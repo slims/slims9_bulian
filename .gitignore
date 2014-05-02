@@ -1,0 +1,14 @@
+images/barcodes/*
+images/persons/*
+images/docs/*
+images/labels/*
+files/*
+repository/*
+.DS_Store
+._.*
+._*
+.project
+sysconfig.local.inc.php
+sysconfig.inc.php
+slims7.sublime-project
+slims7.sublime-workspace
