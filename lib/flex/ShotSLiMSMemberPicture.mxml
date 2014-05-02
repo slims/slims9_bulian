@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!--
+        ShotSLiMSMemberPicture.mxml
+        
+        Copyright 2012 Indra Sutriadi Pipii <indra@sutriadi.web.id>
+        
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+        MA 02110-1301, USA.
+        
+        
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+		// Define a variable of type Camera.
+		import flash.media.Camera;
+		import flash.media.Video;
+		import flash.external.*;
+		import flash.geom.Rectangle;
+		import mx.controls.Alert;
+		import mx.graphics.ImageSnapshot;
+		import mx.graphics.codec.JPEGEncoder;
+		import mx.graphics.codec.PNGEncoder;
+		import mx.collections.ArrayCollection;
+		
+		private var cam:Camera;
+		private var shot:BitmapData;
+		private var crop:BitmapData;
+		private var vid:Video;
+		
+		private const jpgEnc:JPEGEncoder = new JPEGEncoder(); 
+		private const pngEnc:PNGEncoder = new PNGEncoder(); 
+		
+		[Bindable]
+		public var kind:ArrayCollection = new ArrayCollection([
+			{label:"JPG", data:jpgEnc}, 
+			{label:"PNG", data:pngEnc}
+		]);
+
+		[Bindable]
+		public var ratio:ArrayCollection = new ArrayCollection([
+			{label:"2x3", data:1},
+			{label:"3x4", data:2},
+		]);
+		
+		public function initCamera():void {
+			cam = Camera.getCamera();
+			if (cam)
+			{
+				cam.setMode(320, 240, 10);
+				vid = new Video();
+				vid.width = cam.width;
+				vid.height = cam.height; 
+				vid.attachCamera(cam);
+				theCam.addChild(vid)
+			}
+			else
+			{
+				Alert.show("No camera found!");
+			}
+		}
+		
+		public function shotCamera():void {
+			var shot:BitmapData = new BitmapData(theCam.width, theCam.height, true);
+			shot.draw(theCam);
+			var shotBmp:Bitmap = new Bitmap(shot);
+
+			shotBmp.width = theCam.width;
+			shotBmp.height = theCam.height;
+			theCam.addChild(shotBmp);
+			crop = Bitmap(shotBmp).bitmapData.clone();
+		}
+		
+		public function saveShot():void {
+			
+			var theCropImg:BitmapData = new BitmapData(theFrame.width, theFrame.height, true);
+			var rect:Rectangle = new Rectangle(theFrame.x, theFrame.y, theFrame.width, theFrame.height);
+			theCropImg.copyPixels(crop, rect, new Point(0, 0));
+			var theImg:ImageSnapshot;
+			theImg = ImageSnapshot.captureImage(theCropImg, 0, cmbType.selectedItem.data);
+			var sVal:String = ImageSnapshot.encodeImageAsBase64(theImg);
+			if (ExternalInterface.available) {
+				var wrapperFunction:String = "setPicture";
+				ExternalInterface.call(wrapperFunction, sVal, cmbType.selectedItem.label);
+			} else {
+				Alert.show("Wrapper not available!");
+			}
+		}
+
+		private function changeRatio():void {
+			switch (cmbRatio.selectedItem.data) {
+				case 1:
+					theFrame.width = 140;
+					theFrame.height = 210;
+					theFrame.x = 90;
+					theFrame.y = 15;
+					break;
+				case 2:
+					theFrame.width = 150;
+					theFrame.height = 200;
+					theFrame.x = 85;
+					theFrame.y = 20;
+					break;
+			}
+		}
+		]]>
+	</fx:Script>
+	<mx:Grid id="myGrid">
+		<mx:GridRow horizontalAlign="center">
+			<mx:GridItem id="rowCamera" horizontalAlign="center">
+				<s:Group>
+					<s:VideoDisplay id="theCam" width="320" height="240"/>
+					<s:Rect id="theFrame" width="140" height="210" x="90" y="15">
+						<s:stroke>
+							<s:SolidColorStroke color="0x000000" weight="1"/>
+						</s:stroke>
+					</s:Rect>
+				</s:Group>
+			</mx:GridItem>
+		</mx:GridRow>
+		<mx:GridRow id="rowButton">
+			<mx:GridItem horizontalAlign="center">
+				<mx:Button id="btnInit" label="Load Camera" click="initCamera();"/>
+				<mx:Button id="btnCapture" label="Capture" click="shotCamera();"/>
+				<mx:Button id="btnSave" label="Use It!" click="saveShot();"/>
+				<mx:ComboBox id="cmbType" dataProvider="{kind}"/>
+				<mx:ComboBox id="cmbRatio" dataProvider="{ratio}" change="changeRatio()"/>
+			</mx:GridItem>
+		</mx:GridRow>
+	</mx:Grid>
+</s:Application>

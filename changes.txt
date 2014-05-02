@@ -1,0 +1,322 @@
+SENAYAN 3 Stable Branch
+SLiMS 5
+SLiMS 7
+Changes Log
+
+Developers :
+Hendro Wicaksono (hendrowicaksono@yahoo.com, hendrowicaksono@gmail.com)
+Arie Nugraha (dicarve@yahoo.com, dicarve@gmail.com)
+Wardiyono (wynerst@gmail.com)
+Purwoko (purgeologi@yahoo.com, tamanjiwa@gmail.com)
+Sulfan Zayd (sulfan@gmail.com)
+Arif Syamsudin (buitenzorg812@yahoo.com, buitenzorg812@gmail.com)
+Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)
+Eddy Subratha (eddy.subratha@gmail.com)
+Indra Sutriadi (indra.sutriadi@gmail.com)
+
+Localisation contributors :
+Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
+Thai: Prasitichai เรารักในหลวง <eak.pras@facebook.com>
+Bengali: A. K. M. Nurul Alam <nalamapu@gmail.com>
+Persian: Mohammad Javad Mansourzadeh <info@mansourzadeh.ir>
+Arabic: Rasyid Ridho <rasyidridho@gmail.com>
+Malay: Jerry Mohd. Arif 
+Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
+Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
+
+THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 7 (Cendana)
+========================================================================
+Added: Persian translation
+Added: Cendana Responsive template
+Added: Comment field in OPAC
+Added: Membercard generator by Jushadi
+Added: Tooltip in New Bibliography field
+Added: New theme for SLiMS 7 Cendana
+Added: Label, barcode, and member card settings from within the SLiMS adminstration page
+Added: Keyword suggestion using Enchant library
+Added: Since Meranti, Google voice search in OPAC using Google Chrome browser
+Added: Google voice search for search in OPAC with Google Chrome browser using mobile device
+Fixed: Bugs in Custom Reports
+Fixed: LDAP auth error
+Modified: Type ahead value for Publisher, Publishing Place, Classification
+
+
+SLIMS 5 (Meranti)
+========================================================================
+Added: Web-based SLiMS installer
+Added: New Template for Admin and OPAC. For old templates can be downloaded from https://github.com/slimstemplate.
+Added: Z39.50 SRU: Search/Retrieval via URL
+Added: OAI/PMH support (server).
+Added: Statement of Responbility field in bibliographic form.
+Added: Item(s) code generator
+Added: Integrated Classification in Subject field
+Added: Catalog card printing
+Added: Search result clustering :)
+Added: Brazilian Portuguise language
+Added: remove orphaned publisher and place
+Added: Import MARC data
+Added: Member photo capture foto directly from membership form.
+Added: keyboard shortcut to modules and submodules.
+Added: option to not counting fines in holiday.
+Added: Alternative to barcode printing using zend barcode
+Added: Improvised mobile apps view
+Fixed: Bugs in import/export of bibliographic and item data.
+Fixed: Missing filter in item usage statistics on Reporting module
+Fixed: Bugs in XML result
+
+SENAYAN 3 Stable 15 (Matoa)
+========================================================================
+- Fixed: Loan receipt always pop even when there are no circulation transactions
+- Added: User no need to modify sysconfig.inc.php to make local customization. It is also not recommended. Use sysconfig.local.inc.php instead.
+- Added: Download Loan History and current loan for member (in member login).
+- Fixed: improve image viewer handling using OpenHTMLpop.
+- Added: lib/minigalnano/createthumb.php for alternative in thumbnail generating to phpThumb. Including modify it to meet slims need: flexible width/height resize and caching.
+- Added: UCS is now separated package from SLiMS distribution.
+- Fixed: remove UCS variables from SLiMS distribution.
+- Added: Author and Topic/Subject structure changes.
+- Fixed: change unique key for master topic table.
+- Fixed: add author year field for author master table in SQL install script.
+- Fixed: install and upgrade script fix.
+- Fixed: change classification to call number in item list.
+- Fixed: update SQL statement in biblio for publish_year and year in search_biblio.
+- Fixed: change 'series' to series_title in install/senayan/sql for search_biblio Table.
+- Fixed: biblio index error on series title search.
+- Fixed: upgrade script for stable15.
+- Fixed: search error on publisher.
+- Fixed: ajax history error after saving data and causing wrong page to display.
+- Fixed: error on system backup because of already defined constant.
+- Fixed: removing urlencode function usage.
+- Fixed: bugs fixing for series_title in custom frontpage.
+- Added: improve XML mods based support in SLiMS.
+- Added: Add tools for searching orphaned topic/author in masterfile module.
+- Added: Add Email support for sending notification in due date warning and overdue list (using PHPMailer Library).
+- Added: Thai language support (Prasitichai เรารักในหลวง).
+- Added: 74% arabic translation.
+- Fixed: terrafirma template and language file (id_ID).
+- Fixed: AJAX circuation error on circulation transaction.
+- Fixed: birthdate exp on membership.
+- Added: update security.
+- Added: set item status to missing when finishing stocktake.
+- Added: Bengali language support (A. K. M. Nurul Alam).
+- Added: two database connection (security. least privilege for database connection)
+- Added: Integrated IP based access limitation
+- Added: Security patch from Indra Sutriadi (sutriadi.web.id) to avoid barcode.php exploitation.
+- Added: Option $_SERVER['LOCAL_ADDR'] besides $_SERVER['SERVER_ADDR'] for compatibility reason with IIS (Indra Sutriadi)
+- Fixed: change "prototype" word menjadi to "jQuery" (Indra Sutriadi)
+- Added: Port Reference to checkref function in phpbarcode library (Indra Sutriadi)
+
+SENAYAN 3 Stable 14 (Seulanga)
+========================================================================
+- Fixed : Expiration date checking in membership management & circulation transaction.
+- Fixed : Print receipt in circulation transaction.
+- Added : Union Catalogue Server (more stable for production use)
+- Added : Peer-to-peer cataloging service
+- Added : Custom fields for bibliographic data/Bibliography module (experimental)
+- Added : Custom fields for membership data/Membership module (experimental)
+
+
+SENAYAN 3 Stable 13
+========================================================================
+- Fixed : Loan by classification reporting for non-decimal class
+- Fixed : OPAC search error when searching with GMD or Collection type containing more than one word
+- Fixed : Non-decimal class total titles and items in Custom Recapitulation reporting
+- Fixed : Holiday calculation bugs in Circulation (critical)
+- Added : Espanol/Spanish translation (John Urrego Felipe Mejia)
+- Added : Arabic translation (Rasyid Ridho)
+- Added : SWF Document Viewer
+- Added : Circulation transaction receipt when transaction is finished
+- Added : Bibliographic item data export and import features
+- Added : Union Catalogue Server (experimental)
+
+
+SENAYAN 3 Stable 12
+========================================================================
+- Added : Member login in OPAC
+- Added : File download limitation based on Member type
+- Added : new public template (igos & terrafirma)
+- Added : new admin template (igos)
+
+
+SENAYAN 3 Stable 11
+========================================================================
+- Added : Change Loan Date and Due Date manually in circulation transaction (if enabled)
+- Added : Replaced language constants with gettext (thanks a lot to Tobias Zeumer).
+- Added : German SQL (translates all default data).
+- Added : Stock Take, List only item for current logged in user in current stock take and Upload item code list.
+- Added : Label on Bibliographic records can have URL.
+- Added : German translations from Tobias Zeumer.
+- Added : security enhancement for language switch in sysconfig.
+- Fixed : Some Javascripts code optimized.
+- Fixed : date handling on holiday settings.
+- Fixed : Biblio detail metadata notes field is now HTML stripped in OPAC's record detail
+- Fixed : Skip stock take on item status not working when Stock take initialize.
+- Fixed : Paging in loan rules.
+- Fixed : Forcing UTF8 for MySQL/HTTP
+- Fixed : Session cookies revision.
+- Fixed : Simbio Form Table.
+- Fixed : Fines list bugs in circulation.
+- Fixed : Optimized OPAC's search engine.
+- Fixed : Custom reports date filter.
+- Fixed : AJAX error in Item Barcode Generator.
+- Fixed : Mobile browser detection utility
+- Fixed : many untranslated string, thanks to Tobias Zeumer
+
+
+STABLE 10
+========================================================================
+- Fixed : Backup module
+- Added : MODS (Metadata Object Description Schema) XML format
+- Added : Z3950 bibliographic data service
+- Added : Multimedia viewer
+- Added : multiple file upload
+- Added : booleans operator in OPAC and bibliography
+- Added : Enhanced advanced search
+- Fixed : duplicate item code warning in Item data form
+- Added : Improvement on New Custom Report - Item Usage and Loan By Class
+- Added : Improvement on Record number to show option in custom reports
+- Added : PHP-based template system
+- Added : Robots support for third-party indexing engine
+- Added : Serial control management
+- Fixed : in stocktaking for location filter
+
+
+STABLE 9
+========================================================================
+- Added : A lot of improvements related with security issues.
+- Added : security patch using Apache .htaccess. So it means that it only works with Apache web
+  server. So it is recomended to use Senayan with Apache web server.
+- Added : security patches in AJAX request in item_list.
+- Added : Some options to add more advanced AJAX Security
+- Added : Option to custom base url on search result (useful to implement filesystem-based web caching)
+- Added : Simple content management system to create non-collection information
+- Added : Options to customize senayan OPAC frontpage
+- Added : Features to promote collections to frontpage
+- Added : Feature to add header info only in frontpage
+- Fixed : printing customization
+- Fixed : displaying background image for some template
+- Added : template (invention)
+
+
+STABLE 8 - Saturday, 2009-03-14
+========================================================================
+- Added : custom result field in OPAC search result
+- Fixed : security vulnerability, enable attacker to inject HTML in OPAC search query and XSS attack
+- Added : New reporting summary based on class and staff activities
+- Added : Feature for duplicating call number to data item.
+- Added : Printing membership card.
+- Added : Configurable label, barcode, and membership card printing per template.
+- Fixed : expiry of collection reservation.
+
+
+STABLE 7 - Wednesday, 2009-01-12
+========================================================================
+- Added : holiday date range in Holiday Setting
+- Added : CLEAR LOGS for clearing full/bloated System Log
+- Added : Inventory Code field in item data form
+- Added : Currency field in item data form
+- Added : Improved document label and barcode printing
+- Fixed : Javascript AJAX Drop down menu
+- Added : Feature of for saving logs
+- Fixed : searching item for checked-out item list.
+- Fixed : importing bibliographic data
+- Fixed : printing call number label
+- Added : filter in reporting
+- Added : reservation list (circulation)
+
+
+STABLE 6 - Sunday, 2008-09-21
+========================================================================
+- Fixed : change template from global configuration interface
+
+
+STABLE 5 - Tuesday, 2008-06-20
+========================================================================
+- Added : Improvement in javascript codes
+- Added : Template file and CSS refinements
+- Added : Improvement in record detail for showing item list and its due date
+- Added : Improvement on bootstrap file (index.php) behaviour
+- Added : template "blue" by Eddy Subratha
+- Added : Improvement holiday count in overdue
+- Added : Implementation of overdue grace periode for circulation
+- Fixed : backup proccess for wrong paging library inclusion
+- Added : Update in translation by Wardiyono (wynerst@gmail.com)
+- Added : version information
+- Added : Improvement in AJAX handling for drop down box
+- Added : Grace Periode for overdue on circulation
+- Added : Language selection in OPAC
+- Added : OPAC template "blue" by Eddy Subratha
+- Added : Improvement in default templates
+
+
+STABLE 4 - Monday, 2008-05-09
+========================================================================
+- Added : Multi-language support
+- Fixed : paging
+- Added : Improved login sessions handling
+- Fixed : search at overdue list on circulation module
+
+
+STABLE 3 - Monday, 2008-03-25
+========================================================================
+- Fixed : changing user profile for administrator
+- Fixed : overdue warnings at admin home page for not showing the right counts
+- Fixed : sessions timeout handling
+- Fixed : upload error because of filename contain single or double quote characters
+- Fixed : checking ID field for showing FORBIDDEN ACCESS when others computer trying set ID Field in form
+- Fixed : print counters for Label Prints and Item Barcodes Print
+- Fixed : deleting collection type
+- Fixed : string handling
+- Added : in Circulation transaction, Fines values automatically displayed in Loan List, without having to return
+  or extend loan first
+- Added : Subject, Series Title in OPAC's Record Detail
+- Added : in OPAC's Record Detail, Each Author Name and Subject Term are hyperlinked to related document
+- Added : master file document language
+- Added : expired member list in membership module
+- Added : improvement in security handling
+- Added : authority level for Author and Topic/Subject
+- Added : improvement on bibliographic import and export tools
+- Added : improvement on stock take modules
+
+
+STABLE 2 - Friday, 2008-03-22
+========================================================================
+- Fixed : changing user profile for empty password
+- Fixed : record detail for not showing GMD/Medium data
+- Fixed : green OPAC template
+- Fixed : Reporting module at Membership section
+- Fixed : login proccess for User that belongs to any User Group
+- Fixed : System Logs's searching
+- Fixed : Stock Take's searching
+- Added : overdue warnings at admin home page
+- Added : warnings for ON LOAN or INVALID item code
+- Added : Detail for stock take history
+
+
+STABLE 1
+========================================================================
+- Added : New built-in system logs.
+- Fixed : templating system.
+- Added : New Document Labels printing on "bibliographic" module, based on Call Number.
+- Added : New Item barcode generator printing on "bibliographic" module.
+- Added : New Partial stock taking proccess on "stock_take" module.
+- Added : New overdue detail in Overdue list on "circulation" module.
+- Added : New Item Status mode allow you to set certain action for some Item Status, such as "Loan Forbid".
+- Added : New Login Session timeout.
+- Added : Few new options in global configuration options.
+- Added : Warning system in admin home for some application settings.
+- Fixed : "master_file" module.
+- Fixed : "stock_take" module.
+- Fixed : "system" module.
+- Fixed : security issues.
+- Fixed : many part of circulation module.
+- Added : "Location" and "Availaibility" field in OPACs record detail.
+- Added : "location" field for advanced search in OPAC to narrow search scope in specific location.
+- Added : "size" option in Barcode generator.
+- Added : "member_since_date" field in "member" table.
+- Added : "source" field in "item" table.
+- Added : "report_file" field in "stock_take" table.
+- Added : New table "system_log" in database for storing system logs.
+- Fixed : "publish_place" field changed to "publish_place_id" (foreign key to mst_place table) field in "biblio" table.
+- Fixed : Re-ordering of "input_date" and "last_update" fields in "biblio" table.

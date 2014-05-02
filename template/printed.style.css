@@ -1,0 +1,76 @@
+.dataListPrinted {
+    width: 100%;
+    background-color: #000000;
+}
+
+/* printed tabular data styles */
+.alterCellPrinted, .alterCellPrinted2 {
+    color: #000000;
+    background: #CCCCCC;
+}
+
+.alterCellPrinted2 {
+    background: #FFFFFF;
+}
+
+.dataListHeaderPrinted {
+    background: #000000;
+    color: #FFFFFF;
+}
+
+.dataListHeaderPrinted * {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.printPageInfo {
+    font-size: 120%;
+    padding: 5px;
+    color: #000000;
+    background-color: #999999;
+}
+
+.calendar {
+    width: 100%;
+    clear: both;
+    font-size: 110%;
+    border: 1px solid #999;
+    border-right: 0;
+}
+
+.calendar .dayname {
+    background: #999;
+    color: #000;
+    width: 14%;
+}
+
+.calendar td {
+    text-align: center;
+}
+
+.calendar td a {
+    color: #555555;
+    display: block;
+}
+
+.calendar .week .even {
+    background-color: #fff;
+}
+
+.calendar .week .odd {
+    background-color: #ccc;
+}
+
+.calendar .day {
+    border-right: 1px solid #999;
+}
+
+.calendar .week .none {
+    background: #999;
+}
+
+.calendar .day .data {
+    font-weight: bold;
+    font-size: 120%;
+    color: #f33;
+}

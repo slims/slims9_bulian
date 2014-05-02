@@ -1,0 +1,16 @@
+#sidebar-right {
+  position:relative;left:-1px;
+}
+
+body {
+  background-position: 0 242px;
+}
+
+#header, #primary, #header-region {
+  min-width:1000px;
+}
+
+#wrapper {
+  min-width: 850px;
+  margin-left: 50px;
+}

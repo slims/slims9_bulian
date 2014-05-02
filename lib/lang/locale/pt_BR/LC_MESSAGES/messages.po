@@ -1,0 +1,3917 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Senayan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-23 22:30+0700\n"
+"PO-Revision-Date: 2011-03-23 15:50-0300\n"
+"Last-Translator: x <aaa@a.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_ngettext:1,2\n"
+"X-Poedit-Basepath: ../../../../../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: sysconfig.inc.php:320
+msgid "Personal Name"
+msgstr "Nome pessoal"
+
+#: sysconfig.inc.php:321
+msgid "Organizational Body"
+msgstr "Corpo Organizacional"
+
+#: sysconfig.inc.php:322
+msgid "Conference"
+msgstr "Conferência"
+
+#: sysconfig.inc.php:325
+msgid "Topic"
+msgstr "Tópico"
+
+#: sysconfig.inc.php:326
+msgid "Geographic"
+msgstr "Geográfico"
+
+#: sysconfig.inc.php:327
+msgid "Name"
+msgstr "Nome"
+
+#: sysconfig.inc.php:328
+msgid "Temporal"
+msgstr "Temporal"
+
+#: sysconfig.inc.php:329
+msgid "Genre"
+msgstr "Gênero"
+
+#: sysconfig.inc.php:330
+msgid "Occupation"
+msgstr "Ocupação"
+
+#: sysconfig.inc.php:333
+msgid "Primary Author"
+msgstr "Autor principal"
+
+#: sysconfig.inc.php:334
+msgid "Additional Author"
+msgstr "Autor adicional"
+
+#: sysconfig.inc.php:335
+msgid "Editor"
+msgstr "Editor"
+
+#: sysconfig.inc.php:336
+msgid "Translator"
+msgstr "Tradutor"
+
+#: sysconfig.inc.php:337
+msgid "Director"
+msgstr "Diretor"
+
+#: sysconfig.inc.php:338
+msgid "Producer"
+msgstr "Produtor"
+
+#: sysconfig.inc.php:339
+msgid "Composer"
+msgstr "Compositor"
+
+#: sysconfig.inc.php:340
+msgid "Illustrator"
+msgstr "Ilustrador"
+
+#: sysconfig.inc.php:341
+msgid "Creator"
+msgstr "Criador"
+
+#: sysconfig.inc.php:342
+msgid "Contributor"
+msgstr "Contribuidor"
+
+#: index.php:37
+msgid "Web Online Public Access Catalog - Use the search options to find documents quickly"
+msgstr "Catálogo de acesso público online - Use as opções de busca para encontrar os documentos rapidamente"
+
+#: index.php:46
+msgid "You are currently Logged on as member"
+msgstr "Você está no momento conectado como usuário"
+
+#: index.php:46
+msgid "LOGOUT"
+msgstr "Sair"
+
+#: template/lightweight/index_template.inc.php:20
+#: template/green/index_template.inc.php:26
+msgid "Home"
+msgstr "Home"
+
+#: template/lightweight/index_template.inc.php:21
+#: template/green/index_template.inc.php:27
+msgid "Library Information"
+msgstr "Informação da Biblioteca"
+
+#: template/lightweight/index_template.inc.php:22
+#: template/green/index_template.inc.php:28
+msgid "Help on Search"
+msgstr "Ajuda na Busca"
+
+#: template/lightweight/index_template.inc.php:39
+#: template/green/index_template.inc.php:63
+#: template/green/index_template.inc.php:91
+msgid "Search"
+msgstr "Busca"
+
+#: template/lightweight/custom_frontpage_record.inc.php:7
+#: template/lightweight/detail_template.php:12
+#: template/green/custom_frontpage_record.inc.php:7
+#: template/green/detail_template.php:12
+msgid "Edition"
+msgstr "Edição"
+
+#: template/lightweight/custom_frontpage_record.inc.php:8
+#: template/lightweight/detail_template.php:20
+#: template/green/index_template.inc.php:76
+#: template/green/custom_frontpage_record.inc.php:8
+#: template/green/detail_template.php:20
+msgid "ISBN/ISSN"
+msgstr "ISBN/ISSN"
+
+#: template/lightweight/custom_frontpage_record.inc.php:9
+#: template/lightweight/detail_template.php:60
+#: template/green/custom_frontpage_record.inc.php:9
+#: template/green/detail_template.php:60
+msgid "Collation"
+msgstr "Paginação"
+
+#: template/lightweight/custom_frontpage_record.inc.php:10
+#: template/lightweight/detail_template.php:37
+#: template/green/custom_frontpage_record.inc.php:10
+#: template/green/detail_template.php:37
+msgid "Series Title"
+msgstr "Título da série"
+
+#: template/lightweight/custom_frontpage_record.inc.php:11
+#: template/lightweight/detail_template.php:16
+#: template/green/custom_frontpage_record.inc.php:11
+#: template/green/detail_template.php:16
+msgid "Call Number"
+msgstr "Número de chamada"
+
+#: template/lightweight/detail_template.php:8
+#: template/green/index_template.inc.php:70
+#: template/green/detail_template.php:8
+msgid "Title"
+msgstr "Título"
+
+#: template/lightweight/detail_template.php:25
+#: template/green/index_template.inc.php:72
+#: template/green/detail_template.php:25
+msgid "Author(s)"
+msgstr "Autor(es)"
+
+#: template/lightweight/detail_template.php:29
+#: template/green/index_template.inc.php:74
+#: template/green/detail_template.php:29
+msgid "Subject(s)"
+msgstr "Assunto(s)"
+
+#: template/lightweight/detail_template.php:33
+#: template/green/detail_template.php:33
+msgid "Classification"
+msgstr "Classificação"
+
+#: template/lightweight/detail_template.php:40
+#: template/green/index_template.inc.php:78
+#: template/green/detail_template.php:40
+msgid "GMD"
+msgstr "DGM"
+
+#: template/lightweight/detail_template.php:44
+#: template/green/detail_template.php:44
+msgid "Language"
+msgstr "Idioma"
+
+#: template/lightweight/detail_template.php:48
+#: template/green/detail_template.php:48
+msgid "Publisher"
+msgstr "Editora"
+
+#: template/lightweight/detail_template.php:52
+#: template/green/detail_template.php:52
+msgid "Publishing Year"
+msgstr "Ano de publicação"
+
+#: template/lightweight/detail_template.php:56
+#: template/green/detail_template.php:56
+msgid "Publishing Place"
+msgstr "Local de publicação"
+
+#: template/lightweight/detail_template.php:64
+#: template/green/detail_template.php:64
+msgid "Abstract/Notes"
+msgstr "Resumo/Notas"
+
+#: template/lightweight/detail_template.php:68
+#: template/green/detail_template.php:68
+msgid "Specific Detail Info"
+msgstr "Detalhe específico"
+
+#: template/lightweight/detail_template.php:72
+#: template/green/detail_template.php:72
+msgid "Image"
+msgstr "Imagem"
+
+#: template/lightweight/detail_template.php:76
+#: template/green/detail_template.php:76
+msgid "File Attachment"
+msgstr "Arquivo anexo"
+
+#: template/lightweight/detail_template.php:80
+#: template/green/detail_template.php:80
+msgid "Availability"
+msgstr "Disponibilidade"
+
+#: template/green/index_template.inc.php:29
+msgid "Member Area"
+msgstr "Área do Usuário"
+
+#: template/green/index_template.inc.php:30
+msgid "Librarian LOGIN"
+msgstr "Acesso Bibliotecário"
+
+#: template/green/index_template.inc.php:51
+msgid "Select Language"
+msgstr "Selecionar idioma"
+
+#: template/green/index_template.inc.php:60
+msgid "Simple Search"
+msgstr "Busca "
+
+#: template/green/index_template.inc.php:68
+msgid "Advanced Search"
+msgstr "Busca Avançada"
+
+#: template/green/index_template.inc.php:82
+msgid "Collection Type"
+msgstr "Tipo de Coleção"
+
+#: template/green/index_template.inc.php:86
+msgid "Location"
+msgstr "Localização"
+
+#: template/green/detail_template.php:85
+msgid "Back To Previous"
+msgstr "Voltar ao anterior"
+
+#: admin/logout.php:32
+msgid "You Have Been Logged Out From Library Automation System"
+msgstr "Você está saindo do Sistema de Automação da Biblioteca"
+
+#: admin/index.php:60
+msgid "Welcome To The Library Automation System, you are currently logged in as"
+msgstr "Bem vindo ao Sistema de Automação de Biblioteca, você está conectado como"
+
+#: admin/modules/bibliography/import.php:36
+msgid "You are not authorized to view this section"
+msgstr "Você não está autorizado para ver essa área"
+
+#: admin/modules/bibliography/import.php:45
+msgid "Please select the file to import!"
+msgstr "Por favor, selecione o arquivo para importar!"
+
+#: admin/modules/bibliography/import.php:48
+msgid "Required fields (*)  must be filled correctly!"
+msgstr "Campos obrigatórios (*) devem ser preenchidos corretamente!"
+
+#: admin/modules/bibliography/import.php:69
+msgid "Upload failed! File type not allowed or the size is more than"
+msgstr "FALHA no envio! Tipo de arquivo não permitido ou o tamanho e maior que"
+
+#: admin/modules/bibliography/import.php:215
+msgid "IMPORT TOOL"
+msgstr "FERRAMENTAS DE IMPORTAÇÃO"
+
+#: admin/modules/bibliography/import.php:217
+msgid "Import for bibliographics data from CSV file. For guide on CVS fields order and format please refer to documentation or visit <a href=\"http://senayan.diknas.go.id\" target=\"_blank\">Official Website</a>"
+msgstr "Importar dados bibliográficos de um arquivo CVS. For guide on CVS fields order and format please refer to documentation or visit <a href=\"http://senayan.diknas.go.id\" target=\"_blank\">Official Website</a>"
+
+#: admin/modules/bibliography/import.php:225
+msgid "Import Now"
+msgstr "Importar agora"
+
+#: admin/modules/bibliography/import.php:236
+msgid "File To Import"
+msgstr "Arquivo para importar"
+
+#: admin/modules/bibliography/import.php:238
+msgid "Field Separator"
+msgstr "Separador de campos"
+
+#: admin/modules/bibliography/import.php:240
+msgid "Field Enclosed With"
+msgstr "Campo fechado com"
+
+#: admin/modules/bibliography/import.php:242
+msgid "Number of Records To Export (0 for all records)"
+msgstr "Número de registros para exportar (0 a todos os registros)"
+
+#: admin/modules/bibliography/import.php:244
+msgid "Start From Record"
+msgstr "Iniciar do registro"
+
+#: admin/modules/bibliography/iframe_attach.php:73
+msgid "Attachment removed!"
+msgstr "Anexo removido!"
+
+#: admin/modules/bibliography/submenu.php:23
+#: admin/modules/bibliography/index.php:266
+msgid "Bibliographic"
+msgstr "Bibliográfico"
+
+#: admin/modules/bibliography/submenu.php:24
+#: admin/modules/bibliography/index.php:267
+msgid "Bibliographic List"
+msgstr "Lista bibliográfica"
+
+#: admin/modules/bibliography/submenu.php:24
+msgid "Show Existing Bibliographic Data"
+msgstr "Mostrar dados bibliográficos existentes"
+
+#: admin/modules/bibliography/submenu.php:25
+#: admin/modules/bibliography/index.php:266
+msgid "Add New Bibliography"
+msgstr "Adicionar nova bibliografia"
+
+#: admin/modules/bibliography/submenu.php:25
+msgid "Add New Bibliographic Data/Catalog"
+msgstr "Adicionar novo dados bibliográficos/catálogo"
+
+#: admin/modules/bibliography/submenu.php:26
+#: admin/modules/bibliography/item.php:190
+msgid "Items"
+msgstr "Itens"
+
+#: admin/modules/bibliography/submenu.php:27
+msgid "Item List"
+msgstr "Lista de itens"
+
+#: admin/modules/bibliography/submenu.php:27
+msgid "Show List of Library Items"
+msgstr "Mostrar lista de itens da biblioteca"
+
+#: admin/modules/bibliography/submenu.php:28
+#: admin/modules/bibliography/checkout_item.php:43
+msgid "Checkout Items"
+msgstr "Itens emprestados"
+
+#: admin/modules/bibliography/submenu.php:28
+msgid "Show List of Checkout Items"
+msgstr "Mostrar lista de itens emprestados"
+
+#: admin/modules/bibliography/submenu.php:29
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: admin/modules/bibliography/submenu.php:30
+msgid "Z3950 Service"
+msgstr "Z3950 Service"
+
+#: admin/modules/bibliography/submenu.php:30
+msgid "Grab Bibliographic Data from Z3950 Web Services"
+msgstr "Coletar dados bibliográficos do serviço Web Z3950"
+
+#: admin/modules/bibliography/submenu.php:31
+#: admin/modules/bibliography/dl_print.php:171
+msgid "Labels Printing"
+msgstr "Impressão de etiquetas"
+
+#: admin/modules/bibliography/submenu.php:31
+msgid "Print Document Labels"
+msgstr "Imprimir etiquetas do documento"
+
+#: admin/modules/bibliography/submenu.php:32
+#: admin/modules/bibliography/item_barcode_generator.php:196
+msgid "Item Barcodes Printing"
+msgstr "Impressão do código de barras do item"
+
+#: admin/modules/bibliography/submenu.php:32
+msgid "Print Item Barcodes"
+msgstr "Imprimir códigos de barra do item"
+
+#: admin/modules/bibliography/submenu.php:33
+msgid "Import Data"
+msgstr "Importar dados"
+
+#: admin/modules/bibliography/submenu.php:33
+msgid "Import Data to Bibliographic Database from CSV file"
+msgstr "Importar de arquivo CSV para base de dados bibliográfico"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Export Data"
+msgstr "Exportar dados"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Export Bibliographic Data To CSV format"
+msgstr "Exportar dados bibliográficos para o formato CSV"
+
+#: admin/modules/bibliography/iframe_author.php:65
+msgid "Author succesfully removed!"
+msgstr "Autor removido com sucesso!"
+
+#: admin/modules/bibliography/iframe_author.php:76
+msgid "Author removed!"
+msgstr "Autor removido!"
+
+#: admin/modules/bibliography/item.php:53
+msgid "Item Code can't be empty!"
+msgstr "Código de item não pode estar vazio"
+
+#: admin/modules/bibliography/item.php:99
+msgid "Item Data Successfully Updated"
+msgstr "Dados de item foi atualizado com sucesso!"
+
+#: admin/modules/bibliography/item.php:106
+#: admin/modules/bibliography/item.php:122
+msgid "Item Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação de dados de item. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/item.php:115
+msgid "New Item Data Successfully Saved"
+msgstr "Dados de novo item gravados com sucesso"
+
+#: admin/modules/bibliography/item.php:169
+#: admin/modules/bibliography/iframe_item_list.php:74
+msgid "Item data can not be deleted because still on hold by members"
+msgstr "Os dados do item não podem ser apagados porque o material está emprestado"
+
+#: admin/modules/bibliography/item.php:175
+#: admin/modules/bibliography/iframe_item_list.php:80
+msgid "Item succesfully removed!"
+msgstr "Item removido com sucesso!"
+
+#: admin/modules/bibliography/item.php:178
+#: admin/modules/bibliography/iframe_item_list.php:85
+msgid "Item FAILED to removed!"
+msgstr "Falha na remoção do item!"
+
+#: admin/modules/bibliography/item.php:218
+#: admin/modules/bibliography/index.php:295
+msgid "Save"
+msgstr "Gravar"
+
+#: admin/modules/bibliography/item.php:237
+#: admin/modules/bibliography/index.php:317
+msgid "Update"
+msgstr "Atualizar"
+
+#: admin/modules/bibliography/item.php:271
+#: admin/modules/bibliography/item.php:372
+#: admin/modules/bibliography/item.php:381
+#: admin/modules/bibliography/checkout_item.php:61
+#: admin/modules/bibliography/item_barcode_generator.php:224
+msgid "Item Code"
+msgstr "Códio do item"
+
+#: admin/modules/bibliography/item.php:275
+msgid "Inventory Code"
+msgstr "Código do inventário"
+
+#: admin/modules/bibliography/item.php:285
+msgid "Shelf Location"
+msgstr "Localização na estante"
+
+#: admin/modules/bibliography/item.php:297
+msgid "Available"
+msgstr "Disponível"
+
+#: admin/modules/bibliography/item.php:301
+msgid "Item Status"
+msgstr "Situação do item"
+
+#: admin/modules/bibliography/item.php:303
+msgid "Order Number"
+msgstr "Número de pedido"
+
+#: admin/modules/bibliography/item.php:305
+msgid "Order Date"
+msgstr "Data de pedido"
+
+#: admin/modules/bibliography/item.php:307
+msgid "Receiving Date"
+msgstr "Data de recebimento"
+
+#: admin/modules/bibliography/item.php:311
+#: admin/modules/bibliography/index.php:350
+msgid "Not Applicable"
+msgstr "Não aplicável"
+
+#: admin/modules/bibliography/item.php:315
+msgid "Supplier"
+msgstr "Fornecedor"
+
+#: admin/modules/bibliography/item.php:317
+msgid "Buy"
+msgstr "Comprar"
+
+#: admin/modules/bibliography/item.php:318
+msgid "Prize/Grant"
+msgstr "Prêmio"
+
+#: admin/modules/bibliography/item.php:319
+msgid "Source"
+msgstr "Fonte"
+
+#: admin/modules/bibliography/item.php:321
+msgid "Invoice"
+msgstr "Fatura"
+
+#: admin/modules/bibliography/item.php:323
+msgid "Invoice Date"
+msgstr "Data da fatura"
+
+#: admin/modules/bibliography/item.php:327
+msgid "Price"
+msgstr "Preço"
+
+#: admin/modules/bibliography/item.php:331
+msgid "You are going to edit Item data"
+msgstr "Você está editando dados de item"
+
+#: admin/modules/bibliography/item.php:332
+#: admin/modules/bibliography/item.php:377
+#: admin/modules/bibliography/item.php:386
+#: admin/modules/bibliography/index.php:454
+msgid "Last Updated"
+msgstr "Última atualização"
+
+#: admin/modules/bibliography/item.php:420
+#: admin/modules/bibliography/checkout_item.php:106
+#: admin/modules/bibliography/item_barcode_generator.php:260
+#: admin/modules/bibliography/index.php:562
+#: admin/modules/bibliography/dl_print.php:236
+msgid "Found <strong>{result->num_rows}</strong> from your keywords"
+msgstr "Encontrados <strong>{result->num_rows}</strong> com suas palavras-chave"
+
+#: admin/modules/bibliography/item.php:421
+#: admin/modules/bibliography/item_barcode_generator.php:261
+#: admin/modules/bibliography/index.php:563
+#: admin/modules/bibliography/dl_print.php:237
+msgid "Query took"
+msgstr "Consulta levou"
+
+#: admin/modules/bibliography/item.php:421
+#: admin/modules/bibliography/item_barcode_generator.php:261
+#: admin/modules/bibliography/index.php:563
+#: admin/modules/bibliography/dl_print.php:237
+msgid "second(s) to complete"
+msgstr "segundo(s) para finalizar"
+
+#: admin/modules/bibliography/pop_author.php:88
+msgid "Author succesfully updated!"
+msgstr "Autor atualizado com sucesso!"
+
+#: admin/modules/bibliography/pop_author.php:92
+msgid "Author FAILED to Add. Please Contact System Administrator"
+msgstr "FALHA para adicionar autor. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/pop_author.php:117
+msgid "Author added!"
+msgstr "Autor adicionado!"
+
+#: admin/modules/bibliography/pop_author.php:128
+msgid "Add Author"
+msgstr "Adicionar autor"
+
+#: admin/modules/bibliography/pop_author.php:133
+msgid "Author Name"
+msgstr "Nome do autor"
+
+#: admin/modules/bibliography/pop_author.php:146
+msgid "Type to search for existing authors or to add a new one"
+msgstr "Digite para pesquisar por autores existentes ou para adicionar um novo"
+
+#: admin/modules/bibliography/pop_author.php:148
+msgid "Insert To Bibliography"
+msgstr "Inserir na bibliografia"
+
+#: admin/modules/bibliography/export.php:103
+msgid "Error on query to database, Export FAILED!"
+msgstr "ERRO na consulta da base de dados. FALHA na exportação!"
+
+#: admin/modules/bibliography/export.php:141
+msgid "There is no record in bibliographic database yet, Export FAILED!"
+msgstr "Não há registros na base de dados bibliográfica ainda. FALHA na exportação!"
+
+#: admin/modules/bibliography/export.php:150
+msgid "EXPORT TOOL"
+msgstr "FERRAMENTAS DE EXPORTAÇÃO"
+
+#: admin/modules/bibliography/export.php:152
+msgid "Export bibliographics data to CSV file"
+msgstr "Exportar dados bibliográficos para arquivo CSV"
+
+#: admin/modules/bibliography/export.php:159
+msgid "Export Now"
+msgstr "Exportar agora"
+
+#: admin/modules/bibliography/export.php:174
+msgid "Record Separator"
+msgstr "Separador de registro"
+
+#: admin/modules/bibliography/checkout_item.php:62
+msgid "Member ID"
+msgstr "ID do Usuário"
+
+#: admin/modules/bibliography/checkout_item.php:64
+msgid "Loan Date"
+msgstr "Data de empréstimo"
+
+#: admin/modules/bibliography/checkout_item.php:65
+msgid "Due Date"
+msgstr "Data de devolução"
+
+#: admin/modules/bibliography/item_barcode_generator.php:88
+#: admin/modules/bibliography/dl_print.php:70
+msgid "Selected items NOT ADDED to print queue. Only {max_print} can be printed at once"
+msgstr "Selecione os itens NÃO ADICIONADOS na fila de impressão. Somente {max_print}  podem ser impressos de uma só vez"
+
+#: admin/modules/bibliography/item_barcode_generator.php:93
+#: admin/modules/bibliography/dl_print.php:75
+msgid "Selected items added to print queue"
+msgstr "Selecionados itens adicionados na fila de impressão"
+
+#: admin/modules/bibliography/item_barcode_generator.php:102
+#: admin/modules/bibliography/dl_print.php:82
+msgid "Print queue cleared!"
+msgstr "Fila de impressão limpa!"
+
+#: admin/modules/bibliography/item_barcode_generator.php:111
+#: admin/modules/bibliography/item_barcode_generator.php:115
+#: admin/modules/bibliography/dl_print.php:92
+#: admin/modules/bibliography/dl_print.php:96
+msgid "There is no data to print!"
+msgstr "Não há dados para imprimir!"
+
+#: admin/modules/bibliography/item_barcode_generator.php:196
+msgid "Print Barcodes for Selected Data"
+msgstr "Imprimir códigos de barras para dados selecionados"
+
+#: admin/modules/bibliography/item_barcode_generator.php:197
+#: admin/modules/bibliography/dl_print.php:172
+msgid "Clear Print Queue"
+msgstr "Limpar fila de impressão"
+
+#: admin/modules/bibliography/item_barcode_generator.php:205
+#: admin/modules/bibliography/dl_print.php:180
+msgid "Maximum"
+msgstr "Máximo"
+
+#: admin/modules/bibliography/item_barcode_generator.php:205
+#: admin/modules/bibliography/dl_print.php:180
+msgid "records can be printed at once. Currently there is"
+msgstr "registros podem ser impressos de uma só vez. Atualmente há"
+
+#: admin/modules/bibliography/item_barcode_generator.php:209
+#: admin/modules/bibliography/dl_print.php:184
+msgid "in queue waiting to be printed."
+msgstr "esperando na fila de impressão"
+
+#: admin/modules/bibliography/item_barcode_generator.php:251
+#: admin/modules/bibliography/dl_print.php:227
+msgid "Add"
+msgstr "Adicionar"
+
+#: admin/modules/bibliography/item_barcode_generator.php:252
+#: admin/modules/bibliography/dl_print.php:228
+msgid "Add To Print Queue"
+msgstr "Adicionar na fila de impressão"
+
+#: admin/modules/bibliography/item_barcode_generator.php:253
+#: admin/modules/bibliography/dl_print.php:229
+msgid "Add to print queue?"
+msgstr "Adicionar na fila de impressão?"
+
+#: admin/modules/bibliography/pop_attach.php:82
+msgid "Upload FAILED! Forbidden file type or file size too big!"
+msgstr "FALHA no envio! Tipo de arquivo proibido ou tamanho de arquivo muito grande!"
+
+#: admin/modules/bibliography/pop_attach.php:131
+msgid "File Attachment data updated!"
+msgstr "Dados de arquivo anexo atualizados!"
+
+#: admin/modules/bibliography/pop_attach.php:135
+msgid "File Attachment data FAILED to update!"
+msgstr "FALHA na atualização de dados de arquivo anexo!"
+
+#: admin/modules/bibliography/pop_attach.php:140
+#: admin/modules/bibliography/pop_attach.php:155
+msgid "File Attachment uploaded succesfully!"
+msgstr "Arquivo anexo atualizado com sucesso!"
+
+#: admin/modules/bibliography/pop_attach.php:144
+msgid "File Attachment data FAILED to save!"
+msgstr "FALHA na gravação de dados de arquivo anexo!"
+
+#: admin/modules/bibliography/pop_attach.php:164
+msgid "Upload Now"
+msgstr "Enviar Agora"
+
+#: admin/modules/bibliography/pop_attach.php:194
+msgid "Repository ROOT"
+msgstr "Repositorio ROOT"
+
+#: admin/modules/bibliography/pop_attach.php:204
+msgid "Repo. Directory"
+msgstr "Repo. Diretório"
+
+#: admin/modules/bibliography/pop_attach.php:208
+msgid "File To Attach"
+msgstr "Arquivo para anexar"
+
+#: admin/modules/bibliography/pop_attach.php:211
+msgid "URL"
+msgstr "URL"
+
+#: admin/modules/bibliography/pop_attach.php:213
+msgid "Description"
+msgstr "Descrição"
+
+#: admin/modules/bibliography/pop_attach.php:215
+msgid "Public"
+msgstr "Público"
+
+#: admin/modules/bibliography/pop_attach.php:216
+msgid "Private"
+msgstr "Particular"
+
+#: admin/modules/bibliography/pop_attach.php:217
+msgid "Access"
+msgstr "Acesso"
+
+#: admin/modules/bibliography/pop_attach.php:224
+msgid "Access Limit by Member Type"
+msgstr "Acesso limitado por tipo de usuário"
+
+#: admin/modules/bibliography/z3950.php:335
+#: admin/modules/bibliography/index.php:271
+msgid "Title/Series Title"
+msgstr "Título/Título da série"
+
+#: admin/modules/bibliography/z3950.php:335
+#: admin/modules/bibliography/index.php:271
+msgid "Authors"
+msgstr "Autores"
+
+#: admin/modules/bibliography/z3950.php:338
+msgid "* Please make sure you have a working Internet connection."
+msgstr "* Por favor, verifique se a conexão com a Internet está funcionando."
+
+#: admin/modules/bibliography/index.php:57
+msgid "Title can not be empty"
+msgstr "Título não pode estar vazio"
+
+#: admin/modules/bibliography/index.php:130
+#: admin/modules/bibliography/index.php:134
+msgid "Image Uploaded Successfully"
+msgstr "Imagem enviada com sucesso"
+
+#: admin/modules/bibliography/index.php:150
+msgid "Bibliography Data Successfully Updated"
+msgstr "Dados de bibliografia atualizados com sucesso"
+
+#: admin/modules/bibliography/index.php:161
+msgid "Bibliography Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA no envio de dados de bibliografia. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/index.php:188
+msgid "New Bibliography Data Successfully Saved"
+msgstr "Novos dados de bibliografia gravados com sucesso"
+
+#: admin/modules/bibliography/index.php:196
+msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar os dados da bibliografia. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/index.php:245
+msgid "Below data can not be deleted:"
+msgstr "Dados abaixo não pode ser apagados:"
+
+#: admin/modules/bibliography/index.php:251
+msgid "All Data Successfully Deleted"
+msgstr "Todos os dados apagados com sucesso"
+
+#: admin/modules/bibliography/index.php:254
+msgid ""
+"Some or All Data NOT deleted successfully!\\n"
+"Please contact system administrator"
+msgstr ""
+"Alguns ou todos os dados NÃO foram apagados com sucesso!\\n"
+"Por favor entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/index.php:271
+msgid "All Fields"
+msgstr "Todos os campos"
+
+#: admin/modules/bibliography/index.php:271
+msgid "Topics"
+msgstr "Tópicos"
+
+#: admin/modules/bibliography/index.php:331
+msgid "Add New Items"
+msgstr "Adiconar novos itens"
+
+#: admin/modules/bibliography/index.php:336
+msgid "Add Author(s)"
+msgstr "Aducibar autor(es)"
+
+#: admin/modules/bibliography/index.php:356
+msgid "Use this for Serial publication"
+msgstr "Use isso para publicação seriada"
+
+#: admin/modules/bibliography/index.php:357
+msgid "Frequency"
+msgstr "Frequência"
+
+#: admin/modules/bibliography/index.php:395
+msgid "Add Subject(s)"
+msgstr "Adiconar assunto(s)"
+
+#: admin/modules/bibliography/index.php:420
+msgid "Add Attachment"
+msgstr "Adicionar anexo"
+
+#: admin/modules/bibliography/index.php:424
+msgid "Show"
+msgstr "Mostrar"
+
+#: admin/modules/bibliography/index.php:425
+msgid "Hide"
+msgstr "Esconder"
+
+#: admin/modules/bibliography/index.php:426
+msgid "Hide in OPAC"
+msgstr "Esconder no OPAC"
+
+#: admin/modules/bibliography/index.php:428
+msgid "Don't Promote"
+msgstr "Não promover"
+
+#: admin/modules/bibliography/index.php:429
+msgid "Promote"
+msgstr "Divulgar"
+
+#: admin/modules/bibliography/index.php:430
+msgid "Promote To Homepage"
+msgstr "Divulgar na homepage"
+
+#: admin/modules/bibliography/index.php:454
+msgid "You are going to edit biblio data"
+msgstr "Você está editando dados da biblio"
+
+#: admin/modules/bibliography/index.php:510
+#: admin/modules/bibliography/index.php:516
+msgid "None"
+msgstr "Nenhum"
+
+#: admin/modules/bibliography/index.php:510
+#: admin/modules/bibliography/index.php:516
+msgid "Copies"
+msgstr "Cópias"
+
+#: admin/modules/bibliography/index.php:511
+#: admin/modules/bibliography/index.php:517
+msgid "Last Update"
+msgstr "Última atualização"
+
+#: admin/modules/bibliography/dl_print.php:171
+msgid "Print Labels for Selected Data"
+msgstr "Imprimir etiquetas para dados selecionados"
+
+#: admin/modules/bibliography/pop_topic.php:91
+msgid "Subject FAILED to Add. Please Contact System Administrator"
+msgstr "FALHA para adicionar assunto. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/bibliography/pop_topic.php:116
+msgid "Subject added!"
+msgstr "Assunto adicionado"
+
+#: admin/modules/bibliography/pop_topic.php:127
+msgid "Add Subject"
+msgstr "Adicionar assunto"
+
+#: admin/modules/bibliography/pop_topic.php:133
+msgid "Keyword"
+msgstr "Palavras-chave"
+
+#: admin/modules/bibliography/pop_topic.php:147
+msgid "Type to search for existing topics or to add a new one"
+msgstr "Digitar para procurar tópicos existentes ou para adicionar um novo"
+
+#: admin/modules/circulation/fines_list.php:56
+msgid "Fines Description and Debet value can't be empty"
+msgstr "Descrição da multa e valor de débito não podem estar vazios"
+
+#: admin/modules/circulation/fines_list.php:58
+msgid "Value of Credit can not be higher that Debet Value"
+msgstr "Valor de crédito não pode ser maior que o valor de débito"
+
+#: admin/modules/circulation/fines_list.php:76
+msgid "Fines Data Successfully Updated"
+msgstr "Dados de multas atualizados com sucesso"
+
+#: admin/modules/circulation/fines_list.php:77
+msgid "Fines Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de multas. Por favor, entre em contato com o adminstrador do sistema"
+
+#: admin/modules/circulation/fines_list.php:83
+msgid "New Fines Data Successfully Saved"
+msgstr "Novos dados de multas gravados com sucesso"
+
+#: admin/modules/circulation/fines_list.php:84
+msgid "Fines Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados de multas. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/circulation/fines_list.php:120
+msgid "Add New Fines"
+msgstr "Adicionar nova multas"
+
+#: admin/modules/circulation/fines_list.php:121
+msgid "Fines List"
+msgstr "Lista de multas"
+
+#: admin/modules/circulation/fines_list.php:122
+msgid "View Balanced Overdue"
+msgstr "Ver balanço de atrasos"
+
+#: admin/modules/circulation/fines_list.php:159
+#: admin/modules/circulation/fines_list.php:183
+msgid "Fines Date"
+msgstr "Dados de multas"
+
+#: admin/modules/circulation/fines_list.php:161
+#: admin/modules/circulation/fines_list.php:182
+msgid "Description/Name"
+msgstr "Descrição/Nome"
+
+#: admin/modules/circulation/fines_list.php:163
+#: admin/modules/circulation/fines_list.php:184
+msgid "Debit"
+msgstr "Débito"
+
+#: admin/modules/circulation/fines_list.php:165
+#: admin/modules/circulation/fines_list.php:185
+msgid "Credit"
+msgstr "Crédito"
+
+#: admin/modules/circulation/fines_list.php:169
+msgid "You are going to edit fines data"
+msgstr "Você esta editando dados de multas"
+
+#: admin/modules/circulation/submenu.php:23
+msgid "Circulation"
+msgstr "Circulação"
+
+#: admin/modules/circulation/submenu.php:24
+#: admin/modules/circulation/index.php:60
+msgid "Start Transaction"
+msgstr "Iniciar transação"
+
+#: admin/modules/circulation/submenu.php:24
+msgid "Start Circulation Transaction Proccess"
+msgstr "Iniciar processo de realização da circulação"
+
+#: admin/modules/circulation/submenu.php:25
+#: admin/modules/circulation/quick_return.php:47
+msgid "Quick Return"
+msgstr "Volta rápida"
+
+#: admin/modules/circulation/submenu.php:25
+msgid "Quick Return Collection"
+msgstr "Volta rápida à coleção"
+
+#: admin/modules/circulation/submenu.php:26
+#: admin/modules/circulation/loan_rules.php:117
+msgid "Loan Rules"
+msgstr "Regras de empréstimo"
+
+#: admin/modules/circulation/submenu.php:26
+msgid "View and Modify Circulation Loan Rules"
+msgstr "Ver e modificar regras de empréstimo"
+
+#: admin/modules/circulation/submenu.php:27
+#: admin/modules/circulation/circulation_action.php:479
+msgid "Loan History"
+msgstr "Histórico de empréstimo"
+
+#: admin/modules/circulation/submenu.php:27
+msgid "Loan History Overview"
+msgstr "Histórico geral de empréstimo"
+
+#: admin/modules/circulation/submenu.php:28
+msgid "Overdued List"
+msgstr "Lista de atrasados"
+
+#: admin/modules/circulation/submenu.php:28
+msgid "View Members Having Overdues"
+msgstr "Ver usuários com atrasos"
+
+#: admin/modules/circulation/submenu.php:29
+msgid "Reservation"
+msgstr "Reserva"
+
+#: admin/modules/circulation/loan.php:34
+#: admin/modules/circulation/quick_return.php:36
+#: admin/modules/circulation/loan_rules.php:40
+#: admin/modules/circulation/loan_rules.php:131
+#: admin/modules/circulation/index.php:38
+msgid "You don't have enough privileges to view this section"
+msgstr "Você não tem privilégios suficientes para ver essa área"
+
+#: admin/modules/circulation/loan.php:113
+msgid "Insert Item Code/Barcode"
+msgstr "Inserir código de item/Código de barras"
+
+#: admin/modules/circulation/loan.php:115
+msgid "Loan"
+msgstr "Emprestar"
+
+#: admin/modules/circulation/loan.php:129
+#: admin/modules/circulation/reserve_list.php:87
+msgid "Remove"
+msgstr "Remover"
+
+#: admin/modules/circulation/loan.php:142
+msgid "Click To Change Loan Date"
+msgstr "Clicar para modificar data de empréstimo"
+
+#: admin/modules/circulation/loan.php:143
+msgid "Click To Change Due Date"
+msgstr "Clica  para modificar data de vencimento"
+
+#: admin/modules/circulation/quick_return.php:41
+msgid "Quick Return is disabled"
+msgstr "Retorno rápido está desativado"
+
+#: admin/modules/circulation/quick_return.php:47
+msgid "Insert an item ID to return collection with keyboard or barcode reader"
+msgstr "Inserir um ID de item par voltar à coleção - com teclado ou leitor de código de barras"
+
+#: admin/modules/circulation/quick_return.php:50
+msgid "Item ID"
+msgstr "ID do item"
+
+#: admin/modules/circulation/quick_return.php:52
+#: admin/modules/circulation/loan_list.php:83
+msgid "Return"
+msgstr "Retorno"
+
+#: admin/modules/circulation/loan_rules.php:66
+msgid "Loan Rules Successfully Updated"
+msgstr "Regras de empréstimo atualizados com sucesso"
+
+#: admin/modules/circulation/loan_rules.php:68
+msgid "Loan Rules FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA no envio das regras de empréstimo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/circulation/loan_rules.php:74
+msgid "New Loan Rules Successfully Saved"
+msgstr "Novas regras de empréstimo gravadas com sucesso"
+
+#: admin/modules/circulation/loan_rules.php:76
+msgid "Loan Rules FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar as regras de empréstimo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/circulation/loan_rules.php:117
+msgid "Add New Loan Rules"
+msgstr "Adicionar novas regras de empréstimo"
+
+#: admin/modules/circulation/loan_rules.php:118
+msgid "Loan Rules List"
+msgstr "Lista de regras de empréstimo"
+
+#: admin/modules/circulation/loan_rules.php:168
+#: admin/modules/circulation/loan_rules.php:215
+#: admin/modules/circulation/loan_rules.php:222
+#: admin/modules/circulation/circulation_action.php:447
+msgid "Member Type"
+msgstr "Tipo de usuário"
+
+#: admin/modules/circulation/loan_rules.php:176
+#: admin/modules/circulation/loan_rules.php:181
+msgid "ALL"
+msgstr "TODOS"
+
+#: admin/modules/circulation/loan_rules.php:187
+#: admin/modules/circulation/loan_rules.php:218
+#: admin/modules/circulation/loan_rules.php:225
+msgid "Loan Limit"
+msgstr "Limite de empréstimo"
+
+#: admin/modules/circulation/loan_rules.php:189
+#: admin/modules/circulation/loan_rules.php:219
+#: admin/modules/circulation/loan_rules.php:226
+msgid "Loan Period"
+msgstr "Período de empréstimo"
+
+#: admin/modules/circulation/loan_rules.php:191
+msgid "Reborrow Limit"
+msgstr "Limite de renovação de empréstimo"
+
+#: admin/modules/circulation/loan_rules.php:193
+msgid "Fines Each Day"
+msgstr "Multa diária"
+
+#: admin/modules/circulation/loan_rules.php:195
+msgid "Overdue Grace Periode"
+msgstr "Período de carência do atraso"
+
+#: admin/modules/circulation/loan_rules.php:199
+msgid "You are going to edit loan rules"
+msgstr "Você está editando regras de empréstimo"
+
+#: admin/modules/circulation/reserve_list.php:46
+msgid "Are you sure to remove reservation for"
+msgstr "Você tem certeza que quer remover resarva de"
+
+#: admin/modules/circulation/reserve_list.php:60
+msgid "Search Collection"
+msgstr "Buscar coleção"
+
+#: admin/modules/circulation/reserve_list.php:67
+msgid "Add Reserve"
+msgstr "Adicionar reserva"
+
+#: admin/modules/circulation/reserve_list.php:87
+msgid "Reserve Date"
+msgstr "Data de reserva"
+
+#: admin/modules/circulation/reserve_list.php:105
+msgid "ALREADY EXPIRED"
+msgstr "JÁ EXPIROU"
+
+#: admin/modules/circulation/loan_list.php:50
+msgid "Are you sure you want to return the item"
+msgstr "Você tem certeza que quer retornar para o item"
+
+#: admin/modules/circulation/loan_list.php:52
+msgid "Are you sure to extend loan for"
+msgstr "Tem certeza que prorrogar o empréstimo para"
+
+#: admin/modules/circulation/loan_list.php:83
+msgid "Extend"
+msgstr "Prorrogação"
+
+#: admin/modules/circulation/loan_list.php:92
+msgid "Return this item"
+msgstr "Devolver esse item"
+
+#: admin/modules/circulation/loan_list.php:96
+#: admin/modules/circulation/loan_list.php:100
+#: admin/modules/circulation/loan_list.php:102
+msgid "No Extend"
+msgstr "Não prorrogação"
+
+#: admin/modules/circulation/loan_list.php:104
+msgid "Extend loan for this item"
+msgstr "Prorrogar empréstimo para esse item"
+
+#: admin/modules/circulation/loan_list.php:109
+msgid "Extended"
+msgstr "Prorrogado"
+
+#: admin/modules/circulation/loan_list.php:115
+msgid "OVERDUED for"
+msgstr "Atrasados de"
+
+#: admin/modules/circulation/loan_list.php:115
+msgid "days(s) with fines value"
+msgstr "dia(s) de multa de valor"
+
+#: admin/modules/circulation/loan_list.php:149
+#: admin/modules/circulation/circulation_action.php:252
+msgid "Item {itemCode} is being reserved by member {member}"
+msgstr "Item {itemCode} está reservado para o usuário {member}"
+
+#: admin/modules/circulation/member_loan_hist.php:55
+msgid "Not Returned Yet"
+msgstr "Ainda não devolvido"
+
+#: admin/modules/circulation/member_loan_hist.php:55
+msgid "Returned Date"
+msgstr "Data de devolução"
+
+#: admin/modules/circulation/index.php:48
+msgid "CIRCULATION - Insert a member ID to start transaction with keyboard or barcode reader"
+msgstr "CIRCULAÇÃO - Inserir ID do usuário para começar transação - com teclado ou leitor de barras"
+
+#: admin/modules/circulation/index.php:66
+msgid "Transaction with member {member_id} is completed"
+msgstr "Transação com usuário {member_id} foi finalizada"
+
+#: admin/modules/circulation/circulation_action.php:46
+msgid "ERROR! Loan data can't be saved to database"
+msgstr "ERRO! Dados de empréstimo não podem ser gravados na base de dados"
+
+#: admin/modules/circulation/circulation_action.php:53
+msgid "Transaction finished"
+msgstr "Transação finalizada"
+
+#: admin/modules/circulation/circulation_action.php:75
+#: admin/modules/circulation/circulation_action.php:97
+msgid "Overdue fines inserted to fines database"
+msgstr "Multas de atraso inseridas na base de dados de multas"
+
+#: admin/modules/circulation/circulation_action.php:88
+msgid "Item CANNOT BE Extended! This Item is being reserved by other member"
+msgstr "Item NÃO PODE SER prorrogado! Esse item está sendo reservado para outro usuário"
+
+#: admin/modules/circulation/circulation_action.php:95
+msgid "Loan Extended"
+msgstr "Empréstimo prolongado"
+
+#: admin/modules/circulation/circulation_action.php:123
+#: admin/modules/circulation/circulation_action.php:130
+msgid "Loan Limit Reached!"
+msgstr "Limite de empréstimo atingido!"
+
+#: admin/modules/circulation/circulation_action.php:123
+#: admin/modules/circulation/circulation_action.php:144
+msgid "Do You Want To Overide This?"
+msgstr "Você deseja substituir esse?"
+
+#: admin/modules/circulation/circulation_action.php:144
+msgid "WARNING! This Item is reserved by another member"
+msgstr "AVISO! Esse item está reservado para um outro usuário"
+
+#: admin/modules/circulation/circulation_action.php:154
+msgid "This Item is not registered in database"
+msgstr "Esse item não está cadastrado na base de dados"
+
+#: admin/modules/circulation/circulation_action.php:159
+msgid "This Item is currently not available"
+msgstr "Esse item não está disponível no momento"
+
+#: admin/modules/circulation/circulation_action.php:164
+msgid "Loan NOT PERMITTED! Membership already EXPIRED!"
+msgstr "Empréstimo NÃO PERMITIDO! Associado já EXPIRADO!"
+
+#: admin/modules/circulation/circulation_action.php:169
+msgid "Loan NOT PERMITTED! Membership under PENDING State!"
+msgstr "NÃO PERMITIDO empréstimo! Associado com pendências"
+
+#: admin/modules/circulation/circulation_action.php:174
+msgid "Loan Forbidden for this Item!"
+msgstr "Proibido empréstimo para esse item"
+
+#: admin/modules/circulation/circulation_action.php:211
+msgid "Item {removeID} removed from session"
+msgstr "Item {removeID} removido da sessão"
+
+#: admin/modules/circulation/circulation_action.php:228
+msgid "This is item already returned or not exists in loan database"
+msgstr "Esse item já retornou ou não existe na base de dados de empréstimo"
+
+#: admin/modules/circulation/circulation_action.php:239
+msgid "OVERDUED for {overdueDays} days(s) with fines value of"
+msgstr "ATRASADO por {overdueDays} dia(s) com valor de multas de"
+
+#: admin/modules/circulation/circulation_action.php:263
+msgid " successfully returned on"
+msgstr "Devolvido com sucesso em"
+
+#: admin/modules/circulation/circulation_action.php:265
+#: admin/modules/circulation/circulation_action.php:434
+msgid "Member Name"
+msgstr "Nome do usuário"
+
+#: admin/modules/circulation/circulation_action.php:291
+msgid "NO DATA Selected to reserve!"
+msgstr "SEM Dados selecionados para reserva!"
+
+#: admin/modules/circulation/circulation_action.php:304
+msgid "Can not add more reservation. Maximum limit reached"
+msgstr "Não é possível acrescentar mais reservas. Limite máximo alcançado"
+
+#: admin/modules/circulation/circulation_action.php:322
+msgid "Can't reserve this Item. Loan Forbidden!"
+msgstr "Não é possível reservar esse item. Proibido empréstimo!"
+
+#: admin/modules/circulation/circulation_action.php:340
+msgid "Reservation added"
+msgstr "Reserva adicionada"
+
+#: admin/modules/circulation/circulation_action.php:345
+msgid "Item for this title is already available or already on hold by this member!"
+msgstr "Item deste título já está disponível ou já está em reserva para esse usuário!"
+
+#: admin/modules/circulation/circulation_action.php:364
+msgid "Reservation removed"
+msgstr "Reserva removida"
+
+#: admin/modules/circulation/circulation_action.php:379
+msgid "Fines data removed"
+msgstr "Dados de multa removido"
+
+#: admin/modules/circulation/circulation_action.php:403
+msgid " not valid (unregistered in database)"
+msgstr "Não válido (não registrado na base de dados)"
+
+#: admin/modules/circulation/circulation_action.php:430
+msgid "Finish Transaction"
+msgstr "Concluir transação"
+
+#: admin/modules/circulation/circulation_action.php:430
+msgid "Are you sure want to finish current transaction?"
+msgstr "Você tem certeza que quer encerrar a transação atual?"
+
+#: admin/modules/circulation/circulation_action.php:446
+msgid "Member Email"
+msgstr "E-mail do usuário"
+
+#: admin/modules/circulation/circulation_action.php:450
+msgid "Register Date"
+msgstr "Data de registro"
+
+#: admin/modules/circulation/circulation_action.php:454
+msgid "Membership Already Expired"
+msgstr "Associado já expirado"
+
+#: admin/modules/circulation/circulation_action.php:456
+msgid "Expiry Date"
+msgstr "Data de vencimento"
+
+#: admin/modules/circulation/circulation_action.php:466
+msgid "Membership currently in pending state, loan transaction is locked."
+msgstr "No momento, o associado está com pendências, transação de empréstimo está bloqueada."
+
+#: admin/modules/circulation/circulation_action.php:473
+msgid "Loans"
+msgstr "Empréstimos"
+
+#: admin/modules/circulation/circulation_action.php:474
+msgid "Current Loans"
+msgstr "Empréstimos atuais"
+
+#: admin/modules/circulation/circulation_action.php:476
+msgid "Reserve"
+msgstr "Reserva"
+
+#: admin/modules/circulation/circulation_action.php:478
+msgid "Fines"
+msgstr "Multas"
+
+#: admin/modules/master_file/place.php:39
+#: admin/modules/master_file/place.php:131
+msgid "You don't have enough privileges to access this area!"
+msgstr "Você não possui nível de acesso para essa área!"
+
+#: admin/modules/master_file/place.php:47
+msgid "Place Name can't be empty"
+msgstr "Nome de local não pode estar vazio"
+
+#: admin/modules/master_file/place.php:65
+msgid "Place Data Successfully Updated"
+msgstr "Dados de local atualizados com sucesso"
+
+#: admin/modules/master_file/place.php:67
+msgid "Place Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de local. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/place.php:74
+msgid "New Place Data Successfully Saved"
+msgstr "Novos dados de lugar gravados com sucesso"
+
+#: admin/modules/master_file/place.php:76
+msgid "Place Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados de local. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/place.php:117
+msgid "Place"
+msgstr "Local"
+
+#: admin/modules/master_file/place.php:117
+msgid "Add New Place"
+msgstr "Adicionar novo local"
+
+#: admin/modules/master_file/place.php:118
+msgid "Place List"
+msgstr "Lista de locais"
+
+#: admin/modules/master_file/place.php:160
+#: admin/modules/master_file/place.php:177
+#: admin/modules/master_file/place.php:180
+msgid "Place Name"
+msgstr "Nome de local"
+
+#: admin/modules/master_file/place.php:164
+msgid "You are going to edit place data"
+msgstr "Você está editando dados de local"
+
+#: admin/modules/master_file/topic.php:47
+msgid "Subject can't be empty"
+msgstr "Assunto não pode estar vazio"
+
+#: admin/modules/master_file/topic.php:67
+msgid "Subject Data Successfully Updated"
+msgstr "Dados de assunto atualizado com sucesso"
+
+#: admin/modules/master_file/topic.php:69
+msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de assunto. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/topic.php:76
+msgid "New Subject Data Successfully Saved"
+msgstr "Novos dados de assunto gravados com sucesso"
+
+#: admin/modules/master_file/topic.php:78
+msgid "Subject Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação de dados do assunto. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/topic.php:120
+#: admin/modules/master_file/topic.php:163
+#: admin/modules/master_file/topic.php:189
+#: admin/modules/master_file/topic.php:194
+#: admin/modules/master_file/submenu.php:28
+msgid "Subject"
+msgstr "Assunto"
+
+#: admin/modules/master_file/topic.php:120
+msgid "Add New Subject"
+msgstr "Adicionar novo assunto"
+
+#: admin/modules/master_file/topic.php:121
+msgid "Subject List"
+msgstr "Lista de assuntos"
+
+#: admin/modules/master_file/topic.php:168
+#: admin/modules/master_file/topic.php:190
+#: admin/modules/master_file/topic.php:195
+msgid "Subject Type"
+msgstr "Tipo de assunto"
+
+#: admin/modules/master_file/topic.php:170
+#: admin/modules/master_file/topic.php:191
+#: admin/modules/master_file/topic.php:196
+#: admin/modules/master_file/submenu.php:23
+#: admin/modules/master_file/author.php:169
+#: admin/modules/master_file/author.php:190
+#: admin/modules/master_file/author.php:195
+msgid "Authority Files"
+msgstr "Arquivos de autoridades"
+
+#: admin/modules/master_file/topic.php:174
+msgid "You are going to edit Subject data"
+msgstr "Você está editando dados de assunto"
+
+#: admin/modules/master_file/supplier.php:47
+msgid "Supplier Name can't be empty"
+msgstr "Nome de fornecedor não pode estar vazio"
+
+#: admin/modules/master_file/supplier.php:71
+msgid "Supplier Data Successfully Updated"
+msgstr "Dados de fornecedor atualizados com sucesso"
+
+#: admin/modules/master_file/supplier.php:73
+msgid "Supplier Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados do fornecedor. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/supplier.php:80
+msgid "New Supplier Data Successfully Saved"
+msgstr "Novos dados do fornecedor gravados com sucesso"
+
+#: admin/modules/master_file/supplier.php:83
+msgid "Supplier Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados do fornecedor. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/supplier.php:125
+msgid "Add New Supplier"
+msgstr "Adicionar novo fornecedor"
+
+#: admin/modules/master_file/supplier.php:126
+msgid "Supplier List"
+msgstr "Lista de fornecedores"
+
+#: admin/modules/master_file/supplier.php:168
+#: admin/modules/master_file/supplier.php:195
+#: admin/modules/master_file/supplier.php:201
+msgid "Supplier Name"
+msgstr "Nome de fornecedor"
+
+#: admin/modules/master_file/supplier.php:170
+msgid "Address"
+msgstr "Endereço"
+
+#: admin/modules/master_file/supplier.php:172
+#: admin/modules/master_file/supplier.php:196
+#: admin/modules/master_file/supplier.php:202
+msgid "Contact"
+msgstr "Contato"
+
+#: admin/modules/master_file/supplier.php:174
+#: admin/modules/master_file/supplier.php:197
+#: admin/modules/master_file/supplier.php:203
+msgid "Phone Number"
+msgstr "Número de telefone"
+
+#: admin/modules/master_file/supplier.php:176
+#: admin/modules/master_file/supplier.php:198
+#: admin/modules/master_file/supplier.php:204
+msgid "Fax Number"
+msgstr "Número de fax"
+
+#: admin/modules/master_file/supplier.php:178
+msgid "Account Number"
+msgstr "Número da conta"
+
+#: admin/modules/master_file/supplier.php:182
+msgid "You are going to edit Supplier data"
+msgstr "Você está editando dados de fornecedor"
+
+#: admin/modules/master_file/doc_language.php:47
+msgid "Language ID or Name can't be empty"
+msgstr "ID de idioma ou nome não podem estar vazios"
+
+#: admin/modules/master_file/doc_language.php:66
+msgid "Language Data Successfully Updated"
+msgstr "Dados do idioma atualizado com sucesso!"
+
+#: admin/modules/master_file/doc_language.php:70
+msgid "Language Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização do idioma. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/doc_language.php:77
+msgid "New Language Data Successfully Saved"
+msgstr "Dados do novo idioma gravado com sucesso!"
+
+#: admin/modules/master_file/doc_language.php:79
+msgid "Language Data FAILED to Save. Please Contact System Administrator"
+msgstr "Falha para gravar dados do idioma. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/doc_language.php:120
+#: admin/modules/master_file/submenu.php:34
+msgid "Doc. Language"
+msgstr "Doc. Idioma"
+
+#: admin/modules/master_file/doc_language.php:120
+msgid "Add New Language"
+msgstr "Adicionar novo  idioma"
+
+#: admin/modules/master_file/doc_language.php:121
+msgid "Language List"
+msgstr "Lista de idiomas"
+
+#: admin/modules/master_file/doc_language.php:163
+msgid "Language Code"
+msgstr "Código do idioma"
+
+#: admin/modules/master_file/doc_language.php:168
+msgid "You are going to edit language data"
+msgstr "Você esta editando dados de idioma"
+
+#: admin/modules/master_file/submenu.php:24
+msgid "General Material Designation"
+msgstr "Designação Geral de Material"
+
+#: admin/modules/master_file/submenu.php:25
+msgid "Document Publisher"
+msgstr "Documentar editora"
+
+#: admin/modules/master_file/submenu.php:26
+msgid "Item Supplier"
+msgstr "Item de fornecedor"
+
+#: admin/modules/master_file/submenu.php:27
+#: admin/modules/master_file/author.php:119
+msgid "Author"
+msgstr "Autor"
+
+#: admin/modules/master_file/submenu.php:27
+msgid "Document Authors"
+msgstr "Documentar autores"
+
+#: admin/modules/master_file/submenu.php:29
+msgid "Item Location"
+msgstr "Localização do item"
+
+#: admin/modules/master_file/submenu.php:30
+msgid "Lookup Files"
+msgstr "Busca de arquivos"
+
+#: admin/modules/master_file/submenu.php:34
+msgid "Document Content Language"
+msgstr "Documentar conteúdo de idioma"
+
+#: admin/modules/master_file/submenu.php:35
+#: admin/modules/master_file/label.php:157
+msgid "Label"
+msgstr "Etiqueta"
+
+#: admin/modules/master_file/submenu.php:35
+msgid "Special Labels for Titles to Show Up On Homepage"
+msgstr "Etiquetas especiais para os título exibidos na homepage"
+
+#: admin/modules/master_file/item_status.php:43
+msgid "No Loan Transaction"
+msgstr "Nenhuma transação de empréstimo"
+
+#: admin/modules/master_file/item_status.php:44
+msgid "Skipped By Stock Take"
+msgstr "Ignorado pelo inventário"
+
+#: admin/modules/master_file/item_status.php:52
+msgid "Item Status ID and Name can't be empty"
+msgstr "ID de situação e nome do item não podem estar vazios"
+
+#: admin/modules/master_file/item_status.php:90
+msgid "Item Status Data Successfully Updated"
+msgstr "Dados de situação do item atualizados com sucesso"
+
+#: admin/modules/master_file/item_status.php:94
+msgid "Item Status Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de situação do item. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/item_status.php:101
+msgid "New Item Status Data Successfully Saved"
+msgstr "Novos dados da situação do item gravados com sucesso"
+
+#: admin/modules/master_file/item_status.php:103
+msgid "Item Status Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação dos dados da situação do item. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/item_status.php:144
+msgid "Add New Item Status"
+msgstr "Adicionar nova situação do item"
+
+#: admin/modules/master_file/item_status.php:187
+#: admin/modules/master_file/item_status.php:215
+#: admin/modules/master_file/item_status.php:219
+msgid "Item Status Code"
+msgstr "Código da situação do item"
+
+#: admin/modules/master_file/item_status.php:189
+#: admin/modules/master_file/item_status.php:216
+#: admin/modules/master_file/item_status.php:220
+msgid "Item Status Name"
+msgstr "Nome da situação do item"
+
+#: admin/modules/master_file/item_status.php:198
+msgid "Rules"
+msgstr "Regras"
+
+#: admin/modules/master_file/item_status.php:202
+msgid "You are going to edit Item Status data"
+msgstr "Você está editando dados da situação do item"
+
+#: admin/modules/master_file/author.php:47
+msgid "Author name can't be empty"
+msgstr "Nome do autor não pode estar vazio"
+
+#: admin/modules/master_file/author.php:67
+msgid "Author Data Successfully Updated"
+msgstr "Dados de autor atualizados com sucesso"
+
+#: admin/modules/master_file/author.php:69
+msgid "Author Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados do autor. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/author.php:76
+msgid "New Author Data Successfully Saved"
+msgstr "Dados de novo autor gravados com sucesso"
+
+#: admin/modules/master_file/author.php:78
+#: admin/modules/master_file/coll_type.php:76
+msgid "Author Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados do autor. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/author.php:119
+msgid "Add New Author"
+msgstr "Adicionar novo autor"
+
+#: admin/modules/master_file/author.php:120
+msgid "Author List"
+msgstr "Lista de autor"
+
+#: admin/modules/master_file/author.php:167
+#: admin/modules/master_file/author.php:189
+#: admin/modules/master_file/author.php:194
+msgid "Authority Type"
+msgstr "Tipo de autoridade"
+
+#: admin/modules/master_file/author.php:173
+msgid "You are going to edit author data"
+msgstr "Você está editando dados de autor"
+
+#: admin/modules/master_file/coll_type.php:47
+msgid "Collection type name can't be empty"
+msgstr "Nome da coleção não pode estar vazio"
+
+#: admin/modules/master_file/coll_type.php:65
+msgid "Colllection Type Data Successfully Updated"
+msgstr "Dados da coleção atualizados com sucesso"
+
+#: admin/modules/master_file/coll_type.php:67
+msgid "Colllection Type Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização do tipo de coleção. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/coll_type.php:74
+msgid "New Colllection Type Data Successfully Saved"
+msgstr "Novo tipo de coleção gravado com sucesso"
+
+#: admin/modules/master_file/coll_type.php:106
+#: admin/modules/master_file/location.php:110
+msgid "Location ({item_name}) still used by {number_items} item(s)"
+msgstr "Localização ({item_name}) já utilizado por {number_items} iten(s)"
+
+#: admin/modules/master_file/coll_type.php:137
+msgid "Add New Collection Type"
+msgstr "Adicionar novo tipo de coleção"
+
+#: admin/modules/master_file/coll_type.php:138
+msgid "Collection Type List"
+msgstr "Lista de tipo de coleção"
+
+#: admin/modules/master_file/coll_type.php:183
+msgid "You are going to edit collection type data"
+msgstr "Você esta eidtando dados de tipo de coleção"
+
+#: admin/modules/master_file/label.php:106
+msgid "Label Data Successfully Updated"
+msgstr "Dados da etiqueta atualizados com sucesso"
+
+#: admin/modules/master_file/label.php:108
+msgid "Label Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização dos dados da etiqueta. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/label.php:114
+msgid "New Label Data Successfully Saved"
+msgstr "Novos dados da etiqueta gravados com sucesso"
+
+#: admin/modules/master_file/label.php:116
+msgid "Label Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação de dados da etiqueta. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/label.php:157
+msgid "Add New Label"
+msgstr "Adicionar nova etiqueta"
+
+#: admin/modules/master_file/label.php:158
+msgid "Label List"
+msgstr "Lista de etiquetas"
+
+#: admin/modules/master_file/label.php:200
+#: admin/modules/master_file/label.php:231
+#: admin/modules/master_file/label.php:235
+msgid "Label Name"
+msgstr "Nome da etiqueta"
+
+#: admin/modules/master_file/label.php:213
+#: admin/modules/master_file/label.php:230
+#: admin/modules/master_file/label.php:234
+msgid "Label Description"
+msgstr "Descrição da etiqueta"
+
+#: admin/modules/master_file/label.php:217
+msgid "You are going to edit Label data"
+msgstr "Você está editando dados de etiqueta"
+
+#: admin/modules/master_file/publisher.php:47
+msgid "Publisher Name can't be empty"
+msgstr "Nome de editora não pode estar vazio"
+
+#: admin/modules/master_file/publisher.php:65
+msgid "Publisher Data Successfully Updated"
+msgstr "Dados de editora atualizados com sucesso"
+
+#: admin/modules/master_file/publisher.php:67
+msgid "PUBLISHER Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA para atualizar dados de editora. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/publisher.php:74
+msgid "New Publisher Data Successfully Saved"
+msgstr "Dados de nova editora gravados com sucesso"
+
+#: admin/modules/master_file/publisher.php:76
+msgid "Publisher Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação de dados da editora. Por favor, entre em contatao com o administrador do sistema"
+
+#: admin/modules/master_file/publisher.php:117
+msgid "Add New Publisher"
+msgstr "Adicionar nova editora"
+
+#: admin/modules/master_file/publisher.php:118
+msgid "Publisher List"
+msgstr "Lista de editoras"
+
+#: admin/modules/master_file/publisher.php:160
+#: admin/modules/master_file/publisher.php:178
+#: admin/modules/master_file/publisher.php:182
+msgid "Publisher Name"
+msgstr "Nome da editora"
+
+#: admin/modules/master_file/publisher.php:164
+msgid "You are going to edit publisher data"
+msgstr "Você esta editando dados de editora"
+
+#: admin/modules/master_file/location.php:48
+msgid "Location ID and Name can't be empty"
+msgstr "ID de localização e nome não podem estar vazios"
+
+#: admin/modules/master_file/location.php:67
+msgid "Location Data Successfully Updated"
+msgstr "Dados de localização atualizados com sucesso"
+
+#: admin/modules/master_file/location.php:71
+msgid "Location Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de localização. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/location.php:78
+msgid "New Location Data Successfully Saved"
+msgstr "Dados de localização gravados com sucesso"
+
+#: admin/modules/master_file/location.php:80
+msgid "Location Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados da localização. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/location.php:141
+msgid "Add New Location"
+msgstr "Adicionar nova localização"
+
+#: admin/modules/master_file/location.php:142
+msgid "Location List"
+msgstr "Lista de localização"
+
+#: admin/modules/master_file/location.php:184
+#: admin/modules/master_file/location.php:203
+#: admin/modules/master_file/location.php:207
+msgid "Location Code"
+msgstr "Código da localização"
+
+#: admin/modules/master_file/location.php:186
+#: admin/modules/master_file/location.php:204
+#: admin/modules/master_file/location.php:208
+msgid "Location Name"
+msgstr "Nome da localização"
+
+#: admin/modules/master_file/location.php:190
+msgid "You are going to edit location data"
+msgstr "Você está editadno dados de localização"
+
+#: admin/modules/master_file/frequency.php:67
+msgid "Frequency Data Successfully Updated"
+msgstr "Dados de frequência atualizados com sucesso"
+
+#: admin/modules/master_file/frequency.php:69
+msgid "Frequency Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de frequência. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/frequency.php:75
+msgid "New Frequency Data Successfully Saved"
+msgstr "Novos dados de frequência gravaods com sucesso"
+
+#: admin/modules/master_file/frequency.php:77
+msgid "Frequency Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados de frequência. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/frequency.php:118
+msgid "Add New Frequency"
+msgstr "Adiconar nova frequência"
+
+#: admin/modules/master_file/frequency.php:119
+msgid "Frequency Available"
+msgstr "Frequência disponível"
+
+#: admin/modules/master_file/frequency.php:171
+#: admin/modules/master_file/frequency.php:197
+#: admin/modules/master_file/frequency.php:203
+msgid "Time Increment"
+msgstr "Incremento de tempo"
+
+#: admin/modules/master_file/frequency.php:173
+msgid "Day"
+msgstr "Dia"
+
+#: admin/modules/master_file/frequency.php:174
+msgid "Week"
+msgstr "Semana"
+
+#: admin/modules/master_file/frequency.php:175
+msgid "Month"
+msgstr "Mês"
+
+#: admin/modules/master_file/frequency.php:176
+msgid "Year"
+msgstr "Ano"
+
+#: admin/modules/master_file/frequency.php:177
+#: admin/modules/master_file/frequency.php:198
+#: admin/modules/master_file/frequency.php:204
+msgid "Time Unit"
+msgstr "Unidade de tempo"
+
+#: admin/modules/master_file/frequency.php:181
+msgid "You are going to edit Frequency data"
+msgstr "Você está editando dados de frequência"
+
+#: admin/modules/master_file/index.php:51
+msgid "GMD Code And Name can't be empty"
+msgstr "Código e nome do DGM não podem estar vazios"
+
+#: admin/modules/master_file/index.php:70
+msgid "GMD Data Successfully Updated"
+msgstr "Dados de DGM atualizados com sucesso"
+
+#: admin/modules/master_file/index.php:72
+msgid "GMD Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização dos dados de DGM. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/index.php:78
+msgid "New GMD Data Successfully Saved"
+msgstr "Novos dados de DGM gravados com sucesso"
+
+#: admin/modules/master_file/index.php:80
+msgid "GMD Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados de DGM. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/master_file/index.php:121
+msgid "Add New GMD"
+msgstr "Adicionar nova DGM"
+
+#: admin/modules/master_file/index.php:122
+msgid "GMD List"
+msgstr "Lista DGM"
+
+#: admin/modules/master_file/index.php:164
+#: admin/modules/master_file/index.php:183
+#: admin/modules/master_file/index.php:187
+msgid "GMD Code"
+msgstr "Código DGM"
+
+#: admin/modules/master_file/index.php:166
+#: admin/modules/master_file/index.php:184
+#: admin/modules/master_file/index.php:188
+msgid "GMD Name"
+msgstr "Nome DGM"
+
+#: admin/modules/master_file/index.php:170
+msgid "You are going to edit gmd data"
+msgstr "Você está editando dados de DGM"
+
+#: admin/modules/reporting/submenu.php:23
+msgid "Reporting"
+msgstr "Relatórios"
+
+#: admin/modules/reporting/submenu.php:24
+msgid "Collection Statistic"
+msgstr "Estatística da coleção"
+
+#: admin/modules/reporting/submenu.php:24
+msgid "View Library Collection Statistic"
+msgstr "Ver estatistica de coleção da biblioteca"
+
+#: admin/modules/reporting/submenu.php:25
+#: admin/modules/reporting/loan_report.php:135
+#: admin/modules/reporting/loan_report.php:152
+msgid "Loan Report"
+msgstr "Relatório de empréstimo"
+
+#: admin/modules/reporting/submenu.php:25
+msgid "View Library Loan Report"
+msgstr "Ver relatório de empréstimo da biblioteca"
+
+#: admin/modules/reporting/submenu.php:26
+#: admin/modules/reporting/member_report.php:111
+#: admin/modules/reporting/member_report.php:128
+msgid "Membership Report"
+msgstr "Relatório de associado"
+
+#: admin/modules/reporting/submenu.php:26
+msgid "View Membership Report"
+msgstr "Ver relatório de associado"
+
+#: admin/modules/reporting/submenu.php:27
+msgid "Other Reports"
+msgstr "Outro relatórios"
+
+#: admin/modules/reporting/member_report.php:46
+msgid "Total Registered Members"
+msgstr "Total de usuários registrados"
+
+#: admin/modules/reporting/member_report.php:52
+msgid "Total Active Member"
+msgstr "Total de usuários ativos"
+
+#: admin/modules/reporting/member_report.php:63
+msgid "Total Members By Membership Type"
+msgstr "Total de usuários por tipo de associado"
+
+#: admin/modules/reporting/member_report.php:69
+msgid "Total Expired Member"
+msgstr "Total de usuários expirados"
+
+#: admin/modules/reporting/member_report.php:80
+msgid "10 most active members"
+msgstr "Os 10 usuários mais ativos"
+
+#: admin/modules/reporting/member_report.php:83
+msgid "Membership Data Summary"
+msgstr "Sumário dos dados de associado"
+
+#: admin/modules/reporting/member_report.php:131
+#: admin/modules/reporting/loan_report.php:155
+msgid "Download Report"
+msgstr "Baixar relatório"
+
+#: admin/modules/reporting/loan_report.php:46
+msgid "Total Loan"
+msgstr "Total de empréstimo"
+
+#: admin/modules/reporting/loan_report.php:58
+msgid "Total Loan By GMD/Medium"
+msgstr "Total de empréstimo por DGM/Mídia"
+
+#: admin/modules/reporting/loan_report.php:69
+msgid "Total Loan By Collection Type"
+msgstr "Total de empréstimo por coleção"
+
+#: admin/modules/reporting/loan_report.php:77
+#: admin/modules/reporting/loan_report.php:83
+msgid "Total Loan Transactions"
+msgstr "Total de transações de empréstimo"
+
+#: admin/modules/reporting/loan_report.php:83
+msgid "Transaction Average (Per Day)"
+msgstr "Média de transações (por dia)"
+
+#: admin/modules/reporting/loan_report.php:86
+msgid "Total Peak Transaction"
+msgstr "Total de pico de transações"
+
+#: admin/modules/reporting/loan_report.php:91
+#: admin/modules/reporting/loan_report.php:98
+msgid "Members Already Had Loans"
+msgstr "Usuários que já fizeram empréstimos"
+
+#: admin/modules/reporting/loan_report.php:98
+msgid "Members Never Have Loans Yet"
+msgstr "Usuários que ainda nunca fizeram empréstimos"
+
+#: admin/modules/reporting/loan_report.php:104
+msgid "Total Overdued Loans"
+msgstr "Total de empréstimos com atraso"
+
+#: admin/modules/reporting/loan_report.php:107
+msgid "Loan Data Summary"
+msgstr "Sumário de dados de empréstimos"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "record(s) found. Currently displaying page"
+msgstr "registro(s) encontrados. Exibindo a página"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "record each page"
+msgstr "registro por página"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "Print Current Page"
+msgstr "Imprimir página atual"
+
+#: admin/modules/reporting/index.php:49
+msgid "Total Titles"
+msgstr "Total de títulos"
+
+#: admin/modules/reporting/index.php:54
+#: admin/modules/reporting/index.php:64
+msgid "Total Items/Copies"
+msgstr "Total de itens/cópias"
+
+#: admin/modules/reporting/index.php:61
+#: admin/modules/reporting/index.php:64
+msgid "Total Checkout Items"
+msgstr "Total de itens emprestados"
+
+#: admin/modules/reporting/index.php:64
+msgid "Total Items In Library"
+msgstr "Total de itens na biblioteca"
+
+#: admin/modules/reporting/index.php:76
+msgid "Total Titles By Medium/GMD"
+msgstr "Total de títulos por mídia/DGM"
+
+#: admin/modules/reporting/index.php:90
+msgid "Total Items By Collection Type"
+msgstr "Total de itens por tipo de material"
+
+#: admin/modules/reporting/index.php:102
+msgid "10 Most Popular Titles"
+msgstr "10 títulos mais populares"
+
+#: admin/modules/reporting/index.php:105
+msgid "Collection Statistic Summary"
+msgstr "Sumário estatístico da coleção"
+
+#: admin/modules/reporting/index.php:133
+msgid "Collection Statistic Report"
+msgstr "Relatório estatístico da coleção"
+
+#: admin/modules/reporting/customs/item_titles_list.php:54
+#: admin/modules/reporting/customs/customs_report_list.inc.php:25
+msgid "Items Title List"
+msgstr "Lista de títulos dos itens"
+
+#: admin/modules/reporting/customs/item_titles_list.php:54
+#: admin/modules/reporting/customs/overdued_list.php:54
+#: admin/modules/reporting/customs/loan_by_class.php:53
+#: admin/modules/reporting/customs/reserve_list.php:53
+#: admin/modules/reporting/customs/titles_list.php:54
+#: admin/modules/reporting/customs/class_recap.php:53
+#: admin/modules/reporting/customs/item_usage.php:53
+#: admin/modules/reporting/customs/member_loan_list.php:54
+#: admin/modules/reporting/customs/loan_history.php:53
+#: admin/modules/reporting/customs/member_list.php:55
+#: admin/modules/reporting/customs/staff_act.php:53
+msgid "Report Filter"
+msgstr "Filtro de relatório"
+
+#: admin/modules/reporting/customs/item_titles_list.php:58
+#: admin/modules/reporting/customs/reserve_list.php:63
+#: admin/modules/reporting/customs/titles_list.php:58
+#: admin/modules/reporting/customs/item_usage.php:57
+msgid "Title/ISBN"
+msgstr "Título/ISBN"
+
+#: admin/modules/reporting/customs/item_titles_list.php:118
+#: admin/modules/reporting/customs/overdued_list.php:82
+#: admin/modules/reporting/customs/titles_list.php:117
+#: admin/modules/reporting/customs/member_loan_list.php:82
+#: admin/modules/reporting/customs/loan_history.php:103
+#: admin/modules/reporting/customs/member_list.php:108
+msgid "Record each page"
+msgstr "Registros por página"
+
+#: admin/modules/reporting/customs/item_titles_list.php:119
+#: admin/modules/reporting/customs/overdued_list.php:83
+#: admin/modules/reporting/customs/titles_list.php:118
+#: admin/modules/reporting/customs/member_loan_list.php:83
+#: admin/modules/reporting/customs/loan_history.php:104
+#: admin/modules/reporting/customs/member_list.php:109
+msgid "Set between 20 and 200"
+msgstr "Definir entre 20 e 200"
+
+#: admin/modules/reporting/customs/item_titles_list.php:123
+#: admin/modules/reporting/customs/overdued_list.php:87
+#: admin/modules/reporting/customs/loan_by_class.php:105
+#: admin/modules/reporting/customs/reserve_list.php:92
+#: admin/modules/reporting/customs/titles_list.php:122
+#: admin/modules/reporting/customs/class_recap.php:70
+#: admin/modules/reporting/customs/item_usage.php:83
+#: admin/modules/reporting/customs/member_loan_list.php:87
+#: admin/modules/reporting/customs/loan_history.php:108
+#: admin/modules/reporting/customs/member_list.php:113
+#: admin/modules/reporting/customs/staff_act.php:70
+msgid "Apply Filter"
+msgstr "Aplicar filtro"
+
+#: admin/modules/reporting/customs/item_titles_list.php:124
+#: admin/modules/reporting/customs/overdued_list.php:88
+#: admin/modules/reporting/customs/reserve_list.php:93
+#: admin/modules/reporting/customs/titles_list.php:123
+#: admin/modules/reporting/customs/class_recap.php:72
+#: admin/modules/reporting/customs/member_loan_list.php:88
+#: admin/modules/reporting/customs/loan_history.php:109
+#: admin/modules/reporting/customs/member_list.php:114
+#: admin/modules/reporting/customs/staff_act.php:71
+msgid "Show More Filter Options"
+msgstr "Mostrar mais opções de filtro"
+
+#: admin/modules/reporting/customs/item_titles_list.php:124
+#: admin/modules/reporting/customs/overdued_list.php:88
+#: admin/modules/reporting/customs/reserve_list.php:93
+#: admin/modules/reporting/customs/titles_list.php:123
+#: admin/modules/reporting/customs/class_recap.php:72
+#: admin/modules/reporting/customs/member_loan_list.php:88
+#: admin/modules/reporting/customs/loan_history.php:109
+#: admin/modules/reporting/customs/member_list.php:114
+#: admin/modules/reporting/customs/staff_act.php:71
+msgid "Hide Filter Options"
+msgstr "Esconder opções de filtro"
+
+#: admin/modules/reporting/customs/overdued_list.php:66
+#: admin/modules/reporting/customs/member_loan_list.php:66
+#: admin/modules/reporting/customs/loan_history.php:81
+msgid "Loan Date From"
+msgstr "Data de empréstimo de"
+
+#: admin/modules/reporting/customs/overdued_list.php:74
+#: admin/modules/reporting/customs/member_loan_list.php:74
+#: admin/modules/reporting/customs/loan_history.php:89
+msgid "Loan Date Until"
+msgstr "Data de empréstimo até"
+
+#: admin/modules/reporting/customs/overdued_list.php:164
+#: admin/modules/reporting/customs/member_loan_list.php:162
+msgid "E-mail"
+msgstr "E-mail"
+
+#: admin/modules/reporting/customs/overdued_list.php:170
+msgid "Overdue"
+msgstr "Atraso"
+
+#: admin/modules/reporting/customs/overdued_list.php:170
+msgid "day(s)"
+msgstr "dia(s)"
+
+#: admin/modules/reporting/customs/loan_by_class.php:53
+#: admin/modules/reporting/customs/customs_report_list.inc.php:27
+msgid "Loans by Classification"
+msgstr "Empréstimos por classificação"
+
+#: admin/modules/reporting/customs/loan_by_class.php:60
+msgid "0 Classes"
+msgstr "Classes 0"
+
+#: admin/modules/reporting/customs/loan_by_class.php:61
+msgid "1 Classes"
+msgstr "Classes 1"
+
+#: admin/modules/reporting/customs/loan_by_class.php:62
+msgid "2 Classes"
+msgstr "Classes 2"
+
+#: admin/modules/reporting/customs/loan_by_class.php:63
+msgid "2X Classes (Islamic Related)"
+msgstr "Classes 2X (Islamic Related)"
+
+#: admin/modules/reporting/customs/loan_by_class.php:64
+msgid "3 Classes"
+msgstr "Classes 3"
+
+#: admin/modules/reporting/customs/loan_by_class.php:65
+msgid "4 Classes"
+msgstr "Classes 4"
+
+#: admin/modules/reporting/customs/loan_by_class.php:66
+msgid "5 Classes"
+msgstr "Classes 5"
+
+#: admin/modules/reporting/customs/loan_by_class.php:67
+msgid "6 Classes"
+msgstr "Classes 6"
+
+#: admin/modules/reporting/customs/loan_by_class.php:68
+msgid "7 Classes"
+msgstr "Classes 7"
+
+#: admin/modules/reporting/customs/loan_by_class.php:69
+msgid "8 Classes"
+msgstr "Classes 8"
+
+#: admin/modules/reporting/customs/loan_by_class.php:70
+msgid "9 Classes"
+msgstr "Classes 9"
+
+#: admin/modules/reporting/customs/loan_by_class.php:71
+msgid "NON Decimal Classes"
+msgstr "SEM Classes decimais"
+
+#: admin/modules/reporting/customs/loan_by_class.php:116
+#: admin/modules/reporting/customs/item_usage.php:102
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jan"
+msgstr "Jan"
+
+#: admin/modules/reporting/customs/loan_by_class.php:117
+#: admin/modules/reporting/customs/item_usage.php:103
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Feb"
+msgstr "Fev"
+
+#: admin/modules/reporting/customs/loan_by_class.php:118
+#: admin/modules/reporting/customs/item_usage.php:104
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Mar"
+msgstr "Mar"
+
+#: admin/modules/reporting/customs/loan_by_class.php:119
+#: admin/modules/reporting/customs/item_usage.php:105
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Apr"
+msgstr "Abr"
+
+#: admin/modules/reporting/customs/loan_by_class.php:120
+#: admin/modules/reporting/customs/item_usage.php:106
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "May"
+msgstr "Maio"
+
+#: admin/modules/reporting/customs/loan_by_class.php:121
+#: admin/modules/reporting/customs/item_usage.php:107
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jun"
+msgstr "Jun"
+
+#: admin/modules/reporting/customs/loan_by_class.php:122
+#: admin/modules/reporting/customs/item_usage.php:108
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jul"
+msgstr "Jul"
+
+#: admin/modules/reporting/customs/loan_by_class.php:123
+#: admin/modules/reporting/customs/item_usage.php:109
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Aug"
+msgstr "Ago"
+
+#: admin/modules/reporting/customs/loan_by_class.php:124
+#: admin/modules/reporting/customs/item_usage.php:110
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Sep"
+msgstr "Set"
+
+#: admin/modules/reporting/customs/loan_by_class.php:125
+#: admin/modules/reporting/customs/item_usage.php:111
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Oct"
+msgstr "Out"
+
+#: admin/modules/reporting/customs/loan_by_class.php:126
+#: admin/modules/reporting/customs/item_usage.php:112
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Nov"
+msgstr "Nov"
+
+#: admin/modules/reporting/customs/loan_by_class.php:127
+#: admin/modules/reporting/customs/item_usage.php:113
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Dec"
+msgstr "Dez"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:23
+#: admin/modules/reporting/customs/class_recap.php:53
+msgid "Custom Recapitulations"
+msgstr "Sumarizações personalizadas"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:23
+msgid "Title and Collection recapitulation based on classification and others"
+msgstr "Título e coleção sumarizados baseados na classificação e em outros"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:24
+#: admin/modules/reporting/customs/titles_list.php:54
+msgid "Title List"
+msgstr "Lista de titulos"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:24
+msgid "List of bibliographic titles"
+msgstr "Lista de títulos bibliográficos"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:25
+msgid "List of collection/items"
+msgstr "Lista da coleção/itens"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:26
+#: admin/modules/reporting/customs/item_usage.php:53
+msgid "Items Usage Statistics"
+msgstr "Estatísticas de uso de itens"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:26
+msgid "List of Collection/items usage statistic"
+msgstr "Lista da coleção/estatística de uso de itens"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:27
+msgid "Loan statistic by classification"
+msgstr "Estatistica de empréstimo por classificação"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+#: admin/modules/reporting/customs/member_list.php:55
+msgid "Member List"
+msgstr "Lista de usuários"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+msgid "List of library member/patron"
+msgstr "Lista de usuários da biblioteca"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:29
+#: admin/modules/reporting/customs/member_loan_list.php:54
+msgid "Loan List by Member"
+msgstr "Lista de empréstimo por usuário"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:29
+msgid "List of loan by each member"
+msgstr "Lista de empréstimo por cada usuário"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+#: admin/modules/reporting/customs/staff_act.php:53
+msgid "Staff Activity"
+msgstr "Atividade do pessoal"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+msgid "Staff activity log recapitulation"
+msgstr "Log de atividades de pessoal - sumarização"
+
+#: admin/modules/reporting/customs/reserve_list.php:75
+msgid "Reserve Date From"
+msgstr "Data de reserva de"
+
+#: admin/modules/reporting/customs/reserve_list.php:83
+msgid "Reserve Date Until"
+msgstr "Data de reserva até"
+
+#: admin/modules/reporting/customs/titles_list.php:85
+msgid "Press Ctrl and click to select multiple entries"
+msgstr "Aperte Ctrl e clique para selecionar entradas múltiplas"
+
+#: admin/modules/reporting/customs/class_recap.php:57
+msgid "Recap By"
+msgstr "Sumarizar por"
+
+#: admin/modules/reporting/customs/class_recap.php:230
+msgid "Title and Collection Recap by"
+msgstr "Título e coleção sumarizados por"
+
+#: admin/modules/reporting/customs/loan_history.php:97
+#: admin/modules/reporting/customs/loan_history.php:134
+msgid "Loan Status"
+msgstr "Situação de empréstimo"
+
+#: admin/modules/reporting/customs/loan_history.php:99
+#: admin/modules/reporting/customs/loan_history.php:182
+msgid "On Loan"
+msgstr "Emprestado"
+
+#: admin/modules/reporting/customs/loan_history.php:99
+#: admin/modules/reporting/customs/loan_history.php:184
+msgid "Returned"
+msgstr "Devolvido"
+
+#: admin/modules/reporting/customs/member_list.php:59
+#: admin/modules/reporting/customs/member_list.php:134
+#: admin/modules/membership/member_card_generator.php:167
+#: admin/modules/membership/member_card_generator.php:223
+msgid "Membership Type"
+msgstr "Tipo de associado"
+
+#: admin/modules/reporting/customs/member_list.php:79
+msgid "Gender"
+msgstr "Gênero"
+
+#: admin/modules/reporting/customs/member_list.php:83
+msgid "Male"
+msgstr "Masculino"
+
+#: admin/modules/reporting/customs/member_list.php:84
+msgid "Female"
+msgstr "Feminino"
+
+#: admin/modules/reporting/customs/member_list.php:96
+msgid "Register Date From"
+msgstr "Data de registro de"
+
+#: admin/modules/reporting/customs/member_list.php:102
+msgid "Register Date Until"
+msgstr "Data de registro até"
+
+#: admin/modules/reporting/customs/staff_act.php:57
+msgid "Activity Date From"
+msgstr "Data de atividade de"
+
+#: admin/modules/reporting/customs/staff_act.php:63
+msgid "Activity Date Until"
+msgstr "Data de atividade até"
+
+#: admin/modules/reporting/customs/staff_act.php:88
+msgid "Real Name"
+msgstr "Nome real"
+
+#: admin/modules/reporting/customs/staff_act.php:89
+msgid "Login Username"
+msgstr "Acesso Nome de usuário"
+
+#: admin/modules/reporting/customs/staff_act.php:90
+msgid "Bibliography Data Entry"
+msgstr "Entrada de dados de bibliografia"
+
+#: admin/modules/reporting/customs/staff_act.php:91
+msgid "Item Data Entry"
+msgstr "Entrada de dados do item"
+
+#: admin/modules/reporting/customs/staff_act.php:92
+msgid "Member Data Entry"
+msgstr "Entrada de dados do usuário"
+
+#: admin/modules/reporting/customs/staff_act.php:93
+msgid "Circulation Tasks"
+msgstr "Tarefas de circulação"
+
+#: admin/modules/membership/member_card_generator.php:194
+#: admin/modules/membership/submenu.php:28
+msgid "Member Card Printing"
+msgstr "Imprimindo cartão de usuário"
+
+#: admin/modules/membership/member_card_generator.php:194
+msgid "Print Member Cards for Selected Data"
+msgstr "Imprimir cartão de usuário de dados selecionados"
+
+#: admin/modules/membership/member_card_generator.php:256
+msgid "Found"
+msgstr "Encontrado"
+
+#: admin/modules/membership/member_card_generator.php:256
+msgid "from your search with keyword"
+msgstr "de sua busca com palavras-chave"
+
+#: admin/modules/membership/import.php:158
+msgid "records inserted successfully to members database, from record"
+msgstr "registros inseridos com sucesso na base de dados de usuários, do registro"
+
+#: admin/modules/membership/import.php:168
+msgid "Import for members data from CSV file"
+msgstr "Importar para dados de usuário do arquivo CSV"
+
+#: admin/modules/membership/submenu.php:23
+msgid "Membership"
+msgstr "Associado"
+
+#: admin/modules/membership/submenu.php:24
+msgid "View Member List"
+msgstr "Ver lista de usuários"
+
+#: admin/modules/membership/submenu.php:24
+msgid "View Library Member List"
+msgstr "Ver  lista de usuários"
+
+#: admin/modules/membership/submenu.php:25
+msgid "Add New Member"
+msgstr "Adiconar novo usuário"
+
+#: admin/modules/membership/submenu.php:25
+msgid "Add New Library Member Data"
+msgstr "Adicionar dados de novo usuário da biblioteca"
+
+#: admin/modules/membership/submenu.php:26
+msgid "View and modify member type"
+msgstr "Ver e modificar tipo de usuário"
+
+#: admin/modules/membership/submenu.php:28
+msgid "Print Member Card"
+msgstr "Imprimir cartão do usuário"
+
+#: admin/modules/membership/submenu.php:29
+msgid "Import Members Data From CSV File"
+msgstr "Importar dados de usuários para arquivo CSV"
+
+#: admin/modules/membership/submenu.php:30
+msgid "Export Members Data To CSV File"
+msgstr "Exportar dados de usuários para arquivo CSV"
+
+#: admin/modules/membership/member_type.php:47
+msgid "Member Type Name can't be empty"
+msgstr "Nome de tipo de usuário não pode estar vazio"
+
+#: admin/modules/membership/member_type.php:73
+msgid "Member Type Successfully Updated"
+msgstr "Tipo de usuário atualizado com sucesso"
+
+#: admin/modules/membership/member_type.php:78
+#: admin/modules/membership/member_type.php:86
+msgid "Member Type Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "FALHA para gravar/atualizar dados de tipo de usuário. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/membership/member_type.php:84
+msgid "New Member Type Successfully Saved"
+msgstr "Novo tipo de usuário gravado com sucesso"
+
+#: admin/modules/membership/member_type.php:127
+msgid "Add New Member Type"
+msgstr "Adicionar novo tipo de usuário"
+
+#: admin/modules/membership/member_type.php:128
+msgid "Member Type List"
+msgstr "Lista de tipo de usuário"
+
+#: admin/modules/membership/member_type.php:170
+msgid "Member Type Name"
+msgstr "Nome de tipo de usuário"
+
+#: admin/modules/membership/member_type.php:174
+msgid "Loan Periode (In Days)"
+msgstr "Periodo de empréstimo (em dias)"
+
+#: admin/modules/membership/member_type.php:176
+msgid "Enable"
+msgstr "Ativo"
+
+#: admin/modules/membership/member_type.php:177
+msgid "Disable"
+msgstr "Inativo"
+
+#: admin/modules/membership/member_type.php:180
+msgid "Reserve Limit"
+msgstr "Limite de reserva"
+
+#: admin/modules/membership/member_type.php:182
+#: admin/modules/membership/member_type.php:207
+#: admin/modules/membership/member_type.php:213
+msgid "Membership Periode (In Days)"
+msgstr "Período do associado (em dias)"
+
+#: admin/modules/membership/member_type.php:186
+msgid "Fine Each Day"
+msgstr "Multa diária"
+
+#: admin/modules/membership/member_type.php:192
+#: admin/modules/membership/index.php:374
+msgid "You are going to edit member data"
+msgstr "Você está editando dados de usuário"
+
+#: admin/modules/membership/export.php:105
+msgid "There is no record in membership database yet, Export FAILED!"
+msgstr "Não há registros na base de dados de associados ainda. FALHA na exportação!"
+
+#: admin/modules/membership/export.php:115
+msgid "Export member(s) data to CSV file"
+msgstr "Exportar dados de usuário(s) para arquivo CSV"
+
+#: admin/modules/membership/index.php:55
+msgid "Member ID and Name can't be empty"
+msgstr "ID de usuário e nome não podem estar vazios"
+
+#: admin/modules/membership/index.php:58
+msgid "Password confirmation does not match. See if your Caps Lock key is on!"
+msgstr "Senhas não conferem. Verifique se a tecla Caps Lock está ligada!"
+
+#: admin/modules/membership/index.php:124
+msgid "Member Data Successfully Updated"
+msgstr "Dados de usuários atualizados com sucesso"
+
+#: admin/modules/membership/index.php:134
+#: admin/modules/membership/index.php:158
+msgid "Image FAILED to upload"
+msgstr "FALHA ao enviar imagem"
+
+#: admin/modules/membership/index.php:140
+#: admin/modules/membership/index.php:164
+msgid "Member Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "FALHA na gravação/atualização dos dados do usuário. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/membership/index.php:148
+msgid "New Member Data Successfully Saved"
+msgstr "Dados de novo usuário gravados com sucesso"
+
+#: admin/modules/membership/index.php:227
+msgid "Below member data can't be deleted because still have unreturned item(s)"
+msgstr "O dados do usuário abaixo não podem ser apagados porque ainda possui item não devolvido"
+
+#: admin/modules/membership/index.php:248
+msgid "View Expired Member"
+msgstr "Ver usuário expirado"
+
+#: admin/modules/membership/index.php:250
+msgid "Member Search"
+msgstr "Bucar usuário"
+
+#: admin/modules/membership/index.php:298
+msgid "Extend Membership"
+msgstr "Prorrogar associação"
+
+#: admin/modules/membership/index.php:309
+msgid "Birth Date"
+msgstr "Data de nascimento"
+
+#: admin/modules/membership/index.php:312
+msgid "Member Since"
+msgstr "Usuário desde"
+
+#: admin/modules/membership/index.php:320
+msgid "Auto Set"
+msgstr "Auto configurar"
+
+#: admin/modules/membership/index.php:326
+msgid "Institution"
+msgstr "Instituição"
+
+#: admin/modules/membership/index.php:342
+msgid "Postal Code"
+msgstr "Código postal"
+
+#: admin/modules/membership/index.php:348
+msgid "Personal ID Number"
+msgstr "Número ID pessoal"
+
+#: admin/modules/membership/index.php:350
+msgid "Notes"
+msgstr "Notas"
+
+#: admin/modules/membership/index.php:352
+msgid "Pending Membership"
+msgstr "Associado pendente"
+
+#: admin/modules/membership/index.php:352
+#: admin/modules/stock_take/finish.php:170
+msgid "Yes"
+msgstr "Sim"
+
+#: admin/modules/membership/index.php:358
+#: admin/modules/membership/index.php:362
+msgid "Photo"
+msgstr "Foto"
+
+#: admin/modules/membership/index.php:367
+msgid "New Password"
+msgstr "Nova senha"
+
+#: admin/modules/membership/index.php:369
+msgid "Confirm New Password"
+msgstr "Confirmar nova senha"
+
+#: admin/modules/membership/index.php:375
+msgid "Leave Password field blank if you don't want to change the password"
+msgstr "Se não quiser mudar a senha, deixe o campo em branco"
+
+#: admin/modules/membership/index.php:434
+msgid "Expired Member List"
+msgstr "Lista de usuários expirados"
+
+#: admin/modules/membership/index.php:435
+msgid "Extend Selected Member(s)"
+msgstr "Prorrogar usuário(s) selecionados"
+
+#: admin/modules/membership/index.php:435
+msgid "Are you sure to EXTEND membership for selected members?"
+msgstr "Você tem certeza que quer prorrogar a associação dos usuários selecionados?"
+
+#: admin/modules/membership/index.php:437
+msgid "members extended!"
+msgstr "Usuários - Prorrogados!"
+
+#: admin/modules/serial_control/submenu.php:23
+#: admin/modules/serial_control/index.php:50
+msgid "Serial Control"
+msgstr "Controle de seriado"
+
+#: admin/modules/serial_control/submenu.php:24
+msgid "Subscription"
+msgstr "Assinatura"
+
+#: admin/modules/serial_control/submenu.php:24
+msgid "Manage Subscription"
+msgstr "Gerenciar assinatura"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:146
+msgid "Date Expected"
+msgstr "Data prevista"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:147
+msgid "Date Received"
+msgstr "Data de recebimento"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:147
+msgid "Seq. Number"
+msgstr "Número Seq."
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:148
+msgid "Note"
+msgstr "Nota"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:196
+msgid "Kardex Detail for subscription"
+msgstr "Detalhe do kardex para assinatura"
+
+#: admin/modules/serial_control/kardex.php:58
+msgid "Kardex data updated!"
+msgstr "Dados do kardex atualizados!"
+
+#: admin/modules/serial_control/kardex.php:64
+msgid "Kardex data deleted!"
+msgstr "Dados do kardex apagados!"
+
+#: admin/modules/serial_control/subscription.php:61
+msgid "Error inserting subscription data, Subscription Date must be filled!"
+msgstr "ERROS inserindo dados de assinatura. A data de asssinatura deve ser preenchida!"
+
+#: admin/modules/serial_control/subscription.php:81
+msgid "Subscription Data Successfully Updated"
+msgstr "Dados de assinatura atualizados com sucesso!"
+
+#: admin/modules/serial_control/subscription.php:83
+msgid "Subscription Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de assinatura. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/serial_control/subscription.php:97
+msgid "New Subscription Data Successfully Saved"
+msgstr "Novos dados de assinatura gravados com sucesso"
+
+#: admin/modules/serial_control/subscription.php:99
+msgid "Subscription Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar dados de assinatura. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/serial_control/subscription.php:135
+msgid "Subscription data successfully deleted"
+msgstr "Dados de assinatura apagados com sucesso"
+
+#: admin/modules/serial_control/subscription.php:137
+msgid "Subscription data FAILED to deleted!"
+msgstr "FALHA para apagar dados de assinatura!"
+
+#: admin/modules/serial_control/subscription.php:173
+#: admin/modules/serial_control/subscription.php:216
+msgid "Subscription Start"
+msgstr "Iniciar assinatura"
+
+#: admin/modules/serial_control/subscription.php:176
+msgid "Total Exemplar Expected"
+msgstr "Total de exemplares esperado"
+
+#: admin/modules/serial_control/subscription.php:179
+#: admin/modules/serial_control/subscription.php:215
+msgid "Period Name"
+msgstr "Nome do período"
+
+#: admin/modules/serial_control/subscription.php:181
+#: admin/modules/serial_control/subscription.php:217
+msgid "Subscription Notes"
+msgstr "Notas da assinatura"
+
+#: admin/modules/serial_control/subscription.php:195
+msgid "You are going to edit Subscription data"
+msgstr "Você está editando dados de assinatura"
+
+#: admin/modules/serial_control/subscription.php:205
+msgid "View/Edit Kardex Detail"
+msgstr "Ver/editar detalhe do Kardex"
+
+#: admin/modules/serial_control/index.php:75
+msgid "Add New Subscription"
+msgstr "Adicionar nova assinatura"
+
+#: admin/modules/serial_control/index.php:77
+msgid "View Subscriptions"
+msgstr "Ver assinaturas"
+
+#: admin/modules/serial_control/index.php:79
+msgid "CLOSE"
+msgstr "FECHAR"
+
+#: admin/modules/serial_control/index.php:87
+msgid "Serial Title"
+msgstr "Título seriado"
+
+#: admin/modules/stock_take/st_upload.php:40
+msgid "NO stock taking proccess initialized yet!"
+msgstr "Processo de inventário NÃO iniciado ainda!"
+
+#: admin/modules/stock_take/st_upload.php:83
+msgid "Succesfully upload stock take file"
+msgstr "Arquivo de inventário enviado com sucesso"
+
+#: admin/modules/stock_take/st_upload.php:83
+msgid " item codes scanned!"
+msgstr "Códigos de item escaneados!"
+
+#: admin/modules/stock_take/st_upload.php:101
+msgid "STOCK TAKE UPLOAD - Upload a plain text file (.txt) containing list of Item Code to stock take. Each Item Code separated by line."
+msgstr "INVENTÁRIO ENVIADO - Enviado arquivo de texto simples (.txt) contendo lista de código dos itens para o inventário. Cada código de item separado por linha."
+
+#: admin/modules/stock_take/st_upload.php:103
+msgid " File"
+msgstr "Arquivo"
+
+#: admin/modules/stock_take/st_upload.php:104
+msgid "Upload File"
+msgstr "Enviar arquivo"
+
+#: admin/modules/stock_take/submenu.php:23
+msgid "Stock Take"
+msgstr "Inventário"
+
+#: admin/modules/stock_take/submenu.php:24
+msgid "Stock Take History"
+msgstr "Histórico do inventário"
+
+#: admin/modules/stock_take/submenu.php:24
+msgid "View Stock Take History"
+msgstr "Ver histórico do inventário"
+
+#: admin/modules/stock_take/submenu.php:28
+msgid "Current Stock Take"
+msgstr "Inventário atual"
+
+#: admin/modules/stock_take/submenu.php:28
+msgid "View Current Stock Take Process"
+msgstr "Ver o atual processo de inventário"
+
+#: admin/modules/stock_take/submenu.php:29
+msgid "Stock Take Report"
+msgstr "Relatório do "
+
+#: admin/modules/stock_take/submenu.php:29
+msgid "View Current Stock Take Report"
+msgstr "Ver relatório atual do inventário"
+
+#: admin/modules/stock_take/submenu.php:30
+#: admin/modules/stock_take/finish.php:153
+#: admin/modules/stock_take/finish.php:161
+msgid "Finish Stock Take"
+msgstr "Encerrar inventário"
+
+#: admin/modules/stock_take/submenu.php:30
+msgid "Finish Current Stock Take Proccess"
+msgstr "Encerrar atual processo de inventário"
+
+#: admin/modules/stock_take/submenu.php:31
+#: admin/modules/stock_take/lost_item_list.php:45
+msgid "Current Lost Item"
+msgstr "Atuais itens perdidos"
+
+#: admin/modules/stock_take/submenu.php:31
+msgid "View Lost Item in Current Stock Take Proccess"
+msgstr "Ver item perdido no atual processo de inventário"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "Stock Take Log"
+msgstr "Log do inventário"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "View Log of Current Stock Take Proccess"
+msgstr "Ver log de atual processo de inventário"
+
+#: admin/modules/stock_take/submenu.php:33
+msgid "Resynchronize"
+msgstr "Ressincronizar"
+
+#: admin/modules/stock_take/submenu.php:33
+msgid "Resynchronize bibliographic data with current stock take"
+msgstr "Ressincronizar dados bibliográficos com inventário atual"
+
+#: admin/modules/stock_take/submenu.php:34
+msgid "Upload List"
+msgstr "Lista de enviados"
+
+#: admin/modules/stock_take/submenu.php:34
+msgid "Upload List in text file"
+msgstr "Enviar lista em arquivo de texto"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Initialize"
+msgstr "Iniciar"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Initialize New Stock Take Proccess"
+msgstr "Iniciar novo processo de inventário"
+
+#: admin/modules/stock_take/init.php:43
+msgid "There is already stock taking proccess running!"
+msgstr "O processo de inventário já está em execução!"
+
+#: admin/modules/stock_take/init.php:47
+msgid "Stock Take Name must be filled!"
+msgstr "Nome do inventário deve ser preenchido!"
+
+#: admin/modules/stock_take/init.php:126
+msgid "Stock Taking Initialized"
+msgstr "Inventário iniciado"
+
+#: admin/modules/stock_take/init.php:131
+msgid ""
+"Stock Taking FAILED to Initialized.\\n"
+"No item to stock take!"
+msgstr ""
+"FALHA no início do inventário.\\n"
+"Não há item para o inventário!"
+
+#: admin/modules/stock_take/init.php:139
+msgid "Initialize Stock Take"
+msgstr "Iniciar inventário"
+
+#: admin/modules/stock_take/init.php:148
+msgid "Stock Take Name"
+msgstr "Nome do inventário"
+
+#: admin/modules/stock_take/init.php:177
+msgid "Separate each class comma sign. Use * for wildcard"
+msgstr "Separar cada classe com vírgula. Use * como curinga"
+
+#: admin/modules/stock_take/finish.php:43
+msgid "NO stock taking proccess running!"
+msgstr "O processo de inventário NÃO está sendo executado!"
+
+#: admin/modules/stock_take/finish.php:144
+msgid "Stock Take Proccess Finished!"
+msgstr "Processo de inventário finalizado!"
+
+#: admin/modules/stock_take/finish.php:154
+msgid "Are you sure to end current stock take proccess? Once it finished there is no way you can rollback this stock take"
+msgstr "Você tem certeza que quer encerrar o atual processo de inventário? Uma vez encerrado, não há maneira de reverter esse inventário"
+
+#: admin/modules/stock_take/finish.php:171
+msgid "Purge Lost Item"
+msgstr "Eliminar item perdido"
+
+#: admin/modules/stock_take/st_report.php:55
+msgid "CURRENT STOCK TAKE REPORT"
+msgstr "RELATÓRIO ATUAL DE INVENTÁRIO"
+
+#: admin/modules/stock_take/st_report.php:69
+#: admin/modules/stock_take/index.php:63
+msgid "Total Item Stock Taked"
+msgstr "Total de itens inventariados"
+
+#: admin/modules/stock_take/st_report.php:71
+#: admin/modules/stock_take/st_report.php:72
+#: admin/modules/stock_take/st_report.php:73
+#: admin/modules/stock_take/index.php:64
+msgid "Total Item Lost"
+msgstr "Total de itens perdidos"
+
+#: admin/modules/stock_take/st_report.php:77
+#: admin/modules/stock_take/st_report.php:79
+#: admin/modules/stock_take/index.php:66
+msgid "Total Item On Loan"
+msgstr "Total de itens emprestaodos"
+
+#: admin/modules/stock_take/st_report.php:85
+msgid "Total Checked/Scanned Items"
+msgstr "Total verificado/itens escaneados"
+
+#: admin/modules/stock_take/st_report.php:87
+#: admin/modules/stock_take/st_report.php:92
+#: admin/modules/stock_take/st_report.php:97
+#: admin/modules/stock_take/index.php:67
+msgid "Stock Take Participants"
+msgstr "Participantes do inventário"
+
+#: admin/modules/stock_take/st_report.php:92
+msgid "items already checked"
+msgstr "Item já verificado"
+
+#: admin/modules/stock_take/st_report.php:99
+#: admin/modules/stock_take/index.php:60
+#: admin/modules/stock_take/index.php:109
+msgid "Start Date"
+msgstr "Data de início"
+
+#: admin/modules/stock_take/st_report.php:101
+#: admin/modules/stock_take/index.php:61
+#: admin/modules/stock_take/index.php:110
+msgid "End Date"
+msgstr "Data de finalização"
+
+#: admin/modules/stock_take/st_report.php:122
+#: admin/modules/stock_take/st_report.php:160
+msgid "Lost Items"
+msgstr "Itens perdidos"
+
+#: admin/modules/stock_take/st_report.php:123
+#: admin/modules/stock_take/st_report.php:161
+msgid "Existing Items"
+msgstr "Itens exitentes"
+
+#: admin/modules/stock_take/st_report.php:124
+#: admin/modules/stock_take/st_report.php:162
+msgid "On Loan Items"
+msgstr "Itens empréstados"
+
+#: admin/modules/stock_take/st_report.php:127
+msgid " classes"
+msgstr "classes"
+
+#: admin/modules/stock_take/resync.php:58
+msgid "Re-synchronize will only update current stock take's item data. It won't update any new bibliographic or item data that were inserted in the middle of stock take proccess"
+msgstr "Ressincronizar apenas atualizará dados atuais do item do inventário. Não irá atualizar qualquer novo dado bibliográfico ou do item que foi inserido no meio do processo de inventário"
+
+#: admin/modules/stock_take/resync.php:61
+msgid "Resynchronize Now"
+msgstr "Ressincronizar agora"
+
+#: admin/modules/stock_take/index.php:62
+msgid "Initializer"
+msgstr "Iniciar"
+
+#: admin/modules/stock_take/index.php:65
+msgid "Total Item Exists"
+msgstr "Total de itens existentes"
+
+#: admin/modules/stock_take/index.php:68
+#: admin/modules/stock_take/index.php:83
+msgid "Status"
+msgstr "Situação"
+
+#: admin/modules/stock_take/index.php:69
+#: admin/modules/stock_take/index.php:111
+msgid "Report"
+msgstr "Relatório"
+
+#: admin/modules/stock_take/index.php:85
+msgid "Currently Active"
+msgstr "Ativos no momento"
+
+#: admin/modules/stock_take/current.php:61
+msgid "STOCK TAKE PROCCESS - Insert Item Code/Barcode with keyboard or barcode scanner"
+msgstr "PROCESSO DE INVENTÁRIO - Inserir código do item/Código de barras com teclado ou código de barras escaneado"
+
+#: admin/modules/stock_take/current.php:63
+msgid "Change Status"
+msgstr "Modificar situação"
+
+#: admin/modules/stock_take/current.php:64
+msgid "List stocktakes by"
+msgstr "Listar inventários por"
+
+#: admin/modules/stock_take/current.php:65
+msgid "Current User Only"
+msgstr "Somente usuário atual"
+
+#: admin/modules/stock_take/current.php:66
+msgid "All User"
+msgstr "Todos os usuários"
+
+#: admin/modules/stock_take/current.php:70
+msgid "Current Missing/Lost Items"
+msgstr "Faltando atualmente/Itens perdidos"
+
+#: admin/modules/stock_take/current.php:94
+msgid "Exists"
+msgstr "Existentes"
+
+#: admin/modules/stock_take/current.php:94
+msgid "Missing"
+msgstr "Perdidos"
+
+#: admin/modules/system/holiday.php:65
+msgid "Holiday Data Successfully updated"
+msgstr "Dados do feriados atualizados com sucesso"
+
+#: admin/modules/system/holiday.php:71
+msgid "Holiday FAILED to update. Please Contact System Administrator"
+msgstr "FALHA na atualização do feriado. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/holiday.php:77
+msgid "New Holiday Successfully Saved"
+msgstr "Novo feriado gravado com sucesso"
+
+#: admin/modules/system/holiday.php:104
+msgid "Holiday FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA para gravar feriado. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/holiday.php:150
+#: admin/modules/system/submenu.php:35
+msgid "Holiday Setting"
+msgstr "Configurações de feriado"
+
+#: admin/modules/system/holiday.php:152
+msgid "Set holiday"
+msgstr "Configurar feriado"
+
+#: admin/modules/system/holiday.php:153
+msgid "Special holiday"
+msgstr "Feriado especial"
+
+#: admin/modules/system/holiday.php:154
+msgid "Add Special holiday"
+msgstr "Adicionar feriado especial"
+
+#: admin/modules/system/holiday.php:187
+#: admin/modules/system/holiday.php:211
+#: admin/modules/system/holiday.php:215
+msgid "Holiday Date Start"
+msgstr "Data de início do feriado"
+
+#: admin/modules/system/holiday.php:190
+msgid "Holiday Date End"
+msgstr "Data do fim do feriado"
+
+#: admin/modules/system/holiday.php:193
+#: admin/modules/system/holiday.php:212
+#: admin/modules/system/holiday.php:216
+msgid "Holiday Description"
+msgstr "Descrição do feriado"
+
+#: admin/modules/system/holiday.php:197
+msgid "You are going to edit holiday data"
+msgstr "Você está dados de feriado"
+
+#: admin/modules/system/holiday.php:210
+#: admin/modules/system/holiday.php:214
+msgid "Day name"
+msgstr "Nome do dia"
+
+#: admin/modules/system/holiday.php:249
+msgid "Maximum 6 day can be set as holiday!"
+msgstr "6 dias no máximo pode ser configurados como feriado!"
+
+#: admin/modules/system/holiday.php:262
+msgid "Holiday settings saved"
+msgstr "Configurações de feriado gravados"
+
+#: admin/modules/system/holiday.php:291
+msgid "Monday"
+msgstr "Segunda"
+
+#: admin/modules/system/holiday.php:292
+msgid "Tuesday"
+msgstr "Terça"
+
+#: admin/modules/system/holiday.php:293
+msgid "Wednesday"
+msgstr "Quarta"
+
+#: admin/modules/system/holiday.php:295
+msgid "Thursday"
+msgstr "Quinta"
+
+#: admin/modules/system/holiday.php:296
+msgid "Friday"
+msgstr "Sexta"
+
+#: admin/modules/system/holiday.php:297
+msgid "Saturday"
+msgstr "Sábado"
+
+#: admin/modules/system/holiday.php:299
+msgid "Sunday"
+msgstr "Domingo"
+
+#: admin/modules/system/holiday.php:304
+msgid "Save Settings"
+msgstr "Gravar configurações"
+
+#: admin/modules/system/submenu.php:23
+msgid "System"
+msgstr "Sistema"
+
+#: admin/modules/system/submenu.php:26
+msgid "System Configuration"
+msgstr "Configuração do Sistema"
+
+#: admin/modules/system/submenu.php:26
+msgid "Configure Global System Preferences"
+msgstr "Configurar preferências globais do sistema"
+
+#: admin/modules/system/submenu.php:28
+#: admin/modules/system/content.php:131
+msgid "Content"
+msgstr "Conteúdo"
+
+#: admin/modules/system/submenu.php:31
+#: admin/modules/system/module.php:136
+msgid "Modules"
+msgstr "Módulos"
+
+#: admin/modules/system/submenu.php:31
+msgid "Configure Application Modules"
+msgstr "Configurar módulo do aplicativo"
+
+#: admin/modules/system/submenu.php:32
+#: admin/modules/system/app_user.php:160
+msgid "System Users"
+msgstr "Sistema de usuários"
+
+#: admin/modules/system/submenu.php:32
+msgid "Manage Application User or Library Staff"
+msgstr "Gerenciar usuário do aplicativo or pessoal da biblioteca"
+
+#: admin/modules/system/submenu.php:33
+#: admin/modules/system/user_group.php:159
+msgid "User Group"
+msgstr "Grupo Usuário"
+
+#: admin/modules/system/submenu.php:33
+msgid "Manage Group of Application User"
+msgstr "Gerenciar grupo de usuários do aplicativo"
+
+#: admin/modules/system/submenu.php:35
+msgid "Configure Holiday Setting"
+msgstr "Configurar definição do feriado"
+
+#: admin/modules/system/submenu.php:36
+#: admin/modules/system/barcode_generator.php:111
+msgid "Barcode Generator"
+msgstr "Gerados de código de barras"
+
+#: admin/modules/system/submenu.php:37
+#: admin/modules/system/sys_log.php:68
+msgid "System Log"
+msgstr "Log do sistema"
+
+#: admin/modules/system/submenu.php:37
+msgid "View Application System Log"
+msgstr "Ver log do sistema aplicativo"
+
+#: admin/modules/system/submenu.php:38
+#: admin/modules/system/backup.php:41
+msgid "Database Backup"
+msgstr "Backup da base de dados"
+
+#: admin/modules/system/submenu.php:38
+msgid "Backup Application Database"
+msgstr "Backup de base de dados do aplicativo"
+
+#: admin/modules/system/user_group.php:47
+msgid "Group name can't be empty"
+msgstr "Nome do grupo não pode estar vazio"
+
+#: admin/modules/system/user_group.php:82
+msgid "Group Data Successfully Updated"
+msgstr "Dados de grupo atualizados com sucesso"
+
+#: admin/modules/system/user_group.php:84
+msgid "Group Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA no envio de dados do grupo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/user_group.php:110
+msgid "New Group Data Successfully Saved"
+msgstr "Novos dados do grupo gravados com sucesso"
+
+#: admin/modules/system/user_group.php:112
+msgid "Group Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação dos dados do grupo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/user_group.php:159
+msgid "Add New Group"
+msgstr "Adicionar novo grupo"
+
+#: admin/modules/system/user_group.php:160
+msgid "Group List"
+msgstr "Lista de grupo"
+
+#: admin/modules/system/user_group.php:199
+#: admin/modules/system/user_group.php:226
+msgid "Group Name"
+msgstr "Nome do grupo"
+
+#: admin/modules/system/user_group.php:210
+msgid "Privileges"
+msgstr "Privilégios"
+
+#: admin/modules/system/user_group.php:215
+msgid "You are going to edit Group data"
+msgstr "Você está editando dados de grupo"
+
+#: admin/modules/system/backup.php:41
+msgid "Start New Backup"
+msgstr "Iniciar novo backup"
+
+#: admin/modules/system/module.php:48
+msgid "Module name and path can't be empty"
+msgstr "Nome do módulo e caminho não podem estar vazios"
+
+#: admin/modules/system/module.php:71
+msgid "Module Data Successfully Updated"
+msgstr "Dados do módulo enviados com sucesso"
+
+#: admin/modules/system/module.php:73
+msgid "Module Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização dos dados do módulo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/module.php:84
+msgid "New Module Data Successfully Saved"
+msgstr "Novos dados do módulo gravados com sucesso"
+
+#: admin/modules/system/module.php:86
+msgid "Module Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação dos dados do módulo. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/module.php:136
+msgid "Add New Modules"
+msgstr "Adicionar novos módulos"
+
+#: admin/modules/system/module.php:137
+msgid "Modules List"
+msgstr "Lista de módulos"
+
+#: admin/modules/system/module.php:176
+#: admin/modules/system/module.php:196
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Module Name"
+msgstr "Nome do módulo"
+
+#: admin/modules/system/module.php:178
+msgid "Module Path"
+msgstr "Módulo caminho"
+
+#: admin/modules/system/module.php:180
+#: admin/modules/system/module.php:197
+msgid "Module Description"
+msgstr "Descrição do módulo"
+
+#: admin/modules/system/module.php:184
+msgid "You are going to edit data"
+msgstr "Você esta editando dados"
+
+#: admin/modules/system/app_user.php:60
+msgid "User Name or Real Name can't be empty"
+msgstr "Nome de usuário ou nome real não podem estar vazios"
+
+#: admin/modules/system/app_user.php:63
+msgid "Login username or Real Name is probihited!"
+msgstr "Acesso de nome de usuário ou nome real estão proibidos!"
+
+#: admin/modules/system/app_user.php:100
+msgid "User Data Successfully Updated"
+msgstr "Dados de usuário atualizados com sucesso"
+
+#: admin/modules/system/app_user.php:102
+msgid "User Data FAILED to Updated. Please Contact System Administrator"
+msgstr "FALHA na atualização de dados de usuário. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/app_user.php:110
+msgid "New User Data Successfully Saved"
+msgstr "Novos dados de usuários gravados com sucesso"
+
+#: admin/modules/system/app_user.php:112
+msgid "User Data FAILED to Save. Please Contact System Administrator"
+msgstr "FALHA na gravação dos dados do usuário. Por favor, entre em contato com o administrador do sistema"
+
+#: admin/modules/system/app_user.php:160
+msgid "Add New User"
+msgstr "Adicionar novo usuário"
+
+#: admin/modules/system/app_user.php:161
+msgid "User List"
+msgstr "Lista de usuários"
+
+#: admin/modules/system/app_user.php:231
+msgid "Group(s)"
+msgstr "Grupo(s)"
+
+#: admin/modules/system/app_user.php:240
+msgid "You are going to edit user profile"
+msgstr "Você está editando o perfil de usuário"
+
+#: admin/modules/system/app_user.php:261
+#: admin/modules/system/app_user.php:266
+msgid "Last Login"
+msgstr "Último acesso"
+
+#: admin/modules/system/content.php:50
+msgid "Title or Path can't be empty!"
+msgstr "Título ou caminho não podem estar vazios!"
+
+#: admin/modules/system/content.php:72
+msgid "Content data updated"
+msgstr "Dados de conteúdo atualizados"
+
+#: admin/modules/system/content.php:74
+msgid "Content data FAILED to update!"
+msgstr "FALHA na atualização dos dados do conteúdo!"
+
+#: admin/modules/system/content.php:82
+msgid "Content data saved"
+msgstr "Dados de conteúdo gravado"
+
+#: admin/modules/system/content.php:84
+msgid "Content data FAILED to save!"
+msgstr "FALHA na gravação dos dados de conteúdo"
+
+#: admin/modules/system/content.php:131
+msgid "Add New Content"
+msgstr "Adicionar novo conteúdo"
+
+#: admin/modules/system/content.php:132
+msgid "Content List"
+msgstr "Lista de conteúdo"
+
+#: admin/modules/system/content.php:175
+#: admin/modules/system/content.php:208
+#: admin/modules/system/content.php:212
+msgid "Content Title"
+msgstr "Título do conteúdo"
+
+#: admin/modules/system/content.php:177
+#: admin/modules/system/content.php:209
+#: admin/modules/system/content.php:213
+msgid "Path (Must be unique)"
+msgstr "Caminho (Deve ser único)"
+
+#: admin/modules/system/content.php:179
+msgid "Content Description"
+msgstr "Descrição de conteúdo"
+
+#: admin/modules/system/content.php:183
+msgid "You are going to update Content data"
+msgstr "Você está editando dados de conteúdo"
+
+#: admin/modules/system/sys_log.php:59
+msgid "System Log data completely cleared!"
+msgstr "Dados do log do sistema foi limpo!"
+
+#: admin/modules/system/sys_log.php:70
+msgid "Are you SURE to completely clear system log data? This action cannot be undo!"
+msgstr "Você tem certeza que quer limpar completamente os dados de log do sistema? Esta ação não poderá ser revertida!"
+
+#: admin/modules/system/sys_log.php:70
+msgid "CLEAR LOGS"
+msgstr "LIMPAR LOGS"
+
+#: admin/modules/system/sys_log.php:71
+msgid "Save Logs record to file?"
+msgstr "Gravar registro de logs para um arquivo?"
+
+#: admin/modules/system/sys_log.php:71
+msgid "Save Logs To File"
+msgstr "Gravar logs para o arquivo"
+
+#: admin/modules/system/sys_log.php:95
+msgid "Time"
+msgstr "Hora"
+
+#: admin/modules/system/sys_log.php:97
+msgid "Message"
+msgstr "Mensagem"
+
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Read"
+msgstr "Ler"
+
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Write"
+msgstr "Escrever"
+
+#: admin/modules/system/barcode_generator.php:96
+msgid "Error creating barcode!"
+msgstr "Erro criando código de barras!"
+
+#: admin/modules/system/barcode_generator.php:101
+msgid "Barcode generation finished"
+msgstr "Geração de código de barras finalizada"
+
+#: admin/modules/system/barcode_generator.php:111
+msgid "Type barcodes text to one or more text field below and click"
+msgstr "Digite texto dos códigos de barras em um ou mais campos abaixo e clique"
+
+#: admin/modules/system/barcode_generator.php:111
+#: admin/modules/system/barcode_generator.php:141
+msgid "Generate Barcodes"
+msgstr "Gerar código de barras"
+
+#: admin/modules/system/barcode_generator.php:125
+msgid "Barcode Size"
+msgstr "Código de barras"
+
+#: admin/modules/system/barcode_generator.php:125
+msgid "Small"
+msgstr "Pequena"
+
+#: admin/modules/system/barcode_generator.php:126
+msgid "Medium"
+msgstr "Média"
+
+#: admin/modules/system/barcode_generator.php:127
+msgid "Big"
+msgstr "Grande"
+
+#: admin/modules/system/index.php:46
+msgid "Modify global application preferences"
+msgstr "Modificar preferência gerais do aplicativo"
+
+#: admin/modules/system/index.php:119
+msgid "Settings saved. Refreshing page"
+msgstr "Configurações gravadas. Atualizar página"
+
+#: admin/modules/system/index.php:140
+msgid "Library Name"
+msgstr "Nome da biblioteca"
+
+#: admin/modules/system/index.php:143
+msgid "Library Subname"
+msgstr "Subtítulo da biblioteca"
+
+#: admin/modules/system/index.php:157
+msgid "Public Template"
+msgstr "Modelo Público"
+
+#: admin/modules/system/index.php:170
+msgid "Admin Template"
+msgstr "Modelo Admin"
+
+#: admin/modules/system/index.php:174
+msgid "Default App. Language"
+msgstr "Ap. de Idioma padrão"
+
+#: admin/modules/system/index.php:182
+msgid "Number Of Collections To Show In OPAC Result List"
+msgstr "Número das coleções para mostra na lista de resultado do OPAC"
+
+#: admin/modules/system/index.php:186
+msgid "Show Promoted Titles at Homepage"
+msgstr "Mostrar títulos divulgados na homepage "
+
+#: admin/modules/system/index.php:198
+msgid "Loan and Due Date Manual Change"
+msgstr "Mudança manual dos dados de empréstimo e devolução"
+
+#: admin/modules/system/index.php:204
+msgid "Loan Limit Override"
+msgstr "Limite de empréstimo ultrapassado"
+
+#: admin/modules/system/index.php:210
+msgid "OPAC XML Detail"
+msgstr "Detalhes do OPAC XML"
+
+#: admin/modules/system/index.php:216
+msgid "OPAC XML Result"
+msgstr "Resultado do OPAC XML"
+
+#: admin/modules/system/index.php:220
+msgid "Forbid"
+msgstr "Proibir"
+
+#: admin/modules/system/index.php:221
+msgid "Allow"
+msgstr "Permitir"
+
+#: admin/modules/system/index.php:222
+msgid "Allow OPAC File Download"
+msgstr "Permitir baixar arquivo do OPAC"
+
+#: admin/modules/system/index.php:225
+msgid "Session Login Timeout"
+msgstr "Sessão finalizada!"
+
+#: admin/default/submenu.php:21
+msgid "Panel"
+msgstr "Painel"
+
+#: admin/default/submenu.php:22
+msgid "Change User Profiles"
+msgstr "Mudar perfil de usuário"
+
+#: admin/default/submenu.php:22
+msgid "Change Current User Profiles and Password"
+msgstr "Alterar atual perfil de usuário e senha"
+
+#: admin/default/session_check.inc.php:56
+msgid "Your Login Session has already timeout!"
+msgstr "Seu acesso já foi finalizado!"
+
+#: admin/default/home.php:30
+msgid "<strong>PHP GD</strong> extension is not installed. Please install it or application won't be able to create image thumbnail and barcode."
+msgstr "<strong>PHP GD</strong> extensão não está instalada. Por favor, instale ou a aplicação não será capaz de criar imagens em miniatura ou códigos de barras."
+
+#: admin/default/home.php:34
+msgid "<strong>Freetype</strong> support is not enabled in PHP GD extension. Rebuild PHP GD extension with Freetype support or application won't be able to create barcode."
+msgstr "<strong>Freetype</strong> suporte não está habilidado no PHP GD extension. Recompile o PHP GD extension com suporte a Freetype ou o aplicativo não poderá criar códigos de barra. "
+
+#: admin/default/home.php:41
+msgid "There is currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail"
+msgstr "No momento há <strong>{num_overdue}</strong> usuários da biblioteca em atraso. Por favor, verifique no módulo <b>Circulação</b> em <b>Atrasados</b> para mais detalhes "
+
+#: admin/default/home.php:46
+msgid "<strong>Images</strong> directory and directories under it is not writable. Make sure it is writable by changing its permission or you won't be able to upload any images and create barcodes"
+msgstr "o diretório <strong>Imagens</strong> e todos os diretórios dentro dele não possuem permissão de escrita. Certifique-se de alterar a permissão de escrita ou não poderão ser enviadas imagens nem criados códigos de barras "
+
+#: admin/default/home.php:50
+msgid "<strong>Repository</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any bibliographic attachments."
+msgstr "o diretório <strong>Repositório</strong> não possui permissão de escrita. Certifique-se de alterar sua permissão de escrita (e para todos os diretórios dentro dele) ou nenhum anexo bibliográfico poderá ser enviado. "
+
+#: admin/default/home.php:54
+msgid "<strong>File upload</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any file, create report files and create database backups."
+msgstr "o diretório <strong>Arquivo enviado</strong> não possui permissão de escrita. Certifique-se de alterar sua permissão de escrita (e para todos os diretório dentro dele) ou o envio de arquivos, criação de relatórios e realização de backup da base de dados não poderão ser realizados. "
+
+#: admin/default/home.php:58
+msgid "The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won't be able to do any database backups."
+msgstr "O CAMINHO para o<strong>mysqldump</strong> programa não está correto! Por favor, verifique o arquivo de configuração ou ou não será possível  fazer backup das bases de dados"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:81
+msgid "DELETE"
+msgstr "Apagar"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:82
+msgid "EDIT"
+msgstr "Editar"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:97
+msgid "Are You Sure Want to DELETE Selected Data?"
+msgstr "Você tem certeza que quer APAGAR dados selecionados?"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:101
+msgid "Delete Selected Data"
+msgstr "Apagar dado selecionado"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:126
+msgid "ascendingly"
+msgstr "ascendentemente"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:136
+msgid "descendingly"
+msgstr "descendentemente"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:206
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:208
+msgid "Order list by"
+msgstr "Ordenar lista por"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:371
+msgid "Check All"
+msgstr "Marcar todos"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:372
+msgid "Uncheck All"
+msgstr "Desmarcar todos"
+
+#: simbio2/simbio_GUI/table/simbio_table.inc.php:213
+msgid "No Data"
+msgstr "Sem data"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:111
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:107
+msgid "First Page"
+msgstr "Primeira página"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:113
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:109
+msgid "Previous"
+msgstr "Anterior"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:134
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:130
+msgid "Next"
+msgstr "Próximo"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:142
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:138
+msgid "Last Page"
+msgstr "Última página"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:95
+msgid "Delete Record"
+msgstr "Apagar registro"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:96
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:257
+msgid "Date"
+msgstr "Data"
+
+#: lib/admin_logon.inc.php:64
+#: lib/member_logon.inc.php:59
+msgid "Error authenticating user and password to database"
+msgstr "Erro na autenticação do usuário e senha na base de dados"
+
+#: lib/detail.inc.php:150
+msgid "Click to view others documents with this author"
+msgstr "Clicar para ver outros documentos desse autor"
+
+#: lib/detail.inc.php:164
+msgid "Click to view others documents with this subject"
+msgstr "Clicar para ver outros documentos com esse assunto"
+
+#: lib/detail.inc.php:185
+msgid "There is no item/copy for this title yet"
+msgstr "Não há item/cópia do título ainda"
+
+#: lib/detail.inc.php:189
+msgid "copies at"
+msgstr "cópia em"
+
+#: lib/biblio_list.inc.php:333
+#: lib/biblio_list.inc.php:354
+msgid "Record Detail"
+msgstr "Detalhe do registro"
+
+#: lib/lang/localisation.php:60
+msgid "German"
+msgstr "Alemão"
+
+#: lib/lang/localisation.php:61
+msgid "English"
+msgstr "Inglês"
+
+#: lib/lang/localisation.php:62
+msgid "Indonesian"
+msgstr "Indonésio"
+
+#: lib/contents/member.inc.php:28
+msgid "Welcome to Member's Area where you can view your current loan information and view your membership status."
+msgstr "Bem vindo à área do usuário,  aquil você pode ver suas informações de empréstimo e sua situação de associado."
+
+#: lib/contents/member.inc.php:51
+msgid "Please fill your Username and Password to Login!"
+msgstr "Por favor, digite seu nome de usuário e senha!"
+
+#: lib/contents/member.inc.php:66
+msgid "Login FAILED! Wrong username or password!"
+msgstr "FALHA no acesso! Nome ou senha de usuário incorreto"
+
+#: lib/contents/member.inc.php:76
+msgid "Library Member Login"
+msgstr "Acesso usuario da biblioteca"
+
+#: lib/contents/member.inc.php:77
+msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
+msgstr "Por favor, insira seu ID de usuário e senha dados pelo administrador do sistema da biblioteca. Se você é usuário da biblioteca e ainda não possui a senha, entre em contato com o bibliotecário."
+
+#: lib/contents/member.inc.php:81
+msgid "Password"
+msgstr "Senha"
+
+#: lib/contents/member.inc.php:83
+msgid "Login"
+msgstr "Acesso"
+
+#: lib/contents/member.inc.php:100
+msgid "Current Password"
+msgstr "Senha atual"
+
+#: lib/contents/member.inc.php:108
+msgid "Confirm Password"
+msgstr "Confirmar senha"
+
+#: lib/contents/member.inc.php:112
+#: lib/contents/member.inc.php:278
+msgid "Change Password"
+msgstr "Trocar senha"
+
+#: lib/contents/member.inc.php:171
+msgid "Your Membership Already EXPIRED! Please extend your membership."
+msgstr "Seu associado já está EXPIRADO! Por favor, prorrogue associação."
+
+#: lib/contents/member.inc.php:174
+msgid "Membership currently in pending state, no loan transaction can be made yet."
+msgstr "No momento, associado está com pendências, transações de empréstimo não podem ser feitas ainda."
+
+#: lib/contents/member.inc.php:207
+msgid "OVERDUED"
+msgstr "ATRASADO"
+
+#: lib/contents/member.inc.php:252
+msgid "item(s) currently on loan"
+msgstr "Itens emprestados no momento"
+
+#: lib/contents/member.inc.php:260
+msgid "Your password have been changed successfully."
+msgstr "Sua senha foi modificada com sucesso."
+
+#: lib/contents/member.inc.php:263
+msgid "Current password entered WRONG! Please insert the right password!"
+msgstr "Senha INCORRETA! Por favor, digite a senha correta!"
+
+#: lib/contents/member.inc.php:265
+msgid "Password confirmation FAILED! Make sure to check undercase or uppercase letters!"
+msgstr "FALHA na confirmação da senha! Verifique se digitou em letras maiúsculas ou minúsculas!"
+
+#: lib/contents/member.inc.php:267
+msgid "Password update FAILED! ERROR ON DATABASE!"
+msgstr "FALHA na atualização da senha! ERRO na base dados!"
+
+#: lib/contents/member.inc.php:274
+msgid "Member Detail"
+msgstr "Detalhe do usuário"
+
+#: lib/contents/member.inc.php:276
+msgid "Your Current Loan"
+msgstr "Seus empréstimos atuais"
+
+#: lib/contents/default.inc.php:100
+#: lib/contents/default.inc.php:111
+msgid "Found  <strong>{biblio_list->num_rows}</strong> from your keywords"
+msgstr "Encontrado  <strong>{biblio_list->num_rows}</strong> com suas palavras-chave"
+
+#: lib/contents/default.inc.php:144
+msgid "You currently on page <strong>{page}</strong> of <strong>{total_pages}</strong> page(s)"
+msgstr "No momento, você está na página <strong>{page}</strong> of <strong>{total_pages}</strong> página(s)"
+
+#: lib/contents/common.inc.php:25
+msgid "All Locations"
+msgstr "Todas localizações"
+
+#: lib/contents/common.inc.php:34
+msgid "All Collections"
+msgstr "Todas as coleções"
+
+#: lib/contents/common.inc.php:43
+msgid "All GMD/Media"
+msgstr "Todas DGM/Mídia"
+
+#: lib/contents/login.inc.php:48
+msgid "Please supply valid username and password"
+msgstr "Por favor, informe usuário e senha válidos"
+
+#: lib/contents/login.inc.php:63
+msgid "Welcome to Library Automation,"
+msgstr "Bem vindo ao Gereciamento da biblioteca,"
+
+#: lib/contents/login.inc.php:72
+msgid "Wrong Username or Password. ACCESS DENIED"
+msgstr "Nome ou senha errados. ACESSO NEGADO"
+
+#: lib/contents/login.inc.php:84
+msgid "Your browser does not support Javascript or Javascript is disabled. Application won't run without Javascript!"
+msgstr "Seu navegador não suporta Javascript ou ele está desabilitado. O aplicativo não funcioná sem Javascript!"
+
+#: lib/contents/attachment_list.php:48
+msgid "No Attachment"
+msgstr "Sem anexo"
+
+#: lib/contents/item_list.php:65
+msgid "Currently On Loan (Due on"
+msgstr "Emprestado (Devolução em"
+
+#: lib/contents/item_list.php:67
+msgid "Unavailable"
+msgstr "Indisponível"
+

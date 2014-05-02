@@ -1,0 +1,4070 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Senayan3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-23 22:31+0700\n"
+"PO-Revision-Date: 2010-04-24 10:23+0700\n"
+"Last-Translator: sss <sss>\n"
+"Language-Team: Prasittichai Lertratanakehakran <eak.pras@hotmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_ngettext:1,2\n"
+"X-Poedit-Basepath: ../../../../../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: sysconfig.inc.php:320
+msgid "Personal Name"
+msgstr "ผู้แต่ง (บุคคล)"
+
+#: sysconfig.inc.php:321
+msgid "Organizational Body"
+msgstr "ผู้แต่ง (นิติบุคคล)"
+
+#: sysconfig.inc.php:322
+msgid "Conference"
+msgstr "ชื่อการประชุม"
+
+#: sysconfig.inc.php:325
+msgid "Topic"
+msgstr "หัวเรื่อง (ทางเนื้อหา)"
+
+#: sysconfig.inc.php:326
+msgid "Geographic"
+msgstr "หัวเรื่อง(ทางภูมิศาสตร์)"
+
+#: sysconfig.inc.php:327
+msgid "Name"
+msgstr "หัวเรื่อง(ชื่อบุคคล)"
+
+#: sysconfig.inc.php:328
+msgid "Temporal"
+msgstr "หัวเรื่อง(เวลา)"
+
+#: sysconfig.inc.php:329
+msgid "Genre"
+msgstr "หัวเรื่อง(ประเภทเนื้อหา)"
+
+#: sysconfig.inc.php:330
+msgid "Occupation"
+msgstr "อาชีพ"
+
+#: sysconfig.inc.php:333
+msgid "Primary Author"
+msgstr "ผู้แต่งหลัก"
+
+#: sysconfig.inc.php:334
+msgid "Additional Author"
+msgstr "ผู้แต่งเพิ่ม"
+
+#: sysconfig.inc.php:335
+msgid "Editor"
+msgstr "ผู้รวบรวม เรียบเรียง"
+
+#: sysconfig.inc.php:336
+msgid "Translator"
+msgstr "ผู้แปล"
+
+#: sysconfig.inc.php:337
+msgid "Director"
+msgstr "บรรณาธิการ"
+
+#: sysconfig.inc.php:338
+msgid "Producer"
+msgstr "ผู้ผลิต "
+
+#: sysconfig.inc.php:339
+msgid "Composer"
+msgstr "ผู้ประพันธ์"
+
+#: sysconfig.inc.php:340
+msgid "Illustrator"
+msgstr "ผู้วาดภาพประกอบ"
+
+#: sysconfig.inc.php:341
+msgid "Creator"
+msgstr "ผู้สร้าง"
+
+#: sysconfig.inc.php:342
+msgid "Contributor"
+msgstr "ผู้เผยแพร่"
+
+#: index.php:37
+msgid "Web Online Public Access Catalog - Use the search options to find documents quickly"
+msgstr "ระบบสืบค้นรายการออนไลน์ "
+
+#: index.php:46
+msgid "You are currently Logged on as member"
+msgstr "คุณกำลังอยู่ในระบบ"
+
+#: index.php:46
+msgid "LOGOUT"
+msgstr "ออกจากระบบ"
+
+#: template/lightweight/index_template.inc.php:20
+#: template/green/index_template.inc.php:26
+msgid "Home"
+msgstr "หน้าหลัก"
+
+#: template/lightweight/index_template.inc.php:21
+#: template/green/index_template.inc.php:27
+msgid "Library Information"
+msgstr "เกี่ยวกับห้องสมุด"
+
+#: template/lightweight/index_template.inc.php:22
+#: template/green/index_template.inc.php:28
+msgid "Help on Search"
+msgstr "ช่วยเหลือการสืบค้น"
+
+#: template/lightweight/index_template.inc.php:39
+#: template/green/index_template.inc.php:63
+#: template/green/index_template.inc.php:91
+msgid "Search"
+msgstr "สืบค้น"
+
+#: template/lightweight/custom_frontpage_record.inc.php:7
+#: template/lightweight/detail_template.php:12
+#: template/green/custom_frontpage_record.inc.php:7
+#: template/green/detail_template.php:12
+msgid "Edition"
+msgstr "ครั้งที่จัดทำ"
+
+#: template/lightweight/custom_frontpage_record.inc.php:8
+#: template/lightweight/detail_template.php:20
+#: template/green/index_template.inc.php:76
+#: template/green/custom_frontpage_record.inc.php:8
+#: template/green/detail_template.php:20
+msgid "ISBN/ISSN"
+msgstr "ISBN/ISSN"
+
+#: template/lightweight/custom_frontpage_record.inc.php:9
+#: template/lightweight/detail_template.php:60
+#: template/green/custom_frontpage_record.inc.php:9
+#: template/green/detail_template.php:60
+msgid "Collation"
+msgstr "ลักษณะวัสดุ"
+
+#: template/lightweight/custom_frontpage_record.inc.php:10
+#: template/lightweight/detail_template.php:37
+#: template/green/custom_frontpage_record.inc.php:10
+#: template/green/detail_template.php:37
+msgid "Series Title"
+msgstr "ชื่อชุด"
+
+#: template/lightweight/custom_frontpage_record.inc.php:11
+#: template/lightweight/detail_template.php:16
+#: template/green/custom_frontpage_record.inc.php:11
+#: template/green/detail_template.php:16
+msgid "Call Number"
+msgstr "เลขหมู่"
+
+#: template/lightweight/detail_template.php:8
+#: template/green/index_template.inc.php:70
+#: template/green/detail_template.php:8
+msgid "Title"
+msgstr "ชื่อเรื่อง"
+
+#: template/lightweight/detail_template.php:25
+#: template/green/index_template.inc.php:72
+#: template/green/detail_template.php:25
+msgid "Author(s)"
+msgstr "ผู้แต่ง"
+
+#: template/lightweight/detail_template.php:29
+#: template/green/index_template.inc.php:74
+#: template/green/detail_template.php:29
+msgid "Subject(s)"
+msgstr "หัวเรื่อง"
+
+#: template/lightweight/detail_template.php:33
+#: template/green/detail_template.php:33
+msgid "Classification"
+msgstr "หมวดหมู่"
+
+#: template/lightweight/detail_template.php:40
+#: template/green/index_template.inc.php:78
+#: template/green/detail_template.php:40
+msgid "GMD"
+msgstr "ประเภทวัสดุ/มีเดีย "
+
+#: template/lightweight/detail_template.php:44
+#: template/green/detail_template.php:44
+msgid "Language"
+msgstr "ภาษา"
+
+#: template/lightweight/detail_template.php:48
+#: template/green/detail_template.php:48
+msgid "Publisher"
+msgstr "ผู้จัดทำ"
+
+#: template/lightweight/detail_template.php:52
+#: template/green/detail_template.php:52
+msgid "Publishing Year"
+msgstr "ปีที่จัดทำ"
+
+#: template/lightweight/detail_template.php:56
+#: template/green/detail_template.php:56
+msgid "Publishing Place"
+msgstr "สถานที่จัดทำ"
+
+#: template/lightweight/detail_template.php:64
+#: template/green/detail_template.php:64
+msgid "Abstract/Notes"
+msgstr "บทคัดย่อ/บันทึก"
+
+#: template/lightweight/detail_template.php:68
+#: template/green/detail_template.php:68
+msgid "Specific Detail Info"
+msgstr "ชื่อเรื่องเพิ่ม"
+
+#: template/lightweight/detail_template.php:72
+#: template/green/detail_template.php:72
+msgid "Image"
+msgstr "รูปภาพ"
+
+#: template/lightweight/detail_template.php:76
+#: template/green/detail_template.php:76
+msgid "File Attachment"
+msgstr "เอกสารดิจิทัล"
+
+#: template/lightweight/detail_template.php:80
+#: template/green/detail_template.php:80
+msgid "Availability"
+msgstr "สภานภาพ"
+
+#: template/green/index_template.inc.php:29
+msgid "Member Area"
+msgstr "สมาชิกห้องสมุด"
+
+#: template/green/index_template.inc.php:30
+msgid "Librarian LOGIN"
+msgstr "ผู้ปฏิบัติงานเข้าระบบ"
+
+#: template/green/index_template.inc.php:51
+msgid "Select Language"
+msgstr "เลือกภาษา"
+
+#: template/green/index_template.inc.php:60
+msgid "Simple Search"
+msgstr "สืบค้นแบบง่าย"
+
+#: template/green/index_template.inc.php:68
+msgid "Advanced Search"
+msgstr "สืบค้นแบบละเอียด"
+
+#: template/green/index_template.inc.php:82
+msgid "Collection Type"
+msgstr "ประเภททรัพยากรสารสนเทศ"
+
+#: template/green/index_template.inc.php:86
+msgid "Location"
+msgstr "สถานที่จัดเก็บ"
+
+#: template/green/detail_template.php:85
+msgid "Back To Previous"
+msgstr "กลับไปหน้าที่แล้ว"
+
+#: admin/logout.php:32
+msgid "You Have Been Logged Out From Library Automation System"
+msgstr "คุณได้ออกจากการใช้งานระบบแล้ว"
+
+#: admin/index.php:60
+msgid "Welcome To The Library Automation System, you are currently logged in as"
+msgstr "ยินดีต้อนรับสู่การเข้าการใช้งานระบบ"
+
+#: admin/modules/bibliography/import.php:36
+msgid "You are not authorized to view this section"
+msgstr "ไม่อนุญาตให้ใช้งานส่วนนี้กรุณาเข้าสู่ระบบก่อน"
+
+#: admin/modules/bibliography/import.php:45
+msgid "Please select the file to import!"
+msgstr "กรุณาเลือกเอกสารสำหรับนำเข้า"
+
+#: admin/modules/bibliography/import.php:48
+msgid "Required fields (*)  must be filled correctly!"
+msgstr "ต้องการ ( *) ข้อมูลต้องถูกต้อง"
+
+#: admin/modules/bibliography/import.php:69
+msgid "Upload failed! File type not allowed or the size is more than"
+msgstr "มีข้อผิดพลาดไม่สามารถอัพโหลดเอกสารได้ เนื่องจากระบบไม่รองรับชนิดเอกสารหรือเอกสารขนาดใหญ่เกินไป"
+
+#: admin/modules/bibliography/import.php:215
+msgid "IMPORT TOOL"
+msgstr "นำข้อมูลออก"
+
+#: admin/modules/bibliography/import.php:217
+msgid "Import for bibliographics data from CSV file. For guide on CVS fields order and format please refer to documentation or visit <a href=\"http://senayan.diknas.go.id\" target=\"_blank\">Official Website</a>"
+msgstr "นำเข้าข้อมูลบรรณานุกรมจากเอกสาร CVS "
+
+#: admin/modules/bibliography/import.php:225
+msgid "Import Now"
+msgstr "นำเข้าข้อมูล"
+
+#: admin/modules/bibliography/import.php:236
+msgid "File To Import"
+msgstr "เอกสารนำเข้า"
+
+#: admin/modules/bibliography/import.php:238
+msgid "Field Separator"
+msgstr "จบฟิลด์ด้วย"
+
+#: admin/modules/bibliography/import.php:240
+msgid "Field Enclosed With"
+msgstr "คร่อมฟิลด์ด้วย"
+
+#: admin/modules/bibliography/import.php:242
+msgid "Number of Records To Export (0 for all records)"
+msgstr "เลขที่นำออกข้อมูล (0 จากรายการบันทึกทั้งหมด)"
+
+#: admin/modules/bibliography/import.php:244
+msgid "Start From Record"
+msgstr "เริ่มรายการบันทึก"
+
+#: admin/modules/bibliography/iframe_attach.php:73
+msgid "Attachment removed!"
+msgstr "ลบเอกสารที่แนบ"
+
+#: admin/modules/bibliography/submenu.php:23
+#: admin/modules/bibliography/index.php:266
+msgid "Bibliographic"
+msgstr "บรรณานุกรม"
+
+#: admin/modules/bibliography/submenu.php:24
+#: admin/modules/bibliography/index.php:267
+msgid "Bibliographic List"
+msgstr "รายการบรรณานุกรม"
+
+#: admin/modules/bibliography/submenu.php:24
+msgid "Show Existing Bibliographic Data"
+msgstr "แสดงรายการบรรณานุกรม"
+
+#: admin/modules/bibliography/submenu.php:25
+#: admin/modules/bibliography/index.php:266
+msgid "Add New Bibliography"
+msgstr "เพิ่มรายการบรรณานุกรม"
+
+#: admin/modules/bibliography/submenu.php:25
+msgid "Add New Bibliographic Data/Catalog"
+msgstr "เพิ่มข้อมูลรายการบรรณานุกรมใหม่"
+
+#: admin/modules/bibliography/submenu.php:26
+#: admin/modules/bibliography/item.php:190
+msgid "Items"
+msgstr "ตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:27
+msgid "Item List"
+msgstr "รายการตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:27
+msgid "Show List of Library Items"
+msgstr "แสดงรายการตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:28
+#: admin/modules/bibliography/checkout_item.php:43
+msgid "Checkout Items"
+msgstr "ตัวเล่มที่ถูกยืม"
+
+#: admin/modules/bibliography/submenu.php:28
+msgid "Show List of Checkout Items"
+msgstr "แสดงรายการตัวเล่มยืมออก"
+
+#: admin/modules/bibliography/submenu.php:29
+msgid "Tools"
+msgstr "เครื่องมือ"
+
+#: admin/modules/bibliography/submenu.php:30
+msgid "Z3950 Service"
+msgstr "Z3950"
+
+#: admin/modules/bibliography/submenu.php:30
+msgid "Grab Bibliographic Data from Z3950 Web Services"
+msgstr "นำเข้าข้อมูลบรรณานุกรมจาก Z3950"
+
+#: admin/modules/bibliography/submenu.php:31
+#: admin/modules/bibliography/dl_print.php:171
+msgid "Labels Printing"
+msgstr "พิมพ์สันตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:31
+msgid "Print Document Labels"
+msgstr "สร้างสันรายการตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:32
+#: admin/modules/bibliography/item_barcode_generator.php:196
+msgid "Item Barcodes Printing"
+msgstr "พิมพ์บาร์โค้ด"
+
+#: admin/modules/bibliography/submenu.php:32
+msgid "Print Item Barcodes"
+msgstr "สร้างบาร์โค้ดจากรายการตัวเล่ม"
+
+#: admin/modules/bibliography/submenu.php:33
+msgid "Import Data"
+msgstr "นำข้อมูล"
+
+#: admin/modules/bibliography/submenu.php:33
+msgid "Import Data to Bibliographic Database from CSV file"
+msgstr "นำเข้าข้อมูลบรรณานุกรมจากเอกสาร CSV"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Export Data"
+msgstr "ส่งออกข้อมูล"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Export Bibliographic Data To CSV format"
+msgstr "นำออกข้อมูลบรรณานุกรมในรูปแบบ CSV"
+
+#: admin/modules/bibliography/iframe_author.php:65
+msgid "Author succesfully removed!"
+msgstr "ลบข้อมูลสำเร็จ"
+
+#: admin/modules/bibliography/iframe_author.php:76
+msgid "Author removed!"
+msgstr "ยืนยันการลบ"
+
+#: admin/modules/bibliography/item.php:53
+msgid "Item Code can't be empty!"
+msgstr "ไม่มีรหัสรายการตัวเล่ม"
+
+#: admin/modules/bibliography/item.php:99
+msgid "Item Data Successfully Updated"
+msgstr "ปรับปรุงรายการตัวเล่มสำเร็จ"
+
+#: admin/modules/bibliography/item.php:106
+#: admin/modules/bibliography/item.php:122
+msgid "Item Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกรายการตัวเล่มได้"
+
+#: admin/modules/bibliography/item.php:115
+msgid "New Item Data Successfully Saved"
+msgstr "เพิ่มรายการตัวเล่มใหม่สำเร็จ"
+
+#: admin/modules/bibliography/item.php:169
+#: admin/modules/bibliography/iframe_item_list.php:74
+msgid "Item data can not be deleted because still on hold by members"
+msgstr "รายการตัวเล่มไม่สามารถลบได้ เนื่องจากยังมีสมาชิกใช้งานอยู่"
+
+#: admin/modules/bibliography/item.php:175
+#: admin/modules/bibliography/iframe_item_list.php:80
+msgid "Item succesfully removed!"
+msgstr "ลบรายการตัวเล่มสำเร็จ"
+
+#: admin/modules/bibliography/item.php:178
+#: admin/modules/bibliography/iframe_item_list.php:85
+msgid "Item FAILED to removed!"
+msgstr "มีข้อผิดผลาดไม่สามารถลบรายการตัวเล่มได้"
+
+#: admin/modules/bibliography/item.php:218
+#: admin/modules/bibliography/index.php:295
+msgid "Save"
+msgstr "บันทึก"
+
+#: admin/modules/bibliography/item.php:237
+#: admin/modules/bibliography/index.php:317
+msgid "Update"
+msgstr "ปรับปรุง"
+
+#: admin/modules/bibliography/item.php:271
+#: admin/modules/bibliography/item.php:372
+#: admin/modules/bibliography/item.php:381
+#: admin/modules/bibliography/checkout_item.php:61
+#: admin/modules/bibliography/item_barcode_generator.php:224
+msgid "Item Code"
+msgstr "รหัสบาร์โค้ด"
+
+#: admin/modules/bibliography/item.php:275
+msgid "Inventory Code"
+msgstr "รหัสสินค้า"
+
+#: admin/modules/bibliography/item.php:285
+msgid "Shelf Location"
+msgstr "ที่ตั้ง/สถานที่ "
+
+#: admin/modules/bibliography/item.php:297
+msgid "Available"
+msgstr "พร้อมให้บริการ"
+
+#: admin/modules/bibliography/item.php:301
+msgid "Item Status"
+msgstr "สถานภาพ"
+
+#: admin/modules/bibliography/item.php:303
+msgid "Order Number"
+msgstr "เลขที่ทำรายการสั่งซื้อ"
+
+#: admin/modules/bibliography/item.php:305
+msgid "Order Date"
+msgstr "วันที่ทำรายการสั่งซื้อ"
+
+#: admin/modules/bibliography/item.php:307
+msgid "Receiving Date"
+msgstr "วันที่ได้รับ"
+
+#: admin/modules/bibliography/item.php:311
+#: admin/modules/bibliography/index.php:350
+msgid "Not Applicable"
+msgstr "ไม่สามารถใช้ได้"
+
+#: admin/modules/bibliography/item.php:315
+msgid "Supplier"
+msgstr "ผู้จัดจำหน่าย"
+
+#: admin/modules/bibliography/item.php:317
+msgid "Buy"
+msgstr "จัดชื้อ"
+
+#: admin/modules/bibliography/item.php:318
+msgid "Prize/Grant"
+msgstr "บริจาค/ได้รับความอนุเคราะห์"
+
+#: admin/modules/bibliography/item.php:319
+msgid "Source"
+msgstr "แหล่งที่ได้มา"
+
+#: admin/modules/bibliography/item.php:321
+msgid "Invoice"
+msgstr "ใบส่งของ"
+
+#: admin/modules/bibliography/item.php:323
+msgid "Invoice Date"
+msgstr "วันที่ได้รับใบส่งของ"
+
+#: admin/modules/bibliography/item.php:327
+msgid "Price"
+msgstr "ราคา"
+
+#: admin/modules/bibliography/item.php:331
+msgid "You are going to edit Item data"
+msgstr "แก้ไขข้อมูลรายการตัวเล่ม"
+
+#: admin/modules/bibliography/item.php:332
+#: admin/modules/bibliography/item.php:377
+#: admin/modules/bibliography/item.php:386
+#: admin/modules/bibliography/index.php:454
+msgid "Last Updated"
+msgstr "ปรับปรุงข้อมูลล่าสุด"
+
+#: admin/modules/bibliography/item.php:420
+#: admin/modules/bibliography/checkout_item.php:106
+#: admin/modules/bibliography/item_barcode_generator.php:260
+#: admin/modules/bibliography/index.php:562
+#: admin/modules/bibliography/dl_print.php:236
+msgid "Found <strong>{result->num_rows}</strong> from your keywords"
+msgstr "พบ <strong>{result->num_rows}</strong> จากคำค้นของคุณ"
+
+#: admin/modules/bibliography/item.php:421
+#: admin/modules/bibliography/item_barcode_generator.php:261
+#: admin/modules/bibliography/index.php:563
+#: admin/modules/bibliography/dl_print.php:237
+msgid "Query took"
+msgstr "ใช้เวลาค้นหา"
+
+#: admin/modules/bibliography/item.php:421
+#: admin/modules/bibliography/item_barcode_generator.php:261
+#: admin/modules/bibliography/index.php:563
+#: admin/modules/bibliography/dl_print.php:237
+msgid "second(s) to complete"
+msgstr "วินาที"
+
+#: admin/modules/bibliography/pop_author.php:88
+msgid "Author succesfully updated!"
+msgstr "ปรับปรุงรายการผู้แต่งสำเร็จ"
+
+#: admin/modules/bibliography/pop_author.php:92
+msgid "Author FAILED to Add. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถเพิ่มรายการผู้แต่งได้"
+
+#: admin/modules/bibliography/pop_author.php:117
+msgid "Author added!"
+msgstr "ยืนยันการเพิ่มผู้แต่ง"
+
+#: admin/modules/bibliography/pop_author.php:128
+msgid "Add Author"
+msgstr "เพิ่มผู้แต่ง"
+
+#: admin/modules/bibliography/pop_author.php:133
+msgid "Author Name"
+msgstr "ชื่อผู้แต่ง"
+
+#: admin/modules/bibliography/pop_author.php:146
+msgid "Type to search for existing authors or to add a new one"
+msgstr "พิมพ์ผู้แต่งที่มีอยู่ หรือเพิ่มผู้แต่งใหม่"
+
+#: admin/modules/bibliography/pop_author.php:148
+msgid "Insert To Bibliography"
+msgstr "เพิ่มในรายการบรรณานุกรม"
+
+#: admin/modules/bibliography/export.php:103
+msgid "Error on query to database, Export FAILED!"
+msgstr "มีข้อผิดพลาด ไม่สามารถนำออกข้อมูลได้"
+
+#: admin/modules/bibliography/export.php:141
+msgid "There is no record in bibliographic database yet, Export FAILED!"
+msgstr "ไม่สามารถนำออกได้ เนื่องจากไม่มีรายการบรรณานุกรม"
+
+#: admin/modules/bibliography/export.php:150
+msgid "EXPORT TOOL"
+msgstr "นำข้อมูลออก"
+
+#: admin/modules/bibliography/export.php:152
+msgid "Export bibliographics data to CSV file"
+msgstr "นำข้อมูบรรณานุกรมออกสู่ไฟล์เอกสาร CSV"
+
+#: admin/modules/bibliography/export.php:159
+msgid "Export Now"
+msgstr "นำข้อมูลออก"
+
+#: admin/modules/bibliography/export.php:174
+msgid "Record Separator"
+msgstr "จบฟิลด์ด้วย"
+
+#: admin/modules/bibliography/checkout_item.php:62
+msgid "Member ID"
+msgstr "รหัสสมาชิก"
+
+#: admin/modules/bibliography/checkout_item.php:64
+msgid "Loan Date"
+msgstr "วันที่ยืม"
+
+#: admin/modules/bibliography/checkout_item.php:65
+msgid "Due Date"
+msgstr "วันกำหนดส่ง"
+
+#: admin/modules/bibliography/item_barcode_generator.php:88
+#: admin/modules/bibliography/dl_print.php:70
+msgid "Selected items NOT ADDED to print queue. Only {max_print} can be printed at once"
+msgstr "เลือกตัวเล่มเพื่อรายการพิมพ์สำหรับรอการพิมพ์จำนวน {max_print}รายการ สามารถทำการพิมพ์ได้"
+
+#: admin/modules/bibliography/item_barcode_generator.php:93
+#: admin/modules/bibliography/dl_print.php:75
+msgid "Selected items added to print queue"
+msgstr "ยืนยันรายการที่เลือกเพื่อรอการพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:102
+#: admin/modules/bibliography/dl_print.php:82
+msgid "Print queue cleared!"
+msgstr "ยืนยันการลบรายการสั่งพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:111
+#: admin/modules/bibliography/item_barcode_generator.php:115
+#: admin/modules/bibliography/dl_print.php:92
+#: admin/modules/bibliography/dl_print.php:96
+msgid "There is no data to print!"
+msgstr "ยังไม่มีรายการสำหรับการพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:196
+msgid "Print Barcodes for Selected Data"
+msgstr "ทำการพิมพ์สำหรับรายการที่เลือก"
+
+#: admin/modules/bibliography/item_barcode_generator.php:197
+#: admin/modules/bibliography/dl_print.php:172
+msgid "Clear Print Queue"
+msgstr "ยกเลิกรายการที่รอการพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:205
+#: admin/modules/bibliography/dl_print.php:180
+msgid "Maximum"
+msgstr "จำกัดสูงสุด"
+
+#: admin/modules/bibliography/item_barcode_generator.php:205
+#: admin/modules/bibliography/dl_print.php:180
+msgid "records can be printed at once. Currently there is"
+msgstr "รายการ ปัจจุบันมีรายการที่สามารถสั่งพิมพ์ทั้งหมดจำนวน"
+
+#: admin/modules/bibliography/item_barcode_generator.php:209
+#: admin/modules/bibliography/dl_print.php:184
+msgid "in queue waiting to be printed."
+msgstr "รายการที่รอการพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:251
+#: admin/modules/bibliography/dl_print.php:227
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: admin/modules/bibliography/item_barcode_generator.php:252
+#: admin/modules/bibliography/dl_print.php:228
+msgid "Add To Print Queue"
+msgstr "เพิ่มรายการพิมพ์"
+
+#: admin/modules/bibliography/item_barcode_generator.php:253
+#: admin/modules/bibliography/dl_print.php:229
+msgid "Add to print queue?"
+msgstr "ยืนยันการเพิ่มรายการพิมพ์"
+
+#: admin/modules/bibliography/pop_attach.php:82
+msgid "Upload FAILED! Forbidden file type or file size too big!"
+msgstr "ประเภทเอกสารดิจิทัลมีขนาดใหญ่หรือระบบไม่รองรับ ไม่สามารถอัพโหลดได้"
+
+#: admin/modules/bibliography/pop_attach.php:131
+msgid "File Attachment data updated!"
+msgstr "ปรับปรุงเอกสารดิจิทัลสำเร็จ"
+
+#: admin/modules/bibliography/pop_attach.php:135
+msgid "File Attachment data FAILED to update!"
+msgstr "อัพโหลดเอกสารดิจิทัลไม่สำเร็จ"
+
+#: admin/modules/bibliography/pop_attach.php:140
+#: admin/modules/bibliography/pop_attach.php:155
+msgid "File Attachment uploaded succesfully!"
+msgstr "อัพโหลดเอกสารดิจิทัลสำเร็จ"
+
+#: admin/modules/bibliography/pop_attach.php:144
+msgid "File Attachment data FAILED to save!"
+msgstr "มีข้อผิดพลาดอัพโหลดไม่สามารถบันทึกข้อมูลเอกสารดิจิทัลได้"
+
+#: admin/modules/bibliography/pop_attach.php:164
+msgid "Upload Now"
+msgstr "ทำการอัพโหลด"
+
+#: admin/modules/bibliography/pop_attach.php:194
+msgid "Repository ROOT"
+msgstr "Repository ROOT"
+
+#: admin/modules/bibliography/pop_attach.php:204
+msgid "Repo. Directory"
+msgstr "ที่อยู่ไดเรกทรอรี"
+
+#: admin/modules/bibliography/pop_attach.php:208
+msgid "File To Attach"
+msgstr "แนบเอกสาร"
+
+#: admin/modules/bibliography/pop_attach.php:211
+msgid "URL"
+msgstr "URL"
+
+#: admin/modules/bibliography/pop_attach.php:213
+msgid "Description"
+msgstr "รายละเอียด"
+
+#: admin/modules/bibliography/pop_attach.php:215
+msgid "Public"
+msgstr "เผยแพร่"
+
+#: admin/modules/bibliography/pop_attach.php:216
+msgid "Private"
+msgstr "ใช้ได้เฉพาะสมาชิก"
+
+#: admin/modules/bibliography/pop_attach.php:217
+msgid "Access"
+msgstr "ทางเข้า"
+
+#: admin/modules/bibliography/pop_attach.php:224
+msgid "Access Limit by Member Type"
+msgstr "จำกัดการเข้าจากประเภทสมาชิก"
+
+#: admin/modules/bibliography/z3950.php:335
+#: admin/modules/bibliography/index.php:271
+msgid "Title/Series Title"
+msgstr "ชื่อเรื่อง/ชื่อวารสาร"
+
+#: admin/modules/bibliography/z3950.php:335
+#: admin/modules/bibliography/index.php:271
+msgid "Authors"
+msgstr "ผู้แต่ง"
+
+#: admin/modules/bibliography/z3950.php:338
+#, fuzzy
+msgid "* Please make sure you have a working Internet connection."
+msgstr "* Pastikan anda memiliki koneksi Internet yang bekerja."
+
+#: admin/modules/bibliography/index.php:57
+msgid "Title can not be empty"
+msgstr "ยังไม่มีรายการชื่อเรื่อง"
+
+#: admin/modules/bibliography/index.php:130
+#: admin/modules/bibliography/index.php:134
+msgid "Image Uploaded Successfully"
+msgstr "อัพโหลดรูปภาพสำเร็จ"
+
+#: admin/modules/bibliography/index.php:150
+msgid "Bibliography Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลรายการบรรณานุกรมสำเร็จ"
+
+#: admin/modules/bibliography/index.php:161
+msgid "Bibliography Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดผลาด ไม่สามารถปรับปรุงข้อมูลบรรณานุกรมได้"
+
+#: admin/modules/bibliography/index.php:188
+msgid "New Bibliography Data Successfully Saved"
+msgstr "บันทึกรายการข้อมูลบรรณานุกรมใหม่สำเร็จ"
+
+#: admin/modules/bibliography/index.php:196
+msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกรายการข้อมูลบรรณานุกรมได้"
+
+#: admin/modules/bibliography/index.php:245
+msgid "Below data can not be deleted:"
+msgstr "ข้อมูลด้านล่างไม่สามารถลบได้"
+
+#: admin/modules/bibliography/index.php:251
+msgid "All Data Successfully Deleted"
+msgstr "ลบรายการข้อมูลทั้งหมดสำเร็จ"
+
+#: admin/modules/bibliography/index.php:254
+#, fuzzy
+msgid ""
+"Some or All Data NOT deleted successfully!\\n"
+"Please contact system administrator"
+msgstr ""
+"Sebagian atau semua data GAGAL dihapus!\n"
+"Hubungi admin sistem untuk pemecahannya"
+
+#: admin/modules/bibliography/index.php:271
+msgid "All Fields"
+msgstr "ทั้งหมด"
+
+#: admin/modules/bibliography/index.php:271
+msgid "Topics"
+msgstr "หัวเรื่อง"
+
+#: admin/modules/bibliography/index.php:331
+msgid "Add New Items"
+msgstr "เพิ่มตัวเล่ม"
+
+#: admin/modules/bibliography/index.php:336
+msgid "Add Author(s)"
+msgstr "เพิ่มผู้แต่ง"
+
+#: admin/modules/bibliography/index.php:356
+msgid "Use this for Serial publication"
+msgstr "เลือกกำหนดเวลาออก"
+
+#: admin/modules/bibliography/index.php:357
+msgid "Frequency"
+msgstr "กำหนดออกวารสารและสิ่งพิมพ์ต่อเนื่อง"
+
+#: admin/modules/bibliography/index.php:395
+msgid "Add Subject(s)"
+msgstr "เพิ่มหัวเรื่อง"
+
+#: admin/modules/bibliography/index.php:420
+msgid "Add Attachment"
+msgstr "แนบเอกสารดิจิทัลเพิ่ม"
+
+#: admin/modules/bibliography/index.php:424
+msgid "Show"
+msgstr "แสดง"
+
+#: admin/modules/bibliography/index.php:425
+msgid "Hide"
+msgstr "ซ่อน"
+
+#: admin/modules/bibliography/index.php:426
+msgid "Hide in OPAC"
+msgstr "ไมแสดงผลใน OPAC"
+
+#: admin/modules/bibliography/index.php:428
+msgid "Don't Promote"
+msgstr "ไมแสดงรายการแรก"
+
+#: admin/modules/bibliography/index.php:429
+msgid "Promote"
+msgstr "แสดงรายการแรก"
+
+#: admin/modules/bibliography/index.php:430
+msgid "Promote To Homepage"
+msgstr "แสดงผลในหน้าแรก"
+
+#: admin/modules/bibliography/index.php:454
+msgid "You are going to edit biblio data"
+msgstr "แก้ไขข้อมูลรายการบรรณานุกรม"
+
+#: admin/modules/bibliography/index.php:510
+#: admin/modules/bibliography/index.php:516
+msgid "None"
+msgstr "ไม่มี"
+
+#: admin/modules/bibliography/index.php:510
+#: admin/modules/bibliography/index.php:516
+msgid "Copies"
+msgstr "เล่ม"
+
+#: admin/modules/bibliography/index.php:511
+#: admin/modules/bibliography/index.php:517
+msgid "Last Update"
+msgstr "ปรับปรุงล่าสุด"
+
+#: admin/modules/bibliography/dl_print.php:171
+msgid "Print Labels for Selected Data"
+msgstr "ทำการพิมพ์รายการที่เลือก"
+
+#: admin/modules/bibliography/pop_topic.php:91
+msgid "Subject FAILED to Add. Please Contact System Administrator"
+msgstr "ไม่สามารถเพิ่มหัวเรื่องได้"
+
+#: admin/modules/bibliography/pop_topic.php:116
+msgid "Subject added!"
+msgstr "ยืนยันการเพิ่มหัวเรื่อง"
+
+#: admin/modules/bibliography/pop_topic.php:127
+msgid "Add Subject"
+msgstr "เพิ่มหัวเรื่อง"
+
+#: admin/modules/bibliography/pop_topic.php:133
+msgid "Keyword"
+msgstr "หัวเรื่อง"
+
+#: admin/modules/bibliography/pop_topic.php:147
+msgid "Type to search for existing topics or to add a new one"
+msgstr "เลือกหัวเรื่องที่มีอยู่ หรือเพิ่มหัวเรื่องใหม่"
+
+#: admin/modules/circulation/fines_list.php:56
+msgid "Fines Description and Debet value can't be empty"
+msgstr "รายละเอียดค่าปรับ"
+
+#: admin/modules/circulation/fines_list.php:58
+msgid "Value of Credit can not be higher that Debet Value"
+msgstr "ไม่สามารถเพิ่มเครดิตให้สูงกว่ารายการที่กำหนดได้"
+
+#: admin/modules/circulation/fines_list.php:76
+msgid "Fines Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลค่าปรับสำเร็จ"
+
+#: admin/modules/circulation/fines_list.php:77
+msgid "Fines Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกข้อมูลค่าปรับได้"
+
+#: admin/modules/circulation/fines_list.php:83
+msgid "New Fines Data Successfully Saved"
+msgstr "เพิ่มข้อมูลค่าปรับสำเร็จ"
+
+#: admin/modules/circulation/fines_list.php:84
+msgid "Fines Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกข้อมูลค่าปรับได้"
+
+#: admin/modules/circulation/fines_list.php:120
+msgid "Add New Fines"
+msgstr "เพิ่มค่าปรับ"
+
+#: admin/modules/circulation/fines_list.php:121
+msgid "Fines List"
+msgstr "รายการค่าปรับ"
+
+#: admin/modules/circulation/fines_list.php:122
+msgid "View Balanced Overdue"
+msgstr "แสดงรายการเกินกำหนดคืน"
+
+#: admin/modules/circulation/fines_list.php:159
+#: admin/modules/circulation/fines_list.php:183
+msgid "Fines Date"
+msgstr "วันที่ปรับ"
+
+#: admin/modules/circulation/fines_list.php:161
+#: admin/modules/circulation/fines_list.php:182
+msgid "Description/Name"
+msgstr "รายละเอียด/ชื่อ"
+
+#: admin/modules/circulation/fines_list.php:163
+#: admin/modules/circulation/fines_list.php:184
+msgid "Debit"
+msgstr "รายการ"
+
+#: admin/modules/circulation/fines_list.php:165
+#: admin/modules/circulation/fines_list.php:185
+msgid "Credit"
+msgstr "เครดิต"
+
+#: admin/modules/circulation/fines_list.php:169
+msgid "You are going to edit fines data"
+msgstr "แก้ไขข้อมูลค่าปรับ"
+
+#: admin/modules/circulation/submenu.php:23
+msgid "Circulation"
+msgstr "งานยืม - คืน"
+
+#: admin/modules/circulation/submenu.php:24
+#: admin/modules/circulation/index.php:60
+msgid "Start Transaction"
+msgstr "เริ่มรายการสมาชิก"
+
+#: admin/modules/circulation/submenu.php:24
+msgid "Start Circulation Transaction Proccess"
+msgstr "เริ่มทำรายการ ยืม คืน"
+
+#: admin/modules/circulation/submenu.php:25
+#: admin/modules/circulation/quick_return.php:47
+msgid "Quick Return"
+msgstr "คืน"
+
+#: admin/modules/circulation/submenu.php:25
+msgid "Quick Return Collection"
+msgstr "คืนทรัพยากรสารสนเทศอย่างรวดเร็ว"
+
+#: admin/modules/circulation/submenu.php:26
+#: admin/modules/circulation/loan_rules.php:117
+msgid "Loan Rules"
+msgstr "สิทธิการยืม"
+
+#: admin/modules/circulation/submenu.php:26
+msgid "View and Modify Circulation Loan Rules"
+msgstr "แสดง/แก้ไขสิทธิการยืม"
+
+#: admin/modules/circulation/submenu.php:27
+#: admin/modules/circulation/circulation_action.php:479
+msgid "Loan History"
+msgstr "ประวัติการยืม"
+
+#: admin/modules/circulation/submenu.php:27
+msgid "Loan History Overview"
+msgstr "ประวัติการยืม"
+
+#: admin/modules/circulation/submenu.php:28
+msgid "Overdued List"
+msgstr "รายการยืมเกินกำหนด"
+
+#: admin/modules/circulation/submenu.php:28
+msgid "View Members Having Overdues"
+msgstr "แสดงรายการสมาชิกที่ยืมเกินกำหนด"
+
+#: admin/modules/circulation/submenu.php:29
+msgid "Reservation"
+msgstr "รายการจอง"
+
+#: admin/modules/circulation/loan.php:34
+#: admin/modules/circulation/quick_return.php:36
+#: admin/modules/circulation/loan_rules.php:40
+#: admin/modules/circulation/loan_rules.php:131
+#: admin/modules/circulation/index.php:38
+msgid "You don't have enough privileges to view this section"
+msgstr "คุณไม่มีสิทธิ์การดูรายการส่วนนี้"
+
+#: admin/modules/circulation/loan.php:113
+msgid "Insert Item Code/Barcode"
+msgstr "ใส่รหัสบาร์โค้ด หรือบาร์โค้ด"
+
+#: admin/modules/circulation/loan.php:115
+msgid "Loan"
+msgstr "ยืม"
+
+#: admin/modules/circulation/loan.php:129
+#: admin/modules/circulation/reserve_list.php:87
+msgid "Remove"
+msgstr "ลบ"
+
+#: admin/modules/circulation/loan.php:142
+msgid "Click To Change Loan Date"
+msgstr "คลิกสำหรับเปลี่ยนวันยืม"
+
+#: admin/modules/circulation/loan.php:143
+msgid "Click To Change Due Date"
+msgstr "คลิกกำหนดวันคืน"
+
+#: admin/modules/circulation/quick_return.php:41
+msgid "Quick Return is disabled"
+msgstr "ระบบคืนถูกระงับ"
+
+#: admin/modules/circulation/quick_return.php:47
+msgid "Insert an item ID to return collection with keyboard or barcode reader"
+msgstr "ใส่ตัวเลขรหัสบาร์โค้ด หรือใช้ยิงบาร์โค๊ด "
+
+#: admin/modules/circulation/quick_return.php:50
+msgid "Item ID"
+msgstr "รหัสบาร์โค้ด"
+
+#: admin/modules/circulation/quick_return.php:52
+#: admin/modules/circulation/loan_list.php:83
+msgid "Return"
+msgstr "คืน"
+
+#: admin/modules/circulation/loan_rules.php:66
+msgid "Loan Rules Successfully Updated"
+msgstr "ปรับปรุงสิทธิการยืมสำเร็จ"
+
+#: admin/modules/circulation/loan_rules.php:68
+msgid "Loan Rules FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงสิทธิการยืมได้"
+
+#: admin/modules/circulation/loan_rules.php:74
+msgid "New Loan Rules Successfully Saved"
+msgstr "บันทึกสิทธิการยืมสำเร็จ"
+
+#: admin/modules/circulation/loan_rules.php:76
+msgid "Loan Rules FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกสิทธิการยืมได้"
+
+#: admin/modules/circulation/loan_rules.php:117
+msgid "Add New Loan Rules"
+msgstr "เพิ่มสิทธิการยืมใหม่"
+
+#: admin/modules/circulation/loan_rules.php:118
+msgid "Loan Rules List"
+msgstr "รายการสิทธิการยืม"
+
+#: admin/modules/circulation/loan_rules.php:168
+#: admin/modules/circulation/loan_rules.php:215
+#: admin/modules/circulation/loan_rules.php:222
+#: admin/modules/circulation/circulation_action.php:447
+msgid "Member Type"
+msgstr "ประเภทสมาชิก"
+
+#: admin/modules/circulation/loan_rules.php:176
+#: admin/modules/circulation/loan_rules.php:181
+msgid "ALL"
+msgstr "ทั้งหมด"
+
+#: admin/modules/circulation/loan_rules.php:187
+#: admin/modules/circulation/loan_rules.php:218
+#: admin/modules/circulation/loan_rules.php:225
+msgid "Loan Limit"
+msgstr "สิทธิการยืม"
+
+#: admin/modules/circulation/loan_rules.php:189
+#: admin/modules/circulation/loan_rules.php:219
+#: admin/modules/circulation/loan_rules.php:226
+msgid "Loan Period"
+msgstr "ระยะเวลาการยืม"
+
+#: admin/modules/circulation/loan_rules.php:191
+msgid "Reborrow Limit"
+msgstr "สิทธิการยืมต่อ"
+
+#: admin/modules/circulation/loan_rules.php:193
+msgid "Fines Each Day"
+msgstr "ค่าปรับต่อวัน"
+
+#: admin/modules/circulation/loan_rules.php:195
+msgid "Overdue Grace Periode"
+msgstr "ระยะเวลายืมเกินกำหนด"
+
+#: admin/modules/circulation/loan_rules.php:199
+msgid "You are going to edit loan rules"
+msgstr "แก้ไขสิทธิการยืม"
+
+#: admin/modules/circulation/reserve_list.php:46
+msgid "Are you sure to remove reservation for"
+msgstr "ยืนยันการลบรายการจองจาก"
+
+#: admin/modules/circulation/reserve_list.php:60
+msgid "Search Collection"
+msgstr "ค้นหาประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/circulation/reserve_list.php:67
+msgid "Add Reserve"
+msgstr "เพิ่มรายกาารจอง"
+
+#: admin/modules/circulation/reserve_list.php:87
+msgid "Reserve Date"
+msgstr "วันที่ทำการจอง"
+
+#: admin/modules/circulation/reserve_list.php:105
+msgid "ALREADY EXPIRED"
+msgstr "หมดอายุ"
+
+#: admin/modules/circulation/loan_list.php:50
+msgid "Are you sure you want to return the item"
+msgstr "ยืนยันการคืนรายการตัวเล่มนี้"
+
+#: admin/modules/circulation/loan_list.php:52
+msgid "Are you sure to extend loan for"
+msgstr "ยืนยันขยายเวลาคืนสำหรับ"
+
+#: admin/modules/circulation/loan_list.php:83
+msgid "Extend"
+msgstr "ขยายเวลา"
+
+#: admin/modules/circulation/loan_list.php:92
+msgid "Return this item"
+msgstr "คืนรายการตัวเล่มนี้"
+
+#: admin/modules/circulation/loan_list.php:96
+#: admin/modules/circulation/loan_list.php:100
+#: admin/modules/circulation/loan_list.php:102
+msgid "No Extend"
+msgstr "ไม่ขยายเวลา"
+
+#: admin/modules/circulation/loan_list.php:104
+msgid "Extend loan for this item"
+msgstr "ขยายเวลาให้ยืมสำหรับรายการตัวเล่มนี้"
+
+#: admin/modules/circulation/loan_list.php:109
+msgid "Extended"
+msgstr "ขยายเวลา"
+
+#: admin/modules/circulation/loan_list.php:115
+msgid "OVERDUED for"
+msgstr "ยืมเกินกำหนด"
+
+#: admin/modules/circulation/loan_list.php:115
+msgid "days(s) with fines value"
+msgstr "วัน รวมเสียค่าปรับ"
+
+#: admin/modules/circulation/loan_list.php:149
+#: admin/modules/circulation/circulation_action.php:252
+msgid "Item {itemCode} is being reserved by member {member}"
+msgstr "รายการตัวเล่ม {itemCode} ถูกจองโดย {member}"
+
+#: admin/modules/circulation/member_loan_hist.php:55
+msgid "Not Returned Yet"
+msgstr "ยังไม่ได้คืน"
+
+#: admin/modules/circulation/member_loan_hist.php:55
+msgid "Returned Date"
+msgstr "วันที่คืน"
+
+#: admin/modules/circulation/index.php:48
+msgid "CIRCULATION - Insert a member ID to start transaction with keyboard or barcode reader"
+msgstr "งาน ยืม - คืน  กรุณาใส่รหัสสมาชิกหรือยิงบาร์โค้ด "
+
+#: admin/modules/circulation/index.php:66
+msgid "Transaction with member {member_id} is completed"
+msgstr "เริ่มต้นสำหรับสมาชิก {member_id} เสร็จสิ้น"
+
+#: admin/modules/circulation/circulation_action.php:46
+msgid "ERROR! Loan data can't be saved to database"
+msgstr "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูล"
+
+#: admin/modules/circulation/circulation_action.php:53
+msgid "Transaction finished"
+msgstr "ออกจากงานส่วนการยืมของสมาชิกห้องสมุดเรียบร้อยแล้ว"
+
+#: admin/modules/circulation/circulation_action.php:75
+#: admin/modules/circulation/circulation_action.php:97
+msgid "Overdue fines inserted to fines database"
+msgstr "เพิ่มค่าปรับลงฐานข้อมูล"
+
+#: admin/modules/circulation/circulation_action.php:88
+msgid "Item CANNOT BE Extended! This Item is being reserved by other member"
+msgstr "ไม่สามารถขยายเวลาคืนกำหนด เนื่องมีสามาชิกจองรายการตัวเล่มนี้เพื่อยืมต่อ"
+
+#: admin/modules/circulation/circulation_action.php:95
+msgid "Loan Extended"
+msgstr "ขยายเวลาการยืม"
+
+#: admin/modules/circulation/circulation_action.php:123
+#: admin/modules/circulation/circulation_action.php:130
+msgid "Loan Limit Reached!"
+msgstr "ข้อจำกัดการยืม"
+
+#: admin/modules/circulation/circulation_action.php:123
+#: admin/modules/circulation/circulation_action.php:144
+msgid "Do You Want To Overide This?"
+msgstr "คุณต้องการยกเลิกรายการนี้หรือไหม"
+
+#: admin/modules/circulation/circulation_action.php:144
+msgid "WARNING! This Item is reserved by another member"
+msgstr "กรุณารอ รายการตัวเล่มถูกจองเพื่อยืมต่อโดยสมาชิกคนอื่นแล้ว"
+
+#: admin/modules/circulation/circulation_action.php:154
+msgid "This Item is not registered in database"
+msgstr ""
+
+#: admin/modules/circulation/circulation_action.php:159
+msgid "This Item is currently not available"
+msgstr "ปัจจุบันรายการนี้ยังไม่มีรายการตัวเล่มสำหรับยืม"
+
+#: admin/modules/circulation/circulation_action.php:164
+msgid "Loan NOT PERMITTED! Membership already EXPIRED!"
+msgstr "ไม่สามารถยืมได้ เนื่องพ้นจากเป็นสมาชิกภาพแล้ว"
+
+#: admin/modules/circulation/circulation_action.php:169
+msgid "Loan NOT PERMITTED! Membership under PENDING State!"
+msgstr "ไม่สามารถยืมได้ เนื่องจากยังไม่กำหนดให้สมาชิกชื่อนี้ยืมได้"
+
+#: admin/modules/circulation/circulation_action.php:174
+msgid "Loan Forbidden for this Item!"
+msgstr "ห้ามยืมรายการตัวเล่มนี้"
+
+#: admin/modules/circulation/circulation_action.php:211
+msgid "Item {removeID} removed from session"
+msgstr "รายการตัวเล่ม {removeID} ถูกนำออกแล้ว"
+
+#: admin/modules/circulation/circulation_action.php:228
+msgid "This is item already returned or not exists in loan database"
+msgstr "รายกาาตัวเล่มนี้ถูกยืมเรียบร้อยแล้ว หรือไม่มีในฐานข้อมูล"
+
+#: admin/modules/circulation/circulation_action.php:239
+msgid "OVERDUED for {overdueDays} days(s) with fines value of"
+msgstr "คืนกำหนดคืน {overdueDays} วัน เสียค่าปรับ"
+
+#: admin/modules/circulation/circulation_action.php:263
+msgid " successfully returned on"
+msgstr " ทำการคืนทรัพยากรสำเร็จ"
+
+#: admin/modules/circulation/circulation_action.php:265
+#: admin/modules/circulation/circulation_action.php:434
+msgid "Member Name"
+msgstr "ชื่อสมาชิก"
+
+#: admin/modules/circulation/circulation_action.php:291
+msgid "NO DATA Selected to reserve!"
+msgstr "ไม่มีข้อมูลสำหรับการจอง"
+
+#: admin/modules/circulation/circulation_action.php:304
+msgid "Can not add more reservation. Maximum limit reached"
+msgstr "ไม่สามารถเพิ่มการจองได้ มีข้อจำกัดการจอง"
+
+#: admin/modules/circulation/circulation_action.php:322
+msgid "Can't reserve this Item. Loan Forbidden!"
+msgstr "ไม่สามารถทำรายการจองรายการตัวเล่ม เนื่องจากรายการตัวเล่มห้ามยืม"
+
+#: admin/modules/circulation/circulation_action.php:340
+msgid "Reservation added"
+msgstr "เพิ่มรายการจอง"
+
+#: admin/modules/circulation/circulation_action.php:345
+msgid "Item for this title is already available or already on hold by this member!"
+msgstr "รายการตัวเล่มสามารถใช้ได้"
+
+#: admin/modules/circulation/circulation_action.php:364
+msgid "Reservation removed"
+msgstr "ลบรายการจอง"
+
+#: admin/modules/circulation/circulation_action.php:379
+msgid "Fines data removed"
+msgstr "ลบข้อมูลค่าปรับ"
+
+#: admin/modules/circulation/circulation_action.php:403
+msgid " not valid (unregistered in database)"
+msgstr " ไม่มีข้อมูล (หรือไม่มีในฐานข้อมูล)"
+
+#: admin/modules/circulation/circulation_action.php:430
+msgid "Finish Transaction"
+msgstr "เสร็จสิ้นการทำรายการ"
+
+#: admin/modules/circulation/circulation_action.php:430
+msgid "Are you sure want to finish current transaction?"
+msgstr "คุณแน่ใจในการออกจากการทำรายการหรือไม่"
+
+#: admin/modules/circulation/circulation_action.php:446
+msgid "Member Email"
+msgstr "อีเมล์"
+
+#: admin/modules/circulation/circulation_action.php:450
+msgid "Register Date"
+msgstr "วันที่เริ่มเป็นสมาชิก"
+
+#: admin/modules/circulation/circulation_action.php:454
+msgid "Membership Already Expired"
+msgstr "หมดความเป็นสมาชิกภาพห้องสมุด"
+
+#: admin/modules/circulation/circulation_action.php:456
+msgid "Expiry Date"
+msgstr "วันหมดความเป็นสมาชิกภาพ"
+
+#: admin/modules/circulation/circulation_action.php:466
+msgid "Membership currently in pending state, loan transaction is locked."
+msgstr "เนื่องจากยังไม่ได้ยืนยันสมาชิกภาพ ยังไม่สามารถยืมได้"
+
+#: admin/modules/circulation/circulation_action.php:473
+msgid "Loans"
+msgstr "ยืม"
+
+#: admin/modules/circulation/circulation_action.php:474
+msgid "Current Loans"
+msgstr "ปัจจุบันยืม"
+
+#: admin/modules/circulation/circulation_action.php:476
+msgid "Reserve"
+msgstr "ทำการจอง"
+
+#: admin/modules/circulation/circulation_action.php:478
+msgid "Fines"
+msgstr "ค่าปรับ"
+
+#: admin/modules/master_file/place.php:39
+#: admin/modules/master_file/place.php:131
+msgid "You don't have enough privileges to access this area!"
+msgstr "คุณไม่มีสิทธิ์ในการเข้าใช้ส่วนนี้"
+
+#: admin/modules/master_file/place.php:47
+msgid "Place Name can't be empty"
+msgstr "ไม่มีชื่อสถานที่จัดทำ"
+
+#: admin/modules/master_file/place.php:65
+msgid "Place Data Successfully Updated"
+msgstr "ปรับปรุงชื่อสถานที่จัดทำสำเร็จ"
+
+#: admin/modules/master_file/place.php:67
+msgid "Place Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงข้อมูลชื่อสถานที่จัดทำได้"
+
+#: admin/modules/master_file/place.php:74
+msgid "New Place Data Successfully Saved"
+msgstr "บันทึกเพิ่มชื่อสถานที่จัดทำสำเร็จ"
+
+#: admin/modules/master_file/place.php:76
+msgid "Place Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลชื่อสถานที่จัดทำได้"
+
+#: admin/modules/master_file/place.php:117
+msgid "Place"
+msgstr "สถานที่จัดเก็บ"
+
+#: admin/modules/master_file/place.php:117
+msgid "Add New Place"
+msgstr "เพิ่มรายการสถานที่จัดทำ"
+
+#: admin/modules/master_file/place.php:118
+msgid "Place List"
+msgstr "รายการสถานที่จัดทำ"
+
+#: admin/modules/master_file/place.php:160
+#: admin/modules/master_file/place.php:177
+#: admin/modules/master_file/place.php:180
+msgid "Place Name"
+msgstr "Nama-nama Tempat"
+
+#: admin/modules/master_file/place.php:164
+msgid "You are going to edit place data"
+msgstr "แก้ไขข้อมูลสถานที่จัดทำ"
+
+#: admin/modules/master_file/topic.php:47
+msgid "Subject can't be empty"
+msgstr "ไม่มีรายการหัวเรื่อง"
+
+#: admin/modules/master_file/topic.php:67
+msgid "Subject Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลหัวเรื่องสำเร็จ"
+
+#: admin/modules/master_file/topic.php:69
+msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงข้อมูลหัวเรื่องได้"
+
+#: admin/modules/master_file/topic.php:76
+msgid "New Subject Data Successfully Saved"
+msgstr "บันทึกเพิ่มหัวเรื่องใหม่สำเร็จ"
+
+#: admin/modules/master_file/topic.php:78
+msgid "Subject Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกข้อมูลหัวเรื่องได้"
+
+#: admin/modules/master_file/topic.php:120
+#: admin/modules/master_file/topic.php:163
+#: admin/modules/master_file/topic.php:189
+#: admin/modules/master_file/topic.php:194
+#: admin/modules/master_file/submenu.php:28
+msgid "Subject"
+msgstr "หัวเรื่อง"
+
+#: admin/modules/master_file/topic.php:120
+msgid "Add New Subject"
+msgstr "เพิ่มหัวเรื่องใหม่"
+
+#: admin/modules/master_file/topic.php:121
+msgid "Subject List"
+msgstr "รายการหัวเรื่อง"
+
+#: admin/modules/master_file/topic.php:168
+#: admin/modules/master_file/topic.php:190
+#: admin/modules/master_file/topic.php:195
+msgid "Subject Type"
+msgstr "ประเภทหัวเรื่อง"
+
+#: admin/modules/master_file/topic.php:170
+#: admin/modules/master_file/topic.php:191
+#: admin/modules/master_file/topic.php:196
+#: admin/modules/master_file/submenu.php:23
+#: admin/modules/master_file/author.php:169
+#: admin/modules/master_file/author.php:190
+#: admin/modules/master_file/author.php:195
+msgid "Authority Files"
+msgstr "ข้อมูลหลัก"
+
+#: admin/modules/master_file/topic.php:174
+msgid "You are going to edit Subject data"
+msgstr "แก้ไขข้อมูลหัวเรื่อง"
+
+#: admin/modules/master_file/supplier.php:47
+msgid "Supplier Name can't be empty"
+msgstr "ไม่มีรายการผู้จัดจำหน่าย"
+
+#: admin/modules/master_file/supplier.php:71
+msgid "Supplier Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลผู้จัดจำหน่ายสำเร็จ"
+
+#: admin/modules/master_file/supplier.php:73
+msgid "Supplier Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงข้อมูลผู้จัดจำหน่ายได้"
+
+#: admin/modules/master_file/supplier.php:80
+msgid "New Supplier Data Successfully Saved"
+msgstr "บันทึกเพิ่มข้อมูลผู้จัดจำหน่ายสำเร็จ"
+
+#: admin/modules/master_file/supplier.php:83
+msgid "Supplier Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกข้อมูลผู้จัดจำหน่ายได้"
+
+#: admin/modules/master_file/supplier.php:125
+msgid "Add New Supplier"
+msgstr "เพิ่มรายการผู้จัดจำหน่ายใหม่"
+
+#: admin/modules/master_file/supplier.php:126
+msgid "Supplier List"
+msgstr "รายการผู้จัดจำหน่าย"
+
+#: admin/modules/master_file/supplier.php:168
+#: admin/modules/master_file/supplier.php:195
+#: admin/modules/master_file/supplier.php:201
+msgid "Supplier Name"
+msgstr "ชื่อผู้จัดจำหน่ายr"
+
+#: admin/modules/master_file/supplier.php:170
+msgid "Address"
+msgstr "ที่อยู่"
+
+#: admin/modules/master_file/supplier.php:172
+#: admin/modules/master_file/supplier.php:196
+#: admin/modules/master_file/supplier.php:202
+msgid "Contact"
+msgstr "ติดต่อ"
+
+#: admin/modules/master_file/supplier.php:174
+#: admin/modules/master_file/supplier.php:197
+#: admin/modules/master_file/supplier.php:203
+msgid "Phone Number"
+msgstr "เบอร์โทร"
+
+#: admin/modules/master_file/supplier.php:176
+#: admin/modules/master_file/supplier.php:198
+#: admin/modules/master_file/supplier.php:204
+msgid "Fax Number"
+msgstr "เบอร์โทรสาร"
+
+#: admin/modules/master_file/supplier.php:178
+msgid "Account Number"
+msgstr "เลขบัญชี"
+
+#: admin/modules/master_file/supplier.php:182
+msgid "You are going to edit Supplier data"
+msgstr "แก้ไขข้อมูลรายการผู้จัดจำหน่าย"
+
+#: admin/modules/master_file/doc_language.php:47
+msgid "Language ID or Name can't be empty"
+msgstr "ยังไม่รหัสหรือชื่อภาษา"
+
+#: admin/modules/master_file/doc_language.php:66
+msgid "Language Data Successfully Updated"
+msgstr "ปรับปรุงรายการภาษาสำเร็จ"
+
+#: admin/modules/master_file/doc_language.php:70
+msgid "Language Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงข้อมูลภาษาได้"
+
+#: admin/modules/master_file/doc_language.php:77
+msgid "New Language Data Successfully Saved"
+msgstr "บันทึกข้อมูลภาษาสำเร็จ"
+
+#: admin/modules/master_file/doc_language.php:79
+msgid "Language Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลภาษาได้"
+
+#: admin/modules/master_file/doc_language.php:120
+#: admin/modules/master_file/submenu.php:34
+msgid "Doc. Language"
+msgstr "ภาษา"
+
+#: admin/modules/master_file/doc_language.php:120
+msgid "Add New Language"
+msgstr "เพิ่มภาษา"
+
+#: admin/modules/master_file/doc_language.php:121
+msgid "Language List"
+msgstr "รายการภาษา"
+
+#: admin/modules/master_file/doc_language.php:163
+msgid "Language Code"
+msgstr "โค้ดภาษา"
+
+#: admin/modules/master_file/doc_language.php:168
+msgid "You are going to edit language data"
+msgstr "แก้ไขข้อมูลภาษา "
+
+#: admin/modules/master_file/submenu.php:24
+msgid "General Material Designation"
+msgstr "ประเภทวัสดุ/มีเดีย"
+
+#: admin/modules/master_file/submenu.php:25
+msgid "Document Publisher"
+msgstr "เนื้อหาผู้จัดจำหน่าย"
+
+#: admin/modules/master_file/submenu.php:26
+msgid "Item Supplier"
+msgstr "รหัสผู้จัดจำหน่าย"
+
+#: admin/modules/master_file/submenu.php:27
+#: admin/modules/master_file/author.php:119
+msgid "Author"
+msgstr "ผู้แต่ง"
+
+#: admin/modules/master_file/submenu.php:27
+msgid "Document Authors"
+msgstr "เนื้อหาผู้แต่ง"
+
+#: admin/modules/master_file/submenu.php:29
+msgid "Item Location"
+msgstr "รหัสสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/submenu.php:30
+msgid "Lookup Files"
+msgstr "ข้อมูลหลัก"
+
+#: admin/modules/master_file/submenu.php:34
+msgid "Document Content Language"
+msgstr "เนื้อหาภาษา"
+
+#: admin/modules/master_file/submenu.php:35
+#: admin/modules/master_file/label.php:157
+msgid "Label"
+msgstr "สัญลักษณ์"
+
+#: admin/modules/master_file/submenu.php:35
+msgid "Special Labels for Titles to Show Up On Homepage"
+msgstr "สัญญลักษณ์พิเศษสำหรับชื่อเรื่องแสดงหน้าแรกของ OPAC"
+
+#: admin/modules/master_file/item_status.php:43
+msgid "No Loan Transaction"
+msgstr "ไม่สามารถยืมได้"
+
+#: admin/modules/master_file/item_status.php:44
+#, fuzzy
+msgid "Skipped By Stock Take"
+msgstr "Inventarisasi Koleksi"
+
+#: admin/modules/master_file/item_status.php:52
+msgid "Item Status ID and Name can't be empty"
+msgstr "ไม่มีรายการสถานะรายการตัวเล่ม"
+
+#: admin/modules/master_file/item_status.php:90
+msgid "Item Status Data Successfully Updated"
+msgstr "ปรับปรุงรายการสถานะรายการตัวเล่มสำเร็จ"
+
+#: admin/modules/master_file/item_status.php:94
+msgid "Item Status Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงรายการสถานะรายการตัวเล่มได้"
+
+#: admin/modules/master_file/item_status.php:101
+msgid "New Item Status Data Successfully Saved"
+msgstr "บันทึกเพิ่มรายการสถานะรายการตัวเล่มสำเร็จ"
+
+#: admin/modules/master_file/item_status.php:103
+msgid "Item Status Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกรายการสถานะรายการตัวเล่มได้"
+
+#: admin/modules/master_file/item_status.php:144
+msgid "Add New Item Status"
+msgstr "เพิ่มรายการสถานะตัวเล่มสำเร็จ"
+
+#: admin/modules/master_file/item_status.php:187
+#: admin/modules/master_file/item_status.php:215
+#: admin/modules/master_file/item_status.php:219
+msgid "Item Status Code"
+msgstr "รหัสรายการตัวเล่ม"
+
+#: admin/modules/master_file/item_status.php:189
+#: admin/modules/master_file/item_status.php:216
+#: admin/modules/master_file/item_status.php:220
+msgid "Item Status Name"
+msgstr "ชื่อสถานะรายการตัวเล่ม"
+
+#: admin/modules/master_file/item_status.php:198
+msgid "Rules"
+msgstr "Peraturannya"
+
+#: admin/modules/master_file/item_status.php:202
+msgid "You are going to edit Item Status data"
+msgstr "แก้ไขข้อมูลรายการสถานะรายการตัวเล่ม"
+
+#: admin/modules/master_file/author.php:47
+msgid "Author name can't be empty"
+msgstr "ไม่ทำรายการต่อได้ เนื่องจากไม่มีชื่อผู้แต่ง"
+
+#: admin/modules/master_file/author.php:67
+msgid "Author Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลผู้แต่งสำเร็จ"
+
+#: admin/modules/master_file/author.php:69
+msgid "Author Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงข้อมูลผู้แต่งได้"
+
+#: admin/modules/master_file/author.php:76
+msgid "New Author Data Successfully Saved"
+msgstr "เพิ่มข้อมูลผู้แต่งสำเร็จ"
+
+#: admin/modules/master_file/author.php:78
+#: admin/modules/master_file/coll_type.php:76
+msgid "Author Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกข้อมูลผู้แต่งได้"
+
+#: admin/modules/master_file/author.php:119
+msgid "Add New Author"
+msgstr "เพิ่มผู้แต่งใหม่"
+
+#: admin/modules/master_file/author.php:120
+msgid "Author List"
+msgstr "รายการผู้แต่ง"
+
+#: admin/modules/master_file/author.php:167
+#: admin/modules/master_file/author.php:189
+#: admin/modules/master_file/author.php:194
+msgid "Authority Type"
+msgstr "ประเภทผู้แต่ง"
+
+#: admin/modules/master_file/author.php:173
+msgid "You are going to edit author data"
+msgstr "แก้ไขข้อมูลผู้แต่ง"
+
+#: admin/modules/master_file/coll_type.php:47
+msgid "Collection type name can't be empty"
+msgstr "ไม่สมารถทำรายการต่อได้ เนื่องจากไม่มีประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/coll_type.php:65
+msgid "Colllection Type Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลประเภททรัพยากรสารสนเทศสำเร็จ"
+
+#: admin/modules/master_file/coll_type.php:67
+msgid "Colllection Type Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงข้อมูลประเภททรัพยากรสารสนเทศได้"
+
+#: admin/modules/master_file/coll_type.php:74
+msgid "New Colllection Type Data Successfully Saved"
+msgstr "เพิ่มประเภททรัพยากรสารสนเทศสำเร็จ"
+
+#: admin/modules/master_file/coll_type.php:106
+#: admin/modules/master_file/location.php:110
+msgid "Location ({item_name}) still used by {number_items} item(s)"
+msgstr "สถานที่จัดเก็บ {item_name} ถูกใช้ {number_items} รายการตัวเล่ม"
+
+#: admin/modules/master_file/coll_type.php:137
+msgid "Add New Collection Type"
+msgstr "เพิ่มประเภททรัพยากรสารสนเทศใหม่"
+
+#: admin/modules/master_file/coll_type.php:138
+msgid "Collection Type List"
+msgstr "รายการประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/coll_type.php:183
+msgid "You are going to edit collection type data"
+msgstr "รายการประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/label.php:106
+msgid "Label Data Successfully Updated"
+msgstr "ปรับปรุงสัญญลักษณ์ทรัพยากรสำเร็จ"
+
+#: admin/modules/master_file/label.php:108
+msgid "Label Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงรายการสัญญลักษณ์ได้"
+
+#: admin/modules/master_file/label.php:114
+msgid "New Label Data Successfully Saved"
+msgstr "Label Baru Berhasil Disimpan"
+
+#: admin/modules/master_file/label.php:116
+msgid "Label Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกการเพิ่มสัญญลักษณ์ทรัพยากรได้"
+
+#: admin/modules/master_file/label.php:157
+msgid "Add New Label"
+msgstr "เพิ่มสัญญลักษณ์ทรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/label.php:158
+msgid "Label List"
+msgstr "รายการสัญญลักษณ์ทรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/label.php:200
+#: admin/modules/master_file/label.php:231
+#: admin/modules/master_file/label.php:235
+msgid "Label Name"
+msgstr "ชื่อสัญญลักษณ์ทรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/label.php:213
+#: admin/modules/master_file/label.php:230
+#: admin/modules/master_file/label.php:234
+msgid "Label Description"
+msgstr "รายละเอียดสัญญลักษณ์ทรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/label.php:217
+msgid "You are going to edit Label data"
+msgstr "แก้ไขข้อมูลสัญญลักษณ์ทรัพยากรสารสนเทศ"
+
+#: admin/modules/master_file/publisher.php:47
+msgid "Publisher Name can't be empty"
+msgstr "ไม่มีรายการผู้จัดทำ"
+
+#: admin/modules/master_file/publisher.php:65
+msgid "Publisher Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลผู้จัดทำ"
+
+#: admin/modules/master_file/publisher.php:67
+msgid "PUBLISHER Data FAILED to Updated. Please Contact System Administrator"
+msgstr "ไม่มีรายการผู้จัดทำ"
+
+#: admin/modules/master_file/publisher.php:74
+msgid "New Publisher Data Successfully Saved"
+msgstr "บันทึกเพิ่มรายการผู้จัดทำสำเร็จ"
+
+#: admin/modules/master_file/publisher.php:76
+msgid "Publisher Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลผู้จัดทำได้"
+
+#: admin/modules/master_file/publisher.php:117
+msgid "Add New Publisher"
+msgstr "เพิ่มรายการผู้จัดทำใหม่"
+
+#: admin/modules/master_file/publisher.php:118
+msgid "Publisher List"
+msgstr "Daftar Penerbit"
+
+#: admin/modules/master_file/publisher.php:160
+#: admin/modules/master_file/publisher.php:178
+#: admin/modules/master_file/publisher.php:182
+msgid "Publisher Name"
+msgstr "ชื่อผู้จัดทำ"
+
+#: admin/modules/master_file/publisher.php:164
+msgid "You are going to edit publisher data"
+msgstr "แก้ไขข้อมูลผู้จัดทำ"
+
+#: admin/modules/master_file/location.php:48
+msgid "Location ID and Name can't be empty"
+msgstr "ไม่มีรายการสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/location.php:67
+msgid "Location Data Successfully Updated"
+msgstr "ปรับปรุงรายการสถานที่จัดเก็บสำเร็จ"
+
+#: admin/modules/master_file/location.php:71
+msgid "Location Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงข้อมูลสถานที่จัดเก็บได้"
+
+#: admin/modules/master_file/location.php:78
+msgid "New Location Data Successfully Saved"
+msgstr "บันทกรายการสถานที่จัดเก็บสำเร็จ"
+
+#: admin/modules/master_file/location.php:80
+msgid "Location Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลสถานที่จัดเก็บได้"
+
+#: admin/modules/master_file/location.php:141
+msgid "Add New Location"
+msgstr "เพิ่มรายการสถานที่จัดเก็บใหม่"
+
+#: admin/modules/master_file/location.php:142
+msgid "Location List"
+msgstr "รายการสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/location.php:184
+#: admin/modules/master_file/location.php:203
+#: admin/modules/master_file/location.php:207
+msgid "Location Code"
+msgstr "รหัสสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/location.php:186
+#: admin/modules/master_file/location.php:204
+#: admin/modules/master_file/location.php:208
+msgid "Location Name"
+msgstr "ชื่อสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/location.php:190
+msgid "You are going to edit location data"
+msgstr "แก้ไขข้อมูลสถานที่จัดเก็บ"
+
+#: admin/modules/master_file/frequency.php:67
+msgid "Frequency Data Successfully Updated"
+msgstr "ปรับปรุงกำหนดเวลาออกสำเร็จ"
+
+#: admin/modules/master_file/frequency.php:69
+msgid "Frequency Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงกำหนดเวลาออกได้"
+
+#: admin/modules/master_file/frequency.php:75
+msgid "New Frequency Data Successfully Saved"
+msgstr "เพิ่มรายการกำหนดเวลาออกสำเร็จ"
+
+#: admin/modules/master_file/frequency.php:77
+msgid "Frequency Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกกำหนดเวลาออกได้"
+
+#: admin/modules/master_file/frequency.php:118
+msgid "Add New Frequency"
+msgstr "เพิ่มรายการกำหนดเวลาออกใหม่"
+
+#: admin/modules/master_file/frequency.php:119
+msgid "Frequency Available"
+msgstr "กำหนดเวลาออก"
+
+#: admin/modules/master_file/frequency.php:171
+#: admin/modules/master_file/frequency.php:197
+#: admin/modules/master_file/frequency.php:203
+msgid "Time Increment"
+msgstr "ครั้ง"
+
+#: admin/modules/master_file/frequency.php:173
+msgid "Day"
+msgstr "วัน"
+
+#: admin/modules/master_file/frequency.php:174
+msgid "Week"
+msgstr "สัปดาห์"
+
+#: admin/modules/master_file/frequency.php:175
+msgid "Month"
+msgstr "เดือน"
+
+#: admin/modules/master_file/frequency.php:176
+msgid "Year"
+msgstr "ปี"
+
+#: admin/modules/master_file/frequency.php:177
+#: admin/modules/master_file/frequency.php:198
+#: admin/modules/master_file/frequency.php:204
+msgid "Time Unit"
+msgstr "หน่วยเวลา"
+
+#: admin/modules/master_file/frequency.php:181
+msgid "You are going to edit Frequency data"
+msgstr "แก้ไขข้อมูลกำหนดเวลาออก"
+
+#: admin/modules/master_file/index.php:51
+msgid "GMD Code And Name can't be empty"
+msgstr "ไม่มีประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/master_file/index.php:70
+msgid "GMD Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลประเภทวัสดุ/มีเดียสำเร็จ"
+
+#: admin/modules/master_file/index.php:72
+msgid "GMD Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงข้อมูลประเภทวัสดุ/มีเดียได้"
+
+#: admin/modules/master_file/index.php:78
+msgid "New GMD Data Successfully Saved"
+msgstr "บันทึกเพิ่มประเภทวัสดุ/มีเดียสำเร็จ"
+
+#: admin/modules/master_file/index.php:80
+msgid "GMD Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกประเภทวัสดุ/มีเดียได้"
+
+#: admin/modules/master_file/index.php:121
+msgid "Add New GMD"
+msgstr "เพิ่มประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/master_file/index.php:122
+msgid "GMD List"
+msgstr "รายการประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/master_file/index.php:164
+#: admin/modules/master_file/index.php:183
+#: admin/modules/master_file/index.php:187
+msgid "GMD Code"
+msgstr "รหัสประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/master_file/index.php:166
+#: admin/modules/master_file/index.php:184
+#: admin/modules/master_file/index.php:188
+msgid "GMD Name"
+msgstr "ชื่อประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/master_file/index.php:170
+msgid "You are going to edit gmd data"
+msgstr "แก้ไขข้อมูลประเภทวัสดุ/มีเดีย "
+
+#: admin/modules/reporting/submenu.php:23
+msgid "Reporting"
+msgstr "รายงาน"
+
+#: admin/modules/reporting/submenu.php:24
+msgid "Collection Statistic"
+msgstr "สรุปสถิติทรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/submenu.php:24
+msgid "View Library Collection Statistic"
+msgstr "แสดงสถิติทรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/submenu.php:25
+#: admin/modules/reporting/loan_report.php:135
+#: admin/modules/reporting/loan_report.php:152
+msgid "Loan Report"
+msgstr "รายงานการยืม"
+
+#: admin/modules/reporting/submenu.php:25
+msgid "View Library Loan Report"
+msgstr "แสดงรายงานการยืม"
+
+#: admin/modules/reporting/submenu.php:26
+#: admin/modules/reporting/member_report.php:111
+#: admin/modules/reporting/member_report.php:128
+msgid "Membership Report"
+msgstr "รายงานสมาชิก"
+
+#: admin/modules/reporting/submenu.php:26
+msgid "View Membership Report"
+msgstr "แสดงรายงานสมาชิก"
+
+#: admin/modules/reporting/submenu.php:27
+msgid "Other Reports"
+msgstr "เมนูรายงานส่วนอื่นๆ"
+
+#: admin/modules/reporting/member_report.php:46
+msgid "Total Registered Members"
+msgstr "สมาชิกทั้งหมด"
+
+#: admin/modules/reporting/member_report.php:52
+msgid "Total Active Member"
+msgstr "สมาชิกใช้บริการยืมทั้งหมด"
+
+#: admin/modules/reporting/member_report.php:63
+msgid "Total Members By Membership Type"
+msgstr "สมาชิกทั้งหมดแบ่งตามประเภทสมาชิก"
+
+#: admin/modules/reporting/member_report.php:69
+msgid "Total Expired Member"
+msgstr "สมาชิกที่หมดความเป็นสมาชิกภาพห้องสมุด"
+
+#: admin/modules/reporting/member_report.php:80
+msgid "10 most active members"
+msgstr "10 ลำดับแรกสำหรับสมาชิกที่ใช้บริการยืมมากที่สุด"
+
+#: admin/modules/reporting/member_report.php:83
+msgid "Membership Data Summary"
+msgstr "สรุปข้อมูลสมาชิก"
+
+#: admin/modules/reporting/member_report.php:131
+#: admin/modules/reporting/loan_report.php:155
+msgid "Download Report"
+msgstr "รายงานการดาวน์โหลดเอกสารดิจิทัล"
+
+#: admin/modules/reporting/loan_report.php:46
+msgid "Total Loan"
+msgstr "รายการยืมทั้งหมด"
+
+#: admin/modules/reporting/loan_report.php:58
+msgid "Total Loan By GMD/Medium"
+msgstr "รายการยืมแบ่งตามประเภทวัสดุ/มีเดีย"
+
+#: admin/modules/reporting/loan_report.php:69
+msgid "Total Loan By Collection Type"
+msgstr "รายการยืมแบ่งตามประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/loan_report.php:77
+#: admin/modules/reporting/loan_report.php:83
+msgid "Total Loan Transactions"
+msgstr "รายการที่สามารถยืมออกทั้งหมด"
+
+#: admin/modules/reporting/loan_report.php:83
+msgid "Transaction Average (Per Day)"
+msgstr "รายการยืมเฉลี่ยต่อวัน"
+
+#: admin/modules/reporting/loan_report.php:86
+msgid "Total Peak Transaction"
+msgstr "รายการยอดทั้งหมด"
+
+#: admin/modules/reporting/loan_report.php:91
+#: admin/modules/reporting/loan_report.php:98
+msgid "Members Already Had Loans"
+msgstr "สมาชิกมียืม"
+
+#: admin/modules/reporting/loan_report.php:98
+msgid "Members Never Have Loans Yet"
+msgstr "สมาชิกที่ยังไม่เคยยืม"
+
+#: admin/modules/reporting/loan_report.php:104
+msgid "Total Overdued Loans"
+msgstr "รายการยืมเกินกำหนดทั้งหมด"
+
+#: admin/modules/reporting/loan_report.php:107
+msgid "Loan Data Summary"
+msgstr "สรุปข้อมูลการยืม"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "record(s) found. Currently displaying page"
+msgstr "รายการที่ค้นพบ ปัจจุบันแสดงอยู่บนหน้า"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "record each page"
+msgstr "รายการต่อหน้า"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:83
+msgid "Print Current Page"
+msgstr "พิมพ์หน้าปัจจุบัน"
+
+#: admin/modules/reporting/index.php:49
+msgid "Total Titles"
+msgstr "ชื่อเรื่องทั้งหมด"
+
+#: admin/modules/reporting/index.php:54
+#: admin/modules/reporting/index.php:64
+msgid "Total Items/Copies"
+msgstr "รายการตัวเล่มทั้งหมด"
+
+#: admin/modules/reporting/index.php:61
+#: admin/modules/reporting/index.php:64
+msgid "Total Checkout Items"
+msgstr "รายการยืมตัวเล่มทั้งหมด"
+
+#: admin/modules/reporting/index.php:64
+msgid "Total Items In Library"
+msgstr "รายการตัวเล่มทั้งหมด"
+
+#: admin/modules/reporting/index.php:76
+msgid "Total Titles By Medium/GMD"
+msgstr "รายการชื่อเรื่องแบ่งตามประเภทวัสดุ/มีเดีย"
+
+#: admin/modules/reporting/index.php:90
+msgid "Total Items By Collection Type"
+msgstr "รายการตัวเล่มทั้งหมดแบ่งตามประเภททรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/index.php:102
+msgid "10 Most Popular Titles"
+msgstr "ชื่อเรื่อง 10 ลำดับแรกที่ถูกยืมมากที่สุด"
+
+#: admin/modules/reporting/index.php:105
+msgid "Collection Statistic Summary"
+msgstr "สรุปรายการสถิติการใช้ทรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/index.php:133
+msgid "Collection Statistic Report"
+msgstr "รายงานสถิติทรัพยากรสารสนเทศ"
+
+#: admin/modules/reporting/customs/item_titles_list.php:54
+#: admin/modules/reporting/customs/customs_report_list.inc.php:25
+msgid "Items Title List"
+msgstr "รายการตัวเล่ม"
+
+#: admin/modules/reporting/customs/item_titles_list.php:54
+#: admin/modules/reporting/customs/overdued_list.php:54
+#: admin/modules/reporting/customs/loan_by_class.php:53
+#: admin/modules/reporting/customs/reserve_list.php:53
+#: admin/modules/reporting/customs/titles_list.php:54
+#: admin/modules/reporting/customs/class_recap.php:53
+#: admin/modules/reporting/customs/item_usage.php:53
+#: admin/modules/reporting/customs/member_loan_list.php:54
+#: admin/modules/reporting/customs/loan_history.php:53
+#: admin/modules/reporting/customs/member_list.php:55
+#: admin/modules/reporting/customs/staff_act.php:53
+msgid "Report Filter"
+msgstr "จัดกลุ่มรายงาน"
+
+#: admin/modules/reporting/customs/item_titles_list.php:58
+#: admin/modules/reporting/customs/reserve_list.php:63
+#: admin/modules/reporting/customs/titles_list.php:58
+#: admin/modules/reporting/customs/item_usage.php:57
+msgid "Title/ISBN"
+msgstr "ชื่อเรื่อง/ISBN"
+
+#: admin/modules/reporting/customs/item_titles_list.php:118
+#: admin/modules/reporting/customs/overdued_list.php:82
+#: admin/modules/reporting/customs/titles_list.php:117
+#: admin/modules/reporting/customs/member_loan_list.php:82
+#: admin/modules/reporting/customs/loan_history.php:103
+#: admin/modules/reporting/customs/member_list.php:108
+msgid "Record each page"
+msgstr "บันทึกแต่ละหน้า"
+
+#: admin/modules/reporting/customs/item_titles_list.php:119
+#: admin/modules/reporting/customs/overdued_list.php:83
+#: admin/modules/reporting/customs/titles_list.php:118
+#: admin/modules/reporting/customs/member_loan_list.php:83
+#: admin/modules/reporting/customs/loan_history.php:104
+#: admin/modules/reporting/customs/member_list.php:109
+msgid "Set between 20 and 200"
+msgstr "ตั้งค่าระหว่าง 20 ถึง 200"
+
+#: admin/modules/reporting/customs/item_titles_list.php:123
+#: admin/modules/reporting/customs/overdued_list.php:87
+#: admin/modules/reporting/customs/loan_by_class.php:105
+#: admin/modules/reporting/customs/reserve_list.php:92
+#: admin/modules/reporting/customs/titles_list.php:122
+#: admin/modules/reporting/customs/class_recap.php:70
+#: admin/modules/reporting/customs/item_usage.php:83
+#: admin/modules/reporting/customs/member_loan_list.php:87
+#: admin/modules/reporting/customs/loan_history.php:108
+#: admin/modules/reporting/customs/member_list.php:113
+#: admin/modules/reporting/customs/staff_act.php:70
+msgid "Apply Filter"
+msgstr "ใช้จัดกลุ่ม"
+
+#: admin/modules/reporting/customs/item_titles_list.php:124
+#: admin/modules/reporting/customs/overdued_list.php:88
+#: admin/modules/reporting/customs/reserve_list.php:93
+#: admin/modules/reporting/customs/titles_list.php:123
+#: admin/modules/reporting/customs/class_recap.php:72
+#: admin/modules/reporting/customs/member_loan_list.php:88
+#: admin/modules/reporting/customs/loan_history.php:109
+#: admin/modules/reporting/customs/member_list.php:114
+#: admin/modules/reporting/customs/staff_act.php:71
+msgid "Show More Filter Options"
+msgstr "แสดงเลือกจัดกลุ่ม"
+
+#: admin/modules/reporting/customs/item_titles_list.php:124
+#: admin/modules/reporting/customs/overdued_list.php:88
+#: admin/modules/reporting/customs/reserve_list.php:93
+#: admin/modules/reporting/customs/titles_list.php:123
+#: admin/modules/reporting/customs/class_recap.php:72
+#: admin/modules/reporting/customs/member_loan_list.php:88
+#: admin/modules/reporting/customs/loan_history.php:109
+#: admin/modules/reporting/customs/member_list.php:114
+#: admin/modules/reporting/customs/staff_act.php:71
+msgid "Hide Filter Options"
+msgstr "ซ่อนเลือกจัดกลุ่ม"
+
+#: admin/modules/reporting/customs/overdued_list.php:66
+#: admin/modules/reporting/customs/member_loan_list.php:66
+#: admin/modules/reporting/customs/loan_history.php:81
+msgid "Loan Date From"
+msgstr "ยืมเมื่อวันที่"
+
+#: admin/modules/reporting/customs/overdued_list.php:74
+#: admin/modules/reporting/customs/member_loan_list.php:74
+#: admin/modules/reporting/customs/loan_history.php:89
+msgid "Loan Date Until"
+msgstr "ยืมได้ถึงวันที่"
+
+#: admin/modules/reporting/customs/overdued_list.php:164
+#: admin/modules/reporting/customs/member_loan_list.php:162
+msgid "E-mail"
+msgstr "อีเมล์"
+
+#: admin/modules/reporting/customs/overdued_list.php:170
+msgid "Overdue"
+msgstr "ยืมเกินกำหนด"
+
+#: admin/modules/reporting/customs/overdued_list.php:170
+msgid "day(s)"
+msgstr "วัน"
+
+#: admin/modules/reporting/customs/loan_by_class.php:53
+#: admin/modules/reporting/customs/customs_report_list.inc.php:27
+msgid "Loans by Classification"
+msgstr "รายการยืมแบ่งตามหมวดหมู่"
+
+#: admin/modules/reporting/customs/loan_by_class.php:60
+msgid "0 Classes"
+msgstr "หมวด 0 ทั่วไป"
+
+#: admin/modules/reporting/customs/loan_by_class.php:61
+msgid "1 Classes"
+msgstr "หมวด 1 ปรัญญา จิตวิทยา"
+
+#: admin/modules/reporting/customs/loan_by_class.php:62
+msgid "2 Classes"
+msgstr "หมวด 1 ปรัญญา จิตวิทยา"
+
+#: admin/modules/reporting/customs/loan_by_class.php:63
+msgid "2X Classes (Islamic Related)"
+msgstr "หมวด 2พ ศาสนาพุทธ"
+
+#: admin/modules/reporting/customs/loan_by_class.php:64
+msgid "3 Classes"
+msgstr "หมวด 3 สังคมศาสตร์"
+
+#: admin/modules/reporting/customs/loan_by_class.php:65
+msgid "4 Classes"
+msgstr "หมวด 4 ภาษาศาสตร์"
+
+#: admin/modules/reporting/customs/loan_by_class.php:66
+msgid "5 Classes"
+msgstr "หมวด 5 วิทยาศาสตร์"
+
+#: admin/modules/reporting/customs/loan_by_class.php:67
+msgid "6 Classes"
+msgstr "หมวด 6 เทคโนโลยี"
+
+#: admin/modules/reporting/customs/loan_by_class.php:68
+msgid "7 Classes"
+msgstr "หมวด 7 ศิลปะ"
+
+#: admin/modules/reporting/customs/loan_by_class.php:69
+msgid "8 Classes"
+msgstr "หมวด 8 วรรณกรรม"
+
+#: admin/modules/reporting/customs/loan_by_class.php:70
+msgid "9 Classes"
+msgstr "หมวด 9 ประวัติศาสตร์"
+
+#: admin/modules/reporting/customs/loan_by_class.php:71
+msgid "NON Decimal Classes"
+msgstr "ไม่มีหมวด 10"
+
+#: admin/modules/reporting/customs/loan_by_class.php:116
+#: admin/modules/reporting/customs/item_usage.php:102
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jan"
+msgstr "ม.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:117
+#: admin/modules/reporting/customs/item_usage.php:103
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Feb"
+msgstr "ก.พ"
+
+#: admin/modules/reporting/customs/loan_by_class.php:118
+#: admin/modules/reporting/customs/item_usage.php:104
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Mar"
+msgstr "มี.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:119
+#: admin/modules/reporting/customs/item_usage.php:105
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Apr"
+msgstr "เม.ย"
+
+#: admin/modules/reporting/customs/loan_by_class.php:120
+#: admin/modules/reporting/customs/item_usage.php:106
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "May"
+msgstr "พ.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:121
+#: admin/modules/reporting/customs/item_usage.php:107
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jun"
+msgstr "มิ.ย"
+
+#: admin/modules/reporting/customs/loan_by_class.php:122
+#: admin/modules/reporting/customs/item_usage.php:108
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Jul"
+msgstr "ก.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:123
+#: admin/modules/reporting/customs/item_usage.php:109
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Aug"
+msgstr "ต.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:124
+#: admin/modules/reporting/customs/item_usage.php:110
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Sep"
+msgstr "ก.ย"
+
+#: admin/modules/reporting/customs/loan_by_class.php:125
+#: admin/modules/reporting/customs/item_usage.php:111
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Oct"
+msgstr "ต.ค"
+
+#: admin/modules/reporting/customs/loan_by_class.php:126
+#: admin/modules/reporting/customs/item_usage.php:112
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Nov"
+msgstr "พ.ย"
+
+#: admin/modules/reporting/customs/loan_by_class.php:127
+#: admin/modules/reporting/customs/item_usage.php:113
+#: admin/modules/reporting/customs/item_usage.php:170
+msgid "Dec"
+msgstr "ธ.ค"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:23
+#: admin/modules/reporting/customs/class_recap.php:53
+msgid "Custom Recapitulations"
+msgstr "เลือกรูปแบบการแสดงผลรายงาน"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:23
+msgid "Title and Collection recapitulation based on classification and others"
+msgstr "Rekapitulasi judul dan item berdasarkan klasifikasi dan lainnya"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:24
+#: admin/modules/reporting/customs/titles_list.php:54
+msgid "Title List"
+msgstr "รายการชื่อเรื่อง"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:24
+msgid "List of bibliographic titles"
+msgstr "รายการชื่อเรื่องบรรณานุกรม"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:25
+msgid "List of collection/items"
+msgstr "รายการทรัพยากรสารสนเทศ/ตัวเล่ม"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:26
+#: admin/modules/reporting/customs/item_usage.php:53
+msgid "Items Usage Statistics"
+msgstr "สถิติการยืมรายการตัวเล่ม"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:26
+msgid "List of Collection/items usage statistic"
+msgstr "รายการทรัพยากรสารสนเทศ/สถิติการใช้ตัวเล่ม"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:27
+msgid "Loan statistic by classification"
+msgstr "ยืมโดยหมวด"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+#: admin/modules/reporting/customs/member_list.php:55
+msgid "Member List"
+msgstr "รายการสมาชิก"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+msgid "List of library member/patron"
+msgstr "รายการสมาชิกห้องสมุด"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:29
+#: admin/modules/reporting/customs/member_loan_list.php:54
+msgid "Loan List by Member"
+msgstr "รายการยืมโดยสมาชิก"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:29
+msgid "List of loan by each member"
+msgstr "รายการยืมโดยสมาชิกแต่ละคน"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+#: admin/modules/reporting/customs/staff_act.php:53
+msgid "Staff Activity"
+msgstr "การใช้งานระบบของผู้ปฏิบัติงาน"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+msgid "Staff activity log recapitulation"
+msgstr "สรุปการใช้งานของผู้ปฏิบัติงาน"
+
+#: admin/modules/reporting/customs/reserve_list.php:75
+msgid "Reserve Date From"
+msgstr "จองเมื่อวันที่"
+
+#: admin/modules/reporting/customs/reserve_list.php:83
+msgid "Reserve Date Until"
+msgstr "ถึงวันที่"
+
+#: admin/modules/reporting/customs/titles_list.php:85
+msgid "Press Ctrl and click to select multiple entries"
+msgstr "กด \"Ctrl\" และคลิกเลือกรายการ"
+
+#: admin/modules/reporting/customs/class_recap.php:57
+msgid "Recap By"
+msgstr "เลือกออกรายงานโดย"
+
+#: admin/modules/reporting/customs/class_recap.php:230
+msgid "Title and Collection Recap by"
+msgstr "ชื่อเรื่องและทรัพยากรสารสนเทศโดย"
+
+#: admin/modules/reporting/customs/loan_history.php:97
+#: admin/modules/reporting/customs/loan_history.php:134
+msgid "Loan Status"
+msgstr "สถานภาพ"
+
+#: admin/modules/reporting/customs/loan_history.php:99
+#: admin/modules/reporting/customs/loan_history.php:182
+msgid "On Loan"
+msgstr "ยิมออก"
+
+#: admin/modules/reporting/customs/loan_history.php:99
+#: admin/modules/reporting/customs/loan_history.php:184
+msgid "Returned"
+msgstr "คืน"
+
+#: admin/modules/reporting/customs/member_list.php:59
+#: admin/modules/reporting/customs/member_list.php:134
+#: admin/modules/membership/member_card_generator.php:167
+#: admin/modules/membership/member_card_generator.php:223
+msgid "Membership Type"
+msgstr "ประเภทสมาชิก"
+
+#: admin/modules/reporting/customs/member_list.php:79
+msgid "Gender"
+msgstr "เพศ"
+
+#: admin/modules/reporting/customs/member_list.php:83
+msgid "Male"
+msgstr "ชาย"
+
+#: admin/modules/reporting/customs/member_list.php:84
+msgid "Female"
+msgstr "หญิง"
+
+#: admin/modules/reporting/customs/member_list.php:96
+msgid "Register Date From"
+msgstr "เริ่มเป็นสมาชิกเมื่อวันที่"
+
+#: admin/modules/reporting/customs/member_list.php:102
+msgid "Register Date Until"
+msgstr "ถึงวันที่"
+
+#: admin/modules/reporting/customs/staff_act.php:57
+msgid "Activity Date From"
+msgstr "ใช้งานเมื่อวันที่"
+
+#: admin/modules/reporting/customs/staff_act.php:63
+msgid "Activity Date Until"
+msgstr "ถึงวันที่"
+
+#: admin/modules/reporting/customs/staff_act.php:88
+msgid "Real Name"
+msgstr "ชื่อจริง"
+
+#: admin/modules/reporting/customs/staff_act.php:89
+msgid "Login Username"
+msgstr "ชื่อเข้าใช้งานระบบ"
+
+#: admin/modules/reporting/customs/staff_act.php:90
+msgid "Bibliography Data Entry"
+msgstr "จัดการลงรายการบรรณานุกรม"
+
+#: admin/modules/reporting/customs/staff_act.php:91
+msgid "Item Data Entry"
+msgstr "จัดการรายการตัวเล่ม"
+
+#: admin/modules/reporting/customs/staff_act.php:92
+msgid "Member Data Entry"
+msgstr "จัดการสมาชิกห้องสมุด"
+
+#: admin/modules/reporting/customs/staff_act.php:93
+msgid "Circulation Tasks"
+msgstr "จัดการงานยืม - คืน"
+
+#: admin/modules/membership/member_card_generator.php:194
+#: admin/modules/membership/submenu.php:28
+msgid "Member Card Printing"
+msgstr "พิมพ์บัตรสมาชิก"
+
+#: admin/modules/membership/member_card_generator.php:194
+msgid "Print Member Cards for Selected Data"
+msgstr "ทำการพิมพ์บัตรสมาชิกที่เลือก"
+
+#: admin/modules/membership/member_card_generator.php:256
+msgid "Found"
+msgstr "ค้นพบ"
+
+#: admin/modules/membership/member_card_generator.php:256
+msgid "from your search with keyword"
+msgstr "จากการค้นหา กับคำค้น"
+
+#: admin/modules/membership/import.php:158
+msgid "records inserted successfully to members database, from record"
+msgstr "บันทึกรายการสำเร็จ"
+
+#: admin/modules/membership/import.php:168
+msgid "Import for members data from CSV file"
+msgstr "นำเข้าข้อมูลสมาชิกจากเอกสาร CSV"
+
+#: admin/modules/membership/submenu.php:23
+msgid "Membership"
+msgstr "สมาชิกห้องสมุด"
+
+#: admin/modules/membership/submenu.php:24
+msgid "View Member List"
+msgstr "รายการสมาชิก"
+
+#: admin/modules/membership/submenu.php:24
+msgid "View Library Member List"
+msgstr "รายการสมาชิกห้องสมุด"
+
+#: admin/modules/membership/submenu.php:25
+msgid "Add New Member"
+msgstr "เพิ่มสมาชิกใหม่"
+
+#: admin/modules/membership/submenu.php:25
+msgid "Add New Library Member Data"
+msgstr "เพิ่มข้อมูลสมาชิกห้องสมุด"
+
+#: admin/modules/membership/submenu.php:26
+msgid "View and modify member type"
+msgstr "แสดงแก้ไขประเภทสมาชิก"
+
+#: admin/modules/membership/submenu.php:28
+msgid "Print Member Card"
+msgstr "พิมพ์บัตรสมาชิก"
+
+#: admin/modules/membership/submenu.php:29
+msgid "Import Members Data From CSV File"
+msgstr "นำเข้าข้อมูลสมาชิกจากไฟล์เอกสาร CSV"
+
+#: admin/modules/membership/submenu.php:30
+msgid "Export Members Data To CSV File"
+msgstr "นำออกข้อมูลสมาชิกสู่ไฟล์เอกสาร CSV"
+
+#: admin/modules/membership/member_type.php:47
+msgid "Member Type Name can't be empty"
+msgstr "ไม่มีรายการประเภทสมาชิก"
+
+#: admin/modules/membership/member_type.php:73
+msgid "Member Type Successfully Updated"
+msgstr "ปรับปรุงประเภทสมาชิกสำเร็จ"
+
+#: admin/modules/membership/member_type.php:78
+#: admin/modules/membership/member_type.php:86
+msgid "Member Type Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "ไม่สามารถบันทึกปรับปรุงประเภทสมาชิกได้"
+
+#: admin/modules/membership/member_type.php:84
+msgid "New Member Type Successfully Saved"
+msgstr "เพิ่มประเภทสสมาชิกใหม่สำเร็จ"
+
+#: admin/modules/membership/member_type.php:127
+msgid "Add New Member Type"
+msgstr "เพิ่มประเภทสมาชิกใหม่"
+
+#: admin/modules/membership/member_type.php:128
+msgid "Member Type List"
+msgstr "รายการประเภทสมาชิก"
+
+#: admin/modules/membership/member_type.php:170
+msgid "Member Type Name"
+msgstr "ชื่อประเภทสมาชิก"
+
+#: admin/modules/membership/member_type.php:174
+msgid "Loan Periode (In Days)"
+msgstr "ระยะเวลาในการยืม(วัน)"
+
+#: admin/modules/membership/member_type.php:176
+msgid "Enable"
+msgstr "สามารถใช้งานได้"
+
+#: admin/modules/membership/member_type.php:177
+msgid "Disable"
+msgstr "ไม่สามารถใช้งานได้"
+
+#: admin/modules/membership/member_type.php:180
+msgid "Reserve Limit"
+msgstr "จำกัดการจอง"
+
+#: admin/modules/membership/member_type.php:182
+#: admin/modules/membership/member_type.php:207
+#: admin/modules/membership/member_type.php:213
+msgid "Membership Periode (In Days)"
+msgstr "ระยะเวลาความเป็นสมาชิกภาพ(วัน)"
+
+#: admin/modules/membership/member_type.php:186
+msgid "Fine Each Day"
+msgstr "ค่าปรับต่อวัน"
+
+#: admin/modules/membership/member_type.php:192
+#: admin/modules/membership/index.php:374
+msgid "You are going to edit member data"
+msgstr "แก้ไขข้อมูลสมาชิก"
+
+#: admin/modules/membership/export.php:105
+msgid "There is no record in membership database yet, Export FAILED!"
+msgstr "ยังไม่มีรายการในฐานข้อมูล"
+
+#: admin/modules/membership/export.php:115
+msgid "Export member(s) data to CSV file"
+msgstr "ส่งออกข้อมูลสมาชิกสู่เอกสาร CSV"
+
+#: admin/modules/membership/index.php:55
+msgid "Member ID and Name can't be empty"
+msgstr "ไม่มีรายการสมาชิก"
+
+#: admin/modules/membership/index.php:58
+msgid "Password confirmation does not match. See if your Caps Lock key is on!"
+msgstr "การยืนยันรหัสผ่านไม่ถูกต้อง"
+
+#: admin/modules/membership/index.php:124
+msgid "Member Data Successfully Updated"
+msgstr "ปรับปรุงรายการข้อมูลสมาชิกสำเร็จ"
+
+#: admin/modules/membership/index.php:134
+#: admin/modules/membership/index.php:158
+msgid "Image FAILED to upload"
+msgstr "ไม่สามารถอัพโหลดรูปภาพได้"
+
+#: admin/modules/membership/index.php:140
+#: admin/modules/membership/index.php:164
+msgid "Member Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "มีข้อผิอพลาด ไม่สามารถบันทึกปรับปรุงข้อมูลสมาชิกได้"
+
+#: admin/modules/membership/index.php:148
+msgid "New Member Data Successfully Saved"
+msgstr "บันทึกเพิ่มข้อมูลสมาชิกข้อมูลสำเร็จ"
+
+#: admin/modules/membership/index.php:227
+msgid "Below member data can't be deleted because still have unreturned item(s)"
+msgstr "ไม่สามารถลบข้อมูลสมาชิกด้านล่างได้ เนื่องจากยังมีรายการตัวเล่มค้างอยู่"
+
+#: admin/modules/membership/index.php:248
+msgid "View Expired Member"
+msgstr "แสดงรายการสมาชิกที่หมดอายุ"
+
+#: admin/modules/membership/index.php:250
+msgid "Member Search"
+msgstr "ค้นหาสมาชิก"
+
+#: admin/modules/membership/index.php:298
+msgid "Extend Membership"
+msgstr "ขยายเวลาสมาชิกภาพ"
+
+#: admin/modules/membership/index.php:309
+msgid "Birth Date"
+msgstr "วันเกิด"
+
+#: admin/modules/membership/index.php:312
+msgid "Member Since"
+msgstr "เริ่มเป็นสมาชิกเมื่อ"
+
+#: admin/modules/membership/index.php:320
+msgid "Auto Set"
+msgstr "ตั้งค่าอัตโนมัติ"
+
+#: admin/modules/membership/index.php:326
+msgid "Institution"
+msgstr "สถานะปัจจุบัน"
+
+#: admin/modules/membership/index.php:342
+msgid "Postal Code"
+msgstr "รหัสไปรษณีย์"
+
+#: admin/modules/membership/index.php:348
+msgid "Personal ID Number"
+msgstr "เลขที่บัตรประชาชน"
+
+#: admin/modules/membership/index.php:350
+msgid "Notes"
+msgstr "รายการบันทึก"
+
+#: admin/modules/membership/index.php:352
+msgid "Pending Membership"
+msgstr "ระงับการยืม"
+
+#: admin/modules/membership/index.php:352
+#: admin/modules/stock_take/finish.php:170
+msgid "Yes"
+msgstr "ใช่"
+
+#: admin/modules/membership/index.php:358
+#: admin/modules/membership/index.php:362
+msgid "Photo"
+msgstr "รูปภาพ"
+
+#: admin/modules/membership/index.php:367
+msgid "New Password"
+msgstr "รหัสผ่านใหม่"
+
+#: admin/modules/membership/index.php:369
+msgid "Confirm New Password"
+msgstr "ยืนยันรหัสผ่านใหม่"
+
+#: admin/modules/membership/index.php:375
+msgid "Leave Password field blank if you don't want to change the password"
+msgstr "ถ้าไม่ต้องการเปลี่ยนรหัสผ่านใหม่ ให้ปล่อยว่างไว้"
+
+#: admin/modules/membership/index.php:434
+msgid "Expired Member List"
+msgstr "รายการนสมาชิกพ้นความเป็นสมาชิกภาพ"
+
+#: admin/modules/membership/index.php:435
+msgid "Extend Selected Member(s)"
+msgstr "ขยายสมาชิกภาพ"
+
+#: admin/modules/membership/index.php:435
+msgid "Are you sure to EXTEND membership for selected members?"
+msgstr "ยืนยันในการขยายความเป็นสมาชิกภาพสำหรับสมาชิกที่ต้องการหรือไม่"
+
+#: admin/modules/membership/index.php:437
+msgid "members extended!"
+msgstr "รายการขยายสมาชิกภาพ"
+
+#: admin/modules/serial_control/submenu.php:23
+#: admin/modules/serial_control/index.php:50
+msgid "Serial Control"
+msgstr "งานควบคุมสิ่งพิมพ์ต่อเนื่อง"
+
+#: admin/modules/serial_control/submenu.php:24
+msgid "Subscription"
+msgstr "รายการบอกรับวารสาร"
+
+#: admin/modules/serial_control/submenu.php:24
+msgid "Manage Subscription"
+msgstr "จัดการรายการบอกรับวารสาร"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:146
+msgid "Date Expected"
+msgstr "วันที่คาดว่าจะได้รับ"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:147
+msgid "Date Received"
+msgstr "วันที่ได้รับ"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:147
+msgid "Seq. Number"
+msgstr "เลขทะเบียน"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:148
+msgid "Note"
+msgstr "สถานภาพ"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:196
+msgid "Kardex Detail for subscription"
+msgstr "ข้อมูลทะเบียนวารสารสำหรับรายการที่บอกรับ"
+
+#: admin/modules/serial_control/kardex.php:58
+msgid "Kardex data updated!"
+msgstr "ยืนยันปรับปรุงข้อมูลทะเบียนวารสาร"
+
+#: admin/modules/serial_control/kardex.php:64
+msgid "Kardex data deleted!"
+msgstr "ยืนยันลบข้อมูลทะเบียนวารสาร"
+
+#: admin/modules/serial_control/subscription.php:61
+msgid "Error inserting subscription data, Subscription Date must be filled!"
+msgstr "มีข้อผิดพลาด ไม่สามารถเพิ่มข้อมูลรายการบอกรับได้"
+
+#: admin/modules/serial_control/subscription.php:81
+msgid "Subscription Data Successfully Updated"
+msgstr "บันทึกปรับปรุงข้อมูลรายการบอกรับวารสารสำเร็จ"
+
+#: admin/modules/serial_control/subscription.php:83
+msgid "Subscription Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถปรับปรุงรายการบอกรับวารสารได้"
+
+#: admin/modules/serial_control/subscription.php:97
+msgid "New Subscription Data Successfully Saved"
+msgstr "เพิ่มข้อมูลรายการบอกรับวารสารใหม่สำเร็จ"
+
+#: admin/modules/serial_control/subscription.php:99
+msgid "Subscription Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถบันทึกรายการบอกรับวารสารได้"
+
+#: admin/modules/serial_control/subscription.php:135
+msgid "Subscription data successfully deleted"
+msgstr "ลบรายการบอกรับวารสารสำเร็จ"
+
+#: admin/modules/serial_control/subscription.php:137
+msgid "Subscription data FAILED to deleted!"
+msgstr "มีข้อผิดพลาด ไม่สามารถลบรายการบอกรับวารสารได้"
+
+#: admin/modules/serial_control/subscription.php:173
+#: admin/modules/serial_control/subscription.php:216
+msgid "Subscription Start"
+msgstr "เริ่มทำรายการบอกรับวารสาร"
+
+#: admin/modules/serial_control/subscription.php:176
+msgid "Total Exemplar Expected"
+msgstr "รายการบอกรับทั้งหมดที่คาดว่าจะได้รับ"
+
+#: admin/modules/serial_control/subscription.php:179
+#: admin/modules/serial_control/subscription.php:215
+msgid "Period Name"
+msgstr "ชื่อออกตามกำหนดเวลา"
+
+#: admin/modules/serial_control/subscription.php:181
+#: admin/modules/serial_control/subscription.php:217
+msgid "Subscription Notes"
+msgstr "บันทึกรายการบอกรับวารสาร"
+
+#: admin/modules/serial_control/subscription.php:195
+msgid "You are going to edit Subscription data"
+msgstr "แก้ไขข้อมูลทะเบียนวารสาร"
+
+#: admin/modules/serial_control/subscription.php:205
+msgid "View/Edit Kardex Detail"
+msgstr "แสดง/แก้ไขข้อมูลบัตรทะเบียนวารสาร"
+
+#: admin/modules/serial_control/index.php:75
+msgid "Add New Subscription"
+msgstr "เพิ่มรายการบอกรับวารสารใหม่"
+
+#: admin/modules/serial_control/index.php:77
+msgid "View Subscriptions"
+msgstr "แสดงรายการบอกรับวารสาร"
+
+#: admin/modules/serial_control/index.php:79
+msgid "CLOSE"
+msgstr "ปิด"
+
+#: admin/modules/serial_control/index.php:87
+msgid "Serial Title"
+msgstr "ชื่อวารสารและสิ่งพิมพ์ต่อเนื่อง "
+
+#: admin/modules/stock_take/st_upload.php:40
+msgid "NO stock taking proccess initialized yet!"
+msgstr "ยังไม่มีกระบวนการตรวจสอบทรัพยากร"
+
+#: admin/modules/stock_take/st_upload.php:83
+msgid "Succesfully upload stock take file"
+msgstr "อัพโหลดเอกสารการตรวจสอบทรัพยากรสำเร็จ"
+
+#: admin/modules/stock_take/st_upload.php:83
+msgid " item codes scanned!"
+msgstr "ตรวจสอบรหัสรายการตัวเล่ม"
+
+#: admin/modules/stock_take/st_upload.php:101
+msgid "STOCK TAKE UPLOAD - Upload a plain text file (.txt) containing list of Item Code to stock take. Each Item Code separated by line."
+msgstr "อัพโหลดรายการตรวจสอบทรัพยากร"
+
+#: admin/modules/stock_take/st_upload.php:103
+msgid " File"
+msgstr "เอกสาร"
+
+#: admin/modules/stock_take/st_upload.php:104
+msgid "Upload File"
+msgstr "อัพโหลดเอกสาร"
+
+#: admin/modules/stock_take/submenu.php:23
+msgid "Stock Take"
+msgstr "ตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:24
+msgid "Stock Take History"
+msgstr "ประวัติตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:24
+msgid "View Stock Take History"
+msgstr "แสดงประวัติตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:28
+msgid "Current Stock Take"
+msgstr "ปัจจุบันใช้การตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:28
+msgid "View Current Stock Take Process"
+msgstr "แสดงกระบวนการตรวจสอบรายการตัวเล่มปัจจุบัน"
+
+#: admin/modules/stock_take/submenu.php:29
+msgid "Stock Take Report"
+msgstr "รายงานตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:29
+msgid "View Current Stock Take Report"
+msgstr "แสดงรายการตรวจสอบรายการตัวเล่มปัจจุบัน"
+
+#: admin/modules/stock_take/submenu.php:30
+#: admin/modules/stock_take/finish.php:153
+#: admin/modules/stock_take/finish.php:161
+msgid "Finish Stock Take"
+msgstr "ทำการลบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:30
+msgid "Finish Current Stock Take Proccess"
+msgstr "กระบวนการตรวจสอบรายการตัวเล่มสำเร็จ"
+
+#: admin/modules/stock_take/submenu.php:31
+#: admin/modules/stock_take/lost_item_list.php:45
+msgid "Current Lost Item"
+msgstr "รายการตัวเล่มสำหรับการลบ"
+
+#: admin/modules/stock_take/submenu.php:31
+msgid "View Lost Item in Current Stock Take Proccess"
+msgstr "แสดงกระบวนการตรวจสอบรายการตัวเล่มทำการลบ"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "Stock Take Log"
+msgstr "รายงานข้อผิดพลาดการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "View Log of Current Stock Take Proccess"
+msgstr "แสดงห้ามใช้กระบวนการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:33
+msgid "Resynchronize"
+msgstr "ปรับปรุงข้อมูลตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:33
+msgid "Resynchronize bibliographic data with current stock take"
+msgstr "ตรวจสอบข้อมูลบรรณานุกรมกับกระบวนตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/submenu.php:34
+msgid "Upload List"
+msgstr "รายการอัพโหลด"
+
+#: admin/modules/stock_take/submenu.php:34
+msgid "Upload List in text file"
+msgstr "รายการอัพโหลดในแฟ้มข้อมูล"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Initialize"
+msgstr "สร้างรายการตรวจสอบ"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Initialize New Stock Take Proccess"
+msgstr "เริ่มต้นกระบวนการตรวจสอบใหม่"
+
+#: admin/modules/stock_take/init.php:43
+msgid "There is already stock taking proccess running!"
+msgstr "มีรายการสำหรับกระบวนการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/init.php:47
+msgid "Stock Take Name must be filled!"
+msgstr "ชื่อตรวจสอบรายการตัวเล่มต้องใส่ข้อมูล"
+
+#: admin/modules/stock_take/init.php:126
+msgid "Stock Taking Initialized"
+msgstr "กำลังทำการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/init.php:131
+#, fuzzy
+msgid ""
+"Stock Taking FAILED to Initialized.\\n"
+"No item to stock take!"
+msgstr ""
+"GAGAL Inisialisasi Inventarisasi Koleksi.\n"
+"Tidak ada item untuk di inventarisasi!"
+
+#: admin/modules/stock_take/init.php:139
+msgid "Initialize Stock Take"
+msgstr "เริ่มการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/init.php:148
+msgid "Stock Take Name"
+msgstr "ชื่อ"
+
+#: admin/modules/stock_take/init.php:177
+msgid "Separate each class comma sign. Use * for wildcard"
+msgstr "แยก class โดยใช้เครื่องหมาย * เป็นสัญญลักษณ์แทน"
+
+#: admin/modules/stock_take/finish.php:43
+msgid "NO stock taking proccess running!"
+msgstr "ไม่มีรายการสำหรับกระบวนการตรวจสอบ"
+
+#: admin/modules/stock_take/finish.php:144
+msgid "Stock Take Proccess Finished!"
+msgstr "ยืนยันทำการตรวจสอบรายการตัวเล่มหรือไม่"
+
+#: admin/modules/stock_take/finish.php:154
+msgid "Are you sure to end current stock take proccess? Once it finished there is no way you can rollback this stock take"
+msgstr "คุณแน่ใจสำหรับการจบกระบวนการตรวจสอบรายการตัวเล่มหรือไม่"
+
+#: admin/modules/stock_take/finish.php:171
+msgid "Purge Lost Item"
+msgstr "ทำการลบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/st_report.php:55
+msgid "CURRENT STOCK TAKE REPORT"
+msgstr "รายงานตรวจสอบรายการตัวเล่มปัจจุบัน"
+
+#: admin/modules/stock_take/st_report.php:69
+#: admin/modules/stock_take/index.php:63
+msgid "Total Item Stock Taked"
+msgstr "ผลรวมรายการตรวจสอบรายการตัวเล่ม"
+
+#: admin/modules/stock_take/st_report.php:71
+#: admin/modules/stock_take/st_report.php:72
+#: admin/modules/stock_take/st_report.php:73
+#: admin/modules/stock_take/index.php:64
+msgid "Total Item Lost"
+msgstr "ผลรวมรายการตัวเล่มทำการลบ"
+
+#: admin/modules/stock_take/st_report.php:77
+#: admin/modules/stock_take/st_report.php:79
+#: admin/modules/stock_take/index.php:66
+msgid "Total Item On Loan"
+msgstr "ผลรวมรายการตัวเล่มถูกยืม"
+
+#: admin/modules/stock_take/st_report.php:85
+msgid "Total Checked/Scanned Items"
+msgstr "เช็คทั้งหมด/ตัวเล่มที่ตรวจสอบ"
+
+#: admin/modules/stock_take/st_report.php:87
+#: admin/modules/stock_take/st_report.php:92
+#: admin/modules/stock_take/st_report.php:97
+#: admin/modules/stock_take/index.php:67
+msgid "Stock Take Participants"
+msgstr "ผู้ทำการตรวจสอบ"
+
+#: admin/modules/stock_take/st_report.php:92
+msgid "items already checked"
+msgstr "ตัวเล่มตรวจเสร็จเรียบร้อย"
+
+#: admin/modules/stock_take/st_report.php:99
+#: admin/modules/stock_take/index.php:60
+#: admin/modules/stock_take/index.php:109
+msgid "Start Date"
+msgstr "เริ่มต้นวันที่"
+
+#: admin/modules/stock_take/st_report.php:101
+#: admin/modules/stock_take/index.php:61
+#: admin/modules/stock_take/index.php:110
+msgid "End Date"
+msgstr "ถึงวันที่"
+
+#: admin/modules/stock_take/st_report.php:122
+#: admin/modules/stock_take/st_report.php:160
+msgid "Lost Items"
+msgstr "ตัวเล่มทำการลบ"
+
+#: admin/modules/stock_take/st_report.php:123
+#: admin/modules/stock_take/st_report.php:161
+msgid "Existing Items"
+msgstr "ตัวเล่มยังคงอยู่"
+
+#: admin/modules/stock_take/st_report.php:124
+#: admin/modules/stock_take/st_report.php:162
+msgid "On Loan Items"
+msgstr "ตัวเล่มถูกยืม"
+
+#: admin/modules/stock_take/st_report.php:127
+msgid " classes"
+msgstr " classes"
+
+#: admin/modules/stock_take/resync.php:58
+msgid "Re-synchronize will only update current stock take's item data. It won't update any new bibliographic or item data that were inserted in the middle of stock take proccess"
+msgstr "ตรวจสอบอีกครั้งกับการปรับปรุงรายการตรวจสอบข้อมูลรายการตัวเล่ม"
+
+#: admin/modules/stock_take/resync.php:61
+msgid "Resynchronize Now"
+msgstr "ตรวจสอบอีกครั้ง"
+
+#: admin/modules/stock_take/index.php:62
+msgid "Initializer"
+msgstr "ผู้ทำการเริ่มต้น"
+
+#: admin/modules/stock_take/index.php:65
+msgid "Total Item Exists"
+msgstr "ผลรวมรายการตัวเล่มยังคงอยู่"
+
+#: admin/modules/stock_take/index.php:68
+#: admin/modules/stock_take/index.php:83
+msgid "Status"
+msgstr "สถานะ"
+
+#: admin/modules/stock_take/index.php:69
+#: admin/modules/stock_take/index.php:111
+msgid "Report"
+msgstr "รายงาน"
+
+#: admin/modules/stock_take/index.php:85
+msgid "Currently Active"
+msgstr "ปัจจุบันมีการทำงาน"
+
+#: admin/modules/stock_take/current.php:61
+msgid "STOCK TAKE PROCCESS - Insert Item Code/Barcode with keyboard or barcode scanner"
+msgstr "ทำกระบวนตรวจสอบรายการตัวเล่ม - ใส่รหัสบาร์โค้ด/ใช้ยิงบาร์โค้ด"
+
+#: admin/modules/stock_take/current.php:63
+msgid "Change Status"
+msgstr "เปลี่ยนสถานะ"
+
+#: admin/modules/stock_take/current.php:64
+msgid "List stocktakes by"
+msgstr "แสดงรายการตรวจสอบรายการตัวเล่มโดย"
+
+#: admin/modules/stock_take/current.php:65
+msgid "Current User Only"
+msgstr "ผู้ใช้ปัจจุบันเท่านั้น"
+
+#: admin/modules/stock_take/current.php:66
+msgid "All User"
+msgstr "ผู้ใช้ทั้งหมด"
+
+#: admin/modules/stock_take/current.php:70
+msgid "Current Missing/Lost Items"
+msgstr "ปัจจุบันตัวเล่มถูกลบ"
+
+#: admin/modules/stock_take/current.php:94
+msgid "Exists"
+msgstr "ยังมีรายการอยู่"
+
+#: admin/modules/stock_take/current.php:94
+msgid "Missing"
+msgstr "ถูกลบ"
+
+#: admin/modules/system/holiday.php:65
+msgid "Holiday Data Successfully updated"
+msgstr "ปรับปรุงข้อมูลวันหยุดสำเร็จ"
+
+#: admin/modules/system/holiday.php:71
+msgid "Holiday FAILED to update. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงวันหยุดได้"
+
+#: admin/modules/system/holiday.php:77
+msgid "New Holiday Successfully Saved"
+msgstr "บันทึกเพิ่มวันหยุดสำเร็จ"
+
+#: admin/modules/system/holiday.php:104
+msgid "Holiday FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกวันหยุดได้"
+
+#: admin/modules/system/holiday.php:150
+#: admin/modules/system/submenu.php:35
+msgid "Holiday Setting"
+msgstr "ตั้งค่าวันหยุด"
+
+#: admin/modules/system/holiday.php:152
+msgid "Set holiday"
+msgstr "ตั้งค่าวันหยุด"
+
+#: admin/modules/system/holiday.php:153
+msgid "Special holiday"
+msgstr "วันหยุดพิเศษ"
+
+#: admin/modules/system/holiday.php:154
+msgid "Add Special holiday"
+msgstr "เพิ่มวันหยุดพิเศษ"
+
+#: admin/modules/system/holiday.php:187
+#: admin/modules/system/holiday.php:211
+#: admin/modules/system/holiday.php:215
+msgid "Holiday Date Start"
+msgstr "เริ่ม"
+
+#: admin/modules/system/holiday.php:190
+msgid "Holiday Date End"
+msgstr "สิ้นสุด"
+
+#: admin/modules/system/holiday.php:193
+#: admin/modules/system/holiday.php:212
+#: admin/modules/system/holiday.php:216
+msgid "Holiday Description"
+msgstr "รายละเอียดวันหยุด"
+
+#: admin/modules/system/holiday.php:197
+msgid "You are going to edit holiday data"
+msgstr "แก้ไขข้อมูลวันหยุด"
+
+#: admin/modules/system/holiday.php:210
+#: admin/modules/system/holiday.php:214
+msgid "Day name"
+msgstr "ชื่อ"
+
+#: admin/modules/system/holiday.php:249
+msgid "Maximum 6 day can be set as holiday!"
+msgstr "กำหนดวันหยุดได้ไม่เกิน 6 วัน"
+
+#: admin/modules/system/holiday.php:262
+msgid "Holiday settings saved"
+msgstr "ตั้งค่าวันหยุด"
+
+#: admin/modules/system/holiday.php:291
+msgid "Monday"
+msgstr "จันทร์"
+
+#: admin/modules/system/holiday.php:292
+msgid "Tuesday"
+msgstr "อังคาร"
+
+#: admin/modules/system/holiday.php:293
+msgid "Wednesday"
+msgstr "พุธ"
+
+#: admin/modules/system/holiday.php:295
+msgid "Thursday"
+msgstr "พฤหัสบดี"
+
+#: admin/modules/system/holiday.php:296
+msgid "Friday"
+msgstr "ศุกร์"
+
+#: admin/modules/system/holiday.php:297
+msgid "Saturday"
+msgstr "เสาร์"
+
+#: admin/modules/system/holiday.php:299
+msgid "Sunday"
+msgstr "อาทิตย์"
+
+#: admin/modules/system/holiday.php:304
+msgid "Save Settings"
+msgstr "บันทึกการตั้งค่า"
+
+#: admin/modules/system/submenu.php:23
+msgid "System"
+msgstr "จัดการระบบ"
+
+#: admin/modules/system/submenu.php:26
+msgid "System Configuration"
+msgstr "ตั้งค่าระบบ"
+
+#: admin/modules/system/submenu.php:26
+msgid "Configure Global System Preferences"
+msgstr "ปรับปรุงการตั้งค่าระบบ"
+
+#: admin/modules/system/submenu.php:28
+#: admin/modules/system/content.php:131
+msgid "Content"
+msgstr "เนื้อหา"
+
+#: admin/modules/system/submenu.php:31
+#: admin/modules/system/module.php:136
+msgid "Modules"
+msgstr "โมดูล"
+
+#: admin/modules/system/submenu.php:31
+msgid "Configure Application Modules"
+msgstr "ปรับปรุงส่วนโมดูล"
+
+#: admin/modules/system/submenu.php:32
+#: admin/modules/system/app_user.php:160
+msgid "System Users"
+msgstr "ผู้ใช้งานระบบ"
+
+#: admin/modules/system/submenu.php:32
+msgid "Manage Application User or Library Staff"
+msgstr "จัดการส่วนผู้ใช้งานระบบ"
+
+#: admin/modules/system/submenu.php:33
+#: admin/modules/system/user_group.php:159
+msgid "User Group"
+msgstr "กลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/submenu.php:33
+msgid "Manage Group of Application User"
+msgstr "จัดการกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/submenu.php:35
+msgid "Configure Holiday Setting"
+msgstr "ตั้งค่าวันหยุด"
+
+#: admin/modules/system/submenu.php:36
+#: admin/modules/system/barcode_generator.php:111
+msgid "Barcode Generator"
+msgstr "สร้างบาร์โค้ด"
+
+#: admin/modules/system/submenu.php:37
+#: admin/modules/system/sys_log.php:68
+msgid "System Log"
+msgstr "การเข้าใช้งานระบบ"
+
+#: admin/modules/system/submenu.php:37
+msgid "View Application System Log"
+msgstr "แสดงการเข้าใช้ระบบ"
+
+#: admin/modules/system/submenu.php:38
+#: admin/modules/system/backup.php:41
+msgid "Database Backup"
+msgstr "สำรองฐานข้อมูล"
+
+#: admin/modules/system/submenu.php:38
+msgid "Backup Application Database"
+msgstr "สำรองโปรแกรมฐานข้อมูล"
+
+#: admin/modules/system/user_group.php:47
+msgid "Group name can't be empty"
+msgstr "ไม่มีรายการกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/user_group.php:82
+msgid "Group Data Successfully Updated"
+msgstr "แก้ไขข้อมูลกลุ่มผู้ใช้งานระบบสำเร็จ"
+
+#: admin/modules/system/user_group.php:84
+msgid "Group Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดในการแก้ไขข้อมูลกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/user_group.php:110
+msgid "New Group Data Successfully Saved"
+msgstr "บันทึกข้อมูลกลุ่มผู้ใช้งานระบบสำเร็จ"
+
+#: admin/modules/system/user_group.php:112
+msgid "Group Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดในการบันทึกข้อมูล"
+
+#: admin/modules/system/user_group.php:159
+msgid "Add New Group"
+msgstr "เพิ่มกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/user_group.php:160
+msgid "Group List"
+msgstr "รายชื่อกลุ่มผู้ใช้งานระบ"
+
+#: admin/modules/system/user_group.php:199
+#: admin/modules/system/user_group.php:226
+msgid "Group Name"
+msgstr "ชื่อกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/user_group.php:210
+msgid "Privileges"
+msgstr "สิทธิพิเศษ"
+
+#: admin/modules/system/user_group.php:215
+msgid "You are going to edit Group data"
+msgstr "แก้ไขข้อมูลกลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/backup.php:41
+msgid "Start New Backup"
+msgstr "เริ่มสำรองข้อมูล"
+
+#: admin/modules/system/module.php:48
+msgid "Module name and path can't be empty"
+msgstr "ไม่มีรายการโมดูล"
+
+#: admin/modules/system/module.php:71
+msgid "Module Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลโมดูลสำเร็จ"
+
+#: admin/modules/system/module.php:73
+msgid "Module Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลโมดูลได้"
+
+#: admin/modules/system/module.php:84
+msgid "New Module Data Successfully Saved"
+msgstr "บันทึกเพิ่มโมดูลสำเร็จ"
+
+#: admin/modules/system/module.php:86
+msgid "Module Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาดไม่สามารถบันทึกข้อมูลโมดูลได้"
+
+#: admin/modules/system/module.php:136
+msgid "Add New Modules"
+msgstr "เพิ่มโมดูล"
+
+#: admin/modules/system/module.php:137
+msgid "Modules List"
+msgstr "รายการโมดูล"
+
+#: admin/modules/system/module.php:176
+#: admin/modules/system/module.php:196
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Module Name"
+msgstr "ชื่อโมดูล"
+
+#: admin/modules/system/module.php:178
+msgid "Module Path"
+msgstr "พาธโมดูล"
+
+#: admin/modules/system/module.php:180
+#: admin/modules/system/module.php:197
+msgid "Module Description"
+msgstr "รายละเอียด"
+
+#: admin/modules/system/module.php:184
+msgid "You are going to edit data"
+msgstr "ทำรายการแก้ไขข้อมูล"
+
+#: admin/modules/system/app_user.php:60
+msgid "User Name or Real Name can't be empty"
+msgstr "ยังไม่มีรายการชื่อผู้ใช้งานระบบ"
+
+#: admin/modules/system/app_user.php:63
+msgid "Login username or Real Name is probihited!"
+msgstr "ใส่ข้อมูลผู้ใช้งานระบบ"
+
+#: admin/modules/system/app_user.php:100
+msgid "User Data Successfully Updated"
+msgstr "ปรับปรุงข้อมูลผู้ใช้งานระบบสำเร็จ"
+
+#: admin/modules/system/app_user.php:102
+msgid "User Data FAILED to Updated. Please Contact System Administrator"
+msgstr "มีข้อผิดพลาด ไม่สามารถปรับปรุงข้อมูลผู้ใช้งานระบบได้"
+
+#: admin/modules/system/app_user.php:110
+msgid "New User Data Successfully Saved"
+msgstr "บันทึกข้อมูลผู้ใช้งานระบบสำเร็จ"
+
+#: admin/modules/system/app_user.php:112
+msgid "User Data FAILED to Save. Please Contact System Administrator"
+msgstr "มีข้อมูลผิดพลาด ไม่สามารถบันทึกข้อมูลผู้ใช้งานระบบได้"
+
+#: admin/modules/system/app_user.php:160
+msgid "Add New User"
+msgstr "เพิ่มชื่อผู้ใช้งานระบบใหม่"
+
+#: admin/modules/system/app_user.php:161
+msgid "User List"
+msgstr "รายชื่อผู้ใช้งานระบบ"
+
+#: admin/modules/system/app_user.php:231
+msgid "Group(s)"
+msgstr "กลุ่มผู้ใช้งานระบบ"
+
+#: admin/modules/system/app_user.php:240
+msgid "You are going to edit user profile"
+msgstr "แก้ไขข้อมูลผู้ใช้ระบบ"
+
+#: admin/modules/system/app_user.php:261
+#: admin/modules/system/app_user.php:266
+msgid "Last Login"
+msgstr "เข้าใช้ระบบล่าสุด"
+
+#: admin/modules/system/content.php:50
+msgid "Title or Path can't be empty!"
+msgstr "ไม่มีรายการ"
+
+#: admin/modules/system/content.php:72
+msgid "Content data updated"
+msgstr "ปรับปรุงเนื้อหา"
+
+#: admin/modules/system/content.php:74
+msgid "Content data FAILED to update!"
+msgstr "ปรับปรุงข้อมูลเนื้อหาสำเร็จ"
+
+#: admin/modules/system/content.php:82
+msgid "Content data saved"
+msgstr "บ้นทึกข้อมูลเนื้อหาสำเร็จ"
+
+#: admin/modules/system/content.php:84
+msgid "Content data FAILED to save!"
+msgstr "ไม่สามารถบันทึกเนื้อหาได้"
+
+#: admin/modules/system/content.php:131
+msgid "Add New Content"
+msgstr "เพิ่มเนื้อหาใหม่"
+
+#: admin/modules/system/content.php:132
+msgid "Content List"
+msgstr "รายการเนื้อหา"
+
+#: admin/modules/system/content.php:175
+#: admin/modules/system/content.php:208
+#: admin/modules/system/content.php:212
+msgid "Content Title"
+msgstr "ชื่อเนิ้อหา"
+
+#: admin/modules/system/content.php:177
+#: admin/modules/system/content.php:209
+#: admin/modules/system/content.php:213
+msgid "Path (Must be unique)"
+msgstr "พาธ"
+
+#: admin/modules/system/content.php:179
+msgid "Content Description"
+msgstr "รายละเอียดเนื้อหา"
+
+#: admin/modules/system/content.php:183
+msgid "You are going to update Content data"
+msgstr "แก้ไขข้อมูลข้อมูลเนื้อหา"
+
+#: admin/modules/system/sys_log.php:59
+msgid "System Log data completely cleared!"
+msgstr "ได้ทำการลบรายการเข้าใช้ระบบเรียบร้อยแล้ว"
+
+#: admin/modules/system/sys_log.php:70
+msgid "Are you SURE to completely clear system log data? This action cannot be undo!"
+msgstr "ยืนยันในการลบรายการหารใช้งานระบบหรือไม่"
+
+#: admin/modules/system/sys_log.php:70
+msgid "CLEAR LOGS"
+msgstr "ลบรายการการใช้งานระบบ"
+
+#: admin/modules/system/sys_log.php:71
+msgid "Save Logs record to file?"
+msgstr "ยืนยันการบันทึกรายการเข้าใช้งานระบบ"
+
+#: admin/modules/system/sys_log.php:71
+msgid "Save Logs To File"
+msgstr "บันทึกรายการเข้าใช้งานระบบ"
+
+#: admin/modules/system/sys_log.php:95
+msgid "Time"
+msgstr "เวลา"
+
+#: admin/modules/system/sys_log.php:97
+msgid "Message"
+msgstr "รายละเอียดการใช้งาน"
+
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Read"
+msgstr "อ่าน"
+
+#: admin/modules/system/module_priv_form.inc.php:26
+msgid "Write"
+msgstr "เขียน"
+
+#: admin/modules/system/barcode_generator.php:96
+msgid "Error creating barcode!"
+msgstr "เกิดข้อผิดพลาดไม่สามารถสร้างบาร์โค้ดได้"
+
+#: admin/modules/system/barcode_generator.php:101
+msgid "Barcode generation finished"
+msgstr "สร้างบาร์โค้ดสำเร็จ"
+
+#: admin/modules/system/barcode_generator.php:111
+msgid "Type barcodes text to one or more text field below and click"
+msgstr "ใส่ชนิดอักษรหรือตัวเลขลงในช่องว่างข้างใต้นี้แล้วคลิก"
+
+#: admin/modules/system/barcode_generator.php:111
+#: admin/modules/system/barcode_generator.php:141
+msgid "Generate Barcodes"
+msgstr "สร้างบาร์โค้ด"
+
+#: admin/modules/system/barcode_generator.php:125
+msgid "Barcode Size"
+msgstr "ขนาดบาร์โค๊ด"
+
+#: admin/modules/system/barcode_generator.php:125
+msgid "Small"
+msgstr "เล็ก"
+
+#: admin/modules/system/barcode_generator.php:126
+msgid "Medium"
+msgstr "กลาง"
+
+#: admin/modules/system/barcode_generator.php:127
+msgid "Big"
+msgstr "ใหญ่"
+
+#: admin/modules/system/index.php:46
+msgid "Modify global application preferences"
+msgstr "แก้ไขข้อมูลได้ตามต้องการ"
+
+#: admin/modules/system/index.php:119
+msgid "Settings saved. Refreshing page"
+msgstr "บันทึกสำเร็จ แสดงการตั้งค่าใหม่"
+
+#: admin/modules/system/index.php:140
+msgid "Library Name"
+msgstr "ชื่อย่อห้องสมุด"
+
+#: admin/modules/system/index.php:143
+msgid "Library Subname"
+msgstr "ชื่อเต็มห้องสมุด"
+
+#: admin/modules/system/index.php:157
+msgid "Public Template"
+msgstr "เทมเพลต สำหรับ OPAC"
+
+#: admin/modules/system/index.php:170
+msgid "Admin Template"
+msgstr "เทมเพลต สำหรับ ส่วนผู้ดูแลระบบ"
+
+#: admin/modules/system/index.php:174
+msgid "Default App. Language"
+msgstr "เลือกภาษา"
+
+#: admin/modules/system/index.php:182
+msgid "Number Of Collections To Show In OPAC Result List"
+msgstr "ตั้งค่าจำนวนรายการที่แสดงในหน้า OPAC"
+
+#: admin/modules/system/index.php:186
+msgid "Show Promoted Titles at Homepage"
+msgstr "แสดงรายการชื่อเรื่องใหม่ในหน้าโฮมเพจ"
+
+#: admin/modules/system/index.php:198
+msgid "Loan and Due Date Manual Change"
+msgstr "ยืม และ วันที่คืน"
+
+#: admin/modules/system/index.php:204
+msgid "Loan Limit Override"
+msgstr "จำกัดการยืม"
+
+#: admin/modules/system/index.php:210
+msgid "OPAC XML Detail"
+msgstr "แสดงรายละเอียด XML"
+
+#: admin/modules/system/index.php:216
+msgid "OPAC XML Result"
+msgstr "แสดงผล XML"
+
+#: admin/modules/system/index.php:220
+msgid "Forbid"
+msgstr "ไม่อนุญาต"
+
+#: admin/modules/system/index.php:221
+msgid "Allow"
+msgstr "อนุญาต"
+
+#: admin/modules/system/index.php:222
+msgid "Allow OPAC File Download"
+msgstr "อนุญาตให้ดาวน์โหลดเอกสารดิจิทัล"
+
+#: admin/modules/system/index.php:225
+msgid "Session Login Timeout"
+msgstr "เวลาอยู่ในระบบ(นาที)"
+
+#: admin/default/submenu.php:21
+msgid "Panel"
+msgstr "จัดการส่วนงานระบบ"
+
+#: admin/default/submenu.php:22
+msgid "Change User Profiles"
+msgstr "แก้ไขข้อมูลผู้ดูแลระบบ"
+
+#: admin/default/submenu.php:22
+msgid "Change Current User Profiles and Password"
+msgstr "แก้ไขข้อมูลผู้ดูแลระบบ"
+
+#: admin/default/session_check.inc.php:56
+msgid "Your Login Session has already timeout!"
+msgstr "การใช้งานของคุณได้หมดเวลากรุณาเข้าสู่ระบบใหม่"
+
+#: admin/default/home.php:30
+msgid "<strong>PHP GD</strong> extension is not installed. Please install it or application won't be able to create image thumbnail and barcode."
+msgstr "Extension <strong>PHP GD</strong> belum terinstall. Pastikan PHP GD terinstall atau aplikasi tidak dapat membuat thumbnail image dan membuat barcode"
+
+#: admin/default/home.php:34
+msgid "<strong>Freetype</strong> support is not enabled in PHP GD extension. Rebuild PHP GD extension with Freetype support or application won't be able to create barcode."
+msgstr "Dukungan <strong>Freetype</strong> pada PHP GD belum ada. Bangun atau install ulang PHP GD dengan dukungan Freetype atau aplikasi tidak dapat membuat barcode."
+
+#: admin/default/home.php:41
+msgid "There is currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail"
+msgstr "ขณะนี้มีสมาชิก <strong>{num_overdue}</strong>คนยืมเกินกำหนด ตรวจสอบรายการที่ <b> งานยืม-คืน </b>ดูที่เมนู<b> รายการยืมเกินกำหนด</b>"
+
+#: admin/default/home.php:46
+msgid "<strong>Images</strong> directory and directories under it is not writable. Make sure it is writable by changing its permission or you won't be able to upload any images and create barcodes"
+msgstr "Direktori <strong>Images</strong> dan direktori-direktori di bawahnya tidak dapat ditulis. Pastikan direktori-direktori ini bisa ditulis atau aplikasi tidak dapat mengunggah gambar dan membuat barcode."
+
+#: admin/default/home.php:50
+msgid "<strong>Repository</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any bibliographic attachments."
+msgstr "Direktori <strong>Repository</strong> dan direktori-direktori di bawahnya tidak dapat ditulis. Pastikan direktori-direktori ini bisa ditulis atau aplikasi tidak bisa mengunggah file attachment untuk data bibliografi."
+
+#: admin/default/home.php:54
+msgid "<strong>File upload</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any file, create report files and create database backups."
+msgstr "Direktori <strong>Upload File</strong> dan direktori-direktori di bawahnya tidak dapat ditulis. Pastikan direktori-direktori ini bisa ditulis atau aplikasi tidak bisa mengunggah file, membuat report dan backup."
+
+#: admin/default/home.php:58
+msgid "The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won't be able to do any database backups."
+msgstr "Letak program <strong>mysqldump</strong> tidak ditemukan! Periksa kembali file konfigurasi aplikasi atau anda tidak dapat melakukan backup."
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:81
+msgid "DELETE"
+msgstr "ลบ"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:82
+msgid "EDIT"
+msgstr "แก้ไข"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:97
+msgid "Are You Sure Want to DELETE Selected Data?"
+msgstr "ยืนยันการลบข้อมูล"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:101
+msgid "Delete Selected Data"
+msgstr "ลบข้อมูล"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:126
+msgid "ascendingly"
+msgstr "เรียงจากบนลงล่าง"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:136
+msgid "descendingly"
+msgstr "เรียงจากเรียงล่างขึ้นบน"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:206
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:208
+msgid "Order list by"
+msgstr "เรียงรายการโดย"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:371
+msgid "Check All"
+msgstr "เลือกรายการทั้งหมด"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:372
+msgid "Uncheck All"
+msgstr "ยกเลิกรายการทั้งหมด"
+
+#: simbio2/simbio_GUI/table/simbio_table.inc.php:213
+msgid "No Data"
+msgstr "ไม่มีข้อมูล"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:111
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:107
+msgid "First Page"
+msgstr "หน้าแรก"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:113
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:109
+msgid "Previous"
+msgstr "หน้าก่อนนี้ "
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:134
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:130
+msgid "Next"
+msgstr " หน้าถัดไป"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:142
+#: simbio2/simbio_GUI/paging/simbio_paging_ajax.inc.php:138
+msgid "Last Page"
+msgstr "หน้าสุดท้าย"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:95
+msgid "Delete Record"
+msgstr "ลบรายการ"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:96
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:257
+msgid "Date"
+msgstr "วันที่"
+
+#: lib/admin_logon.inc.php:64
+#: lib/member_logon.inc.php:59
+msgid "Error authenticating user and password to database"
+msgstr "มีข้อมูลผิดพลาด"
+
+#: lib/detail.inc.php:150
+msgid "Click to view others documents with this author"
+msgstr "คลิกเพื่อดูเอกสารอื่นๆ กับผู้แต่งนี้"
+
+#: lib/detail.inc.php:164
+msgid "Click to view others documents with this subject"
+msgstr "คลิกเพื่อดูเอกสารอื่นๆ กับหัวเรื่องนี้"
+
+#: lib/detail.inc.php:185
+msgid "There is no item/copy for this title yet"
+msgstr "ไม่มีตัวเล่ม"
+
+#: lib/detail.inc.php:189
+msgid "copies at"
+msgstr "รายการอยู่ ที่"
+
+#: lib/biblio_list.inc.php:333
+#: lib/biblio_list.inc.php:354
+msgid "Record Detail"
+msgstr "รายละเอียดบรรณานุกรม"
+
+#: lib/lang/localisation.php:60
+msgid "German"
+msgstr "German"
+
+#: lib/lang/localisation.php:61
+msgid "English"
+msgstr "English"
+
+#: lib/lang/localisation.php:62
+msgid "Indonesian"
+msgstr "ไทย"
+
+#: lib/contents/member.inc.php:28
+msgid "Welcome to Member's Area where you can view your current loan information and view your membership status."
+msgstr "ส่วนพื้นที่สำหรับตรวจสอบการยืม และสถานภาพของสมาชิกห้องสมุด"
+
+#: lib/contents/member.inc.php:51
+msgid "Please fill your Username and Password to Login!"
+msgstr "กรุณาเติมชื่อผู้ใช้งาน และรหัสผ่านที่จะเข้าใช้งาน"
+
+#: lib/contents/member.inc.php:66
+msgid "Login FAILED! Wrong username or password!"
+msgstr "ใส่ชื่อ รหัสผ่านเข้าใช้งานไม่ถูกต้อง"
+
+#: lib/contents/member.inc.php:76
+msgid "Library Member Login"
+msgstr "สมาชิกเข้าระบบ"
+
+#: lib/contents/member.inc.php:77
+msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
+msgstr "ใส่รหัสสมาชิกห้องสมุด และรหัสผ่านที่ได้รับจากห้องสมุด ถ้ายังไม่มีรหัสสมาชิกห้องสมุด และรหัสผ่านกรุณาติดต่อห้องสมุด"
+
+#: lib/contents/member.inc.php:81
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+#: lib/contents/member.inc.php:83
+msgid "Login"
+msgstr "เข้าใช้งาน"
+
+#: lib/contents/member.inc.php:100
+msgid "Current Password"
+msgstr "รหัสผ่านปัจจุบัน"
+
+#: lib/contents/member.inc.php:108
+msgid "Confirm Password"
+msgstr "ยืนยันรหัสผ่าน"
+
+#: lib/contents/member.inc.php:112
+#: lib/contents/member.inc.php:278
+msgid "Change Password"
+msgstr "เปลี่ยนรหัสผ่าน"
+
+#: lib/contents/member.inc.php:171
+msgid "Your Membership Already EXPIRED! Please extend your membership."
+msgstr "ความเป็นสมาชิกภาพของคุณหมดอายุแล้ว กรุณาขยายเวลาสำหรับการเป็นสมาชิกภาพ"
+
+#: lib/contents/member.inc.php:174
+msgid "Membership currently in pending state, no loan transaction can be made yet."
+msgstr "ยังไม่ได้อนุมัติความเป็นสมาชิกภาพห้องสมุด ไม่สามารถทำการยืมได"
+
+#: lib/contents/member.inc.php:207
+msgid "OVERDUED"
+msgstr "ยืมเกินกำหนด"
+
+#: lib/contents/member.inc.php:252
+msgid "item(s) currently on loan"
+msgstr "รายการตัวเล่ม ปัจจุบันถูกยืม"
+
+#: lib/contents/member.inc.php:260
+msgid "Your password have been changed successfully."
+msgstr "เปลี่ยนรหัสผ่านสำเร็จ"
+
+#: lib/contents/member.inc.php:263
+msgid "Current password entered WRONG! Please insert the right password!"
+msgstr "ใส่รหัสผ่านไม่ถูกต้องกรุณาใส่ให้ถูกต้อง"
+
+#: lib/contents/member.inc.php:265
+msgid "Password confirmation FAILED! Make sure to check undercase or uppercase letters!"
+msgstr ""
+
+#: lib/contents/member.inc.php:267
+msgid "Password update FAILED! ERROR ON DATABASE!"
+msgstr ""
+
+#: lib/contents/member.inc.php:274
+msgid "Member Detail"
+msgstr "รายละเอียดสมาชิก"
+
+#: lib/contents/member.inc.php:276
+msgid "Your Current Loan"
+msgstr "ปัจจุบันคุณยืม"
+
+#: lib/contents/default.inc.php:100
+#: lib/contents/default.inc.php:111
+msgid "Found  <strong>{biblio_list->num_rows}</strong> from your keywords"
+msgstr "พบ  <strong>{biblio_list->num_rows}</strong> รายการ จากคำค้น"
+
+#: lib/contents/default.inc.php:144
+msgid "You currently on page <strong>{page}</strong> of <strong>{total_pages}</strong> page(s)"
+msgstr "ปัจจุบันอยู่ <strong>{page}</strong> จาก <strong>{total_pages}</strong> หน้า"
+
+#: lib/contents/common.inc.php:25
+msgid "All Locations"
+msgstr "ทุกสถานที่จัดเก็บ"
+
+#: lib/contents/common.inc.php:34
+msgid "All Collections"
+msgstr "ทุกประเภท"
+
+#: lib/contents/common.inc.php:43
+msgid "All GMD/Media"
+msgstr "ทุกประเภท"
+
+#: lib/contents/login.inc.php:48
+msgid "Please supply valid username and password"
+msgstr "กรุณาใส่ข้อมูลให้ครบถ้วน"
+
+#: lib/contents/login.inc.php:63
+msgid "Welcome to Library Automation,"
+msgstr "ยินดีต้อนรับเข้าสู่การใช้ระบบ"
+
+#: lib/contents/login.inc.php:72
+msgid "Wrong Username or Password. ACCESS DENIED"
+msgstr "ใส่ข้อมูลผู้ใช้ รหัสผ่านไม่ถูกต้อง "
+
+#: lib/contents/login.inc.php:84
+msgid "Your browser does not support Javascript or Javascript is disabled. Application won't run without Javascript!"
+msgstr "เว็บเบราเซอร์ไม่สนับสนุนการใช้ จาวาสคริปต์ "
+
+#: lib/contents/attachment_list.php:48
+msgid "No Attachment"
+msgstr "ไม่มี"
+
+#: lib/contents/item_list.php:65
+msgid "Currently On Loan (Due on"
+msgstr "ถูกยืมออก (วันกำหนดคืน"
+
+#: lib/contents/item_list.php:67
+msgid "Unavailable"
+msgstr "ไม่อยู่"
+
+#~ msgid "Member E-Mail"
+#~ msgstr "E-mail Anggota"
+#~ msgid "Bibliography"
+#~ msgstr "Katalog"
+#~ msgid ""
+#~ "<strong>{dompdf_libdir}</strong> directory is not writable. Make sure it "
+#~ "is writable (and all directories under it) by changing its permission or "
+#~ "application won't be able to generate pdf files."
+#~ msgstr ""
+#~ "Direktori <strong>{dompdf_libdir}</strong> tidak dapat ditulis. Pastikan "
+#~ "direktori ini bisa ditulis atau aplikasi tidak dapat membuat file PDF."
+#~ msgid "Add New Kardex"
+#~ msgstr "Tambahkan Kardex"
+#~ msgid "cant be deleted because still have"
+#~ msgstr "tidak bisa dihapus karena masih memiliki"
+#~ msgid "Click for detail or edit this Record"
+#~ msgstr "Klik disini untuk detail atau perbaharuan rekod terkait"
+#~ msgid "Collection title must be set!"
+#~ msgstr "Judul koleksi harus dilengkapi!"
+#~ msgid "Collection Type ({item_name}) still used by {number_items} item(s)"
+#~ msgstr "Tipe koleksi {item_name} masih digunakan oleh {number_items} item"
+#~ msgid "ERROR! Data doesnt exists"
+#~ msgstr "ERROR! Data tidak ditemukan!"
+#~ msgid "Error! Fines data does not exists!"
+#~ msgstr "Error! Data denda tidak ditemukan!"
+#~ msgid "Error! Group data doesnt exists!"
+#~ msgstr "Error! Data Kelompok tidak ditemukan!"
+#~ msgid "Error! Holiday  data doesnt exists!"
+#~ msgstr "Error! Hari libur tidak ditemukan!"
+#~ msgid "Error! Loan Rules data doesnt exists!"
+#~ msgstr "Error! Data Peraturan Peminjaman tidak ditemukan!"
+#~ msgid "ERROR! Member Type data doesnt exists"
+#~ msgstr "ERROR! Data Tipe Keanggotaan tidak ditemukan"
+#~ msgid "Error! Module data doesnt exists!"
+#~ msgstr "Error! Data Modul tidak ditemukan!"
+#~ msgid "ERROR! Selected data doesn't exists"
+#~ msgstr "ERROR! Data terpilih tidak ditemukan"
+#~ msgid "Error! Subscription data does not exist!"
+#~ msgstr "Error! Data Berlangganan tidak ditemukan!"
+#~ msgid "Error! User data doesn't exists!"
+#~ msgstr "Error! Data Pengguna tidak ditemukan!"
+#~ msgid "File {file_d[0]} deleted"
+#~ msgstr "Berkas {file_d[0]} dihapus"
+#~ msgid "File {file_d[0]} FAIL to delete"
+#~ msgstr "Berkas {file_d[0]} TIDAK BISA dihapus"
+#~ msgid "File Attachment FAILED to upload"
+#~ msgstr "Lampiran Berkas GAGAL Diunggah"
+#~ msgid "File Attachment Uploaded Successfully"
+#~ msgstr "Lampiran Berkas Berhasil Diunggah"
+#~ msgid "GMD icon"
+#~ msgstr "Icon GMD"
+#~ msgid "GMD Successfully Deleted"
+#~ msgstr "Data GMD berhasil dihapus"
+#~ msgid "Group failed to delete"
+#~ msgstr "Kelompok pengguna GAGAL dihapus"
+#~ msgid "Group Successfully Deleted"
+#~ msgstr "Kelompok pengguna berhasil dihapus"
+#~ msgid "Holiday description cant be empty"
+#~ msgstr "Deskripi hari libur tidak boleh kosong"
+#~ msgid "Holiday failed to delete"
+#~ msgstr "Hari libur GAGAL dihapus"
+#~ msgid "Holiday Successfully Deleted"
+#~ msgstr "Hari libur berhasil dihapus"
+#~ msgid "is available"
+#~ msgstr "bisa dipinjam"
+#~ msgid "Item Data failed to delete"
+#~ msgstr "Item Data GAGAL dihapus"
+#~ msgid "Item Data Successfully Deleted"
+#~ msgstr "Item Data berhasil dihapus"
+#~ msgid "Item Status List"
+#~ msgstr "Daftar Status Koleksi"
+#~ msgid "Item(s) Data"
+#~ msgstr "Data Koleksi"
+#~ msgid "Kardex"
+#~ msgstr "Kardesk"
+#~ msgid "Label Image"
+#~ msgstr "Gambar Label"
+#~ msgid "Loan Rules FAIL To Delete"
+#~ msgstr "Peraturan Peminjaman GAGAL Dihapus"
+#~ msgid "Loan Rules Successfully Deleted"
+#~ msgstr "Peraturan Peminjaman Berhasil Dihapus"
+#~ msgid "Manage Kardex"
+#~ msgstr "Data Kardesk"
+#~ msgid "Member data"
+#~ msgstr "Data anggota"
+#~ msgid "Member Data failed to delete"
+#~ msgstr "Data Anggota gagal dihapus"
+#~ msgid "Member Data Successfully Deleted"
+#~ msgstr "Data Anggota Berhasil Dihapus"
+#~ msgid "Memeber(s) Having Overdue"
+#~ msgstr "Anggota Dengan Keterlambatan"
+#~ msgid "No File Attachment"
+#~ msgstr "Tidak Ada Berkas Terlampir"
+#~ msgid "No Image Available"
+#~ msgstr "Tidak ada gambar sampul"
+#~ msgid "No Place data yet"
+#~ msgstr "Belum ada tempat terbit"
+#~ msgid "Publisher Not Set Yet"
+#~ msgstr "Belum ada penerbit"
+#~ msgid "Record failed to delete"
+#~ msgstr "Rekod GAGAL dihapus"
+#~ msgid "Record Successfully Deleted"
+#~ msgstr "Cantuman Berhasil Dihapus"
+#~ msgid "Search Result"
+#~ msgstr "Hasil Pencarian"
+#~ msgid "Subject succesfully updated!"
+#~ msgstr "Subyek berhasil diperbaharui!"
+#~ msgid ""
+#~ "This Collection Type cant be deleted because still used by {item_d} "
+#~ "items. Delete Items data first"
+#~ msgstr ""
+#~ "Tipe Koleksi ini tidak bisa dihapus karena masih diguanakan oleh {item_d} "
+#~ "items. Hapus data item terlebih dahulu"
+#~ msgid ""
+#~ "This Location cant be deleted because still used by {item_d} items. "
+#~ "Delete Items data first"
+#~ msgstr ""
+#~ "Data Lokasi ini GAGAL dihapus karena masih digunakan oleh {item_d} item "
+#~ "dalam tabel\n"
+#~ "Hapus item terkait lebih dahulu"
+#~ msgid ""
+#~ "This title can not be deleted because still have {biblio_item} copies. "
+#~ "Delete Items data first"
+#~ msgstr ""
+#~ "Judul ini tidak bisa dihapus karena masih memiliki {biblio_item} item. "
+#~ "Hapus item terlebih dahulu"
+#~ msgid "unreturned items"
+#~ msgstr "pinjaman yang belum dikembalikan"
+#~ msgid "User failed to delete"
+#~ msgstr "Rekod Pengguna GAGAL dihapus"
+#~ msgid "User Successfully Deleted"
+#~ msgstr "Rekod Pengguna berhasil dihapus"
+#~ msgid "View Kardex"
+#~ msgstr "Lihat Data Kardex"
+#~ msgid "We have {copy} items/copies for this title"
+#~ msgstr "Perpustakaan memiliki {copy} kopi dari judul ini"
+#~ msgid ""
+#~ "We have {copy} items/copies for this title and ALL copies all currently "
+#~ "on loan"
+#~ msgstr "Perpustakaan memiliki {copy} kopi dan SELURUHNYA sedang dipinjamkan"
+#~ msgid "You cannot supply a blank password!"
+#~ msgstr "Password tidak boleh kosong!"
+#~ msgid "Print Selected Data"
+#~ msgstr "Cetak data terpilih"
+#~ msgid "All"
+#~ msgstr "Semua"
+#~ msgid "List"
+#~ msgstr "Daftar"
+

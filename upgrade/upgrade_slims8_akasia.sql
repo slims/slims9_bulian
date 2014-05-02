@@ -1,0 +1,1 @@
+DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';

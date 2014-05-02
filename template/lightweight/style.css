@@ -1,0 +1,429 @@
+/*--------------------------------------------------------------------
+
+	Theme Name	: Slims Meranti Mobile Template
+	Version		: 1.0.0
+	Author		: Eddy Subratha
+	Tags		: senayan, slims, themes, template, meranti
+	Copyrights	: (c) 2012 Eddy Subratha - eddy.subratha{at}gmail.com
+
+---------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------*/
+/* Default Font */
+/*----------------------------------------------------------------*/
+@import url('css/reset.css');
+@font-face {
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 400;
+  src: 	local('css/Karla/Karla-Regular'),
+	url('css/Karla/Karla-Regular.ttf') format('ttf');
+}
+
+/*----------------------------------------------------------------*/
+/* General */
+/*----------------------------------------------------------------*/
+html, body, #content {
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+html>body, html>body #content {
+    height: auto;
+}
+
+#header,#section,#footer{
+    width: 100%;
+	
+}
+
+body {
+	color: #333;
+	font: 10pt/1.5 Karla, Calibri, Arial, sans-serif;
+	background: transparent url(images/3.jpg) left top fixed;
+	background-size: cover;
+	margin: 0 auto;
+	padding:0;
+}
+
+a {
+  color: #666666;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+p {
+	margin-bottom:10px;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-weight:normal;
+}
+
+h1
+{
+	font-size: 150%;
+}
+
+h2
+{
+	font-size: 135%;
+}
+
+h3
+{
+	font-size: 120%;
+}
+
+h4
+{
+	font-size: 110%;
+}
+
+input,
+textarea,
+select
+{
+	color: #000000;
+	border: 1px solid #ccc;
+}
+
+select {
+	padding: initial;
+	height: 20px;
+	*height: auto;
+	line-height: 25px;
+	*margin-top: 4px;
+}
+
+/*----------------------------------------------------------------*/
+/* Header Layout */
+/*----------------------------------------------------------------*/
+#content
+{
+	text-align:center;
+	width:100%;
+	height:100%;
+}
+
+.treding
+{
+	background-color: #68b7df;
+	padding:10px;
+	width: 100%:
+}
+
+
+.social
+{
+	text-align:center;
+	height:auto;
+	width: 100%:
+	border-bottom:solid 1px #ffffff;
+}
+
+.social li
+{
+	margin-right:5px;
+	display:inline;
+}
+
+.social li a
+{
+	font-size: 12px;
+	color: #ffffff;
+	text-align: center;
+}
+
+.social li a:hover
+{	
+	background-color: rgba(0,0,0,0.1); 	
+}
+
+.title
+{
+	background-color: #262626;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	padding:10px;
+	width: 100%:
+}
+
+.title a
+{
+	color:#fff;
+}
+
+.sitename
+{
+	font-size:20px;
+	letter-spacing: -1px;
+	white-space: nowrap;
+}
+
+.subname
+{
+	font-size:12px;
+}
+
+.subname a{
+	color:#ffcc00;
+}
+
+.info
+{
+	border-top: solid 1px #ffffff;
+	background-color: #ffffff;
+	padding: 10px;
+	font-size: 10pt;
+	border-bottom:solid 1px #efefef;
+	
+}
+
+.subinfo
+{
+	background-color: #efefef;
+	padding:10px;
+	color:#999999;
+}
+/*----------------------------------------------------------------*/
+/* Item Layout */
+/*----------------------------------------------------------------*/
+#section
+{
+	min-height: 70%;	
+
+}
+.item
+{
+	text-align: left;
+	font-size: 14px; 
+	padding:10px;
+	border-bottom:solid 1px #dddddd;
+}
+
+.item:hover
+{
+	background-color: #ffffff;
+}
+
+
+
+.cover-list
+{
+	background: transparent url(images/arrow.png) center center no-repeat;
+	width: 50px;
+	height:50px;
+	display: block;
+	float: right;
+	margin: 0;
+	padding: 0;
+}
+
+.detailLink
+{
+	display:none;
+}
+
+.content
+{
+	margin:10px;
+	padding:10px;
+	border: solid 1px #ffffff;
+	border-radius: 10px;
+	background-color: rgba(255,255,255,0.8);
+	-webkit-box-shadow: inset 0px 0px 20px #999999;
+	-moz-box-shadow: inset 0px 0px 10px #999999;
+	box-shadow: inset 0px 0px 10px #999999;
+	text-align: left;
+	
+}
+
+.biblioPaging
+{
+	font-size: 12px;
+	padding:10px;
+	border-bottom: solid 1px #e6e6e6;
+	text-align: center;
+}
+
+/*----------------------------------------------------------------*/
+/* Search & Language Layout */
+/*----------------------------------------------------------------*/
+.tools
+{
+	background-color: #d64e3e;
+	padding: 10px;
+	display: block;
+	border-top: solid 1px #df7568;	
+}
+
+
+.keywords, .search
+{
+	padding:5px;
+}
+
+.keywords,
+.search,
+.biblioMarkFormAction input,
+.memberDetail input,
+#loginButton,
+a.basket,
+#memberLogout,
+.login_input input,
+.memberButton,
+.errorBox
+{
+	padding:5px;
+	border: none;
+	border-radius: 50px;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	-webkit-appearance: none;
+	outline: 0;
+	cursor: pointer;
+}
+
+.keywords
+{
+	background: #efefef url(images/magnifier.png) 5px center no-repeat;
+	width: 60%;
+	-webkit-box-shadow: inset 2px 2px 5px #cccccc;
+	-moz-box-shadow: inset 1px 1px 12px #cccccc;
+	-box-shadow: inset 0px 0px 5px #cccccc;
+	border: solid 1px #ccc;
+	-webkit-appearance: button;
+	padding-left:28px;
+	margin:0;
+}
+
+.search
+{
+	color: #EFDDA8;
+	background: #262C32;
+	border: solid 1px #262C32;
+	padding: 6px 15px;
+}
+
+.biblioMarkFormAction
+{
+	padding:10px 0px;
+}
+
+.biblioMarkFormAction input,
+#loginButton,
+a.basket,
+#memberLogout,
+.memberButton
+{
+	color: #ffffff;
+	background: #93d176;
+	border: solid 1px #75c450;
+	padding: 8px;	
+}
+
+.errorBox
+{
+	color: #ffffff;
+	background: #df7569;
+	border: solid 1px #d64f3f;
+	padding: 8px;
+	text-align: center;
+}
+
+.subItem label
+{
+	font-size:12px;
+	color:#d16446;
+}
+
+.memberBasketAction
+{
+	padding:10px 0px;	
+}
+
+#memberLogout
+{
+	padding:4px 7px;
+	clear: both;
+}
+/*----------------------------------------------------------------*/
+/* Detail Layout */
+/*----------------------------------------------------------------*/
+
+.content table
+{	
+	margin-right:10px;		
+}
+.border td
+{
+	border-bottom: solid 1px #efefef;
+	padding: 8px;
+}
+
+.tblHead
+{
+	color: #df7568;
+	text-align: right;
+}
+
+.content h3, .memberInfoHead, .tagline, .fieldLabel
+{
+	color: 	#df7568;
+	font-size:16px;
+	letter-spacing: -1px;
+}
+
+.loginInfo
+{
+	padding-top:5px;
+}
+
+
+/*----------------------------------------------------------------*/
+/* Member Layout */
+/*----------------------------------------------------------------*/
+.memberDetail, .memberLoanList
+{
+	width:100%;	
+}
+.memberDetail td, .memberLoanList td
+{
+	padding:3px ;
+	border-bottom: dotted 1px #999;
+}
+
+.dataListHeader a
+{
+	color:#333333;
+	font-weight:bold;
+}
+
+/*----------------------------------------------------------------*/
+/* Footer Layout */
+/*----------------------------------------------------------------*/
+
+#footer
+{
+	color: #FFFFFF;
+	display: block;
+	font-size: 12px;
+	width:100%;
+	background-color: rgba(0,0,0,0.9);
+	margin: 0;
+}
+
+.footer_info
+{
+	background-color: #333333;
+}
+.footer_info, .language
+{
+	padding:10px;
+}
+
