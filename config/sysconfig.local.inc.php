@@ -31,23 +31,15 @@ if (!defined('INDEX_AUTH')) {
 // database constant
 // change below setting according to your database configuration
 define('DB_NAME', 'senayandb');
-define('DB_USERNAME', 'arie');
-define('DB_PASSWORD', 'ariearie');
+define('DB_USERNAME', 'senayanuser');
+define('DB_PASSWORD', 'password_senayanuser');
 
 // define any other sysconfig variables below
-$sysconf['index']['type'] = 'index';
-
-$sysconf['ucs']['enable'] = true;
-$sysconf['ucs']['auto_delete'] = true;
-$sysconf['ucs']['auto_insert'] = true;
-
-/* WEBCAM feature */
-$sysconf['webcam'] = true;
-
-$sysconf['allow_pdf_download'] = false;
+$sysconf['index']['type'] = 'default';
 
 // additional e-mail recipients for library administrator
 /*
 $sysconf['mail']['add_recipients'][] = array('from' => 'senayan.slims@slims.web.id', 'from_name' => 'Librarian 2');
 $sysconf['mail']['add_recipients'][] = array('from' => 'wynerst@gmail.com', 'from_name' => 'Librarian 3');
 */
+?>
