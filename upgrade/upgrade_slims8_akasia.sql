@@ -227,6 +227,7 @@ CREATE TABLE IF NOT EXISTS `chat_user` (
   `avatar_reference_user` varchar(255) NOT NULL,
   `avatar_reference_avatar` varchar(255) NOT NULL,
   `avatar_field_name` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_chat_user`),
   UNIQUE KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='SLiMS table for chat support (hendro wicaksono)' AUTO_INCREMENT=1 ;
