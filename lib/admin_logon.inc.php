@@ -110,13 +110,15 @@ class admin_logon
         $_SESSION['biblioTopic'] = array();
         $_SESSION['biblioAttach'] = array();
 
-        if ($sysconf['chat_system']['enabled']) {
-          // register/update user info chat table 
-          $_SESSION['chat_mid'] = mt_rand();
-          $chatinfo['userid'] = $_SESSION['chat_mid'];
-          $chatinfo['username'] = 'Librarian - '.$_SESSION['realname'];
-          $chat_reg = new simbio_dbop ($obj_db);
-          $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
+        if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['librarian'])) {
+          if ($sysconf['chat_system']['vendors'] == 'freichat') {
+            // register/update user info chat table 
+            $_SESSION['chat_mid'] = mt_rand();
+            $chatinfo['userid'] = $_SESSION['chat_mid'];
+            $chatinfo['username'] = 'Librarian - '.$_SESSION['realname'];
+            $chat_reg = new simbio_dbop ($obj_db);
+            $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
+          }
         }
 
         if (!defined('UCS_VERSION')) {
