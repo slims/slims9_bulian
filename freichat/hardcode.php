@@ -1,8 +1,8 @@
 <?php
 /* Data base details */
-$dsn='mysql:host=localhost;dbname=senayandb'; //DSN
-$db_user='senayanuser'; //DB username 
-$db_pass='password_senayanuser'; //DB password 
+$dsn='mysql:host=localhost;dbname=db_akasia'; //DSN
+$db_user='lenovo_user'; //DB username 
+$db_pass='12345678'; //DB password 
 $driver='Custom'; //Integration driver
 $db_prefix=''; //prefix used for tables in database
 $uid='52b6b359e98f3'; //Any random unique number
