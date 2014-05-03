@@ -1,0 +1,29 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  /*background: black;*/
+  font: 12px/170% Verdana, sans-serif;
+  color:#EFEFEF;
+  
+ background-image:url('images/gray_bg2.jpg');
+  /*  background-size: 100%;*/
+background-attachment : fixed;
+}
+
+
+.content{
+
+/*background-color:black;*/
+}
+
+.menux{
+
+background-image:url('images/gray_bg.jpg');
+  /*
+  opacity:0.4;
+  moz-opacity:0.4;
+  filter:alpha(opacity=40);*/
+}
+
+

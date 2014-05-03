@@ -1,0 +1,428 @@
+.frei_tab {
+  font-family: arial;
+  font-size: 1em !important;
+}
+.frei_chatroom.right .frei_tab,
+.frei_chatroom.left .frei_tab {
+  top: 3px;
+}
+.frei_room_n_online {
+  color: black;
+}
+.frei_chatroom.left .frei_tab {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.frei_chatroom.right .frei_tab {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.frei_chatroom {
+  width: 550px;
+  padding: 0px;
+  font-family: Arial;
+  height: 400px;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  background-repeat: no-repeat;
+}
+.frei_chatroom .frei_tab {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 12px;
+  background: #333;
+  padding: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+.frei_chatroom .frei_chatroom-content ul {
+  list-style: square;
+  margin: 0 0 0 25px;
+  line-height: 1.3em;
+}
+.frei_chatroom .frei_chatroom-content ul li {
+  font-size: 10px;
+}
+.frei_chatroom .frei_chatroom-content ul li a {
+  color: #fff;
+  font-size: 13px;
+}
+.frei_chatroom .frei_chatroom-content ul li a:hover {
+  color: #000;
+}
+#frei_smileys_chatroom:after {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  border: 10px solid transparent;
+  border-left-color: #333;
+  top: 105px;
+  left: 160px;
+}
+.frei_chatroom.right,
+.frei_chatroom.right .frei_tab {
+  border-right: none;
+}
+.frei_chat_userlist_hover {
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.4), rgba(255,255,255,0.1) 0 1px 0;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.4), rgba(255,255,255,0.1) 0 1px 0;
+}
+.frei_roompanel {
+  border-top: grey solid 1px;
+  width: 100%;
+  height: 328px;
+  overflow: auto;
+}
+.chatroommessagearea {
+  resize: none;
+  height: 73%;
+  font-size: 11px;
+  outline: 0;
+  width: 100%;
+  padding: 0px;
+  font-family: helvetica;
+  color: black;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid #CCC;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -webkit-transition: border linear .2s, box-shadow linear .2s;
+  -moz-transition: border linear .2s, box-shadow linear .2s;
+  -o-transition: border linear .2s, box-shadow linear .2s;
+  transition: border linear .2s, box-shadow linear .2s;
+}
+.chatroommessagearea:focus {
+  border-color: rgba(82,168,236,0.8);
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+}
+.frei_chatroom.left,
+.frei_chatroom.left .frei_tab {
+  border-left: none;
+  width: 550px;
+}
+.frei_chat_chatroomselected {
+  background-color: #333333;
+  font-weight: bold;
+}
+.frei_chatroomleftpanel {
+  border-left: 1px solid black;
+  height: 100%;
+  float: left;
+  width: 63%;
+}
+.frei_chatroom.left {
+  left: 0;
+}
+.frei_chatroom.left .frei_tab {
+  right: 3px;
+  margin-top: -3px;
+  background-position: 100% 0;
+}
+.frei_lobby_room_1 {
+  float: left;
+  padding-left: 5px;
+}
+.frei_chatroom_add_smiley {
+  line-height: 0px;
+  position: relative;
+  left: 95.6%;
+  width: 32px;
+  top: 39px;
+}
+.frei_chatroom_add_smiley img {
+  opacity: 0.5;
+}
+.frei_chatroom_add_smiley img:hover {
+  opacity: 1;
+}
+.frei_chatroom-content a {
+  color: #fff;
+}
+.frei_chatroom-content p {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+.frei_chatroom.bottom,
+.frei_chatroom.bottom .frei_tab {
+  border-bottom: none;
+}
+.frei_lobby_room_2 {
+  float: right;
+  padding-right: 5px;
+  width: 70px;
+  text-align: right;
+}
+.frei_chatroom.bottom {
+  bottom: 0;
+}
+.frei_chatroom.bottom .frei_tab {
+  top: 3px;
+  background-position: 0 0;
+}
+.frei_lobby_room_3 {
+  float: right;
+  padding-right: 0px;
+}
+.frei_lobby_room {
+  color: #000000;
+  display: block;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 100%;
+  cursor: pointer;
+  height: 15px;
+}
+.frei_room_close {
+  position: absolute;
+  right: 10px;
+  font-size: 18px;
+  top: 5px;
+}
+.frei_chatroomtextarea {
+  width: 326px;
+  height: 52px;
+  line-height: 0px;
+  margin: 0px auto;
+}
+#chatroommessagearea :focus {
+  border: 2px solid #0060A8;
+}
+.frei_chatroompanel {
+  height: 364px;
+  border-right: solid grey 1px;
+  border-bottom: solid grey 1px;
+  background: whitesmoke;
+}
+.frei_roomcontainer {
+  width: 500px;
+  content: overflow;
+}
+.frei_chatroom.align-right .frei_tab {
+  margin-right: -3px;
+}
+.frei_chatroom.right {
+  right: 0;
+}
+.frei_chatroom.right .frei_tab {
+  left: 3px;
+  margin-top: -3px;
+}
+.frei_lobby_room_4 {
+  float: right;
+  padding-right: 0px;
+}
+.frei_chatroommsgcnt {
+  text-align: justify;
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+  font-size: 11px;
+  font-style: arial, helvetica, sans-serif;
+}
+.frei_userpanel {
+  width: 100%;
+  height: 328px;
+  overflow: auto;
+}
+.frei_chatroom_msgcontent {
+  background: white;
+  color: grey;
+  font-weight: normal;
+  font-size: 8pt;
+  opacity: 1;
+  z-index: 10000;
+  width: 94%;
+  border-radius: 4px;
+  box-shadow: 0px 1px 2px black;
+  padding-top: 3px;
+  padding-left: 8px;
+  padding-bottom: 2px;
+}
+.frei_chatroom,
+.frei_chatroom .frei_tab {
+  border-left: 0px solid #ccc;
+}
+.frei_chatroom.top {
+  top: 0;
+}
+.frei_chatroom.top .frei_tab {
+  bottom: 3px;
+  background-position: 0 100%;
+}
+#chatroom_branding a:link,
+#chatroom_branding a:visited,
+#chatroom_branding a:hover,
+#chatroom_branding a:active {
+  text-decoration: none !important;
+  color: blue !important;
+  background-color: none !important;
+}
+#frei_smileys_chatroom {
+  position: absolute;
+  left: 350px;
+  bottom: 20px;
+}
+.frei_chatroom.top,
+.frei_chatroom.top .frei_tab {
+  border-top: none;
+}
+.frei_selected_room {
+  color: white;
+  display: block;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 100%;
+  cursor: pointer;
+  height: 15px;
+  font-weight: bold;
+  background: #1699F3;
+  box-shadow: inset 0px 0px 6px 0px black;
+}
+.frei_selected_room:hover {
+  background: #0b87dc;
+}
+.frei_chatroom_message {
+  padding-left: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+.frei_chatroomrightpanel {
+  float: left;
+  width: 198px;
+  border-left: solid grey 1px;
+  background: white;
+  height: 100%;
+}
+.frei_roomtitle {
+  font-weight: bold;
+  cursor: pointer;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 19px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: white;
+  background: #7db9e8;
+  background: -moz-linear-gradient(top,#7db9e8 24%,#1e5799 100%);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(24%,#7db9e8),color-stop(100%,#1e5799));
+  background: -webkit-linear-gradient(top,#7db9e8 24%,#1e5799 100%);
+  background: -o-linear-gradient(top,#7db9e8 24%,#1e5799 100%);
+  background: -ms-linear-gradient(top,#7db9e8 24%,#1e5799 100%);
+  background: linear-gradient(to bottom,#7db9e8 24%,#1e5799 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db9e8',endColorstr='#1e5799',GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #BFBFBF;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 100%;
+}
+.frei_roomtitle img {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+#chatroom_branding {
+  bottom: 65px;
+  position: absolute;
+  display: block;
+}
+#chatroom_branding a {
+  color: blue;
+  text-decoration: none !important;
+}
+.chatroom_messagefrom_right {
+  text-align: right;
+  padding-left: 240px;
+  font-weight: bold;
+  color: #000000;
+}
+.frei_chatroom.align-left .frei_tab {
+  margin-left: -3px;
+  width: 64px;
+}
+.chatroom_messagefrom_left {
+  text-align: left;
+  font-weight: bold;
+  color: black;
+  padding-bottom: 10px;
+}
+.frei_userlist {
+  color: black;
+  cursor: pointer;
+  height: 20px;
+  line-height: 100%;
+  text-align: left;
+  padding-top: 9px;
+  padding-bottom: 5px;
+  padding-left: 4px;
+}
+.frei_userlist_onhover {
+  background-color: #B2C9F1 !important;
+  color: #000000;
+  text-align: left;
+}
+.frei_chatroom_tabs {
+  height: 30px;
+}
+.frei_chatroom_tabs > ul {
+  font-size: 1em;
+  list-style: none !important;
+  margin: 0px !important;
+  padding: 0 !important;
+}
+.frei_chatroom_tabs > ul > li > a {
+  color: white;
+}
+.frei_chatroom_tabs > ul > li {
+  cursor: pointer;
+  float: left;
+  color: #FFF;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  background: #1985D1;
+  background: -moz-linear-gradient(top,#0C91EC 0%,#257AB6 100%);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#0C91EC),color-stop(100%,#257AB6));
+  width: 50%;
+  padding: 8px 0px 8px 0px;
+  text-align: center;
+  margin: 0;
+}
+.frei_chatroom_tabs > ul > li a:hover {
+  color: white !important;
+  background: none;
+}
+.frei_chatroom_tabs_selected {
+  box-shadow: inset 0px 1px 6px black;
+}
+#frei_userpanel,
+#frei_roompanel {
+  float: left;
+  display: none;
+}
+.frei_chatroom_tabs_container {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}

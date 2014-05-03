@@ -1,0 +1,1643 @@
+.frei_chatroom_formatter_plugin {
+  height: 12px;
+  width: 12px;
+  background: grey;
+  border: 1px solid black;
+  border-radius: 14px;
+  float: left;
+  margin-right: 4px;
+  opacity: 0.8;
+}
+.frei_chatroom_formatter_plugin:hover {
+  opacity: 1;
+}
+.frei_nanocontent {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.frei_nanocontent .content {
+  position: absolute;
+  overflow: scroll;
+  overflow-x: hidden;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+}
+.frei_nanocontent .content:focus {
+  outline: thin dotted;
+}
+.frei_nanocontent .content::-webkit-scrollbar {
+  visibility: hidden;
+}
+.has-scrollbar .content::-webkit-scrollbar {
+  visibility: visible;
+}
+.frei_nanocontent > .pane {
+  position: absolute;
+  width: 6px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  visibility: hidden \9;
+  opacity: .01;
+  -webkit-transition: .2s;
+  -moz-transition: .2s;
+  -o-transition: .2s;
+  transition: .2s;
+}
+.frei_nanocontent > .pane > .slider {
+  position: relative;
+  margin: 0 1px;
+  visibility: hidden;
+  border-radius: 12px;
+}
+.frei_nanocontent:hover > .pane > .slider {
+  visibility: visible;
+}
+.frei_nanocontent > .pane:hover > .slider {
+  background: #999;
+}
+.frei_nanocontent > .pane:hover {
+  background: rgba(0,0,0,0.1);
+}
+.frei_nanocontent:hover > .pane {
+  visibility: visible \9;
+  opacity: 0.99;
+}
+.pane.active {
+  visibility: visible \9;
+  opacity: 0.99;
+}
+.pane.flashed {
+  visibility: visible \9;
+  opacity: 0.99;
+}
+.frei_nanocontent .slider {
+  background-color: #A0A0A0;
+  background: rgba(0,0,0,0.2);
+}
+.chatboxtextarea:focus {
+  border: 2px solid #0060a8;
+  margin: 0;
+  background: white;
+}
+.frei_smileys_table {
+  border: 0;
+  margin: 0;
+  width: 100%;
+}
+.frei_smileys_table tr,
+.frei_smileys_table td,
+.frei_smileys_table th,
+.frei_smileys_table tbody {
+  border-collapse: collapse;
+  border: 0px;
+  padding: 0px;
+}
+.frei_smileys_table tr td {
+  padding: 0px;
+  background: white;
+}
+#freichat {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  margin-right: 5px;
+  font-family: helvetica, arial, sans-serif;
+  font-size: 13px;
+}
+.freichat {
+  position: relative;
+  padding: 0px;
+  background-color: none;
+  color: #000000;
+  text-align: justify;
+  font-size: 14px;
+  width: 200px;
+  background-image: none;
+  border: none;
+  line-height: 1.4em;
+  margin: 0px;
+}
+.freichat a:hover {
+  text-decoration: none;
+  background-color: white;
+  color: blue;
+}
+.freichat img {
+  padding-left: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  display: inline;
+  border-top: 0px;
+  border-bottom: 0px;
+}
+.frei_smileys {
+  position: absolute;
+  color: white;
+  background: white;
+  display: none;
+  width: 150px;
+  height: 115px;
+  bottom: 86px;
+  left: -5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.frei_smileys img {
+  cursor: pointer;
+  border: 1px solid white;
+  font-size: 12px;
+  padding: 1px;
+  width: 16px;
+  height: 16px;
+}
+.frei_smileys img:hover {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.frei_smiley_image {
+  padding: 1px 0 1px 2px;
+  border: 0px;
+  width: 24px;
+  height: 24px;
+}
+.frei_box {
+  position: relative;
+  bottom: 0px;
+  width: 225px;
+  z-index: 9999999;
+}
+.frei {
+  font-size: 13px;
+  height: 112px;
+  overflow: auto;
+  width: 200px;
+}
+.frei img {
+  border: none;
+  padding-left: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.frei a:hover {
+  color: blue;
+}
+.frei a:link {
+  text-decoration: none;
+  color: wroomcontainerhite;
+  font-weight: normal;
+}
+.onfreioffline {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10001;
+}
+.status_available {
+  width: auto;
+  display: inline-block;
+  padding-right: 5px;
+}
+.status_busy {
+  width: auto;
+  display: inline-block;
+  margin-left: 10px;
+}
+.status_invisible {
+  width: auto;
+  display: inline-block;
+  padding-right: 5px;
+}
+.status_offline {
+  width: auto;
+  display: inline-block;
+  margin-left: 10px;
+}
+*html #freichat {
+  position: absolute;
+  bottom: 0px;
+}
+.freicontain {
+  z-index: 99999;
+  bottom: 0px;
+  position: fixed;
+  width: 225px;
+  display: block;
+  overflow: visible;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+.user_freichat_head_content {
+  font-weight: bold;
+  color: white;
+}
+.frei_chat_status {
+  background-color: inherit;
+  color: #b94a48;
+  font-size: 80%;
+  padding-bottom: 2px;
+  display: block;
+  bottom: 80px;
+}
+.freichat_time {
+  color: black;
+  float: right;
+  font-size: 9px;
+}
+.freichathead {
+  cursor: pointer;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 0 1px 0 #194b7e;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#5f9cc5),to(#396b9e));
+  background-image: -webkit-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -moz-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -ms-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -o-linear-gradient(#5f9cc5,#396b9e);
+  background-image: linear-gradient(#5f9cc5,#396b9e);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 202px;
+}
+.freichathead img {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+#offlineimg {
+  border-radius: 10px 0px 0px 0px;
+}
+.freichat_userscontentstatus {
+  float: right;
+  padding-right: 5px;
+  padding-top: 4px;
+  padding-right: 4px;
+}
+.frei_msg_container {
+  color: black;
+}
+.chatboxmessagecontent_him {
+  color: black;
+}
+.chatboxmessagecontent_him a {
+  color: blue;
+  text-decoration: none;
+}
+.chatboxmessagecontent_him a:hover {
+  color: black;
+  background: white;
+  border-bottom: 1px dotted black;
+  cursor: pointer;
+}
+.chatboxmessagecontent_me {
+  color: black;
+}
+.chatboxmessagecontent_me a {
+  color: blue;
+  text-decoration: none;
+}
+.chatboxmessagecontent_me a:hover {
+  color: black;
+  background: white;
+  border-bottom: 1px dotted black;
+  cursor: pointer;
+}
+.chatboxmessagefrom_him {
+  font-weight: bold;
+}
+.chatboxmessagefrom_me {
+  font-weight: bold;
+}
+.chatboxhead {
+  position: relative;
+  cursor: pointer;
+  padding: 6px 0px 6px 0px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 0 1px 0 #194b7e;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#5f9cc5),to(#396b9e));
+  background-image: -webkit-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -moz-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -ms-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -o-linear-gradient(#5f9cc5,#396b9e);
+  background-image: linear-gradient(#5f9cc5,#396b9e);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 225px;
+}
+.chatboxhead img {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+.chatboxmessage {
+  color: #ffffff;
+  font-size: 0.9em;
+}
+.freichat_linkprofile_s {
+  visibility: hidden;
+}
+.freichat_linkprofile_s img {
+  padding-right: 6px;
+  padding-top: 2px;
+  height: 20px;
+  width: 20px;
+}
+.freichat_userscontentname {
+  float: left;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-top: 4px;
+  text-align: left;
+}
+.input_blue_focus {
+  border: 2px solid #0060A8;
+  outline: 0;
+  outline: thin dotted 9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+}
+.chatboxinput {
+  padding: 3px;
+  background-color: #ffffff;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  background-image: none;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #cccccc;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+}
+.chatboxinput img {
+  margin-left: 4px;
+}
+.chatboxinput :focus {
+  border: 2px solid #0060A8;
+  outline: 0;
+  outline: thin dotted 9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+}
+#frei_member_search_input {
+  padding: 0px 0px 0px 15px;
+  width: 181px;
+  margin: 0;
+}
+.zero-border-radius {
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+}
+.frei_search_members {
+  display: block;
+}
+.frei_search_members input {
+  width: 100%;
+  -webkit-box-sizing: content-box;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-top: 1px solid black;
+  cursor: text;
+  background: url("search.jpg") no-repeat;
+  margin: 0px;
+  color: #999;
+  outline: 0;
+  padding: 0px;
+  line-height: 15px;
+}
+.min_freichathead {
+  padding-right: 10px;
+  float: right;
+}
+.frei_status_options_selected {
+  border: 1px solid black;
+}
+.frei_tools_options img {
+  cursor: pointer;
+  padding-bottom: 15px;
+  padding-right: 0px;
+}
+#freichat_mobile_chat {
+  position: fixed;
+  z-index: 999999999;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #BFBFBF;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  border: 1px solid #BBB;
+  border-bottom-color: #A2A2A2;
+  right: 0px;
+  vertical-align: middle;
+  bottom: 0px;
+  width: 100px;
+  text-align: center;
+  height: 23px;
+  padding-top: 7px;
+  cursor: pointer;
+  border-bottom: 0;
+  border-right: 0;
+}
+#freichat_mobile_chat:hover {
+  background: #e6e6e6;
+}
+.freichat_mobile_new_messages {
+  line-height: 18px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  color: white;
+  border: 1px solid #efefef;
+  background: #f56c7e;
+  height: 18px;
+  text-align: center;
+  width: 18px;
+  float: right;
+  border-radius: 10px;
+  position: relative;
+  bottom: 18px;
+  right: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.17), 0 1px 1px rgba(0,0,0,0.2);
+  -moz-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.17), 0 1px 1px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.17), 0 1px 1px rgba(0,0,0,0.2);
+  font-weight: bold;
+}
+.freichat_userlist_hover {
+  background-color: #B2C9F1;
+  color: #000000;
+  text-align: left;
+}
+.langlist a {
+  color: white;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 13px;
+}
+.langlist a:hover {
+  color: blue;
+}
+.freicontain0 {
+  right: 208px;
+  z-index: 999999;
+}
+.freichat_userlist {
+  cursor: pointer;
+  height: 26px;
+  line-height: 100%;
+  text-align: left;
+  padding-top: 0px;
+  padding-bottom: 1px;
+  width: 99%;
+}
+.chatboxoptions {
+  padding-right: 6px;
+  float: right;
+}
+.chatboxoptions > a {
+  background: none;
+  padding: 0;
+}
+.chatboxoptions > a img {
+  border: none;
+}
+.frei_smileys_table {
+  border-collapse: collapse;
+}
+.freicontain1 {
+  right: 432px;
+  z-index: 999998;
+}
+.frei_user_brand {
+  border: 1px solid black;
+  background: white;
+  width: 200px;
+}
+.originalmessagecontent {
+  position: absolute;
+  color: white;
+  background-color: black;
+  overflow: auto;
+  border: 1px solid white;
+  width: 150px;
+  height: 44px;
+}
+.originalmessagecontent a {
+  color: white;
+}
+.chatboxtitle {
+  float: left;
+  color: #FFFFFF;
+  padding-left: 6px;
+}
+.freicontain2 {
+  right: 658px;
+  z-index: 999997;
+}
+.freichat_linkprofile {
+  float: right;
+}
+.frei_user_count {
+  color: inherit;
+  padding-left: 10px;
+  color: white;
+}
+.chatboxtextarea {
+  font-size: 12px;
+  width: 209px;
+  height: 44px;
+  padding: 3px 0px 3px 3px;
+  border: 2px solid #efefef;
+  margin: 1px;
+  overflow: hidden;
+  color: #000000;
+  background-image: none;
+  max-width: 209px;
+  min-width: 209px;
+  max-height: 100px;
+  min-height: 44px;
+  box-sizing: content-box;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+}
+.chatboxcontent {
+  background-image: url('bmid.png');
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  height: 200px;
+  width: 209px;
+  padding: 7px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  line-height: 1.32em;
+  text-align: left;
+  word-wrap: break-word;
+  min-height: 45px;
+  max-height: 200px;
+}
+.freicontain3 {
+  right: 884px;
+  z-index: 999996;
+}
+.frei_options {
+  border-radius: 4px;
+  background: white;
+  width: 199px;
+  border: 1px solid grey;
+  margin-bottom: -10px;
+}
+.frei_options a {
+  color: black;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 12px;
+}
+.frei_options >div {
+  padding-left: 20px;
+}
+.frei_options input {
+  font-family: Tahoma, sans-serif;
+  width: 125px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  border-right: 0;
+}
+.frei_options input:focus {
+  border-color: rgba(82,168,236,0.8);
+  outline: 0;
+  outline: thin dotted 9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+}
+.frei_options button {
+  display: inline-block;
+  padding: 3px 5px;
+  margin: 0;
+  margin-left: -5px;
+  font-size: 13px;
+  line-height: 17px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #BFBFBF;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  border: 1px solid #BBB;
+  border-bottom-color: #A2A2A2;
+  -webkit-border-radius: 0px 4px 4px 0px;
+  -moz-border-radius: 0px 4px 4px 0px;
+  border-radius: 0px 4px 4px 0px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  border-left: 1px solid #ccc;
+}
+.frei_options button:hover {
+  color: #333;
+  text-decoration: none;
+  background-color: #E6E6E6;
+  background-position: 0 -15px;
+  -webkit-transition: background-position .1s linear;
+  -moz-transition: background-position .1s linear;
+  -o-transition: background-position .1s linear;
+  transition: background-position .1s linear;
+}
+#frei_set_status_title {
+  padding: 5px;
+  background: #eee;
+  padding-left: 10px;
+  color: #222;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.custom_mesg {
+  padding-top: 8px;
+}
+.self_status_img img {
+  padding-top: 2px;
+}
+.frei_status_options {
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+.frei_status_options a {
+  text-decoration: none;
+  background-color: none;
+  color: black;
+}
+.frei_status_options a:hover {
+  text-decoration: none;
+  color: black;
+  background: none;
+}
+.frei_status_options img {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.freichat_userscontentavatarimage {
+  height: 22px;
+  width: 22px;
+  text-align: left;
+}
+.freichat_userscontentavatar {
+  display: block;
+  float: left;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-top: 1px;
+  text-align: left;
+}
+.frei_added_options_img {
+  float: left;
+  padding-top: 0px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  height: 12px;
+  width: 12px;
+  border-right: 1px solid black;
+}
+.frei_added_options_img:hover {
+  -webkit-transform: translate(0px,-3px);
+  -moz-transform: translate(0px,-2px);
+  -o-transform: translate(0px,-2px);
+  transform: translate(0px,-2px);
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  background: #e6e6e6;
+}
+.added_options {
+  padding: 2px 0px 2px 0px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #BFBFBF;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  border-bottom: 1px solid #BBB;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 100%;
+}
+.added_options > a {
+  background: none;
+  padding: 0;
+}
+.chatboxinfo {
+  margin-left: -1em;
+  color: #666666;
+}
+.frei_option_bar {
+  padding: 2px 0px 2px 0px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #BFBFBF;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  border-bottom: 1px solid #BBB;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 200px;
+}
+.frei_option_bar_arrow {
+  height: 15px;
+  background: url('icons/arrow-up.png') no-repeat left;
+  background-size: 12px 12px;
+  width: 12px;
+  display: inline-block;
+}
+.frei_option_bar_status {
+  padding: 2px;
+  height: 15px;
+  border-right: 1px solid black;
+  display: inline-block;
+  width: 100px;
+}
+.frei_option_bar_status:hover {
+  background: #e6e6e6;
+}
+.frei_option_bar_status_txt {
+  height: 15px;
+  display: inline-block;
+  vertical-align: top;
+  width: 82px;
+  overflow: hidden;
+}
+.frei_chatbox_options {
+  float: right;
+}
+.frei_option_bar_reset {
+  padding-right: 7px;
+  display: inline-block;
+}
+.frei_option_bar_reset:hover {
+  background: #e6e6e6;
+}
+.frei_option_bar_reset_bg {
+  height: 15px;
+  background: url('icons/loop.png') no-repeat left;
+  background-size: contain;
+  width: 12px;
+  display: inline-block;
+}
+.frei_option_bar_rtl {
+  border-right: 1px solid black;
+  padding-right: 7px;
+  padding-left: 7px;
+  display: inline-block;
+}
+.frei_option_bar_rtl:hover {
+  background: #e6e6e6;
+}
+.frei_option_bar_rtl_bg {
+  height: 15px;
+  background: url('icons/paragraph-left.png') no-repeat left;
+  background-size: contain;
+  width: 12px;
+  display: inline-block;
+}
+.frei_option_bar_sound {
+  padding-left: 7px;
+  padding-right: 7px;
+  display: inline-block;
+}
+.frei_option_bar_sound:hover {
+  background: #e6e6e6;
+}
+.frei_option_bar_sound_bg_on {
+  background: url('icons/volume.png') no-repeat left;
+}
+.frei_option_bar_sound_bg_off {
+  background: url('icons/volume_off.png') no-repeat left;
+}
+.frei_option_bar_sound_bg {
+  height: 15px;
+  background-size: contain;
+  width: 12px;
+  display: inline-block;
+}
+.frei_tab {
+  font-family: arial;
+  font-size: 1em !important;
+}
+.frei_chatroom.right .frei_tab,
+.frei_chatroom.left .frei_tab {
+  top: 3px;
+}
+.frei_room_n_online {
+  color: black;
+}
+.frei_chatroom.left .frei_tab {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.frei_chatroom.right .frei_tab {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#frei_chatroom_tools {
+  height: 15px;
+  padding: 6px;
+  position: absolute;
+  right: 8px;
+  width: 59%;
+  bottom: 60px;
+  z-index: 100;
+  border-radius: 3px;
+}
+#frei_chatroom_tools img {
+  height: 14px;
+  width: 14px;
+  padding-bottom: 0;
+  border: 0;
+  margin-left: 4px;
+}
+.frei_chatroom_options {
+  padding: 2px 0px 2px 0px;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  border-bottom: 1px solid #BBB;
+  border-right: 1px solid #BBB;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+}
+.frei_chatroom_options > a {
+  color: #222 !important;
+  border-bottom: 1px dotted;
+}
+.frei_chatroom_options > a:hover {
+  color: black !important;
+  text-decoration: none;
+  border-bottom: 1px solid;
+}
+.frei_chatroom {
+  width: 550px;
+  padding: 0px;
+  font-family: Arial;
+  height: 400px;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  background-repeat: no-repeat;
+  z-index: 9999999999999 !important;
+}
+.frei_chatroom .frei_tab {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 12px;
+  background: #333;
+  padding: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+.frei_chatroom .frei_chatroom-content ul {
+  list-style: square;
+  margin: 0 0 0 25px;
+  line-height: 1.3em;
+}
+.frei_chatroom .frei_chatroom-content ul li {
+  font-size: 10px;
+}
+.frei_chatroom .frei_chatroom-content ul li a {
+  color: #fff;
+  font-size: 13px;
+}
+.frei_chatroom .frei_chatroom-content ul li a:hover {
+  color: #333;
+  background: none;
+}
+.frei_chatroom .frei_chatroom-content a:hover {
+  background: none;
+}
+.frei_chatroom .frei_chatroom-content a:focus {
+  background: none;
+}
+.frei_chatroom .frei_chatroom-content a:active {
+  background: none;
+}
+#frei_smileys_chatroom:after {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  border: 10px solid transparent;
+  border-left-color: #333;
+  top: 105px;
+  left: 160px;
+}
+.frei_chatroom.right,
+.frei_chatroom.right .frei_tab {
+  border-right: none;
+}
+.frei_roompanel {
+  height: 328px;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: 0;
+  border-left: 0;
+  padding-top: 4px;
+}
+.frei_roompanel > .content {
+  padding: 0 !important;
+}
+.chatroommessagearea {
+  resize: none;
+  height: 62%;
+  font-size: 11px;
+  outline: 0;
+  width: 300px;
+  font-family: helvetica;
+  color: black;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid #CCC;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -webkit-transition: border linear .2s, box-shadow linear .2s;
+  -moz-transition: border linear .2s, box-shadow linear .2s;
+  -o-transition: border linear .2s, box-shadow linear .2s;
+  transition: border linear .2s, box-shadow linear .2s;
+  padding: 4px;
+  padding-right: 22px;
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+}
+.chatroommessagearea:focus {
+  border-color: rgba(82,168,236,0.8);
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+  background: white;
+}
+.frei_chatroom.left,
+.frei_chatroom.left .frei_tab {
+  border-left: none;
+  width: 550px;
+}
+.frei_chat_chatroomselected {
+  background-color: #333333;
+  font-weight: bold;
+}
+.frei_chatroomleftpanel {
+  float: left;
+  width: 63%;
+}
+.frei_chatroom.left {
+  left: 0;
+}
+.frei_chatroom.left .frei_tab {
+  right: 3px;
+  margin-top: -3px;
+  background-position: 100% 0;
+}
+.frei_lobby_room_1 {
+  float: left;
+  padding-left: 5px;
+}
+.frei_chatroom_add_smiley {
+  line-height: 0px;
+  position: relative;
+  left: 94.8%;
+  width: 16px;
+  top: 28px;
+}
+.frei_chatroom_add_smiley img {
+  opacity: 0.5;
+  height: 16px;
+}
+.frei_chatroom_add_smiley img:hover {
+  opacity: 1;
+}
+.frei_chatroom-content a {
+  color: #fff;
+}
+.frei_chatroom-content p {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+.frei_chatroom.bottom,
+.frei_chatroom.bottom .frei_tab {
+  border-bottom: none;
+}
+.frei_lobby_room_2 {
+  float: right;
+  padding-right: 5px;
+  width: 70px;
+  text-align: right;
+}
+.frei_chatroom.bottom {
+  bottom: 0;
+}
+.frei_chatroom.bottom .frei_tab {
+  top: 3px;
+  background-position: 0 0;
+}
+.frei_lobby_room_3 {
+  float: right;
+  padding-right: 0px;
+}
+.frei_lobby_room_3 a {
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+.frei_lobby_room_3 a:hover {
+  text-decoration: none;
+  border-bottom: 1px solid;
+}
+.frei_lobby_room {
+  color: #222;
+  display: block;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  height: 15px;
+  border-bottom: 1px dotted #eee;
+  padding-left: 10px;
+}
+.frei_lobby_room:hover {
+  background: whitesmoke;
+  box-shadow: inset 0px 1px 1px #ccc;
+  -webkit-box-shadow: inset 0px 1px 1px #ccc;
+  -moz-box-shadow: inset 0px 1px 1px #ccc;
+}
+#frei_chatroom_options {
+  height: 15px;
+  padding: 6px;
+}
+.frei_room_close {
+  position: absolute;
+  right: 10px;
+  font-size: 18px;
+  top: 5px;
+}
+.frei_chatroomtextarea {
+  width: 326px;
+  height: 52px;
+  line-height: 0px;
+  margin: 0px auto;
+}
+#chatroommessagearea :focus {
+  border: 2px solid #0060A8;
+}
+.frei_chatroompanel {
+  height: 364px;
+  border-right: solid grey 1px;
+  border-bottom: solid grey 1px;
+  display: none;
+  background: whitesmoke;
+}
+.frei_roomcontainer {
+  width: 500px;
+  content: overflow;
+}
+.frei_chatroom.align-right .frei_tab {
+  margin-right: -3px;
+}
+.frei_chatroom.right {
+  right: 0;
+}
+.frei_chatroom.right .frei_tab {
+  left: 3px;
+  margin-top: -3px;
+}
+.frei_lobby_room_4 {
+  float: right;
+  padding-right: 0px;
+  margin-right: 14px;
+}
+.frei_lobby_room_4 img {
+  height: 14px;
+}
+.frei_chatroommsgcnt {
+  text-align: justify;
+  width: 100%;
+  height: 296px;
+  font-size: 11px;
+  font-style: arial, helvetica, sans-serif;
+}
+.frei_userpanel {
+  width: 100%;
+  height: 328px;
+  overflow: auto;
+}
+.frei_chatroom_msgcontent {
+  background: white;
+  color: grey;
+  font-weight: normal;
+  font-size: 8pt;
+  opacity: 1;
+  z-index: 10000;
+  width: 94%;
+  border-radius: 4px;
+  box-shadow: 0px 1px 2px black;
+  padding-top: 3px;
+  padding-left: 8px;
+  padding-bottom: 2px;
+  word-wrap: break-word;
+}
+.frei_chatroom_msgcontent a {
+  color: blue;
+  text-decoration: none;
+}
+.frei_chatroom_msgcontent a:hover {
+  color: black;
+  border-bottom: 1px dotted black;
+}
+.frei_chatroom_msgcontent img {
+  margin-bottom: 3px;
+}
+.frei_chatroom,
+.frei_chatroom .frei_tab {
+  border-left: 0px solid #ccc;
+}
+.frei_chatroom.top {
+  top: 0;
+}
+.frei_chatroom.top .frei_tab {
+  bottom: 3px;
+  background-position: 0 100%;
+}
+#chatroom_branding a:link,
+#chatroom_branding a:visited,
+#chatroom_branding a:hover,
+#chatroom_branding a:active {
+  text-decoration: none !important;
+  color: blue !important;
+  background-color: none !important;
+}
+#frei_smileys_chatroom {
+  position: absolute;
+  left: 28%;
+  bottom: 22%;
+  z-index: 99999;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.frei_chatroom.top,
+.frei_chatroom.top .frei_tab {
+  border-top: none;
+}
+.frei_selected_room {
+  color: #222;
+  display: block;
+  font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  height: 15px;
+  border-bottom: 1px dotted #eee;
+  padding-left: 10px;
+  background: #eee;
+  box-shadow: inset 0px 1px 1px grey;
+  -webkit-box-shadow: inset 0px 1px 1px grey;
+  -moz-box-shadow: inset 0px 1px 1px grey;
+}
+.frei_chatroom_message {
+  padding-left: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+.frei_chatroomrightpanel {
+  float: left;
+  width: 198px;
+  border-left: solid grey 1px;
+  border-right: solid grey 1px;
+  background: white;
+  height: 100%;
+}
+#frei_chatroomhead {
+  cursor: pointer;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 19px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: white;
+  border: 1px solid #044062;
+  background: #396b9e;
+  color: #fff;
+  text-shadow: 0 1px 0 #194b7e;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#5f9cc5),to(#396b9e));
+  background-image: -webkit-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -moz-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -ms-linear-gradient(#5f9cc5,#396b9e);
+  background-image: -o-linear-gradient(#5f9cc5,#396b9e);
+  background-image: linear-gradient(#5f9cc5,#396b9e);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05);
+  width: 100%;
+}
+#frei_chatroomhead img {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+.frei_chatroom_btn {
+  display: inline-block;
+  -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  border: 1px solid #044062;
+  border-radius: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-shadow: none;
+  font-size: 12px;
+  background: #5083b5;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#d6f0fe),color-stop(3%,#9ec2e6),color-stop(3%,#9ec2e6),color-stop(100%,#5083b5));
+  background: -moz-linear-gradient(center top,#d6f0fe 0%,#9ec2e6 3%,#9ec2e6 3%,#5083b5 100%);
+}
+.frei_chatroom_btn:hover {
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#c4eafe),color-stop(3%,#79acde),color-stop(3%,#79acde),color-stop(100%,#5083b5));
+  background: -moz-linear-gradient(center top,#c4eafe 0%,#79acde 3%,#79acde 3%,#5083b5 100%);
+}
+#frei_chatroom_lobby_btn {
+  float: left;
+  margin-left: 5px;
+}
+#frei_chatroom_back_btn {
+  float: right;
+  margin-right: 5px;
+}
+.frei_roomtitle {
+  font-weight: bold;
+  display: inline-block;
+}
+#chatroom_branding {
+  top: 34px;
+  position: absolute;
+  display: block;
+  right: 12px;
+}
+#chatroom_branding a {
+  color: blue;
+  text-decoration: none !important;
+}
+.chatroom_messagefrom_right {
+  text-align: right;
+  padding-left: 240px;
+  font-weight: bold;
+  color: #000000;
+}
+.frei_chatroom.align-left .frei_tab {
+  margin-left: -3px;
+  width: 64px;
+}
+.chatroom_messagefrom_left {
+  text-align: left;
+  font-weight: bold;
+  color: black;
+  padding-bottom: 10px;
+}
+.frei_userlist {
+  color: black;
+  cursor: pointer;
+  height: 20px;
+  line-height: 100%;
+  text-align: left;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 4px;
+  border-bottom: 1px dotted #ccc;
+  background: #eee;
+  background-image: -moz-linear-gradient(top,#fff,whitesmoke);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(whitesmoke));
+  background-image: -webkit-linear-gradient(top,#fff,whitesmoke);
+  background-image: -o-linear-gradient(top,#fff,whitesmoke);
+  background-image: linear-gradient(to bottom,#fff,whitesmoke);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe5e5e5',GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.frei_userlist:hover {
+  background: whitesmoke;
+}
+.frei_userlistme {
+  background: whitesmoke !important;
+}
+.frei_userlist_onhover {
+  background-color: #B2C9F1 !important;
+  color: #000000;
+  text-align: left;
+}
+.frei_chatroom_tabs {
+  height: 30px;
+}
+.frei_chatroom_tabs > ul {
+  font-size: 1em;
+  list-style: none !important;
+  margin: 0px !important;
+  padding: 0 !important;
+}
+.frei_chatroom_tabs > ul > li > a {
+  color: white;
+}
+.frei_chatroom_tabs > ul > li {
+  cursor: pointer;
+  float: left;
+  color: #FFF;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  background: #1985D1;
+  background: -moz-linear-gradient(top,#0C91EC 0%,#257AB6 100%);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#0C91EC),color-stop(100%,#257AB6));
+  width: 50%;
+  padding: 8px 0px 8px 0px;
+  text-align: center;
+  margin: 0;
+}
+.frei_chatroom_tabs > ul > li a:hover {
+  color: white !important;
+  background: none;
+}
+.frei_chatroom_tabs_selected {
+  box-shadow: inset 0px 1px 6px black;
+}
+#frei_userpanel,
+#frei_roompanel {
+  display: block;
+}
+.frei_chatroom_tabs_container {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.frei_chatroom_notify {
+  position: absolute;
+  margin: 0px;
+  background-color: rgba(25,125,215,0.8);
+  color: white;
+  border: 0;
+  width: 200px;
+  padding: 8px 10px 9px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  font-family: 'times new roman';
+  font-size: 12px;
+  overflow: hidden;
+  height: 36px;
+}
+.frei_chatroom_notify_close {
+  padding: 0;
+  line-height: 0;
+  height: 12px;
+  background: none;
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 8px;
+  right: 3px;
+  border: 0;
+}
+.frei_chatroom_creator {
+  background: white;
+  padding: 100px;
+  border: 1px solid #ccc;
+  border-top: 0;
+}
+.frei_chatroom_creator input {
+  background: white !important;
+  border-radius: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+.frei_chatroom_creator input:focus {
+  border: solid 1px #4690d6;
+}
+.frei_chatroom_creator .frei_chatroom_creator_input {
+  font-family: Tahoma, sans-serif;
+  border: 1px solid gray;
+  padding: 5px;
+  font-size: 11px;
+  margin-top: 5px;
+}
+.frei_chatroom_creator .frei_chatroom_creator_check {
+  vertical-align: top;
+  margin-right: 5px;
+  width: 14px;
+}
+.frei_chatroom_creator .frei_chatroom_creator_btn {
+  border: 1px solid #ccc;
+  color: #222;
+  margin-top: 10px;
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top,white,#E6E6E6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top,white,#E6E6E6);
+  background-image: -o-linear-gradient(top,white,#E6E6E6);
+  background-image: linear-gradient(to bottom,white,#E6E6E6);
+  background-repeat: repeat-x;
+  border-radius: 3px;
+  padding: 3px 10px;
+}
+.frei_chatroom_creator .frei_chatroom_creator_btn:hover {
+  background: whitesmoke;
+}
+.frei_chatroom_creator_error {
+  margin-bottom: 7px;
+  color: #ff0c15;
+  display: none;
+}
+.triangle-right.right:after {
+  top: 16px;
+  right: -40px;
+  bottom: auto;
+  left: auto;
+  border-width: 15px 0 0 40px;
+  border-color: transparent #075698;
+}
+.frei_room_left_arrow:after {
+  left: 50px;
+}
+.frei_room_right_arrow:after {
+  border-width: 10px 10px 0 0;
+  right: 50px;
+}
+.triangle-right.left:after {
+  top: 16px;
+  left: -40px;
+  bottom: auto;
+  border-width: 15px 40px 0 0;
+  border-color: transparent #075698;
+}
+.triangle-right.top {
+  background: -webkit-gradient(linear,0 0,0 100%,from(#075698),to(#2e88c4));
+  background: -moz-linear-gradient(#075698,#2e88c4);
+  background: -o-linear-gradient(#075698,#2e88c4);
+  background: linear-gradient(#075698,#2e88c4);
+}
+.triangle-right.top:after {
+  top: -20px;
+  right: 50px;
+  bottom: auto;
+  left: auto;
+  border-width: 20px 20px 0 0;
+  border-color: transparent #075698;
+}
+.triangle-right:after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  border-width: 10px 0 0 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: rgba(46,136,196,0.6);
+  display: block;
+  width: 0;
+}
+.triangle-right.left {
+  margin-left: 40px;
+  background: #075698;
+}
+.triangle-right {
+  position: relative;
+  padding: 5px;
+  margin: 1em 0 3em;
+  color: #fff;
+  background: #075698;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-align: center;
+  background: #2e88c4;
+  background: rgba(46,136,196,0.6);
+  margin-right: 2px;
+}
+.triangle-right.right {
+  margin-right: 40px;
+  background: #075698;
+}

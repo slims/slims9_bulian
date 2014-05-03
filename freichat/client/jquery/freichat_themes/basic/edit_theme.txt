@@ -1,0 +1,1 @@
+the theme folder has been moved to freichat/themes

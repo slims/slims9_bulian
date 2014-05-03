@@ -37,9 +37,17 @@ define('DB_PASSWORD', 'password_senayanuser');
 // define any other sysconfig variables below
 $sysconf['index']['type'] = 'default';
 
+/**
+ * UCS settings
+ */
+$sysconf['ucs']['enable'] = false;
+// auto delete same record on UCS?
+$sysconf['ucs']['auto_delete'] = true;
+// auto insert new record to UCS?
+$sysconf['ucs']['auto_insert'] = true;
+
 // additional e-mail recipients for library administrator
 /*
 $sysconf['mail']['add_recipients'][] = array('from' => 'senayan.slims@slims.web.id', 'from_name' => 'Librarian 2');
 $sysconf['mail']['add_recipients'][] = array('from' => 'wynerst@gmail.com', 'from_name' => 'Librarian 3');
 */
-?>

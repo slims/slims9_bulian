@@ -1,0 +1,159 @@
+			Common Problems and their solutions 
+
+
+This file will keep on getting updated so that next time everyone gets a quicker solution 
+
+
+->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+BEFORE INSTALLATION
+->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+
+
+===============================================================================
+1. Accept license -> click => page is refreshed (i.e unable to get past next step) 
+
+
+REASON :
+
+Your SESSION file is not writable
+
+---------------------------------------------------------------------
+SOLUTION:
+
+http://codologic.com/page/node/652
+
+OR
+
+1. Create a file named test_session.php in your CMS_installed_directory (web server root directory)
+2. Copy paste the following contents
+
+<?php
+
+ echo session_save_path();
+
+
+3. Run this file by pointing your browser to http://your_website.com/test_session.php    
+4. Now you will see a path being printed on that page.
+5. Using FTP client(or any other equivalent) go to this path.
+6. Give 0777 permissions to this directory
+
+---------------------------------------------------------------------
+===============================================================================
+
+
+===============================================================================
+1. During installation -> Click on next step => following output
+
+
+OUTPUT :
+
+Internal Server Error
+
+The server encountered an internal error or misconfiguration and was unable
+to complete your request.
+
+Please contact the server administrator, webmaster@deltaworkersmovement.com
+and inform them of the time the error occurred, and anything you might have
+done that may have caused the error.
+
+More information about this error may be available in the server error log.
+
+Additionally, a 404 Not Found error was encountered while trying to use an
+ErrorDocument to handle the request.
+
+
+---------------------------------------------------------------------
+SOLUTION :
+
+change permissions of all files and folders(including their files) in /freichat to 755 
+---------------------------------------------------------------------
+
+===============================================================================
+
+
+
+
+->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+AFTER INSTALLATION
+->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->->
+
+
+*******************************************************************************
+
+TERMS:
+
+Check error console means 
+  1. press f12 in chrome and click on console tab 
+OR
+  2. open firebug in firefox and click on console tab
+
+*******************************************************************************
+
+===============================================================================
+1. FreiChat not shown -> Check error console -> clicked on error ->
+
+OUTPUT :
+
+FreiChat says : You access has been restricted
+
+---------------------------------------------------------------------
+SOLUTION :
+
+Remove index.html file from ~/freichat/client
+---------------------------------------------------------------------
+
+===============================================================================
+
+2. FreiChat not shown -> Check error console->
+
+
+ERROR  : 
+
+Uncaught TypeError: Cannot set property 'backgroundColor' of undefined 
+
+
+OR
+
+
+Uncaught TypeError: Object #<XMLHttpRequest> has no method 'complete' 
+
+---------------------------------------------------------------------
+SOLUTION :
+
+[Only applicable to FreiChat v8.2 or higher]
+
+1. Go to ~freichat/hardcode.php
+2. Replace the line
+
+$force_load_jquery = 'NO';
+      with
+$force_load_jquery = 'YES';
+
+3. Refresh your website 
+4. If you still do not see freichat 
+===> 1. Go to freichat backend 
+     2. Click General settings -> client side
+     3. Set Remove jQuery conflicts to yes
+
+5. Refresh your website 
+6. If you still do not see freichat 
+7. Mention these steps and report in the forums 
+  
+---------------------------------------------------------------------
+
+===============================================================================
+
+3. Elgg default avatars are not shown 
+
+Problem: This is due to the fact that the newer versions of Elgg do not have 
+         avatar.gif as the default avatar image .
+
+---------------------------------------------------------------------
+Solution:
+
+1. Go to elgg_installed_folder/_graphics/icons/user/
+2. Copy defaultsmall.gif to default.gif
+---------------------------------------------------------------------
+
+===============================================================================
+

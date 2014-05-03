@@ -190,6 +190,7 @@ class member_logon
      * @return  void
      */
     public function valid($obj_db) {
+        global $sysconf;
         $this->obj_db = $obj_db;
         $_check_login = call_user_func(array($this, $this->auth_method.'Login'));
         // check if the user exist in database
@@ -217,6 +218,15 @@ class member_logon
         $_curr_date = date('Y-m-d');
         if (simbio_date::compareDates($this->user_info['expire_date'], $_curr_date) == $_curr_date) {
             $_SESSION['m_is_expired'] = true;
+        }
+
+        if ($sysconf['chat_system']['enabled']) {
+          $_SESSION['chat_mid'] = mt_rand();
+          $chatinfo['userid'] = $_SESSION['chat_mid'];
+          $chatinfo['username'] = $_SESSION['m_name'];
+          $chat_reg = new simbio_dbop ($obj_db);
+          $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
+          echo '<h1>benar</h1>';
         }
 
         // update the last login time

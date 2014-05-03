@@ -1,0 +1,1 @@
+$('#x').html($('#x').html()+"90% Loaded Main component<br/>");
