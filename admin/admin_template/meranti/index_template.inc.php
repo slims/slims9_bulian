@@ -15,8 +15,8 @@
 <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>calendar.js"></script>
-<script type="text/javascript" src="<?php echo JWB; ?>tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>keyboard.js"></script>
+<script type="text/javascript" src="<?php echo JWB; ?>tinymce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>chosen/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>chosen/ajax-chosen.min.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>tooltipsy.js"></script>

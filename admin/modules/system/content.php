@@ -198,11 +198,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title'].'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
+    echo $form->printOut();
     // init TinyMCE instance
     echo '<script type="text/javascript">tinyMCE.init({
         // Options
         mode : "exact", elements : "contentDesc", theme : "advanced",
-        plugins : "safari,style,table,media,searchreplace,directionality,visualchars,xhtmlxtras,compat2x",
+        plugins : "table,media,searchreplace,directionality",
         skin : "o2k7", skin_variant : "silver",
         // Theme options
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,fontsizeselect,|,bullist,numlist,|,link,unlink,anchor,image,cleanup,code,forecolor",
@@ -210,7 +211,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         theme_advanced_buttons3 : null, theme_advanced_toolbar_location : "top", theme_advanced_toolbar_align : "center", theme_advanced_statusbar_location : "bottom",
         theme_advanced_resizing : false, content_css : "'.(SWB.'admin/'.$sysconf['admin_template']['css']).'",
         });</script>';
-    echo $form->printOut();
 } else {
     /* USER LIST */
     // table spec
