@@ -4,6 +4,8 @@ images/docs/*
 images/labels/*
 files/*
 repository/*
+config/*
+cache/*
 .DS_Store
 ._.*
 ._*

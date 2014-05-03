@@ -220,13 +220,14 @@ class member_logon
             $_SESSION['m_is_expired'] = true;
         }
 
-        if ($sysconf['chat_system']['enabled']) {
-          $_SESSION['chat_mid'] = mt_rand();
-          $chatinfo['userid'] = $_SESSION['chat_mid'];
-          $chatinfo['username'] = $_SESSION['m_name'];
-          $chat_reg = new simbio_dbop ($obj_db);
-          $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
-          echo '<h1>benar</h1>';
+        if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) {
+          if ($sysconf['chat_system']['vendors'] == 'freichat') {
+            $_SESSION['chat_mid'] = mt_rand();
+            $chatinfo['userid'] = $_SESSION['chat_mid'];
+            $chatinfo['username'] = $_SESSION['m_name'];
+            $chat_reg = new simbio_dbop ($obj_db);
+            $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
+          }
         }
 
         // update the last login time
