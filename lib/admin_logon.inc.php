@@ -63,6 +63,7 @@ class admin_logon
      * @return  void
      */
     public function adminValid($obj_db) {
+        global $sysconf;
         $this->obj_db = $obj_db;
         $_check_login = call_user_func(array($this, $this->auth_method.'Login'));
         // check if the user exist in database
@@ -108,6 +109,15 @@ class admin_logon
         $_SESSION['biblioAuthor'] = array();
         $_SESSION['biblioTopic'] = array();
         $_SESSION['biblioAttach'] = array();
+
+        if ($sysconf['chat_system']['enabled']) {
+          // register/update user info chat table 
+          $_SESSION['chat_mid'] = mt_rand();
+          $chatinfo['userid'] = $_SESSION['chat_mid'];
+          $chatinfo['username'] = 'Librarian - '.$_SESSION['realname'];
+          $chat_reg = new simbio_dbop ($obj_db);
+          $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
+        }
 
         if (!defined('UCS_VERSION')) {
             // load holiday data from database

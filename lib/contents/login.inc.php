@@ -33,6 +33,7 @@ if (defined('LIGHTWEIGHT_MODE')) {
 
 // required file
 require LIB.'admin_logon.inc.php';
+require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 // https connection (if enabled)
 if ($sysconf['https_enable']) {

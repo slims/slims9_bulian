@@ -1,0 +1,42 @@
+						FreiChat Contributions
+						```````` `````````````
+
+A project like FreiChat requires the dedication and investment of personal time from various contributors.
+This version of FreiChat has been made possible by the following contributors :
+
+==============================================================================================
+Sebi - SoS
+Email:admin@riddletown.net
+Contibution:    Solved the long username issue
+		Reported a lot of bugs during FreiChat's Development
+		Gave many suggestions to improve FreiChat
+		Created Language file for
+Country:Austria
+==============================================================================================
+Anton Skvortsov
+Email:anton_skv@hotmail.com
+Contribution :  newmsg.mp3 (The sound that you hear when new messages arrive)
+                Sent Jomsocial code for developing early version of FreiChatSocial
+country:New York, NY 
+=============================================================================================
+Encipoly
+Email: kis.erno@digitalvac.hu
+Contribution : Contributed Hungary Language file
+=============================================================================================
+Richy              
+website :www.my-starmedia.de
+Contribution : Contributed the DZCP driver 
+=============================================================================================
+
+In addition many members of codologic.com have contributed and helped make this a more stable and bugfree version.
+Our thanks go out to all contributors of FreiChat! 
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~External Libraries/Scripts Used by FreiChat~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+1 . JQuery 				 http://jquery.com
+2 . JQuery  UI	     			 http://http://jqueryui.com
+4 . SoundManager2 	[JavaScript Sound]

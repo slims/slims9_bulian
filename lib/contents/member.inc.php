@@ -28,6 +28,8 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+
 // IP based access limitation
 do_checkIP('opac');
 do_checkIP('opac-member');

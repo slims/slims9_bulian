@@ -9,6 +9,7 @@ repository/*
 ._*
 .project
 sysconfig.local.inc.php
+config/sysconfig.local.inc.php
 sysconfig.inc.php
 slims7.sublime-project
 slims7.sublime-workspace
