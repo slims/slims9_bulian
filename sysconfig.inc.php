@@ -586,10 +586,10 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled'] = TRUE;
+$sysconf['chat_system']['enabled'] = FALSE;
 $sysconf['chat_system']['vendors'] = 'freichat';
 $sysconf['chat_system']['opac'] = TRUE;
-$sysconf['chat_system']['librarian'] = TRUE;
+$sysconf['chat_system']['librarian'] = FALSE;
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
