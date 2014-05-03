@@ -79,30 +79,38 @@ $main_content = ob_get_clean();
 require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';
 
 ##############################FreiChat#####Start###################################
-$ses = null;
+if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) {
+  if ($sysconf['chat_system']['vendors'] == 'freichat') {
 
-if (isset($_SESSION['chat_mid'])) {
-  $ses = $_SESSION['chat_mid'];
-  #echo $ses;
-} else {
-  $ses = false;
-  #die ('gabisalanjut');
-}
+    $ses = null;
 
-if(!function_exists ("freichatx_get_hash")) {
-  function freichatx_get_hash ($ses)
-  {
-    if(is_file ("../freichat/hardcode.php")) {
-      require "../freichat/hardcode.php";
-      $temp_id =  $ses . $uid;
-      return md5($temp_id);
+    if (isset($_SESSION['chat_mid'])) {
+      $ses = $_SESSION['chat_mid'];
     } else {
-      echo "<script>alert('module freichatx says: hardcode.php file not found!');</script>";
+      $ses = false;
     }
-    return 0;
+
+    if(!function_exists ("freichatx_get_hash")) {
+      function freichatx_get_hash ($ses)
+      {
+        if(is_file ("../freichat/hardcode.php")) {
+          require "../freichat/hardcode.php";
+          $temp_id =  $ses . $uid;
+          return md5($temp_id);
+        } else {
+          echo "<script>alert('module freichatx says: hardcode.php file not found!');</script>";
+        }
+        return 0;
+      }
+    }
+
+    if (!($ses == NULL)) {
+?>
+      <script type="text/javascript" language="javascipt" src="../freichat/client/main.php?id=<?php echo $ses;?>&xhash=<?php echo freichatx_get_hash($ses); ?>"></script>
+      <link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
+<!--===========================FreiChatX=======END=========================-->                
+<?php 
+    }
   }
 }
 ?>
-<script type="text/javascript" language="javascipt" src="../freichat/client/main.php?id=<?php echo $ses;?>&xhash=<?php echo freichatx_get_hash($ses); ?>"></script>
-<link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
-<!--===========================FreiChatX=======END=========================-->                
