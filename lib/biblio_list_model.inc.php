@@ -184,7 +184,7 @@ abstract class biblio_list_model
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
 	  $_detail_link = SWB.'index.php?p=show_detail&id='.$_biblio_d['biblio_id'].'&keywords='.$_keywords;
 	  $_title_plain = $_biblio_d['title'];
-      $_biblio_d['title'] = '<a href="'.$_detail_link.'" class="titleField" itemprop="url" property="url" title="'.__('Record Detail').'">'.$_biblio_d['title'].'</a>';
+      $_biblio_d['title'] = '<a href="'.$_detail_link.'" class="titleField" itemprop="name" property="name" title="'.__('Record Detail').'">'.$_biblio_d['title'].'</a>';
       // label
       if ($this->show_labels AND !empty($_biblio_d['labels'])) {
         $arr_labels = @unserialize($_biblio_d['labels']);
@@ -205,9 +205,9 @@ abstract class biblio_list_model
 				}
       }
       // button
-      $_biblio_d['detail_button'] = '<a href="'.$_detail_link.'" class="detailLink" itemprop="url" title="'.__('Record Detail').'">'.__('Record Detail').'</a>';
+      $_biblio_d['detail_button'] = '<a href="'.$_detail_link.'" class="detailLink" title="'.__('Record Detail').'">'.__('Record Detail').'</a>';
       if ($this->xml_detail) {
-        $_biblio_d['xml_button'] = '<a href="'.$_detail_link.'&inXML=true" class="xmlDetailLink" title="View Detail in XML Format" target="_blank" itemprop="url">XML Detail</a>';
+        $_biblio_d['xml_button'] = '<a href="'.$_detail_link.'&inXML=true" class="xmlDetailLink" title="View Detail in XML Format" target="_blank">XML Detail</a>';
       } else {
         $_biblio_d['xml_button'] = '';
       }
@@ -226,7 +226,7 @@ abstract class biblio_list_model
 
       $_alt_list = ($_i%2 == 0)?'alterList':'alterList2';
       $_buffer .= '<div class="item biblioRecord" itemscope itemtype="http://schema.org/DataCatalog" vocab="http://schema.org/" typeof="DataCatalog"><div class="cover-list">'.$_image_cover.'</div>';
-	  $_buffer .= '<div class="detail-list"><h4 itemprop="name" property="name">'.$_biblio_d['title'].'</h4>';
+	  $_buffer .= '<div class="detail-list"><h4>'.$_biblio_d['title'].'</h4>';
       // concat author data
       $_authors = isset($_biblio_d['author'])?$_biblio_d['author']:self::getAuthors($this->obj_db, $_biblio_d['biblio_id']);
       if ($_authors) {

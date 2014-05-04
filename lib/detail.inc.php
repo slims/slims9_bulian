@@ -119,12 +119,12 @@ class detail extends content_list
         $_detail_link = SWB.'index.php?p=show_detail&id='.$this->detail_id;
 
         foreach ($this->record_detail as $idx => $data) {
-            if ($idx == 'notes') {
-                $data = nl2br($data);
-            } else {
-                $data = trim(strip_tags($data));
-            }
-            $this->record_detail[$idx] = $data;
+          if ($idx == 'notes') {
+            $data = nl2br($data);
+          } else {
+            $data = trim(strip_tags($data));
+          }
+          $this->record_detail[$idx] = $data;
         }
 
         // get title and set it to public record_title property
@@ -148,15 +148,11 @@ class detail extends content_list
 
         // check image
         if (!empty($this->record_detail['image'])) {
-            if ($sysconf['tg']['type'] == 'phpthumb') {
-                $this->record_detail['image'] = '<img src="./lib/phpthumb/phpThumb.php?src='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&w=200" border="0" />';
-            } elseif ($sysconf['tg']['type'] == 'minigalnano') {
-                $this->record_detail['image'] = '<img src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
-            } else {
-                $this->record_detail['image'] = '<img src="./lib/phpthumb/phpThumb.php?src='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&w=200" border="0" />';
-            }
+          if ($sysconf['tg']['type'] == 'minigalnano') {
+            $this->record_detail['image'] = '<img itemprop="image" src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
+          }
         } else {
-            $this->record_detail['image'] = '<img src="./images/default/image.png" border="0" />';
+          $this->record_detail['image'] = '<img src="./images/default/image.png" border="0" />';
         }
 
         // get the authors data
@@ -226,8 +222,7 @@ class detail extends content_list
             '</ul>'."\n";
 
           $this->record_detail['social_shares'] = $_share_btns;
-			  }
-
+		}
 
         return $this->record_detail;
     }
