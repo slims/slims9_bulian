@@ -3,7 +3,7 @@
 // output the buffer
 ob_start(); /* <- DONT REMOVE THIS COMMAND */
 ?>
-<span itemscope itemtype="http://schema.org/DataCatalog" vocab="http://schema.org/" typeof="DataCatalog">
+<span itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
   <div class="sidebar">
    <div class="cover">
    {image}
@@ -11,7 +11,8 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
    <div>
     <a class="back" href="javascript: history.back();"> <?php echo __('Back'); ?> </a>
     &nbsp; | &nbsp;
-    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $_GET['id'];?>" class="xml" style="margin-top:10px;margin-right:20px;">XML</a>
+    <a target="_blank" href="<?php echo SWB; ?>index.php?p=show_detail&inXML=true&id=<?php echo $_GET['id'];?>" class="xml"
+     title="" style="margin-top:10px;margin-right:20px;">XML</a>
    </div>
   </div>
   
@@ -39,11 +40,11 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </tr>
       <tr>
        <td class="key"><?php print __('Author(s)'); ?></td>
-       <td class="value" itemprop="author" property="author">{authors}</td>
+       <td class="value" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">{authors}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Edition'); ?></td>
-       <td class="value" itemprop="version" property="version">{edition}</td>
+       <td class="value" itemprop="bookEdition" property="bookEdition">{edition}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Call Number'); ?></td>
@@ -67,15 +68,15 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </tr>
       <tr>
        <td class="key"><?php print __('GMD'); ?></td>
-       <td class="value" itemprop="encoding" property="encoding" itemscope itemtype="http://schema.org/MediaObject"><span itemprop="name" property="name">{gmd_name}</span></td>
+       <td class="value" itemprop="bookFormat" property="bookFormat">{gmd_name}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Language'); ?></td>
-       <td class="value" itemprop="inLanguage" property="inLanguage">{language_name}</td>
+       <td class="value"><meta itemprop="inLanguage" property="inLanguage" content="{language_name}" />{language_name}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Publisher'); ?></td>
-       <td class="value" itemprop="publisher" property="publisher">{publisher_name}</td>
+       <td class="value" itemprop="publisher" property="publisher" itemtype="http://schema.org/Organization" itemscope>{publisher_name}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Publishing Year'); ?></td>
@@ -87,7 +88,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </tr>
       <tr>
        <td class="key"><?php print __('Collation'); ?></td>
-       <td class="value">{collation}</td>
+       <td class="value" itemprop="numberOfPages" property="numberOfPages">{collation}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Specific Detail Info'); ?></td>

@@ -96,12 +96,15 @@ abstract class biblio_list_model
   /**
    * Method to get string of authors data of bibliographic record
    *
+   * @param   object	$obj_db
    * @param   integer	$int_biblio_id
-   * @return  string
+   * @param   boolean	$bool_return_array
+   * @return  mixed
    */
-  public static function getAuthors($obj_db, $int_biblio_id) {
-	  $_authors = '';
-	  $_sql_str = 'SELECT a.author_name, a.author_id FROM biblio_author AS ba
+  public static function getAuthors($obj_db, $int_biblio_id, $bool_return_array = false) {
+	$_authors = '';
+	$_authors_arr = array();
+	$_sql_str = 'SELECT a.author_name, a.author_id FROM biblio_author AS ba
       LEFT JOIN biblio AS b ON ba.biblio_id=b.biblio_id
       LEFT JOIN mst_author AS a ON ba.author_id=a.author_id WHERE ba.biblio_id='.$int_biblio_id;
     // query the author
@@ -110,9 +113,16 @@ abstract class biblio_list_model
     while ($_author_d = $_author_q->fetch_row()) {
       $counter = count ($_author_d);
       $_authors .= $_author_d[0];
+	  if ($bool_return_array) {
+		$_authors_arr[] = $_author_d[0];
+	  }
       $_authors .= ' - ';
     }
-	  return $_authors;
+	if ($bool_return_array) {
+	  return $_authors_arr;
+	} else {
+	  return $_authors; 
+	}
   }
 
 
@@ -184,7 +194,7 @@ abstract class biblio_list_model
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
 	  $_detail_link = SWB.'index.php?p=show_detail&id='.$_biblio_d['biblio_id'].'&keywords='.$_keywords;
 	  $_title_plain = $_biblio_d['title'];
-      $_biblio_d['title'] = '<a href="'.$_detail_link.'" class="titleField" itemprop="name" property="name" title="'.__('Record Detail').'">'.$_biblio_d['title'].'</a>';
+      $_biblio_d['title'] = '<a href="'.$_detail_link.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$_biblio_d['title'].'</a>';
       // label
       if ($this->show_labels AND !empty($_biblio_d['labels'])) {
         $arr_labels = @unserialize($_biblio_d['labels']);
@@ -197,17 +207,17 @@ abstract class biblio_list_model
               $this->label_cache[$label[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
             }
             if (isset($label[1]) && $label[1]) {
-              $_biblio_d['title'] .= ' <a href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
+              $_biblio_d['title'] .= ' <a href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" alt="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
             } else {
-              $_biblio_d['title'] .= ' <img src="'.SWB.IMG.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
+              $_biblio_d['title'] .= ' <img src="'.SWB.IMG.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" alt="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
             }
           }
-				}
+		}
       }
       // button
-      $_biblio_d['detail_button'] = '<a href="'.$_detail_link.'" class="detailLink" title="'.__('Record Detail').'">'.__('Record Detail').'</a>';
+      $_biblio_d['detail_button'] = '<a href="'.$_detail_link.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
       if ($this->xml_detail) {
-        $_biblio_d['xml_button'] = '<a href="'.$_detail_link.'&inXML=true" class="xmlDetailLink" title="View Detail in XML Format" target="_blank">XML Detail</a>';
+        $_biblio_d['xml_button'] = '<a href="'.$_detail_link.'&inXML=true" class="xmlDetailLink" title="View record detail description in XML Format" target="_blank">XML Detail</a>';
       } else {
         $_biblio_d['xml_button'] = '';
       }
@@ -217,7 +227,6 @@ abstract class biblio_list_model
       if (!empty($_biblio_d['image']) && !defined('LIGHTWEIGHT_MODE')) {
         $_biblio_d['image'] = urlencode($_biblio_d['image']);
         $images_loc = '../../images/docs/'.$_biblio_d['image'];
-        #$cache_images_loc = 'images/cache/'.$_biblio_d['image'];
         if ($sysconf['tg']['type'] == 'minigalnano') {
 		  $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=90';
           $_image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" />';
@@ -225,20 +234,28 @@ abstract class biblio_list_model
       }
 
       $_alt_list = ($_i%2 == 0)?'alterList':'alterList2';
-      $_buffer .= '<div class="item biblioRecord" itemscope itemtype="http://schema.org/DataCatalog" vocab="http://schema.org/" typeof="DataCatalog"><div class="cover-list">'.$_image_cover.'</div>';
+      $_buffer .= '<div class="item biblioRecord" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book"><div class="cover-list">'.$_image_cover.'</div>';
 	  $_buffer .= '<div class="detail-list"><h4>'.$_biblio_d['title'].'</h4>';
       // concat author data
-      $_authors = isset($_biblio_d['author'])?$_biblio_d['author']:self::getAuthors($this->obj_db, $_biblio_d['biblio_id']);
-      if ($_authors) {
-        $_buffer .= '<div class="author" itemprop="author"><b>'.__('Author(s)').'</b> : '.$_authors.'</div>';
+      $_authors = isset($_biblio_d['author'])?$_biblio_d['author']:self::getAuthors($this->obj_db, $_biblio_d['biblio_id'], true);
+      $_buffer .= '<div class="author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">';
+	  if ($_authors) {
+		$_authors_string = '';
+		foreach ($_authors as $author) {
+		  $_authors_string .= '<span class="author-name" itemprop="name" property="name">'.$author.'</span> - ';
+		}
+		$_authors_string = substr_replace($_authors_string, '', -2);
+        $_buffer .= $_authors_string;
+        // $_buffer .= '<div class="author" itemprop="author"><b>'.__('Author(s)').'</b> : '.$_authors.'</div>';
       }
+	  $_buffer .= '</div>';
 
       # checking custom file
       if ($this->enable_custom_frontpage AND $this->custom_fields) {
         foreach ($this->custom_fields as $_field => $_field_opts) {
           if ($_field_opts[0] == 1) {
             if ($_field == 'edition') {
-              $_buffer .= '<div class="customField editionField" itemprop="version" property="version"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['edition'].'</div>';
+              $_buffer .= '<div class="customField editionField" itemprop="bookEdition" property="bookEdition"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['edition'].'</div>';
             } else if ($_field == 'isbn_issn') {
               $_buffer .= '<div class="customField isbnField" itemprop="isbn" property="isbn"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['isbn_issn'].'</div>';
             } else if ($_field == 'collation') {
@@ -264,8 +281,8 @@ abstract class biblio_list_model
                 $_buffer .= '<div class="customField availabilityField"><b>'.$_field_opts[1].'</b> : '.$this->item_availability_message.'</div>';
               }
             } else if ($_field == 'node_id' && $this->disable_item_data) {
-			  			$_buffer .= '<div class="customField locationField"><b>'.$_field_opts[1].'</b> : '.$sysconf['node'][$_biblio_d['node_id']]['name'].'</div>';
-						}
+			    $_buffer .= '<div class="customField locationField"><b>'.$_field_opts[1].'</b> : '.$sysconf['node'][$_biblio_d['node_id']]['name'].'</div>';
+			  }
         	}
     	  }
 		  }

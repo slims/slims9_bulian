@@ -116,7 +116,7 @@ if (isset($_GET['p']))
 <script type="text/javascript" src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="<?php echo SWB; ?>template/default/js/jquery.jcarousel.min.js"></script>
 </head>
-<body>
+<body itemscope itemtype="http://schema.org/WebPage">
   <div id="masking"></div>
   <!--// Social Button //-->
   <div class="navbar navbar-social navbar-fixed-top">

@@ -184,6 +184,9 @@ $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><bl
 $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
 
+/* JSON LD */
+$sysconf['jsonld_detail'] = true;
+
 /* DATABASE BACKUP config */
 // specify the full path of mysqldump binary
 $sysconf['mysqldump'] = '/usr/bin/mysqldump';

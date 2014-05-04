@@ -45,6 +45,21 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
     echo $output;
     echo $detail->getSuffix();
     exit();
+} else if (isset($_GET['JSONLD']) AND !empty($_GET['JSONLD'])) {
+    if (!$sysconf['jsonld_detail']) {
+      die('JSON-LD detail is disabled');
+    }
+    // filter the ID
+    $detail_id = intval($_GET['id']);
+    // include detail library and template
+    include LIB.'detail.inc.php';
+    // create detail object
+    $detail = new detail($dbs, $detail_id, 'json-ld');
+    $output = $detail->showDetail();
+    // send http header
+    header('Content-Type: application/ld+json');
+    echo $output;
+    exit();
 } else {
     // filter the ID
     $detail_id = intval($_GET['id']);
@@ -101,5 +116,4 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
   $metadata = $detail->metadata;
 
   echo '<br />'."\n";
-
 }

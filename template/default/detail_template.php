@@ -11,7 +11,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       <br/>
     <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $_GET['id'];?>" class="btn btn-mini btn-danger">XML</a>
   </div>
-  <div class="span10" itemscope itemtype="http://schema.org/DataCatalog" vocab="http://schema.org/" typeof="DataCatalog">
+  <div class="span10" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
     <h4 class="title" itemprop="name" property="name">{title}</h4>
     <div>{social_shares}</div>
     <span class="abstract" itemprop="description" property="description">
@@ -26,11 +26,11 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Author(s)'); ?></label>
-        <div class="controls" itemprop="author" property="author">{authors}</div>
+        <div class="controls" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">{authors}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Edition'); ?></label>
-        <div class="controls" itemprop="version" property="version">{edition}</div>
+        <div class="controls" itemprop="bookEdition" property="bookEdition">{edition}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Call Number'); ?></label>
@@ -54,15 +54,15 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('GMD'); ?></label>
-        <div class="controls" itemprop="encoding" property="encoding" itemscope itemtype="http://schema.org/MediaObject"><span itemprop="name" property="name">{gmd_name}</span></div>
+        <div class="controls" itemprop="bookFormat" property="bookFormat">{gmd_name}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Language'); ?></label>
-        <div class="controls" itemprop="inLanguage" property="inLanguage">{language_name}</div>
+        <div class="controls"><meta itemprop="inLanguage" property="inLanguage" content="{language_name}" />{language_name}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Publisher'); ?></label>
-        <div class="controls" itemprop="publisher" property="publisher">{publisher_name}</div>
+        <div class="controls" itemprop="publisher" property="publisher" itemtype="http://schema.org/Organization" itemscope>{publisher_name}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Publishing Year'); ?></label>
@@ -74,7 +74,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Collation'); ?></label>
-        <div class="controls">{collation}</div>
+        <div class="controls" itemprop="numberOfPages" property="numberOfPages">{collation}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Specific Detail Info'); ?></label>

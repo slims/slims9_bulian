@@ -115,10 +115,9 @@ $social = array (
 <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
-
 </head>
 
-<body>
+<body itemscope itemtype="http://schema.org/WebPage">
  <div id="masking"></div>
  <div id="content">
   <div class="topic">

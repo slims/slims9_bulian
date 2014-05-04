@@ -53,7 +53,7 @@ class detail extends content_list
      */
     public function __construct($obj_db, $int_detail_id, $str_output_format = 'html')
     {
-        if (!in_array($str_output_format, array('html', 'xml', 'mods', 'dc'))) {
+        if (!in_array($str_output_format, array('html', 'xml', 'mods', 'dc', 'json', 'json-ld'))) {
             $this->output_format = trim($str_output_format);
         } else { $this->output_format = $str_output_format; }
 
@@ -95,6 +95,8 @@ class detail extends content_list
                 return parent::parseListTemplate($this->htmlOutput());
             } else if ($this->output_format == 'mods') {
                 return $this->MODSoutput();
+            } else if ($this->output_format == 'json-ld') {
+                return $this->JSONLDoutput();
             } else {
                 // external output function
                 if (function_exists($this->output_format)) {
@@ -149,7 +151,7 @@ class detail extends content_list
         // check image
         if (!empty($this->record_detail['image'])) {
           if ($sysconf['tg']['type'] == 'minigalnano') {
-            $this->record_detail['image'] = '<img itemprop="image" src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
+            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
           }
         } else {
           $this->record_detail['image'] = '<img src="./images/default/image.png" border="0" />';
@@ -405,21 +407,13 @@ class detail extends content_list
 
     /**
      * Record detail output in MODS (Metadata Object Description Schema) XML mode
-     * @return  array
+     * @return  string
      *
      */
     public function DublinCoreOutput()
     {
         // get global configuration vars array
         global $sysconf;
-
-        // convert to htmlentities
-        foreach ($this->record_detail as $_field => $_value) {
-            if (is_string($_value)) {
-              $this->record_detail[$_field] = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]+);/S',
-                'utility::convertXMLentities', htmlspecialchars(trim($_value)));
-            }
-        }
 
         // set prefix and suffix
         $this->detail_prefix = '';
@@ -439,11 +433,11 @@ class detail extends content_list
             $_title_main = trim($this->record_detail['title']);
         }
 
-        $_xml_output .= '<dc:title>'.$_title_main;
+        $_xml_output .= '<dc:title><![CDATA['.$_title_main;
         if ($_title_sub) {
             $_xml_output .= ' '.$_title_sub;
         }
-        $_xml_output .= '</dc:title>'."\n";
+        $_xml_output .= ']]></dc:title>'."\n";
 
         // get the authors data
         $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
@@ -454,52 +448,52 @@ class detail extends content_list
         $_biblio_authors_q->free_result();
 
         // imprint/publication data
-        $_xml_output .= '<dc:publisher>'.$this->record_detail['publisher_name'].'</dc:publisher>'."\n";
+        $_xml_output .= '<dc:publisher><![CDATA['.$this->record_detail['publisher_name'].']]></dc:publisher>'."\n";
 
         // date
-        $_xml_output .= '<dc:date>'.$this->record_detail['publish_year'].'</dc:date>'."\n";
+        $_xml_output .= '<dc:date><![CDATA['.$this->record_detail['publish_year'].']]></dc:date>'."\n";
 
         // edition
-        $_xml_output .= '<dc:hasVersion>'.$this->record_detail['edition'].'</dc:hasVersion>'."\n";
+        $_xml_output .= '<dc:hasVersion><![CDATA['.$this->record_detail['edition'].']]></dc:hasVersion>'."\n";
 
         // language
-        $_xml_output .= '<dc:language>'.$this->record_detail['language_name'].'</dc:language>'."\n";
+        $_xml_output .= '<dc:language><![CDATA['.$this->record_detail['language_name'].']]></dc:language>'."\n";
 
         // Physical Description/Collation
-        $_xml_output .= '<dc:medium>'.$this->record_detail['gmd_name'].'</dc:medium>'."\n";
-        $_xml_output .= '<dc:format>'.$this->record_detail['gmd_name'].'</dc:format>'."\n";
+        $_xml_output .= '<dc:medium><![CDATA['.$this->record_detail['gmd_name'].']]></dc:medium>'."\n";
+        $_xml_output .= '<dc:format><![CDATA['.$this->record_detail['gmd_name'].']]></dc:format>'."\n";
         if ((integer)$this->record_detail['frequency_id'] > 0) {
             $_xml_output .= '<dc:format>Serial</dc:format>'."\n";
         }
-        $_xml_output .= '<dc:extent>'.$this->record_detail['collation'].'</dc:extent>'."\n";
+        $_xml_output .= '<dc:extent><![CDATA['.$this->record_detail['collation'].']]></dc:extent>'."\n";
 
         // Series title
         if ($this->record_detail['series_title']) {
-          $_xml_output .= '<dc:isPartOf>'.$this->record_detail['series_title'].'</dc:isPartOf>'."\n";
+          $_xml_output .= '<dc:isPartOf><![CDATA['.$this->record_detail['series_title'].']]></dc:isPartOf>'."\n";
         }
 
         // Note
-        $_xml_output .= '<dc:description>'.$this->record_detail['notes'].'</dc:description>'."\n";
-        $_xml_output .= '<dc:abstract>'.$this->record_detail['notes'].'</dc:abstract>'."\n";
+        $_xml_output .= '<dc:description><![CDATA['.$this->record_detail['notes'].']]></dc:description>'."\n";
+        $_xml_output .= '<dc:abstract><![CDATA['.$this->record_detail['notes'].']]></dc:abstract>'."\n";
 
         // subject/topic
         $_biblio_topics_q = $this->obj_db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
           LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id WHERE bt.biblio_id='.$this->detail_id.' ORDER BY t.auth_list');
         while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
-          $_xml_output .= '<dc:subject>'.$_topic_d['topic'].'</dc:subject>'."\n";
+          $_xml_output .= '<dc:subject><![CDATA['.$_topic_d['topic'].']]></dc:subject>'."\n";
         }
 
         // classification
-        $_xml_output .= '<dc:subject>'.$this->record_detail['classification'].'</dc:subject>';
+        $_xml_output .= '<dc:subject><![CDATA['.$this->record_detail['classification'].']]></dc:subject>';
 
         // Permalink
         $_xml_output .= '<dc:identifier><![CDATA[http://'.$_SERVER['SERVER_NAME'].SWB.'index.php?p=show_detail&id='.$this->detail_id.']]></dc:identifier>';
 
         // ISBN/ISSN
-        $_xml_output .= '<dc:identifier>'.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).'</dc:identifier>';
+        $_xml_output .= '<dc:identifier><![CDATA['.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).']]></dc:identifier>';
 
         // Call Number
-        $_xml_output .= '<dc:identifier>'.$this->record_detail['call_number'].'</dc:identifier>'."\n";
+        $_xml_output .= '<dc:identifier><![CDATA['.$this->record_detail['call_number'].']]></dc:identifier>'."\n";
 
         $_copy_q = $this->obj_db->query('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
             .'LEFT JOIN mst_item_status AS stat ON i.item_status_id=stat.item_status_id '
@@ -507,7 +501,7 @@ class detail extends content_list
             .'WHERE i.biblio_id='.$this->detail_id);
         if ($_copy_q->num_rows > 0) {
             while ($_copy_d = $_copy_q->fetch_assoc()) {
-                $_xml_output .= '<dc:hasPart>'.$_copy_d['item_code'].'</dc:hasPart>'."\n";
+                $_xml_output .= '<dc:hasPart><![CDATA['.$_copy_d['item_code'].']]></dc:hasPart>'."\n";
             }
         }
 
@@ -519,8 +513,7 @@ class detail extends content_list
               $_xml_output .= '<dc:relation><![CDATA[';
               // check member type privileges
               if ($attachment_d['access_limit']) { continue; }
-              $_xml_output .= preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]+);/S',
-                  'utility::convertXMLentities', htmlspecialchars(trim($attachment_d['file_title'])));
+              $_xml_output .= trim($attachment_d['file_title']);
               $_xml_output .= ']]></dc:relation>'."\n";
           }
         }
@@ -532,6 +525,115 @@ class detail extends content_list
         }
 
         return $_xml_output;
+    }
+
+
+    /**
+     * Record detail output in JSON-LD (JSON-Linked Data)
+     * @return  string
+     *
+     */
+    public function JSONLDoutput() {
+      // get global configuration vars array
+      global $sysconf;
+      
+      // set prefix and suffix
+      $this->detail_prefix = '';
+      $this->detail_suffix = '';
+      
+      $jsonld['@context'] = 'http://schema.org';
+      $jsonld['@type'] = 'Book';
+      
+      // parse title
+      $_title_sub = '';
+      $_title_statement_resp = '';
+      if (stripos($this->record_detail['title'], ':') !== false) {
+          $_title_main = trim(substr_replace($this->record_detail['title'], '', stripos($this->record_detail['title'], ':')+1));
+          $_title_sub = trim(substr_replace($this->record_detail['title'], '', 0, stripos($this->record_detail['title'], ':')+1));
+      } else if (stripos($this->record_detail['title'], '/') !== false) {
+          $_title_statement_resp = trim(substr_replace($this->record_detail['title'], '', stripos($this->record_detail['title'], '/')+1));
+      } else {
+          $_title_main = trim($this->record_detail['title']);
+      }
+      
+      $jsonld['name'] = $_title_main;
+      if ($_title_sub) {
+        $jsonld['alternativeHeadline'] = $_title_sub;
+      }
+      
+      // get the authors data
+      $jsonld['author']['@type'] = 'Person'; 
+      $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
+          .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$this->detail_id);
+      while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
+          $jsonld['author']['name'][] = $_auth_d['author_name'];
+      }
+      $_biblio_authors_q->free_result();
+      
+      // imprint/publication data
+      $jsonld['publisher']['@type'] = 'Organization';
+      $jsonld['publisher']['name'] = $this->record_detail['publisher_name'];
+      
+      // date
+      $jsonld['dateCreated'] = $this->record_detail['publish_year'];
+      
+      // edition
+      $jsonld['version'] = $this->record_detail['edition'];
+      
+      // language
+      $jsonld['inLanguage'] = $this->record_detail['language_name'];
+      
+      // Physical Description/Collation
+      $jsonld['bookFormat'] = $this->record_detail['gmd_name'];
+      
+      // collation
+      $jsonld['numberOfPages'] = $this->record_detail['collation'];
+      
+      // Series title
+      if ($this->record_detail['series_title']) {
+        $jsonld['alternativeHeadline'] = $this->record_detail['series_title'];
+      }
+      
+      // Note
+      $jsonld['description'] = $this->record_detail['notes'];
+      
+      // subject/topic
+      $jsonld['keywords'] = '';
+      $_biblio_topics_q = $this->obj_db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
+        LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id WHERE bt.biblio_id='.$this->detail_id.' ORDER BY t.auth_list');
+      while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
+        $jsonld['keywords'] .= $_topic_d['topic'].' ';
+      }
+      
+      // classification
+      $jsonld['keywords'] .= $this->record_detail['classification'];
+      
+      // Permalink
+      $jsonld['url'] = 'http://'.$_SERVER['SERVER_NAME'].SWB.'index.php?p=show_detail&id='.$this->detail_id;
+      
+      // ISBN/ISSN
+      $jsonld['isbn'] = str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']);
+      
+      // digital files
+      $jsonld['associatedMedia']['@type'] = 'MediaObject';
+      $attachment_q = $this->obj_db->query('SELECT att.*, f.* FROM biblio_attachment AS att
+          LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
+      if ($attachment_q->num_rows > 0) {
+        while ($attachment_d = $attachment_q->fetch_assoc()) {
+            $_xml_output .= '<dc:relation><![CDATA[';
+            // check member type privileges
+            if ($attachment_d['access_limit']) { continue; }
+            $jsonld['associatedMedia']['name'] = trim($attachment_d['file_title']);
+        }
+      }
+      
+      // image
+      if (!empty($this->record_detail['image'])) {
+        $_image = urlencode($this->record_detail['image']);
+	  	  $jsonld['image'] = 'http://'.$_SERVER['SERVER_NAME'].IMGBS.'docs/'.urlencode($_image);
+      }
+      
+      return json_encode($jsonld);
     }
 
 
