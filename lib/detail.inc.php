@@ -107,6 +107,147 @@ class detail extends content_list
             }
         }
     }
+    
+
+    /**
+     * Method to get file attachments information of biblio
+     *
+     * @param   boolean     $bool_return_raw
+     *
+     * @return  mix
+     */
+    public function getAttachments($bool_return_raw = false) {
+      $items = array();
+      $_output = '';
+      $attachment_q = $this->obj_db->query(sprintf('SELECT att.*, f.* FROM biblio_attachment AS att
+        LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id=%d AND att.access_type=\'public\' LIMIT 20', $this->detail_id));
+      if ($attachment_q->num_rows < 1) {
+        $_output = '<div class="alert alert-error no-attachment">'.__('No Attachment').'</div>';
+        if (!$bool_return_raw) {
+          return $_output;
+        }
+        return false;
+      } else {
+        $_output .= '<ul class="attachList">';
+        while ($attachment_d = $attachment_q->fetch_assoc()) {
+          // check member type privileges
+          if ($attachment_d['access_limit']) {
+            if (utility::isMemberLogin()) {
+              $allowed_mem_types = @unserialize($attachment_d['access_limit']);
+              if (!in_array($_SESSION['m_member_type_id'], $allowed_mem_types)) {
+                continue;
+              }
+            } else {
+              continue;
+            }
+          }
+          #if (preg_match('@(video|audio|image)/.+@i', $attachment_d['mime_type'])) {
+          if ($attachment_d['mime_type'] == 'application/pdf') {
+            $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'&fname='.$attachment_d['file_name'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
+            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+            if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource related to this book" target="_blank">Other Resource Link</a></div>'; }
+            $_output .= '</li>';
+          } else if (preg_match('@(video)/.+@i', $attachment_d['mime_type'])) {
+            $_output .= '<li class="attachment-audio-video" itemprop="video" property="video" itemscope itemtype="http://schema.org/VideoObject" style="list-style-image: url(images/labels/auvi.png)">'
+              .'<a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="640" height="480">'.$attachment_d['file_title'].'</a>';
+            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+            if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource Link" target="_blank">Other Resource Link</a></div>'; }
+            $_output .= '</li>';
+          } else if (preg_match('@(audio)/.+@i', $attachment_d['mime_type'])) {
+            $_output .= '<li class="attachment-audio-audio" itemprop="audio" property="audio" itemscope itemtype="http://schema.org/AudioObject" style="list-style-image: url(images/labels/auvi.png)">'
+              .'<a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="640" height="480">'.$attachment_d['file_title'].'</a>';
+            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+            if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource Link" target="_blank">Other Resource Link</a></div>'; }
+            $_output .= '</li>';
+          } else if ($attachment_d['mime_type'] == 'text/uri-list') {
+            $_output .= '<li class="attachment-url-list" style="list-style-image: url(images/labels/url.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name"  href="'.trim($attachment_d['file_url']).'" title="Click to open link" target="_blank">'.$attachment_d['file_title'].'</a><div class="attachment-desc">'.$attachment_d['file_desc'].'</div></li>';
+          } else if (preg_match('@(image)/.+@i', $attachment_d['mime_type'])) {
+            $file_loc = REPOBS.'/'.$attachment_d['file_dir'].'/'.$attachment_d['file_name'];
+            $imgsize = GetImageSize($file_loc);
+            $imgwidth = $imgsize[0] + 16;
+            if ($imgwidth > 600) {
+              $imgwidth = 600;
+            }
+            $imgheight = $imgsize[1] + 16;
+            if ($imgheight > 400) {
+              $imgheight = 400;
+            }
+            $_output .= '<li class="attachment-image" style="list-style-image: url(images/labels/ebooks.png)" itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="'.$imgwidth.'" height="'.$imgheight.'">'.$attachment_d['file_title'].'</a>';
+            if (trim($attachment_d['file_url']) != '') { $_output .= ' [<a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource related to this file" target="_blank" style="font-size: 90%;">Other Resource Link</a>]'; }
+            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div></li>';
+          } else {
+            $_output .= '<li class="attachment-image" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" title="Click To View File" href="index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" target="_blank">'.$attachment_d['file_title'].'</a>';
+            if (trim($attachment_d['file_url']) != '') { $_output .= ' [<a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource related to this file" target="_blank" style="font-size: 90%;">Other Resource Link</a>]'; }
+            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div></li>';
+          }
+        }
+        $_output .= '</ul>';
+        if (!$bool_return_raw) {
+          return $bool_return_raw;
+        }
+        return $items;
+      }
+    }
+
+
+    /**
+     * Method to get items/copies information of biblio
+     *
+     * @param   boolean     $bool_return_raw
+     *
+     * @return  mix
+     */
+    public function getItemCopy($bool_return_raw = false) {
+      $items = array();
+      $_output = '';
+      $copy_q = $this->obj_db->query(sprintf('SELECT i.item_code, i.call_number, loc.location_name, stat.*, i.site FROM item AS i
+          LEFT JOIN mst_item_status AS stat ON i.item_status_id=stat.item_status_id
+          LEFT JOIN mst_location AS loc ON i.location_id=loc.location_id
+          WHERE i.biblio_id=%d', $this->detail_id));
+      if ($copy_q->num_rows < 1) {
+          $_output = '<div class="alert alert-error no-copies">'.__('There is no item/copy for this title yet').'</div>';
+          if (!$bool_return_raw) {
+            return $_output;
+          }
+          return false;
+      }
+      
+      $_output = '<table class="table table-bordered table-small itemList">';
+      while ($copy_d = $copy_q->fetch_assoc()) {
+        // check if this collection is on loan
+        $loan_stat_q = $this->obj_db->query('SELECT due_date FROM loan AS l
+            LEFT JOIN item AS i ON l.item_code=i.item_code
+            WHERE l.item_code=\''.$copy_d['item_code'].'\' AND is_lent=1 AND is_return=0');
+        $_output .= '<tr>';
+        $_output .= '<td class="biblio-item-code">'.$copy_d['item_code'].'</td>';
+        $_output .= '<td class="biblio-call-number">'.$copy_d['call_number'].'</td>';
+        $_output .= '<td class="biblio-location">'.$copy_d['location_name'];
+        if (trim($copy_d['site']) != "") {
+            $_output .= ' ('.$copy_d['site'].')';
+        }
+        $_output .= '</td>';
+        $_output .= '<td width="30%">';
+        /* DEPRECATED
+        $_rules = @unserialize($copy_d['rules']);
+        */
+        if ($loan_stat_q->num_rows > 0) {
+            $loan_stat_d = $loan_stat_q->fetch_row();
+            $_output .= '<span class="label label-important status-on-loan">'.__('Currently On Loan (Due on').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')</span>'; //mfc
+        } else if ($copy_d['no_loan']) {
+            $_output .= '<span class="label label-important status-not-loan">'.__('Available but not for loan').' - '.$copy_d['item_status_name'].'</span>';
+        } else {
+            $_output .= '<span class="label label-info status-available">'.__('Available').(trim($copy_d['item_status_name'])?' - '.$copy_d['item_status_name']:'').'</span>';
+        }
+        $loan_stat_q->free_result();
+        $_output .= '</td>';
+        $_output .= '</tr>';
+      }
+      $_output .= '</table>';
+      if (!$bool_return_raw) {
+        return $_output;
+      }
+      return $items;
+    }
 
 
     /**
@@ -193,6 +334,9 @@ class detail extends content_list
         // free memory
         $_biblio_topics_q->free_result();
 
+        $this->record_detail['availability'] = $this->getItemCopy();
+        $this->record_detail['file_att'] = $this->getAttachments();
+        /*
         // availability
         $this->record_detail['availability'] = '<div id="itemListLoad">LOADING LIST...</div>';
         $this->record_detail['availability'] .= '<script type="text/javascript">'
@@ -208,7 +352,8 @@ class detail extends content_list
                 type: \'POST\',
                 data: \'id='.$this->detail_id.'&ajaxsec_user='.$sysconf['ajaxsec_user'].'&ajaxsec_passwd='.$sysconf['ajaxsec_passwd'].'\',
                 success: function(ajaxRespond) { jQuery(\'#attachListLoad\').html(ajaxRespond); } }); });</script>';
-
+        */
+        
         if ($sysconf['social_shares']) {
 			    // share buttons
 			    $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);

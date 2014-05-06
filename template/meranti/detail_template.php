@@ -96,7 +96,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </tr>
       <tr>
        <td class="key"><?php print __('File Attachment'); ?></td>
-       <td class="value" itemprop="associatedMedia" itemscope itemtype="http://schema.org/MediaObject">{file_att}</td>
+       <td class="value" itemprop="associatedMedia">{file_att}</td>
       </tr>
       <tr>
        <td class="key"><?php print __('Availability'); ?></td>

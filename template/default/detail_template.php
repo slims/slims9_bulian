@@ -82,7 +82,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('File Attachment'); ?></label>
-        <div class="controls" itemprop="associatedMedia" itemscope itemtype="http://schema.org/MediaObject">{file_att}</div>
+        <div class="controls" itemprop="associatedMedia">{file_att}</div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Availability'); ?></label>
