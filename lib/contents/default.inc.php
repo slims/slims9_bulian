@@ -169,7 +169,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $biblio_list->only_promoted = true;
   }
 
-  if (!isset($_GET['resultXML'])) {
+  if (!isset($_GET['resultXML']) && !isset($_GET['JSONLD'])) {
     // show the list
     echo $biblio_list->getDocumentList();
     echo '<br />'."\n";
@@ -256,6 +256,16 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
   }
 }
 
+if (isset($_GET['JSONLD']) && $sysconf['jsonld_result']) {
+  // get document list but don't output the result
+  $biblio_list->getDocumentList(false);
+  if ($biblio_list->num_rows > 0) {
+    // send http header
+    header('Content-Type: application/ld+json');
+    echo $biblio_list->JSONLDresult();
+  }
+  exit();
+}
 // check if we are on xml resultset mode
 if ( (isset($_GET['rss']) || isset($_GET['resultXML'])) && $sysconf['enable_xml_result']) {
   // get document list but don't output the result

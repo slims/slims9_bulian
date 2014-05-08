@@ -148,8 +148,8 @@ abstract class biblio_list_model
    * @return  string
    */
   public function getDocumentList($bool_return_output = true) {
-	  global $sysconf;
-	  $_sql_str = $this->compileSQL();
+	global $sysconf;
+	$_sql_str = $this->compileSQL();
     // start time
     $_start = function_exists('microtime')?microtime(true):time();
     // execute query
@@ -359,13 +359,6 @@ abstract class biblio_list_model
     $_buffer .= '<slims:modsResultShowed>'.$this->num2show.'</slims:modsResultShowed>'."\n";
     $_buffer .= '</slims:resultInfo>'."\n";
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
-      // replace xml entities
-      foreach ($_biblio_d as $_field => $_value) {
-        if (is_string($_value)) {
-          $_biblio_d[$_field] = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]+);/S','utility::convertXMLentities', htmlspecialchars(trim($_value)));
-        }
-      }
-
       $_buffer .= '<mods version="3.3" ID="'.$_biblio_d['biblio_id'].'">'."\n";
       // parse title
       $_title_sub = '';
@@ -376,9 +369,9 @@ abstract class biblio_list_model
         $_title_main = trim($_biblio_d['title']);
       }
 
-      $_buffer .= '<titleInfo>'."\n".'<title>'.$_title_main.'</title>'."\n";
+      $_buffer .= '<titleInfo>'."\n".'<title><![CDATA['.$_title_main.']]></title>'."\n";
       if ($_title_sub) {
-        $_buffer .= '<subTitle>'.$_title_sub.'</subTitle>'."\n";
+        $_buffer .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
       }
       $_buffer .= '</titleInfo>'."\n";
 
@@ -397,24 +390,24 @@ abstract class biblio_list_model
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'personal';
         }
         $_buffer .= '<name type="'.$sysconf['authority_type'][$_auth_d['authority_type']].'" authority="'.$_auth_d['auth_list'].'">'."\n"
-          .'<namePart>'.preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]+);/S','utility::convertXMLentities', htmlspecialchars(trim($_auth_d['author_name']))).'</namePart>'."\n"
+          .'<namePart><![CDATA['.trim($_auth_d['author_name']).']]></namePart>'."\n"
           .'<role><roleTerm type="text">'.$sysconf['authority_level'][$_auth_d['level']].'</roleTerm></role>'."\n"
         .'</name>'."\n";
       }
       $_buffer .= '<typeOfResource manuscript="yes" collection="yes">mixed material</typeOfResource>'."\n";
       $_biblio_authors_q->free_result();
 
-			// ISBN
-			$_buffer .= '<identifier type="isbn">'.str_replace(array('-', ' '), '', $_biblio_d['isbn_issn']).'</identifier>'."\n";
-
-			// imprint/publication data
-			$_buffer .= '<originInfo>'."\n";
-			$_buffer .= '<place><placeTerm type="text">'.$_biblio_d['publish_place'].'</placeTerm></place>'."\n"
-			  .'<publisher>'.$_biblio_d['publisher'].'</publisher>'."\n"
-			  .'<dateIssued>'.$_biblio_d['publish_year'].'</dateIssued>'."\n";
-			$_buffer .= '</originInfo>'."\n";
-
-			// doc images
+	  // ISBN
+	  $_buffer .= '<identifier type="isbn">'.str_replace(array('-', ' '), '', $_biblio_d['isbn_issn']).'</identifier>'."\n";
+      
+	  // imprint/publication data
+	  $_buffer .= '<originInfo>'."\n";
+	  $_buffer .= '<place><placeTerm type="text"><![CDATA['.$_biblio_d['publish_place'].']]></placeTerm></place>'."\n"
+	    .'<publisher><![CDATA['.$_biblio_d['publisher'].']]></publisher>'."\n"
+	    .'<dateIssued><![CDATA['.$_biblio_d['publish_year'].']]></dateIssued>'."\n";
+	  $_buffer .= '</originInfo>'."\n";
+      
+	  // doc images
       $_image = '';
       if (!empty($_biblio_d['image'])) {
         $_image = urlencode($_biblio_d['image']);
@@ -430,6 +423,62 @@ abstract class biblio_list_model
 
     return $_buffer;
   }
+
+
+  /**
+   * Method to make an output of document records in JSON-LD format
+   *
+   * @return  string
+   */
+  public function JSONLDresult() {
+    global $sysconf;
+    $jsonld['@context'] = 'http://schema.org';
+    $jsonld['@type'] = 'Book';
+    
+    // loop data
+    $jsonld['total_rows'] = $this->num_rows;
+    $jsonld['page'] = $this->current_page;
+    $jsonld['records_each_page'] = $this->num2show;
+    $jsonld['@graph'] = array();
+	while ($_biblio_d = $this->resultset->fetch_assoc()) {
+      $record = array();
+      $record['@id'] = 'http://'.$_SERVER['SERVER_NAME'].SWB.'index.php?p=show_detail&id='.$_biblio_d['biblio_id'];
+      $record['name'] = trim($_biblio_d['title']);
+
+      // get the authors data
+      $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
+        .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$_biblio_d['biblio_id']);
+	  $record['author'] = array();
+      while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
+		$record['author']['name'][] = trim($_auth_d['author_name']);
+      }
+      $_biblio_authors_q->free_result();
+
+	  // ISBN
+	  $record['isbn'] = $_biblio_d['isbn_issn'];
+      
+	  // publisher
+	  $record['publisher'] = $_biblio_d['publisher'];
+	  
+	  // publish date
+	  $record['dateCreated'] = $_biblio_d['publish_year'];
+
+			// doc images
+      $_image = '';
+      if (!empty($_biblio_d['image'])) {
+        $_image = urlencode($_biblio_d['image']);
+		$record['image'] = $_image;
+      }
+
+	  $jsonld['@graph'][] = $record;
+    }
+
+    // free resultset memory
+    $this->resultset->free_result();
+
+    return str_ireplace('\/', '/', json_encode($jsonld));
+  }
+  
 
 
   /**

@@ -185,6 +185,7 @@ $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
 
 /* JSON LD */
+$sysconf['jsonld_result'] = true;
 $sysconf['jsonld_detail'] = true;
 
 /* DATABASE BACKUP config */

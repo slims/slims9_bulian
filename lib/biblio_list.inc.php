@@ -273,8 +273,8 @@ class biblio_list extends biblio_list_model {
     if ($this->criteria) {
       if (isset($this->criteria['searched_fields']['location']) || isset($this->criteria['searched_fields']['colltype'])) {
         if (!$this->disable_item_data) {
-				  $_add_sql_str .= ' LEFT JOIN item ON biblio.biblio_id=item.biblio_id ';
-				}
+		  $_add_sql_str .= ' LEFT JOIN item ON biblio.biblio_id=item.biblio_id ';
+		}
       }
     }
 
