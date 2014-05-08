@@ -94,7 +94,7 @@ if (isset($_GET['p']))
     );
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>">
 <head>
 <title><?php echo $page_title; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -127,12 +127,12 @@ if (isset($_GET['p']))
           <?php foreach ($social as $path => $menu) { ?>
           <li><a href="<?php echo $menu['url']; ?>" title="<?php echo $menu['text']; ?>" <?php if ($p == $path) {echo ' class="active"';} ?>><?php echo $menu['text']; ?></a></li>
           <?php } ?>
-          <li><a href="index.php?rss=true" target="_blank" title="RSS" class="rss" ><img src="<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/rss.png" /></a></li>
+          <li><a href="index.php?rss=true" target="_blank" title="RSS" class="rss" ><img src="<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/rss.png" alt="Link to library collection RSS feed" /></a></li>
         </ul>
         <?php } ?>
         <form class="navbar-form pull-right language" name="langSelect" action="index.php" method="get">
-          <span class="language-info"><?php echo __('Select Language'); ?></span>
-          <select name="select_lang" id="select_lang"  onchange="document.langSelect.submit();" class="input-medium">
+          <label class="language-info" for="select_lang"><?php echo __('Select Language'); ?></label>
+          <select name="select_lang" id="select_lang" title="Change language of this site" onchange="document.langSelect.submit();" class="input-medium">
             <?php echo $language_select; ?>
           </select>
         </form>
@@ -181,7 +181,7 @@ if (isset($_GET['p']))
             <?php } else { ?>
             <?php echo $page_title; ?>
             <?php } ?>
-            <a href="javascript: history.back();" class="btn btn-mini btn-danger pull-right"><i class="icon icon-white icon-circle-arrow-left"></i> <?php echo __('Back'); ?> </a>
+            <a href="javascript: history.back();" class="btn btn-mini btn-danger pull-right" title="Backup to previous page"><span class="icon icon-white icon-circle-arrow-left"></span> <?php echo __('Back'); ?> </a>
           </div>
           <?php } ?>
 

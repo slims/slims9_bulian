@@ -295,7 +295,7 @@ class detail extends content_list
             $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
           }
         } else {
-          $this->record_detail['image'] = '<img src="./images/default/image.png" border="0" />';
+          $this->record_detail['image'] = '<img src="./images/default/image.png" alt="No image available for this title" border="0" />';
         }
 
         // get the authors data
@@ -355,9 +355,9 @@ class detail extends content_list
         */
         
         if ($sysconf['social_shares']) {
-			    // share buttons
-			    $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
-			    $_share_btns = "\n".'<ul class="share-buttons">'.
+		  // share buttons
+		  $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
+		  $_share_btns = "\n".'<ul class="share-buttons">'.
             '<li>'.__('Share to').': </li>'.
             '<li><a href="http://www.facebook.com/sharer.php?u='.$_detail_link_encoded.'" title="Facebook" target="_blank"><img src="./images/default/fb.gif" alt="Facebook" /></a></li>'.
             '<li><a href="http://twitter.com/share?url='.$_detail_link_encoded.'&text='.urlencode($this->record_title).'" title="Twitter" target="_blank"><img src="./images/default/tw.gif" alt="Twitter" /></a></li>'.

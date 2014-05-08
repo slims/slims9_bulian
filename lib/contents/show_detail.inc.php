@@ -105,10 +105,10 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
   // set the content for info box
   $info = '<strong>'.strtoupper(__('Record Detail')).'</strong><hr />';
   if (!defined('LIGHTWEIGHT_MODE')) {
-      $info .= '<a href="javascript: history.back();">'.__('Back To Previous').'</a> &nbsp;';
+      $info .= '<a href="javascript: history.back();" title="Back to previous page">'.__('Back To Previous').'</a> &nbsp;';
   }
   if (isset($sysconf['enable_xml_detail']) && $sysconf['enable_xml_detail'] && !defined('LIGHTWEIGHT_MODE')) {
-      $info .= '<a href="index.php?p=show_detail&inXML=true&id='.$detail_id.'" class="xmlDetailLink" target="_blank">XML Detail</a>';
+      $info .= '<a href="index.php?p=show_detail&inXML=true&id='.$detail_id.'" class="xmlDetailLink" title="Show detail in XML format" target="_blank">XML Detail</a>';
   }
   // output the record detail
   echo $detail->showDetail();

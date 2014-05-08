@@ -9,7 +9,7 @@ ob_start(); /* <- DONT REMOVE THIS COMMAND */
       {image}
       </div>
       <br/>
-    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $_GET['id'];?>" class="btn btn-mini btn-danger">XML</a>
+    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $_GET['id'];?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a>
   </div>
   <div class="span10" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
     <h4 class="title" itemprop="name" property="name">{title}</h4>

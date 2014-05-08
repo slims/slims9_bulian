@@ -44,6 +44,10 @@ h1,h2,h3,h4,h5,h6 {
 	padding-right: 10px;
 }
 
+.language-info {
+    display: inline-block;
+}
+
 .navbar-social .navbar-inner {
 	border-top: solid 1px #b0d6e7;
 	background: #89c1db;
