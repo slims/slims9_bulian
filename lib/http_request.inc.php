@@ -150,12 +150,13 @@ class http_request {
             return false;
         }
 
-        // extract host and path:
+        // extract host, port and path:
         $host = $url['host'];
+        $port = isset($url['port']) ? $url['port'] : '80'; // using port 80 for undefined port number
         $path = $url['path'];
 
-        // open a socket connection on port 80
-        $fp = fsockopen($host, 80, $errno, $errstr, 30);
+        // open a socket connection
+        $fp = fsockopen($host, $port, $errno, $errstr, 30);
         if (!$fp) {
             $this->error = array('errno' => $errno, 'message' => $errstr);
             return false;
@@ -164,7 +165,7 @@ class http_request {
         // send the request headers:
         $method = strtoupper($method);
         fputs($fp, "$method $path HTTP/1.1\r\n");
-        fputs($fp, "Host: $host\r\n");
+        fputs($fp, "Host: $host" . (($port != '80') ? ":$port" : '') . "\r\n");
         fputs($fp, "Referer: $referer\r\n");
         fputs($fp, "Content-type: $content_type\r\n");
         fputs($fp, "Content-length: ". strlen($encoded_data) ."\r\n");
