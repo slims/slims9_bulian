@@ -43,6 +43,7 @@ class OAI_Web_Service {
     $resumptionToken = array();
     $offset = 0;
     $where = '';
+    $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
       echo 'resumption';
@@ -52,6 +53,13 @@ class OAI_Web_Service {
       }
       if (isset($resumptionToken['metadataPrefix'])) {
         $metadataPrefix = $resumptionToken['metadataPrefix'];
+      }
+    } else {
+      if (isset($_GET['offset'])) {
+        $offset = (integer)$_GET['offset'];
+      }
+      if (isset($_GET['metadataPrefix'])) {
+        $metadataPrefix = $_GET['metadataPrefix'];
       }
     }
 
@@ -96,6 +104,7 @@ class OAI_Web_Service {
     $resumptionToken = array();
     $offset = 0;
     $where = '';
+    $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
       echo 'resumption';
@@ -105,6 +114,13 @@ class OAI_Web_Service {
       }
       if (isset($resumptionToken['metadataPrefix'])) {
         $metadataPrefix = $resumptionToken['metadataPrefix'];
+      }
+    } else {
+      if (isset($_GET['offset'])) {
+        $offset = (integer)$_GET['offset'];
+      }
+      if (isset($_GET['metadataPrefix'])) {
+        $metadataPrefix = $_GET['metadataPrefix'];
       }
     }
 
@@ -151,6 +167,7 @@ class OAI_Web_Service {
     $resumptionToken = array();
     $offset = 0;
     $where = '';
+    $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
       echo 'resumption';
@@ -160,6 +177,13 @@ class OAI_Web_Service {
       }
       if (isset($resumptionToken['metadataPrefix'])) {
         $metadataPrefix = $resumptionToken['metadataPrefix'];
+      }
+    } else {
+      if (isset($_GET['offset'])) {
+        $offset = (integer)$_GET['offset'];
+      }
+      if (isset($_GET['metadataPrefix'])) {
+        $metadataPrefix = $_GET['metadataPrefix'];
       }
     }
 
