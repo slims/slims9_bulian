@@ -231,37 +231,37 @@ class biblio_list extends biblio_list_model
 		      $_query_str .= " (@topic $_q";
           break;
           case 'location' :
-		      $_query_str .= " @location $_q";
+		      $_query_str .= " (@location $_q";
           break;
           case 'colltype' :
-		      $_query_str .= " @collection_types $_q";
+		      $_query_str .= " (@collection_types $_q";
           break;
           case 'itemcode' :
-		      $_query_str .= " @items $_q";
+		      $_query_str .= " (@items $_q";
           break;
           case 'callnumber' :
-		      $_query_str .= " @call_number $_q";
+		      $_query_str .= " (@call_number $_q";
           break;
           case 'itemcallnumber' :
-		      $_query_str .= " @item_call_number $_q";
+		      $_query_str .= " (@item_call_number $_q";
           break;
           case 'class' :
-		      $_query_str .= " @classification $_q";
+		      $_query_str .= " (@classification $_q";
           break;
           case 'isbn' :
-		      $_query_str .= " @isbn_issn $_q";
+		      $_query_str .= " (@isbn_issn $_q";
           break;
           case 'publisher' :
-		      $_query_str .= " @publisher $_q";
+		      $_query_str .= " (@publisher $_q";
           break;
           case 'publishyear' :
-		      $_query_str .= " @publish_year $_q";
+		      $_query_str .= " (@publish_year $_q";
           break;
           case 'gmd' :
-		      $_query_str .= " @gmd $_q";
+		      $_query_str .= " (@gmd $_q";
           break;
           case 'notes' :
-		      $_query_str .= " @notes $_q";
+		      $_query_str .= " (@notes $_q";
           break;
           default :
 		      $_query_str .= " (@title $_q";
@@ -270,6 +270,7 @@ class biblio_list extends biblio_list_model
       }
 
       $_query_str .= ')';
+	  
 	    // check if query is empty
 	    if (!$_query_str) {
 	      $this->no_query = true;
