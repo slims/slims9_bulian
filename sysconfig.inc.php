@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 7 (Cendana)');
+define('SENAYAN_VERSION', 'SLiMS 8 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -207,22 +207,22 @@ $sysconf['scanner'] = false;
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
 // Zend Barcode Engine Encoding selection
-$barcodes_encoding['CODE25'] = array('code25', 'Code 2 or 5 Industrial');
-$barcodes_encoding['CODE25I'] = array('code25interleaved', 'Code 2 or 5 Interleaved ');
+// $barcodes_encoding['CODE25'] = array('code25', 'Code 2 or 5 Industrial (may result in barcode creation error)');
+// $barcodes_encoding['CODE25I'] = array('code25interleaved', 'Code 2 or 5 Interleaved (may result in barcode creation error)');
 $barcodes_encoding['CODE39'] = array('code39', 'Code 39');
 $barcodes_encoding['CODE128'] = array('code128', 'Code 128');
-$barcodes_encoding['EAN2'] = array('ean2', 'Ean 2');
-$barcodes_encoding['EAN5'] = array('ean5', 'Ean 5');
-$barcodes_encoding['EAN8'] = array('ean8', 'Ean 8');
-$barcodes_encoding['EAN13'] = array('ean13', 'Ean 13');
-$barcodes_encoding['IDENTCODE'] = array('identcode', 'Identcode');
-$barcodes_encoding['ITF14'] = array('itf14', 'ITF-14');
-$barcodes_encoding['LEITCODE'] = array('leitcode', 'Leitcode');
-$barcodes_encoding['PLANET'] = array('planet', 'Planet');
-$barcodes_encoding['POSTNET'] = array('postnet', 'Postnet');
-$barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail');
-$barcodes_encoding['UPCA'] = array('upca', 'UPC-A');
-$barcodes_encoding['UPCE'] = array('upce', 'UPC-E');
+// $barcodes_encoding['EAN2'] = array('ean2', 'Ean 2 (may result in barcode creation error)');
+// $barcodes_encoding['EAN5'] = array('ean5', 'Ean 5 (may result in barcode creation error)');
+// $barcodes_encoding['EAN8'] = array('ean8', 'Ean 8');
+// $barcodes_encoding['EAN13'] = array('ean13', 'Ean 13 (may result in barcode creation error)');
+// $barcodes_encoding['IDENTCODE'] = array('identcode', 'Identcode (may result in barcode creation error)');
+// $barcodes_encoding['ITF14'] = array('itf14', 'ITF-14 (may result in barcode creation error)');
+// $barcodes_encoding['LEITCODE'] = array('leitcode', 'Leitcode (may result in barcode creation error)');
+// $barcodes_encoding['PLANET'] = array('planet', 'Planet (may result in barcode creation error)');
+// $barcodes_encoding['POSTNET'] = array('postnet', 'Postnet (may result in barcode creation error)');
+// $barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail (may result in barcode creation error)');
+// $barcodes_encoding['UPCA'] = array('upca', 'UPC-A (may result in barcode creation error)');
+// $barcodes_encoding['UPCE'] = array('upce', 'UPC-E (may result in barcode creation error)');
 $sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'];
 
 /* QUICK RETURN */

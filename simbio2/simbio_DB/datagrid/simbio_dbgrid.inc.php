@@ -357,7 +357,7 @@ class simbio_datagrid extends simbio_table
         $_target = '_self';
         if ($this->using_AJAX) {
             $_target = 'submitExec';
-            // $_iframe = '<iframe name="submitExec" style="visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
+            $_iframe = '<iframe name="submitExec" style="visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
             // below is for debugging purpose only
             // $_iframe = '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 300px;"></iframe>'."\n";
         }

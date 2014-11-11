@@ -58,7 +58,8 @@ function checkref($mode = 'module') {
   if (isset($_SERVER['HTTP_REFERER'])) {
   	$ref_url = $_SERVER['HTTP_REFERER'];
   	$ref_part = (object) parse_url($ref_url);
-  	$ref_host = isset($ref_part->host) ? $ref_part->host : '';
+  	
+	$ref_host = isset($ref_part->host) ? $ref_part->host : '';
   	$ref_host .= isset($ref_part->port) ? ':' . $ref_part->port : '';
   	$ref_ip = isset($ref_part->host) ? gethostbyname($ref_host) : '';
   	$ref_path = isset($ref_part->path) ? $ref_part->path : '/';
@@ -111,7 +112,7 @@ function checkref($mode = 'module') {
 }
 
 // checkref('admin');
-$get = (object) $_GET;
+$get = (object)$_GET;
 $allowed_scale = array(1, 2, 3, 4, 5, 6);
 if ( ! isset($get->scale) OR (isset($get->scale) AND ! in_array($get->scale, $allowed_scale)))
 	$get->scale = 2;
@@ -119,9 +120,9 @@ if ( ! isset($get->scale) OR (isset($get->scale) AND ! in_array($get->scale, $al
 // http vars
 $code = isset($get->code) ? trim($get->code) : '1234567890';
 if (get_magic_quotes_gpc())
-	$code=stripslashes($code);
+  $code=stripslashes($code);
 
-$encoding = isset($get->encoding) ? trim($get->encoding) : '128';
+$encoding = isset($get->encoding) ? trim($get->encoding) : 'code128';
 $scale = isset($get->scale) ? trim($get->scale) : '2';
 $mode = isset($get->mode) ? trim($get->mode) : 'png';
 

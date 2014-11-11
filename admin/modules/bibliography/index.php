@@ -684,7 +684,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       if ($in_pop_up) {
       $upper_dir = '../../';
       }
-      echo '<div id="biblioImage" style="float: right;"><img src="'.$upper_dir.'../lib/phpthumb/phpThumb.php?src=../../images/docs/'.urlencode($rec_d['image']).'&w=53" style="border: 1px solid #999999" /></div>';
+      echo '<div id="biblioImage" style="float: right;"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=53" style="border: 1px solid #999999" /></div>';
     }
     }
   echo '</div>'."\n";
