@@ -662,11 +662,23 @@ fieldset[disabled] .btn-success.active {
 	background-color: #A9E2D0;
 	border-color: #A9E2D0;
 }
+.uncheck-all,
+.check-all,
 .btn-warning {
 	color: #fff;
 	background-color: #F4CC17;
 	border-color: #F4CC17;
 }
+.uncheck-all:hover,
+.uncheck-all:focus,
+.uncheck-all.focus,
+.uncheck-all:active,
+.uncheck-all.active,
+.check-all:hover,
+.check-all:focus,
+.check-all.focus,
+.check-all:active,
+.check-all.active,
 .btn-warning:hover,
 .btn-warning:focus,
 .btn-warning.focus,
@@ -677,11 +689,48 @@ fieldset[disabled] .btn-success.active {
 	background-color: #F4CD16;
 	border-color: #F4CD16;
 }
+.check-all:active,
+.check-all.active,
 .btn-warning:active,
 .btn-warning.active,
 .open > .dropdown-toggle.btn-warning {
 	background-image: none;
 }
+
+.check-all.disabled,
+.check-all[disabled],
+fieldset[disabled] .check-all,
+.check-all.disabled:hover,
+.check-all[disabled]:hover,
+fieldset[disabled] .check-all:hover,
+.check-all.disabled:focus,
+.check-all[disabled]:focus,
+fieldset[disabled] .check-all:focus,
+.check-all.disabled.focus,
+.check-all[disabled].focus,
+fieldset[disabled] .check-all.focus,
+.check-all.disabled:active,
+.check-all[disabled]:active,
+fieldset[disabled] .check-all:active,
+.check-all.disabled.active,
+.check-all[disabled].active,
+.uncheck-all.disabled,
+.uncheck-all[disabled],
+fieldset[disabled] .uncheck-all,
+.uncheck-all.disabled:hover,
+.uncheck-all[disabled]:hover,
+fieldset[disabled] .uncheck-all:hover,
+.uncheck-all.disabled:focus,
+.uncheck-all[disabled]:focus,
+fieldset[disabled] .uncheck-all:focus,
+.uncheck-all.disabled.focus,
+.uncheck-all[disabled].focus,
+fieldset[disabled] .uncheck-all.focus,
+.uncheck-all.disabled:active,
+.uncheck-all[disabled]:active,
+fieldset[disabled] .uncheck-all:active,
+.uncheck-all.disabled.active,
+.uncheck-all[disabled].active,
 .btn-warning.disabled,
 .btn-warning[disabled],
 fieldset[disabled] .btn-warning,
