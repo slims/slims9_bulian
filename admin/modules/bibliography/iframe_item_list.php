@@ -118,10 +118,10 @@ if ($biblioID) {
     $title = $item_d['item_code'];
 
     $table->appendTableRow(array($edit_link, $remove_link, $title, $item_d['location_name'], $item_d['site'], $item_d['coll_type_name'], $item_d['item_status_name']));
-    $table->setCellAttr($row, null, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: auto;"');
-    $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-    $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
-    $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 40%;"');
+    $table->setCellAttr($row, null, 'class="'.$row_class.'" style="font-weight: bold; width: auto;"');
+    $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
+    $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
+    $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="font-weight: bold; width: 40%;"');
 
     $row++;
   }

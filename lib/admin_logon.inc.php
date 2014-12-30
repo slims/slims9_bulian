@@ -84,6 +84,12 @@ class admin_logon
         $_SESSION['uid'] = $this->user_info['user_id'];
         $_SESSION['uname'] = $this->user_info['username'];
         $_SESSION['realname'] = $this->user_info['realname'];
+        //modified by Eddy Subratha
+        if (!empty($this->user_info['user_image'])) {
+            $_SESSION['upict'] = $this->user_info['user_image'];                    
+        } else {
+            $_SESSION['upict'] = 'person.png';        
+        }
         if (!empty($this->user_info['groups'])) {
             $_SESSION['groups'] = @unserialize($this->user_info['groups']);
             // fetch group privileges
@@ -229,7 +235,7 @@ class admin_logon
     protected function nativeLogin() {
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username,
-            u.realname, u.groups
+            u.realname, u.groups, u.user_image
             FROM user AS u
             WHERE u.username='%s'
                 AND u.passwd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));

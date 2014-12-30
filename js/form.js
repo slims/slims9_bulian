@@ -30,9 +30,14 @@ var ajaxCheckID = function(str_handler_file, str_table_name, str_ID_fields, str_
   var inputVal = inputEl.val();
   if (inputVal) {
     additionalParams = '&id=' + inputVal;
+    inputEl.css('background-color','#fff');
+    inputEl.css('color','#000');
+    inputEl.css('border-color','#ddd');
   } else {
-    $('#'+str_container_ID).html('<strong style="color: #f00;">Please supply valid ID!</strong>');
-    inputEl.css('background-color','#fc0');
+    $('#'+str_container_ID).html('<strong style="color: #D9534F;">Please supply valid ID!</strong>');
+    inputEl.css('background-color','#D9534F');
+    inputEl.css('color','#fff');
+    inputEl.css('border-color','#D9534F');
     return;
   }
   // fill the select list

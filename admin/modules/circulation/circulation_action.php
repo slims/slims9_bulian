@@ -48,7 +48,7 @@ if (isset($_POST['finish'])) {
     // create circulation object
     $memberID = $_SESSION['memberID'];
     $circulation = new circulation($dbs, $memberID);
-    // finish loan transaction
+    // finish loan transaction    
     $flush = $circulation->finishLoanSession();
     if ($flush == TRANS_FLUSH_ERROR) {
         // write log
@@ -196,6 +196,7 @@ if (isset($_POST['tempLoanID'])) {
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else {
+        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $_SESSION['realname'].' insert new loan ('.$_POST['tempLoanID'].') for member ('.$_SESSION['memberID'].')');
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
@@ -453,9 +454,12 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
             $add_style = ' disabled';
         }
         // show the member information
-        echo '<table width="100%" class="border" style="margin-bottom: 5px;" cellpadding="5" cellspacing="0">'."\n";
+        echo '<div class="per_title">';
+        echo '<h2>'.__('Circulation').'</h2>';
+        echo '</div>';
+        echo '<table width="100%" class="border s-member-account" style="margin-bottom: 5px;" cellpadding="5" cellspacing="0">'."\n";
         echo '<tr>'."\n";
-        echo '<td class="dataListHeader" colspan="5">';
+        echo '<td class="dataListHeader s-transc" colspan="5">';
         // hidden form for transaction finish
         echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php" style="display: inline;"><input type="button" class="btn btn-danger" accesskey="T" value="'.__('Finish Transaction').' (T)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
         echo '</td>';
@@ -466,8 +470,8 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         // member photo
         if ($member->member_image) {
           if (file_exists(IMGBS.'persons/'.$member->member_image)) {
-            echo '<td class="alterCell2" valign="top" rowspan="3">';
-            echo '<img src="'.SWB.'lib/phpthumb/phpThumb.php?src=../../images/persons/'.urlencode($member->member_image).'&w=90" style="border: 1px solid #999999" />';
+            echo '<td class="alterCell2 s-person-photo" valign="top" rowspan="3">';
+            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($member->member_image).'&amp;width=200" style="border: 1px solid #999999" />';
             echo '</td>';
           }
         }

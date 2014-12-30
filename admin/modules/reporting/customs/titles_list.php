@@ -275,6 +275,7 @@ if (!$reportView) {
     // modify column value
     $reportgrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
 
+
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
@@ -282,18 +283,16 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-	$xlsquery = 'SELECT b.biblio_id, b.title AS \''.__('Title').'\', COUNT(item_id) AS \''.__('Copies').'\''.
-		', pl.place_name AS \''.__('Publishing Place').'\''.
-		', pb.publisher_name AS \''.__('Publisher').'\''.
-		',  b.isbn_issn AS \''.__('ISBN/ISSN').'\', b.call_number AS \''.__('Call Number').'\' FROM '.
-		$table_spec . ' WHERE '. $outer_criteria . ' group by b.biblio_id';
-		// echo $xlsquery;
-		unset($_SESSION['xlsdata']); 
-		$_SESSION['xlsquery'] = $xlsquery;
-		$_SESSION['tblout'] = "title_list";
-
-	echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
-
+    $xlsquery = 'SELECT b.biblio_id, b.title AS \''.__('Title').'\', COUNT(item_id) AS \''.__('Copies').'\''.
+        ', pl.place_name AS \''.__('Publishing Place').'\''.
+        ', pb.publisher_name AS \''.__('Publisher').'\''.
+        ',  b.isbn_issn AS \''.__('ISBN/ISSN').'\', b.call_number AS \''.__('Call Number').'\' FROM '.
+        $table_spec . ' WHERE '. $outer_criteria . ' group by b.biblio_id';
+        // echo $xlsquery;
+        unset($_SESSION['xlsdata']); 
+        $_SESSION['xlsquery'] = $xlsquery;
+        $_SESSION['tblout'] = "title_list";
+	echo '<a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

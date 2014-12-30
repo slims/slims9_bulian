@@ -186,10 +186,26 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
             $html_str .= '<div class="labelStyle" valign="top">';
             if ($sysconf['print']['label']['include_header_text']) { $html_str .= '<div class="labelHeaderStyle">'.($sysconf['print']['label']['header_text']?$sysconf['print']['label']['header_text']:$sysconf['library_name']).'</div>'; }
             // explode label data by space
-            $sliced_label = explode(' ', $label, 5);
-            foreach ($sliced_label as $slice_label_item) {
-                $html_str .= $slice_label_item.'<br />';
+            $sliced_label = explode(' ', $label);
+            //Modified By Eddy Subratha
+            //Need to check of the classification is has another space between each number
+            //Ex. 123 123 12 SIL m 
+            if(count($sliced_label) > 4) {
+                $html_str .= $sliced_label[0].' '.$sliced_label[1].' '.$sliced_label[2].'<br/>';
+                $html_str .= $sliced_label[3].'<br/>';
+                $html_str .= $sliced_label[4].'<br/>';                
+                $html_str .= $sliced_label[5];                
+            } elseif(count($sliced_label) > 3) {
+                $html_str .= $sliced_label[0].' '.$sliced_label[1].'<br/>';
+                $html_str .= $sliced_label[2].'<br/>';
+                $html_str .= $sliced_label[3].'<br/>';                
+                $html_str .= $sliced_label[4];                                
+            } else {
+                foreach ($sliced_label as $slice_label_item) {
+                    $html_str .= $slice_label_item.'<br />';
+                }                
             }
+            //End modified
             $html_str .= '</div>';
             $html_str .= '</td>';
         }

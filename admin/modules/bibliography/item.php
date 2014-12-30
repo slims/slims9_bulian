@@ -377,7 +377,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                 $_authors .= $_biblio_d[1].' - ';
             }
             $_authors = substr_replace($_authors, '', -3);
-            $_output = '<div style="float: left;"><b>'.$_title.'</b><br /><i>'.$_authors.'</i></div>';
+            $_output = '<div style="float: left;"><span class="title">'.$_title.'</span><div class="authors">'.$_authors.'</div></div>';
             return $_output;
         }
 

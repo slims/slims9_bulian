@@ -151,7 +151,7 @@ if (!$reportView) {
         global $start_date, $until_date;
         $_user = $obj_db->escape_string($array_data[0]);
         $_count_q = $obj_db->query('SELECT COUNT(log_id) FROM system_log WHERE log_location=\'circulation\' AND log_type=\'member\'
-            AND (log_msg LIKE \''.$_user.'%transaction with member%\' OR log_msg LIKE \''.$_user.'%Quick Return%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
+            AND (log_msg LIKE \''.$_user.'%return item%\'OR \'%new loan%\' OR \'%extend loan%\' OR log_msg LIKE \''.$_user.'%Quick Return%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
         $_count_d = $_count_q->fetch_row();
         return $_count_d[0];
     }

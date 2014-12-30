@@ -107,10 +107,10 @@ if ($biblioID) {
     $topic_type = $sysconf['subject_type'][$biblio_topic_d['topic_type']];
 
     $table->appendTableRow(array($remove_link, $topic, $topic_type, $sysconf['subject_level'][$biblio_topic_d['level']]));
-    $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
-    $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 50%;"');
-    $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 20%;"');
-    $table->setCellAttr($row, 3, 'valign="top" class="'.$row_class.'" style="width: 20%;"');
+    $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
+    $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="font-weight: bold; width: 50%;"');
+    $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="font-weight: bold; width: 20%;"');
+    $table->setCellAttr($row, 3, 'class="'.$row_class.'" style="width: 20%;"');
 
     $row++;
   }
@@ -137,10 +137,10 @@ if ($biblioID) {
       }
 
       $table->appendTableRow(array($remove_link, $topic, $topic_type, $sysconf['subject_level'][$biblio_session[1]]));
-      $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; background-color: #ffc466; width: 10%;"');
-      $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 50%;"');
-      $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
-      $table->setCellAttr($row, 3, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
+      $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; background-color: #ffc466; width: 10%;"');
+      $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="background-color: #ffc466; width: 50%;"');
+      $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
+      $table->setCellAttr($row, 3, 'class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
 
       $row++;
     }

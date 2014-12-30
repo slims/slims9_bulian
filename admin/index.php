@@ -71,12 +71,12 @@ if ($current_module AND $can_read) {
         .'</script>';
 } else {
     include 'default/home.php';
+    // for debugs purpose only
+    // include 'modules/bibliography/index.php';
 }
 // page content
 $main_content = ob_get_clean();
 
-// print out the template
-require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';
 
 ##############################FreiChat#####Start###################################
 if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) {
@@ -105,12 +105,11 @@ if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) 
     }
 
     if (!($ses == NULL)) {
-?>
-      <script type="text/javascript" language="javascipt" src="../freichat/client/main.php?id=<?php echo $ses;?>&xhash=<?php echo freichatx_get_hash($ses); ?>"></script>
-      <link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
-<!--===========================FreiChatX=======END=========================-->                
-<?php 
+      $chat = ' <script type="text/javascript" language="javascipt" src="../freichat/client/main.php?id='.$ses.'&amp;xhash='.freichatx_get_hash($ses).'"></script>
+                <link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">';
     }
   }
 }
-?>
+
+// print out the template
+require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';

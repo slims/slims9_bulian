@@ -104,11 +104,11 @@ if ($biblioID) {
     $authority_type = $sysconf['authority_type'][$biblio_author_d['authority_type']];
 
     $table->appendTableRow(array($remove_link, $author, $author_year, $authority_type, $sysconf['authority_level'][$biblio_author_d['level']]));
-    $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
-    $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="width: 30%;"');
-    $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="width: 20%;"');
-    $table->setCellAttr($row, 3, 'valign="top" class="'.$row_class.'" style="width: 20%;"');
-    $table->setCellAttr($row, 4, 'valign="top" class="'.$row_class.'" style="width: 20%;"');
+    $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
+    $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="width: 30%;"');
+    $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="width: 20%;"');
+    $table->setCellAttr($row, 3, 'class="'.$row_class.'" style="width: 20%;"');
+    $table->setCellAttr($row, 4, 'class="'.$row_class.'" style="width: 20%;"');
     $row++;
   }
 
@@ -136,11 +136,11 @@ if ($biblioID) {
       }
 
       $table->appendTableRow(array($remove_link, $author, $author_year, $authority_type, $sysconf['authority_level'][$biblio_session[1]]));
-      $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; background-color: #ffc466; width: 10%;"');
-      $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 30%;"');
-      $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
-      $table->setCellAttr($row, 3, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
-      $table->setCellAttr($row, 4, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 20%;"');
+      $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; background-color: #fff; width: 10%;"');
+      $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="background-color: #fff; width: 30%;"');
+      $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="background-color: #fff; width: 20%;"');
+      $table->setCellAttr($row, 3, 'class="'.$row_class.'" style="background-color: #fff; width: 20%;"');
+      $table->setCellAttr($row, 4, 'class="'.$row_class.'" style="background-color: #fff; width: 20%;"');
       $row++;
     }
 

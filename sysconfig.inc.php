@@ -199,7 +199,7 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = false;
+$sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'flex'. Default is false
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;
@@ -307,7 +307,7 @@ $sysconf['reserve_expire_periode'] = 7;
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
 $sysconf['library_subname'] = 'Open Source Library Management System';
-$sysconf['page_footer'] = ' <strong>SENAYAN Library Automation System (SLiMS)</strong> - SLiMS Developer Community - Released Under GNU GPL License';
+$sysconf['page_footer'] = ' SENAYAN Library Automation System (SLiMS) - SLiMS Developer Community - Released Under GNU GPL License';
 
 /* HTTPS Setting */
 $sysconf['https_enable'] = false;
@@ -590,10 +590,10 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled'] = true;
+$sysconf['chat_system']['enabled'] = FALSE;
 $sysconf['chat_system']['vendors'] = 'freichat';
 $sysconf['chat_system']['opac'] = TRUE;
-$sysconf['chat_system']['librarian'] = FALSE;
+$sysconf['chat_system']['librarian'] = TRUE;
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {

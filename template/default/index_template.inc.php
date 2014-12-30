@@ -115,7 +115,9 @@ if (isset($_GET['p']))
 <script type="text/javascript" src="<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="<?php echo SWB; ?>template/default/js/jquery.jcarousel.min.js"></script>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage">
   <div id="masking"></div>
   <!--// Social Button //-->
@@ -546,6 +548,7 @@ $(document).ready(function()
 
 });
 </script>
+<?php echo $chat; ?>
 
 </body>
 </html>

@@ -1,17 +1,17 @@
 <?php
 /* Data base details */
-$dsn='mysql:host=localhost;dbname=senayandb'; //DSN
-$db_user='senayanuser'; //DB username 
-$db_pass='password_senayanuser'; //DB password 
+$dsn='mysql:host=localhost;dbname=isi-slims'; //DSN
+$db_user='root'; //DB username 
+$db_pass=''; //DB password 
 $driver='Custom'; //Integration driver
 $db_prefix=''; //prefix used for tables in database
-$uid='52b6b359e98f3'; //Any random unique number
-
+$uid='549e91aa888e9'; //Any random unique number
+	
 $connected='YES'; //only for custom installation
 
 $PATH = 'freichat/'; // Use this only if you have placed the freichat folder somewhere else
 $installed=true; //make it false if you want to reinstall freichat
-$admin_pswd='[senayanslims]'; //backend password 
+$admin_pswd='senayanslims'; //backend password 
 
 $debug = false;
 $custom_error_handling='YES'; // used during custom installation
@@ -22,12 +22,12 @@ $use_cookie='false';
 $smtp_username = '';
 $smtp_password = '';
 
-$force_load_jquery = 'NO';
+$force_load_jquery = 'YES';
 
 /* Custom driver */
-$usertable='chat_user'; //specifies the name of the table in which your user information is stored.
-$row_username='username'; //specifies the name of the field in which the user's name/display name is stored.
-$row_userid='userid'; //specifies the name of the field in which the user's id is stored (usually id or userid)
+$usertable='login'; //specifies the name of the table in which your user information is stored.
+$row_username='root'; //specifies the name of the field in which the user's name/display name is stored.
+$row_userid='loginid'; //specifies the name of the field in which the user's id is stored (usually id or userid)
 
 
 $avatar_table_name='members'; //specifies the table where avatar information is stored

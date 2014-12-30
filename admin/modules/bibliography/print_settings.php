@@ -85,10 +85,23 @@ $form->table_content_attr = 'class="alterCell2"';
 // load print settings from database
 loadPrintSettings($dbs, $type);
 
+//Modified by Eddy Subratha
+//Measure for each configuration
+$measure['label']['page_margin']         = __('(px)');
+$measure['label']['items_per_row']       = '';
+$measure['label']['items_margin']        = __('(cm)');
+$measure['label']['box_width']           = __('(cm)');
+$measure['label']['box_height']          = __('(cm)');
+$measure['label']['include_header_text'] = __('(0 if don\'t want to use header)'); 
+$measure['label']['header_text']         = __('(empty if you want to use Library Name)');
+$measure['label']['fonts']               = __('(name of the font used)');
+$measure['label']['font_size']           = __('(pt)');
+$measure['label']['border_size']         = __('(px)');
+
 $form->addAnything(__('Print setting for'), ucwords($type));
 foreach ($sysconf['print'][$type] as $setting_name => $val) {
   $setting_name_label = ucwords(str_ireplace('_', ' ', $setting_name));
-  $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label), $val, 'style="width: 90%;"');
+  $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure[$type][$setting_name].'</em></small>', $val, 'style="width: 75%;"');
 }
 $form->addHidden('settingType', $type);
 
