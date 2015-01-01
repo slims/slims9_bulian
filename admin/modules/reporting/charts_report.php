@@ -56,16 +56,21 @@ if (!$can_read) { die(); }
  */
 function generateRandomColors()
 {
-    @mt_srand((double)microtime()*1000000);
+    @mt_srand((double)microtime()*10000);
     $_c = '';
     while(strlen($_c)<6){ $_c .= sprintf("%02X", mt_rand(0, 255)); }
     return $_c;
 }
 
-// create PHPLot object
-$plot = new PHPlot(770, 515);
-$plot_data = array();
-$data_colors = array();
+if($sysconf['chart']['mode'] == 'plot') {
+    // create PHPLot object
+    $plot = new PHPlot(770, 515);
+    $plot_data = array();
+    $data_colors = array();    
+} else {
+    $plot_data = '';    
+}
+
 // default chart
 $chart = 'total_title_gmd';
 $chart_title = __('Total Titles By Medium/GMD');
@@ -89,8 +94,16 @@ switch ($chart) {
             ORDER BY COUNT(item_id) DESC');
         // set plot data and colors
         while ($data = $stat_query->fetch_row()) {
-            $plot_data[] = array($data[0], $data[1]);
-            $data_colors[] = '#'.generateRandomColors();
+            if($sysconf['chart']['mode'] == 'plot') {
+                $plot_data[] = array($data[0], $data[1]);
+                $data_colors[] = '#'.generateRandomColors();
+            } else {
+                $plot_data .= '{   value:       '.$data[1].',
+                                    color:      "#'.generateRandomColors().'",
+                                    highlight:  "#'.generateRandomColors().'",
+                                    label:      "'.$data[0].'" },';
+            }
+
         }
         break;
     case 'total_member_by_type':
@@ -101,8 +114,15 @@ switch ($chart) {
             WHERE TO_DAYS(expire_date)>TO_DAYS(\''.date('Y-m-d').'\')
             GROUP BY m.member_type_id ORDER BY COUNT(member_id) DESC');
         while ($data = $report_q->fetch_row()) {
-            $plot_data[] = array($data[0], $data[1]);
-            $data_colors[] = '#'.generateRandomColors();
+            if($sysconf['chart']['mode'] == 'plot') {
+                $plot_data[] = array($data[0], $data[1]);
+                $data_colors[] = '#'.generateRandomColors();
+            } else {
+                $plot_data .= '{   value:       '.$data[1].',
+                                    color:      "#'.generateRandomColors().'",
+                                    highlight:  "#'.generateRandomColors().'",
+                                    label:      "'.$data[0].'" },';
+            }
         }
         break;
     case 'total_loan_gmd':
@@ -114,8 +134,15 @@ switch ($chart) {
             GROUP BY b.gmd_id ORDER BY COUNT(loan_id) DESC');
         $report_d = '';
         while ($data = $report_q->fetch_row()) {
-            $plot_data[] = array($data[0], $data[1]);
-            $data_colors[] = '#'.generateRandomColors();
+            if($sysconf['chart']['mode'] == 'plot') {
+                $plot_data[] = array($data[0], $data[1]);
+                $data_colors[] = '#'.generateRandomColors();
+            } else {
+                $plot_data .= '{   value:       '.$data[1].',
+                                    color:      "#'.generateRandomColors().'",
+                                    highlight:  "#'.generateRandomColors().'",
+                                    label:      "'.$data[0].'" },';
+            }
         }
         break;
     case 'total_loan_colltype':
@@ -125,8 +152,15 @@ switch ($chart) {
             INNER JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
             GROUP BY i.coll_type_id ORDER BY COUNT(loan_id) DESC');
         while ($data = $report_q->fetch_row()) {
-            $plot_data[] = array($data[0], $data[1]);
-            $data_colors[] = '#'.generateRandomColors();
+            if($sysconf['chart']['mode'] == 'plot') {
+                $plot_data[] = array($data[0], $data[1]);
+                $data_colors[] = '#'.generateRandomColors();
+            } else {
+                $plot_data .= '{   value:       '.$data[1].',
+                                    color:      "#'.generateRandomColors().'",
+                                    highlight:  "#'.generateRandomColors().'",
+                                    label:      "'.$data[0].'" },';
+            }
         }
         break;
     default:
@@ -136,8 +170,15 @@ switch ($chart) {
             GROUP BY b.gmd_id HAVING total_titles>0 ORDER BY COUNT(biblio_id) DESC');
         // set plot data and colors
         while ($data = $stat_query->fetch_row()) {
-            $plot_data[] = array($data[0], $data[1]);
-            $data_colors[] = '#'.generateRandomColors();
+            if($sysconf['chart']['mode'] == 'plot') {
+                $plot_data[] = array($data[0], $data[1]);
+                $data_colors[] = '#'.generateRandomColors();
+            } else {
+                $plot_data .= '{   value:       '.$data[1].',
+                                    color:      "#'.generateRandomColors().'",
+                                    highlight:  "#'.generateRandomColors().'",
+                                    label:      "'.$data[0].'" },';
+            }
         }
         break;
 }
@@ -146,29 +187,42 @@ switch ($chart) {
  */
 
 // Create plot
-if ($plot_data && $chart) {
-    // set plot titles
-    $plot->SetTitle($chart_title);
+if($sysconf['chart']['mode'] == 'plot') {
+    if ($plot_data && $chart) {
+        // set plot titles
+        $plot->SetTitle($chart_title);
 
-    // set data
-    $plot->SetDataValues($plot_data);
+        // set data
+        $plot->SetDataValues($plot_data);
 
-    // set plot colors
-    $plot->SetDataColors($data_colors);
+        // set plot colors
+        $plot->SetDataColors($data_colors);
 
-    // set plot shading
-    $plot->SetShading(20);
+        // set plot shading
+        $plot->SetShading(20);
 
-    // set plot type to pie
-    $plot->SetPlotType('pie');
-    $plot->SetDataType('text-data-single');
+        // set plot type to pie
+        $plot->SetPlotType('pie');
+        $plot->SetDataType('text-data-single');
 
-    // set legend
-    foreach ($plot_data as $row) {
-      $plot->SetLegend(implode(': ', $row));
+        // set legend
+        foreach ($plot_data as $row) {
+          $plot->SetLegend(implode(': ', $row));
+        }
+
+        //Draw it
+        $plot->DrawGraph();
     }
-
-    //Draw it
-    $plot->DrawGraph();
+} else {
+    echo '<script src="'.JWB.'chartjs/Chart.min.js"></script>
+    <div id="canvas-holder" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
+        <canvas id="chart-area" width="400" height="400" />
+    </div>
+    <script>
+        var moduleData = ['.substr($plot_data,0,-1).'];
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        var myChart = new Chart(ctx).Doughnut(moduleData);
+        myChart.generateLegend();
+    </script>';
 }
 exit();

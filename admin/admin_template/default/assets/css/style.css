@@ -28,7 +28,7 @@
 }
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-track-piece{
-	background-color: transparent;
+	background-color: #fff;
 }
 ::-webkit-scrollbar-thumb{
 	background-color:#ccc;
@@ -539,8 +539,8 @@ input[name="saveDaynameData"],
 
 #doSearch {
 	color: #fff;
-	background-color: #06B1CD;
-	border-color: #06B1CD;
+	background-color: #337AB7;
+	border-color: #337AB7;
 }
 @media (min-width: 768px) {
 	#doSearch {
@@ -611,6 +611,10 @@ fieldset[disabled] .button.active {
 	background-color: #31353E;
 	border-color: #31353E;
 }
+input[name="saveZ"]{
+	margin-left:-10px;
+}
+input[name="saveZ"],
 .printReport,
 #addReserve,
 .btn-success {
@@ -621,6 +625,11 @@ fieldset[disabled] .button.active {
 .printReport {
 	margin-left: 5px;
 }
+.input[name="saveZ"]:hover,
+.input[name="saveZ"]:focus,
+.input[name="saveZ"].focus,
+.input[name="saveZ"]:active,
+.input[name="saveZ"].active,
 .printReport:hover,
 .printReport:focus,
 .printReport.focus,
@@ -755,8 +764,8 @@ fieldset[disabled] .btn-warning.active {
 .btn-delete,
 .btn-danger {
 	color: #fff;
-	background-color: #d9534f;
-	border-color: #d43f3a;
+	background-color: #4AC49B;
+	border-color: #4AC49B;
 }
 .btn-delete:hover,
 .btn-delete:focus,
@@ -882,6 +891,11 @@ table.datagrid-action-bar > tbody > tr:first-child > td {
 #dataList td {
 	padding: 10px;
 }
+#searchResult tr[row="0"],
+#searchResult tr[row="0"]:hover {
+	background-color: #f2f2f2 !important;
+}
+
 iframe,
 textarea,
 input[type="password"],
@@ -931,6 +945,8 @@ iframe {
 #pageContent {
 	width: 100%;
 	display: inline-block;
+	padding:10px;
+	background-color: #f2f2f2;
 }
 #pageContent #mainForm {
 	padding: 0px;
@@ -938,14 +954,24 @@ iframe {
 #pageContent td {
 	padding: 10px 5px;
 }
-#pageContent a[href="../xlsoutput.php"] {
-	margin-left: 10px;
-	margin-top: 5px;
-	top:0;
-	position: absolute;
+#pageContent a.button[href="../xlsoutput.php"] {
+	margin-left: 0px;
+	margin-top: 11px;
+	position: relative;
+	top:10px;
+}
+.printReport + a.button[href="../xlsoutput.php"] {
+	margin-left: 3px !important;
+	top:0 !important;
 }
 #pageContent a:hover {
 	text-decoration: none;
+}
+#pageContent > .border {
+	margin:0;
+}
+#pageContent > .printPageInfo {
+	background-color: transparent;
 }
 select {
 	width: 100%;
@@ -1005,6 +1031,10 @@ tr.dataListHeader a[href*='DESC']:after {
 	font-family: 'FontAwesome';
 	content: '\f0d7';
 	padding-left: 3px;
+}
+td..dataListHeader {
+	background-color: #ff0 !important;
+	padding:25px 10px !important;
 }
 @media (min-width: 768px) {
 	tr.dataListHeader {
@@ -1114,6 +1144,10 @@ tr.dataListHeader > td > a {
 	background-color: #fff;
 	min-height: 70px;
 }
+.statisticIcon .infoBox {
+	background-color: transparent !important;
+	padding:0 !important;	
+} 
 .action_button {
 	line-height: 24px;
 	background-color: #4AC49B;
@@ -1359,7 +1393,7 @@ tr.dataListHeader > td > a {
 .border {
 	border-bottom: solid 1px #ddd;
 	padding: 15px 10px;
-	margin: 0 10px;
+	margin:0 10px;
 }
 .border td {
 	padding: 10px;
@@ -1521,6 +1555,7 @@ tr.dataListHeader > td > a {
 	font-family: 'FontAwesome';
 	content: '\f073';
 	font-size: 18px;
+	color: #000;
 }
 .social-label {
 	width: 120px;
@@ -1622,17 +1657,14 @@ input[type="date"]::-webkit-input-placeholder {
 }
 .printPageInfo {
 	font-size: 120%;
-	padding: 15px 10px;
+	padding: 15px 0px;
 	color: #000000;
 	background-color: #fff;
-}
-.printPageInfo a {
-	float: right;
 }
 .dataListPrinted {
 	width: 100%;
 	background-color: transparent;
-	margin: 10px;
+	margin:10px 0;
 }
 .notprinted {
 	background-color: #f2f2f2 !important;
@@ -1645,6 +1677,9 @@ input[type="date"]::-webkit-input-placeholder {
 	background-color: transparent;
 	padding: 15px 0px;
 }
+#pagingBox:empty{
+	display: none;
+}
 .pagingList b {
 	font-size: 12px;
 	color: #000;
@@ -1655,9 +1690,14 @@ input[type="date"]::-webkit-input-placeholder {
 .alterCellPrinted2 {
 	color: #333;
 	background: #fff;
+	border-bottom:solid 1px #f2f2f2;
 }
 .alterCellPrinted2 {
 	background: #FFFFFF;
+}
+.alterCellPrinted strong[style*="font-size: 1.5em"],
+.alterCellPrinted2 strong[style*="font-size: 1.5em"] {
+	color: #4AC49B;
 }
 .dataListHeaderPrinted {
 	background: #31353E;
@@ -1679,9 +1719,13 @@ td.dataListHeaderPrinted,
 #reportView {
 	border: none;
 }
+#reportView ~ body {
+	background-color: #f2f2f2;
+}
+
 div.dataListHeader,
 div.dataListHeader:hover {
-	background-color: #f2f2f2 !important;
+	background-color: #eee !important;
 	padding: 25px 10px !important;
 }
 div.dataListHeader a {
@@ -1758,5 +1802,150 @@ div.label-multimedia {
 	background-color: transparent;
 	padding-top:10px;
 }
+.calendar {
+	padding:10px 15px;
+}
+.calendar .dayname {
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: lighter;
+	font-size: 10px;
+	white-space: nowrap;
+}
+/*----------
+contentdisk
+-----------*/
+.contentDesc table {
+  margin:30px 30px 0px;
+  width:90% !important;
+}
 
+.contentDesc table tr td {
+  padding:10px;
+}
+/*------
+icon
+--------*/
+.icon {
+  text-decoration: none;
+  border: 0;
+  display: inline-block;
+	float: left;
+  width: 96px;
+  height: 96px;
+  background-repeat: no-repeat;
+}
 
+.backupIcon {
+  background-image: url(../../media/modules/backup.png);
+}
+
+.barcodeIcon {
+  background-image: url(../../media/modules/barcode.png);
+}
+
+.biblioIcon {
+  background-image: url(../../media/modules/biblio.png);
+}
+
+.calendarIcon {
+  background-image: url(../../media/modules/calendar.png);
+}
+
+.circulationIcon {
+  background-image: url(../../media/modules/circ.png);
+}
+
+.exportIcon {
+  background-image: url(../../media/modules/export.png);
+}
+
+.importIcon {
+  background-image: url(../../media/modules/import.png);
+}
+
+.itemIcon {
+  background-image: url(../../media/modules/item.png);
+}
+
+.itemOutIcon {
+  background-image: url(../../media/modules/item_out.png);
+}
+
+.loanRulesIcon {
+  background-image: url(../../media/modules/loan_rules.png);
+}
+
+.masterFileIcon {
+  background-image: url(../../media/modules/masterfile.png);
+}
+
+.memberIcon {
+  background-image: url(../../media/modules/membership.png);
+}
+
+.memberTypeIcon {
+  background-image: url(../../media/modules/member_type.png);
+}
+
+.moduleIcon {
+  background-image: url(../../media/modules/module.png);
+}
+
+.overdueIcon {
+  background-image: url(../../media/modules/overdue.png);
+}
+
+.quickReturnIcon {
+  background-image: url(../../media/modules/quick_return.png);
+}
+
+.reportIcon {
+  background-image: url(../../media/modules/report.png);
+}
+
+.stockTakeIcon {
+  background-image: url(../../media/modules/sstake.png);
+}
+
+.statisticIcon {
+  background-image: url(../../media/modules/statistic.png);
+}
+
+.syslogIcon {
+  background-image: url(../../media/modules/syslog.png);
+}
+
+.systemIcon {
+  background-image: url(../../media/modules/system.png);
+}
+
+.userIcon {
+  background-image: url(../../media/modules/user.png);
+}
+
+.userGroupIcon {
+  background-image: url(../../media/modules/user_group.png);
+}
+
+.serialIcon {
+  background-image: url(../../media/modules/serial_control.png);
+}
+
+.printIcon {
+  background-image: none !important;
+}
+
+.errorIcon {
+  background-image: url(../../media/error.png);
+}
+
+.homeFlagIcon {
+  background: transparent url(../../media/home.png) top left no-repeat;
+  width: 23px !important;
+  height:23px !important;
+}
+
+.lockFlagIcon {
+  background-image: url(../../media/lock.png);
+}

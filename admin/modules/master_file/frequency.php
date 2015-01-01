@@ -193,7 +193,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit Frequency data').' : <b>'.$rec_d['frequency'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit Frequency data').' : <b>'.$rec_d['frequency'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

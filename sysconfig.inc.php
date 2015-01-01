@@ -602,3 +602,6 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
   $sysconf['enable_xml_detail'] = false;
   $sysconf['enable_xml_result'] = false;
 }
+
+/* CHART */
+$sysconf['chart']['mode'] = 'chartjs'; // plot or chartjs. default is plot

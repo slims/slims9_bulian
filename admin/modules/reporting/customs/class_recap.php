@@ -290,7 +290,7 @@ if (!$reportView) {
 	unset($_SESSION['xlsquery']); 
 	$_SESSION['xlsdata'] = $xlsrows;
 	$_SESSION['tblout'] = "recap_list";
-	echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
+	// echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

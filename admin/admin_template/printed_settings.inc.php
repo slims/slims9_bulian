@@ -98,14 +98,14 @@ $sysconf['print']['membercard']['factor'] = "37.795275591"; //cm to px
 
 // Items Settings
 // change to 0 if dont want to use selected items
-$sysconf['print']['membercard']['include_id_label'] = 1; // no anggota
-$sysconf['print']['membercard']['include_name_label'] = 1; // nama anggota
-$sysconf['print']['membercard']['include_pin_label'] = 1; // no identitas
-$sysconf['print']['membercard']['include_inst_label'] = 0; // institusi
-$sysconf['print']['membercard']['include_email_label'] = 0; // email
-$sysconf['print']['membercard']['include_address_label'] = 1; // alamat
+$sysconf['print']['membercard']['include_id_label'] = 1; // id
+$sysconf['print']['membercard']['include_name_label'] = 1; // name
+$sysconf['print']['membercard']['include_pin_label'] = 1; // identify
+$sysconf['print']['membercard']['include_inst_label'] = 0; // institution
+$sysconf['print']['membercard']['include_email_label'] = 0; // mail address
+$sysconf['print']['membercard']['include_address_label'] = 1; // home or office address
 $sysconf['print']['membercard']['include_barcode_label'] = 1; // barcode
-$sysconf['print']['membercard']['include_expired_label'] = 1; // expired
+$sysconf['print']['membercard']['include_expired_label'] = 1; // expired date
 
 // Cardbox Settings
 $sysconf['print']['membercard']['box_width'] = 8.6;

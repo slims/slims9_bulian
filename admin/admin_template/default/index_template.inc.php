@@ -48,7 +48,7 @@
         <div class="s-user">
           <div class="s-user-frame">            
             <a href="<?php echo AWB; ?>" class="s-user-photo">
-              <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=200" alt="Photo <?php echo $_SESSION['realname']?>">
+              <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=100" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
           </div>
           <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>
