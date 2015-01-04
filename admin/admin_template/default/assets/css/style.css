@@ -35,6 +35,10 @@
 	width:8px;
 	height:4px;
 }
+html, body{
+	height: 100%;
+	margin: 0px;
+}
 body {
 	direction: ltr;
 	font-family: 'Open Sans', sans-serif;
@@ -44,9 +48,7 @@ a:hover {
 	text-decoration: none;
 }
 /*--------------*/
-
 /*  Navigation  */
-
 /*--------------*/
 
 .s-sidebar {
@@ -376,6 +378,8 @@ a:hover {
 .s-page-action {
 	background-color: #fff;
 }
+
+.loader.active,
 .loader {
 	display: none;
 }
@@ -387,7 +391,7 @@ a:hover {
 		right: 0;
 		white-space: nowrap;
 		border-left: solid 1px #f2f2f2;
-		padding: 15px;
+		padding: 16px 70px 16px 16px;
 	}
 }
 .loadingImage {
@@ -414,7 +418,7 @@ a:hover {
 	background: -o-linear-gradient(135deg, #fff 0%, #09c 100%);
 	background: -ms-linear-gradient(135deg, #fff 0%, #09c 100%);
 	background: linear-gradient(to 135deg, #fff 0%, #09c 100%);
-	background-size: 500% 500%;
+	background-size: 300% 300%;
 	-webkit-animation: rolling 2s linear infinite;
 	-moz-animation: rolling 2s linear infinite;
 	-o-animation: rolling 2s linear infinite;
@@ -436,7 +440,12 @@ a:hover {
 	color: #1CA8DD;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	font-size: 20px;
+	font-size: 14px;
+}
+@media (min-width: 600px) {
+	.per_title h2 {
+		font-size: 20px;
+	}	
 }
 .sub_section {
 	padding: 15px 0px 10px 10px;
@@ -891,6 +900,9 @@ table.datagrid-action-bar > tbody > tr:first-child > td {
 #dataList td {
 	padding: 10px;
 }
+#dataList select {
+	width: auto;
+}
 #searchResult tr[row="0"],
 #searchResult tr[row="0"]:hover {
 	background-color: #f2f2f2 !important;
@@ -942,14 +954,21 @@ iframe {
 #mainContent {
 	margin-bottom: 15px;
 }
+#main {
+	min-height: 100%;
+}
 #pageContent {
 	width: 100%;
 	display: inline-block;
 	padding:10px;
-	background-color: #f2f2f2;
 }
-#pageContent #mainForm {
+#pageContent > #mainForm {
 	padding: 0px;
+	background: #fff;
+	margin:-15px -10px; 
+}
+#pageContent table {
+
 }
 #pageContent td {
 	padding: 10px 5px;
@@ -1267,6 +1286,10 @@ tr.dataListHeader > td > a {
 #cboxLoadedContent {
 	overflow: hidden !important;
 }
+.popUpForm {
+	background-color: #fff;
+	margin: -10px;
+}
 .popUpForm input[name="search_str"],
 .popUpForm select[name="type"],
 .popUpForm select[name="level"] {
@@ -1391,7 +1414,6 @@ tr.dataListHeader > td > a {
 	padding: 20px;
 }
 .border {
-	border-bottom: solid 1px #ddd;
 	padding: 15px 10px;
 	margin:0 10px;
 }
@@ -1502,6 +1524,9 @@ tr.dataListHeader > td > a {
 	font-family: 'FontAwesome';
 	content: '\f014';
 	font-size: 20px;
+}
+.circ-action-btn {
+	display: -webkit-box;
 }
 .circ-action-btn a {
 	font-size: 10px;
@@ -1719,10 +1744,9 @@ td.dataListHeaderPrinted,
 #reportView {
 	border: none;
 }
-#reportView ~ body {
-	background-color: #f2f2f2;
+#reportView > html > body {
+	background-color: #f2f2f2 !important;
 }
-
 div.dataListHeader,
 div.dataListHeader:hover {
 	background-color: #eee !important;
@@ -1815,9 +1839,8 @@ div.label-multimedia {
 /*----------
 contentdisk
 -----------*/
-.contentDesc table {
-  margin:30px 30px 0px;
-  width:90% !important;
+.contentDesc {
+  overflow: auto;
 }
 
 .contentDesc table tr td {
@@ -1847,7 +1870,6 @@ icon
 .biblioIcon {
   background-image: url(../../media/modules/biblio.png);
 }
-
 .calendarIcon {
   background-image: url(../../media/modules/calendar.png);
 }
@@ -1908,10 +1930,6 @@ icon
   background-image: url(../../media/modules/sstake.png);
 }
 
-.statisticIcon {
-  background-image: url(../../media/modules/statistic.png);
-}
-
 .syslogIcon {
   background-image: url(../../media/modules/syslog.png);
 }
@@ -1931,21 +1949,83 @@ icon
 .serialIcon {
   background-image: url(../../media/modules/serial_control.png);
 }
-
-.printIcon {
-  background-image: none !important;
+.menuBoxInner.systemIcon,
+.menuBoxInner.importIcon,
+.menuBoxInner.exportIcon,
+.menuBoxInner.biblioIcon {
+	background-image: none;
+}
+table {
+	overflow-x:auto; 
+}
+.left{
+	-webkit-transition-duration: 0.25s;
+	-moz-transition-duration: 0.25s;
+	-o-transition-duration: 0.25s;
+	transition-duration: 0.25s;
+	float: right;
+	background-color: #fff;
+	width: 0;
+	height: 100%;
+	display: inline-block;
+}
+.left.active {
+	width:25%;
+}
+.right {
+	-webkit-transition-duration: 0.25s;
+	-moz-transition-duration: 0.25s;
+	-o-transition-duration: 0.25s;
+	transition-duration: 0.25s;
+	width:100%;
+}
+.right.active{
+	width:75%;	
+}
+.s-help {
+	border-left: solid 1px #f2f2f2;
+	border-bottom: solid 1px #f2f2f2;
+	padding: 16px 20px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #fff;
+	color:#ccc;
+}
+.s-help.active {
+	background-color: #31353E;
+	color:#fff;
+}
+.s-help.active:hover {
+	color:#ff0;
+}
+.s-help-header {
+	padding:15px 20px;
+	font-size: 16px;
+	border-left: solid 1px #f2f2f2;
+	border-bottom: solid 1px #f2f2f2;
+}
+.s-help-content {
+	border-left: solid 1px #f2f2f2;
+	background-color: #fff;
+	width: auto;
+	height: 100% !important;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px 20px;
+	position: relative;
+	line-height: 24px;
+	color: #000;
+	font-size: 12px;
 }
 
-.errorIcon {
-  background-image: url(../../media/error.png);
-}
-
-.homeFlagIcon {
-  background: transparent url(../../media/home.png) top left no-repeat;
-  width: 23px !important;
-  height:23px !important;
-}
-
-.lockFlagIcon {
-  background-image: url(../../media/lock.png);
+.s-help-content h1,
+.s-help-content h2,
+.s-help-content h3,
+.s-help-content h4,
+.s-help-content h5 {
+	font-weight: bold;
+	padding-bottom: 20px;
+	line-height: 30px;
 }

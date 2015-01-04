@@ -101,6 +101,10 @@ define('REPBS', UPLOAD.REP.DS);
 // languages base dir
 define('LANG', LIB.'lang'.DS);
 
+//help base dir
+define('HELP', SB.'help'.DS);
+
+
 // senayan web doc root dir
 /* Custom base URL */
 $sysconf['baseurl'] = '';

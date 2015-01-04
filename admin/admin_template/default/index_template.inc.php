@@ -1,6 +1,6 @@
 <?php 
-  include 'function.php'; 
-?>
+  include 'function.php';   
+?> 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -59,17 +59,26 @@
     </nav>
   </aside>
   <main class="s-content" role="main">
-    <a name="top"></a>
     <div class="loader"><?php echo $info;?></div>
+    <a href="#" name="top" class="s-help"><i class="fa fa-question-circle"></i></a>
     <div id="main">
-      <div id="mainContent">
-      <?php 
-        if(isset($_GET['mod']) && ($_GET['mod'] == 'system')) {
-          include "modules/system/index.php";
-        } else {
-          echo $main_content;        
-        }
-      ?>
+      <div class="left">
+        <div class="s-help-header"><?php echo __('Help'); ?></div>
+        <div class="s-help-content">
+          <!-- Place to put documentation -->
+        </div>        
+      </div>
+      <div class="right">        
+        <div id="mainContent">
+          <?php 
+            if(isset($_GET['mod']) && ($_GET['mod'] == 'system')) {
+              include "modules/system/index.php";
+              echo "<script>$('#mainForm').attr('action','".AWB."modules/system/index.php');</script>";
+            } else {
+              echo $main_content;        
+            }
+          ?>
+        </div>
       </div>
     </div>
     <footer class="s-footer">
@@ -81,14 +90,42 @@
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->	
   <script>
+
+    //trigger to hide the current sidebar
     $('.s-current-child').click(function(){
       $('.s-current').trigger('click');
     });
+    
+    //create a help anchor by current menu
+    $('.s-current-child').click(function(){
+      $('.left, .right, .loader').removeClass('active');
+      $('.s-help-content').html();
+      var get_url       = $(this).attr('href');
+      var path_array    = get_url.split('/');
+      var clean_path    = path_array[path_array.length-1].split('.');
+      var new_pathname  = '<?php echo AWB?>help.php?url='+path_array[path_array.length-2]+'/'+clean_path[0]+'.md';
+      $('.s-help').attr('href', new_pathname);
+    });
+
+    //generate help file
+    $('.s-help').click(function(e){
+      e.preventDefault();
+      if($(this).attr('href') != '#') {
+        // load active style
+        $('.left, .right, .loader').toggleClass('active');
+        $(this).toggleClass('active');
+        $('.s-help > i').toggleClass('fa-question-circle').toggleClass('fa-times');
+        $.ajax({
+          type: 'GET',
+          url: $(this).attr('href')
+        }).done(function( data ) {
+          $('.s-help-content').html(data);
+        });
+      }else{
+        alert('Help content will show according to available menu.')
+      }
+    });
   </script>
-
   <?php echo $chat?>
-
-
 </body>
-
 </html>
