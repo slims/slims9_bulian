@@ -1399,13 +1399,12 @@ tr.dataListHeader > td > a {
 }
 .s-transc {
 	background-color: transparent !important;
-	margin-right: 50px;
 }
 .s-transc:hover {
 	background-color: transparent !important;
 }
 .s-transc form {
-	margin: 10px 15px !important;
+	margin: 15px 10px !important;
 	display: block !important;
 }
 .s-transc input[type="button"] {
@@ -1420,13 +1419,18 @@ tr.dataListHeader > td > a {
 .border td {
 	padding: 10px;
 }
+.s-member-account {
+	border-bottom: solid 1px #ddd;
+	margin: 10px 0px;
+}
 .s-member-account tr {
-	display: table-cell;
-	padding: 10px 0;
+	display: inline-block;
+	padding: 10px 30px;
 }
 .s-member-account tr:first-child {
 	height: 100%;
 	border-right: solid 1px #f2f2f2;
+	padding: 0px 30px 0 0  !important;
 	/*width: 216px;*/
 }
 .s-member-account tr .alterCell,
@@ -1461,7 +1465,7 @@ tr.dataListHeader > td > a {
 	background-color: transparent;
 	position: absolute;
 	right: 15px;
-	top: 72px;
+	top: 80px;
 	border: solid 8px #fff !important;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	border-radius: 50px;
@@ -1472,6 +1476,7 @@ tr.dataListHeader > td > a {
 	height: 100px !important;
 	text-align: center;
 	padding: 0 !important;
+
 }
 #userImage {
 	background-color: transparent;
@@ -1843,6 +1848,16 @@ contentdisk
   overflow: auto;
 }
 
+@media (min-width: 600px) {
+	.contentDesc {
+	  overflow: hidden;
+	}	
+}
+.contentDesc .container-fluid {
+	margin:0;
+	padding: 10px 10px;
+}
+
 .contentDesc table tr td {
   padding:10px;
 }
@@ -1978,9 +1993,11 @@ table {
 	-o-transition-duration: 0.25s;
 	transition-duration: 0.25s;
 	width:100%;
+	position: static;
 }
 .right.active{
 	width:75%;	
+	position: relative;
 }
 .s-help {
 	border-left: solid 1px #f2f2f2;
@@ -2027,5 +2044,102 @@ table {
 .s-help-content h5 {
 	font-weight: bold;
 	padding-bottom: 20px;
+	line-height: 30px;
+}
+
+
+.panel,
+.panel-heading {
+	border-radius: 0px;
+	border: none;
+	box-shadow: none !important;
+}
+.panel-heading {
+	padding:20px 15px;
+}
+.panel-title {
+	font-size: 24px;
+	color: #459CBD;
+}
+.col-lg-4 .panel,
+.col-lg-4 .panel-heading {
+	background-color: #fff;
+}
+.s-dashboard {
+	min-height: 500px;
+}
+.s-dashboard .panel-footer {
+	min-height: 75px;
+	background-color: #fff;
+	border-color: #fff;
+	text-align: center;
+
+}
+.col-lg-8 .panel,
+.col-lg-8 .panel-heading,
+.col-lg-8 .panel-footer {
+	background-color: #fff;
+	border-color: #f2f2f2;
+}
+.s-chart-left {
+	display: inline-block;
+	width: 74%;	
+	background-color: #fff;
+	margin: 0px 0px 0px 10px;
+	padding: 15px;
+}
+
+.s-chart-right {
+	float: right;
+	display: inline-block;
+	width: 25%;	
+	margin: 0px 10px 0px 0px;
+}
+
+.s-chart-right .panel {
+	padding: 0;
+	margin:0;
+}
+
+.s-widget-value {
+	font-size: 30px;
+	color: #4AC49B;
+}
+
+.s-widget-icon {
+	float: left;
+	margin: 0;
+	padding-left: 10px;
+	padding-right: 20px;
+	color: #eee;
+	font-size: 50px;
+}
+
+.s-list {
+	line-height: 30px;
+	min-height: 400px;
+}
+
+.col-lg-4 .s-dashboard-legend,
+.col-lg-8 .s-dashboard-legend {
+	padding-top: 15px;
+}
+.col-lg-4 .s-dashboard-legend dl {
+	float: left;
+	margin-left: 0;
+}
+.col-lg-8 .s-dashboard-legend div {
+	float: left;
+	padding-right: 30px;
+}
+.s-dashboard .table td {
+	border-color: #f2f2f2;
+	padding: 5px;
+	font-size: 12px;
+}
+.s-chart {
+	padding:20px 0;
+}
+.panel-body ul>li {
 	line-height: 30px;
 }

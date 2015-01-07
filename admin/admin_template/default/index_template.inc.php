@@ -99,7 +99,9 @@
     //create a help anchor by current menu
     $('.s-current-child').click(function(){
       $('.left, .right, .loader').removeClass('active');
+      $('.s-help > i').removeClass('fa-times').addClass('fa-question-circle');
       $('.s-help-content').html();
+      $('.s-help').removeClass('active');
       var get_url       = $(this).attr('href');
       var path_array    = get_url.split('/');
       var clean_path    = path_array[path_array.length-1].split('.');
@@ -114,12 +116,12 @@
         // load active style
         $('.left, .right, .loader').toggleClass('active');
         $(this).toggleClass('active');
-        $('.s-help > i').toggleClass('fa-question-circle').toggleClass('fa-times');
         $.ajax({
           type: 'GET',
           url: $(this).attr('href')
         }).done(function( data ) {
           $('.s-help-content').html(data);
+          $('.s-help > i').toggleClass('fa-question-circle fa-times');
         });
       }else{
         alert('Help content will show according to available menu.')

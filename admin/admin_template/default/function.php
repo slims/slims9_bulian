@@ -33,25 +33,25 @@ include_once '../sysconfig.inc.php';
 function main_menu() 
 {
 	global $dbs;
-	$modules_dir 	= 'modules';
+	$modules_dir 		= 'modules';
 	$module_table 	= 'mst_module';
-	$module_list 	= array();
-	$_menu 			= '';
-	$icon 			= array(
-								'home' 						=> 'fa fa-dashboard',
-								'bibliography' 		=> 'fa fa-bookmark',
-								'circulation' 		=> 'fa fa-clock-o',
-								'membership' 			=> 'fa fa-user',
-								'master_file' 		=> 'fa fa-pencil',
-								'stock_take' 			=> 'fa fa-suitcase',
-								'system' 					=> 'fa fa-keyboard-o',
-								'reporting' 			=> 'fa fa-file-text-o',
-								'serial_control'	=> 'fa fa-barcode',
-								'logout' 					=> 'fa fa-close',
-								'opac' 						=> 'fa fa-desktop'
-								);
+	$module_list 		= array();
+	$_menu 					= '';
+	$icon 					= array(
+											'home' 						=> 'fa fa-home',
+											'bibliography' 		=> 'fa fa-bookmark',
+											'circulation' 		=> 'fa fa-clock-o',
+											'membership' 			=> 'fa fa-user',
+											'master_file' 		=> 'fa fa-pencil',
+											'stock_take' 			=> 'fa fa-suitcase',
+											'system' 					=> 'fa fa-keyboard-o',
+											'reporting' 			=> 'fa fa-file-text-o',
+											'serial_control'	=> 'fa fa-barcode',
+											'logout' 					=> 'fa fa-close',
+											'opac' 						=> 'fa fa-desktop'
+											);
 
-	$appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">Dashboard</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">Dashboard</span></label>';
+	$appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Home').'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Home').'</span></label>';
 	$_mods_q = $dbs->query('SELECT * FROM '.$module_table);
 	while ($_mods_d = $_mods_q->fetch_assoc()) {
 		$module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);

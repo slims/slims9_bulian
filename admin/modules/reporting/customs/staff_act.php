@@ -103,7 +103,9 @@ if (!$reportView) {
         'u.user_id AS \''.__('Bibliography Data Entry').'\'',
         'u.user_id AS \''.__('Item Data Entry').'\'',
         'u.user_id AS \''.__('Member Data Entry').'\'',
-        'u.user_id AS \''.__('Circulation Tasks').'\'');
+        'u.user_id AS \''.__('Peminjaman').'\'',
+        'u.user_id AS \''.__('Pengembalian').'\'',
+        'u.user_id AS \''.__('Perpanjang').'\'');
     $reportgrid->setSQLorder('realname ASC');
 
     // is there any search
@@ -146,12 +148,32 @@ if (!$reportView) {
         return $_count_d[0];
     }
 
-    function showCirculation($obj_db, $array_data)
+    function showCirculation_Loan($obj_db, $array_data)
     {
         global $start_date, $until_date;
         $_user = $obj_db->escape_string($array_data[0]);
         $_count_q = $obj_db->query('SELECT COUNT(log_id) FROM system_log WHERE log_location=\'circulation\' AND log_type=\'member\'
-            AND (log_msg LIKE \''.$_user.'%return item%\'OR \'%new loan%\' OR \'%extend loan%\' OR log_msg LIKE \''.$_user.'%Quick Return%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
+            AND (log_msg LIKE \''.$_user.'%new loan%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
+        $_count_d = $_count_q->fetch_row();
+        return $_count_d[0];
+    }
+
+    function showCirculation_Return($obj_db, $array_data)
+    {
+        global $start_date, $until_date;
+        $_user = $obj_db->escape_string($array_data[0]);
+        $_count_q = $obj_db->query('SELECT COUNT(log_id) FROM system_log WHERE log_location=\'circulation\' AND log_type=\'member\'
+            AND (log_msg LIKE \''.$_user.'%return item%\' OR \''.$_user.'%Quick Return%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
+        $_count_d = $_count_q->fetch_row();
+        return $_count_d[0];
+    }
+
+    function showCirculation_Extends($obj_db, $array_data)
+    {
+        global $start_date, $until_date;
+        $_user = $obj_db->escape_string($array_data[0]);
+        $_count_q = $obj_db->query('SELECT COUNT(log_id) FROM system_log WHERE log_location=\'circulation\' AND log_type=\'member\'
+            AND (log_msg LIKE \''.$_user.'%extend loan%\') AND TO_DAYS(log_date) BETWEEN TO_DAYS(\''.$start_date.'\') AND TO_DAYS(\''.$until_date.'\')');
         $_count_d = $_count_q->fetch_row();
         return $_count_d[0];
     }
@@ -161,7 +183,9 @@ if (!$reportView) {
     $reportgrid->modifyColumnContent(2, 'callback{showBiblioEntries}');
     $reportgrid->modifyColumnContent(3, 'callback{showItemEntries}');
     $reportgrid->modifyColumnContent(4, 'callback{showMemberEntries}');
-    $reportgrid->modifyColumnContent(5, 'callback{showCirculation}');
+    $reportgrid->modifyColumnContent(5, 'callback{showCirculation_Loan}');
+    $reportgrid->modifyColumnContent(6, 'callback{showCirculation_Return}');
+    $reportgrid->modifyColumnContent(7, 'callback{showCirculation_Extends}');
 
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, 20);

@@ -609,3 +609,4 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
 
 /* CHART */
 $sysconf['chart']['mode'] = 'chartjs'; // plot or chartjs. default is plot
+$sysconf['admin_home']['mode'] = 'default'; // set as 'default' or 'dashboard' mode
