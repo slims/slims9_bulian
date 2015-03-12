@@ -80,7 +80,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
         <div class="s-user">
           <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
-              <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=100" alt="Photo <?php echo $_SESSION['realname']?>">
+              <img src="<?php echo SWB.'images/persons/'.urlencode($_SESSION['upict']); ?>" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
           </div>
           <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>
@@ -165,11 +165,20 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       $('a.change-user-profiles').trigger('click');
     });
 
-    $('.per_title').click(function(){
+    $('.per_title').bind('click',function(){
       $('.s-content').toggleClass('active');
       $('.s-sidebar').toggleClass('active');
       $('.s-user-frame').toggleClass('active');
       $('.s-menu').toggleClass('active');
+    });
+
+    $('body').on('simbioAJAXloaded', function(evt) {
+	    $('.per_title').bind('click',function(){
+	      $('.s-content').toggleClass('active');
+	      $('.s-sidebar').toggleClass('active');
+	      $('.s-user-frame').toggleClass('active');
+	      $('.s-menu').toggleClass('active');
+	    });    	
     })
 
   </script>
