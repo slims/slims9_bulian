@@ -25,6 +25,9 @@ do_checkIP('smc-masterfile');
 
 $menu[] = array('Header', __('Authority Files'));
 $menu[] = array(__('GMD'), MWB.'master_file/index.php', __('General Material Designation'));
+$menu[] = array(__('Content Type'), MWB.'master_file/rda_cmc.php?type=content', __('RDA Content Type'));
+$menu[] = array(__('Media Type'), MWB.'master_file/rda_cmc.php?type=media', __('RDA Media Type'));
+$menu[] = array(__('Carrier Type'), MWB.'master_file/rda_cmc.php?type=carrier', __('RDA Carrier Type'));
 $menu[] = array(__('Publisher'), MWB.'master_file/publisher.php', __('Document Publisher'));
 $menu[] = array(__('Supplier'), MWB.'master_file/supplier.php', __('Item Supplier'));
 $menu[] = array(__('Author'), MWB.'master_file/author.php', __('Document Authors'));
