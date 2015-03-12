@@ -1,9 +1,9 @@
-# Add New Bibliography Menu 
+## Add New Bibliography Menu
 
 Use this option menu to add new bibliography data. The screen
 provide you with fields of bibliographic data as follows:
 
-- Title : Title of document/collection
+- Title : Title of [document/collection](http://slims.web.id)
 - Edition : Statements of edition
 - Author : Statements of authority
 - GMD : General Material Designation
