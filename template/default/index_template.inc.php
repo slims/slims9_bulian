@@ -548,7 +548,7 @@ $(document).ready(function()
 
 });
 </script>
-<?php echo $chat; ?>
+<?php if (isset($chat)) { echo $chat; } ?>
 
 </body>
 </html>
