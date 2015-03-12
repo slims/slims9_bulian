@@ -2,8 +2,8 @@
 /**
 * Custom Menu Layout
 *
-* Copyright (C) 2014 Eddy Subratha (eddy.subratha@gmail.com)
-* 
+* Copyright (C) 2015 Eddy Subratha (eddy.subratha@gmail.com)
+*
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation; either version 2 of the License, or
@@ -23,14 +23,14 @@
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+} elseif (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
 include_once '../sysconfig.inc.php';
 
-// Generate Menu 
-function main_menu() 
+// Generate Menu
+function main_menu()
 {
 	global $dbs;
 	$modules_dir 		= 'modules';
@@ -78,7 +78,7 @@ function main_menu()
 	echo $_menu;
 }
 
-function sub_menu($str_module = '', $_module = array()) 
+function sub_menu($str_module = '', $_module = array())
 {
 	global $dbs;
     $modules_dir 	= 'modules';

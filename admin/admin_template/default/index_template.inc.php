@@ -1,6 +1,38 @@
-<?php 
-  include 'function.php';   
-?> 
+<?php
+  /**
+  * Custom Menu Layout
+  *
+  * Copyright (C) 2015 Eddy Subratha (eddy.subratha@gmail.com)
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 2 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program; if not, write to the Free Software
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  *
+  */
+
+  // Need to modified script to adaptive new theme
+  include 'function.php';
+?>
+<!-- =====================================================================
+___  __    ____  __  __  ___      __    _  _    __    ___  ____    __
+/ __)(  )  (_  _)(  \/  )/ __)    /__\  ( )/ )  /__\  / __)(_  _)  /__\
+\__ \ )(__  _)(_  )    ( \__ \   /(__)\  )  (  /(__)\ \__ \ _)(_  /(__)\
+(___/(____)(____)(_/\/\_)(___/  (__)(__)(_)\_)(__)(__)(___/(____)(__)(__)
+
+By Eddy Subratha (eddy.subratha@gmail.com)
+
+========================================================================== -->
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -38,7 +70,7 @@
   <script type="text/javascript" src="<?php echo JWB; ?>jquery.imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>webcam.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>scanner.js"></script>
-  <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>  
+  <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>
 </head>
 
 <body>
@@ -46,7 +78,7 @@
     <nav class="s-menu" role="navigation">
       <header class="s-header">
         <div class="s-user">
-          <div class="s-user-frame">            
+          <div class="s-user-frame">
             <a href="<?php echo AWB; ?>" class="s-user-photo">
               <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=100" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
@@ -66,36 +98,36 @@
         <div class="s-help-header"><?php echo __('Help'); ?></div>
         <div class="s-help-content">
           <!-- Place to put documentation -->
-        </div>        
+        </div>
       </div>
-      <div class="right">        
+      <div class="right">
         <div id="mainContent">
-          <?php 
+          <?php
             if(isset($_GET['mod']) && ($_GET['mod'] == 'system')) {
               include "modules/system/index.php";
               echo "<script>$('#mainForm').attr('action','".AWB."modules/system/index.php');</script>";
             } else {
-              echo $main_content;        
+              echo $main_content;
             }
           ?>
         </div>
       </div>
     </div>
     <footer class="s-footer">
-      <div class="s-footer-about"><a href="http://www.slims.web.id/" target="_blank"><?php echo SENAYAN_VERSION; ?></a></div> 
+      <div class="s-footer-about"><a href="http://www.slims.web.id/" target="_blank"><?php echo SENAYAN_VERSION; ?></a></div>
       <div class="s-footer-brand"><?php echo $sysconf['library_name'].' - '.$sysconf['library_subname']?> </div>
     </footer>
   </main>
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
-  <!-- fake submit iframe -->	
+  <!-- fake submit iframe -->
   <script>
 
     //trigger to hide the current sidebar
     $('.s-current-child').click(function(){
       $('.s-current').trigger('click');
     });
-    
+
     //create a help anchor by current menu
     $('.s-current-child').click(function(){
       $('.left, .right, .loader').removeClass('active');
