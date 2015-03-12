@@ -1,6 +1,6 @@
 <?php
   /**
-  * Custom Menu Layout
+  * Akasia Template
   *
   * Copyright (C) 2015 Eddy Subratha (eddy.subratha@gmail.com)
   *
@@ -159,11 +159,19 @@ By Eddy Subratha (eddy.subratha@gmail.com)
         alert('Help content will show according to available menu.')
       }
     });
-    
+
     $('.s-user-photo').bind('click', function(e) {
       e.preventDefault();
       $('a.change-user-profiles').trigger('click');
     });
+
+    $('.per_title').click(function(){
+      $('.s-content').toggleClass('active');
+      $('.s-sidebar').toggleClass('active');
+      $('.s-user-frame').toggleClass('active');
+      $('.s-menu').toggleClass('active');
+    })
+
   </script>
   <?php if (isset($chat)) { echo $chat; } ?>
 </body>
