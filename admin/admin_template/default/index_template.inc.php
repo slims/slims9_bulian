@@ -160,6 +160,6 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       }
     });
   </script>
-  <?php echo $chat?>
+  <?php if (isset($chat)) { echo $chat; } ?>
 </body>
 </html>
