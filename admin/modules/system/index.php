@@ -22,7 +22,10 @@
 /* Global application configuration */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');    
+}
+
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
@@ -149,7 +152,8 @@ if (isset($_POST['updateData'])) {
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
     utility::jsAlert(__('Settings saved. Refreshing page'));
-    echo '<script type="text/javascript">parent.location.href = \'../../index.php?mod=system\';</script>';
+    echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+    exit();
 }
 /* Config Vars update process end */
 

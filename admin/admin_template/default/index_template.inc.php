@@ -79,7 +79,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       <header class="s-header">
         <div class="s-user">
           <div class="s-user-frame">
-            <a href="<?php echo AWB; ?>" class="s-user-photo">
+            <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
               <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=100" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
           </div>
@@ -158,6 +158,11 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       }else{
         alert('Help content will show according to available menu.')
       }
+    });
+    
+    $('.s-user-photo').bind('click', function(e) {
+      e.preventDefault();
+      $('a.change-user-profiles').trigger('click');
     });
   </script>
   <?php if (isset($chat)) { echo $chat; } ?>

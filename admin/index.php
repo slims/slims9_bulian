@@ -106,7 +106,7 @@ if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) 
 
     if (!($ses == NULL)) {
       $chat = ' <script type="text/javascript" language="javascipt" src="../freichat/client/main.php?id='.$ses.'&amp;xhash='.freichatx_get_hash($ses).'"></script>
-                <link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">';
+        <link rel="stylesheet" href="../freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">';
     }
   }
 }

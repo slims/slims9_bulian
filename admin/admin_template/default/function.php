@@ -20,6 +20,7 @@
 *
 */
 
+/*
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -28,28 +29,29 @@ if (!defined('INDEX_AUTH')) {
 }
 
 include_once '../sysconfig.inc.php';
+*/
 
 // Generate Menu
 function main_menu()
 {
 	global $dbs;
-	$modules_dir 		= 'modules';
+	$modules_dir 	= 'modules';
 	$module_table 	= 'mst_module';
-	$module_list 		= array();
-	$_menu 					= '';
-	$icon 					= array(
-											'home' 						=> 'fa fa-home',
-											'bibliography' 		=> 'fa fa-bookmark',
-											'circulation' 		=> 'fa fa-clock-o',
-											'membership' 			=> 'fa fa-user',
-											'master_file' 		=> 'fa fa-pencil',
-											'stock_take' 			=> 'fa fa-suitcase',
-											'system' 					=> 'fa fa-keyboard-o',
-											'reporting' 			=> 'fa fa-file-text-o',
-											'serial_control'	=> 'fa fa-barcode',
-											'logout' 					=> 'fa fa-close',
-											'opac' 						=> 'fa fa-desktop'
-											);
+	$module_list 	= array();
+	$_menu 		= '';
+	$icon           = array(
+	  'home'           => 'fa fa-home',
+	  'bibliography'   => 'fa fa-bookmark',
+	  'circulation'    => 'fa fa-clock-o',
+	  'membership' 	   => 'fa fa-user',
+	  'master_file'    => 'fa fa-pencil',
+	  'stock_take' 	   => 'fa fa-suitcase',
+	  'system' 	   => 'fa fa-keyboard-o',
+	  'reporting' 	   => 'fa fa-file-text-o',
+	  'serial_control' => 'fa fa-barcode',
+	  'logout' 	   => 'fa fa-close',
+	  'opac' 	   => 'fa fa-desktop'
+	  );
 
 	$appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Home').'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Home').'</span></label>';
 	$_mods_q = $dbs->query('SELECT * FROM '.$module_table);
@@ -94,7 +96,7 @@ function sub_menu($str_module = '', $_module = array())
         if ($_list[0] == 'Header') {
             $_submenu .= '<li class="s-submenu-header">'.$menu[$i][1].'</li>'."\n";
         } else {
-            $_submenu .= '<li><a class="menu s-current-child" href="'.$menu[$i][1].'" title="'.( isset($menu[$i][2])?$menu[$i][2]:$menu[$i][0] ).'"><i class="nav-icon fa fa-bars"></i> '.$menu[$i][0].'</a></li>'."\n";
+            $_submenu .= '<li><a class="menu s-current-child '.strtolower(str_replace(' ', '-', $menu[$i][0])).'" href="'.$menu[$i][1].'" title="'.( isset($menu[$i][2])?$menu[$i][2]:$menu[$i][0] ).'"><i class="nav-icon fa fa-bars"></i> '.$menu[$i][0].'</a></li>'."\n";
         }
     }
     $_submenu .= '</ul></div>';
