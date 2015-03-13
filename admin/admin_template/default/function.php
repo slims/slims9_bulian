@@ -56,7 +56,7 @@ function main_menu()
   $appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Shortcut').'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Home').'</span></label>';
   $_mods_q = $dbs->query('SELECT * FROM '.$module_table);
   while ($_mods_d = $_mods_q->fetch_assoc()) {
-  	$module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);
+    $module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);
   }
   $_menu 	.= '<ul class="nav">';
   $_menu 	.= $appended_first;
@@ -65,8 +65,7 @@ function main_menu()
   $_menu 	.= '<li><a class="menu dashboard" href="'.AWB.'index.php"><i class="nav-icon fa fa-dashboard"></i> <span class="s-menu-title">Dashboard</span></a></li>';
   $_menu 	.= '<li><a class="menu opac" href="'.SWB.'index.php" target="_blank"><i class="nav-icon '.$icon['opac'].'"></i> <span class="s-menu-title">Opac</span></a></li>';
   if ($module_list) {
-    foreach ($module_list as $_module)
-    {
+    foreach ($module_list as $_module) {
       $_formated_module_name = ucwords(str_replace('_', ' ', $_module['name']));
       $_mod_dir = $_module['path'];
       if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && file_exists($modules_dir.DS.$_mod_dir)) {
