@@ -213,7 +213,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         'g.'.$type.'_type AS \''.__('Name').'\'',
         'g.last_update AS \''.__('Last Update').'\'');
     }
-    $datagrid->setSQLorder('name ASC');
+    $datagrid->setSQLorder($type.'_type ASC');
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
