@@ -232,6 +232,11 @@ CREATE TABLE IF NOT EXISTS `chat_user` (
   UNIQUE KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='SLiMS table for chat support (hendro wicaksono)' AUTO_INCREMENT=1 ;
 
+ALTER TABLE `biblio` ADD `content_type_id` INT NULL DEFAULT NULL AFTER `spec_detail_info`,
+  ADD `media_type_id` INT NULL DEFAULT NULL AFTER `content_type_id`,
+  ADD `carrier_type_id` INT NULL DEFAULT NULL AFTER `media_type_id`,
+  ADD INDEX (`content_type_id`, `media_type_id`, `carrier_type_id`) ; 
+
 --
 -- Table structure for table `mst_carrier_type`
 --

@@ -59,6 +59,9 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
+// RDA Content, Media and Carrier
+$rda_cmc = array('content' => 'Content Type', 'media' => 'Media Type', 'carrier' => 'Carrier Type');
+
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img'])) {
   $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
@@ -156,6 +159,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['labels'] = $arr_label?serialize($arr_label):'literal{NULL}';
     $data['frequency_id'] = ($_POST['frequencyID'] == '0')?'literal{0}':(integer)$_POST['frequencyID'];
     $data['spec_detail_info'] = trim($dbs->escape_string(strip_tags($_POST['specDetailInfo'])));
+    
+    // RDA Content, Media anda Carrier Type
+    foreach ($rda_cmc as $cmc => $cmc_name) {
+      if (isset($_POST[$cmc.'TypeID']) && $_POST[$cmc.'TypeID'] <> 0) {
+        $data[$cmc.'_type_id'] = filter_input(INPUT_POST, $cmc.'TypeID', FILTER_SANITIZE_NUMBER_INT); 
+      }
+    }
+    
     $data['input_date'] = date('Y-m-d H:i:s');
     $data['last_update'] = date('Y-m-d H:i:s');
 
@@ -515,6 +526,20 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
   }
   $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="select2"', __('General material designation. The physical form of publication.'));
+  
+  // biblio RDA content, media, carrier type
+  foreach ($rda_cmc as $cmc => $cmc_name) {
+    $cmc_options = array();
+    $cmc_q = $dbs->query('SELECT id, '.$cmc.'_type FROM mst_'.$cmc.'_type');
+    $cmc_options = array();
+    $cmc_options[] = array(0, __('Not set'));
+    while ($cmc_d = $cmc_q->fetch_row()) {
+      $cmc_options[] = array($cmc_d[0], $cmc_d[1]);
+    }
+    $form->addSelectList($cmc.'TypeID', __($cmc_name), $cmc_options, $rec_d[$cmc.'_type_id'], 'class="select2"', __('RDA '.$cmc_name.' designation.'));    
+  }
+
+  
   // biblio publish frequencies
   // get frequency data related to this record from database
   $freq_q = $dbs->query('SELECT frequency_id, frequency FROM mst_frequency');
