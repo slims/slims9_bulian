@@ -53,15 +53,15 @@
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Content Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php print $content_type ?></div>
+        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($content_type) : print $content_type; else : print __('No data'); endif; ?></div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Media Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php print $media_type ?></div>
+        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($media_type) : print $media_type; else : print __('No data'); endif; ?></div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Carrier Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php print $carrier_type ?></div>
+        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($carrier_type) : print $carrier_type; else : print __('No data'); endif; ?></div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Language'); ?></label>
@@ -85,7 +85,7 @@
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Specific Detail Info'); ?></label>
-        <div class="controls"><?php print $spec_detail_info ?></div>
+        <div class="controls"><?php if ($spec_detail_info) : print $spec_detail_info; else : print __('No data'); endif; ?></div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('File Attachment'); ?></label>

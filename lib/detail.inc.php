@@ -102,6 +102,7 @@ class detail
      */
     public function showDetail()
     {
+        global $sysconf;
         if ($this->error) {
             return '<div class="error">Error Fetching data for record detail. Server return error message: '.$this->error.'</div>';
         } else {
