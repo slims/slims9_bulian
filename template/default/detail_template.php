@@ -4,7 +4,7 @@
       <?php print $image ?>
       </div>
       <br/>
-    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT); ?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a>
+    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $biblio_id ?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a>
   </div>
   <div class="span10" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
     <h4 class="title" itemprop="name" property="name"><?php print $title ?></h4>
