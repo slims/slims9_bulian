@@ -29,15 +29,17 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-require 'content_list.inc.php';
+// require 'content_list.inc.php';
 
-class detail extends content_list
+// class detail extends content_list
+class detail
 {
     private $obj_db = false;
     private $record_detail = array();
     private $detail_id = 0;
     private $error = false;
     private $output_format = 'html';
+    private $template = 'html';
     protected $detail_prefix = '';
     protected $detail_suffix = '';
     public $record_title;
@@ -59,12 +61,19 @@ class detail extends content_list
 
         $this->obj_db = $obj_db;
         $this->detail_id = $int_detail_id;
-        $_sql = sprintf('SELECT b.*, l.language_name, p.publisher_name, pl.place_name AS \'publish_place\', gmd.gmd_name, fr.frequency FROM biblio AS b
+        $_sql = sprintf('SELECT b.*, l.language_name, p.publisher_name,
+              pl.place_name AS `publish_place`, gmd.gmd_name, fr.frequency,
+              rct.content_type,
+              rmt.media_type, rcrt.carrier_type
+              FROM biblio AS b
             LEFT JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
             LEFT JOIN mst_language AS l ON b.language_id=l.language_id
             LEFT JOIN mst_publisher AS p ON b.publisher_id=p.publisher_id
             LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id
             LEFT JOIN mst_frequency AS fr ON b.frequency_id=fr.frequency_id
+            LEFT JOIN mst_content_type rct ON b.content_type_id=rct.id
+            LEFT JOIN mst_media_type AS rmt ON b.media_type_id=rmt.id
+            LEFT JOIN mst_carrier_type AS rcrt ON b.carrier_type_id=rcrt.id
             WHERE biblio_id=%d', $int_detail_id);
         // for debugging purpose only
         // die($_sql);
@@ -79,6 +88,11 @@ class detail extends content_list
             $_det_q->free_result();
         }
     }
+    
+    public function setTemplate($str_template_path)
+    {
+      $this->template = $str_template_path;
+    }
 
 
     /**
@@ -88,11 +102,17 @@ class detail extends content_list
      */
     public function showDetail()
     {
+        global $sysconf;
         if ($this->error) {
             return '<div class="error">Error Fetching data for record detail. Server return error message: '.$this->error.'</div>';
         } else {
-            if ($this->output_format == 'html' AND !empty($this->list_template)) {
-                return parent::parseListTemplate($this->htmlOutput());
+            if ($this->output_format == 'html') {
+                ob_start();
+                $detail = $this->htmlOutput();
+                extract($detail, EXTR_OVERWRITE);
+                include $this->template;
+                $detail_html = ob_get_clean();
+                return $detail_html;
             } else if ($this->output_format == 'mods') {
                 return $this->MODSoutput();
             } else if ($this->output_format == 'json-ld') {
@@ -551,7 +571,7 @@ class detail extends content_list
 
 
     /**
-     * Record detail output in MODS (Metadata Object Description Schema) XML mode
+     * Record detail output in Dublin Core XML
      * @return  string
      *
      */
@@ -666,7 +686,7 @@ class detail extends content_list
         // image
         if (!empty($this->record_detail['image'])) {
           $_image = urlencode($this->record_detail['image']);
-			    $_xml_output .= '<dc:relation><![CDATA['.htmlentities($_image).']]></dc:relation>'."\n";
+	  $_xml_output .= '<dc:relation><![CDATA['.htmlentities($_image).']]></dc:relation>'."\n";
         }
 
         return $_xml_output;

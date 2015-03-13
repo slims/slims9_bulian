@@ -52,7 +52,7 @@ $searched_words_js_array = '';
 
 // member login information
 if (utility::isMemberLogin()) {
-  $header_info .= '<div id="memberLoginInfo">'.__('You are currently Logged on as member').': <strong>'.$_SESSION['m_name'].' (<em>'.$_SESSION['m_email'].'</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">'.__('LOGOUT').'</a></div>';
+  $header_info .= '<div class="alert alert-info alert-member-login" id="memberLoginInfo">'.__('You are currently Logged on as member').': <strong>'.$_SESSION['m_name'].' (<em>'.$_SESSION['m_email'].'</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">'.__('LOGOUT').'</a></div>';
 }
 
 // start the output buffering for main content
@@ -102,40 +102,6 @@ if (isset($_GET['p'])) {
 }
 // main content grab
 $main_content = ob_get_clean();
-
-##############################FreiChat#####Start###################################
-if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) {
-  if ($sysconf['chat_system']['vendors'] == 'freichat') {
-
-    $ses = null;
-
-    if (isset($_SESSION['chat_mid'])) {
-      $ses = $_SESSION['chat_mid'];
-    } else {
-      $ses = false;
-    }
-
-    if(!function_exists ("freichatx_get_hash")) {
-      function freichatx_get_hash ($ses)
-      {
-        if(is_file ("freichat/hardcode.php")) {
-          require "freichat/hardcode.php";
-          $temp_id =  $ses . $uid;
-          return md5($temp_id);
-        } else {
-          echo "<script>alert('module freichatx says: hardcode.php file not found!');</script>";
-        }
-        return 0;
-      }
-    }
-
-    if (!($ses == NULL)) {
-      $chat = ' <script type="text/javascript" language="javascipt" src="./freichat/client/main.php?id='.$ses.'&amp;xhash='.freichatx_get_hash($ses).'"></script>
-                <link rel="stylesheet" href="./freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">';
-    }
-  }
-}
-
 
 // template output
 require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/index_template.inc.php';
