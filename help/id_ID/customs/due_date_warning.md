@@ -1,3 +1,3 @@
-### Daftar keterlambatan
-<hr>
-Berisi laporan/daftar keterlambatan pengembalian anggota perpustakaan. Dalam menu ini terdapat fasilitas untuk mengurutkan dan mencetak. 
+###Peringatan Jatuh Tempo
+
+Fitur ini berisi informasi peminjam koleksi perpustakaan yang dalam 3 hari ini akan tepat pada batas peminjaman.
