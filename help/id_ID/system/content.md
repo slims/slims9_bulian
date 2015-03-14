@@ -1,10 +1,12 @@
+### Konten
+<hr>
 Menu ini digunakan untuk mengubah tampilan content aplikasi senayan. Secara default, tampilan yang sudah ada dan dapat dimodifikasi dalam menu ini adalah:
 - Homepage info, terletak di bagian depan OPAC
 - Lisensi SLiMS
 - Tentang SLiMS
 - Model Pengembangan Opensource
 - Modul yang tersedia
-- Welcome to admin page, 
+- Welcome to admin page,
 - Help on usage, pada OPAC.
 - Library Information, juga ada pada OPAC.
 

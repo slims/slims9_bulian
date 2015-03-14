@@ -1,4 +1,6 @@
-Pada fitur ini anda dapat melakukan pencadangan database SLiMS. Untuk dapat membuat cadangan, perlu terlebih dahulu didefinisikan letak/path file mysqldump. Caranya adalah dengan mengedit file sysconfig.inc.php. Cari baris yang tertulis:
+### Salin pangkalan data
+<hr>
+Pada fitur ini anda dapat melakukan pencadangan database SLiMS. Untuk dapat membuat cadangan, perlu terlebih dahulu didefinisikan letak/path file mysqldump. Caranya adalah dengan mengedit file sysconfig.inc.php. Temukan baris yang tertulis:
 
 $sysconf['mysqldump'] = 'xxxxxx';
 
