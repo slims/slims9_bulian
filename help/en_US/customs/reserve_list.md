@@ -1,10 +1,10 @@
-####Menu Reserve
-<hr>
-Menu ini digunakan untuk melakukan pemesanan koleksi/item. Selain itu juga melihat daftar koleksi yang sedang di pesan oleh anggota. 
-Informasi yang ada dalam menu ini adalah: 
+####Reservation Menu
+
+This menu is used to view a list of reservations by the members. Item information contained in this menu is: 
 - Item Code, 
 - Title, 
 - Member, 
 - Reserve Date.
 
-Catatan: koleksi yang dapat dipesan adalah item (eksemplar) yang saat itu tidak ada diperpustakaan (sedang dipinjam), dan tidak dipinjam oleh diri sendiri.
+Note:
+Reserve collection is collection that is not in hand/library at that moment and not a self-lent collection.

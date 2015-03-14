@@ -1,12 +1,14 @@
-####Daftar Keterlambatan
-<hr>
-Merupakan fasilitas untuk mengetahui anggota-anggota dengan status terlambat.
-Informasi yang ditampilkan dalam fasilitas ini adalah
-- No Anggota,
-- Nama Anggota,
-- Title,
-- Lama keterlambatan,
-- Tanggal Pinjam,
-- Due Date
+####Overdued List
 
-Dengan Menu ini pula kita dapat melakukan pencetakan dan pencarian data keterlambatan. Pencarian data keterlambatan dilakukan berdasarkan kategori Member ID/Member Name, Loan Date From, Loan Date Until.
+A facility to find members with overdue status. Information displayed in this facility is:
+
+- Member ID, 
+- Member Name, 
+- Title, Days overdue, 
+- Loan Date, 
+- Due Date. 
+
+With this menu we can also do printing and search overdues. Overdues searches are done by: 
+- Member ID/Member Name, 
+- Loan Date From, 
+- Loan Date Until.
