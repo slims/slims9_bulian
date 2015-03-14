@@ -233,6 +233,36 @@ if (isset($_POST['doImport'])) {
           }
         }
 
+        // RDA Content type
+        $rct_fld = $record->getField('336');
+        if ($rct_fld) {
+          $content_type = $rct_fld->getSubfields('a');
+          // get ID
+          $q = $dbs->query(sprintf('SELECT id FROM mst_content_type WHERE content_type=\'%s\'', $content_type));
+          $d = $q->fetch_row();
+          $data['content_type_id'] = $d[0];
+        }
+
+        // RDA Media type
+        $rmt_fld = $record->getField('337');
+        if ($rmt_fld) {
+          $media_type = $rmt_fld->getSubfields('a');
+          // get ID
+          $q = $dbs->query(sprintf('SELECT id FROM mst_media_type WHERE media_type=\'%s\'', $media_type));
+          $d = $q->fetch_row();
+          $data['media_type_id'] = $d[0];
+        }
+
+        // RDA Carrier type
+        $rcrt_fld = $record->getField('338');
+        if ($rcrt_fld) {
+          $carrier_type = $rcrt_fld->getSubfields('a');
+          // get ID
+          $q = $dbs->query(sprintf('SELECT id FROM mst_carrier_type WHERE carrier_type=\'%s\'', $carrier_type));
+          $d = $q->fetch_row();
+          $data['carrier_type_id'] = $d[0];
+        }
+        
         // Series title
         $series_fld = $record->getField('440');
         if ($series_fld) {
