@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -329,7 +329,7 @@ if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'
 }
 
 $sysconf['pdf']['viewer'] = 'pdfjs'; # 'pdfjs'
-$sysconf['allow_pdf_download'] = true; 
+$sysconf['allow_pdf_download'] = true;
 
 /**
  * UCS global settings
@@ -350,7 +350,7 @@ $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voya
 /**
  * Peer to peer server config
  */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims7_cendana', 'name' => 'SLiMS Library');
+$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims8_akasia', 'name' => 'SLiMS Library');
 
 /**
  * User and member login method
