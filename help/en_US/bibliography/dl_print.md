@@ -1,8 +1,8 @@
-####Pencetakan Label
+#### Labels Printing Menu 
 <hr>
-Dengan menu ini kita dapat mencetak label koleksi berdasar data bibliografi yang sudah dimasukkan dalam SLiMS.
-Berikut urutan mencetak label menggunakan menu Labels Printing:
-- Klik Labels Printing, maka akan muncul tampilan sebagai berikut:
-- Pilih bibliografi yang akan dicetak labelnya. Gunakan tombol Shift+klik kotak chek box untuk memilih lebih dari satu secara berurutan dengan cepat. Catatan: sekali cetak maksimal 50 data. Dalam menu label print ini, sudah dimungkinkan untuk mencetak label lebih dari satu, tergantung pada berapa jumlah eksemplar koleksi.
-- Klik Add to Print Queue untuk memasukkan pilihan ke dalam antrian cetak.
-- Klik Print Selected Data untuk mulai mencetak, maka akan muncul pop-up yang meminta kita untuk mencetak label kedalam printer. 
+With this menu you can print labels based on the collection of bibliographic data which is entered in SLiMS. The following sequence prints labels using Printing Labels menu:
+
+- Click Labels Printing, and the display will appear as follows:
+- Select the bibliography to print the label. Use Shift + click a checkbox to select more than one in rapid sequence. Note: one print run can only contain a maximum of 50 records. In this Print Label menu, it is possible to print more than one label, depending on how many copies of a title exist.
+- Click Add to Print Queue to enter a selection in the print queue.
+- Click Print to start printing the Selected Data, it will display a pop-up that asks you to send labels to the printer.

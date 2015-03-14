@@ -1,6 +1,3 @@
-####Inventarisasi Aktif (Current Stoctake)
+#### Current Stoctake
 <hr>
-Menu itu adalah menu utama untuk melakukan stock take. Menu ini digunakan untuk mengembalikan status koleksi perpustakaan yang dianggap hilang oleh sistem, ke status exist (koleksi dinyatakan ada).
-Pada menu ini, item id (nomor barcode) koleksi menjadi acuan utama untuk mengubah status koleksi yang dianggap hilang menjadi exist (ada),
-Caranya dengan memasukan nomor barcode koleksi tersebut pada kolom Item Code.
-Menu ini akan berfungsi apabila telah dilakukan proses Initialize. 
+This menu is the main menu for doing a stock-take. It is used to restore the status of library collections that are considered lost by the system, In this menu, item id (barcode number) is the main item reference to change the status of the items that are considered lost to existing (there), Do this by entering the barcode number in the field Item Code. This menu will work when the Initialize process is completed.

@@ -1,3 +1,3 @@
-####Import Data
+#### Import Data
 <hr>
-Menu import data ini digunakan untuk mengambil data bibliografi dari luar SLiMS dalam format csv (atau dari database Senayan yang sudah di eksport dalam bentuk .csv), kemudian dimasukkan dalam program aplikasi Senayan. 
+The “Import Data” menu is used to retrieve bibliographic data from outside SLiMS in csv format (or from a database that has been exported from Senayan in csv format), and then subsequently include it in Senayan. 

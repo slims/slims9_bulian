@@ -1,3 +1,3 @@
-####Import Item
+#### Import Item
 <hr>
-Item import digunakan untuk memasukkan data item ke database SLiMS. Jika kegiatan ini dilakukan dari database SLiMS yang satu ke SLiMS yang lain, maka item import dilakukan setelah bibliography import. Artinya item akan menyesuaikan data bibliografi yang telah diimport lebih dahulu.
+Item import is used to insert item data into a SLiMS database. If this activity is done from a single SLiMS database to another SLiMSr, then the item import is done after bibliography import. This means the item will adjust the bibliographic data that has been imported earlier.

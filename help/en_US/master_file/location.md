@@ -1,4 +1,4 @@
-####Master File / Lokasi
+####Master File / Location
 <hr>
-Gunakan fitur ini untuk mengisi kode lokasi dan nama lokasi penyimpanan koleksi di Perpustakaan.
-Contoh: Perpustakaan Fakultas Ekonomi, Perpustakaan Fakultas Psikologi
+location code and the name of the location where the item is placed
+Example: Engineering Faculty Library

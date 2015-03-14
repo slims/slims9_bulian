@@ -1,4 +1,4 @@
-####Master File / Tempat Terbit
+####Master File / Publishing Place
 <hr>
-Gunakan fitur ini untuk mengentri lokasi kota perbitan suatu dokumen.
-Contoh: Jakarta, Bogor, New York, Texas, London 
+Contains the place of publication
+Example: Jakarta, London

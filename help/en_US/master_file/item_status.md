@@ -1,9 +1,5 @@
-####Master File / Status Eksemplar
+####Master File / Item status
 <hr>
-Gunakan fitur ini untuk mengisi status eksemplar.
-contoh: sedang diperbaiki, sedang dipinjam, sedang dipesan
-
-Pada Item Status ini diisikan:  Item Status Code, Item Status Name, dan Rules.
-Ada dua pilihan dalam Rules:
-- No Loan Transaction (item tidak bisa dipinjam, misal: koleksi digital) 
-- Skipped by Stock Take (tidak diproses dalam Stock Take)
+Contains the status of the item (Repair, On Loan, Reserved). Each Item Status category contains the Item Status Code , Item Status Name and Rules. There are two options in Rules:
+- No Loan Transaction (items can not be borrowed, eg digital collections) and 
+- Skipped by Take Stock (not contained in the process of the Stock Take)

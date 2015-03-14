@@ -1,3 +1,3 @@
-## Catatan inventarisasi
+## StockTake Log
 <hr>
-Fungsi menu ini adalah untuk mengetahui rekaman (Log) saat melakukan proses stock take
+The function of this menu is to find log records when doing the stock-take

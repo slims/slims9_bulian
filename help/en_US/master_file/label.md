@@ -1,4 +1,6 @@
 ####Master File / Label
 <hr>
-Gunakan fitur ini untuk memberikan memberikan label keterangan informasi tetang bibliografi. 
-Secara default SLIMS mempunyai tiga label: New Title, Favorite Title dan Multimedia.
+To provide specific information about the bibliographic item. labels can be defined in the Master File menu. By default Senayan has three labels: 
+- New Title, 
+- Favorite Title, and 
+- Multimedia.
