@@ -1,10 +1,8 @@
-####Daftar Koleksi Yang Sedang Dipinjam
+#### Checkout items
 <hr>
-Menu ini memberikan informasi tentang koleksi yang sedang dipinjam.
-Dalam menu ini dilengkapi juga dengan fasilitas pencarian dengan pendekatan item dan judul bibliografi.
-Informasi yang ada dalam menu ini adalah
-- Item Code,
-- Member ID peminjam,
-- Title,
-- Loan Date (tanggal pinjam),
-- Due Date (tanggal kembali).
+This menu provides information about the item being borrowed. This menu is also equipped with a search facility to find bibliographic items and titles. The information contained in this menu is: 
+- Item Code, 
+- Member ID Borrower, 
+- Title, 
+- Loan Date (when lent), 
+- Due Date (date of return).

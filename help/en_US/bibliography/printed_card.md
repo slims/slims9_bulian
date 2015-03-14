@@ -1,4 +1,3 @@
-####Cetak Kartu Katalog
+#### Catalog Printing
 <hr>
-Fitur ini dapat digunakan untuk mencetak kartu katalog.
-Cara mencetak hampir sama dengan cara mencetak barcode atau label buku.
+This feature can be used to print a card catalog (author, subject, title). Printing is similar to printing a barcode or book label.

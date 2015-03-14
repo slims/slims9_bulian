@@ -1,4 +1,4 @@
-####Master File
+#### Master File / GMD
 <hr>
-Dalam modul Master File kita dapat memasukkan data yang dapat digunakan sebagai master dalam entry data bibliografi. Data-data yang dapat kita definisikan dalam modul Master File ini adalah:
-- GMD General Material Designation – Bentuk fisik koleksi atau media fisik tempat penyimpanan informasi.
+In this module we can enter the master file data that can be used as a master in bibliographic data entry. 
+- GMD General Material Designation – The physical form of the media item 

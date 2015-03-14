@@ -1,7 +1,3 @@
-####Master File / Subyek
+####Master File / Subject
 <hr>
-Gunakan fitur ini untuk mengisi
-- daftar tajuk subyek,
-- kode klasifikasi,
-- tipe subjek, dan
-- authority files.
+the topic/subject, classification code, subject type, and authority files source.
