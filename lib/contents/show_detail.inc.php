@@ -82,26 +82,25 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 		$sql_op = new simbio_dbop($dbs);
 		$insert = $sql_op->insert('comment', $data);
 		if ($insert) {
-			utility::jsAlert(__('Thank you for your comment.'));
+		  utility::jsAlert(__('Thank you for your comment.'));
 		} else { utility::jsAlert(__('FAILED to strore you comment. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
 	}
 
   if (isset($_GET['keywords'])) {
-		$keywords = trim($_GET['keywords']);
-		$keywords_array = explode(' ', $keywords);
+    $keywords = trim($_GET['keywords']);
+    $keywords_array = explode(' ', $keywords);
     $searched_words_js_array = '[';
     foreach($keywords_array as $word) {
-		  $word = str_replace(array('"', ',', "'", '-'), '', $word);
+      $word = str_replace(array('"', ',', "'", '-'), '', $word);
       $searched_words_js_array .= "'$word',";
     }
     $searched_words_js_array = substr_replace($searched_words_js_array, '', -1);
     $searched_words_js_array .= ']';
   }
 
-  include $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/detail_template.php';
   // create detail object
   $detail = new detail($dbs, $detail_id);
-  $detail->setListTemplate($detail_template);
+  $detail->setTemplate($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/detail_template.php');
   // set the content for info box
   $info = '<strong>'.strtoupper(__('Record Detail')).'</strong><hr />';
   if (!defined('LIGHTWEIGHT_MODE')) {

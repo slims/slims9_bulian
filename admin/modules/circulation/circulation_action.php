@@ -196,7 +196,7 @@ if (isset($_POST['tempLoanID'])) {
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else {
-        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $_SESSION['realname'].' insert new loan ('.$_POST['tempLoanID'].') for member ('.$_SESSION['memberID'].')');
+        utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' insert new loan ('.$_POST['tempLoanID'].') for member ('.$_SESSION['memberID'].')');
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';

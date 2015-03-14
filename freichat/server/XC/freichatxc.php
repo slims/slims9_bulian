@@ -1,1 +1,0 @@
-<?phpfunction xclog($str){file_put_contents("xclog.txt",file_get_contents("xclog.txt")."\n".$str);}require "../../arg.php";if($driver=='Joomla'){require "joomla.php";}?>

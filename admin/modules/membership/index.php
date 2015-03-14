@@ -211,9 +211,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')');
                 if ($sysconf['webcam'] == 'html5') {
-                  echo '<script type="text/javascript">parent.location.reload();</script>';
+                  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 } else {
-                  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+                  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 }
             } else { utility::jsAlert(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
@@ -520,7 +520,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             .'</div>';
             if ($rec_d['member_image']) {
                 if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
-                    echo '<div id="memberImage" style="float: right;"><img src="../lib/phpthumb/phpThumb.php?src=../../images/persons/'.urlencode($rec_d['member_image']).'&w=53&timestamp='.date('his').'" style="border: 1px solid #999999" /></div>';
+                    echo '<div id="memberImage" style="float: right;"><img src="../images/persons/'.urlencode($rec_d['member_image']).'" style="border: 1px solid #999999" /></div>';
                 }
             }
         echo '</div>'."\n";

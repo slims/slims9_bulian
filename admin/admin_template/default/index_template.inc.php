@@ -1,6 +1,6 @@
 <?php
   /**
-  * Custom Menu Layout
+  * Akasia Template
   *
   * Copyright (C) 2015 Eddy Subratha (eddy.subratha@gmail.com)
   *
@@ -80,7 +80,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
         <div class="s-user">
           <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
-              <img src="<?php echo SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($_SESSION['upict']); ?>&amp;width=100" alt="Photo <?php echo $_SESSION['realname']?>">
+              <img src="<?php echo SWB.'images/persons/'.urlencode($_SESSION['upict']); ?>" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
           </div>
           <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>
@@ -122,7 +122,16 @@ By Eddy Subratha (eddy.subratha@gmail.com)
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
   <script>
-
+    
+    var toggleMainMenu = function() {
+      $('.per_title').bind('click',function(){
+        $('.s-content').toggleClass('active');
+        $('.s-sidebar').toggleClass('active');
+        $('.s-user-frame').toggleClass('active');
+        $('.s-menu').toggleClass('active');
+      });      
+    }
+    
     //trigger to hide the current sidebar
     $('.s-current-child').click(function(){
       $('.s-current').trigger('click');
@@ -159,11 +168,18 @@ By Eddy Subratha (eddy.subratha@gmail.com)
         alert('Help content will show according to available menu.')
       }
     });
-    
+
     $('.s-user-photo').bind('click', function(e) {
       e.preventDefault();
       $('a.change-user-profiles').trigger('click');
     });
+    
+    // toggle main menu event register
+    toggleMainMenu();
+    $('body').on('simbioAJAXloaded', function(evt) {
+      toggleMainMenu();
+    })
+
   </script>
   <?php if (isset($chat)) { echo $chat; } ?>
 </body>

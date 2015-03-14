@@ -22,7 +22,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
-::-webkit-scrollbar { 
+::-webkit-scrollbar {
 	width:8px;
 	height:6px;
 }
@@ -67,11 +67,17 @@ a:hover {
 	width: 50px;
 	height: 100%;
 }
+
+.s-sidebar.active {
+	width: 47px;
+}
+
 @media (min-width: 1044px) {
 	.s-sidebar {
 		width: 240px;
 	}
 }
+
 .s-menu {
 	box-shadow: inset -10px 10px 10px rgba(0, 0, 0, 0.1);
 	overflow: auto;
@@ -81,6 +87,12 @@ a:hover {
 	width: 50px;
 	height: 100%;
 }
+
+.s-menu.active {
+	width: 47px;
+	height: 100%;
+}
+
 @media (min-width: 768px) {
 	.s-menu {
 		width: 100%;
@@ -113,6 +125,12 @@ a:hover {
 		width: 275px;
 		left: 240px;
 	}
+
+	.s-menu.active li div ul {
+		width: 270px;
+		left: 47px;
+	}
+
 }
 .s-menu-hide {
 	position: absolute;
@@ -232,6 +250,7 @@ a:hover {
 		padding: 10px 5px 2px 5px
 	}
 }
+.s-user-frame.active,
 .s-user-frame {
 	background: -moz-linear-gradient(45deg, #4AB1DD 10%, #861FA4 80%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4AB1DD), color-stop(80%, #861FA4));
@@ -295,7 +314,6 @@ a:hover {
 @media (min-width: 768px) {
 	.s-user-frame {
 		border: solid 2px #31353E;
-		;
 		padding: 6px;
 		width: 79px;
 		height: 79px;
@@ -344,6 +362,7 @@ a:hover {
 
 /*-----------*/
 
+.s-content.active,
 .s-content {
 	background-color: #f2f2f2;
 	margin-left: 50px;
@@ -442,10 +461,15 @@ a:hover {
 	letter-spacing: 1px;
 	font-size: 14px;
 }
+.per_title:hover h2:before {
+	color: #000;
+	cursor: pointer;
+}
+
 @media (min-width: 600px) {
 	.per_title h2 {
 		font-size: 20px;
-	}	
+	}
 }
 .sub_section {
 	padding: 15px 0px 10px 10px;
@@ -476,7 +500,7 @@ a:hover {
 	background-color: #fff;
 }
 /*btn custom*/
-.popUpSubmit, 
+.popUpSubmit,
 #addReserve,
 input[type="submit"],
 input[name="moreFilter"],
@@ -965,7 +989,7 @@ iframe {
 #pageContent > #mainForm {
 	padding: 0px;
 	background: #fff;
-	margin:-15px -10px; 
+	margin:-15px -10px;
 }
 #pageContent table {
 
@@ -1145,6 +1169,12 @@ tr.dataListHeader > td > a {
 	padding-bottom: 17px;
 	vertical-align: middle;
 }
+
+.s-content.active .per_title.active h2:before {
+	content: "\f00d";
+	font-family: 'FontAwesome';
+}
+
 .s-footer-about {
 	float: right;
 	display: inline-block;
@@ -1165,8 +1195,8 @@ tr.dataListHeader > td > a {
 }
 .statisticIcon .infoBox {
 	background-color: transparent !important;
-	padding:0 !important;	
-} 
+	padding:0 !important;
+}
 .action_button {
 	line-height: 24px;
 	background-color: #4AC49B;
@@ -1774,7 +1804,7 @@ img[src="../images/labels/label-new.png"] {
 	content: url('../img/bookmark.png') !important;
 	width:22px;
 	padding:0 !important;
-	margin:0 !important; 
+	margin:0 !important;
 }
 img[src="../images/labels/label-favorite.png"] {
 	content: url('../img/heart.png') !important;
@@ -1797,17 +1827,17 @@ img[src="../images/labels/label-multimedia.png"] {
 }
 div.label-new {
 	background: transparent url('../img/bookmark.png') 10px 33px no-repeat !important;
-	width:22px;	
+	width:22px;
 	background-size: 10% !important;
 }
 div.label-favorite {
 	background: transparent url('../img/heart.png') 10px 33px no-repeat !important;
-	width:22px;	
+	width:22px;
 	background-size: 10% !important;
 }
 div.label-multimedia {
 	background: transparent url('../img/play.png') 10px 33px no-repeat !important;
-	width:22px;	
+	width:22px;
 	background-size: 10% !important;
 }
 div.label-new,
@@ -1851,7 +1881,7 @@ contentdisk
 @media (min-width: 600px) {
 	.contentDesc {
 	  overflow: hidden;
-	}	
+	}
 }
 .contentDesc .container-fluid {
 	margin:0;
@@ -1971,7 +2001,7 @@ icon
 	background-image: none;
 }
 table {
-	overflow-x:auto; 
+	overflow-x:auto;
 }
 .left{
 	-webkit-transition-duration: 0.25s;
@@ -1996,7 +2026,7 @@ table {
 	position: static;
 }
 .right.active{
-	width:75%;	
+	width:75%;
 	position: relative;
 }
 .s-help {
@@ -2083,7 +2113,7 @@ table {
 }
 .s-chart-left {
 	display: inline-block;
-	width: 74%;	
+	width: 74%;
 	background-color: #fff;
 	margin: 0px 0px 0px 10px;
 	padding: 15px;
@@ -2092,7 +2122,7 @@ table {
 .s-chart-right {
 	float: right;
 	display: inline-block;
-	width: 25%;	
+	width: 25%;
 	margin: 0px 10px 0px 0px;
 }
 
