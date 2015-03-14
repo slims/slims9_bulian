@@ -2173,3 +2173,7 @@ table {
 .panel-body ul>li {
 	line-height: 30px;
 }
+.btn-full, input[type="submit"].btn-full {
+	width: 100%;
+	text-align: center;
+}

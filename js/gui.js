@@ -328,8 +328,8 @@ $('document').ready(function() {
   });
 
   // change all search form submit behaviour to AJAX
-  container.on('submit', '.menuBox form:not(.notAJAX)', function(evt) {
-		var ajaxContainer = $('#mainContent,#pageContent');
+  container.on('submit', '.menuBox form:not(.notAJAX), .submitViaAJAX', function(evt) {
+    var ajaxContainer = $('#mainContent,#pageContent');
     var theForm = $(this);
     if (theForm.attr('target')) {
       theForm[0].submit();

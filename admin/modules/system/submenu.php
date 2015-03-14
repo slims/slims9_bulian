@@ -36,6 +36,7 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('Librarian & System Users'), MWB.'system/app_user.php', __('Manage Application User or Library Staff'));
     $menu[] = array(__('User Group'), MWB.'system/user_group.php', __('Manage Group of Application User'));
 }
+$menu[] = array(__('Shortcut Setting'), MWB.'system/shortcut.php', __('Shortcut Setting'));
 $menu[] = array(__('Holiday Setting'), MWB.'system/holiday.php', __('Configure Holiday Setting'));
 $menu[] = array(__('Barcode Generator'), MWB.'system/barcode_generator.php', __('Barcode Generator'));
 $menu[] = array(__('System Log'), MWB.'system/sys_log.php', __('View Application System Log'));
