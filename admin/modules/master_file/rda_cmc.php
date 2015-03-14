@@ -218,7 +218,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
        $keywords = $dbs->escape_string($_GET['keywords']);
-       $datagrid->setSQLCriteria("g.'.$type.'_type LIKE '%$keywords%' OR g.code LIKE '%$keywords%'");
+       $datagrid->setSQLCriteria("g.".$type."_type LIKE '%$keywords%' OR g.code LIKE '%$keywords%'");
     }
 
     // set table and table header attributes
