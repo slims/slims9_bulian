@@ -1,0 +1,3 @@
+### Daftar judul eksemplar
+<hr>
+Berisi laporan/daftar item yang dimikili oleh perpustakaan. Dalam menu ini terdapat fasilitas untuk mengurutkan dan mencetak. Pada menu ini, dapat pula dilakukan filtering dengan menuliskan Title/ISBN, atau dengan menampilkan fasilitas filter lainnya. Caranya dengan klik Show More Filter Options. Fasilitas filter yang tersedia adalah: Title/ISBN, Item Code, Classification, Collection Type, Item Status, Location. Fasilitas filter ini dapat di sembunyikan dengan klik Hide Filter Option
