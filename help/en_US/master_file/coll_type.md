@@ -1,4 +1,3 @@
-####Master File / Tipe Koleksi
+#### Master File / Collection Type
 <hr>
-Gunakan fitur ini untuk mengisi tipe koleksi yang dimiliki perpustakaan,
-Contoh: Textbook, Reference, Audio Visual, Skripsi, Thesis, Laporan
+The type of item collections owned by the library, for example: Textbook, Reference

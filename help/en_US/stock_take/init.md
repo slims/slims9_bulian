@@ -1,16 +1,11 @@
-####Inisialisasi
+#### Initialize
 <hr>
-Menu Initialize digunakan untuk memulai stock opname. Pada menu ini, terdapat sub-sub menu:
-- Stock Take Name Adalah nama dari kegiatan stock opname yang dilakukan. Sesuaikan namanya dengan keinginan Anda. Sub menu ini HARUS diisi.
-- GMD (Lihat panduan modul Master File --> GMD (di bawah Authority Files)).
-- Collection Type (Lihat panduan modul Master File --> Collection Type (di bawah Lookup Files)).
-- Location (Lihat panduan modul Master File --> Location (di bawah Authority Files)).
-- Site/Placement Mengacu ke informasi item pada modul Bibliography.
-- Classification Mengacu ke sub menu class pada modul Bibliography. Untuk penulisan class menggunakan wildcard (*), misal, apabila kita ingin melakukan stock opname dengan kisaran class 100 s.d.300, cukup masukkan 1* to 3*. Apabila kisaran class yang kita lakukan stock opname hanya pada class 100, masukkan 1*.
+The Initialize menu is used to start stock-taking. In this menu, there are the following sub-menus:
+- StockTake Name: the name of the stock-taking activities undertaken. Customize the name to your liking. This field MUST be filled.
+- GMD: (See the module guide Master File -> GMD (below Authority Files)). 
+- Collection Type: (See the module guide Master File -> Collection Type (under Lookup Files)).
+- Location: (See the module guide Master File -> Location (below Authority Files)).
+- Shelf Location: referring to the information item in the Bibliography module.
+- Classification: Referring to the classification field in the Bibliography module. For defining a classification range use the wildcard (*), For example, if we want to do stock-taking of classifications with a range of 100 through to 300, just enter 1* to 3*. If the range of classifications we stock-take is in the 100's, enter 1 *.
 
-Setalah proses Initialize dilakukan, maka menu current stoke take dan stock take report akan berfungsi sebagai menu untuk melakukan kegiatan stock take ditambah dengan adanya menu menu tambahan yang akan digunakan untuk melakukan kegiatan stock take,
-yaitu menu:
-- Finish Stock Take,
-- Current Lost Items,
-- Stock Take Log,
-- Resyncronize.
+After the Initialization is done, the Current StockTake menu and StockTake Report will serve as menus for stock-take activities, coupled with the navigation menu to be used to conduct a stock-take along with the StockTake Finish menu, Current Lost Items, StockTake Log, and Resynchronise.

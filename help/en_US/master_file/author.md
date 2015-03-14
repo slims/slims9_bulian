@@ -1,3 +1,3 @@
-####Master File / Pengarang
+#### Master File / Author
 <hr>
-Gunakan fitur ini untuk mengentri daftar nama pengarang dan jenis pengarang (pribadi atau kelompok)
+Author's name and the type of author (individual or group)

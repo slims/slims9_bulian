@@ -1,4 +1,3 @@
-####Master File / Kala Terbit
+####Master File / Frequency
 <hr>
-Gunakan fitur ini untuk mengisi daftar kala/frekwensi terbit terbitan berseri.
-Contoh : Mingguan, Bulanan, Dua Mingguan, Harian
+The language used by the document. Eg: Indonesian, English, French, Javanese etc..

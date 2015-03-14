@@ -1,3 +1,3 @@
-### Eksemplar hilang saat ini
+### Current Lost Items
 <hr>
-Isi menu ini merupakan daftar dari koleksi yang dianggap hilang pada saat stock opname selain koleksi yang dipinjam.
+The contents of this menu is a list of items that are considered missing at the time of stock-taking, in addition to items on loan.

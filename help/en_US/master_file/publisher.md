@@ -1,3 +1,3 @@
-####Master File / Penerbit
+####Master File / Publisher
 <hr>
-Gunakan fitur ini untuk mengentri daftar nama penerbit.
+Type the name of Publisher here 

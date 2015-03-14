@@ -1,3 +1,3 @@
-### Resinkronisasi
+### Resynchronize
 <hr>
-Silakan melakukan sinkronisasi data bibliografi yang diedit pada saat berlangsung kegiatan stock take dengan data bibliografi yang ada pada modul stock take. Tujuannya adalah untuk menyamakan data jika ada proses edit data ketika inventarisasi telah berlangsung. Klik tombol Resyncronize begitu perubahan data bibliografi sudah dilakukan.
+This menu is used to synchronize newly edited bibliographic data during ongoing activities to take stock of existing bibliographic data using the stock-take module. The goal is that when we do editing of bibliographic data while doing the stock-take, in order to produce a change in the bibliographic data contained in the stock-take module , it is necessary to do resynchronization of data. Click the button, and that Resyncronizes bibliographic data

@@ -1,3 +1,3 @@
-### Selesaikan inventarisasi
+### Finish StockTake
 <hr>
-Klik tombol "selesaikan inventarisasi" apabila anda telah selesai melakukan stock opname. Dalam fitur ini terdapat sub menu Purge Lost Item. Apabila anda memberikan tanda cek pada Yes, maka data item pada bibliography yang berada dalam Current Lost Item akan ditandai dengan “Missing”.
+Click on this link if you have finished stock-taking. In the menu, there is a field labelled Purge Lost Item. If we give a checkmark on Yes, the data items in the collection that are in Current Lost items will be marked as "Missing".
