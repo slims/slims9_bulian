@@ -1,0 +1,3 @@
+### Daftar judul
+<hr>
+Berisi laporan/daftar judul yang dimikili oleh perpustakaan. Dalam menu ini terdapat fasilitas untuk mengurutkan dan mencetak, serta memfilter koleksi yang diinginkan. Pada menu ini, dapat pula dilakukan filtering dengan menuliskan Title/ISBN, atau dengan menampilkan fasilitas filter lainnya. Caranya dengan klik Show More Filter Options. Fasilitas filter yang ada adalah: Title/ISBN, Author, Classification, GMD, Langage dan Location, serta dapat ditentukan jumlah tampilan tiap halaman.

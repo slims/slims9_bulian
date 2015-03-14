@@ -69,6 +69,11 @@ if (!defined('INDEX_AUTH')) {
   <link type="text/css" rel="stylesheet" media="all" href="<?php echo SWB; ?>template/default/css/tango/skin.css"/>
   <?php echo $metadata; ?>
 
+  <!-- Script
+  ============================================= -->
+  <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
+  <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
+
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -79,11 +84,11 @@ if (!defined('INDEX_AUTH')) {
 <header class="s-header container" role="header">
   <div class="row">
     <div class="col-lg-6">
-      <div class="s-brand">
+      <a href="index.php" class="s-brand">
         <img class="s-logo animated fadeInUp delay1" src="<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png" alt="" />
         <h1 class="animated fadeInUp delay2"><?php echo $sysconf['library_name']; ?></h1>
         <div class="s-brand-tagline animated fadeInUp delay3"><?php echo $sysconf['library_subname']; ?></div>
-      </div>
+      </a>
     </div>
     <div class="col-6-lg">
       <div class="s-menu animated fadeInUp delay4">
@@ -100,11 +105,11 @@ if (!defined('INDEX_AUTH')) {
   <h1>Menu</h1>
   <ul>
     <li><a href="index.php" rel="tab"><?php echo __('Home'); ?></a></li>
-    <li><a href="index.php?p=libinfo"  rel="tab"><?php echo __('Library Information'); ?></a></li>
-    <li><a href="index.php?p=member"  rel="tab"><?php echo __('Member Area'); ?></a></li>
-    <li><a href="index.php?p=librarian"  rel="tab"><?php echo __('Librarian'); ?></a></li>
-    <li><a href="index.php?p=help"  rel="tab"><?php echo __('Help on Search'); ?></a></li>
-    <li><a href="index.php?p=login"  rel="tab"><?php echo __('Librarian LOGIN'); ?></a></li>
+    <li><a href="index.php?p=libinfo" rel="tab"><?php echo __('Library Information'); ?></a></li>
+    <li><a href="index.php?p=member" rel="tab"><?php echo __('Member Area'); ?></a></li>
+    <li><a href="index.php?p=librarian" rel="tab"><?php echo __('Librarian'); ?></a></li>
+    <li><a href="index.php?p=help" rel="tab"><?php echo __('Help on Search'); ?></a></li>
+    <li><a href="index.php?p=login" rel="tab"><?php echo __('Librarian LOGIN'); ?></a></li>
   </ul>
   <div class="s-menu-info">
     <p>Thank you for using SLiMS</p>
@@ -116,28 +121,79 @@ if (!defined('INDEX_AUTH')) {
 ============================================= -->
 <?php if(isset($_GET['keywords']) || isset($_GET['p'])): ?>
 
-  <!-- Search
-  ============================================= -->
   <main  id="content" class="s-main-page" role="main">
 
-        <div class="s-main-search animated fadeIn">
-          <form action="index.html" method="post" autocomplete="off">
-            <h1 class="animated fadeInUp delay5">SEARCHING</h1>
-            <p class="s-search-info animated fadeInUp delay6">you can start it by typing one or more keywords for title, author or subject</p>
-            <input type="text" class="s-search animated fadeInUp delay7" name="name" value="">
-            <button name="button" class="s-btn animated fadeInUp delay8">Search</button>
+        <!-- Search on Front Page
+        ============================================= -->
+        <div class="s-main-search animated fadeInUp delay1">
+          <h1 class="s-main-title animated fadeInUp delay2">
+          <?php
+              if(!isset($_GET['p'])) :
+                echo __('Collections');
+              elseif ($_GET['p'] == 'show_detail') :
+                echo __("Record Detail");
+              elseif ($_GET['p'] == 'member') :
+                echo __("Member Area");
+              else :
+                echo $page_title;
+              endif;
+          ?>
+          </h1>
+          <form action="index.php" method="get" autocomplete="off">
+            <h1 class="animated fadeInUp delay2">SEARCHING</h1>
+            <p class="s-search-info animated fadeInUp delay3">you can start it by typing one or more keywords for title, author or subject</p>
+            <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4">Search</button>
           </form>
         </div>
 
-        <div class="s-main-content container">
+        <!-- Main
+        ============================================= -->
+        <div class="s-main-content container animated fadeInUp delay2">
           <div class="row">
             <div class="col-lg-8">
               <?php echo $main_content; ?>
             </div>
             <div class="col-lg-4">
-            <h1>Information</h1>
-            <hr/>
-            <p>Akses Katalog Publik Daring - Gunakan fasilitas pencarian untuk mempercepat penemuan data katalog</p>
+
+              <!--// If Member Logged //-->
+              <?php if (utility::isMemberLogin()) { ?>
+                  <h2><?php echo __('Information'); ?></h2>
+                  <hr/>
+                <p>
+                  <?php echo $header_info; ?>
+                </p>
+              </div>
+              <?php } else { ?>
+                  <h2><?php echo __('Information'); ?></h2>
+                  <hr/>
+                  <p><?php echo $info; ?></p>
+              <?php } ?>
+              <!--// End Member Logged //-->
+              <br/>
+
+              <!--// Show if clustering search is enabled //-->
+              <?php if(!isset($_GET['p'])) { ?>
+              <?php if ($sysconf['enable_search_clustering']) { ?>
+                  <h2><?php echo __('Search Cluster'); ?></h2>
+                  <hr/>
+                  <div id="search-cluster"><div class="cluster-loading"><?php echo __('Generating search cluster...');  ?></div></div>
+                  <script type="text/javascript">
+                  $('document').ready( function() {
+                    $.ajax({
+                      url: 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
+                      type: 'GET',
+                      success: function(data, status, jqXHR) {
+                        $('#search-cluster').html(data);
+                      }
+                    });
+                  });
+                  </script>
+              </div>
+              <?php } ?>
+              <!--// End Show if clustering search is enabled //-->
+              <?php } ?>
+
             </div>
           </div>
         </div>
@@ -145,21 +201,25 @@ if (!defined('INDEX_AUTH')) {
   </main>
 
 <?php else: ?>
-  <!-- Result
-  ============================================= -->
+<!-- Result
+============================================= -->
 
   <main id="content" class="s-main" role="main">
 
-        <div class="s-main-content animated fadeInUp delay1">
+        <!-- Search on Result Page
+        ============================================= -->
+        <div class="s-main-search animated fadeInUp delay1">
           <form action="index.php" method="get" autocomplete="off">
             <h1 class="animated fadeInUp delay2">SEARCHING</h1>
             <p class="s-search-info animated fadeInUp delay3">you can start it by typing one or more keywords for title, author or subject</p>
             <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
-            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay5">Search</button>
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4">Search</button>
           </form>
         </div>
 
-        <!-- Featured Link -->
+        <!-- Feature
+        ============================================= -->
+
         <a href="#" class="s-feature animated fadeInUp delay6">see also our featured collections
           <div class="s-menu-toggle animated fadeInUp delay7"><span></span></div>
         </a>
@@ -188,7 +248,7 @@ if (!defined('INDEX_AUTH')) {
   </div>
 </footer>
 
-<!-- Background Video
+<!-- Background
 ============================================= -->
 <div class="s-video animated fadeIn">
   <video loop autoplay muted>
@@ -196,12 +256,6 @@ if (!defined('INDEX_AUTH')) {
     Your browser does not support the video tag.
   </video>
 </div>
-
-<!-- Script
-============================================= -->
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
-
 
 </body>
 </html>

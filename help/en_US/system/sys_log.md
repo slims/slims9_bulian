@@ -1,4 +1,5 @@
-### Catatan sistem
-<hr>
-Pada menu ini anda dapat melihat rekaman/log yang terjadi selama SLiMS digunakan. Rekaman yang muncul adalah Time (waktu), Location (lokasi -nama modul-), dan Message (keterangan). Message yang muncul dalam System Logs ini meliputi siapa (User/Administrator), melakukan apa dan dari mana.
-Anda juga dapat menyimpan log melalui SAVE LOGS TO FILES. Proses ini akan menyimpan log yang, dan kemudian kita bersihkan layar dengan klik CLEAR LOGS.
+###System Log
+
+This is a menu to view the recorded processes conducted by the Senayan system. Records that are produced list Time, Location (module name), and Message (description). Messages that appear in the System Logs include Who (User/Administrator), conducted what ,and where.
+
+When the Senayan application has been used, it will automatically log the Senayan work and the log size and load will also increase. Therefore, the system log menus, also contains the facility to SAVE LOGS TO FILES. This process will save the existing log, and then we clean the screen with a click on CLEAR LOGS.
