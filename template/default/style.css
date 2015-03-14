@@ -97,7 +97,15 @@ a:hover {
  ================================ */
 .s-brand {
 	text-transform: uppercase;
+  color: #fff;
 }
+
+.s-brand:visited,
+.s-brand:active,
+.s-brand:hover {
+  color: #fff;
+}
+
 
 .s-brand h1 {
 	font-size: 20pt;
@@ -112,7 +120,8 @@ a:hover {
 
 .s-logo {
   float: left;
-  padding-right: 30px;
+  padding-right: 10px;
+  margin-top:-5px;
 }
 
 /* Menu
@@ -220,7 +229,7 @@ a:hover {
   font-weight: lighter !important;
   font-size: 20pt;
   text-transform: uppercase;
-  border-bottom: double 3px #f2f2f2;
+  border-bottom: double 3px #d5d5d5;
   padding-bottom: 30px;
   padding-top:0;
 }
@@ -261,7 +270,7 @@ a:hover {
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 4px;
-  border-top: double 3px #f2f2f2;
+  border-top: double 3px #d5d5d5;
   padding-top: 10px;
   color: #000;
 }
@@ -388,10 +397,11 @@ a:hover {
 }
 
 .s-search {
+  border-radius: 50px 0 0 50px;
   border: none;
   background-color: rgba(255,255,255,0.15);
   width: 500px;
-  padding: 14px;
+  padding: 14px 14px 14px 28px;
   font-size: 15pt;
   -webkit-transition: background-color 1s ease;
   -moz-transition: background-color 1s ease;
@@ -406,16 +416,14 @@ a:hover {
   box-shadow:none;
 }
 
+.s-search:focus,
 .s-search:not(:empty) {
-  background-color: rgba(255,255,255,0.50);
-}
-
-.s-search:focus {
-  background-color: rgba(255,255,255,0.50);
+  background-color: rgba(255,255,255,.5);
 }
 
 .s-btn {
   border: none;
+  border-radius: 0 50px 50px 0;
   background-color: #fff;
   width: 125px;
   margin-left:-5px;
@@ -476,12 +484,20 @@ a:hover {
   position: relative;
   margin-top: 300px;
   min-height: 100%;
+  width:100%;
 }
 
 .s-main-page .s-main-search {
   position: absolute;
-  top: -100px;
+  top: -95px;
   right: 40px;
+}
+
+.s-main-page .s-main-title {
+  position: absolute;
+  left: -565px;
+  color: #fff;
+  top: -12px;
 }
 
 .s-main-page  form  h1,
@@ -505,4 +521,87 @@ a:hover {
 
 .share-buttons li {
   display: inline;
+}
+
+/* Share to Media Social Icon
+ ================================ */
+#loginForm {
+  padding-top: 100px;
+}
+
+#loginForm div {
+  display: inline
+}
+
+#loginForm .heading1,
+#loginForm .homeButton {
+  display: none;
+}
+
+#loginForm input[type="password"],
+#loginForm #userName {
+  border: none;
+  background-color: rgba(255,255,255,1);
+  width: 250px;
+  padding: 10px 10px 10px 20px;
+  font-size: 15pt;
+  -webkit-transition: background-color 1s ease;
+  -moz-transition: background-color 1s ease;
+  -o-transition: background-color 1s ease;
+  -ms-transition: background-color 1s ease;
+  transition: background-color 1s ease;
+}
+
+#loginForm #userName {
+  border-radius: 50px 0 0 50px;
+}
+
+#loginForm #userName:before {
+  font-family: 'FontAwesome';
+  content: '\f007';
+  color: #000;
+  width:30px;
+  height:30px;
+}
+
+.loginButton {
+  background-color: #000;
+  padding: 14px;
+  border: none;
+  width:150px;
+  border-radius: 0 50px 50px 0;
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: rgba(255,255,255,1);
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+input:-moz-autofill {
+    -moz-text-fill-color: rgba(255,255,255,1);
+    -moz-box-shadow: 0 0 0px 1000px white inset;
+}
+input:-o-autofill {
+    -o-text-fill-color: rgba(255,255,255,1);
+    -o-box-shadow: 0 0 0px 1000px white inset;
+}
+input:-khtml-autofill {
+    -khtml-text-fill-color: rgba(255,255,255,1);
+    -khtml-box-shadow: 0 0 0px 1000px white inset;
+}
+
+input:focus:-webkit-autofill {
+    -webkit-text-fill-color: rgba(255,255,255,1);
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+input:focus:-moz-autofill {
+    -moz-text-fill-color: rgba(255,255,255,1);
+    -moz-box-shadow: 0 0 0px 1000px white inset;
+}
+input:focus:-o-autofill {
+    -o-text-fill-color: rgba(255,255,255,1);
+    -o-box-shadow: 0 0 0px 1000px white inset;
+}
+input:focus:-khtml-autofill {
+    -khtml-text-fill-color: rgba(255,255,255,1);
+    -khtml-box-shadow: 0 0 0px 1000px white inset;
 }
