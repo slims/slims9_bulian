@@ -60,8 +60,10 @@ class detail
             $this->output_format = trim($str_output_format);
         } else { $this->output_format = $str_output_format; }
         $this->db = $dbs;
+        $this->detail_id = $int_detail_id;
         $this->biblio = new Biblio($this->db, $int_detail_id);
         $this->record_detail = $this->biblio->detail();
+        $this->record_title = $this->record_detail['title'];
     }
 
     
