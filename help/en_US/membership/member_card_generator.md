@@ -1,10 +1,9 @@
-####Member Card
-<hr>
-Menu ini digunakan untuk mencetak kartu anggota. Cara mencetaknya sama dengan cara mencetak label atau barcode.
-Informasi yang ada dalam kartu anggota ini adalah:
-- No Anggota,
-- Nama,
-- Tipe Anggota,
-- Barcode,
-- Foto (Jika ada) dan
-- Identitas perpustakaan.
+####Member Card Printing
+
+This menu is used to print the member card. Printing method is similar to barcode label printing. The information contained in this membership card is: 
+- ID, 
+- Name, 
+- Member Type, 
+- Barcode, 
+- Photo (if any), and 
+- Name of the Library

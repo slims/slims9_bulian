@@ -1,5 +1,12 @@
-### Pengguna dan Pustakawan Sistem
-<hr>
-Merupakan fasilitas untuk menentukan user yang dapat mengakses sistem sesuai dengak haknya masing-masing. User ini nantinya dapat melakukan login sesuai dengan username dan passwordnya masing-masing. Dalam menu ini terdapat beberapa fasilitas: Add New User (menambah user), Users List (melihat daftar user), Search (mencari user), Edit dan delete user. Untuk menambah user baru, klik Add New User, kemudian isikan Login Username, Real Name, Groups, Password. Selain itu, adapula fasilitas untuk mengunggah foto pustakawan dan alamat media sosial pustakawan.
+###System Users
 
-Profil dari masing-masing staf yang diset dengan tipe "Pustakawan" akan ditampilkan pada halaman OPAC.
+A facility to determine which users can access the system, according to their permissions. These users will be able to perform a login according to their username and password respectively. This menu contains the options:
+
+- Add New User (adding users), 
+- Users List (list of users), 
+- Search (search for a user), 
+- Edit and Delete user. 
+
+Within user information, user can also add their internet credentials, e.g. Facebook profile, blog or websites, etc.
+
+To add a new user, click Add New User, and then fill in the Login Username, Real Name, Groups ( that they will belong to), and Password.

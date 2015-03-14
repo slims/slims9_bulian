@@ -1,42 +1,32 @@
-####Lihat Daftar Anggota
-<hr>
-Digunakan untuk melihat anggota yang telah terdaftar dalam sistem. Informasi yang ditampilkan adalah
-- Member ID,
-- Member Name,
-- Membership Type,
-- Email,
-- Last update.
+####View Member List
 
-####Tambah Anggota Baru
-<hr>
-Fasilitas untuk menambahkan data anggota baru ke dalam sistem Senayan. Data anggota yang dimasukkan adalah:
-- Member ID (ID Anggota -barcode/RFID-),
-- Member Name (Nama Lengkap Anggota),
-- Register Date (tanggal mendatar),
-- Expiry Date (tanggal kadaluarsa),
-- Institution (nama institusi, nama kantor atau nama organisasi),
-- Membership Type (Tipe Keanggotaan),
-- Gender (Jenis Kelamin),
-- E-mail,
-- Address (Alamat rumah atau kantor),
-- Postal Code (Kode Pos),
-- Phone Number (Nomor Telepon),
-- Fax Number (Nomor Fax),
-- Personal ID Number (Nomor ID Personal seperti no. KTP),
-- Notes (Catatan singkat),
-- dan Upload Photo (File foto anggota).
+This is used to view the members who have registered in the system. Information shown is: 
+- Member ID, 
+- Member Name, 
+- Membership Type, 
+- Email, and 
+- Last update. 
 
-Dalam Expiry date terdapat Auto Set, maksud dari fasilitas ini, jika auto set di check maka tanggal expired anggota akan dihitung berdasar Membership Type. Namun jika di uncheck, maka Expiry date dapat ditentukan secara manual, dengan memilih tanggal Expirednya.
+This section is provided with facilities to DELETE and EDIT.
 
-Pada form ini pula, disediakan fitur Pending Membership. Jika Pending Membership ini di check, maka anggota yang bersangkutan tidak akan dapat melakukan sirkulasi, meskipun masih aktif. Hal ini dapat diterapkan sebagai sanksi kepada anggota yang melanggar peraturan perpustakaan.
+####Add New Member
 
-SLiMS mempunyai fitur yang membantu pustakawan dalam memasukkan data foto anggota. Fitur tersebut adalah fitur untuk mengambil foto anggota dan langsung disimpan dalam aplikasi SLiMS. Fitur tersebut dapat anda temukan ketika mengedit membership atau mengisikan data member baru. Tampilan fitur tersebut adalah seperti di bawah ini:
+This provides the facility to add new members to the data in the Senayan system. Members' information included are: 
+- Member ID (ID -barcode/RFID for the member), 
+- Member Name (Full Name of the member), 
+- Register Date (date horizontal), 
+- Expiry Date (the expiration date), 
+- Institution (name of institution, agency or organization name ), 
+- Membership type (type of membership), 
+- Gender (gender), E-mail, 
+- Address (home or work address), 
+- Postal Code (zip code), 
+- Phone Number (phone number), 
+- Fax Number (fax number), 
+- Personal ID Number (Personal ID number such as identity card number), 
+- Notes (short note), and 
+- Upload a photo (photo file of member). 
 
-Untuk dapat mengambil foto, lakukan langkah sebagai berikut:
+Expiry date contained in the Auto Set, the intent of this facility, is that if the Auto Sett is checked, the member's expiry date will then be calculated based on Membership Type. However, if unchecked, then the Expiry date can be determined manually, by selecting the date of expiry.
 
-- aktifkan fitur ini dengan memastikan value pada $sysconf['webcam'] = true; yang ada di sysconfig.inc.php bernilai true
-- pastikan browser anda support flash player
-- klik load camera
-- klik capture
-- klik use!!!
-- jangan lupa menentukan format file dan ukurannya
+This form also provides the feature Pending Membership. If Pending Membership is checked, then that member will not be able to borrow, although their membership is still active. It can be applied as a sanction against members who break the library rules.
