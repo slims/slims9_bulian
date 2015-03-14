@@ -477,4 +477,3 @@ class circulation extends member
         }
     }
 }
-?>

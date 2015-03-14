@@ -135,7 +135,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     <hr />
     <form name="searchTopic" method="post" style="display: inline;">
     <?php
-    $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
+    $ajax_exp = "ajaxFillSelect('../../AJAX_vocabolary_control.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
     <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" onkeyup="<?php echo $ajax_exp; ?>" />
     <select name="type" style="width: 20%;"><?php
@@ -151,11 +151,34 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     </select>
 </div>
 <div class="popUpSubForm">
-<select name="topicID" id="topicID" size="5" style="width: 100%;"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
+<div class="row" style="overflow-y:scroll; max-height:170px; margin-bottom: 10px; padding-left: 55px;">
+    <ul id="topicID">
+        <li><?php echo __('Type to search for existing topics or to add a new one'); ?></li>
+    </ul>
+</div>
 <?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
 <input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="popUpSubmit btn btn-primary" />
 </div>
 </form>
+<script type="text/javascript">
+
+    $('#topicID').mouseover(function() {
+
+        $('.voc').mouseover(function() {
+            $(this).css({'cursor': 'pointer', 'background': '#b3e5fc'});
+        })
+        .mouseleave(function() {
+            $(this).css('background', 'none');
+        })
+        .click(function() {
+            var vocVal = $(this).text();
+            $('#search_str').val(vocVal);
+            ajaxFillSelect('../../AJAX_vocabolary_control.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', vocVal);
+        });
+
+    });
+
+</script>
 </div>
 
 <?php

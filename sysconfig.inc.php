@@ -136,6 +136,8 @@ require SIMBIO.'simbio.inc.php';
 require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
 // we must include utility library first
 require LIB.'utility.inc.php';
+// include biblio class
+require MDLBS.'bibliography/biblio.inc.php';
 
 // check if we are in mobile browser mode
 if (utility::isMobileBrowser()) { define('LIGHTWEIGHT_MODE', 1); }

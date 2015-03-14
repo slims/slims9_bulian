@@ -1,4 +1,5 @@
 DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
+UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
 
 ALTER TABLE `biblio` ADD `content_type_id` INT NULL DEFAULT NULL AFTER `spec_detail_info`,
   ADD `media_type_id` INT NULL DEFAULT NULL AFTER `content_type_id`,
@@ -153,6 +154,64 @@ INSERT INTO `mst_media_type` (`id`, `media_type`, `code`, `code2`, `input_date`,
 (8, 'video ', 'v ', 'v', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (9, 'other ', 'x ', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (10, 'unspecified ', 'z ', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+--
+-- Table structure for table `mst_relation_term`
+--
+
+CREATE TABLE IF NOT EXISTS `mst_relation_term` (
+`ID` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `mst_relation_term`
+--
+
+INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
+(1, 'U', 'Use'),
+(2, 'UF', 'Use For'),
+(3, 'BT', 'Broader Term'),
+(4, 'NT', 'Narrower Term'),
+(5, 'RT', 'Related Term'),
+(6, 'SA', 'See Also');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mst_voc_ctrl`
+--
+
+CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
+  `topic_id` int(11) NOT NULL,
+`vocabolary_id` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+
+--
+-- Indexes for table `mst_relation_term`
+--
+ALTER TABLE `mst_relation_term`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `mst_voc_ctrl`
+--
+ALTER TABLE `mst_voc_ctrl`
+ ADD PRIMARY KEY (`vocabolary_id`);
+
+--
+-- AUTO_INCREMENT for table `mst_relation_term`
+--
+ALTER TABLE `mst_relation_term`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `mst_voc_ctrl`
+--
+ALTER TABLE `mst_voc_ctrl`
+MODIFY `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
 
 ALTER TABLE `mst_carrier_type`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `media_type` (`carrier_type`), ADD KEY `code` (`code`);

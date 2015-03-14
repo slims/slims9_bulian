@@ -48,6 +48,12 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
+$in_pop_up = false;
+// check if we are inside pop-up window
+if (isset($_GET['inPopUp'])) {
+  $in_pop_up = true;
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $topic = trim(strip_tags($_POST['topic']));
@@ -83,8 +89,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // insert the data
             $insert = $sql_op->insert('mst_topic', $data);
             if ($insert) {
+                $last_biblio_id = $sql_op->insert_id;
                 utility::jsAlert(__('New Subject Data Successfully Saved'));
-                echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'master_file/topic.php\', {method: \'post\', addData: \'itemID='.$last_biblio_id.'&detail=true\'});</script>';
             } else { utility::jsAlert(__('Subject Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         }
@@ -133,7 +140,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	<div class="sub_section">
 	  <div class="btn-group">
 		  <a href="<?php echo MWB; ?>master_file/topic.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Subject List'); ?></a>
-		  <a href="<?php echo MWB; ?>master_file/topic.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Subject'); ?></a>
+		  <a href="<?php echo MWB; ?>master_file/topic.php?action=detail" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Subject'); ?></a>
+          <a href="<?php echo MWB; ?>master_file/cross_reference.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Cross Reference'); ?></a>
 	  </div>
 	  <form name="search" action="<?php echo MWB; ?>master_file/topic.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
 		  <input type="text" name="keywords" size="30" />
@@ -186,6 +194,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addSelectList('subjectType', __('Subject Type'), $subj_type_options, $rec_d['topic_type']);
     // authority list
     $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'style="width: 30%;"');
+    //  vocabolary control
+    if (!$in_pop_up AND $form->edit_mode) {
+    $str_input = '<div class="makeHidden"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?itemID='.$itemID.'" title="'.__('Vocabolary Control').'" height="400">'.__('Add New Vocabolary').'</a></div>';
+    $str_input .= '<iframe name="itemIframe" id="itemIframe" class="borderAll" style="width: 98%; height: 200px;" src="'.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'"></iframe>'."\n";
+    $form->addAnything(__('Vocabolary Control'), $str_input);
+    }
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -196,7 +210,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 } else {
     /* TOPIC LIST */
     // table spec
-    $sql_criteria = 't.topic_id > 1';
+    $sql_criteria = 't.topic_id >= 1';
     if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
         $table_spec = 'mst_topic AS t LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id';
         $sql_criteria = 'bt.biblio_id IS NULL OR bt.topic_id IS NULL';

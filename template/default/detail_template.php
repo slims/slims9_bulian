@@ -89,11 +89,11 @@
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('File Attachment'); ?></label>
-        <div class="controls" itemprop="associatedMedia"><?php print $file_att ?></div>
+        <div class="controls" itemprop="associatedMedia"><?php if ($file_att) : print $file_att; else : print '<p class="bg-danger">'.__('No attachment data').'</p>'; endif; ?></div>
       </div>
       <div class="control-group">
         <label class="control-label key"><?php print __('Availability'); ?></label>
-        <div class="controls"><?php print $availability ?></div>
+        <div class="controls"><?php if ($availability) : print $availability; else : print '<p class="bg-danger">'.__('No copy data').'</p>'; endif; ?></div>
       </div>
     </div>
   </div>
