@@ -423,7 +423,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // member gender
     $gender_chbox[0] = array('1', __('Male'));
     $gender_chbox[1] = array('0', __('Female'));
-    $form->addRadio('gender', __('Gender'), $gender_chbox, !empty($rec_d['gender'])?$rec_d['gender']:'0');
+    $form->addRadio('gender', __('Sex'), $gender_chbox, !empty($rec_d['gender'])?$rec_d['gender']:'0');
     // member address
     $form->addTextField('textarea', 'memberAddress', __('Address'), $rec_d['member_address'], 'rows="2" style="width: 100%;"');
     // member postal
