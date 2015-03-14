@@ -1,0 +1,183 @@
+/*--------------------------------------------------------------------
+
+	Theme Name	: Slims Installer Template
+	Version		: 1.0.0
+	Author		: Eddy Subratha
+	Tags		: senayan, slims, themes, template, meranti
+	Copyrights	: (c) 2012 Eddy Subratha - eddy.subratha{at}gmail.com
+
+---------------------------------------------------------------------*/
+
+/*---------------------------------------------
+http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+----------------------------------------------*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;font-weight:normal;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+/*----------------------------------------------------------------*/
+/* General */
+/*----------------------------------------------------------------*/
+body {
+	color: #999999;
+	font: 12pt/1.5 Calibri, Arial, sans-serif;
+        padding-top:30px;
+        background-color: whitesmoke; 
+}
+
+a {
+  color: #666666;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p {
+	margin-bottom:10px;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-weight:normal;
+}
+
+h1
+{
+	font-size: 150%;
+}
+
+h2
+{
+	font-size: 135%;
+}
+
+h3
+{
+	font-size: 120%;
+}
+
+h4
+{
+	font-size: 110%;
+}
+
+/*----------------------------------------------------------------*/
+/* Layout */
+/*----------------------------------------------------------------*/
+.wrapper
+{
+    width:660px;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid 1px #efefef;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
+    -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
+    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
+    background-color: #ffffff;
+}
+
+.title
+{
+    color:#ffffff;
+    padding:20px;
+    border-bottom: solid 1px #ccc;
+    background-color: #8dc8f9;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;    
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+}
+
+.content
+{
+    padding:20px;
+}
+
+
+.hastable table td
+{
+    padding:5px;
+}
+
+.hastable table td:first-child
+{
+    white-space: nowrap;
+    color: #f9a88d;
+    width: 150px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+.list li
+{
+    margin-left: 15px;
+    padding:3px;
+    list-style: disc;
+}
+
+.button
+{
+    background-color: #f57044;
+    border: none;
+    padding:10px;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;    
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.message
+{
+    padding:10px 20px;
+    background-color: #efefef;
+    color: #666666;
+}
+
+.error
+{
+    padding:10px 20px;
+    background-color: #ff818d;
+    color: #ffffff;    
+}
+
+.success
+{
+    padding:10px 20px;
+    background-color: #a2f651;
+    color: #ffffff;    
+}
+
+
+.form_text
+{
+    border: solid 1px #cccccc;
+    padding:8px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    color: #666666;
+    cursor: text;    
+}
+
+.footer
+{
+    border-top: solid 1px #efefef;
+    padding:10px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.toright
+{
+    text-align: right;
+    clear: both;
+    display: block;
+}
