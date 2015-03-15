@@ -90,6 +90,12 @@ function sub_menu($str_module = '', $_module = array())
         include $_submenu_file;
     } else {
         include 'default/submenu.php';
+	$shortcuts = get_shortcuts_menu();
+	foreach ($shortcuts as $shortcut) {
+	  $path = preg_replace('@^.+?\|/@i', '', $shortcut);
+	  $label = preg_replace('@\|.+$@i', '', $shortcut);
+	  $menu[] = array(__($label), MWB.$path, __($label));
+	}
     }
     // iterate menu array
     foreach ($menu as $i=>$_list) {
@@ -101,4 +107,16 @@ function sub_menu($str_module = '', $_module = array())
     }
     $_submenu .= '</ul></div>';
     return $_submenu;
+}
+
+function get_shortcuts_menu()
+{
+    global $dbs;
+    $shortcuts = array();
+    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$_SESSION['uid'].'\'');
+    $shortcuts_d = $shortcuts_q->fetch_assoc();
+    if ($shortcuts_q->num_rows > 0) {
+      $shortcuts = unserialize($shortcuts_d['setting_value']);
+    }
+    return $shortcuts;
 }
