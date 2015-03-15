@@ -195,6 +195,10 @@ CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
 
+
+INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
+('shortcuts_1', 'a:6:{i:0;s:42:"Daftar Bibliografi|/bibliography/index.php";i:1;s:61:"Tambah Bibliografi Baru|/bibliography/index.php?action=detail";i:2;s:51:"Mulai Transaksi|/circulation/index.php?action=start";i:3;s:48:"Pengembalian Kilat|/circulation/quick_return.php";i:4;s:42:"Lihat Daftar Anggota|/membership/index.php";i:5;s:37:"Shortcut Setting|/system/shortcut.php";}');
+
 --
 -- Indexes for table `mst_relation_term`
 --
