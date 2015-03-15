@@ -75,7 +75,6 @@ body {
   -ms-user-select: none;
   -khtml-user-select: none;
   user-select: none;
-
 }
 
 a,
@@ -86,9 +85,9 @@ a:hover {
 .s-header {
 		position: absolute;
 		width: 100%;
-		padding: 0 50px 45px 50px;
+		padding: 0 50px 8px 50px;
 		margin:0;
-		top:50px;
+		top:25px;
   	color: #fff;
     border-bottom: solid 1px rgba(255,255,255,0.05);
 }
@@ -96,7 +95,6 @@ a:hover {
 /* Brand
  ================================ */
 .s-brand {
-	text-transform: uppercase;
   color: #fff;
 }
 
@@ -106,8 +104,8 @@ a:hover {
   color: #fff;
 }
 
-
 .s-brand h1 {
+  text-transform: uppercase;
 	font-size: 20pt;
 	padding: 0 0 5px;
 	margin: 0;
@@ -282,14 +280,17 @@ a:hover {
 
 /* Footer
  ================================ */
- footer {
-   bottom: 0px;
- }
+footer {
+}
 
 .s-footer {
+  position: fixed;
+  bottom:0;
+  left: 0;
+  right: 0;
+  display: block;
+  zoom:1;
   background-color: #282828;
-	position: fixed;
-  left:0;
 	padding:20px 50px;
 	width: 100%;
 	margin:0 auto;
@@ -298,8 +299,10 @@ a:hover {
   color: #ccc;
   text-transform: uppercase;
   z-index: 2001;
-  -webkit-animation: slide 1s ease;
-  animation: slide 1s ease;
+  -webkit-animation-name: slide;
+  animation-name: slide;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
 }
 
 @-webkit-keyframes slide {
@@ -410,10 +413,11 @@ a:hover {
   transition: background-color 1s ease;
 }
 
+#loginform input[type="text"],
 .s-search:focus,
 .s-btn:focus {
-  outline:none;
-  box-shadow:none;
+  outline:none !important;
+  box-shadow:none !important;
 }
 
 .s-search:focus,
@@ -477,25 +481,171 @@ a:hover {
   width:15px;
 }
 
+/* Biblio
+ ================================ */
+.biblioRecord {
+  position: relative;
+  float: left;
+  width:45%;
+  padding: 10px 20px;
+  min-height: 350px;
+  text-align: center;
+  margin-right: 15px;
+  border: solid 1px #f2f2f2;
+  margin-bottom:15px;
+  -webkit-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
+}
+
+.biblioRecord:hover {
+  border-color: #f03;
+}
+
+.biblioRecord:last-child {
+  margin-right: 0;
+}
+
+.biblioRecord .cover-list {
+  position: relative;
+  width: 100px;
+  height: 125px;
+  box-shadow: inset 4px 0 10px rgba(100, 100, 100, 0.25);
+  background: transparent url(img/book.png) top left no-repeat;
+  background-size: cover;
+  margin: 0 auto;
+}
+
+.biblioRecord .cover-list .img-thumbnail {
+  padding:0;
+  border:none;
+  position: absolute;
+  bottom:0;
+  left:0;
+  z-index: 0;
+  border-radius: 0;
+  width: 100px;
+  height: 125px;
+}
+
+.biblioRecord .detail-list h4 {
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	max-height: 2.8em;
+	line-height: 1.4em;
+}
+
+.biblioRecord .author {
+  font-family: Georgia, serif;
+  font-style: italic;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	max-height: 2em;
+	line-height: 1em;
+  padding-bottom:10px;
+}
+
+.biblioRecord .author-name {
+  font-size: 10pt;
+  padding:0;
+  margin-top:0;
+}
+
+.biblioRecord .subItem {
+  position: absolute;
+  bottom:10px;
+  margin-left: 6px;
+}
+
+.biblioRecord .detailLink,
+.biblioRecord .xmlDetailLink {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  -webkit-transition: background-color 500ms;
+  transition: background-color 500ms;
+}
+
+.biblioRecord .detailLink {
+  background-color: #f2f2f2;
+  color: #000;
+  margin-right: -10px;
+  padding: 10px 30px;
+}
+
+.biblioRecord .xmlDetailLink {
+  background-color: #282828;
+  color: #fff;
+  padding: 10px 29px;
+}
+
+.biblioRecord .detailLink:hover,
+.biblioRecord .xmlDetailLink:hover {
+  background-color: #852836;
+  color: #fff;
+}
+
+.customField {
+  font-size: 8pt;
+  line-height:14pt;
+  text-align: center;
+  border: solid 1px #f2f2f2;
+  margin-bottom: -1px;
+  background-color: #fff;
+  padding: 5px 0;
+}
+
+/* Paging
+ ================================ */
+.biblioPaging {
+  width: 100%;
+  float: left;
+  padding:20px 0;
+}
+
+.biblioPaging b,
+.biblioPaging a {
+  display: inline;
+  padding: 10px 15px;
+  font-size: 10pt;
+  background: #f2f2f2;
+  border-radius: 3px;
+}
+
+.biblioPaging a:hover,
+.biblioPaging b {
+  background: #282828;
+  color: #fff;
+  -webikit-transition: all 500ms;
+  transition: all 500ms;
+}
+
 /* Page
  ================================ */
 .s-main-page {
   background-color: #fff;
   position: relative;
-  margin-top: 300px;
+  margin-top: 217px;
   min-height: 100%;
   width:100%;
 }
 
 .s-main-page .s-main-search {
   position: absolute;
-  top: -95px;
+  top: -85px;
   right: 40px;
 }
 
 .s-main-page .s-main-title {
   position: absolute;
-  left: -565px;
+  left: -570px;
   color: #fff;
   top: -12px;
 }
@@ -507,101 +657,104 @@ a:hover {
 
 .s-main-page .s-main-content {
   line-height: 24pt;
-  padding: 100px 50px 100px 50px;
+  padding: 50px 50px 100px 50px;
 }
 
 /* Share to Media Social Icon
  ================================ */
 .share-buttons {
   clear: both;
-  float: right;
   list-style: none;
-  margin: 3px;
+  margin: 3px auto;
+  text-align: center;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  left:-20px;
+  padding-bottom: 35px;
 }
 
-.share-buttons li {
+.share-buttons li:not(:first-child) {
   display: inline;
+  padding-right:5px;
 }
 
-/* Share to Media Social Icon
+.share-buttons li:first-child {
+  padding-top:10px;
+  margin-bottom:5px;
+  line-height:5px;
+}
+
+.share-buttons li:last-child {
+  padding-right:0;
+}
+
+.share-buttons li:not(:first-child) img {
+  width:18px;
+  height: 18px;
+  border-radius: 10px;
+}
+/* Login
  ================================ */
 #loginForm {
-  padding-top: 100px;
+  padding: 50px 20px;
+  border: solid 1px rgba(255,255,255,0.15);
 }
 
-#loginForm div {
-  display: inline
+.s-login-content {
+  margin: 0 auto;
+  width: 300px;
+  padding:20px;
+  background-color: rgba(255,255,255,0.1);
 }
 
-#loginForm .heading1,
 #loginForm .homeButton {
   display: none;
+}
+
+#loginForm .heading1 {
+  letter-spacing: 4px;
+  font-size: 8pt;
+  text-transform: uppercase;
 }
 
 #loginForm input[type="password"],
 #loginForm #userName {
   border: none;
-  background-color: rgba(255,255,255,1);
-  width: 250px;
   padding: 10px 10px 10px 20px;
   font-size: 15pt;
-  -webkit-transition: background-color 1s ease;
-  -moz-transition: background-color 1s ease;
-  -o-transition: background-color 1s ease;
-  -ms-transition: background-color 1s ease;
-  transition: background-color 1s ease;
-}
-
-#loginForm #userName {
-  border-radius: 50px 0 0 50px;
-}
-
-#loginForm #userName:before {
-  font-family: 'FontAwesome';
-  content: '\f007';
-  color: #000;
-  width:30px;
-  height:30px;
+  width:100%;
+  color: #000 !important;
+  margin: 10px auto;
+  text-align: center;
 }
 
 .loginButton {
   background-color: #000;
-  padding: 14px;
+  padding: 15px;
   border: none;
-  width:150px;
-  border-radius: 0 50px 50px 0;
+  width:100%;
 }
 
-input:-webkit-autofill {
-    -webkit-text-fill-color: rgba(255,255,255,1);
-    -webkit-box-shadow: 0 0 0px 1000px white inset;
-}
-input:-moz-autofill {
-    -moz-text-fill-color: rgba(255,255,255,1);
-    -moz-box-shadow: 0 0 0px 1000px white inset;
-}
-input:-o-autofill {
-    -o-text-fill-color: rgba(255,255,255,1);
-    -o-box-shadow: 0 0 0px 1000px white inset;
-}
-input:-khtml-autofill {
-    -khtml-text-fill-color: rgba(255,255,255,1);
-    -khtml-box-shadow: 0 0 0px 1000px white inset;
+.s-login {
+  margin-top:-25px;
 }
 
-input:focus:-webkit-autofill {
-    -webkit-text-fill-color: rgba(255,255,255,1);
-    -webkit-box-shadow: 0 0 0px 1000px white inset;
+.xmlResultLink {
+  background-color: #282828;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  background-color: #282828;
+  color: #fff;
+  padding: 10px 29px;
+  -webkit-transition: background-color 500ms ease;
+  transition: background-color 500ms ease;
 }
-input:focus:-moz-autofill {
-    -moz-text-fill-color: rgba(255,255,255,1);
-    -moz-box-shadow: 0 0 0px 1000px white inset;
-}
-input:focus:-o-autofill {
-    -o-text-fill-color: rgba(255,255,255,1);
-    -o-box-shadow: 0 0 0px 1000px white inset;
-}
-input:focus:-khtml-autofill {
-    -khtml-text-fill-color: rgba(255,255,255,1);
-    -khtml-box-shadow: 0 0 0px 1000px white inset;
+
+.xmlResultLink:hover {
+  background-color: #852836;
+  color: #fff;
 }
