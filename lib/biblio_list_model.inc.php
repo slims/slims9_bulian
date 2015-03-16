@@ -121,7 +121,7 @@ abstract class biblio_list_model
 	if ($bool_return_array) {
 	  return $_authors_arr;
 	} else {
-	  return $_authors; 
+	  return $_authors;
 	}
   }
 
@@ -228,7 +228,7 @@ abstract class biblio_list_model
         $_biblio_d['image'] = urlencode($_biblio_d['image']);
         $images_loc = '../../images/docs/'.$_biblio_d['image'];
         if ($sysconf['tg']['type'] == 'minigalnano') {
-		  $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=90';
+		  $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
           $_image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" />';
         }
       }
@@ -399,14 +399,14 @@ abstract class biblio_list_model
 
 	  // ISBN
 	  $_buffer .= '<identifier type="isbn">'.str_replace(array('-', ' '), '', $_biblio_d['isbn_issn']).'</identifier>'."\n";
-      
+
 	  // imprint/publication data
 	  $_buffer .= '<originInfo>'."\n";
 	  $_buffer .= '<place><placeTerm type="text"><![CDATA['.$_biblio_d['publish_place'].']]></placeTerm></place>'."\n"
 	    .'<publisher><![CDATA['.$_biblio_d['publisher'].']]></publisher>'."\n"
 	    .'<dateIssued><![CDATA['.$_biblio_d['publish_year'].']]></dateIssued>'."\n";
 	  $_buffer .= '</originInfo>'."\n";
-      
+
 	  // doc images
       $_image = '';
       if (!empty($_biblio_d['image'])) {
@@ -434,7 +434,7 @@ abstract class biblio_list_model
     global $sysconf;
     $jsonld['@context'] = 'http://schema.org';
     $jsonld['@type'] = 'Book';
-    
+
     // loop data
     $jsonld['total_rows'] = $this->num_rows;
     $jsonld['page'] = $this->current_page;
@@ -456,10 +456,10 @@ abstract class biblio_list_model
 
 	  // ISBN
 	  $record['isbn'] = $_biblio_d['isbn_issn'];
-      
+
 	  // publisher
 	  $record['publisher'] = $_biblio_d['publisher'];
-	  
+
 	  // publish date
 	  $record['dateCreated'] = $_biblio_d['publish_year'];
 
@@ -478,7 +478,7 @@ abstract class biblio_list_model
 
     return str_ireplace('\/', '/', json_encode($jsonld));
   }
-  
+
 
 
   /**

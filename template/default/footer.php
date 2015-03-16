@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="s-footer-tagline">
-        <?php echo SENAYAN_VERSION; ?>
+        <a href="//slims.web.id" target="_blank"><?php echo SENAYAN_VERSION; ?></a>
       </div>
     </div>
     <div class="col-lg-6">

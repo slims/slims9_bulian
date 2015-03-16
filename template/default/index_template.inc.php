@@ -73,6 +73,8 @@ if (!defined('INDEX_AUTH')) {
   ============================================= -->
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
+  <script src="<?php echo JWB; ?>form.js"></script>
+  <script src="<?php echo JWB; ?>gui.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
 
 </head>
