@@ -804,6 +804,10 @@ footer {
   text-align: center;
 }
 
+#loginForm input[type=text], #loginForm input[type=password] {
+  color: #333;
+}
+
 .loginButton {
   background-color: #000;
   padding: 15px;
