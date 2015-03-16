@@ -564,6 +564,10 @@ a:hover {
   height:30px;
 }
 
+#loginForm input[type=text], #loginForm input[type=password] {
+  color: #333;
+}
+
 .loginButton {
   background-color: #000;
   padding: 14px;

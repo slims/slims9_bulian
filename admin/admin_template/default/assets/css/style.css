@@ -1314,7 +1314,7 @@ tr.dataListHeader > td > a {
 	background-position: 0;
 }
 #cboxLoadedContent {
-	/*overflow: hidden !important;*/
+	overflow: hidden !important;
 }
 .popUpForm {
 	background-color: #fff;

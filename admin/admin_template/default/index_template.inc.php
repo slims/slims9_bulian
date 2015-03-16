@@ -119,7 +119,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
     </footer>
   </main>
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
-  <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
+  <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe>
   <!-- fake submit iframe -->
   <script>
     
