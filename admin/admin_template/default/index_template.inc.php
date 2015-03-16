@@ -119,7 +119,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
     </footer>
   </main>
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
-  <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe>
+  <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
   <script>
 
@@ -171,7 +171,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
 
     $('.s-user-photo').bind('click', function(e) {
       e.preventDefault();
-      $('a.change-user-profiles').trigger('click');
+      $('a.submenu-user-profile').trigger('click');
     });
 
     // toggle main menu event register
@@ -180,6 +180,15 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       toggleMainMenu();
     })
 
+    $('#mainMenu a.opac').bind('click', function(evt) {
+    	evt.preventDefault();
+    	top.jQuery.colorbox({iframe:true,
+    	  href: $(this).attr('href'),
+          width: function() { return parseInt($(window).width())-50; },
+          height: function() { return parseInt($(window).height())-50; },
+          title: function() { return 'Online Public Access Catalog'; } }
+        );
+    });
   </script>
   <?php if (isset($chat)) { echo $chat; } ?>
 </body>
