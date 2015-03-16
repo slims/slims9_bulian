@@ -44,33 +44,40 @@ if (!defined('INDEX_AUTH')) {
 
 <head>
 
+  <!-- Page Title
+  ============================================= -->
+  <title><?php echo $page_title; ?></title>
+
   <!-- Meta
   ============================================= -->
-
-  <title><?php echo $page_title; ?></title>
   <meta charset="utf-8">
+
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
   <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT" />
 
-  <!-- Meta
-  ============================================= -->
   <meta name="description" content="SLiMS (Senayan Library Management System) is an open source Library Management System. It is build on Open source technology like PHP and MySQL">
   <meta name="keywords" content="senayan,slims,library automation,free library application, library, perpustakaan, aplikasi perpustakaan">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
   <meta name="generator" content="<?php echo SENAYAN_VERSION ?>">
 
-  <!-- Meta
+  <!-- Opengraph
   ============================================= -->
-  <link rel="canonical" href="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>" />
   <meta property='og:locale' content='en_US'/>
   <meta property='og:type' content='book'/>
   <meta property='og:title' content='<?php echo $page_title; ?>'/>
   <meta property='og:url' content='//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>'/>
   <meta property='og:site_name' content='<?php echo $sysconf['library_name']; ?>'/>
   <meta property='og:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png'/>
+
+  <!-- Twitter
+  ============================================= -->
+  <meta name=”twitter:card” content=”summary”>
+  <meta name='twitter:url' content='//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>'/>
+  <meta name='twitter:title' content='<?php echo $page_title; ?>'/>
+  <meta name='twitter:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png'/>
 
   <!-- Theme
   ============================================= -->
@@ -91,7 +98,7 @@ if (!defined('INDEX_AUTH')) {
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
+<body itemscope="itemscope" itemtype="http://schema.org/WebPage">
 
 <!-- Header
 ============================================= -->
@@ -124,10 +131,8 @@ if (!defined('INDEX_AUTH')) {
           ?>
           </h1>
           <form action="index.php" method="get" autocomplete="off">
-            <h1 class="animated fadeInUp delay2">SEARCHING</h1>
-            <p class="s-search-info animated fadeInUp delay3">you can start it by typing one or more keywords for title, author or subject</p>
             <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
-            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4">Search</button>
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
           </form>
         </div>
 
@@ -144,7 +149,7 @@ if (!defined('INDEX_AUTH')) {
 
             <div class="col-lg-4">
               <?php if(isset($_GET['search'])) : ?>
-              <h2>Search Result</h2>
+              <h2><?php echo __('Search Result'); ?></h2>
               <hr>
               <?php echo $search_result_info; ?>
               <?php endif; ?>
@@ -205,16 +210,16 @@ if (!defined('INDEX_AUTH')) {
         ============================================= -->
         <div class="s-main-search animated fadeInUp delay1">
           <form action="index.php" method="get" autocomplete="off">
-            <h1 class="animated fadeInUp delay2">SEARCHING</h1>
-            <p class="s-search-info animated fadeInUp delay3">you can start it by typing one or more keywords for title, author or subject</p>
+            <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
+            <p class="s-search-info animated fadeInUp delay3"><?php echo __('you can start it by typing one or more keywords for title, author or subject'); ?></p>
             <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
-            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4">Search</button>
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
           </form>
         </div>
 
         <!-- Featured
         ============================================= -->
-        <a href="#" class="s-feature animated fadeInUp delay6">see also our featured collections
+        <a href="#" class="s-feature animated fadeInUp delay6"><?php echo __('see also our featured collections'); ?>
           <div class="s-menu-toggle animated fadeInUp delay7"><span></span></div>
         </a>
         <div class="s-feature-content">

@@ -1,4 +1,4 @@
-<div class="s-video">
+<div class="s-video animated fadeIn">
   <div class="gradients">
     <div class="blue"></div>
     <div class="green"></div>

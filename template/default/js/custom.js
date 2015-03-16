@@ -12,12 +12,17 @@ $(document).ready(function(){
     // Show hide menu
     // ============================================
     $('#show-menu').on('click', function(){
-      $('.s-menu-content').removeClass('slideOutRight animated-fast').toggleClass('active slideInRight');
+      $('.s-menu-content').removeClass('slideOutRight').addClass('active slideInRight');
     });
 
     $('#hide-menu').on('click', function(){
-      $('.s-menu-content').removeClass('slideInRight animated-fast').toggleClass('active animated slideOutRight');
+      $('.s-menu-content').removeClass('active slideInRight').addClass('slideOutRight');
     });
+
+
+    // Hide only an empty tag inside biblio detail
+    // ============================================
+    $('.controls:empty').parent().hide();
 
     // Animate background color
     // ============================================
@@ -33,4 +38,15 @@ $(document).ready(function(){
       });
     }
     fade();
+
+
 });
+
+(function(){
+	var customSelects = document.querySelectorAll(".custom-dropdown__select");
+	for(var i=0; i<customSelects.length; i++){
+		if (customSelects[i].hasAttribute("disabled")){
+			customSelects[i].parentNode.className += " custom-dropdown--disabled";
+		}
+	}
+})()

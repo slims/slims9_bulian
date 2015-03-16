@@ -15,9 +15,11 @@
   <div class="s-menu-info">
     <form class="language" name="langSelect" action="index.php" method="get">
       <label class="language-info" for="select_lang"><?php echo __('Select Language'); ?></label>
-      <select name="select_lang" id="select_lang" title="Change language of this site" onchange="document.langSelect.submit();" class="input-medium">
-        <?php echo $language_select; ?>
-      </select>
+      <span class="custom-dropdown custom-dropdown--emerald custom-dropdown--small">
+        <select name="select_lang" id="select_lang" title="Change language of this site" onchange="document.langSelect.submit();" class="custom-dropdown__select custom-dropdown__select--emerald">
+          <?php echo $language_select; ?>
+        </select>
+      </span>
     </form>
   </div>
 </nav>

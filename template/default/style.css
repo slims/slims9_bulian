@@ -62,12 +62,6 @@ body {
   font-weight: lighter;
   -webkit-text-size-adjust: none;
   font-size: 16px;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: moz-none;
-  -ms-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
 }
 a, a:hover {
   text-decoration: none !important;
@@ -117,8 +111,8 @@ a, a:hover {
   color: #fff;
 }
 .s-menu-toggle {
-  width: 18px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   display: block;
   vertical-align: top;
   padding-top: 3px;
@@ -128,7 +122,7 @@ a, a:hover {
   cursor: pointer;
   border-radius: 1px;
   height: 1px;
-  width: 25px;
+  width: 20px;
   background: white;
   position: absolute;
   display: block;
@@ -142,10 +136,10 @@ a, a:hover {
   bottom: -5px;
 }
 .s-menu-toggle:hover span:before {
-  top: -10px;
+  top: -8px;
 }
 .s-menu-toggle:hover span:after {
-  bottom: -10px;
+  bottom: -8px;
 }
 .s-menu-toggle.active span {
   background-color: transparent;
@@ -180,7 +174,7 @@ a, a:hover {
   padding: 0 0 75px 0;
 }
 .s-menu-content li {
-  line-height: 42pt;
+  line-height: 30pt;
 }
 .s-menu-content a {
   font-size: 8pt;
@@ -219,17 +213,142 @@ a, a:hover {
   top: 0;
 }
 .s-menu-info {
-  font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 4px;
   border-top: double 3px #d5d5d5;
-  padding-top: 10px;
+  padding-top: 25px;
   color: #000;
 }
-.s-menu-info p {
-  padding: 10px 0 0 0;
+.s-menu-info label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #bbb;
+  padding: 0 0 12px 0;
   margin: 0;
 }
+
+/* Custom Select Dropdown
+ ================================ */
+ .custom-dropdown--large {
+   font-size: 1.5em;
+ }
+
+ .custom-dropdown--small {
+   font-size: 1em;
+ }
+
+ .custom-dropdown__select{
+   font-size: inherit; /* inherit size from .custom-dropdown */
+   padding: .5em; /* add some space*/
+   margin: 0; /* remove default margins */
+ }
+
+ .custom-dropdown__select--white {
+   background-color: #fff;
+   color: #444;
+ }
+
+ .custom-dropdown__select--emerald {
+   background-color: #20b390;
+   color: #fff;
+ }
+
+ .custom-dropdown__select--red {
+   background-color: #d53a22;
+   color: #fff;
+ }
+
+ @supports (pointer-events: none) and
+       ((-webkit-appearance: none) or
+       (-moz-appearance: none) or
+       (appearance: none)) {
+
+   .custom-dropdown {
+     position: relative;
+     display: inline-block;
+     vertical-align: middle;
+   }
+
+   .custom-dropdown__select {
+     padding-right: 5em; /* accommodate with the pseudo elements for the dropdown arrow */
+     border: 0;
+     border-radius: 0;
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+   }
+
+   .custom-dropdown::before,
+   .custom-dropdown::after {
+     content: "";
+     position: absolute;
+     pointer-events: none;
+   }
+
+   .custom-dropdown::after { /*  Custom dropdown arrow */
+     content: "\25BC";
+     height: 1em;
+     font-size: .625em;
+     line-height: 1;
+     right: 1.2em;
+     top: 50%; margin-top: -.5em;
+   }
+
+   .custom-dropdown::before { /*  Custom dropdown arrow cover */
+     width: 2.6em;
+     right: 0; top: 0; bottom: 0;
+     border-radius: 0 0 0 0;
+   }
+
+   .custom-dropdown__select[disabled] {
+     color: rgba(0,0,0,.3);
+   }
+
+   .custom-dropdown.custom-dropdown--disabled::after {
+     color: rgba(0,0,0,.1);
+   }
+
+   /* White dropdown style */
+   .custom-dropdown--white::before {
+     background-color: #fff;
+     border-left: 1px solid rgba(0,0,0,.1);
+   }
+
+   .custom-dropdown--white::after {
+     color: rgba(0,0,0,.9);
+   }
+
+   /* Emerald dropdown style */
+   .custom-dropdown--emerald::before {
+     background-color: #1aa181;
+   }
+
+   .custom-dropdown--emerald::after {
+     color: rgba(0,0,0,.4);
+   }
+
+
+   /* Red dropdown style */
+   .custom-dropdown--red::before {
+     background-color: #d53a22;
+   }
+
+   .custom-dropdown--red::after {
+     color: rgba(0,0,0,.4);
+   }
+
+   /* FF only temporary & ugly fixes */
+   /* the "appearance: none" applied on select still shows a dropdown arrow on Firefox */
+   /* https://bugzilla.mozilla.org/show_bug.cgi?id=649849 */
+   @-moz-document url-prefix() {
+     .custom-dropdown__select 						 { padding-right: .9em }
+     .custom-dropdown--large .custom-dropdown__select { padding-right: 1.3em }
+     .custom-dropdown--small .custom-dropdown__select { padding-right: .5em }
+   }
+
+ }
+
 /* Footer
  ================================ */
 
@@ -651,7 +770,7 @@ footer {}
   float: right;
   height: 250px;
   overflow: hidden;
-  margin: 90px 0 0 50px;
+  margin: 105px 0 0 50px;
 }
 .coll-detail .share-buttons {
   float: right;
@@ -697,6 +816,20 @@ footer {}
 
   display: table;
 }
+
+.control-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  border-bottom: solid 1px #f2f2f2;
+  width: 100%;
+  display: inline-block;
+  width: 500px;
+  text-align: left !important;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
 /* Page
  ================================ */
 
@@ -714,7 +847,7 @@ footer {}
 }
 .s-main-page .s-main-title {
   position: absolute;
-  left: -570px;
+  left: -766px;
   color: #fff;
   top: -12px;
 }
@@ -723,7 +856,11 @@ footer {}
 }
 .s-main-page .s-main-content {
   line-height: 24pt;
-  padding: 50px 50px 100px 50px;
+  padding: 50px 50px 100px 35px;
+}
+
+.s-main-page .s-main-search .s-search {
+  width: 300px;
 }
 /* Share to Media Social Icon
  ================================ */
