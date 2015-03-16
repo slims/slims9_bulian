@@ -48,7 +48,6 @@ if (!defined('INDEX_AUTH')) {
 
   <title><?php echo $page_title; ?></title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -59,13 +58,25 @@ if (!defined('INDEX_AUTH')) {
   ============================================= -->
   <meta name="description" content="SLiMS (Senayan Library Management System) is an open source Library Management System. It is build on Open source technology like PHP and MySQL">
   <meta name="keywords" content="senayan,slims,library automation,free library application, library, perpustakaan, aplikasi perpustakaan">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <meta name="generator" content="<?php echo SENAYAN_VERSION ?>">
+
+  <!-- Meta
+  ============================================= -->
+  <link rel="canonical" href="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>" />
+  <meta property='og:locale' content='en_US'/>
+  <meta property='og:type' content='book'/>
+  <meta property='og:title' content='<?php echo $page_title; ?>'/>
+  <meta property='og:url' content='//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>'/>
+  <meta property='og:site_name' content='<?php echo $sysconf['library_name']; ?>'/>
+  <meta property='og:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png'/>
 
   <!-- Theme
   ============================================= -->
-  <link href="<?php echo $sysconf['template']['dir']; ?>/core.style.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo $sysconf['template']['css']; ?>" rel="stylesheet" type="text/css" />
+  <link rel="shortcut icon" href="webicon.ico"/>
+  <link rel="stylesheet" href="<?php echo $sysconf['template']['dir']; ?>/core.style.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo JWB; ?>colorbox/colorbox.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo $sysconf['template']['css']; ?>" type="text/css" />
   <!-- <link type="text/css" rel="stylesheet" media="all" href="<?php echo SWB; ?>template/default/css/tango/skin.css"/> -->
   <?php echo $metadata; ?>
 
