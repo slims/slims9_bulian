@@ -102,7 +102,7 @@ function sub_menu($str_module = '', $_module = array())
       if ($_list[0] == 'Header') {
         $_submenu .= '<li class="s-submenu-header">'.$menu[$i][1].'</li>'."\n";
       } else {
-        $_submenu .= '<li><a class="menu s-current-child '.strtolower(str_replace(' ', '-', $menu[$i][0])).'" href="'.$menu[$i][1].'" title="'.( isset($menu[$i][2])?$menu[$i][2]:$menu[$i][0] ).'"><i class="nav-icon fa fa-bars"></i> '.$menu[$i][0].'</a></li>'."\n";
+        $_submenu .= '<li><a class="menu s-current-child submenu-'.$i.' '.strtolower(str_replace(' ', '-', $menu[$i][0])).'" href="'.$menu[$i][1].'" title="'.( isset($menu[$i][2])?$menu[$i][2]:$menu[$i][0] ).'"><i class="nav-icon fa fa-bars"></i> '.$menu[$i][0].'</a></li>'."\n";
       }
     }
     $_submenu .= '</ul></div>';

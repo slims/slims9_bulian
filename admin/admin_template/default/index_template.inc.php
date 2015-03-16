@@ -171,7 +171,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
 
     $('.s-user-photo').bind('click', function(e) {
       e.preventDefault();
-      $('a.change-user-profiles').trigger('click');
+      $('a.submenu-user-profile').trigger('click');
     });
 
     // toggle main menu event register
@@ -180,6 +180,15 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       toggleMainMenu();
     })
 
+    $('#mainMenu a.opac').bind('click', function(evt) {
+    	evt.preventDefault();
+    	top.jQuery.colorbox({iframe:true,
+    	  href: $(this).attr('href'),
+          width: function() { return parseInt($(window).width())-50; },
+          height: function() { return parseInt($(window).height())-50; },
+          title: function() { return 'Online Public Access Catalog'; } }
+        );
+    });
   </script>
   <?php if (isset($chat)) { echo $chat; } ?>
 </body>
