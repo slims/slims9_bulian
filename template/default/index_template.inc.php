@@ -72,6 +72,7 @@ if (!defined('INDEX_AUTH')) {
   <!-- Script
   ============================================= -->
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
+  <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
 
 </head>
