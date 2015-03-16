@@ -122,16 +122,16 @@ By Eddy Subratha (eddy.subratha@gmail.com)
   <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe>
   <!-- fake submit iframe -->
   <script>
-    
+
     var toggleMainMenu = function() {
       $('.per_title').bind('click',function(){
         $('.s-content').toggleClass('active');
         $('.s-sidebar').toggleClass('active');
         $('.s-user-frame').toggleClass('active');
         $('.s-menu').toggleClass('active');
-      });      
+      });
     }
-    
+
     //trigger to hide the current sidebar
     $('.s-current-child').click(function(){
       $('.s-current').trigger('click');
@@ -173,7 +173,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       e.preventDefault();
       $('a.change-user-profiles').trigger('click');
     });
-    
+
     // toggle main menu event register
     toggleMainMenu();
     $('body').on('simbioAJAXloaded', function(evt) {
