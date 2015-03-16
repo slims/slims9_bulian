@@ -148,8 +148,8 @@ abstract class biblio_list_model
    * @return  string
    */
   public function getDocumentList($bool_return_output = true) {
-	global $sysconf;
-	$_sql_str = $this->compileSQL();
+    global $sysconf;
+    $_sql_str = $this->compileSQL();
     // start time
     $_start = function_exists('microtime')?microtime(true):time();
     // execute query
@@ -181,7 +181,7 @@ abstract class biblio_list_model
     // init the result buffer
     $_buffer = '';
     // keywords from last search
-		$_keywords = '';
+    $_keywords = '';
     // loop data
     $_i = 0;
     if (!$this->resultset) {
@@ -189,125 +189,15 @@ abstract class biblio_list_model
     }
 
     if (isset($_GET['keywords'])) {
-	  $_keywords = urlencode(trim(urldecode($_GET['keywords'])));
-	}
+      $_keywords = urlencode(trim(urldecode($_GET['keywords'])));
+    }
+    // include biblio list HTML template callback
+    include SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/biblio_list_template.php';
+    $settings = '';
+    $settings = get_object_vars($this);
+    $settings['keywords'] = $_keywords;
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
-	  $_detail_link = SWB.'index.php?p=show_detail&id='.$_biblio_d['biblio_id'].'&keywords='.$_keywords;
-	  $_title_plain = $_biblio_d['title'];
-      $_biblio_d['title'] = '<a href="'.$_detail_link.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$_biblio_d['title'].'</a>';
-      // label
-      if ($this->show_labels AND !empty($_biblio_d['labels'])) {
-        $arr_labels = @unserialize($_biblio_d['labels']);
-        if ($arr_labels !== false) {
-          foreach ($arr_labels as $label) {
-            if (!isset($this->label_cache[$label[0]]['name'])) {
-              $_label_q = $this->obj_db->query('SELECT label_name, label_desc, label_image FROM mst_label AS lb
-                  WHERE lb.label_name=\''.$label[0].'\'');
-              $_label_d = $_label_q->fetch_row();
-              $this->label_cache[$label[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
-            }
-            if (isset($label[1]) && $label[1]) {
-              $_biblio_d['title'] .= ' <a href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" alt="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
-            } else {
-              $_biblio_d['title'] .= ' <img src="'.SWB.IMG.'/labels/'.$this->label_cache[$label[0]]['image'].'" title="'.$this->label_cache[$label[0]]['desc'].'" alt="'.$this->label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
-            }
-          }
-		}
-      }
-      // button
-      $_biblio_d['detail_button'] = '<a href="'.$_detail_link.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
-      if ($this->xml_detail) {
-        $_biblio_d['xml_button'] = '<a href="'.$_detail_link.'&inXML=true" class="xmlDetailLink" title="View record detail description in XML Format" target="_blank">XML Detail</a>';
-      } else {
-        $_biblio_d['xml_button'] = '';
-      }
-
-      // cover images var
-      $_image_cover = '';
-      if (!empty($_biblio_d['image']) && !defined('LIGHTWEIGHT_MODE')) {
-        $_biblio_d['image'] = urlencode($_biblio_d['image']);
-        $images_loc = '../../images/docs/'.$_biblio_d['image'];
-        if ($sysconf['tg']['type'] == 'minigalnano') {
-		  $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=90';
-          $_image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" />';
-        }
-      }
-
-      $_alt_list = ($_i%2 == 0)?'alterList':'alterList2';
-      $_buffer .= '<div class="item biblioRecord" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book"><div class="cover-list">'.$_image_cover.'</div>';
-	  $_buffer .= '<div class="detail-list"><h4>'.$_biblio_d['title'].'</h4>';
-      // concat author data
-      $_authors = isset($_biblio_d['author'])?$_biblio_d['author']:self::getAuthors($this->obj_db, $_biblio_d['biblio_id'], true);
-      $_buffer .= '<div class="author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">';
-	  if ($_authors) {
-		$_authors_string = '';
-		foreach ($_authors as $author) {
-		  $_authors_string .= '<span class="author-name" itemprop="name" property="name">'.$author.'</span> - ';
-		}
-		$_authors_string = substr_replace($_authors_string, '', -2);
-        $_buffer .= $_authors_string;
-        // $_buffer .= '<div class="author" itemprop="author"><b>'.__('Author(s)').'</b> : '.$_authors.'</div>';
-      }
-	  $_buffer .= '</div>';
-
-      # checking custom file
-      if ($this->enable_custom_frontpage AND $this->custom_fields) {
-        foreach ($this->custom_fields as $_field => $_field_opts) {
-          if ($_field_opts[0] == 1) {
-            if ($_field == 'edition') {
-              $_buffer .= '<div class="customField editionField" itemprop="bookEdition" property="bookEdition"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['edition'].'</div>';
-            } else if ($_field == 'isbn_issn') {
-              $_buffer .= '<div class="customField isbnField" itemprop="isbn" property="isbn"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['isbn_issn'].'</div>';
-            } else if ($_field == 'collation') {
-              $_buffer .= '<div class="customField collationField" itemprop="numberOfPages" property="numberOfPages"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['collation'].'</div>';
-            } else if ($_field == 'series_title') {
-              $_buffer .= '<div class="customField seriesTitleField" itemprop="alternativeHeadline" property="alternativeHeadline"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['series_title'].'</div>';
-            } else if ($_field == 'call_number') {
-              $_buffer .= '<div class="customField callNumberField"><b>'.$_field_opts[1].'</b> : '.$_biblio_d['call_number'].'</div>';
-            } else if ($_field == 'availability' && !$this->disable_item_data) {
-              // get total number of this biblio items/copies
-              $_item_q = $this->obj_db->query('SELECT COUNT(*) FROM item WHERE biblio_id='.$_biblio_d['biblio_id']);
-              $_item_c = $_item_q->fetch_row();
-              // get total number of currently borrowed copies
-              $_borrowed_q = $this->obj_db->query('SELECT COUNT(*) FROM loan AS l INNER JOIN item AS i'
-                .' ON l.item_code=i.item_code WHERE l.is_lent=1 AND l.is_return=0 AND i.biblio_id='.$_biblio_d['biblio_id']);
-              $_borrowed_c = $_borrowed_q->fetch_row();
-              // total available
-              $_total_avail = $_item_c[0]-$_borrowed_c[0];
-              if ($_total_avail < 1) {
-                $_buffer .= '<div class="customField availabilityField"><b>'.$_field_opts[1].'</b> : <strong style="color: #f00;">'.__('none copy available').'</strong></div>';
-              } else {
-                $this->item_availability_message = $_total_avail.' copies available for loan';
-                $_buffer .= '<div class="customField availabilityField"><b>'.$_field_opts[1].'</b> : '.$this->item_availability_message.'</div>';
-              }
-            } else if ($_field == 'node_id' && $this->disable_item_data) {
-			    $_buffer .= '<div class="customField locationField"><b>'.$_field_opts[1].'</b> : '.$sysconf['node'][$_biblio_d['node_id']]['name'].'</div>';
-			  }
-        	}
-    	  }
-		  }
-	  // checkbox for marking collection
-	  $_check_mark = (utility::isMemberLogin() && $this->enable_mark)?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$_biblio_d['biblio_id'].'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-      $_buffer .= '<div class="subItem">'.$_biblio_d['detail_button'].' '.$_biblio_d['xml_button'].$_check_mark.'</div>';
-
-      if ($sysconf['social_shares']) {
-		// share buttons
-		$_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
-		$_share_btns = "\n".'<ul class="share-buttons">'.
-          '<li>'.__('Share to').': </li>'.
-          '<li><a href="http://www.facebook.com/sharer.php?u='.$_detail_link_encoded.'" title="Facebook" target="_blank"><img src="./images/default/fb.gif" alt="Share this title to Facebook" /></a></li>'.
-          '<li><a href="http://twitter.com/share?url='.$_detail_link_encoded.'&text='.urlencode($_title_plain).'" title="Twitter" target="_blank"><img src="./images/default/tw.gif" alt="Share this title to Twitter" /></a></li>'.
-          '<li><a href="https://plus.google.com/share?url='.$_detail_link_encoded.'" title="Google Plus" target="_blank"><img src="./images/default/gplus.gif" alt="Share this title to Google Plus" /></a></li>'.
-          '<li><a href="http://www.digg.com/submit?url='.$_detail_link_encoded.'" title="Digg It" target="_blank"><img src="./images/default/digg.gif" alt="Share this title to  Digg It" /></a></li>'.
-          '<li><a href="http://reddit.com/submit?url='.$_detail_link_encoded.'&title='.urlencode($_title_plain).'" title="Reddit" target="_blank"><img src="./images/default/rdit.gif" alt="Share this title to Reddit" /></a></li>'.
-          '<li><a href="http://www.linkedin.com/shareArticle?mini=true&url='.$_detail_link_encoded.'" title="LinkedIn" target="_blank"><img src="./images/default/lin.gif" alt="Share this title to LinkedIn" /></a></li>'.
-          '<li><a href="http://www.stumbleupon.com/submit?url='.$_detail_link_encoded.'&title='.urlencode($_title_plain).'" title="Stumbleupon" target="_blank"><img src="./images/default/su.gif" alt="Share this title to StumbleUpon" /></a></li>'.
-          '</ul>'."\n";
-
-        $_buffer .= $_share_btns;
-	  }
-
-      $_buffer .= "</div></div>\n";
+      $_buffer .= biblio_list_format($this->obj_db, $_biblio_d, $_i, $settings, $return_back);
       $_i++;
     }
 
@@ -321,24 +211,24 @@ abstract class biblio_list_model
       $_paging = '';
     }
 
-		$_biblio_list = '';
-		$_is_member_logged_in = utility::isMemberLogin() && $this->enable_mark;
-		if ($_paging) {
-			$_biblio_list .= $_paging;
-		}
-		if ($_is_member_logged_in) {
-			$_submit = '<div class="biblioMarkFormAction"><input type="submit" name="markBiblio" value="'.__('Put marked selection into basket').'" /></div>';
-			$_biblio_list .= '<form class="biblioMarkForm" method="post" action="index.php?p=member#biblioBasket">';
-			$_biblio_list .= $_submit;
-		}
-		$_biblio_list .= $_buffer;
-		if ($_is_member_logged_in) {
-			$_biblio_list .= $_submit;
-			$_biblio_list .= '</form>';
-		}
-		if ($_paging) {
-			$_biblio_list .= $_paging;
-		}
+    $_biblio_list = '';
+    $_is_member_logged_in = utility::isMemberLogin() && $this->enable_mark;
+    if ($_paging) {
+    	$_biblio_list .= $_paging;
+    }
+    if ($_is_member_logged_in) {
+      $_submit = '<div class="biblioMarkFormAction"><input type="submit" name="markBiblio" value="'.__('Put marked selection into basket').'" /></div>';
+      $_biblio_list .= '<form class="biblioMarkForm" method="post" action="index.php?p=member#biblioBasket">';
+      $_biblio_list .= $_submit;
+    }
+    $_biblio_list .= $_buffer;
+    if ($_is_member_logged_in) {
+      $_biblio_list .= $_submit;
+      $_biblio_list .= '</form>';
+    }
+    if ($_paging) {
+      $_biblio_list .= $_paging;
+    }
     return $_biblio_list;
   }
 
