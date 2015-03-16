@@ -1,4 +1,4 @@
-<header class="s-header container" role="header">
+<header class="s-header container" role="banner">
   <div class="row">
     <div class="col-lg-6">
       <a href="index.php" class="s-brand">

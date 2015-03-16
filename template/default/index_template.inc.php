@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
+
 <?php
 /*------------------------------------------------------------
 
@@ -39,8 +42,6 @@ if (!defined('INDEX_AUTH')) {
 ==========================================================================
 -->
 
-<!DOCTYPE html>
-<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>">
 <head>
 
   <!-- Meta
@@ -125,7 +126,7 @@ if (!defined('INDEX_AUTH')) {
           <form action="index.php" method="get" autocomplete="off">
             <h1 class="animated fadeInUp delay2">SEARCHING</h1>
             <p class="s-search-info animated fadeInUp delay3">you can start it by typing one or more keywords for title, author or subject</p>
-            <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
+            <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
             <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4">Search</button>
           </form>
         </div>
