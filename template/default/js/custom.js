@@ -13,10 +13,12 @@ $(document).ready(function(){
     // ============================================
     $('#show-menu').on('click', function(){
       $('.s-menu-content').removeClass('slideOutRight').addClass('active slideInRight');
+      $('.s-menu-content ul a').addClass('animated fadeInRight delay4');
     });
 
     $('#hide-menu').on('click', function(){
       $('.s-menu-content').removeClass('active slideInRight').addClass('slideOutRight');
+      $('.s-menu-content ul a').removeClass('animated fadeInRight delay4');
     });
 
 
