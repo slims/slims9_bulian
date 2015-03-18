@@ -371,9 +371,9 @@ if (!$is_member_login) {
         $_datagrid = $_loan_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
         if ($_loan_list->num_rows > 0) {
             $_actions = '<div class="memberBasketAction">';
-            $_actions .= '<a href="index.php?p=member" class="basket reserve">'.__('Reserve title(s) on Basket').'</a> :: ';
-            $_actions .= '<a href="index.php?p=member" class="basket clearAll" postdata="clear_biblio=1">'.__('Clear Basket').'</a> :: ';
-            $_actions .= '<a href="index.php?p=member" class="basket clearOne">'.__('Remove selected title(s) from Basket').'</a>';
+            $_actions .= '<a href="index.php?p=member" class="basket reserve">'.__('Reserve title(s) on Basket').'</a> ';
+            $_actions .= '<a href="index.php?p=member" class="basket clearAll" postdata="clear_biblio=1">'.__('Clear Basket').'</a> ';
+            $_actions .= '<a href="index.php?p=member" class="basket clearOne">'.__('Remove selected title(s) from Basket').'</a> ';
             $_actions .= '</div>';
             $_result .= '<div class="memberBasketInfo">'.$_loan_list->num_rows.' '.__('title(s) on basket').$_actions.'</div>'."\n".$_datagrid;
         }

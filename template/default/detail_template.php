@@ -1,102 +1,180 @@
-<div class="row-fluid coll-detail">
-  <div class="span2">
-      <div class="cover">
-      <?php print $image ?>
-      </div>
-      <br/>
-    <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $biblio_id ?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a>
+<div class="s-detail animated delay9 fadeInUp" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
+  
+  <!-- Book Cover
+  ============================================= -->
+  <div class="cover">
+    <?php echo $image ?>
   </div>
-  <div class="span10" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book">
-    <h4 class="title" itemprop="name" property="name"><?php print $title ?></h4>
-    <div><?php print $social_shares ?></div>
-    <span class="abstract" itemprop="description" property="description">
-    <hr/>
-    <?php print $notes ?>
-    <hr/>
-    </span>
-    <div class="form-horizontal">
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Statement of Responsibility'); ?></label>
-        <div class="controls" itemprop="author" property="author"><?php print $sor ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Author(s)'); ?></label>
-        <div class="controls" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person"><?php print $authors ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Edition'); ?></label>
-        <div class="controls" itemprop="bookEdition" property="bookEdition"><?php print $edition ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Call Number'); ?></label>
-        <div class="controls"><?php print $call_number ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('ISBN/ISSN'); ?></label>
-        <div class="controls" itemprop="isbn" property="isbn"><?php print $isbn_issn ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Subject(s)'); ?></label>
-        <div class="controls" itemprop="keywords" property="keywords"><?php print $subjects ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Classification'); ?></label>
-        <div class="controls"><?php print $classification ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Series Title'); ?></label>
-        <div class="controls" itemprop="alternativeHeadline" property="alternativeHeadline"><?php print $series_title ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('GMD'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php print $gmd_name ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Content Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($content_type) : print $content_type; else : print __('No data'); endif; ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Media Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($media_type) : print $media_type; else : print __('No data'); endif; ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Carrier Type'); ?></label>
-        <div class="controls" itemprop="bookFormat" property="bookFormat"><?php if ($carrier_type) : print $carrier_type; else : print __('No data'); endif; ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Language'); ?></label>
-        <div class="controls"><meta itemprop="inLanguage" property="inLanguage" content="<?php print $language_name ?>" /><?php print $language_name ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Publisher'); ?></label>
-        <div class="controls" itemprop="publisher" property="publisher" itemtype="http://schema.org/Organization" itemscope><?php print $publisher_name ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Publishing Year'); ?></label>
-        <div class="controls" itemprop="datePublished" property="datePublished"><?php print $publish_year ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Publishing Place'); ?></label>
-        <div class="controls" itemprop="publisher" property="publisher"><?php print $publish_place ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Collation'); ?></label>
-        <div class="controls" itemprop="numberOfPages" property="numberOfPages"><?php print $collation ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Specific Detail Info'); ?></label>
-        <div class="controls"><?php if ($spec_detail_info) : print $spec_detail_info; else : print __('No data'); endif; ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('File Attachment'); ?></label>
-        <div class="controls" itemprop="associatedMedia"><?php if ($file_att) : print $file_att; else : print '<p class="bg-danger">'.__('No attachment data').'</p>'; endif; ?></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label key"><?php print __('Availability'); ?></label>
-        <div class="controls"><?php if ($availability) : print $availability; else : print '<p class="bg-danger">'.__('No copy data').'</p>'; endif; ?></div>
-      </div>
+
+  <!-- Title 
+  ============================================= -->
+  <!-- <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $biblio_id ?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a> -->
+  <h3 class="s-detail-type"><?php echo $gmd_name ?></h3>
+  <h4 class="s-detail-title" itemprop="name" property="name"><?php echo $title ?></h4>
+  <?php echo $social_shares ?>
+  <br>
+  <div class="s-detail-author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">
+  <?php echo  $authors ?>
+  <br>
+  </div>
+
+  <!-- Abstract 
+  ============================================= -->
+  <hr>
+  <?php if($notes) : ?>
+    <div class="s-detail-abstract" itemprop="description" property="description">
+      <p><?php echo $notes ?></p>
+      <hr/>
     </div>
+    <?php else : ?>
+    <div>
+      <em><?php echo __('Description Not Available'); ?></em>
+      <br><br><br>
+    </div>
+  <?php endif; ?>
+
+  <!-- Availability
+  ============================================= -->  
+  <h3><i class="fa fa-check-circle-o"></i> <?php echo __('Availability'); ?></h3>
+  <?php echo ($availability) ? $availability : '<p class="s-alert">'.__('No copy data').'</p>'; ?>
+  <br>
+
+  <!-- Item Details
+  ============================================= -->  
+  <h3><i class="fa fa-circle-o"></i> <?php echo __('Detail Information'); ?></h3>
+  <div class="row">
+  <div class="col-lg-6">  
+  <table class="s-table">
+    <tbody>      
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Series Title'); ?></th>
+        <td>
+          <div itemprop="alternativeHeadline" property="alternativeHeadline"><?php echo ($series_title) ? $series_title : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Call Number'); ?></th>
+        <td>
+          <div><?php echo ($call_number) ? $call_number : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Publisher'); ?></th>
+        <td>
+          <span itemprop="publisher" property="publisher" itemtype="http://schema.org/Organization" itemscope><?php echo $publisher_name ?></span> :
+          <span itemprop="publisher" property="publisher"><?php echo $publish_place ?></span>.,
+          <span itemprop="datePublished" property="datePublished"><?php echo $publish_year ?></span>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Collation'); ?></th>
+        <td>
+          <div itemprop="numberOfPages" property="numberOfPages"><?php echo ($collation) ? $collation : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Language'); ?></th>
+        <td>
+          <div><meta itemprop="inLanguage" property="inLanguage" content="<?php echo $language_name ?>" /><?php echo $language_name ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('ISBN/ISSN'); ?></th>
+        <td>
+          <div itemprop="isbn" property="isbn"><?php echo ($isbn_issn) ? $isbn_issn : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>  
+        <th><?php echo __('Classification'); ?></th>
+        <td>
+          <div><?php echo ($classification) ? $classification : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Content Type'); ?></th>
+        <td>
+          <div itemprop="bookFormat" property="bookFormat"><?php echo ($content_type) ? $content_type : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+    </tbody>
+  </table>
   </div>
-  <div class="clearfix"></div>
+  <div class="col-lg-6">
+  <table class="s-table">
+    <tbody>    
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Media Type'); ?></th>
+        <td>
+          <div itemprop="bookFormat" property="bookFormat"><?php echo ($media_type) ? $media_type : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Carrier Type'); ?></th>
+        <td>
+        <div itemprop="bookFormat" property="bookFormat"><?php echo ($carrier_type) ? $carrier_type : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Edition'); ?></th>
+        <td>
+          <div itemprop="bookEdition" property="bookEdition"><?php echo ($edition) ? $edition : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Subject(s)'); ?></th>
+        <td>
+          <div class="s-subject" itemprop="keywords" property="keywords"><?php echo ($subjects) ? $subjects : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Specific Detail Info'); ?></th>
+        <td>
+          <div><?php echo ($spec_detail_info) ? $spec_detail_info : '-'; ?></div>
+        </td>
+      </tr>
+      <!-- ============================================= -->  
+      <tr>
+        <th><?php echo __('Statement of Responsibility'); ?></th>
+        <td>
+          <div itemprop="author" property="author"><?php echo ($sor) ? $sor : '-';  ?></div>
+        </td>
+      </tr>    
+      <!-- ============================================= -->  
+    </tbody>
+  </table>
+  </div>
+  </div>
+
+  <?php if ($file_att) : ?>
+  <!-- Attachment
+  ============================================= -->  
+  <h3><i class="fa fa-arrow-circle-o-down"></i> <?php echo __('File Attachment'); ?></h3>
+  <div itemprop="associatedMedia">
+    <div class="s-download">
+      <?php echo $file_att; ?>
+    </div> 
+  </div>
+  <?php endif; ?>
+
+  <!-- Comment
+  ============================================= -->  
+  <?php if(isset($_SESSION['mid'])) : ?>
+  <h3><i class="fa fa-comments-o"></i> <?php echo __('Comments'); ?></h3>
   <?php echo showComment($biblio_id); ?>
+  <?php endif; ?>
+
 </div>

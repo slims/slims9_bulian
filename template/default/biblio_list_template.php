@@ -40,6 +40,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   global $label_cache, $sysconf;
   // init output var
   $output = '';
+
   $title = $biblio_detail['title'];
   $biblio_id = $biblio_detail['biblio_id'];
   $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
@@ -138,6 +139,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   }
 
   // checkbox for marking collection
+  $_i= rand(); // Add By Eddy Subratha
   $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
   $output .= '<div class="subItem">'.$detail_button.' '.$xml_button.$_check_mark.'</div>';
 

@@ -99,6 +99,140 @@ a, a:hover {
   padding-right: 10px;
   margin-top: -5px;
 }
+
+/* Member
+ ================================ */
+.tagline {
+  font-size: 30px;
+  border-bottom: solid 1px #f2f2f2;
+  padding-top: 53px;
+  padding-bottom:20px;
+  margin-bottom:20px;
+}
+
+.loginInfo {
+  padding-bottom: 50px;
+}
+
+.loginInfo .login_input input {
+  border: none;
+  padding: 5px 10px;
+  background: #f2f2f2;
+  color: #333;
+  width: 300px;
+}
+
+.memberButton {
+  padding: 2px 20px !important;
+  margin-top: 20px;
+}
+
+.loginInfo .fieldLabel {
+  font-size: 10pt;
+  padding: 10px 0;
+}
+
+
+/* Member Detail
+ ================================ */
+.memberBasketList,
+.memberDetail {
+  border: none;
+}
+
+.memberDetail .alterCell {
+  background-color: #f2f2f2;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 0px 15px;
+  width: auto !important;
+  text-align: right;
+  border-color: #E1E1E1;
+}
+
+.memberDetail .alterCell2 {
+  border-color: #eee;
+  padding: 0px 15px;
+}
+
+.memberLoanList {
+  border: none;
+}
+
+.memberBasketList .alterCell td,
+.memberLoanList .alterCell td {
+  background: #ddd;
+}
+
+.memberBasketList .alterCell2 td,
+.memberLoanList .alterCell2 td {
+  background: #f2f2f2;
+}
+
+.memberBasketList .alterCell td,
+.memberBasketList .alterCell2 td,
+.memberLoanList .alterCell td,
+.memberLoanList .alterCell2 td {
+  border: none;
+  padding: 10px;
+  font-size: 10pt;
+}
+
+.dataListHeader {
+  background: #282828;
+  color: #fff;
+  letter-spacing: 4px;
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dataListHeader a {
+  color: #fff;  
+  display: block;
+  padding: 5px 10px;
+}
+
+.dataListHeader a:hover {
+  color: #fff;
+  background: #852836;
+}
+
+#loginButton {
+  padding: 5px 35px !important;
+  margin: 10px 0 10px -15px;
+}
+
+.memberDetail input {
+  width: 100%;
+  border: solid 1px #f2f2f2;
+  margin: 5px -10px;
+}
+
+.memberBasketInfo {
+  font-size: 12pt;
+}
+
+.memberBasketAction a {
+  background-color: #282828;
+  color: #fff;
+  padding: 10px 15px;
+  letter-spacing: 4px;
+  font-size: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+}
+
+.memberBasketAction a:hover  {
+  background: #852836;
+}
+
+#memberChangePassword .alterCell2 {
+  border-color: #f2f2f2;
+}
+
 /* Menu
  ================================ */
 
@@ -623,6 +757,7 @@ footer {}
 }
 .biblioRecord:hover {
   border-color: #ccc;
+
 }
 .biblioRecord:last-child {
   margin-right: 0;
@@ -637,9 +772,44 @@ footer {}
   position: relative;
   width: 120px;
   height: 165px;
-  margin: 30px auto;
+  margin: 50px auto 15px auto;
   overflow: hidden;
 }
+.biblioRecord:hover .cover-list {
+  -webkit-transition: bottom 1s ease-in-out;
+  transition: bottom 1s ease-in-out;
+  -webkit-animation-name: coverUp;
+  animation-name: coverUp;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+
+}
+
+@-webkit-keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 10px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 10px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+
 .biblioRecord .cover-list .img-thumbnail {
   padding: 0;
   border-radius: 0;
@@ -706,11 +876,13 @@ footer {}
   padding: 0;
   margin-top: 0;
 }
+
 .biblioRecord .subItem {
   position: absolute;
   bottom: 10px;
   margin-left: 6px;
 }
+
 .biblioRecord .detailLink, .biblioRecord .xmlDetailLink {
   font-size: 8px;
   text-transform: uppercase;
@@ -750,12 +922,18 @@ footer {}
   width: 100%;
   float: left;
   padding: 20px 0;
+  margin-left: 2px;
 }
+
 .biblioPaging b, .biblioPaging a {
   display: inline;
-  padding: 10px 15px;
-  font-size: 10pt;
-  background: #f2f2f2;
+  margin:0 -7px;
+  padding: 10px 11px;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background-color: #fff;
+  border: solid 1px #f2f2f2;
   -webikit-transition: all 500ms;
   transition: all 500ms;
 }
@@ -766,44 +944,62 @@ footer {}
 /* Biblio Detail
  ================================ */
 
-.coll-detail .cover {
+.s-detail .cover {
   float: right;
   height: 250px;
   overflow: hidden;
-  margin: 105px 0 0 50px;
+  margin: 50px 0 0 50px;
 }
-.coll-detail .share-buttons {
+
+.s-detail-type {
+  padding:0;
+  margin:0;
+}
+
+.s-detail .share-buttons {
   float: right;
+  padding-top: 0;
 }
-.coll-detail .abstract {
+
+.s-detail .s-detail-abstract p {
+  display: block;
+  text-align: justify !important;
+  font-style: italic;
+}
+
+.s-detail .s-detail-abstract {
   position: relative;
   width: 100%;
 }
-.coll-detail .abstract hr:first-child {
+.s-detail .s-detail-abstract:empty {
   display: none;
 }
-.coll-detail .abstract:empty {
+
+.s-detail .s-detail-abstract br:not(:first-child) {
   display: none;
 }
-.coll-detail .cover img {
+
+.s-detail .cover img {
   background-size: 100%;
   height: 250px;
-}
-.coll-detail .title {
-  font-family: 'Arial', serif;
+} 
+
+.s-detail .s-detail-title {
+  font-family: Arial, serif;
   font-weight: 900 !important;
-  font-size: 24pt;
-  line-height: 32pt;
+  font-size: 18pt;
+  line-height: 24pt;
+  padding-top: 5px; 
   padding-bottom: 20px;
   margin-bottom: 20px;
   text-transform: capitalize;
 }
-.coll-detail .form-horizontal {
+.s-detail .form-horizontal {
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
 }
-.coll-detail .form-horizontal .control-group {
+.s-detail .form-horizontal .control-group {
   margin: 0;
   -webkit-column-break-inside: avoid;
   /* Chrome, Safari */
@@ -828,6 +1024,347 @@ footer {}
   text-align: left !important;
   padding-top:10px;
   padding-bottom:10px;
+}
+
+.s-detail-author {
+  display: inline;
+  font-family: Raleway, serif;
+}
+
+.s-detail-author a:first-child:before {
+  content: "";
+
+}
+.s-detail-author a:before {
+  content: " | ";
+}
+.s-detail-author br {
+  display: none;
+}
+
+.labels {
+  width: 48px;
+  display: inline-block;
+  position: absolute;
+  top: -5px;
+  right: -5px;  
+  z-index: 1099;
+}
+
+/* Librarian
+ ================================ */
+.librarian {
+  position: relative;
+  float: left;
+  width: 45%;
+  padding: 10px 20px;
+  min-height: 423px;
+  text-align: center;
+  margin-right: 15px;
+  border: solid 1px #f2f2f2;
+  margin-bottom: 15px;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+
+}
+.librarian .span2 div,
+.librarian-image {
+  width: 125px;
+  height: 125px;
+  overflow: hidden;
+  border-radius: 50%;  
+  margin: 20px auto;
+}
+
+.librarian img {
+  width: 125px;
+}
+
+.librarian .key {
+  font-size: 12px;
+  margin-bottom: -15px;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.librarian .key + div {
+  border-bottom: solid 1px #f2f2f2;
+  padding-bottom: 15px;
+}
+
+.librarian div:empty:before {
+  content: '-';
+}
+
+.librarian-social {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Alert
+ ================================ */
+.s-alert {
+  background-color: #f2f2f2;
+  color: red;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Download
+ ================================ */
+.s-download {
+}
+
+.attachList {
+  position: relative;
+  padding:0;
+}
+
+
+
+.attachment-pdf,
+.attachment-audio-video,
+.attachment-audio-audio,
+.attachment-url-list,
+.attachment-image  {
+  list-style: none;
+  list-style-image: none !important;
+  margin:0;
+  border: solid 1px #f2f2f2;
+  padding: 20px 28px;
+  font-size: 14px;
+  line-height: 18pt;
+  vertical-align: middle;
+}
+
+.attachment-pdf:before,
+.attachment-audio-video:before,
+.attachment-audio-audio:before,
+.attachment-url-list:before,
+.attachment-image:before {
+  position: absolute;
+  right: 10px;
+  top:30%;
+  font-family: 'FontAwesome';
+  display: block;
+  color: #20b390;
+  font-size: 28px;
+}
+
+.attachment-pdf:before {
+  content: "\f1c1";
+}
+
+.attachment-image:before {
+  content: "\f1c5";
+}
+
+.attachment-audio-audio:before  {
+  content: "\f1c7";
+}
+
+.attachment-audio-video:before  {
+  content: "\f1c8";
+}
+
+.attachment-url-list:before  {
+  content: "\f1c9";
+}
+
+
+/* Member Logged
+ ================================ */
+.alert-member-login {
+  background: transparent;
+  text-align: left !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+#memberLogout {
+  clear: both;
+  color: #fff !important;
+}
+
+/* Comments
+ ================================ */
+.comments {
+  padding-top: 10px;
+  padding-bottom: 14px;
+}
+
+.comment-found {
+  font-size: 10px;
+}
+
+.comment-member {
+  text-transform: uppercase;
+  font-size: 10pt;
+  font-weight: 300px;
+}
+
+.comment-content {
+  background: #f2f2f2;
+  padding: 15px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 15px;
+  border-color: #f2f2f2;
+}
+
+.comment-form .button {
+  border: none;
+  background: #282828;
+  color: #fff;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 5px 15px;
+  width: 100%;
+}
+
+/* Colorbox for PDF Preview
+ ================================ */
+#cboxOverlay {
+  background: #000;
+  opacity: 
+}
+
+#cboxTopLeft,
+#cboxTopCenter,
+#cboxTopRight,
+#cboxBottomLeft,
+#cboxBottomCenter,
+#cboxBottomRight,
+#cboxMiddleLeft,
+#cboxMiddleRight {
+  display: none;
+}
+
+#cboxTitle {
+  padding: 20px 0;
+}
+
+
+/* Collection Mark
+ ================================ */
+.biblioRecord .biblioCheck {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: -1;
+}
+
+.biblioRecord .biblioCheck + label {
+  cursor: pointer;
+  background: #282828;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff ;
+  padding:4px 0;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+.biblioRecord .biblioCheck:checked + label:before {
+  font-family: FontAwesome;
+  content: "\f00c";
+  color: #fff;
+  padding-right:10px;
+}
+
+.biblioRecord .biblioCheck:checked + label,
+.biblioRecord .biblioCheck + label:hover {
+  background: #060;
+  color: #fff
+}
+
+.biblioMarkFormAction {
+  padding: 10px 0;
+}
+
+.biblioMarkFormAction:first-child {
+  margin-bottom: 10px;
+}
+
+.biblioMarkFormAction:last-child {
+  margin-bottom: -15px;
+}
+
+.biblioMarkFormAction input {
+  border: none;
+  background: #282828;
+  color: #fff;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 5px 26px;
+  margin-left: -10px;
+}
+
+
+
+/* Table
+ ================================ */
+.s-table {
+  border-width: 0;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  padding: 5px 10px;
+  line-height: 2;
+  max-width: 100%;
+  width: 100%;
+  border-spacing: 0;
+}
+
+.s-table tr {
+  border-bottom: 1px dotted #f2f2f2;
+}
+
+.s-table td,
+.s-table th {
+  vertical-align: top;
+  padding-top: 8px;
+  border-width: 0;
+  padding-bottom: 0;
+}
+
+.s-table td {
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  padding: 5px 10px;
+}
+
+.s-table th {
+  font-weight: 300;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-align: right;
+  text-transform: uppercase;
+  vertical-align: middle;
+  background-color: #f2f2f2;
+  color: #000;
+  padding: 0px 10px;
+  width:150px;
+}
+
+.s-subject a {
+  -webkit-transition: background-color 500ms ease;
+  transition: background-color 500ms ease;
 }
 
 /* Page
@@ -936,7 +1473,11 @@ footer {}
 .s-login {
   margin-top: -25px;
 }
-.s-main-content .col-lg-4 a, .coll-detail .btn, .xmlResultLink {
+
+#loginButton,
+.memberButton,
+.s-main-content .col-lg-4 a, 
+.s-detail .btn, .xmlResultLink {
   border-radius: 0;
   border: none;
   background-color: #282828;
@@ -944,13 +1485,17 @@ footer {}
   text-transform: uppercase;
   letter-spacing: 2px;
   white-space: nowrap;
-  background-color: #282828;
   color: #fff;
   padding: 10px 29px;
   -webkit-transition: background-color 500ms ease;
   transition: background-color 500ms ease;
 }
+
+#loginButton:hover,
+.memberButton a:hover, 
+.s-subject a:hover, 
 .xmlResultLink:hover {
   background-color: #852836;
   color: #fff;
+
 }
