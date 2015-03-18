@@ -210,13 +210,10 @@ form.clock {
 }
 
 #visitorCounterForm {
-    width: 75%;
-    float: left;
+    width: 100%;
 }
 
 #visitorCounterPhoto {
-    margin-top: 10px;
-    float: right;
+    margin-top: 5px;
     width: 100px;
-    height: 120px;
 }
