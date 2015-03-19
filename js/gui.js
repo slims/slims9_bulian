@@ -422,17 +422,17 @@ $('document').ready(function() {
 
   // jquery colorbox
   $('body').on('click', 'a.openPopUp', function(evt) {
-  	evt.preventDefault();
-  	var popUpButton = $(this);
-  	top.jQuery.colorbox({iframe:true,
-  		href: popUpButton.attr('href'),
-      innerWidth: function() {
-        var width = parseInt(popUpButton.attr('width'));
-        if (width) { return width; } else { return 600; } },
-      innerHeight: function() {
-        var height = parseInt(popUpButton.attr('height'));
-        if (height) { return height; } else { return 300; } },
-      title: function() { return popUpButton.attr('title'); } });
+    evt.preventDefault();
+    var popUpButton = $(this);
+    top.jQuery.colorbox({iframe:true,
+    href: popUpButton.attr('href'),
+    innerWidth: function() {
+      var width = parseInt(popUpButton.attr('width'));
+      if (width) { return width; } else { return 600; } },
+    innerHeight: function() {
+      var height = parseInt(popUpButton.attr('height'));
+      if (height) { return height; } else { return 300; } },
+    title: function() { return popUpButton.attr('title'); } });
   });
 
   // Google Voice Search
