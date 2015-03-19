@@ -21,9 +21,10 @@
   <?php if ($authors_string) : ?>
     <span class="authors"><?php print $authors_string ?>.</span>
     <span class="title"><em><?php print $title ?></em>.</span>
-    <span class="edition"><?php print $edition ?> 
+    <span class="edition"><?php print $edition ?></span>
   <?php else : ?>
     <span class="title"><em><?php print $title ?></em>.</span>
+    <span class="edition"><?php print $edition ?>.</span>
   <?php endif; ?>
   <span class="publish_place"><?php print $publish_place ?>:</span>
   <span class="publisher"><?php print $publisher_name ?>,</span>
