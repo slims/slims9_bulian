@@ -95,7 +95,24 @@ class simbio_directory
         $_dir->close();
         return ($_d > 0)?$mixed_dir_tree:false;
     }
-
+    
+    public function getFileList()
+    {
+        $_dir = scandir($this->base_dir);
+        $files = array();
+        // loop directory content and search for directory
+        $_d = 0;
+        foreach ($_dir as $_content) {
+            if (in_array($_content, array('.', '..'))) {
+              continue;
+            }
+            $_current_path = $this->base_dir.DIRECTORY_SEPARATOR.$_content;
+            if (is_file($_current_path)) {
+              $files[] = $_content;
+            }
+        }
+        return $files;        
+    }
 
     /**
      * Strip trailing directory slash
@@ -108,4 +125,3 @@ class simbio_directory
         return preg_replace("/(\/|\\\)$/i", '', $str_dir);
     }
 }
-?>

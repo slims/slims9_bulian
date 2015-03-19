@@ -44,6 +44,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $title = $biblio_detail['title'];
   $biblio_id = $biblio_detail['biblio_id'];
   $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
+  $cite_url = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];
   
   $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
   // label
@@ -72,6 +73,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   if ($settings['xml_detail']) {
     $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink" title="View record detail description in XML Format" target="_blank">XML Detail</a>';
   }
+  
+  // citation button
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink" title="Citation for: '.substr($title, 0, 50).'" target="_blank">Cite</a>';
   
   // cover images var
   $image_cover = '';
@@ -141,8 +145,8 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // checkbox for marking collection
   $_i= rand(); // Add By Eddy Subratha
   $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-  $output .= '<div class="subItem">'.$detail_button.' '.$xml_button.$_check_mark.'</div>';
-
+  $output .= '<div class="subItem">'.$detail_button.' '.$cite_button.' '.$xml_button.$_check_mark.'</div>';
+  
   // social buttons
   if ($sysconf['social_shares']) {
     // share buttons

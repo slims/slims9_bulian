@@ -56,7 +56,7 @@ class detail
      */
     public function __construct($dbs, $int_detail_id, $str_output_format = 'html')
     {
-        if (!in_array($str_output_format, array('html', 'xml', 'mods', 'dc', 'json', 'json-ld'))) {
+        if (!in_array($str_output_format, array('html', 'xml', 'mods', 'dc', 'json', 'json-ld', 'marc'))) {
             $this->output_format = trim($str_output_format);
         } else { $this->output_format = $str_output_format; }
         $this->db = $dbs;
@@ -82,7 +82,7 @@ class detail
     {
         global $sysconf;
         if ($this->error) {
-            return '<div class="error">Error Fetching data for record detail. Server return error message: '.$this->error.'</div>';
+            return '<div class="error alert alert-error">Error Fetching data for record detail. Server return error message: '.$this->error.'</div>';
         } else {
             if ($this->output_format == 'html') {
                 ob_start();
@@ -706,7 +706,7 @@ class detail
       // image
       if (!empty($this->record_detail['image'])) {
         $_image = urlencode($this->record_detail['image']);
-	  	  $jsonld['image'] = 'http://'.$_SERVER['SERVER_NAME'].IMGBS.'docs/'.urlencode($_image);
+	$jsonld['image'] = 'http://'.$_SERVER['SERVER_NAME'].IMGBS.'docs/'.urlencode($_image);
       }
       
       return json_encode($jsonld);
