@@ -969,10 +969,12 @@ keyframes coverUp {
   -webikit-transition: all 500ms;
   transition: all 500ms;
 }
+
 .biblioPaging a:hover, .biblioPaging b {
   background: #282828;
   color: #fff;
 }
+
 /* Biblio Detail
  ================================ */
 

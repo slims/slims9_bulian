@@ -194,6 +194,13 @@ if (!defined('INDEX_AUTH')) {
 ============================================= -->
 <?php include "footer_template.php"; ?>
 
+<!-- Chat
+============================================= -->
+<div class="s-chat">
+  
+</div>
+
+
 <!-- Background
 ============================================= -->
 <?php include "bg_template.php"; ?>

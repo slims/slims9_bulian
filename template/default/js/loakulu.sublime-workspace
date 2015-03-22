@@ -1,0 +1,686 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"margin",
+				"margin"
+			],
+			[
+				"text",
+				"text-transform"
+			],
+			[
+				"ease-in",
+				"ease-in-out"
+			],
+			[
+				"ease",
+				"ease-in-out"
+			],
+			[
+				"s",
+				"script"
+			],
+			[
+				"font-",
+				"font-weight"
+			],
+			[
+				"Opne",
+				"Open_Sans"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"mari",
+				"margin"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"tab",
+				"table-column"
+			],
+			[
+				"padi",
+				"padding-top"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"paddin",
+				"padding-right"
+			],
+			[
+				"inlin",
+				"inline-block"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/layouts/default.html",
+			"settings":
+			{
+				"buffer_size": 202,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/header.html",
+			"settings":
+			{
+				"buffer_size": 3818,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "&nbsp;",
+			"settings":
+			{
+				"buffer_size": 6,
+				"line_ending": "Windows",
+				"name": "&nbsp;"
+			}
+		},
+		{
+			"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/modules/pages/page.php",
+			"settings":
+			{
+				"buffer_size": 171,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<!DOCTYPE html>\n<html dir=\"ltr\" lang=\"en-US\">\n<head>\n\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n	<meta name=\"author\" content=\"Loakulu Kota Kutai Kartanegara\" />\n\n	<!-- <link href=\"http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic\" rel=\"stylesheet\" type=\"text/css\" /> -->\n    <link rel=\"stylesheet\" href=\"css/bootstrap.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"css/colors.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"custom.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"css/dark.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"css/font-icons.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"css/animate.css\" type=\"text/css\" />\n    <link rel=\"stylesheet\" href=\"css/magnific-popup.css\" type=\"text/css\" />\n\n    <link rel=\"stylesheet\" href=\"css/responsive.css\" type=\"text/css\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />\n    <!--[if lt IE 9]>\n    	<script src=\"http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js\"></script>\n    <![endif]-->\n\n	<script type=\"text/javascript\" src=\"js/jquery.js\"></script>\n	<script type=\"text/javascript\" src=\"js/plugins.js\"></script>\n\n	<title>Desa Loakulu Kota Kutai Kartanegara</title>\n\n</head>\n\n<body>\n\n    <!-- Document Wrapper\n    ============================================= -->\n    <div id=\"wrapper\" class=\"clearfix\">\n\n        <div id=\"home\" class=\"page-section\" style=\"position:absolute;top:0;left:0;width:100%;height:200px;z-index:-2;\"></div>\n\n        <section id=\"slider\" class=\"slider-parallax full-screen with-header swiper_wrapper clearfix\">\n\n            <div class=\"swiper-container swiper-parent\">\n                <div class=\"swiper-wrapper\">\n                    <div class=\"swiper-slide dark\">\n                        <div class=\"container clearfix\">\n                            <div class=\"slider-caption slider-caption-center\">\n                                <h2 data-caption-animate=\"fadeInUp\">Keindahan Desa Loa Kulu</h2>\n                                <p data-caption-animate=\"fadeInUp\" data-caption-delay=\"200\">Menghirup Segarnya Udara Hutan Kalimantan </p>\n                            </div>\n                        </div>\n                        <div class=\"video-wrap\">\n                            <video poster=\"images/videos/explore-poster.jpg\" preload=\"auto\" loop autoplay muted>\n                                <source src='images/videos/2.mp4' type='video/mp4' />\n                            </video>\n                            <div class=\"video-overlay default\"></div>\n                        </div>\n                    </div>\n                    <div class=\"swiper-slide dark\" style=\"background-image: url('images/slider/1.jpg');\">\n                        <div class=\"video-overlay blue\"></div>\n                        <div class=\"container clearfix\">\n                            <div class=\"slider-caption slider-caption-center\">\n                                <h2 data-caption-animate=\"fadeInUp\">Keragaman Suku</h2>\n                                <p data-caption-animate=\"fadeInUp\" data-caption-delay=\"200\">Menjunjung Tinggi Kebersamaan</p>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"swiper-slide dark\" style=\"background-image: url('images/slider/2.jpg'); background-position: center top;\">\n                        <div class=\"video-overlay green\"></div>\n                        <div class=\"container clearfix\">\n                            <div class=\"slider-caption slider-caption-center    \">\n                                <h2 data-caption-animate=\"fadeInUp\">Membangun Kebersamaan</h2>\n                                <p data-caption-animate=\"fadeInUp\" data-caption-delay=\"200\">Sinergitas Pemerintah dan Masyarakat</p>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div id=\"slider-arrow-left\"><i class=\"icon-angle-left\"></i></div>\n                <div id=\"slider-arrow-right\"><i class=\"icon-angle-right\"></i></div>\n                <div id=\"slide-number\"><div id=\"slide-number-current\"></div><span>/</span><div id=\"slide-number-total\"></div></div>\n            </div>\n\n            <script>\n                jQuery(document).ready(function($){\n                    var swiperSlider = new Swiper('.swiper-parent',{\n                        paginationClickable: false,\n                        slidesPerView: 1,\n                        grabCursor: true,\n                        onSwiperCreated: function(swiper){\n                            $('[data-caption-animate]').each(function(){\n                                var $toAnimateElement = $(this);\n                                var toAnimateDelay = $(this).attr('data-caption-delay');\n                                var toAnimateDelayTime = 0;\n                                if( toAnimateDelay ) { toAnimateDelayTime = Number( toAnimateDelay ) + 750; } else { toAnimateDelayTime = 750; }\n                                if( !$toAnimateElement.hasClass('animated') ) {\n                                    $toAnimateElement.addClass('not-animated');\n                                    var elementAnimation = $toAnimateElement.attr('data-caption-animate');\n                                    setTimeout(function() {\n                                        $toAnimateElement.removeClass('not-animated').addClass( elementAnimation + ' animated');\n                                    }, toAnimateDelayTime);\n                                }\n                            });\n                        },\n                        onSlideChangeStart: function(swiper){\n                            $('#slide-number-current').html(swiper.activeIndex + 1);\n                            $('[data-caption-animate]').each(function(){\n                                var $toAnimateElement = $(this);\n                                var elementAnimation = $toAnimateElement.attr('data-caption-animate');\n                                $toAnimateElement.removeClass('animated').removeClass(elementAnimation).addClass('not-animated');\n                            });\n                        },\n                        onSlideChangeEnd: function(swiper){\n                            $('#slider .swiper-slide').each(function(){\n                                if($(this).find('video').length > 0) { $(this).find('video').get(0).pause(); }\n                            });\n                            $('#slider .swiper-slide:not(\".swiper-slide-active\")').each(function(){\n                                if($(this).find('video').length > 0) {\n                                    if($(this).find('video').get(0).currentTime != 0 ) $(this).find('video').get(0).currentTime = 0;\n                                }\n                            });\n                            if( $('#slider .swiper-slide.swiper-slide-active').find('video').length > 0 ) { $('#slider .swiper-slide.swiper-slide-active').find('video').get(0).play(); }\n\n                            $('#slider .swiper-slide.swiper-slide-active [data-caption-animate]').each(function(){\n                                var $toAnimateElement = $(this);\n                                var toAnimateDelay = $(this).attr('data-caption-delay');\n                                var toAnimateDelayTime = 0;\n                                if( toAnimateDelay ) { toAnimateDelayTime = Number( toAnimateDelay ) + 300; } else { toAnimateDelayTime = 300; }\n                                if( !$toAnimateElement.hasClass('animated') ) {\n                                    $toAnimateElement.addClass('not-animated');\n                                    var elementAnimation = $toAnimateElement.attr('data-caption-animate');\n                                    setTimeout(function() {\n                                        $toAnimateElement.removeClass('not-animated').addClass( elementAnimation + ' animated');\n                                    }, toAnimateDelayTime);\n                                }\n                            });\n                        }\n                    });\n\n                    $('#slider-arrow-left').on('click', function(e){\n                        e.preventDefault();\n                        swiperSlider.swipePrev();\n                    });\n\n                    $('#slider-arrow-right').on('click', function(e){\n                        e.preventDefault();\n                        swiperSlider.swipeNext();\n                    });\n\n                    $('#slide-number-current').html(swiperSlider.activeIndex + 1);\n                    $('#slide-number-total').html(swiperSlider.slides.length);\n                });\n            </script>\n\n        </section>\n\n        <header id=\"header\" class=\"full-header\">\n            <div id=\"header-wrap\">\n                <div class=\"container clearfix\">\n                    <div id=\"primary-menu-trigger\"><i class=\"icon-reorder\"></i></div>\n                    <div id=\"logo\">\n                        <a href=\"index.html\" class=\"standard-logo\" data-dark-logo=\"images/logo-dark.png\"><img src=\"images/logo.png\" alt=\"Canvas Logo\"></a>\n                        <a href=\"index.html\" class=\"retina-logo\" data-dark-logo=\"images/logo-dark@2x.png\"><img src=\"images/logo@2x.png\" alt=\"Canvas Logo\"></a>\n                    </div><!-- #logo end -->\n\n                    <nav id=\"primary-menu\">\n\n                        <ul class=\"one-page-menu\">\n                            <li><a href=\"#\"><div>Beranda</div></a></li>\n                            <li><a href=\"#\"><div>Tentang Kami</div></a>\n                                <ul>\n                                    <li><a href=\"#\"><div>Sambutan</div></a></li>\n                                    <li><a href=\"#\"><div>Struktur Organisasi</div></a></li>\n                                    <li><a href=\"#\"><div>Visi & Misi</div></a></li>\n                                </ul>\n                            </li>\n                            <li><a href=\"#\"><div>Berkas Daring</div></a></li>\n                            <li><a href=\"#\"><div>Berita</div></a></li>\n                            <li><a href=\"#\"><div>Galeri</div></a></li>\n                        </ul>\n\n                        <div id=\"top-search\">\n                            <a href=\"#\" id=\"top-search-trigger\"><i class=\"icon-search3\"></i><i class=\"icon-line-cross\"></i></a>\n                            <form action=\"search.html\" method=\"get\">\n                                <input type=\"text\" name=\"q\" class=\"form-control\" value=\"\" placeholder=\"Type &amp; Hit Enter..\">\n                            </form>\n                        </div>\n\n                    </nav>\n\n                </div>\n\n            </div>\n\n        </header>\n\n\n        <section id=\"content\">\n            <div class=\"content-wrap\">\n\n                <section id=\"section-services\" class=\"page-section topmargin-lg\">\n\n                    <div class=\"heading-block center bottommargin-lg\">\n                        <h2>Layanan Terbaik</h2>\n                        <span>Senantiasa Memberikan Pelayanan Prima</span>\n                    </div>\n\n                    <div class=\"container clearfix\">\n\n\n                        <div class=\"col_one_third nobottommargin\">\n                            <div class=\"feature-box fbox-center fbox-effect nobottomborder\" data-animate=\"fadeIn\" data-delay=\"1200\">\n                                <div class=\"fbox-icon\">\n                                    <a href=\"#\"><i class=\"icon-print\"></i></a>\n                                </div>\n                                <h3>Pelayanan Administratif</h3>\n                                <p>Belum punya KTP atau Kartu Keluarga? Syarat mudah dan cukup 4 menit sudah jadi.</p>\n                            </div>\n                        </div>\n\n                        <div class=\"col_one_third nobottommargin\">\n                            <div class=\"feature-box fbox-center fbox-effect nobottomborder\" data-animate=\"fadeIn\" data-delay=\"1400\">\n                                <div class=\"fbox-icon\">\n                                    <a href=\"#\"><i class=\"icon-male\"></i></a>\n                                </div>\n                                <h3>Meningkatkan Sumber Daya</h3>\n                                <p>Ayo ciptakan produk dan buka lapangan kerja.<br/>Kini membuat perijinan UKM lebih cepat dan mudah.</p>\n                            </div>\n                        </div>\n\n                        <div class=\"col_one_third nobottommargin col_last\">\n                            <div class=\"feature-box fbox-center fbox-effect nobottomborder\" data-animate=\"fadeIn\" data-delay=\"1600\">\n                                <div class=\"fbox-icon\">\n                                    <a href=\"#\"><i class=\"icon-truck\"></i></a>\n                                </div>\n                                <h3>Peningkatan Fasilitas Umum</h3>\n                                <p>Sekolah rusak atau jalan masih berlubang? Laporkan segera!</p>\n                            </div>\n                        </div>\n\n                        <div class=\"clear\"></div>\n\n                    </div>\n\n                    <div class=\"divider divider-short divider-center topmargin-lg\"><i class=\"icon-star3\"></i></div>\n\n                </section>\n\n                <section id=\"section-about\" class=\"page-section\">\n                    <div class=\"container clearfix\">\n                        <div class=\"heading-block center\">\n                            <h2>Berita<span>Terbaru</span></h2>\n                            <span>Beragam Informasi &amp; Kegiatan Desa Loa Kulu Kota</span>\n                        </div>\n\n                        <div class=\"col_one_third nobottommargin\">\n                            <div class=\"feature-box media-box\">\n                                <div class=\"fbox-media\">\n                                    <img src=\"images/services/1.jpg\" alt=\"Why choose Us?\">\n                                </div>\n                                <div class=\"fbox-desc\">\n                                    <h3>Pengusaha Jepang Akan Bangun Kota Pintar di Kutai</h3>\n                                    <p>Kyushu Economic Federation, kelompok usaha dengan anggota 970 perusahaan besar di Jepang, berminat membangun \"Smart City\" atau kota pintar di Kabupaten Kutai, Kartanegara, Kalimantan Timur.</p>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div class=\"col_one_third nobottommargin\">\n                            <div class=\"feature-box media-box\">\n                                <div class=\"fbox-media\">\n                                    <img src=\"images/services/2.jpg\" alt=\"Why choose Us?\">\n                                </div>\n                                <div class=\"fbox-desc\">\n                                    <h3>Generasi Muda Berprestasi dari Loa Kulu</h3>\n                                    <p>SMA Negeri 1 Loa Kulu, yang berlokasi di Jalan poros 1 RT.17 Desa Margahayu (Jonggon A) Loa Kulu, Kabupaten Kutai Kartanegara, Kalimantan Timur, merupakan satu sekolah unggulan di wilayah pedalaman di kabupaten ini. Meski berada di wilayah yang bisa dibilang terpencil, sejumlah prestasi akademik pernah berhasil diraih sekolah ini.</p>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div class=\"col_one_third nobottommargin col_last\">\n                            <div class=\"feature-box media-box\">\n                                <div class=\"fbox-media\">\n                                    <img src=\"images/services/3.jpg\" alt=\"Why choose Us?\">\n                                </div>\n                                <div class=\"fbox-desc\">\n                                    <h3>What we Do.<span class=\"subtitle\">Make our Customers Happy.</span></h3>\n                                    <p>Porro repellat vero sapiente amet vitae quibusdam necessitatibus consectetur, labore totam. Accusamus perspiciatis asperiores labore esse ab accusantium ea modi ut.</p>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div class=\"clear\"></div>\n\n                    </div>\n\n                </section>\n\n                <section id=\"section-work\" class=\"page-section topmargin-lg\">\n\n                    <div class=\"heading-block center\">\n                        <h2>Galeri</h2>\n                        <span>Sekilas Wajah Desa Loa Kulu Kota</span>\n                    </div>\n\n                    <div class=\"container clearfix center\">\n\n                        <!-- Portfolio Items\n                        ============================================= -->\n                        <div id=\"portfolio\" class=\"portfolio-nomargin clearfix\">\n\n                            <article class=\"portfolio-item pf-media pf-icons\">\n                                <div class=\"portfolio-image\">\n                                    <a href=\"portfolio-single.html\">\n                                        <img src=\"images/portfolio/4/1.jpg\" alt=\"Open Imagination\">\n                                    </a>\n                                    <div class=\"portfolio-overlay\">\n                                        <a href=\"images/portfolio/full/1.jpg\" class=\"left-icon\" data-lightbox=\"image\"><i class=\"icon-line-plus\"></i></a>\n                                        <a href=\"portfolio-single.html\" class=\"right-icon\"><i class=\"icon-line-ellipsis\"></i></a>\n                                    </div>\n                                </div>\n                                <div class=\"portfolio-desc\">\n                                    <h3><a href=\"portfolio-single.html\">Open Imagination</a></h3>\n                                    <span><a href=\"#\">Media</a>, <a href=\"#\">Icons</a></span>\n                                </div>\n                            </article>\n\n\n                            <article class=\"portfolio-item pf-graphics pf-media pf-uielements\">\n                                <div class=\"portfolio-image\">\n                                    <a href=\"portfolio-single-video.html\">\n                                        <img src=\"images/portfolio/4/10.jpg\" alt=\"Study Table\">\n                                    </a>\n                                    <div class=\"portfolio-overlay\">\n                                        <a href=\"http://vimeo.com/91973305\" class=\"left-icon\" data-lightbox=\"iframe\"><i class=\"icon-line-play\"></i></a>\n                                        <a href=\"portfolio-single-video.html\" class=\"right-icon\"><i class=\"icon-line-ellipsis\"></i></a>\n                                    </div>\n                                </div>\n                                <div class=\"portfolio-desc\">\n                                    <h3><a href=\"portfolio-single-video.html\">Study Table</a></h3>\n                                    <span><a href=\"#\">Graphics</a>, <a href=\"#\">Media</a></span>\n                                </div>\n                            </article>\n\n                            <article class=\"portfolio-item pf-media pf-icons\">\n                                <div class=\"portfolio-image\">\n                                    <a href=\"portfolio-single.html\">\n                                        <img src=\"images/portfolio/4/11.jpg\" alt=\"Workspace Stuff\">\n                                    </a>\n                                    <div class=\"portfolio-overlay\">\n                                        <a href=\"images/portfolio/full/11.jpg\" class=\"left-icon\" data-lightbox=\"image\"><i class=\"icon-line-plus\"></i></a>\n                                        <a href=\"portfolio-single.html\" class=\"right-icon\"><i class=\"icon-line-ellipsis\"></i></a>\n                                    </div>\n                                </div>\n                                <div class=\"portfolio-desc\">\n                                    <h3><a href=\"portfolio-single.html\">Workspace Stuff</a></h3>\n                                    <span><a href=\"#\">Media</a>, <a href=\"#\">Icons</a></span>\n                                </div>\n                            </article>\n\n                            <article class=\"portfolio-item pf-illustrations pf-graphics\">\n                                <div class=\"portfolio-image\">\n                                    <a href=\"#\">\n                                        <img src=\"images/portfolio/4/12.jpg\" alt=\"Mac Sunglasses\">\n                                    </a>\n                                    <div class=\"portfolio-overlay\" data-lightbox=\"gallery\">\n                                        <a href=\"images/portfolio/full/12.jpg\" class=\"left-icon\" data-lightbox=\"gallery-item\"><i class=\"icon-line-stack-2\"></i></a>\n                                        <a href=\"images/portfolio/full/12-1.jpg\" class=\"hidden\" data-lightbox=\"gallery-item\"></a>\n                                        <a href=\"portfolio-single-gallery.html\" class=\"right-icon\"><i class=\"icon-line-ellipsis\"></i></a>\n                                    </div>\n                                </div>\n                                <div class=\"portfolio-desc\">\n                                    <h3><a href=\"portfolio-single-gallery.html\">Fixed Aperture</a></h3>\n                                    <span><a href=\"#\">Illustrations</a>, <a href=\"#\">Graphics</a></span>\n                                </div>\n                            </article>\n\n                        </div><!-- #portfolio end -->\n\n                    </div>\n\n                </section>\n\n\n\n\n            </div>\n\n        </section><!-- #content end -->\n\n        <!-- Footer\n        ============================================= -->\n        <footer id=\"footer\" class=\"dark\">\n\n            <!-- Copyrights\n            ============================================= -->\n            <div id=\"copyrights\">\n\n                <div class=\"container clearfix\">\n\n                    <div class=\"col_half\">\n                        Hak Cipta &copy; 2015 Dilindungi Undang-undang Republik Indonesia \n                    </div>\n                    <div class=\"col_half col_last tright\">\n                        Kelola Oleh Kantor Lurah Desa Loa Kulu Kota Kabupaten Kutai Kartanegara\n                    </div>\n\n\n                </div>\n\n            </div><!-- #copyrights end -->\n\n        </footer><!-- #footer end -->\n\n    </div><!-- #wrapper end -->\n\n    <!-- Go To Top\n    ============================================= -->\n    <div id=\"gotoTop\" class=\"icon-angle-up\"></div>\n\n    <!-- Footer Scripts\n    ============================================= -->\n    <script type=\"text/javascript\" src=\"js/functions.js\"></script>\n\n</body>\n</html>",
+			"file": "/D/Webs/loakulu/index.html",
+			"file_size": 23341,
+			"file_write_time": 130713116522868552,
+			"settings":
+			{
+				"buffer_size": 22918,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "		<section class=\"page-section topmargin-lg\">\n			<div class=\"heading-block center bottommargin-lg\">\n				<h2>Layanan Terbaik</h2>\n				<span>Senantiasa Memberikan Pelayanan Prima</span>\n			</div>\n			<div class=\"container clearfix\">\n				<div class=\"col_one_third nobottommargin\">\n					<div class=\"feature-box fbox-center fbox-effect nobottomborder\">\n						<div class=\"fbox-icon\">&nbsp;</div>\n						<h3>Pelayanan Administratif</h3>\n						<p>Belum punya KTP atau Kartu Keluarga? Syarat mudah dan cukup 4 menit sudah jadi.</p>\n					</div>\n				</div>\n\n				<div class=\"col_one_third nobottommargin\">\n					<div class=\"feature-box fbox-center fbox-effect nobottomborder\">\n						<div class=\"fbox-icon\">&nbsp;</div>\n						<h3>Meningkatkan Sumber Daya</h3>\n						<p>Ayo ciptakan produk dan buka lapangan kerja.<br />\n							Kini membuat perijinan UKM lebih cepat dan mudah.</p>\n						</div>\n					</div>\n\n					<div class=\"col_one_third nobottommargin col_last\">\n						<div class=\"feature-box fbox-center fbox-effect nobottomborder\">\n							<div class=\"fbox-icon\">&nbsp;</div>\n							<h3>Peningkatan Fasilitas Umum</h3>\n							<p>Sekolah rusak atau jalan masih berlubang? Laporkan segera!</p>\n						</div>\n					</div>\n					<div class=\"clear\">&nbsp;</div>\n			</div>\n			<div class=\"divider divider-short divider-center topmargin-lg\">&nbsp;</div>\n		</section>\n\n		<section class=\"page-section\">\n			<div class=\"container clearfix\">\n				<div class=\"heading-block center\">\n					<h2>Berita<span>Terbaru</span></h2>\n				</div>\n\n				<div class=\"clear\">&nbsp;</div>\n			</div>\n		</section>\n\n		<section class=\"page-section topmargin-lg\">\n			<div class=\"heading-block center\">\n				<h2>Galeri</h2>\n			</div>\n\n			<div class=\"container clearfix center\">\n				<div class=\"portfolio-nomargin clearfix\" id=\"portfolio\">\n					<article class=\"portfolio-item pf-illustrations pf-graphics\">&nbsp;</article>\n				</div>\n			</div>\n		</section>\n",
+			"settings":
+			{
+				"buffer_size": 1900,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/css/custom.css",
+			"settings":
+			{
+				"buffer_size": 1826,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<!doctype html>\n\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en\"> <![endif]-->\n<!--[if gt IE 8]> <html class=\"no-js\" lang=\"en\"> 		   <![endif]-->\n\n<head>\n	<meta charset=\"utf-8\">\n\n  	<!-- You can use .htaccess and remove these lines to avoid edge case issues. -->\n  	<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n\n  	<title>{{ settings:site_name }} &raquo; {{ template:title }}</title>\n\n  	<meta name=\"author\" content=\"Scott Parry - iKreativ\">\n	<meta name=\"description\" content=\"\">\n	<meta name=\"keywords\" content=\"\">\n\n  	<!-- Mobile viewport optimized -->\n  	<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n	\n	<!-- Set a base location for assets -->\n	<base href=\"{{ url:base }}\"/>\n	<!-- End base -->\n\n  	<!-- CSS. No need to specify the media attribute unless specifically targeting a media type, leaving blank implies media=all -->\n  	{{ theme:css file=\"plugins.css\" }}\n	{{ theme:css file=\"workless.css\" }}\n  	<!-- End CSS-->\n\n	<!-- Googlelicious -->\n	<link rel=\"stylesheet\" href=\"http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold\" type=\"text/css\" />\n	<link rel=\"stylesheet\" href=\"http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold\" type=\"text/css\" />\n\n	<!-- Load up some favicons -->\n  	{{ theme:favicon }}\n\n  	<!-- All JavaScript at the bottom, except for Modernizr. -->\n  	{{ theme:js file=\"libs/modernizr.js\" }}\n  	{{ theme:js file=\"libs/jquery.js\" }}\n\n	\n	{{ template:metadata }}\n	\n	<!-- Google Analytics -->\n	{{ integration:analytics }}\n	\n	<!-- Add some theme option variables for styling -->\n	<style type=\"text/css\">\n		/* Background */\n		{{ if theme:options:background == 'black' }}\n			body { background: url({{ theme:path }}/img/bg_black.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'fabric' }}\n			body { background: url({{ theme:path }}/img/bg_fabric.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'graph' }}\n			body { background: url({{ theme:path }}/img/bg_graph.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'leather' }}\n			body { background: url({{ theme:path }}/img/bg_leather.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'noise' }}\n			body { background: url({{ theme:path }}/img/bg_noise.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'texture' }}\n			body { background: url({{ theme:path }}/img/bg_texture.jpg) fixed repeat; }\n		{{ elseif theme:options:background == 'fabric' }}\n			body { background: url({{ theme:path }}/img/bg_fabric.jpg) fixed repeat; }\n		{{ endif }}\n		/* Colors */\n		{{ if theme:options:color == 'red' }}\n			.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#ff0000; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#ff0000; }\n		{{ elseif theme:options:color == 'orange' }}\n			.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#EF770E; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#EF770E; }\n		{{ elseif theme:options:color == 'yellow' }}\n			.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#EDBB1C; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#EDBB1C; }\n		{{ elseif theme:options:color == 'green' }}\n			.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#bada55; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#bada55; }\n		{{ elseif theme:options:color == 'blue' }}\n		 	.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#0087C2; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#0087C2; }\n		{{ elseif theme:options:color == 'pink' }}\n			.pagination ul li a:hover, .pagination ul li.active a, nav#primary ul li.current { background:#DD1251; }\n			a:hover, .single_post h5 small a:hover, nav#primary ul li a:hover { color:#DD1251; }\n		{{ endif }}\n	</style>\n</head>\n\n<body class=\"{{ url:segments segment=\"1\" default=\"home\" }}\" onload=\"prettyPrint()\">\n	\n	<!-- container -->\n	<div class=\"container\">	\n\n		<header>\n			<div id=\"logo\">\n				<a href=\"{{ url:base }}\">\n					<h1>{{ settings:site_name }}</h1>\n				</a>\n		\n				<span class=\"slogan\">\n					{{ settings:site_slogan }}\n				</span>\n			</div>\n		\n			<nav id=\"primary\">\n				<ul>\n					{{ navigation:links group=\"header\" }}\n				</ul>\n			</nav>\n		</header>",
+			"settings":
+			{
+				"buffer_size": 4604,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/footer.html",
+			"settings":
+			{
+				"buffer_size": 641,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 127.0,
+		"selected_items":
+		[
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/css",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/js",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/layouts",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/modules",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/modules/blog",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/modules/pages",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials"
+	],
+	"file_history":
+	[
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/slider.html",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/css/style.css",
+		"/C/Users/lenovo/AppData/Roaming/Sublime Text 3/Packages/Minifier/Minifier.sublime-settings",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/css/font-icons.css",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/header.html",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/js/modernizr.js",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/footer.html",
+		"/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/theme.php",
+		"/D/Webs/pyro2docs/README.md",
+		"/D/Webs/loakulu/css/colors.css",
+		"/D/Webs/loakulu/custom.css",
+		"/D/Masters/Pinnacle Studio 16 Ultimate 16.1.0.115 Multilingual/read me.txt",
+		"/D/Webs/anchor/anchor/helpers.php",
+		"/D/Webs/loakulu/index.html",
+		"/D/Webs/pyrocms2/.htaccess",
+		"/C/Users/lenovo/Desktop/pyrocms2.sql",
+		"/D/Webs/pyro2docs/system/fizl/config/config.php",
+		"/D/Webs/anchor/anchor/routes/menu.php",
+		"/D/Webs/anchor/anchor/routes/fields.php",
+		"/D/Webs/anchor/anchor/routes/users.php",
+		"/D/Webs/anchor/anchor/models/user.php",
+		"/D/Webs/slims8_akasia/template/default/visitor_template.php",
+		"/D/Webs/slims8_akasia/config/sysconfig.local.inc.php",
+		"/D/Webs/slims8_akasia/template/default/style.css",
+		"/D/Webs/loakulu/canvas/Documentation/index.html",
+		"/D/Webs/loakulu/css/animate.css",
+		"/D/Webs/loakulu/canvas/HTML/footer-4.html",
+		"/D/Webs/loakulu/js/canvas.slider.fade.js",
+		"/D/Webs/loakulu/canvas/HTML/slider-canvas-autoplay.html",
+		"/D/Webs/loakulu/css/calendar.css",
+		"/D/Webs/slims8_akasia_smsgateway/template/default/index_template.inc.php",
+		"/D/Webs/slims8_akasia/lib/comment.inc.php",
+		"/D/Webs/modx/core/xpdo/xpdo.class.php",
+		"/D/Webs/processwire/.htaccess",
+		"/D/Webs/processwire/wire/templates-admin/controller.php",
+		"/D/Webs/processwire/index.php",
+		"/D/Webs/processwire/README.md",
+		"/D/Webs/processwire/COPYRIGHT.txt",
+		"/D/Webs/slims8_akasia/lib/detail.inc.php",
+		"/D/Webs/slims8_akasia/template/default/detail_template.php",
+		"/D/Webs/slims8_akasia/changes.txt",
+		"/D/Webs/slims8_akasia/index.php",
+		"/D/Webs/slims8_akasia/.htaccess",
+		"/D/Webs/slims8_akasia/.gitignore",
+		"/D/Webs/dropbox/assets/js/customize.js",
+		"/D/Webs/slims8_akasia/template/default/index_template.inc.php",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/assets/css/animate.css",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/assets/css/font-awesome.css",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/index_template.inc.php",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/assets/css/bootstrap.css",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/function.php",
+		"/D/Webs/slims8_akasia/admin/admin_template/default/assets/css/style.css",
+		"/D/Webs/opac/index.html",
+		"/D/Webs/slims8_akasia/js/gui.js",
+		"/D/Webs/slims8_akasia/admin/modules/membership/index.php"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"data-animate=\"fadeIn\" data-delay=\"1600\"",
+			"scroll",
+			"webkitIndexe",
+			"webkitIndexedDB",
+			"images",
+			"image",
+			"utf8mb4",
+			"0.8",
+			"blur(100px) ",
+			"100%",
+			"ff7c00",
+			"290a59",
+			"1ABC9C",
+			"peyanan",
+			"003366",
+			"33cc33",
+			"htt",
+			"0fa9a8",
+			"dfcee5",
+			"0px",
+			"gradient",
+			"Canvas Logo",
+			"<footer",
+			"mr",
+			"bottom",
+			"500",
+			"duration",
+			"cover",
+			"1s",
+			"-out",
+			"1s",
+			"slide",
+			"1s",
+			"flipInX",
+			"row-fluid",
+			"span",
+			"video",
+			"fadeIn",
+			"<?php",
+			"<?php echo SWB; ?>",
+			"photo"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 5,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/layouts/default.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 202,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								129,
+								129
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/header.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3818,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3724,
+								3724
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 607.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6,
+								6
+							]
+						],
+						"settings":
+						{
+							"auto_name": "&nbsp;",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/modules/pages/page.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 171,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/Webs/loakulu/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22918,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21785,
+								10967
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1900,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1202,
+								1202
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/css/custom.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1826,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								43,
+								43
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4604,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4171,
+								4171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1260.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/Webs/pyrocms2/addons/shared_addons/themes/loakulu/views/partials/footer.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 641,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								626,
+								626
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "loakulu.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"canvas/in",
+				"canvas\\Documentation\\index.html"
+			],
+			[
+				"",
+				"template\\default\\detail_template.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 249.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
