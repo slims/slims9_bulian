@@ -600,8 +600,7 @@ $sysconf['chat_system']['enabled']    = FALSE;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       = TRUE;
 $sysconf['chat_system']['librarian']  = TRUE;
-// $sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
-$sysconf['chat_system']['librarian']  = 'C:/php/php';
+$sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
 
 
 

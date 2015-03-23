@@ -196,6 +196,7 @@ if (!defined('INDEX_AUTH')) {
 
 <!-- Chat
 ============================================= -->
+<?php if($sysconf['chat_system']['enabled']) : ?>
 <a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
 <aside class="s-chat s-maximize">
   <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
@@ -253,7 +254,7 @@ if (!defined('INDEX_AUTH')) {
     Server.connect();
   });
 </script>
-
+<?php endif; ?>
 
 <!-- Background
 ============================================= -->
