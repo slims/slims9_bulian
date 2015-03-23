@@ -27,9 +27,13 @@ $(document).ready(function(){
 
     // Show or hide chat
     // ============================================
-    $('#pchat').on('click', function(){
+    $('#pchat-toggle').on('click', function(){
         $('.s-chat').toggle().addClass('animated-fast fadeInUp');      
-    })
+    });
+
+    $('#pchat-hide').on('click', function(){
+        $('.s-chat').toggleClass('s-minimize s-maximize ');
+    });
 
     // Animate background color
     // ============================================

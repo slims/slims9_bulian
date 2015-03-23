@@ -1380,7 +1380,7 @@ keyframes coverUp {
 
 /* Chat
  ================================ */
-#pchat {
+#pchat-toggle {
   position: fixed;
   right: 75px;
   top: 10px;
@@ -1405,11 +1405,25 @@ keyframes coverUp {
 }
 
 .s-chat-header {
+  border-bottom: solid 1px #333;
+  display: block;
   background-color: #282828;
-  padding: 20px 10px;
+  padding: 20px 0;
   margin: 0;
-  font-size: 14px;
+  font-size: 8px;
   text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #fff;
+}
+
+.s-chat-header:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.s-chat-header:focus,
+.s-chat-header:active,
+.s-chat-header:visited {
   color: #fff;
 }
 
@@ -1437,11 +1451,22 @@ keyframes coverUp {
   line-height: 24px;
 }
 
-
 .s-chat footer {
   border-top: solid 1px #ddd;
   font-size: 10px;
   padding: 8pt !important;
+}
+
+.s-minimize {
+  bottom: -305px;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+}
+
+.s-maximize {
+  bottom: 51px;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
 }
 
 /* Table

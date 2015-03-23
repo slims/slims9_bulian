@@ -196,9 +196,9 @@ if (!defined('INDEX_AUTH')) {
 
 <!-- Chat
 ============================================= -->
-<a href="#" id="pchat" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
-<aside class="s-chat">
-  <h3 class="s-chat-header"><?php echo __('Chat With Librarian'); ?></h3>
+<a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
+<aside class="s-chat s-maximize">
+  <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
   <div class="s-chat-content">
     <textarea id="log" name="log" readonly="readonly"></textarea>
     <label for="message">Message</label>
