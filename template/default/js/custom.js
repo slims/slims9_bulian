@@ -21,10 +21,19 @@ $(document).ready(function(){
       $('.s-menu-content ul a').removeClass('animated fadeInRight delay4');
     });
 
-
     // Hide only an empty tag inside biblio detail
     // ============================================
     $('.controls:empty').parent().hide();
+
+    // Show or hide chat
+    // ============================================
+    $('#pchat-toggle').on('click', function(){
+        $('.s-chat').toggle().addClass('animated-fast fadeInUp');      
+    });
+
+    $('#pchat-hide').on('click', function(){
+        $('.s-chat').toggleClass('s-minimize s-maximize ');
+    });
 
     // Animate background color
     // ============================================
@@ -44,6 +53,9 @@ $(document).ready(function(){
 
 });
 
+
+// Select makeover
+// ============================================
 (function(){
 	var customSelects = document.querySelectorAll(".custom-dropdown__select");
 	for(var i=0; i<customSelects.length; i++){
@@ -52,3 +64,4 @@ $(document).ready(function(){
 		}
 	}
 })()
+
