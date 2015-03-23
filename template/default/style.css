@@ -1378,7 +1378,71 @@ keyframes coverUp {
   margin-left: -10px;
 }
 
+/* Chat
+ ================================ */
+#pchat {
+  position: fixed;
+  right: 75px;
+  top: 10px;
+  color: #fff;
+  width:35px;
+  height:35px;
+  padding-top: 7px;
+  text-align: center;
+  vertical-align: middle;
+}
 
+.s-chat {
+  z-index:1;
+  display: none;
+  position: fixed;
+  bottom: 51px;
+  right: 10px;
+  text-align: center;
+  width:275px;
+  background: #fff;
+  padding: 0;
+}
+
+.s-chat-header {
+  background-color: #282828;
+  padding: 20px 10px;
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.s-chat-content {
+  padding: 20px;
+}
+
+.s-chat-content label {
+    padding:10px 0;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.s-chat-content textarea,
+.s-chat-content input {
+  width: 100%;
+  border: solid 1px #ddd;
+  padding:10px;
+  font-size: 12px;
+}
+
+.s-chat-content textarea {
+  min-height: 200px;
+  line-height: 24px;
+}
+
+
+.s-chat footer {
+  border-top: solid 1px #ddd;
+  font-size: 10px;
+  padding: 8pt !important;
+}
 
 /* Table
  ================================ */

@@ -196,9 +196,63 @@ if (!defined('INDEX_AUTH')) {
 
 <!-- Chat
 ============================================= -->
-<div class="s-chat">
-  
-</div>
+<a href="#" id="pchat" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
+<aside class="s-chat">
+  <h3 class="s-chat-header"><?php echo __('Chat With Librarian'); ?></h3>
+  <div class="s-chat-content">
+    <textarea id="log" name="log" readonly="readonly"></textarea>
+    <label for="message">Message</label>
+    <input type="text" id="message" name="message" />
+  </div>
+  <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
+</aside>
+
+<script>
+  var Server;
+
+  function log( text ) {
+    $log = $('#log');
+    //Add text to log
+    $log.append(($log.val()?"\n":'')+text);
+    //Autoscroll
+    $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
+  }
+
+  function send( text ) {
+    Server.send( 'message', text );
+  }
+
+  $(document).ready(function() {
+    log('Connecting...');
+    Server = new FancyWebSocket('ws://127.0.0.1:9300');
+
+    $('#message').keypress(function(e) {
+      if ( e.keyCode == 13 && this.value ) {
+        log( 'You: ' + this.value );
+        send( this.value );
+
+        $(this).val('');
+      }
+    });
+
+    //Let the user know we're connected
+    Server.bind('open', function() {
+      log( "Connected." );
+    });
+
+    //OH NOES! Disconnection occurred.
+    Server.bind('close', function( data ) {
+      log( "Disconnected." );
+    });
+
+    //Log any messages sent from server
+    Server.bind('message', function( payload ) {
+      log( payload );
+    });
+
+    Server.connect();
+  });
+</script>
 
 
 <!-- Background

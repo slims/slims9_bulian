@@ -25,6 +25,11 @@ $(document).ready(function(){
     // ============================================
     $('.controls:empty').parent().hide();
 
+    // Show or hide chat
+    // ============================================
+    $('#pchat').on('click', function(){
+        $('.s-chat').toggle().addClass('animated-fast fadeInUp');      
+    })
 
     // Animate background color
     // ============================================
