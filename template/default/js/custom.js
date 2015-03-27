@@ -35,22 +35,6 @@ $(document).ready(function(){
         $('.s-chat').toggleClass('s-minimize s-maximize ');
     });
 
-    // Animate background color
-    // ============================================
-    var bg = $('.gradients');
-    function fade() {
-      var divs = bg.children();
-      $(".current").transition({opacity: 1}, 5000, 'linear', function() {
-        $('.current').removeClass('current');
-        firstDiv = divs.first();
-        firstDiv.addClass('current').css({opacity: 0});
-        firstDiv.appendTo(bg);
-        fade();
-      });
-    }
-    fade();
-
-
 });
 
 
@@ -64,4 +48,3 @@ $(document).ready(function(){
 		}
 	}
 })()
-

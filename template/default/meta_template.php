@@ -48,6 +48,7 @@
   <script src="<?php echo JWB; ?>modernizr.js"></script>
   <script src="<?php echo JWB; ?>form.js"></script>
   <script src="<?php echo JWB; ?>gui.js"></script>
+  <script src="<?php echo JWB; ?>highlight.js"></script>
   <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
   <script src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>

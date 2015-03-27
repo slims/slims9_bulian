@@ -65,7 +65,7 @@ if (!defined('INDEX_AUTH')) {
 
 <!-- Content
 ============================================= -->
-<?php if(isset($_GET['keywords']) || isset($_GET['p'])): ?>
+<?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
 
   <main  id="content" class="s-main-page" role="main">
 
@@ -86,7 +86,7 @@ if (!defined('INDEX_AUTH')) {
           ?>
           </h1>
           <form action="index.php" method="get" autocomplete="off">
-            <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
+            <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
             <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
           </form>
         </div>
@@ -103,7 +103,7 @@ if (!defined('INDEX_AUTH')) {
                 // Generate Output
                 echo $main_content;
                 // Somehow we need to hack the layout
-                echo (isset($_GET['keywords']) || isset($_GET['p']) && $_GET['p'] != 'member') ? '</div>' : '';
+                echo (isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') ? '</div>' : '';
                 echo (isset($_SESSION['mid'])) ? '</div></div>' : '';
               ?>
 
@@ -154,7 +154,7 @@ if (!defined('INDEX_AUTH')) {
                   </script>
 
                   <?php endif; ?>
-                <?php endif ?>
+                <?php endif; ?>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ if (!defined('INDEX_AUTH')) {
           <form action="index.php" method="get" autocomplete="off">
             <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
             <p class="s-search-info animated fadeInUp delay3"><?php echo __('you can start it by typing one or more keywords for title, author or subject'); ?></p>
-            <input type="text" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
+            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
             <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
           </form>
         </div>
@@ -259,6 +259,18 @@ if (!defined('INDEX_AUTH')) {
 <!-- Background
 ============================================= -->
 <?php include "bg_template.php"; ?>
+
+<script>
+$(document).ready(function(){
+  $(window).load(function () {
+    $('#keyword').focus();
+  });  
+
+  <?php if(isset($_GET['search'])) : ?>
+  $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
+  <?php endif; ?>
+});
+</script>
 
 </body>
 </html>

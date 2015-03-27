@@ -487,6 +487,13 @@ a, a:hover {
 
  }
 
+/* Higlight s: ;earch result
+ ================================ */
+.highlight {
+  background: #930;
+  color: #fff;
+}
+
 /* Footer
  ================================ */
 
@@ -1064,11 +1071,11 @@ keyframes coverUp {
 }
 
 .s-detail-author a:first-child:before {
-  content: "";
-
+  content: '';
 }
+
 .s-detail-author a:before {
-  content: " | ";
+  content: ' | ';
 }
 .s-detail-author br {
   display: none;
@@ -1402,14 +1409,20 @@ keyframes coverUp {
   width:275px;
   background: #fff;
   padding: 0;
+  border-left: solid 1px #f2f2f2;
+  border-right: solid 1px #f2f2f2;
 }
 
 .s-chat-header {
   border-bottom: solid 1px #333;
   display: block;
   background-color: #282828;
+  border-left: solid 1px #282828;
+  border-right: solid 1px #282828;
+  width:275px;
+  left:-1px;
   padding: 20px 0;
-  margin: 0;
+  position: relative;
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 4px;
