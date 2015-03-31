@@ -11,7 +11,7 @@ $sysconf['template']['responsive']  			= true;
 $sysconf['template']['run_gradient_animation']  = false; // true or false
 
 // Choose gradient color
-// Available color:  red, blue, green, beach, mint, purple, pink
+// Available color:  red, blue(default) , green, beach, mint, purple, pink
 $sysconf['template']['default_gradient']		= 'default';
 
 // Show video or image for the background.
