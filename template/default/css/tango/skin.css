@@ -1,8 +1,5 @@
 .jcarousel-skin-tango .jcarousel-container {
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  background: rgba(255,  255,  255,  0.55);
+  margin:0 auto;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl {
@@ -10,8 +7,8 @@
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
-    width: 89.5%;
-    padding: 20px 40px;
+    width: 90%;
+    padding: 0px 80px;
 }
 
 .jcarousel-skin-tango .jcarousel-container-vertical {
@@ -26,7 +23,8 @@
 
 .jcarousel-skin-tango .jcarousel-clip-horizontal {
     width:  100%;
-    height: 110px;
+    height: 125px;
+    top:20px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-vertical {
@@ -35,13 +33,26 @@
 }
 
 .jcarousel-skin-tango .jcarousel-item {
-    width: 75px;
-    height: 100px;
+    border-radius: 4px;
+    width: 90px;
+    height: 125px;
+    box-shadow: 0 0 10px #000;
+    position: relative;
+}
+
+.jcarousel-skin-tango .jcarousel-item:before {
+    content: '';
+    background: transparent url(../../img/book-side.png) top center no-repeat;
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    z-index: 2002;
+    left: -3px;    
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
-	margin-left: 0;
-    margin-right: 10px;
+	margin-left: 20px;
+    margin-right: 20px;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal {
@@ -63,12 +74,30 @@
  */
 .jcarousel-skin-tango .jcarousel-next-horizontal {
     position: absolute;
-    top: 43px;
+    top: 95px;
     right: 5px;
     width: 32px;
     height: 32px;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:before {
+    content: '\f18e';
+    font-family: FontAwesome;
+    font-size: 24pt;
+    color: #333;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal:before {
+    content: '\f190';
+    font-family: FontAwesome;
+    font-size: 24pt;
+    color: #333;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:hover:before,
+.jcarousel-skin-tango .jcarousel-prev-horizontal:hover:before {
+    color: #fff;
     cursor: pointer;
-    background: transparent url(next-horizontal.png) no-repeat 0 0;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-next-horizontal {
@@ -96,12 +125,11 @@
 
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
-    top: 43px;
+    top: 95px;
     left: 5px;
     width: 32px;
     height: 32px;
     cursor: pointer;
-    background: transparent url(prev-horizontal.png) no-repeat 0 0;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-prev-horizontal {

@@ -499,13 +499,12 @@ a, a:hover {
 
 footer {}
 .s-footer {
-  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   display: block;
   zoom: 1;
-  background-color: #282828;
+  background-color: #1B1B1B;
   padding: 20px 50px;
   width: 100%;
   margin: 0 auto;
@@ -519,6 +518,7 @@ footer {}
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
 }
+
 @-webkit-keyframes slide {
   0% {
     bottom: -300px;
@@ -538,6 +538,11 @@ footer {}
 .s-footer a {
   color: #ccc;
 }
+
+.s-footer a:hover {
+  color: #fff;
+}
+
 .s-footer-menu {
   float: right;
   margin: 0;
@@ -552,14 +557,34 @@ footer {}
   float: left;
   padding-right: 20px;
   margin: 0;
+  position: relative;
+  -webkit-transition: bottom 2s ease-in-out;
+  transition: bottom 2s ease-in-out;
 }
+.s-footer-menu li:hover {
+  bottom: 2px;
+}
+
+.s-footer-tagline a {
+  position: relative;  
+  font-weight: 300px;
+}
+
+.s-footer-tagline a:hover {
+  bottom: 2px;
+}
+
 .s-footer-menu li:last-child {
   padding-right: 0px;
+}
+
+.rss {
+  color: #fc0 !important;
 }
 /* Menu
  ================================ */
 
-.s-video {
+.s-background {
   z-index: -1;
   position: fixed;
   top: 0;
@@ -570,8 +595,7 @@ footer {}
   height: 100%;
   overflow: hidden;
 }
-.s-video > video {
-  opacity: 0.15;
+.s-background > video {
   position: absolute;
   top: 0;
   left: 0;
@@ -579,19 +603,27 @@ footer {}
   height: auto;
   background-size: cover;
 }
+
+.s-background .slider {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
 .gradients {
   background-position: center center;
   background-repeat: no-repeat;
   height: 100%;
   position: absolute;
   width: 100%;
+  z-index: 1099;
+  opacity: 0.75;
 }
 .gradients div {
   height: 100%;
   position: absolute;
   width: 100%;
 }
-.default {
+.red {
   background: rgb(5, 67, 101);
   background: -webkit-gradient(left bottom, right top, color-stop(0%, rgb(5, 67, 101)), color-stop(100%, rgb(255, 0, 0)));
   background: -webkit-linear-gradient(45deg, rgb(5, 67, 101) 0%, rgb(255, 0, 0) 100%);
@@ -618,7 +650,8 @@ footer {}
   background: -ms-linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
   background: linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
 }
-.blue {
+.blue,
+.default {
   background: #05c6d1;
   background: -webkit-gradient(left bottom, right 45deg, color-stop(0%, #194fb8), color-stop(100%, #05c6d1));
   background: -webkit-linear-gradient(45deg, #194fb8 0%, #05c6d1 100%);
@@ -654,9 +687,40 @@ footer {}
   background: -ms-linear-gradient(45deg, #2cbedf 0%, #e5d8b9 100%);
   background: linear-gradient(45deg, #2cbedf 0%, #e5d8b9 100%);
 }
+
 .current {
   opacity: 0;
 }
+
+.slider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  -webkit-animation: slideImg 16s infinite;
+  animation: slideImg 16s infinite;
+  opacity:0;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+@-webkit-keyframes slideImg {   
+  25%{opacity:1;}
+  40%{opacity:0;}
+} 
+
+@keyframes slideImg {   
+  25%{opacity:1;}
+  40%{opacity:0;}
+} 
+
+.slider:nth-child(1){-webkit-animation-delay:0s;animation-delay:0s;}
+.slider:nth-child(2){-webkit-animation-delay:4s;animation-delay:4s;}
+.slider:nth-child(3){-webkit-animation-delay:8s;animation-delay:8s;}
+.slider:nth-child(4){-webkit-animation-delay:12s;animation-delay:12s;}
+
 /* Main
  ================================ */
 
@@ -711,6 +775,61 @@ footer {}
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+/* Feature
+ ================================ */
+.s-feature-list {
+  width: 100%;
+  padding: 15px;
+  margin: 0 auto !important;
+  text-align: center;
+  position: absolute;
+  top: 76px;
+  background: transparent url(img/shelf.png) 0 100px no-repeat;
+  z-index: 2002;
+}
+.s-feature-list:after {
+  bottom:-30px;
+  content: '';
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,0,0, 0.2)), color-stop(50%, rgba(0,0,0, 0)), color-stop(100%, rgba(0,0,0, 0)));
+  background: -webkit-linear-gradient(top, rgba(0,0,0, 0.2) 0, rgba(0,0,0, 0) 50%, rgba(0,0,0, 0) 100%);
+  background: -webkit-gradient(linear, top left, bottom left, from(rgba(0,0,0, 0.2)), color-stop(50%, rgba(0,0,0, 0)), to(rgba(0,0,0, 0)));
+  background: linear-gradient(to bottom, rgba(0,0,0, 0.2) 0, rgba(0,0,0, 0) 50%, rgba(0,0,0, 0) 100%);
+  width: 100%;
+  height: 75px;
+  display: inline-block;
+  position: relative;
+  z-index: 2001;
+  
+}
+
+.s-feature-list ul {
+  list-style: none;
+  margin: 0 auto;
+}
+
+.s-feature-list li {
+  display: inline;
+  padding-right: 25px;
+  overflow: hidden;  
+}
+
+.s-feature-list li:last-child {
+  padding-right: 0;
+}
+
+.s-feature-list img {
+  overflow: hidden;
+  vertical-align: bottom;
+  border-radius: 4px;
+  border: none;
+  width: 90px;
+  height: 125px;
+  background: transparent url(img/book.png) top left no-repeat;
+  background-size: cover;
+  background-color: #FFF;
+}
+
 .s-feature {
   position: relative;
   top: 150px;
@@ -721,33 +840,27 @@ footer {}
   -ms-transition: color 1s ease;
   transition: color 1s ease;
 }
+
 .s-feature:visited, .s-feature:active, .s-feature:hover {
   color: #fff;
 }
-.s-feature .s-menu-toggle {
-  position: absolute;
-  width: 100%;
-  left: 45%;
-  top: 50px;
+
+.s-feature-content {
   margin: 0 auto;
-  padding: 0;
+  text-align: center;
+  position: relative;
+  z-index: 2002;
 }
-.s-feature .s-menu-toggle span {
-  transform: rotate(-45deg);
-  top: 0;
-  width: 15px;
-}
-.s-feature .s-menu-toggle span:before {
-  opacity: 0;
-}
-.s-feature .s-menu-toggle span:after {
-  left: -7px;
-  transform: rotate(-90deg);
-  top: -7px;
-  width: 15px;
-}
+
 /* Biblio
  ================================ */
+.label {
+  border-radius:0;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
 
 .detailLink {
   background-color: #f2f2f2;
@@ -755,11 +868,13 @@ footer {}
   margin-right: -5px;
   padding: 10px 10px;
 }
+
 .xmlDetailLink {
   background-color: #282828;
   color: #fff;
   padding: 10px 10px;
 }
+
 .citationLink {
   background-color: #777;
   color: #fff;
@@ -791,6 +906,7 @@ footer {}
 .biblioRecord:last-child {
   margin-right: 0;
 }
+
 .biblioRecord .cover-list {
   background: transparent url(img/book.png) top left no-repeat;
   background-size: cover;
@@ -954,6 +1070,8 @@ keyframes coverUp {
   background-color: #fff;
   padding: 5px 0;
 }
+
+
 /* Paging
  ================================ */
 
@@ -973,6 +1091,12 @@ keyframes coverUp {
   text-transform: uppercase;
   background-color: #fff;
   border: solid 1px #f2f2f2;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
   -webikit-transition: all 500ms;
   transition: all 500ms;
 }
@@ -1017,7 +1141,7 @@ keyframes coverUp {
 }
 
 .s-detail .s-detail-abstract br:not(:first-child) {
-  display: none;
+  /*display: none;*/
 }
 
 .s-detail .cover img {
@@ -1388,7 +1512,7 @@ keyframes coverUp {
 /* Chat
  ================================ */
 #pchat-toggle {
-  position: fixed;
+  position: absolute;
   right: 75px;
   top: 10px;
   color: #fff;
@@ -1400,7 +1524,7 @@ keyframes coverUp {
 }
 
 .s-chat {
-  z-index:1;
+  z-index:2099;
   display: none;
   position: fixed;
   bottom: 51px;
@@ -1411,6 +1535,7 @@ keyframes coverUp {
   padding: 0;
   border-left: solid 1px #f2f2f2;
   border-right: solid 1px #f2f2f2;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
 .s-chat-header {
@@ -1471,15 +1596,38 @@ keyframes coverUp {
 }
 
 .s-minimize {
-  bottom: -305px;
+  bottom: -357px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
 
 .s-maximize {
-  bottom: 51px;
+  bottom: 0px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
+}
+
+/* Table
+ ================================ */
+.errorBox {
+  border: none;
+  background-color: #900;
+  padding:10px;
+  color: #fff;
+  position: fixed;
+  z-index:9999;
+  bottom:50px;
+  left:0;
+  width: 100%;
+  text-align: center;
+  margin:0;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+
 }
 
 /* Table
@@ -1515,7 +1663,7 @@ keyframes coverUp {
 
 .s-table th {
   font-weight: 300;
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 2px;
   text-align: right;
   text-transform: uppercase;
@@ -1595,6 +1743,7 @@ keyframes coverUp {
   height: 18px;
   border-radius: 10px;
 }
+
 /* Login
  ================================ */
 
@@ -1662,4 +1811,27 @@ keyframes coverUp {
   background-color: #852836;
   color: #fff;
 
+}
+
+/* For support browser
+ ================================ */
+.chromeframe {
+  position: fixed !important;
+  z-index: 9099;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+}
+
+/*Voice Search*/
+#fkbx-spch, #fkbx-hspch {
+  background-size: 14px 19px;
+  cursor: pointer;
+  float: right;
+  height: 21px;
+  opacity: 1;
+  padding: 15px 6px 0;
+  width: 17px;
+  color: #000;
 }
