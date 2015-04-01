@@ -99,6 +99,7 @@ if (!defined('INDEX_AUTH')) {
             <!-- Show Result
             ============================================= -->
             <div class="col-lg-8">
+
               <?php 
                 // Generate Output
                 echo $main_content;
@@ -107,7 +108,7 @@ if (!defined('INDEX_AUTH')) {
                 echo (isset($_SESSION['mid'])) ? '</div></div>' : '';
               ?>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 animated fadeInUp delay4">
               <?php if(isset($_GET['search'])) : ?>
               <h2><?php echo __('Search Result'); ?></h2>
               <hr>
@@ -172,17 +173,48 @@ if (!defined('INDEX_AUTH')) {
           <form action="index.php" method="get" autocomplete="off">
             <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
             <p class="s-search-info animated fadeInUp delay3"><?php echo __('you can start it by typing one or more keywords for title, author or subject'); ?></p>
-            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
+            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
             <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+            <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
           </form>
         </div>
 
         <!-- Featured
         ============================================= -->
-        <a href="#" class="s-feature animated fadeInUp delay6"><?php echo __('see also our featured collections'); ?>
-          <div class="s-menu-toggle animated fadeInUp delay7"><span></span></div>
-        </a>
-        <div class="s-feature-content">
+        <div class="s-feature-content animated fadeInUp delay9">
+        <?php
+        // Promoted titles
+        // Only show at the homepage
+        if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
+          // query top book
+          $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
+              promoted=1 ORDER BY last_update LIMIT 30');
+          if ($num_rows = $topbook->num_rows) :
+        ?>
+        <div class="s-feature-list">
+              <ul id="topbook" class="jcarousel-skin-tango">
+                <?php
+                while ($book = $topbook->fetch_assoc()) :
+                  if (!empty($book['image'])) : ?>
+                  <li class="book">
+                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>" class="tooltips">
+                      <img src="images/docs/<?php echo $book['image'] ?>" />
+                    </a>
+                  </li>
+                  <?php else: ?>
+                  <li class="book">
+                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>" class="tooltips">
+                      <img src="./template/default/img/book.png" />
+                    </a>
+                  </li>
+                  <?php 
+                  endif;
+                endwhile;
+                ?>
+              </ul>
+        </div>
+          <?php endif; ?>
+        <?php endif; ?>
 
         </div>
 
@@ -256,10 +288,37 @@ if (!defined('INDEX_AUTH')) {
 </script>
 <?php endif; ?>
 
+<script>
+  function mycarousel_initCallback(carousel)
+  {
+    // Disable autoscrolling if the user clicks the prev or next button.
+    carousel.buttonNext.bind('click', function() {
+      carousel.startAuto(0);
+    });
+
+    carousel.buttonPrev.bind('click', function() {
+      carousel.startAuto(0);
+    });
+
+    // Pause autoscrolling if the user moves with the cursor over the clip.
+    carousel.clip.hover(function() {
+      carousel.stopAuto();
+    }, function() {
+      carousel.startAuto();
+    });
+  };
+
+  jQuery('#topbook').jcarousel({
+      auto: 5,
+      wrap: 'last',
+      initCallback: mycarousel_initCallback
+  });  
+
+</script>
+
 <!-- Background
 ============================================= -->
 <?php include "bg_template.php"; ?>
-
 <script>
 $(document).ready(function(){
   $(window).load(function () {
@@ -269,6 +328,12 @@ $(document).ready(function(){
   <?php if(isset($_GET['search'])) : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
+
+  //Replace blank cover
+  $('img').error(function(){
+          $(this).attr('src', './template/default/img/book.png');
+  });
+
 });
 </script>
 
