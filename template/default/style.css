@@ -301,7 +301,7 @@ a, a:hover {
   padding: 10px 30px;
   text-align: center;
   transition: all 500ms ease-in-out;
-  z-index: 1099;
+  z-index: 2099;
 }
 .s-menu-content.active {
   right: 0;
@@ -318,7 +318,7 @@ a, a:hover {
   font-size: 8pt;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #4C79CB;
+  color: #000;
 }
 .s-menu-content h1 {
   font-weight: lighter !important;
@@ -812,6 +812,7 @@ footer {}
   display: inline;
   padding-right: 25px;
   overflow: hidden;  
+  position: relative;
 }
 
 .s-feature-list li:last-child {
@@ -830,6 +831,39 @@ footer {}
   background-color: #FFF;
 }
 
+.s-feature-list li:hover {
+  -webkit-transition: left 500ms ease-in-out;
+  transition: left 500ms ease-in-out;
+  -webkit-animation-name: coverShake;
+  animation-name: coverShake;
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
+}
+
+@-webkit-keyframes coverShake {
+  0% {
+    left: 0px;
+  }
+  50% {
+    left: 10px;
+  }
+  100% {
+    left: 0px;
+  }
+}
+
+keyframes coverShake {
+  0% {
+    left: 0px;
+  }
+  50% {
+    left: 10px;
+  }
+  100% {
+    left: 0px;
+  }
+}
+
 .s-feature {
   position: relative;
   top: 150px;
@@ -841,7 +875,9 @@ footer {}
   transition: color 1s ease;
 }
 
-.s-feature:visited, .s-feature:active, .s-feature:hover {
+.s-feature:visited, 
+.s-feature:active, 
+.s-feature:hover {
   color: #fff;
 }
 
@@ -908,6 +944,7 @@ footer {}
 }
 
 .biblioRecord .cover-list {
+  border-radius: 4px;
   background: transparent url(img/book.png) top left no-repeat;
   background-size: cover;
   background-color: #FFF;
@@ -927,7 +964,6 @@ footer {}
   animation-name: coverUp;
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
-
 }
 
 @-webkit-keyframes coverUp {
@@ -1014,7 +1050,7 @@ keyframes coverUp {
   -webkit-box-orient: vertical;
   max-height: 1em;
   line-height: 1em;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 .biblioRecord .author-name {
   font-size: 10pt;
@@ -1025,7 +1061,7 @@ keyframes coverUp {
 .biblioRecord .subItem {
   position: absolute;
   bottom: 10px;
-  margin-left: 6px;
+  margin-left: 18px;
 }
 
 .biblioRecord .detailLink, .biblioRecord .xmlDetailLink, .biblioRecord .citationLink {
@@ -1035,32 +1071,32 @@ keyframes coverUp {
   white-space: nowrap;
   -webkit-transition: background-color 500ms;
   transition: background-color 500ms;
+  color: #fff;
+  padding: 10px 10px;
 }
 
-/*
+
 .biblioRecord .detailLink {
   background-color: #f2f2f2;
   color: #000;
-  margin-right: -5px;
-  padding: 10px 10px;
 }
-.biblioRecord .xmlDetailLink {
-  background-color: #282828;
-  color: #fff;
-  padding: 10px 10px;
-}
-.biblioRecord .citationLink {
-  background-color: #777;
-  color: #fff;
-  margin-right: -5px;
-  padding: 10px 10px;
-}
-*/
 
-.biblioRecord .detailLink:hover, .biblioRecord .xmlDetailLink:hover {
+.biblioRecord .xmlDetailLink {
+  background-color: #777;
+}
+
+.biblioRecord .citationLink {
+  background-color: #282828;
+}
+
+
+.biblioRecord .detailLink:hover, 
+.biblioRecord .xmlDetailLink:hover, 
+.biblioRecord .citationLink:hover {
   background-color: #852836;
   color: #fff;
 }
+
 .customField {
   font-size: 8pt;
   line-height: 14pt;
@@ -1068,9 +1104,8 @@ keyframes coverUp {
   border: solid 1px #f2f2f2;
   margin-bottom: -1px;
   background-color: #fff;
-  padding: 5px 0;
+  padding: 0;
 }
-
 
 /* Paging
  ================================ */
@@ -1748,43 +1783,109 @@ keyframes coverUp {
  ================================ */
 
 #loginForm {
-  padding: 50px 20px;
-  border: solid 1px rgba(255, 255, 255, 0.15);
+  padding: 75px 20px 50px 20px;
 }
+
 .s-login-content {
+  border-radius: 4px;
   margin: 0 auto;
   width: 300px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #fff;
+  position: relative;
 }
-#loginForm .homeButton {
-  display: none;
-}
+
 #loginForm .heading1 {
   letter-spacing: 4px;
   font-size: 8pt;
   text-transform: uppercase;
+  color: #000;
 }
+
 #loginForm input[type="password"], #loginForm #userName {
   border: none;
-  padding: 10px 10px 10px 20px;
+  padding: 8px 10px;
   font-size: 15pt;
   width: 100%;
   color: #000 !important;
   margin: 10px auto;
   text-align: center;
+  border: solid 1px #f2f2f2;
 }
+
 #loginForm input[type=text], #loginForm input[type=password] {
   color: #333;
+  border-radius:50px;
 }
+
+#loginForm input[type=text] {
+  background: transparent url(img/username.png) 8px 6px no-repeat;
+  background-size: 32px;
+}
+
+#loginForm input[type=password] {
+  background: transparent url(img/password.png) 8px 6px no-repeat;
+  background-size: 32px;
+}
+
+#loginForm input[type=text]:focus, 
+#loginForm input[type=password]:focus {
+  outline: 0;
+}
+
+#loginForm input[type=text]:focus:-webkit-autofill, 
+#loginForm input[type=password]:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 500px #fff inset; 
+}
+
+.login_input {
+  position: relative;
+}
+
 .loginButton {
-  background-color: #000;
-  padding: 15px;
+  border-radius:50px;
+  color: #ccc;
+  background-color: #282828;
   border: none;
   width: 100%;
+  -webkit-transition: background-color 500ms ease;
+  transition: background-color 500ms ease;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 10px;
 }
+
+.homeButton:hover,
+.loginButton:hover {
+  background-color: #852836;
+  color: #fff;
+}
+
+.loginButton {
+  margin-top: 40px;  
+  padding: 15px 0;
+}
+
+.homeButton {
+  position: absolute;
+  padding: 15px 0;
+  background: #ccc;
+  border: none;
+  color: #000;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 10px;
+  width: 100%;
+  margin: 0 auto;
+  bottom:-28px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  left: 0;
+}
+
+
 .s-login {
-  margin-top: -25px;
+  margin-top: -75px;
+  margin-bottom: 24px;
 }
 
 #loginButton,
@@ -1813,6 +1914,24 @@ keyframes coverUp {
 
 }
 
+/*.s-login-icon {
+  background-color: #000;
+  width:75px;
+  height:75px;
+  position: relative;
+  top: -35px;
+  margin: 0 auto;
+  vertical-align: middle;  
+  text-align: center;
+  border-radius: 4px;
+}
+
+.s-login-icon img {
+  position: relative;
+  margin: 0 auto;
+  padding: 4px 8px 0 8px;
+}
+*/
 /* For support browser
  ================================ */
 .chromeframe {

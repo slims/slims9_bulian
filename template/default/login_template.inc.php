@@ -10,22 +10,17 @@ if (!defined('INDEX_AUTH')) {
 <!DOCTYPE html>
 <html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>">
 <head>
-
-  <!-- Meta
-  ============================================= -->
-  <?php include "meta_template.php"; ?>
-
+<!-- Meta
+============================================= -->
+<?php include "meta_template.php"; ?>
 </head>
-<body itemscope itemtype="http://schema.org/WebPage" id="login-page">
 
-  <!-- Header
-  ============================================= -->
-  <?php include "header_template.php"; ?>
+<body itemscope itemtype="http://schema.org/WebPage" id="login-page">
 
   <!-- Login
   ============================================= -->
   <main id="content" class="s-main s-login" role="main">
-    <div class="s-login-content animated fadeInUp delay9">
+    <div class="s-login-content animated flipInY delay9">
       <?php echo $main_content; ?>
     </div>
   </main>
@@ -41,6 +36,18 @@ if (!defined('INDEX_AUTH')) {
   <!-- Background
   ============================================= -->
   <?php include "bg_template.php"; ?>
+
+  <script>
+    $("form, input").attr({
+      autocomplete    : "off",  
+      autocorrect     : "off",  
+      autocapitalize  : "off",  
+      spellcheck      : "off"  
+    });
+
+    $('.homeButton').val('Back To Home');
+
+  </script>
 
 </body>
 
