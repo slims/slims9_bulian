@@ -503,7 +503,7 @@ footer {}
   right: 0;
   display: block;
   zoom: 1;
-  background-color: #1B1B1B;
+  background-color: #000;
   padding: 20px 50px;
   width: 100%;
   margin: 0 auto;
@@ -772,6 +772,13 @@ footer {}
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+.s-btn:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 /* Feature
@@ -782,7 +789,7 @@ footer {}
   margin: 0 auto !important;
   text-align: center;
   position: fixed;
-  top: 75px;
+  bottom: -14px;
   background: transparent url(img/shelf.png) 0 100px no-repeat;
   z-index: 2002;
 }
@@ -1669,20 +1676,14 @@ keyframes coverUp {
   background-color: #900;
   padding:10px;
   color: #fff;
-  position: fixed;
+  position: absolute;
   z-index:9999;
-  bottom:50px;
+  top: 217px;
   left:0;
   width: 100%;
   text-align: center;
   margin:0;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-name: fadeInUp;
-  animation-name: fadeInUp;
-
+  display: inline-block;
 }
 
 /* Table

@@ -184,50 +184,51 @@ if (!defined('INDEX_AUTH')) {
           </form>
         </div>
 
-        <!-- Featured
-        ============================================= -->
-        <div class="s-feature-content animated fadeInUp delay9">
-        <?php
-        // Promoted titles
-        // Only show at the homepage
-        if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
-          // query top book
-          $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
-              promoted=1 ORDER BY last_update LIMIT 30');
-          if ($num_rows = $topbook->num_rows) :
-        ?>
-        <div class="s-feature-list">
-              <ul id="topbook" class="jcarousel-skin-tango">
-                <?php
-                while ($book = $topbook->fetch_assoc()) :
-                  $title = explode(" ", $book['title']);
-                  if (!empty($book['image'])) : ?>
-                  <li class="book">
-                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
-                      <img src="images/docs/<?php echo $book['image'] ?>" />
-                    </a>
-                  </li>
-                  <?php else: ?>
-                  <li class="book">
-                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
-                      <div class="s-feature-title"><?php echo $title[0].'<br/>'.$title[1] ?><br/>...</div>
-                      <img src="./template/default/img/book.png" />
-                    </a>
-                  </li>
-                  <?php 
-                  endif;
-                endwhile;
-                ?>
-              </ul>
-        </div>
-          <?php endif; ?>
-        <?php endif; ?>
-
-        </div>
 
 
   </main>
 <?php endif; ?>
+
+<!-- Featured
+============================================= -->
+<div class="s-feature-content animated fadeInUp delay9">
+<?php
+// Promoted titles
+// Only show at the homepage
+if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
+  // query top book
+  $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
+      promoted=1 ORDER BY last_update LIMIT 30');
+  if ($num_rows = $topbook->num_rows) :
+  ?>
+  <div class="s-feature-list">
+    <ul id="topbook" class="jcarousel-skin-tango">
+      <?php
+      while ($book = $topbook->fetch_assoc()) :
+        $title = explode(" ", $book['title']);
+        if (!empty($book['image'])) : ?>
+        <li class="book">
+          <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
+            <img src="images/docs/<?php echo $book['image'] ?>" />
+          </a>
+        </li>
+        <?php else: ?>
+        <li class="book">
+          <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
+            <div class="s-feature-title"><?php echo $title[0].'<br/>'.$title[1] ?><br/>...</div>
+            <img src="./template/default/img/book.png" />
+          </a>
+        </li>
+        <?php 
+        endif;
+      endwhile;
+      ?>
+    </ul>
+  </div>
+  <?php endif; ?>
+<?php endif; ?>
+</div>
+
 
 <!-- Footer
 ============================================= -->
@@ -350,6 +351,9 @@ $(document).ready(function(){
   $('.librarian-image img').error(function(){
     $(this).attr('src','./template/default/img/avatar.jpg');
   });
+
+  $('.errorBox').parent().removeClass('animated fadeInUp delay2');
+  $('.errorBox').parents().attr('style','position: static;');
 
 });
 </script>
