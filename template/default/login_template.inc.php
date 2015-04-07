@@ -47,6 +47,10 @@ if (!defined('INDEX_AUTH')) {
 
     $('.homeButton').val('Back To Home');
 
+    //If captcha available
+    $('.captchaAdmin').parent().parent().attr('style','padding: 25px 20px;');
+    $('.captchaAdmin').parent().parent().parent().attr('style','top: -40px;');
+
   </script>
 
 </body>

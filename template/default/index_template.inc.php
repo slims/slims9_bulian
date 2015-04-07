@@ -98,7 +98,7 @@ if (!defined('INDEX_AUTH')) {
 
             <!-- Show Result
             ============================================= -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 animated fadeInUp delay2">
 
               <?php 
                 // Generate Output
@@ -134,22 +134,19 @@ if (!defined('INDEX_AUTH')) {
               <!-- Show if clustering search is enabled
               ============================================= -->
               <?php
-                if(!isset($_GET['p'])) :
-                  if ($sysconf['enable_search_clustering']) : ?>
+                if(isset($_GET['keywords']) && (!empty($_GET['keywords']))) :
+                  if (($sysconf['enable_search_clustering'])) : ?>
                   <h2><?php echo __('Search Cluster'); ?></h2>
                   <hr/>
                   <div id="search-cluster">
                     <div class="cluster-loading"><?php echo __('Generating search cluster...');  ?></div>
                   </div>
-
                   <script type="text/javascript">
                     $('document').ready( function() {
                       $.ajax({
                         url     : 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
                         type    : 'GET',
-                        success : function(data, status, jqXHR) {
-                                    $('#search-cluster').html(data);
-                                  }
+                        success : function(data, status, jqXHR) { $('#search-cluster').html(data); }
                       });
                     });
                   </script>
@@ -172,55 +169,66 @@ if (!defined('INDEX_AUTH')) {
         <div class="s-main-search animated fadeInUp delay1">
           <form action="index.php" method="get" autocomplete="off">
             <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
-            <p class="s-search-info animated fadeInUp delay3"><?php echo __('you can start it by typing one or more keywords for title, author or subject'); ?></p>
+            <div class="marquee down">
+              <p class="s-search-info">
+              <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
+              <!--
+              <?php echo __('use logical search "title=library AND author=robert"'); ?>
+              <?php echo __('just click on the Search button to see all collections'); ?>
+              -->
+              </p>
+            </div>
             <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
             <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
             <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
           </form>
         </div>
 
-        <!-- Featured
-        ============================================= -->
-        <div class="s-feature-content animated fadeInUp delay9">
-        <?php
-        // Promoted titles
-        // Only show at the homepage
-        if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
-          // query top book
-          $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
-              promoted=1 ORDER BY last_update LIMIT 30');
-          if ($num_rows = $topbook->num_rows) :
-        ?>
-        <div class="s-feature-list">
-              <ul id="topbook" class="jcarousel-skin-tango">
-                <?php
-                while ($book = $topbook->fetch_assoc()) :
-                  if (!empty($book['image'])) : ?>
-                  <li class="book">
-                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>" class="tooltips">
-                      <img src="images/docs/<?php echo $book['image'] ?>" />
-                    </a>
-                  </li>
-                  <?php else: ?>
-                  <li class="book">
-                    <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>" class="tooltips">
-                      <img src="./template/default/img/book.png" />
-                    </a>
-                  </li>
-                  <?php 
-                  endif;
-                endwhile;
-                ?>
-              </ul>
-        </div>
-          <?php endif; ?>
-        <?php endif; ?>
-
-        </div>
 
 
   </main>
 <?php endif; ?>
+
+<!-- Featured
+============================================= -->
+<div class="s-feature-content animated fadeInUp delay9">
+<?php
+// Promoted titles
+// Only show at the homepage
+if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
+  // query top book
+  $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
+      promoted=1 ORDER BY last_update LIMIT 30');
+  if ($num_rows = $topbook->num_rows) :
+  ?>
+  <div class="s-feature-list">
+    <ul id="topbook" class="jcarousel-skin-tango">
+      <?php
+      while ($book = $topbook->fetch_assoc()) :
+        $title = explode(" ", $book['title']);
+        if (!empty($book['image'])) : ?>
+        <li class="book">
+          <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
+            <img src="images/docs/<?php echo $book['image'] ?>" />
+          </a>
+        </li>
+        <?php else: ?>
+        <li class="book">
+          <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
+            <div class="s-feature-title"><?php echo $title[0].'<br/>'.$title[1] ?><br/>...</div>
+            <img src="./template/default/img/book.png" />
+          </a>
+        </li>
+        <?php 
+        endif;
+      endwhile;
+      ?>
+    </ul>
+  </div>
+  <?php endif; ?>
+<?php endif; ?>
+</div>
+
 
 <!-- Footer
 ============================================= -->
@@ -325,14 +333,27 @@ $(document).ready(function(){
     $('#keyword').focus();
   });  
 
-  <?php if(isset($_GET['search'])) : ?>
+  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 
   //Replace blank cover
-  $('img').error(function(){
-          $(this).attr('src', './template/default/img/book.png');
+  $('.book img').error(function(){
+    var title = $(this).parent().attr('title').split(' ');
+    $(this).parent().append('<div class="s-feature-title">' + title[0] + '<br/>' + title[1] + '<br/>... </div>');
+    $(this).attr({
+      src   : './template/default/img/book.png',
+      title : title + title[0] + ' ' + title[1]
+    });
   });
+
+  //Replace blank photo
+  $('.librarian-image img').error(function(){
+    $(this).attr('src','./template/default/img/avatar.jpg');
+  });
+
+  $('.errorBox').parent().removeClass('animated fadeInUp delay2');
+  $('.errorBox').parents().attr('style','position: static;');
 
 });
 </script>

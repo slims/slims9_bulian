@@ -6,7 +6,7 @@ $sysconf['captcha']['smc']['webfile'] = ''; // php file that needs to accessed t
 $sysconf['captcha']['smc']['publickey'] = '6Ld41r4SAAAAAFjuQln14H5il6sARyliKWu8oB_8'; // some captcha providers need this. Ajdust it with yours
 $sysconf['captcha']['smc']['privatekey'] = '6Ld41r4SAAAAAB-u-GiQRskOU3POAH20Vuy6Ytgt'; // some captcha providers need this. Ajdust it with yours
 
-$sysconf['captcha']['smc']['recaptcha']['theme'] = 'white'; // Possible values: 'red' | 'white' | 'blackglass' | 'clean' | 'custom'
+$sysconf['captcha']['smc']['recaptcha']['theme'] = 'clean'; // Possible values: 'red' | 'white' | 'blackglass' | 'clean' | 'custom'
 $sysconf['captcha']['smc']['recaptcha']['lang'] = 'en'; // Possible values: 'en' (english) | 'nl' (Dutch) | 'fr' (French) | 'de' (German) | 'pt' (Portuguese) | 'ru' (Russian) | 'es' (Spanish) | 'tr' (Turkish)
 $sysconf['captcha']['smc']['recaptcha']['customlang']['enable'] = false;
 $sysconf['captcha']['smc']['recaptcha']['customlang']['instructions_visual'] = 'Ketik dua kata diatas:';

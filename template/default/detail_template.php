@@ -5,7 +5,7 @@
   <div class="cover">
     <?php echo $image ?>
   </div>
-
+  
   <!-- Title 
   ============================================= -->
   <!-- <a target="_blank" href="index.php?p=show_detail&inXML=true&id=<?php echo $biblio_id ?>" class="btn btn-mini btn-danger" title="View record detail description in XML Format">XML</a> -->

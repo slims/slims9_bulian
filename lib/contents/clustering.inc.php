@@ -66,7 +66,7 @@ if (!isset($_GET['q'])) {
       if ($i > $cluster_num_show-1) {
         $hidden = ' cluster-hidden';  
       }
-      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND gmd="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">('.$cluster_data['Cluster Count'].')</span></a></li>'."\n";
+      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND gmd="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">'.$cluster_data['Cluster Count'].'</span></a></li>'."\n";
       $i++;
     }
     echo '</ul>'."\n";
@@ -85,7 +85,7 @@ if (!isset($_GET['q'])) {
       if ($i > $cluster_num_show-1) {
         $hidden = ' cluster-hidden';  
       }
-      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND colltype="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">('.$cluster_data['Cluster Count'].')</span></a></li>'."\n";
+      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND colltype="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">'.$cluster_data['Cluster Count'].'</span></a></li>'."\n";
       $i++;
     }
     echo '</ul>'."\n";
@@ -104,7 +104,7 @@ if (!isset($_GET['q'])) {
       if ($i > $cluster_num_show-1) {
         $hidden = ' cluster-hidden';  
       }
-      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND subject="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">('.$cluster_data['Cluster Count'].')</span></a></li>'."\n";
+      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND subject="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">'.$cluster_data['Cluster Count'].'</span></a></li>'."\n";
       $i++;
     }
     if ($i > $cluster_num_show) {
@@ -126,7 +126,7 @@ if (!isset($_GET['q'])) {
       if ($i > $cluster_num_show-1) {
         $hidden = ' cluster-hidden';  
       }
-      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND author="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">('.$cluster_data['Cluster Count'].')</a></a></li>'."\n";
+      echo '<li class="cluster-item'.$hidden.'"><a href="index.php?keywords='.urlencode('('.$q.') AND author="'.$cluster_data['Cluster Name'].'"').'&search=Search&fromcluster=1">'.$cluster_data['Cluster Name'].' <span class="cluster-item-count">'.$cluster_data['Cluster Count'].'</a></a></li>'."\n";
       $i++;
     }
     if ($i > $cluster_num_show) {
