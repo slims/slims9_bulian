@@ -533,7 +533,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $cmc_q = $dbs->query('SELECT id, '.$cmc.'_type FROM mst_'.$cmc.'_type');
     $cmc_options = array();
     $cmc_options[] = array(0, __('Not set'));
-    while ($cmc_d = $cmc_q->fetch_row()) {
+    while ($cmc_q->num_rows > 0 && $cmc_d = $cmc_q->fetch_row()) {
       $cmc_options[] = array($cmc_d[0], $cmc_d[1]);
     }
     $form->addSelectList($cmc.'TypeID', __($cmc_name), $cmc_options, $rec_d[$cmc.'_type_id'], 'class="select2"', __('RDA '.$cmc_name.' designation.'));    
