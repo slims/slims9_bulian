@@ -1,4 +1,5 @@
 <?php 
+$footer_position = '';
 if(isset($_GET['search']) || isset($_GET['p'])) {
   $footer_position = 'style="position: relative !important"';
 }
