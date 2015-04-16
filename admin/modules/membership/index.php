@@ -520,7 +520,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             .'</div>';
             if ($rec_d['member_image']) {
                 if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
-                    echo '<div id="memberImage" style="float: right;"><img src="../images/persons/'.urlencode($rec_d['member_image']).'" style="border: 1px solid #999999" /></div>';
+                    echo '<div id="memberImage" style="float: right;"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['member_image']).'&amp;width=180&amp;timestamp='.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
                 }
             }
         echo '</div>'."\n";

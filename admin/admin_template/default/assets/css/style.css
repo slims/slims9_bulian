@@ -1189,6 +1189,7 @@ tr.dataListHeader > td > a {
 	padding: 15px 10px;
 	margin: 15px 11px 15px 10px;
 	color: #fff;
+	position: relative;
 }
 .menuBoxInner .sub_section {
 	background-color: #fff;
@@ -1513,7 +1514,7 @@ tr.dataListHeader > td > a {
 	background-color: transparent;
 	position: absolute;
 	right: 21px;
-	top: 79px;
+	top: 15px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	border-radius: 50px;
 	overflow: hidden;
@@ -1524,6 +1525,24 @@ tr.dataListHeader > td > a {
 	text-align: center;
 	padding: 0 !important;
 }
+
+
+#memberImage {
+	background-color: transparent;
+	position: absolute;
+	right: 21px;
+	top: 15px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 50px;
+	overflow: hidden;
+	font-size: 12px;
+	display: inline-block;
+	width: 75px !important;
+	height: 75px !important;
+	text-align: center;
+	padding: 0 !important;
+}
+
 .s-person-photo img {
 	width: 100px;
 	border: none !important;
@@ -1532,13 +1551,14 @@ tr.dataListHeader > td > a {
 	margin-left: auto;
 	padding: 0;
 }
+#memberImage img,
 #userImage img {
 	border: none !important;
 	text-align: center;
 	margin-right: auto;
 	margin-left: auto;
 	padding: 0;
-	width: 75px;
+	height: 80px;
 }
 #listsFrame {
 	min-height: 370px !important;
