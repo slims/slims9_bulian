@@ -17,7 +17,7 @@
 
 ?>
 <p class="citation">
-  <h3>Chicago style</h3>
+  <h3>Chicago Style</h3>
   <?php if ($authors_string) : ?>
     <span class="authors"><?php print $authors_string ?>.</span>
     <span class="title"><em><?php print $title ?></em>.</span>

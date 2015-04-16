@@ -45,6 +45,7 @@ class detail
     protected $detail_suffix = '';
     public $record_title;
     public $metadata;
+    public $image_src;
 
     /**
      * Class Constructor
@@ -265,11 +266,16 @@ class detail
         // check image
         if (!empty($this->record_detail['image'])) {
           if ($sysconf['tg']['type'] == 'minigalnano') {
-            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200" border="0" />';
+            $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200';
+            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" />';
           }
         } else {
-          $this->record_detail['image'] = '<img src="./images/default/image.png" alt="No image available for this title" border="0" />';
+          $this->record_detail['image_src'] = "images/default/image.png";
+          $this->record_detail['image'] = '<img src="./'.$this->record_detail['image_src'].'" alt="No image available for this title" border="0" />';
         }
+
+        // get image source
+        $this->image_src = $this->record_detail['image_src'];
 
         // get the authors data
         $authors = '';
@@ -313,7 +319,6 @@ class detail
 
           $this->record_detail['social_shares'] = $_share_btns;
         }
-
         return $this->record_detail;
     }
 
