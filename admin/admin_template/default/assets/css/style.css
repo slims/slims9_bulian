@@ -187,6 +187,7 @@ a:hover {
 	.s-menu li label {
 		white-space: nowrap;
 		width: 100%;
+		text-align: left;
 	}
 	.s-menu-title {
 		display: inline-block;
