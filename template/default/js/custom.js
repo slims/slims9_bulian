@@ -48,3 +48,15 @@ $(document).ready(function(){
 		}
 	}
 })()
+
+  
+
+$(document).ready(function(){
+  $(window).load(function () {
+    $('#keyword').focus();
+  });  
+
+  $('.errorBox').parent().removeClass('animated fadeInUp delay2');
+  $('.errorBox').parents().attr('style','position: static;');
+
+});

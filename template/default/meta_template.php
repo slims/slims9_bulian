@@ -24,22 +24,20 @@
   <meta property='og:title' content='<?php echo $page_title; ?>'/>
   <meta property='og:url' content='//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>'/>
   <meta property='og:site_name' content='<?php echo $sysconf['library_name']; ?>'/>
-  <meta property='og:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png'/>
+  <meta property='og:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/logo.png'/>
 
   <!-- Twitter
   ============================================= -->
   <meta name=”twitter:card” content=”summary”>
   <meta name='twitter:url' content='//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>'/>
   <meta name='twitter:title' content='<?php echo $page_title; ?>'/>
-  <meta name='twitter:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/slims-logo.png'/>
+  <meta name='twitter:image' content='<?php echo $sysconf['template']['dir']; ?>/default/img/logo.png'/>
 
   <!-- Theme
   ============================================= -->
   <link rel="shortcut icon" href="webicon.ico" type="image/x-icon"/>
   <link rel="stylesheet" href="<?php echo $sysconf['template']['dir']; ?>/core.style.css" type="text/css" />
   <link rel="stylesheet" href="<?php echo JWB; ?>colorbox/colorbox.css" type="text/css" />
-  <link rel="stylesheet" href="<?php echo $sysconf['template']['css']; ?>" type="text/css" />
-  <link type="text/css" rel="stylesheet" media="all" href="<?php echo SWB; ?>template/default/css/tango/skin.css"/>
   <?php echo $metadata; ?>
 
   <!-- Script
@@ -55,3 +53,10 @@
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
   <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
+
+  <!-- Less
+  ============================================= -->
+  <link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.less"/>
+  <script>less = { env: "development" };</script>
+  <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
+
