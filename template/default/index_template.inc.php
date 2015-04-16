@@ -72,12 +72,16 @@ if (!defined('INDEX_AUTH')) {
   ============================================= -->
   <div class="s-main-search">
     <?php
-    switch ($_GET['p']) {
-    case ''             : $page_title = __('Collections'); break;
-    case 'show_detail'  : $page_title = __("Record Detail"); break;              
-    case 'member'       : $page_title = __("Member Area"); break;              
-    case 'member'       : $page_title = __("Member Area"); break;              
-    default             : $page_title; break; }            
+    if(isset($_GET['p'])) {    
+      switch ($_GET['p']) {
+      case ''             : $page_title = __('Collections'); break;
+      case 'show_detail'  : $page_title = __("Record Detail"); break;              
+      case 'member'       : $page_title = __("Member Area"); break;              
+      case 'member'       : $page_title = __("Member Area"); break;              
+      default             : $page_title; break; }            
+    } else {
+      $page_title = __('Collections');  
+    }
     ?>
     <h1 class="s-main-title animated fadeInUp delay1"><?php echo $page_title ?></h1>
     <form action="index.php" method="get" autocomplete="off">
@@ -99,8 +103,13 @@ if (!defined('INDEX_AUTH')) {
           // Generate Output
           echo $main_content;
           // Somehow we need to hack the layout
-          echo (isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') ? '</div>' : '';
-          echo (isset($_SESSION['mid'])) ? '</div></div>' : '';
+          if(isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') {
+            echo '</div>'; 
+          } elseif(isset($_SESSION['mid'])) {
+            echo  '</div></div>';            
+          } else {
+            echo '';
+          }
         ?>
 
       <div class="col-lg-4 col-sm-1 col-xs-1 animated fadeInUp delay4">
