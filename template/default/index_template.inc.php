@@ -100,7 +100,7 @@ if (!defined('INDEX_AUTH')) {
           echo $main_content;
           // Somehow we need to hack the layout
           echo (isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') ? '</div>' : '';
-          echo (isset($_SESSION['mid'])) ? '</div></div>' : '</div>';
+          echo (isset($_SESSION['mid'])) ? '</div></div>' : '';
         ?>
 
       <div class="col-lg-4 col-sm-1 col-xs-1 animated fadeInUp delay4">
