@@ -1063,6 +1063,47 @@ tr.dataListHeader > td > a {
 	text-transform: uppercase;
 	white-space: nowrap;
 }
+
+/* serial control module */
+.addSubscription {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: 32px;
+	height: 32px;
+	float: right;
+}
+.addSubscription:before {
+	font-family: 'FontAwesome';
+	content: '\f0fe';
+	font-size: 15px;
+	color: #31353E;
+}
+.addSubscription:hover {
+	text-decoration: none;
+	color: #fff !important;
+}
+
+
+.viewSubscription {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: 32px;
+	height: 32px;
+	float: right;
+}
+.viewSubscription:before {
+	font-family: 'FontAwesome';
+	content: '\f002';
+	font-size: 15px;
+	color: #31353E;
+}
+.viewSubscription:hover {
+	text-decoration: none;
+	color: #fff !important;
+}
+
 .editLink {
 	margin-left: auto;
 	margin-right: auto;
