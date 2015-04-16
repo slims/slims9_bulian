@@ -229,7 +229,7 @@ $barcodes_encoding['CODE128'] = array('code128', 'Code 128');
 // $barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail (may result in barcode creation error)');
 // $barcodes_encoding['UPCA'] = array('upca', 'UPC-A (may result in barcode creation error)');
 // $barcodes_encoding['UPCE'] = array('upce', 'UPC-E (may result in barcode creation error)');
-$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'];
+$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'][0];
 
 /* QUICK RETURN */
 $sysconf['quick_return'] = true;
