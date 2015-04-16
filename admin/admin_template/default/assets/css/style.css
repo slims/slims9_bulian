@@ -330,6 +330,7 @@ a:hover {
 	height: 25px;
 	border-radius: 50px;
 	text-align: center;
+	position: relative;
 }
 .s-user-photo img {
 	width: 25px;
@@ -346,12 +347,13 @@ a:hover {
 @media (min-width: 768px) {
 	.s-user-photo {
 		border: solid 4px #31353E;
-		;
 		width: 63px;
 		height: 63px;
 	}
 	.s-user-photo img {
-		width: 55px;
+		width: auto;
+		height: 80px;
+		background-size: cover;
 	}
 	.s-user-name {
 		display: block;
