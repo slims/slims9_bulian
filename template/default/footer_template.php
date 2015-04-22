@@ -3,8 +3,13 @@ $footer_position = '';
 if(isset($_GET['search']) || isset($_GET['p'])) {
   $footer_position = 'style="position: relative !important"';
 }
+
+if(isset($_GET['p']) && (($_GET['p'] == 'visitor') || ($_GET['p'] == 'login'))) {
+  $footer_position = '';
+}
+
 ?>
-<footer class="s-footer container"  <?php echo $footer_position ?>;">
+<footer class="s-footer container" <?php echo $footer_position ?>>
   <div class="row">
     <div class="col-lg-6">
       <div class="s-footer-tagline">
@@ -13,6 +18,7 @@ if(isset($_GET['search']) || isset($_GET['p'])) {
     </div>
     <nav class="col-lg-6">
       <ul class="s-footer-menu">
+        <li><a href="index.php"><?php echo __('Home'); ?></a></li>
         <li><a target="_blank" rel="archives" href="//www.facebook.com/groups/senayan.slims">Facebook</a></li>
         <li><a target="_blank" rel="archives" href="//twitter.com/#!/slims_official">Twitter</a></li>
         <li><a target="_blank" rel="archives" href="//www.youtube.com/user/senayanslims">Youtube</a></li>

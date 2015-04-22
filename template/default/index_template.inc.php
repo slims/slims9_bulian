@@ -97,22 +97,27 @@ if (!defined('INDEX_AUTH')) {
 
       <!-- Show Result
       ============================================= -->
-      <div class="col-lg-8 col-sm-1 col-xs-1 animated fadeInUp delay2">
+      <div class="col-lg-8 col-sm-1 animated fadeInUp delay2">
 
         <?php 
           // Generate Output
           echo $main_content;
           // Somehow we need to hack the layout
-          if(isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') {
+          if(isset($_GET['search'])){
             echo '</div>'; 
-          } elseif(isset($_SESSION['mid'])) {
-            echo  '</div></div>';            
-          } else {
-            echo '';
           }
+
+          if(isset($_SESSION['mid'])) {
+            echo  '</div></div>';            
+          }
+
+          if(isset($_GET['p']) && $_GET['p'] != 'member') {
+            echo '</div>';
+          }
+
         ?>
 
-      <div class="col-lg-4 col-sm-1 col-xs-1 animated fadeInUp delay4">
+      <div class="col-lg-4 col-sm-1 animated fadeInUp delay4">
         <?php if(isset($_GET['search'])) : ?>
         <h2><?php echo __('Search Result'); ?></h2>
         <hr>
@@ -184,7 +189,6 @@ if (!defined('INDEX_AUTH')) {
           <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
         </form>
       </div>
-
 </main>
 
 <!-- Featured
@@ -223,6 +227,7 @@ if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords
       ?>
     </ul>
   </div>
+  </script>
   <?php endif; ?>
 <?php endif; ?>
 </div>
@@ -301,7 +306,7 @@ if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords
 <?php include "bg_template.php"; ?>
 
 <script>
-   <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
+  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 

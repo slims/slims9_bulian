@@ -1,58 +1,77 @@
 /* Menu
  ================================ */
 .s-menu {
-  position: relative;
+  position: fixed;
+}
+
+@media only screen and (max-width : 480px) {
+  .s-menu {
+    position: relative;
+    display: block;
+    width: 100%;
+    left: 0px;
+  }
 }
 
 .s-menu a {
-  margin: 40px auto 0 auto;
   display: block;
   color: #fff;
+  background-color: #fff;
+  width: 30px;
+  border-radius: 50px;
+  padding: 15px 0 0 8px;
+  height: 30px;
+  margin: 20px auto 0 auto;
 }
 
 @media only screen and (min-width : 768px) {
   .s-menu {
-    float: right;
-    margin-right: 10px;
+      z-index: 2099;
+      top:25px;
+      right: 60px;
   }
 
   .s-menu a {
-    margin: 20px 0 0 0;
-    padding-top: 0;
+    margin: 0;
+    width: 30px;
+    height: 30px;
   }
 }  
 
-.s-menu-toggle {
-  width: 20px;
-  height: 20px;
-  display: block;
-  vertical-align: top;
-  padding-top: 3px;
-  margin-left: 15px;
+@media only screen and (max-width : 480px) {
+  .s-menu-toggle {
+    width: 19px;
+    height: 20px;
+    display: block;
+    vertical-align: top;
+    padding-top: 3px;
+    margin-left: 15px;
+  }
+
 }
 
 .s-menu-toggle span, .s-menu-toggle span:before, .s-menu-toggle span:after {
   cursor: pointer;
   border-radius: 1px;
   height: 1px;
-  width: 20px;
-  background: white;
+  width: 15px;
+  background: #282828;
   position: absolute;
   display: block;
   content: '';
   transition: all 500ms ease-in-out;
 }
 .s-menu-toggle span:before {
-  top: -5px;
+  top: -3px;
 }
 .s-menu-toggle span:after {
-  bottom: -5px;
+  bottom: -3px;
 }
 .s-menu-toggle:hover span:before {
-  top: -8px;
+  top: -6px;
 }
 .s-menu-toggle:hover span:after {
-  bottom: -8px;
+  bottom: -6px;
 }
 .s-menu-toggle.active span {
   background-color: transparent;
@@ -66,7 +85,6 @@
 .s-menu-toggle.active span:after {
   transform: rotate(-45deg);
 }
-
 .s-menu-content {
   background-color: #eee;
   width: 100%;

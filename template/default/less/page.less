@@ -3,8 +3,8 @@
 
 .s-main-page {
     background-color: #fff;
+    margin-top: 200px;
     position: relative;
-    margin-top: 115px;
 }
 
 @media only screen and (min-width : 768px) {
@@ -16,24 +16,40 @@
 }
 
 .s-main-page .s-main-search {
-  position: absolute;
-  top: -85px;
-  right: 40px;
+  top: -175px;
+  left: 0;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-main-page .s-main-search {
+    top: -95px;
+    text-align: right;
+    right: 0;
+    position: absolute;
+  }
 }
 
 .s-main-page .s-main-title {
-    margin: 0 auto;
-    padding: 0;
     color: #fff;
     text-align: center;
-    position: relative;
+    position: absolute;
+    left: 0;
+    top:120px;
+    padding-bottom: 25px;
+    font-size: 20pt;
+    width: 100%;
+    display: inline-block;
+    margin: 0;
 }
 
 @media only screen and (min-width : 768px) {
   .s-main-page .s-main-title {
-    position: absolute;
-    left: -766px;
-    top: -12px;
+    top:20px;
+    text-align: left;
+    padding-left: 50px;
   }
 }
 

@@ -27,7 +27,7 @@
   <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
   <meta property="og:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$image_src ?>"/>
   <?php else: ?>
-  <meta property="og:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.'/'.$sysconf['template']['dir']; ?>/default/img/logo.png"/>
+  <meta property="og:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$sysconf['template']['dir']; ?>/default/img/logo.png"/>
   <?php endif; ?>
   <!-- Twitter
   ============================================= -->
@@ -37,7 +37,7 @@
   <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
   <meta property="twitter:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$image_src ?>"/>
   <?php else: ?>
-  <meta property="twitter:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.'/'.$sysconf['template']['dir']; ?>/default/img/logo.png"/>
+  <meta property="twitter:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$sysconf['template']['dir']; ?>/default/img/logo.png"/>
   <?php endif; ?>
 
   <!-- Theme

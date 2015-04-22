@@ -3,23 +3,17 @@
 
 .s-main {
   width: 100%;
-  height: 100%;
   text-align: center;
   margin: 0 auto;
   color: #fff;
   font-size: 12pt;
   font-weight: lighter;
+  overflow: auto;
 }
 
 @media only screen and (min-width : 768px) {
   .s-main {
-    padding-top: 15%;
-  }
-}
-
-@media only screen and (min-width : 768px) and (orientation: landscape) {
-  .s-main {
-    min-height: 400px;
+    // padding-top: 15%;
   }
 }
 
@@ -29,7 +23,16 @@
   font-size: 26pt;
 }
 
-.s-main-content {}
+.s-main-search {
+  padding: 0 20px;
+  margin-top:15%;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-main-search {
+    margin-bottom:0;
+  }
+}
 
 .s-search-info {
   padding: 10px 15px;
@@ -44,7 +47,7 @@
 .s-search {
   border-radius: 50px;
   border: none;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.15);
   padding: 10px;
@@ -89,7 +92,7 @@
   background-color: #fff;
   padding: 10px;
   color: #666;
-  width: 90%;
+  width: 100%;
   margin: 10px auto;
   font-size: 14px;
   text-transform: uppercase;
@@ -100,6 +103,7 @@
 
 @media only screen and (min-width : 768px) {
   .s-btn {
+    margin-right:32px;
     width: 125px;
     border-radius: 0 50px 50px 0;
     display: inline-block;

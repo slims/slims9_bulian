@@ -266,7 +266,7 @@ class detail
         // check image
         if (!empty($this->record_detail['image'])) {
           if ($sysconf['tg']['type'] == 'minigalnano') {
-            $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&width=200';
+            $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&amp;width=200';
             $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" />';
           }
         } else {

@@ -596,7 +596,7 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    = false;
+$sysconf['chat_system']['enabled']    = true;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       = false;
 $sysconf['chat_system']['librarian']  = false;
