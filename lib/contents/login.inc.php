@@ -27,9 +27,11 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+/*
 if (defined('LIGHTWEIGHT_MODE')) {
     header('Location: index.php');
 }
+*/
 
 // required file
 require LIB.'admin_logon.inc.php';

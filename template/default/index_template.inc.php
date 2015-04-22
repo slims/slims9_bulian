@@ -97,27 +97,23 @@ if (!defined('INDEX_AUTH')) {
 
       <!-- Show Result
       ============================================= -->
-      <div class="col-lg-8 col-sm-1 animated fadeInUp delay2">
+      <div class="col-lg-8 col-sm-9 col-xs-12 animated fadeInUp delay2">
 
         <?php 
           // Generate Output
           echo $main_content;
           // Somehow we need to hack the layout
-          if(isset($_GET['search'])){
+          if(isset($_GET['search']) || (isset($_GET['p']) && $_GET['p'] != 'member')){
             echo '</div>'; 
-          }
-
-          if(isset($_SESSION['mid'])) {
-            echo  '</div></div>';            
-          }
-
-          if(isset($_GET['p']) && $_GET['p'] != 'member') {
-            echo '</div>';
+          } else {
+            if(isset($_SESSION['mid'])) {
+              echo  '</div></div>';            
+            }            
           }
 
         ?>
 
-      <div class="col-lg-4 col-sm-1 animated fadeInUp delay4">
+      <div class="col-lg-4 col-sm-3 col-xs-12 animated fadeInUp delay4">
         <?php if(isset($_GET['search'])) : ?>
         <h2><?php echo __('Search Result'); ?></h2>
         <hr>
@@ -189,50 +185,8 @@ if (!defined('INDEX_AUTH')) {
           <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
         </form>
       </div>
+<?php endif; ?>
 </main>
-
-<!-- Featured
-============================================= -->
-<div class="s-feature-content animated fadeInUp delay9">
-<?php
-// Promoted titles
-// Only show at the homepage
-if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
-  // query top book
-  $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
-      promoted=1 ORDER BY last_update LIMIT 30');
-  if ($num_rows = $topbook->num_rows) :
-  ?>
-  <div class="s-feature-list">
-    <ul id="topbook" class="jcarousel-skin-tango">
-      <?php
-        while ($book = $topbook->fetch_assoc()) :
-          $title = explode(" ", $book['title']);
-          if (!empty($book['image'])) : ?>
-          <li class="book">
-            <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
-              <img src="images/docs/<?php echo $book['image'] ?>" />
-            </a>
-          </li>
-          <?php else: ?>
-          <li class="book">
-            <a href="./index.php?p=show_detail&id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
-              <div class="s-feature-title"><?php echo $title[0].'<br/>'.$title[1] ?><br/>...</div>
-              <img src="./template/default/img/book.png" />
-            </a>
-          </li>
-          <?php 
-          endif;
-        endwhile;
-      ?>
-    </ul>
-  </div>
-  </script>
-  <?php endif; ?>
-<?php endif; ?>
-</div>
-
-<?php endif; ?>
 
 
 <!-- Footer

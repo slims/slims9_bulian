@@ -2,19 +2,23 @@
  ================================ */
 #loginForm {
   padding: 75px 20px 50px 20px;
+  position: relative;
+  margin: 0 auto 26px auto;
+  background-color: #fff;  
+  min-height: 100%;
+}
+
+@media only screen and (min-width : 768px) {
+  #loginForm {
+    border-radius: 4px;
+    width: 300px;
+  }
 }
 
 .s-login-content {
   position: relative;
 }
 
-#loginForm {
-  position: relative;
-  margin: 0 auto;
-  border-radius: 4px;
-  width: 300px;
-  background-color: #fff;  
-}
 
 #loginForm .heading1 {
   letter-spacing: 4px;
@@ -106,8 +110,10 @@
 }
 
 
-.s-login {
-  margin-top: 75px;
+@media only screen and (min-width : 768px) {
+  .s-login {
+    margin-top: 75px;
+  }
 }
 
 #loginButton,

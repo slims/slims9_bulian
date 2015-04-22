@@ -49,6 +49,14 @@
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
 }
+
+@media only screen and (max-width : 768px) {
+  .biblioRecord {
+    float: none;
+    width: 100%;
+  }
+}
+
 .biblioRecord:hover {
   border-color: #ccc;
 
@@ -174,9 +182,14 @@ keyframes coverUp {
 }
 
 .biblioRecord .subItem {
-  position: absolute;
-  bottom: 10px;
-  margin-left: 18px;
+}
+
+@media only screen and (min-width : 1024px) {
+  .biblioRecord .subItem {
+    bottom: 10px;
+    margin-left: 18px;
+    position: absolute;
+  }
 }
 
 .biblioRecord .detailLink, .biblioRecord .xmlDetailLink, .biblioRecord .citationLink {

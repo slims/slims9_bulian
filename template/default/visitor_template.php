@@ -37,14 +37,14 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
 
     <div class="row"> 
 
-      <div class="col-lg-6 col-sm-1">
+      <div class="col-lg-6 col-sm-6 col-xs-12">
         <div class="form-group"> 
           <input type="text" name="memberID" id="memberID"  class="form-control input-lg" />
           <label for="memberID"><?php echo __('Member ID'); ?></label>
         </div> 
       </div>
 
-      <div class="col-lg-6 col-sm-1">
+      <div class="col-lg-6 col-sm-6 col-xs-12">
         <div class="form-group"> 
           <input type="text" name="institution" id="institution" class="form-control input-lg" />
           <label for="institution"><?php echo __('Institution'); ?></label>
@@ -53,7 +53,7 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
     
       <div class="clearfix"></div>
 
-      <div class="col-lg-12 col-sm-1">
+      <div class="col-lg-12 col-sm-12 col-xs-12">
         <input type="submit" id="counter" name="counter" class="form-control input-lg" value="<?php echo __('Add'); ?>">
       </div>
     </div>
