@@ -75,7 +75,7 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 		$data['member_id'] = $_SESSION['mid'];
 
 		$data['input_date'] = date('Y-m-d H:i:s');
-        $data['last_update'] = date('Y-m-d H:i:s');
+    $data['last_update'] = date('Y-m-d H:i:s');
 
 		/* INSERT RECORD MODE */
 		// insert the data
@@ -114,6 +114,7 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
   echo $detail->showDetail();
   $page_title = $detail->record_title;
   $metadata = $detail->metadata;
+  $image_src = $detail->image_src;
 
   echo '<br />'."\n";
 }

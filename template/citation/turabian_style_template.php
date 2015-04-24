@@ -17,7 +17,7 @@
 
 ?>
 <p class="citation">
-  <h3>Turabian style</h3>
+  <h3>Turabian Style</h3>
   <?php if ($authors_string) : ?>
     <span class="authors"><?php print $authors_string ?>.</span>
     <span class="title"><em><?php print $title ?></em>.</span>

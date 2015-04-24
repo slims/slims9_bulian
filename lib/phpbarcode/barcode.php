@@ -146,11 +146,11 @@ if ($sysconf['zend_barcode_engine'] === true) {
   //$options['foreColor'] = "#000000";
   //$options['backgroundColor'] = "#FFFFFF";
   //$options['reverseColor'] = FALSE;
-  //$options['orientation'] = 0;
+  // $options['orientation'] = 0;
   $options['font'] = "./DejaVuSans.ttf";
-  //$options['fontSize'] = 10;
-  //$options['withBorder'] = FALSE;
-  //$options['withQuietZones'] = TRUE;
+  $options['fontSize'] = 8;
+  // $options['withBorder'] = TRUE;
+  // $options['withQuietZones'] = TRUE;
   //$options['drawText'] = TRUE;
   //$options['stretchText'] = FALSE;
   //$options['withChecksum'] = FALSE;

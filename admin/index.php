@@ -61,7 +61,7 @@ $sub_menu = $module->generateSubMenu(($current_module AND $can_read)?$current_mo
 // start the output buffering for main content
 ob_start();
 // info
-$info = __('Welcome To The Library Automation System, you are currently logged in as').' <strong>'.$_SESSION['realname'].'</strong>'; //mfc
+$info = __('You are currently logged in as').' <strong>'.$_SESSION['realname'].'</strong>'; //mfc
 
 if ($current_module AND $can_read) {
     // get content of module default content with AJAX

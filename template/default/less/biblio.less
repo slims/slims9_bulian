@@ -1,0 +1,444 @@
+/* Biblio
+ ================================ */
+.label {
+  border-radius:0;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.detailLink {
+  background-color: #f2f2f2;
+  color: #000;
+  margin-right: -5px;
+  padding: 10px 10px;
+}
+
+.xmlDetailLink {
+  background-color: #282828;
+  color: #fff;
+  padding: 10px;
+}
+
+.s-xml-detail {
+  padding: 10px 49px !important;  
+}
+
+.citationLink {
+  background-color: #777;
+  color: #fff;
+  margin-right: -5px;
+  padding: 10px 10px;
+}
+
+.biblioRecord {
+  position: relative;
+  float: left;
+  width: 45%;
+  padding: 10px 20px;
+  min-height: 440px;
+  text-align: center;
+  margin-right: 15px;
+  border: solid 1px #f2f2f2;
+  margin-bottom: 15px;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+@media only screen and (max-width : 768px) {
+  .biblioRecord {
+    float: none;
+    width: 100%;
+  }
+}
+
+.biblioRecord:hover {
+  border-color: #ccc;
+
+}
+.biblioRecord:last-child {
+  margin-right: 0;
+}
+
+.biblioRecord .cover-list {
+  border-radius: 4px;
+  background: transparent url(img/book.png) top left no-repeat;
+  background-size: cover;
+  background-color: #FFF;
+  margin: 0 auto;
+  -webkit-box-shadow: 0 2px 7.68px .32px rgba(0, 0, 0, 0.1), 0 12px 26px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 7.68px .32px rgba(0, 0, 0, 0.1), 0 12px 26px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 120px;
+  height: 165px;
+  margin: 50px auto 15px auto;
+  overflow: hidden;
+}
+
+.biblioRecord:hover .cover-list {
+  -webkit-transition: bottom 1s ease-in-out;
+  transition: bottom 1s ease-in-out;
+  -webkit-animation-name: coverUp;
+  animation-name: coverUp;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 10px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 10px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+
+.biblioRecord .cover-list .img-thumbnail {
+  padding: 0;
+  border-radius: 0;
+  height: 166px;
+  width: 121px;
+  border: none;
+  vertical-align: top;
+  font-size: 0;
+  top: -1px;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+  position: absolute;
+  z-index: 1;
+}
+.biblioRecord .cover-list:before {
+  content: '';
+  background: transparent url(img/book-side.png) top center no-repeat;
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  z-index: 2002;
+  left: -2px;
+}
+.biblioRecord .cover-list:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  -webkit-box-shadow: inset 4px 0px 10px -4px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(0, 0, 0, 0.2), inset 0 2px 0 0 rgba(255, 255, 255, 0.2);
+  box-shadow: inset 4px 0px 10px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(0, 0, 0, 0.2), inset 0 2px 0 0 rgba(255, 255, 255, 0.2);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0.2)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 0)));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-gradient(linear, top left, bottom left, from(rgba(255, 255, 255, .2)), color-stop(50%, rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0)));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%);
+}
+.biblioRecord .detail-list h4 {
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 2.8em;
+  line-height: 1.4em;
+}
+.biblioRecord .author {
+  font-family: Georgia, serif;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  max-height: 1em;
+  line-height: 1em;
+  margin-bottom: 10px;
+}
+.biblioRecord .author-name {
+  font-size: 10pt;
+  padding: 0;
+  margin-top: 0;
+}
+
+.biblioRecord .subItem {
+}
+
+@media only screen and (min-width : 1024px) {
+  .biblioRecord .subItem {
+    bottom: 10px;
+    margin-left: 18px;
+    position: absolute;
+  }
+}
+
+.biblioRecord .detailLink, .biblioRecord .xmlDetailLink, .biblioRecord .citationLink {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  -webkit-transition: background-color 500ms;
+  transition: background-color 500ms;
+  color: #fff;
+  padding: 10px 10px;
+}
+
+
+.biblioRecord .detailLink {
+  background-color: #f2f2f2;
+  color: #000;
+}
+
+.biblioRecord .xmlDetailLink {
+  background-color: #777;
+}
+
+.biblioRecord .citationLink {
+  background-color: #282828;
+}
+
+
+.biblioRecord .detailLink:hover, 
+.biblioRecord .xmlDetailLink:hover, 
+.biblioRecord .citationLink:hover {
+  background-color: #852836;
+  color: #fff;
+}
+
+.customField {
+  font-size: 8pt;
+  line-height: 14pt;
+  text-align: center;
+  border: solid 1px #f2f2f2;
+  margin-bottom: -1px;
+  background-color: #fff;
+  padding: 0;
+}
+
+/* Biblio Detail
+ ================================ */
+
+.s-detail .cover {
+  height: 250px;
+  max-width:185px;
+  margin:0 auto;
+  border-radius: 4px;
+  background: transparent url(img/book.png) top left no-repeat;
+  background-size: cover;
+  background-color: #FFF;
+  margin: 0 auto;
+  -webkit-box-shadow: 0 2px 7.68px .32px rgba(0, 0, 0, 0.1), 0 12px 26px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 7.68px .32px rgba(0, 0, 0, 0.1), 0 12px 26px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.s-detail .cover:before {
+  content: '';
+  background: transparent url(img/book-side.png) top center no-repeat;
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  z-index: 2002;
+}
+
+
+@media only screen and (min-width : 768px) {
+  .s-detail .cover {
+    float: right;
+    overflow: hidden;
+    margin: 50px 0 0 50px;
+  }
+}
+
+.s-detail-type {
+  padding: 20px 0 0 0;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-detail-type {
+    padding: 0;
+    margin: 0;
+    width: auto;
+    text-align: left;    
+  }
+}
+
+.s-detail .share-buttons {
+  float: right;
+  padding-top: 0;
+}
+
+.s-detail .s-detail-abstract p {
+  display: block;
+  text-align: justify !important;
+}
+
+.s-detail .s-detail-abstract {
+  width: 100%;
+  font-style: italic;
+  font-family: Raleway, serif;
+  line-height: 1.6em;
+  font-size: 11pt;
+}
+
+.s-detail .s-detail-abstract:empty {
+  display: none;
+}
+
+.s-detail .s-detail-abstract br:not(:first-child) {
+  /*display: none;*/
+}
+
+.s-detail .cover img {
+  background-size: 100%;
+  height: 250px;
+} 
+
+.s-detail .s-detail-title {
+  font-family: Arial, serif;
+  font-weight: 900 !important;
+  font-size: 18pt;
+  line-height: 24pt;
+  padding-top: 5px; 
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+.s-detail .form-horizontal {
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+}
+.s-detail .form-horizontal .control-group {
+  margin: 0;
+  -webkit-column-break-inside: avoid;
+  /* Chrome, Safari */
+
+  page-break-inside: avoid;
+  /* Theoretically FF 20+ */
+
+  break-inside: avoid-column;
+  /* IE 11 */
+
+  display: table;
+}
+
+.control-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  width: 100%;
+  display: inline-block;
+  width: 500px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.s-detail-author {
+  display: inline;
+  font-family: Raleway, serif;
+}
+
+.s-detail-author a:first-child:before {
+  content: '';
+}
+
+.s-detail-author a:before {
+  content: ' | ';
+}
+.s-detail-author br {
+  display: none;
+}
+
+.labels {
+  width: 48px;
+  display: inline-block;
+  position: absolute;
+  top: -5px;
+  right: -5px;  
+  z-index: 1099;
+}
+
+/* Collection Mark
+ ================================ */
+.biblioRecord .biblioCheck {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: -1;
+}
+
+.biblioRecord .biblioCheck + label {
+  cursor: pointer;
+  background: #282828;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff ;
+  padding:4px 0;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+.biblioRecord .biblioCheck:checked + label:before {
+  font-family: FontAwesome;
+  content: "\f00c";
+  color: #fff;
+  padding-right:10px;
+}
+
+.biblioRecord .biblioCheck:checked + label,
+.biblioRecord .biblioCheck + label:hover {
+  background: #060;
+  color: #fff
+}
+
+.biblioMarkFormAction {
+  padding: 10px 0;
+}
+
+.biblioMarkFormAction:first-child {
+  margin-bottom: 10px;
+}
+
+.biblioMarkFormAction:last-child {
+  margin-bottom: -15px;
+}
+
+.biblioMarkFormAction input {
+  border: none;
+  background: #282828;
+  color: #fff;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 5px 26px;
+  margin-left: -10px;
+}

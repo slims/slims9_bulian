@@ -20,7 +20,7 @@
 *
 */
 
-/*
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -29,7 +29,6 @@ if (!defined('INDEX_AUTH')) {
 }
 
 include_once '../sysconfig.inc.php';
-*/
 
 // Generate Menu
 function main_menu()
@@ -38,7 +37,7 @@ function main_menu()
   $modules_dir 	  = 'modules';
   $module_table   = 'mst_module';
   $module_list 	  = array();
-  $_menu 	  = '';
+  $_menu 	        = '';
   $icon           = array(
     'home'           => 'fa fa-home',
     'bibliography'   => 'fa fa-bookmark',

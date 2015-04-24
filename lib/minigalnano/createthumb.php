@@ -103,12 +103,12 @@ if ($cache['exist'] == false) {
     imagejpeg($target,$cache['file'],90);
   }
   if (preg_match("/.gif$/i", $imagefilename)) {
-    imagegif($target,null,90);
-    imagegif($target,$cache['file'],90);
+    imagegif($target,null);
+    imagegif($target,$cache['file']);
   }
   if (preg_match("/.png$/i", $imagefilename)) {
-    imagepng($target,null,90);
-    imagepng($target,$cache['file'],90);
+    imagepng($target,null,9);
+    imagepng($target,$cache['file'],9);
   }
   imagedestroy($target);
 }         

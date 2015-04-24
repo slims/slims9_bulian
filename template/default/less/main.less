@@ -1,0 +1,120 @@
+/* Main
+ ================================ */
+
+.s-main {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  color: #fff;
+  font-size: 12pt;
+  font-weight: light;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-main {
+    // padding-top: 15%;
+  }
+}
+
+.s-main h1 {
+  font-family: Raleway, serif;
+  font-weight: bold;
+  font-size: 26pt;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-main-search {
+    margin-bottom:0;
+    margin-top:25%;
+  }
+}
+
+@media only screen and (min-width : 1025px) {
+  .s-main-search {
+    margin-top:15%;
+  }
+}
+
+
+.s-search-info {
+  padding: 10px 15px;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-search-info {
+    padding: 10px 0 0px 0;
+  }
+}
+
+.s-search {
+  border-radius: 50px;
+  border: none;
+  width: 100%;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  font-size: 12pt;
+  text-align: center;
+  -webkit-transition: background-color 1s ease;
+  -moz-transition: background-color 1s ease;
+  -o-transition: background-color 1s ease;
+  -ms-transition: background-color 1s ease;
+  transition: background-color 1s ease;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-search {
+    font-size: 15pt;
+    text-align: left;
+    width: 100px;
+    border-radius: 50px 0 0 50px;
+    padding: 14px 14px 14px 28px;
+  }
+}
+
+@media only screen and (min-width : 768px) {
+  .s-search {
+    width: 500px;
+  }
+}
+
+#loginform input[type="text"], .s-search:focus, .s-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.s-search:focus, .s-search:not(:empty) {
+  background-color: rgba(255, 255, 255, .5);
+}
+
+.s-btn {
+  display: list-item;
+  border: none;
+  border-radius: 50px;
+  background-color: #fff;
+  padding: 10px;
+  color: #666;
+  width: 100%;
+  margin: 10px auto;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-btn {
+    margin-right:32px;
+    width: 125px;
+    border-radius: 0 50px 50px 0;
+    display: inline-block;
+    margin-left: -5px;
+    padding: 20px 18px 16px 18px;
+  }
+}
+
+.s-btn:hover {
+  background-color: #000;
+  color: #fff;
+}

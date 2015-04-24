@@ -1,0 +1,58 @@
+/* Download
+ ================================ */
+.s-download {
+}
+
+.attachList {
+  position: relative;
+  padding:0;
+}
+
+.attachment-pdf,
+.attachment-audio-video,
+.attachment-audio-audio,
+.attachment-url-list,
+.attachment-image  {
+  list-style: none;
+  list-style-image: none !important;
+  margin:0;
+  border: solid 1px #f2f2f2;
+  padding: 20px 28px;
+  font-size: 14px;
+  line-height: 18pt;
+  vertical-align: middle;
+}
+
+.attachment-pdf:before,
+.attachment-audio-video:before,
+.attachment-audio-audio:before,
+.attachment-url-list:before,
+.attachment-image:before {
+  position: absolute;
+  right: 10px;
+  top:30%;
+  font-family: 'FontAwesome';
+  display: block;
+  color: #20b390;
+  font-size: 28px;
+}
+
+.attachment-pdf:before {
+  content: "\f1c1";
+}
+
+.attachment-image:before {
+  content: "\f1c5";
+}
+
+.attachment-audio-audio:before  {
+  content: "\f1c7";
+}
+
+.attachment-audio-video:before  {
+  content: "\f1c8";
+}
+
+.attachment-url-list:before  {
+  content: "\f1c9";
+}

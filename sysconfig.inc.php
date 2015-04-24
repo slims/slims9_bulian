@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -229,7 +229,7 @@ $barcodes_encoding['CODE128'] = array('code128', 'Code 128');
 // $barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail (may result in barcode creation error)');
 // $barcodes_encoding['UPCA'] = array('upca', 'UPC-A (may result in barcode creation error)');
 // $barcodes_encoding['UPCE'] = array('upce', 'UPC-E (may result in barcode creation error)');
-$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'];
+$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'][0];
 
 /* QUICK RETURN */
 $sysconf['quick_return'] = true;
@@ -596,7 +596,7 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    = false;
+$sysconf['chat_system']['enabled']    = true;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       = false;
 $sysconf['chat_system']['librarian']  = false;
