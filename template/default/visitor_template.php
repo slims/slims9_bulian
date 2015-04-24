@@ -40,7 +40,7 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
       <div class="col-lg-6 col-sm-6 col-xs-12">
         <div class="form-group"> 
           <input type="text" name="memberID" id="memberID"  class="form-control input-lg" />
-          <label for="memberID"><?php echo __('Member ID'); ?></label>
+          <label for="memberID"><?php echo __('Member ID / Visitor Name'); ?></label>
         </div> 
       </div>
 
