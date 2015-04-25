@@ -204,7 +204,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         foreach ($membercard_rows as $card) {
           $html_str .= '<td valign="top">';
           $html_str .= '<div class="container_div" id="front_side">';
-          $html_str .= '<div><img width="'.($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']).'px" height="'.($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']).'px" src="'.SWB.'files/membercard/card1.png" style="border-radius: 8px; -moz-border-radius: 8px;-khtml-border-radius: 8px;-webkit-border-radius: 8px;" /></div>';
+          $html_str .= '<div></div>';
           $html_str .= '<div id="logo_div"><img height="40px" width="40px" src="'.SWB.'files/membercard/'.$sysconf['print']['membercard']['logo'].'" /></div>';
           $html_str .= '<div id="header1_div">';
           $html_str .= '<h1>'.$sysconf['print']['membercard']['front_header1_text'].'</h1>';
@@ -231,7 +231,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
           $html_str .= '<p class="stamp officials">'.$sysconf['print']['membercard']['officials'].'<br />'.$sysconf['print']['membercard']['officials_id'].'</p></div></div></td>';
           $html_str .= '<td valign="top">';
           $html_str .= '<div class="container_div" id="back_side">';
-          $html_str .= '<div><img height="'.($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']).'px" width="'.($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']).'px" src="'.SWB.'files/membercard/card2.png" style="border-radius: 8px; -moz-border-radius: 8px;-khtml-border-radius: 8px;-webkit-border-radius: 8px;" /></div>';
+          $html_str .= '<div></div>';
           $html_str .= '<div id="logo_div"><img height="35px" width="35px" src="'.SWB.'files/membercard/'.$sysconf['print']['membercard']['logo'].'" /></div>';
           $html_str .= '<div id="header2_div">';
           $html_str .= '<h1>'.$sysconf['print']['membercard']['back_header1_text'].'</h1>';
