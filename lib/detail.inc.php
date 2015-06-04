@@ -185,6 +185,7 @@ class detail
      * @return  string
      */
     public function getItemCopy() {
+      global $sysconf;
       $_output = '';
       $copies = $this->record_detail['copies'];
       if (!$copies) {

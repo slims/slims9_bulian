@@ -43,7 +43,7 @@ if (!file_exists($cite_style_template)) {
 */
 
 require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
-$dir = new simbio_directory(SB.'template'.DS.'citation');
+$dir = new simbio_directory(SB.'template'.DS.$sysconf['template']['theme'].DS.'citation');
 $style_files = $dir->getFileList();
 
 // create Biblio
@@ -64,7 +64,7 @@ foreach ($style_files as $file) {
   if (false === stripos($file, '_style_template.php')) {
     continue;
   } else {
-    include_once SB.'template'.DS.'citation'.DS.$file;  
+    include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.$file;  
   }
 }
 

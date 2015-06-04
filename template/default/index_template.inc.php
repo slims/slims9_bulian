@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
-
 <?php
 /*------------------------------------------------------------
 
@@ -23,13 +20,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 -------------------------------------------------------------*/
+
 // be sure that this file not accessed directly
 
 if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
-}
+} 
 
 ?>
 <!--
@@ -41,30 +39,40 @@ if (!defined('INDEX_AUTH')) {
 
 ==========================================================================
 -->
-
+<!DOCTYPE html>
+<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 <head>
 
-<!-- Meta
-============================================= -->
-<?php include "meta_template.php"; ?>
+
+<?php 
+// Meta Template
+// =============================================
+include "partials/meta.php"; 
+?>
 
 </head>
+
 <body itemscope="itemscope" itemtype="http://schema.org/WebPage">
 
 <!--[if lt IE 9]>
 <div class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</div>
 <![endif]-->
 
-<!-- Header
-============================================= -->
-<?php include "header_template.php"; ?>
+<?php
+// Header
+// =============================================
+include "partials/header.php"; 
+?>
 
-<!-- Navigation
-============================================= -->
-<?php include "navigation_template.php"; ?>
+<?php 
+// Navigation
+// =============================================
+include "partials/nav.php"; 
+?>
 
-<!-- Content
-============================================= -->
+<?php 
+// Content
+// ============================================= ?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
 <main  id="content" class="s-main-page" role="main">
 
@@ -101,7 +109,13 @@ if (!defined('INDEX_AUTH')) {
 
         <?php 
           // Generate Output
-          echo $main_content;
+          // catch empty list
+          if(strlen($main_content) == 7) {
+            echo '<h2>No Result</h2><hr/><p>Please try again</p>';
+          } else {
+            echo $main_content;
+          }
+
           // Somehow we need to hack the layout
           if(isset($_GET['search']) || (isset($_GET['p']) && $_GET['p'] != 'member')){
             echo '</div>'; 
@@ -166,36 +180,42 @@ if (!defined('INDEX_AUTH')) {
 ============================================= -->
 <main id="content" class="s-main" role="main">
 
-      <!-- Search form
-      ============================================= -->
-      <div class="s-main-search animated fadeInUp delay1">
-        <form action="index.php" method="get" autocomplete="off">
-          <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
-          <div class="marquee down">
-            <p class="s-search-info">
-            <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
-            <!--
-            <?php echo __('use logical search "title=library AND author=robert"'); ?>
-            <?php echo __('just click on the Search button to see all collections'); ?>
-            -->
-            </p>
-          </div>
-          <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
-          <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-          <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
-        </form>
-      </div>
+    <!-- Search form
+    ============================================= -->
+    <div class="s-main-search animated fadeInUp delay1">
+      <form action="index.php" method="get" autocomplete="off">
+        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
+        <div class="marquee down">
+          <p class="s-search-info">
+          <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
+          <!--
+          <?php echo __('use logical search "title=library AND author=robert"'); ?>
+          <?php echo __('just click on the Search button to see all collections'); ?>
+          -->
+          </p>
+        </div>
+        <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
+        <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+        <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
+      </form>
+    </div>
+
 <?php endif; ?>
+
 </main>
 
 
-<!-- Footer
-============================================= -->
-<?php include "footer_template.php"; ?>
+<?php 
+// Footer
+// =============================================
+include "partials/footer.php"; 
+?>
 
-<!-- Chat
-============================================= -->
-<?php if($sysconf['chat_system']['enabled']) : ?>
+<?php 
+// Chat
+// =============================================
+if($sysconf['chat_system']['enabled']) : 
+?>
 <a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
 <aside class="s-chat s-maximize">
   <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
@@ -208,8 +228,8 @@ if (!defined('INDEX_AUTH')) {
 </aside>
 
 <script>
+  // $.get('./chat_server.php', {}, function(){});
   var Server;
-
   function log( text ) {
     $log = $('#log');
     //Add text to log
@@ -224,12 +244,12 @@ if (!defined('INDEX_AUTH')) {
 
   $(document).ready(function() {
     log('Connecting...');
-    Server = new FancyWebSocket('ws://127.0.0.1:9300');
+    Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
 
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {
         log( 'You: ' + this.value );
-        send( this.value );
+        send( 'Member|'+this.value );
 
         $(this).val('');
       }
@@ -252,12 +272,16 @@ if (!defined('INDEX_AUTH')) {
 
     Server.connect();
   });
+
+
 </script>
 <?php endif; ?>
 
-<!-- Background
-============================================= -->
-<?php include "bg_template.php"; ?>
+<?php 
+// Background
+// =============================================
+include "partials/bg.php"; 
+?>
 
 <script>
   <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>

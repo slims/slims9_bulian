@@ -36,7 +36,12 @@ if ($sysconf['logout_message']) {
     $msg .= 'alert(\''.__('You Have Been Logged Out From Library Automation System').'\');';
 }
 $msg .= 'location.href = \''.SWB.'index.php?p=login\';';
+
+// Disconnect Websocket
+$msg .= 'Server = new FancyWebSocket("ws://'.$sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port'].'");';
+$msg .= 'Server.bind("close", function( data ) { log( "Disconnected." ); });';
 $msg .= '</script>';
+
 // unset admin cookie flag
 setcookie('admin_logged_in', true, time()-86400, SWB);
 // completely destroy session cookie

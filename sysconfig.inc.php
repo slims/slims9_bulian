@@ -153,7 +153,7 @@ $sysconf['session_timeout'] = 7200;
 
 /* default application language */
 $sysconf['default_lang'] = 'en_US';
-$sysconf['spellchecker_enabled'] = false;
+$sysconf['spellchecker_enabled'] = true;
 
 /* HTTP header */
 header('Content-type: text/html; charset=UTF-8');
@@ -601,6 +601,8 @@ $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       = false;
 $sysconf['chat_system']['librarian']  = false;
 $sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
+$sysconf['chat_system']['host']       = '127.0.0.1'; // You need an IP Address to use Chat
+$sysconf['chat_system']['port']       = '9300'; // set Chat port
 
 
 
