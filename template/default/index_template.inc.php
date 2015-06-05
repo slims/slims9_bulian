@@ -209,7 +209,7 @@ include "partials/footer.php";
 
 <?php 
 // Chat
-if($sysconf['chat_system']['enabled']) : 
+if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) : 
 ?>
 <a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
 <aside class="s-chat s-maximize">
@@ -238,12 +238,7 @@ if($sysconf['chat_system']['enabled']) :
 
   $(document).ready(function() {
     log('Connecting...');
-<<<<<<< HEAD
     Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>');
-=======
-    Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
->>>>>>> 350294370b8751288e55357911b8c562dc726034
-
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {
         log( 'You: ' + this.value );

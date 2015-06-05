@@ -2,11 +2,12 @@
 // prevent the server from timing out
 set_time_limit(0);
 
-define('INDEX_AUTH', 1);
+// call configuration 
+define('INDEX_AUTH', '1');
+require 'sysconfig.inc.php';
 
 // include the web sockets server script (the server is started at the far bottom of this file)
-require 'sysconfig.inc.php';
-require LIB.'phpwebsocket.php';
+require 'lib/phpwebsocket.php';
 
 // when a client sends data to the server
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
@@ -25,22 +26,25 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 	else
 		//Send the message to everyone but the person who said it
 		foreach ( $Server->wsClients as $id => $client )
-			if ( $id != $clientID )
-				$Server->wsSend($id, "Visitor $clientID ($ip) said \"$message\"");
+			if ( $id != $clientID ) {
+				$_message = explode("|", $message);
+				$Server->wsSend($id, $_message[0]." ".$clientID." : ".$_message[1]);
+			}
 }
 
 // when a client connects
 function wsOnOpen($clientID)
 {
+	echo $clientID;
 	global $Server;
 	$ip = long2ip( $Server->wsClients[$clientID][6] );
 
-	$Server->log( "$ip ($clientID) has connected." );
+	$Server->log("Someone has connected." );
 
 	//Send a join notice to everyone but the person who joined
 	foreach ( $Server->wsClients as $id => $client )
 		if ( $id != $clientID )
-			$Server->wsSend($id, "Visitor $clientID ($ip) has joined the room.");
+			$Server->wsSend($id, "Someone has joined the room.");
 }
 
 // when a client closes or lost connection
@@ -48,11 +52,11 @@ function wsOnClose($clientID, $status) {
 	global $Server;
 	$ip = long2ip( $Server->wsClients[$clientID][6] );
 
-	$Server->log( "$ip ($clientID) has disconnected." );
+	$Server->log( "Someone has disconnected." );
 
 	//Send a user left notice to everyone in the room
 	foreach ( $Server->wsClients as $id => $client )
-		$Server->wsSend($id, "Visitor $clientID ($ip) has left the room.");
+		$Server->wsSend($id, "Someone has left the room.");
 }
 
 // start the server
