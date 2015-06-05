@@ -57,7 +57,7 @@ if (isset($_POST['counter'])) {
    $photo = 'person.png';
    $expire = 0;
   // sleep for a while
-  sleep(2);
+  sleep(1);
   
   /**
   * Insert counter data to database
@@ -73,19 +73,20 @@ if (isset($_POST['counter'])) {
         if ($_d['is_expire'] == 1) {
             $expire = 1;
         }
-        $member_id = $_d['member_id'];
-        $member_name = $_d['member_name'];
-        $member_name = preg_replace("/'/", "\'", $member_name);
-        $photo = trim($_d['member_image'])?trim($_d['member_image']):'person.png';
-        $_institution = $dbs->escape_string(trim($_d['inst_name']))?$dbs->escape_string(trim($_d['inst_name'])):null;
+        $member_id      = $_d['member_id'];
+        $member_name    = $_d['member_name'];
+        $member_name    = preg_replace("/'/", "\'", $member_name);
+        $photo          = trim($_d['member_image'])?trim($_d['member_image']):'person.png';
+        $_institution   = $dbs->escape_string(trim($_d['inst_name']))?$dbs->escape_string(trim($_d['inst_name'])):null;
         
-        $_checkin_date = date('Y-m-d H:i:s');
-        $_i = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$_institution', '$_checkin_date')");
+        $_checkin_date  = date('Y-m-d H:i:s');
+        $_i             = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$_institution', '$_checkin_date')");
     } else {
     // non member
         $_d = $_q->fetch_assoc();
         $member_name = $dbs->escape_string(trim($_POST['memberID']));
         $_institution = $dbs->escape_string(trim($_POST['institution']));
+        $photo = 'non_member.png';
         $_checkin_date = date('Y-m-d H:i:s');
         if (!$_institution) {
             return INSTITUTION_EMPTY;
@@ -100,7 +101,7 @@ if (isset($_POST['counter'])) {
   $memberID = trim($_POST['memberID']);
   $counter = setCounter($memberID);
   if ($counter === true) {
-    echo __($member_name.', thank you for inserting your data to our visitor log').'<span id="memberImage" src="images/persons/'.urlencode($photo).'"></span>';
+    echo __($member_name.', thank you for inserting your data to our visitor log').'<div id="memberImage" data-img="./images/persons/'.urlencode($photo).'"></div>';
     if ($expire) {
       echo '<div class="error visitor-error">'.__('Your membership already EXPIRED, please renew/extend your membership immediately').'</div>';
     }
@@ -121,23 +122,7 @@ $(document).ready( function() {
   // give focus to first field
   $('#memberID').focus();
   var visitorCounterForm = $('#visitorCounterForm');
-  // AJAX counter error handler
-  visitorCounterForm.ajaxError( function() {
-      alert('Error inserting counter data to database!');
-      $(this).enableForm().find('input[type=text]').val('');
-      $('#memberID').focus();
-  });
-  // AJAX counter complete handler
-  visitorCounterForm.ajaxComplete( function() {
-    $(this).enableForm().find('input[type=text]').val('');
-    var memberImage = $('#memberImage');
-    if (memberImage) {
-      // update visitor photo
-      var imageSRC = memberImage.attr('src'); memberImage.remove();
-      $('#visitorCounterPhoto')[0].src = imageSRC;
-    }
-    $('#memberID').focus();
-  });
+  var defaultMsg = $('#counterInfo').html();
   // register event
   visitorCounterForm.on('submit', function(e) {
     e.preventDefault();
@@ -146,16 +131,15 @@ $(document).ready( function() {
       $('#counterInfo').html('Please fill your member ID or name');
       return false;
     }
-    var theForm = $(this);
-    var formAction = theForm.attr('action');
-    var formData = theForm.serialize();
-    formData += '&counter=true';
+    var theForm     = $(this);
+    var formAction  = theForm.attr('action');
+    var formData    = theForm.serialize();
+    formData       += '&counter=true';
     // block the form
     theForm.disableForm();
-    $('#counterInfo').css({'display': 'block'}).html('PLEASE WAIT...');
+    $('#counterInfo').html('Please Wait ...');
     // create AJAX request for submitting form
-    $.ajax(
-      { url: formAction,
+    $.ajax({ url: formAction,
           type: 'POST',
           async: false,
           data: formData,
@@ -163,8 +147,26 @@ $(document).ready( function() {
           success: function(respond) {
             $('#counterInfo').html(respond);
             // reset counter
-            setTimeout(function() { $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
-              $('#counterInfo').html('&nbsp;'); }, 5000);
+            setTimeout(function() { 
+              $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
+              $('#counterInfo').html(defaultMsg); 
+              visitorCounterForm.enableForm().find('input[type=text]').val('');
+            }, 5000);
+          },
+          complete: function() {
+            $(this).enableForm().find('input[type=text]').val('');
+            var memberImage = $('#memberImage');
+            if (memberImage) {
+              // update visitor photo
+              var imageSRC = memberImage.data("img");
+              $('#visitorCounterPhoto').attr('src', imageSRC);
+            }
+            $('#memberID').focus();            
+          },
+          error: function(){
+            alert('Error inserting counter data to database!');
+            $(this).enableForm().find('input[type=text]').val('');
+            $('#memberID').focus();
           }
       });
   });
@@ -176,6 +178,6 @@ $(document).ready( function() {
 // main content
 $main_content = ob_get_clean();
 // page title
-$page_title = $sysconf['library_name'].' :: Visitor Counter';
+$page_title = 'Visitor Counter | ' . $sysconf['library_name'];
 require $main_template_path;
 exit();

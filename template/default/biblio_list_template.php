@@ -5,6 +5,7 @@
  * Name of callback function MUST BE biblio_list_format
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
+ * Modified by Eddy Subratha (eddy.subratha@slims.web.id)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,25 +40,36 @@ $label_cache = array();
 function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$return_back = array()) {
   global $label_cache, $sysconf;
   // init output var
-  $output = '';
+  $output     = '';
 
-  $title = $biblio_detail['title'];
-  $biblio_id = $biblio_detail['biblio_id'];
+  $title      = $biblio_detail['title'];
+  $biblio_id  = $biblio_detail['biblio_id'];
   $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
-  $cite_url = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];
-  
+  $cite_url   = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];  
   $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
+
   // label
   if ($settings['show_labels'] AND !empty($biblio_detail['labels'])) {
     $labels = @unserialize($biblio_detail['labels']);
     if ($labels !== false) {
       foreach ($labels as $label) {
         if (!isset($label_cache[$label[0]]['name'])) {
-          $label_q = $dbs->query('SELECT label_name, label_desc, label_image FROM mst_label AS lb
-              WHERE lb.label_name=\''.$label[0].'\'');
+          $label_q = $dbs->query('SELECT 
+                                    label_name, 
+                                    label_desc, 
+                                    label_image 
+                                  FROM 
+                                    mst_label AS lb
+                                  WHERE 
+                                    lb.label_name=\''.$label[0].'\'');
           $label_d = $label_q->fetch_row();
-          $label_cache[$label[0]] = array('name' => $label_d[0], 'desc' => $label_d[1], 'image' => $label_d[2]);
+          $label_cache[$label[0]] = array(
+                                      'name'  => $label_d[0], 
+                                      'desc'  => $label_d[1], 
+                                      'image' => $label_d[2]
+          );
         }
+
         if (isset($label[1]) && $label[1]) {
           $title_link .= ' <a href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
         } else {
@@ -145,7 +157,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // checkbox for marking collection
   $_i= rand(); // Add By Eddy Subratha
   $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-  $output .= '<div class="subItem">'.$detail_button.' '.$cite_button.' '.$xml_button.$_check_mark.'</div>';
+  $output .= '<div class="subItem">'.$detail_button.$xml_button.$_check_mark.$cite_button.'</div>';
   
   // social buttons
   if ($sysconf['social_shares']) {

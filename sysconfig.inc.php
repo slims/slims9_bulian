@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -153,7 +153,7 @@ $sysconf['session_timeout'] = 7200;
 
 /* default application language */
 $sysconf['default_lang'] = 'en_US';
-$sysconf['spellchecker_enabled'] = false;
+$sysconf['spellchecker_enabled'] = true;
 
 /* HTTP header */
 header('Content-type: text/html; charset=UTF-8');
@@ -229,7 +229,7 @@ $barcodes_encoding['CODE128'] = array('code128', 'Code 128');
 // $barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail (may result in barcode creation error)');
 // $barcodes_encoding['UPCA'] = array('upca', 'UPC-A (may result in barcode creation error)');
 // $barcodes_encoding['UPCE'] = array('upce', 'UPC-E (may result in barcode creation error)');
-$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'];
+$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'][0];
 
 /* QUICK RETURN */
 $sysconf['quick_return'] = true;
@@ -596,12 +596,22 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    = TRUE;
+$sysconf['chat_system']['enabled']    = true;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
+<<<<<<< HEAD
 $sysconf['chat_system']['opac']       = TRUE;
 $sysconf['chat_system']['librarian']  = TRUE;
 $sysconf['chat_system']['server']  = '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
+=======
+$sysconf['chat_system']['opac']       = false;
+$sysconf['chat_system']['librarian']  = false;
+$sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
+$sysconf['chat_system']['host']       = '127.0.0.1'; // You need an IP Address to use Chat
+$sysconf['chat_system']['port']       = '9300'; // set Chat port
+
+
+>>>>>>> 350294370b8751288e55357911b8c562dc726034
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {

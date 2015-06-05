@@ -377,7 +377,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
           <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
         if ($rec_d['user_image']) {
           if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
-            echo '<div id="userImage" style="float: right;"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['user_image']).'&amp;width=53&amp;timestamp='.date('his').'" style="border: 1px solid #999999" /></div>';
+            echo '<div id="userImage" style="float: right;"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['user_image']).'&amp;width=180&amp;timestamp='.date('his').'" style="border: 1px solid #999999" /></div>';
           }
         }
         echo '</div>';

@@ -24,12 +24,12 @@
   include 'function.php';
 ?>
 <!-- =====================================================================
-___  __    ____  __  __  ___      __    _  _    __    ___  ____    __
+ ___  __    ____  __  __  ___      __    _  _    __    ___  ____    __
 / __)(  )  (_  _)(  \/  )/ __)    /__\  ( )/ )  /__\  / __)(_  _)  /__\
 \__ \ )(__  _)(_  )    ( \__ \   /(__)\  )  (  /(__)\ \__ \ _)(_  /(__)\
 (___/(____)(____)(_/\/\_)(___/  (__)(__)(_)\_)(__)(__)(___/(____)(__)(__)
 
-By Eddy Subratha (eddy.subratha@gmail.com)
+By Eddy Subratha (eddy.subratha@slims.web.id)
 
 ========================================================================== -->
 
@@ -71,6 +71,9 @@ By Eddy Subratha (eddy.subratha@gmail.com)
   <script type="text/javascript" src="<?php echo JWB; ?>webcam.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>scanner.js"></script>
   <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+  <?php if($sysconf['chat_system']['enabled']) : ?>
+  <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
+  <?php endif; ?>
 </head>
 
 <body>
@@ -80,7 +83,7 @@ By Eddy Subratha (eddy.subratha@gmail.com)
         <div class="s-user">
           <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
-              <img src="<?php echo SWB.'images/persons/'.urlencode($_SESSION['upict']); ?>" alt="Photo <?php echo $_SESSION['realname']?>">
+              <img src="<?php echo '../lib/minigalnano/createthumb.php?filename=../../'.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
           </div>
           <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>
@@ -118,6 +121,76 @@ By Eddy Subratha (eddy.subratha@gmail.com)
       <div class="s-footer-brand"><?php echo $sysconf['library_name'].' - '.$sysconf['library_subname']?> </div>
     </footer>
   </main>
+
+  <?php 
+  // Chat
+  // =============================================
+  if($sysconf['chat_system']['enabled']) : ?>
+  <aside class="s-chat s-maximize">
+    <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Members'); ?></a>
+    <div class="s-chat-content">
+      <textarea id="log" name="log" readonly="readonly"></textarea>
+      <label for="message">Message</label>
+      <input type="text" id="message" name="message" />
+    </div>
+    <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
+  </aside>
+
+  <script>
+    $.get('../chat_server.php', {}, function(){});
+    var Server;
+    function log( text ) {
+      $log = $('#log');
+      //Add text to log
+      $log.append(($log.val()?"\n":'')+text);
+      //Autoscroll
+      $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
+    }
+
+    function send( text ) {
+      Server.send( 'message', text );
+    }
+
+    $(document).ready(function() { 
+     log('Connecting...');
+      Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
+      $('#message').keypress(function(e) {
+        if ( e.keyCode == 13 && this.value ) {
+          log( 'You: ' + this.value );
+          send( 'Librarian|'+this.value );
+
+          $(this).val('');
+        }
+      });
+
+      //Let the user know we're connected
+      Server.bind('open', function() {
+        log( "Connected." );
+      });
+
+      //OH NOES! Disconnection occurred.
+      Server.bind('close', function( data ) {
+        log( "Disconnected." );
+      });
+
+      //Log any messages sent from server
+      Server.bind('message', function( payload ) {
+        log( payload );
+      });
+
+      Server.connect();
+    });
+
+    // Show or hide chat
+    // ============================================
+    $('.s-chat').toggleClass('s-minimize s-maximize');
+    $('#pchat-hide').on('click', function(){
+        $('.s-chat').toggleClass('s-minimize s-maximize ');
+    });
+
+  </script>
+  <?php endif; ?>
+
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->

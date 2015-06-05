@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
-
 <?php
 /*------------------------------------------------------------
 
 Template    : Slims Akasia Template
-Create Date : March 14, 2015
+Create Date : April, 2015
 Author      : Eddy Subratha (eddy.subratha{at}slims.web.id)
 
 This program is free software; you can redistribute it and/or modify
@@ -23,13 +20,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 -------------------------------------------------------------*/
+
 // be sure that this file not accessed directly
 
 if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
-}
+} 
 
 ?>
 <!--
@@ -41,162 +39,183 @@ if (!defined('INDEX_AUTH')) {
 
 ==========================================================================
 -->
-
+<!DOCTYPE html>
+<html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 <head>
 
-  <!-- Meta
-  ============================================= -->
-  <?php include "meta_template.php"; ?>
+
+<?php 
+// Meta Template
+// =============================================
+include "partials/meta.php"; 
+?>
 
 </head>
+
 <body itemscope="itemscope" itemtype="http://schema.org/WebPage">
 
-<!--[if lt IE 7]>
-<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<!--[if lt IE 9]>
+<div class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</div>
 <![endif]-->
 
-<!-- Header
-============================================= -->
-<?php include "header_template.php"; ?>
+<?php
+// Header
+// =============================================
+include "partials/header.php"; 
+?>
 
-<!-- Navigation
-============================================= -->
-<?php include "navigation_template.php"; ?>
+<?php 
+// Navigation
+// =============================================
+include "partials/nav.php"; 
+?>
 
-<!-- Content
-============================================= -->
+<?php 
+// Content
+// ============================================= ?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
+<main  id="content" class="s-main-page" role="main">
 
-  <main  id="content" class="s-main-page" role="main">
+  <!-- Search on Front Page
+  ============================================= -->
+  <div class="s-main-search">
+    <?php
+    if(isset($_GET['p'])) {    
+      switch ($_GET['p']) {
+      case ''             : $page_title = __('Collections'); break;
+      case 'show_detail'  : $page_title = __("Record Detail"); break;              
+      case 'member'       : $page_title = __("Member Area"); break;              
+      case 'member'       : $page_title = __("Member Area"); break;              
+      default             : $page_title; break; }            
+    } else {
+      $page_title = __('Collections');  
+    }
+    ?>
+    <h1 class="s-main-title animated fadeInUp delay1"><?php echo $page_title ?></h1>
+    <form action="index.php" method="get" autocomplete="off">
+      <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
+      <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+    </form>
+  </div>
 
-        <!-- Search on Front Page
+  <!-- Main
+  ============================================= -->
+  <div class="s-main-content container">
+    <div class="row">
+
+      <!-- Show Result
+      ============================================= -->
+      <div class="col-lg-8 col-sm-9 col-xs-12 animated fadeInUp delay2">
+
+        <?php 
+          // Generate Output
+          // catch empty list
+          if(strlen($main_content) == 7) {
+            echo '<h2>No Result</h2><hr/><p>Please try again</p>';
+          } else {
+            echo $main_content;
+          }
+
+          // Somehow we need to hack the layout
+          if(isset($_GET['search']) || (isset($_GET['p']) && $_GET['p'] != 'member')){
+            echo '</div>'; 
+          } else {
+            if(isset($_SESSION['mid'])) {
+              echo  '</div></div>';            
+            }            
+          }
+
+        ?>
+
+      <div class="col-lg-4 col-sm-3 col-xs-12 animated fadeInUp delay4">
+        <?php if(isset($_GET['search'])) : ?>
+        <h2><?php echo __('Search Result'); ?></h2>
+        <hr>
+        <?php echo $search_result_info; ?>
+        <?php endif; ?>
+
+        <br>
+
+        <!-- If Member Logged
         ============================================= -->
-        <div class="s-main-search">
-          <h1 class="s-main-title animated fadeInUp delay1">
-          <?php
-              if(!isset($_GET['p'])) :
-                echo __('Collections');
-              elseif ($_GET['p'] == 'show_detail') :
-                echo __("Record Detail");
-              elseif ($_GET['p'] == 'member') :
-                echo __("Member Area");
-              else :
-                echo $page_title;
-              endif;
-          ?>
-          </h1>
-          <form action="index.php" method="get" autocomplete="off">
-            <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
-            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-          </form>
-        </div>
+        <h2><?php echo __('Information'); ?></h2>
+        <hr/>
+        <p><?php echo (utility::isMemberLogin()) ? $header_info : $info; ?></p>
+        <br/>
 
-        <!-- Main
+        <!-- Show if clustering search is enabled
         ============================================= -->
-        <div class="s-main-content container">
-          <div class="row">
+        <?php
+          if(isset($_GET['keywords']) && (!empty($_GET['keywords']))) :
+            if (($sysconf['enable_search_clustering'])) : ?>
+            <h2><?php echo __('Search Cluster'); ?></h2>
 
-            <!-- Show Result
-            ============================================= -->
-            <div class="col-lg-8">
-              <?php 
-                // Generate Output
-                echo $main_content;
-                // Somehow we need to hack the layout
-                echo (isset($_GET['search']) || isset($_GET['p']) && $_GET['p'] != 'member') ? '</div>' : '';
-                echo (isset($_SESSION['mid'])) ? '</div></div>' : '';
-              ?>
+            <hr/>
 
-            <div class="col-lg-4">
-              <?php if(isset($_GET['search'])) : ?>
-              <h2><?php echo __('Search Result'); ?></h2>
-              <hr>
-              <?php echo $search_result_info; ?>
-              <?php endif; ?>
-
-              <br>
-
-              <!-- If Member Logged
-              ============================================= -->
-              <?php if (utility::isMemberLogin()) : ?>
-                <h2><?php echo __('Information'); ?></h2>
-                <hr/>
-                <p><?php echo $header_info; ?></p>
-              <?php else: ?>
-                <h2><?php echo __('Information'); ?></h2>
-                <hr/>
-                <p><?php echo $info; ?></p>
-              <?php endif; ?>
-
-              <br/>
-
-              <!-- Show if clustering search is enabled
-              ============================================= -->
-              <?php
-                if(!isset($_GET['p'])) :
-                  if ($sysconf['enable_search_clustering']) : ?>
-                  <h2><?php echo __('Search Cluster'); ?></h2>
-                  <hr/>
-                  <div id="search-cluster">
-                    <div class="cluster-loading"><?php echo __('Generating search cluster...');  ?></div>
-                  </div>
-
-                  <script type="text/javascript">
-                    $('document').ready( function() {
-                      $.ajax({
-                        url     : 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
-                        type    : 'GET',
-                        success : function(data, status, jqXHR) {
-                                    $('#search-cluster').html(data);
-                                  }
-                      });
-                    });
-                  </script>
-
-                  <?php endif; ?>
-                <?php endif; ?>
+            <div id="search-cluster">
+              <div class="cluster-loading"><?php echo __('Generating search cluster...');  ?></div>
             </div>
-          </div>
-        </div>
 
-  </main>
+            <script type="text/javascript">
+              $('document').ready( function() {
+                $.ajax({
+                  url     : 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
+                  type    : 'GET',
+                  success : function(data, status, jqXHR) { $('#search-cluster').html(data); }
+                });
+              });
+            </script>
+
+            <?php endif; ?>
+          <?php endif; ?>
+      </div>
+    </div>
+  </div>
+
+</main>
 
 <?php else: ?>
-  <!-- Homepage
-  ============================================= -->
-  <main id="content" class="s-main" role="main">
 
-        <!-- Search form
-        ============================================= -->
-        <div class="s-main-search animated fadeInUp delay1">
-          <form action="index.php" method="get" autocomplete="off">
-            <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
-            <p class="s-search-info animated fadeInUp delay3"><?php echo __('you can start it by typing one or more keywords for title, author or subject'); ?></p>
-            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" x-webkit-speech="x-webkit-speech">
-            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-          </form>
+<!-- Homepage
+============================================= -->
+<main id="content" class="s-main" role="main">
+
+    <!-- Search form
+    ============================================= -->
+    <div class="s-main-search animated fadeInUp delay1">
+      <form action="index.php" method="get" autocomplete="off">
+        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
+        <div class="marquee down">
+          <p class="s-search-info">
+          <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
+          <!--
+          <?php echo __('use logical search "title=library AND author=robert"'); ?>
+          <?php echo __('just click on the Search button to see all collections'); ?>
+          -->
+          </p>
         </div>
+        <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
+        <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+        <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
+      </form>
+    </div>
 
-        <!-- Featured
-        ============================================= -->
-        <a href="#" class="s-feature animated fadeInUp delay6"><?php echo __('see also our featured collections'); ?>
-          <div class="s-menu-toggle animated fadeInUp delay7"><span></span></div>
-        </a>
-        <div class="s-feature-content">
-
-        </div>
-
-
-  </main>
 <?php endif; ?>
 
-<!-- Footer
-============================================= -->
-<?php include "footer_template.php"; ?>
+</main>
 
-<!-- Chat
-============================================= -->
-<?php if($sysconf['chat_system']['enabled']) : ?>
+
+<?php 
+// Footer
+// =============================================
+include "partials/footer.php"; 
+?>
+
+<?php 
+// Chat
+// =============================================
+if($sysconf['chat_system']['enabled']) : 
+?>
 <a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
 <aside class="s-chat s-maximize">
   <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
@@ -209,8 +228,8 @@ if (!defined('INDEX_AUTH')) {
 </aside>
 
 <script>
+  // $.get('./chat_server.php', {}, function(){});
   var Server;
-
   function log( text ) {
     $log = $('#log');
     //Add text to log
@@ -225,12 +244,16 @@ if (!defined('INDEX_AUTH')) {
 
   $(document).ready(function() {
     log('Connecting...');
+<<<<<<< HEAD
     Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>');
+=======
+    Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
+>>>>>>> 350294370b8751288e55357911b8c562dc726034
 
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {
         log( 'You: ' + this.value );
-        send( this.value );
+        send( 'Member|'+this.value );
 
         $(this).val('');
       }
@@ -253,23 +276,64 @@ if (!defined('INDEX_AUTH')) {
 
     Server.connect();
   });
+
+
 </script>
 <?php endif; ?>
 
-<!-- Background
-============================================= -->
-<?php include "bg_template.php"; ?>
+<?php 
+// Background
+// =============================================
+include "partials/bg.php"; 
+?>
 
 <script>
-$(document).ready(function(){
-  $(window).load(function () {
-    $('#keyword').focus();
-  });  
-
-  <?php if(isset($_GET['search'])) : ?>
+  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
+
+  //Replace blank cover
+  $('.book img').error(function(){
+    var title = $(this).parent().attr('title').split(' ');
+    $(this).parent().append('<div class="s-feature-title">' + title[0] + '<br/>' + title[1] + '<br/>... </div>');
+    $(this).attr({
+      src   : './template/default/img/book.png',  
+      title : title + title[0] + ' ' + title[1]
+    });
+  });
+
+  //Replace blank photo
+  $('.librarian-image img').error(function(){
+    $(this).attr('src','./template/default/img/avatar.jpg');
+  });
+
+// Feature list slider
+// ============================================
+function mycarousel_initCallback(carousel)
+{
+  // Disable autoscrolling if the user clicks the prev or next button.
+  carousel.buttonNext.bind('click', function() {
+    carousel.startAuto(0);
+  });
+
+  carousel.buttonPrev.bind('click', function() {
+    carousel.startAuto(0);
+  });
+
+  // Pause autoscrolling if the user moves with the cursor over the clip.
+  carousel.clip.hover(function() {
+    carousel.stopAuto();
+  }, function() {
+    carousel.startAuto();
+  });
+};
+
+jQuery('#topbook').jcarousel({
+    auto: 5,
+    wrap: 'last',
+    initCallback: mycarousel_initCallback
 });
+ 
 </script>
 
 </body>
