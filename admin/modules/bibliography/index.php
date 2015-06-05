@@ -277,6 +277,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $sql_op->insert('biblio_attachment', array('biblio_id' => $last_biblio_id, 'file_id' => $attachment['file_id'], 'access_type' => $attachment['access_type']));
           }
         }
+        // biblio to biblio
+        if ($_SESSION['biblioToBiblio']) {
+          foreach ($_SESSION['biblioToBiblio'] as $rel_biblio_id) {
+            $sql_op->insert('biblio_relation', array('biblio_id' => $last_biblio_id, 'rel_biblio_id' => $rel_biblio_id[0]));
+          }
+        }
         // insert custom data
         if ($custom_data) {
           $custom_data['biblio_id'] = $last_biblio_id;
@@ -291,6 +297,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_SESSION['biblioAuthor'] = array();
         $_SESSION['biblioTopic'] = array();
         $_SESSION['biblioAttach'] = array();
+        $_SESSION['biblioToBiblio'] = array();
         // update index
         $indexer->makeIndex($last_biblio_id);
         // auto insert catalog to UCS if enabled
@@ -359,6 +366,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $sql_op->delete('biblio_topic', "biblio_id=$itemID");
         $sql_op->delete('biblio_author', "biblio_id=$itemID");
         $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
+        $sql_op->delete('biblio_relation', "biblio_id=$itemID");
         $sql_op->delete('search_biblio', "biblio_id=$itemID");
         // add to http query for UCS delete
         $http_query .= "itemID[]=$itemID&";
@@ -473,6 +481,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $_sql_rec_cust_q = sprintf('SELECT * FROM biblio_custom WHERE biblio_id=%d', $itemID);
     $rec_cust_q = $dbs->query($_sql_rec_cust_q);
     $rec_cust_d = $rec_cust_q->fetch_assoc();
+  } else {
+    $_SESSION['biblioToBiblio'] = array();
   }
 
   // include custom fields file
@@ -640,6 +650,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $str_input .= '<iframe name="attachIframe" id="attachIframe" class="borderAll" style="width: 100%; height: 70px;" src="'.MWB.'bibliography/iframe_attach.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('File Attachment'), $str_input);
 
+  // biblio relation
+  $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Biblio Relation').'">'.__('Add Relation').'</a></div>';
+  $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="borderAll" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
+  $form->addAnything(__('Related Biblio Data'), $str_input);
+  
   /**
    * Custom fields
    */

@@ -301,7 +301,7 @@ abstract class biblio_list_model
       $_image = '';
       if (!empty($_biblio_d['image'])) {
         $_image = urlencode($_biblio_d['image']);
-				$_buffer .= '<slims:image>'.$_image.'</slims:image>'."\n";
+	$_buffer .= '<slims:image>'.$_image.'</slims:image>'."\n";
       }
 
       $_buffer .= '</mods>'."\n";
