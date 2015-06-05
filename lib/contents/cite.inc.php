@@ -55,8 +55,20 @@ extract($biblio_detail);
 // Pre-proccess author
 $authors_string = '';
 $author_list = array();
+$last_author = '';
+$a = 0;
 foreach ($authors as $auth) {
-  $author_list[] = $auth['author_name'];
+  // invert first author name if it is not inverted
+  if ($a == 0 && stripos($auth['author_name'], ',', 2) === false) {
+    $last_name = strrpos($auth['author_name'], ' ') + 1;
+    $name = substr($auth['author_name'], $last_name);
+    die($name);
+    $author_list[] = $name;
+  } else {
+    $author_list[] = $auth['author_name'];  
+  }
+  $last_author = $auth['author_name'];
+  $a++;
 }
 $authors_string = implode(', ', $author_list);
 
@@ -72,4 +84,5 @@ foreach ($style_files as $file) {
 $main_content = ob_get_clean();
 // page title
 echo $main_content;
+echo '<p class="spacer">&nbsp;</p>';
 exit();

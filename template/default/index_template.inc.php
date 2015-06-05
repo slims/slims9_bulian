@@ -225,7 +225,7 @@ if (!defined('INDEX_AUTH')) {
 
   $(document).ready(function() {
     log('Connecting...');
-    Server = new FancyWebSocket('ws://127.0.0.1:9300');
+    Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>');
 
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {

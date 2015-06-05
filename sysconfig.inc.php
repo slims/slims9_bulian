@@ -492,8 +492,8 @@ if (defined('DB_ACCESS') && DB_ACCESS == 'fa' && file_exists(SB.'config'.DS.'sys
   if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
     include SB.'config'.DS.'sysconfig.local.inc.php';
   } else {
-	  header("location: install/index.php");
-	  exit;
+    header("location: install/index.php");
+    exit;
   }
 }
 
@@ -600,9 +600,8 @@ $sysconf['chat_system']['enabled']    = TRUE;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       = TRUE;
 $sysconf['chat_system']['librarian']  = TRUE;
-$sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
-
-
+$sysconf['chat_system']['server']  = '127.0.0.1';
+$sysconf['chat_system']['server_port']  = 9300;
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {

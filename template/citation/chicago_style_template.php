@@ -15,6 +15,9 @@
  *
  */
 
+if ($gmd_name == 'Text') {
+  $gmd_name = 'Print';
+}
 ?>
 <p class="citation">
   <h3>Chicago style</h3>
