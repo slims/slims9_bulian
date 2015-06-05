@@ -101,6 +101,7 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
   // create detail object
   $detail = new detail($dbs, $detail_id);
   $detail->setTemplate($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/detail_template.php');
+
   // set the content for info box
   $info = '<strong>'.strtoupper(__('Record Detail')).'</strong><hr />';
   if (!defined('LIGHTWEIGHT_MODE')) {
@@ -110,11 +111,21 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
     $info .= '<a href="index.php?p=show_detail&inXML=true&id='.$detail_id.'" class="xmlDetailLink s-xml-detail" title="Show detail in XML format" target="_blank">XML Detail</a>';
     $info .= '<a href="index.php?p=cite&id='.$detail_id.'" class="openPopUp citationLink" title="Citation for: '.substr($detail->record_title, 0, 50).'" target="_blank">Cite this</a>';
   }
+
   // output the record detail
   echo $detail->showDetail();
-  $page_title = $detail->record_title;
-  $metadata = $detail->metadata;
-  $image_src = $detail->image_src;
+  $page_title = $detail->record_title.' | '.$sysconf['library_name'];
+  $metadata   = $detail->metadata;
+  $image_src  = $detail->image_src;
+  $notes      = $detail->notes;
 
+  // get keywords
+  $subject    = '';
+  if(count($detail->subjects[0]) > 0) {
+    foreach($detail->subjects as $_subject) {
+      $subject .= strtolower($_subject['topic']).',';
+    }    
+    $subject = substr($subject,0,-1);
+  }
   echo '<br />'."\n";
 }

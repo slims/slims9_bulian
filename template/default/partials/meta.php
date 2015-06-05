@@ -12,16 +12,26 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
 <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT" />
 
-<meta name="description" content="SLiMS (Senayan Library Management System) is an open source Library Management System. It is build on Open source technology like PHP and MySQL">
-<meta name="keywords" content="senayan,slims,library automation,free library application, library, perpustakaan, aplikasi perpustakaan">
+<?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
+<meta name="description" content="<?php echo $notes; ?>">
+<meta name="keywords" content="<?php echo $subject; ?>">
+<?php else: ?>
+<meta name="description" content="<?php echo $page_title; ?>">
+<meta name="keywords" content="<?php echo $sysconf['library_subname']; ?>">
+<?php endif; ?>
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 <meta name="generator" content="<?php echo SENAYAN_VERSION ?>">
 
 <!-- Opengraph
 ============================================= -->
-<meta property="og:locale" content="en_US"/>
+<meta property="og:locale" content="<?php echo str_replace('-','_',$sysconf['default_lang']); ?>"/>
 <meta property="og:type" content="book"/>
 <meta property="og:title" content="<?php echo $page_title; ?>"/>
+<?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
+<meta property="og:description" content="<?php echo $notes; ?>"/>
+<?php else: ?>
+<meta property="og:description" content="<?php echo $sysconf['library_subname']; ?>"/>
+<?php endif; ?>
 <meta property="og:url" content="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>"/>
 <meta property="og:site_name" content="<?php echo $sysconf['library_name']; ?>"/>
 <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
@@ -46,6 +56,8 @@
 <link rel="shortcut icon" href="webicon.ico" type="image/x-icon"/>
 <link rel="stylesheet" href="<?php echo $sysconf['template']['dir']; ?>/core.style.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo JWB; ?>colorbox/colorbox.css" type="text/css" />
+<link rel="profile" href="http://www.slims.web.id/">
+<link rel="canonical" href="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>" />
 <?php echo $metadata; ?>
 
 <!-- Script

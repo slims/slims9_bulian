@@ -1,12 +1,14 @@
 <?php
 /**
- *
  * Template for visitor counter
  * name of memberID text field must be: memberID
  * name of institution text field must be: institution
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
- *
+ * Create by Eddy Subratha (eddy.subratha@slims.web.id)
+ * 
+ * Slims 8 (Akasia)
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,9 +22,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
  */
+
 $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/login_template.inc.php';
+
 ?>
 <div class="s-visitor container">
   <header>
@@ -64,5 +67,4 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
 <script>
   $('#login-page, .s-login').attr('style','margin:0;')
   $('.s-login-content').removeClass('animated flipInY').addClass('animated fadeInUp')
-
 </script>

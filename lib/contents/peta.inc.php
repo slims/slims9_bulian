@@ -25,16 +25,16 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-$info = 'Library Location';
-$lat= -6.2254549;
-$long= 106.8023901;
+$page_title = __('Library Location').' | '.$sysconf['library_name'];
+$lat 		= -6.2254549;
+$long 		= 106.8023901;
 
 ?>
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<title><?php echo $info; ?></title>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<title><?php echo $page_title; ?></title>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
   function initialize() {
     var latlng = new google.maps.LatLng(<?php echo $lat . ',' . $long; ?>);

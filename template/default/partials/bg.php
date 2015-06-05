@@ -1,7 +1,9 @@
-<!-- background -->
+<!-- Background 
+============================================= -->
 <div class="s-background animated fadeIn">
 
-  <!-- Gradient Effect -->
+  <!-- Gradient Effect 
+  ============================================= -->
   <div class="gradients">
     <?php if($sysconf['template']['run_gradient_animation']) : ?>
       <div class="green"></div>
@@ -12,7 +14,7 @@
       <div class="pink current"></div>
     <?php endif; ?>
     <div class="<?php echo $sysconf['template']['default_gradient'] ?>"></div>
-  </div><!-- end Gradient Effect -->
+  </div>
 
 
   <?php if($sysconf['template']['background_mode'] == 'video') : ?>
@@ -29,13 +31,15 @@
     <div class="s-background-none"></div>
   <?php endif; ?>
 
-</div><!-- end background -->
+</div>
 
 <?php 
-// Running this animation may need high memory
-// Please make sure your computer has high performance
-// Use with your own risk
-// ====================================================
+
+/**
+ * Running this animation may need high memory
+ * Please make sure your computer has high performance
+ * Use with your own risk
+ */
 if($sysconf['template']['run_gradient_animation']) : 
 ?>
 <script>
