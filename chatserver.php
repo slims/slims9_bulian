@@ -28,7 +28,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 		foreach ( $Server->wsClients as $id => $client )
 			if ( $id != $clientID ) {
 				$_message = explode("|", $message);
-				$Server->wsSend($id, $_message[0]." ".$clientID." : ".$_message[1]);
+				$Server->wsSend($id, '<strong class="c'.$clientID.'">'.$_message[0].":</strong> ".$_message[1]);
 			}
 }
 

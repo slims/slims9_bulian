@@ -215,7 +215,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
 <aside class="s-chat s-maximize">
   <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
   <div class="s-chat-content">
-    <textarea id="log" name="log" readonly="readonly"></textarea>
+    <div id="log"></div>
     <label for="message">Message</label>
     <input type="text" id="message" name="message" />
   </div>
@@ -227,7 +227,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
   function log( text ) {
     $log = $('#log');
     //Add text to log
-    $log.append(($log.val()?"\n":'')+text);
+    $log.append(($log.html()?'<br>':'') + text);
     //Autoscroll
     $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
   }
@@ -242,8 +242,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {
         log( 'You: ' + this.value );
-        send( 'Member|'+this.value );
-
+        send( 'Member|' + this.value );
         $(this).val('');
       }
     });
