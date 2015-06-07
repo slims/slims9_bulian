@@ -136,7 +136,6 @@ include 'function.php';
   </aside>
 
   <script>
-    $.get('../chatserver.php', {}, function(){});
     var Server;
     function log( text ) {
       $log = $('#log');

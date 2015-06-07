@@ -223,6 +223,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
 </aside>
 
 <script>
+  $.get('chatserver.php', {}, function(){});
   var Server;
   function log( text ) {
     $log = $('#log');
