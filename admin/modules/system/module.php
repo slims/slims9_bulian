@@ -90,16 +90,13 @@ if (isset($_POST['saveData'])) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')');
                 utility::jsAlert(__('New Module Data Successfully Saved'));
-                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\);</script>';
+                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('Module Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
             exit();
         }
     }
     exit();
 } else if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
-    if (!($can_read AND $can_write)) {
-        die();
-    }
     /* DATA DELETION PROCESS */
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();

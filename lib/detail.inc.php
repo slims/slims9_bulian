@@ -334,13 +334,6 @@ class detail
         // get global configuration vars array
         global $sysconf;
 
-        // convert to htmlentities
-        foreach ($this->record_detail as $_field => $_value) {
-            if (is_string($_value)) {
-                $this->record_detail[$_field] = htmlspecialchars(trim($_value));
-            }
-        }
-
         // set prefix and suffix
         $this->detail_prefix = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
         $this->detail_suffix = '</modsCollection>';
@@ -375,10 +368,10 @@ class detail
         }
 
         // resources type
-        $_xml_output .= '<typeOfResource manuscript="yes" collection="yes">mixed material</typeOfResource>'."\n";
+        $_xml_output .= '<typeOfResource manuscript="yes" collection="yes"><![CDATA[mixed material]]></typeOfResource>'."\n";
 
         // gmd
-        $_xml_output .= '<genre authority="marcgt">bibliography</genre>'."\n";
+        $_xml_output .= '<genre authority="marcgt"><![CDATA[bibliography]]></genre>'."\n";
 
         // imprint/publication data
         $_xml_output .= '<originInfo>'."\n";
@@ -389,7 +382,7 @@ class detail
             $_xml_output .= '<issuance>continuing</issuance>'."\n";
             $_xml_output .= '<frequency><![CDATA['.$this->record_detail['frequency'].']]></frequency>'."\n";
         } else {
-            $_xml_output .= '<issuance>monographic</issuance>'."\n";
+            $_xml_output .= '<issuance><![CDATA[monographic]]></issuance>'."\n";
         }
         $_xml_output .= '<edition><![CDATA['.$this->record_detail['edition'].']]></edition>'."\n";
         $_xml_output .= '</originInfo>'."\n";
@@ -481,10 +474,10 @@ class detail
 
         // record info
         $_xml_output .= '<recordInfo>'."\n";
-        $_xml_output .= '<recordIdentifier>'.$this->detail_id.'</recordIdentifier>'."\n";
-        $_xml_output .= '<recordCreationDate encoding="w3cdtf">'.$this->record_detail['input_date'].'</recordCreationDate>'."\n";
-        $_xml_output .= '<recordChangeDate encoding="w3cdtf">'.$this->record_detail['last_update'].'</recordChangeDate>'."\n";
-        $_xml_output .= '<recordOrigin>machine generated</recordOrigin>'."\n";
+        $_xml_output .= '<recordIdentifier><![CDATA['.$this->detail_id.']]></recordIdentifier>'."\n";
+        $_xml_output .= '<recordCreationDate encoding="w3cdtf"><![CDATA['.$this->record_detail['input_date'].']]></recordCreationDate>'."\n";
+        $_xml_output .= '<recordChangeDate encoding="w3cdtf"><![CDATA['.$this->record_detail['last_update'].']]></recordChangeDate>'."\n";
+        $_xml_output .= '<recordOrigin><![CDATA[machine generated]]></recordOrigin>'."\n";
         $_xml_output .= '</recordInfo>';
 
         $_xml_output .= '</mods>';
@@ -509,23 +502,9 @@ class detail
 
         $_xml_output = '';
 
-        // parse title
-        $_title_sub = '';
-        $_title_statement_resp = '';
-        if (stripos($this->record_detail['title'], ':') !== false) {
-            $_title_main = trim(substr_replace($this->record_detail['title'], '', stripos($this->record_detail['title'], ':')+1));
-            $_title_sub = trim(substr_replace($this->record_detail['title'], '', 0, stripos($this->record_detail['title'], ':')+1));
-        } else if (stripos($this->record_detail['title'], '/') !== false) {
-            $_title_statement_resp = trim(substr_replace($this->record_detail['title'], '', stripos($this->record_detail['title'], '/')+1));
-        } else {
-            $_title_main = trim($this->record_detail['title']);
-        }
-
-        $_xml_output .= '<dc:title><![CDATA['.$_title_main;
-        if ($_title_sub) {
-            $_xml_output .= ' '.$_title_sub;
-        }
-        $_xml_output .= ']]></dc:title>'."\n";
+        // title
+        $_title_main = $this->record_detail['title'];
+        $_xml_output .= '<dc:title><![CDATA['.$_title_main.']]></dc:title>'."\n";
 
         // get the authors data
         foreach ($this->record_detail['authors'] as $_auth_d) {
@@ -536,7 +515,9 @@ class detail
         $_xml_output .= '<dc:publisher><![CDATA['.$this->record_detail['publisher_name'].']]></dc:publisher>'."\n";
 
         // date
-        $_xml_output .= '<dc:date><![CDATA['.$this->record_detail['publish_year'].']]></dc:date>'."\n";
+        if ($this->record_detail['publish_year']) {
+          $_xml_output .= '<dc:date><![CDATA['.$this->record_detail['publish_year'].']]></dc:date>'."\n";    
+        }
 
         // edition
         $_xml_output .= '<dc:hasVersion><![CDATA['.$this->record_detail['edition'].']]></dc:hasVersion>'."\n";

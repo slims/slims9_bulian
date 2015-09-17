@@ -120,6 +120,9 @@ define('JWB', SWB.'js/');
 // library automation module web root dir
 define('MWB', SWB.'admin/'.MDL.'/');
 
+// repository web base dir
+define('REPO_WBS', SWB.REPO.'/');
+
 // item status rules
 define('NO_LOAN_TRANSACTION', 1);
 define('SKIP_STOCK_TAKE', 2);
@@ -598,20 +601,10 @@ $sysconf['social']['ym'] = 'Yahoo! Messenger';
 /* CHATTING SYSTEM */
 $sysconf['chat_system']['enabled']    = true;
 $sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
-<<<<<<< HEAD
-$sysconf['chat_system']['opac']       = TRUE;
-$sysconf['chat_system']['librarian']  = TRUE;
-$sysconf['chat_system']['server']  = '127.0.0.1';
-$sysconf['chat_system']['server_port']  = 9300;
-=======
 $sysconf['chat_system']['opac']       = false;
 $sysconf['chat_system']['librarian']  = false;
-$sysconf['chat_system']['librarian']  = '/usr/local/bin/php';
 $sysconf['chat_system']['host']       = '127.0.0.1'; // You need an IP Address to use Chat
 $sysconf['chat_system']['port']       = '9300'; // set Chat port
-
-
->>>>>>> 350294370b8751288e55357911b8c562dc726034
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {

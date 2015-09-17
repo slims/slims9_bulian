@@ -182,6 +182,23 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (5, 'RT', 'Related Term'),
 (6, 'SA', 'See Also');
 
+
+CREATE TABLE IF NOT EXISTS `biblio_relation` (
+  `biblio_id` int(11) NOT NULL DEFAULT '0',
+  `rel_biblio_id` int(11) NOT NULL DEFAULT '0',
+  `rel_type` int(1) DEFAULT '1'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `biblio_relation`
+--
+ALTER TABLE `biblio_relation`
+ ADD PRIMARY KEY (`biblio_id`,`rel_biblio_id`);
+
 -- --------------------------------------------------------
 
 --
