@@ -2,7 +2,6 @@ images/barcodes/*
 images/persons/*
 images/docs/*
 images/labels/*
-files/*
 repository/*
 config/*
 cache/*
