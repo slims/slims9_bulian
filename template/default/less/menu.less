@@ -1,16 +1,21 @@
 /* Menu
  ================================ */
-.s-menu {
-  position: fixed;
+.s-pmenu {
+  position: relative;
+  margin:0 auto;
 }
 
-@media only screen and (max-width :600px) {
-  .s-menu {
-    position: relative;
-    display: block;
-    width: 100%;
-    left: 0px;
-  }
+@media (min-width: 768px) and (max-width: 1200px) {
+  .s-pmenu {
+    top:-50px;
+  }  
+}
+
+.s-menu {
+  position: relative;
+  left: 25px;
+  top:-50px;
+  margin:0 auto;
 }
 
 .s-menu a {
@@ -27,8 +32,11 @@
 @media only screen and (min-width : 768px) {
   .s-menu {
       z-index: 2099;
-      top:25px;
-      right: 60px;
+      position: absolute;
+      left:auto;
+      right:15px;
+      top:10px;
+      margin:0;
   }
 
   .s-menu a {
@@ -136,6 +144,8 @@
   position: absolute;
   top: 45px;
   right: 45px;
+  width: 30px;
+  height: 30px;  
 }
 .s-menu-content .s-menu-toggle span, .s-menu-content .s-menu-toggle span:before, .s-menu-content .s-menu-toggle span:after {
   background-color: #ccc;

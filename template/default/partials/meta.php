@@ -13,7 +13,7 @@
 <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT" />
 
 <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
-<meta name="description" content="<?php echo $notes; ?>">
+<meta name="description" content="<?php echo substr($notes,0,152).'...'; ?>">
 <meta name="keywords" content="<?php echo $subject; ?>">
 <?php else: ?>
 <meta name="description" content="<?php echo $page_title; ?>">
@@ -28,7 +28,7 @@
 <meta property="og:type" content="book"/>
 <meta property="og:title" content="<?php echo $page_title; ?>"/>
 <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
-<meta property="og:description" content="<?php echo $notes; ?>"/>
+<meta property="og:description" content="<?php echo substr($notes,0,152).'...'; ?>"/>
 <?php else: ?>
 <meta property="og:description" content="<?php echo $sysconf['library_subname']; ?>"/>
 <?php endif; ?>
@@ -74,8 +74,18 @@
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
 
+<!-- Style Minified
+============================================= -->
+<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
+
+<!-- Style
+============================================= -->
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['css']; ?>" /> -->
+
 <!-- Less
 ============================================= -->
-<link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.less"/>
+<!-- For Developmet Only
+<link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css"/>
 <script>less = { env: "development" };</script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
+-->

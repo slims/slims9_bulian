@@ -2,8 +2,7 @@
 /**
  * Template for Backend
  *
- * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
- * Create by Eddy Subratha (eddy.subratha@slims.web.id)
+ * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com), Eddy Subratha (eddy.subratha@slims.web.id)
  * 
  * Slims 8 (Akasia)
  * 
@@ -121,73 +120,6 @@ include 'function.php';
     </footer>
   </main>
 
-  <?php 
-  // Chat
-  // =============================================
-  if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['librarian']) : ?>
-  <aside class="s-chat s-maximize">
-    <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Members'); ?></a>
-    <div class="s-chat-content">
-      <div id="log"></div>
-      <label for="message">Message</label>
-      <input type="text" id="message" name="message" />
-    </div>
-    <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
-  </aside>
-
-  <script>
-    var Server;
-    function log( text ) {
-      $log = $('#log');
-      //Add text to log
-      $log.append(($log.html()?'<br>':'') + text);
-      //Autoscroll
-      $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
-    }
-
-    function send( text ) {
-      Server.send( 'message', text );
-    }
-
-    $(document).ready(function() { 
-     log('Connecting...');
-      Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>');
-      $('#message').keypress(function(e) {
-        if ( e.keyCode == 13 && this.value ) {
-          log( 'You: ' + this.value );
-          send( '<?php echo $_SESSION["realname"]?>|'+this.value);
-          $(this).val('');
-        }
-      });
-
-      //Let the user know we're connected
-      Server.bind('open', function() {
-        log( "Connected." );
-      });
-
-      //OH NOES! Disconnection occurred.
-      Server.bind('close', function( data ) {
-        log( "Disconnected." );
-      });
-
-      //Log any messages sent from server
-      Server.bind('message', function( payload ) {
-        log( payload );
-      });
-
-      Server.connect();
-    });
-
-    // Show or hide chat
-    // ============================================
-    $('.s-chat').toggleClass('s-minimize s-maximize');
-    $('#pchat-hide').on('click', function(){
-        $('.s-chat').toggleClass('s-minimize s-maximize ');
-    });
-
-  </script>
-  <?php endif; ?>
-
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
@@ -260,6 +192,6 @@ include 'function.php';
         );
     });
   </script>
-  <?php if (isset($chat)) { echo $chat; } ?>
+  <?php include "chat.php" ?>
 </body>
 </html>

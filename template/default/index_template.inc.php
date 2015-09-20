@@ -71,7 +71,7 @@ include "partials/nav.php";
 // Content
 ?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
-<main  id="content" class="s-main-page" role="main">
+<section  id="content" class="s-main-page" role="main">
 
   <!-- Search on Front Page
   ============================================= -->
@@ -169,7 +169,7 @@ include "partials/nav.php";
     </div>
   </div>
 
-</main>
+</section>
 
 <?php else: ?>
 
@@ -205,72 +205,10 @@ include "partials/nav.php";
 <?php 
 // Footer
 include "partials/footer.php"; 
-?>
 
-<?php 
-// Chat
-if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) : 
-?>
-<a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
-<aside class="s-chat s-maximize">
-  <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
-  <div class="s-chat-content">
-    <div id="log"></div>
-    <label for="message">Message</label>
-    <input type="text" id="message" name="message" />
-  </div>
-  <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
-</aside>
+// Chat Engine
+include LIB."contents/chat.php"; 
 
-<script>
-  $.get('chatserver.php', {}, function(){});
-  var Server;
-  function log( text ) {
-    $log = $('#log');
-    //Add text to log
-    $log.append(($log.html()?'<br>':'') + text);
-    //Autoscroll
-    $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
-  }
-
-  function send( text ) {
-    Server.send( 'message', text );
-  }
-
-  $(document).ready(function() {
-    log('Connecting...');
-    Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>');
-    $('#message').keypress(function(e) {
-      if ( e.keyCode == 13 && this.value ) {
-        log( 'You: ' + this.value );
-        send( 'Member|' + this.value );
-        $(this).val('');
-      }
-    });
-
-    //Let the user know we're connected
-    Server.bind('open', function() {
-      log( "Connected." );
-    });
-
-    //OH NOES! Disconnection occurred.
-    Server.bind('close', function( data ) {
-      log( "Disconnected." );
-    });
-
-    //Log any messages sent from server
-    Server.bind('message', function( payload ) {
-      log( payload );
-    });
-
-    Server.connect();
-  });
-
-
-</script>
-<?php endif; ?>
-
-<?php 
 // Background
 include "partials/bg.php"; 
 ?>

@@ -1,4 +1,4 @@
-@import "bootstrap.min.css";
+@import "bootstrap.min.css"; 
 @import "font-awesome.min.css";
 @import "animate.css";
 @font-face {
@@ -234,7 +234,9 @@ a:hover {
 	font-size: 10px;
 }
 /*----------------*/
+
 /*  User Account  */
+
 /*----------------*/
 
 .s-header {
@@ -358,7 +360,9 @@ a:hover {
 	}
 }
 /*-----------*/
+
 /*  Content  */
+
 /*-----------*/
 
 .s-content.active,
@@ -1365,6 +1369,7 @@ tr.dataListHeader > td > a {
 	padding: 15px;
 	margin: 15px 10px;
 }
+
 .errorBox:before,
 .message:before {
 	font-family: 'FontAwesome';
@@ -1379,6 +1384,7 @@ tr.dataListHeader > td > a {
 	overflow: hidden;
 	color: rgba(255, 255, 255, 0.25);
 }
+
 .message ul {
 	list-style: none;
 	padding: 0;
@@ -2205,7 +2211,6 @@ table {
 
 /* Chat
  ================================ */
-
 #pchat-toggle {
   background-color: #fff;
   border-radius: 50px;
@@ -2325,7 +2330,7 @@ table {
 }
 
 .s-minimize {
-  bottom: -355px;
+  bottom: -379px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
