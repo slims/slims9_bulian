@@ -84,6 +84,9 @@ if (isset($_POST['doImport'])) {
       $upload = new simbio_file_upload();
       // get system temporary directory location
       $temp_dir = sys_get_temp_dir();
+      if (!is_writable($temp_dir)) {
+        $temp_dir = UPLOAD;
+      }
       $uploaded_file = $temp_dir.DS.$_FILES['importFile']['name'];
       // set max size
       $max_size = $sysconf['max_upload']*1024;
@@ -91,7 +94,7 @@ if (isset($_POST['doImport'])) {
       $upload->setMaxSize($max_size);
       $upload->setUploadDir($temp_dir);
       $upload_status = $upload->doUpload('importFile');
-      if ($upload_status != UPLOAD_SUCCESS) {
+      if ($upload_status !== UPLOAD_SUCCESS) {
           utility::jsAlert(__('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB');
           exit();
       }

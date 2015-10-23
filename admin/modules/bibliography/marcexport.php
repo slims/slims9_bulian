@@ -68,8 +68,16 @@ if (!class_exists('File_MARC')) {
         $marc = new File_MARC_Record();
   	
 	if (isset($_recs['title']) && $_recs['title'] <> "") {
-  		$tag['245'][] = new File_MARC_Subfield('a', preg_replace('/:.+$/i', '', $_recs['title']));
-  		$tag['245'][] = new File_MARC_Subfield('b', preg_replace('/^.+:/i', '', $_recs['title']));
+	        $main_title = preg_replace('@:.+$@i', '', $_recs['title']);
+	        $rest_title = preg_replace('@^.+:@i', '', $_recs['title']);
+                
+		if ($main_title <> $rest_title) {
+  		  $tag['245'][] = new File_MARC_Subfield('a', preg_replace('/:.+$/i', '', $_recs['title']));
+  		  $tag['245'][] = new File_MARC_Subfield('b', ' : '.preg_replace('/^.+:/i', '', $_recs['title']));		    
+		} else {
+		  $tag['245'][] = new File_MARC_Subfield('a', $_recs['title']);  
+		}
+
   		if (isset($_recs['sor']) && $_recs['sor'] <> "") {
   			$tag['245'][] = new File_MARC_Subfield('c', $_recs['sor']);
   		}
@@ -95,22 +103,22 @@ if (!class_exists('File_MARC')) {
   	}
   	// $tag[] = $_recs['author'];
   	// get author name and roles first
-  	$_aut_q = $dbs->query('SELECT a.author_name,a.author_year,a.authority_type, i.level FROM biblio_author as i LEFT JOIN `mst_author` as a on a.author_id=i.author_id WHERE i.biblio_id='.$_recs['biblio_id']);
+  	$_aut_q = $dbs->query('SELECT a.author_name,a.author_year,a.authority_type,i.level FROM biblio_author as i LEFT JOIN `mst_author` as a on a.author_id=i.author_id WHERE i.biblio_id='.$_recs['biblio_id']);
   	while ($_rs_aut = $_aut_q->fetch_assoc()) {
-  		if ($_rs_aut['level'] = 1) {
-  			if ($_rs_aut['authority_type'] = 'p') {
+  		if ($_rs_aut['level'] == 1) {
+  			if ($_rs_aut['authority_type'] == 'p') {
   				$marc->appendField(new File_MARC_Data_Field('100', array(
   						new File_MARC_Subfield('a', $_rs_aut['author_name']),
   					), null, null
   				));
   				//$tag['100'] = $sd.'a'.$_rs_aut['author_name'];
-  			} elseif ($_rs_aut['authority_type'] = 'o') {
+  			} elseif ($_rs_aut['authority_type'] == 'o') {
   				$marc->appendField(new File_MARC_Data_Field('110', array(
   						new File_MARC_Subfield('a', $_rs_aut['author_name']),
   					), null, null
   				));
   				//$tag['110'] = $sd.'a'.$_rs_aut['author_name'];
-  			} elseif ($_rs_aut['authority_type'] = 'c') {
+  			} elseif ($_rs_aut['authority_type'] == 'c') {
   				$marc->appendField(new File_MARC_Data_Field('111', array(
   						new File_MARC_Subfield('a', $_rs_aut['author_name']),
   					), null, null
@@ -118,18 +126,18 @@ if (!class_exists('File_MARC')) {
   				//$tag['111'] = $sd.'a'.$_rs_aut['author_name'];
   			}
   		} else {
-  			if ($_rs_aut['authority_type'] = 'p') {
+  			if ($_rs_aut['authority_type'] == 'p') {
   				if (!isset($tag['700'])) {
   					$marc->appendField(new File_MARC_Data_Field('700', array(
   							new File_MARC_Subfield('a', $_rs_aut['author_name']),
   						), null, null
   					));
-  				} elseif ($_rs_aut['authority_type'] = 'o') {
+  				} elseif ($_rs_aut['authority_type'] == 'o') {
   					$marc->appendField(new File_MARC_Data_Field('710', array(
   							new File_MARC_Subfield('a', $_rs_aut['author_name']),
   						), null, null
   					));
-  				} elseif ($_rs_aut['authority_type'] = 'c') {
+  				} elseif ($_rs_aut['authority_type'] == 'c') {
   					$marc->appendField(new File_MARC_Data_Field('711', array(
   							new File_MARC_Subfield('a', $_rs_aut['author_name']),
   						), null, null
@@ -142,7 +150,7 @@ if (!class_exists('File_MARC')) {
   	// get topic and its type first
   	$_aut_q = $dbs->query('SELECT t.topic,t.topic_type,i.level FROM biblio_topic as i LEFT JOIN `mst_topic` as t on t.topic_id=i.topic_id WHERE i.biblio_id='.$_recs['biblio_id']);
   	while ($_rs_aut = $_aut_q->fetch_assoc()) {
-  		if ($_rs_aut['authority_type'] = 't') {
+  		if ($_rs_aut['topic_type'] == 't') {
   			if (!isset($tag['650'])) {
   				$marc->appendField(new File_MARC_Data_Field('650', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
@@ -150,7 +158,7 @@ if (!class_exists('File_MARC')) {
   				));
   			}
   			//$tag['650'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['authority_type'] = 'n') {
+  		} elseif ($_rs_aut['topic_type'] == 'n') {
   			if (!isset($tag['600'])) {
   				$marc->appendField(new File_MARC_Data_Field('600', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
@@ -158,7 +166,7 @@ if (!class_exists('File_MARC')) {
   				));
   			}
   			//$tag['600'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['authority_type'] = 'c') {
+  		} elseif ($_rs_aut['topic_type'] == 'c') {
   			if (!isset($tag['610'])) {
   				$marc->appendField(new File_MARC_Data_Field('610', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
@@ -166,7 +174,7 @@ if (!class_exists('File_MARC')) {
   				));
   			}
   			//$tag['610'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['authority_type'] = 'g') {
+  		} elseif ($_rs_aut['topic_type'] == 'g') {
   			if (!isset($tag['651'])) {
   				$marc->appendField(new File_MARC_Data_Field('651', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
@@ -174,14 +182,14 @@ if (!class_exists('File_MARC')) {
   				));
   			}
   			//$tag['651'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['authority_type'] = 'tm' OR $_rs_aut['authority_type'] = 'oc') {
+  		} elseif ($_rs_aut['topic_type'] == 'tm' || $_rs_aut['topic_type'] == 'oc') {
   			if (!isset($tag['653'])) {
   				$marc->appendField(new File_MARC_Data_Field('653', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
   					), null, null
   				));
   			}
-  		} elseif ($_rs_aut['authority_type'] = 'gr') {
+  		} elseif ($_rs_aut['topic_type'] == 'gr') {
   			if (!isset($tag['655'])) {
   				$marc->appendField(new File_MARC_Data_Field('655', array(
   						new File_MARC_Subfield('a', $_rs_aut['topic']),
@@ -265,8 +273,9 @@ if (!class_exists('File_MARC')) {
     fclose($fh);
     */
     unset($tag);
-    $gs = 0x1d; // ASCII Group Separator
-    $marc_records .= $marc->toRaw().$gs;
+    // $gs = 0x1d."\n"; // ASCII Group Separator
+    // $marc_records .= $marc->toRaw().$gs;
+    $marc_records .= $marc->toRaw();
   }
   return $marc_records;
 }
@@ -326,11 +335,9 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
   // check if label session array is available
   if (!isset($_SESSION['marcexport'])) {
     utility::jsAlert(__('There is no data to export!*'));
-    die('Yahoo');
   }
   if (count($_SESSION['marcexport']) < 1) {
     utility::jsAlert(__('There is no data to export!'));
-    die('Holla');
   }
   
   // concat all ID together

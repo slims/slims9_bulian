@@ -131,7 +131,7 @@ class simbio_file_upload extends simbio
     }
 
     // uploading file
-    if (@move_uploaded_file($_FILES[$file_input_name]['tmp_name'], $this->upload_dir.'/'.$this->new_filename)) {
+    if (move_uploaded_file($_FILES[$file_input_name]['tmp_name'], $this->upload_dir.'/'.$this->new_filename)) {
       return UPLOAD_SUCCESS;
     } else {
       $upload_error = error_get_last();
