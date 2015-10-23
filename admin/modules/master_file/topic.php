@@ -115,6 +115,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $itemID = (integer)$itemID;
         if (!$sql_op->delete('mst_topic', 'topic_id='.$itemID)) {
             $error_num++;
+        } else {
+            // delete related topic
+            $sql_op->delete('mst_voc_ctrl', 'topic_id='.$itemID.' OR related_topic_id='.$itemID);
         }
     }
 

@@ -1,8 +1,8 @@
 <?php
 /**
  * Custom OPAC record list items
+ * Change "0" value to "1" to enable field
  */
-// change "0" value to "1" to enable field
 $custom_fields['edition'] 		= array(0, __('Edition'));
 $custom_fields['isbn_issn'] 	= array(0, __('ISBN/ISSN'));
 $custom_fields['collation'] 	= array(0, __('Collation'));

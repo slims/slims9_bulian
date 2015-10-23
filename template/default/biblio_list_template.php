@@ -1,12 +1,14 @@
 <?php
 /**
- *
- * Template for bibliogrphic data listing
- * Name of callback function MUST BE biblio_list_format
+ * Template for Biblio List
+ * name of memberID text field must be: memberID
+ * name of institution text field must be: institution
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
- * Modified by Eddy Subratha (eddy.subratha@slims.web.id)
- *
+ * Create by Eddy Subratha (eddy.subratha@slims.web.id)
+ * 
+ * Slims 8 (Akasia)
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,7 +22,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
  */
 
 $label_cache = array();
@@ -71,7 +72,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         }
 
         if (isset($label[1]) && $label[1]) {
-          $title_link .= ' <a href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
+          $title_link .= ' <a itemprop="name" property="name" href="'.$label[1].'" target="_blank"><img src="'.SWB.IMAGES_DIR.'/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
         } else {
           $title_link .= ' <img src="'.SWB.IMG.'/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
         }
@@ -96,7 +97,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     $images_loc = '../../images/docs/'.$biblio_detail['image'];
     if ($sysconf['tg']['type'] == 'minigalnano') {
       $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
-      $image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" />';
+      $image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" alt="'.$title.'" />';
     }
   }
   

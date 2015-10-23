@@ -1,24 +1,35 @@
 /* Chat
  ================================ */
+.s-pchat {
+  position: relative;
+  left: -25px;
+  z-index: 1999;
+}
 
-#pchat-toggle {
+@media only screen and (min-width: 768px) {
+  .s-pchat {
+    position: absolute;
+    left:auto;
+    right:55px;
+    margin:0;
+    top:-10px;
+  }
+}
+
+.s-pchat a {
+  display: block;
+  color: #000;
   background-color: #fff;
+  width: 30px;
   border-radius: 50px;
-  position: absolute;
-  top: 25px;
-  color: #282828;
-  width:30px;
-  height:30px;
-  padding-top: 3px;
-  text-align: center;
-  vertical-align: middle;
-  right: 15px;  
-  z-index:4001;
+  padding: 3px 0 0 8px;
+  height: 30px;
+  margin: 20px auto 0 auto;
 }
 
 @media only screen and (min-width : 768px) {
-  #pchat-toggle {
-    right: 100px;  
+  #show-pchat {
+    right: 0px;  
   }
 }
 
@@ -28,7 +39,7 @@
   position: fixed;
   bottom: 51px;
   right: 12px;
-  text-align: center;
+  text-align: left;
   width:275px;
   background: #fff;
   padding: 0;
@@ -38,6 +49,7 @@
 }
 
 .s-chat-header {
+  text-align: center;
   border-bottom: solid 1px #333;
   display: block;
   background-color: #282828;
@@ -69,20 +81,45 @@
 }
 
 .s-chat-content label {
-    padding:10px 0;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
+  padding:10px 0;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
 }
 
-.s-chat-content textarea,
-.s-chat-content input {
+.s-chat-content #log {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 200px;
+  padding:10px;
   width: 100%;
   border: solid 1px #ddd;
-  padding:10px;
   font-size: 12px;
 }
 
+.s-chat-content #log p {
+  line-height: 1;
+  padding-bottom:5px;
+  margin: 0;
+}
+
+/* Chat theme */
+.c1,  .c6, .c11, .c16 { color: #3E966E !important; }
+.c2,  .c7, .c12, .c17 { color: #F36C32 !important; }
+.c3,  .c8, .c13, .c18 { color: #2A7BCC !important; }
+.c4,  .c9, .c14, .c19 { color: #7C378A !important; }
+.c5, .c10, .c15, .c20 { color: #333333 !important; }
+
+
+.s-chat-content textarea,
+#message {
+  width: 100%;
+  border: solid 1px #ddd;
+  font-size: 12px;
+  padding:10px;
+}
+
+.s-chat-content #log,
 .s-chat-content textarea {
   min-height: 200px;
   line-height: 24px;
@@ -95,7 +132,7 @@
 }
 
 .s-minimize {
-  bottom: -357px;
+  bottom: -414px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
@@ -105,3 +142,8 @@
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
+
+.s-chat .btn {
+  border-radius: 0;
+  margin-top: 5px;
+} 

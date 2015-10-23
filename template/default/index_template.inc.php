@@ -1,25 +1,26 @@
 <?php
-/*------------------------------------------------------------
-
-Template    : Slims Akasia Template
-Create Date : April, 2015
-Author      : Eddy Subratha (eddy.subratha{at}slims.web.id)
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-
--------------------------------------------------------------*/
+/**
+ * Template for OPAC
+ *
+ * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
+ * Create by Eddy Subratha (eddy.subratha@slims.web.id)
+ * 
+ * Slims 8 (Akasia)
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 // be sure that this file not accessed directly
 
@@ -43,10 +44,8 @@ if (!defined('INDEX_AUTH')) {
 <html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 <head>
 
-
-<?php 
+<?php
 // Meta Template
-// =============================================
 include "partials/meta.php"; 
 ?>
 
@@ -60,21 +59,19 @@ include "partials/meta.php";
 
 <?php
 // Header
-// =============================================
 include "partials/header.php"; 
 ?>
 
 <?php 
 // Navigation
-// =============================================
 include "partials/nav.php"; 
 ?>
 
 <?php 
 // Content
-// ============================================= ?>
+?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
-<main  id="content" class="s-main-page" role="main">
+<section  id="content" class="s-main-page" role="main">
 
   <!-- Search on Front Page
   ============================================= -->
@@ -172,7 +169,7 @@ include "partials/nav.php";
     </div>
   </div>
 
-</main>
+</section>
 
 <?php else: ?>
 
@@ -207,79 +204,12 @@ include "partials/nav.php";
 
 <?php 
 // Footer
-// =============================================
 include "partials/footer.php"; 
-?>
 
-<?php 
-// Chat
-// =============================================
-if($sysconf['chat_system']['enabled']) : 
-?>
-<a href="#" id="pchat-toggle" class="animated fadeInUp delay3"><i class="fa fa-comment-o"></i></a>
-<aside class="s-chat s-maximize">
-  <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Librarian'); ?></a>
-  <div class="s-chat-content">
-    <textarea id="log" name="log" readonly="readonly"></textarea>
-    <label for="message">Message</label>
-    <input type="text" id="message" name="message" />
-  </div>
-  <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
-</aside>
+// Chat Engine
+include LIB."contents/chat.php"; 
 
-<script>
-  // $.get('./chat_server.php', {}, function(){});
-  var Server;
-  function log( text ) {
-    $log = $('#log');
-    //Add text to log
-    $log.append(($log.val()?"\n":'')+text);
-    //Autoscroll
-    $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
-  }
-
-  function send( text ) {
-    Server.send( 'message', text );
-  }
-
-  $(document).ready(function() {
-    log('Connecting...');
-    Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
-
-    $('#message').keypress(function(e) {
-      if ( e.keyCode == 13 && this.value ) {
-        log( 'You: ' + this.value );
-        send( 'Member|'+this.value );
-
-        $(this).val('');
-      }
-    });
-
-    //Let the user know we're connected
-    Server.bind('open', function() {
-      log( "Connected." );
-    });
-
-    //OH NOES! Disconnection occurred.
-    Server.bind('close', function( data ) {
-      log( "Disconnected." );
-    });
-
-    //Log any messages sent from server
-    Server.bind('message', function( payload ) {
-      log( payload );
-    });
-
-    Server.connect();
-  });
-
-
-</script>
-<?php endif; ?>
-
-<?php 
 // Background
-// =============================================
 include "partials/bg.php"; 
 ?>
 
@@ -303,33 +233,32 @@ include "partials/bg.php";
     $(this).attr('src','./template/default/img/avatar.jpg');
   });
 
-// Feature list slider
-// ============================================
-function mycarousel_initCallback(carousel)
-{
-  // Disable autoscrolling if the user clicks the prev or next button.
-  carousel.buttonNext.bind('click', function() {
-    carousel.startAuto(0);
+  //Feature list slider
+  function mycarousel_initCallback(carousel)
+  {
+    // Disable autoscrolling if the user clicks the prev or next button.
+    carousel.buttonNext.bind('click', function() {
+      carousel.startAuto(0);
+    });
+
+    carousel.buttonPrev.bind('click', function() {
+      carousel.startAuto(0);
+    });
+
+    // Pause autoscrolling if the user moves with the cursor over the clip.
+    carousel.clip.hover(function() {
+      carousel.stopAuto();
+    }, function() {
+      carousel.startAuto();
+    });
+  };
+
+  jQuery('#topbook').jcarousel({
+      auto: 5,
+      wrap: 'last',
+      initCallback: mycarousel_initCallback
   });
 
-  carousel.buttonPrev.bind('click', function() {
-    carousel.startAuto(0);
-  });
-
-  // Pause autoscrolling if the user moves with the cursor over the clip.
-  carousel.clip.hover(function() {
-    carousel.stopAuto();
-  }, function() {
-    carousel.startAuto();
-  });
-};
-
-jQuery('#topbook').jcarousel({
-    auto: 5,
-    wrap: 'last',
-    initCallback: mycarousel_initCallback
-});
- 
 </script>
 
 </body>

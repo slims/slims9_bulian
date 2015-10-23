@@ -27,11 +27,11 @@ $(document).ready(function(){
 
     // Show or hide chat
     // ============================================
-    $('#pchat-toggle').on('click', function(){
+    $('#show-pchat').on('click', function(){
         $('.s-chat').toggle().addClass('animated-fast fadeInUp');      
     });
 
-    $('#pchat-hide').on('click', function(){
+    $('#hide-pchat').on('click', function(){
         $('.s-chat').toggleClass('s-minimize s-maximize ');
     });
 
@@ -49,14 +49,8 @@ $(document).ready(function(){
 	}
 })()
 
-  
-
 $(document).ready(function(){
   $(window).load(function () {
     $('#keyword').focus();
   });  
-
-  $('.errorBox').parent().removeClass('animated fadeInUp delay2');
-  $('.errorBox').parents().attr('style','position: static;');
-
 });

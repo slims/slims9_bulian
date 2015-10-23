@@ -539,14 +539,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   
   // biblio RDA content, media, carrier type
   foreach ($rda_cmc as $cmc => $cmc_name) {
-    $cmc_options = array();
-    $cmc_q = $dbs->query('SELECT id, '.$cmc.'_type FROM mst_'.$cmc.'_type');
-    $cmc_options = array();
-    $cmc_options[] = array(0, __('Not set'));
-    while ($cmc_q->num_rows > 0 && $cmc_d = $cmc_q->fetch_row()) {
-      $cmc_options[] = array($cmc_d[0], $cmc_d[1]);
+    if (isset($rec_d[$cmc.'_type_id'])) {
+      $cmc_options = array();
+      $cmc_q = $dbs->query('SELECT id, '.$cmc.'_type FROM mst_'.$cmc.'_type');
+      $cmc_options = array();
+      $cmc_options[] = array(0, __('Not set'));
+      while (isset($cmc_q->num_rows) && $cmc_q->num_rows > 0 && $cmc_d = $cmc_q->fetch_row()) {
+        $cmc_options[] = array($cmc_d[0], $cmc_d[1]);
+      }
+      $form->addSelectList($cmc.'TypeID', __($cmc_name), $cmc_options, $rec_d[$cmc.'_type_id'], 'class="select2"', __('RDA '.$cmc_name.' designation.'));
     }
-    $form->addSelectList($cmc.'TypeID', __($cmc_name), $cmc_options, $rec_d[$cmc.'_type_id'], 'class="select2"', __('RDA '.$cmc_name.' designation.'));    
   }
 
   
@@ -622,23 +624,23 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
     if ($sysconf['scanner'] == 'html5') {
-        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="openPopUp" onclick="toggle_dialog();" />';
-        $str_input .= '<input type="button" value="'.__('Reset').'" class="openPopUp" onclick="scan_reset();" />';
+        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn openPopUp" onclick="toggle_dialog();" />';
+        $str_input .= '<input type="button" value="'.__('Reset').'" class="button btn openPopUp" onclick="scan_reset();" />';
         $str_input .= '<div id="scan_overlay" style="display: none; position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(192, 194, 201, 0.5);">';
         $str_input .= '<div id="scan_dialog" title="'.__('Scan a cover').'">';
-        $str_input .= '<div id="scan_options_std" style=""><label>'.__('Format:').' <select id="scan_type" onchange="scan_type();">';
+        $str_input .= '<div id="scan_options_std" style="margin: 5px;"><label>'.__('Format:').' <select id="scan_type" onchange="scan_type();">';
         $str_input .= '<option value="png">PNG</option><option value="jpg">JPEG</option></select></label> ';
-        $str_input .= '<input type="button" id="btn_getscan" onclick="scan()" value="'.__('Scan').'" />';
-        $str_input .= '<img style="margin-left: 10px;" title="'.__('Click to show or hide options').'" onclick="toggle_options()" src="data:image/[ImageFormat: b96b3caf-0728-11d3-9d7b-0000f81ef32e];base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALOSURBVDhPY8AFXK2MeUC0nqo8k6OFETdYkFiwtyZw8oc+329pkQFGC3K8Uj+0O39rSfZNhEpjB34OZlyrSgPL40P9JI7W+K791uP+/1aD2+1XLY5vvrba/O9L9aqpiXbVn5nmkmFhbsYE1YYAy4sDy7/1e/9/3enx4UuXy59vHQ7/v7bZ/v/aYvn/a5PZ/9e1Jp8+1ej/+lKt/S8n0tcZqg0BooN8JF63u3341un4/2u7HVCjFVCj+f+vDcb/v9bp//9So/P/S6XG/0M5Jhf9fH14odogYF+F1+Rjle5rv7Tb//naav3/a7PF/3NlNncmp7p1zE1zmvC4TO/Nlwq1/59Llf4/LFB7fSjTYM3EeIdcsGY7Ez2e920O37622QA1Ap3baPr/XKnVnQA/X1mwAiBIDnLXf1Os/PVjseL/d4VK/98UKP/fk2Z0xsDAgAWsICXMx+hmlfXtrw1G/7/W6v+fnOzSAZZAAv3xDvlvC5T+v8pX/r8uxWxfaICfGlhCR1mWaVG6Y+rLaqM3MH/OTbGbAJZEAttTjWe8zFP5/zxX5f/xNL1rZeFukIC0NNLlfl+t9+1LleZ/sD/LwP58kxbiqQ9WAAQToq3DgBr/Ps1R/f84S/X/w0y1/5sTTc/o6+tDvNAc757Ym+Bc87JI5RPMn0/zVb/uTzfcfiJD7whQ49/H2RCNe5KNbrdEuVTnhHv7gTXDQEWovf7bQuVfIH++BvrzBdC5z3JU/j8BanyUpfb/QYba/7vp6v+PJuk/DPD1FoRqQ4DJ8fYZQI3/dqcZXbyepfn6KVij6v8HQFvvATXuSjS6fRio+XyS9o+UUD97qDYEMNDXZ8oK93H29vbi3Z5svAbk3BUJFvsOJBlcu5Wq8b8p0qXa19tTEKQZ6HfMpIwMuqKdckGBFBrop1YQ4ua8Ls7sTHaYD6qfCQEdHR1ICAMBMhsVMDAAACmzULN269FIAAAAAElFTkSuQmCC" /></div>';
-        $str_input .= '<div id="scan_options" class="makeHidden" style="">';
-        $str_input .= '<p style="padding: 3px 0;"><label>'.__('History index:').' <input type="text" id="scan_history" value="1" style="width: 10px;" /></label> <input type="button" id="btn_getrecall" onclick="scan_recall" value="'.__('Recall').'" /></p>';
-        $str_input .= '<p style="padding: 3px 0;"><label>'.__('Host:').' <input type="text" id="scan_host" value="localhost" /></label> | <label>Port: <input type="text" id="scan_port" patter="\d*" maxlength="6" size="6" style="width: 60px;" value="8811" /></label> <input type="button" id="btn_getmachine" onclick="scan_init()" value="'.__('Get machine').'" /></p>';
+        $str_input .= '<input type="button" id="btn_getscan" class="button btn" onclick="scan()" value="'.__('Scan').'" />';
+        $str_input .= '<i style="margin-left: 10px; cursor: pointer; cursor: hand;" title="'.__('Click to show or hide options').'" onclick="toggle_options()" class="fa fa-gear fa-2x"></i></div>';
+        $str_input .= '<div id="scan_options" class="makeHidden" style="margin: 5px;">';
+        $str_input .= '<p style="padding: 3px 0;"><label>'.__('History index:').' <input type="text" id="scan_history" value="1" style="width: 60px;" /></label> <input type="button" id="btn_getrecall" class="button btn" onclick="scan_recall" value="'.__('Recall').'" /></p>';
+        $str_input .= '<p style="padding: 3px 0;"><label>'.__('Host:').' <input type="text" id="scan_host" value="localhost" /></label> | <label>Port: <input type="text" id="scan_port" patter="\d*" maxlength="6" size="6" style="width: 60px;" value="8811" /></label> <input type="button" id="btn_getmachine" class="button btn" onclick="scan_init()" value="'.__('Get machine').'" /></p>';
         $str_input .= '<p style="padding: 3px 0;"><label>'.__('Scanner:').' <select id="scan_machine" readonly><option>'.__('Default').'</option></select></label></p>';
-        $str_input .= '<p style="padding: 3px 0;">'.__('Resolution').', <label>'.__('Horizontal:').' <input type="text" id="scan_res_x" value="300" pattern="\d*" maxlength="3" size="3" style="width: 30px;" />dpi</label> - <label>'.__('Vertical:').' <input type="text" id="scan_res_y" value="300" pattern="\d*" maxlength="3" size="3" style="width: 30px;" />dpi</label></p>';
-        $str_input .= '<p style="padding: 3px 0;">'.__('Capture').', <label>'.__('Width:').' <input type="text" id="scan_capture_w" value="2550" pattern="\d*" maxlength="4" size="4" style="width: 30px;" />px</label> - <label>'.__('Height:').' <input type="text" id="scan_capture_h" value="3507" pattern="\d*" maxlength="4" size="4" style="width: 40px;" />px</label></p>';
-        $str_input .= '<p>'.__('Result').', <label>'.__('Max Width:').' <input type="text" id="scan_max_w" value="360" pattern="\d*" maxlength="3" size="3" style="width: 30px;" />px</label> - <label>'.__('Max Height:').' <input type="text" id="scan_max_h" value="480" pattern="\d*" maxlength="3" size="3" style="width: 30px;" />px</label></p></div>';
-        $str_input .= '<div id="scan_container" style=""><div style="height: 550px; width: 390px; overflow: auto; float: left;"><p>'.__('Scan result').'</p><img id="my_imgdata" style="margin: auto;" /></div>';
-        $str_input .= '<div style="padding-left: 10px; height: 550; width: 400px; overflow: auto; float: left;"><p>'.__('Preview').' <input type="button" value="'.__('Rotate Left').'" onclick="scan_rotate(\'left\')" /> <input type="button" value="'.__('Rotate Right').'" onclick="scan_rotate(\'right\')" /></p><canvas id="my_selected" style="border: 1px solid #CCC; margin: auto;"></canvas></div></div></div></div>';
+        $str_input .= '<p style="padding: 3px 0;">'.__('Resolution').', <label>'.__('Horizontal:').' <input type="text" id="scan_res_x" value="300" pattern="\d*" maxlength="3" size="3" style="width: 60px;" />dpi</label> - <label>'.__('Vertical:').' <input type="text" id="scan_res_y" value="300" pattern="\d*" maxlength="3" size="3" style="width: 60px;" />dpi</label></p>';
+        $str_input .= '<p style="padding: 3px 0;">'.__('Capture').', <label>'.__('Width:').' <input type="text" id="scan_capture_w" value="2550" pattern="\d*" maxlength="4" size="4" style="width: 60px;" />px</label> - <label>'.__('Height:').' <input type="text" id="scan_capture_h" value="3507" pattern="\d*" maxlength="4" size="4" style="width: 60px;" />px</label></p>';
+        $str_input .= '<p>'.__('Result').', <label>'.__('Max Width:').' <input type="text" id="scan_max_w" value="360" pattern="\d*" maxlength="3" size="3" style="width: 60px;" />px</label> - <label>'.__('Max Height:').' <input type="text" id="scan_max_h" value="480" pattern="\d*" maxlength="3" size="3" style="width: 60px;" />px</label></p></div>';
+        $str_input .= '<div id="scan_container" style="margin: 5px;"><div style="height: 550px; width: 390px; overflow: auto; float: left;"><p>'.__('Scan result').'</p><img id="my_imgdata" style="margin: auto;" /></div>';
+        $str_input .= '<div style="padding-left: 10px; height: 550; width: 400px; overflow: auto; float: left;"><p>'.__('Preview').' <input type="button" class="button btn" value="'.__('Rotate Left').'" onclick="scan_rotate(\'left\')" /> <input type="button" class="button btn" value="'.__('Rotate Right').'" onclick="scan_rotate(\'right\')" /></p><canvas id="my_selected" style="border: 1px solid #CCC; margin: auto;"></canvas></div></div></div></div>';
     }
   }
 

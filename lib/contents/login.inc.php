@@ -184,7 +184,7 @@ if (isset($_POST['logMeIn'])) {
 $main_content = ob_get_clean();
 
 // page title
-$page_title = $sysconf['library_name'].' :: Library Automation LOGIN';
+$page_title = __('Library Automation Login').' | '.$sysconf['library_name'];
 
 if ($sysconf['template']['base'] == 'html') {
     // create the template object

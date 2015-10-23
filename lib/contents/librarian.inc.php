@@ -28,8 +28,9 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 }
 
-$info = __('Profile of our Librarian');
-$page_title = __('Librarian');
+// $info = __('Profile of our Librarian');
+$page_title = __('Profile of our Librarian') ;
+
 // query librarian data
 $librarian_q = $dbs->query('SELECT * FROM user WHERE user_type IN (1,2) ORDER BY user_type DESC LIMIT 20');
 if ($librarian_q->num_rows > 0) {
@@ -37,9 +38,9 @@ if ($librarian_q->num_rows > 0) {
     echo '<div class="row-fluid librarian">';
     echo '<div class="span2">';
     if ($librarian['user_image']) {
-      echo '<div class="librarian-image"><img src="'.SWB.'images/persons/'.$librarian['user_image'].'" /></div>';
+      echo '<div class="librarian-image"><img src="'.SWB.'images/persons/'.$librarian['user_image'].'" alt="'.$librarian['realname'].'" /></div>';
     } else {
-      echo '<div><img src="'.SWB.'images/persons/person.png" /></div>';
+      echo '<div><img src="'.SWB.'images/persons/person.png" alt="'.$librarian['realname'].'" /></div>';
     }
     echo '</div>';
     echo '<div class="span8">';
@@ -63,5 +64,5 @@ if ($librarian_q->num_rows > 0) {
     echo '</div>';
   }
 } else {
-  echo '<p>No Librarian data yet</p>';
+  echo '<p>No librarian data yet</p>';
 }

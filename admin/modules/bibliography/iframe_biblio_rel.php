@@ -93,7 +93,7 @@ if ($biblioID) {
       LEFT JOIN biblio AS b2 ON ba.rel_biblio_id=b2.biblio_id
       WHERE ba.biblio_id=$biblioID ORDER BY rel_type ASC");
   $row = 1;
-  while ($biblio_relation_d = $biblio_relation_q->fetch_assoc()) {
+  while (isset($biblio_relation_q->num_rows) && $biblio_relation_d = $biblio_relation_q->fetch_assoc()) {
     // alternate the row color
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 

@@ -31,9 +31,9 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 ?>
 <fieldset class="menuBox adminHome">
 <div class="menuBoxInner">
-	<div class="per_title">
-    	<h2><?php echo __('Library Administration'); ?></h2>
-	</div>
+    <div class="per_title">
+        <h2><?php echo __('Library Administration'); ?></h2>
+    </div>
 </div>
 </fieldset>
 <?php
@@ -79,10 +79,11 @@ if (is_dir('../install/')) {
 
 
 // check need to be repaired mysql database
-$query_of_tables = $dbs->query('SHOW TABLES');
-$num_of_tables = $query_of_tables->num_rows;
-$prevtable = '';
-$is_repaired = false;
+$query_of_tables    = $dbs->query('SHOW TABLES');
+$num_of_tables      = $query_of_tables->num_rows;
+$prevtable          = '';
+$repair             = '';
+$is_repaired        = false;
 
 if (isset ($_POST['do_repair'])) {
     if ($_POST['do_repair'] == 1) {
@@ -98,7 +99,7 @@ while ($row = $query_of_tables->fetch_row()) {
     while ($rowcheck = $query_of_check->fetch_assoc()) {
         if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
             if ($row[0] != $prevtable) {
-                echo '<li class="warning">Table '.$row[0].' might need to be repaired.</li>';
+                $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
             }
             $prevtable = $row[0];
             $is_repaired = true;
@@ -106,19 +107,27 @@ while ($row = $query_of_tables->fetch_row()) {
     }
 }
 if (($is_repaired) && !isset($_POST['do_repair'])) {
-     echo '<li class="warning"><form method="POST"><input type="hidden" name="do_repair" value="1"><input value="Repaire Tables" type="submit"></form></li>';
+    echo '<div class="message">';
+    echo '<ul>';
+    echo $repair;
+    echo '</ul>';
+    echo '</div>';
+    echo ' <form method="POST" style="margin:0 10px;">
+        <input type="hidden" name="do_repair" value="1">
+        <input type="submit" value="'.__('Click Here To Repaire The Tables').'" class="button btn btn-block btn-default">
+        </form>';
 }
+echo '<div class="message">';
+echo '<ul>';
 
 // if there any warnings
 if ($warnings) {
-    echo '<div class="message">';
-    echo '<ul>';
     foreach ($warnings as $warning_msg) {
-        echo '<li class="warning">'.$warning_msg.'</li>';
+        echo '<li>'.$warning_msg.'</li>';
     }
-    echo '</ul>';
-    echo '</div>';
 }
+echo '</ul>';
+echo '</div>';
 
 // admin page content
 if($sysconf['admin_home']['mode'] == 'default') {
@@ -171,9 +180,13 @@ if($sysconf['admin_home']['mode'] == 'default') {
                 GROUP BY 
                     loan_date";
 
-        $set_loan       = $dbs->query($sql_loan);                     
-        $transc_loan    = $set_loan->fetch_object();
-        $get_loan      .= $transc_loan->countloan.',';
+        $set_loan       = $dbs->query($sql_loan);
+        if($set_loan->num_rows > 0) {
+            $transc_loan    = $set_loan->fetch_object();
+            $get_loan      .= $transc_loan->countloan.',';            
+        } else {
+            $get_loan       = 0;
+        }
 
         // get latest return
         $sql_return = 
@@ -190,8 +203,12 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     loan_date";
 
         $set_return       = $dbs->query($sql_return);                     
-        $transc_return    = $set_return->fetch_object();
-        $get_return      .= $transc_return->countloan.',';
+        if($set_return->num_rows > 0) {
+            $transc_return    = $set_return->fetch_object();
+            $get_return      .= $transc_return->countloan.',';
+        } else {
+            $get_return       = 0;
+        }
 
         // get latest extends
         $sql_extends = 
@@ -205,10 +222,13 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     AND renewed     = 1
                 GROUP BY 
                     loan_date";
-
-        $set_extends       = $dbs->query($sql_extends);                     
-        $transc_extends    = $set_extends->fetch_object();
-        $get_extends      .= $transc_extends->countloan.',';
+        $set_extends       = $dbs->query($sql_extends);   
+        if($set_extends->num_rows > 0) {              
+            $transc_extends    = $set_extends->fetch_object();
+            $get_extends      .= $transc_extends->countloan.',';
+        } else {
+            $get_extends       = 0;
+        }
     }
     // return transaction date
     $get_date       = substr($get_date,0,-1);

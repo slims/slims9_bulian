@@ -1,4 +1,25 @@
 <?php
+
+/**
+ * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Create by Waris Agung Widodo (ido.alit@gmail.com)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 // key to get full database access
@@ -78,6 +99,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     } else {
         // adding new topic
         $topic_data['topic'] = $search_str;
+        $topic_data['classification'] = $_POST['topicClass'];
         $topic_data['topic_type'] = 't';
         $topic_data['input_date'] = date('Y-m-d');
         $topic_data['last_update'] = date('Y-m-d');
@@ -128,26 +150,33 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     
   } else {
 
-    // insert primary vocabolary
-    if ($sql_op->insert('mst_voc_ctrl', $data)) {
+    // checking if already added
+    $check_vc = $dbs->query('SELECT count(topic_id) FROM mst_voc_ctrl WHERE topic_id='.$data['topic_id'].' AND related_topic_id='.$data['related_topic_id']);
+    if ($check_vc->num_rows > 0) {
+      // already add
+      utility::jsAlert(__('Subject ALREADY Added in Relation!'));
+    } else {
+      // insert primary vocabolary
+      if ($sql_op->insert('mst_voc_ctrl', $data)) {
 
-      // insert secondary vocabolary
-      if ($_data['rt_id']) {
+        // insert secondary vocabolary
+        if ($_data['rt_id']) {
 
-        // insert related topic into vocabolary control
-        $insert = $sql_op->insert('mst_voc_ctrl', $_data);
-        if ($insert) {
-          echo $alert_add;
+          // insert related topic into vocabolary control
+          $insert = $sql_op->insert('mst_voc_ctrl', $_data);
+          if ($insert) {
+            echo $alert_add;
+          }else{
+            utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+          }
+
         }else{
-          utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+          echo $alert_add;
         }
 
-      }else{
-        echo $alert_add;
+      } else {
+        utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
       }
-
-    } else {
-      utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
     }
 
   }
@@ -162,10 +191,11 @@ if (isset($_GET['editTopic'])) {
   $rec_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE vocabolary_id='.$vocID.' AND topic_id='.$itemID);
   $rec_d = $rec_q->fetch_assoc();
 
-  $topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id='.$rec_d['related_topic_id']);
+  $topic_q = $dbs->query('SELECT topic, classification FROM mst_topic WHERE topic_id='.$rec_d['related_topic_id']);
   $topic_d = $topic_q->fetch_row();
 
-  // generate manual form
+
+// edit mode
   ?>
 <div class="popUpForm container">
   <div class="page-header"><h2><?php echo __('Edit Mode'); ?></h2></div>
@@ -195,6 +225,12 @@ if (isset($_GET['editTopic'])) {
       </div>
     </div>
     <div class="form-group">
+    <label for="subname" class="col-xs-2 control-label"><?php echo __('Classification'); ?></label>
+    <div class="col-xs-10">
+      <input type="text" name="topicClass" class="form-control" value="<?php echo $topic_d[1]; ?>">
+    </div>
+  </div>
+    <div class="form-group">
       <div class="col-xs-offset-2 col-xs-10">
         <button type="submit" name="saveData" class="btn btn-success"><?php echo __('Update');?></button>
         <button type="button" onclick="top.jQuery.colorbox.close()" class="btn btn-warning"><?php echo __('Cancel');?></button>
@@ -202,33 +238,14 @@ if (isset($_GET['editTopic'])) {
     </div>
   </form>
 </div>
-  <?php
-  /*
-  // create new instance
-  $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-  $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
 
-  $form->edit_mode = true;
-  // submit button attribute
-  $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="btn btn-default"';
-  $form->addHidden('updateRecordID', $vocID);
-  // form table attributes
-  $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
-  $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
-  $form->table_content_attr = 'class="alterCell2"';
+  <?php 
 
-  // ref
-  // ref option
-    $ref_q = $dbs->query('SELECT rt_id, rt_desc FROM mst_relation_term');
-    while ($ref_d = $ref_q->fetch_row()) {
-        $ref_option[] = array($ref_d[0], $ref_d[1]);
-    }
-  $form->addSelectList('relatedterm', __('Related Term'), $ref_option, $rec_d['rt_id']);
-  $form->addTextField('text', 'vocabolary', __('Vocabolary Control'), $rec_d['related_topic_id'], 'style="width: 60%;"');
-  echo $form->printOut();
-  */
-}else{
-?>
+  }else{ 
+
+  // new related topic
+  ?>
+
 <div class="popUpForm container">
 <div class="page-header"><h2><?php echo __('Add Vocabolary Control'); ?></h2></div>
 <form name="mainForm" class="form-horizontal" role="form" action="pop_vocabolary_control.php?itemID=<?php echo $itemID; ?>" method="post">
@@ -251,8 +268,14 @@ if (isset($_GET['editTopic'])) {
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
-    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="Vocabolary" onkeyup="<?php echo $ajax_exp; ?>" />
+    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="Enter Vocabolary" onkeyup="<?php echo $ajax_exp; ?>" />
     <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="subname" class="col-xs-2 control-label"><?php echo __('Classification'); ?></label>
+    <div class="col-xs-10">
+      <input type="text" name="topicClass" class="form-control">
     </div>
   </div>
   <div class="form-group">

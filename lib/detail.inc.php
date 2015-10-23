@@ -46,6 +46,8 @@ class detail
     public $record_title;
     public $metadata;
     public $image_src;
+    public $notes;
+    public $subjects;
 
     /**
      * Class Constructor
@@ -65,6 +67,8 @@ class detail
         $this->biblio = new Biblio($this->db, $int_detail_id);
         $this->record_detail = $this->biblio->detail();
         $this->record_title = $this->record_detail['title'];
+        $this->notes = $this->record_detail['notes'];
+        $this->subjects = $this->record_detail['subjects'];
     }
 
     
@@ -268,11 +272,11 @@ class detail
         if (!empty($this->record_detail['image'])) {
           if ($sysconf['tg']['type'] == 'minigalnano') {
             $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename='.$sysconf['tg']['relative_url'].'images/docs/'.urlencode($this->record_detail['image']).'&amp;width=200';
-            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" />';
+            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" alt="'.$this->record_detail['title'].'" />';
           }
         } else {
           $this->record_detail['image_src'] = "images/default/image.png";
-          $this->record_detail['image'] = '<img src="./'.$this->record_detail['image_src'].'" alt="No image available for this title" border="0" />';
+          $this->record_detail['image'] = '<img src="./'.$this->record_detail['image_src'].'" alt="No image available for this title" border="0" alt="'.$this->record_detail['title'].'" />';
         }
 
         // get image source

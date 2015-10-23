@@ -1,27 +1,28 @@
 <?php
-  /**
-  * Akasia Template
-  *
-  * Copyright (C) 2015 Eddy Subratha (eddy.subratha@gmail.com)
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation; either version 2 of the License, or
-  * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  *
-  * You should have received a copy of the GNU General Public License
-  * along with this program; if not, write to the Free Software
-  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-  *
-  */
+/**
+ * Template for Backend
+ *
+ * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com), Eddy Subratha (eddy.subratha@slims.web.id)
+ * 
+ * Slims 8 (Akasia)
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
-  // Need to modified script to adaptive new theme
-  include 'function.php';
+// Need to modified script to adaptive new theme
+include 'function.php';
 ?>
 <!-- =====================================================================
  ___  __    ____  __  __  ___      __    _  _    __    ___  ____    __
@@ -29,10 +30,7 @@
 \__ \ )(__  _)(_  )    ( \__ \   /(__)\  )  (  /(__)\ \__ \ _)(_  /(__)\
 (___/(____)(____)(_/\/\_)(___/  (__)(__)(_)\_)(__)(__)(___/(____)(__)(__)
 
-By Eddy Subratha (eddy.subratha@slims.web.id)
-
 ========================================================================== -->
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -122,75 +120,6 @@ By Eddy Subratha (eddy.subratha@slims.web.id)
     </footer>
   </main>
 
-  <?php 
-  // Chat
-  // =============================================
-  if($sysconf['chat_system']['enabled']) : ?>
-  <aside class="s-chat s-maximize">
-    <a href="#" id="pchat-hide" class="s-chat-header"><?php echo __('Chat With Members'); ?></a>
-    <div class="s-chat-content">
-      <textarea id="log" name="log" readonly="readonly"></textarea>
-      <label for="message">Message</label>
-      <input type="text" id="message" name="message" />
-    </div>
-    <footer><?php echo __('Please type and hit Enter button to send your messages'); ?></footer>
-  </aside>
-
-  <script>
-    $.get('../chat_server.php', {}, function(){});
-    var Server;
-    function log( text ) {
-      $log = $('#log');
-      //Add text to log
-      $log.append(($log.val()?"\n":'')+text);
-      //Autoscroll
-      $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
-    }
-
-    function send( text ) {
-      Server.send( 'message', text );
-    }
-
-    $(document).ready(function() { 
-     log('Connecting...');
-      Server = new FancyWebSocket("ws://<?php echo $sysconf['chat_system']['host'].':'.$sysconf['chat_system']['port']; ?>");
-      $('#message').keypress(function(e) {
-        if ( e.keyCode == 13 && this.value ) {
-          log( 'You: ' + this.value );
-          send( 'Librarian|'+this.value );
-
-          $(this).val('');
-        }
-      });
-
-      //Let the user know we're connected
-      Server.bind('open', function() {
-        log( "Connected." );
-      });
-
-      //OH NOES! Disconnection occurred.
-      Server.bind('close', function( data ) {
-        log( "Disconnected." );
-      });
-
-      //Log any messages sent from server
-      Server.bind('message', function( payload ) {
-        log( payload );
-      });
-
-      Server.connect();
-    });
-
-    // Show or hide chat
-    // ============================================
-    $('.s-chat').toggleClass('s-minimize s-maximize');
-    $('#pchat-hide').on('click', function(){
-        $('.s-chat').toggleClass('s-minimize s-maximize ');
-    });
-
-  </script>
-  <?php endif; ?>
-
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
   <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
@@ -263,6 +192,6 @@ By Eddy Subratha (eddy.subratha@slims.web.id)
         );
     });
   </script>
-  <?php if (isset($chat)) { echo $chat; } ?>
+  <?php include "chat.php" ?>
 </body>
 </html>

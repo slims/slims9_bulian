@@ -599,12 +599,12 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    = true;
-$sysconf['chat_system']['vendors']    = 'phpwebscoketchat';
-$sysconf['chat_system']['opac']       = false;
-$sysconf['chat_system']['librarian']  = false;
-$sysconf['chat_system']['host']       = '127.0.0.1'; // You need an IP Address to use Chat
-$sysconf['chat_system']['port']       = '9300'; // set Chat port
+$sysconf['chat_system']['enabled']    	= true;
+$sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
+$sysconf['chat_system']['opac']       	= true;
+$sysconf['chat_system']['librarian']  	= true;
+$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['server_port']  = 9300;
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
