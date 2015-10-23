@@ -83,9 +83,9 @@ if (isset($_POST['doImport'])) {
       // create upload object
       $upload = new simbio_file_upload();
       // get system temporary directory location
-      $temp_dir = sys_get_temp_dir();
+      $temp_dir = UPLOAD;
       if (!is_writable($temp_dir)) {
-        $temp_dir = UPLOAD;
+        $temp_dir = sys_get_temp_dir();
       }
       $uploaded_file = $temp_dir.DS.$_FILES['importFile']['name'];
       // set max size
