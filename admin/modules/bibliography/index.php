@@ -59,6 +59,14 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
+if (!function_exists('getimagesizefromstring')) {
+  function getimagesizefromstring($string_data)
+  {
+     $uri = 'data://application/octet-stream;base64,'  . base64_encode($string_data);
+     return getimagesize($uri);
+  }
+}
+
 // RDA Content, Media and Carrier
 $rda_cmc = array('content' => 'Content Type', 'media' => 'Media Type', 'carrier' => 'Carrier Type');
 

@@ -490,11 +490,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<button id="btn_load" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
+        $str_input .= '<button id="btn_load" class="button btn" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
         $str_input .= __('Ratio:').' <select onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select> | ';
         $str_input .= __('Format:').' <select id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select> | ';
-        $str_input .= '<button id="btn_pause" onclick="snapshot(this)" disabled>'.__('Capture').'</button> | ';
-        $str_input .= '<button id="btn_reset" onclick="$(\'textarea#base64picstring\').val(\'\');">'.__('Reset').'</button>';
+        $str_input .= '<button id="btn_pause" class="button btn" onclick="snapshot(this)" disabled>'.__('Capture').'</button> | ';
+        $str_input .= '<button id="btn_reset" class="button btn" onclick="$(\'textarea#base64picstring\').val(\'\');">'.__('Reset').'</button>';
         $str_input .= '<div id="my_container" style="width: 400px; height: 300px; border: 1px solid #333; position: relative;">';
         $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10;"></video>';
         $str_input .= '<canvas id="my_canvas" width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
