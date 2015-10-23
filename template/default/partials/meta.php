@@ -76,7 +76,7 @@
 
 <!-- Style Minified
 ============================================= -->
-<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.css" />
 
 <!-- Style
 ============================================= -->

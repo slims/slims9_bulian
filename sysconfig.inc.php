@@ -600,7 +600,7 @@ $sysconf['chat_system']['enabled']    	= true;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       	= true;
 $sysconf['chat_system']['librarian']  	= true;
-$sysconf['chat_system']['server']  		= '127.0.0.1';
+$sysconf['chat_system']['server']  		 = '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
 // redirect to mobile template on mobile mode
