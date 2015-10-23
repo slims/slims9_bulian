@@ -1,10 +1,10 @@
 /*--------------------------------------------------------------------
 
-	Theme Name	: Slims Installer Template
-	Version		: 1.0.0
-	Author		: Eddy Subratha
-	Tags		: senayan, slims, themes, template, meranti
-	Copyrights	: (c) 2012 Eddy Subratha - eddy.subratha{at}gmail.com
+    Theme Name  : Slims Installer Template
+    Version     : 1.0.0
+    Author      : Eddy Subratha
+    Tags        : senayan, slims, themes, template, meranti
+    Copyrights  : (c) 2012 Eddy Subratha - eddy.subratha{at}gmail.com
 
 ---------------------------------------------------------------------*/
 
@@ -19,10 +19,10 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 /* General */
 /*----------------------------------------------------------------*/
 body {
-	color: #999999;
-	font: 12pt/1.5 Calibri, Arial, sans-serif;
-        padding-top:30px;
-        background-color: whitesmoke; 
+    color: #999999;
+    position: relative;
+    font: 11pt/1.5 Calibri, Arial, sans-serif;
+    background-color: whitesmoke; 
 }
 
 a {
@@ -35,32 +35,32 @@ a:hover {
 }
 
 p {
-	margin-bottom:10px;
+    margin-bottom:10px;
 }
 
 h1,h2,h3,h4,h5,h6
 {
-	font-weight:normal;
+    font-weight:normal;
 }
 
 h1
 {
-	font-size: 150%;
+    font-size: 150%;
 }
 
 h2
 {
-	font-size: 135%;
+    font-size: 135%;
 }
 
 h3
 {
-	font-size: 120%;
+    font-size: 120%;
 }
 
 h4
 {
-	font-size: 110%;
+    font-size: 110%;
 }
 
 /*----------------------------------------------------------------*/
@@ -69,30 +69,70 @@ h4
 .wrapper
 {
     width:660px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 30px;
+    position: absolute;
+    left: calc(50% - 330px);
+    top: 30px;
     border: solid 1px #efefef;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    /*box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
     -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
-    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
+    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 ); */
     background-color: #ffffff;
+
+
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeInLeft;
+    animation-name: fadeInLeft;
+}
+
+@-webkit-keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-20px);
+    -ms-transform: translateX(-20px);
+    transform: translateX(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
 }
 
 .title
 {
     color:#ffffff;
-    padding:20px;
+    padding:40px 20px 10px 20px;
     border-bottom: solid 1px #ccc;
-    background-color: #8dc8f9;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-top-right-radius: 10px;    
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-topright: 10px;
+    background-color: rgb(5, 67, 101);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    -webkit-border-top-left-radius: 2px;
+    -webkit-border-top-right-radius: 2px;    
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-topright: 2px;
 }
 
 .content
@@ -109,7 +149,7 @@ h4
 .hastable table td:first-child
 {
     white-space: nowrap;
-    color: #f9a88d;
+    color: #fc963f;
     width: 150px;
     padding-right: 20px;
     text-align: right;
@@ -124,14 +164,23 @@ h4
 
 .button
 {
-    background-color: #f57044;
+    background-color: #05c6d1;
     border: none;
     padding:10px;
-    border-radius: 50px;
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;    
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;    
     color: #ffffff;
     cursor: pointer;
+
+    -webkit-transition: all .2s ease-in-out;
+         -o-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+}
+
+.button:hover
+{
+    background-color: #00acc1;
 }
 
 .message
@@ -158,13 +207,14 @@ h4
 
 .form_text
 {
-    border: solid 1px #cccccc;
+    border: solid 1px #f2f2f2;
     padding:8px;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     color: #666666;
-    cursor: text;    
+    cursor: text;
+    background-color: #f2f2f2;
 }
 
 .footer
