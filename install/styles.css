@@ -3,6 +3,7 @@
     Theme Name  : Slims Installer Template
     Version     : 1.0.0
     Author      : Eddy Subratha
+    Modificator : Waris Agung Widodo (2015);
     Tags        : senayan, slims, themes, template, meranti
     Copyrights  : (c) 2012 Eddy Subratha - eddy.subratha{at}gmail.com
 
@@ -18,6 +19,12 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 /*----------------------------------------------------------------*/
 /* General */
 /*----------------------------------------------------------------*/
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('fonts/Open_Sans/OpenSans-Light.ttf') format('truetype');
+}
+
 body {
     color: #999999;
     position: relative;
@@ -77,9 +84,7 @@ h4
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    /*box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
-    -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 );
-    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.1 ); */
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     background-color: #ffffff;
 
 
@@ -230,4 +235,105 @@ h4
     text-align: right;
     clear: both;
     display: block;
+}
+
+/*==================================
+    welcome
+====================================*/
+#welcome-wrap {
+    top: calc(40vh - 165px);
+}
+
+#welcome {
+    background: url('img/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.content-body {
+    margin-top: 205px;
+    width: 100%;
+}
+
+#logo {
+    float: left;
+    margin-right: 15px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+
+    background: #edaa9c;
+    background: -webkit-gradient(left bottom, right 45deg, color-stop(0%, #8217b7), color-stop(100%, #edaa9c));
+    background: -webkit-linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
+    background: -moz-linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
+    background: -o-linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
+    background: -ms-linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
+    background: linear-gradient(45deg, #8217b7 0%, #edaa9c 100%);
+}
+
+#welcome-title {
+    font-size: 20px;
+    color: #fff;
+    direction: ltr;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: lighter;
+    -webkit-text-size-adjust: none;
+    
+    margin: 0;
+    font-weight: lighter;
+}
+
+.content-footer {
+    background-color: rgba(0,0,0,.4);
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: -20px;
+    padding: 20px;
+    width: 100%;
+    color: rgba(255,255,255,.8);
+}
+
+.content-footer .col-md-6 {
+    width: 49%;
+    display: inline-block;
+}
+
+/*==================================
+    system environment
+====================================*/
+.items {
+    padding: 10px 0 10px 0;
+}
+
+.items .status-message,
+.items .status,
+.items .key,
+.items .value {
+    display: inline-block;
+}
+
+.items .status {
+    width: 40px;
+}
+
+.items .key {
+    width: 200px;
+}
+
+.items .value {
+    width: 100px;
+}
+
+.status-success {
+    color: #a2f651;
+}
+
+.status-error {
+    color: #ff818d;
+}
+
+.button.disabled {
+    background-color: #d5d5d5;
 }
