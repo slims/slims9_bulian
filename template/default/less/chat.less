@@ -27,6 +27,21 @@
   margin: 20px auto 0 auto;
 }
 
+.s-pchat-toggle {
+width: 56px;
+height: 56px;
+position: absolute; 
+left: -57px; 
+top: 0;
+padding:20px; 
+color: #000; 
+display: block; 
+background: #fff; 
+font-size: 8pt;
+border-top-left-radius: 50%;   
+border-bottom-left-radius: 50%;   
+}
+
 @media only screen and (min-width : 768px) {
   #show-pchat {
     right: 0px;  
@@ -35,10 +50,11 @@
 
 .s-chat {
   z-index:3099;
-  display: none;
   position: fixed;
-  bottom: 51px;
-  right: 12px;
+  bottom: 59px;
+  right: -275px;
+  -webkit-transition: all 150ms ease 0s;
+  transition: all 150ms ease 0s;
   text-align: left;
   width:275px;
   background: #fff;
@@ -57,7 +73,7 @@
   border-right: solid 1px #282828;
   width:275px;
   left:-1px;
-  padding: 20px 0;
+  padding: 22px 0;
   position: relative;
   font-size: 8px;
   text-transform: uppercase;
@@ -77,7 +93,7 @@
 }
 
 .s-chat-content {
-  padding: 20px;
+  padding: 18px 20px;
 }
 
 .s-chat-content label {
@@ -131,16 +147,11 @@
   padding: 8pt !important;
 }
 
-.s-minimize {
-  bottom: -414px;
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
-}
-
 .s-maximize {
-  bottom: 0px;
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
+  right: 0;
+  bottom: 59px;
+  -webkit-transition: all 150ms ease 0s;
+  transition: all 150ms ease 0s;
 }
 
 .s-chat .btn {

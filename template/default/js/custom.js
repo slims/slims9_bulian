@@ -28,11 +28,7 @@ $(document).ready(function(){
     // Show or hide chat
     // ============================================
     $('#show-pchat').on('click', function(){
-        $('.s-chat').toggle().addClass('animated-fast fadeInUp');      
-    });
-
-    $('#hide-pchat').on('click', function(){
-        $('.s-chat').toggleClass('s-minimize s-maximize ');
+        $('.s-chat').toggleClass('s-maximize ');
     });
 
 });
