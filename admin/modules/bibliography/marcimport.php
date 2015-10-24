@@ -100,7 +100,9 @@ if (isset($_POST['doImport'])) {
       }
       $updated_row = 0;
       $marc_string = file_get_contents($uploaded_file);
-
+      $marc_string = mb_convert_encoding($marc_string, "UTF-8", "auto");
+      // var_dump($marc_string); die();
+      
       $marc_data = new File_MARC($marc_string, File_MARC::SOURCE_STRING);
       // create dbop object
       $sql_op = new simbio_dbop($dbs);
@@ -119,49 +121,6 @@ if (isset($_POST['doImport'])) {
         $input_date = date('Y-m-d H:i:s');
         $data['input_date'] = $input_date;
         $data['last_update'] = $input_date;
-
-        $title_fld = $record->getField('245');
-        // Main title
-        $title_main = $title_fld->getSubfields('a');
-        // echo $title_main[0]->getData();
-        $data['title'] = $dbs->escape_string(trim($title_main[0]->getData()));
-        // Sub title
-        $subtitle = $title_fld->getSubfields('b');
-        if (isset($subtitle[0])) {
-          // echo 'Subtitle: '.$subtitle[0]->getData();
-          $data['title'] .= $dbs->escape_string(trim($subtitle[0]->getData()));
-        }
-
-        // Statement of Responsibility
-        $sor = $title_fld->getSubfields('c');
-        if (isset($sor[0])) {
-          // $data['title'] .= $sor[0]->getData();
-          $data['sor'] = $dbs->escape_string(trim($sor[0]->getData()));
-          // echo "\n"; echo 'Statement of responsibility: '.$sor[0]->getData();
-          // $data['sor_id'] = utility::getID($dbs, 'mst_sor', 'sor_id', 'sor', $sor[0]->getData(), $sor_cache);
-        }
-
-        // Edition
-        $ed_fld = $record->getField('250');
-        if ($ed_fld) {
-          $ed = $ed_fld->getSubfields('a');
-          $ed2 = $ed_fld->getSubfields('b');
-          if (isset($ed[0])) {
-            // echo "\n"; echo 'Edition: '.$ed[0]->getData();
-            $data['edition'] = $dbs->escape_string(trim($ed[0]->getData()));
-          }
-          if (isset($ed2[0])) {
-            // echo "\n"; echo 'Edition: '.$ed[0]->getData();
-            $data['edition'] .= $dbs->escape_string(trim($ed2[0]->getData()));
-          }
-        }
-
-        // GMD
-        $gmd = $title_fld->getSubFields('h');
-        if (isset($gmd[0])) {
-          // echo "\n"; echo 'GMD: '.$gmd[0]->getData();
-          $data['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $gmd[0]->getData(), $gmd_cache);
-        }
 
         // Identifier - ISBN
         $id_fld = $record->getField('020');
@@ -187,13 +146,55 @@ if (isset($_POST['doImport'])) {
         // Classification DDC
         $cls_fld = $record->getField('082');
         if ($cls_fld) {
-          echo "\n";
           $classification = $cls_fld->getSubfields('a');
           if (isset($classification[0])) {
             // echo 'Classification: '.$classification[0]->getData();
             $data['classification'] = $classification[0]->getData();
           }
         }
+
+        $title_fld = $record->getField('245');
+        // Main title
+        $title_main = $title_fld->getSubfields('a');
+        // echo $title_main[0]->getData();
+        $data['title'] = $dbs->escape_string(trim($title_main[0]->getData()));
+        // Sub title
+        $subtitle = $title_fld->getSubfields('b');
+        if (isset($subtitle[0])) {
+          // echo 'Subtitle: '.$subtitle[0]->getData();
+          $data['title'] .= $dbs->escape_string(trim($subtitle[0]->getData()));
+        }
+        
+        // GMD
+        $gmd = $title_fld->getSubFields('h');
+        if (isset($gmd[0])) {
+          // echo "\n"; echo 'GMD: '.$gmd[0]->getData();
+          $data['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $gmd[0]->getData(), $gmd_cache);
+        }
+
+        // Statement of Responsibility
+        $sor = $title_fld->getSubfields('c');
+        if (isset($sor[0])) {
+          // $data['title'] .= $sor[0]->getData();
+          $data['sor'] = $dbs->escape_string(trim($sor[0]->getData()));
+          // echo "\n"; echo 'Statement of responsibility: '.$sor[0]->getData();
+          // $data['sor_id'] = utility::getID($dbs, 'mst_sor', 'sor_id', 'sor', $sor[0]->getData(), $sor_cache);
+        }
+
+        // Edition
+        $ed_fld = $record->getField('250');
+        if ($ed_fld) {
+          $ed = $ed_fld->getSubfields('a');
+          $ed2 = $ed_fld->getSubfields('b');
+          if (isset($ed[0])) {
+            // echo "\n"; echo 'Edition: '.$ed[0]->getData();
+            $data['edition'] = $dbs->escape_string(trim($ed[0]->getData()));
+          }
+          if (isset($ed2[0])) {
+            // echo "\n"; echo 'Edition: '.$ed[0]->getData();
+            $data['edition'] .= $dbs->escape_string(trim($ed2[0]->getData()));
+          }
+        }        
 
         // Publication
         $pbl_fld = $record->getField('260');
@@ -293,13 +294,60 @@ if (isset($_POST['doImport'])) {
 
         // insert biblio data
         $sql_op->insert('biblio', $data);
-        echo '<p>'.$sql_op->error.'</p><p>&nbsp;</p>';
+        // echo '<p>'.$sql_op->error.'</p><p>&nbsp;</p>';
         $biblio_id = $sql_op->insert_id;
         if ($biblio_id < 1) {
           continue;
         }
         $updated_row++;
 
+        // Main entry
+        $author_flds = $record->getFields('100|110|111', true);
+        if ($author_flds) {
+            foreach ($author_flds as $tag => $auth_fld) {
+                if ($tag == '110') {
+                  $author_type = 'o';
+                } else if ($tag == '111') {
+                  $author_type = 'c';
+                } else {
+                  $author_type = 'p';
+                }
+
+                if ($auth_fld) {
+                  $author = $auth_fld->getSubfields('a');
+                  if (isset($author[0])) {
+                    $author_id = getAuthorID($dbs->escape_string(trim($author[0]->getData())), $author_type, $author_cache);
+                    @$dbs->query("INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ($biblio_id, $author_id, 1)");
+                  }
+                }
+            }
+        }
+        
+        // Author additional
+        $author_flds = null;
+        $author_flds = $record->getFields('700|710|711', true);
+        if ($author_flds) {
+            // echo 'Author: ';
+            foreach ($author_flds as $tag => $auth_fld) {
+                // if ($tag == '710') {
+                if (stripos($tag, '10') === true) {
+                  $author_type = 'o';
+                } else if (stripos($tag, '11') === true) {
+                  $author_type = 'c';
+                } else {
+                  $author_type = 'p';
+                }
+
+                if ($auth_fld) {
+                  $author = $auth_fld->getSubfields('a');
+                  if (isset($author[0])) {
+                    $author_id = getAuthorID($dbs->escape_string(trim($author[0]->getData())), $author_type, $author_cache);
+                    @$dbs->query("INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ($biblio_id, $author_id, 2)");
+                  }
+                }
+            }
+        }
+        
         // Subject
         $subject_flds = $record->getFields('650|651|648|655|656|657', true);
         if ($subject_flds) {
@@ -312,41 +360,6 @@ if (isset($_POST['doImport'])) {
                     $subject_type = 't';
                     $subject_id = getSubjectID($dbs->escape_string(trim($subject[0]->getData())), $subject_type, $subject_cache);
                     @$dbs->query("INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES ($biblio_id, $subject_id, 1)");
-                  }
-                }
-            }
-        }
-
-        // Main entry
-        $me_fld = $record->getField('100');
-        if ($me_fld) {
-          $mes = $me_fld->getSubfields('a');
-          if (isset($me[0])) {
-            // echo 'Main entry: '.$me[0]->getData();
-            $author_id = utility::getID($dbs, 'mst_author', 'author_id', 'author_name', $dbs->escape_string(trim($me[0]->getData())), $author_cache);
-            @$dbs->query("INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ($biblio_id, $author_id, 1)");
-          }
-        }
-
-        // Author additional
-        $author_flds = $record->getFields('700|710|711', true);
-        if ($author_flds) {
-            // echo 'Author: ';
-            foreach ($author_flds as $tag => $auth_fld) {
-                if ($tag == '710') {
-                  $author_type = 'o';
-                } else if ($tag == '711') {
-                  $author_type = 'c';
-                } else {
-                  $author_type = 'p';
-                }
-
-                if ($auth_fld) {
-                  $author = $auth_fld->getSubfields('a');
-                  if (isset($author[0])) {
-                    // echo $author[0]->getData();
-                    $author_id = getAuthorID($dbs->escape_string(trim($author[0]->getData())), $author_type, $author_cache);
-                    @$dbs->query("INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ($biblio_id, $author_id, 1)");
                   }
                 }
             }

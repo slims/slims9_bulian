@@ -148,51 +148,47 @@ if (!class_exists('File_MARC')) {
   	}
   	// $tag[] = $_recs['topic'];
   	// get topic and its type first
-  	$_aut_q = $dbs->query('SELECT t.topic,t.topic_type,i.level FROM biblio_topic as i LEFT JOIN `mst_topic` as t on t.topic_id=i.topic_id WHERE i.biblio_id='.$_recs['biblio_id']);
-  	while ($_rs_aut = $_aut_q->fetch_assoc()) {
-  		if ($_rs_aut['topic_type'] == 't') {
+  	$_top_q = $dbs->query('SELECT t.topic,t.topic_type,i.level FROM biblio_topic as i LEFT JOIN `mst_topic` as t on t.topic_id=i.topic_id WHERE i.biblio_id='.$_recs['biblio_id']);
+  	while ($_rs_top = $_top_q->fetch_assoc()) {
+  		if ($_rs_top['topic_type'] == 't') {
   			if (!isset($tag['650'])) {
   				$marc->appendField(new File_MARC_Data_Field('650', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
-  			//$tag['650'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['topic_type'] == 'n') {
+  		} elseif ($_rs_top['topic_type'] == 'n') {
   			if (!isset($tag['600'])) {
   				$marc->appendField(new File_MARC_Data_Field('600', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
-  			//$tag['600'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['topic_type'] == 'c') {
+  		} elseif ($_rs_top['topic_type'] == 'c') {
   			if (!isset($tag['610'])) {
   				$marc->appendField(new File_MARC_Data_Field('610', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
-  			//$tag['610'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['topic_type'] == 'g') {
+  		} elseif ($_rs_top['topic_type'] == 'g') {
   			if (!isset($tag['651'])) {
   				$marc->appendField(new File_MARC_Data_Field('651', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
-  			//$tag['651'] = $sd.'a'.$_rs_aut['topic'];
-  		} elseif ($_rs_aut['topic_type'] == 'tm' || $_rs_aut['topic_type'] == 'oc') {
+  		} elseif ($_rs_top['topic_type'] == 'tm' || $_rs_top['topic_type'] == 'oc') {
   			if (!isset($tag['653'])) {
   				$marc->appendField(new File_MARC_Data_Field('653', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
-  		} elseif ($_rs_aut['topic_type'] == 'gr') {
+  		} elseif ($_rs_top['topic_type'] == 'gr') {
   			if (!isset($tag['655'])) {
   				$marc->appendField(new File_MARC_Data_Field('655', array(
-  						new File_MARC_Subfield('a', $_rs_aut['topic']),
+  						new File_MARC_Subfield('a', $_rs_top['topic']),
   					), null, null
   				));
   			}
