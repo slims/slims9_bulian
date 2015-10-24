@@ -51,8 +51,18 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
   }
 
 ?>
+<?php if(isset($_SESSION['userchat'])): ?>
+<aside class="s-chat s-maximize">
+<?php else: ?>
 <aside class="s-chat">
-  <a href="#" id="show-pchat" class="s-pchat-toggle" role="navigation" ><i class="fa fa-comment-o"></i></a>
+<?php endif ?>
+  <a href="#" id="show-pchat" class="s-pchat-toggle" role="navigation" >
+  <?php if(isset($_SESSION['userchat'])): ?>
+  <i class="fa fa-times"></i>
+  <?php else: ?>
+  <i class="fa fa-comment-o"></i>
+  <?php endif ?>  
+  </a>
   <div class="s-chat-header">
   <?php if(isset($_SESSION['userchat'])) { 
     $chat_title = __('Chat As ').$_SESSION['userchat'];
@@ -100,7 +110,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
     //Add text to log
     $log.append(($log.html()?'<br>':'') + text);
     //Autoscroll
-    $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
+    //$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
   }
 
   function send( text ) {

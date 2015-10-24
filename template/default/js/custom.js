@@ -29,6 +29,7 @@ $(document).ready(function(){
     // ============================================
     $('#show-pchat').on('click', function(){
         $('.s-chat').toggleClass('s-maximize ');
+        $('.s-pchat-toggle i').toggleClass('fa-comment-o fa-times ');
     });
 
 });

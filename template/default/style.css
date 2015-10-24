@@ -125,6 +125,14 @@ a:hover {
   position: relative;
   margin: 0 auto;
 }
+@media (max-width: 468px) {
+  .s-pmenu {
+    position: absolute;
+    margin: 0 auto;
+    left: 44%;
+    top: 130px;
+  }
+}
 @media (min-width: 768px) and (max-width: 1200px) {
   .s-pmenu {
     top: -50px;
@@ -132,8 +140,6 @@ a:hover {
 }
 .s-menu {
   position: relative;
-  left: 25px;
-  top: -50px;
   margin: 0 auto;
 }
 .s-menu a {
@@ -581,7 +587,6 @@ a:hover {
   padding: 20px 50px;
   margin: 0 auto;
   font-size: 8pt;
-  letter-spacing: 4px;
   color: #ccc;
   text-transform: uppercase;
   z-index: 3001;
@@ -2286,23 +2291,17 @@ keyframes coverUp 100% {
 }
 .s-chat-header {
   text-align: center;
-  border-bottom: solid 1px #333;
+  border-bottom: solid 1px #eee;
   display: block;
-  background-color: #282828;
-  border-left: solid 1px #282828;
-  border-right: solid 1px #282828;
+  background-color: #fff;
   width: 275px;
   left: -1px;
   padding: 22px 0;
   position: relative;
-  font-size: 8px;
+  font-size: 7pt;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  letter-spacing: 4px;
-  color: #fff;
-}
-.s-chat-header:hover {
-  background-color: #333;
-  color: #fff;
+  color: #000;
 }
 .s-chat-header:focus,
 .s-chat-header:active,
@@ -2389,4 +2388,7 @@ keyframes coverUp 100% {
 .s-chat .btn {
   border-radius: 0;
   margin-top: 5px;
+}
+.s-chat hr {
+  margin: 16px 0;
 }
