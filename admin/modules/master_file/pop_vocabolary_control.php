@@ -52,7 +52,7 @@ $vocID = (integer)isset($_GET['vocID'])?$_GET['vocID']:0;
 ob_start();
 // save proses
 
-$page_title = 'Vocabolary Control';
+$page_title = 'Vocabulary Control';
 
 // utility function to check subject/topic
 function checkSubject($str_subject, $str_subject_type = 't')
@@ -81,7 +81,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
 
   # alert sucsess add
   $alert_add  = '<script type="text/javascript">';
-  $alert_add .= 'alert(\''.__('Vocabolary added!').'\');';
+  $alert_add .= 'alert(\''.__('Vocabulary added!').'\');';
   $alert_add .= 'parent.setIframeContent(\'itemIframe\', \''.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'\');';
   $alert_add .= '</script>';
 
@@ -138,7 +138,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     $update = $sql_op->update('mst_voc_ctrl', $data, 'vocabolary_id='.$vocID);
     if ($update) {
       $alert_update  = '<script type="text/javascript">';
-      $alert_update .= 'alert(\''.__('Vocabolary update!').'\');';
+      $alert_update .= 'alert(\''.__('Vocabulary update!').'\');';
       $alert_update .= 'parent.setIframeContent(\'itemIframe\', \''.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'\');';
       $alert_update .= 'top.jQuery.colorbox.close();';
       $alert_update .= '</script>';
@@ -216,12 +216,12 @@ if (isset($_GET['editTopic'])) {
       </div>
     </div>
     <div class="form-group">
-      <label for="subname" class="col-xs-2 control-label"><?php echo __('Vocabolary');?></label>
+      <label for="subname" class="col-xs-2 control-label"><?php echo __('Vocabulary');?></label>
       <div class="col-xs-10">
       <?php
       $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
       ?>
-      <input type="text" value="<?php echo $topic_d[0];?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabolary" onkeyup="<?php echo $ajax_exp; ?>" />
+      <input type="text" value="<?php echo $topic_d[0];?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabulary" onkeyup="<?php echo $ajax_exp; ?>" />
       <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
       </div>
     </div>
@@ -248,7 +248,7 @@ if (isset($_GET['editTopic'])) {
   ?>
 
 <div class="popUpForm container">
-<div class="page-header"><h2><?php echo __('Add Vocabolary Control'); ?></h2></div>
+<div class="page-header"><h2><?php echo __('Add Vocabulary Control'); ?></h2></div>
 <form name="mainForm" class="form-horizontal" role="form" action="pop_vocabolary_control.php?itemID=<?php echo $itemID; ?>" method="post">
   <div class="form-group">
     <label for="ref" class="col-xs-2 control-label"><?php echo __('Related Term');?></label>
@@ -264,12 +264,12 @@ if (isset($_GET['editTopic'])) {
     </div>
   </div>
   <div class="form-group">
-    <label for="subname" class="col-xs-2 control-label"><?php echo __('Vocabolary');?></label>
+    <label for="subname" class="col-xs-2 control-label"><?php echo __('Vocabulary');?></label>
     <div class="col-xs-10">
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
-    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="Enter Vocabolary" onkeyup="<?php echo $ajax_exp; ?>" />
+    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="Enter Vocabulary" onkeyup="<?php echo $ajax_exp; ?>" />
     <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
     </div>
   </div>
@@ -281,7 +281,7 @@ if (isset($_GET['editTopic'])) {
   </div>
   <div class="form-group">
     <div class="col-xs-offset-2 col-xs-10">
-      <button type="submit" class="btn btn-primary"><?php echo __('Add Vocabolary');?></button>
+      <button type="submit" class="btn btn-primary"><?php echo __('Add Vocabulary');?></button>
     </div>
   </div>
 </form>
