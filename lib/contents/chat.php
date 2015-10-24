@@ -51,15 +51,16 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
   }
 
 ?>
-<aside class="s-chat s-maximize">
-  <a href="#" id="hide-pchat" class="s-chat-header">
+<aside class="s-chat">
+  <a href="#" id="show-pchat" class="s-pchat-toggle" role="navigation" ><i class="fa fa-comment-o"></i></a>
+  <div class="s-chat-header">
   <?php if(isset($_SESSION['userchat'])) { 
     $chat_title = __('Chat As ').$_SESSION['userchat'];
   } else {
     $chat_title = __('Chat With Librarian');
   }
   echo $chat_title; ?>
-  </a>
+  </div>
   <?php if(isset($_SESSION['userchat'])): ?>
   <div class="s-chat-content">
     <div id="log"></div>
