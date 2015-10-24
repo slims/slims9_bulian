@@ -222,7 +222,7 @@
 			$config_file = str_replace("_DB_USER_", $database_username, $config_file);
 			$config_file = str_replace("_DB_PASSWORD_", $database_password, $config_file);
 			
-			if(!copy('../sysconfig.local.inc-sample.php',$config_file_path))
+			if(!copy('../config/sysconfig.local.inc-sample.php',$config_file_path))
 			{
 			    $error_mg[] = "<li>Could not create file ".$config_file_name."! Please check if the sysconfig.local.inc-sample.php file is exists</li>";	    
 			} else {

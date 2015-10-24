@@ -746,3 +746,49 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`comment_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
+`id` int(11) NOT NULL,
+  `carrier_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
+  `input_date` datetime NOT NULL,
+  `last_update` datetime NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_content_type` (
+`id` int(11) NOT NULL,
+  `content_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
+  `input_date` datetime NOT NULL,
+  `last_update` datetime NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_media_type` (
+`id` int(11) NOT NULL,
+  `media_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
+  `input_date` datetime NOT NULL,
+  `last_update` datetime NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_relation_term` (
+`ID` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `biblio_relation` (
+  `biblio_id` int(11) NOT NULL DEFAULT '0',
+  `rel_biblio_id` int(11) NOT NULL DEFAULT '0',
+  `rel_type` int(1) DEFAULT '1'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+
