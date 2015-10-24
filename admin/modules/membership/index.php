@@ -177,7 +177,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 		    }
         // password confirmation
         if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 === $mpasswd2)) {
-          $data['mpasswd'] = 'literal{MD5(\''.$mpasswd2.'\')}';
+          // $data['mpasswd'] = 'literal{MD5(\''.$mpasswd2.'\')}';
+          $data['mpasswd'] = password_hash($mpasswd2, PASSWORD_BCRYPT);
         }
 
         // create sql op object
