@@ -222,7 +222,7 @@
 			$config_file = str_replace("_DB_USER_", $database_username, $config_file);
 			$config_file = str_replace("_DB_PASSWORD_", $database_password, $config_file);
 			
-			if(!copy('../sysconfig.local.inc-sample.php',$config_file_path))
+			if(!copy('../config/sysconfig.local.inc-sample.php',$config_file_path))
 			{
 			    $error_mg[] = "<li>Could not create file ".$config_file_name."! Please check if the sysconfig.local.inc-sample.php file is exists</li>";	    
 			} else {
@@ -274,15 +274,16 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Step 2 | Slims Installer</title>
+	<title>Step 3 | Slims Installer</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="shortcut icon" href="img/webicon.ico" type="image/x-icon"/>
 </head>
 <body>
     <div class="wrapper">
 	    <?php if(!$completed) { ?>
 	    <div class="title">
-		<h2>Step 2 - Installation Not Completed</h2>	    
+		<h2>Step 3 - Installation Not Completed</h2>	    
 	    </div>
 	    <p class="error">Please correct your information according to this message</p>
 	    <div class="content">	    
@@ -299,7 +300,7 @@
 	    </div>		    
 	    <?php } else { ?>
 	    <div class="title">
-		<h2>Step 2 - Installation Completed</h2>	    
+		<h2>Step 3 - Installation Completed</h2>	    
 	    </div>
 	    <p class="success">Hooray, the installation was successful</p>
 	    <div class="content">

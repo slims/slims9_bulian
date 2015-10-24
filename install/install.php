@@ -25,14 +25,15 @@ require 'settings.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Step 1 | Slims Installer</title>
+    <title>Step 2 | Slims Installer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="shortcut icon" href="img/webicon.ico" type="image/x-icon"/>
 </head>
 <body>
     <div class="wrapper">
 	<div class="title">
-	    <h2>Step 1 - Generate the database </h2>
+	    <h2>Step 2 - Generate the database </h2>
 	</div>
 	<p class="message">Please complete following form with your database connection information</p>
 	<div class="content hastable">
@@ -96,8 +97,8 @@ require 'settings.php';
         </table>
 		<br/>
 		<div class="toright">
-			<input type="button" class="button" name="btn_cancel" value="Cancel" onclick="document.location.href='index.php'">
-            <input type="submit" class="button" name="btn_submit" value="Continue">
+			<input type="button" class="button" name="btn_cancel" value="Back" onclick="document.location.href='check_system.php'">
+            <input type="submit" class="button" name="btn_submit" value="Next">
 		</div>
     </form>
 	</div>

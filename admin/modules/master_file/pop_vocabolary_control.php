@@ -152,7 +152,8 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
 
     // checking if already added
     $check_vc = $dbs->query('SELECT count(topic_id) FROM mst_voc_ctrl WHERE topic_id='.$data['topic_id'].' AND related_topic_id='.$data['related_topic_id']);
-    if ($check_vc->num_rows > 0) {
+    $check_dc = $check_vc->fetch_row();
+    if ($check_dc[0] > 0) {
       // already add
       utility::jsAlert(__('Subject ALREADY Added in Relation!'));
     } else {

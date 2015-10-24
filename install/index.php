@@ -4,6 +4,7 @@
  *
  * Copyright © 2006 - 2012 Advanced Power of PHP
  * Some modifications & patches by Eddy Subratha (eddy.subratha@gmail.com)
+ * Some modification by Waris Agung Widodo (ido.alit@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,26 +49,24 @@ foreach($matches as $match)
 	<title>Start | Slims Installer</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="shortcut icon" href="img/webicon.ico" type="image/x-icon"/>
 </head>
 <body>
-    <div class="wrapper">
-	<div class="title">
-	    <h2>Welcome to SLiMS Installer</h2>	    
-	</div>
-	<p class="message">Before getting started, you must get some information of following items</p>
-	<div class="content">	    
-	    <ul class="list">
-		<li>Database Name (must be set before running this installation)</li>
-		<li>Database Username</li>
-		<li>Database Password</li>
-		<li>Username Login (optional)</li>
-		<li>Password Login (optional)</li>
-	    </ul>
-	    <br/>
-	    <div class="toright">
-	    <input type="button" class="button" value="Let's Start The Installation" name="submit" title="Click to start installation" onclick="document.location.href='install.php'">	    
-	    </div>
-	</div>
+    <div class="wrapper" id="welcome-wrap">
+    	<div id="welcome" class="content">
+    		<div class="content-body">
+	    		<div id="welcome-title">
+	    			<div id="logo"><img src="img/logo.png"></div>
+		    		<h2>Welcome to SLiMS 8 Akasia</h2>
+		    	</div>
+		    	<div class="content-footer">
+		    		<div class="toright">
+				    	<input type="button" class="button" value="Let's Start The Installation" name="submit" title="Click to start installation" onclick="document.location.href='check_system.php'">	    
+				    </div>
+		    	</div>
+    		</div>
+    	</div>
+
 	    <?php include_once("footer.php"); ?>
 
     </div>    
