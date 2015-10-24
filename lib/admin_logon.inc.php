@@ -116,17 +116,6 @@ class admin_logon
         $_SESSION['biblioTopic'] = array();
         $_SESSION['biblioAttach'] = array();
 
-        if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['librarian'])) {
-          if ($sysconf['chat_system']['vendors'] == 'freichat') {
-            // register/update user info chat table 
-            $_SESSION['chat_mid'] = mt_rand();
-            $chatinfo['userid'] = $_SESSION['chat_mid'];
-            $chatinfo['username'] = 'Librarian - '.$_SESSION['realname'];
-            $chat_reg = new simbio_dbop ($obj_db);
-            $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
-          }
-        }
-
         if (!defined('UCS_VERSION')) {
             // load holiday data from database
             $_holiday_dayname_q = $obj_db->query('SELECT holiday_dayname FROM holiday WHERE holiday_date IS NULL');
@@ -233,25 +222,41 @@ class admin_logon
      * @return  boolean
      */
     protected function nativeLogin() {
+        /*
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username,
             u.realname, u.groups, u.user_image
             FROM user AS u
             WHERE u.username='%s'
                 AND u.passwd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));
+        */
+        $_sql_librarian_login = sprintf("SELECT
+            u.user_id, u.username, u.passwd,
+            u.realname, u.groups, u.user_image
+            FROM user AS u
+            WHERE u.username='%s'", $this->obj_db->escape_string($this->username));
         $_user_q = $this->obj_db->query($_sql_librarian_login);
+    
         // error check
         if ($this->obj_db->error) {
             $this->errors = 'Failed to query user data from database with error: '.$this->obj_db->error;
             return false;
         }
+        
         // result check
-        if ($_user_q->num_rows < 1) {
+        if ($_user_q->num_rows < 1) {            
             $this->errors = 'Username or Password not exists in database!';
             return false;
         }
+        
         // get user info
         $this->user_info = $_user_q->fetch_assoc();
+        // verify password hash
+        $verified = password_verify($this->password, $this->user_info['passwd']);
+        if (!$verified) {
+            $this->errors = 'Username or Password not exists in database!';
+            return false;
+        }
         return true;
     }
 }
