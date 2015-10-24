@@ -6,7 +6,7 @@
 -- Dumping data for table `biblio`
 --
 
-INSERT INTO `biblio` (`biblio_id`, `gmd_id`, `title`, `edition`, `isbn_issn`, `publisher_id`, `publish_year`, `collation`, `series_title`, `call_number`, `language_id`, `source`, `publish_place_id`, `classification`, `notes`, `image`, `file_att`, `opac_hide`, `promoted`, `input_date`, `last_update`) VALUES
+INSERT IGNORE INTO `biblio` (`biblio_id`, `gmd_id`, `title`, `edition`, `isbn_issn`, `publisher_id`, `publish_year`, `collation`, `series_title`, `call_number`, `language_id`, `source`, `publish_place_id`, `classification`, `notes`, `image`, `file_att`, `opac_hide`, `promoted`, `input_date`, `last_update`) VALUES
 (1, 1, 'PHP 5 for dummies', NULL, '0764541668', 1, 2004, 'xiv, 392 p. : ill. ; 24 cm.', 'For dummies', '005.13/3-22 Jan p', 'en', NULL, 1, '005.13/3 22', NULL, 'php5_dummies.jpg', NULL, 0, 0, '2007-11-29 15:36:50', '2007-11-29 16:26:59'),
 (2, 1, 'Linux In a Nutshell', 'Fifth Edition', '9780596009304', 2, 2005, 'xiv, 925 p. : ill. ; 23 cm.', 'In a Nutshell', '005.4/32-22 Ell l', 'en', NULL, 2, '005.4/32 22', NULL, 'linux_in_a_nutshell.jpg', NULL, 0, 0, '2007-11-29 15:53:35', '2007-11-29 16:26:10'),
 (3, 1, 'The Definitive Guide to MySQL 5', NULL, '9781590595350', 3, 2005, '784p.', 'Definitive Guide Series', '005.75/85-22 Kof d', 'en', NULL, NULL, '005.75/85 22', NULL, 'mysql_def_guide.jpg', NULL, 0, 0, '2007-11-29 16:01:08', '2007-11-29 16:26:33'),
@@ -30,7 +30,7 @@ INSERT INTO `biblio` (`biblio_id`, `gmd_id`, `title`, `edition`, `isbn_issn`, `p
 -- Dumping data for table `biblio_author`
 --
 
-INSERT INTO `biblio_author` (`biblio_id`, `author_id`, `level`) VALUES
+INSERT IGNORE INTO `biblio_author` (`biblio_id`, `author_id`, `level`) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (2, 3, 2),
@@ -62,7 +62,7 @@ INSERT INTO `biblio_author` (`biblio_id`, `author_id`, `level`) VALUES
 -- Dumping data for table `biblio_topic`
 --
 
-INSERT INTO `biblio_topic` (`biblio_id`, `topic_id`, `level`) VALUES
+INSERT IGNORE INTO `biblio_topic` (`biblio_id`, `topic_id`, `level`) VALUES
 (1, 1, 1),
 (1, 2, 2),
 (2, 3, 1),
@@ -99,7 +99,7 @@ INSERT INTO `biblio_topic` (`biblio_id`, `topic_id`, `level`) VALUES
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`item_id`, `biblio_id`, `coll_type_id`, `item_code`, `inventory_code`, `received_date`, `supplier_id`, `order_no`, `location_id`, `order_date`, `item_status_id`, `site`, `source`, `invoice`, `price`, `price_currency`, `invoice_date`, `input_date`, `last_update`) VALUES
+INSERT IGNORE INTO `item` (`item_id`, `biblio_id`, `coll_type_id`, `item_code`, `inventory_code`, `received_date`, `supplier_id`, `order_no`, `location_id`, `order_date`, `item_status_id`, `site`, `source`, `invoice`, `price`, `price_currency`, `invoice_date`, `input_date`, `last_update`) VALUES
 (1, 8, 1, 'B00001', 'INV/B00001', '0000-00-00', '0', '', 'SL', '0000-00-00', '0', '', 1, '', 500000, 'Rupiah', '0000-00-00', '2008-12-26 22:11:10', '2008-12-26 22:14:13'),
 (2, 6, 1, 'B00002', 'INV/B00002', '0000-00-00', '0', '', 'SL', '0000-00-00', '0', '', 1, '', 700000, 'Rupiah', '0000-00-00', '2008-12-26 22:11:45', '2008-12-26 22:13:45'),
 (3, 15, 1, 'B00003', 'INV/B00003', '0000-00-00', '0', '', 'SL', '0000-00-00', '0', '', 1, '', 300000, 'Rupiah', '0000-00-00', '2008-12-26 22:15:09', '2008-12-26 22:15:09'),
@@ -117,7 +117,7 @@ INSERT INTO `item` (`item_id`, `biblio_id`, `coll_type_id`, `item_code`, `invent
 -- Dumping data for table `mst_author`
 --
 
-INSERT INTO `mst_author` (`author_id`, `author_name`, `authority_type`, `input_date`, `last_update`) VALUES
+INSERT IGNORE INTO `mst_author` (`author_id`, `author_name`, `authority_type`, `input_date`, `last_update`) VALUES
 (1, 'Valade, Janet', 'p', '2007-11-29', '2007-11-29'),
 (2, 'Siever, Ellen', 'p', '2007-11-29', '2007-11-29'),
 (3, 'Love, Robert', 'p', '2007-11-29', '2007-11-29'),
@@ -149,7 +149,7 @@ INSERT INTO `mst_author` (`author_id`, `author_name`, `authority_type`, `input_d
 -- Dumping data for table `mst_place`
 --
 
-INSERT INTO `mst_place` VALUES
+INSERT IGNORE INTO `mst_place` VALUES
 (1, 'Hoboken, NJ', '2007-11-29', '2007-11-29'),
 (2, 'Sebastopol, CA', '2007-11-29', '2007-11-29'),
 (3, 'Indianapolis', '2007-11-29', '2007-11-29'),
@@ -165,7 +165,7 @@ INSERT INTO `mst_place` VALUES
 -- Dumping data for table `mst_publisher`
 --
 
-INSERT INTO `mst_publisher` (`publisher_id`, `publisher_name`, `input_date`, `last_update`) VALUES
+INSERT IGNORE INTO `mst_publisher` (`publisher_id`, `publisher_name`, `input_date`, `last_update`) VALUES
 (1, 'Wiley', '2007-11-29', '2007-11-29'),
 (2, 'OReilly', '2007-11-29', '2007-11-29'),
 (3, 'Apress', '2007-11-29', '2007-11-29'),
@@ -184,7 +184,7 @@ INSERT INTO `mst_publisher` (`publisher_id`, `publisher_name`, `input_date`, `la
 -- Dumping data for table `mst_topic`
 --
 
-INSERT INTO `mst_topic` (`topic_id`, `topic`, `input_date`, `last_update`) VALUES
+INSERT IGNORE INTO `mst_topic` (`topic_id`, `topic`, `input_date`, `last_update`) VALUES
 (1, 'Programming', '2007-11-29', '2007-11-29'),
 (2, 'Website', '2007-11-29', '2007-11-29'),
 (3, 'Operating System', '2007-11-29', '2007-11-29'),
