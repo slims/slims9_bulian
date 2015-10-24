@@ -159,8 +159,8 @@
 		$database_username	= isset($_POST['database_username'])?$_POST['database_username']:"";
 		$database_password	= isset($_POST['database_password'])?$_POST['database_password']:"";
 		$database_sample	= isset($_POST['install_sample'])?$_POST['install_sample']:"";
-		$username			= isset($_POST['username'])?$_POST['username']:"";
-		$password			= isset($_POST['password'])?$_POST['password']:"";
+		$username		= isset($_POST['username'])?$_POST['username']:"";
+		$password		= isset($_POST['password'])?$_POST['password']:"";
 		$retype_password	= isset($_POST['retype_password'])?$_POST['retype_password']:"";
 		
 		if (empty($database_host)){
@@ -203,17 +203,15 @@
 		}
 
 		$sql_update = " UPDATE user set 
-							username = '".$username."', 
-							passwd = '".md5($retype_password)."', 
-							realname = '".ucfirst($username)."',
-							last_login = NULL,
-							last_login_ip = '127.0.0.1',
-							groups = 'a:1:{i:0;s:1:\"1\";}',
-							input_date = DATE(NOW()),
-							last_update = DATE(NOW())
-						WHERE
-							user_id = 1
-						";
+			username = '".$username."', 
+			passwd = '".password_hash($retype_password, PASSWORD_BCRYPT)."', 
+			realname = '".ucfirst($username)."',
+			last_login = NULL,
+			last_login_ip = '127.0.0.1',
+			groups = 'a:1:{i:0;s:1:\"1\";}',
+			input_date = DATE(NOW()),
+			last_update = DATE(NOW())
+			WHERE user_id = 1";
 
 		if(empty($error_mg)){		
 			$config_file = file_get_contents($config_file_default);
