@@ -423,7 +423,7 @@ class Biblio {
       if ($format == 'XML') {
         $marc_records .= preg_replace('@<\?xml.+?>@i', '', $marc->toXML('UTF-8', true, false));  
       } else if ($format == 'JSON') {
-        $marc_records .= $marc->toJSON();
+        $marc_records .= $marc->toJSON().',';
       } else {
         $marc_records .= $marc->toRaw();
       }
@@ -435,6 +435,11 @@ class Biblio {
         xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">';
       $output .= $marc_records;
       $output .= '</marc:collection>';
+      return $output;
+    } else if ($format == 'JSON') {
+      $output = '[';
+      $output .= substr_replace($marc_records, '', -1);
+      $output .= ']';
       return $output;
     }
     
