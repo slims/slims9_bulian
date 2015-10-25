@@ -259,6 +259,15 @@ include "partials/bg.php";
       initCallback: mycarousel_initCallback
   });
 
+$(window).scroll(function() {    
+  console.log($(window).scrollTop());
+  if ($(window).scrollTop() > 50) {
+    $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
+  } else {
+    $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
+  }  
+});
+
 </script>
 
 </body>

@@ -48,11 +48,12 @@
  ========================================== */
 html,
 body {
-  height: 100%;
   margin: 0px;
   overflow: auto;
 }
 body {
+  overflow: hidden;
+  height: 100%;
   direction: ltr;
   font-family: 'Open Sans', sans-serif;
   font-weight: lighter;
@@ -270,7 +271,7 @@ a:hover {
 .s-menu-content .s-menu-toggle span,
 .s-menu-content .s-menu-toggle span:before,
 .s-menu-content .s-menu-toggle span:after {
-  background-color: #ccc;
+  background-color: #333;
 }
 .s-menu-content .s-menu-toggle:hover span,
 .s-menu-content .s-menu-toggle:hover span:before,
@@ -1861,7 +1862,7 @@ keyframes coverUp 100% {
   display: inline;
   margin: 0 -7px;
   padding: 10px 11px;
-  font-size: 8px;
+  font-size: 7pt;
   letter-spacing: 4px;
   text-transform: uppercase;
   background-color: #fff;
@@ -2256,18 +2257,19 @@ keyframes coverUp 100% {
   margin: 20px auto 0 auto;
 }
 .s-pchat-toggle {
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 50px;
   position: absolute;
-  left: -57px;
-  top: 0;
+  left: -51px;
+  bottom: 0;
   padding: 20px;
   color: #000;
   display: block;
   background: #fff;
   font-size: 8pt;
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
+  border-width: 1px 0 1px 1px;
+  border-style: solid;
+  border-color: #f2f2f2;
 }
 @media only screen and (min-width: 768px) {
   #show-pchat {
@@ -2277,7 +2279,7 @@ keyframes coverUp 100% {
 .s-chat {
   z-index: 3099;
   position: fixed;
-  bottom: 59px;
+  bottom: 0;
   right: -275px;
   -webkit-transition: all 150ms ease 0s;
   transition: all 150ms ease 0s;
@@ -2287,25 +2289,24 @@ keyframes coverUp 100% {
   padding: 0;
   border-left: solid 1px #f2f2f2;
   border-right: solid 1px #f2f2f2;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+@media only screen and (min-width: 768px) {
+  .s-chat {
+    bottom: 59px;
+  }
 }
 .s-chat-header {
   text-align: center;
-  border-bottom: solid 1px #eee;
+  border-top: solid 1px #f8f8f8;
+  border-bottom: solid 1px #f8f8f8;
   display: block;
-  background-color: #fff;
+  background-color: #282828;
   width: 275px;
-  left: -1px;
-  padding: 22px 0;
+  padding: 21px 0;
   position: relative;
   font-size: 7pt;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #000;
-}
-.s-chat-header:focus,
-.s-chat-header:active,
-.s-chat-header:visited {
   color: #fff;
 }
 .s-chat-content {
@@ -2323,7 +2324,7 @@ keyframes coverUp 100% {
   max-height: 200px;
   padding: 10px;
   width: 100%;
-  border: solid 1px #ddd;
+  border: solid 1px #f8f8f8;
   font-size: 12px;
 }
 .s-chat-content #log p {
@@ -2365,7 +2366,7 @@ keyframes coverUp 100% {
 .s-chat-content textarea,
 #message {
   width: 100%;
-  border: solid 1px #ddd;
+  border: solid 1px #f8f8f8;
   font-size: 12px;
   padding: 10px;
 }
@@ -2375,15 +2376,20 @@ keyframes coverUp 100% {
   line-height: 24px;
 }
 .s-chat footer {
-  border-top: solid 1px #ddd;
+  border-top: solid 1px #f8f8f8;
   font-size: 10px;
   padding: 8pt !important;
 }
 .s-maximize {
   right: 0;
-  bottom: 59px;
+  bottom: 0;
   -webkit-transition: all 150ms ease 0s;
   transition: all 150ms ease 0s;
+}
+@media only screen and (min-width: 768px) {
+  .s-maximize {
+    bottom: 59px;
+  }
 }
 .s-chat .btn {
   border-radius: 0;
