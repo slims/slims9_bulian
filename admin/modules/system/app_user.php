@@ -115,7 +115,8 @@ if (isset($_POST['saveData'])) {
             $data['groups'] = trim($groups);
         }
         if (($passwd1 AND $passwd2) AND ($passwd1 === $passwd2)) {
-            $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
+            $data['passwd'] = password_hash($passwd2, PASSWORD_BCRYPT);
+            // $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
         }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');

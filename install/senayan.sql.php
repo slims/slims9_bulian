@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `member` (
   `expire_date` date NOT NULL,
   `member_notes` text collate utf8_unicode_ci,
   `is_pending` smallint(1) NOT NULL default '0',
-  `mpasswd` CHAR(32) NULL,
+  `mpasswd` VARCHAR(64) NULL,
   `last_login` DATETIME NULL,
   `last_login_ip` VARCHAR(20) NULL,
   `input_date` date default NULL,
@@ -642,7 +642,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `realname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `passwd` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
+  `passwd` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_type` smallint(2) DEFAULT NULL,
   `user_image` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -658,7 +658,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2;";
 
 $sql['insert'][] = 'INSERT INTO `user` (`user_id`, `username`, `realname`, `passwd`, `last_login`, `last_login_ip`, `groups`, `input_date`, `last_update`) VALUES
-(1, \'admin\', \'Administrator\', \'21232f297a57a5a743894a0e4a801fc3\', null, \'127.0.0.1\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()));';
+(1, \'admin\', \'Administrator\', \'$2y$10$pG0dqMrd2r39zRTSFSyp8.Z7sMy4cY7s/18UDQsV50Vn0TnR6UORm\', null, \'127.0.0.1\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()));';
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `user_group` (

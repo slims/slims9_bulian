@@ -159,12 +159,19 @@ class member_logon
      * @return  boolean
      */
     public function nativeLogin() {
+        /*
         $_sql_member_login = sprintf("SELECT m.member_id, m.member_name, m.inst_name,
             m.member_email, m.expire_date, m.register_date, m.is_pending,
             m.member_type_id, mt.member_type_name, mt.enable_reserve, mt.reserve_limit
             FROM member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
             WHERE m.member_id='%s'
                 AND m.mpasswd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));
+        */
+        $_sql_member_login = sprintf("SELECT m.member_id, m.member_name, m.mpasswd, m.inst_name,
+            m.member_email, m.expire_date, m.register_date, m.is_pending,
+            m.member_type_id, mt.member_type_name, mt.enable_reserve, mt.reserve_limit
+            FROM member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
+            WHERE m.member_id='%s'", $this->obj_db->escape_string($this->username));
         $_member_q = $this->obj_db->query($_sql_member_login);
 
         // error check
@@ -172,13 +179,22 @@ class member_logon
             $this->errors = 'Failed to query member data from database with error: '.$this->obj_db->error;
             return false;
         }
+        
         // result check
         if ($_member_q->num_rows < 1) {
             $this->errors = 'Username or Password not exists in database!';
             return false;
         }
+        
         // get user info
         $this->user_info = $_member_q->fetch_assoc();
+        // verify password hash
+        $verified = password_verify($this->password, $this->user_info['mpasswd']);
+        if (!$verified) {
+            $this->errors = 'Username or Password not exists in database!';
+            return false;
+        }
+        
         return true;
     }
 
@@ -218,16 +234,6 @@ class member_logon
         $_curr_date = date('Y-m-d');
         if (simbio_date::compareDates($this->user_info['expire_date'], $_curr_date) == $_curr_date) {
             $_SESSION['m_is_expired'] = true;
-        }
-
-        if (($sysconf['chat_system']['enabled']) AND ($sysconf['chat_system']['opac'])) {
-          if ($sysconf['chat_system']['vendors'] == 'freichat') {
-            $_SESSION['chat_mid'] = mt_rand();
-            $chatinfo['userid'] = $_SESSION['chat_mid'];
-            $chatinfo['username'] = $_SESSION['m_name'];
-            $chat_reg = new simbio_dbop ($obj_db);
-            $insert = $chat_reg->insert('chat_user', $chatinfo, TRUE);
-          }
         }
 
         // update the last login time

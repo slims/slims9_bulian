@@ -337,13 +337,21 @@ class detail
     {
         // get global configuration vars array
         global $sysconf;
-
+        $mods_version = '3.3';
+        $xml = new XMLWriter();
+        $xml->openMemory();
+        $xml->setIndent(true);
+        
         // set prefix and suffix
         $this->detail_prefix = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
         $this->detail_suffix = '</modsCollection>';
 
-        $_xml_output = '<mods version="3.3" ID="'.$this->detail_id.'">'."\n";
-
+        // $_xml_output = '<mods version="3.3" ID="'.$this->detail_id.'">'."\n";
+        // MODS main tag
+        $xml->startElement('mods');
+        $xml->writeAttribute('version', $mods_version);
+        $xml->writeAttribute('id', $this->detail_id);
+        
         // parse title
         $_title_sub = '';
         $_title_statement_resp = '';
@@ -356,28 +364,48 @@ class detail
             $_title_main = trim($this->record_detail['title']);
         }
 
-        $_xml_output .= '<titleInfo>'."\n".'<title><![CDATA['.$_title_main.']]></title>'."\n";
+        // $_xml_output .= '<titleInfo>'."\n".'<title><![CDATA['.$_title_main.']]></title>'."\n";
+        $xml->startElement('titleInfo');
+        $xml->startElement('title');
+        $xml->writeCData($_title_main);
+        $xml->endElement();
         if ($_title_sub) {
-            $_xml_output .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
+            // $_xml_output .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
+            $xml->startElement('subTitle');
+            $xml->writeCData($_title_sub);
+            $xml->endElement();
         }
-        $_xml_output .= '</titleInfo>'."\n";
+        // $_xml_output .= '</titleInfo>'."\n";
+        $xml->endElement();
 
         // personal name
         // get the authors data
         foreach ($this->record_detail['authors'] as $_auth_d) {
+            /* 
             $_xml_output .= '<name type="'.$_auth_d['authority_type'].'" authority="'.$_auth_d['auth_list'].'">'."\n"
               .'<namePart><![CDATA['.$_auth_d['author_name'].']]></namePart>'."\n"
               .'<role><roleTerm type="text"><![CDATA['.$sysconf['authority_level'][$_auth_d['level']].']]></roleTerm></role>'."\n"
               .'</name>'."\n";
+              */
+            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+            $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
+            $xml->startElement('role');
+                $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
+                $xml->writeCData($sysconf['authority_level'][$_auth_d['level']]);
+                $xml->endElement();
+            $xml->endElement();
+            $xml->endElement();
         }
 
         // resources type
-        $_xml_output .= '<typeOfResource manuscript="yes" collection="yes"><![CDATA[mixed material]]></typeOfResource>'."\n";
-
-        // gmd
-        $_xml_output .= '<genre authority="marcgt"><![CDATA[bibliography]]></genre>'."\n";
+        // $_xml_output .= '<typeOfResource manuscript="yes" collection="yes"><![CDATA[mixed material]]></typeOfResource>'."\n";
+        $xml->startElement('typeOfResource'); $xml->writeAttribute('manuscript', 'no'); $xml->writeAttribute('collection', 'yes'); $xml->writeCData('mixed material'); $xml->endElement();
+        
+        // $_xml_output .= '<genre authority="marcgt"><![CDATA[bibliography]]></genre>'."\n";
+        $xml->startElement('genre'); $xml->writeAttribute('authority', 'marcgt'); $xml->writeCData('bibliography'); $xml->endElement();
 
         // imprint/publication data
+        /*
         $_xml_output .= '<originInfo>'."\n";
         $_xml_output .= '<place><placeTerm type="text"><![CDATA['.$this->record_detail['publish_place'].']]></placeTerm></place>'."\n"
           .'<publisher><![CDATA['.$this->record_detail['publisher_name'].']]></publisher>'."\n"
@@ -390,57 +418,93 @@ class detail
         }
         $_xml_output .= '<edition><![CDATA['.$this->record_detail['edition'].']]></edition>'."\n";
         $_xml_output .= '</originInfo>'."\n";
+        */
+        $xml->startElement('originInfo');
+        $xml->startElement('place');
+            $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($this->record_detail['publish_place']); $xml->endElement();
+            $xml->startElement('publisher'); $xml->writeCData($this->record_detail['publisher_name']); $xml->endElement();
+            $xml->startElement('dateIssued'); $xml->writeCData($this->record_detail['publish_year']); $xml->endElement();
+        $xml->endElement();
+        $xml->endElement();
 
         // language
+        /*
         $_xml_output .= '<language>'."\n";
         $_xml_output .= '<languageTerm type="code"><![CDATA['.$this->record_detail['language_id'].']]></languageTerm>'."\n";
         $_xml_output .= '<languageTerm type="text"><![CDATA['.$this->record_detail['language_name'].']]></languageTerm>'."\n";
         $_xml_output .= '</language>'."\n";
-
+        */
+        $xml->startElement('language');
+        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'code'); $xml->writeCData($this->record_detail['language_id']); $xml->endElement();
+        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($this->record_detail['language_name']); $xml->endElement();
+        $xml->endElement();
+        
         // Physical Description/Collation
+        /*
         $_xml_output .= '<physicalDescription>'."\n";
         $_xml_output .= '<form authority="gmd"><![CDATA['.$this->record_detail['gmd_name'].']]></form>'."\n";
         $_xml_output .= '<extent><![CDATA['.$this->record_detail['collation'].']]></extent>'."\n";
         $_xml_output .= '</physicalDescription>'."\n";
+        */
+        $xml->startElement('physicalDescription');
+        $xml->startElement('form'); $xml->writeAttribute('authority', 'gmd'); $xml->writeCData($this->record_detail['gmd_name']); $xml->endElement();
+        $xml->startElement('extent'); $xml->writeCData($this->record_detail['collation']); $xml->endElement();
+        $xml->endElement();
 
         // Series title
         if ($this->record_detail['series_title']) {
+            /*
             $_xml_output .= '<relatedItem type="series">'."\n";
             $_xml_output .= '<titleInfo>'."\n";
             $_xml_output .= '<title><![CDATA['.$this->record_detail['series_title'].']]></title>'."\n";
             $_xml_output .= '</titleInfo>'."\n";
             $_xml_output .= '</relatedItem>'."\n";
+            */
+            $xml->startElement('relatedItem'); $xml->writeAttribute('type', 'series');
+            $xml->startElement('titleInfo'); $xml->endElement();
+            $xml->startElement('title'); $xml->writeCData($this->record_detail['series_title']); $xml->endElement();
+            $xml->endElement();
+            $xml->endElement();
         }
 
         // Note
-        $_xml_output .= '<note>'.$this->record_detail['notes'].'</note>'."\n";
-        if ($_title_statement_resp) {
-            $_xml_output .= '<note type="statement of responsibility"><![CDATA['.$_title_statement_resp.']]></note>';
+        // $_xml_output .= '<note>'.$this->record_detail['notes'].'</note>'."\n";
+        $xml->startElement('note'); $xml->writeCData($this->record_detail['notes']); $xml->endElement();
+        if (isset($this->record_detail['sor'])) {
+            $xml->startElement('note'); $xml->writeAttribute('type', 'statement of responsibility'); $xml->writeCData($this->record_detail['sor']); $xml->endElement();
+            // $_xml_output .= '<note type="statement of responsibility"><![CDATA['.$_title_statement_resp.']]></note>';
         }
 
         // subject/topic
         foreach ($this->record_detail['subjects'] as $_topic_d) {
             $_subject_type = strtolower($sysconf['subject_type'][$_topic_d['topic_type']]);
+            /*
             $_xml_output .= '<subject authority="'.$_topic_d['auth_list'].'">';
             $_xml_output .= '<'.$_subject_type.'><![CDATA['.$_topic_d['topic'].']]></'.$_subject_type.'>';
             $_xml_output .= '</subject>'."\n";
+            */
+            $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']);
+            $xml->startElement($_subject_type); $xml->writeCData($_topic_d['topic']); $xml->endElement();
+            $xml->endElement();
         }
 
         // classification
-        $_xml_output .= '<classification><![CDATA['.$this->record_detail['classification'].']]></classification>';
+        // $_xml_output .= '<classification><![CDATA['.$this->record_detail['classification'].']]></classification>';
+        $xml->startElement('classification'); $xml->writeCData($this->record_detail['classification']); $xml->endElement();
 
         // ISBN/ISSN
-        $_xml_output .= '<identifier type="isbn"><![CDATA['.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).']]></identifier>';
-
+        // $_xml_output .= '<identifier type="isbn"><![CDATA['.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).']]></identifier>';
+        $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $xml->writeCData(str_replace(array('-', ' '), '', $this->record_detail['isbn_issn'])); $xml->endElement();
 
         // Location and Copies information
-        $_xml_output .= '<location>'."\n";
-        $_xml_output .= '<physicalLocation><![CDATA['.$sysconf['library_name'].' '.$sysconf['library_subname'].']]></physicalLocation>'."\n";
-        $_xml_output .= '<shelfLocator><![CDATA['.$this->record_detail['call_number'].']]></shelfLocator>'."\n";
         $_copy_q = $this->db->query(sprintf('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
             .'LEFT JOIN mst_item_status AS stat ON i.item_status_id=stat.item_status_id '
             .'LEFT JOIN mst_location AS loc ON i.location_id=loc.location_id '
             .'WHERE i.biblio_id=%d', $this->detail_id));
+        /*
+        $_xml_output .= '<location>'."\n";
+        $_xml_output .= '<physicalLocation><![CDATA['.$sysconf['library_name'].' '.$sysconf['library_subname'].']]></physicalLocation>'."\n";
+        $_xml_output .= '<shelfLocator><![CDATA['.$this->record_detail['call_number'].']]></shelfLocator>'."\n";
         if ($_copy_q->num_rows > 0) {
             $_xml_output .= '<holdingSimple>'."\n";
             while ($_copy_d = $_copy_q->fetch_assoc()) {
@@ -453,11 +517,28 @@ class detail
             $_xml_output .= '</holdingSimple>'."\n";
         }
         $_xml_output .= '</location>'."\n";
+        */
+        $xml->startElement('location');
+        $xml->startElement('physicalLocation'); $xml->writeCData($sysconf['library_name'].' '.$sysconf['library_subname']); $xml->endElement();
+        $xml->startElement('shelfLocator'); $xml->writeCData($this->record_detail['call_number']); $xml->endElement();
+        if ($_copy_q->num_rows > 0) {
+            $xml->startElement('holdingSimple');
+            while ($_copy_d = $_copy_q->fetch_assoc()) {
+                $xml->startElement('copyInformation');
+                    $xml->startElement('numerationAndChronology'); $xml->writeAttribute('type', '1'); $xml->writeCData($_copy_d['item_code']); $xml->endElement();
+                    $xml->startElement('sublocation'); $xml->writeCData($_copy_d['location_name'].( $_copy_d['site']?' ('.$_copy_d['site'].')':'' )); $xml->endElement();
+                    $xml->startElement('shelfLocator'); $xml->writeCData($_copy_d['call_number']); $xml->endElement();
+                $xml->endElement();
+            }
+            $xml->endElement();
+        }
+        $xml->endElement();
 
         // digital files
         $attachment_q = $this->db->query('SELECT att.*, f.* FROM biblio_attachment AS att
             LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
         if ($attachment_q->num_rows > 0) {
+            /*
             $_xml_output .= '<slims:digitals>'."\n";
             while ($attachment_d = $attachment_q->fetch_assoc()) {
                 // check member type privileges
@@ -468,25 +549,50 @@ class detail
                 $_xml_output .= '</slims:digital_item>'."\n";
             }
             $_xml_output .= '</slims:digitals>';
+            */
+            $xml->startElementNS('slims','digitals', null);
+            while ($attachment_d = $attachment_q->fetch_assoc()) {
+                // check member type privileges
+                if ($attachment_d['access_limit']) { continue; }
+                $xml->startElementNS('slims','digital_item', null);
+                $xml->writeAttribute('id', $attachment_d['file_id']);
+                $xml->writeAttribute('url', trim($attachment_d['file_url']));
+                $xml->writeAttribute('path', $attachment_d['file_dir'].'/'.$attachment_d['file_name']);
+                $xml->writeAttribute('mimetype', $attachment_d['mime_type']);
+                $xml->writeCData($attachment_d['file_title']);
+                $xml->endElement();
+            }
+            $xml->endElement();
         }
 
         // image
         if (!empty($this->record_detail['image'])) {
           $_image = urlencode($this->record_detail['image']);
-	  $_xml_output .= '<slims:image><![CDATA['.htmlentities($_image).']]></slims:image>'."\n";
+          $xml->startElementNS('slims','image', null);
+          $xml->writeCData(urlencode($_image));
+          $xml->endElement();
         }
 
         // record info
+        /*
         $_xml_output .= '<recordInfo>'."\n";
         $_xml_output .= '<recordIdentifier><![CDATA['.$this->detail_id.']]></recordIdentifier>'."\n";
         $_xml_output .= '<recordCreationDate encoding="w3cdtf"><![CDATA['.$this->record_detail['input_date'].']]></recordCreationDate>'."\n";
         $_xml_output .= '<recordChangeDate encoding="w3cdtf"><![CDATA['.$this->record_detail['last_update'].']]></recordChangeDate>'."\n";
         $_xml_output .= '<recordOrigin><![CDATA[machine generated]]></recordOrigin>'."\n";
         $_xml_output .= '</recordInfo>';
+        */
+        $xml->startElement('recordInfo');
+        $xml->startElement('recordIdentifier'); $xml->writeCData($this->detail_id); $xml->endElement();
+        $xml->startElement('recordCreationDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $xml->writeCData($this->record_detail['input_date']); $xml->endElement();
+        $xml->startElement('recordChangeDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $xml->writeCData($this->record_detail['last_update']); $xml->endElement();
+        $xml->startElement('recordOrigin'); $xml->writeCData('machine generated'); $xml->endElement();
+        $xml->endElement();
+        
+        // $_xml_output .= '</mods>';
+        $xml->endElement();
 
-        $_xml_output .= '</mods>';
-
-        return $_xml_output;
+        return $xml->outputMemory();
     }
 
 
@@ -499,99 +605,162 @@ class detail
     {
         // get global configuration vars array
         global $sysconf;
+        $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+        $xml = new XMLWriter();
+        $xml->openMemory();
+        $xml->setIndent(true);
 
         // set prefix and suffix
         $this->detail_prefix = '';
         $this->detail_suffix = '';
 
         $_xml_output = '';
-
+        
+        $_title_main = utf8_encode($this->record_detail['title']);
         // title
-        $_title_main = $this->record_detail['title'];
-        $_xml_output .= '<dc:title><![CDATA['.$_title_main.']]></dc:title>'."\n";
-
+        $xml->startElementNS('dc', 'title', null);
+        $xml->writeCdata($_title_main);
+        $xml->endElement();
+        
         // get the authors data
-        foreach ($this->record_detail['authors'] as $_auth_d) {
-          $_xml_output .= '<dc:creator><![CDATA['.$_auth_d['author_name'].']]></dc:creator>'."\n";
+        $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
+            .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$this->detail_id);
+        while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
+          $xml->startElementNS('dc', 'creator', null);
+          $xml->writeCdata($_auth_d['author_name']);
+          $xml->endElement();
         }
+        $_biblio_authors_q->free_result();
 
         // imprint/publication data
-        $_xml_output .= '<dc:publisher><![CDATA['.$this->record_detail['publisher_name'].']]></dc:publisher>'."\n";
+        $xml->startElementNS('dc', 'publisher', null);
+        $xml->writeCdata($this->record_detail['publisher_name']);
+        $xml->endElement();
 
-        // date
         if ($this->record_detail['publish_year']) {
-          $_xml_output .= '<dc:date><![CDATA['.$this->record_detail['publish_year'].']]></dc:date>'."\n";    
+          $xml->startElementNS('dc', 'date', null);
+          $xml->writeCdata($this->record_detail['publish_year']);
+          $xml->endElement();
+        } else {
+          $xml->startElementNS('dc', 'date', null);
+          $xml->fullEndElement();  
         }
 
         // edition
-        $_xml_output .= '<dc:hasVersion><![CDATA['.$this->record_detail['edition'].']]></dc:hasVersion>'."\n";
+        $xml->startElementNS('dc', 'hasVersion', null);
+        $xml->writeCdata($this->record_detail['edition']);
+        $xml->endElement();
 
         // language
-        $_xml_output .= '<dc:language><![CDATA['.$this->record_detail['language_name'].']]></dc:language>'."\n";
+        $xml->startElementNS('dc', 'language', null);
+        $xml->writeCdata($this->record_detail['language_name']);
+        $xml->endElement();
 
         // Physical Description/Collation
-        $_xml_output .= '<dc:medium><![CDATA['.$this->record_detail['gmd_name'].']]></dc:medium>'."\n";
-        $_xml_output .= '<dc:format><![CDATA['.$this->record_detail['gmd_name'].']]></dc:format>'."\n";
-        if ((integer)$this->record_detail['frequency_id'] > 0) {
-            $_xml_output .= '<dc:format>Serial</dc:format>'."\n";
-        }
-        $_xml_output .= '<dc:extent><![CDATA['.$this->record_detail['collation'].']]></dc:extent>'."\n";
+        $xml->startElementNS('dc', 'medium', null);
+        $xml->writeCdata($this->record_detail['gmd_name']);
+        $xml->endElement();
 
+        $xml->startElementNS('dc', 'format', null);
+        $xml->writeCdata($this->record_detail['gmd_name']);
+        $xml->endElement();
+
+        $xml->startElementNS('dc', 'extent', null);
+        $xml->writeCdata($this->record_detail['collation']);
+        $xml->endElement();
+
+        if ((integer)$this->record_detail['frequency_id'] > 0) {
+          $xml->startElementNS('dc', 'format', null);
+          $xml->writeCdata('serial');
+          $xml->endElement();
+        }
+        
         // Series title
         if ($this->record_detail['series_title']) {
-          $_xml_output .= '<dc:isPartOf><![CDATA['.$this->record_detail['series_title'].']]></dc:isPartOf>'."\n";
+          $xml->startElementNS('dc', 'isPartOf', null);
+          $xml->writeCdata($this->record_detail['series_title']);
+          $xml->endElement();
         }
-
+        
         // Note
-        $_xml_output .= '<dc:description><![CDATA['.$this->record_detail['notes'].']]></dc:description>'."\n";
-        $_xml_output .= '<dc:abstract><![CDATA['.$this->record_detail['notes'].']]></dc:abstract>'."\n";
+        $xml->startElementNS('dc', 'description', null);
+        $xml->writeCdata($this->record_detail['notes']);
+        $xml->endElement();
 
+        $xml->startElementNS('dc', 'abstract', null);
+        $xml->writeCdata($this->record_detail['notes']);
+        $xml->endElement();
+        
         // subject/topic
-        $subjects = $this->record_detail['subjects'];
-        foreach ($subjects as $_topic_d) {
-          $_xml_output .= '<dc:subject><![CDATA['.$_topic_d['topic'].']]></dc:subject>'."\n";
+        $_biblio_topics_q = $this->obj_db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
+          LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id WHERE bt.biblio_id='.$this->detail_id.' ORDER BY t.auth_list');
+        while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
+          $xml->startElementNS('dc', 'subject', null);
+          $xml->writeCdata($_topic_d['topic']);
+          $xml->endElement();
         }
+        $_biblio_topics_q->free_result();
 
         // classification
-        $_xml_output .= '<dc:subject><![CDATA['.$this->record_detail['classification'].']]></dc:subject>';
+        $xml->startElementNS('dc', 'subject', null);
+        $xml->writeCdata($this->record_detail['classification']);
+        $xml->endElement();
 
         // Permalink
-        $_xml_output .= '<dc:identifier><![CDATA[http://'.$_SERVER['SERVER_NAME'].SWB.'index.php?p=show_detail&id='.$this->detail_id.']]></dc:identifier>';
+        $permalink = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].SWB.'index.php?p=show_detail&id='.$this->detail_id;
+        $xml->startElementNS('dc', 'identifier', null);
+        $xml->writeCdata($permalink);
+        $xml->endElement();
 
         // ISBN/ISSN
-        $_xml_output .= '<dc:identifier><![CDATA['.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).']]></dc:identifier>';
+        $xml->startElementNS('dc', 'identifier', null);
+        $xml->writeCdata(str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']));
+        $xml->endElement();
 
         // Call Number
-        $_xml_output .= '<dc:identifier><![CDATA['.$this->record_detail['call_number'].']]></dc:identifier>'."\n";
+        $xml->startElementNS('dc', 'identifier', null);
+        $xml->writeCdata($this->record_detail['call_number']);
+        $xml->endElement();
 
-
-        $copies = $this->record_detail['copies'];
-        if ($copies) {
-            foreach ($copies as $_copy_d) {
-                $_xml_output .= '<dc:hasPart><![CDATA['.$_copy_d['item_code'].']]></dc:hasPart>'."\n";
+        $_copy_q = $this->obj_db->query('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
+            .'LEFT JOIN mst_item_status AS stat ON i.item_status_id=stat.item_status_id '
+            .'LEFT JOIN mst_location AS loc ON i.location_id=loc.location_id '
+            .'WHERE i.biblio_id='.$this->detail_id);
+        if ($_copy_q->num_rows > 0) {
+            while ($_copy_d = $_copy_q->fetch_assoc()) {
+              $xml->startElementNS('dc', 'hasPart', null);
+              $xml->writeCdata($_copy_d['item_code']);
+              $xml->endElement();
             }
         }
+        $_copy_q->free_result();
 
         // digital files
-        $attachment_q = $this->db->query('SELECT att.*, f.* FROM biblio_attachment AS att
+        $attachment_q = $this->obj_db->query('SELECT att.*, f.* FROM biblio_attachment AS att
             LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
         if ($attachment_q->num_rows > 0) {
           while ($attachment_d = $attachment_q->fetch_assoc()) {
-              $_xml_output .= '<dc:relation><![CDATA[';
+              $dir = '';
+              if ($attachment_d['file_dir']) {
+                $dir = $attachment_d['file_dir'].'/';
+              }
               // check member type privileges
               if ($attachment_d['access_limit']) { continue; }
-              $_xml_output .= trim($attachment_d['file_title']);
-              $_xml_output .= ']]></dc:relation>'."\n";
+              $xml->startElementNS('dc', 'relation', null);
+              $xml->writeCdata($protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].REPO_WBS.$dir.trim(urlencode($attachment_d['file_name'])));
+              $xml->endElement();
           }
         }
 
         // image
         if (!empty($this->record_detail['image'])) {
-          $_image = urlencode($this->record_detail['image']);
-	  $_xml_output .= '<dc:relation><![CDATA['.htmlentities($_image).']]></dc:relation>'."\n";
+          $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].IMGBS.'docs/'.urlencode($this->record_detail['image']);
+          $xml->startElementNS('dc', 'relation', null);
+          $xml->writeCdata($_image);
+          $xml->endElement();
         }
 
-        return $_xml_output;
+        return $xml->outputMemory();
     }
 
 
