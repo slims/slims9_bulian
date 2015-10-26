@@ -24,7 +24,7 @@ require 'settings.php';
 require 'compat.php';
 
 // system rec
-$phpversion = '5.4.0';
+$phpversion = '5.5.0';
 
 // default state
 $php_pass = 0;
@@ -134,10 +134,10 @@ if ($yaz = isYazOk()) {
 		</div>
 
 		<div class="toright">
-			<input type="button" class="button" name="btn_cancel" value="Back" onclick="document.location.href='index.php'">
+			<input type="button" id="upgrade-btn" class="button upgrade" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
 			<?php
 			if ($pass == $pass_max) { ?>
-				<input type="button" class="button" value="Next" name="submit" title="Click to start installation" onclick="document.location.href='install.php'">
+				<input type="button" class="button" value="New Install" name="submit" title="Click to start installation" onclick="document.location.href='install.php'">
 			<?php } else { ?>
 			<input type="button" class="button disabled" disabled="" value="Next">
 			<?php } ?>
@@ -145,5 +145,30 @@ if ($yaz = isYazOk()) {
 	</div>
 	<?php include_once("footer.php"); ?>
 </div>
+
+<div class="upgrade-warning">
+	<div class="panel">
+		<div class="panel-header"><h4>PERHATIAN!</h4></div>
+		<div class="panel-body">
+			<p>Sistem keamanan baru pada akasia akan mengakibatkan kata kunci masuk pustakawan (password user) dan area anggota (password member) akan direset menjadi kata kunci standar (default) yaitu "akasia" (tanpa tanda petik).</p>
+			<p>Apakah anda tetap ingin melanjutkan upgrade ?</p>
+		</div>
+		<div class="panel-footer">
+			<a href="#" class="button" id="close-btn">Tidak</a>
+			<input type="button" class="button upgrade" name="btn_cancel" value="Ya" title="Click to start upgrade" onclick="document.location.href='upgrade.php'">
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="./../js/jquery.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#upgrade-btn').click(function () {
+			$('.upgrade-warning').addClass('active');
+		});
+		$('#close-btn').click(function () {
+			$('.upgrade-warning').removeClass('active');
+		});
+	});
+</script>
 </body>
 </html>

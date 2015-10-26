@@ -24,7 +24,8 @@
     require "settings.php";    
     
 	$completed = false;
-	$error_mg  = array();	
+	$error_mg  = array();
+	$indexdbupgrade_max = 15;
 
 	function apphp_db_install_core($database, $sql_file)
 	{
@@ -57,6 +58,30 @@
                 if(array_key_exists('alter', $sql))
                 {
 	                foreach ($sql['alter'] as $value) {
+	                	@mysql_query($value);
+	                }
+	            }
+	            if(array_key_exists('update', $sql))
+                {
+	                foreach ($sql['update'] as $value) {
+	                	@mysql_query($value);
+	                }
+	            }
+	            if(array_key_exists('delete', $sql))
+                {
+	                foreach ($sql['delete'] as $value) {
+	                	@mysql_query($value);
+	                }
+	            }
+	            if(array_key_exists('truncate', $sql))
+                {
+	                foreach ($sql['truncate'] as $value) {
+	                	@mysql_query($value);
+	                }
+	            }
+	            if(array_key_exists('drop', $sql))
+                {
+	                foreach ($sql['drop'] as $value) {
 	                	@mysql_query($value);
 	                }
 	            }
@@ -230,26 +255,60 @@
 				$link = @mysql_connect($database_host, $database_username, $database_password);
 				    if($link){					
 					    if (@mysql_select_db($database_name)) {                       
-							if(false == ($db_error = apphp_db_install_core($database_name, $sql_dump))){
-								$error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
-								@unlink($config_file_path);
-							}else{
-								if($_POST['install_sample'] == 'yes'){
-									if(false == ($db_error = apphp_db_install($database_name, $sql_sample))){
-										$error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
-									}else{
-										$completed = true;                            
-									}					    
-								} else {
-									$completed = true;                            						    
-								}
+							
+							// upgrade db
+					    	if (isset($_POST['indexdbupgrade'])) {
+					    		$indexdbupgrade_start = $_POST['indexdbupgrade'];
+					    		$completed_upgrade = 0;
+					    		for ($i=$indexdbupgrade_start; $i <= $indexdbupgrade_max; $i++) {
+					    			$v = $i + 1;
+					    			$file_sql_path = ($i == $indexdbupgrade_max) ? './../upgrade/'.$sql_upgrade[$v] : './../upgrade/old_sql/'.$sql_upgrade[$v];
+					    			$sql_php_path = 'sql_php_upgrade/'.$sql_upgrade[$v].'.php';
+					    			if ($v == 16 || $v == 15 || $v == 14 || $v == 13 || $v == 11 || $v == 9) {
+					    				if (false == ($db_error = apphp_db_install_core($database_name, $sql_php_path))) {
+											$error_mg[] = "<li>Could not read file ".$sql_php_path."! Please check if the file exists</li>";
+										} else {
+											$completed_upgrade++;
+										}
+					    			} else {
+						    			if(false == ($db_error = apphp_db_install($database_name, $file_sql_path))){
+											$error_mg[] = "<li>Could not read file ".$file_sql_path."! Please check if the file exists</li>";                       
+										}else{
+											$completed_upgrade++;                       
+										}
+					    			}
+					    		}
+					    		if ($completed_upgrade != ($indexdbupgrade_max - $indexdbupgrade_start)) {
+					    			$completed = true;
+					    		} else {
+					    			$error_mg[] = "<li>".$completed_upgrade." Database imported.</li>";
+					    			@unlink($config_file_path);     
+					    		}
+					    	} else {
+					    		// fresh install db
+								if(false == ($db_error = apphp_db_install_core($database_name, $sql_dump))){
+									$error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
+									@unlink($config_file_path);
+								}else{
+									// install sampel data
+									if($_POST['install_sample'] == 'yes'){
+										if(false == ($db_error = apphp_db_install($database_name, $sql_sample))){
+											$error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
+										}else{
+											$completed = true;                            
+										}					    
+									} else {
+										$completed = true;                            						    
+									}
 
-								if(!empty($retype_password))
-								{
-									apphp_db_query($sql_update, $link);
+									if(!empty($retype_password))
+									{
+										apphp_db_query($sql_update, $link);
+									}
+									
 								}
-								
-							}
+					    	}
+
 					    } else {
 						    $error_mg[] = "<li>Database connecting error! Check your database exists.</li>";
 						    @unlink($config_file_path);
