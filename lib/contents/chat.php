@@ -56,7 +56,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
 <?php else: ?>
 <aside class="s-chat">
 <?php endif ?>
-  <a href="#" id="show-pchat" class="s-pchat-toggle animated bounceInRight delay8" role="navigation" >
+  <a id="show-pchat" class="s-pchat-toggle animated bounceInRight delay8" role="navigation" >
   <?php if(isset($_SESSION['userchat'])): ?>
   <i class="fa fa-times"></i>
   <?php else: ?>
