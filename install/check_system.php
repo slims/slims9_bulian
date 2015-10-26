@@ -134,12 +134,13 @@ if ($yaz = isYazOk()) {
 		</div>
 
 		<div class="toright">
-			<input type="button" id="upgrade-btn" class="button upgrade" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
 			<?php
 			if ($pass == $pass_max) { ?>
+				<input type="button" id="upgrade-btn" class="button upgrade" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
 				<input type="button" class="button" value="New Install" name="submit" title="Click to start installation" onclick="document.location.href='install.php'">
 			<?php } else { ?>
-			<input type="button" class="button disabled" disabled="" value="Next">
+			<input type="button" class="button disabled" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
+			<input type="button" class="button disabled" disabled="" value="New Install">
 			<?php } ?>
 	    </div>
 	</div>
