@@ -177,6 +177,9 @@ h4
     -moz-border-radius: 2px;    
     color: #ffffff;
     cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Open Sans', sans-serif;
 
     -webkit-transition: all .2s ease-in-out;
          -o-transition: all .2s ease-in-out;
@@ -186,6 +189,14 @@ h4
 .button:hover
 {
     background-color: #00acc1;
+}
+
+.button.upgrade {
+    background-color: #f9a825;
+}
+
+.button.upgrade:hover {
+    background-color: #f57f17;
 }
 
 .message
@@ -336,4 +347,42 @@ h4
 
 .button.disabled {
     background-color: #d5d5d5;
+}
+
+.upgrade-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 99;
+    display: none;
+}
+
+.panel {
+    width: 660px;
+    min-height: 1px;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+.active {
+    display: block;
+}
+
+.panel-header{
+    border-bottom: 1px solid #d5d5d5;
+    padding: 20px;
+}
+.panel-body {
+    border-bottom: 1px solid #d5d5d5;
+    padding: 10px 20px;
+}
+.panel-footer {
+    padding: 20px;
+    text-align: right;
 }
