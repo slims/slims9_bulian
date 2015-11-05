@@ -191,6 +191,13 @@ include 'function.php';
           title: function() { return 'Online Public Access Catalog'; } }
         );
     });
+
+    // hide menu if click on main content
+    $('.s-content').click(function(){
+      $('#mainMenu input[type=radio]').each(function(){
+        $(this).removeAttr('checked');
+      });
+    })
   </script>
   <?php include "chat.php" ?>
 </body>
