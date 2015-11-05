@@ -241,15 +241,24 @@ abstract class biblio_list_model
    */
   public function XMLresult() {
     global $sysconf;
+    $mods_version = '3.3';
     // loop data
     $_buffer = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
-    $_buffer .= '<slims:resultInfo>'."\n";
-    $_buffer .= '<slims:modsResultNum>'.$this->num_rows.'</slims:modsResultNum>'."\n";
-    $_buffer .= '<slims:modsResultPage>'.$this->current_page.'</slims:modsResultPage>'."\n";
-    $_buffer .= '<slims:modsResultShowed>'.$this->num2show.'</slims:modsResultShowed>'."\n";
-    $_buffer .= '</slims:resultInfo>'."\n";
+    $xml = new XMLWriter();
+    $xml->openMemory();
+    $xml->setIndent(true);
+    
+    $xml->startElementNS('slims', 'resultInfo', null);
+    $xml->startElementNS('slims', 'modsResultNum', null); $xml->writeCdata($this->num_rows); $xml->endElement();
+    $xml->startElementNS('slims', 'modsResultPage', null); $xml->writeCdata($this->current_page); $xml->endElement();
+    $xml->startElementNS('slims', 'modsResultShowed', null); $xml->writeCdata($this->num2show); $xml->endElement();
+    $xml->endElement();
+	
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
-      $_buffer .= '<mods version="3.3" ID="'.$_biblio_d['biblio_id'].'">'."\n";
+      $xml->startElement('mods');
+      $xml->writeAttribute('version', $mods_version);
+      $xml->writeAttribute('id', $_biblio_d['biblio_id']);
+      
       // parse title
       $_title_sub = '';
       if (stripos($_biblio_d['title'], ':') !== false) {
@@ -259,11 +268,31 @@ abstract class biblio_list_model
         $_title_main = trim($_biblio_d['title']);
       }
 
-      $_buffer .= '<titleInfo>'."\n".'<title><![CDATA['.$_title_main.']]></title>'."\n";
-      if ($_title_sub) {
-        $_buffer .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
+      // parse title
+      $_title_main = trim($_biblio_d['title']);
+      $_title_sub = '';
+      $_title_statement_resp = '';
+      if (stripos($_biblio_d['title'], '/') !== false) {
+          $_title_main = trim(substr_replace($_biblio_d['title'], '', stripos($_biblio_d['title'], '/')+1));
+	  $_title_statement_resp = trim(substr_replace($_biblio_d['title'], '', 0, stripos($_biblio_d['title'], '/')+1));
       }
-      $_buffer .= '</titleInfo>'."\n";
+      if (stripos($_biblio_d['title'], ':') !== false) {
+          $_title_main = trim(substr_replace($_biblio_d['title'], '', stripos($_biblio_d['title'], ':')+1));
+          $_title_sub = trim(substr_replace($_biblio_d['title'], '', 0, stripos($_biblio_d['title'], ':')+1));
+      }
+
+      $xml->startElement('titleInfo');
+      $xml->startElement('title');
+      $xml->writeCData($_title_main);
+      $xml->endElement();
+      if ($_title_sub) {
+          // $_xml_output .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
+          $xml->startElement('subTitle');
+          $xml->writeCData($_title_sub);
+          $xml->endElement();
+      }
+      // $_xml_output .= '</titleInfo>'."\n";
+      $xml->endElement();
 
       // get the authors data
       $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
@@ -279,37 +308,43 @@ abstract class biblio_list_model
         } else {
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'personal';
         }
-        $_buffer .= '<name type="'.$sysconf['authority_type'][$_auth_d['authority_type']].'" authority="'.$_auth_d['auth_list'].'">'."\n"
-          .'<namePart><![CDATA['.trim($_auth_d['author_name']).']]></namePart>'."\n"
-          .'<role><roleTerm type="text">'.$sysconf['authority_level'][$_auth_d['level']].'</roleTerm></role>'."\n"
-        .'</name>'."\n";
+        $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+        $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
+        $xml->startElement('role');
+            $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
+            $xml->writeCData($sysconf['authority_level'][$_auth_d['level']]);
+            $xml->endElement();
+        $xml->endElement();
+        $xml->endElement();
       }
-      $_buffer .= '<typeOfResource manuscript="yes" collection="yes">mixed material</typeOfResource>'."\n";
+      
       $_biblio_authors_q->free_result();
+      $xml->startElement('typeOfResource'); $xml->writeAttribute('collection', 'yes'); $xml->writeCData('mixed material'); $xml->endElement();
+      $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $xml->writeCData(str_replace(array('-', ' '), '', $_biblio_d['isbn_issn'])); $xml->endElement();
 
-	  // ISBN
-	  $_buffer .= '<identifier type="isbn">'.str_replace(array('-', ' '), '', $_biblio_d['isbn_issn']).'</identifier>'."\n";
+      // imprint/publication data
+      $xml->startElement('originInfo');
+      $xml->startElement('place');
+          $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($_biblio_d['publish_place']); $xml->endElement();
+          $xml->startElement('publisher'); $xml->writeCData($_biblio_d['publisher']); $xml->endElement();
+          $xml->startElement('dateIssued'); $xml->writeCData($_biblio_d['publish_year']); $xml->endElement();
+      $xml->endElement();
+      $xml->endElement();
 
-	  // imprint/publication data
-	  $_buffer .= '<originInfo>'."\n";
-	  $_buffer .= '<place><placeTerm type="text"><![CDATA['.$_biblio_d['publish_place'].']]></placeTerm></place>'."\n"
-	    .'<publisher><![CDATA['.$_biblio_d['publisher'].']]></publisher>'."\n"
-	    .'<dateIssued><![CDATA['.$_biblio_d['publish_year'].']]></dateIssued>'."\n";
-	  $_buffer .= '</originInfo>'."\n";
-
-	  // doc images
+      // images
       $_image = '';
       if (!empty($_biblio_d['image'])) {
         $_image = urlencode($_biblio_d['image']);
-	$_buffer .= '<slims:image>'.$_image.'</slims:image>'."\n";
+	$xml->startElementNS('slims', 'image', null); $xml->writeCdata($_image); $xml->endElement();
       }
 
-      $_buffer .= '</mods>'."\n";
+      $xml->endElement(); // MODS
     }
-    $_buffer .= '</modsCollection>';
-
     // free resultset memory
     $this->resultset->free_result();
+    
+    $_buffer .= $xml->outputMemory();
+    $_buffer .= '</modsCollection>';
 
     return $_buffer;
   }

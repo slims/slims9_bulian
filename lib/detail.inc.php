@@ -387,7 +387,7 @@ class detail
               .'<role><roleTerm type="text"><![CDATA['.$sysconf['authority_level'][$_auth_d['level']].']]></roleTerm></role>'."\n"
               .'</name>'."\n";
               */
-            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+            $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
             $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
             $xml->startElement('role');
                 $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');

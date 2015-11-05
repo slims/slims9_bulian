@@ -252,7 +252,10 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
   }
 
   if (isset($biblio_list) && isset($sysconf['enable_xml_result']) && $sysconf['enable_xml_result']) {
-    $search_result_info .= '<div><a href="index.php?resultXML=true&'.$_SERVER['QUERY_STRING'].'" class="xmlResultLink" target="_blank" title="View Result in XML Format" style="clear: both;">XML Result</a></div>';
+    $search_result_info .= '<div>';
+    $search_result_info .= '<a href="index.php?resultXML=true&'.$_SERVER['QUERY_STRING'].'" class="xmlResultLink" target="_blank" title="View Result in XML Format" style="clear: both;">XML Result</a>';
+    $search_result_info .= '<a href="index.php?JSONLD=true&'.$_SERVER['QUERY_STRING'].'" class="jsonResultLink" target="_blank" title="View Result in JSON Format" style="clear: both;">JSON Result</a>';
+    $search_result_info .= '</div>';
   }
 }
 
@@ -262,6 +265,7 @@ if (isset($_GET['JSONLD']) && $sysconf['jsonld_result']) {
   if ($biblio_list->num_rows > 0) {
     // send http header
     header('Content-Type: application/ld+json');
+    header('Content-disposition: attachment; filename=biblio-opac.json');
     echo $biblio_list->JSONLDresult();
   }
   exit();

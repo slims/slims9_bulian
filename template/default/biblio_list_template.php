@@ -55,19 +55,13 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     if ($labels !== false) {
       foreach ($labels as $label) {
         if (!isset($label_cache[$label[0]]['name'])) {
-          $label_q = $dbs->query('SELECT 
-                                    label_name, 
-                                    label_desc, 
-                                    label_image 
-                                  FROM 
-                                    mst_label AS lb
-                                  WHERE 
-                                    lb.label_name=\''.$label[0].'\'');
+          $label_q = $dbs->query('SELECT label_name, 
+            label_desc, label_image FROM mst_label AS lb
+            WHERE lb.label_name=\''.$label[0].'\'');
           $label_d = $label_q->fetch_row();
-          $label_cache[$label[0]] = array(
-                                      'name'  => $label_d[0], 
-                                      'desc'  => $label_d[1], 
-                                      'image' => $label_d[2]
+          $label_cache[$label[0]] = array( 'name'  => $label_d[0], 
+            'desc'  => $label_d[1], 
+            'image' => $label_d[2]
           );
         }
 
