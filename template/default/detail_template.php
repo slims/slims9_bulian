@@ -161,7 +161,7 @@
   <!-- Related biblio data
   ============================================= -->  
   <h3><i class="fa fa-circle-o"></i> <?php echo __('Other version/related'); ?></h3>
-  <?php echo ($related) ? $$related : '<p class="s-alert">'.__('No other version available').'</p>'; ?>
+  <?php echo ($related) ? $related : '<p class="s-alert">'.__('No other version available').'</p>'; ?>
   <br>
 
   <?php if ($file_att) : ?>
