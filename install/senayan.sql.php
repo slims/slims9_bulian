@@ -531,6 +531,25 @@ CREATE TABLE IF NOT EXISTS `mst_topic` (
   UNIQUE KEY `topic` (`topic`, `topic_type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
 
+$sql['insert'][] = "INSERT IGNORE INTO `mst_topic` (`topic_id`, `topic`, `input_date`, `last_update`) VALUES
+(1, 'Programming', '2007-11-29', '2007-11-29'),
+(2, 'Website', '2007-11-29', '2007-11-29'),
+(3, 'Operating System', '2007-11-29', '2007-11-29'),
+(4, 'Linux', '2007-11-29', '2007-11-29'),
+(5, 'Computer', '2007-11-29', '2007-11-29'),
+(6, 'Database', '2007-11-29', '2007-11-29'),
+(7, 'RDBMS', '2007-11-29', '2007-11-29'),
+(8, 'Open Source', '2007-11-29', '2007-11-29'),
+(9, 'Project', '2007-11-29', '2007-11-29'),
+(10, 'Design', '2007-11-29', '2007-11-29'),
+(11, 'Information', '2007-11-29', '2007-11-29'),
+(12, 'Organization', '2007-11-29', '2007-11-29'),
+(13, 'Metadata', '2007-11-29', '2007-11-29'),
+(14, 'Library', '2007-11-29', '2007-11-29'),
+(15, 'Corruption', '2007-11-29', '2007-11-29'),
+(16, 'Development', '2007-11-29', '2007-11-29'),
+(17, 'Poverty', '2007-11-29', '2007-11-29');";
+
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `reserve` (
   `reserve_id` int(11) NOT NULL auto_increment,
