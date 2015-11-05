@@ -109,8 +109,12 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '<div class="author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">';
   if ($_authors) {
     $_authors_string = '';
-    foreach ($_authors as $author) {
-      $_authors_string .= '<span class="author-name" itemprop="name" property="name">'.$author.'</span> - ';
+    if (is_array($_authors)) {
+      foreach ($_authors as $author) {
+        $_authors_string .= '<span class="author-name" itemprop="name" property="name">'.$author.'</span> - ';  
+      }
+    } else {
+      $_authors_string .= '<span class="author-name" itemprop="name" property="name">'.$_authors.'</span> - ';
     }
     $_authors_string = substr_replace($_authors_string, '', -2);
     $output .= $_authors_string;
