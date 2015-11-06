@@ -26,12 +26,14 @@ if (!defined('INDEX_AUTH')) {
 }
 
 $page_title = __('Library Location').' | '.$sysconf['library_name'];
+
+// change below values to your coordinate
 $lat 		= -6.2254549;
 $long 		= 106.8023901;
 
 ?>
-<html>
-<head>
+<!DOCTYPE html>
+<html><head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <title><?php echo $page_title; ?></title>
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
@@ -55,54 +57,7 @@ $long 		= 106.8023901;
 </script>
 </head>
 <body onload="initialize()">
-<div id="map_canvas" style="float: left; width: 50%; height: 100%;"></div>
-<div style="float: left; width: 2%; height: 100%;"></div>
-<div style="float: left; width: 40%; height: 100%;">
-	<h3>Contact Information</h3>
-		<p>
-		<strong>Address :</strong>
-			<br />
-			Jenderal Sudirman Road, Senayan, Jakarta, Indonesia
-			<br />
-			Postal Code : 10270
-			<br />
-		<strong>Phone Number :</strong>
-			<br />
-			(021) 5711144
-			<br />
-		<strong>Fax Number :</strong>
-			<br />
-			(021) 5711144
-		</p>
-
-	<h3>Opening Hours</h3>
-		<p>
-		<strong>Monday - Friday :</strong>
-		<br />
-		Open : 08.00 AM<br />
-		Break : 12.00 - 13.00 PM<br />
-		Close : 20.00 PM
-		<br />
-		<strong>Saturday  :</strong>
-		<br />
-		Open : 08.00 AM<br />
-		Break : 12.00 - 13.00 PM<br />
-		Close : 17.00 PM
-		</p>
-
-	<h3>Collections</h3>
-		<p>
-		We have many types of collections in our library, range from Fictions to Sciences Material,
-		from printed material to digital collections such CD-ROM, CD, VCD and DVD. We also collect
-		daily serials publications such as newspaper and also monthly serials such as magazines.
-		</p>
-
-	<h3>Library Membership</h3>
-		<p>
-		To be able to loan our library collections, you must first become library member. There is
-		terms and conditions that you must obey.
-		</p>
-</div>
+<div id="map_canvas" style="width: 100%; height: 100%;"></div>
 </body>
 </html>
 <?php

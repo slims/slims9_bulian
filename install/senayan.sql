@@ -136,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   `content_title` varchar(255) collate utf8_unicode_ci NOT NULL,
   `content_desc` text collate utf8_unicode_ci NOT NULL,
   `content_path` varchar(20) collate utf8_unicode_ci NOT NULL,
+  `is_news` smallint(1) NULL DEFAULT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
   `content_ownpage` enum('1','2') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',

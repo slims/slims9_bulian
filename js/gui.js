@@ -219,8 +219,8 @@ jQuery.fn.registerAdminEvents = function(params) {
   });
 
   // disable form with class "disabled"
-	var disabledForm = container.find('form.disabled');
-	if (disabledForm.length > 0) {  disabledForm.disableForm(); }
+  var disabledForm = container.find('form.disabled');
+  if (disabledForm.length > 0) {  disabledForm.disableForm(); }
 
   // focus first element
   container.find('input[type=text]:first').focus();
@@ -298,7 +298,7 @@ $('document').ready(function() {
   // change all anchor behaviour to AJAX in main content
   container.on('click', 'a', function(evt) {
     // avoid conflict with tinyMCE and other non-AJAX anchor
-	container.find('.mceEditor a, .chzn-container a').addClass('notAJAX');
+	container.find('.cke a, .mceEditor a, .chzn-container a').addClass('notAJAX');
     var anchor = $(this);
 	if (anchor.hasClass('notAJAX')) {
       return true;
@@ -347,7 +347,7 @@ $('document').ready(function() {
   });
 
 	// form EDIT link behaviour
-  container.on('click', '.editFormLink', function(evt) {
+    container.on('click', '.editFormLink', function(evt) {
     evt.preventDefault();
     var theForm = $(this).parents('form').enableForm().find('input,textarea').not(':submit,:button').first().focus();
     $('.makeHidden').removeClass('makeHidden');

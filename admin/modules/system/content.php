@@ -191,7 +191,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // content path
     $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'style="width: 50%;"');
     // content description
-    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'style="width: 100%; height: 500px;"');
+    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'class="texteditor" tyle="width: 100%; height: 500px;"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -199,18 +199,27 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     // print out the form object
     echo $form->printOut();
-    // init TinyMCE instance
-    echo '<script type="text/javascript">tinyMCE.init({
-        // Options
-        mode : "exact", elements : "contentDesc", theme : "advanced",
-        plugins : "table,media,searchreplace,directionality",
-        skin : "o2k7", skin_variant : "silver",
-        // Theme options
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,fontsizeselect,|,bullist,numlist,|,link,unlink,anchor,image,cleanup,code,forecolor",
-        theme_advanced_buttons2 : "undo,redo,|,tablecontrols,|,hr,removeformat,visualaid,|,charmap,media,|,ltr,rtl,|,search,replace",
-        theme_advanced_buttons3 : null, theme_advanced_toolbar_location : "top", theme_advanced_toolbar_align : "center", theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : false, content_css : "'.(SWB.'admin/'.$sysconf['admin_template']['css']).'",
-        });</script>';
+    // texteditor instance
+    ?>
+    <script type="text/javascript">
+        $(document).ready(
+          function() {
+            /*
+            $(\'#contentDesc\').removeAttr(\'disable\');
+            tinymce.init({
+            selector : "textarea#contentDesc",
+            theme : "modern",
+            plugins : "table media searchreplace directionality code",
+            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+            content_css : "'.(SWB.'admin/'.$sysconf['admin_template']['css']).'",
+            height : 300
+            });
+            */
+            CKEDITOR.replace( 'contentDesc' );
+          }
+        );
+        </script>';
+    <?php
 } else {
     /* USER LIST */
     // table spec

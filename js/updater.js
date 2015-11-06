@@ -52,12 +52,13 @@ jQuery.fn.simbioAJAX = function(strURL, params)
   jQuery.extend(options, params);
 
   var ajaxContainer = $(this);
-
-  var currLoaderMessage = $(".loader").html();
-  $(".loader").html(options.loadingMessage);
-  $(".loader").ajaxStart(function(){ $(this).addClass('loadingImage'); });
-  $(".loader").ajaxSuccess(function(){
-      $(this).html(currLoaderMessage);
+  var loader = $(".loader");
+  var currLoaderMessage = loader.html();
+  var doc = $(document);
+  loader.html(options.loadingMessage);
+  doc.ajaxStart(function(){ $(this).addClass('loadingImage'); });
+  doc.ajaxSuccess(function(){
+      loader.html(currLoaderMessage);
       // no history on post AJAX request
       if (options.method != 'post') {
           var historyURL = strURL;
@@ -75,8 +76,8 @@ jQuery.fn.simbioAJAX = function(strURL, params)
           jQuery.addAjaxHistory(historyURL, ajaxContainer[0]);
       }
   });
-  $(".loader").ajaxStop(function(){ $(this).removeClass('loadingImage'); });
-  $(".loader").ajaxError(function(event, request, settings){ $(this).html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + "</div>");})
+  doc.ajaxStop(function(){ loader.removeClass('loadingImage'); });
+  doc.ajaxError(function(event, request, settings){ loader.html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + "</div>");})
 
   // send AJAX request
   var ajaxResponse = $.ajax({
