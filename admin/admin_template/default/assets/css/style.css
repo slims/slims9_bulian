@@ -417,7 +417,6 @@ a:hover {
 	}
 }
 .loadingImage {
-	display: none;
 	background-color: #ff908a;
 	border-bottom-color: rgba(0, 0, 0, 0.25) !important;
 	border-left-color-ltr-source: physical !important;
@@ -432,7 +431,7 @@ a:hover {
 	padding: 10px !important;
 	position: fixed;
 	top: -34px;
-	z-index: 9999;
+	z-index: 1999;
 	width: 100%;
 	background: -moz-linear-gradient(135deg, #fff 0%, #09c 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #09c));
@@ -449,7 +448,6 @@ a:hover {
 }
 @media (min-width: 768px) {
 	.loadingImage {
-		top: -36px;
 	}
 }
 .per_title {
@@ -1210,6 +1208,11 @@ tr.dataListHeader > td > a {
 .infoBox div {
 	float: none !important;
 }
+.infoBox font {
+	color: #ff0 !important;
+	font-weight: bold;
+}
+
 #mainForm #dataList {
 	margin: 0 0 15px 0;
 	width: 100%;

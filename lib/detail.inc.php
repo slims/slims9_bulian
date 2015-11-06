@@ -3,7 +3,7 @@
  * detail class
  * Class for document/record detail
  *
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2015  Arie Nugraha (dicarve@yahoo.com)
  * Some security patches by Hendro Wicaksono (hendrowicaksono@yahoo.com)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -225,6 +225,56 @@ class detail
       $_output .= '</table>';
       return $_output;
     }
+    
+  
+    /**
+     * Method to get other version of biblio
+     *
+     * @return  string
+     */  
+    public function getRelatedBiblio() {
+        $_output = '<table class="table table-bordered table-small itemList">';
+        $_output .= '<tr>';
+        $_output .= '<th>'.__('Title').'</th>';
+        $_output .= '<th>'.__('Edition').'</th>';
+        $_output .= '<th>'.__('Language').'</th>';
+        $_output .= '</tr>';
+        // get parent id
+        $parent_q = $this->db->query(sprintf('SELECT b.biblio_id, title, edition, language_id
+            FROM biblio_relation AS br INNER JOIN biblio AS b ON br.biblio_id=b.biblio_id
+            WHERE rel_biblio_id=%d', $this->detail_id));
+        $parent_d = $parent_q->fetch_assoc();
+        if ($parent_d) {
+            $_output .= '<tr>';
+            $_output .= '<td class="biblio-title relation"><a href="'.SWB.'index.php?p=show_detail&id='.$parent_d['biblio_id'].'">'.$parent_d['title'].'</a></td>';
+            $_output .= '<td class="biblio-edition relation">'.$parent_d['edition'].'</td>';
+            $_output .= '<td class="biblio-language relation">'.$parent_d['language_id'].'</td>';
+            $_output .= '</tr>';            
+        }
+        // check related data
+        $rel_q = $this->db->query(sprintf('SELECT b.biblio_id, title, edition, language_id FROM biblio_relation AS br
+          INNER JOIN biblio AS b ON br.rel_biblio_id=b.biblio_id
+          WHERE br.biblio_id IN (SELECT biblio_id FROM biblio_relation WHERE rel_biblio_id=%d) OR br.biblio_id=%d',
+          $this->detail_id, $this->detail_id));
+
+        if ($rel_q->num_rows < 1) {
+            return null;
+        } 
+
+        while ($rel_d = $rel_q->fetch_assoc()) {
+            if ($rel_d['biblio_id'] == $this->detail_id) {
+                continue;
+            }
+            $_output .= '<tr>';
+            $_output .= '<td class="biblio-title relation"><a href="'.SWB.'index.php?p=show_detail&id='.$rel_d['biblio_id'].'">'.$rel_d['title'].'</a></td>';
+            $_output .= '<td class="biblio-edition relation">'.$rel_d['edition'].'</td>';
+            $_output .= '<td class="biblio-language relation">'.$rel_d['language_id'].'</td>';
+            $_output .= '</tr>';
+        }
+    
+        $_output .= '</table>';
+        return $_output;        
+    }
 
 
     /**
@@ -307,11 +357,12 @@ class detail
 
         $this->record_detail['availability'] = $this->getItemCopy();
         $this->record_detail['file_att'] = $this->getAttachments();
+        $this->record_detail['related'] = $this->getRelatedBiblio();
         
         if ($sysconf['social_shares']) {
-	  // share buttons
-	  $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
-	  $_share_btns = "\n".'<ul class="share-buttons">'.
+        // share buttons
+        $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
+        $_share_btns = "\n".'<ul class="share-buttons">'.
             '<li>'.__('Share to').': </li>'.
             '<li><a href="http://www.facebook.com/sharer.php?u='.$_detail_link_encoded.'" title="Facebook" target="_blank"><img src="./images/default/fb.gif" alt="Facebook" /></a></li>'.
             '<li><a href="http://twitter.com/share?url='.$_detail_link_encoded.'&text='.urlencode($this->record_title).'" title="Twitter" target="_blank"><img src="./images/default/tw.gif" alt="Twitter" /></a></li>'.
@@ -387,7 +438,7 @@ class detail
               .'<role><roleTerm type="text"><![CDATA['.$sysconf['authority_level'][$_auth_d['level']].']]></roleTerm></role>'."\n"
               .'</name>'."\n";
               */
-            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+            $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
             $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
             $xml->startElement('role');
                 $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');

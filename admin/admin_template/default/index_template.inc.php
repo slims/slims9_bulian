@@ -59,7 +59,7 @@ include 'function.php';
   <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>calendar.js"></script>
-  <script type="text/javascript" src="<?php echo JWB; ?>tinymce/tiny_mce.js"></script>
+  <script type="text/javascript" src="<?php echo JWB; ?>ckeditor/ckeditor.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>keyboard.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/chosen.jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/ajax-chosen.min.js"></script>
@@ -191,6 +191,13 @@ include 'function.php';
           title: function() { return 'Online Public Access Catalog'; } }
         );
     });
+
+    // hide menu if click on main content
+    $('.s-content').click(function(){
+      $('#mainMenu input[type=radio]').each(function(){
+        $(this).removeAttr('checked');
+      });
+    })
   </script>
   <?php include "chat.php" ?>
 </body>

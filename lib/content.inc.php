@@ -28,11 +28,46 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-class content
+class Content
 {
     public $strip_html = false;
     public $allowed_tags = null;
 
+    public function getContents($obj_db, $max_each_page = 10, $search_query = '')
+    {
+        global $sysconf;
+        $contents = array();
+        $page = 1;
+        $offset = 0;
+        if (isset($_GET['page'])) {
+            $page = (integer)$_GET['page'];
+        }
+        if ($page > 1) {
+            $offset = ($page*$max_each_page)-$max_each_page;
+        }
+        
+        // language
+        $_lang = strtolower($sysconf['default_lang']);
+
+        // query content
+        $_sql_content = "SELECT * FROM content WHERE is_news=1";
+        if ($search_query) {
+            $search_query = $obj_db->escape_string(trim($search_query));
+            $_sql_content .= " AND MATCH(`content_title`, `content_desc`) AGAINST('$search_query' IN BOOLEAN MODE)";
+        }
+        $_sql_content .= " ORDER BY `last_update` DESC";
+        $_sql_content .= " LIMIT $max_each_page, $offset";
+        
+        $_content_q = $obj_db->query($_sql_content);
+        // echo $_sql_content;
+        // get content data
+        while ($_content_d = $_content_q->fetch_assoc()) {
+            $_content_d[] = $_content_d;
+        }
+        
+        return $contents;
+    }
+    
     public function get($obj_db, $str_path = '')
     {
         global $sysconf;
