@@ -606,6 +606,13 @@ $sysconf['chat_system']['librarian']  	= true;
 $sysconf['chat_system']['server']  		 = '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
+/* NEWS */
+$sysconf['news']['num_each_page'] = 10;
+
+/* LIBRARY MAP COORDINATES */
+$sysconf['location']['lat'] = -7.977000;
+$sysconf['location']['long'] = 112.634025;
+
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
   $sysconf['template']['theme'] = 'lightweight';

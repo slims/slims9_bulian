@@ -3,7 +3,9 @@
   <h1>Menu</h1>
   <ul>
     <li><a href="index.php"><?php echo __('Home'); ?></a></li>
+    <li><a href="index.php?p=news"><?php echo __('Library News'); ?></a></li>
     <li><a href="index.php?p=libinfo"><?php echo __('Library Information'); ?></a></li>
+    <li><a href="index.php?p=peta" class="openPopUp" width="600" height="400"><?php echo __('Library Location'); ?></a></li>
     <li><a href="index.php?p=member"><?php echo __('Member Area'); ?></a></li>
     <li><a href="index.php?p=librarian"><?php echo __('Librarian'); ?></a></li>
     <li><a href="index.php?p=help"><?php echo __('Help on Search'); ?></a></li>

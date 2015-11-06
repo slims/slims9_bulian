@@ -27,19 +27,14 @@ if (!defined('INDEX_AUTH')) {
 
 $page_title = __('Library Location').' | '.$sysconf['library_name'];
 
-// change below values to your coordinate
-$lat 		= -6.2254549;
-$long 		= 106.8023901;
-
 ?>
-<!DOCTYPE html>
 <html><head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <title><?php echo $page_title; ?></title>
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
   function initialize() {
-    var latlng = new google.maps.LatLng(<?php echo $lat . ',' . $long; ?>);
+    var latlng = new google.maps.LatLng(<?php echo $sysconf['location']['lat'] . ',' . $sysconf['location']['long']; ?>);
     var myOptions = {
       zoom: 14,
       center: latlng,
@@ -56,7 +51,7 @@ $long 		= 106.8023901;
   }
 </script>
 </head>
-<body onload="initialize()">
+<body onload="initialize()" style="padding: 0; margin: 0;">
 <div id="map_canvas" style="width: 100%; height: 100%;"></div>
 </body>
 </html>
