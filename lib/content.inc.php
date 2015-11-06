@@ -33,7 +33,15 @@ class Content
     public $strip_html = false;
     public $allowed_tags = null;
 
-    public function getContents($obj_db, $max_each_page = 10, $search_query = '')
+    public static function createSummary($text, $max_chars = 300)
+    {
+        $summary = strip_tags($text);
+        $summary = substr($summary, 0, $max_chars);
+        
+        return $summary;
+    }
+    
+    public function getContents($obj_db, $max_each_page = 10, &$total, $search_query = '')
     {
         global $sysconf;
         $contents = array();
@@ -50,19 +58,25 @@ class Content
         $_lang = strtolower($sysconf['default_lang']);
 
         // query content
-        $_sql_content = "SELECT * FROM content WHERE is_news=1";
+        $_sql_content = "SELECT SQL_CALC_FOUND_ROWS * FROM content WHERE is_news=1";
         if ($search_query) {
             $search_query = $obj_db->escape_string(trim($search_query));
             $_sql_content .= " AND MATCH(`content_title`, `content_desc`) AGAINST('$search_query' IN BOOLEAN MODE)";
         }
         $_sql_content .= " ORDER BY `last_update` DESC";
-        $_sql_content .= " LIMIT $max_each_page, $offset";
+        $_sql_content .= " LIMIT $max_each_page OFFSET $offset";
         
         $_content_q = $obj_db->query($_sql_content);
         // echo $_sql_content;
+        
+        // get total rows
+        $_total_rows = $obj_db->query('SELECT FOUND_ROWS()');
+        $_total_rows_d = $_total_rows->fetch_row();
+        $total = $_total_rows_d[0];
+        
         // get content data
         while ($_content_d = $_content_q->fetch_assoc()) {
-            $_content_d[] = $_content_d;
+            $contents[] = $_content_d;
         }
         
         return $contents;

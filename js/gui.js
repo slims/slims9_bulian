@@ -147,6 +147,7 @@ jQuery.fn.enableForm = function() {
   enabledForm.find('input,select,textarea').each(function() {
     this.disabled = false;
   });
+  $(document).trigger('formEnabled');
   return enabledForm;
 }
 

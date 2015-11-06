@@ -61,6 +61,9 @@ if (isset($_POST['saveData'])) {
     } else {
         $data['content_title'] = $dbs->escape_string(strip_tags(trim($contentTitle)));
         $data['content_path'] = strtolower($dbs->escape_string(strip_tags(trim($contentPath))));
+        if ($_POST['isNews'] && $_POST['isNews'] == '1') {
+            $data['is_news'] = 1;
+        }
         $data['content_desc'] = $dbs->escape_string(trim($_POST['contentDesc']));
         $data['input_date'] = date('Y-m-d H:i:s');
         $data['last_update'] = date('Y-m-d H:i:s');
@@ -188,6 +191,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /* Form Element(s) */
     // content title
     $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title'], 'style="width: 100%;"');
+    // content news flag
+    $news_chbox[0] = array('0', __('No'));
+    $news_chbox[1] = array('1', __('Yes'));
+    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']);
     // content path
     $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'style="width: 50%;"');
     // content description
@@ -216,6 +223,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             });
             */
             CKEDITOR.replace( 'contentDesc' );
+            $(document).bind('formEnabled', function() {
+                CKEDITOR.instances.contentDesc.setReadOnly(false);
+            });
           }
         );
         </script>';
