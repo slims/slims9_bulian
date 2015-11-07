@@ -264,4 +264,6 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;";
 $sql['alter'][] = "ALTER TABLE `mst_media_type`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;";
 
+$sql['alter'][] = "ALTER TABLE `content` ADD `is_news` SMALLINT(1) NULL DEFAULT NULL AFTER `content_path`;";
+
 ?>
