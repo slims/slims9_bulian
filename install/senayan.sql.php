@@ -604,7 +604,7 @@ $sql['insert'][] = "INSERT IGNORE INTO `setting` (`setting_id`, `setting_name`, 
 (13, 'allow_file_download', 'b:1;'),
 (14, 'session_timeout', 's:4:\"7200\";'),
 (15, 'circulation_receipt', 'b:0;'),
-(16, 'barcode_encoding', 's:4:\"Code128\";'),
+(16, 'barcode_encoding', 's:7:\"code128\";'),
 (17, 'ignore_holidays_fine_calc', 'b:0;'),
 (18, 'barcode_print_settings', 'a:12:{s:19:\"barcode_page_margin\";d:0.200000000000000011102230246251565404236316680908203125;s:21:\"barcode_items_per_row\";i:3;s:20:\"barcode_items_margin\";d:0.1000000000000000055511151231257827021181583404541015625;s:17:\"barcode_box_width\";i:7;s:18:\"barcode_box_height\";i:5;s:27:\"barcode_include_header_text\";i:1;s:17:\"barcode_cut_title\";i:50;s:19:\"barcode_header_text\";s:0:\"\";s:13:\"barcode_fonts\";s:41:\"Arial, Verdana, Helvetica, ''Trebuchet MS''\";s:17:\"barcode_font_size\";i:11;s:13:\"barcode_scale\";i:70;s:19:\"barcode_border_size\";i:1;}'),
 (19, 'label_print_settings', 'a:10:{s:11:\"page_margin\";d:0.200000000000000011102230246251565404236316680908203125;s:13:\"items_per_row\";i:3;s:12:\"items_margin\";d:0.05000000000000000277555756156289135105907917022705078125;s:9:\"box_width\";i:8;s:10:\"box_height\";d:3.29999999999999982236431605997495353221893310546875;s:19:\"include_header_text\";i:1;s:11:\"header_text\";s:0:\"\";s:5:\"fonts\";s:41:\"Arial, Verdana, Helvetica, ''Trebuchet MS''\";s:9:\"font_size\";i:11;s:11:\"border_size\";i:1;}'),
@@ -811,6 +811,14 @@ CREATE TABLE IF NOT EXISTS `mst_relation_term` (
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;";
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
+  `topic_id` int(11) NOT NULL,
+`vocabolary_id` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
