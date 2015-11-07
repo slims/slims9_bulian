@@ -121,10 +121,10 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 
   // get keywords
   $subject    = '';
-  if(count($detail->subjects[0]) > 0) {
+  if(isset($detail->subjects[0]) && count($detail->subjects[0]) > 0) {
     foreach($detail->subjects as $_subject) {
       $subject .= strtolower($_subject['topic']).',';
-    }    
+    }
     $subject = substr($subject,0,-1);
   }
   echo '<br />'."\n";

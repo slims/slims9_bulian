@@ -1985,7 +1985,7 @@ keyframes coverUp 100% {
 .memberButton,
 .s-main-content .col-lg-4 a,
 .s-detail .btn,
-.xmlResultLink {
+.xmlResultLink, .jsonResultLink {
   border-radius: 0;
   border: none;
   background-color: #282828;
@@ -1997,6 +1997,9 @@ keyframes coverUp 100% {
   padding: 10px 29px;
   -webkit-transition: background-color 500ms ease;
   transition: background-color 500ms ease;
+}
+.jsonResultLink {
+  background-color: #f00 !important;
 }
 #loginButton:hover,
 .memberButton a:hover,

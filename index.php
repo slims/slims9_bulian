@@ -74,7 +74,7 @@ if (isset($_GET['p'])) {
         // get content data from database
         $metadata = '<meta name="robots" content="index, follow">';
         include LIB.'content.inc.php';
-        $content = new content();
+        $content = new Content();
         $content_data = $content->get($dbs, $path);
         if ($content_data) {
           $page_title = $content_data['Title'];
@@ -91,7 +91,7 @@ if (isset($_GET['p'])) {
         if ((!isset($_GET['keywords'])) AND (!isset($_GET['page'])) AND (!isset($_GET['title'])) AND (!isset($_GET['author'])) AND (!isset($_GET['subject'])) AND (!isset($_GET['location']))) {
             // get content data from database
             include LIB.'content.inc.php';
-            $content = new content();
+            $content = new Content();
             $content_data = $content->get($dbs, 'headerinfo');
             if ($content_data) {
                 //$header_info .= '<div id="headerInfo">'.$content_data['Content'].'</div>';

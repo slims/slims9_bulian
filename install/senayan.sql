@@ -40,28 +40,32 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `collation` varchar(50) collate utf8_unicode_ci default NULL,
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
-  `language_id` char(5) collate utf8_unicode_ci default 'en',
+  `language_id` char(5) collate utf8_unicode_ci default \'en\',
   `source` varchar(3) collate utf8_unicode_ci default NULL,
   `publish_place_id` int(11) default NULL,
   `classification` varchar(40) collate utf8_unicode_ci default NULL,
   `notes` text collate utf8_unicode_ci,
   `image` varchar(100) collate utf8_unicode_ci default NULL,
   `file_att` varchar(255) collate utf8_unicode_ci default NULL,
-  `opac_hide` smallint(1) default '0',
-  `promoted` smallint(1) default '0',
+  `opac_hide` smallint(1) default \'0\',
+  `promoted` smallint(1) default \'0\',
   `labels` text collate utf8_unicode_ci NULL,
-  `frequency_id` int(11) NOT NULL default '0',
+  `frequency_id` int(11) NOT NULL default \'0\',
   `spec_detail_info` text collate utf8_unicode_ci,
+  `content_type_id` int(11) default NULL,
+  `media_type_id` int(11) default NULL,
+  `carrier_type_id` int(11) default NULL,
   `input_date` datetime default NULL,
   `last_update` datetime default NULL,
   PRIMARY KEY  (`biblio_id`),
   KEY `references_idx` (`gmd_id`,`publisher_id`,`language_id`,`publish_place_id`),
   KEY `classification` (`classification`),
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
+  KEY `rda_idx` (`content_type_id`, `media_type_id`, `carrier_type_id`),
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;;
 
 --
 -- Dumping data for table `biblio`
@@ -136,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   `content_title` varchar(255) collate utf8_unicode_ci NOT NULL,
   `content_desc` text collate utf8_unicode_ci NOT NULL,
   `content_path` varchar(20) collate utf8_unicode_ci NOT NULL,
+  `is_news` smallint(1) NULL DEFAULT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
   `content_ownpage` enum('1','2') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
@@ -1062,6 +1067,9 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   `language` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `classification` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `spec_detail_info` text COLLATE utf8_unicode_ci,
+  `carrier_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `content_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `media_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `location` text COLLATE utf8_unicode_ci,
   `publish_year` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes` text COLLATE utf8_unicode_ci,
@@ -1079,6 +1087,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   UNIQUE KEY `biblio_id` (`biblio_id`),
   KEY `add_indexes` (`gmd`,`publisher`,`publish_place`,`language`,`classification`,`publish_year`,`call_number`),
   KEY `add_indexes2` (`opac_hide`,`promoted`),
+  KEY `rda_indexes` (`carrier_type`,`media_type`,`content_type`),
   FULLTEXT `title` (`title`),
   FULLTEXT `author` (`author`),
   FULLTEXT `topic` (`topic`),
@@ -1295,13 +1304,5 @@ CREATE TABLE IF NOT EXISTS `biblio_relation` (
 ALTER TABLE `biblio_relation`
  ADD PRIMARY KEY (`biblio_id`,`rel_biblio_id`);
  
-DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
-UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
-
-ALTER TABLE `biblio` ADD `content_type_id` INT NULL DEFAULT NULL AFTER `spec_detail_info`,
-  ADD `media_type_id` INT NULL DEFAULT NULL AFTER `content_type_id`,
-  ADD `carrier_type_id` INT NULL DEFAULT NULL AFTER `media_type_id`,
-  ADD INDEX (`content_type_id`, `media_type_id`, `carrier_type_id`) ;
-  
-ALTER TABLE `search_biblio` ADD `content_type` VARCHAR(100) NULL DEFAULT NULL AFTER `image`, ADD `media_type` VARCHAR(100) NULL DEFAULT NULL AFTER `content_type`,
-  ADD `carrier_type` VARCHAR(100) NULL DEFAULT NULL AFTER `media_type`, ADD INDEX (`content_type`, `media_type`, `carrier_type`);
+-- DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
+-- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
