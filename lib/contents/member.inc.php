@@ -101,17 +101,103 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
             header('Location: index.php?p=member');
             exit();
         } else {
-            // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', 'Login FAILED for member '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            // message
-            $msg = '<div class="errorBox">'.__('Login FAILED! Wrong username or password!').'</div>';
-            simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+            // md5 password
+            $md5_password = MD5($password);
+            // query password
+            $_pass_q = $dbs->query('SELECT mpasswd FROM member WHERE member_id = \''.$username.'\'');
+            $_pass_d = $_pass_q->fetch_row();
+            if ($_pass_d[0] === $md5_password) {
+                $msg  = '';
+                $msg .= '<div class="panel panel-danger">';
+                $msg .= '<div class="panel-heading">'.__('Please update your password!').'</div>';
+                $msg .= '<div class="panel-body">';
+                $msg .= '<form method="post" action="index.php?p=member">';
+                $msg .= '<div class="form-group">';
+                $msg .= '<label for="isusername">Username</label>';
+                $msg .= '<input type="text" class="form-control" id="isusername" name="isusername" placeholder="Username">';
+                $msg .= '</div>';
+                $msg .= '<div class="form-group">';
+                $msg .= '<label for="isoldpassword">Current Password</label>';
+                $msg .= '<input type="password" class="form-control" id="isoldpassword" name="isoldpassword" placeholder="Old Password">';
+                $msg .= '</div>';
+                $msg .= '<div class="form-group">';
+                $msg .= '<label for="isnewpassword">New Password</label>';
+                $msg .= '<input type="password" class="form-control" id="isnewpassword" name="isnewpassword" placeholder="New Password">';
+                $msg .= '</div>';
+                $msg .= '<div class="form-group">';
+                $msg .= '<label for="isconfirmnewpassword">Confirm New Password</label>';
+                $msg .= '<input type="password" class="form-control" id="isconfirmnewpassword" name="isconfirmnewpassword" placeholder="Confirm New Password">';
+                $msg .= '</div>';
+                $msg .= '</div>';
+                $msg .= '<div class="panel-footer">';
+                $msg .= '<button type="submit" name="renewPass" class="btn btn-success">Update</button>';
+                $msg .= '</form></div></div>';
+                simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);                
+            } else {
+                // write log
+                utility::writeLogs($dbs, 'member', $username, 'Login', 'Login FAILED for member '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
+                // message
+                $msg = '<div class="errorBox">'.__('Login FAILED! Wrong username or password!').'</div>';
+                simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);                
+            }
         }
     }
 }
 
 // check if member already login
 if (!$is_member_login) {
+
+    function procChangePasswordNew($str_user, $str_curr_pass, $str_new_pass, $str_conf_new_pass)
+    {
+        global $dbs;
+        // current password checking
+        $_sql_pass_check = sprintf('SELECT member_id FROM member
+            WHERE mpasswd=MD5(\'%s\') AND member_id=\'%s\'',
+            $dbs->escape_string(trim($str_curr_pass)), $dbs->escape_string(trim($str_user)));
+        $_pass_check = $dbs->query($_sql_pass_check);
+        if ($_pass_check->num_rows == 1) {
+            $str_new_pass = trim($str_new_pass);
+            $str_conf_new_pass = trim($str_conf_new_pass);
+            // password confirmation check
+            if ($str_new_pass && $str_conf_new_pass && ($str_new_pass === $str_conf_new_pass)) {
+                $_new_password = password_hash($str_conf_new_pass, PASSWORD_BCRYPT);
+                $_sql_update_mpasswd = sprintf('UPDATE member SET mpasswd=\'%s\'
+                    WHERE member_id=\'%s\'', $dbs->escape_string($_new_password), $dbs->escape_string(trim($str_user)));
+                @$dbs->query($_sql_update_mpasswd);
+                if (!$dbs->error) {
+                    return true;
+                } else {
+                    return CANT_UPDATE_PASSWD;
+                }
+            } else {
+                return PASSWD_NOT_MATCH;
+            }
+        } else {
+            return CURR_PASSWD_WRONG;
+        }
+    }
+
+    // if there is change md5 password request
+    if (isset($_POST['renewPass'])) {
+        $change_pass = procChangePasswordNew($_POST['isusername'], $_POST['isoldpassword'], $_POST['isnewpassword'], $_POST['isconfirmnewpassword']);
+        
+        if ($change_pass === true) {
+            $info = '<span style="font-size: 120%; font-weight: bold;">'.__('Your password have been changed successfully.').'</span>';
+            $info_class = 'alert-success';
+        } else {
+            if ($change_pass === CURR_PASSWD_WRONG) {
+                $info = __('Current password entered WRONG! Please insert the right password!');
+            } else if ($change_pass === PASSWD_NOT_MATCH) {
+                $info = __('Password confirmation FAILED! Make sure to check undercase or uppercase letters!');
+            } else {
+                $info = __('Password update FAILED! ERROR ON DATABASE!');
+            }
+            $info_class = 'alert-danger';
+        }
+        $msg = '<div class="alert '.$info_class.'"><span>'.$info.'</span></div>';
+        simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+    }
+
 ?>
     <div class="tagline"><?php echo __('Library Member Login'); ?></div>
 	<?php
@@ -222,18 +308,25 @@ if (!$is_member_login) {
     function procChangePassword($str_curr_pass, $str_new_pass, $str_conf_new_pass)
     {
         global $dbs;
+        // get hash from db
+        $_str_pass_sql = sprintf('SELECT mpasswd FROM member
+            WHERE member_id=\'%s\'', $dbs->escape_string(trim($_SESSION['mid'])));
+        $_str_pass_q = $dbs->query($_str_pass_sql);
+        $_str_pass_d = $_str_pass_q->fetch_row();
+        $verified = password_verify($str_curr_pass, $_str_pass_d[0]);
         // current password checking
-        $_sql_pass_check = sprintf('SELECT member_id FROM member
-            WHERE mpasswd=MD5(\'%s\') AND member_id=\'%s\'',
-            $dbs->escape_string(trim($str_curr_pass)), $dbs->escape_string(trim($_SESSION['mid'])));
-        $_pass_check = $dbs->query($_sql_pass_check);
-        if ($_pass_check->num_rows == 1) {
+        // $_sql_pass_check = sprintf('SELECT member_id FROM member
+        //     WHERE mpasswd=MD5(\'%s\') AND member_id=\'%s\'',
+        //     $dbs->escape_string(trim($str_curr_pass)), $dbs->escape_string(trim($_SESSION['mid'])));
+        // $_pass_check = $dbs->query($_sql_pass_check);
+        if ($verified) {
             $str_new_pass = trim($str_new_pass);
             $str_conf_new_pass = trim($str_conf_new_pass);
             // password confirmation check
             if ($str_new_pass && $str_conf_new_pass && ($str_new_pass === $str_conf_new_pass)) {
-                $_sql_update_mpasswd = sprintf('UPDATE member SET mpasswd=MD5(\'%s\')
-                    WHERE member_id=\'%s\'', $dbs->escape_string($str_conf_new_pass), $dbs->escape_string(trim($_SESSION['mid'])));
+                $_new_password = password_hash($str_conf_new_pass, PASSWORD_BCRYPT);
+                $_sql_update_mpasswd = sprintf('UPDATE member SET mpasswd=\'%s\'
+                    WHERE member_id=\'%s\'', $dbs->escape_string($_new_password), $dbs->escape_string(trim($_SESSION['mid'])));
                 @$dbs->query($_sql_update_mpasswd);
                 if (!$dbs->error) {
                     return true;
@@ -247,7 +340,6 @@ if (!$is_member_login) {
             return CURR_PASSWD_WRONG;
         }
     }
-
 
     /*
      * Function to send reservation e-mail for titles in basket

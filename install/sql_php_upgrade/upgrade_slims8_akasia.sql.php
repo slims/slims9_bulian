@@ -18,8 +18,8 @@ $sql['alter'][] = "ALTER TABLE `member` CHANGE `mpasswd` `mpasswd` VARCHAR(64) C
 $sql['update'][] = "UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';";
 
 /*-- change all members password to : 'akasia'*/
-$hash_member = '$2y$10$Vx12rbVCdtYW701HrULLYOLDKJdb3fDusG2rE7GJzAcH9mqu2MjKK';
-$sql['update'][] = "UPDATE `member` SET `mpasswd`='$hash_member' WHERE `mpasswd` IS NOT NULL;";
+// $hash_member = '$2y$10$Vx12rbVCdtYW701HrULLYOLDKJdb3fDusG2rE7GJzAcH9mqu2MjKK';
+// $sql['update'][] = "UPDATE `member` SET `mpasswd`='$hash_member' WHERE `mpasswd` IS NOT NULL;";
 
 /*--
 -- Table structure for table `mst_carrier_type`
