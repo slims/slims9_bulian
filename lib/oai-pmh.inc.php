@@ -166,6 +166,8 @@ class OAI_Web_Service {
 
     $resumptionToken = array();
     $offset = 0;
+    $from = null;
+    $until = null;
     $where = '';
     $metadataPrefix = 'oai_dc';
 
@@ -185,6 +187,20 @@ class OAI_Web_Service {
       if (isset($_GET['metadataPrefix'])) {
         $metadataPrefix = $_GET['metadataPrefix'];
       }
+    }
+    
+    if (isset($_GET['from'])) {
+        $from = $this->db->escape_string($_GET['from']);
+        $date = date_create($from);
+        $from_date = $date->format('Y-m-d H:i:s');
+    }
+    if (isset($_GET['from']) && isset($_GET['until'])) {
+        $until = $this->db->escape_string($_GET['until']);
+        $date = date_create($until);
+        $until_date = $date->format('Y-m-d H:i:s');
+    }
+    if ($from && $until) {
+        $where = "WHERE input_date >= '$from_date' AND input_date <= '$until_date'";
     }
 
     // total query
