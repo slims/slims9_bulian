@@ -218,8 +218,8 @@ $sysconf['zend_barcode_engine'] = true;
 // Zend Barcode Engine Encoding selection
 // $barcodes_encoding['CODE25'] = array('code25', 'Code 2 or 5 Industrial (may result in barcode creation error)');
 // $barcodes_encoding['CODE25I'] = array('code25interleaved', 'Code 2 or 5 Interleaved (may result in barcode creation error)');
-$barcodes_encoding['CODE39'] = array('code39', 'Code 39');
-$barcodes_encoding['CODE128'] = array('code128', 'Code 128');
+$barcodes_encoding['code39'] = array('code39', 'Code 39');
+$barcodes_encoding['code128'] = array('code128', 'Code 128');
 // $barcodes_encoding['EAN2'] = array('ean2', 'Ean 2 (may result in barcode creation error)');
 // $barcodes_encoding['EAN5'] = array('ean5', 'Ean 5 (may result in barcode creation error)');
 // $barcodes_encoding['EAN8'] = array('ean8', 'Ean 8');
@@ -232,7 +232,7 @@ $barcodes_encoding['CODE128'] = array('code128', 'Code 128');
 // $barcodes_encoding['ROYALMAIL'] = array('royalmail', 'Royalmail (may result in barcode creation error)');
 // $barcodes_encoding['UPCA'] = array('upca', 'UPC-A (may result in barcode creation error)');
 // $barcodes_encoding['UPCE'] = array('upce', 'UPC-E (may result in barcode creation error)');
-$sysconf['barcode_encoding'] = $barcodes_encoding['CODE128'][0];
+$sysconf['barcode_encoding'] = $barcodes_encoding['code128'][0];
 
 /* QUICK RETURN */
 $sysconf['quick_return'] = true;

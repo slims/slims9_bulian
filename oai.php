@@ -80,7 +80,7 @@ if (isset($_GET['verb']) || isset($_POST['verb'])) {
         break;
       case 'ListRecords';
         $metadataPrefix = isset($_GET['metadataPrefix'])?$dbs->escape_string(trim($_GET['metadataPrefix'])):'oai_dc';
-        echo $oai_respon_handlers->ListRecords($_GET['metadataPrefix']);
+        echo $oai_respon_handlers->ListRecords($metadataPrefix);
         break;
       case 'GetRecord';
         $identifier = isset($_GET['identifier'])?$dbs->escape_string(trim($_GET['identifier'])):'0';

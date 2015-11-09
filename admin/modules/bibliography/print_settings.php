@@ -219,7 +219,7 @@ $measure['print']['membercard']['barcode_width']            = __('(px)');
 $measure['print']['membercard']['barcode_height']           = __('(px)');
 
 // Rules
-$measure['print']['membercard']['rules']                    = __('(list of rules)');
+$measure['print']['membercard']['rules']                    = __('(list of rules)');  
 $measure['print']['membercard']['rules_font_size']          = __('(pt)');
 
 // address

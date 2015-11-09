@@ -166,11 +166,21 @@ class OAI_Web_Service {
 
     $resumptionToken = array();
     $offset = 0;
+    $from = null;
+    $until = null;
     $where = '';
     $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
-      echo 'resumption';
+      $elm = explode('__', $_GET['resumptionToken']);
+      if (isset($elm[0]) && stripos($elm[0], 'offset', 0) !== false) {
+        $offset = (integer)str_ireplace('offset:', '', $elm[0]);
+      }
+      if (isset($elm[1]) && stripos($elm[1], 'metadataPrefix', 0) !== false) {
+        $metadataPrefix = str_ireplace('metadataPrefix:', '', $elm[1]);
+      }
+      // echo 'resumption';
+      /*
       parse_str($_GET['resumptionToken'], $resumptionToken);
       if (isset($resumptionToken['offset'])) {
         $offset = (integer)$resumptionToken['offset'];
@@ -178,6 +188,7 @@ class OAI_Web_Service {
       if (isset($resumptionToken['metadataPrefix'])) {
         $metadataPrefix = $resumptionToken['metadataPrefix'];
       }
+      */
     } else {
       if (isset($_GET['offset'])) {
         $offset = (integer)$_GET['offset'];
@@ -185,6 +196,20 @@ class OAI_Web_Service {
       if (isset($_GET['metadataPrefix'])) {
         $metadataPrefix = $_GET['metadataPrefix'];
       }
+    }
+    
+    if (isset($_GET['from'])) {
+        $from = $this->db->escape_string($_GET['from']);
+        $date = date_create($from);
+        $from_date = $date->format('Y-m-d H:i:s');
+    }
+    if (isset($_GET['from']) && isset($_GET['until'])) {
+        $until = $this->db->escape_string($_GET['until']);
+        $date = date_create($until);
+        $until_date = $date->format('Y-m-d H:i:s');
+    }
+    if ($from && $until) {
+        $where = "WHERE input_date >= '$from_date' AND input_date <= '$until_date'";
     }
 
     // total query
@@ -206,7 +231,7 @@ class OAI_Web_Service {
     if ($completeListSize > $sysconf['OAI']['ListRecords']['RecordPerSet']) {
       $next_offset = $offset+$sysconf['OAI']['ListRecords']['RecordPerSet'];
       if ($next_offset < $completeListSize) {
-        echo '<resumptionToken completeListSize="'.$completeListSize.'">'.urlencode("offset=$next_offset&metadataPrefix=$metadataPrefix").'</resumptionToken>'."\n";
+        echo '<resumptionToken completeListSize="'.$completeListSize.'">offset:'.$next_offset.'__metadataPrefix:'.$metadataPrefix.'</resumptionToken>'."\n";
       }
     }
 

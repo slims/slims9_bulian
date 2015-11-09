@@ -674,7 +674,7 @@ class detail
         $xml->endElement();
         
         // get the authors data
-        $_biblio_authors_q = $this->obj_db->query('SELECT a.*,ba.level FROM mst_author AS a'
+        $_biblio_authors_q = $this->db->query('SELECT a.*,ba.level FROM mst_author AS a'
             .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$this->detail_id);
         while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
           $xml->startElementNS('dc', 'creator', null);
@@ -743,7 +743,7 @@ class detail
         $xml->endElement();
         
         // subject/topic
-        $_biblio_topics_q = $this->obj_db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
+        $_biblio_topics_q = $this->db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
           LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id WHERE bt.biblio_id='.$this->detail_id.' ORDER BY t.auth_list');
         while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
           $xml->startElementNS('dc', 'subject', null);
@@ -773,7 +773,7 @@ class detail
         $xml->writeCdata($this->record_detail['call_number']);
         $xml->endElement();
 
-        $_copy_q = $this->obj_db->query('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
+        $_copy_q = $this->db->query('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
             .'LEFT JOIN mst_item_status AS stat ON i.item_status_id=stat.item_status_id '
             .'LEFT JOIN mst_location AS loc ON i.location_id=loc.location_id '
             .'WHERE i.biblio_id='.$this->detail_id);
@@ -787,7 +787,7 @@ class detail
         $_copy_q->free_result();
 
         // digital files
-        $attachment_q = $this->obj_db->query('SELECT att.*, f.* FROM biblio_attachment AS att
+        $attachment_q = $this->db->query('SELECT att.*, f.* FROM biblio_attachment AS att
             LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
         if ($attachment_q->num_rows > 0) {
           while ($attachment_d = $attachment_q->fetch_assoc()) {
@@ -805,7 +805,7 @@ class detail
 
         // image
         if (!empty($this->record_detail['image'])) {
-          $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].IMGBS.'docs/'.urlencode($this->record_detail['image']);
+          $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].SWB.'images/docs/'.urlencode($this->record_detail['image']);
           $xml->startElementNS('dc', 'relation', null);
           $xml->writeCdata($_image);
           $xml->endElement();
