@@ -805,7 +805,7 @@ class detail
 
         // image
         if (!empty($this->record_detail['image'])) {
-          $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].IMGBS.'docs/'.urlencode($this->record_detail['image']);
+          $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].SWB.'images/docs/'.urlencode($this->record_detail['image']);
           $xml->startElementNS('dc', 'relation', null);
           $xml->writeCdata($_image);
           $xml->endElement();
