@@ -172,7 +172,15 @@ class OAI_Web_Service {
     $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
-      echo 'resumption';
+      $elm = explode('__', $_GET['resumptionToken']);
+      if (isset($elm[0]) && stripos($elm[0], 'offset', 0) !== false) {
+        $offset = (integer)str_ireplace('offset:', '', $elm[0]);
+      }
+      if (isset($elm[1]) && stripos($elm[1], 'metadataPrefix', 0) !== false) {
+        $metadataPrefix = str_ireplace('metadataPrefix:', '', $elm[1]);
+      }
+      // echo 'resumption';
+      /*
       parse_str($_GET['resumptionToken'], $resumptionToken);
       if (isset($resumptionToken['offset'])) {
         $offset = (integer)$resumptionToken['offset'];
@@ -180,6 +188,7 @@ class OAI_Web_Service {
       if (isset($resumptionToken['metadataPrefix'])) {
         $metadataPrefix = $resumptionToken['metadataPrefix'];
       }
+      */
     } else {
       if (isset($_GET['offset'])) {
         $offset = (integer)$_GET['offset'];
@@ -222,7 +231,7 @@ class OAI_Web_Service {
     if ($completeListSize > $sysconf['OAI']['ListRecords']['RecordPerSet']) {
       $next_offset = $offset+$sysconf['OAI']['ListRecords']['RecordPerSet'];
       if ($next_offset < $completeListSize) {
-        echo '<resumptionToken completeListSize="'.$completeListSize.'">'.urlencode("offset=$next_offset&metadataPrefix=$metadataPrefix").'</resumptionToken>'."\n";
+        echo '<resumptionToken completeListSize="'.$completeListSize.'">offset:'.$next_offset.'__metadataPrefix:'.$metadataPrefix.'</resumptionToken>'."\n";
       }
     }
 
