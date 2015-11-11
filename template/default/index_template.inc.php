@@ -181,7 +181,7 @@ include "partials/nav.php";
     ============================================= -->
     <div class="s-main-search animated fadeInUp delay1">
       <form action="index.php" method="get" autocomplete="off">
-        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCHING'); ?></h1>
+        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCH'); ?></h1>
         <div class="marquee down">
           <p class="s-search-info">
           <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
