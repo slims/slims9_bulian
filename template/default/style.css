@@ -1045,6 +1045,9 @@ keyframes coverShake 100% {
   letter-spacing: 4px;
   text-transform: uppercase;
 }
+.label-important {
+  background-color: #f00;
+}
 .detailLink {
   background-color: #f2f2f2;
   color: #000;
@@ -1985,7 +1988,7 @@ keyframes coverUp 100% {
 .memberButton,
 .s-main-content .col-lg-4 a,
 .s-detail .btn,
-.xmlResultLink, .jsonResultLink {
+.xmlResultLink {
   border-radius: 0;
   border: none;
   background-color: #282828;
@@ -1997,9 +2000,6 @@ keyframes coverUp 100% {
   padding: 10px 29px;
   -webkit-transition: background-color 500ms ease;
   transition: background-color 500ms ease;
-}
-.jsonResultLink {
-  background-color: #f00 !important;
 }
 #loginButton:hover,
 .memberButton a:hover,
