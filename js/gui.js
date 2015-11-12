@@ -371,7 +371,7 @@ $('document').ready(function() {
     // report filter
     $('#filterForm').children('.divRow:gt(0)').wrapAll('<div class="hiddenFilter"></div>');
     var hiddenFilter = $('.hiddenFilter').hide();
-    $('[name=moreFilter]').toggle(function() { hiddenFilter.fadeIn(); }, function() { hiddenFilter.hide(); });
+    $('[name=moreFilter]').bind('click', function() { hiddenFilter.toggle('fast'); });
     // tooltip
 		if ($.tooltipsy) {
       $('input[title], textarea[title]').tooltipsy({
