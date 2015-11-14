@@ -483,6 +483,42 @@ $sysconf['OAI']['MetadataFormats']['Dublin Core'] = array(
 // Search clustering
 $sysconf['enable_search_clustering'] = true;
 
+// comment
+$sysconf['comment']['enable'] =  true;
+
+// social apps sharing
+$sysconf['social_shares'] = true;
+
+// social media for user and member
+$sysconf['social']['fb'] = 'Facebook';
+$sysconf['social']['tw'] = 'Twitter';
+$sysconf['social']['li'] = 'LinkedIn';
+$sysconf['social']['rd'] = 'Reddit';
+$sysconf['social']['pn'] = 'Pinterest';
+$sysconf['social']['gp'] = 'Google Plus+';
+$sysconf['social']['yt'] = 'YouTube';
+$sysconf['social']['bl'] = 'Blog';
+$sysconf['social']['ym'] = 'Yahoo! Messenger';
+
+/* CHATTING SYSTEM */
+$sysconf['chat_system']['enabled']    	= true;
+$sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
+$sysconf['chat_system']['opac']       	= true;
+$sysconf['chat_system']['librarian']  	= true;
+$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['server_port']  = 9300;
+
+/* NEWS */
+$sysconf['news']['num_each_page'] = 10;
+
+/* LIBRARY MAP COORDINATES */
+$sysconf['location']['lat'] = -7.977000;
+$sysconf['location']['long'] = 112.634025;
+
+/* CHART */
+$sysconf['chart']['mode'] = 'chartjs'; // plot or chartjs. default is plot
+$sysconf['admin_home']['mode'] = 'dashboard'; // set as 'default' or 'dashboard' mode
+
 // check if session is auto started and then destroy it
 if ($is_auto = @ini_get('session.auto_start')) { define('SESSION_AUTO_STARTED', $is_auto); }
 if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
@@ -576,42 +612,10 @@ $sysconf['authority_level'][8] = __('Illustrator');
 $sysconf['authority_level'][9] = __('Creator');
 $sysconf['authority_level'][10] = __('Contributor');
 
-// comment
-$sysconf['comment']['enable'] =  true;
-
-// social apps sharing
-$sysconf['social_shares'] = true;
-
 // system user type
 $sysconf['system_user_type'][1] = __('Librarian');
 $sysconf['system_user_type'][2] = __('Senior Librarian');
 $sysconf['system_user_type'][3] = __('Library Staff');
-
-// social media for user and member
-$sysconf['social']['fb'] = 'Facebook';
-$sysconf['social']['tw'] = 'Twitter';
-$sysconf['social']['li'] = 'LinkedIn';
-$sysconf['social']['rd'] = 'Reddit';
-$sysconf['social']['pn'] = 'Pinterest';
-$sysconf['social']['gp'] = 'Google Plus+';
-$sysconf['social']['yt'] = 'YouTube';
-$sysconf['social']['bl'] = 'Blog';
-$sysconf['social']['ym'] = 'Yahoo! Messenger';
-
-/* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    	= true;
-$sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
-$sysconf['chat_system']['opac']       	= true;
-$sysconf['chat_system']['librarian']  	= true;
-$sysconf['chat_system']['server']  		 = '127.0.0.1';
-$sysconf['chat_system']['server_port']  = 9300;
-
-/* NEWS */
-$sysconf['news']['num_each_page'] = 10;
-
-/* LIBRARY MAP COORDINATES */
-$sysconf['location']['lat'] = -7.977000;
-$sysconf['location']['long'] = 112.634025;
 
 // redirect to mobile template on mobile mode
 if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
@@ -621,7 +625,4 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
   $sysconf['enable_xml_result'] = false;
 }
 
-/* CHART */
-$sysconf['chart']['mode'] = 'chartjs'; // plot or chartjs. default is plot
-$sysconf['admin_home']['mode'] = 'dashboard'; // set as 'default' or 'dashboard' mode
 
