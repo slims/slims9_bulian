@@ -130,11 +130,12 @@ ob_start();
 <script type="text/javascript">
 $('.btn-select-shortcuts').bind('click', function (e) {
     $('#shortcuts-options').find('option:selected').clone().appendTo('#selected-shortcuts');
-    $('#selected-shortcuts').find('option').attr('selected', 'selected');
+    $('#selected-shortcuts').find('option').prop('selected', true);
 });
 
 $('.btn-remove-shortcuts').bind('click', function (e) {
     $('#selected-shortcuts').find('option:selected').remove();
+    $('#selected-shortcuts').find('option').prop('selected', true);
 });
 </script>
 <?php

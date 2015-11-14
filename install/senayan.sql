@@ -40,17 +40,17 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `collation` varchar(50) collate utf8_unicode_ci default NULL,
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
-  `language_id` char(5) collate utf8_unicode_ci default \'en\',
+  `language_id` char(5) collate utf8_unicode_ci default 'en',
   `source` varchar(3) collate utf8_unicode_ci default NULL,
   `publish_place_id` int(11) default NULL,
   `classification` varchar(40) collate utf8_unicode_ci default NULL,
   `notes` text collate utf8_unicode_ci,
   `image` varchar(100) collate utf8_unicode_ci default NULL,
   `file_att` varchar(255) collate utf8_unicode_ci default NULL,
-  `opac_hide` smallint(1) default \'0\',
-  `promoted` smallint(1) default \'0\',
+  `opac_hide` smallint(1) default 0,
+  `promoted` smallint(1) default 0,
   `labels` text collate utf8_unicode_ci NULL,
-  `frequency_id` int(11) NOT NULL default \'0\',
+  `frequency_id` int(11) NOT NULL default 0,
   `spec_detail_info` text collate utf8_unicode_ci,
   `content_type_id` int(11) default NULL,
   `media_type_id` int(11) default NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `biblio`
