@@ -36,7 +36,12 @@ class Content
     public static function createSummary($text, $max_chars = 300)
     {
         $summary = strip_tags($text);
-        $summary = substr($summary, 0, $max_chars);
+        // $summary = substr($summary, 0, $max_chars);
+
+        // making sure substr finishes on a word
+        if (preg_match('/^.{1,'.$max_chars.'}\b/s', $summary, $match)) {
+            $summary= $match[0];
+        }
         
         return $summary;
     }
