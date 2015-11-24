@@ -1,0 +1,85 @@
+.button,
+.biblioMarkFormAction input,
+#loginButton,
+.memberButton,
+.homeButton,
+.loginButton,
+.xmlResultLink,
+.jsonResultLink,
+.btn,
+.slims-button {
+    margin-top: 8px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+
+    @include box-shadow(0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));
+
+    &.slims-button--flat {
+        box-shadow: none !important;
+        background-color: transparent;
+
+        &:hover {
+            background-color: #eee;
+        }
+
+        &.slims-button--default {
+            color: #333;
+        }
+
+        &.slims-button--blue {
+            color: #2196f3;
+        }
+
+        &.slims-button--red {
+            color: #f44336;
+        }
+    }
+
+    &.slims-button--circle {
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 24px;
+        line-height: 32px;
+        text-align: center;
+    }
+}
+
+.xmlResultLink,
+.jsonResultLink {
+    box-shadow: none;
+    background-color: transparent;
+    color: #2196f3;
+    margin-top: 8px;
+    &:hover {
+        background-color: #eee;
+    }
+}
+
+.homeButton,
+.slims-button--default {
+    background-color: #fff;
+    color: #333;
+}
+
+.button,
+.biblioMarkFormAction input,
+.memberButton,
+.loginButton,
+.s-chat-content .btn,
+.slims-button--blue {
+    background-color: #2196f3;
+    color: #fff;
+}
+
+#loginButton,
+.slims-button--red {
+    background-color: #f44336;
+    color: #fff;
+}

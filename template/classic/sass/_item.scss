@@ -1,0 +1,103 @@
+
+/*items*/
+.slims-biblio-list {
+    .slims-row {
+        margin-right: -16px;
+        margin-left: -16px;
+        .item {
+            padding: 16px;
+        }
+    }
+}
+.item {
+    padding: 8px;
+    
+    .cover-list {
+        float: left;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 64px;
+        height: 64px;
+        img {
+            width: 100%;
+            margin-top: -8px;
+        }
+    }
+    .detail-list {
+        float: left;
+        padding-left: 16px;
+        width: calc(100% - 64px);
+
+        h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.2;
+            a{
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+        .author {
+            font-style: italic;
+            padding-bottom: 8px;
+        }
+        .notes {
+            font-size: 12px;
+        }
+
+        .customField {
+            b {
+                width: 150px;
+                display: inline-block;
+            }
+        }
+    }
+    .subItem {
+        padding: 16px 0;
+    }
+    .share-buttons {
+        list-style: none;
+        li {
+            display: inline-block;
+        }
+    }
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+
+    .highlight {
+        color: #f44336;
+        background-color: #ccc;
+        border-radius: 1px;
+        padding: 0 1px;
+    }
+}
+
+.biblioPaging {
+    padding: 16px;
+    background-color: #f3f3f3;
+    margin-left: -16px;
+    margin-right: -16px;
+    .pagingList {
+        display: table;
+        a,b {
+            display: inline-block;
+            padding: 8px;
+            margin: 0;
+            // float: left;
+            border-radius: 2px;
+            text-decoration: none;
+            @include box-shadow(0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));
+        }
+        a {
+            background-color: #fff;
+            color: #757575;
+        }
+        b {
+            background-color: #2196f3;
+            color: #fff;
+        }
+    }
+}
