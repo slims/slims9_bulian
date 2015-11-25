@@ -117,17 +117,17 @@ if (($is_repaired) && !isset($_POST['do_repair'])) {
         <input type="submit" value="'.__('Click Here To Repaire The Tables').'" class="button btn btn-block btn-default">
         </form>';
 }
-echo '<div class="message">';
-echo '<ul>';
 
 // if there any warnings
 if ($warnings) {
+echo '<div class="message">';
+echo '<ul>';
     foreach ($warnings as $warning_msg) {
         echo '<li>'.$warning_msg.'</li>';
     }
-}
 echo '</ul>';
 echo '</div>';
+}
 
 // admin page content
 if($sysconf['admin_home']['mode'] == 'default') {
