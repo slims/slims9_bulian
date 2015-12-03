@@ -1,6 +1,7 @@
 SENAYAN 3 Stable Branch
 SLiMS 5
 SLiMS 7
+SLiMS 8
 Changes Log
 
 Developers :
@@ -8,11 +9,15 @@ Hendro Wicaksono (hendrowicaksono@yahoo.com, hendrowicaksono@gmail.com)
 Arie Nugraha (dicarve@yahoo.com, dicarve@gmail.com)
 Wardiyono (wynerst@gmail.com)
 Purwoko (purgeologi@yahoo.com, tamanjiwa@gmail.com)
-Sulfan Zayd (sulfan@gmail.com)
 Arif Syamsudin (buitenzorg812@yahoo.com, buitenzorg812@gmail.com)
 Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)
 Eddy Subratha (eddy.subratha@gmail.com)
 Indra Sutriadi (indra.sutriadi@gmail.com)
+Widianto Nugroho (wnugroho@gmail.com)
+Waris Agung Widodo (idoalit@gmail.com, ido.alit@gmail.com)
+
+Past Developers:
+Sulfan Zayd (sulfan@gmail.com, sulfan.zayd@gmail.com)
 
 Localisation contributors :
 Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
@@ -25,6 +30,25 @@ Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
 Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 8 (Akasia)
+========================================================================
+Added : New editor in content menu (bye bye tinymce)
+Added : Build-in chat
+Added : New lightweight and classic template
+Added : Citation style for each bibliographic record in OPAC
+Added : shortcut settings implemented
+Added : Vocabulary Control by Ido Alit (Waris Agung Widodo)
+Added : RDA Content, Media and Carrier type input on Bibliography form
+Added : Dashboard menu for admin
+Update : Optimizing content menu to make a simple cms, delivering news from your library
+Update : Re-modelled installer page 
+Update : New method in upgrade version within installer page
+Update : MARC Export for multiple records
+Update : biblio record detail now available on JSON-LD format
+Update : schema.org and RDFa microformat data on biblio record detail
+Update : schema.org and RDFa microformat data on OPAC result list
+Fixed : installer error because of SQL syntax in senayan.sql.php
 
 SLiMS 7 (Cendana)
 ========================================================================
