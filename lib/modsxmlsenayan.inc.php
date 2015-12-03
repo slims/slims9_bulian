@@ -84,6 +84,9 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
       $data = array();
 
       $data['id'] = (string)$record['ID'];
+      if (!$data['id']) {
+        $data['id'] = (string)$record['id'];
+      }
       # authors
       $data['authors'] = array();
 

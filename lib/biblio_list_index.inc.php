@@ -81,7 +81,7 @@ class biblio_list extends biblio_list_model
     $_add_sql_str = ' WHERE';
     // main search criteria
     if ($this->criteria) {
-      $_add_sql_str .= ' ('.$this->criteria['sql_criteria'].') ';
+      $_add_sql_str .= ' ('.$this->criteria['sql_criteria'].') AND `index`.`opac_hide`=0 ';
     } else {
       $_add_sql_str .= ' `index`.`opac_hide`=0';
 	  }

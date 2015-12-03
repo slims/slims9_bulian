@@ -170,11 +170,15 @@ class circulation extends member
             // check if loan rules are ignored
             if (!defined('IGNORE_LOAN_RULES')) {
                 // check if this item is being reserved by other member
-                $_resv_q = $this->obj_db->query("SELECT l.loan_id FROM reserve AS rs
-                    INNER JOIN loan AS l ON rs.item_code=l.item_code
-                    WHERE rs.item_code='$str_item_code' AND rs.member_id!='".$_SESSION['memberID']."'");
+                $_resv_q = $this->obj_db->query("SELECT * FROM reserve AS rs
+                    WHERE rs.item_code='$str_item_code' AND rs.member_id<>'".$_SESSION['memberID']."'");
                 if ($_resv_q->num_rows > 0) {
-                    return ITEM_RESERVED;
+                    $_resv2_q = $this->obj_db->query("SELECT * FROM reserve AS rs
+                        WHERE rs.item_code='$str_item_code' ORDER BY reserve_date ASC LIMIT 1");
+                    $_resv2_d = $_resv2_q->fetch_assoc();
+                    if ($_resv2_d['member_id'] != $_SESSION['memberID']) {
+                        return ITEM_RESERVED;    
+                    }
                 }
             }
             // loan date
