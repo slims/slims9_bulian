@@ -60,8 +60,9 @@ class utility
     {
       $_random = '';
       $_salt = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $_saltlength = strlen($_salt);
       for ($r = 0; $r < $int_num_string; $r++) {
-        $_random .= $_salt[mt_srand(strlen($_salt))];
+        $_random .= $_salt[rand(0, $_saltlength - 1)];
       }
 
       return $_random;
