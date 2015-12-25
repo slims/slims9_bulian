@@ -79,7 +79,8 @@ if (isset($_SESSION['barcodes'])) {
       $html_str .= '<div style="clear: both;">';
       foreach ($barcode_rows as $barcode) {
         $html_str .= '<div class="labelStyle">';
-        $html_str .= '<img src="'.SWB.'images/barcodes/'.str_replace(array(' '), '_', $barcode).'.png" style="width: 90%" border="0" />';
+        //~ $html_str .= '<img src="'.SWB.'images/barcodes/'.str_replace(array(' '), '_', $barcode).'.png" style="width: 90%" border="0" />';
+        $html_str .= '<img src="'.SWB.'images/barcodes/'.urlencode(urlencode($barcode)).'.png" style="width: 90%" border="0" />';
         $html_str .= '</div>';
       }
 

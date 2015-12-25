@@ -180,7 +180,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         $html_str .= substr($barcode[0], 0, $sysconf['print']['barcode']['barcode_cut_title']).'...';
       } else { $html_str .= $barcode[0]; }
       $html_str .= '</div>';
-      $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.str_replace(array(' '), '_', $barcode[1]).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
+      //~ $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.str_replace(array(' '), '_', $barcode[1]).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
+      $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.urlencode(urlencode($barcode[1])).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
       $html_str .= '</div>';
       $html_str .= '</td>';
     }

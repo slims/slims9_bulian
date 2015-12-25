@@ -118,7 +118,7 @@ if ( ! isset($get->scale) OR (isset($get->scale) AND ! in_array($get->scale, $al
 	$get->scale = 2;
 
 // http vars
-$code = isset($get->code) ? trim($get->code) : '1234567890';
+$code = isset($get->code) ? urlencode(trim($get->code)) : '1234567890';
 if (get_magic_quotes_gpc())
   $code=stripslashes($code);
 
@@ -138,7 +138,7 @@ if ($sysconf['zend_barcode_engine'] === true) {
   
   $file_name = '../../images/barcodes/' . $code . '.' . $ext;
   
-  $options = array('text' => $code);
+  $options = array('text' => urldecode($code));
   //$options['barHeight'] = 50;
   //$options['barThickWidth'] = 3;
   //$options['barThinWidth'] = 1;
