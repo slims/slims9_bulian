@@ -43,6 +43,30 @@ require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 require MDLBS.'membership/member_base_lib.inc.php';
 require MDLBS.'circulation/circulation_base_lib.inc.php';
 
+function visitOnLoan($member_id)
+{
+    global $dbs;
+    $now = date('Y-m-d');
+    // check if already checkin
+    $query = $dbs->query('SELECT visitor_id FROM visitor_count WHERE member_id=\''.$member_id.'\' AND checkin_date LIKE \''.$now.'%\'');
+    if ($query->num_rows < 1) {
+        // get data
+        $mquery = $dbs->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
+        $mdata = $mquery->fetch_row();
+        $member_name = $mdata[0];
+        $institution = $mdata[1];
+        // insert visit
+        $checkin_date  = date('Y-m-d H:i:s');
+        $insert = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$institution', '$checkin_date')");
+        if (!$insert) {
+            utility::jsAlert(__('ERROR! Can\'t insert visitor counter data'));
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // transaction is finished
 if (isset($_POST['finish'])) {
     // create circulation object
@@ -57,6 +81,8 @@ if (isset($_POST['finish'])) {
         echo 'alert(\''.__('ERROR! Loan data can\'t be saved to database').'\');';
         echo '</script>';
     } else {
+        // insert visitor log
+        visitOnLoan($memberID);
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', $_SESSION['realname'].' finish circulation transaction with member ('.$memberID.')');
         // send message
