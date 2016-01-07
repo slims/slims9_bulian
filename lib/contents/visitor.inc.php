@@ -28,9 +28,13 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+// load settings from database
+utility::loadSettings($dbs);
+
 $allowed_counter_ip = array('127.0.0.1');
 $remote_addr = $_SERVER['REMOTE_ADDR'];
 $confirmation = 0;
+$limit_time_visit = $sysconf['time_visitor_limitation'];
 
 foreach ($allowed_counter_ip as $ip) {
 // change wildcard
@@ -48,6 +52,7 @@ if (!$confirmation) {
 ob_start();
 
 define('INSTITUTION_EMPTY', 11);
+define('ALREADY_CHECKIN', 12);
 
 if (isset($_POST['counter'])) {
    if (trim($_POST['memberID']) == '') {
@@ -58,12 +63,41 @@ if (isset($_POST['counter'])) {
    $expire = 0;
   // sleep for a while
   sleep(1);
+
+  /**
+  * check if already checkin
+  */
+  function checkVisit($str_member_ID, $ismember = true)
+  {
+    global $dbs, $limit_time_visit;
+    if ($ismember) {
+      $criteria = 'member_id';
+    } else {
+      $criteria = 'member_name';
+    }
+
+    $date = date('Y-m-d');
+
+    $_q = $dbs->query('SELECT checkin_date FROM visitor_count WHERE '.$criteria.'=\''.$str_member_ID.'\' ORDER BY checkin_date DESC LIMIT 1');
+    if ($_q->num_rows > 0) {
+      $_d = $_q->fetch_row();
+      $time = new DateTime($_d[0]);
+      $time->add(new DateInterval('PT'.$limit_time_visit.'M'));
+      $timelimit = $time->format('Y-m-d H:i:s');
+      $now = date('Y-m-d H:i:s');
+      if ($now < $timelimit) {
+        return true;
+      }
+    }
+
+    return false;
+  }
   
   /**
   * Insert counter data to database
   */
   function setCounter($str_member_ID) {
-    global $dbs, $member_name, $photo, $expire;
+    global $dbs, $member_name, $photo, $expire, $sysconf;
     // check if ID exists
     $str_member_ID = $dbs->escape_string($str_member_ID);
     $_q = $dbs->query("SELECT member_id,member_name,member_image,inst_name, IF(TO_DAYS('".date('Y-m-d')."')>TO_DAYS(expire_date), 1, 0) AS is_expire FROM member WHERE member_id='$str_member_ID'");
@@ -80,7 +114,19 @@ if (isset($_POST['counter'])) {
         $_institution   = $dbs->escape_string(trim($_d['inst_name']))?$dbs->escape_string(trim($_d['inst_name'])):null;
         
         $_checkin_date  = date('Y-m-d H:i:s');
-        $_i             = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$_institution', '$_checkin_date')");
+        $_checkin_sql   = "INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$_institution', '$_checkin_date')";
+        
+        // limitation
+        if ($sysconf['enable_visitor_limitation']) {
+          $already_checkin = checkVisit($member_id, true);
+          if ($already_checkin) {
+            return ALREADY_CHECKIN;
+          } else {
+            $_i = $dbs->query($_checkin_sql);
+          }
+        } else {
+          $_i = $dbs->query($_checkin_sql);
+        }
     } else {
     // non member
         $_d = $_q->fetch_assoc();
@@ -91,7 +137,18 @@ if (isset($_POST['counter'])) {
         if (!$_institution) {
             return INSTITUTION_EMPTY;
         } else {
-            $_i = $dbs->query("INSERT INTO visitor_count (member_name, institution, checkin_date) VALUES ('$member_name', '$_institution', '$_checkin_date')");
+          $_checkin_sql = "INSERT INTO visitor_count (member_name, institution, checkin_date) VALUES ('$member_name', '$_institution', '$_checkin_date')";
+          // limitation
+          if ($sysconf['enable_visitor_limitation']) {
+            $already_checkin = checkVisit($member_name, false);
+            if ($already_checkin) {
+              return ALREADY_CHECKIN;
+            } else {
+              $_i = $dbs->query($_checkin_sql);
+            }
+          } else {
+            $_i = $dbs->query($_checkin_sql);
+          }
         }
     }
     return true;
@@ -105,6 +162,8 @@ if (isset($_POST['counter'])) {
     if ($expire) {
       echo '<div class="error visitor-error">'.__('Your membership already EXPIRED, please renew/extend your membership immediately').'</div>';
     }
+  } else if ($counter === ALREADY_CHECKIN) {
+    echo __('Welcome back').' '.$member_name.'.';
   } else if ($counter === INSTITUTION_EMPTY) {
     echo __('Sorry, Please fill institution field if you are not library member');
   } else {

@@ -145,6 +145,14 @@ if (isset($_POST['updateData'])) {
     // barcode encoding
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['barcode_encoding'])).'\' WHERE setting_name=\'barcode_encoding\'');
 
+    // visitor limitation
+    $visitor_limitation = $_POST['enable_visitor_limitation'];
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($visitor_limitation)).'\' WHERE setting_name=\'enable_visitor_limitation\'');
+
+    // time limitation
+    $time_limit = intval($_POST['time_visitor_limitation']) >= 0?$_POST['time_visitor_limitation']:60;
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($time_limit)).'\' WHERE setting_name=\'time_visitor_limitation\'');
+
     // spellchecker
     $spellchecker_enabled = $_POST['spellchecker_enabled'] == '1'?true:false;
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
@@ -281,6 +289,15 @@ $form->addTextField('text', 'session_timeout', __('Session Login Timeout'), $sys
 
 // barcode encoding
 $form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encoding, $sysconf['barcode_encoding'] );
+
+// enable visitor limitation
+$options = null;
+$options[] = array('0', __('Disable'));
+$options[] = array('1', __('Enable'));
+$form->addSelectList('enable_visitor_limitation', __('Visitor Limitation'), $options, $sysconf['enable_visitor_limitation']?'1':'0');
+
+// time visitor limitation
+$form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;"');
 
 // print out the object
 echo $form->printOut();
