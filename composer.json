@@ -1,6 +1,9 @@
 {
     "name": "mucill/slims8_akasia",
     "description": "Senayan Library Managemetn System (SLiMS) version 8 Codename Akasia",
+    "keywords": ["slims", "senayan"],
+    "license": "GPL",
+    "type": "project",
     "require": {
         "php": ">=5.5.0",
         "mysql": "5.*"
