@@ -276,7 +276,7 @@ class simbio_datagrid extends simbio_table
                 $_edit_fields = array();
                 // check if checkbox array is included
                 if ($this->chbox_property) {
-                    $_del_chbox = '<input type="checkbox" name="'.$this->chbox_property[0].'[]" value="'.$this->grid_result_rows[$_row][0].'" id="cbRow'.$_row.'" />';
+                    $_del_chbox = '<input class="selected-row" type="checkbox" name="'.$this->chbox_property[0].'[]" value="'.$this->grid_result_rows[$_row][0].'" id="cbRow'.$_row.'" />';
                     $_edit_fields[] = $_del_chbox;
                 }
                 // check if edit link array is included
