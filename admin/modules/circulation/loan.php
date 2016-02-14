@@ -151,8 +151,8 @@ if (isset($_SESSION['memberID'])) {
 
             // check if manually changes loan and due date allowed
             if ($sysconf['allow_loan_date_change']) {
-                $loan_date = '<a href="#" title="'.__('Click To Change Loan Date').'" class="dateChange loan" data="'.$_loan_ID.'" id="loanDate'.$row.'">'.$temp_loan_list_d['loan_date'].'</a>';
-                $due_date = '<a href="#" title="'.__('Click To Change Due Date').'" class="dateChange due" data="'.$_loan_ID.'" id="dueDate'.$row.'">'.$temp_loan_list_d['due_date'].'</a>';
+                $loan_date = '<a href="#" title="'.__('Click To Change Loan Date').'" class="dateChange loan notAJAX" data="'.$_loan_ID.'" id="loanDate'.$row.'">'.$temp_loan_list_d['loan_date'].'</a>';
+                $due_date = '<a href="#" title="'.__('Click To Change Due Date').'" class="dateChange due notAJAX" data="'.$_loan_ID.'" id="dueDate'.$row.'">'.$temp_loan_list_d['due_date'].'</a>';
             } else {
                 $loan_date = $temp_loan_list_d['loan_date'];
                 $due_date = $temp_loan_list_d['due_date'];
