@@ -160,74 +160,79 @@ if($sysconf['admin_home']['mode'] == 'default') {
             ORDER BY 
                 loan_date";
 
-    // echo $sql_loan; //for debug purpose only
-    $set_date = $dbs->query($sql_date);
-    while ($transc_date = $set_date->fetch_object()) {
-        // set transaction date
-        $get_date .= '"'.$transc_date->loandate.'",';
+    // echo $sql_date; //for debug purpose only
+    $set_date       = $dbs->query($sql_date);
+    $get_loan       = 0;
+    $get_return     = 0;
+    $get_extends    = 0;
+    if($set_date->num_rows > 0 ) {
+        while ($transc_date = $set_date->fetch_object()) {
+            // set transaction date
+            $get_date .= '"'.$transc_date->loandate.'",';
 
-        // get latest loan
-        $sql_loan = 
-                "SELECT 
-                    COUNT(loan_date) AS countloan
-                FROM 
-                    loan
-                WHERE 
-                    loan_date = '".$transc_date->loan_date."' 
-                    AND is_lent = 1 
-                    AND renewed = 0
-                    AND is_return = 0
-                GROUP BY 
-                    loan_date";
+            // get latest loan
+            $sql_loan = 
+                    "SELECT 
+                        COUNT(loan_date) AS countloan
+                    FROM 
+                        loan
+                    WHERE 
+                        loan_date = '".$transc_date->loan_date."' 
+                        AND is_lent = 1 
+                        AND renewed = 0
+                        AND is_return = 0
+                    GROUP BY 
+                        loan_date";
 
-        $set_loan       = $dbs->query($sql_loan);
-        if($set_loan->num_rows > 0) {
-            $transc_loan    = $set_loan->fetch_object();
-            $get_loan      .= $transc_loan->countloan.',';            
-        } else {
-            $get_loan       = 0;
-        }
+            $set_loan       = $dbs->query($sql_loan);
+            if($set_loan->num_rows > 0) {
+                $transc_loan    = $set_loan->fetch_object();
+                $get_loan      .= $transc_loan->countloan.',';            
+            } else {
+                $get_loan       = 0;
+            }
 
-        // get latest return
-        $sql_return = 
-                "SELECT 
-                    COUNT(loan_date) AS countloan
-                FROM 
-                    loan
-                WHERE 
-                    loan_date = '".$transc_date->loan_date."' 
-                    AND is_lent = 1 
-                    AND renewed = 0
-                    AND is_return = 1
-                GROUP BY 
-                    loan_date";
+            // get latest return
+            $sql_return = 
+                    "SELECT 
+                        COUNT(loan_date) AS countloan
+                    FROM 
+                        loan
+                    WHERE 
+                        loan_date = '".$transc_date->loan_date."' 
+                        AND is_lent = 1 
+                        AND renewed = 0
+                        AND is_return = 1
+                    GROUP BY 
+                        loan_date";
 
-        $set_return       = $dbs->query($sql_return);                     
-        if($set_return->num_rows > 0) {
-            $transc_return    = $set_return->fetch_object();
-            $get_return      .= $transc_return->countloan.',';
-        } else {
-            $get_return       = 0;
-        }
+            $set_return       = $dbs->query($sql_return);                     
+            if($set_return->num_rows > 0) {
+                $transc_return    = $set_return->fetch_object();
+                $get_return      .= $transc_return->countloan.',';
+            } else {
+                $get_return       = 0;
+            }
 
-        // get latest extends
-        $sql_extends = 
-                "SELECT 
-                    COUNT(loan_date) AS countloan
-                FROM 
-                    loan
-                WHERE 
-                    loan_date = '".$transc_date->loan_date."' 
-                    AND is_lent     = 1 
-                    AND renewed     = 1
-                GROUP BY 
-                    loan_date";
-        $set_extends       = $dbs->query($sql_extends);   
-        if($set_extends->num_rows > 0) {              
-            $transc_extends    = $set_extends->fetch_object();
-            $get_extends      .= $transc_extends->countloan.',';
-        } else {
-            $get_extends       = 0;
+            // get latest extends
+            $sql_extends = 
+                    "SELECT 
+                        COUNT(loan_date) AS countloan
+                    FROM 
+                        loan
+                    WHERE 
+                        loan_date = '".$transc_date->loan_date."' 
+                        AND is_lent     = 1 
+                        AND renewed     = 1
+                    GROUP BY 
+                        loan_date";
+            $set_extends       = $dbs->query($sql_extends);   
+            if($set_extends->num_rows > 0) {              
+                $transc_extends    = $set_extends->fetch_object();
+                $get_extends      .= $transc_extends->countloan.',';
+            } else {
+                $get_extends       = 0;
+            }
         }
     }
     // return transaction date
