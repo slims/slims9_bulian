@@ -73,21 +73,30 @@ ob_start();
 ?>
 <script type="text/javascript">
   $(document).ready(function() {
-     $('#allRead').toggle(function(evt) {
-          evt.preventDefault();
-          $('input:checkbox.read').attr('checked', 'checked');
-      }, function(evt) {
-          evt.preventDefault();
-          $('input:checkbox.read').removeAttr('checked');
-      });
 
-     $('#allWrite').toggle(function(evt) {
-          evt.preventDefault();
-          $('input:checkbox.write').attr('checked', 'checked');
-      }, function(evt) {
-          evt.preventDefault();
-          $('input:checkbox.write').removeAttr('checked');
-      });
+   // function to toggle check input:checkbox element
+   var toggleChecked = function ($cls) {
+     var elm = $('input:checkbox.' + $cls);
+     var isChecked = elm.is(':checked');
+     if (isChecked) {
+      elm.prop('checked', false);
+     } else {
+      elm.prop('checked', true);
+     }
+   };
+
+   // toggle checked for all read rule
+   $('#allRead').click(function (e) {
+     e.preventDefault();
+     toggleChecked('read');
+   });
+
+   // toggle checked for all write rule
+   $('#allWrite').click(function (e) {
+     e.preventDefault();
+     toggleChecked('write');
+   });
+
   });
 </script>
 <?php
