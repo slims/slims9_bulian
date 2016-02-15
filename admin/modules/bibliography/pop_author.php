@@ -37,6 +37,12 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+// privileges checking
+$can_write = utility::havePrivilege('bibliography', 'w');
+if (!$can_write) {
+  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
 // page title
 $page_title = 'Authority List';
 // check for biblioID in url

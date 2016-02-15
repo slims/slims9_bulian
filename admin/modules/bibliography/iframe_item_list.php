@@ -30,12 +30,19 @@ define('DB_ACCESS', 'fa');
 require '../../../sysconfig.inc.php';
 // start the session
 require SB.'admin/default/session.inc.php';
+require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-bibliography');
+
+// privileges checking
+$can_write = utility::havePrivilege('bibliography', 'w');
+if (!$can_write) {
+  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
 
 // page title
 $page_title = 'Item List';
