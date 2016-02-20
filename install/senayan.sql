@@ -1,5 +1,5 @@
 -- SENAYAN Library Automation
--- Version 5 (Meranti)
+-- Version 8 (Akasia)
 -- Core database structure
 
 
