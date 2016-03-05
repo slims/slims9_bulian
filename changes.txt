@@ -31,6 +31,15 @@ Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 8.2 (Akasia)
+========================================================================
+Fixed  : Installation problem due to SLiMS version naming
+Update : Security access to some iframe scripts
+
+SLiMS 8.1 (Akasia)
+========================================================================
+Added : New theme for SLiMS 8 OPAC interface, lightweight and classic
+
 SLiMS 8 (Akasia)
 ========================================================================
 Added : New editor in content menu (bye bye tinymce)
