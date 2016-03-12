@@ -1,6 +1,13 @@
 "repositories": [
     {
     "type": "package",
+    "minimum-stability": "dev",
+    "author" : [
+        {
+            "name" : "Slims Developer Community",
+            "email" : "eddy.subratha@gmail.com"
+        }
+    ],
     "package" : {
         "name": "mucill/slims8_akasia",
         "version" : "dev-master",
