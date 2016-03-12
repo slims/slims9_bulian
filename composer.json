@@ -1,4 +1,3 @@
-"repositories": [
     {
     "type": "package",
     "minimum-stability": "dev",
@@ -21,4 +20,3 @@
     "keywords": ["slims", "akasia", "slims 8", "slims akasia", "slims 8 akasia"],
     "license": "GPL 3"
     }
-],
