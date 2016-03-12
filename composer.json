@@ -1,22 +1,14 @@
-    {
-    "type": "package",
-    "minimum-stability": "dev",
-    "author" : [
+{
+    "name": "mucill/slims8_akasia",
+    "description": "SENAYAN Library Management System (SLiMS) version 8 Codename Akasia",
+    "authors": [
         {
-            "name" : "Slims Developer Community",
-            "email" : "eddy.subratha@gmail.com"
+            "name": "Senayan Developer Community",
+            "email": "eddy.subratha@slims.web.id"
         }
     ],
-    "package" : {
-        "name": "mucill/slims8_akasia",
-        "version" : "dev-master",
-        "source" : {
-            "url" : "git://github.com/mucill/slims8_akasia.git",
-            "type" : "git",
-            "reference" : "master"
-        },
-    },
-    "description": "Senayan Library Managemetn System (SLiMS) version 8 Codename Akasia",
-    "keywords": ["slims", "akasia", "slims 8", "slims akasia", "slims 8 akasia"],
-    "license": "GPL 3"
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0"
     }
+}
