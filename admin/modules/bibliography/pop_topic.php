@@ -158,13 +158,11 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     </select>
 </div>
 <div class="popUpSubForm">
-<div class="row" style="overflow-y:scroll; max-height:170px; margin-bottom: 10px; padding-left: 55px;">
     <ul id="topicID">
         <li><?php echo __('Type to search for existing topics or to add a new one'); ?></li>
     </ul>
-</div>
-<?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
-<input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="popUpSubmit btn btn-primary" />
+    <?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
+    <input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="popUpSubmit btn btn-primary" />
 </div>
 </form>
 <script type="text/javascript">

@@ -2343,3 +2343,18 @@ table {
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
+
+#topicID {
+	list-style: none;
+	line-height: 2em;
+	margin: 15px 0;
+	padding:10px;
+	border: solid 1px #ddd;
+	min-height: 100px;
+	max-height: 110px;
+	overflow: scroll;
+}
+
+.popUpForm {
+	padding: 15px;
+}
