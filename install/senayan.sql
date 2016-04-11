@@ -1287,6 +1287,12 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (5, 'RT', 'Related Term'),
 (6, 'SA', 'See Also');
 
+CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
+  `topic_id` int(11) NOT NULL,
+`vocabolary_id` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
   `biblio_id` int(11) NOT NULL DEFAULT '0',
