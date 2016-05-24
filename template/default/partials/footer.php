@@ -4,7 +4,7 @@
   if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
     // query top book
     $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
-        promoted=1 ORDER BY last_update LIMIT 30');
+        promoted=1 ORDER BY last_update DESC LIMIT 30');
     if ($num_rows = $topbook->num_rows) :
     ?>
     <!-- Featured
@@ -28,7 +28,7 @@
                 <img itemprop="image" src="./template/default/img/book.png" alt="<?php echo $book['title'] ?>" />
               </a>
             </li>
-            <?php 
+            <?php
             endif;
           endwhile;
         ?>
@@ -39,7 +39,7 @@
     <?php endif; ?>
   <?php endif; ?>
 
-  <div class="s-footer-content container">  
+  <div class="s-footer-content container">
     <div class="row">
       <div class="col-lg-6 col-sm-3 col-xs-12">
         <div class="s-footer-tagline">

@@ -141,6 +141,12 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
+            <div class="divRowLabel"><?php echo __('Publish year'); ?></div>
+            <div class="divRowContent">
+            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'style="width: 50%"'); ?>
+            </div>
+        </div>
+        <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
             <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
         </div>
@@ -233,6 +239,10 @@ if (!$reportView) {
     if (isset($_GET['location']) AND !empty($_GET['location'])) {
         $location = $dbs->escape_string(trim($_GET['location']));
         $criteria .= ' AND i.location_id=\''.$location.'\'';
+    }
+    if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
+        $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
+        $criteria .= ' AND b.publish_year LIKE \'%'.$publish_year.'%\'';
     }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
