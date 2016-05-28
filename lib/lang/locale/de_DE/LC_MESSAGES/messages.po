@@ -172,7 +172,7 @@ msgstr "Sie sind derzeit angemeldet als "
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Sie wurden vom Bibliotheksmanagementsystem abgemeldet"
 
-#: admin/admin_template/default/function.php:55
+#: admin/admin_template/default/function.php:55 admin/default/submenu.php:21
 msgid "Shortcut"
 msgstr "Schnellzugriff"
 
@@ -237,10 +237,6 @@ msgstr "Sie sind nicht authorisiert diesen Bereich einzusehen"
 #: admin/default/session_check.inc.php:57
 msgid "Your Login Session has already timeout!"
 msgstr "Die Sitzungsdauer ihrer Anmeldung ist inzwischen abgelaufen!"
-
-#: admin/default/submenu.php:21
-msgid "Panel"
-msgstr "Schnellzugriff"
 
 #: admin/default/submenu.php:22
 msgid "Change User Profiles"
@@ -5412,6 +5408,9 @@ msgstr "Über SLiMS"
 #: template/lightweight/index_template.inc.php:194
 msgid "Put some keyword(s)..."
 msgstr ""
+
+#~ msgid "Panel"
+#~ msgstr "Schnellzugriff"
 
 #~ msgid ""
 #~ "Welcome To The Library Automation System, you are currently logged in as"
