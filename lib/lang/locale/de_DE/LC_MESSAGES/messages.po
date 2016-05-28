@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-28 17:40+0100\n"
-"PO-Revision-Date: 2016-05-28 22:39+0100\n"
-"Last-Translator: Tobias Zeumer <tobias.zeumer@tuhh.de>\n"
+"POT-Creation-Date: 2016-05-28 00:46+0200\n"
+"PO-Revision-Date: 2016-05-29 00:46+0200\n"
+"Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4976,6 +4976,10 @@ msgstr "Benutzername oder Passwort sind inkorrekt. ZUGRIFF VERWEIGERT"
 msgid "Your browser does not support Javascript or Javascript is disabled. Application won't run without Javascript!"
 msgstr "Ihr Browser unterstützt keine JavaScript oder die Unterstützung wurde deaktiviert. JavaScript ist für diese Anwendung erforderlich!"
 
+#: lib/contents/login.inc.php:150
+msgid "Username"
+msgstr "Benutzername"
+
 #: lib/contents/login.inc.php:175
 #: lib/contents/member.inc.php:262
 msgid "Login"
@@ -5033,7 +5037,7 @@ msgstr "Flascher Captcha-Code eingegeben. Bitte geben Sie ihn erneut ein."
 msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
 msgstr "Bitte geben Sie Ihre Mitgliedsnummer und das Passwort ein, das Ihnen von der Bibliothek mitgeteilt wurde. Sollten Sie Bibliotheksmitglied sein und noch kein Passwort haben, wenden Sie sich bitte an das Bibliotheksteam."
 
-#: lib/contents/member.inc.php:239
+#: lib/contents/login.inc.php:152 lib/contents/member.inc.php:239
 msgid "Password"
 msgstr "Passwort"
 
@@ -5394,6 +5398,11 @@ msgstr "Suchergebnis"
 #: template/default/index_template.inc.php:138
 msgid "Information"
 msgstr "Information"
+
+#: template/default/login_template.inc.php:84
+#: template/lightweight/login_template.inc.php:84
+msgid "Back To Home"
+msgstr "Zurück zur Startseite"
 
 #: template/default/partials/nav.php:13
 msgid "About SLiMS"
