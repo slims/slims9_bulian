@@ -18,7 +18,7 @@
  *
  */
 
-$menu[] = array('Header', __('Panel'));
+$menu[] = array('Header', __('Shortcut'));
 $menu['user-profile'] = array(__('Change User Profiles'), MWB.'system/app_user.php?changecurrent=true&action=detail', __('Change Current User Profiles and Password'));
 /*
 if (utility::havePrivilege('bibliography', 'r') AND utility::havePrivilege('bibliography', 'w')) {
