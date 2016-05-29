@@ -54,7 +54,7 @@ if (!is_file($imagefilename)) {
 }
 
 // Display error image if file exists, but can't be opened
-if (substr(decoct(fileperms($imagefilename)), -1, strlen(fileperms($imagefilename))) < 4 OR substr(decoct(fileperms($imagefilename)), -3,1) < 4) {
+if (!is_readable($imagefilename)) {
   header('Content-type: image/png');
   readfile('filecantbeopened.png');
   exit;
