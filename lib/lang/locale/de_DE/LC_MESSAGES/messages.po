@@ -5122,7 +5122,7 @@ msgstr "Anmeldung im Katalog für Bibliotheksmitglieder"
 
 #: lib/contents/member.inc.php:206
 msgid "Wrong Captcha Code entered, Please write the right code!"
-msgstr "Flascher Captcha-Code eingegeben. Bitte geben Sie ihn erneut ein."
+msgstr "Falscher Captcha-Code eingegeben. Bitte geben Sie ihn erneut ein."
 
 #: lib/contents/member.inc.php:209
 msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
