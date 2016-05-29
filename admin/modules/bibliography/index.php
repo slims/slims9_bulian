@@ -718,7 +718,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $checked = isset($arr_labels[$label_d['label_name']])?' checked':'';
     $url = isset($arr_labels[$label_d['label_name']])?$arr_labels[$label_d['label_name']]:'';
     $str_input .= '<div '
-    .'style="background: url('.SWB.IMG.'/labels/'.$label_d['label_image'].') left center no-repeat; padding-left: 30px; height: 45px;" class="'.$label_d['label_name'].'"> '
+    .'style="background: url('.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_d['label_image']).'&amp;width=24&amp;height=24) left center no-repeat; padding-left: 30px; height: 45px;" class="'.$label_d['label_name'].'"> '
     .'<input type="checkbox" name="labels[]" value="'.$label_d['label_name'].'"'.$checked.' /> '.$label_d['label_desc']
     .'<div>URL : <input type="text" title="Enter a website link/URL to make this label clickable" '
     .'name="label_urls['.$label_d['label_name'].']" size="50" maxlength="300" value="'.$url.'" /></div></div>';

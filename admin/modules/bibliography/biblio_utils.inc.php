@@ -144,7 +144,7 @@ function showTitleAuthors($obj_db, $array_data)
 	          $_label_d = $_label_q->fetch_row();
 	          $label_cache[$_label_d[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
 	      }
-	      $_output .= ' <img src="../images/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
+	      $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=24&amp;height=24" title="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
 	  }
 	}
   $_output .= '</div>';
