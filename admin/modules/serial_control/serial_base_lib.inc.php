@@ -133,7 +133,7 @@ class serial
         <script type="text/javascript">
         function confirmProcess(int_serial_id, int_kardex_id)
         {
-            var confirmBox = confirm('Are you sure to remove selected Kardex data?' + "\n" + 'Once deleted, it can\'t be restored!');
+            var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected Kardex data?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
             if (confirmBox) {
                 // set hidden element value
                 document.hiddenActionForm.serialID.value = int_serial_id;
@@ -153,7 +153,7 @@ class serial
             __('Note')));
 
         if ($_can_read AND $_can_write) {
-            $_add_link = '<span title="Add New Kardex" class="extendLink">&nbsp;</span>';
+            $_add_link = '<span title="' . __('Add New Kardex') . '" class="extendLink">&nbsp;</span>';
             $_date_exp = simbio_form_element::dateField('dateExpected[0]');
             $_date_rec = simbio_form_element::dateField('dateReceived[0]');
             $_seq_num = simbio_form_element::textField('text', 'seqNumber[0]', '', 'width: 100%;');

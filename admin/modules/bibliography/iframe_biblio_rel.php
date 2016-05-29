@@ -57,7 +57,7 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(int_biblio_id, int_item_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected title?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected title?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.bid.value = int_biblio_id;
@@ -105,7 +105,7 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_relation_d['rel_biblio_id'].')">Delete</a>';
+    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_relation_d['rel_biblio_id'].')">' . __('Delete') . '</a>';
     $title = $biblio_relation_d['title'];
     $publish_year = $biblio_relation_d['publish_year'];
     $edition = $biblio_relation_d['edition'];
@@ -130,7 +130,7 @@ if ($biblioID) {
     $row_class = 'alterCell2';
     foreach ($_SESSION['biblioToBiblio'] as $biblio_session) {
       // remove link
-      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_biblio_rel.php?removesess='.$biblio_session[0].'">Remove</a>';
+      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_biblio_rel.php?removesess='.$biblio_session[0].'">' . __('Remove') . '</a>';
 
       if ($biblio_session) {
           $title_q = $dbs->query("SELECT title, publish_year, edition FROM biblio
