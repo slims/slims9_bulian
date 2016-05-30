@@ -81,7 +81,7 @@ include "partials/meta.php"; ?>
       spellcheck      : "off"  
     });
 
-    $('.homeButton').val('Back To Home');
+    $('.homeButton').val('<?php echo __('Back To Home'); ?>');
 
     //If captcha available
     $('.captchaAdmin').parent().parent().attr('style','padding: 25px 20px;');

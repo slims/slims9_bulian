@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-28 17:40+0100\n"
-"PO-Revision-Date: 2016-05-28 22:39+0100\n"
-"Last-Translator: Tobias Zeumer <tobias.zeumer@tuhh.de>\n"
+"POT-Creation-Date: 2016-05-29 20:00+0200\n"
+"PO-Revision-Date: 2016-05-29 20:20+0200\n"
+"Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,6 +16,14 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_ngettext:1,2;_gettext\n"
 "X-Poedit-Basepath: ../../../../../\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: admin/AJAX_check_id.php:35
+msgid "ID Already exists! Please use another ID"
+msgstr "ID existiert bereits! Bitte benutzen Sie eine andere ID"
+
+#: admin/AJAX_check_id.php:38
+msgid "ID Available"
+msgstr "ID verfügbar"
 
 #: chatserver.php:25
 msgid "There isn't anyone else in the room."
@@ -172,7 +180,7 @@ msgstr "Sie sind derzeit angemeldet als "
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Sie wurden vom Bibliotheksmanagementsystem abgemeldet"
 
-#: admin/admin_template/default/function.php:55
+#: admin/admin_template/default/function.php:55 admin/default/submenu.php:21
 msgid "Shortcut"
 msgstr "Schnellzugriff"
 
@@ -237,10 +245,6 @@ msgstr "Sie sind nicht authorisiert diesen Bereich einzusehen"
 #: admin/default/session_check.inc.php:57
 msgid "Your Login Session has already timeout!"
 msgstr "Die Sitzungsdauer ihrer Anmeldung ist inzwischen abgelaufen!"
-
-#: admin/default/submenu.php:21
-msgid "Panel"
-msgstr "Schnellzugriff"
 
 #: admin/default/submenu.php:22
 msgid "Change User Profiles"
@@ -401,13 +405,53 @@ msgstr "Zahl der zu exportierenden Datensätze (0 für alle Datensätze)"
 msgid "Start From Record"
 msgstr "Beginnend von Datensatz"
 
+#: admin/modules/bibliography/iframe_attach.php:61
+msgid "Are you sure to remove the file attachment data?"
+msgstr "Sind Sie sicher, dass Sie den Dateianhang entfernen möchten?"
+
+#: admin/modules/bibliography/iframe_attach.php:64
+msgid "Do you also want to remove {filename} file from repository?"
+msgstr "Wollen Sie auch die Datei {filename} aus dem Repository entfernen?"
+
 #: admin/modules/bibliography/iframe_attach.php:83
 msgid "Attachment removed!"
 msgstr "Dateianhang entfernt!"
 
+#: admin/modules/bibliography/iframe_attach.php:102
+msgid "Attachment {filename} succesfully removed!"
+msgstr "Dateianhang {filename} wurde erfolgreich entfernt!"
+
+#: admin/modules/bibliography/iframe_attach.php:124
+#: admin/modules/bibliography/iframe_author.php:108
+#: admin/modules/bibliography/iframe_biblio_rel.php:108
+#: admin/modules/bibliography/iframe_item_list.php:124
+#: admin/modules/bibliography/iframe_topic.php:112
+msgid "Delete"
+msgstr "Löschen"
+
 #: admin/modules/bibliography/iframe_attach.php:127
 msgid "File Attachments"
 msgstr "Dateianhänge"
+
+#: admin/modules/bibliography/iframe_attach.php:127
+#: admin/modules/bibliography/iframe_item_list.php:123
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: admin/modules/bibliography/iframe_author.php:60
+msgid "Are you sure to remove selected author?"
+msgstr "Sind Sie sicher, dass Sie den ausgewählten Autor entfernen möchten?"
+
+#: admin/modules/bibliography/iframe_author.php:60
+#: admin/modules/bibliography/iframe_biblio_rel.php:60
+#: admin/modules/bibliography/iframe_item_list.php:61
+#: admin/modules/bibliography/iframe_topic.php:63
+#: admin/modules/master_file/iframe_vocabolary_control.php:27
+#: admin/modules/serial_control/serial_base_lib.inc.php:136
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+msgid "Once deleted, it can't be restored!"
+msgstr "Das löschen kann nicht rückgängig gemacht werden!"
 
 #: admin/modules/bibliography/iframe_author.php:77
 msgid "Author succesfully removed!"
@@ -417,6 +461,10 @@ msgstr "Autor erfolgreich entfernt!"
 msgid "Author removed!"
 msgstr "Autor entfernt!"
 
+#: admin/modules/bibliography/iframe_biblio_rel.php:60
+msgid "Are you sure to remove selected title?"
+msgstr "Sind Sie sicher, dass Sie den ausgewählten Titel entfernen möchten?"
+
 #: admin/modules/bibliography/iframe_biblio_rel.php:77
 msgid "Biblio relation succesfully removed!"
 msgstr "Bibliographische Beziehung erfolgreich entfernt!"
@@ -424,6 +472,10 @@ msgstr "Bibliographische Beziehung erfolgreich entfernt!"
 #: admin/modules/bibliography/iframe_biblio_rel.php:88
 msgid "Biblio relation removed!"
 msgstr "Bibliographische Beziehung entfernt"
+
+#: admin/modules/bibliography/iframe_item_list.php:61
+msgid "Are you sure to remove selected item?"
+msgstr "Sind Sie sicher, dass Sie das ausgewählte Exemplar entfernen möchten?"
 
 #: admin/modules/bibliography/iframe_item_list.php:86
 #: admin/modules/bibliography/item.php:185
@@ -444,6 +496,21 @@ msgstr "Entfernung des Exemplars FEHLGESCHLAGEN!"
 #: admin/modules/bibliography/index.php:535
 msgid "Items/Copies"
 msgstr "Exemplare"
+
+#: admin/modules/bibliography/iframe_topic.php:63
+#: admin/modules/master_file/iframe_vocabolary_control.php:27
+msgid "Are you sure to remove selected topic?"
+msgstr ""
+"Sind Sie sicher, dass Sie das ausgewählte Schlagwort entfernen möchten?"
+
+#: admin/modules/bibliography/iframe_topic.php:80
+msgid "Topic removed!"
+msgstr "Schlagwort entfernt!"
+
+#: admin/modules/bibliography/iframe_topic.php:91
+#: admin/modules/master_file/iframe_vocabolary_control.php:44
+msgid "Topic succesfully removed!"
+msgstr "Schlagwort erfolgreich entfernt!"
 
 #: admin/modules/bibliography/import.php:61
 #: admin/modules/bibliography/item_import.php:54
@@ -1288,6 +1355,10 @@ msgstr "Neue Bibliographische Beziehung"
 msgid "Type to search for existing biblio data"
 msgstr "Tippen Sie einfach los um nach vorhandenen Daten zu suchen"
 
+#: admin/modules/bibliography/pop_topic.php:101
+msgid "Topic succesfully updated!"
+msgstr "Schlagwort erfolgreich aktualisiert!"
+
 #: admin/modules/bibliography/pop_topic.php:105
 msgid "Subject FAILED to Add. Please Contact System Administrator"
 msgstr "Hinzufügen des Schlagwortes FEHLGESCHLAGEN. Bitte kontaktieren Sie den Systemadministrator"
@@ -1303,6 +1374,14 @@ msgstr "Schlagwörter hinzufügen"
 #: admin/modules/bibliography/pop_topic.php:147
 msgid "Keyword"
 msgstr "Stichwort"
+
+#: admin/modules/bibliography/pop_topic.php:155
+msgid "Primary"
+msgstr "Primär"
+
+#: admin/modules/bibliography/pop_topic.php:156
+msgid "Additional"
+msgstr "Zusätzlich"
 
 #: admin/modules/bibliography/pop_topic.php:162
 msgid "Type to search for existing topics or to add a new one"
@@ -2602,6 +2681,10 @@ msgstr "Abbrechen"
 msgid "Add Vocabulary Control"
 msgstr "Neues kontrolliertes Vokabular"
 
+#: admin/modules/master_file/pop_vocabolary_control.php:272
+msgid "Enter Vocabulary"
+msgstr "Vokabular eingeben"
+
 #: admin/modules/master_file/pop_vocabolary_control.php:284
 msgid "Add Vocabulary"
 msgstr "Begriff hinzufügen"
@@ -3781,6 +3864,10 @@ msgstr "Kardex aktualisiert!"
 msgid "Kardex data deleted!"
 msgstr "Karde gelöscht!"
 
+#: admin/modules/serial_control/serial_base_lib.inc.php:136
+msgid "Are you sure to remove selected Kardex data?"
+msgstr ""
+
 #: admin/modules/serial_control/serial_base_lib.inc.php:151
 msgid "Date Expected"
 msgstr "Erwartet (Datum)"
@@ -3796,6 +3883,10 @@ msgstr "Fortlaufende Nummer"
 #: admin/modules/serial_control/serial_base_lib.inc.php:153
 msgid "Note"
 msgstr "Bemerkungen"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:156
+msgid "Add New Kardex"
+msgstr "Neuen Kardex hinzufügen"
 
 #: admin/modules/serial_control/serial_base_lib.inc.php:201
 msgid "Kardex Detail for subscription"
@@ -4976,6 +5067,10 @@ msgstr "Benutzername oder Passwort sind inkorrekt. ZUGRIFF VERWEIGERT"
 msgid "Your browser does not support Javascript or Javascript is disabled. Application won't run without Javascript!"
 msgstr "Ihr Browser unterstützt keine JavaScript oder die Unterstützung wurde deaktiviert. JavaScript ist für diese Anwendung erforderlich!"
 
+#: lib/contents/login.inc.php:150
+msgid "Username"
+msgstr "Benutzername"
+
 #: lib/contents/login.inc.php:175
 #: lib/contents/member.inc.php:262
 msgid "Login"
@@ -5027,13 +5122,13 @@ msgstr "Anmeldung im Katalog für Bibliotheksmitglieder"
 
 #: lib/contents/member.inc.php:206
 msgid "Wrong Captcha Code entered, Please write the right code!"
-msgstr "Flascher Captcha-Code eingegeben. Bitte geben Sie ihn erneut ein."
+msgstr "Falscher Captcha-Code eingegeben. Bitte geben Sie ihn erneut ein."
 
 #: lib/contents/member.inc.php:209
 msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
 msgstr "Bitte geben Sie Ihre Mitgliedsnummer und das Passwort ein, das Ihnen von der Bibliothek mitgeteilt wurde. Sollten Sie Bibliotheksmitglied sein und noch kein Passwort haben, wenden Sie sich bitte an das Bibliotheksteam."
 
-#: lib/contents/member.inc.php:239
+#: lib/contents/login.inc.php:152 lib/contents/member.inc.php:239
 msgid "Password"
 msgstr "Passwort"
 
@@ -5191,8 +5286,9 @@ msgid "DELETE"
 msgstr "LÖSCHEN"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:90
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
 msgid "EDIT"
-msgstr "EDIT"
+msgstr "BEARBEITEN"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:105
 msgid "Are You Sure Want to DELETE Selected Data?"
@@ -5230,6 +5326,11 @@ msgstr "Datum"
 #: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:98
 msgid "Delete Record"
 msgstr "Datensatz löschen"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+msgid "Are you sure to delete {recordTitle}?"
+msgstr "Sind Sie sicher, dass Sie {recordTitle} entfernen möchten?"
 
 #: simbio2/simbio_GUI/paging/simbio_paging.inc.php:118
 msgid "First Page"
@@ -5395,6 +5496,11 @@ msgstr "Suchergebnis"
 msgid "Information"
 msgstr "Information"
 
+#: template/default/login_template.inc.php:84
+#: template/lightweight/login_template.inc.php:84
+msgid "Back To Home"
+msgstr "Zurück zur Startseite"
+
 #: template/default/partials/nav.php:13
 msgid "About SLiMS"
 msgstr "Über SLiMS"
@@ -5403,6 +5509,9 @@ msgstr "Über SLiMS"
 #: template/lightweight/index_template.inc.php:194
 msgid "Put some keyword(s)..."
 msgstr ""
+
+#~ msgid "Panel"
+#~ msgstr "Schnellzugriff"
 
 #~ msgid ""
 #~ "Welcome To The Library Automation System, you are currently logged in as"
@@ -5462,8 +5571,6 @@ msgstr ""
 #~ "Bitte gestatten Sie den Schreibzugriff (eingeschlossen der darunter "
 #~ "liegenden Verzeichnisse) indem Sie die entsprechende Berechtigung setzen, "
 #~ "da die Anwendung andernfalls keine PDF-Dateien erstellen kann."
-#~ msgid "Add New Kardex"
-#~ msgstr "Neuen Kardex hinzufügen"
 #~ msgid "cant be deleted because still have"
 #~ msgstr "können nicht geklöscht werden,"
 #~ msgid "Click for detail or edit this Record"

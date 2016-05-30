@@ -24,7 +24,7 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(topic_id, vocabolary_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected topic?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected topic?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.tid.value = topic_id;
@@ -41,7 +41,7 @@ if (isset($_POST['remove'])) {
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
   echo '<script type="text/javascript">';
-  echo 'alert(\'Topic succesfully removed!\');';
+  echo 'alert(\''. addslashes(__('Topic succesfully removed!')) . '\');';
   echo 'location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';';
   echo '</script>';
 }
