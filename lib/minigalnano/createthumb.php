@@ -94,6 +94,13 @@ $target = imagecreatetruecolor($res_width,$res_height);
 if (preg_match("/.jpg$/i", $imagefilename)) $source = imagecreatefromjpeg($imagefilename);
 if (preg_match("/.gif$/i", $imagefilename)) $source = imagecreatefromgif($imagefilename);
 if (preg_match("/.png$/i", $imagefilename)) $source = imagecreatefrompng($imagefilename);
+
+// preserve transparency
+imagealphablending($target, false);
+imagesavealpha($target,true);
+$transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
+imagefilledrectangle($target, 0, 0, $res_width, $res_height, $transparent);
+
 imagecopyresampled($target,$source,0,0,$xoord,$yoord,$res_width,$res_height,$width,$height);
 imagedestroy($source);
 

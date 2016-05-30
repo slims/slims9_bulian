@@ -66,22 +66,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $image_upload = new simbio_file_upload();
             $image_upload->setAllowableFormat($sysconf['allowed_images']);
             $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
-            $image_upload->setUploadDir(IMAGES_BASE_DIR.'labels');
+            $image_upload->setUploadDir(IMGBS.'labels');
             // upload
             $img_upload_status = $image_upload->doUpload('labelImage', $data['label_name']);
             if ($img_upload_status == UPLOAD_SUCCESS) {
-              $data['label_image'] = $dbs->escape_string($image_upload->new_filename.'.png');
-              // resize the image
-              if (function_exists('imagecopyresampled')) {
-                // we use phpthumb class to resize image
-                include LIB.'phpthumb/ThumbLib.inc.php';
-                // create phpthumb object
-                $src = IMAGES_BASE_DIR.'labels/'.$image_upload->new_filename;
-                $phpthumb = PhpThumbFactory::create($src);
-                $w = $h = 24;
-                $phpthumb->resize($w, $h);
-                $phpthumb->save(IMAGES_BASE_DIR.'labels/'.$data['label_name'].'.png', 'PNG');
-              }
+              $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
               // write log
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename);
               utility::jsAlert('Label image file successfully uploaded');
@@ -212,7 +201,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
     } else {
-        $str_input = '<div><img src="'.SWB.IMAGES_DIR.'/labels/'.$rec_d['label_image'].'" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
+        $str_input = '<div><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($rec_d['label_image']).'&amp;width=24&amp;height=24" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
         $str_input .= simbio_form_element::textField('file', 'labelImage');
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
