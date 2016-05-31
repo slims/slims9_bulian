@@ -4562,16 +4562,12 @@ msgstr "Entri Data Eksemplar/Kopi"
 msgid "Member Data Entry"
 msgstr "Entri Data Anggota"
 
-#: admin/modules/reporting/customs/staff_act.php:106
-msgid "Peminjaman"
-msgstr "Peminjaman"
-
 #: admin/modules/reporting/customs/staff_act.php:107
-msgid "Pengembalian"
+msgid "Returns"
 msgstr "Pengembalian"
 
 #: admin/modules/reporting/customs/staff_act.php:108
-msgid "Perpanjang"
+msgid "Extends"
 msgstr "Perpanjang"
 
 #: admin/modules/reporting/customs/visitor_list.php:79
