@@ -100,11 +100,11 @@ class simbio_form_table_AJAX extends simbio_form_maker
 
       // check if we are on edit form mode
       if ($this->edit_mode) {
-          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">EDIT</a>';
+          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('EDIT') . '</a>';
           // delete button exists if the record_id properties exists
           if ($this->record_id && $this->delete_button) {
               // create delete button
-              $_delete_button = '<input type="button" value="'.$_del_value.'" class="button btn btn-danger btn-delete confirmSubmit" onclick="confSubmit(\'deleteForm\', \'Are you sure to delete '.addslashes($this->record_title).'?\nOnce Deleted it cant be restored again\')" />';
+              $_delete_button = '<input type="button" value="'.$_del_value.'" class="button btn btn-danger btn-delete confirmSubmit" onclick="confSubmit(\'deleteForm\', \'' . addslashes(str_replace('{recordTitle}', $this->record_title, __('Are you sure to delete {recordTitle}?'))) . '\n' . addslashes(__('Once deleted, it can\'t be restored!')) .'\')" />';
           }
           // back button
           if ($this->back_button) {

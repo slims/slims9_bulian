@@ -98,7 +98,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
 
         if ($sql_op->insert('biblio_topic', $data)) {
             echo '<script type="text/javascript">';
-            echo 'alert(\'Topic succesfully updated!\');';
+            echo 'alert(\'' . addslashes(__('Topic succesfully updated!')) . '\');';
             echo 'parent.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$data['biblio_id'].'\');';
             echo '</script>';
         } else {
@@ -152,8 +152,8 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     ?></select>
     <select name="level" style="width: 20%;">
     <?php
-    echo '<option value="1">Primary</option>';
-    echo '<option value="2">Additional</option>';
+    echo '<option value="1">' . __('Primary') . '</option>';
+    echo '<option value="2">' . __('Additional') . '</option>';
     ?>
     </select>
 </div>

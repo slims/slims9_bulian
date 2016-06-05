@@ -58,7 +58,7 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(int_biblio_id, int_item_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected item?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected item?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.bid.value = int_biblio_id;
@@ -120,8 +120,8 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // links
-    $edit_link = '<a class="notAJAX btn btn-default button openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$biblioID.'&itemID='.$item_d['item_id'].'" width="650" height="400" title="'.__('Items/Copies').'" style="text-decoration: underline;">Edit</a>';
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$biblioID.', '.$item_d['item_id'].')">Delete</a>';
+    $edit_link = '<a class="notAJAX btn btn-default button openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$biblioID.'&itemID='.$item_d['item_id'].'" width="650" height="400" title="'.__('Items/Copies').'" style="text-decoration: underline;">' . __('Edit') . '</a>';
+    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$biblioID.', '.$item_d['item_id'].')">' . __('Delete') . '</a>';
     $title = $item_d['item_code'];
 
     $table->appendTableRow(array($edit_link, $remove_link, $title, $item_d['location_name'], $item_d['site'], $item_d['coll_type_name'], $item_d['item_status_name']));

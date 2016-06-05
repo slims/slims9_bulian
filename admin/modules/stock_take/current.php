@@ -76,7 +76,7 @@ if ($stk_query->num_rows < 1) {
       <?php
       if ($view != 'm') {
         echo '<form name="stockTakeForm" class="notAJAX" action="'.MWB.'stock_take/stock_take_action.php" target="stockTakeAction" method="post" style="display: inline;">
-          <div><div style="width: 140px; float: left;">'.__('Item Code').':</div><input type="text" id="itemCode" name="itemCode" size="30" /> <input type="submit" value="'.__('Change Status').'" class="btn btn-default" /></div>
+          <div><div style="width: 140px; float: left;">'.__('Item Code').':</div><input type="text" id="itemCode" name="itemCode" size="30" autofocus /> <input type="submit" value="'.__('Change Status').'" class="btn btn-default" /></div>
           <div style="margin-top: 3px;"><div style="width: 140px; float: left;">'.__('List stocktakes by').':</div>
           <input type="radio" id="listShow" name="listShow" value="1" onclick="$(\'mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow=1\')" '.( isset($show_only_current)?'checked="checked"':'' ).' /> '.__('Current User Only').'
           <input type="radio" id="listShow2" name="listShow" value="0" onclick="$(\'mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow=0\')" '.( isset($show_only_current)?'':'checked="checked"' ).' /> '.__('All User').'
