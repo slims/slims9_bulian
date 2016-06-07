@@ -126,6 +126,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     $class = str_ireplace('NEW:', '', trim(strip_tags($_POST['class'])));
     $data['classification'] = trim($dbs->escape_string(strip_tags($class)));
+    $data['uid'] = $_SESSION['uid'];
 
     // check publisher
     // echo stripos($_POST['publisherID'], 'NEW:');
