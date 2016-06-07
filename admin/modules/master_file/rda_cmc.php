@@ -189,7 +189,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'name', __('Name').'*', $rec_d[$type.'_type'], 'style="width: 60%;"');
     // marc leader code
     $form->addTextField('text', 'code2', __('MARC Leader Code').'*', $rec_d['code2'], 'style="width: 20%;"');
-    
+
     // edit mode messagge
     if ($form->edit_mode) {
         echo '<div class="infoBox">'.__('You are going to edit '.$type.' data').' : <b>'.$rec_d[$type.'_type'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
@@ -225,7 +225,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
-    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'].'?type='.$type;
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));
