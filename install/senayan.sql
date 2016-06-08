@@ -1121,12 +1121,13 @@ CREATE TABLE IF NOT EXISTS `comment` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `carrier_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1197,12 +1198,13 @@ INSERT INTO `mst_carrier_type` (`id`, `carrier_type`, `code`, `code2`, `input_da
 --
 
 CREATE TABLE IF NOT EXISTS `mst_content_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `content_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1243,12 +1245,13 @@ INSERT INTO `mst_content_type` (`id`, `content_type`, `code`, `code2`, `input_da
 --
 
 CREATE TABLE IF NOT EXISTS `mst_media_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `media_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1272,9 +1275,10 @@ INSERT INTO `mst_media_type` (`id`, `media_type`, `code`, `code2`, `input_date`,
 --
 
 CREATE TABLE IF NOT EXISTS `mst_relation_term` (
-`ID` int(11) NOT NULL,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
@@ -1290,10 +1294,11 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (6, 'SA', 'See Also');
 
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `topic_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL AUTO_INCREMENT,
 `vocabolary_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`topic_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
