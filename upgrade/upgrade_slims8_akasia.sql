@@ -241,7 +241,7 @@ ALTER TABLE `mst_voc_ctrl`
 -- AUTO_INCREMENT for table `mst_relation_term`
 --
 ALTER TABLE `mst_relation_term`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `mst_voc_ctrl`
 --
