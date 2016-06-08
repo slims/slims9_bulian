@@ -1127,7 +1127,9 @@ CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`carrier_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1204,7 +1206,9 @@ CREATE TABLE IF NOT EXISTS `mst_content_type` (
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type` (`content_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1251,7 +1255,9 @@ CREATE TABLE IF NOT EXISTS `mst_media_type` (
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`media_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
