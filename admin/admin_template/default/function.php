@@ -74,7 +74,7 @@ function main_menu()
       }
     }
   }
-  $_menu .= '<li><a class="menu logout" href="logout.php"><i class="nav-icon '.$icon['logout'].'"></i> <span class="s-menu-title">Logout</span></a></li>';
+  $_menu .= '<li><a class="menu logout" href="logout.php"><i class="nav-icon '.$icon['logout'].'"></i> <span class="s-menu-title">' . __('Logout') . '</span></a></li>';
   $_menu .= '</ul>';
   echo $_menu;
 }

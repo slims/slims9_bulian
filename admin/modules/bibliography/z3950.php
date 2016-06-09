@@ -47,10 +47,10 @@ if (!$can_read) {
 }
 
 if (!extension_loaded('yaz')) {
-    die('<div class="errorBox">YAZ extension library is not loaded/installed yet. '
+    die('<div class="errorBox">'.__('YAZ extension library is not loaded/installed yet. '
         .'YAZ library is needed to use z3950 enabled service. '
         .'Please refer to official <a href="http://www.php.net/manual/en/book.yaz.php" class="notAJAX" target="_blank">YAZ PHP Manual</a>'
-        .' on how to setup/install YAZ extension library in PHP.</div>');
+        .' on how to setup/install YAZ extension library in PHP.').'</div>');
 }
 
 if (isset($_GET['z3950_source'])) {
@@ -167,7 +167,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
     }
     // destroy result Z3950 session
     unset($_SESSION['z3950result']);
-    utility::jsAlert($r.' records inserted to database.');
+    utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
     exit();
 }
@@ -227,7 +227,7 @@ if (isset($_GET['keywords']) AND $can_read) {
         // echo htmlentities($xml_result_string);
 
         if ($hits > 0) {
-            echo '<div class="infoBox">Found '.$hits.' records from Z3950 Server, '.$sysconf['z3950_max_result'].' listed.</div>';
+            echo '<div class="infoBox">' . str_replace(array('{hits}', '{maxHits}'),array($hits, $sysconf['z3950_max_result']),__('Found {hits} records from Z3950 Server, {maxHits} listed.')) . '</div>';
             // parse XML
             $xmlrec = marcXMLsenayan($xml_result_string);
             // save it to session vars for retrieving later
@@ -236,7 +236,7 @@ if (isset($_GET['keywords']) AND $can_read) {
             echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/z3950.php" target="blindSubmit">';
             echo '<table align="center" id="dataList" cellpadding="5" cellspacing="0">';
             echo '<tr>';
-            echo '<td colspan="3"><input type="submit" name="saveZ" value="Save Z3950 Records to Database" /></td>';
+            echo '<td colspan="3"><input type="submit" name="saveZ" value="' . __('Save Z3950 Records to Database') . '" /></td>';
             echo '</tr>';
             // loop records
             $row = 1;
@@ -258,10 +258,10 @@ if (isset($_GET['keywords']) AND $can_read) {
             }
             echo '</ul></div>';
         } else {
-            echo '<div class="errorBox">No Results Found!</div>';
+            echo '<div class="errorBox">' . __('No Results Found!') . '</div>';
         }
     } else {
-        echo '<div class="errorBox">No Keywords Supplied!</div>';
+        echo '<div class="errorBox">' . __('No Keywords Supplied!') . '</div>';
     }
     exit();
 }

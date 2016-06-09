@@ -78,11 +78,11 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $xml_button = '';
   $detail_button = '<a href="'.$detail_url.'" class="detailLink slims-button slims-button--flat slims-button--blue" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
   if ($settings['xml_detail']) {
-    $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink slims-button slims-button--flat slims-button--default" title="View record detail description in XML Format" target="_blank">XML Detail</a>';
+    $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink slims-button slims-button--flat slims-button--default" title="'.__('View record detail description in XML Format').'" target="_blank">'.__('XML Detail').'</a>';
   }
   
   // citation button
-  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-button slims-button--circle slims-button--flat slims-button--default" title="Citation for: '.substr($title, 0, 50).'" target="_blank"><i class="material-icons">description</i></a>';
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-button slims-button--circle slims-button--flat slims-button--default" title="'.str_replace('{title}', substr($title, 0, 50) , 'Citation for: {title}').'" target="_blank"><i class="material-icons">description</i></a>';
   
   // cover images var
   $image_cover = '';
@@ -148,7 +148,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
           if ($_total_avail < 1) {
             $output .= '<div class="customField availabilityField"><b>'.$field_opts[1].'</b> : <strong style="color: #f00;">'.__('none copy available').'</strong></div>';
           } else {
-            $item_availability_message = $_total_avail.' copies available for loan';
+            $item_availability_message = str_replace('{numberAvailable}' , $_total_avail, __('{numberAvailable} copies available for loan'));
             $output .= '<div class="customField availabilityField"><b>'.$field_opts[1].'</b> : '.$item_availability_message.'</div>';
           }
         } else if ($field == 'node_id' && $settings['disable_item_data']) {
@@ -164,13 +164,13 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     $detail_url_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$detail_url);
     $_share_btns = "\n".'<ul class="share-buttons">'.
     '<li>'.__('Share to').': </li>'.
-    '<li><a href="http://www.facebook.com/sharer.php?u='.$detail_url_encoded.'" title="Facebook" target="_blank"><img src="./images/default/fb.gif" alt="Share this title to Facebook" /></a></li>'.
-    '<li><a href="http://twitter.com/share?url='.$detail_url_encoded.'&text='.urlencode($title).'" title="Twitter" target="_blank"><img src="./images/default/tw.gif" alt="Share this title to Twitter" /></a></li>'.
-    '<li><a href="https://plus.google.com/share?url='.$detail_url_encoded.'" title="Google Plus" target="_blank"><img src="./images/default/gplus.gif" alt="Share this title to Google Plus" /></a></li>'.
-    '<li><a href="http://www.digg.com/submit?url='.$detail_url_encoded.'" title="Digg It" target="_blank"><img src="./images/default/digg.gif" alt="Share this title to  Digg It" /></a></li>'.
-    '<li><a href="http://reddit.com/submit?url='.$detail_url_encoded.'&title='.urlencode($title).'" title="Reddit" target="_blank"><img src="./images/default/rdit.gif" alt="Share this title to Reddit" /></a></li>'.
-    '<li><a href="http://www.linkedin.com/shareArticle?mini=true&url='.$detail_url_encoded.'" title="LinkedIn" target="_blank"><img src="./images/default/lin.gif" alt="Share this title to LinkedIn" /></a></li>'.
-    '<li><a href="http://www.stumbleupon.com/submit?url='.$detail_url_encoded.'&title='.urlencode($title).'" title="Stumbleupon" target="_blank"><img src="./images/default/su.gif" alt="Share this title to StumbleUpon" /></a></li>'.
+    '<li><a href="http://www.facebook.com/sharer.php?u='.$detail_url_encoded.'" title="Facebook" target="_blank"><img src="./images/default/fb.gif" alt="'.__('Share this title to Facebook').'" /></a></li>'.
+    '<li><a href="http://twitter.com/share?url='.$detail_url_encoded.'&text='.urlencode($title).'" title="Twitter" target="_blank"><img src="./images/default/tw.gif" alt="'.__('Share this title to Twitter').'" /></a></li>'.
+    '<li><a href="https://plus.google.com/share?url='.$detail_url_encoded.'" title="Google Plus" target="_blank"><img src="./images/default/gplus.gif" alt="'.__('Share this title to Google Plus').'" /></a></li>'.
+    '<li><a href="http://www.digg.com/submit?url='.$detail_url_encoded.'" title="Digg It" target="_blank"><img src="./images/default/digg.gif" alt="'.__('Share this title to Digg It').'" /></a></li>'.
+    '<li><a href="http://reddit.com/submit?url='.$detail_url_encoded.'&title='.urlencode($title).'" title="Reddit" target="_blank"><img src="./images/default/rdit.gif" alt="'.__('Share this title to Reddit').'" /></a></li>'.
+    '<li><a href="http://www.linkedin.com/shareArticle?mini=true&url='.$detail_url_encoded.'" title="LinkedIn" target="_blank"><img src="./images/default/lin.gif" alt="'.__('Share this title to LinkedIn').'" /></a></li>'.
+    '<li><a href="http://www.stumbleupon.com/submit?url='.$detail_url_encoded.'&title='.urlencode($title).'" title="Stumbleupon" target="_blank"><img src="./images/default/su.gif" alt="'.__('Share this title to StumbleUpon').'" /></a></li>'.
     '</ul>'."\n";
     
     // $output .= $_share_btns;

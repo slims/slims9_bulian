@@ -17,7 +17,7 @@
 
 ?>
 <p class="citation">
-  <h3>MLA Style</h3>
+  <h3><?php echo __('MLA Style'); ?></h3>
   <?php if ($authors_string) : ?>
     <span class="authors"><?php print $authors_string ?>.</span>
     <span class="title"><em><?php print $title ?></em>.</span>
