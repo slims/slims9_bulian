@@ -768,6 +768,46 @@ ALTER TABLE `mst_topic`
   ADD PRIMARY KEY (`topic_id`),
   ADD UNIQUE KEY `topic` (`topic`,`topic_type`);
 
+--
+-- Indexes for table `mst_relation_term`
+--
+ALTER TABLE `mst_relation_term`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `mst_voc_ctrl`
+--
+ALTER TABLE `mst_voc_ctrl`
+ ADD PRIMARY KEY (`vocabolary_id`);
+
+--
+-- AUTO_INCREMENT for table `mst_relation_term`
+--
+ALTER TABLE `mst_relation_term`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `mst_voc_ctrl`
+--
+ALTER TABLE `mst_voc_ctrl`
+MODIFY `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mst_carrier_type`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `media_type` (`carrier_type`), ADD KEY `code` (`code`);
+
+ALTER TABLE `mst_content_type`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `content_type` (`content_type`), ADD KEY `code` (`code`);
+
+ALTER TABLE `mst_media_type`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `media_type` (`media_type`), ADD KEY `code` (`code`);
+
+ALTER TABLE `mst_carrier_type`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mst_content_type`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mst_media_type`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
