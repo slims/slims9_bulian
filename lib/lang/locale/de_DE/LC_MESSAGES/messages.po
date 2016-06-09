@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 20:00+0200\n"
-"PO-Revision-Date: 2016-05-29 20:20+0200\n"
+"POT-Creation-Date: 2016-06-09 02:39+0200\n"
+"PO-Revision-Date: 2016-06-09 03:03+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -171,6 +171,10 @@ msgstr "Datei nicht gefunden"
 #: admin/help.php:50
 msgid "Cannot Access This File Directly"
 msgstr "Kein Direktzugriff auf die Datei möglich"
+
+#: admin/index.php:44
+msgid "Library Automation System"
+msgstr "Bibliotheksmanagementsystem"
 
 #: admin/index.php:64
 msgid "You are currently logged in as"
@@ -1700,9 +1704,50 @@ msgstr "Exemplardaten aus Datei importieren (CSV-Format)"
 msgid "UCS is not enabled! Change global system configuration to enable UCS"
 msgstr "UCS ist nicht aktiviert. Ändern Sie Globalen Systemeinstellungen um UCS zu aktivieren."
 
+#: admin/modules/bibliography/z3950.php:50
+msgid ""
+"YAZ extension library is not loaded/installed yet. YAZ library is needed to "
+"use z3950 enabled service. Please refer to official <a href=\"http://www.php."
+"net/manual/en/book.yaz.php\" class=\"notAJAX\" target=\"_blank\">YAZ PHP "
+"Manual</a> on how to setup/install YAZ extension library in PHP."
+msgstr ""
+"Die YAZ-Erweiterung ist noch nicht geladen/installiert. Die YAZ-Erweiterung "
+"wird benötigt um einen Z39.50-Service zu verwenden. Bitte konsultieren Sie "
+"das offizielle <a href=\"http://www.php.net/manual/de/book.yaz.php\" class="
+"\"notAJAX\" target=\"_blank\">YAZ PHP Handbuch</a> für eine Anleitung zur "
+"Installation der YAZ-Erweiterung in PHP."
+
+#: admin/modules/bibliography/z3950.php:170
+#: admin/modules/bibliography/z3950sru.php:169
+msgid "{recordCount} records inserted into the database."
+msgstr "{recordCount} Einträge wurden in die Datenbank eingefügt."
+
+#: admin/modules/bibliography/z3950.php:230
+msgid "Found {hits} records from Z3950 Server, {maxHits} listed."
+msgstr "{hits} Treffer vom Z39.50-Server gefunden, {maxHits} werden angezeigt."
+
+#: admin/modules/bibliography/z3950.php:239
+#: admin/modules/bibliography/z3950sru.php:201
+msgid "Save Z3950 Records to Database"
+msgstr "Z39.50-Datensätze in der Datenbank speichern"
+
+#: admin/modules/bibliography/z3950.php:261
+#: admin/modules/bibliography/z3950sru.php:233
+msgid "No Results Found!"
+msgstr "Es wurden keine Suchergebnisse gefunden!"
+
+#: admin/modules/bibliography/z3950.php:264
+#: admin/modules/bibliography/z3950sru.php:236
+msgid "No Keywords Supplied!"
+msgstr "Keine Suchbegriffe angegeben!"
+
 #: admin/modules/bibliography/z3950.php:275
 msgid "Z3950"
 msgstr "Z39.50"
+
+#: admin/modules/bibliography/z3950sru.php:197
+msgid "Found {hits} records from Z3950 SRU Server."
+msgstr "{hits} Treffer vom Z39.50-Server gefunden."
 
 #: admin/modules/bibliography/z3950sru.php:247
 msgid "Z3950 Search/Retrieve via URL (SRU)"
@@ -4454,7 +4499,7 @@ msgstr "Nein"
 
 #: admin/modules/system/content.php:197
 msgid "This is News"
-msgstr ""
+msgstr "Als News anzeigen"
 
 #: admin/modules/system/content.php:199
 #: admin/modules/system/content.php:243
@@ -5217,6 +5262,21 @@ msgstr "Details zum Titel"
 msgid "Back To Previous"
 msgstr "Zurück zur vorherigen Seite"
 
+#: lib/contents/show_detail.inc.php:111
+msgid "Show detail in XML format"
+msgstr "Details im XML-Format anzeigen"
+
+#: lib/contents/show_detail.inc.php:111
+#: template/classic/biblio_list_template.php:81
+#: template/default/biblio_list_template.php:81
+#: template/lightweight/biblio_list_template.php:81
+msgid "XML Detail"
+msgstr "XML-Detail"
+
+#: lib/contents/show_detail.inc.php:112
+msgid "Cite this"
+msgstr "Dies zitieren"
+
 #: lib/contents/visitor.inc.php:161
 msgid ", thank you for inserting your data to our visitor log"
 msgstr ", vielen Dank für die Eingabe Ihrer Daten."
@@ -5280,6 +5340,14 @@ msgstr "Malaiisch (Malay)"
 #: lib/lang/localisation.php:75
 msgid "Persian"
 msgstr "Persisch (فارسی)"
+
+#: lib/module.inc.php:40
+msgid "View OPAC in New Window"
+msgstr "OPAC in einem neuen Fenster anzeigen"
+
+#: lib/module.inc.php:40
+msgid "OPAC"
+msgstr "OPAC"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:89
 msgid "DELETE"
@@ -5357,13 +5425,91 @@ msgstr "Keine Daten"
 msgid "View record detail description for this title"
 msgstr "Details zu diesem Titel anzeigen"
 
+#: template/classic/biblio_list_template.php:81
+#: template/default/biblio_list_template.php:81
+#: template/lightweight/biblio_list_template.php:81
+msgid "View record detail description in XML Format"
+msgstr "Details zu diesem Titel im XML-Format anzeigen"
+
 #: template/classic/biblio_list_template.php:149
 msgid "none copy available"
 msgstr "Kein Exemplar verfügbar"
 
+#: template/classic/biblio_list_template.php:151
+#: template/default/biblio_list_template.php:146
+#: template/lightweight/biblio_list_template.php:146
+msgid "{numberAvailable} copies available for loan"
+msgstr "{numberAvailable} Exemplare verfügbar"
+
+#: template/classic/biblio_list_template.php:167
+#: template/default/biblio_list_template.php:167
+#: template/lightweight/biblio_list_template.php:167
+msgid "Share this title to Facebook"
+msgstr "Diesen Titel auf Facebook teilen"
+
+#: template/classic/biblio_list_template.php:168
+#: template/default/biblio_list_template.php:168
+#: template/lightweight/biblio_list_template.php:168
+msgid "Share this title to Twitter"
+msgstr "Diesen Titel auf Twitter teilen"
+
+#: template/classic/biblio_list_template.php:169
+#: template/default/biblio_list_template.php:169
+#: template/lightweight/biblio_list_template.php:169
+msgid "Share this title to Google Plus"
+msgstr "Diesen Titel auf Google Plus teilen"
+
+#: template/classic/biblio_list_template.php:170
+#: template/default/biblio_list_template.php:170
+#: template/lightweight/biblio_list_template.php:170
+msgid "Share this title to Digg It"
+msgstr "Diesen Titel auf Digg It teilen"
+
+#: template/classic/biblio_list_template.php:171
+#: template/default/biblio_list_template.php:171
+#: template/lightweight/biblio_list_template.php:171
+msgid "Share this title to Reddit"
+msgstr "Diesen Titel auf Reddit teilen"
+
+#: template/classic/biblio_list_template.php:172
+#: template/default/biblio_list_template.php:172
+#: template/lightweight/biblio_list_template.php:172
+msgid "Share this title to LinkedIn"
+msgstr "Diesen Titel auf LinkedIn teilen"
+
+#: template/classic/biblio_list_template.php:173
+#: template/default/biblio_list_template.php:173
+#: template/lightweight/biblio_list_template.php:173
+msgid "Share this title to StumbleUpon"
+msgstr "Diesen Titel auf StumbleUpon teilen"
+
 #: template/classic/biblio_list_template.php:181
 msgid "mark this"
 msgstr "Markieren"
+
+#: template/classic/citation/apa_style_template.php:20
+#: template/default/citation/apa_style_template.php:20
+#: template/lightweight/citation/apa_style_template.php:20
+msgid "APA Style"
+msgstr "APA Style"
+
+#: template/classic/citation/chicago_style_template.php:20
+#: template/default/citation/chicago_style_template.php:20
+#: template/lightweight/citation/chicago_style_template.php:20
+msgid "Chicago Style"
+msgstr "Chicago Style"
+
+#: template/classic/citation/mla_style_template.php:20
+#: template/default/citation/mla_style_template.php:20
+#: template/lightweight/citation/mla_style_template.php:20
+msgid "MLA Style"
+msgstr "MLA Style"
+
+#: template/classic/citation/turabian_style_template.php:23
+#: template/default/citation/turabian_style_template.php:23
+#: template/lightweight/citation/turabian_style_template.php:23
+msgid "Turabian Style"
+msgstr "Turabian Style"
 
 #: template/classic/custom_frontpage_record.inc.php:11
 #: template/classic/detail_template.php:38
@@ -5483,6 +5629,11 @@ msgstr "verwende logische Verknüpfung \"title=Bibliothek AND author=Robert\""
 msgid "just click on the Search button to see all collections"
 msgstr "Klicken Sie den Suchbutton um den Bestand zu sehen"
 
+#: template/default/biblio_list_template.php:85
+#: template/lightweight/biblio_list_template.php:85
+msgid "Cite"
+msgstr "Zitieren"
+
 #: template/default/index_template.inc.php:82
 #: template/default/index_template.inc.php:88
 msgid "Collections"
@@ -5491,6 +5642,16 @@ msgstr "Sammlungen"
 #: template/default/index_template.inc.php:129
 msgid "Search Result"
 msgstr "Suchergebnis"
+
+#: template/default/index_template.inc.php:111
+#: template/lightweight/index_template.inc.php:111
+msgid "No Result"
+msgstr "Kein Ergebnis"
+
+#: template/default/index_template.inc.php:111
+#: template/lightweight/index_template.inc.php:111
+msgid "Please try again"
+msgstr "Bitte versuchen Sie es erneut"
 
 #: template/default/index_template.inc.php:138
 msgid "Information"
