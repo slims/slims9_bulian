@@ -3821,17 +3821,13 @@ msgstr "Exemplare eingetragen"
 msgid "Member Data Entry"
 msgstr "Mitglieder eingetragen"
 
-#: admin/modules/reporting/customs/staff_act.php:106
-msgid "Peminjaman"
-msgstr ""
-
 #: admin/modules/reporting/customs/staff_act.php:107
-msgid "Pengembalian"
-msgstr ""
+msgid "Returns"
+msgstr "Rücknahmen"
 
 #: admin/modules/reporting/customs/staff_act.php:108
-msgid "Perpanjang"
-msgstr ""
+msgid "Extends"
+msgstr "Verlängerungen"
 
 #: admin/modules/reporting/customs/visitor_list.php:79
 msgid "NON-Member visitor"

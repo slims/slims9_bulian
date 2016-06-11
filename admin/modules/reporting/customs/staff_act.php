@@ -103,9 +103,9 @@ if (!$reportView) {
         'u.user_id AS \''.__('Bibliography Data Entry').'\'',
         'u.user_id AS \''.__('Item Data Entry').'\'',
         'u.user_id AS \''.__('Member Data Entry').'\'',
-        'u.user_id AS \''.__('Peminjaman').'\'',
-        'u.user_id AS \''.__('Pengembalian').'\'',
-        'u.user_id AS \''.__('Perpanjang').'\'');
+        'u.user_id AS \''.__('Loans').'\'',
+        'u.user_id AS \''.__('Returns').'\'',
+        'u.user_id AS \''.__('Extends').'\'');
     $reportgrid->setSQLorder('realname ASC');
 
     // is there any search
