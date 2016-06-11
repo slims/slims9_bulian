@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 02:39+0200\n"
-"PO-Revision-Date: 2016-06-09 03:03+0200\n"
+"POT-Creation-Date: 2016-06-11 21:52+0200\n"
+"PO-Revision-Date: 2016-06-11 23:38+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -5268,6 +5268,13 @@ msgstr "Details im XML-Format anzeigen"
 #: template/lightweight/biblio_list_template.php:81
 msgid "XML Detail"
 msgstr "XML-Detail"
+
+#: lib/contents/show_detail.inc.php:112
+#: template/classic/biblio_list_template.php:85
+#: template/default/biblio_list_template.php:85
+#: template/lightweight/biblio_list_template.php:85
+msgid "Citation for: {title}"
+msgstr "Zitierung von: {title}"
 
 #: lib/contents/show_detail.inc.php:112
 msgid "Cite this"
