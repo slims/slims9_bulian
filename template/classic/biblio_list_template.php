@@ -82,7 +82,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   }
   
   // citation button
-  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-button slims-button--circle slims-button--flat slims-button--default" title="'.str_replace('{title}', substr($title, 0, 50) , 'Citation for: {title}').'" target="_blank"><i class="material-icons">description</i></a>';
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-button slims-button--circle slims-button--flat slims-button--default" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank"><i class="material-icons">description</i></a>';
   
   // cover images var
   $image_cover = '';
