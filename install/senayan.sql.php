@@ -36,11 +36,13 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   `carrier_type_id` int(11) default NULL,
   `input_date` datetime default NULL,
   `last_update` datetime default NULL,
+  `uid` int(11) default NULL,
   PRIMARY KEY  (`biblio_id`),
   KEY `references_idx` (`gmd_id`,`publisher_id`,`language_id`,`publish_place_id`),
   KEY `classification` (`classification`),
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
   KEY `rda_idx` (`content_type_id`, `media_type_id`, `carrier_type_id`),
+  KEY `uid` (`uid`),
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
@@ -777,47 +779,58 @@ CREATE TABLE IF NOT EXISTS `comment` (
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `carrier_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`carrier_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_content_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `content_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type` (`content_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_media_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `media_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`media_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_relation_term` (
-`ID` int(11) NOT NULL,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `topic_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL AUTO_INCREMENT,
 `vocabolary_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`topic_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
