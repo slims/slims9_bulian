@@ -4006,16 +4006,12 @@ msgstr "আইটেম তথ্য যোগ করা"
 msgid "Member Data Entry"
 msgstr "সদস্য তথ্য যোগ করা"
 
-#: admin/modules/reporting/customs/staff_act.php:106
-msgid "Peminjaman"
-msgstr "লোন"
-
 #: admin/modules/reporting/customs/staff_act.php:107
-msgid "Pengembalian"
+msgid "Returns"
 msgstr "ফেরত"
 
 #: admin/modules/reporting/customs/staff_act.php:108
-msgid "Perpanjang"
+msgid "Extends"
 msgstr "রিনিউ"
 
 #: admin/modules/reporting/customs/visitor_list.php:79
