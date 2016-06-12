@@ -645,7 +645,7 @@ class detail
         // $_xml_output .= '</mods>';
         $xml->endElement();
 
-        return $xml->outputMemory();
+        return $xml->flush();
     }
 
 
@@ -813,7 +813,7 @@ class detail
           $xml->endElement();
         }
 
-        return $xml->outputMemory();
+        return $xml->flush();
     }
 
 

@@ -243,10 +243,16 @@ abstract class biblio_list_model
     global $sysconf;
     $mods_version = '3.3';
     // loop data
-    $_buffer = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
     $xml = new XMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
+	$xml->startElement('modsCollection');
+	$xml->writeAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+	$xml->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+	$xml->writeAttribute('xmlns', 'http://www.loc.gov/mods/v3');
+	$xml->writeAttribute('xmlns:slims', 'http://slims.web.id');
+	$xml->writeAttribute('xsi:schemaLocation', 'http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd');
+    // $_buffer = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
 
     $xml->startElementNS('slims', 'resultInfo', null);
     $xml->startElementNS('slims', 'modsResultNum', null); $this->xmlWrite($xml, $this->num_rows); $xml->endElement();
@@ -343,8 +349,9 @@ abstract class biblio_list_model
     // free resultset memory
     $this->resultset->free_result();
 
-    $_buffer .= $xml->outputMemory();
-    $_buffer .= '</modsCollection>';
+	$xml->endElement();
+    $_buffer .= $xml->flush();
+    // $_buffer .= '</modsCollection>';
 
     return $_buffer;
   }

@@ -466,10 +466,10 @@ $sysconf['ipaccess']['smc-reporting'] = 'all';
 $sysconf['ipaccess']['smc-serialcontrol'] = 'all';
 
 // OAI-PMH settings
-$sysconf['OAI']['enable'] = false;
+$sysconf['OAI']['enable'] = true;
 $sysconf['OAI']['identifierPrefix'] = 'oai:slims/';
 $sysconf['OAI']['Identify']['baseURL'] = 'http://'.@$_SERVER['SERVER_NAME'].':'.@$_SERVER['SERVER_PORT'].SWB.'oai.php';
-$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System OAI-PMh';
+$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System Repository';
 $sysconf['OAI']['Identify']['adminEmail'] = 'admin@slims.web.id';
 $sysconf['OAI']['Identify']['granularity'] = 'YYYY-MM-DDThh:mm:ssZ';
 $sysconf['OAI']['Identify']['deletedRecord'] = 'transient';
