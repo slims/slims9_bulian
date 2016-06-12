@@ -61,8 +61,8 @@ function main_menu()
   $_menu 	.= $appended_first;
   $_menu 	.= @sub_menu('default', $module_list);
   $_menu 	.= '</li>'."\n";
-  $_menu 	.= '<li><a class="menu dashboard" href="'.AWB.'index.php"><i class="nav-icon fa fa-dashboard"></i> <span class="s-menu-title">Dashboard</span></a></li>';
-  $_menu 	.= '<li><a class="menu opac" href="'.SWB.'index.php" target="_blank"><i class="nav-icon '.$icon['opac'].'"></i> <span class="s-menu-title">Opac</span></a></li>';
+  $_menu 	.= '<li><a class="menu dashboard" href="'.AWB.'index.php"><i class="nav-icon fa fa-dashboard"></i> <span class="s-menu-title">'.__('Dashboard').'</span></a></li>';
+  $_menu 	.= '<li><a class="menu opac" href="'.SWB.'index.php" target="_blank"><i class="nav-icon '.$icon['opac'].'"></i> <span class="s-menu-title">' . __('OPAC') . '</span></a></li>';
   if ($module_list) {
     foreach ($module_list as $_module) {
       $_formated_module_name = ucwords(str_replace('_', ' ', $_module['name']));

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-11 21:52+0200\n"
-"PO-Revision-Date: 2016-06-11 23:38+0200\n"
+"POT-Creation-Date: 2016-06-13 01:35+0200\n"
+"PO-Revision-Date: 2016-06-13 01:38+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -184,9 +184,21 @@ msgstr "Sie sind derzeit angemeldet als "
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Sie wurden vom Bibliotheksmanagementsystem abgemeldet"
 
+#: admin/modules/bibliography/biblio_utils.inc.php:129
+msgid "Hidden in OPAC"
+msgstr "Im OPAC nicht angezeigt"
+
+#: admin/modules/bibliography/biblio_utils.inc.php:133
+msgid "Promoted To Homepage"
+msgstr "Auf der Startseite propagiert"
+
 #: admin/admin_template/default/function.php:55 admin/default/submenu.php:21
 msgid "Shortcut"
 msgstr "Schnellzugriff"
+
+#: admin/admin_template/default/function.php:64
+msgid "Dashboard"
+msgstr "Dashboard"
 
 #: admin/admin_template/default/function.php:55
 msgid "Home"
