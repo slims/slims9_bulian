@@ -221,6 +221,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       /* UPDATE RECORD MODE */
       // remove input date
       unset($data['input_date']);
+      unset($data['uid']);
       // filter update record ID
       $updateRecordID = (integer)$_POST['updateRecordID'];
       // update data

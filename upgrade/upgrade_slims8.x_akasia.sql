@@ -20,3 +20,6 @@ ALTER TABLE `mst_voc_ctrl` CHANGE `vocabolary_id` `vocabolary_id` INT(11) NOT NU
 --
 ALTER TABLE  `biblio` ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
 ADD INDEX (  `uid` ) ;
+
+ALTER TABLE  `item` ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
+ADD INDEX (  `uid` ) ;
