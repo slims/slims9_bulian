@@ -28,6 +28,7 @@ $menu[] = array('Header', __('System'));
 if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('System Configuration'), MWB.'system/index.php', __('Configure Global System Preferences'));
     $menu[] = array(__('System Environment'), MWB.'system/envinfo.php', __('Information about System Environment'));
+    $menu[] = array(__('UCS Setting'), MWB.'system/ucsetting.php', __('Configure UCS Preferences'));
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus

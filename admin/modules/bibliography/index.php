@@ -53,6 +53,9 @@ if (!$can_read) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// load settings
+utility::loadSettings($dbs);
+
 $in_pop_up = false;
 // check if we are inside pop-up window
 if (isset($_GET['inPopUp'])) {
