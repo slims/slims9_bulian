@@ -215,6 +215,12 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver']))  {
 }
 /* SEARCH OPERATION END */
 
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+}
+
 /* search form */
 ?>
 <fieldset class="menuBox">
