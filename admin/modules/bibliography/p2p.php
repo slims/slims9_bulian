@@ -47,6 +47,12 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['p2pserver_save'])) {
   require MDLBS.'bibliography/biblio_utils.inc.php';
@@ -214,12 +220,6 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver']))  {
     exit();
 }
 /* SEARCH OPERATION END */
-
-// get servers
-$server_q = $dbs->query('SELECT name, uri FROM mst_servers ORDER BY name ASC');
-while ($server = $server_q->fetch_assoc()) {
-  $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
-}
 
 /* search form */
 ?>
