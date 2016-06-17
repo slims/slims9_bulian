@@ -321,23 +321,44 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
 
     // item batch insert
-    if (trim($_POST['itemCodePattern']) != '' && $_POST['itemCodeStart'] > 0 && $_POST['itemCodeEnd'] > 0) {
-      $hasil = array();
+    if (trim($_POST['itemCodePattern']) != '' && $_POST['totalItems'] > 0 ) {
       $pattern = trim($_POST['itemCodePattern']);
-      // get last zero chars
-      preg_match('@0+$@i', $pattern, $hasil);
-      $zeros = strlen($hasil[0]);
-      $start = (integer)$_POST['itemCodeStart'];
-      $end = (integer)$_POST['itemCodeEnd'];
-      for ($b = $start; $b <= $end; $b++) {
-      $len = strlen($b);
-      if ($zeros > 0) {
-        $itemcode = preg_replace('@0{'.$len.'}$@i', $b, $pattern);
-      } else { $itemcode = $pattern.$b; }
+      $total = (integer)$_POST['totalItems'];
+      $regex = '/0{3,}/';
 
-      $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
+      // get zeros
+      preg_match($regex, $pattern, $result);
+      $zeros = strlen($result[0]);
+
+      // get chars
+      $chars = preg_split($regex, $pattern);
+
+      $chars_last = (isset($chars[1]) && !empty(trim($chars[1])))?trim($chars[1]):'';
+
+      // get last number from database
+      $last_q = $dbs->query('SELECT item_code FROM item WHERE item_code REGEXP \'^'.$chars[0].'[0-9]{3,}'.$chars_last.'$\' ORDER BY item_code DESC LIMIT 1');
+      if (!$dbs->errno && $last_q->num_rows > 0) {
+        $last_d = $last_q->fetch_row();
+        // get last  number
+        $ptn = '/'.$chars[0].'|'.$chars_last.'$/';
+        $last = preg_replace($ptn, '', $last_d[0]);
+        $start = intval($last) + 1;
+      } else {
+        $start = 1;
+      }
+
+      $end = $start + $total;
+      for ($b=$start; $b < $end; $b++) { 
+        $len = strlen($b);
+        $itemcode = $chars[0];
+        if ($zeros > 0) {
+          $itemcode .= preg_replace('@0{'.$len.'}$@i', $b, $result[0]);
+        } else { $itemcode .= $b; }
+        $itemcode .= $chars[1];
+
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
         VALUES (%d, '%s', '%s', %d)", $updateRecordID?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
-      @$dbs->query($item_insert_sql);
+        @$dbs->query($item_insert_sql);
       }
     }
 
@@ -523,10 +544,25 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->addTextField('text', 'edition', __('Edition'), $rec_d['edition'], 'style="width: 40%;"', __('A version of publication having substantial changes or additions.'));
   // biblio specific detail info/area
   $form->addTextField('textarea', 'specDetailInfo', __('Specific Detail Info'), $rec_d['spec_detail_info'], 'rows="2" style="width: 100%"', __('explain more details about an item e.g. scale within a map, running time in a movie dvd.'));
-  // biblio item batch add
-  $str_input = __('Pattern').': <input type="text" class="small_input" name="itemCodePattern" value="'.$sysconf['batch_item_code_pattern'].'" /> &nbsp;';
-  $str_input .= __('From').': <input type="text" class="small_input" name="itemCodeStart" value="0" /> '.__('To').' <input type="text" class="small_input" name="itemCodeEnd" value="0" /> &nbsp;';
-    // get collection type data related to this record from database
+  // biblio item batch add (by.ido alit)
+  $pattern_options = array(
+    array($sysconf['batch_item_code_pattern'], $sysconf['batch_item_code_pattern'])
+    );
+  // get pattern from database
+  $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
+  if (!$dbs->errno) {
+    $pattern_d = $pattern_q->fetch_row();
+    $val = @unserialize($pattern_d[0]);
+    if (!empty($val)) {
+      foreach ($val as $v) {
+        $pattern_options[] = array($v,$v);
+      }
+    }
+  }
+  $str_input  = '<a class="notAJAX btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_pattern.php" title="'.__('Add new pattern').'"><i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>&nbsp;';
+  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: 120px;"').' &nbsp;';
+  $str_input .= __('Total item(s)').': <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
+  // get collection type data related to this record from database
     $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
     $coll_type_options = array();
     while ($coll_type_d = $coll_type_q->fetch_row()) {
