@@ -264,7 +264,7 @@
 					    			$v = $i + 1;
 					    			$file_sql_path = ($i == $indexdbupgrade_max) ? './../upgrade/'.$sql_upgrade[$v] : './../upgrade/old_sql/'.$sql_upgrade[$v];
 					    			$sql_php_path = 'sql_php_upgrade/'.$sql_upgrade[$v].'.php';
-					    			if ($v == 16 || $v == 15 || $v == 14 || $v == 13 || $v == 11 || $v == 9) {
+					    			if ($v >= 13 || $v == 11 || $v == 9) {
 					    				if (false == ($db_error = apphp_db_install_core($database_name, $sql_php_path))) {
 											$error_mg[] = "<li>Could not read file ".$sql_php_path."! Please check if the file exists</li>";
 										} else {
@@ -310,8 +310,35 @@
 					    	}
 
 					    } else {
-						    $error_mg[] = "<li>Database connecting error! Check your database exists.</li>";
-						    @unlink($config_file_path);
+					    	// create database
+					    	$create = @mysql_query('CREATE DATABASE '.$database_name.' CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+					    	if ($create) {
+					    		// fresh install db
+								if(false == ($db_error = apphp_db_install_core($database_name, $sql_dump))){
+									$error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
+									@unlink($config_file_path);
+								}else{
+									// install sampel data
+									if($_POST['install_sample'] == 'yes'){
+										if(false == ($db_error = apphp_db_install($database_name, $sql_sample))){
+											$error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
+										}else{
+											$completed = true;                            
+										}					    
+									} else {
+										$completed = true;                            						    
+									}
+
+									if(!empty($retype_password))
+									{
+										apphp_db_query($sql_update, $link);
+									}
+									
+								}
+					    	} else {
+							    $error_mg[] = "<li>Database connecting error! Check your database exists or make sure you have privileges to create database.</li>";
+							    @unlink($config_file_path);
+					    	}
 					    }
 				    } else {
 					    $error_mg[] = "<li>Database connecting error! Check your connection parameters</li>";
