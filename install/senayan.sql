@@ -1302,11 +1302,12 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (6, 'SA', 'See Also');
 
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `topic_id` int(11) NOT NULL AUTO_INCREMENT,
-`vocabolary_id` int(11) NOT NULL,
+  `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`topic_id`)
+  `scope` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`vocabolary_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
@@ -1327,3 +1328,15 @@ ALTER TABLE `biblio_relation`
  
 -- DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
 -- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
+
+--
+-- Table structure for table `mst_servers`
+--
+CREATE TABLE `mst_servers` (
+  `server_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uri` text COLLATE utf8_unicode_ci NOT NULL,
+  `input_date` datetime NOT NULL,
+  `last_update` datetime DEFAULT NULL,
+  PRIMARY KEY (`server_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

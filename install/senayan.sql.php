@@ -828,11 +828,12 @@ CREATE TABLE IF NOT EXISTS `mst_relation_term` (
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `topic_id` int(11) NOT NULL AUTO_INCREMENT,
-`vocabolary_id` int(11) NOT NULL,
+  `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`topic_id`)
+  `scope` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`vocabolary_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
@@ -951,3 +952,12 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (5, 'RT', 'Related Term'),
 (6, 'SA', 'See Also');";
 
+$sql['create'][] = "
+CREATE TABLE `mst_servers` (
+  `server_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uri` text COLLATE utf8_unicode_ci NOT NULL,
+  `input_date` datetime NOT NULL,
+  `last_update` datetime DEFAULT NULL,
+  PRIMARY KEY (`server_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
