@@ -37,7 +37,9 @@ $slimsold = array(
 	'12' => array('version' => 'stable14', 'name' => 'Senayan 3 - Stable 14 | Seulanga'),
 	'13' => array('version' => 'stable15', 'name' => 'Senayan 3 - Stable 15 | Matoa'),
 	'14' => array('version' => 'slims5_meranti', 'name' => 'SLiMS 5 | Meranti'),
-	'15' => array('version' => 'slims7_cendana', 'name' => 'SLiMS 7 | Cendana')
+	'15' => array('version' => 'slims7_cendana', 'name' => 'SLiMS 7 | Cendana'),
+	'16' => array('version' => 'slims8_akasia', 'name' => 'SLiMS 8 | Akasia'),
+	'17' => array('version' => 'slims8.2_akasia', 'name' => 'SLiMS 8.2 | Akasia')
 	);
 
 ?>
@@ -52,12 +54,11 @@ $slimsold = array(
 </head>
 <body>
     <div class="wrapper">
-	<div class="title">
-	    <h2>Step 2 - Upgrade</h2>
-	</div>
-	<p class="message">Please complete following form with your database connection information</p>
 	<div class="content hastable">
-		
+		<div class="title">
+		    <h2>Step 2 - Upgrade</h2>
+		</div>
+		<p class="message">Please complete following form with your database connection information</p>
 		<form method="post" action="install2.php">
 
 			<input type="hidden" name="submit" value="step2" />
@@ -87,27 +88,32 @@ $slimsold = array(
 	                </td>
 	            </tr>
 	        </table>
+	        <p class="message">Please select your current SLiMS version</p>
+		    <div>
+		    	<table class=text width="100%" border="0" cellspacing="0" cellpadding="2" class="main_text">
+		            <tr>
+		                <td>&nbsp;Your SLiMS Version</td>
+		                <td>
+		                    <select class="form_text" name="indexdbupgrade">
+		                    <option value="0">-- Select Version --</option>
+							<?php 
+							foreach ($slimsold as $key => $value) { ?>
+								
+								<option value="<?php echo $key; ?>"><?php echo $value['name']; ?></option>
 
-	    </div>
-	    <p class="message">Please select your current SLiMS version</p>
-	    <div class="content hastable">
-
-			<?php 
-			foreach ($slimsold as $key => $value) { ?>
-				
-			<div class="form-group">
-				<input type="radio" name="indexdbupgrade" value="<?php echo $key; ?>" id="<?php echo $value['version']; ?>">
-				<label for="<?php echo $value['version']; ?>"><?php echo $value['name']; ?></label>
-			</div>
-
-			<?php }	?>
-
-		<div class="toright">
-			<input type="button" class="button upgrade" name="btn_cancel" value="Back" title="Click to start upgrade" onclick="document.location.href='check_system.php'">
-			<input type="submit" class="button" name="btn_submit" value="Next">
+							<?php }	?>
+							</select>
+		                </td>
+		            </tr>
+		        </table>
+			    <hr>
+				<div class="toright">
+					<input type="button" class="button upgrade" name="btn_cancel" value="Back" title="Click to start upgrade" onclick="document.location.href='check_system.php'">
+					<input type="submit" class="button" name="btn_submit" value="Next">
+			    </div>
+		    </div>
 	    </div>
 		</form>
-	</div>
 	<?php include_once("footer.php"); ?>
 </div>
 </body>

@@ -5,8 +5,8 @@
 --
 */
 $sql['insert'][] = "INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
-('enable_visitor_limitation', 's:1:"0";'),
-('time_visitor_limitation', 's:2:"60";');";
+('enable_visitor_limitation', 's:1:\"0\";'),
+('time_visitor_limitation', 's:2:\"60\";');";
 
 /*
 -- 

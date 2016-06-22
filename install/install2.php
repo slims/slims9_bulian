@@ -25,7 +25,7 @@
     
 	$completed = false;
 	$error_mg  = array();
-	$indexdbupgrade_max = 15;
+	$indexdbupgrade_max = 17;
 
 	function apphp_db_install_core($database, $sql_file)
 	{
@@ -366,16 +366,17 @@
 <body>
     <div class="wrapper">
 	    <?php if(!$completed) { ?>
+	    <div class="content">
 	    <div class="title">
-		<h2>Step 3 - Installation Not Completed</h2>	    
-	    </div>
-	    <p class="error">Please correct your information according to this message</p>
-	    <div class="content">	    
+			<h2>Step 3 - Installation Not Completed</h2>
+		</div>
+		<p class="error">Please correct your information according to this message</p>  
 	    <?php
 	    foreach($error_mg as $msg){
 		    echo "<ul class=\"list\">".$msg."</ul>";
 	    }
 	    ?>
+	    <hr>
 	    <div class="toright">
 		<input type="button" class="button" value="Back" name="submit" onclick="javascript: history.go(-1);">
 		<input type="button" class="button" value="Retry" name="submit" onclick="javascript: location.reload();">
@@ -383,22 +384,21 @@
 	    <br/>
 	    </div>		    
 	    <?php } else { ?>
+	    <div class="content">
 	    <div class="title">
 		<h2>Step 3 - Installation Completed</h2>	    
 	    </div>
 	    <p class="success">Hooray, the installation was successful</p>
-	    <div class="content">
 		<p>The <?php echo $config_file_name;?> file was sucessfully created.</p>
 		<p>For security reasons, please remove <code style="font-weight: bold;">install/</code> folder from your server.</p>
-		<br/>
+		<hr>
 		<div class="toright">
 		    <?php if($application_start_file != ""){ ?><a href="<?php echo $application_start_file;?>" class="button">OK, start the SLiMS</a><?php } ?>
 		</div>
 		<br/>
 	    <?php } ?>
-	    <?php include_once("footer.php"); ?>
 	</div>
-
+	<?php include_once("footer.php"); ?>
     </div>
                   
 </body>

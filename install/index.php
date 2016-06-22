@@ -57,7 +57,7 @@ foreach($matches as $match)
     		<div class="content-body">
 	    		<div id="welcome-title">
 	    			<div id="logo"><img src="img/logo.png"></div>
-		    		<h2>Welcome to SLiMS 8 Akasia</h2>
+		    		<h2>Welcome to SLiMS 8 Akasia <small>update 3</small></h2>
 		    	</div>
 		    	<div class="content-footer">
 		    		<div class="toright">
@@ -69,8 +69,7 @@ foreach($matches as $match)
 
 	    <?php include_once("footer.php"); ?>
 
-    </div>    
-                  
+    </div>
 </body>
 </html>
 
