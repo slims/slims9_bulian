@@ -15,7 +15,7 @@ $sql['alter'][] = "ALTER TABLE `user` CHANGE `passwd` `passwd` VARCHAR(64) CHARA
 $sql['alter'][] = "ALTER TABLE `member` CHANGE `mpasswd` `mpasswd` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;";
 
 /*-- change all users password to : 'akasia'*/
-$sql['update'][] = "UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';";
+// $sql['update'][] = "UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';";
 
 /*-- change all members password to : 'akasia'*/
 // $hash_member = '$2y$10$Vx12rbVCdtYW701HrULLYOLDKJdb3fDusG2rE7GJzAcH9mqu2MjKK';

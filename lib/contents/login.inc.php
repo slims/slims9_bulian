@@ -106,13 +106,59 @@ if (isset($_POST['logMeIn'])) {
         } else {
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            // message
-            $msg = '<script type="text/javascript">';
-            $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
-            $msg .= 'history.back();';
-            $msg .= '</script>';
-            simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
+
+            // maybe still use md5 encryption
+            if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
+                $token = utility::createRandomString(32);
+                setcookie('token', $token, time()+3600, SWB);
+                setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
+                // message
+                header('location: index.php?p=login&update='.$token);
+            } else {
+                // message
+                $msg = '<script type="text/javascript">';
+                $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
+                $msg .= 'history.back();';
+                $msg .= '</script>';
+                simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
+            }
             exit();
+        }
+    }
+}
+
+// uname
+$_uname = (isset($_COOKIE['uname'])) ? trim($_COOKIE['uname']) : '';
+
+// update password
+if (isset($_POST['updatePassword'])) {
+    $cpasswd = trim($_POST['currentPasswd']);
+    $passwd = trim($_POST['newPasswd']);
+    $passwd2 = trim($_POST['newPasswd2']);
+    if (empty($cpasswd)) {
+        utility::jsAlert(__('Current password can not be empty!'));
+    } else if (($passwd AND $passwd2) AND ($passwd !== $passwd2)) {
+        utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
+    } else {
+
+        $logon = new admin_logon($_uname, $cpasswd);
+        if ($logon->changePasswd($dbs, $passwd2)) {
+
+            // write log
+            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR']);
+
+            // clear cookie
+            setcookie('token', '', time()-3600, SWB);
+            setcookie('uname', '', time()-3600, SWB);
+            echo '<script type="text/javascript">';
+            echo 'alert("Password Updated. Please log in again!");';
+            echo 'location.href = \'index.php?p=login\';';
+            echo '</script>';
+            exit();
+        } else {
+            // write log
+            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password FAILED for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR']);
+            utility::jsAlert($logon->errors);
         }
     }
 }
@@ -147,34 +193,75 @@ if (isset($_POST['logMeIn'])) {
     <?php } ?>
     <!-- Captcha preloaded javascript - end -->
     <form action="index.php?p=login" method="post">
-    <div class="heading1"><?php echo __('Username'); ?></div>
-    <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" /></div>
-    <div class="heading1"><?php echo __('Password'); ?></div>
-    <div class="login_input"><input type="password" name="passWord" class="login_input" /></div>
-    <!-- Captcha in form - start -->
-    <?php if ($sysconf['captcha']['smc']['enable']) { ?>
-      <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
-      <div class="captchaAdmin">
-      <?php
-        require_once LIB.$sysconf['captcha']['smc']['folder'].'/'.$sysconf['captcha']['smc']['incfile'];
-        $publickey = $sysconf['captcha']['smc']['publickey'];
-        echo recaptcha_get_html($publickey);
-      ?>
-      </div>
-      <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
-    <?php 
-      } elseif ($sysconf['captcha']['smc']['type'] == "others") {
+    <?php
+    if (isset($_GET['update']) && !empty($_GET['update'])) { ?>
 
-      }
-      #debugging
-      #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
-    } ?>
-    <!-- Captcha in form - end -->
+        <?php if (isset($_COOKIE['token']) && $_GET['update'] === $_COOKIE['token']) { ?>
+        <div class="alert alert-danger">Hi <?php echo $_uname; ?>, please update your password!</div>
+        <div class="heading1"><?php echo __('Current password'); ?></div>
+        <div class="login_input"><input type="password" name="currentPasswd" id="userName" class="login_input" /></div>
+        <div class="heading1"><?php echo __('New Password'); ?></div>
+        <div class="login_input"><input type="password" name="newPasswd" class="login_input" /></div>
+        <div class="heading1"><?php echo __('Confirm New Password'); ?></div>
+        <div class="login_input"><input type="password" name="newPasswd2" class="login_input" /></div>
+        <!-- Captcha in form - start -->
+        <?php if ($sysconf['captcha']['smc']['enable']) { ?>
+          <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
+          <div class="captchaAdmin">
+          <?php
+            require_once LIB.$sysconf['captcha']['smc']['folder'].'/'.$sysconf['captcha']['smc']['incfile'];
+            $publickey = $sysconf['captcha']['smc']['publickey'];
+            echo recaptcha_get_html($publickey);
+          ?>
+          </div>
+          <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
+        <?php 
+          } elseif ($sysconf['captcha']['smc']['type'] == "others") {
 
-    <div class="marginTop">
-    <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
-    <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
-    </div>
+          }
+          #debugging
+          #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
+        } ?>
+        <!-- Captcha in form - end -->
+
+        <div class="marginTop">
+        <input type="submit" name="updatePassword" value="<?php echo __('Update'); ?>" class="loginButton" />
+        <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
+        </div>
+        <?php } else { ?>
+            <div class="alert alert-danger">Not valid token!</div>
+            <a class="homeButton" href="index.php">Go Home</a>
+        <?php } ?>
+    <?php } else { ?>
+        <div class="heading1"><?php echo __('Username'); ?></div>
+        <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" /></div>
+        <div class="heading1"><?php echo __('Password'); ?></div>
+        <div class="login_input"><input type="password" name="passWord" class="login_input" /></div>
+        <!-- Captcha in form - start -->
+        <?php if ($sysconf['captcha']['smc']['enable']) { ?>
+          <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
+          <div class="captchaAdmin">
+          <?php
+            require_once LIB.$sysconf['captcha']['smc']['folder'].'/'.$sysconf['captcha']['smc']['incfile'];
+            $publickey = $sysconf['captcha']['smc']['publickey'];
+            echo recaptcha_get_html($publickey);
+          ?>
+          </div>
+          <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
+        <?php 
+          } elseif ($sysconf['captcha']['smc']['type'] == "others") {
+
+          }
+          #debugging
+          #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
+        } ?>
+        <!-- Captcha in form - end -->
+
+        <div class="marginTop">
+        <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
+        <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
+        </div>
+    <?php } ?>
     </form>
 </div>
 <script type="text/javascript">jQuery('#userName').focus();</script>

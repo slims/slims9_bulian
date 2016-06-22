@@ -13,7 +13,7 @@ ALTER TABLE `user` CHANGE `passwd` `passwd` VARCHAR(64) CHARACTER SET utf8 COLLA
 ALTER TABLE `member` CHANGE `mpasswd` `mpasswd` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
 
 -- change all users password to : 'akasia'
-UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';
+-- UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';
 
 -- change all members password to : 'akasia'
 -- UPDATE `member` SET `mpasswd`='$2y$10$Vx12rbVCdtYW701HrULLYOLDKJdb3fDusG2rE7GJzAcH9mqu2MjKK' WHERE `mpasswd` IS NOT NULL;
