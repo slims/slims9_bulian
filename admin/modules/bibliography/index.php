@@ -546,11 +546,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->addTextField('textarea', 'specDetailInfo', __('Specific Detail Info'), $rec_d['spec_detail_info'], 'rows="2" style="width: 100%"', __('explain more details about an item e.g. scale within a map, running time in a movie dvd.'));
   // biblio item batch add (by.ido alit)
   $pattern_options = array(
+    // default value
     array($sysconf['batch_item_code_pattern'], $sysconf['batch_item_code_pattern'])
     );
   // get pattern from database
   $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
   if (!$dbs->errno) {
+    // empty pattern
+    $pattern_options = array();
     $pattern_d = $pattern_q->fetch_row();
     $val = @unserialize($pattern_d[0]);
     if (!empty($val)) {
@@ -559,8 +562,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<a class="notAJAX btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_pattern.php" title="'.__('Add new pattern').'"><i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>&nbsp;';
-  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: 120px;"').' &nbsp;';
+  $str_input  = '<a class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'"><i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>&nbsp;';
+  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';
   $str_input .= __('Total item(s)').': <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
   // get collection type data related to this record from database
     $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
@@ -791,6 +794,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $('#class').change(function() {
       $('#callNumber').val($(this).val().replace('NEW:',''));
     });
+
+    // popup pattern
   });
   </script>
   <?php

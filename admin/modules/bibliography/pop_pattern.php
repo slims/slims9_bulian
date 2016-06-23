@@ -34,13 +34,14 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_write) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
-
+$succces_msg = 'Pattern Saved!';
+$failed_msg = 'Pattern Saved Failed!';
 if (isset($_POST['saveData'])) {
   $prefix = trim($dbs->escape_string(strip_tags($_POST['prefix'])));
   $suffix = trim($dbs->escape_string(strip_tags($_POST['suffix'])));
   $length_serial = trim($dbs->escape_string(strip_tags($_POST['length_serial'])));
 
-  if ($length_serial <= 3) {
+  if ($length_serial <= 2) {
     utility::jsAlert('Please, fill length serial number more than 2');
   } else {
     // get database setting
@@ -63,18 +64,18 @@ if (isset($_POST['saveData'])) {
         // update
         $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'batch_item_code_pattern\'');
         if ($update) {
-          utility::jsAlert('Pattern Saved');
+          echo $succces_msg;
         } else {
-          utility::jsAlert('Pattern Saved Failed!');
+          echo $failed_msg;
         }
       } else {
         $data_serialize = serialize($patterns);
         // insert
         $insert = $dbs->query("INSERT INTO setting(setting_name, setting_value) VALUES ('batch_item_code_pattern','$data_serialize')");
         if ($insert) {
-          utility::jsAlert('Pattern Saved');
+          echo $succces_msg;
         } else {
-          utility::jsAlert('Pattern Saved Failed!');
+          echo $failed_msg;
         }
       }
     } else {
@@ -82,13 +83,13 @@ if (isset($_POST['saveData'])) {
       // insert
       $insert = $dbs->query("INSERT INTO setting(setting_name, setting_value) VALUES ('batch_item_code_pattern','$data_serialize')");
       if ($insert) {
-        utility::jsAlert('Pattern Saved');
+        echo $succces_msg;
       } else {
-        utility::jsAlert('Pattern Saved Failed!');
+        echo $failed_msg;
       }
     }
   }
-  // exit();
+  exit();
 }
 
 // page title
@@ -113,11 +114,15 @@ $form->addTextField('text', 'suffix', __('Suffix'), 'S', 'style="width: 60%;"');
 // length serial number
 $form->addTextField('text', 'length_serial', __('Length serial number'), '5', 'style="width: 60%;"');
 
+$form->addHidden('saveData', 'save');
+
 // print out the object
+echo '<div style="padding:20px;">';
 echo $form->printOut();
 
 // preview patternt
 echo '<hr><h4>Preview: <b id="preview">P00000S</b></h4><hr>';
+echo '</div>';
 
 ?>
 <script type="text/javascript">
@@ -133,8 +138,23 @@ echo '<hr><h4>Preview: <b id="preview">P00000S</b></h4><hr>';
     }
     $('#preview').text(prefix + zeros + suffix);
   });
+  $('#mainFormPattern').submit(function (e) {
+    var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $.ajax({
+      url: uri,
+      type: 'post',
+      data: $( this ).serialize()
+    }).done(function (msg) {
+      alert(msg);
+      var pattern = $('#preview').text();
+      $('#itemCodePattern').append('<option value="'+ pattern +'">'+ pattern +'</option>');
+      jQuery.colorbox.close();
+    });
+    event.preventDefault();
+  });
 </script>
 <?php
 $content = ob_get_clean();
+echo $content;
 // include the page template
-require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
+//require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
