@@ -226,7 +226,7 @@ $result_num_options[] = array('50', '50');
 $form->addSelectList('opac_result_num', __('Number Of Collections To Show In OPAC Result List'), $result_num_options, $sysconf['opac_result_num'] );
 
 // homepage setting
-$promote_options[] = array('1', 'Yes');
+$promote_options[] = array('1', __('Yes'));
 $form->addCheckBox('enable_promote_titles', __('Show Promoted Titles at Homepage'), $promote_options, $sysconf['enable_promote_titles']?'1':'0');
 
 // enable quick return

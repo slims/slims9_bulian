@@ -126,11 +126,11 @@ function showTitleAuthors($obj_db, $array_data)
   }
   // check for opac hide flag
   if ($_opac_hide) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="lockFlagIcon" title="Hidden in OPAC">&nbsp;</div>';
+      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="lockFlagIcon" title="' . __('Hidden in OPAC') . '">&nbsp;</div>';
   }
   // check for promoted flag
   if ($_promoted) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="homeFlagIcon" title="Promoted To Homepage">&nbsp;</div>';
+      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="homeFlagIcon" title="' . __('Promoted To Homepage') . '">&nbsp;</div>';
   }
   // labels
   if ($_labels) {

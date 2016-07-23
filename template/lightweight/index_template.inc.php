@@ -108,7 +108,7 @@ include "partials/nav.php";
           // Generate Output
           // catch empty list
           if(strlen($main_content) == 7) {
-            echo '<h2>No Result</h2><hr/><p>Please try again</p>';
+            echo '<h2>' . __('No Result') . '</h2><hr/><p>' . __('Please try again') . '</p>';
           } else {
             echo $main_content;
           }

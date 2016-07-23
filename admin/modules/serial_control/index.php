@@ -82,7 +82,7 @@ $count = 1;
 function subscriptionDetail($obj_db, $array_data)
 {
     global $can_read, $can_write, $count;
-    $_output = '<div style="float: left;"><strong style="font-size: 120%;"><a href="#" class="notAJAX" title="' . __('Edit Bibliographic Data') . '" onclick="openHTMLpop(\''.MWB.'bibliography/pop_biblio.php?action=detail&inPopUp=true&itemID='.$array_data[0].'&itemCollID=0\', 650, 500, \''.__('Edit Bibliographic data').'\')">'.$array_data[1].'</a></strong> ('.$array_data[2].')</div>';
+    $_output = '<div style="float: left;"><strong style="font-size: 120%;"><a class="notAJAX openPopUp" width="650" height="500" title="' . __('Edit Bibliographic data') . '" href="'.MWB.'bibliography/pop_biblio.php?action=detail&inPopUp=true&itemID='.$array_data[0].'&itemCollID=0">'.$array_data[1].'</a></strong> ('.$array_data[2].')</div>';
     if ($can_read AND $can_write) {
         $_output .= ' <a href="#" class="addSubscription notAJAX" onclick="javascript: $(\'#subscriptionListCont'.$count.'\').show(); setIframeContent(\'subscriptionList'.$count.'\', \''.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'&detail=true\');" title="'.__('Add New Subscription').'">&nbsp;</a> ';
     }
