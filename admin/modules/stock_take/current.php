@@ -92,7 +92,8 @@ if ($stk_query->num_rows < 1) {
     </fieldset>
     <!-- give focus to itemCode text field -->
     <script type="text/javascript">
-    Form.Element.focus('itemCode');
+    //Form.Element.focus('itemCode');
+    $('#itemCode').focus();
     </script>
     <div id="stError" class="errorBox" style="display: none;">&nbsp;</div>
 <?php
