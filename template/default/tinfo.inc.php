@@ -9,6 +9,7 @@ $sysconf['template']['responsive']  			= true;
 
 // Run gradient animation - you may need a big memory to run it well.
 $sysconf['template']['run_gradient_animation']  = false; // true or false
+$sysconf['template']['run_animation']  = false; // true or false
 
 // Choose gradient color
 // Available color:  red, blue(default) , green, beach, mint, purple, pink
