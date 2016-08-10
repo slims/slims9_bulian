@@ -242,6 +242,7 @@ abstract class biblio_list_model
   public function XMLresult() {
     global $sysconf;
     $mods_version = '3.3';
+	$_buffer = '';
     // loop data
     $xml = new XMLWriter();
     $xml->openMemory();
