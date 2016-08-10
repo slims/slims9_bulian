@@ -168,15 +168,14 @@ if (!$reportView) {
     // table spec
     $table_spec = 'item AS i
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
-        LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
-        LEFT JOIN mst_item_status AS s ON i.item_status_id=s.item_status_id';
+        LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id';
 
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->setSQLColumn('i.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'ct.coll_type_name AS \''.__('Collection Type').'\'',
-        's.item_status_name AS \''.__('Item Status').'\'',
+        'i.item_status_id AS \''.__('Item Status').'\'',
         'b.call_number AS \''.__('Call Number').'\'', 'i.biblio_id');
     $reportgrid->setSQLorder('b.title ASC');
 
@@ -271,8 +270,23 @@ if (!$reportView) {
         $_output = $_title.'<br /><i>'.$_authors.'</i>'."\n";
         return $_output;
     }
+    function showStatus($obj_db, $array_data)
+    {
+
+        $q = $obj_db->query('SELECT item_status_name FROM mst_item_status WHERE item_status_id=\''.$array_data[3].'\'');
+        $d = $q->fetch_row();
+        $s = $d[0];
+        $output = $s;
+
+        if (!$s) {
+            $output = __('Available');
+        }
+
+        return $output;
+    }
     // modify column value
     $reportgrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
+    $reportgrid->modifyColumnContent(3, 'callback{showStatus}');
     $reportgrid->invisible_fields = array(5);
 
     // put the result into variables
