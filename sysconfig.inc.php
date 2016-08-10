@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.2 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.3 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');

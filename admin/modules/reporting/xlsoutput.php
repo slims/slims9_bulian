@@ -45,7 +45,7 @@ if (isset($_SESSION["xlsquery"])) {
 	$dbtable = $_SESSION["tblout"];
 	$qr = $dbs->query($q);
 	if (!$qr) {
-	    echo "Could not successfully run query ($q) from DB: " . mysql_error();
+	    echo "Could not successfully run query ($q) from DB: " . $dbs->error;
 	    exit;
 	}
 

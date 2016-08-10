@@ -31,6 +31,17 @@ Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 8.3 (Akasia)
+========================================================================
+Added : Installer auto generate database
+Added : Node server for UCS
+Added : Node server for P2P
+Added : Scope note in vocabulary control
+Modified : Password change due to encryption method
+Added : User ID in database
+Fixed : Auto focus on current stock take menu
+Fixed : Download access for PDF
+
 SLiMS 8.2 (Akasia)
 ========================================================================
 Fixed  : Installation problem due to SLiMS version naming
