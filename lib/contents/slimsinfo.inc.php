@@ -34,17 +34,17 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 
 ?>
 <div style="padding-left: 10px;">
-<h2>SLiMS Version 8 codename Akasia</h2>
+<h2>SLiMS Version 8.3 codename Akasia</h2>
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2013 Senayan Developer Community<br />
-Simbio Engine v2.0, Copyright (c) 2007-2013 Arie Nugraha
+Copyright (c) 2007-2016 Senayan Developer Community<br />
+Simbio Engine v2.0, Copyright (c) 2007-2016 Arie Nugraha
 </p>
 
 <p>
 <div style="font-weight:bold;">Developers:</div>
-Lead Developer: Hendro Wicaksono<br />
+Lead Developer: Wardiyono (2015-...)<br />
 Programmer: Arie Nugraha, Hendro Wicaksono, Tobias Zeumer, Wardiyono, Indra Sutriadi, Eddy Subratha, Waris Agung Widodo<br />
 Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Zayd, Wardiyono
 </p>
@@ -53,7 +53,7 @@ Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Z
 <div style="font-weight:bold;">Translator:</div>
 Germany: Tobias Zeumer<br />
 Arabic: Rasyid Ridho<br />
-Thai: Prasitichai 2Õ22Ò32Ó82Ò32Ó72Î92Õ52Ñ32Ó12Ò52Ò72Ï5<br />
+Thai: Prasitichai เรารักในหลวง<br />
 Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
 Brazilian Portuguese: <br />
