@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 00:46+0200\n"
-"PO-Revision-Date: 2016-08-17 00:46+0200\n"
+"POT-Creation-Date: 2016-08-17 00:49+0200\n"
+"PO-Revision-Date: 2016-08-17 00:50+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -29,19 +29,27 @@ msgstr "ID verfügbar"
 msgid "Add New"
 msgstr "Neu hinzufügen"
 
-#: admin/admin_template/default/function.php:55 admin/default/submenu.php:21
+#: admin/admin_template/default/function.php:56
+msgid "Bibliography"
+msgstr "Titelaufnahmen"
+
+#: admin/admin_template/default/function.php:57
+msgid "Master File"
+msgstr "Stammdaten"
+
+#: admin/admin_template/default/function.php:59 admin/default/submenu.php:21
 msgid "Shortcut"
 msgstr "Schnellzugriff"
 
-#: admin/admin_template/default/function.php:64
+#: admin/admin_template/default/function.php:68
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: admin/admin_template/default/function.php:65 lib/module.inc.php:40
+#: admin/admin_template/default/function.php:69 lib/module.inc.php:40
 msgid "OPAC"
 msgstr "OPAC"
 
-#: admin/admin_template/default/function.php:77 lib/contents/chat.php:80
+#: admin/admin_template/default/function.php:81 lib/contents/chat.php:80
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -7349,9 +7357,6 @@ msgstr ""
 
 #~ msgid "Member E-Mail"
 #~ msgstr "E-Mail des Mitglieds"
-
-#~ msgid "Bibliography"
-#~ msgstr "Titelaufnahmen"
 
 #, fuzzy
 #~ msgid "%d Auto"

@@ -51,7 +51,11 @@ function main_menu()
     'logout'         => 'fa fa-close',
     'opac'           => 'fa fa-desktop'
     );
-  
+  //fake, just for translation po... xieyh :(
+  $translations          = array(
+    'bibliography'   => __('Bibliography'),
+    'master_file'    => __('Master File'),
+  );
   $appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Shortcut').'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Shortcut').'</span></label>';
   $_mods_q = $dbs->query('SELECT * FROM '.$module_table);
   while ($_mods_d = $_mods_q->fetch_assoc()) {
