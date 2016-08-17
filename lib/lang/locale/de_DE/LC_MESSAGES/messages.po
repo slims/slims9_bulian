@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 00:49+0200\n"
-"PO-Revision-Date: 2016-08-17 00:50+0200\n"
+"POT-Creation-Date: 2016-08-17 02:35+0200\n"
+"PO-Revision-Date: 2016-08-17 02:38+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,6 +16,10 @@ msgstr ""
 "X-Poedit-Basepath: ../../../../..\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: admin/AJAX_check_id.php:21
+msgid "No ID Supplied!"
+msgstr "Keine ID angegeben!"
 
 #: admin/AJAX_check_id.php:35
 msgid "ID Already exists! Please use another ID"
@@ -167,10 +171,74 @@ msgid ""
 "<strong><i>You are logged in as Super User. With great power comes great "
 "responsibility.</i></strong>"
 msgstr ""
+"<strong><i>Sie sind als Super-User eingeloggt. Große Macht kommt mit großer "
+"Verantwortung.</i></strong>"
 
 #: admin/default/home.php:119
 msgid "Click Here To Repair The Tables"
+msgstr "Klicken Sie hier, um die Tabellen zu reparieren"
+
+#: admin/default/home.php:328
+msgid "Latest Transactions"
 msgstr ""
+
+#: admin/default/home.php:335 admin/default/home.php:359
+msgid "New"
+msgstr "Neu"
+
+#: admin/default/home.php:336 admin/default/home.php:363
+#: admin/default/home.php:471 admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/pop_loan_receipt.php:141
+#: admin/modules/circulation/quick_return.php:69
+msgid "Return"
+msgstr "Zurückbuchen"
+
+#: admin/default/home.php:337 admin/default/home.php:476
+#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/membership/index.php:383
+msgid "Extend"
+msgstr "Verlängern"
+
+#: admin/default/home.php:345
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: admin/default/home.php:355 admin/default/home.php:461
+msgid "Total"
+msgstr "Gesamt"
+
+#: admin/default/home.php:367 admin/modules/reporting/customs/staff_act.php:108
+msgid "Extends"
+msgstr "Verlängerungen"
+
+#: admin/default/home.php:371 admin/default/home.php:481
+#: admin/modules/reporting/customs/overdued_list.php:185
+msgid "Overdue"
+msgstr "Überfälligkeit"
+
+#: admin/default/home.php:385
+msgid "Total of Collections"
+msgstr ""
+
+#: admin/default/home.php:394
+msgid "Total of Items"
+msgstr ""
+
+#: admin/default/home.php:403
+msgid "Lent"
+msgstr ""
+
+#: admin/default/home.php:412 admin/modules/bibliography/item.php:319
+#: admin/modules/circulation/reserve_list.php:110
+#: admin/modules/reporting/customs/item_titles_list.php:282
+#: lib/detail.inc.php:219
+msgid "Available"
+msgstr "Verfügbar"
+
+#: admin/default/home.php:466 admin/modules/circulation/loan.php:127
+#: admin/modules/circulation/pop_loan_receipt.php:88
+msgid "Loan"
+msgstr "Ausleihen"
 
 #: admin/default/session_check.inc.php:32
 #: admin/default/session_check.inc.php:45
@@ -648,7 +716,7 @@ msgid "second(s) to complete"
 msgstr "Sekunde(n) bearbeitet"
 
 #: admin/modules/bibliography/export.php:50
-#: admin/modules/bibliography/import.php:64
+#: admin/modules/bibliography/import.php:69
 #: admin/modules/bibliography/item_export.php:50
 #: admin/modules/bibliography/item_import.php:57
 #: admin/modules/master_file/frequency.php:55
@@ -685,7 +753,7 @@ msgid "Export Now"
 msgstr "Export starten"
 
 #: admin/modules/bibliography/export.php:177
-#: admin/modules/bibliography/import.php:262
+#: admin/modules/bibliography/import.php:312
 #: admin/modules/bibliography/item_export.php:160
 #: admin/modules/bibliography/item_import.php:214
 #: admin/modules/membership/export.php:140
@@ -694,7 +762,7 @@ msgid "Field Separator"
 msgstr "Trennzeichen für Felder"
 
 #: admin/modules/bibliography/export.php:179
-#: admin/modules/bibliography/import.php:264
+#: admin/modules/bibliography/import.php:314
 #: admin/modules/bibliography/item_export.php:162
 #: admin/modules/bibliography/item_import.php:216
 #: admin/modules/membership/export.php:142
@@ -709,7 +777,7 @@ msgid "Record Separator"
 msgstr "Datensatztrennzeichen"
 
 #: admin/modules/bibliography/export.php:185
-#: admin/modules/bibliography/import.php:266
+#: admin/modules/bibliography/import.php:316
 #: admin/modules/bibliography/item_export.php:168
 #: admin/modules/bibliography/item_import.php:218
 #: admin/modules/bibliography/marcexport.php:204
@@ -719,7 +787,7 @@ msgid "Number of Records To Export (0 for all records)"
 msgstr "Zahl der zu exportierenden Datensätze (0 für alle Datensätze)"
 
 #: admin/modules/bibliography/export.php:187
-#: admin/modules/bibliography/import.php:268
+#: admin/modules/bibliography/import.php:318
 #: admin/modules/bibliography/item_export.php:170
 #: admin/modules/bibliography/item_import.php:220
 #: admin/modules/bibliography/marcexport.php:206
@@ -846,25 +914,25 @@ msgstr "Schlagwort entfernt!"
 msgid "Topic succesfully removed!"
 msgstr "Schlagwort erfolgreich entfernt!"
 
-#: admin/modules/bibliography/import.php:61
+#: admin/modules/bibliography/import.php:66
 #: admin/modules/bibliography/item_import.php:54
 #: admin/modules/bibliography/marcimport.php:72
 #: admin/modules/membership/import.php:55
 msgid "Please select the file to import!"
 msgstr "Bitte wählen Sie die zu importierende Datei aus!"
 
-#: admin/modules/bibliography/import.php:85
+#: admin/modules/bibliography/import.php:90
 #: admin/modules/bibliography/item_import.php:78
 #: admin/modules/bibliography/marcimport.php:98
 #: admin/modules/membership/import.php:76
 msgid "Upload failed! File type not allowed or the size is more than"
 msgstr "Hochladen fehlgeschlagen! Dateityp ist unzulässig oder ist größer als"
 
-#: admin/modules/bibliography/import.php:237
+#: admin/modules/bibliography/import.php:287
 msgid "Import Tool"
 msgstr "Importwerkzeug"
 
-#: admin/modules/bibliography/import.php:240
+#: admin/modules/bibliography/import.php:290
 msgid ""
 "Import for bibliographics data from CSV file. For guide on CVS fields order "
 "and format please refer to documentation or visit <a href=\"http://slims.web."
@@ -875,14 +943,14 @@ msgstr ""
 "zu Rate oder besuchen Sie die <a href=\"http://senayan.diknas.go.id\" target="
 "\"_blank\">Offizielle Webseite</a>"
 
-#: admin/modules/bibliography/import.php:249
+#: admin/modules/bibliography/import.php:299
 #: admin/modules/bibliography/item_import.php:202
 #: admin/modules/bibliography/marcimport.php:404
 #: admin/modules/membership/import.php:191
 msgid "Import Now"
 msgstr "Import starten"
 
-#: admin/modules/bibliography/import.php:260
+#: admin/modules/bibliography/import.php:310
 #: admin/modules/bibliography/item_import.php:212
 #: admin/modules/bibliography/marcimport.php:414
 #: admin/modules/membership/import.php:202
@@ -1722,13 +1790,6 @@ msgstr "Standort"
 #: admin/modules/stock_take/init.php:183
 msgid "Shelf Location"
 msgstr "Regalstandort"
-
-#: admin/modules/bibliography/item.php:319
-#: admin/modules/circulation/reserve_list.php:110
-#: admin/modules/reporting/customs/item_titles_list.php:282
-#: lib/detail.inc.php:219
-msgid "Available"
-msgstr "Verfügbar"
 
 #: admin/modules/bibliography/item.php:323
 #: admin/modules/master_file/item_status.php:154
@@ -2893,11 +2954,6 @@ msgstr "Buchungsvorgang für Mitglied {member_id} erfolgreich abgeschlossen"
 msgid "Insert Item Code/Barcode"
 msgstr "Barcode des Exemplars angeben"
 
-#: admin/modules/circulation/loan.php:127
-#: admin/modules/circulation/pop_loan_receipt.php:88
-msgid "Loan"
-msgstr "Ausleihen"
-
 #: admin/modules/circulation/loan.php:154
 msgid "Click To Change Loan Date"
 msgstr "Zum Ändern des Ausleihdatums hier klicken"
@@ -2913,17 +2969,6 @@ msgstr "Wollen Sie das Exemplar zurückbuchen?"
 #: admin/modules/circulation/loan_list.php:62
 msgid "Are you sure to extend loan for"
 msgstr "Wollen Sie die Leihfrist verlängern für"
-
-#: admin/modules/circulation/loan_list.php:98
-#: admin/modules/circulation/pop_loan_receipt.php:141
-#: admin/modules/circulation/quick_return.php:69
-msgid "Return"
-msgstr "Zurückbuchen"
-
-#: admin/modules/circulation/loan_list.php:98
-#: admin/modules/membership/index.php:383
-msgid "Extend"
-msgstr "Verlängern"
 
 #: admin/modules/circulation/loan_list.php:98
 msgid "Col. Type"
@@ -4922,10 +4967,6 @@ msgid "Register Date Until"
 msgstr "Registrierungsdatum bis"
 
 #: admin/modules/reporting/customs/overdued_list.php:185
-msgid "Overdue"
-msgstr "Überfälligkeit"
-
-#: admin/modules/reporting/customs/overdued_list.php:185
 msgid "day(s)"
 msgstr "Tag(e)"
 
@@ -4971,10 +5012,6 @@ msgstr "Mitglieder eingetragen"
 #: admin/modules/reporting/customs/staff_act.php:107
 msgid "Returns"
 msgstr "Rücknahmen"
-
-#: admin/modules/reporting/customs/staff_act.php:108
-msgid "Extends"
-msgstr "Verlängerungen"
 
 #: admin/modules/reporting/customs/visitor_list.php:79
 msgid "NON-Member visitor"
@@ -6648,6 +6685,14 @@ msgstr "ÜBERFÄLLIG"
 msgid "item(s) currently on loan"
 msgstr "Exemplar(e) derzeit ausgeliehen"
 
+#: lib/contents/member.inc.php:575
+msgid "Download All Current Loan"
+msgstr ""
+
+#: lib/contents/member.inc.php:610
+msgid "Download All Loan History"
+msgstr ""
+
 #: lib/contents/member.inc.php:637
 msgid "Reservation e-mail sent successfully!"
 msgstr "Vormerkbenachrichtigung erfolgreich per E-Mail versendet!"
@@ -7283,7 +7328,7 @@ msgstr "Über SLiMS"
 #: template/lightweight/index_template.inc.php:93
 #: template/lightweight/index_template.inc.php:194
 msgid "Put some keyword(s)..."
-msgstr ""
+msgstr "Suchbegriff(e) eingeben..."
 
 #~ msgid "Click Here To Repaire The Tables"
 #~ msgstr "Tabellen reparieren"
