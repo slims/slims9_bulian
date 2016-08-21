@@ -260,8 +260,9 @@ class circulation extends member
             // set overdue flags
             $this->loan_have_overdue = true;
             $this->overdue_days = $_fines['days'];
+            $overdue_description = str_replace("{item_code}", $_fines['item'], __("Overdue fines for item {item_code}"));
             if (is_numeric($this->overdue_days) AND $this->overdue_days > 0) {
-                $this->obj_db->query("INSERT INTO fines VALUES(NULL, '$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, 'Overdue fines for item ".$_fines['item']."')");
+                $this->obj_db->query("INSERT INTO fines VALUES(NULL, '$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
             }
             // add to receipt
             if (isset($_SESSION['receipt_record'])) {
