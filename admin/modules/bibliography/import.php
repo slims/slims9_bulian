@@ -224,7 +224,9 @@ if (isset($_POST['doImport'])) {
     $import_time_sec = $end_time-$start_time;
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name']);
     echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#importInfo\').html(\'<strong>'.$inserted_row.'</strong> records inserted successfully to bibliographic database, from record <strong>'.$_POST['recordOffset'].' in '.$import_time_sec.' second(s)</strong>\');'."\n";
+    echo 'parent.$(\'#importInfo\').html(\''
+    . str_replace(array('{numberOfInsertedRecords}', '{recordOffset}', '{timeInSeconds}'),array($inserted_row,intval($_POST['recordOffset']), $import_time_sec), __( '<strong>{numberOfInsertedRecords}</strong> records inserted successfully to bibliographic database, from record <strong>{recordOffset} in {timeInSeconds} second(s)</strong>'))
+            . '\');'."\n";
     echo 'parent.$(\'#importInfo\').css( {\'display\': \'block\'} );'."\n";
     echo '</script>';
     exit();
