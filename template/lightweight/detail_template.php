@@ -10,7 +10,7 @@
   ============================================= -->
   <h3 class="s-detail-type"><?php echo $gmd_name ?></h3>
   <h4 class="s-detail-title" itemprop="name" property="name"><?php echo $title ?></h4>
-  <?php echo $social_shares ?>
+  <?php if($sysconf['social_shares']) { echo $social_shares; } ?>
   <br>
   <div class="s-detail-author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">
   <?php echo  $authors ?>
