@@ -1,0 +1,38 @@
+/*chat style*/
+.s-chat {
+    .s-chat-header {
+        margin: -16px -16px 8px -16px;
+        padding: 16px;
+        border: 1px solid #e5e5e5;
+        font-weight: bold;
+    }
+
+    .s-chat-content {
+        #log {
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #eee;
+            padding: 8px 16px;
+            margin-left: -16px;
+            margin-right: -16px;
+            margin-bottom: 8px;
+
+            // p {
+            //   display: block;
+            //   width: 100%;
+            //   padding: 8px 16px;
+            //   background-color: #fff;
+            //   border-bottom: 1px solid #eee;
+            //   font-size: 12px;
+            // }
+        }
+    }
+
+    footer {
+        padding-top: 16px;
+        color: #999;
+        font-size: 12px;
+    }
+}

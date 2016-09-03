@@ -1,0 +1,54 @@
+.librarian {
+	width: calc(50% - 16px);
+	position: relative;
+    padding: 16px;
+    min-height: 1px;
+    float: left;
+    margin-right: 16px;
+	.librarian-image {
+		margin-bottom: 16px;
+		margin-left: -16px;
+		margin-right: -16px;
+		margin-top: -16px;
+		overflow: hidden;
+		height: 200px;
+		img {
+			width: 100%;
+			margin-top: -64px;
+		}
+	}
+	.key {
+		font-weight: bold
+	}
+	.librarian-social {
+		list-style: none;
+		li {
+			list-style: none;
+		}
+	}
+	.span8 {
+		.row-fluid {
+			&:nth-child(1) {
+				.key {
+					display: none;
+				}
+				.span7 {
+					font-size: 20px;
+					color: #333;
+				}
+			}
+			&:nth-child(2) {
+				.key {
+					display: none;
+				}
+				.span7 {
+					margin-bottom: 16px;
+				}
+			}
+		}
+	}
+}
+
+.librarian-list {
+	margin-right: -16px;
+}
