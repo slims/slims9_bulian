@@ -1,0 +1,38 @@
+/* Paging
+ ================================ */
+
+.biblioPaging {
+  width: 100%;
+  padding: 20px 0;
+  margin-left: 2px;
+}
+
+@media screen and (min-width: 768px) {
+  .biblioPaging {
+    float: left;
+  }
+}
+
+.biblioPaging b, .biblioPaging a {
+  display: inline;
+  margin:0 -7px;
+  padding: 10px 11px;
+  font-size: 7pt;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background-color: #fff;
+  border: solid 1px #f2f2f2;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webikit-transition: all 500ms;
+  transition: all 500ms;
+}
+
+.biblioPaging a:hover, .biblioPaging b {
+  background: #282828;
+  color: #fff;
+}
