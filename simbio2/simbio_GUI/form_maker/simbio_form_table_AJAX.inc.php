@@ -83,6 +83,10 @@ class simbio_form_table_AJAX extends simbio_form_maker
          }
          // append row
          $_table->appendTableRow(array($row['label'], ':', $_form_element));
+         if(!empty($row['element']->element_name))
+         {
+            $_table->setCellAttr($_row_num+1, null, 'id="simbioFormRow' . $row['element']->element_name . '"');
+         }
          // set the column header attr
          $_table->setCellAttr($_row_num+1, 0, 'width="20%" valign="top"'.$this->table_header_attr);
          $_table->setCellAttr($_row_num+1, 1, 'width="1%" valign="top"'.$this->table_header_attr);
