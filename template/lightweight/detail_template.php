@@ -177,7 +177,7 @@
 
   <!-- Comment
   ============================================= -->  
-  <?php if(isset($_SESSION['mid'])) : ?>
+  <?php if(isset($_SESSION['mid']) && $sysconf['comment']['enable']) : ?>
   <h3><i class="fa fa-comments-o"></i> <?php echo __('Comments'); ?></h3>
   <?php echo showComment($biblio_id); ?>
   <?php endif; ?>
