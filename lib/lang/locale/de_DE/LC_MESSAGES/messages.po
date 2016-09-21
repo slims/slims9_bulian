@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 02:35+0200\n"
-"PO-Revision-Date: 2016-08-26 17:38+0200\n"
+"POT-Creation-Date: 2016-09-21 02:24+0200\n"
+"PO-Revision-Date: 2016-09-21 02:27+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -61,6 +61,33 @@ msgstr "Abmelden"
 msgid "Help"
 msgstr "Hilfe"
 
+#: admin/admin_template/overdue-mail-tpl.php:2
+msgid ""
+"To <strong><!--MEMBER_NAME--> (<!--MEMBER_ID-->)</strong>\n"
+"This is notification e-mail to inform you that you have <strong>OVERDUED</"
+"strong> library loan,\n"
+"the overdued collection(s) are:"
+msgstr ""
+"An <strong><!--MEMBER_NAME--> (<!--MEMBER_ID-->)</strong>\n"
+"Mit dieser eMail werden Sie darauf hingewiesen, dass Sie "
+"<strong>ÜBERFÄLLIGE</strong> Ausleihen haben,\n"
+"die überfälligen Exemplare sind:"
+
+#: admin/admin_template/overdue-mail-tpl.php:10
+msgid ""
+"Please return all overdued collections immediately to library. If you have\n"
+"any complaint regarding to this overdue notification,\n"
+"please contact our circulation desk."
+msgstr ""
+
+#: admin/admin_template/overdue-mail-tpl.php:15
+msgid ""
+"<p>Thank You.</p>\n"
+"\n"
+"<strong><!--DATE--></strong>\n"
+"<br />Library Management"
+msgstr ""
+
 #: admin/chat.php:6
 msgid "Chat With Members"
 msgstr "Mit Mitgliedern chatten"
@@ -73,10 +100,11 @@ msgstr "Absenden der Nachricht mit der Eingabetaste"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: admin/chat.php:15 lib/contents/chat.php:88 sysconfig.inc.php:624
+#: admin/chat.php:15 lib/contents/chat.php:88 sysconfig.inc.php:627
 #: template/classic/part/content/nav.php:42
 #: template/default/partials/nav.php:10
 #: template/lightweight/partials/nav.php:10
+#: template/spielema/partials/nav.php:10
 msgid "Librarian"
 msgstr "Bibliotheksmitarbeiter"
 
@@ -180,21 +208,21 @@ msgstr "Klicken Sie hier, um die Tabellen zu reparieren"
 
 #: admin/default/home.php:328
 msgid "Latest Transactions"
-msgstr ""
+msgstr "Neueste Transaktionen"
 
 #: admin/default/home.php:335 admin/default/home.php:359
 msgid "New"
 msgstr "Neu"
 
 #: admin/default/home.php:336 admin/default/home.php:363
-#: admin/default/home.php:471 admin/modules/circulation/loan_list.php:98
+#: admin/default/home.php:471 admin/modules/circulation/loan_list.php:99
 #: admin/modules/circulation/pop_loan_receipt.php:141
 #: admin/modules/circulation/quick_return.php:69
 msgid "Return"
 msgstr "Zurückbuchen"
 
 #: admin/default/home.php:337 admin/default/home.php:476
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/loan_list.php:99
 #: admin/modules/membership/index.php:383
 msgid "Extend"
 msgstr "Verlängern"
@@ -212,6 +240,7 @@ msgid "Extends"
 msgstr "Verlängerungen"
 
 #: admin/default/home.php:371 admin/default/home.php:481
+#: admin/modules/membership/member_base_lib.inc.php:185
 #: admin/modules/reporting/customs/overdued_list.php:185
 msgid "Overdue"
 msgstr "Überfälligkeit"
@@ -226,7 +255,7 @@ msgstr ""
 
 #: admin/default/home.php:403
 msgid "Lent"
-msgstr ""
+msgstr "Ausgeliehen"
 
 #: admin/default/home.php:412 admin/modules/bibliography/item.php:319
 #: admin/modules/circulation/reserve_list.php:110
@@ -235,7 +264,7 @@ msgstr ""
 msgid "Available"
 msgstr "Verfügbar"
 
-#: admin/default/home.php:466 admin/modules/circulation/loan.php:127
+#: admin/default/home.php:466 admin/modules/circulation/loan.php:68
 #: admin/modules/circulation/pop_loan_receipt.php:88
 msgid "Loan"
 msgstr "Ausleihen"
@@ -251,11 +280,11 @@ msgstr "Ausleihen"
 #: admin/modules/bibliography/iframe_item_list.php:44
 #: admin/modules/bibliography/iframe_topic.php:43
 #: admin/modules/bibliography/import.php:46
-#: admin/modules/bibliography/index.php:53
-#: admin/modules/bibliography/index.php:474
+#: admin/modules/bibliography/index.php:55
+#: admin/modules/bibliography/index.php:476
 #: admin/modules/bibliography/item.php:54
 #: admin/modules/bibliography/item.php:226
-#: admin/modules/bibliography/item_barcode_generator.php:44
+#: admin/modules/bibliography/item_barcode_generator.php:54
 #: admin/modules/bibliography/item_export.php:44
 #: admin/modules/bibliography/item_import.php:45
 #: admin/modules/bibliography/marcimport.php:45
@@ -323,12 +352,12 @@ msgstr "Entliehene Exemplare"
 #: admin/modules/bibliography/checkout_item.php:56
 #: admin/modules/bibliography/dl_print.php:227
 #: admin/modules/bibliography/dl_print.php:229
-#: admin/modules/bibliography/index.php:452
-#: admin/modules/bibliography/index.php:455
+#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:457
 #: admin/modules/bibliography/item.php:212
 #: admin/modules/bibliography/item.php:215
-#: admin/modules/bibliography/item_barcode_generator.php:219
-#: admin/modules/bibliography/item_barcode_generator.php:221
+#: admin/modules/bibliography/item_barcode_generator.php:255
+#: admin/modules/bibliography/item_barcode_generator.php:257
 #: admin/modules/bibliography/marcexport.php:170
 #: admin/modules/bibliography/marcexport.php:172
 #: admin/modules/bibliography/p2p.php:232
@@ -372,8 +401,8 @@ msgstr "Entliehene Exemplare"
 #: admin/modules/master_file/topic.php:149
 #: admin/modules/master_file/topic.php:151
 #: admin/modules/membership/index.php:337
-#: admin/modules/membership/member_card_generator.php:274
-#: admin/modules/membership/member_card_generator.php:276
+#: admin/modules/membership/member_card_generator.php:283
+#: admin/modules/membership/member_card_generator.php:285
 #: admin/modules/membership/member_type.php:145
 #: admin/modules/membership/member_type.php:147
 #: admin/modules/serial_control/index.php:63
@@ -394,6 +423,8 @@ msgstr "Entliehene Exemplare"
 #: template/default/index_template.inc.php:195
 #: template/lightweight/index_template.inc.php:94
 #: template/lightweight/index_template.inc.php:195
+#: template/spielema/index_template.inc.php:94
+#: template/spielema/index_template.inc.php:195
 msgid "Search"
 msgstr "Suchen"
 
@@ -403,12 +434,13 @@ msgstr "Suchen"
 #: admin/modules/bibliography/item.php:406
 #: admin/modules/bibliography/item.php:437
 #: admin/modules/bibliography/item.php:449
-#: admin/modules/bibliography/item_barcode_generator.php:254
-#: admin/modules/bibliography/item_barcode_generator.php:261
-#: admin/modules/circulation/loan.php:141
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/bibliography/item_barcode_generator.php:290
+#: admin/modules/bibliography/item_barcode_generator.php:297
+#: admin/modules/circulation/loan.php:82
+#: admin/modules/circulation/loan_list.php:99
 #: admin/modules/circulation/member_loan_hist.php:62
 #: admin/modules/circulation/reserve_list.php:96
+#: admin/modules/membership/member_base_lib.inc.php:185
 #: admin/modules/reporting/customs/item_titles_list.php:77
 #: admin/modules/reporting/customs/item_titles_list.php:175
 #: admin/modules/reporting/customs/item_usage.php:76
@@ -433,11 +465,11 @@ msgstr "Barcode"
 #: admin/modules/circulation/circulation_action.php:458
 #: admin/modules/circulation/circulation_action.php:495
 #: admin/modules/circulation/index.php:65
-#: admin/modules/membership/index.php:397
-#: admin/modules/membership/index.php:542
-#: admin/modules/membership/index.php:548
-#: admin/modules/membership/member_card_generator.php:213
-#: admin/modules/membership/member_card_generator.php:299
+#: admin/modules/membership/index.php:429
+#: admin/modules/membership/index.php:574
+#: admin/modules/membership/index.php:580
+#: admin/modules/membership/member_card_generator.php:221
+#: admin/modules/membership/member_card_generator.php:308
 #: admin/modules/reporting/customs/due_date_warning.php:72
 #: admin/modules/reporting/customs/due_date_warning.php:103
 #: admin/modules/reporting/customs/loan_history.php:71
@@ -460,28 +492,29 @@ msgstr "Mitgliedsnummer"
 #: admin/modules/bibliography/checkout_item.php:73
 #: admin/modules/bibliography/dl_print.php:262
 #: admin/modules/bibliography/dl_print.php:270
-#: admin/modules/bibliography/index.php:529
-#: admin/modules/bibliography/index.php:826
-#: admin/modules/bibliography/index.php:833
-#: admin/modules/bibliography/index.php:853
+#: admin/modules/bibliography/index.php:531
+#: admin/modules/bibliography/index.php:832
+#: admin/modules/bibliography/index.php:839
 #: admin/modules/bibliography/index.php:859
+#: admin/modules/bibliography/index.php:865
 #: admin/modules/bibliography/item.php:287
 #: admin/modules/bibliography/item.php:398
 #: admin/modules/bibliography/item.php:407
 #: admin/modules/bibliography/item.php:438
 #: admin/modules/bibliography/item.php:450
-#: admin/modules/bibliography/item_barcode_generator.php:255
-#: admin/modules/bibliography/item_barcode_generator.php:262
+#: admin/modules/bibliography/item_barcode_generator.php:291
+#: admin/modules/bibliography/item_barcode_generator.php:299
 #: admin/modules/bibliography/marcexport.php:226
 #: admin/modules/bibliography/marcexport.php:233
 #: admin/modules/bibliography/pop_attach.php:203
 #: admin/modules/bibliography/pop_biblio_rel.php:91
 #: admin/modules/bibliography/printed_card.php:330
 #: admin/modules/circulation/circulation_action.php:319
-#: admin/modules/circulation/loan.php:141
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/loan.php:82
+#: admin/modules/circulation/loan_list.php:99
 #: admin/modules/circulation/member_loan_hist.php:63
 #: admin/modules/circulation/reserve_list.php:96
+#: admin/modules/membership/member_base_lib.inc.php:185
 #: admin/modules/reporting/customs/class_recap.php:106
 #: admin/modules/reporting/customs/class_recap.php:108
 #: admin/modules/reporting/customs/item_titles_list.php:176
@@ -505,9 +538,10 @@ msgstr "Titel"
 
 #: admin/modules/bibliography/checkout_item.php:74
 #: admin/modules/circulation/circulation_action.php:321
-#: admin/modules/circulation/loan.php:141
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/loan.php:82
+#: admin/modules/circulation/loan_list.php:99
 #: admin/modules/circulation/member_loan_hist.php:64
+#: admin/modules/membership/member_base_lib.inc.php:185
 #: admin/modules/reporting/customs/due_date_warning.php:162
 #: admin/modules/reporting/customs/loan_history.php:147
 #: admin/modules/reporting/customs/loan_history.php:214
@@ -521,8 +555,9 @@ msgstr "Ausleihdatum"
 
 #: admin/modules/bibliography/checkout_item.php:75
 #: admin/modules/circulation/circulation_action.php:321
-#: admin/modules/circulation/loan.php:141
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/loan.php:82
+#: admin/modules/circulation/loan_list.php:99
+#: admin/modules/membership/member_base_lib.inc.php:185
 #: admin/modules/reporting/customs/due_date_warning.php:162
 #: admin/modules/reporting/customs/loan_history.php:148
 #: admin/modules/reporting/customs/loan_history.php:215
@@ -535,9 +570,9 @@ msgstr "Rückgabetermin"
 
 #: admin/modules/bibliography/checkout_item.php:116
 #: admin/modules/bibliography/dl_print.php:308
-#: admin/modules/bibliography/index.php:909
+#: admin/modules/bibliography/index.php:915
 #: admin/modules/bibliography/item.php:494
-#: admin/modules/bibliography/item_barcode_generator.php:298
+#: admin/modules/bibliography/item_barcode_generator.php:335
 #: admin/modules/bibliography/marcexport.php:270
 #: admin/modules/bibliography/printed_card.php:384
 #: admin/modules/circulation/fines_list.php:231
@@ -572,9 +607,9 @@ msgstr ""
 "<strong>{result->num_rows}</strong> Ergebnisse gefunden für die Suchbegriffe"
 
 #: admin/modules/bibliography/dl_print.php:92
-#: admin/modules/bibliography/item_barcode_generator.php:96
+#: admin/modules/bibliography/item_barcode_generator.php:117
 #: admin/modules/bibliography/printed_card.php:91
-#: admin/modules/membership/member_card_generator.php:98
+#: admin/modules/membership/member_card_generator.php:109
 msgid ""
 "Selected items NOT ADDED to print queue. Only {max_print} can be printed at "
 "once"
@@ -583,26 +618,26 @@ msgstr ""
 "höchstens {max_print} auf einmal gedruckt werden"
 
 #: admin/modules/bibliography/dl_print.php:96
-#: admin/modules/bibliography/item_barcode_generator.php:99
+#: admin/modules/bibliography/item_barcode_generator.php:120
 #: admin/modules/bibliography/marcexport.php:100
 #: admin/modules/bibliography/printed_card.php:96
-#: admin/modules/membership/member_card_generator.php:103
+#: admin/modules/membership/member_card_generator.php:114
 msgid "Selected items added to print queue"
 msgstr "Ausgewählte Einträge zur Druckerwarteschlange hinzugefügt"
 
 #: admin/modules/bibliography/dl_print.php:103
-#: admin/modules/bibliography/item_barcode_generator.php:108
+#: admin/modules/bibliography/item_barcode_generator.php:129
 #: admin/modules/bibliography/printed_card.php:103
-#: admin/modules/membership/member_card_generator.php:55
+#: admin/modules/membership/member_card_generator.php:66
 msgid "Print queue cleared!"
 msgstr "Druckerwarteschlange gelöscht!"
 
 #: admin/modules/bibliography/dl_print.php:113
-#: admin/modules/bibliography/item_barcode_generator.php:117
-#: admin/modules/bibliography/item_barcode_generator.php:121
+#: admin/modules/bibliography/item_barcode_generator.php:138
+#: admin/modules/bibliography/item_barcode_generator.php:142
 #: admin/modules/bibliography/printed_card.php:113
-#: admin/modules/membership/member_card_generator.php:112
-#: admin/modules/membership/member_card_generator.php:116
+#: admin/modules/membership/member_card_generator.php:123
+#: admin/modules/membership/member_card_generator.php:127
 msgid "There is no data to print!"
 msgstr "Es sind keine Daten zum Drucken vorhanden!"
 
@@ -612,9 +647,9 @@ msgid "Labels Printing"
 msgstr "Etikette drucken (Aufnahmen)"
 
 #: admin/modules/bibliography/dl_print.php:223
-#: admin/modules/bibliography/item_barcode_generator.php:215
+#: admin/modules/bibliography/item_barcode_generator.php:247
 #: admin/modules/bibliography/printed_card.php:292
-#: admin/modules/membership/member_card_generator.php:270
+#: admin/modules/membership/member_card_generator.php:279
 msgid "Clear Print Queue"
 msgstr "Druckerwarteschlange löschen"
 
@@ -623,36 +658,36 @@ msgid "Print Labels for Selected Data"
 msgstr "Etikettendruck starten"
 
 #: admin/modules/bibliography/dl_print.php:225
-#: admin/modules/bibliography/item_barcode_generator.php:217
+#: admin/modules/bibliography/item_barcode_generator.php:253
 msgid "Change print barcode settings"
 msgstr "Einstellungen für Barcodedruck anpassen"
 
 #: admin/modules/bibliography/dl_print.php:234
-#: admin/modules/bibliography/item_barcode_generator.php:226
+#: admin/modules/bibliography/item_barcode_generator.php:262
 #: admin/modules/bibliography/printed_card.php:302
-#: admin/modules/membership/index.php:483
-#: admin/modules/membership/member_card_generator.php:281
+#: admin/modules/membership/index.php:515
+#: admin/modules/membership/member_card_generator.php:290
 #: admin/modules/system/app_user.php:336
 msgid "Maximum"
 msgstr "Höchstens"
 
 #: admin/modules/bibliography/dl_print.php:234
-#: admin/modules/bibliography/item_barcode_generator.php:226
+#: admin/modules/bibliography/item_barcode_generator.php:262
 #: admin/modules/bibliography/printed_card.php:302
-#: admin/modules/membership/member_card_generator.php:281
+#: admin/modules/membership/member_card_generator.php:290
 msgid "records can be printed at once. Currently there is"
 msgstr "Datensätze können auf einmal gedruckt werden. Derzeit sind"
 
 #: admin/modules/bibliography/dl_print.php:238
-#: admin/modules/bibliography/item_barcode_generator.php:230
+#: admin/modules/bibliography/item_barcode_generator.php:266
 #: admin/modules/bibliography/printed_card.php:306
-#: admin/modules/membership/member_card_generator.php:285
+#: admin/modules/membership/member_card_generator.php:294
 msgid "in queue waiting to be printed."
 msgstr "Einträge in der Druckerwarteschlange."
 
 #: admin/modules/bibliography/dl_print.php:263
 #: admin/modules/bibliography/dl_print.php:271
-#: admin/modules/bibliography/index.php:653
+#: admin/modules/bibliography/index.php:659
 #: admin/modules/bibliography/item.php:295
 #: admin/modules/bibliography/item.php:443
 #: admin/modules/bibliography/item.php:455
@@ -667,38 +702,41 @@ msgstr "Einträge in der Druckerwarteschlange."
 #: template/default/detail_template.php:57
 #: template/lightweight/custom_frontpage_record.inc.php:10
 #: template/lightweight/detail_template.php:57
+#: template/spielema/custom_frontpage_record.inc.php:10
+#: template/spielema/detail_template.php:57
 msgid "Call Number"
 msgstr "Signatur"
 
 #: admin/modules/bibliography/dl_print.php:299
-#: admin/modules/bibliography/item_barcode_generator.php:289
+#: admin/modules/bibliography/item_barcode_generator.php:326
 #: admin/modules/bibliography/marcexport.php:261
 #: admin/modules/bibliography/printed_card.php:375
-#: admin/modules/membership/member_card_generator.php:325
+#: admin/modules/membership/member_card_generator.php:334
 #: template/classic/visitor_template.php:57
 #: template/default/visitor_template.php:60
 #: template/lightweight/visitor_template.php:60
+#: template/spielema/visitor_template.php:60
 msgid "Add"
 msgstr "Hinzufügen"
 
 #: admin/modules/bibliography/dl_print.php:300
-#: admin/modules/bibliography/item_barcode_generator.php:290
+#: admin/modules/bibliography/item_barcode_generator.php:327
 #: admin/modules/bibliography/printed_card.php:376
-#: admin/modules/membership/member_card_generator.php:326
+#: admin/modules/membership/member_card_generator.php:335
 msgid "Add To Print Queue"
 msgstr "Zur Druckerwarteschlange hinzufügen"
 
 #: admin/modules/bibliography/dl_print.php:301
-#: admin/modules/bibliography/item_barcode_generator.php:291
+#: admin/modules/bibliography/item_barcode_generator.php:328
 #: admin/modules/bibliography/printed_card.php:377
-#: admin/modules/membership/member_card_generator.php:327
+#: admin/modules/membership/member_card_generator.php:336
 msgid "Add to print queue?"
 msgstr "Zur Druckerwarteschlange hinzufügen?"
 
 #: admin/modules/bibliography/dl_print.php:309
-#: admin/modules/bibliography/index.php:910
+#: admin/modules/bibliography/index.php:916
 #: admin/modules/bibliography/item.php:495
-#: admin/modules/bibliography/item_barcode_generator.php:299
+#: admin/modules/bibliography/item_barcode_generator.php:336
 #: admin/modules/bibliography/marcexport.php:271
 #: admin/modules/bibliography/printed_card.php:385
 #: lib/contents/default.inc.php:198
@@ -706,9 +744,9 @@ msgid "Query took"
 msgstr "Abfrage in"
 
 #: admin/modules/bibliography/dl_print.php:309
-#: admin/modules/bibliography/index.php:910
+#: admin/modules/bibliography/index.php:916
 #: admin/modules/bibliography/item.php:495
-#: admin/modules/bibliography/item_barcode_generator.php:299
+#: admin/modules/bibliography/item_barcode_generator.php:336
 #: admin/modules/bibliography/marcexport.php:271
 #: admin/modules/bibliography/printed_card.php:385
 #: lib/contents/default.inc.php:198
@@ -753,7 +791,7 @@ msgid "Export Now"
 msgstr "Export starten"
 
 #: admin/modules/bibliography/export.php:177
-#: admin/modules/bibliography/import.php:312
+#: admin/modules/bibliography/import.php:319
 #: admin/modules/bibliography/item_export.php:160
 #: admin/modules/bibliography/item_import.php:214
 #: admin/modules/membership/export.php:140
@@ -762,7 +800,7 @@ msgid "Field Separator"
 msgstr "Trennzeichen für Felder"
 
 #: admin/modules/bibliography/export.php:179
-#: admin/modules/bibliography/import.php:314
+#: admin/modules/bibliography/import.php:321
 #: admin/modules/bibliography/item_export.php:162
 #: admin/modules/bibliography/item_import.php:216
 #: admin/modules/membership/export.php:142
@@ -777,9 +815,7 @@ msgid "Record Separator"
 msgstr "Datensatztrennzeichen"
 
 #: admin/modules/bibliography/export.php:185
-#: admin/modules/bibliography/import.php:316
 #: admin/modules/bibliography/item_export.php:168
-#: admin/modules/bibliography/item_import.php:218
 #: admin/modules/bibliography/marcexport.php:204
 #: admin/modules/membership/export.php:148
 #: admin/modules/membership/import.php:208
@@ -787,7 +823,7 @@ msgid "Number of Records To Export (0 for all records)"
 msgstr "Zahl der zu exportierenden Datensätze (0 für alle Datensätze)"
 
 #: admin/modules/bibliography/export.php:187
-#: admin/modules/bibliography/import.php:318
+#: admin/modules/bibliography/import.php:325
 #: admin/modules/bibliography/item_export.php:170
 #: admin/modules/bibliography/item_import.php:220
 #: admin/modules/bibliography/marcexport.php:206
@@ -821,7 +857,7 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: admin/modules/bibliography/iframe_attach.php:127
-#: admin/modules/bibliography/index.php:705
+#: admin/modules/bibliography/index.php:711
 msgid "File Attachments"
 msgstr "Dateianhänge"
 
@@ -834,7 +870,7 @@ msgstr "Bearbeiten"
 #: admin/modules/bibliography/iframe_author.php:134
 #: admin/modules/bibliography/iframe_biblio_rel.php:133
 #: admin/modules/bibliography/iframe_topic.php:137
-#: admin/modules/circulation/loan.php:141
+#: admin/modules/circulation/loan.php:82
 #: admin/modules/circulation/reserve_list.php:96
 #: lib/contents/member.inc.php:442
 msgid "Remove"
@@ -851,7 +887,7 @@ msgstr "Sind Sie sicher, dass Sie den ausgewählten Autor entfernen möchten?"
 #: admin/modules/master_file/iframe_vocabolary_control.php:27
 #: admin/modules/serial_control/serial_base_lib.inc.php:136
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:111
 msgid "Once deleted, it can't be restored!"
 msgstr "Das löschen kann nicht rückgängig gemacht werden!"
 
@@ -895,7 +931,7 @@ msgid "Item FAILED to removed!"
 msgstr "Entfernung des Exemplars FEHLGESCHLAGEN!"
 
 #: admin/modules/bibliography/iframe_item_list.php:123
-#: admin/modules/bibliography/index.php:579
+#: admin/modules/bibliography/index.php:588
 msgid "Items/Copies"
 msgstr "Exemplare"
 
@@ -928,11 +964,18 @@ msgstr "Bitte wählen Sie die zu importierende Datei aus!"
 msgid "Upload failed! File type not allowed or the size is more than"
 msgstr "Hochladen fehlgeschlagen! Dateityp ist unzulässig oder ist größer als"
 
-#: admin/modules/bibliography/import.php:287
+#: admin/modules/bibliography/import.php:283
+msgid ""
+"<strong>{numberOfInsertedRecords}</strong> records inserted successfully to "
+"bibliographic database, from record <strong>{recordOffset} in "
+"{timeInSeconds} second(s)</strong>"
+msgstr ""
+
+#: admin/modules/bibliography/import.php:294
 msgid "Import Tool"
 msgstr "Importwerkzeug"
 
-#: admin/modules/bibliography/import.php:290
+#: admin/modules/bibliography/import.php:297
 msgid ""
 "Import for bibliographics data from CSV file. For guide on CVS fields order "
 "and format please refer to documentation or visit <a href=\"http://slims.web."
@@ -943,63 +986,68 @@ msgstr ""
 "zu Rate oder besuchen Sie die <a href=\"http://senayan.diknas.go.id\" target="
 "\"_blank\">Offizielle Webseite</a>"
 
-#: admin/modules/bibliography/import.php:299
+#: admin/modules/bibliography/import.php:306
 #: admin/modules/bibliography/item_import.php:202
 #: admin/modules/bibliography/marcimport.php:404
 #: admin/modules/membership/import.php:191
 msgid "Import Now"
 msgstr "Import starten"
 
-#: admin/modules/bibliography/import.php:310
+#: admin/modules/bibliography/import.php:317
 #: admin/modules/bibliography/item_import.php:212
 #: admin/modules/bibliography/marcimport.php:414
 #: admin/modules/membership/import.php:202
 msgid "File To Import"
 msgstr "Zu importierende Datei"
 
-#: admin/modules/bibliography/index.php:91
+#: admin/modules/bibliography/import.php:323
+#: admin/modules/bibliography/item_import.php:218
+msgid "Number of Records To Import (0 for all records)"
+msgstr ""
+
+#: admin/modules/bibliography/index.php:93
 msgid "Title can not be empty"
 msgstr "Titel muss angegeben sein"
 
-#: admin/modules/bibliography/index.php:198
+#: admin/modules/bibliography/index.php:200
 #: admin/modules/membership/index.php:206
 #: admin/modules/membership/index.php:234 admin/modules/system/app_user.php:170
 #: admin/modules/system/app_user.php:192
 msgid "Image Uploaded Successfully"
 msgstr "Bild erfolgreich hochgeladen"
 
-#: admin/modules/bibliography/index.php:202
+#: admin/modules/bibliography/index.php:204
 msgid "Image Uploaded Failed"
 msgstr "Bildhochladen fehlgeschlagen"
 
-#: admin/modules/bibliography/index.php:247
+#: admin/modules/bibliography/index.php:249
 msgid "Bibliography Data Successfully Updated"
 msgstr "Titelaufnahme erfolgreich aktualisiert"
 
-#: admin/modules/bibliography/index.php:267
+#: admin/modules/bibliography/index.php:269
 msgid ""
 "Bibliography Data FAILED to Updated. Please Contact System Administrator"
 msgstr ""
 "Aktualisierung der Titelaufnahme FEHLGESCHLAGEN. Bitte kontaktieren Sie den "
 "Systemadministrator"
 
-#: admin/modules/bibliography/index.php:306
+#: admin/modules/bibliography/index.php:308
 msgid "New Bibliography Data Successfully Saved"
 msgstr "Neue Titelaufnahme erfolgreich gespeichert"
 
-#: admin/modules/bibliography/index.php:320
+#: admin/modules/bibliography/index.php:322
 msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
 msgstr ""
 "Speicherung der Titelaufnahme FEHLGESCHLAGEN. Bitte kontaktieren Sie den "
 "Systemadministrator"
 
-#: admin/modules/bibliography/index.php:419
+#: admin/modules/bibliography/index.php:421
 #: admin/modules/master_file/coll_type.php:127
 #: admin/modules/master_file/location.php:131
 msgid "Below data can not be deleted:"
 msgstr "Folgende Daten können nicht gelöscht werden:"
 
-#: admin/modules/bibliography/index.php:429
+#: admin/modules/bibliography/index.php:431
 #: admin/modules/circulation/loan_rules.php:114
 #: admin/modules/master_file/author.php:117
 #: admin/modules/master_file/coll_type.php:132
@@ -1024,7 +1072,7 @@ msgstr "Folgende Daten können nicht gelöscht werden:"
 msgid "All Data Successfully Deleted"
 msgstr "Alle Daten erfolgreich gelöscht"
 
-#: admin/modules/bibliography/index.php:432
+#: admin/modules/bibliography/index.php:434
 #: admin/modules/circulation/loan_rules.php:117
 #: admin/modules/master_file/author.php:120
 #: admin/modules/master_file/coll_type.php:135
@@ -1053,47 +1101,47 @@ msgstr ""
 "Einige oder alle Daten wurden NICHT erfolgreich gelöscht!\n"
 "Bitte kontaktieren Sie den Systemadministrator"
 
-#: admin/modules/bibliography/index.php:445
+#: admin/modules/bibliography/index.php:447
 #: admin/modules/bibliography/submenu.php:27
 msgid "Bibliographic"
 msgstr "Titelaufnahmen"
 
-#: admin/modules/bibliography/index.php:449
+#: admin/modules/bibliography/index.php:451
 #: admin/modules/bibliography/submenu.php:28
 msgid "Bibliographic List"
 msgstr "Titelaufnahmen ansehen"
 
-#: admin/modules/bibliography/index.php:450
+#: admin/modules/bibliography/index.php:452
 #: admin/modules/bibliography/submenu.php:29
 msgid "Add New Bibliography"
 msgstr "Neue Titelaufnahme"
 
-#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:456
 msgid "All Fields"
 msgstr "Alle Felder"
 
-#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:456
 #: admin/modules/bibliography/z3950.php:280
 #: admin/modules/bibliography/z3950sru.php:252
 msgid "Title/Series Title"
 msgstr "Titel/Serientitel"
 
-#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:456
 msgid "Topics"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:456
 #: admin/modules/bibliography/z3950.php:280
 #: admin/modules/bibliography/z3950sru.php:252
 msgid "Authors"
 msgstr "Autoren"
 
-#: admin/modules/bibliography/index.php:454
-#: admin/modules/bibliography/index.php:621
-#: admin/modules/bibliography/index.php:828
+#: admin/modules/bibliography/index.php:456
+#: admin/modules/bibliography/index.php:630
 #: admin/modules/bibliography/index.php:834
-#: admin/modules/bibliography/index.php:854
+#: admin/modules/bibliography/index.php:840
 #: admin/modules/bibliography/index.php:860
+#: admin/modules/bibliography/index.php:866
 #: admin/modules/bibliography/z3950.php:280
 #: admin/modules/bibliography/z3950sru.php:252
 #: admin/modules/reporting/customs/titles_list.php:174
@@ -1106,11 +1154,13 @@ msgstr "Autoren"
 #: template/default/detail_template.php:87
 #: template/lightweight/custom_frontpage_record.inc.php:7
 #: template/lightweight/detail_template.php:87
+#: template/spielema/custom_frontpage_record.inc.php:7
+#: template/spielema/detail_template.php:87
 msgid "ISBN/ISSN"
 msgstr "ISBN/ISSN"
 
-#: admin/modules/bibliography/index.php:454
-#: admin/modules/bibliography/index.php:630
+#: admin/modules/bibliography/index.php:456
+#: admin/modules/bibliography/index.php:639
 #: admin/modules/master_file/publisher.php:128
 #: admin/modules/master_file/submenu.php:31
 #: admin/modules/reporting/customs/titles_list.php:173
@@ -1118,14 +1168,15 @@ msgstr "ISBN/ISSN"
 #: template/classic/detail_template.php:67
 #: template/default/detail_template.php:64
 #: template/lightweight/detail_template.php:64
+#: template/spielema/detail_template.php:64
 msgid "Publisher"
 msgstr "Verlag"
 
-#: admin/modules/bibliography/index.php:461
+#: admin/modules/bibliography/index.php:463
 msgid "Upload Selected Bibliographic data to Union Catalog Server*"
 msgstr "Ausgewählte Titelaufnahmen in den Gesamtkatalog hochladen"
 
-#: admin/modules/bibliography/index.php:488
+#: admin/modules/bibliography/index.php:490
 #: admin/modules/bibliography/item.php:240
 #: admin/modules/bibliography/pop_pattern.php:101
 #: admin/modules/circulation/fines_list.php:148
@@ -1157,7 +1208,7 @@ msgstr "Ausgewählte Titelaufnahmen in den Gesamtkatalog hochladen"
 msgid "Save"
 msgstr "Speichern"
 
-#: admin/modules/bibliography/index.php:510
+#: admin/modules/bibliography/index.php:512
 #: admin/modules/bibliography/item.php:259
 #: admin/modules/circulation/fines_list.php:167
 #: admin/modules/circulation/loan_rules.php:174
@@ -1186,7 +1237,7 @@ msgstr "Speichern"
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: admin/modules/bibliography/index.php:530
+#: admin/modules/bibliography/index.php:532
 msgid ""
 "Main title of collection. Separate child title with colon and pararel title "
 "with equal (=) sign."
@@ -1194,29 +1245,30 @@ msgstr ""
 "Hauptaufnahme der Sammlung. Untergeordnete Titel werden mit einem "
 "Doppelpunkt getrennt, Paralelltitel mit einem Gleichzeichen (=)."
 
-#: admin/modules/bibliography/index.php:534
+#: admin/modules/bibliography/index.php:536
 msgid "Authors/Roles"
 msgstr "Autoren/Rollen"
 
-#: admin/modules/bibliography/index.php:534
+#: admin/modules/bibliography/index.php:536
 msgid "Add Author(s)"
 msgstr "Autor(en) hinzufügen"
 
-#: admin/modules/bibliography/index.php:536
+#: admin/modules/bibliography/index.php:538
 #: admin/modules/serial_control/index.php:65
 #: lib/contents/clustering.inc.php:120
 #: template/classic/part/content/advance-search.php:27
 msgid "Author(s)"
 msgstr "Autor(en)"
 
-#: admin/modules/bibliography/index.php:540
+#: admin/modules/bibliography/index.php:542
 #: template/classic/detail_template.php:135
 #: template/default/detail_template.php:150
 #: template/lightweight/detail_template.php:150
+#: template/spielema/detail_template.php:150
 msgid "Statement of Responsibility"
 msgstr "Mitarbeiter"
 
-#: admin/modules/bibliography/index.php:540
+#: admin/modules/bibliography/index.php:542
 msgid ""
 "Main source of information to show who has written, composed, illustrated, "
 "or in other ways contributed to the existence of the item."
@@ -1224,29 +1276,32 @@ msgstr ""
 "Primär angezeigte Quelle, die zeigt, wer das Werk geschrieben, illustriert, "
 "übersetzt oder in anderer Form dazu beigetragen hat."
 
-#: admin/modules/bibliography/index.php:544 lib/detail.inc.php:239
+#: admin/modules/bibliography/index.php:546 lib/detail.inc.php:239
 #: template/classic/custom_frontpage_record.inc.php:6
 #: template/classic/detail_template.php:120
 #: template/default/custom_frontpage_record.inc.php:6
 #: template/default/detail_template.php:129
 #: template/lightweight/custom_frontpage_record.inc.php:6
 #: template/lightweight/detail_template.php:129
+#: template/spielema/custom_frontpage_record.inc.php:6
+#: template/spielema/detail_template.php:129
 msgid "Edition"
 msgstr "Ausgabe"
 
-#: admin/modules/bibliography/index.php:544
+#: admin/modules/bibliography/index.php:546
 msgid "A version of publication having substantial changes or additions."
 msgstr ""
 "Eine veröffentlichte Edition eines Werkes mit meist größeren Änderungen."
 
-#: admin/modules/bibliography/index.php:546
+#: admin/modules/bibliography/index.php:548
 #: template/classic/detail_template.php:130
 #: template/default/detail_template.php:143
 #: template/lightweight/detail_template.php:143
+#: template/spielema/detail_template.php:143
 msgid "Specific Detail Info"
 msgstr "Anmerkung"
 
-#: admin/modules/bibliography/index.php:546
+#: admin/modules/bibliography/index.php:548
 msgid ""
 "explain more details about an item e.g. scale within a map, running time in "
 "a movie dvd."
@@ -1254,15 +1309,15 @@ msgstr ""
 "Weitere Erläuterungen zum Werk. Zum Beispiel Maßstab bei Karten oder "
 "Laufzeit bei Filmen."
 
-#: admin/modules/bibliography/index.php:565
-msgid "Add new pattern"
-msgstr ""
-
 #: admin/modules/bibliography/index.php:567
+msgid "Add new pattern"
+msgstr "Neues Muster hinzufügen"
+
+#: admin/modules/bibliography/index.php:569
 msgid "Total item(s)"
 msgstr ""
 
-#: admin/modules/bibliography/index.php:574
+#: admin/modules/bibliography/index.php:576
 #: admin/modules/bibliography/item.php:315
 #: admin/modules/bibliography/item.php:399
 #: admin/modules/bibliography/item.php:408
@@ -1292,19 +1347,36 @@ msgstr ""
 msgid "Collection Type"
 msgstr "Sammlungstyp"
 
-#: admin/modules/bibliography/index.php:575
+#: admin/modules/bibliography/index.php:583
+#: admin/modules/bibliography/item.php:305
+#: admin/modules/bibliography/item.php:400
+#: admin/modules/bibliography/item.php:409
+#: admin/modules/bibliography/item.php:441
+#: admin/modules/bibliography/item.php:453
+#: admin/modules/master_file/location.php:151
+#: admin/modules/master_file/submenu.php:35
+#: admin/modules/reporting/customs/item_titles_list.php:130
+#: admin/modules/reporting/customs/titles_list.php:131
+#: admin/modules/stock_take/init.php:181
+#: admin/modules/stock_take/lost_item_list.php:115
+#: admin/modules/system/sys_log.php:108
+#: template/classic/part/content/advance-search.php:64
+msgid "Location"
+msgstr "Standort"
+
+#: admin/modules/bibliography/index.php:584
 msgid "Item(s) code batch generator"
 msgstr "Batchgenerierung für Exemplarcodes"
 
-#: admin/modules/bibliography/index.php:579
+#: admin/modules/bibliography/index.php:588
 msgid "Add New Items"
 msgstr "Neues Exemplar hinzufügen"
 
-#: admin/modules/bibliography/index.php:581
+#: admin/modules/bibliography/index.php:590
 msgid "Item(s) Data"
 msgstr "Exemplardatensatz/-sätze"
 
-#: admin/modules/bibliography/index.php:590
+#: admin/modules/bibliography/index.php:599
 #: admin/modules/circulation/loan_rules.php:202
 #: admin/modules/circulation/loan_rules.php:234
 #: admin/modules/circulation/loan_rules.php:241
@@ -1322,30 +1394,30 @@ msgstr "Exemplardatensatz/-sätze"
 msgid "GMD"
 msgstr "Ressourcenart"
 
-#: admin/modules/bibliography/index.php:590
+#: admin/modules/bibliography/index.php:599
 msgid "General material designation. The physical form of publication."
 msgstr "Allgemeine Materialform. Die physische Formder Veröffentlichung."
 
-#: admin/modules/bibliography/index.php:597
+#: admin/modules/bibliography/index.php:606
 msgid "Not set"
 msgstr "Nicht vergeben"
 
-#: admin/modules/bibliography/index.php:602
-#: admin/modules/bibliography/index.php:604
+#: admin/modules/bibliography/index.php:611
+#: admin/modules/bibliography/index.php:613
 #: admin/modules/master_file/rda_cmc.php:139
 msgid "RDA "
 msgstr "RDA"
 
-#: admin/modules/bibliography/index.php:612
+#: admin/modules/bibliography/index.php:621
 #: admin/modules/bibliography/item.php:333
 msgid "Not Applicable"
 msgstr "Nicht zutreffend"
 
-#: admin/modules/bibliography/index.php:618
+#: admin/modules/bibliography/index.php:627
 msgid "Use this for Serial publication"
 msgstr "Geben Sie dies bei Periodika an"
 
-#: admin/modules/bibliography/index.php:619
+#: admin/modules/bibliography/index.php:628
 #: admin/modules/master_file/frequency.php:128
 #: admin/modules/master_file/frequency.php:176
 #: admin/modules/master_file/frequency.php:210
@@ -1354,53 +1426,58 @@ msgstr "Geben Sie dies bei Periodika an"
 msgid "Frequency"
 msgstr "Erscheinungshäufigkeit"
 
-#: admin/modules/bibliography/index.php:621
+#: admin/modules/bibliography/index.php:630
 msgid "Unique publishing number for each title of publication."
 msgstr "Einzigartige Veröffentlichungsnummer einer Publikation."
 
-#: admin/modules/bibliography/index.php:632
+#: admin/modules/bibliography/index.php:641
 msgid "Publishing Year"
 msgstr "Erscheinungsjahr"
 
-#: admin/modules/bibliography/index.php:632
+#: admin/modules/bibliography/index.php:641
 msgid "Year of publication"
 msgstr "Veröffentlichungsjahr"
 
-#: admin/modules/bibliography/index.php:641
+#: admin/modules/bibliography/index.php:650
 #: admin/modules/reporting/customs/titles_list.php:172
 #: admin/modules/reporting/customs/titles_list.php:298
 msgid "Publishing Place"
 msgstr "Erscheinungsort"
 
-#: admin/modules/bibliography/index.php:643
+#: admin/modules/bibliography/index.php:652
 #: template/classic/custom_frontpage_record.inc.php:8
 #: template/classic/detail_template.php:76
 #: template/default/custom_frontpage_record.inc.php:8
 #: template/default/detail_template.php:73
 #: template/lightweight/custom_frontpage_record.inc.php:8
 #: template/lightweight/detail_template.php:73
+#: template/spielema/custom_frontpage_record.inc.php:8
+#: template/spielema/detail_template.php:73
 msgid "Collation"
 msgstr "Umfang"
 
-#: admin/modules/bibliography/index.php:643
+#: admin/modules/bibliography/index.php:652
 msgid ""
 "Physical description of a publication e.g. publication length, width, page "
 "numbers, etc."
 msgstr "Physische Beschreibung einer Ausgabe, z.B. Höhe, Breite, Seitenzahl."
 
-#: admin/modules/bibliography/index.php:645
+#: admin/modules/bibliography/index.php:654
 #: template/classic/custom_frontpage_record.inc.php:9
 #: template/classic/detail_template.php:57
 #: template/default/custom_frontpage_record.inc.php:9
 #: template/default/detail_template.php:50
 #: template/lightweight/custom_frontpage_record.inc.php:9
 #: template/lightweight/detail_template.php:50
+#: template/spielema/custom_frontpage_record.inc.php:9
+#: template/spielema/detail_template.php:50
 msgid "Series Title"
 msgstr "Reihentitel"
 
-#: admin/modules/bibliography/index.php:651
+#: admin/modules/bibliography/index.php:657
 #: admin/modules/bibliography/item.php:401
 #: admin/modules/bibliography/item.php:410
+#: admin/modules/bibliography/item_barcode_generator.php:298
 #: admin/modules/master_file/pop_vocabolary_control.php:229
 #: admin/modules/master_file/pop_vocabolary_control.php:277
 #: admin/modules/reporting/customs/class_recap.php:74
@@ -1418,31 +1495,33 @@ msgstr "Reihentitel"
 #: template/classic/detail_template.php:93
 #: template/default/detail_template.php:94
 #: template/lightweight/detail_template.php:94
+#: template/spielema/detail_template.php:94
 msgid "Classification"
 msgstr "Klassifikation"
 
-#: admin/modules/bibliography/index.php:653
+#: admin/modules/bibliography/index.php:659
 msgid "Sets of ID that put in the book spine."
 msgstr "Eindeutige Kennung auf dem Buchrücken"
 
-#: admin/modules/bibliography/index.php:656
+#: admin/modules/bibliography/index.php:662
 msgid "Subjects/Topics"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:656
+#: admin/modules/bibliography/index.php:662
 msgid "Add Subject(s)"
 msgstr "Schlagwörter hinzufügen"
 
-#: admin/modules/bibliography/index.php:658
+#: admin/modules/bibliography/index.php:664
 #: admin/modules/serial_control/index.php:65 lib/contents/clustering.inc.php:98
 #: template/classic/detail_template.php:125
 #: template/classic/part/content/advance-search.php:34
 #: template/default/detail_template.php:136
 #: template/lightweight/detail_template.php:136
+#: template/spielema/detail_template.php:136
 msgid "Subject(s)"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:666
+#: admin/modules/bibliography/index.php:672
 #: admin/modules/master_file/doc_language.php:180
 #: admin/modules/master_file/doc_language.php:193
 #: admin/modules/master_file/doc_language.php:195
@@ -1455,200 +1534,202 @@ msgstr "Schlagwörter"
 #: template/classic/detail_template.php:81
 #: template/default/detail_template.php:80
 #: template/lightweight/detail_template.php:80
+#: template/spielema/detail_template.php:80
 msgid "Language"
 msgstr "Sprache"
 
-#: admin/modules/bibliography/index.php:666
+#: admin/modules/bibliography/index.php:672
 msgid "Language use by publication."
 msgstr "Sprache der Publikation"
 
-#: admin/modules/bibliography/index.php:668
+#: admin/modules/bibliography/index.php:674
 msgid "Abstract/Notes"
 msgstr "Abstract/Inhalt"
 
-#: admin/modules/bibliography/index.php:668
+#: admin/modules/bibliography/index.php:674
 msgid "Insert here any abstract or notes from the publication."
 msgstr "Feld für das Abstract oder Bemerkungen aus der Publikation"
 
-#: admin/modules/bibliography/index.php:672
-#: admin/modules/membership/index.php:480 admin/modules/system/app_user.php:333
+#: admin/modules/bibliography/index.php:678
+#: admin/modules/membership/index.php:512 admin/modules/system/app_user.php:333
 msgid "REMOVE IMAGE"
 msgstr "BILD ENTFERNEN"
 
-#: admin/modules/bibliography/index.php:677
+#: admin/modules/bibliography/index.php:683
 msgid "or scan a cover"
 msgstr "oder ein Cover scannen"
 
-#: admin/modules/bibliography/index.php:681
+#: admin/modules/bibliography/index.php:687
 msgid "Show scan dialog"
 msgstr "Scandialog zeigen"
 
-#: admin/modules/bibliography/index.php:682
-#: admin/modules/membership/index.php:499 admin/modules/system/app_user.php:344
+#: admin/modules/bibliography/index.php:688
+#: admin/modules/membership/index.php:531 admin/modules/system/app_user.php:344
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: admin/modules/bibliography/index.php:684
+#: admin/modules/bibliography/index.php:690
 msgid "Scan a cover"
 msgstr "Cover scannen"
 
-#: admin/modules/bibliography/index.php:685
-#: admin/modules/membership/index.php:497 admin/modules/system/app_user.php:342
+#: admin/modules/bibliography/index.php:691
+#: admin/modules/membership/index.php:529 admin/modules/system/app_user.php:342
 msgid "Format:"
 msgstr "Format:"
 
-#: admin/modules/bibliography/index.php:687
+#: admin/modules/bibliography/index.php:693
 msgid "Scan"
 msgstr "Scannen"
 
-#: admin/modules/bibliography/index.php:688
+#: admin/modules/bibliography/index.php:694
 msgid "Click to show or hide options"
 msgstr "Optionen per Klick anzeigen/verbergen"
 
-#: admin/modules/bibliography/index.php:690
+#: admin/modules/bibliography/index.php:696
 msgid "History index:"
 msgstr "Verlauf"
 
-#: admin/modules/bibliography/index.php:690
+#: admin/modules/bibliography/index.php:696
 msgid "Recall"
 msgstr "Vormerken"
 
-#: admin/modules/bibliography/index.php:691
+#: admin/modules/bibliography/index.php:697
 msgid "Host:"
 msgstr "Host:"
 
-#: admin/modules/bibliography/index.php:691
+#: admin/modules/bibliography/index.php:697
 msgid "Get machine"
 msgstr "Finde Gerät"
 
-#: admin/modules/bibliography/index.php:692
+#: admin/modules/bibliography/index.php:698
 msgid "Scanner:"
 msgstr "Scanner:"
 
-#: admin/modules/bibliography/index.php:692
+#: admin/modules/bibliography/index.php:698
 msgid "Default"
 msgstr "Standard"
 
-#: admin/modules/bibliography/index.php:693
+#: admin/modules/bibliography/index.php:699
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: admin/modules/bibliography/index.php:693
+#: admin/modules/bibliography/index.php:699
 msgid "Horizontal:"
 msgstr "Horizontal:"
 
-#: admin/modules/bibliography/index.php:693
+#: admin/modules/bibliography/index.php:699
 msgid "Vertical:"
 msgstr "Vertikal:"
 
-#: admin/modules/bibliography/index.php:694
-#: admin/modules/membership/index.php:498 admin/modules/system/app_user.php:343
+#: admin/modules/bibliography/index.php:700
+#: admin/modules/membership/index.php:530 admin/modules/system/app_user.php:343
 msgid "Capture"
 msgstr "Aufnehmen"
 
-#: admin/modules/bibliography/index.php:694
+#: admin/modules/bibliography/index.php:700
 msgid "Width:"
 msgstr "Breite:"
 
-#: admin/modules/bibliography/index.php:694
+#: admin/modules/bibliography/index.php:700
 msgid "Height:"
 msgstr "Höhe:"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:701
 msgid "Result"
 msgstr "Ergebnis"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:701
 msgid "Max Width:"
 msgstr "Maximalbreite:"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:701
 msgid "Max Height:"
 msgstr "Maximalhöhe:"
 
-#: admin/modules/bibliography/index.php:696
+#: admin/modules/bibliography/index.php:702
 msgid "Scan result"
 msgstr "Scanergebnis"
 
-#: admin/modules/bibliography/index.php:697
+#: admin/modules/bibliography/index.php:703
 msgid "Preview"
 msgstr "Vorschau"
 
-#: admin/modules/bibliography/index.php:697
+#: admin/modules/bibliography/index.php:703
 msgid "Rotate Left"
 msgstr "Links drehen"
 
-#: admin/modules/bibliography/index.php:697
+#: admin/modules/bibliography/index.php:703
 msgid "Rotate Right"
 msgstr "Rechts drehen"
 
-#: admin/modules/bibliography/index.php:701
+#: admin/modules/bibliography/index.php:707
 msgid "Image"
 msgstr "Bild"
 
-#: admin/modules/bibliography/index.php:705
+#: admin/modules/bibliography/index.php:711
 msgid "Add Attachment"
 msgstr "Dateianhang hinzufügen"
 
-#: admin/modules/bibliography/index.php:707
+#: admin/modules/bibliography/index.php:713
 #: admin/modules/master_file/label.php:202
 #: admin/modules/master_file/label.php:207
 #: template/classic/detail_template.php:165
 #: template/default/detail_template.php:170
 #: template/lightweight/detail_template.php:170
+#: template/spielema/detail_template.php:170
 msgid "File Attachment"
 msgstr "Dateianhang"
 
-#: admin/modules/bibliography/index.php:710
+#: admin/modules/bibliography/index.php:716
 msgid "Biblio Relation"
 msgstr "Bibliographische Beziehung"
 
-#: admin/modules/bibliography/index.php:710
+#: admin/modules/bibliography/index.php:716
 msgid "Add Relation"
 msgstr "Beziehung hinzufügen"
 
-#: admin/modules/bibliography/index.php:712
+#: admin/modules/bibliography/index.php:718
 msgid "Related Biblio Data"
 msgstr "Zugeordnete Bibliographiedaten"
 
-#: admin/modules/bibliography/index.php:746
+#: admin/modules/bibliography/index.php:752
 msgid "Show"
 msgstr "Anzeigen"
 
-#: admin/modules/bibliography/index.php:747
+#: admin/modules/bibliography/index.php:753
 msgid "Hide"
 msgstr "Verbergen"
 
-#: admin/modules/bibliography/index.php:748
+#: admin/modules/bibliography/index.php:754
 msgid "Hide in OPAC"
 msgstr "Anzeige im OPAC"
 
-#: admin/modules/bibliography/index.php:750
+#: admin/modules/bibliography/index.php:756
 msgid "Don't Promote"
 msgstr "Nicht anzeigen"
 
-#: admin/modules/bibliography/index.php:751
+#: admin/modules/bibliography/index.php:757
 msgid "Promote"
 msgstr "Anzeigen"
 
-#: admin/modules/bibliography/index.php:752
+#: admin/modules/bibliography/index.php:758
 msgid "Promote To Homepage"
 msgstr "Auf der Startseite anzeigen"
 
-#: admin/modules/bibliography/index.php:776
+#: admin/modules/bibliography/index.php:782
 msgid "You are going to edit biblio data"
 msgstr ""
 "Sie sind im Begriff die Angaben für folgende Titelaufnahme zu bearbeiten"
 
-#: admin/modules/bibliography/index.php:776
+#: admin/modules/bibliography/index.php:782
 #: admin/modules/bibliography/item.php:354
 #: admin/modules/bibliography/item.php:402
 #: admin/modules/bibliography/item.php:411
 #: admin/modules/bibliography/item.php:444
 #: admin/modules/bibliography/item.php:456
-#: admin/modules/membership/index.php:520
-#: admin/modules/membership/index.php:546
 #: admin/modules/membership/index.php:552
+#: admin/modules/membership/index.php:578
+#: admin/modules/membership/index.php:584
 #: admin/modules/membership/member_type.php:208
 #: admin/modules/membership/member_type.php:225
 #: admin/modules/membership/member_type.php:231
@@ -1657,29 +1738,29 @@ msgstr ""
 msgid "Last Updated"
 msgstr "Zuletzt aktualisiert"
 
-#: admin/modules/bibliography/index.php:829
 #: admin/modules/bibliography/index.php:835
-#: admin/modules/bibliography/index.php:855
+#: admin/modules/bibliography/index.php:841
 #: admin/modules/bibliography/index.php:861
+#: admin/modules/bibliography/index.php:867
 #: admin/modules/stock_take/st_report.php:83
 #: admin/modules/stock_take/st_report.php:87
 msgid "None"
 msgstr "Keine"
 
-#: admin/modules/bibliography/index.php:829
 #: admin/modules/bibliography/index.php:835
-#: admin/modules/bibliography/index.php:855
+#: admin/modules/bibliography/index.php:841
 #: admin/modules/bibliography/index.php:861
+#: admin/modules/bibliography/index.php:867
 #: admin/modules/bibliography/printed_card.php:196
 #: admin/modules/reporting/customs/titles_list.php:171
 #: admin/modules/reporting/customs/titles_list.php:297
 msgid "Copies"
 msgstr "Exemplare"
 
-#: admin/modules/bibliography/index.php:830
 #: admin/modules/bibliography/index.php:836
-#: admin/modules/bibliography/index.php:856
+#: admin/modules/bibliography/index.php:842
 #: admin/modules/bibliography/index.php:862
+#: admin/modules/bibliography/index.php:868
 #: admin/modules/circulation/loan_rules.php:216
 #: admin/modules/circulation/loan_rules.php:237
 #: admin/modules/circulation/loan_rules.php:244
@@ -1770,22 +1851,6 @@ msgstr "Titelaufnahme bearbeiten"
 msgid "Inventory Code"
 msgstr "Bestandsnummer"
 
-#: admin/modules/bibliography/item.php:305
-#: admin/modules/bibliography/item.php:400
-#: admin/modules/bibliography/item.php:409
-#: admin/modules/bibliography/item.php:441
-#: admin/modules/bibliography/item.php:453
-#: admin/modules/master_file/location.php:151
-#: admin/modules/master_file/submenu.php:35
-#: admin/modules/reporting/customs/item_titles_list.php:130
-#: admin/modules/reporting/customs/titles_list.php:131
-#: admin/modules/stock_take/init.php:181
-#: admin/modules/stock_take/lost_item_list.php:115
-#: admin/modules/system/sys_log.php:108
-#: template/classic/part/content/advance-search.php:64
-msgid "Location"
-msgstr "Standort"
-
 #: admin/modules/bibliography/item.php:307
 #: admin/modules/stock_take/init.php:183
 msgid "Shelf Location"
@@ -1858,13 +1923,21 @@ msgstr "Sie sind im Begriff die Angaben für folgendes Exemplar zu bearbeiten"
 msgid "Author"
 msgstr "Autor"
 
-#: admin/modules/bibliography/item_barcode_generator.php:202
-#: admin/modules/bibliography/item_barcode_generator.php:211
+#: admin/modules/bibliography/item_barcode_generator.php:234
+#: admin/modules/bibliography/item_barcode_generator.php:243
 #: admin/modules/bibliography/submenu.php:39
 msgid "Item Barcodes Printing"
 msgstr "Barcodes drucken (Exemplare)"
 
-#: admin/modules/bibliography/item_barcode_generator.php:216
+#: admin/modules/bibliography/item_barcode_generator.php:250
+msgid "Offset"
+msgstr ""
+
+#: admin/modules/bibliography/item_barcode_generator.php:250
+msgid "Skip Barcodes from the beginning of the page"
+msgstr ""
+
+#: admin/modules/bibliography/item_barcode_generator.php:251
 msgid "Print Barcodes for Selected Data"
 msgstr "Barcodedruck starten"
 
@@ -2188,11 +2261,11 @@ msgstr "Tippen Sie einfach los um nach vorhandenen Daten zu suchen"
 
 #: admin/modules/bibliography/pop_pattern.php:109
 msgid "Prefix"
-msgstr ""
+msgstr "Präfix"
 
 #: admin/modules/bibliography/pop_pattern.php:112
 msgid "Suffix"
-msgstr ""
+msgstr "Suffix"
 
 #: admin/modules/bibliography/pop_pattern.php:115
 msgid "Length serial number"
@@ -2252,70 +2325,67 @@ msgstr "Einstellungen speichern"
 
 #: admin/modules/bibliography/print_settings.php:93
 #: admin/modules/bibliography/print_settings.php:102
-#: admin/modules/bibliography/print_settings.php:117
-#: admin/modules/bibliography/print_settings.php:165
-#: admin/modules/bibliography/print_settings.php:166
+#: admin/modules/bibliography/print_settings.php:119
 #: admin/modules/bibliography/print_settings.php:167
 #: admin/modules/bibliography/print_settings.php:168
 #: admin/modules/bibliography/print_settings.php:169
 #: admin/modules/bibliography/print_settings.php:170
 #: admin/modules/bibliography/print_settings.php:171
 #: admin/modules/bibliography/print_settings.php:172
-#: admin/modules/bibliography/print_settings.php:175
-#: admin/modules/bibliography/print_settings.php:176
-#: admin/modules/bibliography/print_settings.php:194
-#: admin/modules/bibliography/print_settings.php:203
-#: admin/modules/bibliography/print_settings.php:204
+#: admin/modules/bibliography/print_settings.php:173
+#: admin/modules/bibliography/print_settings.php:174
+#: admin/modules/bibliography/print_settings.php:177
+#: admin/modules/bibliography/print_settings.php:178
+#: admin/modules/bibliography/print_settings.php:196
 #: admin/modules/bibliography/print_settings.php:205
 #: admin/modules/bibliography/print_settings.php:206
-#: admin/modules/bibliography/print_settings.php:209
-#: admin/modules/bibliography/print_settings.php:210
+#: admin/modules/bibliography/print_settings.php:207
+#: admin/modules/bibliography/print_settings.php:208
 #: admin/modules/bibliography/print_settings.php:211
 #: admin/modules/bibliography/print_settings.php:212
-#: admin/modules/bibliography/print_settings.php:216
-#: admin/modules/bibliography/print_settings.php:217
+#: admin/modules/bibliography/print_settings.php:213
+#: admin/modules/bibliography/print_settings.php:214
 #: admin/modules/bibliography/print_settings.php:218
 #: admin/modules/bibliography/print_settings.php:219
-#: admin/modules/bibliography/print_settings.php:228
-#: admin/modules/bibliography/print_settings.php:229
+#: admin/modules/bibliography/print_settings.php:220
+#: admin/modules/bibliography/print_settings.php:221
+#: admin/modules/bibliography/print_settings.php:230
+#: admin/modules/bibliography/print_settings.php:231
 msgid "(px)"
 msgstr "(px)"
 
 #: admin/modules/bibliography/print_settings.php:94
-#: admin/modules/bibliography/print_settings.php:124
+#: admin/modules/bibliography/print_settings.php:126
 msgid "(default is 3)"
 msgstr "(Standard ist 3)"
 
 #: admin/modules/bibliography/print_settings.php:95
 #: admin/modules/bibliography/print_settings.php:96
 #: admin/modules/bibliography/print_settings.php:97
-#: admin/modules/bibliography/print_settings.php:106
-#: admin/modules/bibliography/print_settings.php:107
-#: admin/modules/bibliography/print_settings.php:108
 #: admin/modules/bibliography/print_settings.php:109
 #: admin/modules/bibliography/print_settings.php:110
-#: admin/modules/bibliography/print_settings.php:120
-#: admin/modules/bibliography/print_settings.php:127
-#: admin/modules/bibliography/print_settings.php:144
-#: admin/modules/bibliography/print_settings.php:158
-#: admin/modules/bibliography/print_settings.php:159
-#: admin/modules/bibliography/print_settings.php:177
-#: admin/modules/bibliography/print_settings.php:178
+#: admin/modules/bibliography/print_settings.php:122
+#: admin/modules/bibliography/print_settings.php:129
+#: admin/modules/bibliography/print_settings.php:146
+#: admin/modules/bibliography/print_settings.php:160
+#: admin/modules/bibliography/print_settings.php:161
+#: admin/modules/bibliography/print_settings.php:179
+#: admin/modules/bibliography/print_settings.php:180
 msgid "(cm)"
 msgstr "(cm)"
 
 #: admin/modules/bibliography/print_settings.php:98
 #: admin/modules/bibliography/print_settings.php:111
 #: admin/modules/bibliography/print_settings.php:112
-#: admin/modules/bibliography/print_settings.php:123
-#: admin/modules/bibliography/print_settings.php:148
-#: admin/modules/bibliography/print_settings.php:149
+#: admin/modules/bibliography/print_settings.php:125
 #: admin/modules/bibliography/print_settings.php:150
 #: admin/modules/bibliography/print_settings.php:151
 #: admin/modules/bibliography/print_settings.php:152
 #: admin/modules/bibliography/print_settings.php:153
 #: admin/modules/bibliography/print_settings.php:154
 #: admin/modules/bibliography/print_settings.php:155
+#: admin/modules/bibliography/print_settings.php:156
+#: admin/modules/bibliography/print_settings.php:157
 msgid "(0=No or 1=Yes)"
 msgstr "(0=Nein oder 1=Ja)"
 
@@ -2330,98 +2400,116 @@ msgid "(name of the font used)"
 msgstr "(Name der verwendeten Schriftart)"
 
 #: admin/modules/bibliography/print_settings.php:101
-#: admin/modules/bibliography/print_settings.php:115
-#: admin/modules/bibliography/print_settings.php:182
 #: admin/modules/bibliography/print_settings.php:184
 #: admin/modules/bibliography/print_settings.php:186
 #: admin/modules/bibliography/print_settings.php:188
-#: admin/modules/bibliography/print_settings.php:192
-#: admin/modules/bibliography/print_settings.php:223
-#: admin/modules/bibliography/print_settings.php:227
+#: admin/modules/bibliography/print_settings.php:190
+#: admin/modules/bibliography/print_settings.php:194
+#: admin/modules/bibliography/print_settings.php:225
+#: admin/modules/bibliography/print_settings.php:229
 msgid "(pt)"
 msgstr "(pt)"
 
+#: admin/modules/bibliography/print_settings.php:106
+#: admin/modules/bibliography/print_settings.php:108
+msgid ""
+"(cm - use multiple values separated by spaces for top, right, bottom, left "
+"margin)"
+msgstr ""
+
+#: admin/modules/bibliography/print_settings.php:115
+msgid "(pt - size of the header text)"
+msgstr ""
+
 #: admin/modules/bibliography/print_settings.php:116
-msgid "(percent relative to box width and height)"
-msgstr "(Prozent, relativ zur Rahmenhöhe und -breite)"
+msgid "(pt - size of the barcode title)"
+msgstr ""
 
-#: admin/modules/bibliography/print_settings.php:121
+#: admin/modules/bibliography/print_settings.php:117
+msgid "(percent relative to box width"
+msgstr ""
+
+#: admin/modules/bibliography/print_settings.php:118
+msgid "(px - is scaled by barcode scale and length of the code"
+msgstr ""
+
+#: admin/modules/bibliography/print_settings.php:123
 msgid "(decimal value. default is 0.2)"
-msgstr "(Dezimalwer, Standard ist 0.2)"
+msgstr "(Dezimalwert, Standard ist 0.2)"
 
-#: admin/modules/bibliography/print_settings.php:122
+#: admin/modules/bibliography/print_settings.php:124
 msgid "(decimal value. default is 0.05)"
-msgstr "(Dezimalwer, Standard ist 0.05)"
+msgstr "(Dezimalwert, Standard ist 0.05)"
 
-#: admin/modules/bibliography/print_settings.php:128
+#: admin/modules/bibliography/print_settings.php:130
 msgid "font name. default is Courier"
 msgstr "Schriftname, Standard ist Courier"
 
-#: admin/modules/bibliography/print_settings.php:129
+#: admin/modules/bibliography/print_settings.php:131
 msgid "(hexa color code)"
 msgstr "(Hexadezimaler Farbcode)"
 
-#: admin/modules/bibliography/print_settings.php:130
-#: admin/modules/bibliography/print_settings.php:131
-msgid "px"
-msgstr "(Dezimalwer, Standard ist 0.2)"
-
 #: admin/modules/bibliography/print_settings.php:132
+#: admin/modules/bibliography/print_settings.php:133
+msgid "px"
+msgstr "(Dezimalwert, Standard ist 0.2)"
+
+#: admin/modules/bibliography/print_settings.php:134
 msgid "px style hexa"
 msgstr "px Art Hexadezimal"
 
-#: admin/modules/bibliography/print_settings.php:133
-#: admin/modules/bibliography/print_settings.php:134
+#: admin/modules/bibliography/print_settings.php:135
+#: admin/modules/bibliography/print_settings.php:136
 msgid "pt"
 msgstr "pt"
 
-#: admin/modules/bibliography/print_settings.php:135
-#: admin/modules/bibliography/print_settings.php:141
+#: admin/modules/bibliography/print_settings.php:137
+#: admin/modules/bibliography/print_settings.php:143
 msgid "(number)"
 msgstr "(Zahl)"
 
-#: admin/modules/bibliography/print_settings.php:139
-#: admin/modules/bibliography/print_settings.php:140
+#: admin/modules/bibliography/print_settings.php:141
+#: admin/modules/bibliography/print_settings.php:142
 msgid "(decimal)"
 msgstr "(dezimal)"
 
-#: admin/modules/bibliography/print_settings.php:160
-#: admin/modules/bibliography/print_settings.php:161
-#: admin/modules/bibliography/print_settings.php:164
-#: admin/modules/bibliography/print_settings.php:201
-#: admin/modules/bibliography/print_settings.php:202
+#: admin/modules/bibliography/print_settings.php:162
+#: admin/modules/bibliography/print_settings.php:163
+#: admin/modules/bibliography/print_settings.php:166
+#: admin/modules/bibliography/print_settings.php:203
+#: admin/modules/bibliography/print_settings.php:204
 msgid "(filename)"
 msgstr "(Dateiname)"
 
-#: admin/modules/bibliography/print_settings.php:181
 #: admin/modules/bibliography/print_settings.php:183
 #: admin/modules/bibliography/print_settings.php:185
 #: admin/modules/bibliography/print_settings.php:187
-#: admin/modules/bibliography/print_settings.php:197
-#: admin/modules/bibliography/print_settings.php:198
+#: admin/modules/bibliography/print_settings.php:189
 #: admin/modules/bibliography/print_settings.php:199
 #: admin/modules/bibliography/print_settings.php:200
-#: admin/modules/bibliography/print_settings.php:226
+#: admin/modules/bibliography/print_settings.php:201
+#: admin/modules/bibliography/print_settings.php:202
+#: admin/modules/bibliography/print_settings.php:228
 msgid "(text - add <br> tag for line break)"
 msgstr "(Text - <br> für Zeilenumbruch eingeben)"
 
-#: admin/modules/bibliography/print_settings.php:189
+#: admin/modules/bibliography/print_settings.php:191
 msgid "(hexa color)"
 msgstr "(Hexadezimale Farbe)"
 
-#: admin/modules/bibliography/print_settings.php:193
+#: admin/modules/bibliography/print_settings.php:195
 msgid "(normal or bold)"
 msgstr "(normal oder fett)"
 
-#: admin/modules/bibliography/print_settings.php:215
+#: admin/modules/bibliography/print_settings.php:217
 msgid "1-100 percent"
 msgstr "1-100 Prozent"
 
-#: admin/modules/bibliography/print_settings.php:222
+#: admin/modules/bibliography/print_settings.php:224
 msgid "(list of rules)"
 msgstr "(Regelliste)"
 
-#: admin/modules/bibliography/print_settings.php:231
+#: admin/modules/bibliography/print_settings.php:233
 msgid "Print setting for"
 msgstr "Druckeinstellungen für"
 
@@ -2693,7 +2781,7 @@ msgid "OVERDUED for {overdueDays} days(s) with fines value of"
 msgstr "ÜBERFÄLLIG seit {overdueDays} Tag(en) mit Mahngebühren von"
 
 #: admin/modules/circulation/circulation_action.php:307
-#: admin/modules/circulation/loan_list.php:171
+#: admin/modules/circulation/loan_list.php:179
 msgid "Item {itemCode} is being reserved by member {member}"
 msgstr "Exemplar {itemCode} ist durch Mitglied {member} vorgemerkt"
 
@@ -2703,11 +2791,11 @@ msgstr " erfolgreich zurückgebucht am"
 
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
-#: admin/modules/membership/index.php:399
-#: admin/modules/membership/index.php:543
-#: admin/modules/membership/index.php:549
-#: admin/modules/membership/member_card_generator.php:214
-#: admin/modules/membership/member_card_generator.php:300
+#: admin/modules/membership/index.php:431
+#: admin/modules/membership/index.php:575
+#: admin/modules/membership/index.php:581
+#: admin/modules/membership/member_card_generator.php:222
+#: admin/modules/membership/member_card_generator.php:309
 #: admin/modules/reporting/customs/due_date_warning.php:72
 #: admin/modules/reporting/customs/loan_history.php:71
 #: admin/modules/reporting/customs/loan_history.php:144
@@ -2790,7 +2878,7 @@ msgid "Member Type"
 msgstr "Mitgliedstyp"
 
 #: admin/modules/circulation/circulation_action.php:510
-#: admin/modules/membership/index.php:405 lib/contents/member.inc.php:509
+#: admin/modules/membership/index.php:437 lib/contents/member.inc.php:509
 msgid "Register Date"
 msgstr "Registrierungsdatum"
 
@@ -2800,9 +2888,9 @@ msgid "Membership Already Expired"
 msgstr "Mitgliedschaft ist abgelaufen"
 
 #: admin/modules/circulation/circulation_action.php:516
-#: admin/modules/membership/index.php:408
-#: admin/modules/membership/index.php:413
-#: admin/modules/membership/member_card_generator.php:224
+#: admin/modules/membership/index.php:440
+#: admin/modules/membership/index.php:445
+#: admin/modules/membership/member_card_generator.php:232
 #: lib/contents/member.inc.php:510
 msgid "Expiry Date"
 msgstr "Ablaufdatum"
@@ -2836,6 +2924,10 @@ msgstr "Gebühren"
 #: admin/modules/reporting/customs/loan_history.php:62
 msgid "Loan History"
 msgstr "Ausleihverlauf"
+
+#: admin/modules/circulation/circulation_base_lib.inc.php:263
+msgid "Overdue fines for item {item_code}"
+msgstr "Mahngebühren für Exemplar {item_code}"
 
 #: admin/modules/circulation/fines_list.php:67
 msgid "Fines Description and Debet value can't be empty"
@@ -2950,57 +3042,59 @@ msgstr "Neue Buchung"
 msgid "Transaction with member {member_id} is completed"
 msgstr "Buchungsvorgang für Mitglied {member_id} erfolgreich abgeschlossen"
 
-#: admin/modules/circulation/loan.php:125
+#: admin/modules/circulation/loan.php:66
 msgid "Insert Item Code/Barcode"
 msgstr "Barcode des Exemplars angeben"
 
-#: admin/modules/circulation/loan.php:154
+#: admin/modules/circulation/loan.php:95
+#: admin/modules/circulation/loan_list.php:141
 msgid "Click To Change Loan Date"
 msgstr "Zum Ändern des Ausleihdatums hier klicken"
 
-#: admin/modules/circulation/loan.php:155
+#: admin/modules/circulation/loan.php:96
+#: admin/modules/circulation/loan_list.php:142
 msgid "Click To Change Due Date"
 msgstr "Zum Ändern des Rückgabetermins hier klicken"
 
-#: admin/modules/circulation/loan_list.php:60
+#: admin/modules/circulation/loan_list.php:61
 msgid "Are you sure you want to return the item"
 msgstr "Wollen Sie das Exemplar zurückbuchen?"
 
-#: admin/modules/circulation/loan_list.php:62
+#: admin/modules/circulation/loan_list.php:63
 msgid "Are you sure to extend loan for"
 msgstr "Wollen Sie die Leihfrist verlängern für"
 
-#: admin/modules/circulation/loan_list.php:98
+#: admin/modules/circulation/loan_list.php:99
 msgid "Col. Type"
 msgstr "Sammlungstyp"
 
-#: admin/modules/circulation/loan_list.php:113
+#: admin/modules/circulation/loan_list.php:114
 msgid "Return this item"
 msgstr "Exemplar zurückbuchen"
 
-#: admin/modules/circulation/loan_list.php:117
-#: admin/modules/circulation/loan_list.php:121
+#: admin/modules/circulation/loan_list.php:118
+#: admin/modules/circulation/loan_list.php:122
 msgid "No Extend"
 msgstr "Keine Verlängerung"
 
-#: admin/modules/circulation/loan_list.php:123
+#: admin/modules/circulation/loan_list.php:124
 msgid "Extend loan for this item"
 msgstr "Leihfrist für dieses Exemplar verlängern"
 
-#: admin/modules/circulation/loan_list.php:128
+#: admin/modules/circulation/loan_list.php:129
 #: admin/modules/circulation/pop_loan_receipt.php:88
 msgid "Extended"
 msgstr "Verlängert"
 
-#: admin/modules/circulation/loan_list.php:135
+#: admin/modules/circulation/loan_list.php:136
 msgid "OVERDUED for"
 msgstr "ÜBERFÄLLIG seit"
 
-#: admin/modules/circulation/loan_list.php:135
+#: admin/modules/circulation/loan_list.php:136
 msgid "days(s) with fines value"
 msgstr "Tag(en) mit Mahngebühren"
 
-#: admin/modules/circulation/loan_list.php:177
+#: admin/modules/circulation/loan_list.php:185
 msgid "Send overdues notice e-mail"
 msgstr "E-Mail-Benachrichtigung für überfällige Medien aktivieren."
 
@@ -3771,7 +3865,7 @@ msgstr ""
 
 #: admin/modules/master_file/pop_scope_vocabolary.php:71
 msgid "Data saved!"
-msgstr ""
+msgstr "Daten erfolgreich gespeichert!"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:84
 msgid "Vocabulary added!"
@@ -3801,7 +3895,7 @@ msgstr "Begriff"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:237
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:106
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:99
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -3900,7 +3994,7 @@ msgstr "Code"
 #: admin/modules/master_file/rda_cmc.php:189
 #: admin/modules/master_file/rda_cmc.php:209
 #: admin/modules/master_file/rda_cmc.php:213 lib/contents/librarian.inc.php:47
-#: sysconfig.inc.php:606
+#: sysconfig.inc.php:609
 msgid "Name"
 msgstr "Name"
 
@@ -3920,6 +4014,7 @@ msgstr "Ressourcenart"
 #: template/classic/detail_template.php:105
 #: template/default/detail_template.php:101
 #: template/lightweight/detail_template.php:101
+#: template/spielema/detail_template.php:101
 msgid "Content Type"
 msgstr "Inhaltstyp"
 
@@ -3931,6 +4026,7 @@ msgstr "RDA Inhaltstyp"
 #: template/classic/detail_template.php:110
 #: template/default/detail_template.php:115
 #: template/lightweight/detail_template.php:115
+#: template/spielema/detail_template.php:115
 msgid "Media Type"
 msgstr "Medientyp"
 
@@ -3942,6 +4038,7 @@ msgstr "RDA Medientyp"
 #: template/classic/detail_template.php:115
 #: template/default/detail_template.php:122
 #: template/lightweight/detail_template.php:122
+#: template/spielema/detail_template.php:122
 msgid "Carrier Type"
 msgstr "Datenträgertyp"
 
@@ -4044,8 +4141,8 @@ msgid "Supplier Name"
 msgstr "Name des Zulieferers"
 
 #: admin/modules/master_file/supplier.php:185
-#: admin/modules/membership/index.php:430
-#: admin/modules/membership/member_card_generator.php:219
+#: admin/modules/membership/index.php:462
+#: admin/modules/membership/member_card_generator.php:227
 #: admin/modules/reporting/customs/member_list.php:104
 msgid "Address"
 msgstr "Adresse"
@@ -4059,8 +4156,8 @@ msgstr "Kontakt(person)"
 #: admin/modules/master_file/supplier.php:189
 #: admin/modules/master_file/supplier.php:212
 #: admin/modules/master_file/supplier.php:218
-#: admin/modules/membership/index.php:436
-#: admin/modules/membership/member_card_generator.php:219
+#: admin/modules/membership/index.php:468
+#: admin/modules/membership/member_card_generator.php:227
 #: admin/modules/reporting/customs/due_date_warning.php:156
 #: admin/modules/reporting/customs/member_loan_list.php:175
 #: admin/modules/reporting/customs/overdued_list.php:179
@@ -4070,7 +4167,7 @@ msgstr "Telefon"
 #: admin/modules/master_file/supplier.php:191
 #: admin/modules/master_file/supplier.php:213
 #: admin/modules/master_file/supplier.php:219
-#: admin/modules/membership/index.php:438
+#: admin/modules/membership/index.php:470
 msgid "Fax Number"
 msgstr "Fax"
 
@@ -4238,33 +4335,34 @@ msgstr "Mitgliedersuche"
 msgid "Extend Membership"
 msgstr "Mitgliedschaft verlängern"
 
-#: admin/modules/membership/index.php:401
+#: admin/modules/membership/index.php:433
 msgid "Birth Date"
 msgstr "Geburtsdatum"
 
-#: admin/modules/membership/index.php:403
+#: admin/modules/membership/index.php:435
 msgid "Member Since"
 msgstr "Mitglied seit"
 
-#: admin/modules/membership/index.php:410
+#: admin/modules/membership/index.php:442
 msgid "Auto Set"
 msgstr "Vorgabe verwenden"
 
-#: admin/modules/membership/index.php:416
-#: admin/modules/membership/member_card_generator.php:216
+#: admin/modules/membership/index.php:448
+#: admin/modules/membership/member_card_generator.php:224
 #: admin/modules/reporting/customs/visitor_list.php:94
 #: admin/modules/reporting/customs/visitor_list.php:140
 #: admin/modules/reporting/customs/visitor_list.php:182
 #: lib/contents/member.inc.php:513 template/classic/visitor_template.php:54
 #: template/default/visitor_template.php:53
 #: template/lightweight/visitor_template.php:53
+#: template/spielema/visitor_template.php:53
 msgid "Institution"
 msgstr "Institution"
 
-#: admin/modules/membership/index.php:424
-#: admin/modules/membership/index.php:544
-#: admin/modules/membership/index.php:550
-#: admin/modules/membership/member_card_generator.php:301
+#: admin/modules/membership/index.php:456
+#: admin/modules/membership/index.php:576
+#: admin/modules/membership/index.php:582
+#: admin/modules/membership/member_card_generator.php:310
 #: admin/modules/membership/member_type.php:221
 #: admin/modules/membership/member_type.php:227
 #: admin/modules/reporting/customs/member_list.php:73
@@ -4276,130 +4374,138 @@ msgstr "Institution"
 msgid "Membership Type"
 msgstr "Mitgliedstyp"
 
-#: admin/modules/membership/index.php:426
+#: admin/modules/membership/index.php:458
 #: admin/modules/reporting/customs/member_list.php:97
 msgid "Male"
 msgstr "Männlich"
 
-#: admin/modules/membership/index.php:427
+#: admin/modules/membership/index.php:459
 #: admin/modules/reporting/customs/member_list.php:98
 msgid "Female"
 msgstr "Weiblich"
 
-#: admin/modules/membership/index.php:428
+#: admin/modules/membership/index.php:460
 msgid "Sex"
 msgstr "Geschlecht"
 
-#: admin/modules/membership/index.php:432
+#: admin/modules/membership/index.php:464
 msgid "Postal Code"
 msgstr "Postleitzahl"
 
-#: admin/modules/membership/index.php:434
+#: admin/modules/membership/index.php:466
 msgid "Mail Address"
 msgstr "Postanschrift"
 
-#: admin/modules/membership/index.php:440
-#: admin/modules/membership/member_card_generator.php:215
+#: admin/modules/membership/index.php:472
+#: admin/modules/membership/member_card_generator.php:223
 msgid "Personal ID Number"
 msgstr "Personal ID Number"
 
-#: admin/modules/membership/index.php:442
+#: admin/modules/membership/index.php:474
 msgid "Notes"
 msgstr "Bemerkungen"
 
-#: admin/modules/membership/index.php:476
+#: admin/modules/membership/index.php:508
 msgid "Pending Membership"
 msgstr "Ruhende Mitgliedschaft"
 
-#: admin/modules/membership/index.php:476
+#: admin/modules/membership/index.php:508
 #: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
 #: admin/modules/system/index.php:229
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/modules/membership/index.php:485 admin/modules/system/app_user.php:338
+#: admin/modules/membership/index.php:517 admin/modules/system/app_user.php:338
 msgid "or take a photo"
 msgstr "oder ein Foto machen"
 
-#: admin/modules/membership/index.php:495 admin/modules/system/app_user.php:340
+#: admin/modules/membership/index.php:527 admin/modules/system/app_user.php:340
 msgid "Load Camera"
 msgstr "Kamera laden"
 
-#: admin/modules/membership/index.php:496 admin/modules/system/app_user.php:341
+#: admin/modules/membership/index.php:528 admin/modules/system/app_user.php:341
 msgid "Ratio:"
 msgstr "Verhältnis:"
 
-#: admin/modules/membership/index.php:508
+#: admin/modules/membership/index.php:540
 msgid "Photo"
 msgstr "Foto"
 
-#: admin/modules/membership/index.php:511
-#: admin/modules/membership/index.php:545
-#: admin/modules/membership/index.php:551
-#: admin/modules/membership/member_card_generator.php:218
+#: admin/modules/membership/index.php:543
+#: admin/modules/membership/index.php:577
+#: admin/modules/membership/index.php:583
+#: admin/modules/membership/member_card_generator.php:226
 #: admin/modules/reporting/customs/due_date_warning.php:156
 #: admin/modules/reporting/customs/member_loan_list.php:175
 #: admin/modules/reporting/customs/overdued_list.php:179
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: admin/modules/membership/index.php:513 admin/modules/system/app_user.php:370
+#: admin/modules/membership/index.php:545 admin/modules/system/app_user.php:370
 #: lib/contents/login.inc.php:203 lib/contents/member.inc.php:283
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: admin/modules/membership/index.php:515 admin/modules/system/app_user.php:372
+#: admin/modules/membership/index.php:547 admin/modules/system/app_user.php:372
 #: lib/contents/login.inc.php:205
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
 
-#: admin/modules/membership/index.php:520
+#: admin/modules/membership/index.php:552
 #: admin/modules/membership/member_type.php:208
 msgid "You are going to edit member data"
 msgstr "Sie sind im Begriff die Angaben für folgendes Mitglied zu bearbeiten"
 
-#: admin/modules/membership/index.php:521 admin/modules/system/app_user.php:378
+#: admin/modules/membership/index.php:553 admin/modules/system/app_user.php:378
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Füllen Sie das Passwortfeld nur aus, wenn Sie es ändern wollen"
 
-#: admin/modules/membership/index.php:580
+#: admin/modules/membership/index.php:612
 msgid "Expired Member List"
 msgstr "Liste abgelaufener Mitgliedschaften"
 
-#: admin/modules/membership/index.php:581
+#: admin/modules/membership/index.php:613
 msgid "Extend Selected Member(s)"
 msgstr "Ausgewählte Mitglieder verlängern"
 
-#: admin/modules/membership/index.php:581
+#: admin/modules/membership/index.php:613
 msgid "Are you sure to EXTEND membership for selected members?"
 msgstr ""
 "Wollen Sie die Mitgliedschaft für die ausgewählten Mitglieder VERLÄNGERN?"
 
-#: admin/modules/membership/index.php:583
+#: admin/modules/membership/index.php:615
 msgid "members extended!"
 msgstr "Mitglieder verlängert!"
 
-#: admin/modules/membership/index.php:587
-#: admin/modules/membership/member_card_generator.php:334
+#: admin/modules/membership/index.php:619
+#: admin/modules/membership/member_card_generator.php:343
 msgid "Found"
 msgstr "Es wurde"
 
-#: admin/modules/membership/index.php:587
-#: admin/modules/membership/member_card_generator.php:334
+#: admin/modules/membership/index.php:619
+#: admin/modules/membership/member_card_generator.php:343
 msgid "from your search with keyword"
 msgstr "Mitglied(er) gefunden mit dem Suchbegriff"
 
-#: admin/modules/membership/member_card_generator.php:257
+#: admin/modules/membership/member_base_lib.inc.php:189
+msgid "days"
+msgstr "Tage"
+
+#: admin/modules/membership/member_base_lib.inc.php:209
+msgid "Overdue Notice for Member {member_name} ({member_email})"
+msgstr ""
+
 #: admin/modules/membership/member_card_generator.php:266
+#: admin/modules/membership/member_card_generator.php:275
 #: admin/modules/membership/submenu.php:31
 msgid "Member Card Printing"
 msgstr "Mitgliederkarten drucken"
 
-#: admin/modules/membership/member_card_generator.php:271
+#: admin/modules/membership/member_card_generator.php:280
 msgid "Print Member Cards for Selected Data"
 msgstr "Mitgliederkartendruck starten"
 
-#: admin/modules/membership/member_card_generator.php:272
+#: admin/modules/membership/member_card_generator.php:281
 msgid "Member card print settings"
 msgstr "Mitgliederkarten Druckeneinstellungen"
 
@@ -6299,11 +6405,11 @@ msgstr "Nachricht"
 
 #: admin/modules/system/ucsetting.php:45
 msgid "Settings updated."
-msgstr ""
+msgstr "Einstellungen gespeichert"
 
 #: admin/modules/system/ucsetting.php:49
 msgid "Failed save settings!"
-msgstr ""
+msgstr "Speichern der Einstellungen fehlgeschlagen!"
 
 #: admin/modules/system/ucsetting.php:52
 msgid "Settings inserted."
@@ -6654,7 +6760,7 @@ msgstr "Titel auf den Merkzettel setzen"
 
 #: lib/contents/member.inc.php:467
 msgid "Clear Basket"
-msgstr "Mekrzettel leeren"
+msgstr "Merkzettel leeren"
 
 #: lib/contents/member.inc.php:468
 msgid "Remove selected title(s) from Basket"
@@ -6706,7 +6812,7 @@ msgid "Your Title Basket"
 msgstr "Ihr Merkzettel"
 
 #: lib/contents/news.inc.php:25 template/default/partials/nav.php:6
-#: template/lightweight/partials/nav.php:6
+#: template/lightweight/partials/nav.php:6 template/spielema/partials/nav.php:6
 msgid "Library News"
 msgstr "Bibliotheks-News"
 
@@ -6715,7 +6821,7 @@ msgid "Sorry, we don't have any news for you yet."
 msgstr "Leider haben wir noch keine News für Sie."
 
 #: lib/contents/peta.inc.php:28 template/default/partials/nav.php:8
-#: template/lightweight/partials/nav.php:8
+#: template/lightweight/partials/nav.php:8 template/spielema/partials/nav.php:8
 msgid "Library Location"
 msgstr "Anfahrt"
 
@@ -6735,6 +6841,8 @@ msgstr ""
 #: template/default/index_template.inc.php:83
 #: template/lightweight/biblio_list_template.php:79
 #: template/lightweight/index_template.inc.php:83
+#: template/spielema/biblio_list_template.php:79
+#: template/spielema/index_template.inc.php:83
 msgid "Record Detail"
 msgstr "Details zum Titel"
 
@@ -6750,6 +6858,7 @@ msgstr "Details im XML-Format anzeigen"
 #: template/classic/biblio_list_template.php:81
 #: template/default/biblio_list_template.php:81
 #: template/lightweight/biblio_list_template.php:81
+#: template/spielema/biblio_list_template.php:81
 msgid "XML Detail"
 msgstr "XML-Detail"
 
@@ -6757,6 +6866,7 @@ msgstr "XML-Detail"
 #: template/classic/biblio_list_template.php:85
 #: template/default/biblio_list_template.php:85
 #: template/lightweight/biblio_list_template.php:85
+#: template/spielema/biblio_list_template.php:85
 msgid "Citation for: {title}"
 msgstr "Zitierung von: {title}"
 
@@ -6809,6 +6919,7 @@ msgstr "Klicken um weitere Titel mit diesem Schlagwort anzuzeigen"
 #: lib/detail.inc.php:366 template/classic/biblio_list_template.php:166
 #: template/default/biblio_list_template.php:166
 #: template/lightweight/biblio_list_template.php:166
+#: template/spielema/biblio_list_template.php:171
 msgid "Share to"
 msgstr "Teilen mit"
 
@@ -6860,6 +6971,8 @@ msgstr "Persisch (فارسی)"
 #: template/default/partials/footer.php:51 template/default/partials/nav.php:5
 #: template/lightweight/partials/footer.php:51
 #: template/lightweight/partials/nav.php:5
+#: template/spielema/partials/footer.php:51
+#: template/spielema/partials/nav.php:5
 msgid "Home"
 msgstr "Startseite"
 
@@ -6873,7 +6986,7 @@ msgstr "LÖSCHEN"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:90
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:110
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
 msgid "EDIT"
 msgstr "BEARBEITEN"
 
@@ -6910,12 +7023,12 @@ msgid "Date"
 msgstr "Datum"
 
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:105
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:98
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:102
 msgid "Delete Record"
 msgstr "Datensatz löschen"
 
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:111
 msgid "Are you sure to delete {recordTitle}?"
 msgstr "Sind Sie sicher, dass Sie {recordTitle} entfernen möchten?"
 
@@ -6939,84 +7052,84 @@ msgstr "Letzte Seite"
 msgid "No Data"
 msgstr "Keine Daten"
 
-#: sysconfig.inc.php:599
+#: sysconfig.inc.php:602
 msgid "Personal Name"
 msgstr "Personenname"
 
-#: sysconfig.inc.php:600
+#: sysconfig.inc.php:603
 msgid "Organizational Body"
 msgstr "Körperschaft"
 
-#: sysconfig.inc.php:601
+#: sysconfig.inc.php:604
 msgid "Conference"
 msgstr "Konferenz"
 
-#: sysconfig.inc.php:604
+#: sysconfig.inc.php:607
 msgid "Topic"
 msgstr "Schlagwort"
 
 # Klingt etwas schräg für einen Schlagworttyp
-#: sysconfig.inc.php:605
+#: sysconfig.inc.php:608
 msgid "Geographic"
 msgstr "Geographisch"
 
-#: sysconfig.inc.php:607
+#: sysconfig.inc.php:610
 msgid "Temporal"
 msgstr "Zeit"
 
-#: sysconfig.inc.php:608
+#: sysconfig.inc.php:611
 msgid "Genre"
 msgstr "Genre"
 
-#: sysconfig.inc.php:609
+#: sysconfig.inc.php:612
 msgid "Occupation"
 msgstr "Beruf"
 
-#: sysconfig.inc.php:612
+#: sysconfig.inc.php:615
 msgid "Primary Author"
 msgstr "Erster Verfasser"
 
-#: sysconfig.inc.php:613
+#: sysconfig.inc.php:616
 msgid "Additional Author"
 msgstr "Weiterer Autor"
 
-#: sysconfig.inc.php:614
+#: sysconfig.inc.php:617
 msgid "Editor"
 msgstr "Herausgeber"
 
-#: sysconfig.inc.php:615
+#: sysconfig.inc.php:618
 msgid "Translator"
 msgstr "Übersetzer"
 
-#: sysconfig.inc.php:616
+#: sysconfig.inc.php:619
 msgid "Director"
 msgstr "Regisseur"
 
-#: sysconfig.inc.php:617
+#: sysconfig.inc.php:620
 msgid "Producer"
 msgstr "Produzent"
 
-#: sysconfig.inc.php:618
+#: sysconfig.inc.php:621
 msgid "Composer"
 msgstr "Komponist"
 
-#: sysconfig.inc.php:619
+#: sysconfig.inc.php:622
 msgid "Illustrator"
 msgstr "Illustrator"
 
-#: sysconfig.inc.php:620
+#: sysconfig.inc.php:623
 msgid "Creator"
 msgstr "Urheber"
 
-#: sysconfig.inc.php:621
+#: sysconfig.inc.php:624
 msgid "Contributor"
 msgstr "Mitarbeiter"
 
-#: sysconfig.inc.php:625
+#: sysconfig.inc.php:628
 msgid "Senior Librarian"
 msgstr "Leitender Bibliothekar"
 
-#: sysconfig.inc.php:626
+#: sysconfig.inc.php:629
 msgid "Library Staff"
 msgstr "Bibliothekspersonal"
 
@@ -7026,96 +7139,113 @@ msgstr "Bibliothekspersonal"
 #: template/default/biblio_list_template.php:79
 #: template/lightweight/biblio_list_template.php:50
 #: template/lightweight/biblio_list_template.php:79
+#: template/spielema/biblio_list_template.php:50
+#: template/spielema/biblio_list_template.php:79
 msgid "View record detail description for this title"
 msgstr "Details zu diesem Titel anzeigen"
 
 #: template/classic/biblio_list_template.php:81
 #: template/default/biblio_list_template.php:81
 #: template/lightweight/biblio_list_template.php:81
+#: template/spielema/biblio_list_template.php:81
 msgid "View record detail description in XML Format"
 msgstr "Details zu diesem Titel im XML-Format anzeigen"
 
 #: template/classic/biblio_list_template.php:149
 #: template/default/biblio_list_template.php:144
 #: template/lightweight/biblio_list_template.php:144
+#: template/spielema/biblio_list_template.php:149
 msgid "none copy available"
 msgstr "Kein Exemplar verfügbar"
 
 #: template/classic/biblio_list_template.php:151
 #: template/default/biblio_list_template.php:146
 #: template/lightweight/biblio_list_template.php:146
+#: template/spielema/biblio_list_template.php:151
 msgid "{numberAvailable} copies available for loan"
 msgstr "{numberAvailable} Exemplare verfügbar"
 
 #: template/classic/biblio_list_template.php:167
 #: template/default/biblio_list_template.php:167
 #: template/lightweight/biblio_list_template.php:167
+#: template/spielema/biblio_list_template.php:172
 msgid "Share this title to Facebook"
 msgstr "Diesen Titel auf Facebook teilen"
 
 #: template/classic/biblio_list_template.php:168
 #: template/default/biblio_list_template.php:168
 #: template/lightweight/biblio_list_template.php:168
+#: template/spielema/biblio_list_template.php:173
 msgid "Share this title to Twitter"
 msgstr "Diesen Titel auf Twitter teilen"
 
 #: template/classic/biblio_list_template.php:169
 #: template/default/biblio_list_template.php:169
 #: template/lightweight/biblio_list_template.php:169
+#: template/spielema/biblio_list_template.php:174
 msgid "Share this title to Google Plus"
 msgstr "Diesen Titel auf Google Plus teilen"
 
 #: template/classic/biblio_list_template.php:170
 #: template/default/biblio_list_template.php:170
 #: template/lightweight/biblio_list_template.php:170
+#: template/spielema/biblio_list_template.php:175
 msgid "Share this title to Digg It"
 msgstr "Diesen Titel auf Digg It teilen"
 
 #: template/classic/biblio_list_template.php:171
 #: template/default/biblio_list_template.php:171
 #: template/lightweight/biblio_list_template.php:171
+#: template/spielema/biblio_list_template.php:176
 msgid "Share this title to Reddit"
 msgstr "Diesen Titel auf Reddit teilen"
 
 #: template/classic/biblio_list_template.php:172
 #: template/default/biblio_list_template.php:172
 #: template/lightweight/biblio_list_template.php:172
+#: template/spielema/biblio_list_template.php:177
 msgid "Share this title to LinkedIn"
 msgstr "Diesen Titel auf LinkedIn teilen"
 
 #: template/classic/biblio_list_template.php:173
 #: template/default/biblio_list_template.php:173
 #: template/lightweight/biblio_list_template.php:173
+#: template/spielema/biblio_list_template.php:178
 msgid "Share this title to StumbleUpon"
 msgstr "Diesen Titel auf StumbleUpon teilen"
 
 #: template/classic/biblio_list_template.php:181
 #: template/default/biblio_list_template.php:158
 #: template/lightweight/biblio_list_template.php:158
+#: template/spielema/biblio_list_template.php:163
 msgid "mark this"
 msgstr "Markieren"
 
 #: template/classic/citation/apa_style_template.php:20
 #: template/default/citation/apa_style_template.php:20
 #: template/lightweight/citation/apa_style_template.php:20
+#: template/spielema/citation/apa_style_template.php:20
 msgid "APA Style"
 msgstr "APA Style"
 
 #: template/classic/citation/chicago_style_template.php:20
 #: template/default/citation/chicago_style_template.php:20
 #: template/lightweight/citation/chicago_style_template.php:20
+#: template/spielema/citation/chicago_style_template.php:20
 msgid "Chicago Style"
 msgstr "Chicago Style"
 
 #: template/classic/citation/mla_style_template.php:20
 #: template/default/citation/mla_style_template.php:20
 #: template/lightweight/citation/mla_style_template.php:20
+#: template/spielema/citation/mla_style_template.php:20
 msgid "MLA Style"
 msgstr "MLA Style"
 
 #: template/classic/citation/turabian_style_template.php:23
 #: template/default/citation/turabian_style_template.php:23
 #: template/lightweight/citation/turabian_style_template.php:23
+#: template/spielema/citation/turabian_style_template.php:23
 msgid "Turabian Style"
 msgstr "Turabian Style"
 
@@ -7125,18 +7255,22 @@ msgstr "Turabian Style"
 #: template/default/detail_template.php:37
 #: template/lightweight/custom_frontpage_record.inc.php:11
 #: template/lightweight/detail_template.php:37
+#: template/spielema/custom_frontpage_record.inc.php:11
+#: template/spielema/detail_template.php:37
 msgid "Availability"
 msgstr "Verfügbarkeit"
 
 #: template/classic/detail_template.php:30
 #: template/default/detail_template.php:30
 #: template/lightweight/detail_template.php:30
+#: template/spielema/detail_template.php:30
 msgid "Description Not Available"
-msgstr "Beschreibung nicht verfügabr"
+msgstr "Beschreibung nicht verfügbar"
 
 #: template/classic/detail_template.php:44
 #: template/default/detail_template.php:38
 #: template/lightweight/detail_template.php:38
+#: template/spielema/detail_template.php:38
 msgid "No copy data"
 msgstr "Keine Exemplardaten"
 
@@ -7144,24 +7278,28 @@ msgstr "Keine Exemplardaten"
 #: template/classic/detail_template.php:101
 #: template/default/detail_template.php:43
 #: template/lightweight/detail_template.php:43
+#: template/spielema/detail_template.php:43
 msgid "Detail Information"
 msgstr "Detaillierte Informationen"
 
 #: template/classic/detail_template.php:147
 #: template/default/detail_template.php:163
 #: template/lightweight/detail_template.php:163
+#: template/spielema/detail_template.php:163
 msgid "Other version/related"
-msgstr "Ander Ausgabe / Ähnliches"
+msgstr "Andere Ausgabe / Ähnliches"
 
 #: template/classic/detail_template.php:155
 #: template/default/detail_template.php:164
 #: template/lightweight/detail_template.php:164
+#: template/spielema/detail_template.php:164
 msgid "No other version available"
 msgstr "Keine anderen Ausgaben verfügbar"
 
 #: template/classic/detail_template.php:177
 #: template/default/detail_template.php:181
 #: template/lightweight/detail_template.php:181
+#: template/spielema/detail_template.php:181
 msgid "Comments"
 msgstr "Kommentare"
 
@@ -7169,11 +7307,13 @@ msgstr "Kommentare"
 #: template/classic/part/content/nav.php:60
 #: template/default/partials/nav.php:12
 #: template/lightweight/partials/nav.php:12
+#: template/spielema/partials/nav.php:12
 msgid "Librarian LOGIN"
 msgstr "Mitarbeiter-ANMELDUNG"
 
 #: template/classic/news_template.php:10 template/default/news_template.php:10
 #: template/lightweight/news_template.php:10
+#: template/spielema/news_template.php:10
 msgid "Read More"
 msgstr "Weiterlesen"
 
@@ -7184,6 +7324,7 @@ msgstr "Erweiterte Suche"
 #: template/classic/part/content/language.php:13
 #: template/default/partials/nav.php:20
 #: template/lightweight/partials/nav.php:20
+#: template/spielema/partials/nav.php:20
 msgid "Select Language"
 msgstr "Sprache wählen"
 
@@ -7192,7 +7333,7 @@ msgid "License"
 msgstr "Lizenz"
 
 #: template/classic/part/content/nav.php:34 template/default/partials/nav.php:7
-#: template/lightweight/partials/nav.php:7
+#: template/lightweight/partials/nav.php:7 template/spielema/partials/nav.php:7
 msgid "Library Information"
 msgstr "Über die Bibliothek"
 
@@ -7203,12 +7344,16 @@ msgstr "Über die Bibliothek"
 #: template/lightweight/index_template.inc.php:84
 #: template/lightweight/index_template.inc.php:85
 #: template/lightweight/partials/nav.php:9
+#: template/spielema/index_template.inc.php:84
+#: template/spielema/index_template.inc.php:85
+#: template/spielema/partials/nav.php:9
 msgid "Member Area"
 msgstr "Mein Benutzerkonto"
 
 #: template/classic/part/content/nav.php:46
 #: template/default/partials/nav.php:11
 #: template/lightweight/partials/nav.php:11
+#: template/spielema/partials/nav.php:11
 msgid "Help on Search"
 msgstr "Hilfe zur Suche"
 
@@ -7231,48 +7376,56 @@ msgstr "Beworbene Bücher"
 #: template/classic/part/content/simple-search.php:13
 #: template/default/index_template.inc.php:184
 #: template/lightweight/index_template.inc.php:184
+#: template/spielema/index_template.inc.php:184
 msgid "SEARCH"
 msgstr "SUCHE"
 
 #: template/classic/part/content/simple-search.php:18
 #: template/default/index_template.inc.php:187
 #: template/lightweight/index_template.inc.php:187
+#: template/spielema/index_template.inc.php:187
 msgid "start it by typing one or more keywords for title, author or subject"
 msgstr "Suchen Sie nach Autor, Titel und/oder nach Schlagwörtern"
 
 #: template/classic/part/content/simple-search.php:20
 #: template/default/index_template.inc.php:189
 #: template/lightweight/index_template.inc.php:189
+#: template/spielema/index_template.inc.php:189
 msgid "use logical search \"title=library AND author=robert\""
 msgstr "verwende logische Verknüpfung \"title=Bibliothek AND author=Robert\""
 
 #: template/classic/part/content/simple-search.php:21
 #: template/default/index_template.inc.php:190
 #: template/lightweight/index_template.inc.php:190
+#: template/spielema/index_template.inc.php:190
 msgid "just click on the Search button to see all collections"
 msgstr "Klicken Sie den Suchbutton um den Bestand zu sehen"
 
 #: template/classic/part/sidebar.php:23
 #: template/default/index_template.inc.php:148
 #: template/lightweight/index_template.inc.php:148
+#: template/spielema/index_template.inc.php:148
 msgid "Search Cluster"
 msgstr "Suchcluster"
 
 #: template/classic/part/sidebar.php:27
 #: template/default/index_template.inc.php:153
 #: template/lightweight/index_template.inc.php:153
+#: template/spielema/index_template.inc.php:153
 msgid "Generating search cluster..."
 msgstr "Generiere Suchcluster"
 
 #: template/classic/visitor_template.php:39
 #: template/default/visitor_template.php:32
 #: template/lightweight/visitor_template.php:32
+#: template/spielema/visitor_template.php:32
 msgid "Visitor Counter"
 msgstr "Besucherzähler"
 
 #: template/classic/visitor_template.php:47
 #: template/default/visitor_template.php:33
 #: template/lightweight/visitor_template.php:33
+#: template/spielema/visitor_template.php:33
 msgid "Please insert your library member ID otherwise your full name instead"
 msgstr ""
 "Bitte geben Sie ihre Mitgliedsnummer oder ihren vollständigen Namen ein"
@@ -7280,11 +7433,13 @@ msgstr ""
 #: template/classic/visitor_template.php:50
 #: template/default/visitor_template.php:46
 #: template/lightweight/visitor_template.php:46
+#: template/spielema/visitor_template.php:46
 msgid "Member ID / Visitor Name"
 msgstr "Mitgliedsnummer / Gastname"
 
 #: template/default/biblio_list_template.php:85
 #: template/lightweight/biblio_list_template.php:85
+#: template/spielema/biblio_list_template.php:85
 msgid "Cite"
 msgstr "Zitieren"
 
@@ -7292,36 +7447,44 @@ msgstr "Zitieren"
 #: template/default/index_template.inc.php:88
 #: template/lightweight/index_template.inc.php:82
 #: template/lightweight/index_template.inc.php:88
+#: template/spielema/index_template.inc.php:82
+#: template/spielema/index_template.inc.php:88
 msgid "Collections"
 msgstr "Sammlungen"
 
 #: template/default/index_template.inc.php:111
 #: template/lightweight/index_template.inc.php:111
+#: template/spielema/index_template.inc.php:111
 msgid "No Result"
 msgstr "Kein Ergebnis"
 
 #: template/default/index_template.inc.php:111
 #: template/lightweight/index_template.inc.php:111
+#: template/spielema/index_template.inc.php:111
 msgid "Please try again"
 msgstr "Bitte versuchen Sie es erneut"
 
 #: template/default/index_template.inc.php:129
 #: template/lightweight/index_template.inc.php:129
+#: template/spielema/index_template.inc.php:129
 msgid "Search Result"
 msgstr "Suchergebnis"
 
 #: template/default/index_template.inc.php:138
 #: template/lightweight/index_template.inc.php:138
+#: template/spielema/index_template.inc.php:138
 msgid "Information"
 msgstr "Information"
 
 #: template/default/login_template.inc.php:84
 #: template/lightweight/login_template.inc.php:84
+#: template/spielema/login_template.inc.php:84
 msgid "Back To Home"
 msgstr "Zurück zur Startseite"
 
 #: template/default/partials/nav.php:13
 #: template/lightweight/partials/nav.php:13
+#: template/spielema/partials/nav.php:13
 msgid "About SLiMS"
 msgstr "Über SLiMS"
 
@@ -7329,6 +7492,9 @@ msgstr "Über SLiMS"
 #: template/lightweight/index_template.inc.php:194
 msgid "Put some keyword(s)..."
 msgstr "Suchbegriff(e) eingeben..."
+
+#~ msgid "(percent relative to box width and height)"
+#~ msgstr "(Prozent, relativ zur Rahmenhöhe und -breite)"
 
 #~ msgid "Click Here To Repaire The Tables"
 #~ msgstr "Tabellen reparieren"
