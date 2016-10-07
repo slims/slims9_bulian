@@ -4,9 +4,9 @@
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
  * Create by Eddy Subratha (eddy.subratha@slims.web.id)
- * 
+ *
  * Slims 8 (Akasia)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
-} 
+}
 
 ?>
 <!--
@@ -46,7 +46,7 @@ if (!defined('INDEX_AUTH')) {
 
 <?php
 // Meta Template
-include "partials/meta.php"; 
+include "partials/meta.php";
 ?>
 
 </head>
@@ -59,15 +59,15 @@ include "partials/meta.php";
 
 <?php
 // Header
-include "partials/header.php"; 
+include "partials/header.php";
 ?>
 
-<?php 
+<?php
 // Navigation
-include "partials/nav.php"; 
+include "partials/nav.php";
 ?>
 
-<?php 
+<?php
 // Content
 ?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
@@ -77,15 +77,15 @@ include "partials/nav.php";
   ============================================= -->
   <div class="s-main-search">
     <?php
-    if(isset($_GET['p'])) {    
+    if(isset($_GET['p'])) {
       switch ($_GET['p']) {
       case ''             : $page_title = __('Collections'); break;
-      case 'show_detail'  : $page_title = __("Record Detail"); break;              
-      case 'member'       : $page_title = __("Member Area"); break;              
-      case 'member'       : $page_title = __("Member Area"); break;              
-      default             : $page_title; break; }            
+      case 'show_detail'  : $page_title = __("Record Detail"); break;
+      case 'member'       : $page_title = __("Member Area"); break;
+      case 'member'       : $page_title = __("Member Area"); break;
+      default             : $page_title; break; }
     } else {
-      $page_title = __('Collections');  
+      $page_title = __('Collections');
     }
     ?>
     <h1 class="s-main-title animated fadeInUp delay1"><?php echo $page_title ?></h1>
@@ -93,6 +93,7 @@ include "partials/nav.php";
       <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
       <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
     </form>
+    <a href="#" class="s-search-advances"><?php echo __('Advanced Search') ?></a>
   </div>
 
   <!-- Main
@@ -104,7 +105,7 @@ include "partials/nav.php";
       ============================================= -->
       <div class="col-lg-8 col-sm-9 col-xs-12 animated fadeInUp delay2">
 
-        <?php 
+        <?php
           // Generate Output
           // catch empty list
           if(strlen($main_content) == 7) {
@@ -115,11 +116,11 @@ include "partials/nav.php";
 
           // Somehow we need to hack the layout
           if(isset($_GET['search']) || (isset($_GET['p']) && $_GET['p'] != 'member')){
-            echo '</div>'; 
+            echo '</div>';
           } else {
             if(isset($_SESSION['mid'])) {
-              echo  '</div></div>';            
-            }            
+              echo  '</div></div>';
+            }
           }
 
         ?>
@@ -193,8 +194,9 @@ include "partials/nav.php";
         </div>
         <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
         <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-        <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
       </form>
+      <a href="#" class="s-search-advances"><?php echo __('Advanced Search') ?></a>
+
     </div>
 
 <?php endif; ?>
@@ -202,15 +204,15 @@ include "partials/nav.php";
 </main>
 
 
-<?php 
+<?php
 // Footer
-include "partials/footer.php"; 
+include "partials/footer.php";
 
 // Chat Engine
-include LIB."contents/chat.php"; 
+include LIB."contents/chat.php";
 
 // Background
-include "partials/bg.php"; 
+include "partials/bg.php";
 ?>
 
 <script>
@@ -223,7 +225,7 @@ include "partials/bg.php";
     var title = $(this).parent().attr('title').split(' ');
     $(this).parent().append('<div class="s-feature-title">' + title[0] + '<br/>' + title[1] + '<br/>... </div>');
     $(this).attr({
-      src   : './template/default/img/book.png',  
+      src   : './template/default/img/book.png',
       title : title + title[0] + ' ' + title[1]
     });
   });
@@ -259,13 +261,13 @@ include "partials/bg.php";
       initCallback: mycarousel_initCallback
   });
 
-$(window).scroll(function() {    
+$(window).scroll(function() {
   console.log($(window).scrollTop());
   if ($(window).scrollTop() > 50) {
     $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
   } else {
     $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
-  }  
+  }
 });
 
 </script>

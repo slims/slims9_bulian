@@ -65,6 +65,21 @@ a:hover {
 .btn-default {
   background-color: #282828;
 }
+.s-search-advances {
+  color: #fff;
+}
+.s-search-advances:hover {
+  color: #ff0;
+}
+.s-search-advances:focus {
+  color: #fff;
+}
+.s-main-page .s-search-advances {
+  font-size: 12px;
+  position: absolute;
+  top: 70px;
+  right: 190px;
+}
 /* Header
  ========================================== */
 .s-header {
@@ -1404,7 +1419,7 @@ keyframes coverUp 100% {
 .biblioRecord .biblioCheck:checked + label,
 .biblioRecord .biblioCheck + label:hover {
   background: #060;
-  color: #ffffff;
+  color: #fff;
 }
 .biblioMarkFormAction {
   padding: 10px 0;
