@@ -48,6 +48,13 @@ $_GET['inPopUp'] = true;
 
 ob_start();
 require MDLBS.'bibliography/index.php';
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#pageContent').trigger('simbioAJAXloaded');
+});
+</script>
+<?php
 $content = ob_get_clean();
 
 // page title

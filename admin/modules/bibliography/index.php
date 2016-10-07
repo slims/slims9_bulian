@@ -21,7 +21,10 @@
 /* Bibliography Management section */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');
+}
+
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
@@ -167,14 +170,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['labels'] = $arr_label?serialize($arr_label):'literal{NULL}';
     $data['frequency_id'] = ($_POST['frequencyID'] == '0')?'literal{0}':(integer)$_POST['frequencyID'];
     $data['spec_detail_info'] = trim($dbs->escape_string(strip_tags($_POST['specDetailInfo'])));
-    
+
     // RDA Content, Media anda Carrier Type
     foreach ($rda_cmc as $cmc => $cmc_name) {
       if (isset($_POST[$cmc.'TypeID']) && $_POST[$cmc.'TypeID'] <> 0) {
-        $data[$cmc.'_type_id'] = filter_input(INPUT_POST, $cmc.'TypeID', FILTER_SANITIZE_NUMBER_INT); 
+        $data[$cmc.'_type_id'] = filter_input(INPUT_POST, $cmc.'TypeID', FILTER_SANITIZE_NUMBER_INT);
       }
     }
-    
+
     $data['input_date'] = date('Y-m-d H:i:s');
     $data['last_update'] = date('Y-m-d H:i:s');
 
@@ -475,7 +478,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       $form->record_id = $itemID;
     } else {
       $form->addHidden('updateRecordID', $itemID);
-      $form->addHidden('itemCollID', $_POST['itemCollID']);
+      if (isset($_POST['itemCollID'])) {
+        $form->addHidden('itemCollID', $_POST['itemCollID']);
+      }
       $form->back_button = false;
     }
     // form record title
@@ -544,7 +549,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
   }
   $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="select2"', __('General material designation. The physical form of publication.'));
-  
+
   // biblio RDA content, media, carrier type
   foreach ($rda_cmc as $cmc => $cmc_name) {
     $cmc_options = array();
@@ -561,7 +566,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
   }
 
-  
+
   // biblio publish frequencies
   // get frequency data related to this record from database
   $freq_q = $dbs->query('SELECT frequency_id, frequency FROM mst_frequency');
@@ -666,7 +671,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Biblio Relation').'">'.__('Add Relation').'</a></div>';
   $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="borderAll" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('Related Biblio Data'), $str_input);
-  
+
   /**
    * Custom fields
    */

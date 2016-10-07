@@ -280,7 +280,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // title
     if (!$in_pop_up) {
       $str_input = $b_title;
-      $str_input .= '<div class="makeHidden"><a class="notAJAX button btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="650" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
+      $str_input .= '<div class="makeHidden"><a class="notAJAX button btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="750" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
     } else { $str_input = $b_title; }
     $form->addAnything(__('Title'), $str_input);
     $form->addHidden('biblioTitle', $b_title);
