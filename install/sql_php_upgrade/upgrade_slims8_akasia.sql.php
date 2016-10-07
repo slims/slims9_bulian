@@ -15,7 +15,7 @@ $sql['alter'][] = "ALTER TABLE `user` CHANGE `passwd` `passwd` VARCHAR(64) CHARA
 $sql['alter'][] = "ALTER TABLE `member` CHANGE `mpasswd` `mpasswd` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;";
 
 /*-- change all users password to : 'akasia'*/
-$sql['update'][] = "UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';";
+// $sql['update'][] = "UPDATE `user` SET passwd='$2y$10$/Czdb/DbXSDO2peXwlfvDusUZ6CF0VTeSoErlOOXgSXXA2RanoLd.';";
 
 /*-- change all members password to : 'akasia'*/
 // $hash_member = '$2y$10$Vx12rbVCdtYW701HrULLYOLDKJdb3fDusG2rE7GJzAcH9mqu2MjKK';
@@ -176,7 +176,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_relation_term` (
 `ID` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;";
 
 /*--
 -- Dumping data for table `mst_relation_term`
@@ -238,13 +238,13 @@ $sql['alter'][] = "ALTER TABLE `mst_voc_ctrl`
 -- AUTO_INCREMENT for table `mst_relation_term`
 --*/
 $sql['alter'][] = "ALTER TABLE `mst_relation_term`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;";
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;";
 
 /*--
 -- AUTO_INCREMENT for table `mst_voc_ctrl`
 --*/
 $sql['alter'][] = "ALTER TABLE `mst_voc_ctrl`
-MODIFY `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;";
+MODIFY `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;";
 
 $sql['alter'][] = "ALTER TABLE `mst_carrier_type`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `media_type` (`carrier_type`), ADD KEY `code` (`code`);";
@@ -256,7 +256,7 @@ $sql['alter'][] = "ALTER TABLE `mst_media_type`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `media_type` (`media_type`), ADD KEY `code` (`code`);";
 
 $sql['alter'][] = "ALTER TABLE `mst_carrier_type`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=51;";
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;";
 
 $sql['alter'][] = "ALTER TABLE `mst_content_type`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;";

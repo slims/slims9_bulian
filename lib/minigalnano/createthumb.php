@@ -54,7 +54,7 @@ if (!is_file($imagefilename)) {
 }
 
 // Display error image if file exists, but can't be opened
-if (substr(decoct(fileperms($imagefilename)), -1, strlen(fileperms($imagefilename))) < 4 OR substr(decoct(fileperms($imagefilename)), -3,1) < 4) {
+if (!is_readable($imagefilename)) {
   header('Content-type: image/png');
   readfile('filecantbeopened.png');
   exit;
@@ -94,6 +94,13 @@ $target = imagecreatetruecolor($res_width,$res_height);
 if (preg_match("/.jpg$/i", $imagefilename)) $source = imagecreatefromjpeg($imagefilename);
 if (preg_match("/.gif$/i", $imagefilename)) $source = imagecreatefromgif($imagefilename);
 if (preg_match("/.png$/i", $imagefilename)) $source = imagecreatefrompng($imagefilename);
+
+// preserve transparency
+imagealphablending($target, false);
+imagesavealpha($target,true);
+$transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
+imagefilledrectangle($target, 0, 0, $res_width, $res_height, $transparent);
+
 imagecopyresampled($target,$source,0,0,$xoord,$yoord,$res_width,$res_height,$width,$height);
 imagedestroy($source);
 

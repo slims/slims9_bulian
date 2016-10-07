@@ -61,7 +61,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
             // time string to append to filename
             $time2append = (date('Ymd_His'));
             // execute the backup process
-            exec($sysconf['mysqldump'].' -B '.DB_NAME.' --no-create-db --quick --user='.DB_USERNAME.' --password='.DB_PASSWORD.' > '.$sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql', $outputs, $status);
+            exec($sysconf['mysqldump'].' -B '.DB_NAME.' --no-create-db --quick --user='.DB_USERNAME.' --password='.DB_PASSWORD.' --host='.DB_HOST.' > '.$sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql', $outputs, $status);
 			if ($status == COMMAND_SUCCESS || $status == 1) {
                 $data['user_id'] = $_SESSION['uid'];
                 $data['backup_time'] = date('Y-m-d H:i"s');

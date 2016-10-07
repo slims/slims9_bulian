@@ -106,7 +106,7 @@ while ($data = $stat_query->fetch_row()) {
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;
 
 // popular titles
-$stat_query = $dbs->query('SELECT b.title,l.item_code,COUNT(l.loan_id) AS total_loans FROM `loan` AS l
+$stat_query = $dbs->query('SELECT b.title,b.biblio_id AS total_loans FROM `loan` AS l
     LEFT JOIN item AS i ON l.item_code=i.item_code
     LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
     GROUP BY b.biblio_id ORDER BY COUNT(l.loan_id) DESC LIMIT 10');

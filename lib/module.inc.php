@@ -33,9 +33,13 @@ class module extends simbio
     private $modules_dir = 'modules';
     private $module_table = 'mst_module';
     public $module_list = array();
-    public $appended_first = '<li><a class="menu home#replaced#" href="index.php"><span>Home</a></li><li><a class="menu opac" href="../index.php" title="View OPAC in New Window" target="_blank"><span>OPAC</span></a></li>';
-    public $appended_last = '<li><a class="menu logout" href="logout.php"><span>LOGOUT</span></a></li>';
+    public $appended_first;
+    public $appended_last;
 
+    public function __construct() {
+        $this->appended_first = '<li><a class="menu home#replaced#" href="index.php"><span>' . __('Home') . '</a></li><li><a class="menu opac" href="../index.php" title="' . __('View OPAC in New Window') . '" target="_blank"><span>' . __('OPAC') . '</span></a></li>';
+        $this->appended_last = '<li><a class="menu logout" href="logout.php"><span>' . __('LOGOUT') . '</span></a></li>';
+    }
 
     /**
      * Method to set modules directory

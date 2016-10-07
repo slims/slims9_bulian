@@ -88,7 +88,7 @@ ob_start();
         $menus = $modules->getModuleMainMenu($dbs, true);
         foreach ($menus as $main_menu) {
           $_formated_module_name = ucwords(str_replace('_', ' ', $main_menu['name']));
-          echo '<optgroup label="'.strtoupper($_formated_module_name).'">';
+          echo '<optgroup label="'.strtoupper(__($_formated_module_name)).'">';
           if (isset($main_menu['childs']) && $main_menu['childs']) {
             foreach ($main_menu['childs'] as $id => $main_menu_child) {
               if ($main_menu_child[0] == 'Header') {

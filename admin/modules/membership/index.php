@@ -116,6 +116,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['inst_name'] = trim($dbs->escape_string(strip_tags($_POST['instName'])));
         $data['gender'] = trim($dbs->escape_string(strip_tags($_POST['gender'])));
         $data['birth_date'] = trim($dbs->escape_string(strip_tags($_POST['birthDate'])));
+        $data['birth_date'] = $data['birth_date'] == '' ? null : $data['birth_date'];
         $data['register_date'] = trim($dbs->escape_string(strip_tags($_POST['regDate'])));
         // member since date
         $member_since = trim($dbs->escape_string(strip_tags($_POST['sinceDate'])));

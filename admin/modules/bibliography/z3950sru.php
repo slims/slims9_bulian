@@ -166,7 +166,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
 
   // destroy result Z3950 session
   unset($_SESSION['z3950result']);
-  utility::jsAlert($r.' records inserted to database.');
+  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }
@@ -194,11 +194,11 @@ if (isset($_GET['keywords']) AND $can_read) {
     $hits = $zs_xml->numberOfRecords;
 
     if ($hits > 0) {
-      echo '<div class="infoBox">Found '.$hits.' records from Z3950 SRU Server.</div>';
+      echo '<div class="infoBox">' . str_replace('{hits}', $hits,__('Found {hits} records from Z3950 SRU Server.')) . '</div>';
       echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/z3950sru.php" target="blindSubmit">';
       echo '<table align="center" id="dataList" cellpadding="5" cellspacing="0">';
       echo '<tr>';
-      echo '<td colspan="3"><input type="submit" name="saveZ" value="Save Z3950 Records to Database" /></td>';
+      echo '<td colspan="3"><input type="submit" name="saveZ" value="' . __('Save Z3950 Records to Database') . '" /></td>';
       echo '</tr>';
       $row = 1;
       foreach ($zs_xml->records->record as $rec) {
@@ -230,10 +230,10 @@ if (isset($_GET['keywords']) AND $can_read) {
       }
       echo '</ul></div>';
     } else {
-      echo '<div class="errorBox">No Results Found!</div>';
+      echo '<div class="errorBox">' . __('No Results Found!') . '</div>';
     }
   } else {
-    echo '<div class="errorBox">No Keywords Supplied!</div>';
+    echo '<div class="errorBox">' . __('No Keywords Supplied!') . '</div>';
   }
   exit();
 }

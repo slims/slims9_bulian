@@ -146,6 +146,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
     //Log any messages sent from server
     Server.bind('message', function( payload ) {
       log( payload );
+      $('#log').scrollTop($('#log')[0].scrollHeight);
     });
 
     Server.connect();

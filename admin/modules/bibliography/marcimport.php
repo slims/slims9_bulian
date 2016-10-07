@@ -102,7 +102,7 @@ if (isset($_POST['doImport'])) {
       $marc_string = file_get_contents($uploaded_file);
       $marc_string = mb_convert_encoding($marc_string, "UTF-8", "auto");
       // var_dump($marc_string); die();
-      
+
       $marc_data = new File_MARC($marc_string, File_MARC::SOURCE_STRING);
       // create dbop object
       $sql_op = new simbio_dbop($dbs);
@@ -164,7 +164,7 @@ if (isset($_POST['doImport'])) {
           // echo 'Subtitle: '.$subtitle[0]->getData();
           $data['title'] .= $dbs->escape_string(trim($subtitle[0]->getData()));
         }
-        
+
         // GMD
         $gmd = $title_fld->getSubFields('h');
         if (isset($gmd[0])) {
@@ -194,7 +194,7 @@ if (isset($_POST['doImport'])) {
             // echo "\n"; echo 'Edition: '.$ed[0]->getData();
             $data['edition'] .= $dbs->escape_string(trim($ed2[0]->getData()));
           }
-        }        
+        }
 
         // Publication
         $pbl_fld = $record->getField('260');
@@ -266,7 +266,7 @@ if (isset($_POST['doImport'])) {
           $d = $q->fetch_row();
           $data['carrier_type_id'] = $d[0];
         }
-        
+
         // Series title
         $series_fld = $record->getField('440');
         if ($series_fld) {
@@ -322,7 +322,7 @@ if (isset($_POST['doImport'])) {
                 }
             }
         }
-        
+
         // Author additional
         $author_flds = null;
         $author_flds = $record->getFields('700|710|711', true);
@@ -347,7 +347,7 @@ if (isset($_POST['doImport'])) {
                 }
             }
         }
-        
+
         // Subject
         $subject_flds = $record->getFields('650|651|648|655|656|657', true);
         if ($subject_flds) {
@@ -376,7 +376,7 @@ if (isset($_POST['doImport'])) {
       $import_time_sec = $end_time-$start_time;
       utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' MARC records from file : '.$_FILES['importFile']['name']);
       echo '<script type="text/javascript">'."\n";
-      echo 'top.jQuery(\'#importInfo\').html(\'<strong>'.$updated_row.'</strong> records updated successfully to item database, from record <strong>'.$_POST['recordOffset'].' in '.$import_time_sec.' second(s)</strong>\');'."\n";
+      echo 'top.jQuery(\'#importInfo\').html(\'<strong>'.$updated_row.'</strong> records imported successfully in '.$import_time_sec.' second(s)</strong>\');'."\n";
       echo 'top.jQuery(\'#importInfo\').css( {display: \'block\'} );'."\n";
       echo '</script>';
       exit();

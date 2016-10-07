@@ -32,11 +32,11 @@ require 'settings.php';
 </head>
 <body>
     <div class="wrapper">
-	<div class="title">
-	    <h2>Step 2 - Generate the database </h2>
-	</div>
-	<p class="message">Please complete following form with your database connection information</p>
 	<div class="content hastable">
+    <div class="title">
+        <h2>Step 2 - Generate the database </h2>
+    </div>
+    <p class="message">Please complete following form with your database connection information</p>
     <form method="post" action="install2.php">
         <input type="hidden" name="submit" value="step2" />
         <table class=text width="100%" border="0" cellspacing="0" cellpadding="2" class="main_text">
@@ -72,37 +72,37 @@ require 'settings.php';
 				</td>
             </tr>
         </table>
+        <p class="message">Please complete following form with user login and password (Optional)</p>
+        <div class="hastable">
+            <table class=text width="100%" border="0" cellspacing="0" cellpadding="2" class="main_text">
+                <tr>
+                    <td>&nbsp;Username</td>
+                    <td>
+                        <input type="text" class="form_text" name="username" size="30" value="admin">&nbsp; <em>default : admin</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input type="password" class="form_text" name="password" size="30" value="">&nbsp; <em>default : admin</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retype Password</td>
+                    <td>
+                        <input type="password" class="form_text" name="retype_password" size="30" value="">
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <div class="toright">
+                <input type="button" class="button" name="btn_cancel" value="Back" onclick="document.location.href='check_system.php'">
+                <input type="submit" class="button" name="btn_submit" value="Next">
+            </div>
+        </div>
     </div>
-    <p class="message">Please complete following form with user login and password (Optional)</p>
-    <div class="content hastable">
-        <table class=text width="100%" border="0" cellspacing="0" cellpadding="2" class="main_text">
-            <tr>
-                <td>&nbsp;Username</td>
-                <td>
-                    <input type="text" class="form_text" name="username" size="30" value="admin">&nbsp; <em>default : admin</em>
-                </td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td>
-                    <input type="password" class="form_text" name="password" size="30" value="">&nbsp; <em>default : admin</em>
-                </td>
-            </tr>
-            <tr>
-                <td>Retype Password</td>
-                <td>
-                    <input type="password" class="form_text" name="retype_password" size="30" value="">
-                </td>
-            </tr>
-        </table>
-		<br/>
-		<div class="toright">
-			<input type="button" class="button" name="btn_cancel" value="Back" onclick="document.location.href='check_system.php'">
-            <input type="submit" class="button" name="btn_submit" value="Next">
-		</div>
     </form>
-	</div>
-	<?php include_once("footer.php"); ?>
+    <?php include_once("footer.php"); ?>
 </div>
 </body>
 </html>

@@ -32,8 +32,8 @@ if ($error) {
 }
 
 if ($query->num_rows > 0) {
-  echo '<strong style="color: #FF0000;">ID Already exists! Please use another ID</strong>';
+  echo '<strong style="color: #FF0000;">' . __('ID Already exists! Please use another ID') . '</strong>';
 } else {
   // output the SQL string
-  echo '<strong>ID Available</strong>';
+  echo '<strong>' . __('ID Available') . '</strong>';
 }

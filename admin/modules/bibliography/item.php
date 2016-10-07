@@ -96,6 +96,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['price'] = preg_replace('@[.,\-a-z ]@i', '', strip_tags($_POST['price']));
         $data['input_date'] = date('Y-m-d H:i:s');
         $data['last_update'] = date('Y-m-d H:i:s');
+        $data['uid'] = $_SESSION['uid'];
 
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
@@ -103,6 +104,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* UPDATE RECORD MODE */
             // remove input date
             unset($data['input_date']);
+            unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
             // update the data

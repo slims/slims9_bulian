@@ -71,7 +71,7 @@ class detail
         $this->subjects = $this->record_detail['subjects'];
     }
 
-    
+
     public function setTemplate($str_template_path)
     {
       $this->template = $str_template_path;
@@ -110,7 +110,7 @@ class detail
             }
         }
     }
-    
+
 
     /**
      * Method to get file attachments information of biblio
@@ -139,7 +139,7 @@ class detail
           }
           #if (preg_match('@(video|audio|image)/.+@i', $attachment_d['mime_type'])) {
           if ($attachment_d['mime_type'] == 'application/pdf') {
-            $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'&fname='.$attachment_d['file_name'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
+            $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
             $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
             if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource related to this book" target="_blank">Other Resource Link</a></div>'; }
             $_output .= '</li>';
@@ -225,13 +225,13 @@ class detail
       $_output .= '</table>';
       return $_output;
     }
-    
-  
+
+
     /**
      * Method to get other version of biblio
      *
      * @return  string
-     */  
+     */
     public function getRelatedBiblio() {
         $_output = '<table class="table table-bordered table-small itemList">';
         $_output .= '<tr>';
@@ -249,7 +249,7 @@ class detail
             $_output .= '<td class="biblio-title relation"><a href="'.SWB.'index.php?p=show_detail&id='.$parent_d['biblio_id'].'">'.$parent_d['title'].'</a></td>';
             $_output .= '<td class="biblio-edition relation">'.$parent_d['edition'].'</td>';
             $_output .= '<td class="biblio-language relation">'.$parent_d['language_id'].'</td>';
-            $_output .= '</tr>';            
+            $_output .= '</tr>';
         }
         // check related data
         $rel_q = $this->db->query(sprintf('SELECT b.biblio_id, title, edition, language_id FROM biblio_relation AS br
@@ -259,7 +259,7 @@ class detail
 
         if ($rel_q->num_rows < 1) {
             return null;
-        } 
+        }
 
         while ($rel_d = $rel_q->fetch_assoc()) {
             if ($rel_d['biblio_id'] == $this->detail_id) {
@@ -271,9 +271,9 @@ class detail
             $_output .= '<td class="biblio-language relation">'.$rel_d['language_id'].'</td>';
             $_output .= '</tr>';
         }
-    
+
         $_output .= '</table>';
-        return $_output;        
+        return $_output;
     }
 
 
@@ -293,7 +293,7 @@ class detail
             $data = nl2br($data);
           } else {
             if (is_string($data)) {
-              $data = trim(strip_tags($data));   
+              $data = trim(strip_tags($data));
             }
           }
           $this->record_detail[$idx] = $data;
@@ -358,7 +358,7 @@ class detail
         $this->record_detail['availability'] = $this->getItemCopy();
         $this->record_detail['file_att'] = $this->getAttachments();
         $this->record_detail['related'] = $this->getRelatedBiblio();
-        
+
         if ($sysconf['social_shares']) {
         // share buttons
         $_detail_link_encoded = urlencode('http://'.$_SERVER['SERVER_NAME'].$_detail_link);
@@ -392,7 +392,7 @@ class detail
         $xml = new XMLWriter();
         $xml->openMemory();
         $xml->setIndent(true);
-        
+
         // set prefix and suffix
         $this->detail_prefix = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
         $this->detail_suffix = '</modsCollection>';
@@ -402,7 +402,7 @@ class detail
         $xml->startElement('mods');
         $xml->writeAttribute('version', $mods_version);
         $xml->writeAttribute('id', $this->detail_id);
-        
+
         // parse title
         $_title_sub = '';
         $_title_statement_resp = '';
@@ -418,12 +418,12 @@ class detail
         // $_xml_output .= '<titleInfo>'."\n".'<title><![CDATA['.$_title_main.']]></title>'."\n";
         $xml->startElement('titleInfo');
         $xml->startElement('title');
-        $xml->writeCData($_title_main);
+        $this->xmlWrite($xml, $_title_main);
         $xml->endElement();
         if ($_title_sub) {
             // $_xml_output .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
             $xml->startElement('subTitle');
-            $xml->writeCData($_title_sub);
+            $this->xmlWrite($xml, $_title_sub);
             $xml->endElement();
         }
         // $_xml_output .= '</titleInfo>'."\n";
@@ -432,19 +432,19 @@ class detail
         // personal name
         // get the authors data
         foreach ($this->record_detail['authors'] as $_auth_d) {
-            /* 
+            /*
             $_xml_output .= '<name type="'.$_auth_d['authority_type'].'" authority="'.$_auth_d['auth_list'].'">'."\n"
               .'<namePart><![CDATA['.$_auth_d['author_name'].']]></namePart>'."\n"
               .'<role><roleTerm type="text"><![CDATA['.$sysconf['authority_level'][$_auth_d['level']].']]></roleTerm></role>'."\n"
               .'</name>'."\n";
               */
-              
+
             // $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
             $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
-            $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
+            $xml->startElement('namePart'); $this->xmlWrite($xml, $_auth_d['author_name']); $xml->endElement();
             $xml->startElement('role');
                 $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
-                $xml->writeCData($sysconf['authority_level'][$_auth_d['level']]);
+                $this->xmlWrite($xml, $sysconf['authority_level'][$_auth_d['level']]);
                 $xml->endElement();
             $xml->endElement();
             $xml->endElement();
@@ -452,10 +452,10 @@ class detail
 
         // resources type
         // $_xml_output .= '<typeOfResource manuscript="yes" collection="yes"><![CDATA[mixed material]]></typeOfResource>'."\n";
-        $xml->startElement('typeOfResource'); $xml->writeAttribute('manuscript', 'no'); $xml->writeAttribute('collection', 'yes'); $xml->writeCData('mixed material'); $xml->endElement();
-        
+        $xml->startElement('typeOfResource'); $xml->writeAttribute('manuscript', 'no'); $xml->writeAttribute('collection', 'yes'); $this->xmlWrite($xml, 'mixed material'); $xml->endElement();
+
         // $_xml_output .= '<genre authority="marcgt"><![CDATA[bibliography]]></genre>'."\n";
-        $xml->startElement('genre'); $xml->writeAttribute('authority', 'marcgt'); $xml->writeCData('bibliography'); $xml->endElement();
+        $xml->startElement('genre'); $xml->writeAttribute('authority', 'marcgt'); $this->xmlWrite($xml, 'bibliography'); $xml->endElement();
 
         // imprint/publication data
         /*
@@ -474,9 +474,9 @@ class detail
         */
         $xml->startElement('originInfo');
         $xml->startElement('place');
-            $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($this->record_detail['publish_place']); $xml->endElement();
-            $xml->startElement('publisher'); $xml->writeCData($this->record_detail['publisher_name']); $xml->endElement();
-            $xml->startElement('dateIssued'); $xml->writeCData($this->record_detail['publish_year']); $xml->endElement();
+            $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['publish_place']); $xml->endElement();
+            $xml->startElement('publisher'); $this->xmlWrite($xml, $this->record_detail['publisher_name']); $xml->endElement();
+            $xml->startElement('dateIssued'); $this->xmlWrite($xml, $this->record_detail['publish_year']); $xml->endElement();
         $xml->endElement();
         $xml->endElement();
 
@@ -488,10 +488,10 @@ class detail
         $_xml_output .= '</language>'."\n";
         */
         $xml->startElement('language');
-        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'code'); $xml->writeCData($this->record_detail['language_id']); $xml->endElement();
-        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($this->record_detail['language_name']); $xml->endElement();
+        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'code'); $this->xmlWrite($xml, $this->record_detail['language_id']); $xml->endElement();
+        $xml->startElement('languageTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['language_name']); $xml->endElement();
         $xml->endElement();
-        
+
         // Physical Description/Collation
         /*
         $_xml_output .= '<physicalDescription>'."\n";
@@ -500,8 +500,8 @@ class detail
         $_xml_output .= '</physicalDescription>'."\n";
         */
         $xml->startElement('physicalDescription');
-        $xml->startElement('form'); $xml->writeAttribute('authority', 'gmd'); $xml->writeCData($this->record_detail['gmd_name']); $xml->endElement();
-        $xml->startElement('extent'); $xml->writeCData($this->record_detail['collation']); $xml->endElement();
+        $xml->startElement('form'); $xml->writeAttribute('authority', 'gmd'); $this->xmlWrite($xml, $this->record_detail['gmd_name']); $xml->endElement();
+        $xml->startElement('extent'); $this->xmlWrite($xml, $this->record_detail['collation']); $xml->endElement();
         $xml->endElement();
 
         // Series title
@@ -515,16 +515,16 @@ class detail
             */
             $xml->startElement('relatedItem'); $xml->writeAttribute('type', 'series');
             $xml->startElement('titleInfo'); $xml->endElement();
-            $xml->startElement('title'); $xml->writeCData($this->record_detail['series_title']); $xml->endElement();
+            $xml->startElement('title'); $this->xmlWrite($xml, $this->record_detail['series_title']); $xml->endElement();
             $xml->endElement();
             $xml->endElement();
         }
 
         // Note
         // $_xml_output .= '<note>'.$this->record_detail['notes'].'</note>'."\n";
-        $xml->startElement('note'); $xml->writeCData($this->record_detail['notes']); $xml->endElement();
+        $xml->startElement('note'); $this->xmlWrite($xml, $this->record_detail['notes']); $xml->endElement();
         if (isset($this->record_detail['sor'])) {
-            $xml->startElement('note'); $xml->writeAttribute('type', 'statement of responsibility'); $xml->writeCData($this->record_detail['sor']); $xml->endElement();
+            $xml->startElement('note'); $xml->writeAttribute('type', 'statement of responsibility'); $this->xmlWrite($xml, $this->record_detail['sor']); $xml->endElement();
             // $_xml_output .= '<note type="statement of responsibility"><![CDATA['.$_title_statement_resp.']]></note>';
         }
 
@@ -537,17 +537,17 @@ class detail
             $_xml_output .= '</subject>'."\n";
             */
             $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']);
-            $xml->startElement($_subject_type); $xml->writeCData($_topic_d['topic']); $xml->endElement();
+            $xml->startElement($_subject_type); $this->xmlWrite($xml, $_topic_d['topic']); $xml->endElement();
             $xml->endElement();
         }
 
         // classification
         // $_xml_output .= '<classification><![CDATA['.$this->record_detail['classification'].']]></classification>';
-        $xml->startElement('classification'); $xml->writeCData($this->record_detail['classification']); $xml->endElement();
+        $xml->startElement('classification'); $this->xmlWrite($xml, $this->record_detail['classification']); $xml->endElement();
 
         // ISBN/ISSN
         // $_xml_output .= '<identifier type="isbn"><![CDATA['.str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']).']]></identifier>';
-        $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $xml->writeCData(str_replace(array('-', ' '), '', $this->record_detail['isbn_issn'])); $xml->endElement();
+        $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $this->xmlWrite($xml, str_replace(array('-', ' '), '', $this->record_detail['isbn_issn'])); $xml->endElement();
 
         // Location and Copies information
         $_copy_q = $this->db->query(sprintf('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
@@ -572,15 +572,15 @@ class detail
         $_xml_output .= '</location>'."\n";
         */
         $xml->startElement('location');
-        $xml->startElement('physicalLocation'); $xml->writeCData($sysconf['library_name'].' '.$sysconf['library_subname']); $xml->endElement();
-        $xml->startElement('shelfLocator'); $xml->writeCData($this->record_detail['call_number']); $xml->endElement();
+        $xml->startElement('physicalLocation'); $this->xmlWrite($xml, $sysconf['library_name'].' '.$sysconf['library_subname']); $xml->endElement();
+        $xml->startElement('shelfLocator'); $this->xmlWrite($xml, $this->record_detail['call_number']); $xml->endElement();
         if ($_copy_q->num_rows > 0) {
             $xml->startElement('holdingSimple');
             while ($_copy_d = $_copy_q->fetch_assoc()) {
                 $xml->startElement('copyInformation');
-                    $xml->startElement('numerationAndChronology'); $xml->writeAttribute('type', '1'); $xml->writeCData($_copy_d['item_code']); $xml->endElement();
-                    $xml->startElement('sublocation'); $xml->writeCData($_copy_d['location_name'].( $_copy_d['site']?' ('.$_copy_d['site'].')':'' )); $xml->endElement();
-                    $xml->startElement('shelfLocator'); $xml->writeCData($_copy_d['call_number']); $xml->endElement();
+                    $xml->startElement('numerationAndChronology'); $xml->writeAttribute('type', '1'); $this->xmlWrite($xml, $_copy_d['item_code']); $xml->endElement();
+                    $xml->startElement('sublocation'); $this->xmlWrite($xml, $_copy_d['location_name'].( $_copy_d['site']?' ('.$_copy_d['site'].')':'' )); $xml->endElement();
+                    $xml->startElement('shelfLocator'); $this->xmlWrite($xml, $_copy_d['call_number']); $xml->endElement();
                 $xml->endElement();
             }
             $xml->endElement();
@@ -612,7 +612,7 @@ class detail
                 $xml->writeAttribute('url', trim($attachment_d['file_url']));
                 $xml->writeAttribute('path', $attachment_d['file_dir'].'/'.$attachment_d['file_name']);
                 $xml->writeAttribute('mimetype', $attachment_d['mime_type']);
-                $xml->writeCData($attachment_d['file_title']);
+                $this->xmlWrite($xml, $attachment_d['file_title']);
                 $xml->endElement();
             }
             $xml->endElement();
@@ -622,7 +622,7 @@ class detail
         if (!empty($this->record_detail['image'])) {
           $_image = urlencode($this->record_detail['image']);
           $xml->startElementNS('slims','image', null);
-          $xml->writeCData(urlencode($_image));
+          $this->xmlWrite($xml, urlencode($_image));
           $xml->endElement();
         }
 
@@ -636,16 +636,16 @@ class detail
         $_xml_output .= '</recordInfo>';
         */
         $xml->startElement('recordInfo');
-        $xml->startElement('recordIdentifier'); $xml->writeCData($this->detail_id); $xml->endElement();
-        $xml->startElement('recordCreationDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $xml->writeCData($this->record_detail['input_date']); $xml->endElement();
-        $xml->startElement('recordChangeDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $xml->writeCData($this->record_detail['last_update']); $xml->endElement();
-        $xml->startElement('recordOrigin'); $xml->writeCData('machine generated'); $xml->endElement();
+        $xml->startElement('recordIdentifier'); $this->xmlWrite($xml, $this->detail_id); $xml->endElement();
+        $xml->startElement('recordCreationDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $this->xmlWrite($xml, $this->record_detail['input_date']); $xml->endElement();
+        $xml->startElement('recordChangeDate'); $xml->writeAttribute('encoding', 'w3cdtf'); $this->xmlWrite($xml, $this->record_detail['last_update']); $xml->endElement();
+        $xml->startElement('recordOrigin'); $this->xmlWrite($xml, 'machine generated'); $xml->endElement();
         $xml->endElement();
-        
+
         // $_xml_output .= '</mods>';
         $xml->endElement();
 
-        return $xml->outputMemory();
+        return $xml->flush();
     }
 
 
@@ -668,111 +668,111 @@ class detail
         $this->detail_suffix = '';
 
         $_xml_output = '';
-        
+
         $_title_main = utf8_encode($this->record_detail['title']);
         // title
         $xml->startElementNS('dc', 'title', null);
-        $xml->writeCdata($_title_main);
+        $this->xmlWrite($xml, $_title_main);
         $xml->endElement();
-        
+
         // get the authors data
         $_biblio_authors_q = $this->db->query('SELECT a.*,ba.level FROM mst_author AS a'
             .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$this->detail_id);
         while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
           $xml->startElementNS('dc', 'creator', null);
-          $xml->writeCdata($_auth_d['author_name']);
+          $this->xmlWrite($xml, $_auth_d['author_name']);
           $xml->endElement();
         }
         $_biblio_authors_q->free_result();
 
         // imprint/publication data
         $xml->startElementNS('dc', 'publisher', null);
-        $xml->writeCdata($this->record_detail['publisher_name']);
+        $this->xmlWrite($xml, $this->record_detail['publisher_name']);
         $xml->endElement();
 
         if ($this->record_detail['publish_year']) {
           $xml->startElementNS('dc', 'date', null);
-          $xml->writeCdata($this->record_detail['publish_year']);
+          $this->xmlWrite($xml, $this->record_detail['publish_year']);
           $xml->endElement();
         } else {
           $xml->startElementNS('dc', 'date', null);
-          $xml->fullEndElement();  
+          $xml->fullEndElement();
         }
 
         // edition
         $xml->startElementNS('dc', 'hasVersion', null);
-        $xml->writeCdata($this->record_detail['edition']);
+        $this->xmlWrite($xml, $this->record_detail['edition']);
         $xml->endElement();
 
         // language
         $xml->startElementNS('dc', 'language', null);
-        $xml->writeCdata($this->record_detail['language_name']);
+        $this->xmlWrite($xml, $this->record_detail['language_name']);
         $xml->endElement();
 
         // Physical Description/Collation
         $xml->startElementNS('dc', 'medium', null);
-        $xml->writeCdata($this->record_detail['gmd_name']);
+        $this->xmlWrite($xml, $this->record_detail['gmd_name']);
         $xml->endElement();
 
         $xml->startElementNS('dc', 'format', null);
-        $xml->writeCdata($this->record_detail['gmd_name']);
+        $this->xmlWrite($xml, $this->record_detail['gmd_name']);
         $xml->endElement();
 
         $xml->startElementNS('dc', 'extent', null);
-        $xml->writeCdata($this->record_detail['collation']);
+        $this->xmlWrite($xml, $this->record_detail['collation']);
         $xml->endElement();
 
         if ((integer)$this->record_detail['frequency_id'] > 0) {
           $xml->startElementNS('dc', 'format', null);
-          $xml->writeCdata('serial');
+          $this->xmlWrite($xml, 'serial');
           $xml->endElement();
         }
-        
+
         // Series title
         if ($this->record_detail['series_title']) {
           $xml->startElementNS('dc', 'isPartOf', null);
-          $xml->writeCdata($this->record_detail['series_title']);
+          $this->xmlWrite($xml, $this->record_detail['series_title']);
           $xml->endElement();
         }
-        
+
         // Note
         $xml->startElementNS('dc', 'description', null);
-        $xml->writeCdata($this->record_detail['notes']);
+        $this->xmlWrite($xml, $this->record_detail['notes']);
         $xml->endElement();
 
         $xml->startElementNS('dc', 'abstract', null);
-        $xml->writeCdata($this->record_detail['notes']);
+        $this->xmlWrite($xml, $this->record_detail['notes']);
         $xml->endElement();
-        
+
         // subject/topic
         $_biblio_topics_q = $this->db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
           LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id WHERE bt.biblio_id='.$this->detail_id.' ORDER BY t.auth_list');
         while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
           $xml->startElementNS('dc', 'subject', null);
-          $xml->writeCdata($_topic_d['topic']);
+          $this->xmlWrite($xml, $_topic_d['topic']);
           $xml->endElement();
         }
         $_biblio_topics_q->free_result();
 
         // classification
         $xml->startElementNS('dc', 'subject', null);
-        $xml->writeCdata($this->record_detail['classification']);
+        $this->xmlWrite($xml, $this->record_detail['classification']);
         $xml->endElement();
 
         // Permalink
         $permalink = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].SWB.'index.php?p=show_detail&id='.$this->detail_id;
         $xml->startElementNS('dc', 'identifier', null);
-        $xml->writeCdata($permalink);
+        $this->xmlWrite($xml, $permalink);
         $xml->endElement();
 
         // ISBN/ISSN
         $xml->startElementNS('dc', 'identifier', null);
-        $xml->writeCdata(str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']));
+        $this->xmlWrite($xml, str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']));
         $xml->endElement();
 
         // Call Number
         $xml->startElementNS('dc', 'identifier', null);
-        $xml->writeCdata($this->record_detail['call_number']);
+        $this->xmlWrite($xml, $this->record_detail['call_number']);
         $xml->endElement();
 
         $_copy_q = $this->db->query('SELECT i.item_code, i.call_number, stat.item_status_name, loc.location_name, stat.rules, i.site FROM item AS i '
@@ -782,7 +782,7 @@ class detail
         if ($_copy_q->num_rows > 0) {
             while ($_copy_d = $_copy_q->fetch_assoc()) {
               $xml->startElementNS('dc', 'hasPart', null);
-              $xml->writeCdata($_copy_d['item_code']);
+              $this->xmlWrite($xml, $_copy_d['item_code']);
               $xml->endElement();
             }
         }
@@ -800,7 +800,7 @@ class detail
               // check member type privileges
               if ($attachment_d['access_limit']) { continue; }
               $xml->startElementNS('dc', 'relation', null);
-              $xml->writeCdata($protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].REPO_WBS.$dir.trim(urlencode($attachment_d['file_name'])));
+              $this->xmlWrite($xml, $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].REPO_WBS.$dir.trim(urlencode($attachment_d['file_name'])));
               $xml->endElement();
           }
         }
@@ -809,11 +809,11 @@ class detail
         if (!empty($this->record_detail['image'])) {
           $_image = $protocol.'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].SWB.'images/docs/'.urlencode($this->record_detail['image']);
           $xml->startElementNS('dc', 'relation', null);
-          $xml->writeCdata($_image);
+          $this->xmlWrite($xml, $_image);
           $xml->endElement();
         }
 
-        return $xml->outputMemory();
+        return $xml->flush();
     }
 
 
@@ -825,14 +825,14 @@ class detail
     public function JSONLDoutput() {
       // get global configuration vars array
       global $sysconf;
-      
+
       // set prefix and suffix
       $this->detail_prefix = '';
       $this->detail_suffix = '';
-      
+
       $jsonld['@context'] = 'http://schema.org';
       $jsonld['@type'] = 'Book';
-      
+
       // parse title
       $_title_sub = '';
       $_title_statement_resp = '';
@@ -844,48 +844,48 @@ class detail
       } else {
           $_title_main = trim($this->record_detail['title']);
       }
-      
+
       $jsonld['name'] = $_title_main;
       if ($_title_sub) {
         $jsonld['alternativeHeadline'] = $_title_sub;
       }
-      
+
       // get the authors data
-      $jsonld['author']['@type'] = 'Person'; 
+      $jsonld['author']['@type'] = 'Person';
       $_biblio_authors_q = $this->db->query('SELECT a.*,ba.level FROM mst_author AS a'
           .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$this->detail_id);
       while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
           $jsonld['author']['name'][] = $_auth_d['author_name'];
       }
       $_biblio_authors_q->free_result();
-      
+
       // imprint/publication data
       $jsonld['publisher']['@type'] = 'Organization';
       $jsonld['publisher']['name'] = $this->record_detail['publisher_name'];
-      
+
       // date
       $jsonld['dateCreated'] = $this->record_detail['publish_year'];
-      
+
       // edition
       $jsonld['version'] = $this->record_detail['edition'];
-      
+
       // language
       $jsonld['inLanguage'] = $this->record_detail['language_name'];
-      
+
       // Physical Description/Collation
       $jsonld['bookFormat'] = $this->record_detail['gmd_name'];
-      
+
       // collation
       $jsonld['numberOfPages'] = $this->record_detail['collation'];
-      
+
       // Series title
       if ($this->record_detail['series_title']) {
         $jsonld['alternativeHeadline'] = $this->record_detail['series_title'];
       }
-      
+
       // Note
       $jsonld['description'] = $this->record_detail['notes'];
-      
+
       // subject/topic
       $jsonld['keywords'] = '';
       $_biblio_topics_q = $this->db->query('SELECT t.topic, t.topic_type, t.auth_list, bt.level FROM mst_topic AS t
@@ -893,16 +893,16 @@ class detail
       while ($_topic_d = $_biblio_topics_q->fetch_assoc()) {
         $jsonld['keywords'] .= $_topic_d['topic'].' ';
       }
-      
+
       // classification
       $jsonld['keywords'] .= $this->record_detail['classification'];
-      
+
       // Permalink
       $jsonld['url'] = 'http://'.$_SERVER['SERVER_NAME'].SWB.'index.php?p=show_detail&id='.$this->detail_id;
-      
+
       // ISBN/ISSN
       $jsonld['isbn'] = str_replace(array('-', ' '), '', $this->record_detail['isbn_issn']);
-      
+
       // digital files
       $jsonld['associatedMedia']['@type'] = 'MediaObject';
       $attachment_q = $this->db->query('SELECT att.*, f.* FROM biblio_attachment AS att
@@ -915,13 +915,13 @@ class detail
             $jsonld['associatedMedia']['name'] = trim($attachment_d['file_title']);
         }
       }
-      
+
       // image
       if (!empty($this->record_detail['image'])) {
         $_image = urlencode($this->record_detail['image']);
 	$jsonld['image'] = 'http://'.$_SERVER['SERVER_NAME'].IMGBS.'docs/'.urlencode($_image);
       }
-      
+
       return json_encode($jsonld);
     }
 
@@ -941,5 +941,13 @@ class detail
     public function getSuffix()
     {
         return $this->detail_suffix;
+    }
+
+    private function xmlWrite(&$xmlwriter, $data, $mode = 'Text') {
+        if ($mode == 'CData') {
+            $xmlwriter->writeCData($data);
+        } else {
+            $xmlwriter->text($data);
+        }
     }
 }

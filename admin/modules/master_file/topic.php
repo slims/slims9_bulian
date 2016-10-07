@@ -199,7 +199,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'style="width: 30%;"');
     //  vocabolary control
     if (!$in_pop_up AND $form->edit_mode) {
-    $str_input = '<div class="makeHidden"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?itemID='.$itemID.'" title="'.__('Vocabulary Control').'" height="400">'.__('Add New Vocabulary').'</a></div>';
+    $str_input  = '<div class="makeHidden">';
+    $str_input .= '<a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?itemID='.$itemID.'" height="550px" title="'.__('Vocabulary Control').'">'.__('Add New Vocabulary').'</a>';
+    $str_input .= '<a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_scope_vocabolary.php?itemID='.$itemID.'" title="'.__('Scope Note Vocabulary').'" height="400">'.__('Scope Note').'</a>';
+    $str_input .= '</div>';
     $str_input .= '<iframe name="itemIframe" id="itemIframe" class="borderAll" style="width: 98%; height: 200px;" src="'.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'"></iframe>'."\n";
     $form->addAnything(__('Vocabulary Control'), $str_input);
     }

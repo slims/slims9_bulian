@@ -27,7 +27,6 @@ define('INDEX_AUTH', '1');
 require '../../../sysconfig.inc.php';
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
-require SB.'ucnode.inc.php';
 require LIB.'http_request.inc.php';
 
 // privileges checking
@@ -40,6 +39,9 @@ header('Content-type: text/json');
 if (!($can_read && $can_write)) {
     die(json_encode(array('status' => 'UNAUTHORIZED', 'message' => 'Unauthorized Access!')));
 }
+
+// load settings
+utility::loadSettings($dbs);
 
 if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['nodeOperation'])) {
     $biblioIDS = '';
@@ -64,13 +66,13 @@ if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['nodeOpe
     }
 
     // encode array to json format
-    $to_sent['node_info'] = $node;
+    $to_sent['node_info'] = $sysconf['ucs'];
     $to_sent['node_data'] = $data;
     // create HTTP request
     $http_request = new http_request();
     // send HTTP POST request
     $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-    $http_request->send_http_request($ucs['serveraddr'].'/uc-ops.php', $server_addr, $to_sent, 'POST', 'text/json');
+    $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/uc-ops.php', $server_addr, $to_sent, 'POST', 'text/json');
     // below is for debugging purpose only
     // die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
 

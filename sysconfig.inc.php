@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.3 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -344,6 +344,14 @@ $sysconf['ucs']['enable'] = false;
 $sysconf['ucs']['auto_delete'] = false;
 // auto insert new record to UCS?
 $sysconf['ucs']['auto_insert'] = false;
+// UCS server address. NO TRAILING SLASH! for local testing on Windows machine don't use localhost, use 127.0.0.1 instead
+$sysconf['ucs']['serveraddr'] = 'http://localhost/ucs'; 
+// node ID
+$sysconf['ucs']['id'] = 'slims-node';
+// default is s0beautifulday
+$sysconf['ucs']['password'] = '2325f677e21c1613909c953eb03c57352259cc5d';
+// node name
+$sysconf['ucs']['name'] = 'SLiMS Library'; 
 
 /**
  * Z39.50 copy cataloguing sources
@@ -466,10 +474,10 @@ $sysconf['ipaccess']['smc-reporting'] = 'all';
 $sysconf['ipaccess']['smc-serialcontrol'] = 'all';
 
 // OAI-PMH settings
-$sysconf['OAI']['enable'] = false;
+$sysconf['OAI']['enable'] = true;
 $sysconf['OAI']['identifierPrefix'] = 'oai:slims/';
 $sysconf['OAI']['Identify']['baseURL'] = 'http://'.@$_SERVER['SERVER_NAME'].':'.@$_SERVER['SERVER_PORT'].SWB.'oai.php';
-$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System OAI-PMh';
+$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System Repository';
 $sysconf['OAI']['Identify']['adminEmail'] = 'admin@slims.web.id';
 $sysconf['OAI']['Identify']['granularity'] = 'YYYY-MM-DDThh:mm:ssZ';
 $sysconf['OAI']['Identify']['deletedRecord'] = 'transient';

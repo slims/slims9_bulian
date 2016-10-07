@@ -74,9 +74,13 @@
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
 
+<!-- Animation options
+============================================= -->
+<?php if($sysconf['template']['run_animation']) echo '<link rel="stylesheet" type="text/css" href="'.SWB.'template/default/css/animate.min.css" />'; ?>
+
 <!-- Style Minified
 ============================================= -->
-<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
 
 <!-- Style
 ============================================= -->
@@ -84,8 +88,7 @@
 
 <!-- Less
 ============================================= -->
-<!-- For Developmet Only
-<link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css"/>
-<script>less = { env: "development" };</script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
--->
+<!-- For Developmet Only -->
+<!-- <link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.less"/> -->
+<!-- <script>less = { env: "development" };</script> -->
+<!-- <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script> -->

@@ -25,11 +25,19 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   src: url('fonts/Open_Sans/OpenSans-Light.ttf') format('truetype');
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     color: #999999;
     position: relative;
     font: 11pt/1.5 Calibri, Arial, sans-serif;
-    background-color: whitesmoke; 
+    background-color: whitesmoke;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: table;
 }
 
 a {
@@ -75,17 +83,11 @@ h4
 /*----------------------------------------------------------------*/
 .wrapper
 {
-    width:660px;
-    margin-bottom: 30px;
-    position: absolute;
-    left: calc(50% - 330px);
-    top: 30px;
     border: solid 1px #efefef;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     background-color: #ffffff;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
 
 
     -webkit-animation-duration: 1s;
@@ -130,8 +132,9 @@ h4
 {
     color:#ffffff;
     padding:40px 20px 10px 20px;
+    margin: -20px -20px 0px -20px;
     border-bottom: solid 1px #ccc;
-    background-color: rgb(5, 67, 101);
+    background-color: #0D47A1;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     -webkit-border-top-left-radius: 2px;
@@ -142,9 +145,21 @@ h4
 
 .content
 {
+    width: 660px;
     padding:20px;
+    text-align: left;
+    display: inline-block;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
+.content hr{
+    margin: 20px -20px;
+    border: none;
+    border-top: 1px solid #efefef;
+}
 
 .hastable table td
 {
@@ -169,9 +184,9 @@ h4
 
 .button
 {
-    background-color: #05c6d1;
+    background-color: #2196F3;
     border: none;
-    padding:10px;
+    padding:10px 16px;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;    
@@ -192,7 +207,7 @@ h4
 }
 
 .button.upgrade {
-    background-color: #f9a825;
+    background-color: #FF9800;
 }
 
 .button.upgrade:hover {
@@ -202,6 +217,7 @@ h4
 .message
 {
     padding:10px 20px;
+    margin: 0px -20px 10px -20px;
     background-color: #efefef;
     color: #666666;
 }
@@ -209,6 +225,7 @@ h4
 .error
 {
     padding:10px 20px;
+    margin: 0px -20px 10px -20px;
     background-color: #ff818d;
     color: #ffffff;    
 }
@@ -216,8 +233,9 @@ h4
 .success
 {
     padding:10px 20px;
+    margin: 0px -20px 10px -20px;
     background-color: #a2f651;
-    color: #ffffff;    
+    color: #000;    
 }
 
 
@@ -235,7 +253,7 @@ h4
 
 .footer
 {
-    border-top: solid 1px #efefef;
+    border:none;
     padding:10px;
     font-size: 12px;
     text-align: center;
@@ -260,6 +278,11 @@ h4
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    text-align: left;
+}
+
+#welcome h2 small {
+    font-size: 50%;
 }
 
 .content-body {
@@ -334,7 +357,7 @@ h4
 }
 
 .items .value {
-    width: 100px;
+    width: 200px;
 }
 
 .status-success {
@@ -385,4 +408,8 @@ h4
 .panel-footer {
     padding: 20px;
     text-align: right;
+}
+
+select {
+
 }

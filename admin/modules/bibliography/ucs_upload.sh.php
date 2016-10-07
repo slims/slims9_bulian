@@ -32,12 +32,14 @@ define('INDEX_AUTH', 1);
 // main system configuration
 require '../../../sysconfig.inc.php';
 
+// load settings
+utility::loadSettings($dbs);
+
 // check if UCS is enabled or not
 if (!$sysconf['ucs']['enable']) {
   die(__('UCS is not enabled! Change global system configuration to enable UCS'));
 }
 
-require SB.'ucnode.inc.php';
 require LIB.'http_request.inc.php';
 
 // fetch all data from biblio table
@@ -83,12 +85,12 @@ while ($d = $q->fetch_assoc()) {
 
 // encode array to json format
 if ($data) {
-    $to_sent['node_info'] = $node;
+    $to_sent['node_info'] = $sysconf['ucs'];
     $to_sent['node_data'] = $data;
     // create HTTP request
     $http_request = new http_request();
     // send HTTP POST request
-    $http_request->send_http_request($ucs['serveraddr'].'/ucpoll.php', @gethostbyaddr(), $to_sent, 'POST', 'text/json');
+    $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', @gethostbyaddr(), $to_sent, 'POST', 'text/json');
     // below is for debugging purpose only
 	// die($http_request->body());
 

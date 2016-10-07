@@ -242,23 +242,30 @@ abstract class biblio_list_model
   public function XMLresult() {
     global $sysconf;
     $mods_version = '3.3';
+	$_buffer = '';
     // loop data
-    $_buffer = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
     $xml = new XMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
-    
+	$xml->startElement('modsCollection');
+	$xml->writeAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+	$xml->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+	$xml->writeAttribute('xmlns', 'http://www.loc.gov/mods/v3');
+	$xml->writeAttribute('xmlns:slims', 'http://slims.web.id');
+	$xml->writeAttribute('xsi:schemaLocation', 'http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd');
+    // $_buffer = '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:slims="http://slims.web.id" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">'."\n";
+
     $xml->startElementNS('slims', 'resultInfo', null);
-    $xml->startElementNS('slims', 'modsResultNum', null); $xml->writeCdata($this->num_rows); $xml->endElement();
-    $xml->startElementNS('slims', 'modsResultPage', null); $xml->writeCdata($this->current_page); $xml->endElement();
-    $xml->startElementNS('slims', 'modsResultShowed', null); $xml->writeCdata($this->num2show); $xml->endElement();
+    $xml->startElementNS('slims', 'modsResultNum', null); $this->xmlWrite($xml, $this->num_rows); $xml->endElement();
+    $xml->startElementNS('slims', 'modsResultPage', null); $this->xmlWrite($xml, $this->current_page); $xml->endElement();
+    $xml->startElementNS('slims', 'modsResultShowed', null); $this->xmlWrite($xml, $this->num2show); $xml->endElement();
     $xml->endElement();
-	
+
     while ($_biblio_d = $this->resultset->fetch_assoc()) {
       $xml->startElement('mods');
       $xml->writeAttribute('version', $mods_version);
-      $xml->writeAttribute('id', $_biblio_d['biblio_id']);
-      
+      $xml->writeAttribute('ID', $_biblio_d['biblio_id']);
+
       // parse title
       $_title_sub = '';
       if (stripos($_biblio_d['title'], ':') !== false) {
@@ -283,12 +290,12 @@ abstract class biblio_list_model
 
       $xml->startElement('titleInfo');
       $xml->startElement('title');
-      $xml->writeCData($_title_main);
+      $this->xmlWrite($xml, $_title_main);
       $xml->endElement();
       if ($_title_sub) {
           // $_xml_output .= '<subTitle><![CDATA['.$_title_sub.']]></subTitle>'."\n";
           $xml->startElement('subTitle');
-          $xml->writeCData($_title_sub);
+          $this->xmlWrite($xml, $_title_sub);
           $xml->endElement();
       }
       // $_xml_output .= '</titleInfo>'."\n";
@@ -309,25 +316,25 @@ abstract class biblio_list_model
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'personal';
         }
         $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
-        $xml->startElement('namePart'); $xml->writeCData($_auth_d['author_name']); $xml->endElement();
+        $xml->startElement('namePart'); $this->xmlWrite($xml, $_auth_d['author_name']); $xml->endElement();
         $xml->startElement('role');
             $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
-            $xml->writeCData($sysconf['authority_level'][$_auth_d['level']]);
+            $this->xmlWrite($xml, $sysconf['authority_level'][$_auth_d['level']]);
             $xml->endElement();
         $xml->endElement();
         $xml->endElement();
       }
-      
+
       $_biblio_authors_q->free_result();
-      $xml->startElement('typeOfResource'); $xml->writeAttribute('collection', 'yes'); $xml->writeCData('mixed material'); $xml->endElement();
-      $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $xml->writeCData(str_replace(array('-', ' '), '', $_biblio_d['isbn_issn'])); $xml->endElement();
+      $xml->startElement('typeOfResource'); $xml->writeAttribute('collection', 'yes'); $this->xmlWrite($xml, 'mixed material'); $xml->endElement();
+      $xml->startElement('identifier'); $xml->writeAttribute('type', 'isbn'); $this->xmlWrite($xml, str_replace(array('-', ' '), '', $_biblio_d['isbn_issn'])); $xml->endElement();
 
       // imprint/publication data
       $xml->startElement('originInfo');
       $xml->startElement('place');
-          $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $xml->writeCData($_biblio_d['publish_place']); $xml->endElement();
-          $xml->startElement('publisher'); $xml->writeCData($_biblio_d['publisher']); $xml->endElement();
-          $xml->startElement('dateIssued'); $xml->writeCData($_biblio_d['publish_year']); $xml->endElement();
+          $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $_biblio_d['publish_place']); $xml->endElement();
+          $xml->startElement('publisher'); $this->xmlWrite($xml, $_biblio_d['publisher']); $xml->endElement();
+          $xml->startElement('dateIssued'); $this->xmlWrite($xml, $_biblio_d['publish_year']); $xml->endElement();
       $xml->endElement();
       $xml->endElement();
 
@@ -335,16 +342,17 @@ abstract class biblio_list_model
       $_image = '';
       if (!empty($_biblio_d['image'])) {
         $_image = urlencode($_biblio_d['image']);
-	$xml->startElementNS('slims', 'image', null); $xml->writeCdata($_image); $xml->endElement();
+	$xml->startElementNS('slims', 'image', null); $this->xmlWrite($xml, $_image); $xml->endElement();
       }
 
       $xml->endElement(); // MODS
     }
     // free resultset memory
     $this->resultset->free_result();
-    
-    $_buffer .= $xml->outputMemory();
-    $_buffer .= '</modsCollection>';
+
+	$xml->endElement();
+    $_buffer .= $xml->flush();
+    // $_buffer .= '</modsCollection>';
 
     return $_buffer;
   }
@@ -442,5 +450,13 @@ abstract class biblio_list_model
     $this->resultset->free_result();
 
     return $_buffer;
+  }
+
+  private function xmlWrite(&$xmlwriter, $data, $mode = 'Text') {
+	if ($mode == 'CData') {
+	  $xmlwriter->writeCData($data);
+	} else {
+	  $xmlwriter->text($data);
+	}
   }
 }

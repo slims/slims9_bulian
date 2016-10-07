@@ -1,7 +1,5 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "css/bootstrap.min.css";
 @import "css/font-awesome.min.css";
-@import "css/animate.min.css";
 @import "css/font.min.css";
 /* Scroll
  ========================================== */
@@ -131,7 +129,7 @@ a:hover {
     position: absolute;
     margin: 0 auto;
     left: 44%;
-    top: 130px;
+    top: 115px;
   }
 }
 @media (min-width: 768px) and (max-width: 1200px) {
@@ -1071,6 +1069,7 @@ keyframes coverShake 100% {
 .biblioRecord {
   position: relative;
   float: left;
+  z-index: 0;
   width: 45%;
   padding: 10px 20px;
   min-height: 440px;
@@ -1437,11 +1436,12 @@ keyframes coverUp 100% {
 .attachment-audio-audio,
 .attachment-url-list,
 .attachment-image {
+  position: relative;
   list-style: none;
   list-style-image: none !important;
-  margin: 0;
+  margin: -1px 0 0 0;
   border: solid 1px #f2f2f2;
-  padding: 20px 28px;
+  padding: 15px 28px;
   font-size: 14px;
   line-height: 18pt;
   vertical-align: middle;

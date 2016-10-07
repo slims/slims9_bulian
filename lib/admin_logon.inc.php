@@ -245,7 +245,7 @@ class admin_logon
         
         // result check
         if ($_user_q->num_rows < 1) {            
-            $this->errors = 'Username or Password not exists in database!';
+            $this->errors = 'Username not exists in database!';
             return false;
         }
         
@@ -254,9 +254,64 @@ class admin_logon
         // verify password hash
         $verified = password_verify($this->password, $this->user_info['passwd']);
         if (!$verified) {
+            // maybe still use md5 encryption
+            if ($this->nativeLoginMd5()) {
+                $this->errors = array('status' => 'md5_encryption', 'uname' => $this->user_info['username']);
+            } else {
+                $this->errors = 'Username or Password not exists in database!';
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Native database checking login method with md5 encryption
+     *
+     * @return  boolean
+     */
+    protected function nativeLoginMd5() {
+        $_sql_librarian_login = sprintf("SELECT
+            u.user_id, u.username,
+            u.realname, u.groups
+            FROM user AS u
+            WHERE u.username='%s'
+                AND u.passwd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));
+        $_user_q = $this->obj_db->query($_sql_librarian_login);
+        // error check
+        if ($this->obj_db->error) {
+            $this->errors = 'Failed to query user data from database with error: '.$this->obj_db->error;
+            return false;
+        }
+        // result check
+        if ($_user_q->num_rows < 1) {
             $this->errors = 'Username or Password not exists in database!';
             return false;
         }
         return true;
+    }
+
+    /**
+     * Update password if still use md5 encryption
+     *
+     * @return  boolean
+     */
+    public function changePasswd($obj_db, $new_passwd)
+    {
+        $this->obj_db = $obj_db;
+
+        if ($this->nativeLoginMd5()) {
+            $_sql_update_password = sprintf("UPDATE user SET passwd = '%s', last_update = CURDATE() WHERE username = '%s'",
+                password_hash($new_passwd, PASSWORD_BCRYPT), $this->username);
+            $_update_q = $this->obj_db->query($_sql_update_password);
+            // error check
+            if ($this->obj_db->error) {
+                $this->errors = 'Failed to query user data from database with error: '.$this->obj_db->error;
+                return false;
+            }
+            return true;
+        }
+        $this->errors = 'Incorect current password!';
+        return false;
     }
 }

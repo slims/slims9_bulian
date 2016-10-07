@@ -85,28 +85,30 @@ $prevtable          = '';
 $repair             = '';
 $is_repaired        = false;
 
-if (isset ($_POST['do_repair'])) {
+if ($_SESSION['uid'] === '1') {
+  $warnings[] = __('<strong><i>You are logged in as Super User. With great power comes great responsibility.</i></strong>');
+  if (isset ($_POST['do_repair'])) {
     if ($_POST['do_repair'] == 1) {
-        while ($row = $query_of_tables->fetch_row()) {
-            $sql_of_repair = 'REPAIR TABLE '.$row[0];
-            $query_of_repair = $dbs->query ($sql_of_repair);
-        }
+      while ($row = $query_of_tables->fetch_row()) {
+        $sql_of_repair = 'REPAIR TABLE '.$row[0];
+        $query_of_repair = $dbs->query ($sql_of_repair);
+      }
     }
-}
+  }
 
-while ($row = $query_of_tables->fetch_row()) {
+  while ($row = $query_of_tables->fetch_row()) {
     $query_of_check = $dbs->query('CHECK TABLE '.$row[0]);
     while ($rowcheck = $query_of_check->fetch_assoc()) {
-        if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
-            if ($row[0] != $prevtable) {
-                $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
-            }
-            $prevtable = $row[0];
-            $is_repaired = true;
+      if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
+        if ($row[0] != $prevtable) {
+          $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
         }
+        $prevtable = $row[0];
+        $is_repaired = true;
+      }
     }
-}
-if (($is_repaired) && !isset($_POST['do_repair'])) {
+  }
+  if (($is_repaired) && !isset($_POST['do_repair'])) {
     echo '<div class="message">';
     echo '<ul>';
     echo $repair;
@@ -114,8 +116,9 @@ if (($is_repaired) && !isset($_POST['do_repair'])) {
     echo '</div>';
     echo ' <form method="POST" style="margin:0 10px;">
         <input type="hidden" name="do_repair" value="1">
-        <input type="submit" value="'.__('Click Here To Repaire The Tables').'" class="button btn btn-block btn-default">
+        <input type="submit" value="'.__('Click Here To Repair The Tables').'" class="button btn btn-block btn-default">
         </form>';
+  }
 }
 
 // if there any warnings

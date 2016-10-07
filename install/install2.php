@@ -21,97 +21,97 @@
  *
  */
 
-    require "settings.php";    
+  require "settings.php";    
     
 	$completed = false;
 	$error_mg  = array();
-	$indexdbupgrade_max = 15;
+	$indexdbupgrade_max = 17;
 
-	function apphp_db_install_core($database, $sql_file)
+	function apphp_db_install_core($link, $database, $sql_file)
 	{
 		$db_error = false;
 
-		if (!@apphp_db_select_db($database)) {
+		if (!@apphp_db_select_db($link, $database)) {
 			if (@apphp_db_query('create database ' . $database)) {
-				apphp_db_select_db($database);
+				apphp_db_select_db($link, $database);
 			} else {
-				$db_error = mysql_error();
+				$db_error = mysqli_error($link);
 				return false;		
 			}
 		}
 
 		if (!$db_error) {
 			if (file_exists($sql_file)) {
-                include_once $sql_file;
-                if(array_key_exists('create', $sql))
-                {
-	                foreach ($sql['create'] as $value) {
-	                	@mysql_query($value);
-	                }
-            	}
-                if(array_key_exists('insert', $sql))
-                {
-	                foreach ($sql['insert'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-                if(array_key_exists('alter', $sql))
-                {
-	                foreach ($sql['alter'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-	            if(array_key_exists('update', $sql))
-                {
-	                foreach ($sql['update'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-	            if(array_key_exists('delete', $sql))
-                {
-	                foreach ($sql['delete'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-	            if(array_key_exists('truncate', $sql))
-                {
-	                foreach ($sql['truncate'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-	            if(array_key_exists('drop', $sql))
-                {
-	                foreach ($sql['drop'] as $value) {
-	                	@mysql_query($value);
-	                }
-	            }
-              return true;
+        include_once $sql_file;
+        if(array_key_exists('create', $sql))
+        {
+          foreach ($sql['create'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('insert', $sql))
+        {
+          foreach ($sql['insert'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('alter', $sql))
+        {
+          foreach ($sql['alter'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('update', $sql))
+        {
+          foreach ($sql['update'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('delete', $sql))
+        {
+          foreach ($sql['delete'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('truncate', $sql))
+        {
+          foreach ($sql['truncate'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        if(array_key_exists('drop', $sql))
+        {
+          foreach ($sql['drop'] as $value) {
+            @mysqli_query($link, $value);
+          }
+        }
+        return true;
 			} else {
 			  $db_error = 'SQL file does not exist: ' . $sql_file;
 			  return false;
 			}
-        }
+    }
 	}
 
-	function apphp_db_select_db($database) {
-		return mysql_select_db($database);
+	function apphp_db_select_db($link, $database) {
+		return mysqli_select_db($link, $database);
 	}
 
 	function apphp_db_query($query) {
 		global $link;
-		$res=mysql_query($query, $link);
+		$res=mysqli_query($link, $query);
 		return $res;
 	}
 
-	function apphp_db_install($database, $sql_file)
+	function apphp_db_install($link, $database, $sql_file)
 	{
 		$db_error = false;
 
-		if (!@apphp_db_select_db($database)) {
+		if (!@apphp_db_select_db($link, $database)) {
 			if (@apphp_db_query('create database ' . $database)) {
-				apphp_db_select_db($database);
+				apphp_db_select_db($link, $database);
 			} else {
-				$db_error = mysql_error();
+				$db_error = mysqli_error($link);
 				return false;		
 			}
 		}
@@ -247,81 +247,114 @@
 			
 			if(!copy('../config/sysconfig.local.inc-sample.php',$config_file_path))
 			{
-			    $error_mg[] = "<li>Could not create file ".$config_file_name."! Please check if the sysconfig.local.inc-sample.php file is exists</li>";	    
-			} else {
-			    @chmod($config_file_path,0777);
-			    $f = @fopen($config_file_path, "w+");
-			    if (@fwrite($f, $config_file) > 0){
-				$link = @mysql_connect($database_host, $database_username, $database_password);
-				    if($link){					
-					    if (@mysql_select_db($database_name)) {                       
-							
-							// upgrade db
-					    	if (isset($_POST['indexdbupgrade'])) {
-					    		$indexdbupgrade_start = $_POST['indexdbupgrade'];
-					    		$completed_upgrade = 0;
-					    		for ($i=$indexdbupgrade_start; $i <= $indexdbupgrade_max; $i++) {
-					    			$v = $i + 1;
-					    			$file_sql_path = ($i == $indexdbupgrade_max) ? './../upgrade/'.$sql_upgrade[$v] : './../upgrade/old_sql/'.$sql_upgrade[$v];
-					    			$sql_php_path = 'sql_php_upgrade/'.$sql_upgrade[$v].'.php';
-					    			if ($v == 16 || $v == 15 || $v == 14 || $v == 13 || $v == 11 || $v == 9) {
-					    				if (false == ($db_error = apphp_db_install_core($database_name, $sql_php_path))) {
-											$error_mg[] = "<li>Could not read file ".$sql_php_path."! Please check if the file exists</li>";
-										} else {
-											$completed_upgrade++;
-										}
-					    			} else {
-						    			if(false == ($db_error = apphp_db_install($database_name, $file_sql_path))){
-											$error_mg[] = "<li>Could not read file ".$file_sql_path."! Please check if the file exists</li>";                       
-										}else{
-											$completed_upgrade++;                       
-										}
-					    			}
-					    		}
-					    		if ($completed_upgrade != ($indexdbupgrade_max - $indexdbupgrade_start)) {
-					    			$completed = true;
-					    		} else {
-					    			$error_mg[] = "<li>".$completed_upgrade." Database imported.</li>";
-					    			@unlink($config_file_path);     
-					    		}
-					    	} else {
-					    		// fresh install db
-								if(false == ($db_error = apphp_db_install_core($database_name, $sql_dump))){
-									$error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
-									@unlink($config_file_path);
-								}else{
-									// install sampel data
-									if($_POST['install_sample'] == 'yes'){
-										if(false == ($db_error = apphp_db_install($database_name, $sql_sample))){
-											$error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
-										}else{
-											$completed = true;                            
-										}					    
-									} else {
-										$completed = true;                            						    
-									}
+        $error_mg[] = "<li>Could not create file ".$config_file_name."! Please check if the sysconfig.local.inc-sample.php file is exists</li>";	    
+			}
+      else {
+        @chmod($config_file_path,0777);
+        $f = @fopen($config_file_path, "w+");
+        if (@fwrite($f, $config_file) > 0) {
+          $link = @mysqli_connect($database_host, $database_username, $database_password);
+          if($link){					
+            if (@mysqli_select_db($link, $database_name)) {                                   
+              // upgrade db
+              if (isset($_POST['indexdbupgrade'])) {
+                $indexdbupgrade_start = $_POST['indexdbupgrade'];
+                $completed_upgrade = 0;
+                for ($i=$indexdbupgrade_start; $i <= $indexdbupgrade_max; $i++) {
+                  $v = $i + 1;
+                  $file_sql_path = ($i == $indexdbupgrade_max) ? './../upgrade/'.$sql_upgrade[$v] : './../upgrade/old_sql/'.$sql_upgrade[$v];
+                  $sql_php_path = 'sql_php_upgrade/'.$sql_upgrade[$v].'.php';
+                  if ($v >= 13 || $v == 11 || $v == 9) {
+                    if (false == ($db_error = apphp_db_install_core($link, $database_name, $sql_php_path))) {
+                    $error_mg[] = "<li>Could not read file ".$sql_php_path."! Please check if the file exists</li>";
+                  } else {
+                    $completed_upgrade++;
+                  }
+                  } else {
+                    if(false == ($db_error = apphp_db_install($link, $database_name, $file_sql_path))){
+                    $error_mg[] = "<li>Could not read file ".$file_sql_path."! Please check if the file exists</li>";                       
+                  }else{
+                    $completed_upgrade++;                       
+                  }
+                  }
+                }
+                if ($completed_upgrade != ($indexdbupgrade_max - $indexdbupgrade_start)) {
+                  $completed = true;
+                } else {
+                  $error_mg[] = "<li>".$completed_upgrade." Database imported.</li>";
+                  @unlink($config_file_path);     
+                }
+              } else {
+                // fresh install db
+                if(false == ($db_error = apphp_db_install_core($link, $database_name, $sql_dump))){
+                  $error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
+                  @unlink($config_file_path);
+                }
+                else{
+                  // install sampel data
+                  if($_POST['install_sample'] == 'yes'){
+                    if(false == ($db_error = apphp_db_install($link, $database_name, $sql_sample))){
+                      $error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
+                    }else{
+                      $completed = true;                            
+                    }					    
+                  } else {
+                    $completed = true;                            						    
+                  }
 
-									if(!empty($retype_password))
-									{
-										apphp_db_query($sql_update, $link);
-									}
-									
-								}
-					    	}
+                  if(!empty($retype_password))
+                  {
+                    apphp_db_query($sql_update);
+                  }
+                  
+                }
+              }
 
-					    } else {
-						    $error_mg[] = "<li>Database connecting error! Check your database exists.</li>";
-						    @unlink($config_file_path);
-					    }
-				    } else {
-					    $error_mg[] = "<li>Database connecting error! Check your connection parameters</li>";
-					    @unlink($config_file_path);
-				    }
-			    } else {
-				    $error_mg[] = "<li>Can not open configuration file ".$config_file_directory.$config_file_name."</li>";				
-			    }
-			    @fclose($f);
-			    @chmod($config_file_path,0755);
+            }
+            else {
+              // create database
+              $create = @mysqli_query($link, 'CREATE DATABASE '.$database_name.' CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+              if ($create) {
+                // fresh install db
+                if(false == ($db_error = apphp_db_install_core($link, $database_name, $sql_dump))){
+                  $error_mg[] = "<li>Could not read file ".$sql_dump."! Please check if the file exists</li>";                            
+                  @unlink($config_file_path);
+                }
+                else{
+                  // install sampel data
+                  if($_POST['install_sample'] == 'yes'){
+                    if(false == ($db_error = apphp_db_install($link, $database_name, $sql_sample))){
+                      $error_mg[] = "<li>Could not read file ".$sql_sample."! Please check if the file exists</li>";                            
+                    }else{
+                      $completed = true;                            
+                    }					    
+                  } else {
+                    $completed = true;                            						    
+                  }
+
+                  if(!empty($retype_password))
+                  {
+                    apphp_db_query($sql_update);
+                  }
+                  
+                }
+              }
+              else {
+                $error_mg[] = "<li>Database connecting error! Check your database exists or make sure you have privileges to create database.</li>";
+                @unlink($config_file_path);
+              }
+            }
+          }
+          else {
+            $error_mg[] = "<li>Database connecting error! Check your connection parameters</li>";
+            @unlink($config_file_path);
+          }
+        }
+        else {
+          $error_mg[] = "<li>Can not open configuration file ".$config_file_directory.$config_file_name."</li>";				
+        }
+        @fclose($f);
+        @chmod($config_file_path,0755);
 			}
 		}
 	}
@@ -339,16 +372,17 @@
 <body>
     <div class="wrapper">
 	    <?php if(!$completed) { ?>
+	    <div class="content">
 	    <div class="title">
-		<h2>Step 3 - Installation Not Completed</h2>	    
-	    </div>
-	    <p class="error">Please correct your information according to this message</p>
-	    <div class="content">	    
+			<h2>Step 3 - Installation Not Completed</h2>
+		</div>
+		<p class="error">Please correct your information according to this message</p>  
 	    <?php
 	    foreach($error_mg as $msg){
 		    echo "<ul class=\"list\">".$msg."</ul>";
 	    }
 	    ?>
+	    <hr>
 	    <div class="toright">
 		<input type="button" class="button" value="Back" name="submit" onclick="javascript: history.go(-1);">
 		<input type="button" class="button" value="Retry" name="submit" onclick="javascript: location.reload();">
@@ -356,22 +390,21 @@
 	    <br/>
 	    </div>		    
 	    <?php } else { ?>
+	    <div class="content">
 	    <div class="title">
 		<h2>Step 3 - Installation Completed</h2>	    
 	    </div>
 	    <p class="success">Hooray, the installation was successful</p>
-	    <div class="content">
 		<p>The <?php echo $config_file_name;?> file was sucessfully created.</p>
 		<p>For security reasons, please remove <code style="font-weight: bold;">install/</code> folder from your server.</p>
-		<br/>
+		<hr>
 		<div class="toright">
 		    <?php if($application_start_file != ""){ ?><a href="<?php echo $application_start_file;?>" class="button">OK, start the SLiMS</a><?php } ?>
 		</div>
 		<br/>
 	    <?php } ?>
-	    <?php include_once("footer.php"); ?>
 	</div>
-
+	<?php include_once("footer.php"); ?>
     </div>
                   
 </body>
