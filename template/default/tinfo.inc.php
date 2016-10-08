@@ -4,7 +4,7 @@ $sysconf['template']['base'] 					= 'php';
 $sysconf['template']['responsive']  			= true;
 
 // Please use at your own risk.
-// Animation need big memories. Please adjust with your computer capability 
+// Animation need big memories. Please adjust with your computer capability
 // ========================================================================
 
 // Run gradient animation - you may need a big memory to run it well.

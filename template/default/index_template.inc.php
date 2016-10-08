@@ -93,7 +93,7 @@ include "partials/nav.php";
       <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
       <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
     </form>
-    <a href="#" class="s-search-advances"><?php echo __('Advanced Search') ?></a>
+    <a href="#" class="s-search-advances" width="800" height="500" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
   </div>
 
   <!-- Main
@@ -195,7 +195,7 @@ include "partials/nav.php";
         <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
         <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
       </form>
-      <a href="#" class="s-search-advances"><?php echo __('Advanced Search') ?></a>
+      <a href="#" class="s-search-advances" width="800" height="500" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
 
     </div>
 
@@ -205,6 +205,9 @@ include "partials/nav.php";
 
 
 <?php
+// Advance Search
+include "partials/advsearch.php";
+
 // Footer
 include "partials/footer.php";
 
@@ -261,15 +264,28 @@ include "partials/bg.php";
       initCallback: mycarousel_initCallback
   });
 
-$(window).scroll(function() {
-  console.log($(window).scrollTop());
-  if ($(window).scrollTop() > 50) {
-    $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
-  } else {
-    $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
-  }
-});
+  $(window).scroll(function() {
+    console.log($(window).scrollTop());
+    if ($(window).scrollTop() > 50) {
+      $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
+    } else {
+      $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
+    }
+  });
 
+  $('.s-search-advances').bind('click', function() {
+    var popUpButton = $(this);
+    $.colorbox({
+      html: $('#advance-search-wrapper').html(),
+      innerWidth: function() {
+        var width = parseInt(popUpButton.attr('width'));
+        if (width) { return width; } else { return 600; } },
+      innerHeight: function() {
+        var height = parseInt(popUpButton.attr('height'));
+        if (height) { return height; } else { return 300; } },
+      title: popUpButton.attr('title')
+    });
+  });
 </script>
 
 </body>
