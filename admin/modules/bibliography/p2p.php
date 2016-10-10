@@ -48,7 +48,7 @@ if (!$can_read) {
 }
 
 // get servers
-$server_q = $dbs->query('SELECT name, uri FROM mst_servers ORDER BY name ASC');
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
   $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
 }

@@ -16,6 +16,7 @@ CREATE TABLE `mst_servers` (
   `server_id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `uri` text COLLATE utf8_unicode_ci NOT NULL,
+  `server_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - p2p server; 2 - z3950; 3 - z3950  SRU',
   `input_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

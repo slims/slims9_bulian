@@ -2,11 +2,12 @@
 /**
  * @Author: ido
  * @Date:   2016-06-16 21:34:22
- * @Last Modified by:   ido
- * @Last Modified time: 2016-06-16 21:40:48
+ * @Modified by:   ido, wardiyono
+ * @Modified time: 2016-06-16 21:40:48
+ * @Last Modified time: 2016-09-10 14:24
  */
 
-/* P2P Server Management section */
+/* P2P/Copy Cataloging Server Management section */
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -40,6 +41,9 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
+$serverType = array(array(1,'P2P Server'), array(2,'z3950 server'), array(3,'z3950 SRU server'));
+$lookupType = array(1=>'P2P Server', 2=>'z3950 server', 3=>'z3950 SRU server');
+
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   $server_name = trim(strip_tags($_POST['serverName']));
   $server_uri = trim(strip_tags($_POST['serverUri']));
@@ -50,6 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     } else {
       $data['name'] = $dbs->escape_string($server_name);
       $data['uri'] = $dbs->escape_string($server_uri);
+      $data['server_type'] = $dbs->escape_string($_POST['serverType']);
       $data['input_date'] = date('Y-m-d H:i:s');
       $data['last_update'] = date('Y-m-d H:i:s');
 
@@ -162,6 +167,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->addTextField('text', 'serverName', __('Server Name').'*', $rec_d['name'], 'style="width: 50%;" maxlength="255"');
   // Server URI
   $form->addTextField('text', 'serverUri', __('URI').'*', $rec_d['uri'], 'style="width: 100%;"');
+  // Server type
+  $form->addSelectList('serverType', __('Server Type'), $serverType, $rec_d['server_type']);
 
   // edit mode messagge
   if ($form->edit_mode) {
@@ -180,11 +187,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->setSQLColumn('ms.server_id',
       'ms.name AS \''.__('Server Name').'\'',
       'ms.uri AS \''.__('URI').'\'',
+      'ms.server_type AS \''.__('SERVER').'\'',
       'ms.last_update AS \''.__('Last Update').'\'');
   } else {
     $datagrid->setSQLColumn(
       'ms.name AS \''.__('Server Name').'\'',
       'ms.uri AS \''.__('URI').'\'',
+      'ms.server_type AS \''.__('SERVER').'\'',
       'ms.last_update AS \''.__('Last Update').'\'');
   }
   $datagrid->setSQLorder('name ASC');
@@ -199,6 +208,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
   // set delete proccess URL
   $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+
+  // callback function to change value of authority type
+  function callbackServerType($obj_db, $rec_d)
+  {
+      global $sysconf, $lookupType;
+	  return $lookupType[$rec_d[3]];
+  }
+  // modify column content
+  $datagrid->modifyColumnContent(3, 'callback{callbackServerType}');
 
   // put the result into variables
   $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));

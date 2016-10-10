@@ -49,6 +49,12 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['z3950_SRU_source'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+}
+
 if (isset($_GET['z3950_SRU_source'])) {
     $zserver = trim(urldecode($_GET['z3950_SRU_source']));
 } else {

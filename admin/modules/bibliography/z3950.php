@@ -46,6 +46,12 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 2 ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['z3950_source'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+}
+
 if (!extension_loaded('yaz')) {
     die('<div class="errorBox">'.__('YAZ extension library is not loaded/installed yet. '
         .'YAZ library is needed to use z3950 enabled service. '
