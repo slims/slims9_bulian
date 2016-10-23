@@ -139,6 +139,8 @@ require SIMBIO.'simbio.inc.php';
 require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
 // we must include utility library first
 require LIB.'utility.inc.php';
+// include API
+require LIB.'api.inc.php';
 // include biblio class
 require MDLBS.'bibliography/biblio.inc.php';
 
