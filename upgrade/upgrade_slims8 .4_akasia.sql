@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `biblio_log` (
   `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `affectedrow` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `rawdata` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_information` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`biblio_log_id`),
   KEY `biblio_id` (`biblio_id`,`user_id`,`username`,`realname`,`ip`(191),`action`,`affectedrow`,`date`)

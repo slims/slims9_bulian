@@ -91,7 +91,8 @@ class api
         $s_aut = 'SELECT an.author_name, an.authority_type ';
         $s_aut .= 'FROM biblio AS bi, biblio_author AS ba, mst_author AS an ';
         $s_aut .= 'WHERE bi.biblio_id=ba.biblio_id AND ba.author_id=an.author_id ';
-        $s_aut .= 'AND bi.biblio_id='.$r_bib['biblio_id'];
+        $s_aut .= 'AND bi.biblio_id='.$r_bib['biblio_id'].' ';
+        $s_aut .= 'ORDER BY an.author_id ASC ';
         #debug $s_aut
         #$_return[$i]['authors_sql'] = $s_aut;
         $q_aut = $obj_db->query($s_aut);
@@ -106,7 +107,8 @@ class api
         $s_sub = 'SELECT mt.topic, mt.topic_type ';
         $s_sub .= 'FROM biblio AS bi, biblio_topic AS bt, mst_topic AS mt ';
         $s_sub .= 'WHERE bi.biblio_id=bt.biblio_id AND bt.topic_id=mt.topic_id ';
-        $s_sub .= 'AND bi.biblio_id='.$r_bib['biblio_id'];
+        $s_sub .= 'AND bi.biblio_id='.$r_bib['biblio_id'].' ';
+        $s_sub .= 'ORDER BY mt.topic_id ASC ';
         #debug $s_sub
         #$_return[$i]['subjects_sql'] = $s_sub;
         $q_sub = $obj_db->query($s_sub);
@@ -119,7 +121,8 @@ class api
         #ITEM/HOLDING
         $_return[$i]['items'] = NULL;
         $s_ite = 'SELECT * FROM item AS i ';
-        $s_ite .= 'WHERE i.biblio_id='.$r_bib['biblio_id'];
+        $s_ite .= 'WHERE i.biblio_id='.$r_bib['biblio_id'].' ';
+        $s_ite .= 'ORDER BY i.item_id ASC ';
         #debug $s_ite
         #$_return[$i]['items_sql'] = $s_ite;
         $q_ite = $obj_db->query($s_ite);
@@ -129,7 +132,11 @@ class api
           $_return[$i]['items'][$_ci]['inventory_code'] = $r_ite['inventory_code'];
           $_ci++;
         }
-
+        $_return[$i]['hash']['biblio'] = sha1(urlencode(serialize($_return[$i])));
+        $_return[$i]['hash']['classification'] = sha1(urlencode(serialize($_return[$i]['classification'])));
+        $_return[$i]['hash']['authors'] = sha1(urlencode(serialize($_return[$i]['authors'])));
+        $_return[$i]['hash']['subjects'] = sha1(urlencode(serialize($_return[$i]['subjects'])));
+        $_return[$i]['hash']['image'] = sha1(urlencode(serialize($_return[$i]['image'])));
         $i++;
       }
     }
@@ -151,7 +158,7 @@ class api
    * @param   array  $rawdata
    * @return  void
    */
-  public static function bibliolog_write($obj_db, $biblio_id, $user_id, $username, $realname, $title, $action, $affectedrow, $rawdata)
+  public static function bibliolog_write($obj_db, $biblio_id, $user_id, $username, $realname, $title, $action, $affectedrow, $rawdata, $additional_information = NULL)
   {
     if (!$obj_db->error) {
       // log table
@@ -186,10 +193,11 @@ class api
         $_affectedrow = 'description';     
       }
       $_rawdata = urlencode(serialize($rawdata));
+      $_additional_information = $obj_db->escape_string(trim($additional_information));
       $_date = date('Y-m-d H:i:s');
       // insert log data to database
       @$obj_db->query('INSERT INTO '.$_log_table.'
-        VALUES (NULL, \''.$_biblio_id.'\', \''.$_user_id.'\', \''.$_username.'\', \''.$_realname.'\', \''.$_title.'\', \''.$_ip.'\', \''.$_action.'\', \''.$_affectedrow.'\', \''.$_rawdata.'\', \''.$_date.'\')');
+        VALUES (NULL, \''.$_biblio_id.'\', \''.$_user_id.'\', \''.$_username.'\', \''.$_realname.'\', \''.$_title.'\', \''.$_ip.'\', \''.$_action.'\', \''.$_affectedrow.'\', \''.$_rawdata.'\', \''.$_additional_information.'\', \''.$_date.'\')');
     }
   }
 
