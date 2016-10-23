@@ -137,14 +137,61 @@ class api
 
   }
 
-
-
-
-
-
-
-
-
+  /**
+   * Static Method to write biblio activities logs
+   *
+   * @param   object  $obj_db
+   * @param   integer  $biblio_id
+   * @param   integer  $user_id
+   * @param   string  $username
+   * @param   string  $realname
+   * @param   string  $title
+   * @param   string  $action
+   * @param   string  $affectedrow
+   * @param   array  $rawdata
+   * @return  void
+   */
+  public static function bibliolog_write($obj_db, $biblio_id, $user_id, $username, $realname, $title, $action, $affectedrow, $rawdata)
+  {
+    if (!$obj_db->error) {
+      // log table
+      $_log_table = 'biblio_log';
+      // filter input
+      $_biblio_id = (int) $obj_db->escape_string(trim($biblio_id));
+      $_user_id = (int) $obj_db->escape_string(trim($user_id));
+      $_username = $obj_db->escape_string(trim($username));
+      $_realname = $obj_db->escape_string(trim($realname));
+      $_title = $obj_db->escape_string(trim($title));
+      $_ip = $_SERVER['REMOTE_ADDR'];
+      if ($action === 'create') {
+        $_action = 'create';
+      } elseif ($action === 'edit') {
+        $_action = 'edit';
+      } elseif ($action === 'delete') {
+        $_action = 'delete';
+      } else {
+        $_action = 'create';        
+      }
+      if ($affectedrow === 'description') {
+        $_affectedrow = 'description';
+      } elseif ($affectedrow === 'classification') {
+        $_affectedrow = 'classification';
+      } elseif ($affectedrow === 'subject') {
+        $_affectedrow = 'subject';
+      } elseif ($affectedrow === 'abstract') {
+        $_affectedrow = 'abstract';
+      } elseif ($affectedrow === 'cover') {
+        $_affectedrow = 'cover';
+      } else {
+        $_affectedrow = 'description';     
+      }
+      $_rawdata = urlencode(serialize($rawdata));
+      $_date = date('Y-m-d H:i:s');
+      // insert log data to database
+      @$obj_db->query('INSERT INTO '.$_log_table.'
+        VALUES (NULL, \''.$_biblio_id.'\', \''.$_user_id.'\', \''.$_username.'\', \''.$_realname.'\', \''.$_title.'\', \''.$_ip.'\', \''.$_action.'\', \''.$_affectedrow.'\', \''.$_rawdata.'\', \''.$_date.'\')');
+    }
+  }
 
 
 }
