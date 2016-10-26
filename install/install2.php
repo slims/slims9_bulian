@@ -25,7 +25,7 @@
     
 	$completed = false;
 	$error_mg  = array();
-	$indexdbupgrade_max = 17;
+	$indexdbupgrade_max = 18;
 
 	function apphp_db_install_core($link, $database, $sql_file)
 	{
