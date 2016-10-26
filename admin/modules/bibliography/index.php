@@ -224,6 +224,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
     if (isset($_POST['updateRecordID'])) {
+      if ($sysconf['log']['biblio']) {
+        $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
+      }
       /* UPDATE RECORD MODE */
       // remove input date
       unset($data['input_date']);
@@ -255,6 +258,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update bibliographic data ('.$data['title'].') with biblio_id ('.$updateRecordID.')');
+
+        if ($sysconf['log']['biblio']) {
+          $_currrawdata = api::biblio_load($dbs, $updateRecordID);
+          api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
+          unset($_SESSION['_prevrawdata'][$updateRecordID]);
+        }
+
         // close window OR redirect main page
         if ($in_pop_up) {
           $itemCollID = (integer)$_POST['itemCollID'];
@@ -309,6 +319,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::jsAlert(__('New Bibliography Data Successfully Saved'));
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data ('.$data['title'].') with biblio_id ('.$last_biblio_id.')');
+        if ($sysconf['log']['biblio']) {
+          $_rawdata = api::biblio_load($dbs, $last_biblio_id);
+          api::bibliolog_write($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], 'create', 'description', $_rawdata, 'Pembuatan data bibliografi baru.');
+          api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_rawdata, NULL);
+        }
         // clear related sessions
         $_SESSION['biblioAuthor'] = array();
         $_SESSION['biblioTopic'] = array();
@@ -394,6 +409,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $biblio_item_q = $dbs->query($_sql_biblio_item_q);
     $biblio_item_d = $biblio_item_q->fetch_row();
     if ($biblio_item_d[1] < 1) {
+
+        if ($sysconf['log']['biblio']) {
+          $_rawdata = api::biblio_load($dbs, $itemID);
+          api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
+        }
+
+
       if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
         $error_num++;
       } else {

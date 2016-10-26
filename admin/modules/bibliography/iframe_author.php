@@ -53,6 +53,11 @@ if (isset($_GET['biblioID']) AND !empty($_GET['biblioID'])) {
 
 // start the output buffer
 ob_start();
+if ($sysconf['log']['biblio']) {
+  if (!isset($_SESSION['_prevrawdata'][$biblioID])) {
+    $_SESSION['_prevrawdata'][$biblioID] = api::biblio_load($dbs, $biblioID);
+  }
+}
 ?>
 <script type="text/javascript">
 function confirmProcess(int_biblio_id, int_item_id)

@@ -83,8 +83,8 @@ class api
         $_return[$i]['content_type'] = $r_bib['content_type'];
         $_return[$i]['media_type'] = $r_bib['media_type'];
         $_return[$i]['carrier_type'] = $r_bib['carrier_type'];
-        $_return[$i]['input_date'] = $r_bib['input_date'];
-        $_return[$i]['last_update'] = $r_bib['last_update'];
+        #$_return[$i]['input_date'] = $r_bib['input_date'];
+        #$_return[$i]['last_update'] = $r_bib['last_update'];
         $_return[$i]['uid'] = $r_bib['uid'];
         #AUTHORS
         $_return[$i]['authors'] = NULL;
@@ -137,6 +137,8 @@ class api
         $_return[$i]['hash']['authors'] = sha1(urlencode(serialize($_return[$i]['authors'])));
         $_return[$i]['hash']['subjects'] = sha1(urlencode(serialize($_return[$i]['subjects'])));
         $_return[$i]['hash']['image'] = sha1(urlencode(serialize($_return[$i]['image'])));
+        $_return[$i]['input_date'] = $r_bib['input_date'];
+        $_return[$i]['last_update'] = $r_bib['last_update'];
         $i++;
       }
     }
@@ -158,7 +160,7 @@ class api
    * @param   array  $rawdata
    * @return  void
    */
-  public static function bibliolog_write($obj_db, $biblio_id, $user_id, $username, $realname, $title, $action, $affectedrow, $rawdata, $additional_information = NULL)
+  public static function bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, $action, $affectedrow, $rawdata, $additional_information = NULL)
   {
     if (!$obj_db->error) {
       // log table
@@ -166,14 +168,13 @@ class api
       // filter input
       $_biblio_id = (int) $obj_db->escape_string(trim($biblio_id));
       $_user_id = (int) $obj_db->escape_string(trim($user_id));
-      $_username = $obj_db->escape_string(trim($username));
       $_realname = $obj_db->escape_string(trim($realname));
       $_title = $obj_db->escape_string(trim($title));
       $_ip = $_SERVER['REMOTE_ADDR'];
       if ($action === 'create') {
         $_action = 'create';
-      } elseif ($action === 'edit') {
-        $_action = 'edit';
+      } elseif ($action === 'update') {
+        $_action = 'update';
       } elseif ($action === 'delete') {
         $_action = 'delete';
       } else {
@@ -183,6 +184,8 @@ class api
         $_affectedrow = 'description';
       } elseif ($affectedrow === 'classification') {
         $_affectedrow = 'classification';
+      } elseif ($affectedrow === 'author') {
+        $_affectedrow = 'author';
       } elseif ($affectedrow === 'subject') {
         $_affectedrow = 'subject';
       } elseif ($affectedrow === 'abstract') {
@@ -197,9 +200,59 @@ class api
       $_date = date('Y-m-d H:i:s');
       // insert log data to database
       @$obj_db->query('INSERT INTO '.$_log_table.'
-        VALUES (NULL, \''.$_biblio_id.'\', \''.$_user_id.'\', \''.$_username.'\', \''.$_realname.'\', \''.$_title.'\', \''.$_ip.'\', \''.$_action.'\', \''.$_affectedrow.'\', \''.$_rawdata.'\', \''.$_additional_information.'\', \''.$_date.'\')');
+        VALUES (NULL, \''.$_biblio_id.'\', \''.$_user_id.'\', \''.$_realname.'\', \''.$_title.'\', \''.$_ip.'\', \''.$_action.'\', \''.$_affectedrow.'\', \''.$_rawdata.'\', \''.$_additional_information.'\', \''.$_date.'\')');
     }
   }
 
+  public static function bibliolog_compare($obj_db, $biblio_id, $user_id, $realname, $title, $current, $previous = NULL)
+  {
+    if ($previous == NULL) {
+      if ($current[0]['classification'] != 'NONE') {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'No. Klasifikasi: '.$current[0]['classification']);
+      }
+      if ($current[0]['image'] != NULL) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Berkas: '.$current[0]['image']);
+      }
+      if ($current[0]['authors'] != NULL) {
+        $_authors = '';
+        foreach ($current[0]['authors'] as $key => $value) {
+          $_authors .= $value['author_name'].'; ';
+        }
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Pengarangnya: '.$_authors);
+      }
+      if ($current[0]['subjects'] != NULL) {
+        $_subjects = '';
+        foreach ($current[0]['subjects'] as $key => $value) {
+          $_subjects .= $value['topic'].'; ';
+        }
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Subjek: '.$_subjects);
+      }
+    } else {
+      if ($current[0]['hash']['biblio'] != $previous[0]['hash']['biblio']) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'description', $current, 'Data bibliografi diperbarui.');
+      }
+      if ( ($current[0]['classification'] != 'NONE') AND ($current[0]['classification'] != $previous[0]['classification']) ) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'No. Klasifikasi: '.$current[0]['classification']);
+      }
+      if ( ($current[0]['image'] != NULL) AND ($current[0]['image'] != $previous[0]['image']) ) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Berkas: '.$current[0]['image']);
+      }
+      if ( ($current[0]['authors'] != NULL) AND ($current[0]['hash']['authors'] != $previous[0]['hash']['authors']) ) {
+        $_authors = '';
+        foreach ($current[0]['authors'] as $key => $value) {
+          $_authors .= $value['author_name'].'; ';
+        }
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Pengarangnya: '.$_authors);
+      }
+      if ( ($current[0]['subjects'] != NULL) AND ($current[0]['hash']['subjects'] != $previous[0]['hash']['subjects']) ) {
+        $_subjects = '';
+        foreach ($current[0]['subjects'] as $key => $value) {
+          $_subjects .= $value['topic'].'; ';
+        }
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Subjek: '.$_subjects);
+      }
+
+    }
+  }
 
 }

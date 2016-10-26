@@ -50,7 +50,6 @@ $biblioID = 0;
 if (isset($_GET['biblioID']) AND $_GET['biblioID']) {
     $biblioID = (integer)$_GET['biblioID'];
 }
-
 // utility function to check author name
 function checkAuthor($str_author_name, $str_author_type = 'p')
 {

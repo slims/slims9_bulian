@@ -638,3 +638,6 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
 // visitor limitation
 $sysconf['enable_visitor_limitation']     = false; // "true" or "false"
 $sysconf['time_visitor_limitation']       = 60; // in minute
+
+/* new log system */
+$sysconf['log']['biblio'] = TRUE;
