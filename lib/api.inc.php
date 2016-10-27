@@ -30,6 +30,7 @@ if (!defined('INDEX_AUTH')) {
 
 class api
 {
+  #Bibliographic modules related
   /**
    * Static Method to load collection/bibliography data from database
    *
@@ -143,7 +144,6 @@ class api
       }
     }
     return $_return;
-
   }
 
   /**
@@ -253,6 +253,51 @@ class api
       }
 
     }
+  }
+
+  #Membership modules related
+  public static function member_load($obj_db, $member_id)
+  {
+    $_return = FALSE;
+    $i = 0;
+    $s_mbr = '';
+    $s_mbr .= 'SELECT mmt.member_type_name, mbr.* ';
+    $s_mbr .= 'FROM member AS mbr ';
+    $s_mbr .= 'LEFT JOIN mst_member_type AS mmt ON mbr.member_type_id=mmt.member_type_id ';
+    $s_mbr .= 'WHERE mbr.member_id=\''.$member_id.'\'';
+    $q_mbr = $obj_db->query($s_mbr);
+    if (!$obj_db->errno) {
+      while ($r_mbr = $q_mbr->fetch_assoc()) {
+        $_return[$i]['member_id'] = $r_mbr['member_id'];
+        $_return[$i]['member_name'] = $r_mbr['member_name'];
+        $_return[$i]['gender'] = $r_mbr['gender'];
+        $_return[$i]['birth_date'] = $r_mbr['birth_date'];
+        $_return[$i]['member_type_name'] = $r_mbr['member_type_name'];
+        $_return[$i]['member_address'] = $r_mbr['member_address'];
+        $_return[$i]['member_mail_address'] = $r_mbr['member_mail_address'];
+        $_return[$i]['member_email'] = $r_mbr['member_email'];
+        $_return[$i]['postal_code'] = $r_mbr['postal_code'];
+        $_return[$i]['inst_name'] = $r_mbr['inst_name'];
+        $_return[$i]['is_new'] = $r_mbr['is_new'];
+        $_return[$i]['member_image'] = $r_mbr['member_image'];
+        $_return[$i]['pin'] = $r_mbr['pin'];
+        $_return[$i]['member_phone'] = $r_mbr['member_phone'];
+        $_return[$i]['member_fax'] = $r_mbr['member_fax'];
+        $_return[$i]['member_since_date'] = $r_mbr['member_since_date'];
+        $_return[$i]['register_date'] = $r_mbr['register_date'];
+        $_return[$i]['expire_date'] = $r_mbr['expire_date'];
+        $_return[$i]['member_notes'] = $r_mbr['member_notes'];
+        $_return[$i]['is_pending'] = $r_mbr['is_pending'];
+        $_return[$i]['mpasswd'] = false;
+        $_return[$i]['last_login'] = $r_mbr['last_login'];
+        $_return[$i]['last_login_ip'] = $r_mbr['last_login_ip'];
+        $_return[$i]['hash']['member'] = sha1(urlencode(serialize($_return[$i])));
+        $_return[$i]['input_date'] = $r_mbr['input_date'];
+        $_return[$i]['last_update'] = $r_mbr['last_update'];
+        $i++;
+      }
+    }
+    return $_return;
   }
 
 }
