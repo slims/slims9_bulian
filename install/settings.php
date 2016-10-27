@@ -48,5 +48,6 @@ $sql_upgrade = array(
 	'15' => 'upgrade_slims7_cendana.sql',
 	'16' => 'upgrade_slims8_akasia.sql',
 	'17' => 'upgrade_slims8.2_akasia.sql',
-	'18' => 'upgrade_slims8.3_akasia.sql'
+	'18' => 'upgrade_slims8.3_akasia.sql',
+	'19' => 'upgrade_slims8.4_akasia.sql'
 );

@@ -261,7 +261,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
         if ($sysconf['log']['biblio']) {
           $_currrawdata = api::biblio_load($dbs, $updateRecordID);
-          api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
+          api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
           unset($_SESSION['_prevrawdata'][$updateRecordID]);
         }
 

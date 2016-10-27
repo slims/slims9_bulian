@@ -39,7 +39,8 @@ $slimsold = array(
 	'14' => array('version' => 'slims5_meranti', 'name' => 'SLiMS 5 | Meranti'),
 	'15' => array('version' => 'slims7_cendana', 'name' => 'SLiMS 7 | Cendana'),
 	'16' => array('version' => 'slims8_akasia', 'name' => 'SLiMS 8 | Akasia'),
-	'17' => array('version' => 'slims8.2_akasia', 'name' => 'SLiMS 8.2 | Akasia')
+	'17' => array('version' => 'slims8.2_akasia', 'name' => 'SLiMS 8.2 | Akasia'),
+	'18' => array('version' => 'slims8.3_akasia', 'name' => 'SLiMS 8.3 | Akasia')
 	);
 
 ?>

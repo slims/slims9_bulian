@@ -1,8 +1,11 @@
---
--- Struktur dari tabel `biblio_log`
---
+<?php
 
-CREATE TABLE IF NOT EXISTS `biblio_log` (
+
+// --
+// -- Struktur dari tabel `biblio_log`
+// --
+
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_log` (
   `biblio_log_id` int(11) NOT NULL AUTO_INCREMENT,
   `biblio_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -16,4 +19,4 @@ CREATE TABLE IF NOT EXISTS `biblio_log` (
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`biblio_log_id`),
   KEY `biblio_id` (`biblio_id`,`user_id`,`realname`,`ip`(191),`action`,`affectedrow`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
