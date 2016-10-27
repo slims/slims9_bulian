@@ -208,48 +208,48 @@ class api
   {
     if ($previous == NULL) {
       if ($current[0]['classification'] != 'NONE') {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'No. Klasifikasi: '.$current[0]['classification']);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'New data. Classification. Number: '.$current[0]['classification']);
       }
       if ($current[0]['image'] != NULL) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Berkas: '.$current[0]['image']);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'New data. Image. File: '.$current[0]['image']);
       }
       if ($current[0]['authors'] != NULL) {
         $_authors = '';
         foreach ($current[0]['authors'] as $key => $value) {
           $_authors .= $value['author_name'].'; ';
         }
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Pengarangnya: '.$_authors);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'New data. Author. Names: '.$_authors);
       }
       if ($current[0]['subjects'] != NULL) {
         $_subjects = '';
         foreach ($current[0]['subjects'] as $key => $value) {
           $_subjects .= $value['topic'].'; ';
         }
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Subjek: '.$_subjects);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'New data. Subject. Names: '.$_subjects);
       }
     } else {
       if ($current[0]['hash']['biblio'] != $previous[0]['hash']['biblio']) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'description', $current, 'Data bibliografi diperbarui.');
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'description', $current, 'Updated data. Bibliography.');
       }
       if ( ($current[0]['classification'] != 'NONE') AND ($current[0]['classification'] != $previous[0]['classification']) ) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'No. Klasifikasi: '.$current[0]['classification']);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'Updated data. Classification. Number: '.$current[0]['classification']);
       }
       if ( ($current[0]['image'] != NULL) AND ($current[0]['image'] != $previous[0]['image']) ) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Berkas: '.$current[0]['image']);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Updated data. Image. File: '.$current[0]['image']);
       }
       if ( ($current[0]['authors'] != NULL) AND ($current[0]['hash']['authors'] != $previous[0]['hash']['authors']) ) {
         $_authors = '';
         foreach ($current[0]['authors'] as $key => $value) {
           $_authors .= $value['author_name'].'; ';
         }
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Pengarangnya: '.$_authors);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Updated data. Author. Names: '.$_authors);
       }
       if ( ($current[0]['subjects'] != NULL) AND ($current[0]['hash']['subjects'] != $previous[0]['hash']['subjects']) ) {
         $_subjects = '';
         foreach ($current[0]['subjects'] as $key => $value) {
           $_subjects .= $value['topic'].'; ';
         }
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Subjek: '.$_subjects);
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Updated data. Subject. Names: '.$_subjects);
       }
 
     }
