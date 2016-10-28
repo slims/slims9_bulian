@@ -1302,13 +1302,20 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (6, 'SA', 'See Also');
 
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `vocabolary_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `topic_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `scope` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`vocabolary_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Data setting for visitor limitation
+--
+INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
+('enable_visitor_limitation', 's:1:"0";'),
+('time_visitor_limitation', 's:2:"60";');
 
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
   `biblio_id` int(11) NOT NULL DEFAULT '0',
@@ -1325,9 +1332,9 @@ CREATE TABLE IF NOT EXISTS `biblio_relation` (
 --
 ALTER TABLE `biblio_relation`
  ADD PRIMARY KEY (`biblio_id`,`rel_biblio_id`);
- 
+
 -- DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
--- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
+-- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3;
 
 --
 -- Table structure for table `mst_servers`
@@ -1350,14 +1357,23 @@ CREATE TABLE IF NOT EXISTS `biblio_log` (
   `biblio_log_id` int(11) NOT NULL AUTO_INCREMENT,
   `biblio_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `realname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ip` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `affectedrow` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rawdata` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `additional_information` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `date` datetime DEFAULT NULL,
+  `realname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `affectedrow` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rawdata` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_information` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`biblio_log_id`),
-  KEY `biblio_id` (`biblio_id`,`user_id`,`realname`,`ip`(191),`action`,`affectedrow`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `realname` (`realname`),
+  KEY `biblio_id` (`biblio_id`),
+  KEY `user_id` (`user_id`),
+  KEY `ip` (`ip`),
+  KEY `action` (`action`),
+  KEY `affectedrow` (`affectedrow`),
+  KEY `date` (`date`),
+  FULLTEXT KEY `title` (`title`),
+  FULLTEXT KEY `rawdata` (`rawdata`),
+  FULLTEXT KEY `additional_information` (`additional_information`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
