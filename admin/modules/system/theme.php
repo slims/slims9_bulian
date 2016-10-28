@@ -142,7 +142,7 @@ echo '<div class="row" style="width=100%"><div class="col-md-12">';
 foreach ($dir_tree as $dir) {
   $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-public-theme">Active</a>';
   if ($dir == $sysconf['template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" class="btn notAJAX btn-success custome-public-theme openPopUp">Customize</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-public-theme openPopUp">Customize</a>';
   }
   $output  = '<div class="col-md-3">';
   $output .= '<div class="panel panel-default">';
@@ -170,7 +170,7 @@ echo '<div class="row" style="width=100%"><div class="col-md-12">';
 foreach ($dir_tree as $dir) {
   $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-admin-theme">Active</a>';
   if ($dir == $sysconf['admin_template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" class="btn notAJAX btn-success custome-admin-theme openPopUp">Customize</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-admin-theme openPopUp">Customize</a>';
   }
   $output  = '<div class="col-md-3">';
   $output .= '<div class="panel panel-default">';

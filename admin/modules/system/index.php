@@ -23,7 +23,7 @@
 
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
-  define('INDEX_AUTH', '1');    
+  define('INDEX_AUTH', '1');
 }
 
 // key to get full database access
@@ -78,19 +78,19 @@ if (isset($_POST['updateData'])) {
     $library_subname = $dbs->escape_string(strip_tags(trim($_POST['library_subname'])));
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($library_subname)).'\' WHERE setting_name=\'library_subname\'');
 
-    // initialize template arrays
-    $template = array('theme' => $sysconf['template']['theme'], 'css' => $sysconf['template']['css']);
-    $admin_template = array('theme' => $sysconf['admin_template']['theme'], 'css' => $sysconf['admin_template']['css']);
-
-    // template
-    $template['theme'] = $_POST['template'];
-    $template['css'] = str_replace($sysconf['template']['theme'], $template['theme'], $sysconf['template']['css']);
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($template)).'\' WHERE setting_name=\'template\'');
-
-    // admin template
-    $admin_template['theme'] = $_POST['admin_template'];
-    $admin_template['css'] = str_replace($sysconf['admin_template']['theme'], $admin_template['theme'], $sysconf['admin_template']['css']);
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($admin_template)).'\' WHERE setting_name=\'admin_template\'');
+    // // initialize template arrays
+    // $template = array('theme' => $sysconf['template']['theme'], 'css' => $sysconf['template']['css']);
+    // $admin_template = array('theme' => $sysconf['admin_template']['theme'], 'css' => $sysconf['admin_template']['css']);
+    //
+    // // template
+    // $template['theme'] = $_POST['template'];
+    // $template['css'] = str_replace($sysconf['template']['theme'], $template['theme'], $sysconf['template']['css']);
+    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($template)).'\' WHERE setting_name=\'template\'');
+    //
+    // // admin template
+    // $admin_template['theme'] = $_POST['admin_template'];
+    // $admin_template['css'] = str_replace($sysconf['admin_template']['theme'], $admin_template['theme'], $sysconf['admin_template']['css']);
+    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($admin_template)).'\' WHERE setting_name=\'admin_template\'');
 
     // language
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
@@ -189,29 +189,29 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 /* Form Element(s) */
 // public template
 // scan template directory
-$template_dir = SB.$sysconf['template']['dir'];
-$dir = new simbio_directory($template_dir);
-$dir_tree = $dir->getDirectoryTree(1);
-// sort array by index
-ksort($dir_tree);
-// loop array
-foreach ($dir_tree as $dir) {
-    $tpl_options[] = array($dir, $dir);
-}
-$form->addSelectList('template', __('Public Template'), $tpl_options, $sysconf['template']['theme']);
-
-// admin template
-// scan admin template directory
-$admin_template_dir = SB.'admin'.DS.$sysconf['admin_template']['dir'];
-$dir = new simbio_directory($admin_template_dir);
-$dir_tree = $dir->getDirectoryTree(1);
-// sort array by index
-ksort($dir_tree);
-// loop array
-foreach ($dir_tree as $dir) {
-    $admin_tpl_options[] = array($dir, $dir);
-}
-$form->addSelectList('admin_template', __('Admin Template'), $admin_tpl_options, $sysconf['admin_template']['theme']);
+// $template_dir = SB.$sysconf['template']['dir'];
+// $dir = new simbio_directory($template_dir);
+// $dir_tree = $dir->getDirectoryTree(1);
+// // sort array by index
+// ksort($dir_tree);
+// // loop array
+// foreach ($dir_tree as $dir) {
+//     $tpl_options[] = array($dir, $dir);
+// }
+// $form->addSelectList('template', __('Public Template'), $tpl_options, $sysconf['template']['theme']);
+//
+// // admin template
+// // scan admin template directory
+// $admin_template_dir = SB.'admin'.DS.$sysconf['admin_template']['dir'];
+// $dir = new simbio_directory($admin_template_dir);
+// $dir_tree = $dir->getDirectoryTree(1);
+// // sort array by index
+// ksort($dir_tree);
+// // loop array
+// foreach ($dir_tree as $dir) {
+//     $admin_tpl_options[] = array($dir, $dir);
+// }
+// $form->addSelectList('admin_template', __('Admin Template'), $admin_tpl_options, $sysconf['admin_template']['theme']);
 
 // application language
 require_once(LANG.'localisation.php');
