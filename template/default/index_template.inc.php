@@ -181,27 +181,28 @@ include "partials/nav.php";
     <!-- Search form
     ============================================= -->
     <div class="s-main-search animated fadeInUp delay1">
-      <form action="index.php" method="get" autocomplete="off">
-        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCH'); ?></h1>
-        <div class="marquee down">
-          <p class="s-search-info">
-          <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
-          <!--
-          <?php echo __('use logical search "title=library AND author=robert"'); ?>
-          <?php echo __('just click on the Search button to see all collections'); ?>
-          -->
-          </p>
-        </div>
-        <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
-        <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-      </form>
-      <a href="#" class="s-search-advances" width="800" height="500" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
+
+      <div id="simply-search">
+
+        <form action="index.php" method="get" autocomplete="off">
+          <h1 class="animated fadeInUp delay2"><?php echo __('SEARCH'); ?></h1>
+          <div class="marquee down">
+            <p class="s-search-info">
+            <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
+            </p>
+            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+          </div>
+        </form>
+
+        <a href="#" class="s-search-advances" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
+
+      </div>
 
     </div>
 
-<?php endif; ?>
-
 </main>
+<?php endif; ?>
 
 
 <?php
@@ -219,7 +220,7 @@ include "partials/bg.php";
 ?>
 
 <script>
-  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
+  <?php if(isset($_GET['search']) && (isset($_GET['keywords']))) : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 
@@ -265,7 +266,7 @@ include "partials/bg.php";
   });
 
   $(window).scroll(function() {
-    console.log($(window).scrollTop());
+    // console.log($(window).scrollTop());
     if ($(window).scrollTop() > 50) {
       $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
     } else {
@@ -273,19 +274,21 @@ include "partials/bg.php";
     }
   });
 
-  $('.s-search-advances').bind('click', function() {
-    var popUpButton = $(this);
-    $.colorbox({
-      html: $('#advance-search-wrapper').html(),
-      innerWidth: function() {
-        var width = parseInt(popUpButton.attr('width'));
-        if (width) { return width; } else { return 600; } },
-      innerHeight: function() {
-        var height = parseInt(popUpButton.attr('height'));
-        if (height) { return height; } else { return 300; } },
-      title: popUpButton.attr('title')
+  $('.s-search-advances').click(function() {
+    $('#advance-search').animate({opacity : 1,}, 500, 'linear');
+    $('#simply-search, .s-menu, #content').hide();
+    $('.s-header').addClass('hide-header');
+    $('.s-background').addClass('hide-background');
+  });
+
+  $('#hide-advance-search').click(function(){
+    $('.s-header').toggleClass('hide-header');
+    $('.s-background').toggleClass('hide-background');
+    $('#advance-search').animate({opacity : 0,}, 500, 'linear', function(){
+      $('#simply-search, .s-menu, #content').show();
     });
   });
+
 </script>
 
 </body>

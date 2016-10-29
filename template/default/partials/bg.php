@@ -1,8 +1,8 @@
-<!-- Background 
+<!-- Background
 ============================================= -->
 <div class="s-background animated fadeIn">
 
-  <!-- Gradient Effect 
+  <!-- Gradient Effect
   ============================================= -->
   <div class="gradients">
     <?php if($sysconf['template']['run_gradient_animation']) : ?>
@@ -33,14 +33,14 @@
 
 </div>
 
-<?php 
+<?php
 
 /**
  * Running this animation may need high memory
  * Please make sure your computer has high performance
  * Use with your own risk
  */
-if($sysconf['template']['run_gradient_animation']) : 
+if($sysconf['template']['run_gradient_animation']) :
 ?>
 <script>
 $(document).ready(function(){
@@ -58,7 +58,7 @@ $(document).ready(function(){
         fade();
       });
     }
-    fade();  
+    fade();
 });
 </script>
 <?php endif; ?>

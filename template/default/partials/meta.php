@@ -21,6 +21,7 @@
 <?php endif; ?>
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 <meta name="generator" content="<?php echo SENAYAN_VERSION ?>">
+<meta name="theme-color" content="#000">
 
 <!-- Opengraph
 ============================================= -->
@@ -80,15 +81,15 @@
 
 <!-- Style Minified
 ============================================= -->
-<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" /> -->
 
 <!-- Style
 ============================================= -->
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['css']; ?>" /> -->
+<link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['css']; ?>" />
 
 <!-- Less
 ============================================= -->
 <!-- For Developmet Only -->
 <!-- <link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.less"/> -->
-<!-- <script>less = { env: "development" };</script> -->
-<!-- <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script> -->
+<!-- <script>less = { env: "development" };</script>
+<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script> -->

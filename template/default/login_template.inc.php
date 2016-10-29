@@ -4,9 +4,9 @@
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
  * Create by Eddy Subratha (eddy.subratha@slims.web.id)
- * 
+ *
  * Slims 8 (Akasia)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -41,7 +41,7 @@ if (!defined('INDEX_AUTH')) {
 <!DOCTYPE html>
 <html lang="<?php echo substr($sysconf['default_lang'], 0, 2); ?>" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 <head>
-<?php 
+<?php
 // Meta
 // =============================================
 include "partials/meta.php"; ?>
@@ -58,27 +58,27 @@ include "partials/meta.php"; ?>
     </div>
   </main>
 
-  <?php 
+  <?php
   // Navigation
   // =============================================
   include "partials/nav.php"; ?>
 
-  <?php 
+  <?php
   // Footer
   // =============================================
   include "partials/footer.php"; ?>
 
-  <?php 
+  <?php
   // Background
   // ================================================
   include "partials/bg.php"; ?>
 
   <script>
     $("form, input").attr({
-      autocomplete    : "off",  
-      autocorrect     : "off",  
-      autocapitalize  : "off",  
-      spellcheck      : "off"  
+      autocomplete    : "off",
+      autocorrect     : "off",
+      autocapitalize  : "off",
+      spellcheck      : "off"
     });
 
     $('.homeButton').val('<?php echo __('Back To Home'); ?>');

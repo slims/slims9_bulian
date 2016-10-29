@@ -9,19 +9,22 @@
   .s-pmenu {
     position: absolute;
     margin:0 auto;
-    left: 44%;
-    top: 115px;
+    left: 80%;
+    top: 20px;
+    z-index: 3099;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
   .s-pmenu {
     top:-50px;
-  }  
+  }
 }
 
 .s-menu {
-  position: relative;
+  position: fixed;
+  right:35px;
+  top:35px;
   margin:0 auto;
 }
 
@@ -39,10 +42,7 @@
 @media only screen and (min-width : 768px) {
   .s-menu {
       z-index: 2099;
-      position: absolute;
       left:auto;
-      right:15px;
-      top:10px;
       margin:0;
   }
 
@@ -51,7 +51,7 @@
     width: 30px;
     height: 30px;
   }
-}  
+}
 
 @media only screen and (max-width : 480px) {
   .s-menu-toggle {
@@ -65,85 +65,54 @@
 
 }
 
-.s-menu-toggle span, .s-menu-toggle span:before, .s-menu-toggle span:after {
-  cursor: pointer;
-  border-radius: 1px;
-  height: 1px;
-  width: 15px;
-  background: #282828;
-  position: absolute;
-  display: block;
-  content: '';
-  transition: all 500ms ease-in-out;
-}
-.s-menu-toggle span:before {
-  top: -3px;
-}
-.s-menu-toggle span:after {
-  bottom: -3px;
-}
-.s-menu-toggle:hover span:before {
-  top: -6px;
-}
-.s-menu-toggle:hover span:after {
-  bottom: -6px;
-}
-.s-menu-toggle.active span {
-  background-color: transparent;
-}
-.s-menu-toggle.active span:before, .s-menu-toggle.active span:after {
-  top: 0;
-}
-.s-menu-toggle.active span:before {
-  transform: rotate(45deg);
-}
-.s-menu-toggle.active span:after {
-  transform: rotate(-45deg);
-}
 .s-menu-content {
   background-color: #eee;
   width: 100%;
-  right: -100%;
+  left: 100%;
   position: fixed;
   top: 0;
   height: 100%;
-  text-align: center;
-  transition: all 500ms ease-in-out;
-  z-index: 4099;
+  transition: all .5s ease;
+  z-index: 2005;
   overflow-y: auto;
   overflow-x: hidden;
+  transform: translateX(300px);
+  padding: 10px 30px;
 }
 
 @media only screen and (min-width : 768px) {
   .s-menu-content {
-    padding: 10px 30px;
-    width: 300px;    
-    right: -300px;
+    width: 300px;
   }
 }
 
 .s-menu-content.active {
-  right: 0;
+    transform: translateX(-300px);
 }
 .s-menu-content ul {
   list-style: none;
   margin: 0;
-  padding: 0 0 75px 0;
+  padding: 0;
 }
 .s-menu-content li {
   line-height: 30pt;
 }
+
 .s-menu-content a {
-  font-size: 8pt;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-family: 'Montserrat', sans-serif;
   color: #000;
+
+  &:hover {
+    color: #DE0707;
+    text-decoration: line-through;
+  }
 }
+
 .s-menu-content h1 {
   font-weight: lighter !important;
   font-size: 20pt;
   text-transform: uppercase;
-  border-bottom: double 3px #d5d5d5;
+  border-bottom: solid 1px #d5d5d5;
   padding-bottom: 30px;
   padding-top: 0;
 }
@@ -152,7 +121,7 @@
   top: 45px;
   right: 45px;
   width: 30px;
-  height: 30px;  
+  height: 30px;
 }
 .s-menu-content .s-menu-toggle span, .s-menu-content .s-menu-toggle span:before, .s-menu-content .s-menu-toggle span:after {
   background-color: #333;
@@ -174,7 +143,6 @@
 .s-menu-info {
   text-transform: uppercase;
   letter-spacing: 4px;
-  border-top: double 3px #d5d5d5;
   padding-top: 25px;
   color: #000;
 }
