@@ -220,7 +220,7 @@ include "partials/bg.php";
 ?>
 
 <script>
-  <?php if(isset($_GET['search']) && (isset($_GET['keywords']))) : ?>
+  <?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != ''))   : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 
