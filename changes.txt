@@ -24,12 +24,21 @@ Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
 Thai: Prasitichai เรารักในหลวง <eak.pras@facebook.com>
 Bengali: A. K. M. Nurul Alam <nalamapu@gmail.com>
 Persian: Mohammad Javad Mansourzadeh <info@mansourzadeh.ir>
-Arabic: Rasyid Ridho <rasyidridho@gmail.com>
+Arabic: Rasyid Ridho <rasyidridho@gmail.com>, Bounama Kouider (for full Arabic support)        
 Malay: Jerry Mohd. Arif 
 Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
 Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
 
+
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 8.3.1 (Akasia)
+========================================================================
+Added : Template changer for OPAC and Administration template in System Configuration replacing 
+Modified : Optimized access for menu in OPAC
+Added : Advanced search in OPAC
+Added : Full Arabic Translation
+Added : Biblio log system (for API)
 
 SLiMS 8.3 (Akasia)
 ========================================================================
