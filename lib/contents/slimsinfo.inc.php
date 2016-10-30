@@ -52,7 +52,7 @@ Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Z
 <p>
 <div style="font-weight:bold;">Translator:</div>
 Germany: Tobias Zeumer<br />
-Arabic: Rasyid Ridho<br />
+Arabic: Rasyid Ridho, Bounama Kouider<br />
 Thai: Prasitichai เรารักในหลวง<br />
 Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
