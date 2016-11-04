@@ -210,6 +210,7 @@ $(document).ready( function() {
               $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
               $('#counterInfo').html(defaultMsg); 
               visitorCounterForm.enableForm().find('input[type=text]').val('');
+              $('#memberID').focus();
             }, 5000);
           },
           complete: function() {
