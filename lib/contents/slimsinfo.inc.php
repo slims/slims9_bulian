@@ -65,7 +65,8 @@ Bengali: A. K. M. Nurul Alam
 <div style="font-weight:bold;">Contribution:</div>
 Gettext support: Tobias Zeumer<br />
 Membercard modification: Jushadi<br />
-English documentation: Jim Richardson
+English documentation: Jim Richardson<br />
+OAI Support for Indonesia One Search: Ismail Fahmi
 </p>
 
 </div>
