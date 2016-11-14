@@ -68,7 +68,8 @@ function main_menu()
       $_formated_module_name = ucwords(str_replace('_', ' ', $_module['name']));
       $_mod_dir = $_module['path'];
       if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && file_exists($modules_dir.DS.$_mod_dir)) {
-        $_menu .= '<li><input type="radio" name="s-menu" id="'.$_module['name'].'" role="button"><label for="'.$_module['name'].'" class="menu '.$_module['name'].'" title="'.$_module['desc'].'"><i class="nav-icon '.$icon[$_module['name']].'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="'.$_module['name'].'-close" role="button"><label for="'.$_module['name'].'-close" class="menu '.$_module['name'].' s-current s-menu-hide"><i class="nav-icon '.$icon[$_module['name']].'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label>';
+        $_icon = isset($icon[$_module['name']])?$icon[$_module['name']]:'fa fa-bars';
+        $_menu .= '<li><input type="radio" name="s-menu" id="'.$_module['name'].'" role="button"><label for="'.$_module['name'].'" class="menu '.$_module['name'].'" title="'.$_module['desc'].'"><i class="nav-icon '.$_icon.'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="'.$_module['name'].'-close" role="button"><label for="'.$_module['name'].'-close" class="menu '.$_module['name'].' s-current s-menu-hide"><i class="nav-icon '.$_icon.'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label>';
         $_menu .= sub_menu($_mod_dir, $_module);
         $_menu .= '</li>';
       }
