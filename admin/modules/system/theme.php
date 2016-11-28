@@ -140,9 +140,9 @@ $dir_tree = $dir->getDirectoryTree(1);
 ksort($dir_tree);
 echo '<div class="row" style="width=100%"><div class="col-md-12">';
 foreach ($dir_tree as $dir) {
-  $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-public-theme">Active</a>';
+  $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-public-theme">'.__('Activate').'</a>';
   if ($dir == $sysconf['template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-public-theme openPopUp">Customize</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-public-theme openPopUp">'.__('Customize').'</a>';
   }
   $output  = '<div class="col-md-3">';
   $output .= '<div class="panel panel-default">';
@@ -168,9 +168,9 @@ $dir_tree = $dir->getDirectoryTree(1);
 ksort($dir_tree);
 echo '<div class="row" style="width=100%"><div class="col-md-12">';
 foreach ($dir_tree as $dir) {
-  $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-admin-theme">Active</a>';
+  $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-admin-theme">'.__('Activate').'</a>';
   if ($dir == $sysconf['admin_template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-admin-theme openPopUp">Customize</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-admin-theme openPopUp">'.__('Customize').'</a>';
   }
   $output  = '<div class="col-md-3">';
   $output .= '<div class="panel panel-default">';
@@ -200,8 +200,8 @@ echo '</div></div>';
           method: 'POST',
           data: {theme: 'public', name: theme}
         }).done(function(msg) {
-          $('a.btn-success.custome-public-theme').removeClass('btn-success custome-public-theme openPopUp').addClass('btn-default set-public-theme').text('Active');
-          current.removeClass('btn-default set-public-theme').addClass('btn-success custome-public-theme openPopUp').text('Customize');
+          $('a.btn-success.custome-public-theme').removeClass('btn-success custome-public-theme openPopUp').addClass('btn-default set-public-theme').text('<?php echo __('Activate') ?>');
+          current.removeClass('btn-default set-public-theme').addClass('btn-success custome-public-theme openPopUp').text('<?php echo __('Customize') ?>');
         });
       });
 
@@ -214,8 +214,8 @@ echo '</div></div>';
           method: 'POST',
           data: {theme: 'admin', name: theme}
         }).done(function(msg) {
-          $('a.btn-success.custome-admin-theme').removeClass('btn-success custome-admin-theme openPopUp').addClass('btn-default set-admin-theme').text('Active');
-          current.removeClass('btn-default set-admin-theme').addClass('btn-success custome-admin-theme openPopUp').text('Customize');
+          $('a.btn-success.custome-admin-theme').removeClass('btn-success custome-admin-theme openPopUp').addClass('btn-default set-admin-theme').text('<?php echo __('Activate') ?>');
+          current.removeClass('btn-default set-admin-theme').addClass('btn-success custome-admin-theme openPopUp').text('<?php echo __('Customize') ?>');
           window.location.href = 'index.php';
         });
       });
