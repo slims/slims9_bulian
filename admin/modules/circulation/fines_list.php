@@ -184,6 +184,22 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     // print out the form object
     echo $form->printOut();
 } else {
+
+        $fines_alert = FALSE;
+        $total_unpaid_fines = 0;
+        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id='.$_SESSION['memberID'].' AND debet > credit');
+        $unpaid_fines = $_unpaid_fines->fetch_all();
+        #var_dump($unpaid_fines);
+        if (!empty($unpaid_fines)) {
+            foreach ($unpaid_fines as $key => $value) {
+                $total_unpaid_fines = $total_unpaid_fines + $value['3'] - $value['4'];
+            }
+        }
+        if ($total_unpaid_fines > 0) {
+            $fines_alert = TRUE;
+        }
+        echo '<div style="color:red; font-weight:bold;">Total of unpaid fines: '.$total_unpaid_fines.'</div>';
+
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);
     // table spec
