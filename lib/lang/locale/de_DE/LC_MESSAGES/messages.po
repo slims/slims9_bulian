@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-21 02:24+0200\n"
-"PO-Revision-Date: 2016-09-21 02:27+0200\n"
+"PO-Revision-Date: 2016-12-01 20:14+0100\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -3955,7 +3955,7 @@ msgstr "Sie sind im Begriff die Angaben für folgendem Verlag zu bearbeiten"
 
 #: admin/modules/master_file/rda_cmc.php:67
 msgid "Name can't be empty"
-msgstr "Es muss ien Name angegeben werden"
+msgstr "Es muss ein Name angegeben werden"
 
 #: admin/modules/master_file/rda_cmc.php:87
 msgid "Data Successfully Updated"
@@ -6140,6 +6140,16 @@ msgstr "Bibliotheksname"
 #: admin/modules/system/index.php:187
 msgid "Library Subname"
 msgstr "Namenszusatz"
+
+#: admin/modules/system/theme.php:143 admin/modules/system/theme.php:171
+#: admin/modules/system/theme.php:203 admin/modules/system/theme.php:217
+msgid "Activate"
+msgstr "Aktivieren"
+
+#: admin/modules/system/theme.php:145 admin/modules/system/theme.php:173
+#: admin/modules/system/theme.php:204 admin/modules/system/theme.php:218
+msgid "Customize"
+msgstr "Anpassen"
 
 #: admin/modules/system/index.php:201
 msgid "Public Template"
