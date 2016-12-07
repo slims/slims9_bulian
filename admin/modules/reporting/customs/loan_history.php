@@ -127,7 +127,7 @@ if (!$reportView) {
 	</div>
     </fieldset>
     <!-- filter end -->
-    <!-- <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div> -->
+    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
