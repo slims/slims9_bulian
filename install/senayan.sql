@@ -1302,7 +1302,7 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (6, 'SA', 'See Also');
 
 CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
-  `vocabolary_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,
   `topic_id` int(11) NOT NULL,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
