@@ -374,8 +374,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else { $itemcode .= $b; }
         $itemcode .= $chars[1];
 
-        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
-        VALUES (%d, '%s', '%s', %d)", $updateRecordID?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, item_status_id, input_date, last_update, uid)
+        VALUES (%d, '%s', '%s', %d, 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
         @$dbs->query($item_insert_sql);
       }
     }
