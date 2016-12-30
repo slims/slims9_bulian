@@ -1,0 +1,15 @@
+/*form style*/
+textarea,
+select,
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 2px;
+    border: 1px solid #a5a5a5;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: #666;
+    line-height: 20px;
+}
