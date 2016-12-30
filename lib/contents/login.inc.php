@@ -197,8 +197,8 @@ if (isset($_POST['updatePassword'])) {
     if (isset($_GET['update']) && !empty($_GET['update'])) { ?>
 
         <?php if (isset($_COOKIE['token']) && $_GET['update'] === $_COOKIE['token']) { ?>
-        <div class="alert alert-danger">Hi <?php echo $_uname; ?>, please update your password!</div>
-        <div class="heading1"><?php echo __('Current password'); ?></div>
+        <div class="alert alert-danger"><?php echo str_replace('{username}', $_uname, __('Hi {username}, please update your password!')) ?></div>
+        <div class="heading1"><?php echo __('Current Password'); ?></div>
         <div class="login_input"><input type="password" name="currentPasswd" id="userName" class="login_input" /></div>
         <div class="heading1"><?php echo __('New Password'); ?></div>
         <div class="login_input"><input type="password" name="newPasswd" class="login_input" /></div>

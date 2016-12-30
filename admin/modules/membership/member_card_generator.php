@@ -255,7 +255,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in window
         echo '<script type="text/javascript">top.jQuery.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Member Card Printing').'"})</script>';
-    } else { utility::jsAlert('ERROR! Cards failed to generate, possibly because '.SB.FLS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Cards failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

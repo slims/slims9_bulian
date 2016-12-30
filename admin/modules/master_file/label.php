@@ -55,7 +55,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $labelDesc = trim(strip_tags($_POST['labelDesc']));
     // check form validity
     if (empty($labelDesc) OR empty($labelName)) {
-        utility::jsAlert('Label Name OR Label Description must be filled!');
+        utility::jsAlert(__('Label Name OR Label Description must be filled!'));
         exit();
     } else {
         $data['label_desc'] = $dbs->escape_string($labelDesc);
@@ -73,11 +73,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
               $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
               // write log
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename);
-              utility::jsAlert('Label image file successfully uploaded');
+              utility::jsAlert(__('Label image file successfully uploaded'));
             } else {
               // write log
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')');
-              utility::jsAlert('FAILED to upload label image! Please see System Log for more detailed information');
+              utility::jsAlert(__('FAILED to upload label image! Please see System Log for more detailed information'));
             }
         }
         $data['input_date'] = date('Y-m-d');

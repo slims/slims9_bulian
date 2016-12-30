@@ -113,24 +113,24 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 $msg .= '<div class="panel-body">';
                 $msg .= '<form method="post" action="index.php?p=member">';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isusername">Username</label>';
-                $msg .= '<input type="text" class="form-control" id="isusername" name="isusername" placeholder="Username">';
+                $msg .= '<label for="isusername">'.__('Username').'</label>';
+                $msg .= '<input type="text" class="form-control" id="isusername" name="isusername" placeholder="'.__('Username').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isoldpassword">Current Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isoldpassword" name="isoldpassword" placeholder="Old Password">';
+                $msg .= '<label for="isoldpassword">'.__('Current Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isoldpassword" name="isoldpassword" placeholder="'.__('Current Password').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isnewpassword">New Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isnewpassword" name="isnewpassword" placeholder="New Password">';
+                $msg .= '<label for="isnewpassword">'.__('New Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isnewpassword" name="isnewpassword" placeholder="'.__('New Password').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isconfirmnewpassword">Confirm New Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isconfirmnewpassword" name="isconfirmnewpassword" placeholder="Confirm New Password">';
+                $msg .= '<label for="isconfirmnewpassword">'.__('Confirm New Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isconfirmnewpassword" name="isconfirmnewpassword" placeholder="'.__('Confirm New Password').'">';
                 $msg .= '</div>';
                 $msg .= '</div>';
                 $msg .= '<div class="panel-footer">';
-                $msg .= '<button type="submit" name="renewPass" class="btn btn-success">Update</button>';
+                $msg .= '<button type="submit" name="renewPass" class="btn btn-success">'.__('Update').'</button>';
                 $msg .= '</form></div></div>';
                 simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);                
             } else {
@@ -572,7 +572,7 @@ if (!$is_member_login) {
         $_loan_list->using_AJAX = false;
         // return the result
         $_result = $_loan_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
-        $_result = '<div class="memberLoanListInfo">'.$_loan_list->num_rows.' '.__('item(s) currently on loan').' | <a href="?p=download_current_loan">Download All Current Loan</a></div>'."\n".$_result;
+        $_result = '<div class="memberLoanListInfo">'.$_loan_list->num_rows.' '.__('item(s) currently on loan').' | <a href="?p=download_current_loan">' . __('Download All Current Loan') . '</a></div>'."\n".$_result;
         return $_result;
     }
 
@@ -607,7 +607,7 @@ if (!$is_member_login) {
         $_loan_hist->using_AJAX = false;
         // return the result
         $_result = $_loan_hist->createDataGrid($dbs, $_table_spec, $num_recs_show);
-        $_result = '<div class="memberLoanHistInfo"> &nbsp;'.$_loan_hist->num_rows.' '.__('item(s) loan history').' | <a href="?p=download_loan_history">Download All Loan History</a></div>'."\n".$_result;
+        $_result = '<div class="memberLoanHistInfo"> &nbsp;'.$_loan_hist->num_rows.' '.__('item(s) loan history').' | <a href="?p=download_loan_history">' . __('Download All Loan History') . '</a></div>'."\n".$_result;
         return $_result;
     }
     /* Experimental Loan History - end */
