@@ -196,7 +196,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     $html_str .= '</style>'."\n";
     $html_str .= '</head>'."\n";
     $html_str .= '<body>'."\n";
-    $html_str .= '<a href="#" onclick="window.print()">Print Again</a><br /><br />'."\n";
+    $html_str .= '<a href="#" onclick="window.print()">' . __('Print Again') . '</a><br /><br />'."\n";
     $html_str .= '<table style="margin: 0; padding: 0;" cellspacing="0" cellpadding="0">'."\n";
     // loop the chunked arrays to row
     foreach ($chunked_card_arrays as $membercard_rows) {
