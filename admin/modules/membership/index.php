@@ -510,9 +510,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // member email
     $form->addTextField('text', 'memberEmail', __('E-mail'), $rec_d['member_email'], 'style="width: 40%;"');
     // member password
-    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
     // member password confirmation
-    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
 
     // edit mode messagge
     if ($form->edit_mode) {
