@@ -91,7 +91,7 @@ if (file_exists($cache['file'])) {
 genContentType($imagefilename);
 
 $target = imagecreatetruecolor($res_width,$res_height);
-if (preg_match("/.jpg$/i", $imagefilename)) $source = imagecreatefromjpeg($imagefilename);
+if (preg_match("/.jpg$|.jpeg$/i", $imagefilename)) $source = imagecreatefromjpeg($imagefilename);
 if (preg_match("/.gif$/i", $imagefilename)) $source = imagecreatefromgif($imagefilename);
 if (preg_match("/.png$/i", $imagefilename)) $source = imagecreatefrompng($imagefilename);
 
@@ -105,7 +105,7 @@ imagecopyresampled($target,$source,0,0,$xoord,$yoord,$res_width,$res_height,$wid
 imagedestroy($source);
 
 if ($cache['exist'] == false) {
-  if (preg_match("/.jpg$/i", $imagefilename)) {
+  if (preg_match("/.jpg$|.jpeg$/i", $imagefilename)) {
     imagejpeg($target,null,90);
     imagejpeg($target,$cache['file'],90);
   }

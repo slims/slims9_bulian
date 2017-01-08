@@ -1432,6 +1432,7 @@ tr.dataListHeader > td > a {
 #memberIDList {
 	margin-top: -5px;
 	width: 181px !important;
+        z-index: 1;
 }
 .ajaxDDlist {
 	border-color: #ddd !important;
