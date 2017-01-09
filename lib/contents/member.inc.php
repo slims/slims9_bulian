@@ -699,10 +699,14 @@ if (!$is_member_login) {
     echo '</div>';
     echo showLoanHist();
     echo '</div>';
+
+    // default is to show the title basket
+    if (!isset($sysconf['enable_mark']) || $sysconf['enable_mark']) {
 	echo '<div class="tagline">';
-    echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
-    echo showBasket();
-    echo '</div>';
+        echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
+        echo showBasket();
+        echo '</div>';
+    }
     // change password only form NATIVE authentication, not for others such as LDAP
     if ($sysconf['auth']['member']['method'] == 'native') {
 	echo '<div class="tagline">';

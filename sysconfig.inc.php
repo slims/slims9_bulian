@@ -191,6 +191,9 @@ $sysconf['promote_first_emphasized'] = true;
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
     .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
 
+/* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
+$sysconf['enable_mark'] = true;
+
 /* XML */
 $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
