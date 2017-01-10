@@ -81,7 +81,9 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   $_delete2 = $dbs->query(sprintf('UPDATE search_biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   if ($_delete) {
-    @unlink(sprintf(IMGBS.'docs/%s',$_POST['img']));
+    $postImage = stripslashes($_POST['img']);
+    $postImage = str_replace('/', '', $postImage);
+    @unlink(sprintf(IMGBS.'docs/%s',$postImage));
     exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
   }
   exit();

@@ -112,7 +112,7 @@ function get_shortcuts_menu()
 {
     global $dbs;
     $shortcuts = array();
-    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$_SESSION['uid'].'\'');
+    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$dbs->escape_string($_SESSION['uid']).'\'');
     $shortcuts_d = $shortcuts_q->fetch_assoc();
     if ($shortcuts_q->num_rows > 0) {
       $shortcuts = unserialize($shortcuts_d['setting_value']);

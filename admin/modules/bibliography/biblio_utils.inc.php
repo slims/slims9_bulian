@@ -25,6 +25,7 @@ function getAuthorID($str_author_name, $str_author_type, &$arr_cache = false)
 {
   global $dbs;
   $str_value = trim($str_author_name);
+  $str_author_type = $dbs->escape_string($str_author_type);
   if ($arr_cache) {
       if (isset($arr_cache[$str_value])) {
           return $arr_cache[$str_value];
