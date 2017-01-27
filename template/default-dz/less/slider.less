@@ -1,0 +1,164 @@
+.jcarousel-skin-tango .jcarousel-container {
+  margin:0 auto;
+}
+
+.jcarousel-skin-tango .jcarousel-direction-rtl {
+	direction: rtl;
+}
+
+.jcarousel-skin-tango .jcarousel-container-horizontal {
+    width: 100%;
+    padding: 0 40px;
+}
+
+@media only screen and (min-width : 768px) {
+    .jcarousel-skin-tango .jcarousel-container-horizontal {
+        width: 89%;
+        padding: 0px 85px;
+    }
+}
+
+.jcarousel-skin-tango .jcarousel-clip {
+    overflow: hidden;
+}
+
+.jcarousel-skin-tango .jcarousel-clip-horizontal {
+    width:  100%;
+    height: 125px;
+    top:35px;
+}
+
+.jcarousel-skin-tango .jcarousel-item {
+    border-radius: 4px;
+    width: 90px;
+    height: 125px;
+    box-shadow: 0 0 10px #000;
+    position: relative;
+}
+
+.jcarousel-skin-tango .jcarousel-item:before {
+    content: '';
+    background: transparent url(img/book-side.png) top center no-repeat;
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    z-index: 2002;
+    left: -3px;    
+}
+
+.jcarousel-skin-tango .jcarousel-item-horizontal {
+	margin-left: 0px;
+    margin-right: 18px;
+}
+
+@media only screen and (min-width : 768px) {
+    .jcarousel-skin-tango .jcarousel-item-horizontal {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+.jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal {
+	margin-left: 10px;
+    margin-right: 0;
+}
+
+.jcarousel-skin-tango .jcarousel-item-placeholder {
+    background: #fff;
+    color: #000;
+}
+
+/**
+ *  Horizontal Buttons
+ */
+.jcarousel-skin-tango .jcarousel-next-horizontal {
+    position: absolute;
+    top: 110px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:before {
+    content: '\f054';
+    font-family: FontAwesome;
+    font-size: 24pt;
+    color: #333;
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal:before {
+    content: '\f053';
+    font-family: FontAwesome;
+    font-size: 24pt;
+    color: #333;
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:hover:before {
+    color: #fff;
+    cursor: pointer;
+    margin-left:10px;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal:hover:before {
+    color: #fff;
+    cursor: pointer;
+    margin-right:10px;
+}
+
+.jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-next-horizontal {
+    left: 5px;
+    right: auto;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:hover,
+.jcarousel-skin-tango .jcarousel-next-horizontal:focus {
+    background-position: -32px 0;
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:active {
+    background-position: -64px 0;
+}
+
+.jcarousel-skin-tango .jcarousel-next-disabled-horizontal,
+.jcarousel-skin-tango .jcarousel-next-disabled-horizontal:hover,
+.jcarousel-skin-tango .jcarousel-next-disabled-horizontal:focus,
+.jcarousel-skin-tango .jcarousel-next-disabled-horizontal:active {
+    cursor: default;
+    background-position: -96px 0;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 110px;
+    left: 5px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-prev-horizontal {
+    left: auto;
+    right: 5px;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal:hover,
+.jcarousel-skin-tango .jcarousel-prev-horizontal:focus {
+    background-position: -32px 0;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-horizontal:active {
+    background-position: -64px 0;
+}
+
+.jcarousel-skin-tango .jcarousel-prev-disabled-horizontal,
+.jcarousel-skin-tango .jcarousel-prev-disabled-horizontal:hover,
+.jcarousel-skin-tango .jcarousel-prev-disabled-horizontal:focus,
+.jcarousel-skin-tango .jcarousel-prev-disabled-horizontal:active {
+    cursor: default;
+    background-position: -96px 0;
+}
+

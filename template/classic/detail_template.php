@@ -170,7 +170,7 @@
 <?php endif ?>
 
 <!-- Comment -->
-<?php // if(isset($_SESSION['mid'])) : ?>
+<?php if(isset($_SESSION['mid']) && $sysconf['comment']['enable']) : ?>
 
 <div class="slims-card slims-card--default">
 	<div class="slims-card--header">
@@ -179,4 +179,4 @@
 	<?php echo showComment($biblio_id); ?>
 </div>
 
-<?php // endif ?>
+<?php endif ?>

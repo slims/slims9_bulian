@@ -173,18 +173,20 @@ class member
         $_mail->IsSMTP(); // telling the class to use SMTP
 
         // get message template
-        $_msg_tpl = @file_get_contents(SB.'admin/admin_template/overdue-mail-tpl.html');
+        ob_start();
+        include SB.'admin/admin_template/overdue-mail-tpl.php';
+        $_msg_tpl = ob_get_clean();
 
         // date
         $_curr_date = date('Y-m-d H:i:s');
 
         // compile overdue data
         $_overdue_data = '<table width="100%" border="1">'."\n";
-        $_overdue_data .= '<tr><th>Title</th><th>Item Code</th><th>Loan Date</th><th>Due Date</th><th>Overdue</th></tr>'."\n";
+        $_overdue_data .= '<tr><th>' . __('Title') . '</th><th>' . __('Item Code') . '</th><th>' . __('Loan Date') . '</th><th>' . __('Due Date') . '</th><th>' . __('Overdue') . '</th></tr>'."\n";
         $_arr_overdued = self::getOverduedLoan($this->obj_db, $this->member_id);
         foreach ($_arr_overdued as $_overdue) {
             $_overdue_data .= '<tr>';
-            $_overdue_data .= '<td>'.$_overdue['title'].'</td><td>'.$_overdue['item_code'].'</td><td>'.$_overdue['loan_date'].'</td><td>'.$_overdue['due_date'].'</td><td>'.$_overdue['Overdue Days'].' days</td>'."\n";
+            $_overdue_data .= '<td>'.$_overdue['title'].'</td><td>'.$_overdue['item_code'].'</td><td>'.$_overdue['loan_date'].'</td><td>'.$_overdue['due_date'].'</td><td>'.$_overdue['Overdue Days'].' ' . __('days') . '</td>'."\n";
             $_overdue_data .= '</tr>';
         }
         $_overdue_data .= '</table>';
@@ -204,7 +206,8 @@ class member
         $_mail->SetFrom($sysconf['mail']['from'], $sysconf['mail']['from_name']);
         $_mail->AddReplyTo($sysconf['mail']['reply_to'], $sysconf['mail']['reply_to_name']);
         $_mail->AddAddress($this->member_email, $this->member_name);
-        $_mail->Subject = 'Overdue Notice for Member '.$this->member_name.' ('.$this->member_email.')';
+        $_mail->Subject = str_replace(array('{member_name}', '{member_email}'), array($this->member_name, $this->member_email), __('Overdue Notice for Member {member_name} ({member_email})'));
+
         $_mail->AltBody = strip_tags($_message);
         $_mail->MsgHTML($_message);
 

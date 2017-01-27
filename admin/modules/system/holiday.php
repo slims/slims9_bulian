@@ -55,7 +55,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $holDesc = trim($dbs->escape_string(strip_tags($_POST['holDesc'])));
     if (empty($holDesc)) {
-        utility::jsAlert('Holiday description can\'t be empty!');
+        utility::jsAlert(__('Holiday description can\'t be empty!'));
         exit();
     } else {
         $data['holiday_date'] = trim(preg_replace('@\s[0-9]{2}:[0-9]{2}:[0-9]{2}$@i', '', $_POST['holDate']));

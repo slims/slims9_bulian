@@ -18,7 +18,7 @@ $table_fields = $dbs->escape_string(trim($_POST['tableFields']));
 if (isset($_POST['id']) AND !empty($_POST['id'])) {
   $id = $dbs->escape_string(trim($_POST['id']));
 } else {
-  die('<strong style="color: #FF0000;">No ID Supplied!</strong>');
+  die('<strong style="color: #FF0000;">' . __('No ID Supplied!') . '</strong>');
 }
 
 // sql string

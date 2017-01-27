@@ -30,6 +30,7 @@ if (!defined('INDEX_AUTH')) {
 /* LOCAL DATABASE CONNECTION config */
 // database constant
 // change below setting according to your database configuration
+define('DB_HOST', '_DB_HOST_');
 define('DB_NAME', '_DB_NAME_');
 define('DB_USERNAME', '_DB_USER_');
 define('DB_PASSWORD', '_DB_PASSWORD_');

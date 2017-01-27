@@ -81,7 +81,9 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   $_delete2 = $dbs->query(sprintf('UPDATE search_biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   if ($_delete) {
-    @unlink(sprintf(IMGBS.'docs/%s',$_POST['img']));
+    $postImage = stripslashes($_POST['img']);
+    $postImage = str_replace('/', '', $postImage);
+    @unlink(sprintf(IMGBS.'docs/%s',$postImage));
     exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
   }
   exit();
@@ -375,12 +377,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $itemcode .= $chars[1];
 
         $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
-        VALUES (%d, '%s', '%s', %d)", $updateRecordID?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
+        VALUES (%d, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
         @$dbs->query($item_insert_sql);
       }
     }
 
-    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'bibliography/index.php\', {method: \'post\', addData: \'itemID='.$last_biblio_id.'&detail=true\'});</script>';
+    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'bibliography/index.php\', {method: \'post\', addData: \'itemID='.(isset($updateRecordID)?$updateRecordID:$last_biblio_id).'&detail=true\'});</script>';
     exit();
   }
   exit();
@@ -591,14 +593,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $str_input  = '<a class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'"><i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>&nbsp;';
   $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';
-  $str_input .= __('Total item(s)').': <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
+  $str_input .= '<label id="totalItemsLabel">' . __('Total item(s)').':</label> <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
   // get collection type data related to this record from database
     $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
     $coll_type_options = array();
     while ($coll_type_d = $coll_type_q->fetch_row()) {
         $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
     }
-  $str_input .= __('Collection Type').': '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  $str_input .= '<label id="collTypeIDLabel">' . __('Collection Type').':</label> '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {

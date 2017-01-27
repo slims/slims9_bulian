@@ -118,9 +118,9 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert('Fines data succesfully deleted!');
+        utility::jsAlert(__('Fines data succesfully deleted!'));
     } else {
-        utility::jsAlert('Fines data FAILED to delete!');
+        utility::jsAlert(__('Fines data FAILED to delete!'));
     }
 }
 /* RECORD OPERATION END */
@@ -187,8 +187,8 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 
         $fines_alert = FALSE;
         $total_unpaid_fines = 0;
-        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id='.$_SESSION['memberID'].' AND debet > credit');
-        $unpaid_fines = $_unpaid_fines->fetch_all();
+        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id=\''.$_SESSION['memberID'].'\' AND debet > credit');
+        $unpaid_fines = $_unpaid_fines->fetch_row();
         #var_dump($unpaid_fines);
         if (!empty($unpaid_fines)) {
             foreach ($unpaid_fines as $key => $value) {

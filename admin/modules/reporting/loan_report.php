@@ -130,7 +130,7 @@ foreach ($loan_report as $headings=>$report_d) {
 if (isset($_GET['print'])) {
     // html strings
     $html_str = '<!DOCTYPE html>';
-    $html_str .= '<html><head><title>'.$sysconf['library_name'].' Membership General Statistic Report</title>';
+    $html_str .= '<html><head><title>'.$sysconf['library_name'].' '.__('Loan Report').'</title>';
     $html_str .= '<style type="text/css">'."\n";
     $html_str .= 'body {padding: 0.2cm}'."\n";
     $html_str .= 'body * {color: black; font-size: 11pt;}'."\n";
@@ -151,7 +151,7 @@ if (isset($_GET['print'])) {
     if ($file_write) {
         // open result in new window
         echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.REP.'/loan_stat_print_result.html", width: 800, height: 500})</script>';
-    } else { utility::jsAlert('ERROR! Loan statistic report failed to generate, possibly because '.REPBS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Loan Report failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

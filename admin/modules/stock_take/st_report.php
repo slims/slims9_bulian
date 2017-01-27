@@ -196,7 +196,7 @@ if ($stk_query->num_rows < 1) {
     // check if we are on printed mode
     if (isset($_GET['print'])) {
         // html strings
-        $html_str = '<html><head><title>'.$sysconf['library_name'].' Current Stock Take Report</title>';
+        $html_str = '<html><head><title>'.$sysconf['library_name'].' ' . __('Current Stock Take Report') . '</title>';
         $html_str .= '<style type="text/css">'."\n";
         $html_str .= 'body {padding: 0.2cm}'."\n";
         $html_str .= 'body * {color: black; font-size: 11pt;}'."\n";
@@ -207,7 +207,7 @@ if ($stk_query->num_rows < 1) {
         $html_str .= '</style>'."\n";
         $html_str .= '</head>';
         $html_str .= '<body>'."\n";
-        $html_str .= '<h3>'.$sysconf['library_name'].' - Current Stock Take Report</h3>';
+        $html_str .= '<h3>'.$sysconf['library_name'].' - ' . __('Current Stock Take Report') . '</h3>';
         $html_str .= '<hr size="1" />'."\n";
         $html_str .= $report_content;
         $html_str .= '<script type="text/javascript">self.print();</script>'."\n";
@@ -217,7 +217,7 @@ if ($stk_query->num_rows < 1) {
         if ($file_write) {
             // open result in new window
             echo '<script type="text/javascript">parent.openWin(\''.SWB.'/'.FLS.'/'.REP.'/stock_take_print_result.html\', \'popMemberReport\', 800, 500, true)</script>';
-        } else { utility::jsAlert('ERROR! Membership statistic report failed to generate, possibly because '.REPBS.' directory is not writable'); }
+        } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Current Stock Take Report failed to generate, possibly because {directory} directory is not writable'))); }
         exit();
     } else {
         echo $report_content;

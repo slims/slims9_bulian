@@ -87,7 +87,7 @@ class biblio_list extends biblio_list_model
     public function compileSQL()
     {
 	     $_sql_str = 'SELECT SQL_CALC_FOUND_ROWS index.biblio_id, index.title,
-	     	 index.author, index.image, index.isbn_issn, index.labels
+	     	 index.author, index.image, index.isbn_issn, index.labels, index.publisher, index.publish_place, index.publish_year
 	     	 FROM search_biblio AS `index`';
 	     if (isset($this->criteria['sql_criteria'])) {
 	     	 $_sql_str .= ' WHERE '.$this->criteria['sql_criteria'];
