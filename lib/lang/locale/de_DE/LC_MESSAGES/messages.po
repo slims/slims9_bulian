@@ -2847,8 +2847,8 @@ msgid "Item {itemCode} is being reserved by member {member}"
 msgstr "Exemplar {itemCode} ist durch Mitglied {member} vorgemerkt"
 
 #: admin/modules/circulation/circulation_action.php:318
-msgid " successfully returned on"
-msgstr " erfolgreich zurückgebucht am"
+msgid "Item {itemCode} successfully returned on&nbsp;{returnDate}"
+msgstr "Exemplar {itemCode} am&nbsp;{returnDate} erfolgreich zurückgebucht"
 
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
