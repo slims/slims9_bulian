@@ -1278,7 +1278,7 @@ keyframes coverUp 100% {
   .biblioRecord .subItem {
     bottom: 10px;
     margin-left: 18px;
-    position: absolute;
+    position: relative;
   }
 }
 .biblioRecord .detailLink,
@@ -1445,7 +1445,7 @@ keyframes coverUp 100% {
 /* Collection Mark
  ================================ */
 .biblioRecord .biblioCheck {
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 10px;
   z-index: -1;
@@ -1454,7 +1454,8 @@ keyframes coverUp 100% {
   cursor: pointer;
   background: #282828;
   width: 100%;
-  position: fixed;
+  position: relative;
+  margin-top: 10px;
   top: 0px;
   right: 0px;
   font-size: 8px;

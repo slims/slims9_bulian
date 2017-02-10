@@ -156,7 +156,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // checkbox for marking collection
   $_i= rand(); // Add By Eddy Subratha
   $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-  $output .= '<div class="subItem">'.$detail_button.$xml_button.$_check_mark.$cite_button.'</div>';
+  $output .= '<div class="subItem">'.$detail_button.$xml_button.$cite_button.$_check_mark.'</div>';
   
   // social buttons
   if ($sysconf['social_shares']) {
