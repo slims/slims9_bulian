@@ -301,3 +301,6 @@ class api
   }
 
 }
+
+#require_once 'member_api.inc.php';
+require_once 'circulation_api.inc.php';
