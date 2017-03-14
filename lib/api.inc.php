@@ -300,6 +300,17 @@ class api
     return $_return;
   }
 
+  /**
+   * Convert array to object
+   *
+   * @param array $array
+   * @return object
+   */
+  public static function to_object($array)
+  {
+    return json_decode(json_encode($array));
+  }
+
 }
 
 #require_once 'member_api.inc.php';
