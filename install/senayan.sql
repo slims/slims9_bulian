@@ -345,21 +345,25 @@ CREATE TABLE IF NOT EXISTS `kardex` (
 --
 
 CREATE TABLE IF NOT EXISTS `loan` (
-  `loan_id` int(11) NOT NULL auto_increment,
-  `item_code` varchar(20) collate utf8_unicode_ci default NULL,
-  `member_id` varchar(20) collate utf8_unicode_ci default NULL,
+  `loan_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `loan_date` date NOT NULL,
   `due_date` date NOT NULL,
-  `renewed` int(11) NOT NULL default '0',
-  `loan_rules_id` int(11) NOT NULL default '0',
-  `actual` date default NULL,
-  `is_lent` int(11) NOT NULL default '0',
-  `is_return` int(11) NOT NULL default '0',
-  `return_date` date default NULL,
-  PRIMARY KEY  (`loan_id`),
+  `renewed` int(11) NOT NULL DEFAULT '0',
+  `loan_rules_id` int(11) NOT NULL DEFAULT '0',
+  `actual` date DEFAULT NULL,
+  `is_lent` int(11) NOT NULL DEFAULT '0',
+  `is_return` int(11) NOT NULL DEFAULT '0',
+  `return_date` date DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`loan_id`),
   KEY `item_code` (`item_code`),
-  KEY `member_id` (`member_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  KEY `member_id` (`member_id`),
+  KEY `input_date` (`input_date`,`last_update`,`uid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `loan`
