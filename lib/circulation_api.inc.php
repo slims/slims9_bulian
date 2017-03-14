@@ -57,7 +57,7 @@ class circapi
         $i++;
       }
     }
-    return (object) $_return;
+    return api::to_object($_return);
   }
 
   public static function loan_extended($obj_db, $member_id, $loan_id)
