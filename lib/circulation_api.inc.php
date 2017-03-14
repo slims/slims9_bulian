@@ -142,7 +142,11 @@ class circapi
         $_sql_fines = 'INSERT INTO fines VALUES (NULL, \''.$_today.'\', \''.$member_id.'\', \''.$total_fines.'\', \'0\', \'Overdue fines for item '.$_item_code.'\')';
         $_stmt_fines = $obj_db->query($_sql_fines);
       }
+      if ($_stmt_doextend) {
+        return TRUE;
+      }
     }
+    return FALSE;
   }
 }
 
