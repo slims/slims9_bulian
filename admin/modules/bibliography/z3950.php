@@ -37,6 +37,7 @@ require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+require MDLBS.'system/biblio_indexer.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
@@ -169,7 +170,13 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
                 @$dbs->query("INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES ($biblio_id, $subject_id, 1)");
             }
         }
-        if ($biblio_id) { $r++; }
+        if ($biblio_id) {
+            // create biblio_indexer class instance
+            $indexer = new biblio_indexer($dbs);
+            // update index
+            $indexer->makeIndex($biblio_id);
+            $r++; 
+        }
     }
     // destroy result Z3950 session
     unset($_SESSION['z3950result']);
