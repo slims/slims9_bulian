@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-09 18:19+0100\n"
-"PO-Revision-Date: 2017-01-09 18:20+0100\n"
+"POT-Creation-Date: 2017-03-19 17:58+0100\n"
+"PO-Revision-Date: 2017-03-19 17:58+0100\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -286,22 +286,22 @@ msgstr "Ausleihen"
 #: admin/modules/bibliography/iframe_topic.php:43
 #: admin/modules/bibliography/import.php:46
 #: admin/modules/bibliography/index.php:56
-#: admin/modules/bibliography/index.php:499
+#: admin/modules/bibliography/index.php:501
 #: admin/modules/bibliography/item.php:54
 #: admin/modules/bibliography/item.php:226
 #: admin/modules/bibliography/item_barcode_generator.php:44
 #: admin/modules/bibliography/item_export.php:44
 #: admin/modules/bibliography/item_import.php:45
 #: admin/modules/bibliography/marcimport.php:45
-#: admin/modules/bibliography/p2p.php:47
+#: admin/modules/bibliography/p2p.php:48
 #: admin/modules/bibliography/pop_attach.php:47
 #: admin/modules/bibliography/pop_author.php:43
 #: admin/modules/bibliography/pop_biblio.php:40
 #: admin/modules/bibliography/pop_pattern.php:35
 #: admin/modules/bibliography/pop_topic.php:42
 #: admin/modules/bibliography/printed_card.php:58
-#: admin/modules/bibliography/z3950.php:46
-#: admin/modules/bibliography/z3950sru.php:49
+#: admin/modules/bibliography/z3950.php:47
+#: admin/modules/bibliography/z3950sru.php:50
 #: admin/modules/serial_control/index.php:52
 #: admin/modules/serial_control/kardex.php:47
 #: admin/modules/serial_control/subscription.php:49
@@ -340,11 +340,11 @@ msgstr "Sie sind derzeit angemeldet als "
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Sie wurden vom Bibliotheksmanagementsystem abgemeldet"
 
-#: admin/modules/bibliography/biblio_utils.inc.php:129
+#: admin/modules/bibliography/biblio_utils.inc.php:130
 msgid "Hidden in OPAC"
 msgstr "Im OPAC nicht angezeigt"
 
-#: admin/modules/bibliography/biblio_utils.inc.php:133
+#: admin/modules/bibliography/biblio_utils.inc.php:134
 msgid "Promoted To Homepage"
 msgstr "Auf der Startseite propagiert"
 
@@ -357,22 +357,22 @@ msgstr "Entliehene Exemplare"
 #: admin/modules/bibliography/checkout_item.php:56
 #: admin/modules/bibliography/dl_print.php:227
 #: admin/modules/bibliography/dl_print.php:229
-#: admin/modules/bibliography/index.php:477
-#: admin/modules/bibliography/index.php:480
+#: admin/modules/bibliography/index.php:479
+#: admin/modules/bibliography/index.php:482
 #: admin/modules/bibliography/item.php:212
 #: admin/modules/bibliography/item.php:215
 #: admin/modules/bibliography/item_barcode_generator.php:219
 #: admin/modules/bibliography/item_barcode_generator.php:221
 #: admin/modules/bibliography/marcexport.php:170
 #: admin/modules/bibliography/marcexport.php:172
-#: admin/modules/bibliography/p2p.php:232
-#: admin/modules/bibliography/p2p.php:235
+#: admin/modules/bibliography/p2p.php:237
+#: admin/modules/bibliography/p2p.php:240
 #: admin/modules/bibliography/printed_card.php:295
 #: admin/modules/bibliography/printed_card.php:297
-#: admin/modules/bibliography/z3950.php:284
-#: admin/modules/bibliography/z3950.php:288
-#: admin/modules/bibliography/z3950sru.php:256
-#: admin/modules/bibliography/z3950sru.php:260
+#: admin/modules/bibliography/z3950.php:291
+#: admin/modules/bibliography/z3950.php:295
+#: admin/modules/bibliography/z3950sru.php:261
+#: admin/modules/bibliography/z3950sru.php:265
 #: admin/modules/circulation/loan_rules.php:136
 #: admin/modules/circulation/loan_rules.php:138
 #: admin/modules/master_file/author.php:139
@@ -475,8 +475,8 @@ msgstr "Barcode"
 #: admin/modules/circulation/circulation_action.php:495
 #: admin/modules/circulation/index.php:65
 #: admin/modules/membership/index.php:397
-#: admin/modules/membership/index.php:542
-#: admin/modules/membership/index.php:548
+#: admin/modules/membership/index.php:547
+#: admin/modules/membership/index.php:553
 #: admin/modules/membership/member_card_generator.php:213
 #: admin/modules/membership/member_card_generator.php:299
 #: admin/modules/reporting/customs/due_date_warning.php:72
@@ -501,11 +501,11 @@ msgstr "Mitgliedsnummer"
 #: admin/modules/bibliography/checkout_item.php:73
 #: admin/modules/bibliography/dl_print.php:262
 #: admin/modules/bibliography/dl_print.php:270
-#: admin/modules/bibliography/index.php:556
-#: admin/modules/bibliography/index.php:853
-#: admin/modules/bibliography/index.php:860
-#: admin/modules/bibliography/index.php:880
-#: admin/modules/bibliography/index.php:886
+#: admin/modules/bibliography/index.php:558
+#: admin/modules/bibliography/index.php:855
+#: admin/modules/bibliography/index.php:862
+#: admin/modules/bibliography/index.php:882
+#: admin/modules/bibliography/index.php:888
 #: admin/modules/bibliography/item.php:287
 #: admin/modules/bibliography/item.php:398
 #: admin/modules/bibliography/item.php:407
@@ -582,12 +582,12 @@ msgstr "Rückgabetermin"
 
 #: admin/modules/bibliography/checkout_item.php:116
 #: admin/modules/bibliography/dl_print.php:308
-#: admin/modules/bibliography/index.php:936
+#: admin/modules/bibliography/index.php:938
 #: admin/modules/bibliography/item.php:494
 #: admin/modules/bibliography/item_barcode_generator.php:298
 #: admin/modules/bibliography/marcexport.php:270
 #: admin/modules/bibliography/printed_card.php:384
-#: admin/modules/circulation/fines_list.php:247
+#: admin/modules/circulation/fines_list.php:245
 #: admin/modules/circulation/loan_rules.php:264
 #: admin/modules/circulation/member_loan_hist.php:88
 #: admin/modules/master_file/author.php:258
@@ -715,7 +715,7 @@ msgstr "Einträge in der Druckerwarteschlange."
 
 #: admin/modules/bibliography/dl_print.php:263
 #: admin/modules/bibliography/dl_print.php:271
-#: admin/modules/bibliography/index.php:680
+#: admin/modules/bibliography/index.php:682
 #: admin/modules/bibliography/item.php:295
 #: admin/modules/bibliography/item.php:443
 #: admin/modules/bibliography/item.php:455
@@ -765,7 +765,7 @@ msgid "Add to print queue?"
 msgstr "Zur Druckerwarteschlange hinzufügen?"
 
 #: admin/modules/bibliography/dl_print.php:309
-#: admin/modules/bibliography/index.php:937
+#: admin/modules/bibliography/index.php:939
 #: admin/modules/bibliography/item.php:495
 #: admin/modules/bibliography/item_barcode_generator.php:299
 #: admin/modules/bibliography/marcexport.php:271
@@ -775,7 +775,7 @@ msgid "Query took"
 msgstr "Abfrage in"
 
 #: admin/modules/bibliography/dl_print.php:309
-#: admin/modules/bibliography/index.php:937
+#: admin/modules/bibliography/index.php:939
 #: admin/modules/bibliography/item.php:495
 #: admin/modules/bibliography/item_barcode_generator.php:299
 #: admin/modules/bibliography/marcexport.php:271
@@ -846,9 +846,7 @@ msgid "Record Separator"
 msgstr "Datensatztrennzeichen"
 
 #: admin/modules/bibliography/export.php:185
-#: admin/modules/bibliography/import.php:268
 #: admin/modules/bibliography/item_export.php:168
-#: admin/modules/bibliography/item_import.php:218
 #: admin/modules/bibliography/marcexport.php:204
 #: admin/modules/membership/export.php:148
 #: admin/modules/membership/import.php:208
@@ -890,7 +888,7 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: admin/modules/bibliography/iframe_attach.php:127
-#: admin/modules/bibliography/index.php:732
+#: admin/modules/bibliography/index.php:734
 msgid "File Attachments"
 msgstr "Dateianhänge"
 
@@ -920,7 +918,7 @@ msgstr "Sind Sie sicher, dass Sie den ausgewählten Autor entfernen möchten?"
 #: admin/modules/master_file/iframe_vocabolary_control.php:27
 #: admin/modules/serial_control/serial_base_lib.inc.php:136
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:111
 msgid "Once deleted, it can't be restored!"
 msgstr "Das löschen kann nicht rückgängig gemacht werden!"
 
@@ -964,7 +962,7 @@ msgid "Item FAILED to removed!"
 msgstr "Entfernung des Exemplars FEHLGESCHLAGEN!"
 
 #: admin/modules/bibliography/iframe_item_list.php:123
-#: admin/modules/bibliography/index.php:606
+#: admin/modules/bibliography/index.php:608
 msgid "Items/Copies"
 msgstr "Exemplare"
 
@@ -1036,49 +1034,54 @@ msgstr "Import starten"
 msgid "File To Import"
 msgstr "Zu importierende Datei"
 
-#: admin/modules/bibliography/index.php:94
+#: admin/modules/bibliography/import.php:268
+#: admin/modules/bibliography/item_import.php:218
+msgid "Number of Records To Import (0 for all records)"
+msgstr ""
+
+#: admin/modules/bibliography/index.php:96
 msgid "Title can not be empty"
 msgstr "Titel muss angegeben sein"
 
-#: admin/modules/bibliography/index.php:201
+#: admin/modules/bibliography/index.php:203
 #: admin/modules/membership/index.php:206
 #: admin/modules/membership/index.php:234 admin/modules/system/app_user.php:170
 #: admin/modules/system/app_user.php:192
 msgid "Image Uploaded Successfully"
 msgstr "Bild erfolgreich hochgeladen"
 
-#: admin/modules/bibliography/index.php:205
+#: admin/modules/bibliography/index.php:207
 msgid "Image Uploaded Failed"
 msgstr "Bildhochladen fehlgeschlagen"
 
-#: admin/modules/bibliography/index.php:253
+#: admin/modules/bibliography/index.php:255
 msgid "Bibliography Data Successfully Updated"
 msgstr "Titelaufnahme erfolgreich aktualisiert"
 
-#: admin/modules/bibliography/index.php:280
+#: admin/modules/bibliography/index.php:282
 msgid ""
 "Bibliography Data FAILED to Updated. Please Contact System Administrator"
 msgstr ""
 "Aktualisierung der Titelaufnahme FEHLGESCHLAGEN. Bitte kontaktieren Sie den "
 "Systemadministrator"
 
-#: admin/modules/bibliography/index.php:319
+#: admin/modules/bibliography/index.php:321
 msgid "New Bibliography Data Successfully Saved"
 msgstr "Neue Titelaufnahme erfolgreich gespeichert"
 
-#: admin/modules/bibliography/index.php:338
+#: admin/modules/bibliography/index.php:340
 msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
 msgstr ""
 "Speicherung der Titelaufnahme FEHLGESCHLAGEN. Bitte kontaktieren Sie den "
 "Systemadministrator"
 
-#: admin/modules/bibliography/index.php:444
+#: admin/modules/bibliography/index.php:446
 #: admin/modules/master_file/coll_type.php:127
 #: admin/modules/master_file/location.php:131
 msgid "Below data can not be deleted:"
 msgstr "Folgende Daten können nicht gelöscht werden:"
 
-#: admin/modules/bibliography/index.php:454
+#: admin/modules/bibliography/index.php:456
 #: admin/modules/circulation/loan_rules.php:114
 #: admin/modules/master_file/author.php:117
 #: admin/modules/master_file/coll_type.php:132
@@ -1103,7 +1106,7 @@ msgstr "Folgende Daten können nicht gelöscht werden:"
 msgid "All Data Successfully Deleted"
 msgstr "Alle Daten erfolgreich gelöscht"
 
-#: admin/modules/bibliography/index.php:457
+#: admin/modules/bibliography/index.php:459
 #: admin/modules/circulation/loan_rules.php:117
 #: admin/modules/master_file/author.php:120
 #: admin/modules/master_file/coll_type.php:135
@@ -1132,49 +1135,49 @@ msgstr ""
 "Einige oder alle Daten wurden NICHT erfolgreich gelöscht!\n"
 "Bitte kontaktieren Sie den Systemadministrator"
 
-#: admin/modules/bibliography/index.php:470
+#: admin/modules/bibliography/index.php:472
 #: admin/modules/bibliography/submenu.php:27
 msgid "Bibliographic"
 msgstr "Titelaufnahmen"
 
-#: admin/modules/bibliography/index.php:474
+#: admin/modules/bibliography/index.php:476
 #: admin/modules/bibliography/submenu.php:28
 msgid "Bibliographic List"
 msgstr "Titelaufnahmen ansehen"
 
-#: admin/modules/bibliography/index.php:475
+#: admin/modules/bibliography/index.php:477
 #: admin/modules/bibliography/submenu.php:29
 msgid "Add New Bibliography"
 msgstr "Neue Titelaufnahme"
 
-#: admin/modules/bibliography/index.php:479
+#: admin/modules/bibliography/index.php:481
 msgid "All Fields"
 msgstr "Alle Felder"
 
-#: admin/modules/bibliography/index.php:479
-#: admin/modules/bibliography/z3950.php:286
-#: admin/modules/bibliography/z3950sru.php:258
+#: admin/modules/bibliography/index.php:481
+#: admin/modules/bibliography/z3950.php:293
+#: admin/modules/bibliography/z3950sru.php:263
 msgid "Title/Series Title"
 msgstr "Titel/Serientitel"
 
-#: admin/modules/bibliography/index.php:479
+#: admin/modules/bibliography/index.php:481
 msgid "Topics"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:479
-#: admin/modules/bibliography/z3950.php:286
-#: admin/modules/bibliography/z3950sru.php:258
+#: admin/modules/bibliography/index.php:481
+#: admin/modules/bibliography/z3950.php:293
+#: admin/modules/bibliography/z3950sru.php:263
 msgid "Authors"
 msgstr "Autoren"
 
-#: admin/modules/bibliography/index.php:479
-#: admin/modules/bibliography/index.php:648
-#: admin/modules/bibliography/index.php:855
-#: admin/modules/bibliography/index.php:861
-#: admin/modules/bibliography/index.php:881
-#: admin/modules/bibliography/index.php:887
-#: admin/modules/bibliography/z3950.php:286
-#: admin/modules/bibliography/z3950sru.php:258
+#: admin/modules/bibliography/index.php:481
+#: admin/modules/bibliography/index.php:650
+#: admin/modules/bibliography/index.php:857
+#: admin/modules/bibliography/index.php:863
+#: admin/modules/bibliography/index.php:883
+#: admin/modules/bibliography/index.php:889
+#: admin/modules/bibliography/z3950.php:293
+#: admin/modules/bibliography/z3950sru.php:263
 #: admin/modules/reporting/customs/titles_list.php:174
 #: admin/modules/reporting/customs/titles_list.php:300
 #: admin/modules/serial_control/index.php:65
@@ -1195,8 +1198,8 @@ msgstr "Autoren"
 msgid "ISBN/ISSN"
 msgstr "ISBN/ISSN"
 
-#: admin/modules/bibliography/index.php:479
-#: admin/modules/bibliography/index.php:657
+#: admin/modules/bibliography/index.php:481
+#: admin/modules/bibliography/index.php:659
 #: admin/modules/master_file/publisher.php:128
 #: admin/modules/master_file/submenu.php:31
 #: admin/modules/reporting/customs/titles_list.php:173
@@ -1209,11 +1212,11 @@ msgstr "ISBN/ISSN"
 msgid "Publisher"
 msgstr "Verlag"
 
-#: admin/modules/bibliography/index.php:486
+#: admin/modules/bibliography/index.php:488
 msgid "Upload Selected Bibliographic data to Union Catalog Server*"
 msgstr "Ausgewählte Titelaufnahmen in den Gesamtkatalog hochladen"
 
-#: admin/modules/bibliography/index.php:513
+#: admin/modules/bibliography/index.php:515
 #: admin/modules/bibliography/item.php:240
 #: admin/modules/bibliography/pop_pattern.php:101
 #: admin/modules/circulation/fines_list.php:148
@@ -1245,7 +1248,7 @@ msgstr "Ausgewählte Titelaufnahmen in den Gesamtkatalog hochladen"
 msgid "Save"
 msgstr "Speichern"
 
-#: admin/modules/bibliography/index.php:537
+#: admin/modules/bibliography/index.php:539
 #: admin/modules/bibliography/item.php:259
 #: admin/modules/circulation/fines_list.php:167
 #: admin/modules/circulation/loan_rules.php:174
@@ -1275,7 +1278,7 @@ msgstr "Speichern"
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: admin/modules/bibliography/index.php:557
+#: admin/modules/bibliography/index.php:559
 msgid ""
 "Main title of collection. Separate child title with colon and pararel title "
 "with equal (=) sign."
@@ -1283,15 +1286,15 @@ msgstr ""
 "Hauptaufnahme der Sammlung. Untergeordnete Titel werden mit einem "
 "Doppelpunkt getrennt, Paralelltitel mit einem Gleichzeichen (=)."
 
-#: admin/modules/bibliography/index.php:561
+#: admin/modules/bibliography/index.php:563
 msgid "Authors/Roles"
 msgstr "Autoren/Rollen"
 
-#: admin/modules/bibliography/index.php:561
+#: admin/modules/bibliography/index.php:563
 msgid "Add Author(s)"
 msgstr "Autor(en) hinzufügen"
 
-#: admin/modules/bibliography/index.php:563
+#: admin/modules/bibliography/index.php:565
 #: admin/modules/serial_control/index.php:65
 #: lib/contents/clustering.inc.php:120
 #: template/classic-dz/part/content/advance-search.php:27
@@ -1300,7 +1303,7 @@ msgstr "Autor(en) hinzufügen"
 msgid "Author(s)"
 msgstr "Autor(en)"
 
-#: admin/modules/bibliography/index.php:567
+#: admin/modules/bibliography/index.php:569
 #: template/classic-dz/detail_template.php:135
 #: template/classic/detail_template.php:135
 #: template/default-dz/detail_template.php:150
@@ -1309,7 +1312,7 @@ msgstr "Autor(en)"
 msgid "Statement of Responsibility"
 msgstr "Mitarbeiter"
 
-#: admin/modules/bibliography/index.php:567
+#: admin/modules/bibliography/index.php:569
 msgid ""
 "Main source of information to show who has written, composed, illustrated, "
 "or in other ways contributed to the existence of the item."
@@ -1317,7 +1320,7 @@ msgstr ""
 "Primär angezeigte Quelle, die zeigt, wer das Werk geschrieben, illustriert, "
 "übersetzt oder in anderer Form dazu beigetragen hat."
 
-#: admin/modules/bibliography/index.php:571 lib/detail.inc.php:239
+#: admin/modules/bibliography/index.php:573 lib/detail.inc.php:239
 #: template/classic-dz/custom_frontpage_record.inc.php:6
 #: template/classic-dz/detail_template.php:120
 #: template/classic/custom_frontpage_record.inc.php:6
@@ -1331,12 +1334,12 @@ msgstr ""
 msgid "Edition"
 msgstr "Ausgabe"
 
-#: admin/modules/bibliography/index.php:571
+#: admin/modules/bibliography/index.php:573
 msgid "A version of publication having substantial changes or additions."
 msgstr ""
 "Eine veröffentlichte Edition eines Werkes mit meist größeren Änderungen."
 
-#: admin/modules/bibliography/index.php:573
+#: admin/modules/bibliography/index.php:575
 #: template/classic-dz/detail_template.php:130
 #: template/classic/detail_template.php:130
 #: template/default-dz/detail_template.php:143
@@ -1345,7 +1348,7 @@ msgstr ""
 msgid "Specific Detail Info"
 msgstr "Anmerkung"
 
-#: admin/modules/bibliography/index.php:573
+#: admin/modules/bibliography/index.php:575
 msgid ""
 "explain more details about an item e.g. scale within a map, running time in "
 "a movie dvd."
@@ -1353,15 +1356,15 @@ msgstr ""
 "Weitere Erläuterungen zum Werk. Zum Beispiel Maßstab bei Karten oder "
 "Laufzeit bei Filmen."
 
-#: admin/modules/bibliography/index.php:592
+#: admin/modules/bibliography/index.php:594
 msgid "Add new pattern"
 msgstr "Neues Muster hinzufügen"
 
-#: admin/modules/bibliography/index.php:594
+#: admin/modules/bibliography/index.php:596
 msgid "Total item(s)"
 msgstr "Anzahl Exemplare"
 
-#: admin/modules/bibliography/index.php:601
+#: admin/modules/bibliography/index.php:603
 #: admin/modules/bibliography/item.php:315
 #: admin/modules/bibliography/item.php:399
 #: admin/modules/bibliography/item.php:408
@@ -1393,19 +1396,19 @@ msgstr "Anzahl Exemplare"
 msgid "Collection Type"
 msgstr "Sammlungstyp"
 
-#: admin/modules/bibliography/index.php:602
+#: admin/modules/bibliography/index.php:604
 msgid "Item(s) code batch generator"
 msgstr "Batchgenerierung für Exemplarcodes"
 
-#: admin/modules/bibliography/index.php:606
+#: admin/modules/bibliography/index.php:608
 msgid "Add New Items"
 msgstr "Neues Exemplar hinzufügen"
 
-#: admin/modules/bibliography/index.php:608
+#: admin/modules/bibliography/index.php:610
 msgid "Item(s) Data"
 msgstr "Exemplardatensatz/-sätze"
 
-#: admin/modules/bibliography/index.php:617
+#: admin/modules/bibliography/index.php:619
 #: admin/modules/circulation/loan_rules.php:202
 #: admin/modules/circulation/loan_rules.php:234
 #: admin/modules/circulation/loan_rules.php:241
@@ -1425,30 +1428,30 @@ msgstr "Exemplardatensatz/-sätze"
 msgid "GMD"
 msgstr "Ressourcenart"
 
-#: admin/modules/bibliography/index.php:617
+#: admin/modules/bibliography/index.php:619
 msgid "General material designation. The physical form of publication."
 msgstr "Allgemeine Materialform. Die physische Formder Veröffentlichung."
 
-#: admin/modules/bibliography/index.php:624
+#: admin/modules/bibliography/index.php:626
 msgid "Not set"
 msgstr "Nicht vergeben"
 
-#: admin/modules/bibliography/index.php:629
 #: admin/modules/bibliography/index.php:631
+#: admin/modules/bibliography/index.php:633
 #: admin/modules/master_file/rda_cmc.php:139
 msgid "RDA "
 msgstr "RDA"
 
-#: admin/modules/bibliography/index.php:639
+#: admin/modules/bibliography/index.php:641
 #: admin/modules/bibliography/item.php:333
 msgid "Not Applicable"
 msgstr "Nicht zutreffend"
 
-#: admin/modules/bibliography/index.php:645
+#: admin/modules/bibliography/index.php:647
 msgid "Use this for Serial publication"
 msgstr "Geben Sie dies bei Periodika an"
 
-#: admin/modules/bibliography/index.php:646
+#: admin/modules/bibliography/index.php:648
 #: admin/modules/master_file/frequency.php:128
 #: admin/modules/master_file/frequency.php:176
 #: admin/modules/master_file/frequency.php:210
@@ -1457,25 +1460,25 @@ msgstr "Geben Sie dies bei Periodika an"
 msgid "Frequency"
 msgstr "Erscheinungshäufigkeit"
 
-#: admin/modules/bibliography/index.php:648
+#: admin/modules/bibliography/index.php:650
 msgid "Unique publishing number for each title of publication."
 msgstr "Einzigartige Veröffentlichungsnummer einer Publikation."
 
-#: admin/modules/bibliography/index.php:659
+#: admin/modules/bibliography/index.php:661
 msgid "Publishing Year"
 msgstr "Erscheinungsjahr"
 
-#: admin/modules/bibliography/index.php:659
+#: admin/modules/bibliography/index.php:661
 msgid "Year of publication"
 msgstr "Veröffentlichungsjahr"
 
-#: admin/modules/bibliography/index.php:668
+#: admin/modules/bibliography/index.php:670
 #: admin/modules/reporting/customs/titles_list.php:172
 #: admin/modules/reporting/customs/titles_list.php:298
 msgid "Publishing Place"
 msgstr "Erscheinungsort"
 
-#: admin/modules/bibliography/index.php:670
+#: admin/modules/bibliography/index.php:672
 #: template/classic-dz/custom_frontpage_record.inc.php:8
 #: template/classic-dz/detail_template.php:76
 #: template/classic/custom_frontpage_record.inc.php:8
@@ -1489,13 +1492,13 @@ msgstr "Erscheinungsort"
 msgid "Collation"
 msgstr "Umfang"
 
-#: admin/modules/bibliography/index.php:670
+#: admin/modules/bibliography/index.php:672
 msgid ""
 "Physical description of a publication e.g. publication length, width, page "
 "numbers, etc."
 msgstr "Physische Beschreibung einer Ausgabe, z.B. Höhe, Breite, Seitenzahl."
 
-#: admin/modules/bibliography/index.php:672
+#: admin/modules/bibliography/index.php:674
 #: template/classic-dz/custom_frontpage_record.inc.php:9
 #: template/classic-dz/detail_template.php:57
 #: template/classic/custom_frontpage_record.inc.php:9
@@ -1509,7 +1512,7 @@ msgstr "Physische Beschreibung einer Ausgabe, z.B. Höhe, Breite, Seitenzahl."
 msgid "Series Title"
 msgstr "Reihentitel"
 
-#: admin/modules/bibliography/index.php:678
+#: admin/modules/bibliography/index.php:680
 #: admin/modules/bibliography/item.php:401
 #: admin/modules/bibliography/item.php:410
 #: admin/modules/master_file/pop_vocabolary_control.php:229
@@ -1535,19 +1538,19 @@ msgstr "Reihentitel"
 msgid "Classification"
 msgstr "Klassifikation"
 
-#: admin/modules/bibliography/index.php:680
+#: admin/modules/bibliography/index.php:682
 msgid "Sets of ID that put in the book spine."
 msgstr "Eindeutige Kennung auf dem Buchrücken"
 
-#: admin/modules/bibliography/index.php:683
+#: admin/modules/bibliography/index.php:685
 msgid "Subjects/Topics"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:683
+#: admin/modules/bibliography/index.php:685
 msgid "Add Subject(s)"
 msgstr "Schlagwörter hinzufügen"
 
-#: admin/modules/bibliography/index.php:685
+#: admin/modules/bibliography/index.php:687
 #: admin/modules/serial_control/index.php:65 lib/contents/clustering.inc.php:98
 #: template/classic-dz/detail_template.php:125
 #: template/classic-dz/part/content/advance-search.php:34
@@ -1560,7 +1563,7 @@ msgstr "Schlagwörter hinzufügen"
 msgid "Subject(s)"
 msgstr "Schlagwörter"
 
-#: admin/modules/bibliography/index.php:693
+#: admin/modules/bibliography/index.php:695
 #: admin/modules/master_file/doc_language.php:180
 #: admin/modules/master_file/doc_language.php:193
 #: admin/modules/master_file/doc_language.php:195
@@ -1578,139 +1581,139 @@ msgstr "Schlagwörter"
 msgid "Language"
 msgstr "Sprache"
 
-#: admin/modules/bibliography/index.php:693
+#: admin/modules/bibliography/index.php:695
 msgid "Language use by publication."
 msgstr "Sprache der Publikation"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:697
 msgid "Abstract/Notes"
 msgstr "Abstract/Inhalt"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:697
 msgid "Insert here any abstract or notes from the publication."
 msgstr "Feld für das Abstract oder Bemerkungen aus der Publikation"
 
-#: admin/modules/bibliography/index.php:699
+#: admin/modules/bibliography/index.php:701
 #: admin/modules/membership/index.php:480 admin/modules/system/app_user.php:333
 msgid "REMOVE IMAGE"
 msgstr "BILD ENTFERNEN"
 
-#: admin/modules/bibliography/index.php:704
+#: admin/modules/bibliography/index.php:706
 msgid "or scan a cover"
 msgstr "oder ein Cover scannen"
 
-#: admin/modules/bibliography/index.php:708
+#: admin/modules/bibliography/index.php:710
 msgid "Show scan dialog"
 msgstr "Scandialog zeigen"
 
-#: admin/modules/bibliography/index.php:709
+#: admin/modules/bibliography/index.php:711
 #: admin/modules/membership/index.php:499 admin/modules/system/app_user.php:344
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: admin/modules/bibliography/index.php:711
+#: admin/modules/bibliography/index.php:713
 msgid "Scan a cover"
 msgstr "Cover scannen"
 
-#: admin/modules/bibliography/index.php:712
+#: admin/modules/bibliography/index.php:714
 #: admin/modules/membership/index.php:497 admin/modules/system/app_user.php:342
 msgid "Format:"
 msgstr "Format:"
 
-#: admin/modules/bibliography/index.php:714
+#: admin/modules/bibliography/index.php:716
 msgid "Scan"
 msgstr "Scannen"
 
-#: admin/modules/bibliography/index.php:715
+#: admin/modules/bibliography/index.php:717
 msgid "Click to show or hide options"
 msgstr "Optionen per Klick anzeigen/verbergen"
 
-#: admin/modules/bibliography/index.php:717
+#: admin/modules/bibliography/index.php:719
 msgid "History index:"
 msgstr "Verlauf"
 
-#: admin/modules/bibliography/index.php:717
+#: admin/modules/bibliography/index.php:719
 msgid "Recall"
 msgstr "Vormerken"
 
-#: admin/modules/bibliography/index.php:718
+#: admin/modules/bibliography/index.php:720
 msgid "Host:"
 msgstr "Host:"
 
-#: admin/modules/bibliography/index.php:718
+#: admin/modules/bibliography/index.php:720
 msgid "Get machine"
 msgstr "Finde Gerät"
 
-#: admin/modules/bibliography/index.php:719
+#: admin/modules/bibliography/index.php:721
 msgid "Scanner:"
 msgstr "Scanner:"
 
-#: admin/modules/bibliography/index.php:719
+#: admin/modules/bibliography/index.php:721
 msgid "Default"
 msgstr "Standard"
 
-#: admin/modules/bibliography/index.php:720
+#: admin/modules/bibliography/index.php:722
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: admin/modules/bibliography/index.php:720
+#: admin/modules/bibliography/index.php:722
 msgid "Horizontal:"
 msgstr "Horizontal:"
 
-#: admin/modules/bibliography/index.php:720
+#: admin/modules/bibliography/index.php:722
 msgid "Vertical:"
 msgstr "Vertikal:"
 
-#: admin/modules/bibliography/index.php:721
+#: admin/modules/bibliography/index.php:723
 #: admin/modules/membership/index.php:498 admin/modules/system/app_user.php:343
 msgid "Capture"
 msgstr "Aufnehmen"
 
-#: admin/modules/bibliography/index.php:721
+#: admin/modules/bibliography/index.php:723
 msgid "Width:"
 msgstr "Breite:"
 
-#: admin/modules/bibliography/index.php:721
+#: admin/modules/bibliography/index.php:723
 msgid "Height:"
 msgstr "Höhe:"
 
-#: admin/modules/bibliography/index.php:722
+#: admin/modules/bibliography/index.php:724
 msgid "Result"
 msgstr "Ergebnis"
 
-#: admin/modules/bibliography/index.php:722
+#: admin/modules/bibliography/index.php:724
 msgid "Max Width:"
 msgstr "Maximalbreite:"
 
-#: admin/modules/bibliography/index.php:722
+#: admin/modules/bibliography/index.php:724
 msgid "Max Height:"
 msgstr "Maximalhöhe:"
 
-#: admin/modules/bibliography/index.php:723
+#: admin/modules/bibliography/index.php:725
 msgid "Scan result"
 msgstr "Scanergebnis"
 
-#: admin/modules/bibliography/index.php:724
+#: admin/modules/bibliography/index.php:726
 msgid "Preview"
 msgstr "Vorschau"
 
-#: admin/modules/bibliography/index.php:724
+#: admin/modules/bibliography/index.php:726
 msgid "Rotate Left"
 msgstr "Links drehen"
 
-#: admin/modules/bibliography/index.php:724
+#: admin/modules/bibliography/index.php:726
 msgid "Rotate Right"
 msgstr "Rechts drehen"
 
-#: admin/modules/bibliography/index.php:728
+#: admin/modules/bibliography/index.php:730
 msgid "Image"
 msgstr "Bild"
 
-#: admin/modules/bibliography/index.php:732
+#: admin/modules/bibliography/index.php:734
 msgid "Add Attachment"
 msgstr "Dateianhang hinzufügen"
 
-#: admin/modules/bibliography/index.php:734
+#: admin/modules/bibliography/index.php:736
 #: admin/modules/master_file/label.php:202
 #: admin/modules/master_file/label.php:207
 #: template/classic-dz/detail_template.php:165
@@ -1721,56 +1724,56 @@ msgstr "Dateianhang hinzufügen"
 msgid "File Attachment"
 msgstr "Dateianhang"
 
-#: admin/modules/bibliography/index.php:737
+#: admin/modules/bibliography/index.php:739
 msgid "Biblio Relation"
 msgstr "Bibliographische Beziehung"
 
-#: admin/modules/bibliography/index.php:737
+#: admin/modules/bibliography/index.php:739
 msgid "Add Relation"
 msgstr "Beziehung hinzufügen"
 
-#: admin/modules/bibliography/index.php:739
+#: admin/modules/bibliography/index.php:741
 msgid "Related Biblio Data"
 msgstr "Zugeordnete Bibliographiedaten"
 
-#: admin/modules/bibliography/index.php:773
+#: admin/modules/bibliography/index.php:775
 msgid "Show"
 msgstr "Anzeigen"
 
-#: admin/modules/bibliography/index.php:774
+#: admin/modules/bibliography/index.php:776
 msgid "Hide"
 msgstr "Verbergen"
 
-#: admin/modules/bibliography/index.php:775
+#: admin/modules/bibliography/index.php:777
 msgid "Hide in OPAC"
 msgstr "Anzeige im OPAC"
 
-#: admin/modules/bibliography/index.php:777
+#: admin/modules/bibliography/index.php:779
 msgid "Don't Promote"
 msgstr "Nicht anzeigen"
 
-#: admin/modules/bibliography/index.php:778
+#: admin/modules/bibliography/index.php:780
 msgid "Promote"
 msgstr "Anzeigen"
 
-#: admin/modules/bibliography/index.php:779
+#: admin/modules/bibliography/index.php:781
 msgid "Promote To Homepage"
 msgstr "Auf der Startseite anzeigen"
 
-#: admin/modules/bibliography/index.php:803
+#: admin/modules/bibliography/index.php:805
 msgid "You are going to edit biblio data"
 msgstr ""
 "Sie sind im Begriff die Angaben für folgende Titelaufnahme zu bearbeiten"
 
-#: admin/modules/bibliography/index.php:803
+#: admin/modules/bibliography/index.php:805
 #: admin/modules/bibliography/item.php:354
 #: admin/modules/bibliography/item.php:402
 #: admin/modules/bibliography/item.php:411
 #: admin/modules/bibliography/item.php:444
 #: admin/modules/bibliography/item.php:456
-#: admin/modules/membership/index.php:520
-#: admin/modules/membership/index.php:546
-#: admin/modules/membership/index.php:552
+#: admin/modules/membership/index.php:525
+#: admin/modules/membership/index.php:551
+#: admin/modules/membership/index.php:557
 #: admin/modules/membership/member_type.php:208
 #: admin/modules/membership/member_type.php:225
 #: admin/modules/membership/member_type.php:231
@@ -1779,29 +1782,29 @@ msgstr ""
 msgid "Last Updated"
 msgstr "Zuletzt aktualisiert"
 
-#: admin/modules/bibliography/index.php:856
-#: admin/modules/bibliography/index.php:862
-#: admin/modules/bibliography/index.php:882
-#: admin/modules/bibliography/index.php:888
+#: admin/modules/bibliography/index.php:858
+#: admin/modules/bibliography/index.php:864
+#: admin/modules/bibliography/index.php:884
+#: admin/modules/bibliography/index.php:890
 #: admin/modules/stock_take/st_report.php:83
 #: admin/modules/stock_take/st_report.php:87
 msgid "None"
 msgstr "Keine"
 
-#: admin/modules/bibliography/index.php:856
-#: admin/modules/bibliography/index.php:862
-#: admin/modules/bibliography/index.php:882
-#: admin/modules/bibliography/index.php:888
+#: admin/modules/bibliography/index.php:858
+#: admin/modules/bibliography/index.php:864
+#: admin/modules/bibliography/index.php:884
+#: admin/modules/bibliography/index.php:890
 #: admin/modules/bibliography/printed_card.php:196
 #: admin/modules/reporting/customs/titles_list.php:171
 #: admin/modules/reporting/customs/titles_list.php:297
 msgid "Copies"
 msgstr "Exemplare"
 
-#: admin/modules/bibliography/index.php:857
-#: admin/modules/bibliography/index.php:863
-#: admin/modules/bibliography/index.php:883
-#: admin/modules/bibliography/index.php:889
+#: admin/modules/bibliography/index.php:859
+#: admin/modules/bibliography/index.php:865
+#: admin/modules/bibliography/index.php:885
+#: admin/modules/bibliography/index.php:891
 #: admin/modules/circulation/loan_rules.php:216
 #: admin/modules/circulation/loan_rules.php:237
 #: admin/modules/circulation/loan_rules.php:244
@@ -2175,30 +2178,30 @@ msgstr ""
 msgid "Number of records to import (0 for all records)"
 msgstr "Zahl der zu importierenden Datensätze (0 für alle Datensätze)"
 
-#: admin/modules/bibliography/p2p.php:167
+#: admin/modules/bibliography/p2p.php:172
 msgid "{recordCount} records inserted to database."
 msgstr "{recordCount} Einträge in die Datenbank eingefügt."
 
-#: admin/modules/bibliography/p2p.php:218
+#: admin/modules/bibliography/p2p.php:223
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
 "Leider wurde kein Ergebnis für %s gefunden (möglicherweise sind auch die XML-"
 "Ergebnisse und Details deaktiviert)."
 
-#: admin/modules/bibliography/p2p.php:229
+#: admin/modules/bibliography/p2p.php:234
 #: admin/modules/bibliography/submenu.php:36
 msgid "P2P Service"
 msgstr "P2P-Dienst"
 
-#: admin/modules/bibliography/p2p.php:234
-#: admin/modules/bibliography/z3950.php:287
+#: admin/modules/bibliography/p2p.php:239
+#: admin/modules/bibliography/z3950.php:294
 msgid "Server"
 msgstr "Server"
 
-#: admin/modules/bibliography/p2p.php:238
-#: admin/modules/bibliography/z3950.php:291
-#: admin/modules/bibliography/z3950sru.php:263
+#: admin/modules/bibliography/p2p.php:243
+#: admin/modules/bibliography/z3950.php:298
+#: admin/modules/bibliography/z3950sru.php:268
 msgid "* Please make sure you have a working Internet connection."
 msgstr "* Bitte stellen Sie sicher, dass Sie mit dem Internet verbunden sind."
 
@@ -2708,7 +2711,7 @@ msgstr ""
 "UCS ist nicht aktiviert. Ändern Sie Globalen Systemeinstellungen um UCS zu "
 "aktivieren."
 
-#: admin/modules/bibliography/z3950.php:56
+#: admin/modules/bibliography/z3950.php:57
 msgid ""
 "YAZ extension library is not loaded/installed yet. YAZ library is needed to "
 "use z3950 enabled service. Please refer to official <a href=\"http://www.php."
@@ -2721,47 +2724,47 @@ msgstr ""
 "\"notAJAX\" target=\"_blank\">YAZ PHP Handbuch</a> für eine Anleitung zur "
 "Installation der YAZ-Erweiterung in PHP."
 
-#: admin/modules/bibliography/z3950.php:176
-#: admin/modules/bibliography/z3950sru.php:175
+#: admin/modules/bibliography/z3950.php:183
+#: admin/modules/bibliography/z3950sru.php:180
 msgid "{recordCount} records inserted into the database."
 msgstr "{recordCount} Einträge wurden in die Datenbank eingefügt."
 
-#: admin/modules/bibliography/z3950.php:236
+#: admin/modules/bibliography/z3950.php:243
 msgid "Found {hits} records from Z3950 Server, {maxHits} listed."
 msgstr "{hits} Treffer vom Z39.50-Server gefunden, {maxHits} werden angezeigt."
 
-#: admin/modules/bibliography/z3950.php:245
-#: admin/modules/bibliography/z3950sru.php:207
+#: admin/modules/bibliography/z3950.php:252
+#: admin/modules/bibliography/z3950sru.php:212
 msgid "Save Z3950 Records to Database"
 msgstr "Z39.50-Datensätze in der Datenbank speichern"
 
-#: admin/modules/bibliography/z3950.php:267
-#: admin/modules/bibliography/z3950sru.php:239
+#: admin/modules/bibliography/z3950.php:274
+#: admin/modules/bibliography/z3950sru.php:244
 msgid "No Results Found!"
 msgstr "Es wurden keine Suchergebnisse gefunden!"
 
-#: admin/modules/bibliography/z3950.php:270
-#: admin/modules/bibliography/z3950sru.php:242
+#: admin/modules/bibliography/z3950.php:277
+#: admin/modules/bibliography/z3950sru.php:247
 msgid "No Keywords Supplied!"
 msgstr "Keine Suchbegriffe angegeben!"
 
-#: admin/modules/bibliography/z3950.php:281
+#: admin/modules/bibliography/z3950.php:288
 msgid "Z3950"
 msgstr "Z39.50"
 
-#: admin/modules/bibliography/z3950sru.php:203
+#: admin/modules/bibliography/z3950sru.php:208
 msgid "Found {hits} records from Z3950 SRU Server."
 msgstr "{hits} Treffer vom Z39.50-Server gefunden."
 
-#: admin/modules/bibliography/z3950sru.php:253
+#: admin/modules/bibliography/z3950sru.php:258
 msgid "Z3950 Search/Retrieve via URL (SRU)"
 msgstr "Z39.50 Search/Retrieve via URL (SRU)"
 
-#: admin/modules/bibliography/z3950sru.php:258
+#: admin/modules/bibliography/z3950sru.php:263
 msgid "All fields"
 msgstr "Alle Felder"
 
-#: admin/modules/bibliography/z3950sru.php:259
+#: admin/modules/bibliography/z3950sru.php:264
 msgid "SRU Server"
 msgstr "SRU Server"
 
@@ -2853,8 +2856,8 @@ msgstr "Exemplar {itemCode} am&nbsp;{returnDate} erfolgreich zurückgebucht"
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
 #: admin/modules/membership/index.php:399
-#: admin/modules/membership/index.php:543
-#: admin/modules/membership/index.php:549
+#: admin/modules/membership/index.php:548
+#: admin/modules/membership/index.php:554
 #: admin/modules/membership/member_card_generator.php:214
 #: admin/modules/membership/member_card_generator.php:300
 #: admin/modules/reporting/customs/due_date_warning.php:72
@@ -3040,22 +3043,22 @@ msgid "View Balanced Overdue"
 msgstr "Beglichene Mahngebühren ansehen"
 
 #: admin/modules/circulation/fines_list.php:172
-#: admin/modules/circulation/fines_list.php:212
+#: admin/modules/circulation/fines_list.php:210
 msgid "Fines Date"
 msgstr "Gebührendatum"
 
 #: admin/modules/circulation/fines_list.php:174
-#: admin/modules/circulation/fines_list.php:211
+#: admin/modules/circulation/fines_list.php:209
 msgid "Description/Name"
 msgstr "Beschreibung/Name"
 
 #: admin/modules/circulation/fines_list.php:176
-#: admin/modules/circulation/fines_list.php:213
+#: admin/modules/circulation/fines_list.php:211
 msgid "Debit"
 msgstr "Gebührenforderung"
 
 #: admin/modules/circulation/fines_list.php:178
-#: admin/modules/circulation/fines_list.php:214
+#: admin/modules/circulation/fines_list.php:212
 msgid "Credit"
 msgstr "Guthaben"
 
@@ -3064,7 +3067,7 @@ msgid "You are going to edit fines data"
 msgstr ""
 "Sie sind im Begriff die Angaben für folgenden Gebühreneintrag zu bearbeiten"
 
-#: admin/modules/circulation/fines_list.php:201
+#: admin/modules/circulation/fines_list.php:199
 msgid "Total of unpaid fines"
 msgstr "Summe der unbezahlten Gebühren"
 
@@ -3998,7 +4001,7 @@ msgstr "Begriff"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:237
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:106
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:99
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -4475,8 +4478,8 @@ msgid "Institution"
 msgstr "Institution"
 
 #: admin/modules/membership/index.php:424
-#: admin/modules/membership/index.php:544
-#: admin/modules/membership/index.php:550
+#: admin/modules/membership/index.php:549
+#: admin/modules/membership/index.php:555
 #: admin/modules/membership/member_card_generator.php:301
 #: admin/modules/membership/member_type.php:221
 #: admin/modules/membership/member_type.php:227
@@ -4546,9 +4549,9 @@ msgstr "Verhältnis:"
 msgid "Photo"
 msgstr "Foto"
 
-#: admin/modules/membership/index.php:511
-#: admin/modules/membership/index.php:545
-#: admin/modules/membership/index.php:551
+#: admin/modules/membership/index.php:516
+#: admin/modules/membership/index.php:550
+#: admin/modules/membership/index.php:556
 #: admin/modules/membership/member_card_generator.php:218
 #: admin/modules/reporting/customs/due_date_warning.php:156
 #: admin/modules/reporting/customs/member_loan_list.php:175
@@ -4556,50 +4559,50 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: admin/modules/membership/index.php:513 admin/modules/system/app_user.php:370
+#: admin/modules/membership/index.php:518 admin/modules/system/app_user.php:370
 #: lib/contents/login.inc.php:203 lib/contents/member.inc.php:124
 #: lib/contents/member.inc.php:125 lib/contents/member.inc.php:283
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: admin/modules/membership/index.php:515 admin/modules/system/app_user.php:372
+#: admin/modules/membership/index.php:520 admin/modules/system/app_user.php:372
 #: lib/contents/login.inc.php:205 lib/contents/member.inc.php:128
 #: lib/contents/member.inc.php:129
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
 
-#: admin/modules/membership/index.php:520
+#: admin/modules/membership/index.php:525
 #: admin/modules/membership/member_type.php:208
 msgid "You are going to edit member data"
 msgstr "Sie sind im Begriff die Angaben für folgendes Mitglied zu bearbeiten"
 
-#: admin/modules/membership/index.php:521 admin/modules/system/app_user.php:378
+#: admin/modules/membership/index.php:526 admin/modules/system/app_user.php:378
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Füllen Sie das Passwortfeld nur aus, wenn Sie es ändern wollen"
 
-#: admin/modules/membership/index.php:580
+#: admin/modules/membership/index.php:585
 msgid "Expired Member List"
 msgstr "Liste abgelaufener Mitgliedschaften"
 
-#: admin/modules/membership/index.php:581
+#: admin/modules/membership/index.php:586
 msgid "Extend Selected Member(s)"
 msgstr "Ausgewählte Mitglieder verlängern"
 
-#: admin/modules/membership/index.php:581
+#: admin/modules/membership/index.php:586
 msgid "Are you sure to EXTEND membership for selected members?"
 msgstr ""
 "Wollen Sie die Mitgliedschaft für die ausgewählten Mitglieder VERLÄNGERN?"
 
-#: admin/modules/membership/index.php:583
+#: admin/modules/membership/index.php:588
 msgid "members extended!"
 msgstr "Mitglieder verlängert!"
 
-#: admin/modules/membership/index.php:587
+#: admin/modules/membership/index.php:592
 #: admin/modules/membership/member_card_generator.php:334
 msgid "Found"
 msgstr "Es wurde"
 
-#: admin/modules/membership/index.php:587
+#: admin/modules/membership/index.php:592
 #: admin/modules/membership/member_card_generator.php:334
 msgid "from your search with keyword"
 msgstr "Mitglied(er) gefunden mit dem Suchbegriff"
@@ -5196,6 +5199,10 @@ msgstr "Registrierungsdatum ab"
 #: admin/modules/reporting/customs/member_list.php:116
 msgid "Register Date Until"
 msgstr "Registrierungsdatum bis"
+
+#: admin/modules/reporting/customs/overdued_list.php:179
+msgid "Send Notification e-mail"
+msgstr "Erinnerungsmail verschicken"
 
 #: admin/modules/reporting/customs/overdued_list.php:185
 msgid "day(s)"
@@ -7227,7 +7234,7 @@ msgstr "LÖSCHEN"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:90
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:110
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
 msgid "EDIT"
 msgstr "BEARBEITEN"
 
@@ -7264,12 +7271,12 @@ msgid "Date"
 msgstr "Datum"
 
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:105
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:98
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:102
 msgid "Delete Record"
 msgstr "Datensatz löschen"
 
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:113
-#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:107
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:111
 msgid "Are you sure to delete {recordTitle}?"
 msgstr "Sind Sie sicher, dass Sie {recordTitle} entfernen möchten?"
 
