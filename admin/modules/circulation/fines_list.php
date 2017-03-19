@@ -184,21 +184,19 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     // print out the form object
     echo $form->printOut();
 } else {
-
-        $fines_alert = FALSE;
-        $total_unpaid_fines = 0;
-        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id='.$_SESSION['memberID'].' AND debet > credit');
-        $unpaid_fines = $_unpaid_fines->fetch_all();
-        #var_dump($unpaid_fines);
-        if (!empty($unpaid_fines)) {
-            foreach ($unpaid_fines as $key => $value) {
-                $total_unpaid_fines = $total_unpaid_fines + $value['3'] - $value['4'];
-            }
+    $fines_alert = FALSE;
+    $total_unpaid_fines = 0;
+    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$_SESSION['memberID'].'\' AND debet > credit';
+    $_unpaid_fines = $dbs->query($sql_unpaid_fines);
+    if ($_unpaid_fines->num_rows > 0) {
+        while($row = $_unpaid_fines->fetch_assoc()) {
+            $total_unpaid_fines = $total_unpaid_fines + $row['debet'] - $row['credit'];
         }
-        if ($total_unpaid_fines > 0) {
-            $fines_alert = TRUE;
-        }
-        echo '<div style="color:red; font-weight:bold;">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</div>';
+    }
+    if ($total_unpaid_fines > 0) {
+        $fines_alert = TRUE;
+    }
+    echo '<div style="color:red; font-weight:bold;">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</div>';
 
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);

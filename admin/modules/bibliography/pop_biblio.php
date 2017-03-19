@@ -44,6 +44,10 @@ if (isset($_GET['itemID'])) {
   $_POST['itemID'] = $_GET['itemID'];
 }
 
+if (isset($_GET['itemCollID'])) {
+  $_POST['itemCollID'] = $_GET['itemCollID'];
+}
+
 $_GET['inPopUp'] = true;
 
 ob_start();

@@ -38,6 +38,7 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require LIB.'modsxmlsenayan.inc.php';
+require MDLBS.'system/biblio_indexer.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
@@ -158,6 +159,10 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
               }
           }
           if ($biblio_id) {
+              // create biblio_indexer class instance
+              $indexer = new biblio_indexer($dbs);
+              // update index
+              $indexer->makeIndex($biblio_id);
               // write to logs
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$p2pserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
               $r++;

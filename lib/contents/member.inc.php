@@ -101,15 +101,15 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
             header('Location: index.php?p=member');
             exit();
         } else {
-            // md5 password
-            $md5_password = MD5($password);
-            // query password
-            $_pass_q = $dbs->query('SELECT mpasswd FROM member WHERE member_id = \''.$username.'\'');
-            $_pass_d = $_pass_q->fetch_row();
-            if ($_pass_d[0] === $md5_password) {
+            $_member_sql = sprintf('SELECT member_name FROM member
+            WHERE mpasswd=MD5(\'%s\') AND member_id=\'%s\'',
+            $dbs->escape_string(trim($password)), $dbs->escape_string(trim($username)));
+            $_member_q = $dbs->query($_member_sql);
+            if ($_member_q->num_rows > 0) {
+                $_member_d = $_member_q->fetch_row();
                 $msg  = '';
                 $msg .= '<div class="panel panel-danger">';
-                $msg .= '<div class="panel-heading">'.__('Please update your password!').'</div>';
+                $msg .= '<div class="panel-heading">Hi, '. $_member_d[0] .'! '.__('Please update your password!').'</div>';
                 $msg .= '<div class="panel-body">';
                 $msg .= '<form method="post" action="index.php?p=member">';
                 $msg .= '<div class="form-group">';

@@ -100,7 +100,7 @@ if (isset($_POST['confirmFinish'])) {
         echo '<table style="width: 100%; border: 1px solid #666;" cellspacing="0">';
         echo '<tr>';
         echo '<th class="dataListHeader">' . __('Item Code') . '</th>
-            <th class="dataListHeader">' . __('Document Title') . '</th>
+            <th class="dataListHeader">' . __('Title') . '</th>
             <th class="dataListHeader">' . __('Classification') . '</th>';
         echo '</tr>'."\n";
         while ($lost_item_d = $lost_item_q->fetch_row()) {

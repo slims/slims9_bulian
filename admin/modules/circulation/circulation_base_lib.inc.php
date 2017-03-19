@@ -270,7 +270,8 @@ class circulation extends member
             }
         }
         // update the loan data
-        $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
+        #$this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
+        $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
@@ -448,6 +449,9 @@ class circulation extends member
                 $data['renewed'] = 'literal{0}';
                 $data['is_lent'] = 1;
                 $data['is_return'] = 'literal{0}';
+                $data['input_date'] = date("Y-m-d H:i:s");
+                $data['last_update'] = date("Y-m-d H:i:s");
+                $data['uid'] = $_SESSION['uid'];
                 $sql_op = new simbio_dbop($this->obj_db);
                 if (!$sql_op->insert('loan', $data)) {
                     $error_num++;

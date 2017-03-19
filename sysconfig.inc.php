@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -210,7 +210,7 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'flex'. Default is false
+$sysconf['webcam'] = 'flex'; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;

@@ -239,7 +239,7 @@ class member_logon
         // update the last login time
         $obj_db->query("UPDATE member SET last_login='".date("Y-m-d H:i:s")."',
             last_login_ip='".$_SERVER['REMOTE_ADDR']."'
-            WHERE member_id='".$this->user_info['member_id']."'");
+            WHERE member_id='".$obj_db->escape_string($this->user_info['member_id'])."'");
 
         return true;
     }
