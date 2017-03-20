@@ -315,7 +315,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         $table = new simbio_table();
         $table->table_attr = 'class="border" style="width: 100%; margin-bottom: 5px;" cellpadding="5" cellspacing="0"';
         // append data to table row
-        $table->appendTableRow(array('Item '.$_POST['quickReturnID'].__(' successfully returned on').'&nbsp;'.$return_date)); //mfc
+        $table->appendTableRow(array(str_replace(array('{itemCode}', '{returnDate}'), array($_POST['quickReturnID'], $return_date), __('Item {itemCode} successfully returned on&nbsp;{returnDate}')))); //mfc
         $table->appendTableRow(array(__('Title'), $loan_d['title']));
         $table->appendTableRow(array(__('Member Name'), $loan_d['member_name'], __('Member ID'), $loan_d['member_id']));
         $table->appendTableRow(array(__('Loan Date'), $loan_d['loan_date'], __('Due Date'), $loan_d['due_date']));
@@ -534,7 +534,11 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         $fines_alert = FALSE;
         $total_unpaid_fines = 0;
         $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit');
+<<<<<<< HEAD
         $unpaid_fines = $_unpaid_fines->fetch_row();
+=======
+        $unpaid_fines = $_unpaid_fines->fetch_all();
+>>>>>>> 998a2cd31dc989b43612abd61304e45cf5d3fc65
         #var_dump($unpaid_fines);
         if (!empty($unpaid_fines)) {
             foreach ($unpaid_fines as $key => $value) {

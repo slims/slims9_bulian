@@ -69,7 +69,11 @@ if (isset($_POST['saveData'])) {
         utility::jsAlert(''.__('Value of Credit can not be higher that Debet Value').'');
     } else {
         $data['member_id'] = $_SESSION['memberID'];
-        $data['fines_date'] = trim($dbs->escape_string(strip_tags($_POST['finesDate'])));
+        if (empty($_POST['finesDate'])) {
+            $data['fines_date'] = date('Y-m-d');
+        } else {
+            $data['fines_date'] = trim($dbs->escape_string(strip_tags($_POST['finesDate'])));
+        }
         $data['description'] = trim($dbs->escape_string(strip_tags($_POST['finesDesc'])));
         $data['debet'] = $debet;
         $data['credit'] = $credit;
@@ -186,7 +190,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 } else {
     $fines_alert = FALSE;
     $total_unpaid_fines = 0;
-    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$_SESSION['memberID'].'\' AND debet > credit';
+    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit';
     $_unpaid_fines = $dbs->query($sql_unpaid_fines);
     if ($_unpaid_fines->num_rows > 0) {
         while($row = $_unpaid_fines->fetch_assoc()) {
@@ -196,7 +200,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     if ($total_unpaid_fines > 0) {
         $fines_alert = TRUE;
     }
-    echo '<div style="color:red; font-weight:bold;">Total of unpaid fines: '.$total_unpaid_fines.'</div>';
+    echo '<div style="color:red; font-weight:bold;">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</div>';
 
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);
