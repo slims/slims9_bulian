@@ -69,7 +69,11 @@ if (isset($_POST['saveData'])) {
         utility::jsAlert(''.__('Value of Credit can not be higher that Debet Value').'');
     } else {
         $data['member_id'] = $_SESSION['memberID'];
-        $data['fines_date'] = trim($dbs->escape_string(strip_tags($_POST['finesDate'])));
+        if (empty($_POST['finesDate'])) {
+            $data['fines_date'] = date('Y-m-d');
+        } else {
+            $data['fines_date'] = trim($dbs->escape_string(strip_tags($_POST['finesDate'])));
+        }
         $data['description'] = trim($dbs->escape_string(strip_tags($_POST['finesDesc'])));
         $data['debet'] = $debet;
         $data['credit'] = $credit;
