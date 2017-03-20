@@ -186,7 +186,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 } else {
     $fines_alert = FALSE;
     $total_unpaid_fines = 0;
-    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$_SESSION['memberID'].'\' AND debet > credit';
+    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit';
     $_unpaid_fines = $dbs->query($sql_unpaid_fines);
     if ($_unpaid_fines->num_rows > 0) {
         while($row = $_unpaid_fines->fetch_assoc()) {

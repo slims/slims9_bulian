@@ -533,8 +533,8 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
 
         $fines_alert = FALSE;
         $total_unpaid_fines = 0;
-        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id=\''.$_SESSION['memberID'].'\' AND debet > credit');
-        $unpaid_fines = $_unpaid_fines->fetch_row();
+        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit');
+        $unpaid_fines = $_unpaid_fines->fetch_all();
         #var_dump($unpaid_fines);
         if (!empty($unpaid_fines)) {
             foreach ($unpaid_fines as $key => $value) {
