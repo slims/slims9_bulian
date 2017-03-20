@@ -142,7 +142,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $new_publisher = str_ireplace('NEW:', '', trim(strip_tags($_POST['publisherID'])));
       $new_id = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $new_publisher);
       $data['publisher_id'] = $new_id;
-    } else {
+    } else if (intval($_POST['publisherID']) > 0) {
       $data['publisher_id'] = intval($_POST['publisherID']);
     }
 
@@ -156,7 +156,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $new_place = str_ireplace('NEW:', '', trim(strip_tags($_POST['placeID'])));
       $new_id = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $new_place);
       $data['publish_place_id'] = $new_id;
-    } else {
+    } else if (intval($_POST['placeID']) > 0) {
       $data['publish_place_id'] = intval($_POST['placeID']);
     }
 
@@ -165,7 +165,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['promoted'] = ($_POST['promote'] == '0')?'literal{0}':'1';
     // labels
     $arr_label = array();
-    if ($_POST['labels']) {
+    if (!empty($_POST['labels'])) {
       foreach ($_POST['labels'] as $label) {
       if (trim($label) != '') {
         $arr_label[] = array($label, isset($_POST['label_urls'][$label])?$_POST['label_urls'][$label]:null );
