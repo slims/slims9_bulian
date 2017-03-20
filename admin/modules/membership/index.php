@@ -85,7 +85,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (empty($memberID) OR empty($memberName)) {
         utility::jsAlert(__('Member ID and Name can\'t be empty')); //mfc
         exit();
-    } else if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
+    } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
     } else {
