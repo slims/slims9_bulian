@@ -196,7 +196,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     if ($total_unpaid_fines > 0) {
         $fines_alert = TRUE;
     }
-    echo '<div style="color:red; font-weight:bold;">Total of unpaid fines: '.$total_unpaid_fines.'</div>';
+    echo '<div style="color:red; font-weight:bold;">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</div>';
 
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);

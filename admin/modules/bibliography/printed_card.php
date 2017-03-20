@@ -260,7 +260,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     $html_str .= '</style>'."\n";
     $html_str .= '</head>'."\n";
     $html_str .= '<body>'."\n";
-    $html_str .= '<a href="#" class="doNotPrint" onclick="window.print()">Print Again</a>'."\n";
+    $html_str .= '<a href="#" class="doNotPrint" onclick="window.print()">' . __('Print Again') . '</a>'."\n";
     $html_str .= '<table border=0 cellpadding=0 cellspacing=5>'."\n";
 	  $html_str .= $katalog;
     $html_str .= '</table>'."\n";
