@@ -5474,7 +5474,7 @@ msgid "Holiday FAILED to Save. Please Contact System Administrator"
 msgstr "Hari Libur GAGAL Disimpan. Hubungi administrator Sistem"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "Setelan Hari Libur"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:41
