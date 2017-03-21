@@ -1,4 +1,4 @@
-slims8_akasia
+Slims8 Akasia
 =============
 SENAYAN Library Management System (SLiMS) version 8 Codename Akasia
 
