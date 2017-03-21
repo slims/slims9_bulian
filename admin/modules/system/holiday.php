@@ -156,7 +156,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <fieldset class="menuBox">
 <div class="menuBoxInner calendarIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Holiday Setings'); ?></h2>
+	    <h2><?php echo __('Holiday Settings'); ?></h2>
   </div>
 	<div class="sub_section">
     .
