@@ -88,7 +88,13 @@ define('UPLOAD', SB.FLS.DS);
 
 // repository dir
 define('REPO', 'repository');
-define('REPOBS', SB.REPO.DS);
+$repobs['enable'] = FALSE;
+$repobs['path'] = '/your/alternative/of/repository/directory/';
+if ($repobs['enable'] == TRUE) {
+  define('REPOBS', $repobs['path']);
+} else {
+  define('REPOBS', SB.REPO.DS);
+}
 
 // file attachment dir
 define('ATC', 'att');
