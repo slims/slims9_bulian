@@ -5738,7 +5738,7 @@ msgid "Holiday FAILED to Save. Please Contact System Administrator"
 msgstr "فشل في حفظ بيانات العطلة. الرجاء الاتصال مسؤول النظام"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "إعدادات العطل"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:42
