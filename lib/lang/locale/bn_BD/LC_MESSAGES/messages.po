@@ -4872,7 +4872,7 @@ msgid "Holiday FAILED to Save. Please Contact System Administrator"
 msgstr "ছুটির তথ্য সেভ করতে ব্যর্থ! সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "ছুটির সেটিংস"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:41
