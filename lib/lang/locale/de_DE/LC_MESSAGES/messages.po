@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-19 17:58+0100\n"
-"PO-Revision-Date: 2017-03-19 17:58+0100\n"
+"POT-Creation-Date: 2017-03-26 14:01+0200\n"
+"PO-Revision-Date: 2017-03-26 14:02+0200\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1038,6 +1038,10 @@ msgstr "Zu importierende Datei"
 #: admin/modules/bibliography/item_import.php:218
 msgid "Number of Records To Import (0 for all records)"
 msgstr ""
+
+#: admin/modules/bibliography/index.php:87
+msgid "{imageFilename} successfully removed!"
+msgstr "{imageFilename} erfolgreich entfernt!"
 
 #: admin/modules/bibliography/index.php:96
 msgid "Title can not be empty"
