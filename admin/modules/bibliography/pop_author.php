@@ -142,7 +142,7 @@ if (isset($_POST['save']) AND (isset($_POST['authorID']) OR trim($_POST['search_
     <form name="searchAuthor" method="post" style="display: inline;">
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_author', 'author_id:author_name:author_year:authority_type', 'authorID', $('#search_str').val())";
-    echo __('Author Name'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" onkeyup="<?php echo $ajax_exp; ?>" onchange="<?php echo $ajax_exp; ?>" />
+    echo __('Author Name'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>"  />
     <select name="type" style="width: 20%;"><?php
     foreach ($sysconf['authority_type'] as $type_id => $type) {
         echo '<option value="'.$type_id.'">'.$type.'</option>';
