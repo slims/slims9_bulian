@@ -85,19 +85,19 @@ ob_start();
 $scope_q = $dbs->query('SELECT scope, vocabolary_id FROM mst_voc_ctrl WHERE topic_id='.$itemID.' AND scope IS NOT NULL');
 $scope_d = $scope_q->fetch_row();
 
-$page_title = 'Scope Note Vocabulary';
+$page_title = __('Scope Note Vocabulary');
 ?>
 <h1><?php echo $page_title; ?></h1>
 <form name="scopeForm" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
   <div class="form-group">
-    <label for="exampleInputEmail1">Scope</label>
+      <label for="exampleInputEmail1"><?php echo __('Scope'); ?></label>
     <textarea style="height:auto;" class="form-control" name="scope" rows="5"><?php echo $scope_d[0]; ?></textarea>
   </div>
   <input type="hidden" name="topic_id" value="<?php echo $itemID; ?>">
   <input type="hidden" name="vocabolary_id" value="<?php echo $scope_d[1]; ?>">
   <div class="checkbox">
     <label>
-      <input type="checkbox" name="delete"> Delete this scope
+        <input type="checkbox" name="delete"> <?php echo __('Delete this scope'); ?>
     </label>
   </div>
   <input type="submit" name="save" class="btn btn-primary" value="<?php echo __('Save');?>">
