@@ -85,7 +85,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (empty($memberID) OR empty($memberName)) {
         utility::jsAlert(__('Member ID and Name can\'t be empty')); //mfc
         exit();
-    } else if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
+    } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
     } else {
@@ -507,12 +507,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     $form->addAnything(__('Photo'), $str_input);
 
+    // hidden username and password fields so that the password manager of the browser will not fill in the username in the memberEmail and the password in the memberPasswd field
+    $form->addTextField('text', 'dummyUserField', null, null, '');
+    $form->addTextField('password', 'dummyPasswdField', null, null, '');
+    echo '<style type="text/css">#simbioFormRowdummyPasswdField, #simbioFormRowdummyUserField {display: none}</style>';
+
     // member email
     $form->addTextField('text', 'memberEmail', __('E-mail'), $rec_d['member_email'], 'style="width: 40%;"');
     // member password
-    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
     // member password confirmation
-    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
 
     // edit mode messagge
     if ($form->edit_mode) {

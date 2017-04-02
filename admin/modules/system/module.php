@@ -59,7 +59,7 @@ if (isset($_POST['saveData'])) {
         $data['module_path'] = $dbs->escape_string($modulePath);
         // check for module path existance
         if (!file_exists(MDLBS.$data['module_path'].DS)) {
-            utility::jsAlert('Modules path doesn\'t exists! Please check again in module base directory');
+            utility::jsAlert(__('Modules path doesn\'t exists! Please check again in module base directory'));
             exit();
         }
         $data['module_name'] = $dbs->escape_string($moduleName);

@@ -74,7 +74,7 @@ if (isset($_POST['save'])) {
     $alert_save .= '</script>';
     echo $alert_save;
   } else {
-    utility::jsAlert('Failed save data!');
+    utility::jsAlert(__('Failed to save data!'));
   }
 }
 

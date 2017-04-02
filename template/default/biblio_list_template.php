@@ -57,7 +57,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         if (!isset($label_cache[$label[0]]['name'])) {
           $label_q = $dbs->query('SELECT label_name, 
             label_desc, label_image FROM mst_label AS lb
-            WHERE lb.label_name=\''.$label[0].'\'');
+            WHERE lb.label_name=\''.$dbs->escape_string($label[0]).'\'');
           $label_d = $label_q->fetch_row();
           $label_cache[$label[0]] = array( 'name'  => $label_d[0], 
             'desc'  => $label_d[1], 
@@ -156,7 +156,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // checkbox for marking collection
   $_i= rand(); // Add By Eddy Subratha
   $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-  $output .= '<div class="subItem">'.$detail_button.$xml_button.$_check_mark.$cite_button.'</div>';
+  $output .= '<div class="subItem">'.$detail_button.$xml_button.$cite_button.$_check_mark.'</div>';
   
   // social buttons
   if ($sysconf['social_shares']) {

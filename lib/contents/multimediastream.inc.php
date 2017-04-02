@@ -1,7 +1,7 @@
 <?php
 /**
- * Copyright (C) 2007,Hendro Wicaksono (hendrowicaksono@yahoo.com)
- * Modification by Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2007,Hendro Wicaksono (hendrowicaksono@gmail.com)
+ * Modification by Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,8 @@ if (!file_exists($file_loc)) {
   die();
 }
 // multimedia URL
-$multimedia_url = REPO.'/'.$file_d['file_dir'].'/'.$file_d['file_name'];
+$multimedia_url = SWB.'/index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
+$multimedia_url = urlencode($multimedia_url);
 
 // flowplayer settings
 $splash = SWB.IMG.'/senayan-player-splash.png';

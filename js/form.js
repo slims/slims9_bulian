@@ -147,7 +147,7 @@ var showDropDown = function(strURL, strElmntID, strAddParams) {
   var listObj = $('#'+strElmntID + 'List');
   if (inputVal.length < 4) { listObj.hide(); return; }
   // populate list ID
-  jsonToList(strURL, strElmntID, 'inputSearchVal=' + escape(inputVal) + '&' + strAddParams);
+  jsonToList(strURL, strElmntID, 'inputSearchVal=' + encodeURIComponent(inputVal) + '&' + strAddParams);
   if (noResult) { return; }
   // show list
   listObj.css({'left': inputObjXY.left+'px', 'width': inputObjWidth+'px', 'display': 'block'});

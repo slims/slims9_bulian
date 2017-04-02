@@ -1,0 +1,73 @@
+.librarian,
+.alert,
+.slims-card {
+    position: relative;
+    min-height: 1px;
+    border-radius: 2px;
+    margin: 8px 0;
+    padding: 16px;
+    overflow: hidden;
+
+    @include box-shadow(0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));
+
+    .errorBox {
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-bottom: 16px;
+        padding: 16px;
+        background-color: #ffcdd2;
+        border: none;
+    }
+}
+
+.slims-card--menu {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+
+    .slims-button {
+        padding: 0 8px;
+        font-size: 14px;
+        line-height: 32px;
+        .material-icons {
+            color: #aaa;
+        }
+    }
+}
+
+.slims-card--header {
+    border-bottom: 1px solid #e5e5e5;
+    margin: -16px -16px 8px -16px;
+    padding: 16px;
+    position: relative;
+    h4 {
+        font-weight: bold;
+        margin: 0;
+        font-size: 14px;
+    }
+}
+
+.librarian,
+.slims-card--default {
+    background-color: #fff;
+}
+
+.slims-card--danger,
+.slims-card--error {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.alert-warning,
+.slims-card--warning {
+    background-color: #fbc02d;
+}
+
+.alert-info,
+.slims-card--info {
+    background-color: #03a9f4;
+    color: #fff;
+}

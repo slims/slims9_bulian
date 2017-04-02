@@ -21,7 +21,6 @@
 // key to authenticate
 define('INDEX_AUTH', '1');
 
-sleep(1);
 require '../../../sysconfig.inc.php';
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';

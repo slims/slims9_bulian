@@ -72,7 +72,7 @@ if (isset($_POST['confirmFinish'])) {
     $update_item_status_to_missing = $dbs->query('UPDATE item SET item_status_id=\'MIS\' WHERE item_code IN (SELECT item_code FROM stock_take_item WHERE status=\'m\')');
     // start output buffering content for report generation
     ob_start();
-    echo '<html><head><title>'.$stk_take_d[0].' Report</title>';
+    echo '<html><head><title>'.$stk_take_d[0].' ' . __('Stock Take Report') . '</title>';
     echo '<meta http-equiv="Pragma" content="No-Cache">'."\n";
     echo '<meta http-equiv="Cache-Control" content="No-Cache">'."\n";
     echo '<style type="text/css">'."\n";
@@ -87,7 +87,7 @@ if (isset($_POST['confirmFinish'])) {
     echo '<body>'."\n";
     define('REPECT_INCLUDE', true);
     // stock take general report
-    echo '<h3>'.$stk_take_d[0].' - Stock Take Report</h3><hr />';
+    echo '<h3>'.$stk_take_d[0].' - ' . __('Stock Take Report') . '</h3><hr />';
     include MDLBS.'stock_take/st_report.php';
 
     // cell row class
@@ -96,12 +96,12 @@ if (isset($_POST['confirmFinish'])) {
     $lost_item_q = $dbs->query('SELECT item_code, title, classification, coll_type_name, call_number FROM stock_take_item WHERE status=\'m\'');
     if ($lost_item_q->num_rows > 0) {
         echo '<br />';
-        echo '<h3>LOST Item list</h3><hr size="1" />';
+        echo '<h3>' . __('LOST Item list') . '</h3><hr size="1" />';
         echo '<table style="width: 100%; border: 1px solid #666;" cellspacing="0">';
         echo '<tr>';
-        echo '<th class="dataListHeader">Item Code</th>
-            <th class="dataListHeader">Document Title</th>
-            <th class="dataListHeader">Classification</th>';
+        echo '<th class="dataListHeader">' . __('Item Code') . '</th>
+            <th class="dataListHeader">' . __('Title') . '</th>
+            <th class="dataListHeader">' . __('Classification') . '</th>';
         echo '</tr>'."\n";
         while ($lost_item_d = $lost_item_q->fetch_row()) {
             $cellClass = ($cellClass == 'alterCell')?'alterCell2':'alterCell';
@@ -118,11 +118,11 @@ if (isset($_POST['confirmFinish'])) {
     $error_log_q = $dbs->query('SELECT log_date, log_msg FROM system_log WHERE log_location=\'stock_take\' AND log_msg LIKE \'Stock Take ERROR%\'');
     if ($error_log_q->num_rows > 0) {
         echo '<br />';
-        echo '<h3>Stock Take Error Logs</h3><hr size="1" />';
+        echo '<h3>' . __('Stock Take Error Logs') . '</h3><hr size="1" />';
         echo '<table style="width: 100%; border: 1px solid #666;" cellspacing="0">';
         echo '<tr>';
-        echo '<th class="dataListHeader">Time</th>
-            <th class="dataListHeader">Message</th>';
+        echo '<th class="dataListHeader">' . __('Time') . '</th>
+            <th class="dataListHeader">' . __('Message') . '</th>';
         echo '</tr>';
         while ($error_log_d = $error_log_q->fetch_row()) {
             $cellClass = ($cellClass == 'alterCell')?'alterCell2':'alterCell';
@@ -140,7 +140,7 @@ if (isset($_POST['confirmFinish'])) {
     if ($file_write) {
         // open result in new window
         echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.'/'.FLS.'/'.REP.'/'.$stk_take_report_filename.'", width: 800, height: 500, title: "Stock Take Report"})</script>';
-    } else { utility::jsAlert('ERROR! Stock take report failed to generate, possibly because '.REPBS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Stock take report failed to generate, possibly because {directory} directory is not writable'))); }
     // update
     $update_st_q = $dbs->query("UPDATE stock_take SET report_file='$stk_take_report_filename' WHERE is_active=1");
     // set currently active stock take process to unactive

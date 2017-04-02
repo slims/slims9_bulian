@@ -260,7 +260,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     $html_str .= '</style>'."\n";
     $html_str .= '</head>'."\n";
     $html_str .= '<body>'."\n";
-    $html_str .= '<a href="#" class="doNotPrint" onclick="window.print()">Print Again</a>'."\n";
+    $html_str .= '<a href="#" class="doNotPrint" onclick="window.print()">' . __('Print Again') . '</a>'."\n";
     $html_str .= '<table border=0 cellpadding=0 cellspacing=5>'."\n";
 	  $html_str .= $katalog;
     $html_str .= '</table>'."\n";
@@ -276,7 +276,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in new window
         echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Catalog Printing').'"})</script>';
-    } else { utility::jsAlert('ERROR! Catalog card failed to generate, possibly because '.SB.FLS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Catalog card failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

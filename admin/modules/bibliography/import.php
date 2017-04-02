@@ -224,7 +224,9 @@ if (isset($_POST['doImport'])) {
     $import_time_sec = $end_time-$start_time;
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name']);
     echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#importInfo\').html(\'<strong>'.$inserted_row.'</strong> records inserted successfully to bibliographic database, from record <strong>'.$_POST['recordOffset'].' in '.$import_time_sec.' second(s)</strong>\');'."\n";
+    echo 'parent.$(\'#importInfo\').html(\''
+    . str_replace(array('{numberOfInsertedRecords}', '{recordOffset}', '{timeInSeconds}'),array($inserted_row,intval($_POST['recordOffset']), $import_time_sec), __( '<strong>{numberOfInsertedRecords}</strong> records inserted successfully to bibliographic database, from record <strong>{recordOffset} in {timeInSeconds} second(s)</strong>'))
+            . '\');'."\n";
     echo 'parent.$(\'#importInfo\').css( {\'display\': \'block\'} );'."\n";
     echo '</script>';
     exit();
@@ -263,7 +265,7 @@ $form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentiti
 //  field enclosed
 $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;"');
 // number of records to import
-$form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;"');
+$form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;"');
 // output the form
