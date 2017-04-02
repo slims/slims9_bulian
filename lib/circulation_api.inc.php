@@ -1,4 +1,4 @@
-f<?php
+<?php
 /**
  * API class
  * A Collection of API static utility methods
