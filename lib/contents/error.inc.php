@@ -27,7 +27,6 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-
 $errmsg = NULL;
 if (isset($_GET['errnum'])) {
     if ($_GET['errnum'] === '601') {
@@ -38,9 +37,6 @@ if (isset($_GET['errnum'])) {
 } else {
     $errnum = FALSE;
 }
-
-#die('disini>');
-
 
 if ((!$errnum) AND (!is_null($errmsg))) {
     echo $errmsg;
