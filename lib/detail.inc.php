@@ -126,18 +126,6 @@ class detail
           return false;
         }
         foreach ($this->record_detail['attachments'] as $attachment_d) {
-          // check member type privileges
-          if ($attachment_d['access_limit']) {
-            if (utility::isMemberLogin()) {
-              $allowed_mem_types = @unserialize($attachment_d['access_limit']);
-              if (!in_array($_SESSION['m_member_type_id'], $allowed_mem_types)) {
-                continue;
-              }
-            } else {
-              continue;
-            }
-          }
-          #if (preg_match('@(video|audio|image)/.+@i', $attachment_d['mime_type'])) {
           if ($attachment_d['mime_type'] == 'application/pdf') {
             $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
             $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
