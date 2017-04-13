@@ -42,7 +42,7 @@ if (isset($_POST['saveData'])) {
   $length_serial = trim($dbs->escape_string(strip_tags($_POST['length_serial'])));
 
   if ($length_serial <= 2) {
-    utility::jsAlert(__('Please, fill length serial number more than 2'));
+    utility::jsAlert('Please, fill length serial number more than 2');
   } else {
     // get database setting
     $patterns = array();
@@ -53,13 +53,14 @@ if (isset($_POST['saveData'])) {
     $patterns[] = $prefix.$zeros.$suffix;
     // get pattern from database
     $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
-    if (!$dbs->errno) {
+    if ($pattern_q->num_rows > 0) {
       $pattern_d = $pattern_q->fetch_row();
       $val = @unserialize($pattern_d[0]);
-      if (!empty($val)) {
+      if (!empty($val) || count($val) == 0) {
         foreach ($val as $v) {
           $patterns[] = $v;
         }
+        $patterns = array_unique($patterns);
         $data_serialize = serialize($patterns);
         // update
         $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'batch_item_code_pattern\'');
@@ -116,6 +117,10 @@ $form->addTextField('text', 'length_serial', __('Length serial number'), '5', 's
 
 $form->addHidden('saveData', 'save');
 
+if (isset($_GET['in'])) {
+  $form->addHidden('in', trim($_GET['in']));
+}
+
 // print out the object
 echo '<div style="padding:20px;">';
 echo $form->printOut();
@@ -149,6 +154,11 @@ echo '</div>';
       var pattern = $('#preview').text();
       $('#itemCodePattern').append('<option value="'+ pattern +'">'+ pattern +'</option>');
       jQuery.colorbox.close();
+      <?php
+      if (isset($_GET['in']) && $_GET['in'] == 'master') {
+        echo 'parent.jQuery(\'#mainContent\').simbioAJAX(\''.MWB.'master_file/item_code_pattern.php\');';
+      }
+      ?>
     });
     event.preventDefault();
   });
