@@ -49,12 +49,12 @@ if ($file_q->num_rows > 0) {
                 $allowed_mem_types = @unserialize($file_d['access_limit']);
                 if (!in_array($_SESSION['m_member_type_id'], $allowed_mem_types)) {
                     header("location:index.php?p=error&errnum=601");
-                    continue;
+                    //~ continue;
                 }
             } else {
                 $referto = SWB.'index.php?p=member&destination=index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
                 header("location:$referto");
-                continue;
+                //~ continue;
             }
         }
         header("Content-Description: File Transfer");
