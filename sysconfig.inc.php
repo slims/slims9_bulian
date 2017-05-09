@@ -354,6 +354,8 @@ $sysconf['ucs']['auto_delete'] = false;
 $sysconf['ucs']['auto_insert'] = false;
 // UCS server address. NO TRAILING SLASH! for local testing on Windows machine don't use localhost, use 127.0.0.1 instead
 $sysconf['ucs']['serveraddr'] = 'http://localhost/ucs';
+// UCS server version
+$sysconf['ucs']['serverversion'] = 3;
 // node ID
 $sysconf['ucs']['id'] = 'slims-node';
 // default is s0beautifulday
