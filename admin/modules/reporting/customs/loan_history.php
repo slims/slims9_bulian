@@ -127,6 +127,20 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
+            <div class="divRowLabel"><?php echo __('Location'); ?></div>
+            <div class="divRowContent">
+            <?php
+            $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
+            $loc_options = array();
+            $loc_options[] = array('0', __('ALL'));
+            while ($loc_d = $loc_q->fetch_row()) {
+                $loc_options[] = array($loc_d[0], $loc_d[1]);
+            }
+            echo simbio_form_element::selectList('location', $loc_options);
+            ?>
+        	</div> 
+        </div>	    
+        <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
             <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
         </div>
@@ -202,9 +216,13 @@ if (!$reportView) {
         $membershipType = (integer)$_GET['membershipType'];
         $criteria .= ' AND m.member_type_id='.$membershipType;
     }
-
-
-
+	
+    // item location	
+    if (isset($_GET['location']) AND !empty($_GET['location'])) {
+        $location = $dbs->escape_string(trim($_GET['location']));
+        $criteria .= ' AND i.location_id=\''.$location.'\'';
+    }
+	
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
