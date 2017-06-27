@@ -268,7 +268,7 @@ if (isset($_GET['mode'])) {
                 // emptying holiday dayname session first
                 $_SESSION['holiday_dayname'] = array();
                 foreach ($_POST['dayname'] as $dayname) {
-                    $dbs->query("INSERT INTO holiday VALUES(NULL, '$dayname', NULL, NULL)");
+                    $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
                     // update holiday_dayname session
                     $_SESSION['holiday_dayname'][] = $dayname;
                 }
