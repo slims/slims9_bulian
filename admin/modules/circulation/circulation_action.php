@@ -111,8 +111,8 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-	$circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-	$circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+	$circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+	$circulation->holiday_date = $_SESSION['holiday_date'];
     if ($_POST['process'] == 'return') {
         $return_status = $circulation->returnItem($loanID);
         // write log
@@ -127,8 +127,8 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         echo '</script>';
     } else {
         // set holiday settings
-        $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-        $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+        $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+        $circulation->holiday_date = $_SESSION['holiday_date'];
         $extend_status = $circulation->extendItemLoan($loanID);
         if ($extend_status === ITEM_RESERVED) {
             echo '<script type="text/javascript">';
@@ -156,8 +156,8 @@ if (isset($_POST['tempLoanID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
-    $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-    $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+    $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+    $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
     $add = $circulation->addLoanSession(trim($_POST['tempLoanID']));
     if ($add == LOAN_LIMIT_REACHED) {
@@ -238,8 +238,8 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
-    $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-    $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+    $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+    $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
     $add = $circulation->addLoanSession($_POST['overrideID']);
     echo '<script type="text/javascript">';
@@ -283,8 +283,8 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
 
         /* modified by Indra Sutriadi */
         $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-        $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-        $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+        $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+        $circulation->holiday_date = $_SESSION['holiday_date'];
         /* end of modification */
 
         // check for overdue
