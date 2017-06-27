@@ -100,7 +100,7 @@ class simbio_date
         $_start_mktime = mktime(0, 0, 0, $_parsed_start_date['month'], $_parsed_start_date['day'], $_parsed_start_date['year']);
         $_end_mktime = mktime(0, 0, 0, $_parsed_end_date['month'], $_parsed_end_date['day'], $_parsed_end_date['year']);
         $_mksec = $_end_mktime-$_start_mktime;
-        return abs(intval($_mksec/(3600*24)));
+        return abs(intval(round($_mksec/(3600*24))));
     }
 
 
