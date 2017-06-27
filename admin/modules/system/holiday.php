@@ -58,7 +58,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::jsAlert(__('Holiday description can\'t be empty!'));
         exit();
     } else {
-        $data['holiday_date'] = trim(preg_replace('@\s[0-9]{2}:[0-9]{2}:[0-9]{2}$@i', '', $_POST['holDate']));
+        $data['holiday_date'] = trim($_POST['holDate']); // remove extra whitespace
+        if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $data['holiday_date'])) {
+            utility::jsAlert(__('Holiday Date Start must have the format YYYY-MM-DD!'));
+            exit();
+        }
         $holiday_start_date = $data['holiday_date'];
         $data['holiday_dayname'] = date('D', strtotime($data['holiday_date']));
         $data['description'] = $holDesc;
@@ -86,8 +90,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
                 // date range insert
-                if (isset($_POST['holDateEnd'])) {
-                    $holiday_end_date = trim(preg_replace('@\s[0-9]{2}:[0-9]{2}:[0-9]{2}$@i', '', $_POST['holDateEnd']));
+                if (!empty($_POST['holDateEnd'])) {
+                    $holiday_end_date = trim($_POST['holDateEnd']); // remove extra whitespace
+                    if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $holiday_end_date)) {
+                        utility::jsAlert(__('Holiday Date End must have the format YYYY-MM-DD if it is not empty!'));
+                        exit();
+                    }
                     // check if holiday end date is more than holiday start date
                     if (simbio_date::compareDates($holiday_start_date, $holiday_end_date) == $holiday_end_date) {
                         $guard = 365;
