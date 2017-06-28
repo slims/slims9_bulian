@@ -376,8 +376,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else { $itemcode .= $b; }
         $itemcode .= $chars[1];
 
-        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
-        VALUES (%d, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, location_id, item_status_id, input_date, last_update, uid)
+        VALUES (%d, '%s', '%s', %d, '%s', 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
         @$dbs->query($item_insert_sql);
       }
     }
@@ -605,6 +605,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
     }
   $str_input .= '<label id="collTypeIDLabel">' . __('Collection Type').':</label> '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  // get location data related to this record from database
+  $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
+  $location_options = array();
+  while ($location_d = $location_q->fetch_row()) {
+    $location_options[] = array($location_d[0], $location_d[1]);
+  }
+  $str_input .= __('Location').': '.simbio_form_element::selectList('locationID', $location_options, '', 'style="width: 100px;"');;
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
