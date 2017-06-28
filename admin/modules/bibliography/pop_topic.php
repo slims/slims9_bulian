@@ -144,7 +144,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_vocabolary_control.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
-    <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" onkeyup="<?php echo $ajax_exp; ?>" />
+    <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>" />
     <select name="type" style="width: 20%;"><?php
     foreach ($sysconf['subject_type'] as $type_id => $type) {
         echo '<option value="'.$type_id.'">'.$type.'</option>';
