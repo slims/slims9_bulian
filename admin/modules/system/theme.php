@@ -116,6 +116,7 @@ if (isset($_GET['customize'])) {
   } else {
     echo __('This theme not customizable');
   }
+  require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
   exit();
 }
 

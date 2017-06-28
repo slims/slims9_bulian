@@ -429,6 +429,22 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
         $sql_op->delete('biblio_relation', "biblio_id=$itemID");
         $sql_op->delete('search_biblio', "biblio_id=$itemID");
+	      
+        // delete serial data
+        // check kardex if exist
+        $_sql_serial_kardex_q = sprintf('SELECT b.title, COUNT(kardex_id),s.serial_id FROM biblio AS b
+          LEFT JOIN `serial` AS s ON b.biblio_id=s.biblio_id
+          LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
+          WHERE b.biblio_id=%d GROUP BY title', $itemID);
+        $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
+        $serial_kardex_d = $serial_kardex_q->fetch_row();
+        // delete kardex
+        if ($serial_kardex_d[1] > 1) {
+          $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+        }
+        //delete serial data
+          $sql_op->delete('serial', "biblio_id=$itemID");
+	      
         // add to http query for UCS delete
         $http_query .= "itemID[]=$itemID&";
       }
