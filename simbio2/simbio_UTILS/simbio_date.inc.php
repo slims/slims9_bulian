@@ -24,7 +24,7 @@
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+} elseif (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
@@ -187,7 +187,7 @@ class simbio_date
         if (!$array_holiday_dayname AND !$array_holiday_date) {
             return $str_date;
         }
-		
+
         // check date array first
         $d = false;
 		$_str_date_next = $str_date;
@@ -210,7 +210,7 @@ class simbio_date
 			$n = true;
             $_str_date_next = self::getNextDate(1, $_str_date_next);
         }
-		
+
         //looping break
         if (!$d and !$n) {
             return $_str_date_next;
@@ -282,4 +282,3 @@ class simbio_date
         return $_calendar;
     }
 }
-?>

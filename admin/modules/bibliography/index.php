@@ -90,6 +90,11 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
+  }
   $title = trim(strip_tags($_POST['title']));
   // check form validity
   if (empty($title)) {
@@ -368,7 +373,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       }
 
       $end = $start + $total;
-      for ($b=$start; $b < $end; $b++) { 
+      for ($b=$start; $b < $end; $b++) {
         $len = strlen($b);
         $itemcode = $chars[0];
         if ($zeros > 0) {
@@ -389,6 +394,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 } else if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
   if (!($can_read AND $can_write)) {
     die();
+  }
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
   }
   /* DATA DELETION PROCESS */
   // create sql op object
@@ -429,7 +439,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
         $sql_op->delete('biblio_relation', "biblio_id=$itemID");
         $sql_op->delete('search_biblio', "biblio_id=$itemID");
-	      
+
         // delete serial data
         // check kardex if exist
         $_sql_serial_kardex_q = sprintf('SELECT b.title, COUNT(kardex_id),s.serial_id FROM biblio AS b
@@ -444,7 +454,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
         //delete serial data
           $sql_op->delete('serial', "biblio_id=$itemID");
-	      
+
         // add to http query for UCS delete
         $http_query .= "itemID[]=$itemID&";
       }

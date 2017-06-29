@@ -3,7 +3,7 @@
  * simbio_form_maker
  * Class for creating form with element based on simbio form elements
  *
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2017  Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+} elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
 }
 
@@ -47,6 +47,8 @@ class simbio_form_maker_anything extends abs_simbio_form_element
 class simbio_form_maker
 {
   public $submit_target = '_self';
+  public $add_form_attributes = '';
+  public $css_classes = 'simbio_form_maker';
   protected $elements = array();
   protected $hidden_elements = array();
   protected $form_name = '';
@@ -54,6 +56,9 @@ class simbio_form_maker
   protected $form_action = '';
   protected $disable = '';
   protected $enable_upload = true;
+  protected $enable_token = true;
+  protected $submit_token = null;
+  protected $submit_token_name = null;
 
   /**
    * Class Constructor
@@ -72,15 +77,80 @@ class simbio_form_maker
   }
 
   /**
+   * Static method to create random form submission token
+   *
+   * @param   int       $length
+   * @return  string
+   */
+  public static function genRandomToken($length = 32){
+    if(!isset($length) || intval($length) <= 8 ) {
+      $length = 32;
+    }
+    if (function_exists('random_bytes')) {
+      return bin2hex(random_bytes($length));
+    }
+    if (function_exists('mcrypt_create_iv')) {
+      return bin2hex(mcrypt_create_iv($length, MCRYPT_DEV_URANDOM));
+    }
+    if (function_exists('openssl_random_pseudo_bytes')) {
+      return bin2hex(openssl_random_pseudo_bytes($length));
+    }
+  }
+
+
+  /**
+   * Static method check validaty of form submission token
+   *
+   * @return  boolean
+   */
+  public static function isTokenValid(){
+    if (isset($_SESSION['csrf_token']) && isset($_SESSION['csrf_token']) && isset($_POST['csrf_token'])) {
+      if ($_SESSION['csrf_token'] === $_POST['csrf_token']) {
+        // remove token session var
+        unset($_SESSION['csrf_token']);
+        return true;
+      } else {
+        // remove token session var
+        unset($_SESSION['csrf_token']);
+        return false;
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * Method to disable form submission token
+   * this method MUST BE called before startForm method call
+   *
+   * @return  void
+   */
+  public function disableSubmitToken()
+  {
+    $this->enable_token = false;
+  }
+
+  /**
    * Method to start form
    *
    * @return  string
    */
   public function startForm()
   {
-    return '<form name="'.$this->form_name.'" id="'.$this->form_name.'" '.($this->disable?'class="disabled"':'')
+    if ($this->disable) {
+      $this->css_classes .= ' disabled';
+    }
+    $start_form = '<form name="'.$this->form_name.'" id="'.$this->form_name.'" class="'.$this->css_classes.'" '
       .'method="'.$this->form_method.'" '
-      .'action="'.$this->form_action.'" target="'.$this->submit_target.'"'.($this->enable_upload?' enctype="multipart/form-data"':'').'>';
+      .'action="'.$this->form_action.'" target="'.$this->submit_target.'"'.($this->enable_upload?' enctype="multipart/form-data"':' ').$this->add_form_attributes.'>';
+    if ($this->enable_token) {
+      $this->submit_token = self::genRandomToken();
+      $start_form .= '<input type="hidden" name="csrf_token" value="'.$this->submit_token.'" />';
+      if (isset($_SESSION)) {
+        $_SESSION['csrf_token'] = $this->submit_token;
+      }
+    }
+    return $start_form;
   }
 
 
