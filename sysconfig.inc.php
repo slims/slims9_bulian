@@ -652,3 +652,6 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* new log system */
 $sysconf['log']['biblio'] = TRUE;
+
+// REST Api
+$sysconf['api']['version'] = 1;
