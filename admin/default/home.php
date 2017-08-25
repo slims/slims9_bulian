@@ -165,9 +165,6 @@ if($sysconf['admin_home']['mode'] == 'default') {
 
     // echo $sql_date; //for debug purpose only
     $set_date       = $dbs->query($sql_date);
-    $get_loan       = 0;
-    $get_return     = 0;
-    $get_extends    = 0;
     if($set_date->num_rows > 0 ) {
         while ($transc_date = $set_date->fetch_object()) {
             // set transaction date
@@ -192,7 +189,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                 $transc_loan    = $set_loan->fetch_object();
                 $get_loan      .= $transc_loan->countloan.',';            
             } else {
-                $get_loan       = 0;
+                $get_loan       .= '0,';
             }
 
             // get latest return
@@ -207,14 +204,14 @@ if($sysconf['admin_home']['mode'] == 'default') {
                         AND renewed = 0
                         AND is_return = 1
                     GROUP BY 
-                        loan_date";
+                        return_date";
 
             $set_return       = $dbs->query($sql_return);                     
             if($set_return->num_rows > 0) {
                 $transc_return    = $set_return->fetch_object();
                 $get_return      .= $transc_return->countloan.',';
             } else {
-                $get_return       = 0;
+                $get_return       .= '0,';
             }
 
             // get latest extends
@@ -228,13 +225,13 @@ if($sysconf['admin_home']['mode'] == 'default') {
                         AND is_lent     = 1 
                         AND renewed     = 1
                     GROUP BY 
-                        loan_date";
+                        return_date";
             $set_extends       = $dbs->query($sql_extends);   
             if($set_extends->num_rows > 0) {              
                 $transc_extends    = $set_extends->fetch_object();
                 $get_extends      .= $transc_extends->countloan.',';
             } else {
-                $get_extends       = 0;
+                $get_extends      .= '0,';
             }
         }
     }

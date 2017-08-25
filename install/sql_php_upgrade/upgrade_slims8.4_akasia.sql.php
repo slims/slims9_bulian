@@ -29,3 +29,10 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_log` (
   FULLTEXT KEY `rawdata` (`rawdata`),
   FULLTEXT KEY `additional_information` (`additional_information`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;";
+
+// -- 
+// -- Set new field for 'uid' in 'loan'
+// --
+
+$sql['alter'][] = "ALTER TABLE  `loan` ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
+ADD INDEX (  `uid` ) ;";
