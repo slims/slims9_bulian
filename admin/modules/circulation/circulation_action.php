@@ -553,5 +553,31 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '</ul>';
 				echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="expandable border"></iframe>'."\n";
     }
+    ?>
+    <script type="text/javascript">
+    /**
+     * increase the height of the iframe so that it uses all remaining space
+     */
+    function resizeIframe() {
+        // remove the event handler if the iframe doesn't exist anymore
+        if($('#listsFrame').length === 0) {
+            $(window).off('resize', resizeIframe);
+            return;
+        }
+        var buffer = 20; //scroll bar buffer
+        var height = $(window).height(); // height of the whole page
+        height -= $('#listsFrame').offset().top; // minus everything that is above of the iframe
+        height -= $('.s-footer').innerHeight(); // minus everything that is on the below the iframe
+        height -= buffer; // minus some buffer for scrollbars and such
+        height = (height < 0) ? 0 : height; // in case we dont have enough space, the min-height=370px from css kicks in
+        $('#listsFrame').css('height', height + 'px');
+    }
+
+    // call it once now
+    resizeIframe();
+    // and again if the window is resized
+    $(window).on('resize', resizeIframe);
+    </script>
+    <?php
     exit();
 }
