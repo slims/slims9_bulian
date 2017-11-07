@@ -39,7 +39,7 @@ $parsedown = new Parsedown();
 
 if(isset($_GET['url']) && !empty($_GET['url'])) {		
 	$file_path = HELP.'/'.$sysconf['default_lang'].'/'.$_GET['url'];
-	if(!file_exists($file_path)) {
+	if(!file_exists($file_path)|| !preg_match("/^.*\.(md)$/i", $file_path)) {
 		echo __('File Not Found');
 	} else {
 		//Convert Markdown to HTML
