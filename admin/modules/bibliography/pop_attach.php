@@ -79,7 +79,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
     $file_upload->setAllowableFormat($sysconf['allowed_file_att']);
     $file_upload->setMaxSize($sysconf['max_upload']*1024);
     $file_upload->setUploadDir(REPOBS.DS.str_replace('/', DS, $file_dir));
-    $file_upload_status = $file_upload->doUpload('file2attach');
+    $file_upload_status = $file_upload->doUpload('file2attach',md5(date('Y-m-d H:i:s')));
     if ($file_upload_status === UPLOAD_SUCCESS) {
         $file_ext = substr($file_upload->new_filename, strrpos($file_upload->new_filename, '.')+1);
         $fdata['uploader_id'] = $_SESSION['uid'];
