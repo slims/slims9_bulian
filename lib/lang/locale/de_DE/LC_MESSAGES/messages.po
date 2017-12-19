@@ -6256,7 +6256,7 @@ msgstr ""
 "Systemadministrator"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "Ruhetageinstellungen"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:43
