@@ -178,7 +178,7 @@ if (!$reportView) {
     $output .= '</table>';
 
     // print out
-    echo '<div class="printPageInfo">Visitor Count Report for year <strong>'.$selected_year.'</strong> <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="printPageInfo">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>')).' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();

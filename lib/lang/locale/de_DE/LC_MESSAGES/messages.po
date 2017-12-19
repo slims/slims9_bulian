@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-19 17:29+0100\n"
-"PO-Revision-Date: 2017-12-19 17:29+0100\n"
+"POT-Creation-Date: 2017-12-19 17:52+0100\n"
+"PO-Revision-Date: 2017-12-19 17:53+0100\n"
 "Last-Translator: matlam <matz-josh@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -5387,11 +5387,16 @@ msgstr "Besuche absolut/Monat"
 
 #: admin/modules/reporting/customs/visitor_report.php:181
 msgid "Visitor Count Report for year <strong>{selectedYear}</strong>"
-msgstr ""
+msgstr "Besucherstatistiken für das Jahr <strong>{selectedYear}</strong>"
 
 #: admin/modules/reporting/customs/visitor_report_day.php:72
 msgid "Visitor Report"
 msgstr "Besucherbericht"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:140
+msgid "Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>"
+msgstr ""
+"Besucherstatistiken für <strong>{selectedMonth}, {selectedYear}</strong>"
 
 #: admin/modules/reporting/index.php:60
 msgid "Total Titles"
