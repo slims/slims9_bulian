@@ -113,7 +113,7 @@ if ($biblioID) {
   // database list
   $biblio_attach_q = $dbs->query('SELECT att.*,fl.* FROM biblio_attachment AS att
       LEFT JOIN files AS fl ON att.file_id=fl.file_id WHERE biblio_id='.$biblioID);
-
+  if($biblio_attach_q->num_rows > 0){
   $row = 1;
   $row_class = 'alterCell2';
   while ($biblio_attach_d = $biblio_attach_q->fetch_assoc()) {
@@ -140,6 +140,7 @@ if ($biblioID) {
     $table->setCellAttr($row, 3, 'valign="top" class="'.$row_class.'" style="width: 50%;"');
 
     $row++;
+  }
   }
   echo $table->printTable();
   // hidden form

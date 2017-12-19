@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 21:50+0700\n"
-"PO-Revision-Date: 2015-11-16 21:50+0700\n"
+"PO-Revision-Date: 2017-03-22 13:21+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
-"X-Poedit-Basepath: ../../../../../\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-Basepath: ../../../../..\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_lookup_handler.php:77 admin/AJAX_vocabolary_control.php:78
@@ -261,13 +261,12 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/stock_take/current.php:88
 #: admin/modules/stock_take/index.php:58 admin/modules/stock_take/index.php:60
 #: admin/modules/stock_take/st_log.php:59
-#: admin/modules/stock_take/st_log.php:61
-#: admin/modules/system/app_user.php:256 admin/modules/system/app_user.php:258
-#: admin/modules/system/backup.php:61 admin/modules/system/backup.php:63
-#: admin/modules/system/content.php:151 admin/modules/system/content.php:153
-#: admin/modules/system/module.php:149 admin/modules/system/module.php:151
-#: admin/modules/system/sys_log.php:85 admin/modules/system/sys_log.php:87
-#: admin/modules/system/user_group.php:175
+#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:256
+#: admin/modules/system/app_user.php:258 admin/modules/system/backup.php:61
+#: admin/modules/system/backup.php:63 admin/modules/system/content.php:151
+#: admin/modules/system/content.php:153 admin/modules/system/module.php:149
+#: admin/modules/system/module.php:151 admin/modules/system/sys_log.php:85
+#: admin/modules/system/sys_log.php:87 admin/modules/system/user_group.php:175
 #: admin/modules/system/user_group.php:177
 #: template/default/index_template.inc.php:94
 #: template/default/index_template.inc.php:195
@@ -763,8 +762,8 @@ msgstr "Judul tidak boleh kosong"
 
 #: admin/modules/bibliography/index.php:194
 #: admin/modules/membership/index.php:205
-#: admin/modules/membership/index.php:233
-#: admin/modules/system/app_user.php:170 admin/modules/system/app_user.php:192
+#: admin/modules/membership/index.php:233 admin/modules/system/app_user.php:170
+#: admin/modules/system/app_user.php:192
 msgid "Image Uploaded Successfully"
 msgstr "Gambar Berhasil Diunggah"
 
@@ -1209,8 +1208,8 @@ msgid "Add Subject(s)"
 msgstr "Tambah Data Subyek"
 
 #: admin/modules/bibliography/index.php:614
-#: admin/modules/serial_control/index.php:65
-#: lib/contents/clustering.inc.php:98 template/default/detail_template.php:136
+#: admin/modules/serial_control/index.php:65 lib/contents/clustering.inc.php:98
+#: template/default/detail_template.php:136
 #: template/lightweight/detail_template.php:136
 msgid "Subject(s)"
 msgstr "Subyek"
@@ -1243,8 +1242,7 @@ msgid "Insert here any abstract or notes from the publication."
 msgstr "Masukkan catatan atau abstrak publikasi, di sini."
 
 #: admin/modules/bibliography/index.php:628
-#: admin/modules/membership/index.php:479
-#: admin/modules/system/app_user.php:333
+#: admin/modules/membership/index.php:479 admin/modules/system/app_user.php:333
 msgid "REMOVE IMAGE"
 msgstr "HILANGKAN GAMBAR"
 
@@ -1257,8 +1255,7 @@ msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
 #: admin/modules/bibliography/index.php:638
-#: admin/modules/membership/index.php:498
-#: admin/modules/system/app_user.php:344
+#: admin/modules/membership/index.php:498 admin/modules/system/app_user.php:344
 msgid "Reset"
 msgstr "Setel ulang"
 
@@ -1267,8 +1264,7 @@ msgid "Scan a cover"
 msgstr "Pindai sampul"
 
 #: admin/modules/bibliography/index.php:641
-#: admin/modules/membership/index.php:496
-#: admin/modules/system/app_user.php:342
+#: admin/modules/membership/index.php:496 admin/modules/system/app_user.php:342
 msgid "Format:"
 msgstr "Format:"
 
@@ -1317,8 +1313,7 @@ msgid "Vertical:"
 msgstr "Vertikal:"
 
 #: admin/modules/bibliography/index.php:650
-#: admin/modules/membership/index.php:497
-#: admin/modules/system/app_user.php:343
+#: admin/modules/membership/index.php:497 admin/modules/system/app_user.php:343
 msgid "Capture"
 msgstr "Ambil Gambar"
 
@@ -1705,9 +1700,8 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/reporting/member_report.php:43
 #: admin/modules/reporting/xlsoutput.php:37
 #: admin/modules/stock_take/current.php:45
-#: admin/modules/stock_take/finish.php:46
-#: admin/modules/stock_take/index.php:49 admin/modules/stock_take/init.php:46
-#: admin/modules/stock_take/st_log.php:48
+#: admin/modules/stock_take/finish.php:46 admin/modules/stock_take/index.php:49
+#: admin/modules/stock_take/init.php:46 admin/modules/stock_take/st_log.php:48
 #: admin/modules/stock_take/st_report.php:46
 #: admin/modules/stock_take/st_upload.php:43
 #: admin/modules/stock_take/stock_take_action.php:42
@@ -2585,8 +2579,7 @@ msgstr "Kredit"
 msgid "You are going to edit fines data"
 msgstr "Anda akan menyunting data denda"
 
-#: admin/modules/circulation/index.php:47
-#: admin/modules/circulation/loan.php:44
+#: admin/modules/circulation/index.php:47 admin/modules/circulation/loan.php:44
 #: admin/modules/circulation/loan_rules.php:51
 #: admin/modules/circulation/loan_rules.php:148
 #: admin/modules/circulation/quick_return.php:48
@@ -3746,8 +3739,8 @@ msgid "Member Data Successfully Updated"
 msgstr "Data Anggota Berhasil diperbarui"
 
 #: admin/modules/membership/index.php:209
-#: admin/modules/membership/index.php:237
-#: admin/modules/system/app_user.php:174 admin/modules/system/app_user.php:196
+#: admin/modules/membership/index.php:237 admin/modules/system/app_user.php:174
+#: admin/modules/system/app_user.php:196
 msgid "Image FAILED to upload"
 msgstr "Citra/Berkas Gambar GAGAL Diunggah"
 
@@ -3868,23 +3861,19 @@ msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
 #: admin/modules/membership/index.php:475
-#: admin/modules/stock_take/finish.php:183
-#: admin/modules/system/content.php:196
+#: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
 msgid "Yes"
 msgstr "Ya"
 
-#: admin/modules/membership/index.php:484
-#: admin/modules/system/app_user.php:338
+#: admin/modules/membership/index.php:484 admin/modules/system/app_user.php:338
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:494
-#: admin/modules/system/app_user.php:340
+#: admin/modules/membership/index.php:494 admin/modules/system/app_user.php:340
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
-#: admin/modules/membership/index.php:495
-#: admin/modules/system/app_user.php:341
+#: admin/modules/membership/index.php:495 admin/modules/system/app_user.php:341
 msgid "Ratio:"
 msgstr "Rasio:"
 
@@ -3902,13 +3891,12 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:512
-#: admin/modules/system/app_user.php:370 lib/contents/member.inc.php:283
+#: admin/modules/membership/index.php:512 admin/modules/system/app_user.php:370
+#: lib/contents/member.inc.php:283
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:514
-#: admin/modules/system/app_user.php:372
+#: admin/modules/membership/index.php:514 admin/modules/system/app_user.php:372
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata sandi Baru"
 
@@ -3917,8 +3905,7 @@ msgstr "Konfirmasi Kata sandi Baru"
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:520
-#: admin/modules/system/app_user.php:378
+#: admin/modules/membership/index.php:520 admin/modules/system/app_user.php:378
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan kotak Kata sandi kosong jika tidak ingin mengubahnya"
 
@@ -4652,8 +4639,7 @@ msgstr "Ringkasan Statistik Koleksi"
 msgid "Collection Statistic Report"
 msgstr "Laporan Statistik Koleksi"
 
-#: admin/modules/reporting/index.php:169
-#: admin/modules/reporting/submenu.php:28
+#: admin/modules/reporting/index.php:169 admin/modules/reporting/submenu.php:28
 msgid "Collection Statistic"
 msgstr "Statistik Koleksi"
 
@@ -4945,20 +4931,17 @@ msgid "Stock Take"
 msgstr "Inventarisasi"
 
 #: admin/modules/stock_take/index.php:69 admin/modules/stock_take/index.php:86
-#: admin/modules/stock_take/index.php:118
-#: admin/modules/stock_take/init.php:157
+#: admin/modules/stock_take/index.php:118 admin/modules/stock_take/init.php:157
 #: admin/modules/stock_take/st_report.php:78
 msgid "Stock Take Name"
 msgstr "Nama Inventariasi"
 
-#: admin/modules/stock_take/index.php:70
-#: admin/modules/stock_take/index.php:119
+#: admin/modules/stock_take/index.php:70 admin/modules/stock_take/index.php:119
 #: admin/modules/stock_take/st_report.php:109
 msgid "Start Date"
 msgstr "Tanggal Mulai"
 
-#: admin/modules/stock_take/index.php:71
-#: admin/modules/stock_take/index.php:120
+#: admin/modules/stock_take/index.php:71 admin/modules/stock_take/index.php:120
 #: admin/modules/stock_take/st_report.php:111
 msgid "End Date"
 msgstr "Tanggal Selesai"
@@ -5000,8 +4983,7 @@ msgstr "Pelaksana Inventarisasi"
 msgid "Status"
 msgstr "Status"
 
-#: admin/modules/stock_take/index.php:79
-#: admin/modules/stock_take/index.php:121
+#: admin/modules/stock_take/index.php:79 admin/modules/stock_take/index.php:121
 msgid "Report"
 msgstr "Laporan"
 
@@ -5474,7 +5456,7 @@ msgid "Holiday FAILED to Save. Please Contact System Administrator"
 msgstr "Hari Libur GAGAL Disimpan. Hubungi administrator Sistem"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "Setelan Hari Libur"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:41

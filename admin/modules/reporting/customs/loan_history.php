@@ -47,6 +47,7 @@ require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require MDLBS.'reporting/report_dbgrid.inc.php';
 
+$membershipTypes = membershipApi::getMembershipType($dbs);
 $page_title = 'Loan History Report';
 $reportView = false;
 $num_recs_show = 20;
@@ -74,6 +75,18 @@ if (!$reportView) {
             echo simbio_form_element::textField('text', 'id_name', '', 'style="width: 50%"');
             ?>
             </div>
+        </div>
+        <div class="divRow">
+          <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
+          <div class="divRowContent">
+            <select name="membershipType">
+              <?php 
+              foreach ($membershipTypes as $key => $membershipType) {
+                echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+              }
+              ?>
+            </select>
+          </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Title'); ?></div>
@@ -114,6 +127,20 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
+            <div class="divRowLabel"><?php echo __('Location'); ?></div>
+            <div class="divRowContent">
+            <?php
+            $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
+            $loc_options = array();
+            $loc_options[] = array('0', __('ALL'));
+            while ($loc_d = $loc_q->fetch_row()) {
+                $loc_options[] = array($loc_d[0], $loc_d[1]);
+            }
+            echo simbio_form_element::selectList('location', $loc_options);
+            ?>
+        	</div> 
+        </div>	    
+        <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
             <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
         </div>
@@ -142,6 +169,7 @@ if (!$reportView) {
     $reportgrid = new report_datagrid();
     $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
         'm.member_name AS \''.__('Member Name').'\'',
+        'm.member_type_id AS \''.__('Membership Type').'\'',
         'l.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'l.loan_date AS \''.__('Loan Date').'\'',
@@ -183,6 +211,18 @@ if (!$reportView) {
         $loanStatus = (integer)$_GET['loanStatus'];
         $criteria .= ' AND is_return='.$loanStatus;
     }
+
+    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != '0')) {
+        $membershipType = (integer)$_GET['membershipType'];
+        $criteria .= ' AND m.member_type_id='.$membershipType;
+    }
+	
+    // item location	
+    if (isset($_GET['location']) AND !empty($_GET['location'])) {
+        $location = $dbs->escape_string(trim($_GET['location']));
+        $criteria .= ' AND i.location_id=\''.$location.'\'';
+    }
+	
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
@@ -192,14 +232,23 @@ if (!$reportView) {
    // callback function to show loan status
     function loanStatus($obj_db, $array_data)
     {
-        if ($array_data[6] == 0) {
+        if ($array_data[7] == 0) {
             return '<strong>'.__('On Loan').'</strong>';
         } else {
             return __('Returned');
         }
     }
+
+    function showMembershipType($obj_db, $array_data)
+    {
+      global  $membershipTypes;
+      $_member_type_id = $array_data[2];
+      return $membershipTypes[$_member_type_id]['member_type_name'];
+    }
+
     // modify column value
-    $reportgrid->modifyColumnContent(6, 'callback{loanStatus}');
+    $reportgrid->modifyColumnContent(7, 'callback{loanStatus}');
+    $reportgrid->modifyColumnContent(2, 'callback{showMembershipType}');
 
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);

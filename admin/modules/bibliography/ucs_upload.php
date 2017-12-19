@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2010  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2010  Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,14 +106,20 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
         $http_request = new http_request();
         // send HTTP POST request
         $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-        $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
-        // below is for debugging purpose only
-	// die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
 
-	// check for http request error
-	if ($req_error = $http_request->error()) {
-		die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
-	}
+		if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
+          $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
+		} else {
+		  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
+		}
+
+        // below is for debugging purpose only
+	    // die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
+
+	    // check for http request error
+	    if ($req_error = $http_request->error()) {
+		  die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
+	    }
 
         // print out body of request result
         echo $http_request->body();

@@ -1,4 +1,4 @@
-<?php 
+<?php
 function isPhpOk($expectedVersion)
 {
     // Is this version of PHP greater than minimum version required?
@@ -56,4 +56,10 @@ function isYazOk()
 {
     return extension_loaded('yaz');
 }
+
+function isGettextOk()
+{
+    return extension_loaded('gettext');
+}
+
 ?>

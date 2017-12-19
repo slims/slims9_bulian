@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-17 21:06+0100\n"
-"PO-Revision-Date: 2016-08-17 21:08+0100\n"
+"PO-Revision-Date: 2017-03-23 09:17+0700\n"
 "Last-Translator: kouider bounama <kouiderbounama@gmail.com>\n"
 "Language-Team: \n"
 "Language: ar_DZ\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
 "X-Poedit-Basepath: ../../../../..\n"
-"X-Generator: Poedit 1.7.6\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:35
@@ -300,13 +300,12 @@ msgstr "إعارة المواد"
 #: admin/modules/stock_take/current.php:88
 #: admin/modules/stock_take/index.php:58 admin/modules/stock_take/index.php:60
 #: admin/modules/stock_take/st_log.php:59
-#: admin/modules/stock_take/st_log.php:61
-#: admin/modules/system/app_user.php:256 admin/modules/system/app_user.php:258
-#: admin/modules/system/backup.php:61 admin/modules/system/backup.php:63
-#: admin/modules/system/content.php:151 admin/modules/system/content.php:153
-#: admin/modules/system/module.php:149 admin/modules/system/module.php:151
-#: admin/modules/system/sys_log.php:85 admin/modules/system/sys_log.php:87
-#: admin/modules/system/user_group.php:175
+#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:256
+#: admin/modules/system/app_user.php:258 admin/modules/system/backup.php:61
+#: admin/modules/system/backup.php:63 admin/modules/system/content.php:151
+#: admin/modules/system/content.php:153 admin/modules/system/module.php:149
+#: admin/modules/system/module.php:151 admin/modules/system/sys_log.php:85
+#: admin/modules/system/sys_log.php:87 admin/modules/system/user_group.php:175
 #: admin/modules/system/user_group.php:177
 #: template/classic/part/content/advance-search.php:71
 #: template/classic/part/content/simple-search.php:26
@@ -877,8 +876,8 @@ msgstr "العنوان لا يمكن أن يكون فارغا"
 
 #: admin/modules/bibliography/index.php:198
 #: admin/modules/membership/index.php:206
-#: admin/modules/membership/index.php:234
-#: admin/modules/system/app_user.php:170 admin/modules/system/app_user.php:192
+#: admin/modules/membership/index.php:234 admin/modules/system/app_user.php:170
+#: admin/modules/system/app_user.php:192
 msgid "Image Uploaded Successfully"
 msgstr "الصورة تم رفعها بنجاح"
 
@@ -1336,8 +1335,8 @@ msgid "Add Subject(s)"
 msgstr "إضافة الموضوع "
 
 #: admin/modules/bibliography/index.php:658
-#: admin/modules/serial_control/index.php:65
-#: lib/contents/clustering.inc.php:98 template/classic/detail_template.php:125
+#: admin/modules/serial_control/index.php:65 lib/contents/clustering.inc.php:98
+#: template/classic/detail_template.php:125
 #: template/classic/part/content/advance-search.php:34
 #: template/default/detail_template.php:136
 #: template/lightweight/detail_template.php:136
@@ -1373,8 +1372,7 @@ msgid "Insert here any abstract or notes from the publication."
 msgstr "أدخل هنا أي ملخص أو الملاحظات للمنشور."
 
 #: admin/modules/bibliography/index.php:672
-#: admin/modules/membership/index.php:480
-#: admin/modules/system/app_user.php:333
+#: admin/modules/membership/index.php:480 admin/modules/system/app_user.php:333
 msgid "REMOVE IMAGE"
 msgstr "إزالة صورة"
 
@@ -1387,8 +1385,7 @@ msgid "Show scan dialog"
 msgstr "عرض حوار المسح الضوئي"
 
 #: admin/modules/bibliography/index.php:682
-#: admin/modules/membership/index.php:499
-#: admin/modules/system/app_user.php:344
+#: admin/modules/membership/index.php:499 admin/modules/system/app_user.php:344
 msgid "Reset"
 msgstr "إعادة ضبط"
 
@@ -1397,8 +1394,7 @@ msgid "Scan a cover"
 msgstr "مسح الغلاف"
 
 #: admin/modules/bibliography/index.php:685
-#: admin/modules/membership/index.php:497
-#: admin/modules/system/app_user.php:342
+#: admin/modules/membership/index.php:497 admin/modules/system/app_user.php:342
 msgid "Format:"
 msgstr "الشكل :"
 
@@ -1447,8 +1443,7 @@ msgid "Vertical:"
 msgstr "عمودي:"
 
 #: admin/modules/bibliography/index.php:694
-#: admin/modules/membership/index.php:498
-#: admin/modules/system/app_user.php:343
+#: admin/modules/membership/index.php:498 admin/modules/system/app_user.php:343
 msgid "Capture"
 msgstr "التقاط"
 
@@ -1842,9 +1837,8 @@ msgstr "إستيراد بيانات المواد من ملف CSV "
 #: admin/modules/reporting/member_report.php:43
 #: admin/modules/reporting/xlsoutput.php:37
 #: admin/modules/stock_take/current.php:45
-#: admin/modules/stock_take/finish.php:46
-#: admin/modules/stock_take/index.php:49 admin/modules/stock_take/init.php:46
-#: admin/modules/stock_take/st_log.php:48
+#: admin/modules/stock_take/finish.php:46 admin/modules/stock_take/index.php:49
+#: admin/modules/stock_take/init.php:46 admin/modules/stock_take/st_log.php:48
 #: admin/modules/stock_take/st_report.php:46
 #: admin/modules/stock_take/st_upload.php:43
 #: admin/modules/stock_take/stock_take_action.php:42
@@ -2780,8 +2774,7 @@ msgstr "رصيد"
 msgid "You are going to edit fines data"
 msgstr "ستقوم بتحرير بيانات الغرامات"
 
-#: admin/modules/circulation/index.php:47
-#: admin/modules/circulation/loan.php:44
+#: admin/modules/circulation/index.php:47 admin/modules/circulation/loan.php:44
 #: admin/modules/circulation/loan_rules.php:51
 #: admin/modules/circulation/loan_rules.php:148
 #: admin/modules/circulation/quick_return.php:48
@@ -4003,8 +3996,8 @@ msgid "Member Data Successfully Updated"
 msgstr "تم تحديث بيانات المستفيدين بنجاح "
 
 #: admin/modules/membership/index.php:210
-#: admin/modules/membership/index.php:238
-#: admin/modules/system/app_user.php:174 admin/modules/system/app_user.php:196
+#: admin/modules/membership/index.php:238 admin/modules/system/app_user.php:174
+#: admin/modules/system/app_user.php:196
 msgid "Image FAILED to upload"
 msgstr "فشل في رفع الصورة"
 
@@ -4125,23 +4118,20 @@ msgid "Pending Membership"
 msgstr "قيد الانتظار"
 
 #: admin/modules/membership/index.php:476
-#: admin/modules/stock_take/finish.php:183
-#: admin/modules/system/content.php:196 admin/modules/system/index.php:229
+#: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
+#: admin/modules/system/index.php:229
 msgid "Yes"
 msgstr "نعم"
 
-#: admin/modules/membership/index.php:485
-#: admin/modules/system/app_user.php:338
+#: admin/modules/membership/index.php:485 admin/modules/system/app_user.php:338
 msgid "or take a photo"
 msgstr "أو التقاط صورة"
 
-#: admin/modules/membership/index.php:495
-#: admin/modules/system/app_user.php:340
+#: admin/modules/membership/index.php:495 admin/modules/system/app_user.php:340
 msgid "Load Camera"
 msgstr "تحميل كاميرا"
 
-#: admin/modules/membership/index.php:496
-#: admin/modules/system/app_user.php:341
+#: admin/modules/membership/index.php:496 admin/modules/system/app_user.php:341
 msgid "Ratio:"
 msgstr "نسبة:"
 
@@ -4159,14 +4149,13 @@ msgstr "صورة "
 msgid "E-mail"
 msgstr "البريد الإلكتروني"
 
-#: admin/modules/membership/index.php:513
-#: admin/modules/system/app_user.php:370 lib/contents/login.inc.php:203
-#: lib/contents/member.inc.php:283
+#: admin/modules/membership/index.php:513 admin/modules/system/app_user.php:370
+#: lib/contents/login.inc.php:203 lib/contents/member.inc.php:283
 msgid "New Password"
 msgstr "كلمة المرور الجديدة"
 
-#: admin/modules/membership/index.php:515
-#: admin/modules/system/app_user.php:372 lib/contents/login.inc.php:205
+#: admin/modules/membership/index.php:515 admin/modules/system/app_user.php:372
+#: lib/contents/login.inc.php:205
 msgid "Confirm New Password"
 msgstr "تأكيد كلمة المرور الجديدة"
 
@@ -4175,8 +4164,7 @@ msgstr "تأكيد كلمة المرور الجديدة"
 msgid "You are going to edit member data"
 msgstr "ستقوم بتحرير بيانات المستفيد"
 
-#: admin/modules/membership/index.php:521
-#: admin/modules/system/app_user.php:378
+#: admin/modules/membership/index.php:521 admin/modules/system/app_user.php:378
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "ترك حقل كلمة السر فارغا إذا كنت لا تريد تغيير كلمة المرور"
 
@@ -4914,8 +4902,7 @@ msgstr "ملخص إحصائيات المجموعة"
 msgid "Collection Statistic Report"
 msgstr "تقرير إحصائيات المجموعة"
 
-#: admin/modules/reporting/index.php:169
-#: admin/modules/reporting/submenu.php:28
+#: admin/modules/reporting/index.php:169 admin/modules/reporting/submenu.php:28
 msgid "Collection Statistic"
 msgstr "إحصائيات المجموعات"
 
@@ -5213,20 +5200,17 @@ msgid "Stock Take"
 msgstr "الجرد"
 
 #: admin/modules/stock_take/index.php:69 admin/modules/stock_take/index.php:86
-#: admin/modules/stock_take/index.php:118
-#: admin/modules/stock_take/init.php:157
+#: admin/modules/stock_take/index.php:118 admin/modules/stock_take/init.php:157
 #: admin/modules/stock_take/st_report.php:78
 msgid "Stock Take Name"
 msgstr "إسم الجرد"
 
-#: admin/modules/stock_take/index.php:70
-#: admin/modules/stock_take/index.php:119
+#: admin/modules/stock_take/index.php:70 admin/modules/stock_take/index.php:119
 #: admin/modules/stock_take/st_report.php:109
 msgid "Start Date"
 msgstr "تاريخ البدء"
 
-#: admin/modules/stock_take/index.php:71
-#: admin/modules/stock_take/index.php:120
+#: admin/modules/stock_take/index.php:71 admin/modules/stock_take/index.php:120
 #: admin/modules/stock_take/st_report.php:111
 msgid "End Date"
 msgstr "تاريخ الانتهاء"
@@ -5268,8 +5252,7 @@ msgstr "المسؤول عن الجرد"
 msgid "Status"
 msgstr "حَالَةٌ"
 
-#: admin/modules/stock_take/index.php:79
-#: admin/modules/stock_take/index.php:121
+#: admin/modules/stock_take/index.php:79 admin/modules/stock_take/index.php:121
 msgid "Report"
 msgstr "تقرير "
 
@@ -5738,7 +5721,7 @@ msgid "Holiday FAILED to Save. Please Contact System Administrator"
 msgstr "فشل في حفظ بيانات العطلة. الرجاء الاتصال مسؤول النظام"
 
 #: admin/modules/system/holiday.php:159
-msgid "Holiday Setings"
+msgid "Holiday Settings"
 msgstr "إعدادات العطل"
 
 #: admin/modules/system/holiday.php:164 admin/modules/system/submenu.php:42
@@ -6949,8 +6932,8 @@ msgstr "اختر اللغة"
 msgid "License"
 msgstr "رخصة"
 
-#: template/classic/part/content/nav.php:34
-#: template/default/partials/nav.php:7 template/lightweight/partials/nav.php:7
+#: template/classic/part/content/nav.php:34 template/default/partials/nav.php:7
+#: template/lightweight/partials/nav.php:7
 msgid "Library Information"
 msgstr "معلومات المكتبة"
 

@@ -228,7 +228,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             });
           }
         );
-        </script>';
+        </script>
     <?php
 } else {
     /* USER LIST */

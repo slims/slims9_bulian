@@ -104,6 +104,7 @@ if ($biblioID) {
   $biblio_author_q = $dbs->query("SELECT ba.*, a.author_name, a.author_year, a.authority_type FROM biblio_author AS ba
       LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
       WHERE ba.biblio_id=$biblioID ORDER BY level ASC");
+  if($biblio_author_q->num_rows > 0){
   $row = 1;
   while ($biblio_author_d = $biblio_author_q->fetch_assoc()) {
     // alternate the row color
@@ -123,7 +124,7 @@ if ($biblioID) {
     $table->setCellAttr($row, 4, 'class="'.$row_class.'" style="width: 20%;"');
     $row++;
   }
-
+  }
   echo $table->printTable();
   // hidden form
   echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="bid" value="0" /><input type="hidden" name="remove" value="0" /></form>';

@@ -167,4 +167,27 @@ class circapi
     }
   }
 
+  public static function is_any_active_membershipType($obj_db, $member_type_id)
+  {
+    $s_lr = 'SELECT mmt.member_type_id, m.member_id, l.loan_id ';
+    $s_lr .= 'FROM mst_member_type AS mmt, member AS m, loan AS l ';
+    $s_lr .= 'WHERE ';
+    $s_lr .= 'mmt.member_type_id=m.member_type_id ';
+    $s_lr .= ' AND ';
+    $s_lr .= 'm.member_id=l.member_id ';
+    $s_lr .= ' AND ';
+    $s_lr .= 'mmt.member_type_id=\''.$member_type_id.'\'';
+    $s_lr .= ' AND ';
+    $s_lr .= 'l.is_return=\'0\'';
+    $s_lr .= ' AND ';
+    $s_lr .= 'l.is_lent=\'1\'';
+    $q_lr = $obj_db->query($s_lr);
+    $c_lr = mysqli_num_rows($q_lr);
+    if ($c_lr > 0) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+
 }

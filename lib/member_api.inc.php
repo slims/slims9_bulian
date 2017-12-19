@@ -28,6 +28,27 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-class membership
+class membershipApi
 {
+  public static function getMembershipType($obj_db)
+  {
+    $sMtype = 'SELECT * FROM mst_member_type';
+    $qMtype = $obj_db->query($sMtype);
+    $_return = array ();
+    $_return[0]['member_type_name'] = 'All';
+
+    if (!$obj_db->errno) {
+      $i = 0;
+      while ($rMtype = $qMtype->fetch_assoc()) {
+        #$_return[$i]['member_type_id'] = $rMtype['member_type_id'];
+        $member_type_id = $rMtype['member_type_id'];
+        #$_return[$i]['member_type_name'] = $rMtype['member_type_name'];
+        $_return[$member_type_id]['member_type_name'] = $rMtype['member_type_name'];
+        $i++;
+      }
+    }
+    #return api::to_object($_return);
+    return ($_return);
+  }
+
 }

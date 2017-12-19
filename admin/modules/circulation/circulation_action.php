@@ -111,8 +111,8 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-	$circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-	$circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+	$circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+	$circulation->holiday_date = $_SESSION['holiday_date'];
     if ($_POST['process'] == 'return') {
         $return_status = $circulation->returnItem($loanID);
         // write log
@@ -127,8 +127,8 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         echo '</script>';
     } else {
         // set holiday settings
-        $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-        $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+        $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+        $circulation->holiday_date = $_SESSION['holiday_date'];
         $extend_status = $circulation->extendItemLoan($loanID);
         if ($extend_status === ITEM_RESERVED) {
             echo '<script type="text/javascript">';
@@ -156,8 +156,8 @@ if (isset($_POST['tempLoanID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
-    $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-    $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+    $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+    $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
     $add = $circulation->addLoanSession(trim($_POST['tempLoanID']));
     if ($add == LOAN_LIMIT_REACHED) {
@@ -238,8 +238,8 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
-    $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-    $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+    $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+    $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
     $add = $circulation->addLoanSession($_POST['overrideID']);
     echo '<script type="text/javascript">';
@@ -283,8 +283,8 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
 
         /* modified by Indra Sutriadi */
         $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-        $circulation->holiday_dayname = $dbs->escape_string($_SESSION['holiday_dayname']);
-        $circulation->holiday_date = $dbs->escape_string($_SESSION['holiday_date']);
+        $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+        $circulation->holiday_date = $_SESSION['holiday_date'];
         /* end of modification */
 
         // check for overdue
@@ -533,14 +533,8 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
 
         $fines_alert = FALSE;
         $total_unpaid_fines = 0;
-        $_unpaid_fines = $dbs->query('SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit');
-        $unpaid_fines = $_unpaid_fines->fetch_assoc();
-        if (!empty($unpaid_fines)) {
-            foreach ($unpaid_fines as $key => $value) {
-                $total_unpaid_fines = $total_unpaid_fines + $value['3'];
-            }
-        }
-        if ($total_unpaid_fines > 0) {
+        $_unpaid_fines = $dbs->query('SELECT 1 FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit LIMIT 1');
+        if($_unpaid_fines->fetch_row()) {
             $fines_alert = TRUE;
         }
 
@@ -559,5 +553,31 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '</ul>';
 				echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="expandable border"></iframe>'."\n";
     }
+    ?>
+    <script type="text/javascript">
+    /**
+     * increase the height of the iframe so that it uses all remaining space
+     */
+    function resizeIframe() {
+        // remove the event handler if the iframe doesn't exist anymore
+        if($('#listsFrame').length === 0) {
+            $(window).off('resize', resizeIframe);
+            return;
+        }
+        var buffer = 20; //scroll bar buffer
+        var height = $(window).height(); // height of the whole page
+        height -= $('#listsFrame').offset().top; // minus everything that is above of the iframe
+        height -= $('.s-footer').innerHeight(); // minus everything that is on the below the iframe
+        height -= buffer; // minus some buffer for scrollbars and such
+        height = (height < 0) ? 0 : height; // in case we dont have enough space, the min-height=370px from css kicks in
+        $('#listsFrame').css('height', height + 'px');
+    }
+
+    // call it once now
+    resizeIframe();
+    // and again if the window is resized
+    $(window).on('resize', resizeIframe);
+    </script>
+    <?php
     exit();
 }

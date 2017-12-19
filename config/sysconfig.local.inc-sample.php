@@ -30,10 +30,11 @@ if (!defined('INDEX_AUTH')) {
 /* LOCAL DATABASE CONNECTION config */
 // database constant
 // change below setting according to your database configuration
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'senayandb');
-define('DB_USERNAME', 'senayanuser');
-define('DB_PASSWORD', 'password_senayanuser');
+define('DB_HOST', '_DB_HOST_');
+define('DB_PORT', '_DB_PORT_');
+define('DB_NAME', '_DB_NAME_');
+define('DB_USERNAME', '_DB_USER_');
+define('DB_PASSWORD', '_DB_PASSWORD_');
 
 // define any other sysconfig variables below
 $sysconf['index']['type'] = 'index';

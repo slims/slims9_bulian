@@ -197,6 +197,9 @@ $sysconf['promote_first_emphasized'] = true;
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
     .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
 
+/* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
+$sysconf['enable_mark'] = true;
+
 /* XML */
 $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
@@ -354,6 +357,8 @@ $sysconf['ucs']['auto_delete'] = false;
 $sysconf['ucs']['auto_insert'] = false;
 // UCS server address. NO TRAILING SLASH! for local testing on Windows machine don't use localhost, use 127.0.0.1 instead
 $sysconf['ucs']['serveraddr'] = 'http://localhost/ucs';
+// UCS server version
+$sysconf['ucs']['serverversion'] = 3;
 // node ID
 $sysconf['ucs']['id'] = 'slims-node';
 // default is s0beautifulday
@@ -647,3 +652,6 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* new log system */
 $sysconf['log']['biblio'] = TRUE;
+
+// REST Api
+$sysconf['api']['version'] = 1;

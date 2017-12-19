@@ -47,6 +47,7 @@ require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require MDLBS.'reporting/report_dbgrid.inc.php';
 
+$membershipTypes = membershipApi::getMembershipType($dbs);
 $page_title = 'Members Loan Detail Report';
 $reportView = false;
 $num_recs_show = 20;
@@ -75,6 +76,20 @@ if (!$reportView) {
             ?>
             </div>
         </div>
+
+        <div class="divRow">
+          <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
+          <div class="divRowContent">
+            <select name="membershipType">
+              <?php 
+              foreach ($membershipTypes as $key => $membershipType) {
+                echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+        </div>
+
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Loan Date From'); ?></div>
             <div class="divRowContent">
@@ -143,6 +158,12 @@ if (!$reportView) {
             TO_DAYS(\''.$_GET['untilDate'].'\'))';
         $overdue_criteria .= $date_criteria;
     }
+
+    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != '0')) {
+        $membershipType = (integer)$_GET['membershipType'];
+        $overdue_criteria .= ' AND m.member_type_id='.$membershipType;
+    }
+
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 5 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;

@@ -113,7 +113,7 @@ if ($biblioID) {
     LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
     LEFT JOIN mst_item_status AS st ON i.item_status_id=st.item_status_id
     WHERE i.biblio_id='.$biblioID);
-
+  if($item_q->num_rows > 0){
   $row = 1;
   while ($item_d = $item_q->fetch_assoc()) {
     // alternate the row color
@@ -131,6 +131,7 @@ if ($biblioID) {
     $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="font-weight: bold; width: 40%;"');
 
     $row++;
+  }
   }
   echo $table->printTable();
   // hidden form
