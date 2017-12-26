@@ -106,7 +106,7 @@ $loan_report[__('Members Never Have Loans Yet')] = $total_members_data[0]-$loan_
 
 // total overdued loand
 $report_q = $dbs->query('SELECT COUNT(loan_id) FROM loan WHERE
-    is_lent=1 AND is_return=0 AND TO_DAYS(due_date)>TO_DAYS(\''.date('Y-m-d').'\')');
+    is_lent=1 AND is_return=0 AND TO_DAYS(due_date)<TO_DAYS(\''.date('Y-m-d').'\')');
 $report_d = $report_q->fetch_row();
 $loan_report[__('Total Overdued Loans')] = $report_d[0];
 
