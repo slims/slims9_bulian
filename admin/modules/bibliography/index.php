@@ -84,7 +84,7 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
     $postImage = stripslashes($_POST['img']);
     $postImage = str_replace('/', '', $postImage);
     @unlink(sprintf(IMGBS.'docs/%s',$postImage));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
   }
   exit();
 }

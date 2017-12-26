@@ -57,7 +57,7 @@ $row = 1;
 while ($voc_d = $voc_q->fetch_assoc()) {
 
   if (!is_null($voc_d['scope'])) {
-    echo '<b>Scope note: </b>'.$voc_d['scope'].'<hr>';
+    echo '<b>' . __('Scope note') . ': </b>'.$voc_d['scope'].'<hr>';
   }
 
   if (is_null($voc_d['scope'])) {

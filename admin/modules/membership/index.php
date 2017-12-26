@@ -71,7 +71,7 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $_POST['mimg']));
   if ($_delete) {
     @unlink(sprintf(IMGBS.'persons/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
   }
   exit();
 }
