@@ -524,8 +524,8 @@ $sysconf['social']['ym'] = 'Yahoo! Messenger';
 /* CHATTING SYSTEM */
 $sysconf['chat_system']['enabled']    	= false;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
-$sysconf['chat_system']['opac']       	= true;
-$sysconf['chat_system']['librarian']  	= true;
+$sysconf['chat_system']['opac']       	= false;
+$sysconf['chat_system']['librarian']  	= false;
 $sysconf['chat_system']['server']  		 = '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
