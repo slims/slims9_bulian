@@ -200,11 +200,11 @@ class detail
         $_output .= '<td width="30%">';
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
-            $_output .= '<span class="label label-important status-on-loan">'.__('Currently On Loan (Due on').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')</span>'; //mfc
+            $_output .= '<b style="background-color: #f00; color: white; padding: 3px;">'.__('Currently On Loan (Due on').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')</b>'; //mfc
         } else if ($copy_d['no_loan']) {
-            $_output .= '<span class="label label-important status-not-loan">'.__('Available but not for loan').' - '.$copy_d['item_status_name'].'</span>';
+            $_output .= '<b style="background-color: #f00; color: white; padding: 3px;">'.__('Available but not for loan').' - '.$copy_d['item_status_name'].'</b>';
         } else {
-            $_output .= '<span class="label label-info status-available">'.__('Available').(trim($copy_d['item_status_name'])?' - '.$copy_d['item_status_name']:'').'</span>';
+            $_output .= '<b style="background-color: #5bc0de; color: white; padding: 3px;">'.__('Available').(trim($copy_d['item_status_name'])?' - '.$copy_d['item_status_name']:'').'</b>';
         }
         $loan_stat_q->free_result();
         $_output .= '</td>';
