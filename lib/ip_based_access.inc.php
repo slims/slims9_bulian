@@ -50,7 +50,7 @@ if (!function_exists('do_checkIP')) {
             $is_allowed = false;
         }
         if (!$is_allowed) {
-            echo 'Stop here! Access now allowed.';
+            echo 'Stop here! Access not allowed.';
             exit();
         }
     }
