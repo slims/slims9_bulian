@@ -57,9 +57,12 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
     $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
     $pattern_d = $pattern_q->fetch_row();
     $patterns = @unserialize($pattern_d[0]);
-    $key = array_search(trim($_POST['itemID']), $patterns);
-    unset($patterns[$key]);
-    $data_serialize = serialize($patterns);
+    foreach ($_POST['itemID'] as $pattern_id) {
+        $key = array_search(trim($pattern_id), $patterns);
+        unset($patterns[$key]);
+        $data_serialize = serialize($patterns);
+    }
+
     // update
     $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'batch_item_code_pattern\'');
     if ($update) {
@@ -69,7 +72,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
     }
     exit();
 }
-/* item status update process end */
+
 
 /* search form */
 ?>
@@ -87,60 +90,77 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 </div>
 </fieldset>
 <div class="fluid-container">
-<?php
+<?php 
 /* search form end */
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
     if (!($can_read AND $can_write)) {
         die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
     }
-    // form add / edit
-    echo 'tambah edit';
+    
 } else {
-    // pattern list
-    // load setting
-    echo '<table class="table table-striped">';
+
     $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
     if ($pattern_q->num_rows > 0) {
         $pattern_d = $pattern_q->fetch_row();
         $patterns = @unserialize($pattern_d[0]);
-        $n = 1;
-        echo '<tr>';
-        echo '<th>#</th>';
-        echo '<th>Pattern</th>';
-        echo '<th>Action</th>';
-        echo '</tr>';
-        foreach ($patterns as $pattern) {
-            echo '<tr>';
-            echo '<td width="40px">'.$n.'</td>';
-            echo '<td>'.$pattern.'</td>';
-            echo '<td><a class="btn notAJAX btn-danger delete-pattern" s-pattern="'.$pattern.'">Delete</a></td>';
-            echo '</tr>';
-            $n++;
+
+        $table = new simbio_table();
+
+        $table->table_attr = 'align="center" class="border" cellpadding="5" cellspacing="0" width="98%"';
+
+        if(count($patterns) > 0){
+
+            echo  '<div style="padding:20px 0px 10px 10px;">
+            <input value="'.__('Delete Selected Data').'" class="button btn btn-danger btn-delete" type="button"> 
+            <input value="'.__('Check All').'" class="check-all button btn btn-default" type="button"> 
+            <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button"></div>';
+            // table header
+            $table->setHeader(array(__('Select'),__('Item Code Pattern')));
+            $table->table_header_attr = 'class="dataListHeader"';
+            $table->setCellAttr(0, 0, '');
+            // initial row count
+            $row = 1;
+            foreach ($patterns  as $pattern) {
+                $link = '<a href="'.MWB.'bibliography/pop_pattern.php?in=master" class="notAJAX openPopUp notIframe editLink"></a>';
+                $cb = '<input type="checkbox" name="pattern" value="'.$pattern.'">';
+                $table->appendTableRow(array($cb, $pattern));
+                // set cell attribute
+                $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 5px;"');
+                $table->setCellAttr($row, 1, 'class="alterCell2" valign="top" style="width: auto;"');
+                // add row count
+                $row++;
+            }
         }
-    } else {
-        // no data
-        echo 'No Patternt available. <a class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php?in=master" height="420px" title="'.__('Add new pattern').'">
-            <i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>';
-    }
-    echo '</table>';
+        echo $table->printTable();
+    } 
 }
 /* main content end */
 ?>
 </div>
 
 <script>
-    $(document).on('click', '.delete-pattern', function (e) {
-        e.preventDefault()
-        var pattern = $(this).attr('s-pattern')
-        var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
-        $.ajax({
+    $('.btn-delete').on('click', function (e) {
+    var data = [];
+    var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $("input[type=checkbox]:checked").each(function() {
+       data.push($(this).val());
+    });
+    $.ajax({
             url: uri,
             type: 'post',
-            data: { itemID: pattern, itemAction: true }
+            data: { itemID: data, itemAction: true }
         })
           .done(function (msg) {
             parent.jQuery('#mainContent').simbioAJAX(uri)
         })
     })
+    $(".uncheck-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', false);
+    });
+    $(".check-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', true);
+    });
 </script>
