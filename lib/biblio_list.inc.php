@@ -282,7 +282,7 @@ class biblio_list extends biblio_list_model {
     // promoted flag
     // if ($this->only_promoted) { $_add_sql_str .= ' AND promoted=1'; }
     // main search criteria
-    if ($this->criteria) {
+    if ($this->criteria['sql_criteria']!='') {
       $_add_sql_str .= ' AND ('.$this->criteria['sql_criteria'].') ';
     }
 
