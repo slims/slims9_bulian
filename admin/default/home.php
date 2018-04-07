@@ -53,7 +53,7 @@ if (!extension_loaded('gd')) {
 $overdue_q = $dbs->query('SELECT COUNT(loan_id) FROM loan AS l WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\''.date('Y-m-d').'\')) GROUP BY member_id');
 $num_overdue = $overdue_q->num_rows;
 if ($num_overdue > 0) {
-    $warnings[] = str_replace('{num_overdue}', $num_overdue, __('There are currently <strong>{num_overdue}</strong> records being overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail')); //mfc
+    $warnings[] = str_replace('{num_overdue}', $num_overdue, __('There are currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail')); //mfc
     $overdue_q->free_result();
 }
 // check if images dir is writable or not
