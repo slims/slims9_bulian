@@ -64,7 +64,6 @@
 <!-- Script
 ============================================= -->
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
-<script src="<?php echo JWB; ?>modernizr.js"></script>
 <script src="<?php echo JWB; ?>form.js"></script>
 <script src="<?php echo JWB; ?>gui.js"></script>
 <script src="<?php echo JWB; ?>highlight.js"></script>
