@@ -104,7 +104,7 @@ if (!$reportView) {
     $reportgrid->setSQLorder('l.due_date DESC');
     $reportgrid->sql_group_by = 'm.member_id';
 
-    $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(\''.date('Y-m-d').'\')-TO_DAYS(due_date)) BETWEEN 0 AND 3)) ';
+    $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(due_date)-TO_DAYS(\''.date('Y-m-d').'\')) BETWEEN 0 AND 3)) ';
     // is there any search
     if (isset($_GET['id_name']) AND $_GET['id_name']) {
         $keyword = $dbs->escape_string(trim($_GET['id_name']));
