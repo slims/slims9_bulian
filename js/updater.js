@@ -77,12 +77,31 @@ jQuery.fn.simbioAJAX = function(strURL, params)
       }
   });
   doc.ajaxStop(function(){ loader.removeClass('loadingImage'); });
-  doc.ajaxError(function(event, request, settings){ loader.html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + "</div>");})
+  doc.ajaxError(function(event, request, settings) { 
+      // Fixing error message position
+      /* Modified by Drajat Hasan */
+      loader.attr('style', 'background: #D9534F;color: white;position: relative !important;font-weight: bold;'),
+      loader.html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + " <br> Press F5 to hide this error message.</div>");
+      /* End */
+  })
 
   // send AJAX request
-  var ajaxResponse = $.ajax({
+  /* Modified by Drajat Hasan */
+  // Get response code
+  var ajaxResponseCode = $.ajax({
     type : options.method, url : strURL,
-    data : options.addData, async: false }).responseText;
+    data : options.addData, async: false }).status;
+
+  // If success
+  if (ajaxResponseCode == 200) {
+    var ajaxResponse = $.ajax({
+      type : options.method, url : strURL,
+      data : options.addData, async: false }).responseText;
+  } else {
+    // Hide same error message in #mainContent
+    var ajaxResponse = '';
+  }
+  /* End */
 
   // add to elements
   if (options.insertMode == 'before') {
