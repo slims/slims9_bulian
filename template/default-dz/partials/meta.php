@@ -73,6 +73,7 @@
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
+<script src="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/js/vegas.min.js"></script>
 
 <!-- Animation options
 ============================================= -->
@@ -81,6 +82,7 @@
 <!-- Style Minified
 ============================================= -->
 <link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/css/vegas.min.css" />
 
 <!-- Style
 ============================================= -->
