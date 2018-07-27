@@ -89,7 +89,10 @@ if (isset($_POST['saveData'])) {
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
-    } else {
+    } else if ($_POST['csrf_token'] != $_SESSION['csrf_token']['mainForm']) {
+        utility::jsAlert(__('Invalid token!'));
+        exit();
+    }else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
         $data['user_type'] = (integer)$_POST['userType'];
