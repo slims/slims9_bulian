@@ -62,4 +62,9 @@ function isGettextOk()
     return extension_loaded('gettext');
 }
 
+function isMbStringOk()
+{
+    return extension_loaded('mbstring');
+}
+
 ?>

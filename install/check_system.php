@@ -32,8 +32,9 @@ $db_pass = 0;
 $gd_pass = 0;
 $yaz_pass = 0;
 $gettext_pass = 0;
+$mbstring_pass = 0;
 $pass = 0;
-$pass_max = 4;
+$pass_max = 5;
 
 // ststus html
 $success = '<i class="fa fa-check-square status-success"></i>';
@@ -57,6 +58,11 @@ if ($gd = isGdOk()) {
 
 if ($gettext = isGettextOk()) {
     $gettext_pass = 1;
+    $pass++;
+}
+
+if ($mbstring = isMbStringOk()) {
+    $mbstring_pass = 1;
     $pass++;
 }
 
@@ -124,7 +130,7 @@ if ($yaz = isYazOk()) {
 			</div>
 			<div class="status-message"></div>
 		</div>
-        <div class="items">
+    <div class="items">
 			<div class="key">
 				Gettext
 			</div>
@@ -135,6 +141,17 @@ if ($yaz = isYazOk()) {
 				<?php echo ($gettext_pass) ? $success : $error; ?>
 			</div>
 		</div>
+    <div class="items">
+			<div class="key">
+				mbstring
+			</div>
+			<div class="value">
+				<?php echo ($mbstring_pass) ? 'Yes' : 'No'; ?>
+			</div>
+			<div class="status status-error">
+				<?php echo ($mbstring_pass) ? $success : $error; ?>
+			</div>
+		</div>    
 		<div class="items">
 			<div class="key">
 				YAZ
