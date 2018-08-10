@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `title` text collate utf8_unicode_ci NOT NULL,
   `sor` varchar(200) collate utf8_unicode_ci default NULL,
   `edition` varchar(50) collate utf8_unicode_ci default NULL,
-  `isbn_issn` varchar(20) collate utf8_unicode_ci default NULL,
+  `isbn_issn` varchar(32) collate utf8_unicode_ci default NULL,
   `publisher_id` int(11) default NULL,
   `publish_year` varchar(20) default NULL,
   `collation` varchar(50) collate utf8_unicode_ci default NULL,
