@@ -210,7 +210,18 @@ $sysconf['jsonld_detail'] = true;
 
 /* DATABASE BACKUP config */
 // specify the full path of mysqldump binary
-$sysconf['mysqldump'] = '/usr/bin/mysqldump';
+// Added by Drajat Hasan
+// For Windows platform with XAMPP
+if (preg_match("/(Windows)/i", php_uname('a'))) {
+   if (preg_match("/(xampp)/i", __DIR__)) {
+      $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
+      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";  
+    }
+} else {
+   // For Linux Platform
+   $sysconf['mysqldump'] = '/usr/bin/mysqldump';
+}
+
 // backup location (make sure it is accessible and rewritable to webserver!)
 $sysconf['temp_dir'] = '/tmp';
 $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
