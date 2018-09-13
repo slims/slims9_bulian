@@ -64,7 +64,7 @@ Bengali: A. K. M. Nurul Alam (Apu)
 <p>
 <div style="font-weight:bold;">Contribution:</div>
 Gettext support: Tobias Zeumer<br />
-Membercard modification: Jushadi<br />
+Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)<br />
 English documentation: Jim Richardson<br />
 OAI Support for Indonesia One Search: Ismail Fahmi
 </p>
