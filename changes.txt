@@ -84,7 +84,7 @@ SLiMS 7 (Cendana)
 Added: Persian translation
 Added: Cendana Responsive template
 Added: Comment field in OPAC
-Added: Membercard generator by Jushadi
+Added: Membercard generator by Jushadi Arman Saz (jushadi@unsulbar.ac.id)
 Added: Tooltip in New Bibliography field
 Added: New theme for SLiMS 7 Cendana
 Added: Label, barcode, and member card settings from within the SLiMS adminstration page
