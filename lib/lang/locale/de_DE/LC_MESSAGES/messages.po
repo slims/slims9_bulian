@@ -141,7 +141,7 @@ msgstr ""
 
 #: admin/default/home.php:56
 msgid ""
-"There is currently <strong>{num_overdue}</strong> library members having "
+"There are currently <strong>{num_overdue}</strong> library members having "
 "overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> "
 "section for more detail"
 msgstr ""
