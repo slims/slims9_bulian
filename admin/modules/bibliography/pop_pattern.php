@@ -126,7 +126,7 @@ echo '<div style="padding:20px;">';
 echo $form->printOut();
 
 // preview patternt
-echo '<hr><h4>Preview: <b id="preview">P00000S</b></h4><hr>';
+echo '<hr><h4>'.__('Preview').': <b id="preview">P00000S</b></h4><hr>';
 echo '</div>';
 
 ?>
