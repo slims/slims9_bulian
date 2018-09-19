@@ -619,7 +619,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $str_input  = '<div class="btn-group">';
   $str_input .= '<a style="margin-right:0px" class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'">
-                  <i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>';
+                  <i class="glyphicon glyphicon-plus"></i> '.__('Add New Pattern').'</a>';
   $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" class="notAjax btn btn-default openPopUp" title="'.__('Item code pattern manager.').'"><i class="glyphicon glyphicon-wrench"></i></a>';
   $str_input .= '</div>&nbsp;';
   $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';

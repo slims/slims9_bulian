@@ -141,7 +141,7 @@ msgstr ""
 
 #: admin/default/home.php:56
 msgid ""
-"There is currently <strong>{num_overdue}</strong> library members having "
+"There are currently <strong>{num_overdue}</strong> library members having "
 "overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> "
 "section for more detail"
 msgstr ""
@@ -1396,7 +1396,7 @@ msgstr "Neues Muster hinzufügen"
 
 #: admin/modules/bibliography/index.php:623
 msgid "Item code pattern manager."
-msgstr ""
+msgstr "Barcode-Muster-Manager"
 
 #: admin/modules/bibliography/index.php:626
 msgid "Total item(s)"
@@ -2389,7 +2389,7 @@ msgstr "Suffix"
 
 #: admin/modules/bibliography/pop_pattern.php:116
 msgid "Length serial number"
-msgstr ""
+msgstr "Länge der Nummer"
 
 #: admin/modules/bibliography/pop_topic.php:101
 msgid "Topic succesfully updated!"
@@ -3748,15 +3748,15 @@ msgstr ""
 #: admin/modules/master_file/item_code_pattern.php:79
 #: admin/modules/master_file/submenu.php:45
 msgid "Item Code Pattern"
-msgstr ""
+msgstr "Barcode-Muster"
 
 #: admin/modules/master_file/item_code_pattern.php:83
 msgid "Pattern List"
-msgstr ""
+msgstr "Musterliste"
 
 #: admin/modules/master_file/item_code_pattern.php:84
 msgid "Add New Pattern"
-msgstr ""
+msgstr "Neues Muster hinzufügen"
 
 # Checken wo das im Inventurmodul auftaucht
 #: admin/modules/master_file/item_status.php:52
@@ -4286,7 +4286,7 @@ msgstr ""
 
 #: admin/modules/master_file/submenu.php:45
 msgid "Manage item code pattern"
-msgstr ""
+msgstr "Barcode-Muster verwalten"
 
 #: admin/modules/master_file/submenu.php:46
 msgid "Orphaned Author"
