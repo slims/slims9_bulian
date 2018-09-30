@@ -37,7 +37,7 @@ function create_metadata($outputObj, $cur_record, $identifier, $setspec, $db) {
 	$outputObj->addChild($oai_node,'dc:publisher', xml_safe($record['publisher_name']));
 	$outputObj->addChild($oai_node,'dc:date', date_safe($record['publish_year']));
 	$outputObj->addChild($oai_node,'dc:language', $record['language_id']);
-	$outputObj->addChild($oai_node,'dc:format', $record['gmd_name']);
+	$outputObj->addChild($oai_node,'dc:type', $record['gmd_name']);
 	$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/index.php?p=show_detail&amp;id='. $record['biblio_id']);
 	if (!empty($record['isbn_issn'])) 		$outputObj->addChild($oai_node,'dc:identifier_isbn', xml_safe($record['isbn_issn']));
 	if (!empty($record['notes'])) 			$outputObj->addChild($oai_node,'dc:description', xml_safe($record['notes']));
