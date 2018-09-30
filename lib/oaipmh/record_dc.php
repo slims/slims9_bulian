@@ -45,7 +45,7 @@ function create_metadata($outputObj, $cur_record, $identifier, $setspec, $db) {
 	$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/index.php?p=show_detail&amp;id='. $record['biblio_id']);
 	if (!empty($record['isbn_issn'])) 		$outputObj->addChild($oai_node,'dc:identifier_isbn', xml_safe($record['isbn_issn']));
 	if (!empty($record['notes'])) 			$outputObj->addChild($oai_node,'dc:description', xml_safe($record['notes']));
-	if (!empty($record['publish_place'])) 	$outputObj->addChild($oai_node,'dc:location', xml_safe($record['publish_place']));
+	if (!empty($record['publish_place'])) 	$outputObj->addChild($oai_node,'dc:coverage', xml_safe($record['publish_place']));
 	if (!empty($record['image'])) 			$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/lib/phpthumb/phpThumb.php?src=../../images/docs/'. xml_safe($record['image']));
 	if (!empty($record['series_title'])) 	$outputObj->addChild($oai_node,'dc:source', xml_safe($record['series_title']));
 	if (!empty($record['collation'])) 		$outputObj->addChild($oai_node,'dc:format', xml_safe($record['collation']));
@@ -187,9 +187,6 @@ function get_relations ($identifier, $db){
 			return array();
 		}		
 	} else {
-		#$br = $res->fetch(PDO::FETCH_ASSOC);
-		#return $br;
-
 		$relations = array();
 		$hasNext = 1;
 		while($hasNext){
