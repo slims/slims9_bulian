@@ -41,7 +41,7 @@ jQuery.extend({
  * @param       string      strURL : URL of AJAX request
  * @return      void
  */
-jQuery.fn.simbioAJAX = function(strURL, params)
+jQuery.fn.simbioAJAX = async function(strURL, params)
 {
   var options = {
       method: 'get',
@@ -85,23 +85,20 @@ jQuery.fn.simbioAJAX = function(strURL, params)
       /* End */
   })
 
-  // send AJAX request
-  /* Modified by Drajat Hasan */
-  // Get response code
-  var ajaxResponseCode = $.ajax({
-    type : options.method, url : strURL,
-    data : options.addData, async: false }).status;
+    var ajaxResponse;
+    try {
+        ajaxResponse = await $.ajax({
+            type : options.method, url : strURL,
+            data : options.addData, async: false })
 
-  // If success
-  if (ajaxResponseCode == 200) {
-    var ajaxResponse = $.ajax({
-      type : options.method, url : strURL,
-      data : options.addData, async: false }).responseText;
-  } else {
-    // Hide same error message in #mainContent
-    var ajaxResponse = '';
-  }
-  /* End */
+        // clear error message
+        if (loader.html().indexOf('Error') > -1) {
+            loader.html('&nbsp;')
+        }
+        loader.removeAttr('style')
+    } catch (err) {
+        console.error(err)
+    }
 
   // add to elements
   if (options.insertMode == 'before') {
