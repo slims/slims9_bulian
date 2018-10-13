@@ -125,6 +125,7 @@ if (!$reportView) {
     $reportgrid->setSQLColumn('r.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'm.member_name AS \''.__('Member Name').'\'',
+        'm.member_id AS \''.__('Member ID').'\'',
         'r.reserve_date AS \''.__('Reserve Date').'\'');
     $reportgrid->setSQLorder('r.reserve_date DESC');
 
