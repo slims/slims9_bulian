@@ -1,0 +1,3 @@
+###Volver a sincronizar
+<hr>
+Este menú se utiliza para sincronizar los datos bibliográficos recién editados con las actividades en curso del inventario usando el módulo de inventario. Su objetivo es que cuando editemos los datos bibliográficos mientras realizamos el inventario, para actualizar dichos cambios con los datos bibliográficos contenidos en el módulo de inventario, es necesario realizar una resincronización de los mismos. Haga clic en el botón, y vuelva a sincronizar todos los datos.

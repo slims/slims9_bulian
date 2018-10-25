@@ -1,0 +1,3 @@
+####Inventario actual
+<hr>
+Este menú es el menú principal para realizar un inventario. Se utiliza para restaurar el estado de las colecciones de la biblioteca que se consideren perdidas por el sistema. En este menú, el identificador del ejemplar (el número del código de barras) es la referencia principal de dicho ejemplar para cambiar su estado de los demás ejemplares que se consideran perdidos (allí). Realice este proceso ingresando el número del código de barras en el campo Código del ejemplar. Este menú estará disponible cuando se complete el proceso de inicialización.
