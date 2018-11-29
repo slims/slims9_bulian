@@ -58,7 +58,8 @@ Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
 Brazilian Portuguese: <br />
 Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)<br />
-Bengali: A. K. M. Nurul Alam (Apu)
+Bengali: A. K. M. Nurul Alam (Apu)<br />
+Urdu (Pakistan): Faheem Akbar
 </p>
 
 <p>
