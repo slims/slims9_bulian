@@ -19,6 +19,7 @@
     <link href="<?php echo $sysconf['admin_template']['css'].'?'.date('tHis'); ?>" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
+    <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>updater.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
@@ -30,7 +31,6 @@
     <script type="text/javascript" src="<?php echo JWB; ?>jquery.imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>webcam.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>scanner.js"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>jquery.nicescroll.min.js"></script>
 </head>
 <body>
 
@@ -80,11 +80,6 @@
 <!-- <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe> -->
 <!-- fake submit iframe -->
 
-<script>
-$(document).ready(function() {
-    $("#sidepan").niceScroll({cursorborder : 'transparent', cursorcolor : '#ccc', cursorwidth : '8'});
-});
-</script>
 
 </body>
 </html>

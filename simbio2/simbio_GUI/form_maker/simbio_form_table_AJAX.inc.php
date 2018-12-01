@@ -104,7 +104,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
 
       // check if we are on edit form mode
       if ($this->edit_mode) {
-          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('EDIT') . '</a>';
+          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('Edit') . '</a>';
           // delete button exists if the record_id properties exists
           if ($this->record_id && $this->delete_button) {
               // create delete button
