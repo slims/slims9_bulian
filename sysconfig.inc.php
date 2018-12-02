@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.3.1 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -537,7 +537,7 @@ $sysconf['chat_system']['enabled']    	= false;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       	= false;
 $sysconf['chat_system']['librarian']  	= false;
-$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['server']  		= '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
 /* NEWS */
