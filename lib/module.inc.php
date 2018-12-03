@@ -36,6 +36,7 @@ class module extends simbio
     public $appended_first;
     public $appended_last;
 
+
     public function __construct() {
         $this->appended_first = '<li><a class="menu home#replaced#" href="index.php"><span>' . __('Home') . '</a></li><li><a class="menu opac" href="../index.php" title="' . __('View OPAC in New Window') . '" target="_blank"><span>' . __('OPAC') . '</span></a></li>';
         $this->appended_last = '<li><a class="menu logout" href="logout.php"><span>' . __('LOGOUT') . '</span></a></li>';
@@ -147,11 +148,36 @@ class module extends simbio
     {
       global $dbs;
       $_submenu_file = $this->modules_dir.$str_module.DIRECTORY_SEPARATOR.'submenu.php';
+
+
       if (file_exists($_submenu_file)) {
         include $_submenu_file;
       } else {
         include 'default/submenu.php';
+        foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {
+          $link = explode('|', $value);
+          $menu[$link[0]] = array(__($link[0]), MWB.$link[1]);
+        }
       }
       return $menu;
     }
+
+    /**
+     * Method to get a list of shortcut submenu
+     *
+     * @param   object  $obj_db
+     * @return  array
+     */
+  function get_shortcuts_menu()
+  {
+    global $dbs;
+    $shortcuts = array();
+    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$dbs->escape_string($_SESSION['uid']).'\'');
+    $shortcuts_d = $shortcuts_q->fetch_assoc();
+    if ($shortcuts_q->num_rows > 0) {
+      $shortcuts = unserialize($shortcuts_d['setting_value']);
+    }
+    return $shortcuts;
+  }
+
 }
