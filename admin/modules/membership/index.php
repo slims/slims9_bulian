@@ -80,10 +80,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $memberID = trim($_POST['memberID']);
     $memberName = trim($_POST['memberName']);
+    $birthDate = trim($_POST['birthDate']);
     $mpasswd1 = trim($_POST['memberPasswd']);
     $mpasswd2 = trim($_POST['memberPasswd2']);
-    if (empty($memberID) OR empty($memberName)) {
-        utility::jsAlert(__('Member ID and Name can\'t be empty')); //mfc
+    if (empty($memberID) OR empty($memberName) OR empty($birthDate)) {
+        utility::jsAlert(__('Member ID, Name and Birthday cannot be empty')); //mfc
         exit();
     } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
@@ -398,7 +399,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // member name
     $form->addTextField('text', 'memberName', __('Member Name').'*', $rec_d['member_name'], 'style="width: 100%;"');
     // member birth date
-    $form->addDateField('birthDate', __('Birth Date'), $rec_d['birth_date']);
+    $form->addDateField('birthDate', __('Birth Date').'*', $rec_d['birth_date']);
     // member since date
     $form->addDateField('sinceDate', __('Member Since').'*', $form->edit_mode?$rec_d['member_since_date']:date('Y-m-d'));
     // member register date
