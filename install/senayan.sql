@@ -12,7 +12,7 @@
 CREATE TABLE IF NOT EXISTS `backup_log` (
   `backup_log_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL default '0',
-  `backup_time` datetime NOT NULL default NOW(),
+  `backup_time` datetime not NULL,
   `backup_file` varchar(100) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`backup_log_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
