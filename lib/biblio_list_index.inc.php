@@ -80,11 +80,16 @@ class biblio_list extends biblio_list_model
     // additional SQL string
     $_add_sql_str = ' WHERE';
     // main search criteria
-    if ($this->criteria['sql_criteria']!='') {
-      $_add_sql_str .= ' ('.$this->criteria['sql_criteria'].') AND `index`.`opac_hide`=0 ';
+    if (isset($this->criteria['sql_criteria'])) {
+      if ($this->criteria['sql_criteria']!='') {
+        $_add_sql_str .= ' ('.$this->criteria['sql_criteria'].') AND `index`.`opac_hide`=0 ';
+      } else {
+        $_add_sql_str .= ' `index`.`opac_hide`=0';
+      }
     } else {
-      $_add_sql_str .= ' `index`.`opac_hide`=0';
-	  }
+      $_add_sql_str .= ' `index`.`opac_hide`=0';      
+    }
+
     // promoted flag
     // if ($this->only_promoted) { $_add_sql_str .= ' AND promoted=1'; }
 
