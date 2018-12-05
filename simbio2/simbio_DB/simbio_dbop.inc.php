@@ -66,7 +66,7 @@ class simbio_dbop extends simbio
         $_str_value = '';
         foreach ($array_data as $column => $value) {
             // concatenating column name
-            $_str_columns .= ", $column";
+            $_str_columns .= ", `$column`";
             // concatenating value
             if ($value === 'NULL' OR $value === null) {
                 // if the value is NULL or string NULL
@@ -90,7 +90,7 @@ class simbio_dbop extends simbio
         $_str_value = substr_replace($_str_value, '', 0, 1);
 
         // the insert query
-        $this->sql_string = "INSERT INTO $str_table ($_str_columns) "
+        $this->sql_string = "INSERT INTO `$str_table` ($_str_columns) "
             ."VALUES ($_str_value)";
         $_insert = $this->obj_db->query($this->sql_string);
         // if an error occur
