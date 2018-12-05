@@ -31,6 +31,7 @@ $menu[] = array('Header', __('Items'));
 $menu[] = array(__('Item List'), MWB.'bibliography/item.php', __('Show List of Library Items'));
 $menu[] = array(__('Checkout Items'), MWB.'bibliography/checkout_item.php', __('Show List of Checkout Items'));
 $menu[] = array('Header', __('Copy Cataloguing'));
+$menu[] = array(__('MARC SRU'), MWB.'bibliography/marcsru.php', __('Grab Bibliographic Data from Other MARC Services'));
 $menu[] = array(__('Z3950 SRU'), MWB.'bibliography/z3950sru.php', __('Grab Bibliographic Data from Z3950 SRU Web Services'));
 //$menu[] = array(__('Z3950 Service'), MWB.'bibliography/z3950.php', __('Grab Bibliographic Data from Z3950 Web Services'));
 $menu[] = array(__('P2P Service'), MWB.'bibliography/p2p.php', __('Grab Bibliographic Data from Other SLiMS Web Services'));
