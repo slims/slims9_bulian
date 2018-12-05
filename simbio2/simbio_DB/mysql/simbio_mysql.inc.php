@@ -75,9 +75,9 @@ class simbio_mysql extends simbio
     private function connect()
     {
         if ($this->db_socket) {
-            $this->res_conn = @mysql_connect($this->db_host.":".$this->db_socket, $this->db_username, $this->db_passwd);
+            $this->res_conn = new mysqli_connect($this->db_host.":".$this->db_socket, $this->db_username, $this->db_passwd);
         } else {
-            $this->res_conn = @mysql_connect($this->db_host.":".$this->db_port, $this->db_username, $this->db_passwd);
+            $this->res_conn = new mysqli_connect($this->db_host.":".$this->db_port, $this->db_username, $this->db_passwd);
         }
         // check the connection status
         if (!$this->res_conn) {
