@@ -77,6 +77,7 @@ $place_cache = array();
 $lang_cache = array();
 $author_cache = array();
 $subject_cache = array();
+$frequency_cache = array();
 
 /* RECORD OPERATION */
 if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
@@ -156,10 +157,16 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     if ($i) {
       $data['notes'] = ($i->getSubfield('a')) ? $i->getSubfield('a') : '';
     }
+    // set frequency
+	$j= $record->getField(310);
+	if ($j) {
+		$frequency_id = $j->getSubfield('a');
+		$data['frequency_id'] = utility::getID($dbs, 'mst_frequency', 'frequency_id', 'frequency', $frequency_id, $frequency_cache);
+	}
+
     $data['opac_hide'] = 0;
     $data['promoted'] = 0;
     $data['labels'] = '';
-    $data['frequency_id'] = '';
     $data['spec_detail_info'] = '';
     $data['image'] = null;
     $data['input_date'] = date('Y-m-d H:i:s');
