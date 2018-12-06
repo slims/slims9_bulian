@@ -63,6 +63,7 @@
 <!-- Style Minified
 ============================================= -->
 <link rel="stylesheet" type="text/css" href="<?php echo SWB.$sysconf['template']['dir']; ?>/<?php echo $sysconf['template']['theme']; ?>/css/minified.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo SWB.$sysconf['template']['dir']; ?>/<?php echo $sysconf['template']['theme']; ?>/css/hamburgers.css" />
 
 <!-- Style
 ============================================= -->
@@ -76,3 +77,113 @@
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
 -->
 <script src="<?php echo JWB; ?>jquery.js"></script>
+<style>
+    .s-search-advances {
+        color: #fff;
+        text-decoration: none;
+    }
+    .s-search-advances:hover {
+        color: #0f0f0f;
+    }
+
+    #advance-search {
+        opacity: 0;
+        width: 100%;
+        margin: 0 auto;
+        z-index: -1;
+        background: rgba(0,0,0,0.7);
+        padding-bottom: 20px;
+    }
+    @media only screen and (min-width: 768px) {
+        #advance-search {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            padding-left: 100px;
+            padding-right: 100px;
+            left: 0;
+            right: 0;
+        }
+        .s-main-page .s-search-advances {
+            font-size: 12px;
+            position: absolute;
+            top: 70px;
+            right: 190px;
+        }
+    }
+    @media only screen and (min-width: 992px) {
+        #advance-search {
+            padding-left: 200px;
+            padding-right: 200px;
+        }
+    }
+    @media only screen and (min-width: 1200px) {
+        #advance-search {
+            padding-left: 300px;
+            padding-right: 300px;
+        }
+    }
+    .s-search-advances {
+        color: #fff;
+    }
+    .s-search-advances:hover {
+        color: #ff0;
+    }
+    .s-search-advances:focus {
+        color: #fff;
+    }
+    #advance-search select,
+    #advance-search input[type='text'] {
+        border: none;
+        border-radius: 3px;
+        box-shadow: none;
+        margin-bottom: 2px !important;
+    }
+    @media only screen and (min-width: 768px) {
+        #advance-search select,
+        #advance-search input[type='text'] {
+            padding: 10px 15px;
+            height: 45px;
+            margin-bottom: 5px !important;
+        }
+    }
+    #advance-search .label {
+        line-height: 1;
+        letter-spacing: 1px;
+        font-size: 9pt;
+        color: #999;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+    @media only screen and (min-width: 768px) {
+        #advance-search .label {
+            line-height: 2;
+        }
+    }
+    #advance-search h2 {
+        font-size: 10pt;
+        color: #39c;
+        line-height: 2;
+    }
+    @media only screen and (min-width: 768px) {
+        #advance-search h2 {
+            font-size: 16pt;
+        }
+    }
+    #advance-search button {
+        background-color: #f0fafb;
+        color: #333333;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 50px;
+    }
+    #advance-search .hamburger {
+        position: fixed;
+        top: 40px;
+        right: 40px;
+    }
+    #advance-search .hamburger--3dy.is-active .hamburger-inner::after,
+    #advance-search .hamburger--3dy.is-active .hamburger-inner::before {
+        background: #fff;
+    }
+</style>
