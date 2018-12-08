@@ -60,6 +60,8 @@ class api
     $q_bib = $obj_db->query($s_bib);
     if (!$obj_db->errno) {
       while ($r_bib = $q_bib->fetch_assoc()) {
+        $_return['id'] = $r_bib['biblio_id'];
+        $_return['_id'] = $r_bib['biblio_id'];
         $_return['biblio_id'] = $r_bib['biblio_id'];
         $_return['title'] = $r_bib['title'];
         $_return['gmd_name'] = $r_bib['gmd_name'];
