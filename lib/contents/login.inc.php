@@ -76,8 +76,7 @@ if (isset($_POST['logMeIn'])) {
                     $privatekey = $sysconf['captcha']['smc']['privatekey'];
                     $resp = recaptcha_check_answer ($privatekey,
                                           $_SERVER["REMOTE_ADDR"],
-                                          $_POST["recaptcha_challenge_field"],
-                                          $_POST["recaptcha_response_field"]);
+                                          $_POST["g-recaptcha-response"]);
 
                     if (!$resp->is_valid) {
                         // What happens when the CAPTCHA was entered incorrectly
@@ -167,31 +166,6 @@ if (isset($_POST['updatePassword'])) {
     <noscript>
         <div style="font-weight: bold; color: #FF0000;"><?php echo __('Your browser does not support Javascript or Javascript is disabled. Application won\'t run without Javascript!'); ?><div>
     </noscript>
-    <!-- Captcha preloaded javascript - start -->
-    <?php if ($sysconf['captcha']['smc']['enable']) { ?>
-      <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
-      <script type="text/javascript">
-        var RecaptchaOptions = {
-          theme : '<?php echo$sysconf['captcha']['smc']['recaptcha']['theme']; ?>',
-          lang : '<?php echo$sysconf['captcha']['smc']['recaptcha']['lang']; ?>',
-          <?php if($sysconf['captcha']['smc']['recaptcha']['customlang']['enable']) { ?>
-                custom_translations : {
-                instructions_visual : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['instructions_visual']; ?>",
-                instructions_audio : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['instructions_audio']; ?>",
-                play_again : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['play_again']; ?>",
-                cant_hear_this : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['cant_hear_this']; ?>",
-                visual_challenge : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['visual_challenge']; ?>",
-                audio_challenge : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['audio_challenge']; ?>",
-                refresh_btn : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['refresh_btn']; ?>",
-                help_btn : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['help_btn']; ?>",
-                incorrect_try_again : "<?php echo $sysconf['captcha']['smc']['recaptcha']['customlang']['incorrect_try_again']; ?>",
-                },
-          <?php } ?>
-        };
-      </script>
-      <?php } ?>
-    <?php } ?>
-    <!-- Captcha preloaded javascript - end -->
     <form action="index.php?p=login" method="post">
     <?php
     if (isset($_GET['update']) && !empty($_GET['update'])) { ?>

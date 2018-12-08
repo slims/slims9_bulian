@@ -104,7 +104,7 @@ if (!$reportView) {
     $reportgrid->setSQLorder('l.due_date DESC');
     $reportgrid->sql_group_by = 'm.member_id';
 
-    $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(\''.date('Y-m-d').'\')-TO_DAYS(due_date)) BETWEEN 0 AND 3)) ';
+    $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(due_date)-TO_DAYS(\''.date('Y-m-d').'\')) BETWEEN 0 AND 3)) ';
     // is there any search
     if (isset($_GET['id_name']) AND $_GET['id_name']) {
         $keyword = $dbs->escape_string(trim($_GET['id_name']));
@@ -146,11 +146,11 @@ if (!$reportView) {
         unset($member_q);
 
         $_title_q = $obj_db->query('SELECT l.item_code, b.title, l.loan_date,
-            l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\'
+            l.due_date, (TO_DAYS(due_date)-TO_DAYS(DATE(NOW()))) AS \'Overdue Days\'
             FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
-            WHERE (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(\''.date('Y-m-d').'\')-TO_DAYS(due_date)) BETWEEN 0 AND 3) AND l.member_id=\''.$array_data[0].'\')');
+            WHERE (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(due_date)-TO_DAYS(\''.date('Y-m-d').'\')) BETWEEN 0 AND 3) AND l.member_id=\''.$array_data[0].'\')');
         $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_name.' ('.$array_data[0].')</div>';
         $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_mail_address.'</div>';
         $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;">'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - '.__('Phone Number').': '.$member_d[2].'</div>';

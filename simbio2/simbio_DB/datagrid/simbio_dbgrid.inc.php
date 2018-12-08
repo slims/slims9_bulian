@@ -363,7 +363,15 @@ class simbio_datagrid extends simbio_table
         }
         // if editable
         if ($this->editable) {
-            $_buffer .= '<form action="'.$this->chbox_form_URL.'" name="'.$this->table_name.'" id="'.$this->table_name.'" target="'.$_target.'" method="post" style="display: inline;">'."\n";
+            if (class_exists('simbio_form_maker')) {
+              $form_maker = new simbio_form_maker($this->table_name, $this->chbox_form_URL, $str_form_method = 'post', false);
+              $form_maker->submit_target = $_target;
+              $form_maker->add_form_attributes= 'style="display: inline;"';
+              $_buffer .= $form_maker->startForm();
+            } else {
+              $_buffer .= '<form action="'.$this->chbox_form_URL.'" name="'.$this->table_name.'" id="'.$this->table_name.'" target="'.$_target.'" method="post" style="display: inline;">'."\n";
+            }
+
 
             $_check_all = __('Check All');
             $_uncheck_all = __('Uncheck All');

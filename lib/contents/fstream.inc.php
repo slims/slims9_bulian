@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014 Arie Nugraha (dicarve@yahoo.com), Hendro Wicaksono (hendrowicaksono@yahoo.com)
+ * Copyright (C) 2014 Arie Nugraha (dicarve@gmail.com), Hendro Wicaksono (hendrowicaksono@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
-  $file_loc_url = SWB.'repository/'.( $file_d['file_dir']?$file_d['file_dir'].'/':'' ).$file_d['file_name'];
+  $file_loc_url = SWB.'index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
   $file_loc = REPOBS.( $file_d['file_dir']?$file_d['file_dir'].'/':'' ).$file_d['file_name'];
   if (file_exists($file_loc)) {
     // check access limit
@@ -50,11 +50,12 @@ if ($file_q->num_rows > 0) {
         if (!in_array($_SESSION['m_member_type_id'], $allowed_mem_types)) {
           # Access to file restricted
           # Member logged in but doesnt have privilege to download
-          header("location:index.php");
+          header("location:index.php?p=error&errnum=601");
           exit();
         }
       } else {
-        header("location:index.php");
+        $referto = SWB.'index.php?p=member&destination=index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
+        header("location:$referto");
         exit();
         }
       }

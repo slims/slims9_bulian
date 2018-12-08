@@ -70,7 +70,7 @@ function getSubjectID($str_subject, $str_subject_type, &$arr_cache = false, $str
   }
 
   $str_value = $dbs->escape_string($str_value);
-  $_sql_id_q = sprintf('SELECT topic_id FROM mst_topic WHERE topic=\'%s\' OR classification=\'%s\'', $str_value, $str_class_number);
+  $_sql_id_q = sprintf('SELECT topic_id FROM mst_topic WHERE topic=\'%s\'', $str_value);
   $id_q = $dbs->query($_sql_id_q);
   if ($id_q->num_rows > 0) {
       $id_d = $id_q->fetch_row();

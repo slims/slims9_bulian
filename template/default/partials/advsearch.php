@@ -7,7 +7,7 @@
 </div>
 
 
-<h2>Advance Search</h2>
+<h2><?php echo __('Advanced Search'); ?></h2>
 <div class="row">
   <form action="index.php" method="get" class="form-horizontal form-search">
 

@@ -90,7 +90,7 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Gender'); ?></div>
+            <div class="divRowLabel"><?php echo __('Sex'); ?></div>
             <div class="divRowContent">
             <?php
             $gender_chbox[0] = array('ALL', __('ALL'));

@@ -102,7 +102,7 @@ if ($biblioID) {
   $biblio_topic_q = $dbs->query("SELECT bt.*, t.topic, t.topic_type FROM biblio_topic AS bt
     LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
     WHERE bt.biblio_id=$biblioID ORDER BY level ASC");
-
+  if($biblio_topic_q->num_rows > 0){
   $row = 1;
   while ($biblio_topic_d = $biblio_topic_q->fetch_assoc()) {
     // alternate the row color
@@ -121,7 +121,7 @@ if ($biblioID) {
 
     $row++;
   }
-
+  }
   echo $table->printTable();
   // hidden form
   echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="bid" value="0" /><input type="hidden" name="remove" value="0" /></form>';

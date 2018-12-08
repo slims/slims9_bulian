@@ -45,6 +45,18 @@ define('CURR_PASSWD_WRONG', -1);
 define('PASSWD_NOT_MATCH', -2);
 define('CANT_UPDATE_PASSWD', -3);
 
+if (isset($_GET['destination'])) {
+    $destination = $_GET['destination'];
+    if (isset($_GET['fid'])) {
+        $destination .= '&fid='.$_GET['fid'];
+    }
+    if (isset($_GET['bid'])) {
+        $destination .= '&bid='.$_GET['bid'];
+    }
+} else {
+    $destination = FALSE;
+}
+
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
@@ -73,8 +85,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 $privatekey = $sysconf['captcha']['member']['privatekey'];
                 $resp = recaptcha_check_answer ($privatekey,
                     $_SERVER["REMOTE_ADDR"],
-                    $_POST["recaptcha_challenge_field"],
-                    $_POST["recaptcha_response_field"]);
+                    $_POST["g-recaptcha-response"]);
 
                 if (!$resp->is_valid) {
                     // What happens when the CAPTCHA was entered incorrectly
@@ -98,7 +109,11 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', 'Login success for member '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            header('Location: index.php?p=member');
+            if ($destination) {
+                header("location:$destination");
+            } else {
+                header('Location: index.php?p=member');
+            }
             exit();
         } else {
             $_member_sql = sprintf('SELECT member_name FROM member
@@ -207,33 +222,8 @@ if (!$is_member_login) {
 	}
 	?>
     <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
-    <!-- Captcha preloaded javascript - start -->
-    <?php if ($sysconf['captcha']['member']['enable']) { ?>
-      <?php if ($sysconf['captcha']['member']['type'] == "recaptcha") { ?>
-      <script type="text/javascript">
-        var RecaptchaOptions = {
-          theme : '<?php echo$sysconf['captcha']['member']['recaptcha']['theme']; ?>',
-          lang : '<?php echo$sysconf['captcha']['member']['recaptcha']['lang']; ?>',
-          <?php if($sysconf['captcha']['member']['recaptcha']['customlang']['enable']) { ?>
-                custom_translations : {
-                instructions_visual : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['instructions_visual']; ?>",
-                instructions_audio : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['instructions_audio']; ?>",
-                play_again : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['play_again']; ?>",
-                cant_hear_this : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['cant_hear_this']; ?>",
-                visual_challenge : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['visual_challenge']; ?>",
-                audio_challenge : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['audio_challenge']; ?>",
-                refresh_btn : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['refresh_btn']; ?>",
-                help_btn : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['help_btn']; ?>",
-                incorrect_try_again : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['incorrect_try_again']; ?>",
-                },
-          <?php } ?>
-        };
-      </script>
-      <?php } ?>
-    <?php } ?>
-    <!-- Captcha preloaded javascript - end -->
     <div class="loginInfo">
-    <form action="index.php?p=member" method="post">
+    <form action="index.php?p=member&destination=<?php echo $destination; ?>" method="post">
     <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
         <div class="login_input"><input type="text" name="memberID" /></div>
     <div class="fieldLabel marginTop"><?php echo __('Password'); ?></div>
@@ -699,10 +689,14 @@ if (!$is_member_login) {
     echo '</div>';
     echo showLoanHist();
     echo '</div>';
+
+    // default is to show the title basket
+    if (!isset($sysconf['enable_mark']) || $sysconf['enable_mark']) {
 	echo '<div class="tagline">';
-    echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
-    echo showBasket();
-    echo '</div>';
+        echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
+        echo showBasket();
+        echo '</div>';
+    }
     // change password only form NATIVE authentication, not for others such as LDAP
     if ($sysconf['auth']['member']['method'] == 'native') {
 	echo '<div class="tagline">';

@@ -26,6 +26,7 @@ function create_metadata($outputObj, $cur_record, $identifier, $setspec, $db) {
 	$record = get_record($identifier, $db);
 	$authors = get_authors($identifier, $db);
 	$subjects = get_subjects($identifier, $db);
+	$relations = get_relations($identifier, $db);
 
 	$outputObj->addChild($oai_node,'dc:title', xml_safe($record['title']));
 	foreach ($authors as $author){
@@ -34,19 +35,26 @@ function create_metadata($outputObj, $cur_record, $identifier, $setspec, $db) {
 	foreach ($subjects as $subject){
 		$outputObj->addChild($oai_node,'dc:subject', xml_safe($subject['topic']));
 	}
+	foreach ($relations as $relation){
+		$outputObj->addChild($oai_node,'dc:relation', SLIMS_BASE_URL.'/index.php?p=show_detail&amp;id='. $relation['rel_biblio_id']);
+	}
 	$outputObj->addChild($oai_node,'dc:publisher', xml_safe($record['publisher_name']));
 	$outputObj->addChild($oai_node,'dc:date', date_safe($record['publish_year']));
 	$outputObj->addChild($oai_node,'dc:language', $record['language_id']);
-	$outputObj->addChild($oai_node,'dc:format', $record['gmd_name']);
+	$outputObj->addChild($oai_node,'dc:type', $record['gmd_name']);
 	$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/index.php?p=show_detail&amp;id='. $record['biblio_id']);
 	if (!empty($record['isbn_issn'])) 		$outputObj->addChild($oai_node,'dc:identifier_isbn', xml_safe($record['isbn_issn']));
 	if (!empty($record['notes'])) 			$outputObj->addChild($oai_node,'dc:description', xml_safe($record['notes']));
-	if (!empty($record['publish_place'])) 	$outputObj->addChild($oai_node,'dc:location', xml_safe($record['publish_place']));
-	if (!empty($record['image'])) 			$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/lib/phpthumb/phpThumb.php?src=../../images/docs/'. xml_safe($record['image']));
-	if (!empty($record['series_title'])) 	$outputObj->addChild($oai_node,'dc:series', xml_safe($record['series_title']));
-	if (!empty($record['collation'])) 		$outputObj->addChild($oai_node,'dc:description', xml_safe($record['collation']));
-        if (!empty($record['classification'])) 		$outputObj->addChild($oai_node,'dc:subject', xml_safe($record['classification']));
-
+	if (!empty($record['publish_place'])) 	$outputObj->addChild($oai_node,'dc:coverage', xml_safe($record['publish_place']));
+	if (!empty($record['image'])) 			$outputObj->addChild($oai_node,'dc:identifier', SLIMS_BASE_URL.'/lib/minigalnano/createthumb.php?filename=../../images/docs/'. xml_safe($record['image']).'&amp;width=200');
+	if (!empty($record['series_title'])) 	$outputObj->addChild($oai_node,'dc:source', xml_safe($record['series_title']));
+	if (!empty($record['collation'])) 		$outputObj->addChild($oai_node,'dc:format', xml_safe($record['collation']));
+  if (!empty($record['classification'])) 		$outputObj->addChild($oai_node,'dc:subject', xml_safe($record['classification']));
+	if (!empty($record['image'])) {
+		$outputObj->addChild($oai_node,'image', SLIMS_BASE_URL.'/lib/minigalnano/createthumb.php?filename=../../images/docs/'. xml_safe($record['image']).'&amp;width=200');
+  } else {
+		$outputObj->addChild($oai_node,'image', SLIMS_BASE_URL.'/images/default/image.png');
+  }
 	//print_r($record);
 	//print_r($authors);
 	//print_r($subjects);
@@ -167,4 +175,34 @@ function get_digital_files($identifier, $db) {
               $_xml_output .= ']]></dc:relation>'."\n";
           }
         }
+}
+
+function get_relations ($identifier, $db){
+	$query = 'SELECT * FROM biblio_relation WHERE biblio_id=' . $identifier;
+	$res = $db->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+	$r = $res->execute();
+ 	if ($r===false) {
+		if (SHOW_QUERY_ERROR) {
+			echo __FILE__.','.__LINE__."<br />";
+			echo "Query: $query<br />\n";
+			print_r($db->errorInfo());
+			exit();
+		} else {
+			return array();
+		}		
+	} else {
+		$relations = array();
+		$hasNext = 1;
+		while($hasNext){
+			$relation = $res->fetch(PDO::FETCH_ASSOC);
+			if ($relation){
+				array_push($relations, $relation);
+			} else {
+				$hasNext = 0;
+			}
+		}
+		return $relations;
+
+
+	}
 }

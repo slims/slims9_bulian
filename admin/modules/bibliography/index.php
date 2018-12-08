@@ -84,12 +84,17 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
     $postImage = stripslashes($_POST['img']);
     $postImage = str_replace('/', '', $postImage);
     @unlink(sprintf(IMGBS.'docs/%s',$postImage));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
   }
   exit();
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
+  }
   $title = trim(strip_tags($_POST['title']));
   // check form validity
   if (empty($title)) {
@@ -368,7 +373,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       }
 
       $end = $start + $total;
-      for ($b=$start; $b < $end; $b++) { 
+      for ($b=$start; $b < $end; $b++) {
         $len = strlen($b);
         $itemcode = $chars[0];
         if ($zeros > 0) {
@@ -376,8 +381,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else { $itemcode .= $b; }
         $itemcode .= $chars[1];
 
-        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
-        VALUES (%d, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, location_id, item_status_id, input_date, last_update, uid)
+        VALUES (%d, '%s', '%s', %d, '%s', 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
         @$dbs->query($item_insert_sql);
       }
     }
@@ -389,6 +394,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 } else if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
   if (!($can_read AND $can_write)) {
     die();
+  }
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
   }
   /* DATA DELETION PROCESS */
   // create sql op object
@@ -429,6 +439,24 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
         $sql_op->delete('biblio_relation', "biblio_id=$itemID");
         $sql_op->delete('search_biblio', "biblio_id=$itemID");
+
+        // delete serial data
+        // check kardex if exist
+        $_sql_serial_kardex_q = sprintf('SELECT b.title, COUNT(kardex_id),s.serial_id FROM biblio AS b
+          LEFT JOIN `serial` AS s ON b.biblio_id=s.biblio_id
+          LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
+          WHERE b.biblio_id=%d GROUP BY title', $itemID);
+        $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
+        if ($serial_kardex_q) {
+          $serial_kardex_d = $serial_kardex_q->fetch_row();
+          // delete kardex
+          if ($serial_kardex_d[1] > 1) {
+            $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+          }
+        }
+        //delete serial data
+          $sql_op->delete('serial', "biblio_id=$itemID");
+
         // add to http query for UCS delete
         $http_query .= "itemID[]=$itemID&";
       }
@@ -591,7 +619,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<a class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'"><i class="glyphicon glyphicon-plus"></i> Add New Pattern</a>&nbsp;';
+  $str_input  = '<div class="btn-group">';
+  $str_input .= '<a style="margin-right:0px" class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'">
+                  <i class="glyphicon glyphicon-plus"></i> '.__('Add New Pattern').'</a>';
+  $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" class="notAjax btn btn-default openPopUp" title="'.__('Item code pattern manager.').'"><i class="glyphicon glyphicon-wrench"></i></a>';
+  $str_input .= '</div>&nbsp;';
   $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';
   $str_input .= '<label id="totalItemsLabel">' . __('Total item(s)').':</label> <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
   // get collection type data related to this record from database
@@ -601,6 +633,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
     }
   $str_input .= '<label id="collTypeIDLabel">' . __('Collection Type').':</label> '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  // get location data related to this record from database
+  $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
+  $location_options = array();
+  while ($location_d = $location_q->fetch_row()) {
+    $location_options[] = array($location_d[0], $location_d[1]);
+  }
+  $str_input .= __('Location').': '.simbio_form_element::selectList('locationID', $location_options, '', 'style="width: 100px;"');;
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
@@ -936,7 +975,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));
   if (isset($_GET['keywords']) AND $_GET['keywords']) {
   $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-  echo '<div class="infoBox">'.$msg.' : "'.$_GET['keywords'].'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>'; //mfc
+  echo '<div class="infoBox">'.$msg.' : "'.htmlentities($_GET['keywords']).'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>'; //mfc
   }
 
   echo $datagrid_result;

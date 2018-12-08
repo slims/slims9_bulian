@@ -221,7 +221,7 @@ if (isset($_GET['editTopic'])) {
       <?php
       $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
       ?>
-      <input type="text" value="<?php echo $topic_d[0];?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabulary" onkeyup="<?php echo $ajax_exp; ?>" />
+      <input type="text" value="<?php echo $topic_d[0];?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabulary" oninput="<?php echo $ajax_exp; ?>" />
       <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
       </div>
     </div>
@@ -269,7 +269,7 @@ if (isset($_GET['editTopic'])) {
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
-    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="<?php echo __('Enter Vocabulary');?>" onkeyup="<?php echo $ajax_exp; ?>" />
+    <input type="text" name="search_str" id="search_str" class="form-control" placeholder="<?php echo __('Enter Vocabulary');?>" oninput="<?php echo $ajax_exp; ?>" />
     <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
     </div>
   </div>

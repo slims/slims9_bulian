@@ -79,7 +79,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
     $file_upload->setAllowableFormat($sysconf['allowed_file_att']);
     $file_upload->setMaxSize($sysconf['max_upload']*1024);
     $file_upload->setUploadDir(REPOBS.DS.str_replace('/', DS, $file_dir));
-    $file_upload_status = $file_upload->doUpload('file2attach');
+    $file_upload_status = $file_upload->doUpload('file2attach',md5(date('Y-m-d H:i:s')));
     if ($file_upload_status === UPLOAD_SUCCESS) {
         $file_ext = substr($file_upload->new_filename, strrpos($file_upload->new_filename, '.')+1);
         $fdata['uploader_id'] = $_SESSION['uid'];
@@ -178,7 +178,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
 }
 
 // create new instance
-$form = new simbio_form_table('mainForm', $_SERVER['PHP_SELF'].'?biblioID='.$biblioID, 'post');
+$form = new simbio_form_table('attachUploadForm', $_SERVER['PHP_SELF'].'?biblioID='.$biblioID, 'post');
 $form->submit_button_attr = 'name="upload" value="'.__('Upload Now').'" class="btn btn-primary"';
 // form table attributes
 $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';

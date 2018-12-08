@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.3.1 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -88,7 +88,13 @@ define('UPLOAD', SB.FLS.DS);
 
 // repository dir
 define('REPO', 'repository');
-define('REPOBS', SB.REPO.DS);
+$repobs['enable'] = FALSE;
+$repobs['path'] = '/your/alternative/of/repository/directory/';
+if ($repobs['enable'] == TRUE) {
+  define('REPOBS', $repobs['path']);
+} else {
+  define('REPOBS', SB.REPO.DS);
+}
 
 // file attachment dir
 define('ATC', 'att');
@@ -108,7 +114,7 @@ define('HELP', SB.'help'.DS);
 // senayan web doc root dir
 /* Custom base URL */
 $sysconf['baseurl'] = '';
-$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', dirname(@$_SERVER['PHP_SELF']));
+$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
 define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
 
 // admin section web root dir
@@ -191,6 +197,9 @@ $sysconf['promote_first_emphasized'] = true;
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
     .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
 
+/* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
+$sysconf['enable_mark'] = true;
+
 /* XML */
 $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
@@ -201,7 +210,18 @@ $sysconf['jsonld_detail'] = true;
 
 /* DATABASE BACKUP config */
 // specify the full path of mysqldump binary
-$sysconf['mysqldump'] = '/usr/bin/mysqldump';
+// Added by Drajat Hasan
+// For Windows platform with XAMPP
+if (preg_match("/(Windows)/i", php_uname('a'))) {
+   if (preg_match("/(xampp)/i", __DIR__)) {
+      $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
+      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";  
+    }
+} else {
+   // For Linux Platform
+   $sysconf['mysqldump'] = '/usr/bin/mysqldump';
+}
+
 // backup location (make sure it is accessible and rewritable to webserver!)
 $sysconf['temp_dir'] = '/tmp';
 $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
@@ -348,6 +368,8 @@ $sysconf['ucs']['auto_delete'] = false;
 $sysconf['ucs']['auto_insert'] = false;
 // UCS server address. NO TRAILING SLASH! for local testing on Windows machine don't use localhost, use 127.0.0.1 instead
 $sysconf['ucs']['serveraddr'] = 'http://localhost/ucs';
+// UCS server version
+$sysconf['ucs']['serverversion'] = 2;
 // node ID
 $sysconf['ucs']['id'] = 'slims-node';
 // default is s0beautifulday
@@ -361,6 +383,12 @@ $sysconf['ucs']['name'] = 'SLiMS Library';
 $sysconf['z3950_max_result'] = 50;
 $sysconf['z3950_source'][1] = array('uri' => 'z3950.loc.gov:7090/voyager', 'name' => 'Library of Congress Voyager');
 $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voyager', 'name' => 'Library of Congress SRU Voyager');
+
+/**
+ * MARC copy cataloguing sources
+ */
+$sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
+
 
 /**
  * Peer to peer server config
@@ -491,7 +519,7 @@ $sysconf['OAI']['MetadataFormats']['Dublin Core'] = array(
   'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/');
 
 // Search clustering
-$sysconf['enable_search_clustering'] = true;
+$sysconf['enable_search_clustering'] = false;
 
 // comment
 $sysconf['comment']['enable'] =  true;
@@ -511,11 +539,11 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    	= true;
+$sysconf['chat_system']['enabled']    	= false;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
-$sysconf['chat_system']['opac']       	= true;
-$sysconf['chat_system']['librarian']  	= true;
-$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['opac']       	= false;
+$sysconf['chat_system']['librarian']  	= false;
+$sysconf['chat_system']['server']  		= '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
 /* NEWS */
@@ -641,3 +669,6 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* new log system */
 $sysconf['log']['biblio'] = TRUE;
+
+// REST Api
+$sysconf['api']['version'] = 1;

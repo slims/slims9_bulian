@@ -564,6 +564,14 @@ a:hover {
   -webkit-animation-delay: 12s;
   animation-delay: 12s;
 }
+#hide-advance-search {
+  background-color: white;
+  padding-top: 10px;
+  border-radius: 20px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
 .hide-header {
   position: absolute !important;
   top: 530px !important;
@@ -635,7 +643,7 @@ a:hover {
   line-height: 1;
   letter-spacing: 1px;
   font-size: 9pt;
-  color: #999;
+  color: white;
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -646,7 +654,7 @@ a:hover {
 }
 #advance-search h2 {
   font-size: 10pt;
-  color: #39c;
+  color: white;
   line-height: 2;
 }
 @media only screen and (min-width: 768px) {

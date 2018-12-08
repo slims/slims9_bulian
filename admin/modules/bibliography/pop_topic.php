@@ -86,6 +86,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
                 // adding new topic
                 $topic_data['topic'] = $subject;
                 $topic_data['topic_type'] = $_POST['type'];
+                $topic_data['classification'] = '';
                 $topic_data['input_date'] = date('Y-m-d');
                 $topic_data['last_update'] = date('Y-m-d');
                 // insert new topic to topic master table
@@ -117,6 +118,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
                 // adding new topic
                 $topic_data['topic'] = $subject;
                 $topic_data['topic_type'] = $_POST['type'];
+                $topic_data['classification'] = '';
                 $topic_data['input_date'] = date('Y-m-d');
                 $topic_data['last_update'] = date('Y-m-d');
                 // insert new topic to topic master table
@@ -144,7 +146,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_vocabolary_control.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
     ?>
-    <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" onkeyup="<?php echo $ajax_exp; ?>" />
+    <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>" />
     <select name="type" style="width: 20%;"><?php
     foreach ($sysconf['subject_type'] as $type_id => $type) {
         echo '<option value="'.$type_id.'">'.$type.'</option>';

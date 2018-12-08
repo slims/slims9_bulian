@@ -217,3 +217,7 @@ form.clock {
     margin-top: 5px;
     width: 100px;
 }
+
+.s-member-account td::before {
+    display: none;
+}

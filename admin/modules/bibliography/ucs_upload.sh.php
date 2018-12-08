@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2010  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2017  Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,9 +90,13 @@ if ($data) {
     // create HTTP request
     $http_request = new http_request();
     // send HTTP POST request
-    $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', @gethostbyaddr(), $to_sent, 'POST', 'text/json');
+		if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
+      $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
+		} else {
+		  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
+		}
     // below is for debugging purpose only
-	// die($http_request->body());
+	  // die($http_request->body());
 
 	// check for http request error
 	if ($req_error = $http_request->error()) {
@@ -107,4 +111,3 @@ if ($data) {
 } else {
     exit(0);
 }
-?>

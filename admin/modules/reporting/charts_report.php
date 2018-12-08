@@ -56,7 +56,7 @@ if (!$can_read) { die(); }
  */
 function generateRandomColors()
 {
-    @mt_srand((double)microtime()*10000);
+    // @mt_srand((double)microtime()*10000);
     $_c = '';
     while(strlen($_c)<6){ $_c .= sprintf("%02X", mt_rand(0, 255)); }
     return $_c;

@@ -351,8 +351,8 @@ a:hover {
 		height: 63px;
 	}
 	.s-user-photo img {
-		width: auto;
-		height: 80px;
+		width: 100%;
+		height: 100%;
 		background-size: cover;
 	}
 	.s-user-name {

@@ -113,15 +113,27 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
-            $error_num++;
+        $lrStatus = circapi::is_any_active_membershipType($dbs, $itemID);
+        if (!$lrStatus) {
+            if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
+                $error_num++;
+            }
         }
     }
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        #utility::jsAlert(__('All Data Successfully Deleted'));
+        #echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+
+        if (!$lrStatus) {
+            utility::jsAlert(__('All Data Successfully Deleted'));
+            echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        } else {
+            utility::jsAlert(__('Sorry. There is active loan transaction(s) using this membership type.'));
+            echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+        }
+
     } else {
         utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';

@@ -24,7 +24,7 @@
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+} elseif (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
@@ -136,4 +136,3 @@ function simbio_tokenizeCQL($str_query, $arr_searcheable_fields, $arr_stop_words
     $_array_queries[] = array('f' => 'cql_end');
     return $_array_queries;
 }
-?>

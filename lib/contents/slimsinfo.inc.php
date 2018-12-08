@@ -38,8 +38,8 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2016 Senayan Developer Community<br />
-Simbio Engine v2.0, Copyright (c) 2007-2016 Arie Nugraha
+Copyright (c) 2007-2017 Senayan Developer Community<br />
+Simbio Engine v2.0, Copyright (c) 2007-2017 Arie Nugraha
 </p>
 
 <p>
@@ -58,13 +58,14 @@ Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
 Brazilian Portuguese: <br />
 Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)<br />
-Bengali: A. K. M. Nurul Alam
+Bengali: A. K. M. Nurul Alam (Apu)<br />
+Urdu (Pakistan): Faheem Akbar
 </p>
 
 <p>
 <div style="font-weight:bold;">Contribution:</div>
 Gettext support: Tobias Zeumer<br />
-Membercard modification: Jushadi<br />
+Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)<br />
 English documentation: Jim Richardson<br />
 OAI Support for Indonesia One Search: Ismail Fahmi
 </p>
