@@ -62,7 +62,7 @@ if (isset($_POST['counter'])) {
    $photo = 'person.png';
    $expire = 0;
   // sleep for a while
-  sleep(1);
+  sleep(0);
 
   /**
   * check if already checkin
@@ -210,6 +210,7 @@ $(document).ready( function() {
               $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
               $('#counterInfo').html(defaultMsg); 
               visitorCounterForm.enableForm().find('input[type=text]').val('');
+              $('#memberID').focus();
             }, 5000);
           },
           complete: function() {

@@ -25,6 +25,7 @@ function getAuthorID($str_author_name, $str_author_type, &$arr_cache = false)
 {
   global $dbs;
   $str_value = trim($str_author_name);
+  $str_author_type = $dbs->escape_string($str_author_type);
   if ($arr_cache) {
       if (isset($arr_cache[$str_value])) {
           return $arr_cache[$str_value];
@@ -69,7 +70,7 @@ function getSubjectID($str_subject, $str_subject_type, &$arr_cache = false, $str
   }
 
   $str_value = $dbs->escape_string($str_value);
-  $_sql_id_q = sprintf('SELECT topic_id FROM mst_topic WHERE topic=\'%s\' OR classification=\'%s\'', $str_value, $str_class_number);
+  $_sql_id_q = sprintf('SELECT topic_id FROM mst_topic WHERE topic=\'%s\'', $str_value);
   $id_q = $dbs->query($_sql_id_q);
   if ($id_q->num_rows > 0) {
       $id_d = $id_q->fetch_row();
@@ -126,11 +127,11 @@ function showTitleAuthors($obj_db, $array_data)
   }
   // check for opac hide flag
   if ($_opac_hide) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="lockFlagIcon" title="Hidden in OPAC">&nbsp;</div>';
+      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="lockFlagIcon" title="' . __('Hidden in OPAC') . '">&nbsp;</div>';
   }
   // check for promoted flag
   if ($_promoted) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="homeFlagIcon" title="Promoted To Homepage">&nbsp;</div>';
+      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="homeFlagIcon" title="' . __('Promoted To Homepage') . '">&nbsp;</div>';
   }
   // labels
   if ($_labels) {
@@ -144,7 +145,7 @@ function showTitleAuthors($obj_db, $array_data)
 	          $_label_d = $_label_q->fetch_row();
 	          $label_cache[$_label_d[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
 	      }
-	      $_output .= ' <img src="../images/labels/'.$label_cache[$label[0]]['image'].'" title="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
+	      $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=24&amp;height=24" title="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
 	  }
 	}
   $_output .= '</div>';

@@ -1,0 +1,87 @@
+* {
+    @include box-sizing(border-box);
+}
+
+.page-wraper {
+    width: 970px;
+    padding-right: 8px;
+    padding-left: 8px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.slims-container {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.slims-row {
+    margin-left: -8px;
+    margin-right: -8px;
+    margin-bottom: 8px;
+    &:before {
+        display: table;
+        content: " ";
+    }
+    &:after {
+        display: table;
+        content: " ";
+        clear: both;
+    }
+}
+
+.slims-1, .slims-2, .slims-3, .slims-4, .slims-5, .slims-6, .slims-7, .slims-8, .slims-9, .slims-10, .slims-11, .slims-12 {
+    position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
+    min-height: 1px;
+    float: left;
+}
+
+.slims-1 {
+  width: 8.33333333%;
+}
+
+.slims-2 {
+  width: 16.66666667%;
+}
+
+.slims-3 {
+    width: 25%;
+}
+
+.slims-4 {
+    width: 33.33333333%;
+}
+
+.slims-5 {
+  width: 41.66666667%;
+}
+
+.slims-6 {
+  width: 50%;
+}
+
+.slims-7 {
+  width: 58.33333333%;
+}
+
+.slims-8 {
+    width: 66.66666667%;
+}
+
+.slims-9 {
+    width: 75%;
+}
+
+.slims-10 {
+  width: 83.33333333%;
+}
+
+.slims-11 {
+  width: 91.66666667%;
+}
+
+.slims-12 {
+    width: 100%;
+}

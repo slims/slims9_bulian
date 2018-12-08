@@ -54,6 +54,9 @@ try {
 if (isset($sysconf['enable_xml_detail']) && !$sysconf['enable_xml_detail']) {
   $biblio_list->xml_detail = false;
 }
+if (isset($sysconf['enable_mark']) && !$sysconf['enable_mark']) {
+  $biblio_list->enable_mark = false;
+}
 
 // search result info
 $search_result_info = '';

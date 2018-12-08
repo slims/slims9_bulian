@@ -11,7 +11,7 @@ Wardiyono (wynerst@gmail.com)
 Purwoko (purgeologi@yahoo.com, tamanjiwa@gmail.com)
 Arif Syamsudin (buitenzorg812@yahoo.com, buitenzorg812@gmail.com)
 Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)
-Eddy Subratha (eddy.subratha@gmail.com)
+Eddy Subratha (eddy.subratha@slims.web.id) 
 Indra Sutriadi (indra.sutriadi@gmail.com)
 Widianto Nugroho (wnugroho@gmail.com)
 Waris Agung Widodo (idoalit@gmail.com, ido.alit@gmail.com)
@@ -24,12 +24,37 @@ Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
 Thai: Prasitichai เรารักในหลวง <eak.pras@facebook.com>
 Bengali: A. K. M. Nurul Alam <nalamapu@gmail.com>
 Persian: Mohammad Javad Mansourzadeh <info@mansourzadeh.ir>
-Arabic: Rasyid Ridho <rasyidridho@gmail.com>
+Arabic: Rasyid Ridho <rasyidridho@gmail.com>, Bounama Kouider (for full Arabic support)        
 Malay: Jerry Mohd. Arif 
 Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
 Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
+Urdu (Pakistan): Faheem Akbar <onlinevws@gmail.com>
+
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 8.5
+========================================================================
+Added : New localisation for Urdu (Pakistan) language
+
+SLiMS 8.3.1 (Akasia)
+========================================================================
+Added : Template changer for OPAC and Administration template in System Configuration replacing 
+Modified : Optimized access for menu in OPAC
+Added : Advanced search in OPAC
+Added : Full Arabic Translation
+Added : Biblio log system (for API)
+
+SLiMS 8.3 (Akasia)
+========================================================================
+Added : Installer auto generate database
+Added : Node server for UCS
+Added : Node server for P2P
+Added : Scope note in vocabulary control
+Modified : Password change due to encryption method
+Added : User ID in database
+Fixed : Auto focus on current stock take menu
+Fixed : Download access for PDF
 
 SLiMS 8.2 (Akasia)
 ========================================================================

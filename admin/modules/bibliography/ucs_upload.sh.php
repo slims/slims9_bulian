@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2010  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2017  Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +32,14 @@ define('INDEX_AUTH', 1);
 // main system configuration
 require '../../../sysconfig.inc.php';
 
+// load settings
+utility::loadSettings($dbs);
+
 // check if UCS is enabled or not
 if (!$sysconf['ucs']['enable']) {
   die(__('UCS is not enabled! Change global system configuration to enable UCS'));
 }
 
-require SB.'ucnode.inc.php';
 require LIB.'http_request.inc.php';
 
 // fetch all data from biblio table
@@ -83,14 +85,18 @@ while ($d = $q->fetch_assoc()) {
 
 // encode array to json format
 if ($data) {
-    $to_sent['node_info'] = $node;
+    $to_sent['node_info'] = $sysconf['ucs'];
     $to_sent['node_data'] = $data;
     // create HTTP request
     $http_request = new http_request();
     // send HTTP POST request
-    $http_request->send_http_request($ucs['serveraddr'].'/ucpoll.php', @gethostbyaddr(), $to_sent, 'POST', 'text/json');
+		if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
+      $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
+		} else {
+		  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
+		}
     // below is for debugging purpose only
-	// die($http_request->body());
+	  // die($http_request->body());
 
 	// check for http request error
 	if ($req_error = $http_request->error()) {
@@ -105,4 +111,3 @@ if ($data) {
 } else {
     exit(0);
 }
-?>

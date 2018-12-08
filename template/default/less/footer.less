@@ -2,10 +2,9 @@
  ================================ */
 .s-footer {
   width: 100%;
-  position: relative;
-  bottom: -1px;
+  position: fixed;
   left: 0;
-  right: 0;
+  bottom: 0;
   zoom: 1;
   display: block;
 }
@@ -19,39 +18,19 @@
   color: #ccc;
   text-transform: uppercase;
   z-index: 3001;
-  animation-name: slide;
-  animation-duration: 1s;
-  -webkit-animation-name: slide;
-  -webkit-animation-duration: 1s;
   line-height: 20px;
   position: relative;
   text-align: center;
+  z-index: 0;
 }
 
 @media only screen and (min-width : 768px) {
   .s-footer {
-    position: fixed;
     line-height: normal;
     text-align: left;
   }
 }
 
-@-webkit-keyframes slide {
-  0% {
-    bottom: -300px;
-  }
-  100% {
-    bottom: 0px;
-  }
-}
-@keyframes slide {
-  0% {
-    bottom: -300px;
-  }
-  100% {
-    bottom: 0px;
-  }
-}
 .s-footer a {
   color: #ccc;
 }
@@ -62,14 +41,9 @@
 
 .s-footer-menu {
   float: right;
-  margin: 0;
+  margin: 0 30px 0 0;
   padding: 0;
-}
-
-.s-footer-menu {
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .s-footer-menu li {
@@ -79,8 +53,6 @@
   padding: 0;
   text-align: center;
   position: relative;
-  -webkit-transition: bottom 2s ease-in-out;
-  transition: bottom 2s ease-in-out;
 }
 
 @media only screen and (min-width : 768px) {

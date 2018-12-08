@@ -20,3 +20,9 @@ Options +FollowSymLinks
 
 # Set the default handler.
 DirectoryIndex index.php 
+
+# Add XSS Protection and ClickJacking Attack
+<IfModule mod_headers.c>
+  Header set X-XSS-Protection "1; mode=block"
+  Header always set X-Frame-Options SAMEORIGIN
+</IfModule>

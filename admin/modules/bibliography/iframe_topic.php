@@ -60,7 +60,7 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(int_biblio_id, int_item_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected topic?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected topic?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.bid.value = int_biblio_id;
@@ -77,7 +77,7 @@ if (isset($_GET['removesess'])) {
   $idx = $_GET['removesess'];
   unset($_SESSION['biblioTopic'][$idx]);
   echo '<script type="text/javascript">';
-  echo 'alert(\'Topic removed!\');';
+  echo 'alert(\''. addslashes(__('Topic removed!')) . '\');';
   echo 'location.href = \'iframe_topic.php\';';
   echo '</script>';
 }
@@ -88,7 +88,7 @@ if (isset($_POST['remove'])) {
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('biblio_topic', 'topic_id='.$id.' AND biblio_id='.$bid);
   echo '<script type="text/javascript">';
-  echo 'alert(\'Topic succesfully removed!\');';
+  echo 'alert(\''. addslashes(__('Topic succesfully removed!')) . '\');';
   echo 'location.href = \'iframe_topic.php?biblioID='.$bid.'\';';
   echo '</script>';
 }
@@ -102,14 +102,14 @@ if ($biblioID) {
   $biblio_topic_q = $dbs->query("SELECT bt.*, t.topic, t.topic_type FROM biblio_topic AS bt
     LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
     WHERE bt.biblio_id=$biblioID ORDER BY level ASC");
-
+  if($biblio_topic_q->num_rows > 0){
   $row = 1;
   while ($biblio_topic_d = $biblio_topic_q->fetch_assoc()) {
     // alternate the row color
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_topic_d['topic_id'].')">Delete</a>';
+    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_topic_d['topic_id'].')">' . __('Delete') . '</a>';
     $topic = $biblio_topic_d['topic'];
     $topic_type = $sysconf['subject_type'][$biblio_topic_d['topic_type']];
 
@@ -121,7 +121,7 @@ if ($biblioID) {
 
     $row++;
   }
-
+  }
   echo $table->printTable();
   // hidden form
   echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="bid" value="0" /><input type="hidden" name="remove" value="0" /></form>';
@@ -134,7 +134,7 @@ if ($biblioID) {
     $row_class = 'alterCell2';
     foreach ($_SESSION['biblioTopic'] as $biblio_session) {
       // remove link
-      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_topic.php?removesess='.$biblio_session[0].'">Remove</a>';
+      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_topic.php?removesess='.$biblio_session[0].'">' . __('Remove') . '</a>';
 
       if ($biblio_session) {
           $topic_q = $dbs->query("SELECT topic, topic_type FROM mst_topic WHERE topic_id=".$biblio_session[0]);

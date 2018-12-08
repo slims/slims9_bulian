@@ -55,10 +55,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $holDesc = trim($dbs->escape_string(strip_tags($_POST['holDesc'])));
     if (empty($holDesc)) {
-        utility::jsAlert('Holiday description can\'t be empty!');
+        utility::jsAlert(__('Holiday description can\'t be empty!'));
         exit();
     } else {
-        $data['holiday_date'] = trim(preg_replace('@\s[0-9]{2}:[0-9]{2}:[0-9]{2}$@i', '', $_POST['holDate']));
+        $data['holiday_date'] = trim($_POST['holDate']); // remove extra whitespace
+        if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $data['holiday_date'])) {
+            utility::jsAlert(__('Holiday Date Start must have the format YYYY-MM-DD!'));
+            exit();
+        }
         $holiday_start_date = $data['holiday_date'];
         $data['holiday_dayname'] = date('D', strtotime($data['holiday_date']));
         $data['description'] = $holDesc;
@@ -86,8 +90,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
                 // date range insert
-                if (isset($_POST['holDateEnd'])) {
-                    $holiday_end_date = trim(preg_replace('@\s[0-9]{2}:[0-9]{2}:[0-9]{2}$@i', '', $_POST['holDateEnd']));
+                if (!empty($_POST['holDateEnd'])) {
+                    $holiday_end_date = trim($_POST['holDateEnd']); // remove extra whitespace
+                    if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $holiday_end_date)) {
+                        utility::jsAlert(__('Holiday Date End must have the format YYYY-MM-DD if it is not empty!'));
+                        exit();
+                    }
                     // check if holiday end date is more than holiday start date
                     if (simbio_date::compareDates($holiday_start_date, $holiday_end_date) == $holiday_end_date) {
                         $guard = 365;
@@ -156,7 +164,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <fieldset class="menuBox">
 <div class="menuBoxInner calendarIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Holiday Setings'); ?></h2>
+	    <h2><?php echo __('Holiday Settings'); ?></h2>
   </div>
 	<div class="sub_section">
     .
@@ -268,7 +276,7 @@ if (isset($_GET['mode'])) {
                 // emptying holiday dayname session first
                 $_SESSION['holiday_dayname'] = array();
                 foreach ($_POST['dayname'] as $dayname) {
-                    $dbs->query("INSERT INTO holiday VALUES(NULL, '$dayname', NULL, NULL)");
+                    $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
                     // update holiday_dayname session
                     $_SESSION['holiday_dayname'][] = $dayname;
                 }

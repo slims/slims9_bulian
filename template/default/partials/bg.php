@@ -1,8 +1,8 @@
-<!-- Background 
+<!-- Background
 ============================================= -->
 <div class="s-background animated fadeIn">
 
-  <!-- Gradient Effect 
+  <!-- Gradient Effect
   ============================================= -->
   <div class="gradients">
     <?php if($sysconf['template']['run_gradient_animation']) : ?>
@@ -23,24 +23,41 @@
       Your browser does not support the video tag.
     </video>
   <?php elseif($sysconf['template']['background_mode'] == 'image') : ?>
-    <img class="slider" src='<?php echo $sysconf['template']['dir']; ?>/default/img/4.jpg'/>
-    <img class="slider" src='<?php echo $sysconf['template']['dir']; ?>/default/img/3.jpg'/>
-    <img class="slider" src='<?php echo $sysconf['template']['dir']; ?>/default/img/2.jpg'/>
-    <img class="slider" src='<?php echo $sysconf['template']['dir']; ?>/default/img/1.jpg'/>
+      <script>
+          $(document).ready(function () {
+              $(function() {
+                  $('body').vegas({
+                      slides: [
+                          { src: "<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/1.jpg" },
+                          { src: "<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/2.jpg" },
+                          { src: "<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/3.jpg" },
+                          { src: "<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/4.jpg" }
+                      ],
+                      firstTransition: 'fade',
+                      firstTransitionDuration: 2000,
+                      transition: 'zoomOut',
+                      transitionDuration: 2500,
+                      shuffle: true,
+                      delay: 7000,
+                      overlay: "<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme']; ?>/img/overlays/04.png"
+                  });
+              });
+          })
+      </script>
   <?php else: ?>
     <div class="s-background-none"></div>
   <?php endif; ?>
 
 </div>
 
-<?php 
+<?php
 
 /**
  * Running this animation may need high memory
  * Please make sure your computer has high performance
  * Use with your own risk
  */
-if($sysconf['template']['run_gradient_animation']) : 
+if($sysconf['template']['run_gradient_animation']) :
 ?>
 <script>
 $(document).ready(function(){
@@ -58,7 +75,7 @@ $(document).ready(function(){
         fade();
       });
     }
-    fade();  
+    fade();
 });
 </script>
 <?php endif; ?>

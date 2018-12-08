@@ -2,6 +2,7 @@ images/barcodes/*
 images/persons/*
 images/docs/*
 images/labels/*
+images/cache/*
 files/*
 repository/*
 config/*
@@ -10,8 +11,28 @@ cache/*
 ._.*
 ._*
 .project
+.idea/*
 sysconfig.local.inc.php
 config/sysconfig.local.inc.php
 sysconfig.inc.php
 slims8_akasia.sublime-project
 slims8_akasia.sublime-workspace
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk

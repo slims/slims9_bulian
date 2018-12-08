@@ -105,6 +105,7 @@ if (isset($_SESSION['memberID'])) {
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
     /* end of modification */
+    $_total_temp_fines = 0; #newly added
     while ($loan_list_data = $loan_list_query->fetch_assoc()) {
         // alternate the row color
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
@@ -133,6 +134,7 @@ if (isset($_SESSION['memberID'])) {
         if ($overdue) {
             $is_overdue = true;
             $loan_list_data['title'] .= '<div style="color: red; font-weight: bold;">'.__('OVERDUED for').' '.$overdue['days'].' '.__('days(s) with fines value').' '.$overdue['value'].'</div>'; //mfc
+            $_total_temp_fines = $_total_temp_fines + $overdue['value']; #newly added
         }
         // row colums array
         $fields = array(
@@ -157,7 +159,6 @@ if (isset($_SESSION['memberID'])) {
 
         $row++;
     }
-
     // show reservation alert if any
     if (isset($_GET['reserveAlert']) AND !empty($_GET['reserveAlert'])) {
         $reservedItem = $dbs->escape_string(trim($_GET['reserveAlert']));
@@ -174,7 +175,7 @@ if (isset($_SESSION['memberID'])) {
 
     // create e-mail lin if there is overdue
     if ($is_overdue) {
-        echo '<div style="padding: 5px; background: #ccc;"><div id="emailStatus"></div><a class="sendEmail usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$memberID.'" loadcontainer="emailStatus">'.__('Send overdues notice e-mail').'</a></div>'."\n";
+        echo '<div style="padding: 5px; background: #ccc;"><div id="emailStatus"></div><a class="sendEmail usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$memberID.'" loadcontainer="emailStatus">'.__('Send overdues notice e-mail').'</a> | <span style="color: red; font-weight: bold;">'.__('Total of temporary fines').': '.$_total_temp_fines.'.</span></div>'."\n";
     }
     echo $loan_list->printTable();
     // hidden form for return and extend process

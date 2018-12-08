@@ -62,7 +62,7 @@ if (isset($_SESSION['memberID']) AND !empty($_SESSION['memberID'])) {
         'l.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'l.loan_date AS \''.__('Loan Date').'\'',
-        'IF(return_date IS NULL, \'<i>'.__('Not Returned Yet').'</i>\', return_date) AS \''.__('Returned Date').'\'');
+        'IF(is_return = 0, \'<i>'.__('Not Returned Yet').'</i>\', return_date) AS \''.__('Returned Date').'\'');
     $datagrid->setSQLorder("l.loan_date DESC");
 
     $criteria = 'l.member_id=\''.$dbs->escape_string($memberID).'\' ';

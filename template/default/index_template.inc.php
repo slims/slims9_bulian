@@ -4,9 +4,9 @@
  *
  * Copyright (C) 2015 Arie Nugraha (dicarve@gmail.com)
  * Create by Eddy Subratha (eddy.subratha@slims.web.id)
- * 
+ *
  * Slims 8 (Akasia)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
-} 
+}
 
 ?>
 <!--
@@ -46,7 +46,7 @@ if (!defined('INDEX_AUTH')) {
 
 <?php
 // Meta Template
-include "partials/meta.php"; 
+include "partials/meta.php";
 ?>
 
 </head>
@@ -59,15 +59,15 @@ include "partials/meta.php";
 
 <?php
 // Header
-include "partials/header.php"; 
+include "partials/header.php";
 ?>
 
-<?php 
+<?php
 // Navigation
-include "partials/nav.php"; 
+include "partials/nav.php";
 ?>
 
-<?php 
+<?php
 // Content
 ?>
 <?php if(isset($_GET['search']) || isset($_GET['p'])): ?>
@@ -77,15 +77,15 @@ include "partials/nav.php";
   ============================================= -->
   <div class="s-main-search">
     <?php
-    if(isset($_GET['p'])) {    
+    if(isset($_GET['p'])) {
       switch ($_GET['p']) {
       case ''             : $page_title = __('Collections'); break;
-      case 'show_detail'  : $page_title = __("Record Detail"); break;              
-      case 'member'       : $page_title = __("Member Area"); break;              
-      case 'member'       : $page_title = __("Member Area"); break;              
-      default             : $page_title; break; }            
+      case 'show_detail'  : $page_title = __("Record Detail"); break;
+      case 'member'       : $page_title = __("Member Area"); break;
+      case 'member'       : $page_title = __("Member Area"); break;
+      default             : $page_title; break; }
     } else {
-      $page_title = __('Collections');  
+      $page_title = __('Collections');
     }
     ?>
     <h1 class="s-main-title animated fadeInUp delay1"><?php echo $page_title ?></h1>
@@ -93,6 +93,7 @@ include "partials/nav.php";
       <input type="text" id="keyword" class="s-search animated fadeInUp delay4" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" role="search">
       <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
     </form>
+    <a href="#" class="s-search-advances" width="800" height="500" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
   </div>
 
   <!-- Main
@@ -104,22 +105,22 @@ include "partials/nav.php";
       ============================================= -->
       <div class="col-lg-8 col-sm-9 col-xs-12 animated fadeInUp delay2">
 
-        <?php 
+        <?php
           // Generate Output
           // catch empty list
           if(strlen($main_content) == 7) {
-            echo '<h2>No Result</h2><hr/><p>Please try again</p>';
+            echo '<h2>' . __('No Result') . '</h2><hr/><p>' . __('Please try again') . '</p>';
           } else {
             echo $main_content;
           }
 
           // Somehow we need to hack the layout
           if(isset($_GET['search']) || (isset($_GET['p']) && $_GET['p'] != 'member')){
-            echo '</div>'; 
+            echo '</div>';
           } else {
             if(isset($_SESSION['mid'])) {
-              echo  '</div></div>';            
-            }            
+              echo  '</div></div>';
+            }
           }
 
         ?>
@@ -180,41 +181,46 @@ include "partials/nav.php";
     <!-- Search form
     ============================================= -->
     <div class="s-main-search animated fadeInUp delay1">
-      <form action="index.php" method="get" autocomplete="off">
-        <h1 class="animated fadeInUp delay2"><?php echo __('SEARCH'); ?></h1>
-        <div class="marquee down">
-          <p class="s-search-info">
-          <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
-          <!--
-          <?php echo __('use logical search "title=library AND author=robert"'); ?>
-          <?php echo __('just click on the Search button to see all collections'); ?>
-          -->
-          </p>
-        </div>
-        <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
-        <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
-        <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
-      </form>
+
+      <div id="simply-search">
+
+        <form action="index.php" method="get" autocomplete="off">
+          <h1 class="animated fadeInUp delay2"><?php echo __('SEARCH'); ?></h1>
+          <div class="marquee down">
+            <p class="s-search-info">
+            <?php echo __('start it by typing one or more keywords for title, author or subject'); ?>
+            </p>
+            <input type="text" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
+            <button type="submit" name="search" value="search" class="s-btn animated fadeInUp delay4"><?php echo __('Search'); ?></button>
+          </div>
+        </form>
+
+        <a href="#" class="s-search-advances" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
+
+      </div>
+
     </div>
 
+</main>
 <?php endif; ?>
 
-</main>
 
+<?php
+// Advance Search
+include "partials/advsearch.php";
 
-<?php 
 // Footer
-include "partials/footer.php"; 
+include "partials/footer.php";
 
 // Chat Engine
-include LIB."contents/chat.php"; 
+include LIB."contents/chat.php";
 
 // Background
-include "partials/bg.php"; 
+include "partials/bg.php";
 ?>
 
 <script>
-  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
+  <?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != ''))   : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 
@@ -223,7 +229,7 @@ include "partials/bg.php";
     var title = $(this).parent().attr('title').split(' ');
     $(this).parent().append('<div class="s-feature-title">' + title[0] + '<br/>' + title[1] + '<br/>... </div>');
     $(this).attr({
-      src   : './template/default/img/book.png',  
+      src   : './template/default/img/book.png',
       title : title + title[0] + ' ' + title[1]
     });
   });
@@ -259,14 +265,29 @@ include "partials/bg.php";
       initCallback: mycarousel_initCallback
   });
 
-$(window).scroll(function() {    
-  console.log($(window).scrollTop());
-  if ($(window).scrollTop() > 50) {
-    $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
-  } else {
-    $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
-  }  
-});
+  $(window).scroll(function() {
+    // console.log($(window).scrollTop());
+    if ($(window).scrollTop() > 50) {
+      $('.s-main-search').removeClass("animated fadeIn").addClass("animated fadeOut");
+    } else {
+      $('.s-main-search').removeClass("animated fadeOut").addClass("animated fadeIn");
+    }
+  });
+
+  $('.s-search-advances').click(function() {
+    $('#advance-search').animate({opacity : 1,}, 500, 'linear');
+    $('#simply-search, .s-menu, #content').hide();
+    $('.s-header').addClass('hide-header');
+    $('.s-background').addClass('hide-background');
+  });
+
+  $('#hide-advance-search').click(function(){
+    $('.s-header').toggleClass('hide-header');
+    $('.s-background').toggleClass('hide-background');
+    $('#advance-search').animate({opacity : 0,}, 500, 'linear', function(){
+      $('#simply-search, .s-menu, #content').show();
+    });
+  });
 
 </script>
 

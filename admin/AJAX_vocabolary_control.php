@@ -94,14 +94,22 @@ if (isset($_GET['format'])) {
 
 	  	$output  = '<li>';
 	  	$output .= '<span class="voc" style="font-style:italic;padding: 0 5px; border-radius:2px;">'.$row[1].(isset($row[2])?'</span> - '.$row[2]:'').(isset($row[3])?' - '.$row[3]:'');
-	  	$output .= '<ul style="padding-left:20px;">';
+	  	$output .= '<ul style="padding-left:20px; list-style:none;">';
+	  	$li = '';
+	  	$scope = '';
 
-	  	$voc_q = $dbs->query('SELECT rt_id, related_topic_id FROM mst_voc_ctrl WHERE topic_id='.$row[0]);
+	  	$voc_q = $dbs->query('SELECT rt_id, related_topic_id, scope FROM mst_voc_ctrl WHERE topic_id='.$row[0]);
 	  	while ($voc_d = $voc_q->fetch_row()) {
-	  		$topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id='.$voc_d[1]);
-	  		$topic_d = $topic_q->fetch_row();
-	  		$output .= '<li><strong style="margin-right:10px;">'.$voc_d[0].'</strong><span style="padding: 0 5px; border-radius:2px;" class="voc">'.$topic_d[0].'</span></li>';
+	  		if (is_null($voc_d[2])) {
+	  			$topic_q = $dbs->query('SELECT topic, topic_type FROM mst_topic WHERE topic_id='.$voc_d[1]);
+		  		$topic_d = $topic_q->fetch_row();
+		  		$li .= '<li><strong style="margin-right:10px;">'.__($voc_d[0]).'</strong><span style="padding: 0 5px; border-radius:2px;" class="voc">'.$topic_d[0].' - '.$topic_d[1].'</span></li>';
+	  		} else {
+	  			$scope = $voc_d[2];
+	  		}
 	  	}
+
+	  	$output .= $scope.$li;
 
 	  	$output .= '</ul>';
 	  	$output .= '</li>';

@@ -12,7 +12,7 @@
 CREATE TABLE IF NOT EXISTS `backup_log` (
   `backup_log_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL default '0',
-  `backup_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `backup_time` datetime not NULL,
   `backup_file` varchar(100) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`backup_log_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `title` text collate utf8_unicode_ci NOT NULL,
   `sor` varchar(200) collate utf8_unicode_ci default NULL,
   `edition` varchar(50) collate utf8_unicode_ci default NULL,
-  `isbn_issn` varchar(20) collate utf8_unicode_ci default NULL,
+  `isbn_issn` varchar(32) collate utf8_unicode_ci default NULL,
   `publisher_id` int(11) default NULL,
   `publish_year` varchar(20) default NULL,
   `collation` varchar(50) collate utf8_unicode_ci default NULL,
@@ -57,11 +57,13 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `carrier_type_id` int(11) default NULL,
   `input_date` datetime default NULL,
   `last_update` datetime default NULL,
+  `uid` int(11) default NULL,
   PRIMARY KEY  (`biblio_id`),
   KEY `references_idx` (`gmd_id`,`publisher_id`,`language_id`,`publish_place_id`),
   KEY `classification` (`classification`),
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
   KEY `rda_idx` (`content_type_id`, `media_type_id`, `carrier_type_id`),
+  KEY `uid` (`uid`),
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
@@ -299,8 +301,10 @@ CREATE TABLE IF NOT EXISTS `item` (
   `invoice_date` date default NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime default NULL,
+  `uid` int(11) default NULL,
   PRIMARY KEY  (`item_id`),
   UNIQUE KEY `item_code` (`item_code`),
+  KEY `uid` (`uid`),
   KEY `item_references_idx` (`coll_type_id`,`location_id`,`item_status_id`),
   KEY `biblio_id_idx` (`biblio_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -341,21 +345,25 @@ CREATE TABLE IF NOT EXISTS `kardex` (
 --
 
 CREATE TABLE IF NOT EXISTS `loan` (
-  `loan_id` int(11) NOT NULL auto_increment,
-  `item_code` varchar(20) collate utf8_unicode_ci default NULL,
-  `member_id` varchar(20) collate utf8_unicode_ci default NULL,
+  `loan_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `loan_date` date NOT NULL,
   `due_date` date NOT NULL,
-  `renewed` int(11) NOT NULL default '0',
-  `loan_rules_id` int(11) NOT NULL default '0',
-  `actual` date default NULL,
-  `is_lent` int(11) NOT NULL default '0',
-  `is_return` int(11) NOT NULL default '0',
-  `return_date` date default NULL,
-  PRIMARY KEY  (`loan_id`),
+  `renewed` int(11) NOT NULL DEFAULT '0',
+  `loan_rules_id` int(11) NOT NULL DEFAULT '0',
+  `actual` date DEFAULT NULL,
+  `is_lent` int(11) NOT NULL DEFAULT '0',
+  `is_return` int(11) NOT NULL DEFAULT '0',
+  `return_date` date DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`loan_id`),
   KEY `item_code` (`item_code`),
-  KEY `member_id` (`member_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  KEY `member_id` (`member_id`),
+  KEY `input_date` (`input_date`,`last_update`,`uid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `loan`
@@ -991,7 +999,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_login` datetime DEFAULT NULL,
   `last_login_ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `groups` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `input_date` date DEFAULT '0000-00-00',
+  `input_date` date DEFAULT NULL,
   `last_update` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
@@ -1119,12 +1127,15 @@ CREATE TABLE IF NOT EXISTS `comment` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `carrier_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`carrier_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1132,61 +1143,61 @@ CREATE TABLE IF NOT EXISTS `mst_carrier_type` (
 --
 
 INSERT INTO `mst_carrier_type` (`id`, `carrier_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'audio cartridge', 'sg', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'audio cylinder', 'se', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'audio disc', 'sd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'sound track reel', 'si', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'audio roll', 'sq', 'q', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'audiocassette', 'ss', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'audiotape reel', 'st', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'other (audio)', 'sz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'computer card', 'ck', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'computer chip cartridge', 'cb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 'computer disc', 'cd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 'computer disc cartridge', 'ce', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 'computer tape cartridge', 'ca', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 'computer tape cassette', 'cf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 'computer tape reel', 'ch', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 'online resource', 'cr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 'other (computer)', 'cz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 'aperture card', 'ha', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 'microfiche', 'he', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 'microfiche cassette', 'hf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 'microfilm cartridge', 'hb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'microfilm cassette', 'hc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'microfilm reel', 'hd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'microfilm roll', 'hj', 'j', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'microfilm slip', 'hh', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(26, 'microopaque', 'hg', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(27, 'other (microform)', 'hz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(28, 'microscope slide', 'pp', 'p', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(29, 'other (microscope)', 'pz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(30, 'film cartridge', 'mc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(31, 'film cassette', 'mf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(32, 'film reel', 'mr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(33, 'film roll', 'mo', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(34, 'filmslip', 'gd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(35, 'filmstrip', 'gf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(36, 'filmstrip cartridge', 'gc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(37, 'overhead transparency', 'gt', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(38, 'slide', 'gs', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(39, 'other (projected image)', 'mz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(40, 'stereograph card', 'eh', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(41, 'stereograph disc', 'es', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(42, 'other (stereographic)', 'ez', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(43, 'card', 'no', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(44, 'flipchart', 'nn', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(45, 'roll', 'na', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(46, 'sheet', 'nb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(47, 'volume', 'nc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(48, 'object', 'nr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(49, 'other (unmediated)', 'nz', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(50, 'video cartridge', 'vc', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(51, 'videocassette', 'vf', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(52, 'videodisc', 'vd', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(53, 'videotape reel', 'vr', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(54, 'other (video)', 'vz', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(55, 'unspecified', 'zu', 'u', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'audio cartridge', 'sg', 'g', NOW(), NOW()),
+(2, 'audio cylinder', 'se', 'e', NOW(), NOW()),
+(3, 'audio disc', 'sd', 'd', NOW(), NOW()),
+(4, 'sound track reel', 'si', 'i', NOW(), NOW()),
+(5, 'audio roll', 'sq', 'q', NOW(), NOW()),
+(6, 'audiocassette', 'ss', 's', NOW(), NOW()),
+(7, 'audiotape reel', 'st', 't', NOW(), NOW()),
+(8, 'other (audio)', 'sz', 'z', NOW(), NOW()),
+(9, 'computer card', 'ck', 'k', NOW(), NOW()),
+(10, 'computer chip cartridge', 'cb', 'b', NOW(), NOW()),
+(11, 'computer disc', 'cd', 'd', NOW(), NOW()),
+(12, 'computer disc cartridge', 'ce', 'e', NOW(), NOW()),
+(13, 'computer tape cartridge', 'ca', 'a', NOW(), NOW()),
+(14, 'computer tape cassette', 'cf', 'f', NOW(), NOW()),
+(15, 'computer tape reel', 'ch', 'h', NOW(), NOW()),
+(16, 'online resource', 'cr', 'r', NOW(), NOW()),
+(17, 'other (computer)', 'cz', 'z', NOW(), NOW()),
+(18, 'aperture card', 'ha', 'a', NOW(), NOW()),
+(19, 'microfiche', 'he', 'e', NOW(), NOW()),
+(20, 'microfiche cassette', 'hf', 'f', NOW(), NOW()),
+(21, 'microfilm cartridge', 'hb', 'b', NOW(), NOW()),
+(22, 'microfilm cassette', 'hc', 'c', NOW(), NOW()),
+(23, 'microfilm reel', 'hd', 'd', NOW(), NOW()),
+(24, 'microfilm roll', 'hj', 'j', NOW(), NOW()),
+(25, 'microfilm slip', 'hh', 'h', NOW(), NOW()),
+(26, 'microopaque', 'hg', 'g', NOW(), NOW()),
+(27, 'other (microform)', 'hz', 'z', NOW(), NOW()),
+(28, 'microscope slide', 'pp', 'p', NOW(), NOW()),
+(29, 'other (microscope)', 'pz', 'z', NOW(), NOW()),
+(30, 'film cartridge', 'mc', 'c', NOW(), NOW()),
+(31, 'film cassette', 'mf', 'f', NOW(), NOW()),
+(32, 'film reel', 'mr', 'r', NOW(), NOW()),
+(33, 'film roll', 'mo', 'o', NOW(), NOW()),
+(34, 'filmslip', 'gd', 'd', NOW(), NOW()),
+(35, 'filmstrip', 'gf', 'f', NOW(), NOW()),
+(36, 'filmstrip cartridge', 'gc', 'c', NOW(), NOW()),
+(37, 'overhead transparency', 'gt', 't', NOW(), NOW()),
+(38, 'slide', 'gs', 's', NOW(), NOW()),
+(39, 'other (projected image)', 'mz', 'z', NOW(), NOW()),
+(40, 'stereograph card', 'eh', 'h', NOW(), NOW()),
+(41, 'stereograph disc', 'es', 's', NOW(), NOW()),
+(42, 'other (stereographic)', 'ez', 'z', NOW(), NOW()),
+(43, 'card', 'no', 'o', NOW(), NOW()),
+(44, 'flipchart', 'nn', 'n', NOW(), NOW()),
+(45, 'roll', 'na', 'a', NOW(), NOW()),
+(46, 'sheet', 'nb', 'b', NOW(), NOW()),
+(47, 'volume', 'nc', 'c', NOW(), NOW()),
+(48, 'object', 'nr', 'r', NOW(), NOW()),
+(49, 'other (unmediated)', 'nz', '', NOW(), NOW()),
+(50, 'video cartridge', 'vc', '', NOW(), NOW()),
+(51, 'videocassette', 'vf', '', NOW(), NOW()),
+(52, 'videodisc', 'vd', '', NOW(), NOW()),
+(53, 'videotape reel', 'vr', '', NOW(), NOW()),
+(54, 'other (video)', 'vz', '', NOW(), NOW()),
+(55, 'unspecified', 'zu', 'u', NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -1195,12 +1206,15 @@ INSERT INTO `mst_carrier_type` (`id`, `carrier_type`, `code`, `code2`, `input_da
 --
 
 CREATE TABLE IF NOT EXISTS `mst_content_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `content_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type` (`content_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1208,31 +1222,31 @@ CREATE TABLE IF NOT EXISTS `mst_content_type` (
 --
 
 INSERT INTO `mst_content_type` (`id`, `content_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'cartographic dataset', 'crd', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'cartographic image', 'cri', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'cartographic moving image', 'crm', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'cartographic tactile image', 'crt', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'cartographic tactile three-dimensional form', 'crn', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'cartographic three-dimensional form', 'crf', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'computer dataset', 'cod', 'm', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'computer program', 'cop', 'm', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'notated movement', 'ntv', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'notated music', 'ntm', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 'performed music', 'prm', 'j', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 'sounds', 'snd', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 'spoken word', 'spw', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 'still image', 'sti', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 'tactile image', 'tci', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 'tactile notated music', 'tcm', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 'tactile notated movement', 'tcn', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 'tactile text', 'tct', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 'tactile three-dimensional form', 'tcf', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 'text', 'txt', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 'three-dimensional form', 'tdf', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'three-dimensional moving image', 'tdm', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'two-dimensional moving image', 'tdi', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'other', 'xxx', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'unspecified', 'zzz', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'cartographic dataset', 'crd', 'e', NOW(), NOW()),
+(2, 'cartographic image', 'cri', 'e', NOW(), NOW()),
+(3, 'cartographic moving image', 'crm', 'e', NOW(), NOW()),
+(4, 'cartographic tactile image', 'crt', 'e', NOW(), NOW()),
+(5, 'cartographic tactile three-dimensional form', 'crn', 'e', NOW(), NOW()),
+(6, 'cartographic three-dimensional form', 'crf', 'e', NOW(), NOW()),
+(7, 'computer dataset', 'cod', 'm', NOW(), NOW()),
+(8, 'computer program', 'cop', 'm', NOW(), NOW()),
+(9, 'notated movement', 'ntv', 'a', NOW(), NOW()),
+(10, 'notated music', 'ntm', 'c', NOW(), NOW()),
+(11, 'performed music', 'prm', 'j', NOW(), NOW()),
+(12, 'sounds', 'snd', 'i', NOW(), NOW()),
+(13, 'spoken word', 'spw', 'i', NOW(), NOW()),
+(14, 'still image', 'sti', 'k', NOW(), NOW()),
+(15, 'tactile image', 'tci', 'k', NOW(), NOW()),
+(16, 'tactile notated music', 'tcm', 'c', NOW(), NOW()),
+(17, 'tactile notated movement', 'tcn', 'a', NOW(), NOW()),
+(18, 'tactile text', 'tct', 'a', NOW(), NOW()),
+(19, 'tactile three-dimensional form', 'tcf', 'r', NOW(), NOW()),
+(20, 'text', 'txt', 'a', NOW(), NOW()),
+(21, 'three-dimensional form', 'tdf', 'r', NOW(), NOW()),
+(22, 'three-dimensional moving image', 'tdm', 'g', NOW(), NOW()),
+(23, 'two-dimensional moving image', 'tdi', 'g', NOW(), NOW()),
+(24, 'other', 'xxx', 'o', NOW(), NOW()),
+(25, 'unspecified', 'zzz', ' ', NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -1241,12 +1255,15 @@ INSERT INTO `mst_content_type` (`id`, `content_type`, `code`, `code2`, `input_da
 --
 
 CREATE TABLE IF NOT EXISTS `mst_media_type` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
   `media_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `code2` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `input_date` datetime NOT NULL,
-  `last_update` datetime NOT NULL
+  `last_update` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `media_type` (`media_type`),
+  KEY `code` (`code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1254,26 +1271,27 @@ CREATE TABLE IF NOT EXISTS `mst_media_type` (
 --
 
 INSERT INTO `mst_media_type` (`id`, `media_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'audio', 's', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'computer', 'c', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'microform', 'h', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'microscopic', 'p', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'projected', 'g', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'stereographic', 'e', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'unmediated', 'n', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'video', 'v', 'v', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'other', 'x', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'unspecified', 'z', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'audio', 's', 's', NOW(), NOW()),
+(2, 'computer', 'c', 'c', NOW(), NOW()),
+(3, 'microform', 'h', 'h', NOW(), NOW()),
+(4, 'microscopic', 'p', ' ', NOW(), NOW()),
+(5, 'projected', 'g', 'g', NOW(), NOW()),
+(6, 'stereographic', 'e', ' ', NOW(), NOW()),
+(7, 'unmediated', 'n', 't', NOW(), NOW()),
+(8, 'video', 'v', 'v', NOW(), NOW()),
+(9, 'other', 'x', 'z', NOW(), NOW()),
+(10, 'unspecified', 'z', 'z', NOW(), NOW());
 
 --
 -- Table structure for table `mst_relation_term`
 --
 
 CREATE TABLE IF NOT EXISTS `mst_relation_term` (
-`ID` int(11) NOT NULL,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
+  `rt_desc` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `mst_relation_term`
@@ -1287,6 +1305,21 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 (5, 'RT', 'Related Term'),
 (6, 'SA', 'See Also');
 
+CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
+  `vocabolary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
+  `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `scope` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`vocabolary_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Data setting for visitor limitation
+--
+INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
+('enable_visitor_limitation', 's:1:"0";'),
+('time_visitor_limitation', 's:2:"60";');
 
 CREATE TABLE IF NOT EXISTS `biblio_relation` (
   `biblio_id` int(11) NOT NULL DEFAULT '0',
@@ -1303,6 +1336,48 @@ CREATE TABLE IF NOT EXISTS `biblio_relation` (
 --
 ALTER TABLE `biblio_relation`
  ADD PRIMARY KEY (`biblio_id`,`rel_biblio_id`);
- 
+
 -- DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';
--- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3; 
+-- UPDATE `setting` SET `setting_value` = 'a:2:{s:5:"theme";s:7:"default";s:3:"css";s:26:"template/default/style.css";}' WHERE `setting_id` = 3;
+
+--
+-- Table structure for table `mst_servers`
+--
+CREATE TABLE `mst_servers` (
+  `server_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uri` text COLLATE utf8_unicode_ci NOT NULL,
+  `server_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - p2p server; 2 - z3950; 3 - z3950  SRU',
+  `input_date` datetime NOT NULL,
+  `last_update` datetime DEFAULT NULL,
+  PRIMARY KEY (`server_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Struktur dari tabel `biblio_log`
+--
+
+CREATE TABLE IF NOT EXISTS `biblio_log` (
+  `biblio_log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `biblio_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `realname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `affectedrow` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rawdata` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_information` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`biblio_log_id`),
+  KEY `realname` (`realname`),
+  KEY `biblio_id` (`biblio_id`),
+  KEY `user_id` (`user_id`),
+  KEY `ip` (`ip`),
+  KEY `action` (`action`),
+  KEY `affectedrow` (`affectedrow`),
+  KEY `date` (`date`),
+  FULLTEXT KEY `title` (`title`),
+  FULLTEXT KEY `rawdata` (`rawdata`),
+  FULLTEXT KEY `additional_information` (`additional_information`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;

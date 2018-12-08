@@ -38,6 +38,7 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require LIB.'modsxmlsenayan.inc.php';
+require MDLBS.'system/biblio_indexer.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
@@ -45,6 +46,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 
 if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
 }
 
 /* RECORD OPERATION */
@@ -152,13 +159,17 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
               }
           }
           if ($biblio_id) {
+              // create biblio_indexer class instance
+              $indexer = new biblio_indexer($dbs);
+              // update index
+              $indexer->makeIndex($biblio_id);
               // write to logs
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$p2pserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
               $r++;
           }
       }
   }
-  utility::jsAlert($r.' records inserted to database.');
+  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')));
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }

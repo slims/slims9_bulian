@@ -106,7 +106,7 @@ while ($data = $stat_query->fetch_row()) {
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;
 
 // popular titles
-$stat_query = $dbs->query('SELECT b.title,l.item_code,COUNT(l.loan_id) AS total_loans FROM `loan` AS l
+$stat_query = $dbs->query('SELECT b.title,b.biblio_id AS total_loans FROM `loan` AS l
     LEFT JOIN item AS i ON l.item_code=i.item_code
     LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
     GROUP BY b.biblio_id ORDER BY COUNT(l.loan_id) DESC LIMIT 10');
@@ -137,7 +137,7 @@ foreach ($collection_stat as $headings=>$stat_data) {
 if (isset($_GET['print'])) {
     // html strings
     $html_str = '<!DOCTYPE html>';
-    $html_str .= '<html><head><title>'.$sysconf['library_name'].' Membership General Statistic Report</title>';
+    $html_str .= '<html><head><title>'.$sysconf['library_name'].' '.__('Collection Statistic Report').'</title>';
     $html_str .= '<style type="text/css">'."\n";
     $html_str .= 'body {padding: 0.2cm}'."\n";
     $html_str .= 'body * {color: black; font-size: 11pt;}'."\n";
@@ -158,7 +158,7 @@ if (isset($_GET['print'])) {
     if ($file_write) {
         // open result in new window
         echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.REP.'/biblio_stat_print_result.html", height: 800,  width: 500})</script>';
-    } else { utility::jsAlert('ERROR! Loan statistic report failed to generate, possibly because '.REPBS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Collection Statistic Report failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

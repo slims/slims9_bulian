@@ -70,13 +70,13 @@ function visitOnLoan($member_id)
 // transaction is finished
 if (isset($_POST['finish'])) {
     // create circulation object
-    $memberID = $_SESSION['memberID'];
+    $memberID = $dbs->escape_string($_SESSION['memberID']);
     $circulation = new circulation($dbs, $memberID);
     // finish loan transaction    
     $flush = $circulation->finishLoanSession();
     if ($flush == TRANS_FLUSH_ERROR) {
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$_SESSION['realname'].' FAILED finish circulation transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')');
         echo '<script type="text/javascript">';
         echo 'alert(\''.__('ERROR! Loan data can\'t be saved to database').'\');';
         echo '</script>';
@@ -84,7 +84,7 @@ if (isset($_POST['finish'])) {
         // insert visitor log
         visitOnLoan($memberID);
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $_SESSION['realname'].' finish circulation transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')');
         // send message
         echo '<script type="text/javascript">';
         if ($sysconf['transaction_finished_notification']) {
@@ -109,14 +109,14 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     $loan_q = $dbs->query('SELECT item_code FROM loan WHERE loan_id='.$loanID);
     $loan_d = $loan_q->fetch_row();
     // create circulation object
-    $circulation = new circulation($dbs, $_SESSION['memberID']);
+    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
 	$circulation->holiday_dayname = $_SESSION['holiday_dayname'];
 	$circulation->holiday_date = $_SESSION['holiday_date'];
     if ($_POST['process'] == 'return') {
         $return_status = $circulation->returnItem($loanID);
         // write log
-        utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' return item '.$loan_d[0].' for member ('.$_SESSION['memberID'].')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
         echo '<script type="text/javascript">';
         if ($circulation->loan_have_overdue) {
             echo "\n".'alert(\''.__('Overdue fines inserted to fines database').'\');'."\n";
@@ -137,7 +137,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
             echo '</script>';
         } else {
             // write log
-            utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' extend loan for item '.$loan_d[0].' for member ('.$_SESSION['memberID'].')');
+            utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
             echo '<script type="text/javascript">';
             echo 'alert(\''.__('Loan Extended').'\');';
             if ($circulation->loan_have_overdue) {
@@ -154,12 +154,12 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
 // add temporary item to session
 if (isset($_POST['tempLoanID'])) {
     // create circulation object
-    $circulation = new circulation($dbs, $_SESSION['memberID']);
+    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
-    $add = $circulation->addLoanSession($_POST['tempLoanID']);
+    $add = $circulation->addLoanSession(trim($_POST['tempLoanID']));
     if ($add == LOAN_LIMIT_REACHED) {
         echo '<html>';
         echo '<body>';
@@ -222,7 +222,7 @@ if (isset($_POST['tempLoanID'])) {
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else {
-        utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' insert new loan ('.$_POST['tempLoanID'].') for member ('.$_SESSION['memberID'].')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' insert new loan ('.$_POST['tempLoanID'].') for member ('.$dbs->escape_string($_SESSION['memberID']).')');
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
@@ -236,7 +236,7 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     // define constant
     define('IGNORE_LOAN_RULES', 1);
     // create circulation object
-    $circulation = new circulation($dbs, $_SESSION['memberID']);
+    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
@@ -252,7 +252,7 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
 // remove temporary item session
 if (isset($_GET['removeID'])) {
     // create circulation object
-    $circulation = new circulation($dbs, $_SESSION['memberID']);
+    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // remove item from loan session
     $circulation->removeLoanSession($_GET['removeID']);
     echo '<script type="text/javascript">';
@@ -308,14 +308,14 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
             $loan_d['title'] .= '<div>'.$reserve_msg.'</div>';
         }
         // write log
-        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $_SESSION['realname'].' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method');
+        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $dbs->escape_string($_SESSION['realname']).' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method');
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object
         $table = new simbio_table();
         $table->table_attr = 'class="border" style="width: 100%; margin-bottom: 5px;" cellpadding="5" cellspacing="0"';
         // append data to table row
-        $table->appendTableRow(array('Item '.$_POST['quickReturnID'].__(' successfully returned on').'&nbsp;'.$return_date)); //mfc
+        $table->appendTableRow(array(str_replace(array('{itemCode}', '{returnDate}'), array($_POST['quickReturnID'], $return_date), __('Item {itemCode} successfully returned on&nbsp;{returnDate}')))); //mfc
         $table->appendTableRow(array(__('Title'), $loan_d['title']));
         $table->appendTableRow(array(__('Member Name'), $loan_d['member_name'], __('Member ID'), $loan_d['member_id']));
         $table->appendTableRow(array(__('Loan Date'), $loan_d['loan_date'], __('Due Date'), $loan_d['due_date']));
@@ -352,7 +352,7 @@ if (isset($_POST['reserveItemID'])) {
     $reserve_limit_q = $dbs->query('SELECT reserve_limit FROM mst_member_type WHERE member_type_id='.(integer)$_SESSION['memberTypeID']);
     $reserve_limit_d = $reserve_limit_q->fetch_row();
     // get current reservation data for this member
-    $current_reserve_q = $dbs->query('SELECT COUNT(reserve_id) FROM reserve WHERE member_id=\''.trim($_SESSION['memberID']).'\'');
+    $current_reserve_q = $dbs->query('SELECT COUNT(reserve_id) FROM reserve WHERE member_id=\''.$dbs->escape_string(trim($_SESSION['memberID'])).'\'');
     $current_reserve_d = $current_reserve_q->fetch_row();
     if ($current_reserve_d[0] >= $reserve_limit_d[0]) {
         echo '<script type="text/javascript">';
@@ -383,14 +383,14 @@ if (isset($_POST['reserveItemID'])) {
     }
     // get the availability status
     $avail_q = $dbs->query('SELECT COUNT(l.loan_id) FROM loan AS l
-        WHERE l.item_code=\''.$item_id.'\' AND l.is_lent=1 AND l.is_return=0 AND l.member_id!=\''.$_SESSION['memberID'].'\'');
+        WHERE l.item_code=\''.$item_id.'\' AND l.is_lent=1 AND l.is_return=0 AND l.member_id!=\''.$dbs->escape_string($_SESSION['memberID']).'\'');
     $avail_d = $avail_q->fetch_row();
     if ($avail_d[0] > 0) {
         // write log
-        utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' reserve item '.$item_id.' for member ('.$_SESSION['memberID'].')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' reserve item '.$item_id.' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
         // add reservation to database
         $reserve_date = date('Y-m-d H:i:s');
-        $dbs->query('INSERT INTO reserve(member_id, biblio_id, item_code, reserve_date) VALUES (\''.$_SESSION['memberID'].'\', \''.$biblio_d[0].'\', \''.$item_id.'\', \''.$reserve_date.'\')');
+        $dbs->query('INSERT INTO reserve(member_id, biblio_id, item_code, reserve_date) VALUES (\''.$dbs->escape_string($_SESSION['memberID']).'\', \''.$biblio_d[0].'\', \''.$item_id.'\', \''.$reserve_date.'\')');
         echo '<script type="text/javascript">';
         echo 'alert(\''.__('Reservation added').'\');';
         echo 'location.href = \'reserve_list.php\';';
@@ -414,7 +414,7 @@ if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
     // delete reservation record from database
     $dbs->query('DELETE FROM reserve WHERE reserve_id='.$reserveID);
     // write log
-    utility::writeLogs($dbs, 'member', $_SESSION['memberID'], 'circulation', $_SESSION['realname'].' remove reservation for item '.$reserve_d[0].' for member ('.$_SESSION['memberID'].')');
+    utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' remove reservation for item '.$reserve_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
     echo '<script type="text/javascript">';
     echo 'alert(\''.__('Reservation removed').'\');';
     echo 'location.href = \'reserve_list.php\';';
@@ -450,7 +450,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         $_SESSION['temp_loan'] = array();
         $memberID = trim(preg_replace('@\s*(<.+)$@i', '', $_POST['memberID']));
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $_SESSION['realname'].' start transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' start transaction with member ('.$memberID.')');
     }
     $member = new member($dbs, $memberID);
     if (!$member->valid()) {
@@ -460,9 +460,9 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         // get member information
         $member_type_d = $member->getMemberTypeProp();
         // member type ID
-        $_SESSION['memberTypeID'] = $member->member_type_id;
+        $_SESSION['memberTypeID'] = $dbs->escape_string($member->member_type_id);
         // save member ID to the sessions
-        $_SESSION['memberID'] = $member->member_id;
+        $_SESSION['memberID'] = $dbs->escape_string($member->member_id);
         // create renewed/reborrow session array
         $_SESSION['reborrowed'] = array();
         // check membership expire
@@ -530,16 +530,54 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         }
         echo '</table>'."\n";
         // tab and iframe
-				echo '<ul class="nav nav-tabs nav-justified circ-action-btn">';
+
+        $fines_alert = FALSE;
+        $total_unpaid_fines = 0;
+        $_unpaid_fines = $dbs->query('SELECT 1 FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit LIMIT 1');
+        if($_unpaid_fines->fetch_row()) {
+            $fines_alert = TRUE;
+        }
+
+		echo '<ul class="nav nav-tabs nav-justified circ-action-btn">';
         echo '<li><a accesskey="L" class="tab notAJAX" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (L)</a></li>';
         echo '<li class="active"><a accesskey="C" class="tab notAJAX" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (C)</a></li>';
         if ($member_type_d['enable_reserve']) {
           echo '<li><a accesskey="R" class="tab notAJAX" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').' (R)</a></li>';
         }
-        echo '<li><a accesskey="F" class="tab notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').' (F)</a></li>';
+        if ($fines_alert) {
+            echo '<li><a accesskey="F" class="tab notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame"><span style="color: red; font-weight: bold;">'.__('Fines').' (F)</span></a></li>';
+        } else {
+            echo '<li><a accesskey="F" class="tab notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').' (F)</a></li>';            
+        }
         echo '<li><a accesskey="H" class="tab notAJAX" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').' (H)</a></li>'."\n";
         echo '</ul>';
 				echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="expandable border"></iframe>'."\n";
     }
+    ?>
+    <script type="text/javascript">
+    /**
+     * increase the height of the iframe so that it uses all remaining space
+     */
+    function resizeIframe() {
+        // remove the event handler if the iframe doesn't exist anymore
+        if($('#listsFrame').length === 0) {
+            $(window).off('resize', resizeIframe);
+            return;
+        }
+        var buffer = 20; //scroll bar buffer
+        var height = $(window).height(); // height of the whole page
+        height -= $('#listsFrame').offset().top; // minus everything that is above of the iframe
+        height -= $('.s-footer').innerHeight(); // minus everything that is on the below the iframe
+        height -= buffer; // minus some buffer for scrollbars and such
+        height = (height < 0) ? 0 : height; // in case we dont have enough space, the min-height=370px from css kicks in
+        $('#listsFrame').css('height', height + 'px');
+    }
+
+    // call it once now
+    resizeIframe();
+    // and again if the window is resized
+    $(window).on('resize', resizeIframe);
+    </script>
+    <?php
     exit();
 }

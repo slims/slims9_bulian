@@ -44,10 +44,21 @@ if (isset($_GET['itemID'])) {
   $_POST['itemID'] = $_GET['itemID'];
 }
 
+if (isset($_GET['itemCollID'])) {
+  $_POST['itemCollID'] = $_GET['itemCollID'];
+}
+
 $_GET['inPopUp'] = true;
 
 ob_start();
 require MDLBS.'bibliography/index.php';
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#pageContent').trigger('simbioAJAXloaded');
+});
+</script>
+<?php
 $content = ob_get_clean();
 
 // page title

@@ -43,9 +43,9 @@ class utility
         }
 
         // replace newline with javascripts newline
-        $str_message = str_replace("\n", '\n', $str_message);
+        $str_message = str_replace("\n", '\n', addslashes($str_message));
         echo '<script type="text/javascript">'."\n";
-        echo 'alert("'.addslashes($str_message).'")'."\n";
+        echo 'alert("'.$str_message.'")'."\n";
         echo '</script>'."\n";
     }
 

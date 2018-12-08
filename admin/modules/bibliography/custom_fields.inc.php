@@ -42,6 +42,7 @@ $biblio_custom_fields = array(
 		'max' => '50', // maximum character to enter in 'text' field type
 		'data' => false, // an array of data for 'dropdown', 'checklist' or 'choice'
 		'indexed' => true, // NOT APPLICABLE YET, FOR FUTURE RELEASE USE
+    'is_public' => true, // if true show this data in OPAC detail. If not defined default value is false.
 		'width' => 50), // width of field in form for 'text' field type, maximum is 100
 
 	'customfield2' => array(
@@ -50,9 +51,10 @@ $biblio_custom_fields = array(
 		'type' => 'dropdown',
 		'default' => 'value2',
 		'data' => array(
-			array('value1', 'Value 1'),
-			array('value2', 'Value 2')
+			array('value1', 'Value #1'),
+			array('value2', 'Value #2')
 			),
+    'is_public' => true,
 		'indexed' => true),
 
 	'customfield3' => array(
@@ -65,6 +67,7 @@ $biblio_custom_fields = array(
 			array('value2', 'Value 2'),
 			array('value3', 'Value 3')
 			),
+    'is_public' => false,
 		'indexed' => true),
 
 	'customfield4' => array(
@@ -76,6 +79,7 @@ $biblio_custom_fields = array(
 			array('value1', 'Value 1'),
 			array('value2', 'Value 2')
 			),
+    'is_public' => false,
 		'indexed' => true),
 
 	'customfield5' => array(

@@ -96,6 +96,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['price'] = preg_replace('@[.,\-a-z ]@i', '', strip_tags($_POST['price']));
         $data['input_date'] = date('Y-m-d H:i:s');
         $data['last_update'] = date('Y-m-d H:i:s');
+        $data['uid'] = $_SESSION['uid'];
 
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
@@ -103,6 +104,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* UPDATE RECORD MODE */
             // remove input date
             unset($data['input_date']);
+            unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
             // update the data
@@ -234,7 +236,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_d = $rec_q->fetch_assoc();
 
     // create new instance
-    $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+    $form = new simbio_form_table_AJAX('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
     // form table attributes
     $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
@@ -280,7 +282,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // title
     if (!$in_pop_up) {
       $str_input = $b_title;
-      $str_input .= '<div class="makeHidden"><a class="notAJAX button btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="650" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
+      $str_input .= '<div class="makeHidden"><a class="notAJAX button btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="750" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
     } else { $str_input = $b_title; }
     $form->addAnything(__('Title'), $str_input);
     $form->addHidden('biblioTitle', $b_title);

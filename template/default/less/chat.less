@@ -3,7 +3,7 @@
 .s-pchat {
   position: relative;
   left: -25px;
-  z-index: 1999;
+  z-index: 9;
 }
 
 @media only screen and (min-width: 768px) {
@@ -28,20 +28,17 @@
 }
 
 .s-pchat-toggle {
+  width: 60px;
+  height: 60px;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
-  position: absolute; 
-  left: -51px; 
+  position: fixed; 
+  right: 0; 
   bottom: 0;
-  padding:20px; 
+  padding: 25px 0 0 25px; 
   color: #000; 
   display: block; 
-  background: #fff; 
+  background: #fafafa; 
   font-size: 8pt;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #f2f2f2;
 }
 
 @media only screen and (min-width : 768px) {
@@ -51,7 +48,7 @@
 }
 
 .s-chat {
-  z-index:3099;
+  z-index: 9;
   position: fixed;
   bottom: 0;
   right: -275px;
@@ -61,20 +58,17 @@
   width:275px;
   background: #fff;
   padding: 0;
-  border-left: solid 1px #f2f2f2;
-  border-right: solid 1px #f2f2f2;
+  box-shadow: 0 0 2px rgba(100,100,100,0.5);
 }
 
 @media only screen and (min-width : 768px) {
   .s-chat {
-    bottom: 59px;  
+    bottom: 60px;  
   }
 }
 
 .s-chat-header {
   text-align: center;
-  border-top: solid 1px #f8f8f8;
-  border-bottom: solid 1px #f8f8f8;
   display: block;
   background-color: #282828;
   width:275px;
@@ -150,7 +144,7 @@
 
 @media only screen and (min-width : 768px) {
   .s-maximize {
-    bottom: 59px;
+    bottom: 60px;
   }
 }
 

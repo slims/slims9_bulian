@@ -24,7 +24,7 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(topic_id, vocabolary_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected topic?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected topic?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.tid.value = topic_id;
@@ -41,7 +41,7 @@ if (isset($_POST['remove'])) {
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
   echo '<script type="text/javascript">';
-  echo 'alert(\'Topic succesfully removed!\');';
+  echo 'alert(\''. addslashes(__('Topic succesfully removed!')) . '\');';
   echo 'location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';';
   echo '</script>';
 }
@@ -55,26 +55,32 @@ $voc_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE topic_id='.$itemID);
 
 $row = 1;
 while ($voc_d = $voc_q->fetch_assoc()) {
-  
-  // fallback related topic id
-  $topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id='.$voc_d['related_topic_id']);
-  $topic_d = $topic_q->fetch_row();
 
-	// alternate the row color
-    $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
+  if (!is_null($voc_d['scope'])) {
+    echo '<b>' . __('Scope note') . ': </b>'.$voc_d['scope'].'<hr>';
+  }
 
-    // links
-    $edit_link = '<a class="notAJAX btn btn-primary button openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;"><i class="glyphicon glyphicon-pencil"></i></a>';
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].')"><i class="glyphicon glyphicon-trash"></i></a>';
-    $related_term = $voc_d['rt_id'];
+  if (is_null($voc_d['scope'])) {
+    // fallback related topic id
+    $topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id='.$voc_d['related_topic_id']);
+    $topic_d = $topic_q->fetch_row();
 
-    $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_d[0]));
-    $table->setCellAttr($row, null, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: auto;"');
-    $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-    $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-    $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 8%;"');
+    // alternate the row color
+      $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
-    $row++;
+      // links
+      $edit_link = '<a class="notAJAX btn btn-primary button openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;"><i class="glyphicon glyphicon-pencil"></i></a>';
+      $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].')"><i class="glyphicon glyphicon-trash"></i></a>';
+      $related_term = $voc_d['rt_id'];
+
+      $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_d[0]));
+      $table->setCellAttr($row, null, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: auto;"');
+      $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
+      $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
+      $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 8%;"');
+
+      $row++;
+  }
 }
 echo $table->printTable();
 // hidden form

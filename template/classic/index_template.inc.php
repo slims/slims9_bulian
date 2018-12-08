@@ -15,30 +15,31 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
-} 
+}
 
-/* 
+/*
 =========================
 Define current public template directory
 =========================
 */
 define('CURRENT_TEMPLATE_DIR', $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/');
 
-/* 
+/*
 =========================
 Load config template
 =========================
 */
 include 'tinfo.inc.php';
+utility::loadSettings($dbs);
 
-/* 
+/*
 =========================
 Load custome function
 =========================
 */
 include 'function.php';
 
-/* 
+/*
 =========================
 Load header
 - open html tag
@@ -48,7 +49,7 @@ Load header
 */
 include 'part/header.php';
 
-/* 
+/*
 =========================
 Load content
 =========================
@@ -67,7 +68,7 @@ include 'part/content/row_close.php';
 
 // include 'part/content/footer.php';
 
-/* 
+/*
 =========================
 Load footer
 - close body tag

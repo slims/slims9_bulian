@@ -40,6 +40,7 @@ require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+require MDLBS.'system/biblio_indexer.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
@@ -47,6 +48,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 
 if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  $sysconf['z3950_SRU_source'][] = array('uri' => $server['uri'], 'name' => $server['name']);
 }
 
 if (isset($_GET['z3950_SRU_source'])) {
@@ -157,6 +164,10 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
               }
           }
           if ($biblio_id) {
+              // create biblio_indexer class instance
+              $indexer = new biblio_indexer($dbs);
+              // update index
+              $indexer->makeIndex($biblio_id);
               // write to logs
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$p2pserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
               $r++;
@@ -166,7 +177,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
 
   // destroy result Z3950 session
   unset($_SESSION['z3950result']);
-  utility::jsAlert($r.' records inserted to database.');
+  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }
@@ -194,11 +205,11 @@ if (isset($_GET['keywords']) AND $can_read) {
     $hits = $zs_xml->numberOfRecords;
 
     if ($hits > 0) {
-      echo '<div class="infoBox">Found '.$hits.' records from Z3950 SRU Server.</div>';
+      echo '<div class="infoBox">' . str_replace('{hits}', $hits,__('Found {hits} records from Z3950 SRU Server.')) . '</div>';
       echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/z3950sru.php" target="blindSubmit">';
       echo '<table align="center" id="dataList" cellpadding="5" cellspacing="0">';
       echo '<tr>';
-      echo '<td colspan="3"><input type="submit" name="saveZ" value="Save Z3950 Records to Database" /></td>';
+      echo '<td colspan="3"><input type="submit" name="saveZ" value="' . __('Save Z3950 Records to Database') . '" /></td>';
       echo '</tr>';
       $row = 1;
       foreach ($zs_xml->records->record as $rec) {
@@ -230,10 +241,10 @@ if (isset($_GET['keywords']) AND $can_read) {
       }
       echo '</ul></div>';
     } else {
-      echo '<div class="errorBox">No Results Found!</div>';
+      echo '<div class="errorBox">' . __('No Results Found!') . '</div>';
     }
   } else {
-    echo '<div class="errorBox">No Keywords Supplied!</div>';
+    echo '<div class="errorBox">' . __('No Keywords Supplied!') . '</div>';
   }
   exit();
 }

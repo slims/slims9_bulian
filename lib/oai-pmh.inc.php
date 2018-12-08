@@ -29,9 +29,13 @@ if (!defined('INDEX_AUTH')) {
 
 class OAI_Web_Service {
   private $db = false;
+  private $xml = false;
 
   public function __construct($obj_db = false) {
     $this->db = $obj_db;
+    $this->xml = new XMLWriter();
+    $this->xml->openMemory();
+    $this->xml->setIndent(true);
   }
 
   /**
@@ -46,15 +50,11 @@ class OAI_Web_Service {
     $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
-      echo 'resumption';
-      parse_str($_GET['resumptionToken'], $resumptionToken);
-      if (isset($resumptionToken['offset'])) {
-        $offset = (integer)$resumptionToken['offset'];
+      list($metadataPrefix, $offset) = explode('/', $_GET['resumptionToken'], 2);
+      if (isset($offset)) {
+        $offset = (integer)$offset;
       }
-      if (isset($resumptionToken['metadataPrefix'])) {
-        $metadataPrefix = $resumptionToken['metadataPrefix'];
-      }
-    } else {
+     } else {
       if (isset($_GET['offset'])) {
         $offset = (integer)$_GET['offset'];
       }
@@ -71,25 +71,35 @@ class OAI_Web_Service {
     $rec_q = $this->db->query("SELECT biblio_id, last_update FROM biblio $where
       ORDER BY biblio_id DESC LIMIT ".$sysconf['OAI']['ListRecords']['RecordPerSet']." OFFSET $offset");
 
-    ob_start();
-    echo '<request verb="ListIdentifiers" metadataPrefix="'.$metadataPrefix.'">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
-    echo "<ListIdentifiers>\n";
+    $this->xml->startElement('request');
+        $this->xml->writeAttribute('verb', 'ListIdentifiers');
+        $this->xml->writeAttribute('metadataPrefix', $metadataPrefix);
+        $this->xmlWrite($this->xml, $sysconf['OAI']['Identify']['baseURL']);
+    $this->xml->endElement();
+    $this->xml->startElement('ListIdentifiers');
     // mulai iterasi record
     while ($rec_data = $rec_q->fetch_assoc()) {
-      echo "<header>\n<identifier>".$sysconf['OAI']['identifierPrefix'].$rec_data['biblio_id']."</identifier><datestamp>".$rec_data['last_update']."</datestamp></header>\n";
+      $this->xml->startElement('header');
+        $this->xml->writeElement('identifier', $sysconf['OAI']['identifierPrefix'].$rec_data['biblio_id']);
+        $this->xml->writeElement('datestamp', $rec_data['last_update']);
+      $this->xml->endElement();
     }
 
     // resumptionToken
     if ($completeListSize > $sysconf['OAI']['ListRecords']['RecordPerSet']) {
       $next_offset = $offset+$sysconf['OAI']['ListRecords']['RecordPerSet'];
       if ($next_offset < $completeListSize) {
-        echo '<resumptionToken completeListSize="'.$completeListSize.'">'.urlencode("offset=$next_offset").'</resumptionToken>'."\n";
+        $this->xml->startElement('resumptionToken');
+        $this->xml->writeAttribute('completeListSize', $completeListSize);
+        $this->xml->writeAttribute('cursor', $offset);
+        $this->xml->text($metadataPrefix.'/'.$next_offset);
+        $this->xml->endElement();
       }
     }
 
-    echo "</ListIdentifiers>\n";
+    $this->xml->endElement();
 
-    $ListIdentifiers = ob_get_clean();
+    $ListIdentifiers = $this->xml->flush();
 
     return $ListIdentifiers;
   }
@@ -107,20 +117,10 @@ class OAI_Web_Service {
     $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
-      echo 'resumption';
-      parse_str($_GET['resumptionToken'], $resumptionToken);
-      if (isset($resumptionToken['offset'])) {
-        $offset = (integer)$resumptionToken['offset'];
-      }
-      if (isset($resumptionToken['metadataPrefix'])) {
-        $metadataPrefix = $resumptionToken['metadataPrefix'];
-      }
+      $offset = (integer)$_GET['resumptionToken'];
     } else {
       if (isset($_GET['offset'])) {
         $offset = (integer)$_GET['offset'];
-      }
-      if (isset($_GET['metadataPrefix'])) {
-        $metadataPrefix = $_GET['metadataPrefix'];
       }
     }
 
@@ -132,27 +132,35 @@ class OAI_Web_Service {
     $set_q = $this->db->query("SELECT * FROM mst_topic $where ORDER BY topic ASC LIMIT ".$sysconf['OAI']['ListRecords']['RecordPerSet']." OFFSET $offset");
 
     ob_start();
-    echo '<request verb="ListSets">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
-    echo "<ListSets>\n";
+    $this->xml->startElement('request');
+        $this->xml->writeAttribute('verb', 'ListSets');
+        $this->xmlWrite($this->xml, $sysconf['OAI']['Identify']['baseURL']);
+    $this->xml->endElement();
+
+    $this->xml->startElement('ListSets');
     // mulai iterasi record
     while ($set_data = $set_q->fetch_assoc()) {
-      echo "<set>\n".
-      "<setSpec>".$set_data['topic_id']."</setSpec>\n".
-      "<setName>Subject = ".$set_data['topic']."</setName>\n".
-      "</set>\n";
+        $this->xml->startElement('set');
+        $this->xml->writeElement('setSpec', $set_data['topic_id']);
+        $this->xml->writeElement('setName', "Subject = ".$set_data['topic']);
+        $this->xml->endElement();
     }
 
     // resumptionToken
     if ($completeListSize > $sysconf['OAI']['ListRecords']['RecordPerSet']) {
       $next_offset = $offset+$sysconf['OAI']['ListRecords']['RecordPerSet'];
       if ($next_offset < $completeListSize) {
-        echo '<resumptionToken completeListSize="'.$completeListSize.'">'.urlencode("offset=$next_offset").'</resumptionToken>'."\n";
+        $this->xml->startElement('resumptionToken');
+        $this->xml->writeAttribute('completeListSize', $completeListSize);
+        $this->xml->writeAttribute('cursor', $offset);
+        $this->xml->text($next_offset);
+        $this->xml->endElement();
       }
     }
 
-    echo "</ListSets>\n";
+    $this->xml->endElement();
 
-    $ListSets = ob_get_clean();
+    $ListSets = $this->xml->flush();
 
     return $ListSets;
   }
@@ -172,24 +180,11 @@ class OAI_Web_Service {
     $metadataPrefix = 'oai_dc';
 
     if (isset($_GET['resumptionToken'])) {
-      $elm = explode('__', $_GET['resumptionToken']);
-      if (isset($elm[0]) && stripos($elm[0], 'offset', 0) !== false) {
-        $offset = (integer)str_ireplace('offset:', '', $elm[0]);
+      list($metadataPrefix, $offset) = explode('/', $_GET['resumptionToken'], 2);
+      if (isset($offset)) {
+        $offset = (integer)$offset;
       }
-      if (isset($elm[1]) && stripos($elm[1], 'metadataPrefix', 0) !== false) {
-        $metadataPrefix = str_ireplace('metadataPrefix:', '', $elm[1]);
-      }
-      // echo 'resumption';
-      /*
-      parse_str($_GET['resumptionToken'], $resumptionToken);
-      if (isset($resumptionToken['offset'])) {
-        $offset = (integer)$resumptionToken['offset'];
-      }
-      if (isset($resumptionToken['metadataPrefix'])) {
-        $metadataPrefix = $resumptionToken['metadataPrefix'];
-      }
-      */
-    } else {
+     } else {
       if (isset($_GET['offset'])) {
         $offset = (integer)$_GET['offset'];
       }
@@ -197,7 +192,7 @@ class OAI_Web_Service {
         $metadataPrefix = $_GET['metadataPrefix'];
       }
     }
-    
+
     if (isset($_GET['from'])) {
         $from = $this->db->escape_string($_GET['from']);
         $date = date_create($from);
@@ -220,7 +215,12 @@ class OAI_Web_Service {
     $rec_q = $this->db->query("SELECT biblio_id FROM biblio $where ORDER BY biblio_id DESC LIMIT ".$sysconf['OAI']['ListRecords']['RecordPerSet']." OFFSET $offset");
 
     ob_start();
-    echo '<request verb="ListRecords" metadataPrefix="'.$metadataPrefix.'">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
+    $this->xml->startElement('request');
+        $this->xml->writeAttribute('verb', 'ListRecords');
+        $this->xml->writeAttribute('metadataPrefix', $metadataPrefix);
+        $this->xmlWrite($this->xml, $sysconf['OAI']['Identify']['baseURL']);
+    $this->xml->endElement();
+    echo $this->xml->flush();
     echo "<ListRecords>\n";
     // mulai iterasi record
     while ($rec_data = $rec_q->fetch_row()) {
@@ -231,7 +231,12 @@ class OAI_Web_Service {
     if ($completeListSize > $sysconf['OAI']['ListRecords']['RecordPerSet']) {
       $next_offset = $offset+$sysconf['OAI']['ListRecords']['RecordPerSet'];
       if ($next_offset < $completeListSize) {
-        echo '<resumptionToken completeListSize="'.$completeListSize.'">offset:'.$next_offset.'__metadataPrefix:'.$metadataPrefix.'</resumptionToken>'."\n";
+        $this->xml->startElement('resumptionToken');
+        $this->xml->writeAttribute('completeListSize', $completeListSize);
+        $this->xml->writeAttribute('cursor', $offset);
+        $this->xml->text($metadataPrefix.'/'.$next_offset);
+        $this->xml->endElement();
+        echo $this->xml->flush();
       }
     }
 
@@ -249,7 +254,6 @@ class OAI_Web_Service {
   public function GetRecord($recordID, $metadataPrefix = 'oai_dc') {
     global $sysconf;
     ob_start();
-
     // check record ID
     /*
     if (strpos($recordID, $sysconf['OAI']['identifierPrefix']) !== true) {
@@ -258,9 +262,15 @@ class OAI_Web_Service {
       return ob_get_clean();
     }
     */
-
     $recordID = str_ireplace($sysconf['OAI']['identifierPrefix'], '', $recordID);
-    echo '<request verb="GetRecord" identifier="'.$recordID.'" metadataPrefix="'.$metadataPrefix.'">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
+    $this->xml->startElement('request');
+        $this->xml->writeAttribute('verb', 'GetRecord');
+        $this->xml->writeAttribute('identifier', $recordID);
+        $this->xml->writeAttribute('metadataPrefix', $metadataPrefix);
+        $this->xmlWrite($this->xml, $sysconf['OAI']['Identify']['baseURL']);
+    $this->xml->endElement();
+    echo $this->xml->flush();
+    // echo '<request verb="GetRecord" identifier="'.$recordID.'" metadataPrefix="'.$metadataPrefix.'">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
     echo "<GetRecord>\n";
     echo $this->outputRecordXML($recordID, $metadataPrefix);
     echo "</GetRecord>\n";
@@ -276,27 +286,27 @@ class OAI_Web_Service {
   public function Identify() {
     global $sysconf;
     $earliestDatestamp = '';
-    ob_start();
-    echo '<request verb="Identify">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
-    ?>
-    <Identify>
-      <repositoryName><?php echo htmlentities($sysconf['OAI']['Identify']['repositoryName']); ?></repositoryName>
-      <baseURL><?php echo htmlentities($sysconf['OAI']['Identify']['baseURL']); ?></baseURL>
-      <protocolVersion>2.0</protocolVersion>
-      <adminEmail><?php echo $sysconf['OAI']['Identify']['adminEmail']; ?></adminEmail>
-      <earliestDatestamp><?php echo $earliestDatestamp; ?></earliestDatestamp>
-      <deletedRecord><?php echo $sysconf['OAI']['Identify']['deletedRecord']; ?></deletedRecord>
-      <granularity><?php echo $sysconf['OAI']['Identify']['granularity']; ?></granularity>
-      <description>
-        <eprints xmlns="http://www.openarchives.org/OAI/1.1/eprints" xsi:schemaLocation="http://www.openarchives.org/OAI/1.1/eprints http://www.openarchives.org/OAI/1.1/eprints.xsd">
-        <metadataPolicy>
-          <text><?php echo htmlentities($sysconf['OAI']['Identify']['metadataPolicy']); ?></text>
-        </metadataPolicy>
-        </eprints>
-      </description>
-    </Identify>
-    <?php
-    return ob_get_clean();
+    $this->xml->startElement('request'); $this->xml->writeAttribute('verb', 'Identify'); $this->xml->text($sysconf['OAI']['Identify']['baseURL']); $this->xml->endElement();
+    $this->xml->startElement('Identify');
+        $this->xml->writeElement('repositoryName', $sysconf['OAI']['Identify']['repositoryName']);
+        $this->xml->writeElement('baseURL', $sysconf['OAI']['Identify']['baseURL']);
+        $this->xml->writeElement('protocolVersion', '2.0');
+        $this->xml->writeElement('repositoryName', $sysconf['OAI']['Identify']['repositoryName']);
+        $this->xml->writeElement('adminEmail', $sysconf['OAI']['Identify']['adminEmail']);
+        $this->xml->writeElement('earliestDatestamp', $earliestDatestamp);
+        $this->xml->writeElement('deletedRecord', $sysconf['OAI']['Identify']['deletedRecord']);
+        $this->xml->writeElement('granularity', $sysconf['OAI']['Identify']['granularity']);
+        $this->xml->startElement('description');
+             $this->xml->startElement('eprints');
+             $this->xml->writeAttribute('xmlns', 'http://www.openarchives.org/OAI/1.1/eprints');
+             $this->xml->writeAttribute('xsi:schemaLocation', 'http://www.openarchives.org/OAI/1.1/eprints http://www.openarchives.org/OAI/1.1/eprints.xsd');
+                $this->xml->startElement('metadataPolicy');
+                    $this->xml->writeElement('text', $sysconf['OAI']['Identify']['metadataPolicy']);
+                $this->xml->endElement();
+             $this->xml->endElement();
+        $this->xml->endElement();
+    $this->xml->endElement();
+    return $this->xml->flush();
   }
 
 
@@ -305,19 +315,21 @@ class OAI_Web_Service {
    */
   public function ListMetadataFormats() {
     global $sysconf;
-    ob_start();
-    echo '<request verb="ListMetadataFormats">'.$sysconf['OAI']['Identify']['baseURL'].'</request>'."\n";
-    echo "<ListMetadataFormats>\n";
+    $this->xml->startElement('request');
+        $this->xml->writeAttribute('verb', 'ListMetadataFormats');
+        $this->xml->text($sysconf['OAI']['Identify']['baseURL']);
+    $this->xml->endElement();
+    $this->xml->startElement('ListMetadataFormats');
     // query ke database
     foreach ($sysconf['OAI']['MetadataFormats'] as $metadataformat) {
-      echo "<metadataFormat>\n";
-      echo "<metadataPrefix>".$metadataformat['oai_prefix']."</metadataPrefix>\n".
-        "<schema>".$metadataformat['schema_xsd']."</schema>\n".
-        "<metadataNamespace>".$metadataformat['namespace']."</metadataNamespace>\n";
+      $this->xml->startElement('metadataFormat');
+        $this->xml->writeElement('metadataPrefix', $metadataformat['oai_prefix']);
+        $this->xml->writeElement('schema', $metadataformat['schema_xsd']);
+        $this->xml->writeElement('metadataNamespace', $metadataformat['namespace']);
+      $this->xml->endElement();
     }
-    echo "</metadataFormat>\n";
-    echo "</ListMetadataFormats>\n";
-    $ListMetadataFormats = ob_get_clean();
+    $this->xml->endElement();
+    $ListMetadataFormats = $this->xml->flush();
 
     return $ListMetadataFormats;
   }
@@ -334,11 +346,6 @@ class OAI_Web_Service {
   protected function outputRecordXML($recordID, $metadataPrefix = 'oai_dc') {
     global $sysconf;
 
-    // berikut adalah entitas yang dilarang oleh XML, tambahkan dalam array apabila diperlukan
-    $xmlForbiddenSymbols = array('&Acirc;', '&Atilde;', '&para;',
-      '&cedil;', '&copy;', '&shy;', '&pound;', '&plusmn;',
-      '&reg;', '&sect;', '&middot;', '&iexcl;');
-
     // ambil detail record
     if ($metadataPrefix == 'oai_dc') {
       $detail = new detail($this->db, $recordID, 'dc');
@@ -347,8 +354,7 @@ class OAI_Web_Service {
 
     // mulai output XML
     ob_start();
-    echo '<record>'
-     ."<header><identifier>".$sysconf['OAI']['identifierPrefix'].$recordID."</identifier></header>";
+    echo "<record><header><identifier>".$sysconf['OAI']['identifierPrefix'].$recordID."</identifier></header>";
     echo "<metadata>";
     if ($metadataPrefix == 'oai_dc') {
       echo '<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
@@ -365,5 +371,13 @@ class OAI_Web_Service {
     $recordXML = ob_get_clean();
 
     return $recordXML;
+  }
+
+  private function xmlWrite(&$xmlwriter, $data, $mode = 'Text') {
+    if ($mode == 'CData') {
+        $xmlwriter->writeCData($data);
+    } else {
+        $xmlwriter->text($data);
+    }
   }
 }

@@ -41,7 +41,7 @@ jQuery.extend({
  * @param       string      strURL : URL of AJAX request
  * @return      void
  */
-jQuery.fn.simbioAJAX = function(strURL, params)
+jQuery.fn.simbioAJAX = async function(strURL, params)
 {
   var options = {
       method: 'get',
@@ -77,12 +77,28 @@ jQuery.fn.simbioAJAX = function(strURL, params)
       }
   });
   doc.ajaxStop(function(){ loader.removeClass('loadingImage'); });
-  doc.ajaxError(function(event, request, settings){ loader.html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + "</div>");})
+  doc.ajaxError(function(event, request, settings) { 
+      // Fixing error message position
+      /* Modified by Drajat Hasan */
+      loader.attr('style', 'background: #D9534F;color: white;position: relative !important;font-weight: bold;'),
+      loader.html("<div class=\"error\">Error requesting page : <strong>" + settings.url + "</strong>" + request.responseText + " <br> Press F5 to hide this error message.</div>");
+      /* End */
+  })
 
-  // send AJAX request
-  var ajaxResponse = $.ajax({
-    type : options.method, url : strURL,
-    data : options.addData, async: false }).responseText;
+    var ajaxResponse;
+    try {
+        ajaxResponse = await $.ajax({
+            type : options.method, url : strURL,
+            data : options.addData, async: false })
+
+        // clear error message
+        if (loader.html().indexOf('Error') > -1) {
+            loader.html('&nbsp;')
+        }
+        loader.removeAttr('style')
+    } catch (err) {
+        console.error(err)
+    }
 
   // add to elements
   if (options.insertMode == 'before') {

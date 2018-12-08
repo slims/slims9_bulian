@@ -142,6 +142,12 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
+            <div class="divRowLabel"><?php echo __('Publish year'); ?></div>
+            <div class="divRowContent">
+            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'style="width: 50%"'); ?>
+            </div>
+        </div>
+        <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
             <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
         </div>
@@ -231,6 +237,10 @@ if (!$reportView) {
         $location = $dbs->escape_string(trim($_GET['location']));
         $outer_criteria .= ' AND i.location_id=\''.$location.'\'';
     }
+    if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
+        $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
+        $criteria .= ' AND bsub.publish_year LIKE \'%'.$publish_year.'%\'';
+    }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
@@ -283,14 +293,14 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-    $xlsquery = 'SELECT b.biblio_id, b.title AS \''.__('Title').'\''. 
+    $xlsquery = 'SELECT b.biblio_id, b.title AS \''.__('Title').'\''.
         ', COUNT(item_id) AS \''.__('Copies').'\''.
         ', pl.place_name AS \''.__('Publishing Place').'\''.
         ', pb.publisher_name AS \''.__('Publisher').'\''.
         ',  b.isbn_issn AS \''.__('ISBN/ISSN').'\', b.call_number AS \''.__('Call Number').'\' FROM '.
         $table_spec . ' WHERE '. $outer_criteria . ' group by b.biblio_id';
         // echo $xlsquery;
-        unset($_SESSION['xlsdata']); 
+        unset($_SESSION['xlsdata']);
         $_SESSION['xlsquery'] = $xlsquery;
         $_SESSION['tblout'] = "title_list";
 	echo '<a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a>';

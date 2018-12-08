@@ -81,7 +81,9 @@ if (isset($_GET['p'])) {
           echo $content_data['Content'];
           unset($content_data);
         } else {
-          header ("location:index.php");
+          // header ("location:index.php");
+          // check in api router
+          require 'api/v'.$sysconf['api']['version'].'/routes.php';
         }
     }
 } else {

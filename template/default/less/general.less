@@ -53,6 +53,7 @@ html, body {
 }
 
 body {
+    background: #f1f1f1 url(img/logo-big.png) -150px 35px no-repeat;
   overflow: hidden;
   height: 100%;
   direction: ltr;
@@ -67,5 +68,32 @@ a, a:hover {
 }
 
 .btn-default {
-  background-color: #282828; 
+  background-color: #282828;
 }
+
+
+.s-search-advances {
+  color: #fff;
+
+  &:hover {
+    color: #ff0;
+  }
+
+  &:focus {
+    color: #fff;
+  }
+
+    @media only screen {
+        @media (min-width: 768px) {
+          .s-main-page & {
+            font-size: 12px;
+            position: absolute;
+            top: 70px;
+            right: 190px;        
+        }
+    }
+  }
+
+
+}
+

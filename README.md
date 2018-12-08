@@ -1,5 +1,5 @@
-slims8_akasia
-=============
+SLiMS 8 Akasia
+===============
 SENAYAN Library Management System (SLiMS) version 8 Codename Akasia
 
 SLiMS is free open source software for library resources management

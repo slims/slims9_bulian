@@ -88,7 +88,7 @@ if (isset($_POST['save']) AND (isset($_POST['biblioID']) OR trim($_POST['search_
     <form name="searchBiblio" method="post" style="display: inline;">
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'biblio', 'biblio_id:title:edition:publish_year', 'relBiblioID', $('#search_str').val())";
-    echo __('Title'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" onkeyup="<?php echo $ajax_exp; ?>" onchange="<?php echo $ajax_exp; ?>" />
+    echo __('Title'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>" />
 </div>
 <div class="popUpSubForm">
 <select name="relBiblioID" id="relBiblioID" size="5" style="width: 100%;"><option value="0"><?php echo __('Type to search for existing biblio data'); ?></option></select>

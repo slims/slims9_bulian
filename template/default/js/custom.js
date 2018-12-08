@@ -49,5 +49,14 @@ $(document).ready(function(){
 $(document).ready(function(){
   $(window).load(function () {
     $('#keyword').focus();
-  });  
+  });
+
+  $('.s-menu-toggle').click(function(e){
+    e.preventDefault();
+    $(this).toggleClass('is-active');
+    $('.s-menu-content').toggleClass('active');
+  })
+
+  $('#content').css("min-height", (screen.height - 333));
+
 });

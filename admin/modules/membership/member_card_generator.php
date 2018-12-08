@@ -196,7 +196,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     $html_str .= '</style>'."\n";
     $html_str .= '</head>'."\n";
     $html_str .= '<body>'."\n";
-    $html_str .= '<a href="#" onclick="window.print()">Print Again</a><br /><br />'."\n";
+    $html_str .= '<a href="#" onclick="window.print()">' . __('Print Again') . '</a><br /><br />'."\n";
     $html_str .= '<table style="margin: 0; padding: 0;" cellspacing="0" cellpadding="0">'."\n";
     // loop the chunked arrays to row
     foreach ($chunked_card_arrays as $membercard_rows) {
@@ -255,7 +255,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in window
         echo '<script type="text/javascript">top.jQuery.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Member Card Printing').'"})</script>';
-    } else { utility::jsAlert('ERROR! Cards failed to generate, possibly because '.SB.FLS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Cards failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

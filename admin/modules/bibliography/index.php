@@ -21,7 +21,10 @@
 /* Bibliography Management section */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');
+}
+
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
@@ -53,6 +56,9 @@ if (!$can_read) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// load settings
+utility::loadSettings($dbs);
+
 $in_pop_up = false;
 // check if we are inside pop-up window
 if (isset($_GET['inPopUp'])) {
@@ -75,13 +81,20 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   $_delete2 = $dbs->query(sprintf('UPDATE search_biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
   if ($_delete) {
-    @unlink(sprintf(IMGBS.'docs/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
+    $postImage = stripslashes($_POST['img']);
+    $postImage = str_replace('/', '', $postImage);
+    @unlink(sprintf(IMGBS.'docs/%s',$postImage));
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#biblioImage, #imageFilename\').remove();</script>');
   }
   exit();
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
+  }
   $title = trim(strip_tags($_POST['title']));
   // check form validity
   if (empty($title)) {
@@ -126,6 +139,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     $class = str_ireplace('NEW:', '', trim(strip_tags($_POST['class'])));
     $data['classification'] = trim($dbs->escape_string(strip_tags($class)));
+    $data['uid'] = $_SESSION['uid'];
 
     // check publisher
     // echo stripos($_POST['publisherID'], 'NEW:');
@@ -133,7 +147,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $new_publisher = str_ireplace('NEW:', '', trim(strip_tags($_POST['publisherID'])));
       $new_id = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $new_publisher);
       $data['publisher_id'] = $new_id;
-    } else {
+    } else if (intval($_POST['publisherID']) > 0) {
       $data['publisher_id'] = intval($_POST['publisherID']);
     }
 
@@ -147,7 +161,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $new_place = str_ireplace('NEW:', '', trim(strip_tags($_POST['placeID'])));
       $new_id = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $new_place);
       $data['publish_place_id'] = $new_id;
-    } else {
+    } else if (intval($_POST['placeID']) > 0) {
       $data['publish_place_id'] = intval($_POST['placeID']);
     }
 
@@ -156,7 +170,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['promoted'] = ($_POST['promote'] == '0')?'literal{0}':'1';
     // labels
     $arr_label = array();
-    if ($_POST['labels']) {
+    if (!empty($_POST['labels'])) {
       foreach ($_POST['labels'] as $label) {
       if (trim($label) != '') {
         $arr_label[] = array($label, isset($_POST['label_urls'][$label])?$_POST['label_urls'][$label]:null );
@@ -167,14 +181,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['labels'] = $arr_label?serialize($arr_label):'literal{NULL}';
     $data['frequency_id'] = ($_POST['frequencyID'] == '0')?'literal{0}':(integer)$_POST['frequencyID'];
     $data['spec_detail_info'] = trim($dbs->escape_string(strip_tags($_POST['specDetailInfo'])));
-    
+
     // RDA Content, Media anda Carrier Type
     foreach ($rda_cmc as $cmc => $cmc_name) {
       if (isset($_POST[$cmc.'TypeID']) && $_POST[$cmc.'TypeID'] <> 0) {
-        $data[$cmc.'_type_id'] = filter_input(INPUT_POST, $cmc.'TypeID', FILTER_SANITIZE_NUMBER_INT); 
+        $data[$cmc.'_type_id'] = filter_input(INPUT_POST, $cmc.'TypeID', FILTER_SANITIZE_NUMBER_INT);
       }
     }
-    
+
     $data['input_date'] = date('Y-m-d H:i:s');
     $data['last_update'] = date('Y-m-d H:i:s');
 
@@ -217,9 +231,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
     if (isset($_POST['updateRecordID'])) {
+      if ($sysconf['log']['biblio']) {
+        $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
+      }
       /* UPDATE RECORD MODE */
       // remove input date
       unset($data['input_date']);
+      unset($data['uid']);
       // filter update record ID
       $updateRecordID = (integer)$_POST['updateRecordID'];
       // update data
@@ -247,6 +265,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update bibliographic data ('.$data['title'].') with biblio_id ('.$updateRecordID.')');
+
+        if ($sysconf['log']['biblio']) {
+          $_currrawdata = api::biblio_load($dbs, $updateRecordID);
+          api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
+          unset($_SESSION['_prevrawdata'][$updateRecordID]);
+        }
+
         // close window OR redirect main page
         if ($in_pop_up) {
           $itemCollID = (integer)$_POST['itemCollID'];
@@ -301,6 +326,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::jsAlert(__('New Bibliography Data Successfully Saved'));
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data ('.$data['title'].') with biblio_id ('.$last_biblio_id.')');
+        if ($sysconf['log']['biblio']) {
+          $_rawdata = api::biblio_load($dbs, $last_biblio_id);
+          api::bibliolog_write($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], 'create', 'description', $_rawdata, 'New data. Bibliography.');
+          api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_rawdata, NULL);
+        }
         // clear related sessions
         $_SESSION['biblioAuthor'] = array();
         $_SESSION['biblioTopic'] = array();
@@ -316,33 +346,59 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
 
     // item batch insert
-    if (trim($_POST['itemCodePattern']) != '' && $_POST['itemCodeStart'] > 0 && $_POST['itemCodeEnd'] > 0) {
-      $hasil = array();
+    if (trim($_POST['itemCodePattern']) != '' && $_POST['totalItems'] > 0 ) {
       $pattern = trim($_POST['itemCodePattern']);
-      // get last zero chars
-      preg_match('@0+$@i', $pattern, $hasil);
-      $zeros = strlen($hasil[0]);
-      $start = (integer)$_POST['itemCodeStart'];
-      $end = (integer)$_POST['itemCodeEnd'];
-      for ($b = $start; $b <= $end; $b++) {
-      $len = strlen($b);
-      if ($zeros > 0) {
-        $itemcode = preg_replace('@0{'.$len.'}$@i', $b, $pattern);
-      } else { $itemcode = $pattern.$b; }
+      $total = (integer)$_POST['totalItems'];
+      $regex = '/0{3,}/';
 
-      $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id)
-        VALUES (%d, '%s', '%s', %d)", $updateRecordID?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], $_POST['collTypeID']);
-      @$dbs->query($item_insert_sql);
+      // get zeros
+      preg_match($regex, $pattern, $result);
+      $zeros = strlen($result[0]);
+
+      // get chars
+      $chars = preg_split($regex, $pattern);
+
+      $chars_last = (isset($chars[1]) && !empty(trim($chars[1])))?trim($chars[1]):'';
+
+      // get last number from database
+      $last_q = $dbs->query('SELECT item_code FROM item WHERE item_code REGEXP \'^'.$chars[0].'[0-9]{3,}'.$chars_last.'$\' ORDER BY item_code DESC LIMIT 1');
+      if (!$dbs->errno && $last_q->num_rows > 0) {
+        $last_d = $last_q->fetch_row();
+        // get last  number
+        $ptn = '/'.$chars[0].'|'.$chars_last.'$/';
+        $last = preg_replace($ptn, '', $last_d[0]);
+        $start = intval($last) + 1;
+      } else {
+        $start = 1;
+      }
+
+      $end = $start + $total;
+      for ($b=$start; $b < $end; $b++) {
+        $len = strlen($b);
+        $itemcode = $chars[0];
+        if ($zeros > 0) {
+          $itemcode .= preg_replace('@0{'.$len.'}$@i', $b, $result[0]);
+        } else { $itemcode .= $b; }
+        $itemcode .= $chars[1];
+
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, location_id, item_status_id, input_date, last_update, uid)
+        VALUES (%d, '%s', '%s', %d, '%s', 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
+        @$dbs->query($item_insert_sql);
       }
     }
 
-    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'bibliography/index.php\', {method: \'post\', addData: \'itemID='.$last_biblio_id.'&detail=true\'});</script>';
+    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'bibliography/index.php\', {method: \'post\', addData: \'itemID='.(isset($updateRecordID)?$updateRecordID:$last_biblio_id).'&detail=true\'});</script>';
     exit();
   }
   exit();
 } else if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
   if (!($can_read AND $can_write)) {
     die();
+  }
+  if (!simbio_form_maker::isTokenValid()) {
+    utility::jsAlert(__('Invalid form submission token!'));
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
+    exit();
   }
   /* DATA DELETION PROCESS */
   // create sql op object
@@ -365,6 +421,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $biblio_item_q = $dbs->query($_sql_biblio_item_q);
     $biblio_item_d = $biblio_item_q->fetch_row();
     if ($biblio_item_d[1] < 1) {
+
+        if ($sysconf['log']['biblio']) {
+          $_rawdata = api::biblio_load($dbs, $itemID);
+          api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
+        }
+
+
       if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
         $error_num++;
       } else {
@@ -376,6 +439,24 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
         $sql_op->delete('biblio_relation', "biblio_id=$itemID");
         $sql_op->delete('search_biblio', "biblio_id=$itemID");
+
+        // delete serial data
+        // check kardex if exist
+        $_sql_serial_kardex_q = sprintf('SELECT b.title, COUNT(kardex_id),s.serial_id FROM biblio AS b
+          LEFT JOIN `serial` AS s ON b.biblio_id=s.biblio_id
+          LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
+          WHERE b.biblio_id=%d GROUP BY title', $itemID);
+        $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
+        if ($serial_kardex_q) {
+          $serial_kardex_d = $serial_kardex_q->fetch_row();
+          // delete kardex
+          if ($serial_kardex_d[1] > 1) {
+            $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+          }
+        }
+        //delete serial data
+          $sql_op->delete('serial', "biblio_id=$itemID");
+
         // add to http query for UCS delete
         $http_query .= "itemID[]=$itemID&";
       }
@@ -475,7 +556,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       $form->record_id = $itemID;
     } else {
       $form->addHidden('updateRecordID', $itemID);
-      $form->addHidden('itemCollID', $_POST['itemCollID']);
+      if (isset($_POST['itemCollID'])) {
+        $form->addHidden('itemCollID', $_POST['itemCollID']);
+      }
       $form->back_button = false;
     }
     // form record title
@@ -518,16 +601,45 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->addTextField('text', 'edition', __('Edition'), $rec_d['edition'], 'style="width: 40%;"', __('A version of publication having substantial changes or additions.'));
   // biblio specific detail info/area
   $form->addTextField('textarea', 'specDetailInfo', __('Specific Detail Info'), $rec_d['spec_detail_info'], 'rows="2" style="width: 100%"', __('explain more details about an item e.g. scale within a map, running time in a movie dvd.'));
-  // biblio item batch add
-  $str_input = __('Pattern').': <input type="text" class="small_input" name="itemCodePattern" value="'.$sysconf['batch_item_code_pattern'].'" /> &nbsp;';
-  $str_input .= __('From').': <input type="text" class="small_input" name="itemCodeStart" value="0" /> '.__('To').' <input type="text" class="small_input" name="itemCodeEnd" value="0" /> &nbsp;';
-    // get collection type data related to this record from database
+  // biblio item batch add (by.ido alit)
+  $pattern_options = array(
+    // default value
+    array($sysconf['batch_item_code_pattern'], $sysconf['batch_item_code_pattern'])
+    );
+  // get pattern from database
+  $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
+  if (!$dbs->errno) {
+    // empty pattern
+    $pattern_options = array();
+    $pattern_d = $pattern_q->fetch_row();
+    $val = @unserialize($pattern_d[0]);
+    if (!empty($val)) {
+      foreach ($val as $v) {
+        $pattern_options[] = array($v,$v);
+      }
+    }
+  }
+  $str_input  = '<div class="btn-group">';
+  $str_input .= '<a style="margin-right:0px" class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'">
+                  <i class="glyphicon glyphicon-plus"></i> '.__('Add New Pattern').'</a>';
+  $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" class="notAjax btn btn-default openPopUp" title="'.__('Item code pattern manager.').'"><i class="glyphicon glyphicon-wrench"></i></a>';
+  $str_input .= '</div>&nbsp;';
+  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';
+  $str_input .= '<label id="totalItemsLabel">' . __('Total item(s)').':</label> <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
+  // get collection type data related to this record from database
     $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
     $coll_type_options = array();
     while ($coll_type_d = $coll_type_q->fetch_row()) {
         $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
     }
-  $str_input .= __('Collection Type').': '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  $str_input .= '<label id="collTypeIDLabel">' . __('Collection Type').':</label> '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  // get location data related to this record from database
+  $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
+  $location_options = array();
+  while ($location_d = $location_q->fetch_row()) {
+    $location_options[] = array($location_d[0], $location_d[1]);
+  }
+  $str_input .= __('Location').': '.simbio_form_element::selectList('locationID', $location_options, '', 'style="width: 100px;"');;
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
@@ -544,7 +656,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
   }
   $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="select2"', __('General material designation. The physical form of publication.'));
-  
+
   // biblio RDA content, media, carrier type
   foreach ($rda_cmc as $cmc => $cmc_name) {
     $cmc_options = array();
@@ -561,7 +673,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
   }
 
-  
+
   // biblio publish frequencies
   // get frequency data related to this record from database
   $freq_q = $dbs->query('SELECT frequency_id, frequency FROM mst_frequency');
@@ -666,7 +778,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Biblio Relation').'">'.__('Add Relation').'</a></div>';
   $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="borderAll" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('Related Biblio Data'), $str_input);
-  
+
   /**
    * Custom fields
    */
@@ -718,7 +830,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $checked = isset($arr_labels[$label_d['label_name']])?' checked':'';
     $url = isset($arr_labels[$label_d['label_name']])?$arr_labels[$label_d['label_name']]:'';
     $str_input .= '<div '
-    .'style="background: url('.SWB.IMG.'/labels/'.$label_d['label_image'].') left center no-repeat; padding-left: 30px; height: 45px;" class="'.$label_d['label_name'].'"> '
+    .'style="background: url('.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_d['label_image']).'&amp;width=24&amp;height=24) left center no-repeat; padding-left: 30px; height: 45px;" class="'.$label_d['label_name'].'"> '
     .'<input type="checkbox" name="labels[]" value="'.$label_d['label_name'].'"'.$checked.' /> '.$label_d['label_desc']
     .'<div>URL : <input type="text" title="Enter a website link/URL to make this label clickable" '
     .'name="label_urls['.$label_d['label_name'].']" size="50" maxlength="300" value="'.$url.'" /></div></div>';
@@ -750,6 +862,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $('#class').change(function() {
       $('#callNumber').val($(this).val().replace('NEW:',''));
     });
+
+    // popup pattern
   });
   </script>
   <?php
@@ -861,7 +975,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));
   if (isset($_GET['keywords']) AND $_GET['keywords']) {
   $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-  echo '<div class="infoBox">'.$msg.' : "'.$_GET['keywords'].'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>'; //mfc
+  echo '<div class="infoBox">'.$msg.' : "'.htmlentities($_GET['keywords']).'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>'; //mfc
   }
 
   echo $datagrid_result;

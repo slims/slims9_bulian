@@ -31,8 +31,10 @@ $php_pass = 0;
 $db_pass = 0;
 $gd_pass = 0;
 $yaz_pass = 0;
+$gettext_pass = 0;
+$mbstring_pass = 0;
 $pass = 0;
-$pass_max = 3;
+$pass_max = 5;
 
 // ststus html
 $success = '<i class="fa fa-check-square status-success"></i>';
@@ -54,9 +56,20 @@ if ($gd = isGdOk()) {
     $pass++;
 }
 
+if ($gettext = isGettextOk()) {
+    $gettext_pass = 1;
+    $pass++;
+}
+
+if ($mbstring = isMbStringOk()) {
+    $mbstring_pass = 1;
+    $pass++;
+}
+
 if ($yaz = isYazOk()) {
 	$yaz_pass = 1;
 }
+
 
 ?>
 <!DOCTYPE HTML>
@@ -69,12 +82,12 @@ if ($yaz = isYazOk()) {
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
 </head>
 <body>
-    <div class="wrapper">
-	<div class="title">
-	    <h2>Step 1 - Environment Checking</h2>
-	</div>
-	<p class="message">Check the minimum system environment for installing SLiMS</p>
+<div class="wrapper" id="welcome-wrap">
 	<div class="content hastable">
+		<div class="title">
+		    <h2>Step 1 - Environment Checking</h2>
+		</div>
+		<p class="message">Check the minimum system environment for installing SLiMS</p>
 		<div class="items">
 			<div class="key">
 				PHP version
@@ -117,7 +130,28 @@ if ($yaz = isYazOk()) {
 			</div>
 			<div class="status-message"></div>
 		</div>
-
+    <div class="items">
+			<div class="key">
+				Gettext
+			</div>
+			<div class="value">
+				<?php echo ($gettext_pass) ? 'Yes' : 'No'; ?>
+			</div>
+			<div class="status status-error">
+				<?php echo ($gettext_pass) ? $success : $error; ?>
+			</div>
+		</div>
+    <div class="items">
+			<div class="key">
+				mbstring
+			</div>
+			<div class="value">
+				<?php echo ($mbstring_pass) ? 'Yes' : 'No'; ?>
+			</div>
+			<div class="status status-error">
+				<?php echo ($mbstring_pass) ? $success : $error; ?>
+			</div>
+		</div>    
 		<div class="items">
 			<div class="key">
 				YAZ
@@ -132,11 +166,11 @@ if ($yaz = isYazOk()) {
 				<?php echo ($yaz_pass) ? '' : '&nbsp; <em>optional</em>'; ?>
 			</div>
 		</div>
-
+		<hr>
 		<div class="toright">
 			<?php
 			if ($pass == $pass_max) { ?>
-				<input type="button" id="upgrade-btn" class="button upgrade" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
+				<input type="button" id="upgrade-btn" class="button upgrade" name="btn_cancel" value="Upgrade" title="Click to start upgrade" onclick="document.location.href='upgrade.php'">
 				<input type="button" class="button" value="New Install" name="submit" title="Click to start installation" onclick="document.location.href='install.php'">
 			<?php } else { ?>
 			<input type="button" class="button disabled" name="btn_cancel" value="Upgrade" title="Click to start upgrade">
@@ -146,30 +180,5 @@ if ($yaz = isYazOk()) {
 	</div>
 	<?php include_once("footer.php"); ?>
 </div>
-
-<div class="upgrade-warning">
-	<div class="panel">
-		<div class="panel-header"><h4>PERHATIAN!</h4></div>
-		<div class="panel-body">
-			<p>Sistem keamanan baru pada akasia akan mengakibatkan kata kunci masuk pustakawan (password user) dan area anggota (password member) akan direset menjadi kata kunci standar (default) yaitu "akasia" (tanpa tanda petik).</p>
-			<p>Apakah anda tetap ingin melanjutkan upgrade ?</p>
-		</div>
-		<div class="panel-footer">
-			<a href="#" class="button" id="close-btn">Tidak</a>
-			<input type="button" class="button upgrade" name="btn_cancel" value="Ya" title="Click to start upgrade" onclick="document.location.href='upgrade.php'">
-		</div>
-	</div>
-</div>
-<script type="text/javascript" src="./../js/jquery.js"></script>
-<script type="text/javascript">
-	$(document).ready(function () {
-		$('#upgrade-btn').click(function () {
-			$('.upgrade-warning').addClass('active');
-		});
-		$('#close-btn').click(function () {
-			$('.upgrade-warning').removeClass('active');
-		});
-	});
-</script>
 </body>
 </html>

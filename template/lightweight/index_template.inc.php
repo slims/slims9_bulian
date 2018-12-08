@@ -93,6 +93,7 @@ include "partials/nav.php";
       <input type="text" id="keyword" class="s-search" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" placeholder="<?php echo __('Put some keyword(s)...') ?>" role="search">
       <button type="submit" name="search" value="search" class="s-btn"><?php echo __('Search'); ?></button>
     </form>
+    <a href="#" class="s-search-advances" width="800" height="500" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
   </div>
 
   <!-- Main
@@ -108,7 +109,7 @@ include "partials/nav.php";
           // Generate Output
           // catch empty list
           if(strlen($main_content) == 7) {
-            echo '<h2>No Result</h2><hr/><p>Please try again</p>';
+            echo '<h2>' . __('No Result') . '</h2><hr/><p>' . __('Please try again') . '</p>';
           } else {
             echo $main_content;
           }
@@ -195,6 +196,9 @@ include "partials/nav.php";
         <button type="submit" name="search" value="search" class="s-btn"><?php echo __('Search'); ?></button>
         <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
       </form>
+
+      <a href="#" class="s-search-advances" title="<?php echo __('Advanced Search') ?>"><?php echo __('Advanced Search') ?></a>
+
     </div>
 
 <?php endif; ?>
@@ -202,7 +206,10 @@ include "partials/nav.php";
 </main>
 
 
-<?php 
+<?php
+// Advance Search
+include "partials/advsearch.php";
+
 // Footer
 include "partials/footer.php"; 
 
@@ -226,7 +233,7 @@ include "partials/bg.php";
 <script src="<?php echo SWB.$sysconf['template']['dir']; ?>/<?php echo $sysconf['template']['theme']; ?>/js/bootstrap.min.js"></script>
 <script src="<?php echo SWB.$sysconf['template']['dir']; ?>/<?php echo $sysconf['template']['theme']; ?>/js/custom.js"></script>
 <script>
-  <?php if(isset($_GET['search']) && ($_GET['keywords']) != '') : ?>
+  <?php if(isset($_GET['search']) && isset($_GET['keywords']) && ($_GET['keywords']) != '') : ?>
   $('.biblioRecord .detail-list, .biblioRecord .title, .biblioRecord .abstract, .biblioRecord .controls').highlight(<?php echo $searched_words_js_array; ?>);
   <?php endif; ?>
 
@@ -269,6 +276,22 @@ include "partials/bg.php";
       auto: 5,
       wrap: 'last',
       initCallback: mycarousel_initCallback
+  });
+
+  $('.s-search-advances').click(function() {
+      console.log('s-search-advances clicked');
+      $('#advance-search').animate({opacity : 1, zIndex: 1}, 200, 'linear');
+      $('#simply-search, .s-menu, #content').hide();
+      $('.s-header').addClass('hide-header');
+      $('.s-background').addClass('hide-background');
+  });
+
+  $('#hide-advance-search').click(function(){
+      $('.s-header').toggleClass('hide-header');
+      $('.s-background').toggleClass('hide-background');
+      $('#advance-search').animate({opacity : 0, zIndex: -1}, 100, 'linear', function(){
+          $('#simply-search, .s-menu, #content').show();
+      });
   });
 </script>
 

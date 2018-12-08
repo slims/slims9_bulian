@@ -53,11 +53,16 @@ if (isset($_GET['biblioID']) AND !empty($_GET['biblioID'])) {
 
 // start the output buffer
 ob_start();
+if ($sysconf['log']['biblio']) {
+  if (!isset($_SESSION['_prevrawdata'][$biblioID])) {
+    $_SESSION['_prevrawdata'][$biblioID] = api::biblio_load($dbs, $biblioID);
+  }
+}
 ?>
 <script type="text/javascript">
 function confirmProcess(int_biblio_id, int_item_id)
 {
-  var confirmBox = confirm('Are you sure to remove selected author?' + "\n" + 'Once deleted, it can\'t be restored!');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected author?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.bid.value = int_biblio_id;
@@ -99,13 +104,14 @@ if ($biblioID) {
   $biblio_author_q = $dbs->query("SELECT ba.*, a.author_name, a.author_year, a.authority_type FROM biblio_author AS ba
       LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
       WHERE ba.biblio_id=$biblioID ORDER BY level ASC");
+  if($biblio_author_q->num_rows > 0){
   $row = 1;
   while ($biblio_author_d = $biblio_author_q->fetch_assoc()) {
     // alternate the row color
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">Delete</a>';
+    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">' . __('Delete') . '</a>';
     $author = $biblio_author_d['author_name'];
     $author_year = $biblio_author_d['author_year'];
     $authority_type = $sysconf['authority_type'][$biblio_author_d['authority_type']];
@@ -118,7 +124,7 @@ if ($biblioID) {
     $table->setCellAttr($row, 4, 'class="'.$row_class.'" style="width: 20%;"');
     $row++;
   }
-
+  }
   echo $table->printTable();
   // hidden form
   echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="bid" value="0" /><input type="hidden" name="remove" value="0" /></form>';
@@ -131,7 +137,7 @@ if ($biblioID) {
     $row_class = 'alterCell2';
     foreach ($_SESSION['biblioAuthor'] as $biblio_session) {
       // remove link
-      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_author.php?removesess='.$biblio_session[0].'">Remove</a>';
+      $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_author.php?removesess='.$biblio_session[0].'">' . __('Remove') . '</a>';
 
       if ($biblio_session) {
           $author_q = $dbs->query("SELECT author_name, author_year, authority_type FROM mst_author

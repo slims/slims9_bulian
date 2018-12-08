@@ -100,7 +100,7 @@ if (isset($_SESSION['barcodes'])) {
     if ($file_write) {
       // open result in window
       echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title:"'.__('Barcode Generator').'"})</script>';
-    } else { utility::jsAlert('ERROR! Barcodes failed to generate, possibly because '.SB.FLS.' directory is not writable'); }
+    } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Barcodes failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

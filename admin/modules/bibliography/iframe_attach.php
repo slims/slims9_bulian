@@ -58,10 +58,10 @@ ob_start();
 function confirmProcess(int_biblio_id, int_file_id, str_file_name)
 {
   // confirmation to remove file from repository
-  var confirmBox = confirm('Are you sure to remove the file attachment data?');
+  var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove the file attachment data?'));?>');
   if (confirmBox) {
     // set hidden element value
-    var confirmBox2 = confirm('Do you also want to remove ' + str_file_name.sub('\'', '\\\'') + ' file from repository?');
+    var confirmBox2 = confirm('<?php echo __('Do you also want to remove {filename} file from repository?');?>'.replace('{filename}', str_file_name));
     if (confirmBox2) { document.hiddenActionForm.alsoDeleteFile.value = '1'; }
     document.hiddenActionForm.bid.value = int_biblio_id;
     document.hiddenActionForm.remove.value = int_file_id;
@@ -99,7 +99,7 @@ if (isset($_POST['bid']) AND isset($_POST['remove'])) {
   if ($_POST['alsoDeleteFile'] == '1') {
       // remove file from repository and filesystem
       @unlink(REPOBS.str_replace('/', DS, $file_d['file_dir']).DS.$file_d['file_name']);
-      echo 'alert(\'Attachment '.$file_d['file_name'].' succesfully removed!\');';
+      echo 'alert(\'' . addslashes(str_replace('{filename}', $file_d['file_name'], __('Attachment {filename} succesfully removed!'))) .'\');';
   }
   echo 'location.href = \'iframe_attach.php?biblioID='.$bid.'\';';
   echo '</script>';
@@ -113,7 +113,7 @@ if ($biblioID) {
   // database list
   $biblio_attach_q = $dbs->query('SELECT att.*,fl.* FROM biblio_attachment AS att
       LEFT JOIN files AS fl ON att.file_id=fl.file_id WHERE biblio_id='.$biblioID);
-
+  if($biblio_attach_q->num_rows > 0){
   $row = 1;
   $row_class = 'alterCell2';
   while ($biblio_attach_d = $biblio_attach_q->fetch_assoc()) {
@@ -121,10 +121,10 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" onclick="confirmProcess('.$biblioID.', '.$biblio_attach_d['file_id'].', \''.addslashes($biblio_attach_d['file_name']).'\')" class="notAJAX btn button btn-danger btn-delete">Delete</a>';
+    $remove_link = '<a href="#" onclick="confirmProcess('.$biblioID.', '.$biblio_attach_d['file_id'].', \''.addslashes($biblio_attach_d['file_name']).'\')" class="notAJAX btn button btn-danger btn-delete">' . __('Delete') . '</a>';
 
     // edit link
-    $edit_link = '<a class="notAJAX button btn btn-default openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$biblioID.'&fileID='.$biblio_attach_d['file_id'].'" width="600" height="300" title="'.__('File Attachments').'">Edit</a>';
+    $edit_link = '<a class="notAJAX button btn btn-default openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$biblioID.'&fileID='.$biblio_attach_d['file_id'].'" width="600" height="300" title="'.__('File Attachments').'">' . __('Edit') . '</a>';
 
     // file link
     if (preg_match('@(video|audio|image)/.+@i', $biblio_attach_d['mime_type'])) {
@@ -141,6 +141,7 @@ if ($biblioID) {
 
     $row++;
   }
+  }
   echo $table->printTable();
   // hidden form
   echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="bid" value="0" /><input type="hidden" name="remove" value="0" /><input type="hidden" name="alsoDeleteFile" value="0" /></form>';
@@ -153,7 +154,7 @@ if ($biblioID) {
     $row_class = 'alterCell2';
     foreach ($_SESSION['biblioAttach'] as $idx=>$biblio_session) {
       // remove link
-      $remove_link = '<a href="iframe_attach.php?removesess='.$idx.'" class="notAJAX btn button btn-danger btn-delete">Remove</a>';
+      $remove_link = '<a href="iframe_attach.php?removesess='.$idx.'" class="notAJAX btn button btn-danger btn-delete">' . __('Remove') . '</a>';
 
       $table->appendTableRow(array($remove_link, $biblio_session['file_name'], $biblio_session['last_update']));
       $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; background-color: #ffc466; width: 10%;"');

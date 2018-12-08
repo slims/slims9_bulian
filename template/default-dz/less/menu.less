@@ -1,0 +1,309 @@
+/* Menu
+ ================================ */
+.s-pmenu {
+  position: relative;
+  margin:0 auto;
+}
+
+@media (max-width: 468px) {
+  .s-pmenu {
+    position: absolute;
+    margin:0 auto;
+    left: 44%;
+    top: 115px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .s-pmenu {
+    top:-50px;
+  }  
+}
+
+.s-menu {
+  position: relative;
+  margin:0 auto;
+}
+
+.s-menu a {
+  display: block;
+  color: #fff;
+  background-color: #fff;
+  width: 30px;
+  border-radius: 50px;
+  padding: 15px 0 0 8px;
+  height: 30px;
+  margin: 20px auto 0 auto;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-menu {
+      z-index: 2099;
+      position: absolute;
+      left:auto;
+      right:15px;
+      top:10px;
+      margin:0;
+  }
+
+  .s-menu a {
+    margin: 0;
+    width: 30px;
+    height: 30px;
+  }
+}  
+
+@media only screen and (max-width : 480px) {
+  .s-menu-toggle {
+    width: 19px;
+    height: 20px;
+    display: block;
+    vertical-align: top;
+    padding-top: 3px;
+    margin-left: 15px;
+  }
+
+}
+
+.s-menu-toggle span, .s-menu-toggle span:before, .s-menu-toggle span:after {
+  cursor: pointer;
+  border-radius: 1px;
+  height: 1px;
+  width: 15px;
+  background: #282828;
+  position: absolute;
+  display: block;
+  content: '';
+  transition: all 500ms ease-in-out;
+}
+.s-menu-toggle span:before {
+  top: -3px;
+}
+.s-menu-toggle span:after {
+  bottom: -3px;
+}
+.s-menu-toggle:hover span:before {
+  top: -6px;
+}
+.s-menu-toggle:hover span:after {
+  bottom: -6px;
+}
+.s-menu-toggle.active span {
+  background-color: transparent;
+}
+.s-menu-toggle.active span:before, .s-menu-toggle.active span:after {
+  top: 0;
+}
+.s-menu-toggle.active span:before {
+  transform: rotate(45deg);
+}
+.s-menu-toggle.active span:after {
+  transform: rotate(-45deg);
+}
+.s-menu-content {
+  background-color: #eee;
+  width: 100%;
+  right: -100%;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  text-align: center;
+  transition: all 500ms ease-in-out;
+  z-index: 4099;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media only screen and (min-width : 768px) {
+  .s-menu-content {
+    padding: 10px 30px;
+    width: 300px;    
+    right: -300px;
+  }
+}
+
+.s-menu-content.active {
+  right: 0;
+}
+.s-menu-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 75px 0;
+}
+.s-menu-content li {
+  line-height: 30pt;
+}
+.s-menu-content a {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #000;
+}
+.s-menu-content h1 {
+  font-weight: lighter !important;
+  font-size: 20pt;
+  text-transform: uppercase;
+  border-bottom: double 3px #d5d5d5;
+  padding-bottom: 30px;
+  padding-top: 0;
+}
+.s-menu-content .s-menu-toggle {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+  width: 30px;
+  height: 30px;  
+}
+.s-menu-content .s-menu-toggle span, .s-menu-content .s-menu-toggle span:before, .s-menu-content .s-menu-toggle span:after {
+  background-color: #333;
+}
+.s-menu-content .s-menu-toggle:hover span, .s-menu-content .s-menu-toggle:hover span:before, .s-menu-content .s-menu-toggle:hover span:after {
+  background-color: #000;
+}
+.s-menu-content .s-menu-toggle span {
+  transform: rotate(-45deg);
+  top: 0;
+}
+.s-menu-content .s-menu-toggle span:before {
+  opacity: 0;
+}
+.s-menu-content .s-menu-toggle span:after {
+  transform: rotate(-90deg);
+  top: 0;
+}
+.s-menu-info {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  border-top: double 3px #d5d5d5;
+  padding-top: 25px;
+  color: #000;
+}
+.s-menu-info label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #bbb;
+  padding: 0 0 12px 0;
+  margin: 0;
+}
+
+/* Custom Select Dropdown
+ ================================ */
+ .custom-dropdown--large {
+   font-size: 1.5em;
+ }
+
+ .custom-dropdown--small {
+   font-size: 1em;
+ }
+
+ .custom-dropdown__select{
+   font-size: inherit; /* inherit size from .custom-dropdown */
+   padding: .5em; /* add some space*/
+   margin: 0; /* remove default margins */
+ }
+
+ .custom-dropdown__select--white {
+   background-color: #fff;
+   color: #444;
+ }
+
+ .custom-dropdown__select--emerald {
+   background-color: #20b390;
+   color: #fff;
+ }
+
+ .custom-dropdown__select--red {
+   background-color: #d53a22;
+   color: #fff;
+ }
+
+ @supports (pointer-events: none) and
+       ((-webkit-appearance: none) or
+       (-moz-appearance: none) or
+       (appearance: none)) {
+
+   .custom-dropdown {
+     position: relative;
+     display: inline-block;
+     vertical-align: middle;
+   }
+
+   .custom-dropdown__select {
+     padding-right: 5em; /* accommodate with the pseudo elements for the dropdown arrow */
+     border: 0;
+     border-radius: 0;
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+   }
+
+   .custom-dropdown::before,
+   .custom-dropdown::after {
+     content: "";
+     position: absolute;
+     pointer-events: none;
+   }
+
+   .custom-dropdown::after { /*  Custom dropdown arrow */
+     content: "\25BC";
+     height: 1em;
+     font-size: .625em;
+     line-height: 1;
+     right: 1.2em;
+     top: 50%; margin-top: -.5em;
+   }
+
+   .custom-dropdown::before { /*  Custom dropdown arrow cover */
+     width: 2.6em;
+     right: 0; top: 0; bottom: 0;
+     border-radius: 0 0 0 0;
+   }
+
+   .custom-dropdown__select[disabled] {
+     color: rgba(0,0,0,.3);
+   }
+
+   .custom-dropdown.custom-dropdown--disabled::after {
+     color: rgba(0,0,0,.1);
+   }
+
+   /* White dropdown style */
+   .custom-dropdown--white::before {
+     background-color: #fff;
+     border-left: 1px solid rgba(0,0,0,.1);
+   }
+
+   .custom-dropdown--white::after {
+     color: rgba(0,0,0,.9);
+   }
+
+   /* Emerald dropdown style */
+   .custom-dropdown--emerald::before {
+     background-color: #1aa181;
+   }
+
+   .custom-dropdown--emerald::after {
+     color: rgba(0,0,0,.4);
+   }
+
+
+   /* Red dropdown style */
+   .custom-dropdown--red::before {
+     background-color: #d53a22;
+   }
+
+   .custom-dropdown--red::after {
+     color: rgba(0,0,0,.4);
+   }
+
+   /* FF only temporary & ugly fixes */
+   /* the "appearance: none" applied on select still shows a dropdown arrow on Firefox */
+   /* https://bugzilla.mozilla.org/show_bug.cgi?id=649849 */
+   @-moz-document url-prefix() {
+     .custom-dropdown__select              { padding-right: .9em }
+     .custom-dropdown--large .custom-dropdown__select { padding-right: 1.3em }
+     .custom-dropdown--small .custom-dropdown__select { padding-right: .5em }
+   }
+
+ }

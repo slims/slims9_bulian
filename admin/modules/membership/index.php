@@ -71,7 +71,7 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $_POST['mimg']));
   if ($_delete) {
     @unlink(sprintf(IMGBS.'persons/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
   }
   exit();
 }
@@ -80,12 +80,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $memberID = trim($_POST['memberID']);
     $memberName = trim($_POST['memberName']);
+    $birthDate = trim($_POST['birthDate']);
     $mpasswd1 = trim($_POST['memberPasswd']);
     $mpasswd2 = trim($_POST['memberPasswd2']);
-    if (empty($memberID) OR empty($memberName)) {
-        utility::jsAlert(__('Member ID and Name can\'t be empty')); //mfc
+    if (empty($memberID) OR empty($memberName) OR empty($birthDate)) {
+        utility::jsAlert(__('Member ID, Name and Birthday cannot be empty')); //mfc
         exit();
-    } else if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
+    } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
     } else {
@@ -116,6 +117,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['inst_name'] = trim($dbs->escape_string(strip_tags($_POST['instName'])));
         $data['gender'] = trim($dbs->escape_string(strip_tags($_POST['gender'])));
         $data['birth_date'] = trim($dbs->escape_string(strip_tags($_POST['birthDate'])));
+        $data['birth_date'] = $data['birth_date'] == '' ? null : $data['birth_date'];
         $data['register_date'] = trim($dbs->escape_string(strip_tags($_POST['regDate'])));
         // member since date
         $member_since = trim($dbs->escape_string(strip_tags($_POST['sinceDate'])));
@@ -397,7 +399,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // member name
     $form->addTextField('text', 'memberName', __('Member Name').'*', $rec_d['member_name'], 'style="width: 100%;"');
     // member birth date
-    $form->addDateField('birthDate', __('Birth Date'), $rec_d['birth_date']);
+    $form->addDateField('birthDate', __('Birth Date').'*', $rec_d['birth_date']);
     // member since date
     $form->addDateField('sinceDate', __('Member Since').'*', $form->edit_mode?$rec_d['member_since_date']:date('Y-m-d'));
     // member register date
@@ -506,12 +508,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     $form->addAnything(__('Photo'), $str_input);
 
+    // hidden username and password fields so that the password manager of the browser will not fill in the username in the memberEmail and the password in the memberPasswd field
+    $form->addTextField('text', 'dummyUserField', null, null, '');
+    $form->addTextField('password', 'dummyPasswdField', null, null, '');
+    echo '<style type="text/css">#simbioFormRowdummyPasswdField, #simbioFormRowdummyUserField {display: none}</style>';
+
     // member email
     $form->addTextField('text', 'memberEmail', __('E-mail'), $rec_d['member_email'], 'style="width: 40%;"');
     // member password
-    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
     // member password confirmation
-    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;"');
+    $form->addTextField('password', 'memberPasswd2', __('Confirm New Password'), null, 'style="width: 40%;" autocomplete="new-password"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -583,7 +590,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             }
         }
         if (isset($_GET['keywords']) AND $_GET['keywords']) {
-            echo __('Found').' '.$datagrid->num_rows.' '.__('from your search with keyword').' : "'.$_GET['keywords'].'"'; //mfc
+            echo __('Found').' '.$datagrid->num_rows.' '.__('from your search with keyword').' : "'.htmlentities($_GET['keywords']).'"'; //mfc
         }
         echo '</div>';
     }

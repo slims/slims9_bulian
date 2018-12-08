@@ -10,7 +10,9 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
 }
+
 .s-background > video {
   position: absolute;
   top: 0;
@@ -124,17 +126,123 @@
   filter: grayscale(100%);
 }
 
-@-webkit-keyframes slideImg {   
+@-webkit-keyframes slideImg {
   25%{opacity:1;}
   40%{opacity:0;}
-} 
+}
 
-@keyframes slideImg {   
+@keyframes slideImg {
   25%{opacity:1;}
   40%{opacity:0;}
-} 
+}
 
-.slider:nth-child(1){-webkit-animation-delay:0s;animation-delay:0s;}
-.slider:nth-child(2){-webkit-animation-delay:4s;animation-delay:4s;}
-.slider:nth-child(3){-webkit-animation-delay:8s;animation-delay:8s;}
-.slider:nth-child(4){-webkit-animation-delay:12s;animation-delay:12s;}
+.slider-nth(@delay) {
+  -webkit-animation-delay:@delay;
+  animation-delay:@delay;
+}
+
+.slider:nth-child(1){
+  .slider-nth(0);
+}
+
+.slider:nth-child(2){
+  .slider-nth(4s);
+}
+
+.slider:nth-child(3){
+  .slider-nth(8s);
+}
+
+.slider:nth-child(4){
+  .slider-nth(12s);
+}
+
+.hide-header {
+    position: absolute !important;
+    top: 530px !important;
+    transform: translateY(0%);
+    .animate-cubic-bezier();
+}
+
+.hide-background {
+    box-shadow: 0 0 10px rgba(100,100,100,0.5);
+    top: 500px !important;
+    transform: translateY(0%);
+    .animate-cubic-bezier();
+}
+
+#advance-search {
+    opacity: 0;
+    width: 100%;
+    margin: 0 auto;
+    z-index: -1;
+
+    @media only screen {
+      @media (min-width : 768px) {
+        top: 0;
+        left: 300px;
+        position: fixed;
+        width: 50%;
+        left: 300px;
+      }
+    }
+
+
+    select,
+    input[type='text'] {
+        border: none;
+        border-radius: 3px;
+        box-shadow: none;
+        margin-bottom: 2px !important;
+
+        @media only screen {
+          @media (min-width : 768px) {
+            padding: 10px 15px;
+            height: 45px;
+            margin-bottom: 5px !important;
+          }
+        }
+
+    }
+
+    .label {
+        line-height: 1;
+        letter-spacing: 1px;
+        font-size: 9pt;
+        color: #999;
+        font-weight: bold;
+        text-transform: capitalize;
+        @media only screen {
+          @media (min-width : 768px) {
+            line-height: 2;
+          }
+        }
+
+    }
+
+    h2 {
+        font-size: 10pt;
+        color: #39c;
+        line-height: 2;
+        @media only screen {
+          @media (min-width : 768px) {
+          font-size: 16pt;
+          }
+        }
+
+    }
+
+    button {
+        background-color: #000;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 50px;
+    }
+
+    .hamburger {
+        position: fixed;
+        top: 40px;
+        right: 40px;
+    }
+}

@@ -41,6 +41,8 @@ $menu[] = array(__('Doc. Language'), MWB.'master_file/doc_language.php', __('Doc
 $menu[] = array(__('Label'), MWB.'master_file/label.php', __('Special Labels for Titles to Show Up On Homepage'));
 $menu[] = array(__('Frequency'), MWB.'master_file/frequency.php', __('Frequency'));
 $menu[] = array('Header', __('Tools'));
+$menu[] = array(__('Cataloging Servers'), MWB.'master_file/p2pservers.php', __('List of available Copy Cataloging Servers'));
+$menu[] = array(__('Item Code Pattern'), MWB.'master_file/item_code_pattern.php', __('Manage item code pattern'));
 $menu[] = array(__('Orphaned Author'), MWB.'master_file/author.php?type=orphaned', __('Orphaned Authors'));
 $menu[] = array(__('Orphaned Subject'), MWB.'master_file/topic.php?type=orphaned', __('Orphaned Subject'));
 $menu[] = array(__('Orphaned Publisher'), MWB.'master_file/publisher.php?type=orphaned', __('Orphaned Publisher'));

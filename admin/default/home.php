@@ -53,7 +53,7 @@ if (!extension_loaded('gd')) {
 $overdue_q = $dbs->query('SELECT COUNT(loan_id) FROM loan AS l WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\''.date('Y-m-d').'\')) GROUP BY member_id');
 $num_overdue = $overdue_q->num_rows;
 if ($num_overdue > 0) {
-    $warnings[] = str_replace('{num_overdue}', $num_overdue, __('There is currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail')); //mfc
+    $warnings[] = str_replace('{num_overdue}', $num_overdue, __('There are currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail')); //mfc
     $overdue_q->free_result();
 }
 // check if images dir is writable or not
@@ -85,28 +85,30 @@ $prevtable          = '';
 $repair             = '';
 $is_repaired        = false;
 
-if (isset ($_POST['do_repair'])) {
+if ($_SESSION['uid'] === '1') {
+  $warnings[] = __('<strong><i>You are logged in as Super User. With great power comes great responsibility.</i></strong>');
+  if (isset ($_POST['do_repair'])) {
     if ($_POST['do_repair'] == 1) {
-        while ($row = $query_of_tables->fetch_row()) {
-            $sql_of_repair = 'REPAIR TABLE '.$row[0];
-            $query_of_repair = $dbs->query ($sql_of_repair);
-        }
+      while ($row = $query_of_tables->fetch_row()) {
+        $sql_of_repair = 'REPAIR TABLE '.$row[0];
+        $query_of_repair = $dbs->query ($sql_of_repair);
+      }
     }
-}
+  }
 
-while ($row = $query_of_tables->fetch_row()) {
+  while ($row = $query_of_tables->fetch_row()) {
     $query_of_check = $dbs->query('CHECK TABLE '.$row[0]);
     while ($rowcheck = $query_of_check->fetch_assoc()) {
-        if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
-            if ($row[0] != $prevtable) {
-                $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
-            }
-            $prevtable = $row[0];
-            $is_repaired = true;
+      if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
+        if ($row[0] != $prevtable) {
+          $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
         }
+        $prevtable = $row[0];
+        $is_repaired = true;
+      }
     }
-}
-if (($is_repaired) && !isset($_POST['do_repair'])) {
+  }
+  if (($is_repaired) && !isset($_POST['do_repair'])) {
     echo '<div class="message">';
     echo '<ul>';
     echo $repair;
@@ -114,8 +116,9 @@ if (($is_repaired) && !isset($_POST['do_repair'])) {
     echo '</div>';
     echo ' <form method="POST" style="margin:0 10px;">
         <input type="hidden" name="do_repair" value="1">
-        <input type="submit" value="'.__('Click Here To Repaire The Tables').'" class="button btn btn-block btn-default">
+        <input type="submit" value="'.__('Click Here To Repair The Tables').'" class="button btn btn-block btn-default">
         </form>';
+  }
 }
 
 // if there any warnings
@@ -162,9 +165,6 @@ if($sysconf['admin_home']['mode'] == 'default') {
 
     // echo $sql_date; //for debug purpose only
     $set_date       = $dbs->query($sql_date);
-    $get_loan       = 0;
-    $get_return     = 0;
-    $get_extends    = 0;
     if($set_date->num_rows > 0 ) {
         while ($transc_date = $set_date->fetch_object()) {
             // set transaction date
@@ -189,7 +189,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                 $transc_loan    = $set_loan->fetch_object();
                 $get_loan      .= $transc_loan->countloan.',';            
             } else {
-                $get_loan       = 0;
+                $get_loan       .= '0,';
             }
 
             // get latest return
@@ -204,14 +204,14 @@ if($sysconf['admin_home']['mode'] == 'default') {
                         AND renewed = 0
                         AND is_return = 1
                     GROUP BY 
-                        loan_date";
+                        return_date";
 
             $set_return       = $dbs->query($sql_return);                     
             if($set_return->num_rows > 0) {
                 $transc_return    = $set_return->fetch_object();
                 $get_return      .= $transc_return->countloan.',';
             } else {
-                $get_return       = 0;
+                $get_return       .= '0,';
             }
 
             // get latest extends
@@ -225,13 +225,13 @@ if($sysconf['admin_home']['mode'] == 'default') {
                         AND is_lent     = 1 
                         AND renewed     = 1
                     GROUP BY 
-                        loan_date";
+                        return_date";
             $set_extends       = $dbs->query($sql_extends);   
             if($set_extends->num_rows > 0) {              
                 $transc_extends    = $set_extends->fetch_object();
                 $get_extends      .= $transc_extends->countloan.',';
             } else {
-                $get_extends       = 0;
+                $get_extends      .= '0,';
             }
         }
     }
@@ -322,16 +322,16 @@ if($sysconf['admin_home']['mode'] == 'default') {
             <div class="col-lg-8 s-dashboard">
               <div class="panel panel-info">
                 <div class="panel-heading">
-                  <h2 class="panel-title">Latest Transactions</h2>
+                  <h2 class="panel-title"><?php echo __('Latest Transactions') ?></h2>
                 </div>
                 <div class="panel-body">
                     <canvas id="line-chartjs" height="319"></canvas>            
                 </div>
                 <div class="panel-footer">
                     <div class="s-dashboard-legend">
-                        <div><i class="fa fa-square" style="color:#f2f2f2;"></i> New</div>
-                        <div><i class="fa fa-square" style="color:#459CBD;"></i> Return</div>
-                        <div><i class="fa fa-square" style="color:#5D45BD;"></i> Extend</div>
+                        <div><i class="fa fa-square" style="color:#f2f2f2;"></i> <?php echo __('New') ?></div>
+                        <div><i class="fa fa-square" style="color:#459CBD;"></i> <?php echo __('Return') ?></div>
+                        <div><i class="fa fa-square" style="color:#5D45BD;"></i> <?php echo __('Extend') ?></div>
                     </div>
                 </div>
               </div>
@@ -339,7 +339,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
             <div class="col-lg-4 s-dashboard">
               <div class="panel panel-default s-dashboard">
                 <div class="panel-heading">
-                  <h2 class="panel-title">Summary</h2>
+                  <h2 class="panel-title"><?php echo __('Summary') ?></h2>
                 </div>
                 <div class="panel-body">
                     <div class="s-chart">                        
@@ -349,23 +349,23 @@ if($sysconf['admin_home']['mode'] == 'default') {
                 <div class="panel-footer">
                     <table class="table">
                         <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#f2f2f2;"></i>&nbsp;&nbsp;Total</td>
+                            <td class="text-left"><i class="fa fa-square" style="color:#f2f2f2;"></i>&nbsp;&nbsp;<?php echo __('Total') ?></td>
                             <td class="text-right"><?php echo $get_total?></td>
                         </tr>
                         <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#337AB7;"></i>&nbsp;&nbsp;New</td>
+                            <td class="text-left"><i class="fa fa-square" style="color:#337AB7;"></i>&nbsp;&nbsp;<?php echo __('New') ?></td>
                             <td class="text-right"><?php echo $get_total_loan?></td>
                         </tr>
                         <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#06B1CD;"></i>&nbsp;&nbsp;Return</td>
+                            <td class="text-left"><i class="fa fa-square" style="color:#06B1CD;"></i>&nbsp;&nbsp;<?php echo __('Return') ?></td>
                             <td class="text-right"><?php echo $get_total_return?></td>
                         </tr>
                         <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#4AC49B;"></i>&nbsp;&nbsp;Extends</td>
+                            <td class="text-left"><i class="fa fa-square" style="color:#4AC49B;"></i>&nbsp;&nbsp;<?php echo __('Extends') ?></td>
                             <td class="text-right"><?php echo $get_total_extends?></td>
                         </tr>
                         <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#F4CC17;"></i>&nbsp;&nbsp;Overdue</dd>
+                            <td class="text-left"><i class="fa fa-square" style="color:#F4CC17;"></i>&nbsp;&nbsp;<?php echo __('Overdue') ?></dd>
                             <td class="text-right"><?php echo $get_total_overdue?></td>
                         </tr>
                     </table>                                      
@@ -379,7 +379,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     <div class="panel-body">
                         <div class="s-widget-icon"><i class="fa fa-bookmark"></i></div>
                         <div class="s-widget-value"><?php echo $get_total_title?></div>
-                        <div class="s-widget-title">Total of Collections</div>                  
+                        <div class="s-widget-title"><?php echo __('Total of Collections') ?></div>
                     </div>
                 </div>
             </div>
@@ -388,7 +388,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     <div class="panel-body">
                         <div class="s-widget-icon"><i class="fa fa-barcode"></i></div>
                         <div class="s-widget-value"><?php echo $get_total_item?></div>
-                        <div class="s-widget-title">Total of Items</div>                  
+                        <div class="s-widget-title"><?php echo __('Total of Items') ?></div>
                     </div>
                 </div>
             </div>
@@ -397,7 +397,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     <div class="panel-body">
                         <div class="s-widget-icon"><i class="fa fa-archive"></i></div>
                         <div class="s-widget-value"><?php echo $get_total_loan?></div>
-                        <div class="s-widget-title">Lent</div>                  
+                        <div class="s-widget-title"><?php echo __('Lent') ?></div>
                     </div>
                 </div>
             </div>
@@ -406,7 +406,7 @@ if($sysconf['admin_home']['mode'] == 'default') {
                     <div class="panel-body">
                         <div class="s-widget-icon"><i class="fa fa-check"></i></div>
                         <div class="s-widget-value"><?php echo $get_total_available?></div>
-                        <div class="s-widget-title">Available</div>                  
+                        <div class="s-widget-title"><?php echo __('Available') ?></div>
                     </div>
                 </div>
             </div>
@@ -455,27 +455,27 @@ $(function(){
         {
             value       : <?php echo $get_total?>,
             color       : "#f2f2f2",
-            label       : "Total"
+            label       : "<?php echo __('Total'); ?>"
         },
         {
             value       : <?php echo $get_total_loan?>,
             color       : "#337AB7",
-            label       : "Loan"
+            label       : "<?php echo __('Loan'); ?>"
         },
         {
             value       : <?php echo $get_total_return?>,
             color       : "#06B1CD",
-            label       : "Return"
+            label       : "<?php echo __('Return'); ?>"
         },
         {
             value       : <?php echo $get_total_extends?>,
             color       : "#4AC49B",
-            label       : "Extend"
+            label       : "<?php echo __('Extend'); ?>"
         },
         {
             value       : <?php echo $get_total_overdue?>,
             color       : "#F4CC17",
-            label       : "Overdue"
+            label       : "<?php echo __('Overdue'); ?>"
         }
 
     ];

@@ -176,7 +176,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     $html_str .= '</style>'."\n";
     $html_str .= '</head>'."\n";
     $html_str .= '<body>'."\n";
-    $html_str .= '<a href="#" onclick="window.print()">Print Again</a>'."\n";
+    $html_str .= '<a href="#" onclick="window.print()">' . __('Print Again') . '</a>'."\n";
     $html_str .= '<table style="margin: 0; padding: 0;" cellspacing="0" cellpadding="0">'."\n";
     // loop the chunked arrays to row
     foreach ($chunked_label_arrays as $label_data) {
@@ -206,8 +206,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     if ($file_write) {
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in new window
-        echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "Label Print Result"})</script>';
-    } else { utility::jsAlert('ERROR! Label failed to generate, possibly because '.SB.FLS.' directory is not writable'); }
+        echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "' . __('Labels Printing') . '"})</script>';
+    } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Label failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 

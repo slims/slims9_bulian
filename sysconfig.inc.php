@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.2 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -88,7 +88,13 @@ define('UPLOAD', SB.FLS.DS);
 
 // repository dir
 define('REPO', 'repository');
-define('REPOBS', SB.REPO.DS);
+$repobs['enable'] = FALSE;
+$repobs['path'] = '/your/alternative/of/repository/directory/';
+if ($repobs['enable'] == TRUE) {
+  define('REPOBS', $repobs['path']);
+} else {
+  define('REPOBS', SB.REPO.DS);
+}
 
 // file attachment dir
 define('ATC', 'att');
@@ -108,7 +114,7 @@ define('HELP', SB.'help'.DS);
 // senayan web doc root dir
 /* Custom base URL */
 $sysconf['baseurl'] = '';
-$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', dirname(@$_SERVER['PHP_SELF']));
+$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
 define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
 
 // admin section web root dir
@@ -139,6 +145,8 @@ require SIMBIO.'simbio.inc.php';
 require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
 // we must include utility library first
 require LIB.'utility.inc.php';
+// include API
+require LIB.'api.inc.php';
 // include biblio class
 require MDLBS.'bibliography/biblio.inc.php';
 
@@ -189,6 +197,9 @@ $sysconf['promote_first_emphasized'] = true;
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
     .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
 
+/* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
+$sysconf['enable_mark'] = true;
+
 /* XML */
 $sysconf['enable_xml_detail'] = true;
 $sysconf['enable_xml_result'] = true;
@@ -199,7 +210,18 @@ $sysconf['jsonld_detail'] = true;
 
 /* DATABASE BACKUP config */
 // specify the full path of mysqldump binary
-$sysconf['mysqldump'] = '/usr/bin/mysqldump';
+// Added by Drajat Hasan
+// For Windows platform with XAMPP
+if (preg_match("/(Windows)/i", php_uname('a'))) {
+   if (preg_match("/(xampp)/i", __DIR__)) {
+      $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
+      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";  
+    }
+} else {
+   // For Linux Platform
+   $sysconf['mysqldump'] = '/usr/bin/mysqldump';
+}
+
 // backup location (make sure it is accessible and rewritable to webserver!)
 $sysconf['temp_dir'] = '/tmp';
 $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
@@ -208,7 +230,7 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'flex'. Default is false
+$sysconf['webcam'] = 'flex'; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;
@@ -344,6 +366,16 @@ $sysconf['ucs']['enable'] = false;
 $sysconf['ucs']['auto_delete'] = false;
 // auto insert new record to UCS?
 $sysconf['ucs']['auto_insert'] = false;
+// UCS server address. NO TRAILING SLASH! for local testing on Windows machine don't use localhost, use 127.0.0.1 instead
+$sysconf['ucs']['serveraddr'] = 'http://localhost/ucs';
+// UCS server version
+$sysconf['ucs']['serverversion'] = 2;
+// node ID
+$sysconf['ucs']['id'] = 'slims-node';
+// default is s0beautifulday
+$sysconf['ucs']['password'] = '2325f677e21c1613909c953eb03c57352259cc5d';
+// node name
+$sysconf['ucs']['name'] = 'SLiMS Library';
 
 /**
  * Z39.50 copy cataloguing sources
@@ -351,6 +383,12 @@ $sysconf['ucs']['auto_insert'] = false;
 $sysconf['z3950_max_result'] = 50;
 $sysconf['z3950_source'][1] = array('uri' => 'z3950.loc.gov:7090/voyager', 'name' => 'Library of Congress Voyager');
 $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voyager', 'name' => 'Library of Congress SRU Voyager');
+
+/**
+ * MARC copy cataloguing sources
+ */
+$sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
+
 
 /**
  * Peer to peer server config
@@ -466,10 +504,10 @@ $sysconf['ipaccess']['smc-reporting'] = 'all';
 $sysconf['ipaccess']['smc-serialcontrol'] = 'all';
 
 // OAI-PMH settings
-$sysconf['OAI']['enable'] = false;
+$sysconf['OAI']['enable'] = true;
 $sysconf['OAI']['identifierPrefix'] = 'oai:slims/';
 $sysconf['OAI']['Identify']['baseURL'] = 'http://'.@$_SERVER['SERVER_NAME'].':'.@$_SERVER['SERVER_PORT'].SWB.'oai.php';
-$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System OAI-PMh';
+$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System Repository';
 $sysconf['OAI']['Identify']['adminEmail'] = 'admin@slims.web.id';
 $sysconf['OAI']['Identify']['granularity'] = 'YYYY-MM-DDThh:mm:ssZ';
 $sysconf['OAI']['Identify']['deletedRecord'] = 'transient';
@@ -481,7 +519,7 @@ $sysconf['OAI']['MetadataFormats']['Dublin Core'] = array(
   'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/');
 
 // Search clustering
-$sysconf['enable_search_clustering'] = true;
+$sysconf['enable_search_clustering'] = false;
 
 // comment
 $sysconf['comment']['enable'] =  true;
@@ -501,11 +539,11 @@ $sysconf['social']['bl'] = 'Blog';
 $sysconf['social']['ym'] = 'Yahoo! Messenger';
 
 /* CHATTING SYSTEM */
-$sysconf['chat_system']['enabled']    	= true;
+$sysconf['chat_system']['enabled']    	= false;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
-$sysconf['chat_system']['opac']       	= true;
-$sysconf['chat_system']['librarian']  	= true;
-$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['opac']       	= false;
+$sysconf['chat_system']['librarian']  	= false;
+$sysconf['chat_system']['server']  		= '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
 /* NEWS */
@@ -628,3 +666,9 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
 // visitor limitation
 $sysconf['enable_visitor_limitation']     = false; // "true" or "false"
 $sysconf['time_visitor_limitation']       = 60; // in minute
+
+/* new log system */
+$sysconf['log']['biblio'] = TRUE;
+
+// REST Api
+$sysconf['api']['version'] = 1;

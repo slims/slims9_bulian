@@ -69,7 +69,7 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
   $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $_POST['uimg']));
   if ($_delete) {
     @unlink(sprintf(IMGBS.'persons/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.$_POST['img'].' successfully removed!\'); $(\'#userImage, #imageFilename\').remove();</script>');
+    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#userImage, #imageFilename\').remove();</script>');
   }
   exit();
 }
@@ -89,7 +89,10 @@ if (isset($_POST['saveData'])) {
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
-    } else {
+    } else if (!simbio_form_maker::isTokenValid()) {
+        utility::jsAlert(__('Invalid form submission token!'));
+        exit();
+    }else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
         $data['user_type'] = (integer)$_POST['userType'];

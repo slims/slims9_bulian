@@ -44,6 +44,7 @@ if (!$can_read) {
 
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
 
+$membershipTypes = membershipApi::getMembershipType($dbs);
 $page_title = 'Loan Report by Class Report';
 $reportView = false;
 if (isset($_GET['reportView'])) {
@@ -110,6 +111,18 @@ if (!$reportView) {
             ?>
             </div>
         </div>
+        <div class="divRow">
+          <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
+          <div class="divRowContent">
+            <select name="membershipType">
+              <?php 
+              foreach ($membershipTypes as $key => $membershipType) {
+                echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+        </div>
     </div>
     <div style="padding-top: 10px; clear: both;">
     <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
@@ -161,6 +174,11 @@ if (!$reportView) {
     if (isset($_GET['year']) AND !empty($_GET['year'])) {
         $selected_year = (integer)$_GET['year'];
     }
+
+    if (isset($_GET['membershipType']) AND !empty($_GET['membershipType'])) {
+        $membershipType = (integer)$_GET['membershipType'];
+    }
+
     // collection type
     $coll_type = null;
     if (isset($_GET['collType'])) {
@@ -181,7 +199,8 @@ if (!$reportView) {
             $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
                 LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
                 LEFT JOIN loan AS l ON l.item_code=i.item_code
-                WHERE classification REGEXP '^[^0-9]' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ));
+                LEFT JOIN member AS m ON l.member_id=m.member_id
+                WHERE classification REGEXP '^[^0-9]' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
             $loan_d = $loan_q->fetch_row();
             if ($loan_d[0] > 0) {
                 $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';
@@ -205,7 +224,8 @@ if (!$reportView) {
             $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
                 LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
                 LEFT JOIN loan AS l ON l.item_code=i.item_code
-                WHERE TRIM(classification) LIKE '$class_num%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ));
+                LEFT JOIN member AS m ON l.member_id=m.member_id
+                WHERE TRIM(classification) LIKE '$class_num%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
             $loan_d = $loan_q->fetch_row();
             if ($loan_d[0] > 0) {
                 $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';
@@ -234,7 +254,8 @@ if (!$reportView) {
                 $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
                     LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
                     LEFT JOIN loan AS l ON l.item_code=i.item_code
-                    WHERE TRIM(classification) LIKE '$class_num"."$class_num2%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ));
+                    LEFT JOIN member AS m ON l.member_id=m.member_id
+                    WHERE TRIM(classification) LIKE '$class_num"."$class_num2%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
                 $loan_d = $loan_q->fetch_row();
                 if ($loan_d[0] > 0) {
                     $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';

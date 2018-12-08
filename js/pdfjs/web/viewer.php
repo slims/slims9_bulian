@@ -25,7 +25,7 @@ limitations under the License.
 var pdfFileToLoad = '<?php echo $file_loc_url; ?>';
 </script>
 <!-- This snippet is used in production, see Makefile -->
-<link rel="resource" type="application/l10n" href="locale/locale.properties"/>
+<link rel="resource" type="application/l10n" href="<?php echo SWB ?>js/pdfjs/web/locale/locale.properties"/>
 </head>
 <body tabindex="1">
     <div id="outerContainer" class="loadingInProgress">
@@ -100,19 +100,18 @@ var pdfFileToLoad = '<?php echo $file_loc_url; ?>';
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
 
-                <button id="openFile" class="toolbarButton openFile hiddenSmallView" title="Open File" tabindex="13" data-l10n-id="open_file">
+                <button id="openFile" class="toolbarButton openFile hiddenSmallView <?php if(!$sysconf['allow_pdf_download']) echo 'hidden'; ?>" title="Open File" tabindex="13" data-l10n-id="open_file">
                    <span data-l10n-id="open_file_label">Open</span>
                 </button>
 
-                <button id="print" class="toolbarButton print" title="Print" tabindex="14" data-l10n-id="print">
+                <button id="print" class="toolbarButton print <?php if(!$sysconf['allow_pdf_download']) echo 'hidden'; ?>" title="Print" tabindex="14" data-l10n-id="print">
                   <span data-l10n-id="print_label">Print</span>
                 </button>
                 
-                <?php if ($sysconf['allow_pdf_download']) : ?>
-                <button id="download" class="toolbarButton download" title="Download" tabindex="15" data-l10n-id="download">
+                
+                <button id="download" class="toolbarButton download <?php if(!$sysconf['allow_pdf_download']) echo 'hidden'; ?> " title="Download" tabindex="15" data-l10n-id="download">
                   <span data-l10n-id="download_label">Download</span>
                 </button>
-                <?php endif; ?>
                 <!-- <div class="toolbarButtonSpacer"></div> -->
                 <a href="#" id="viewBookmark" class="toolbarButton bookmark hiddenSmallView" title="Current view (copy or open in new window)" tabindex="16" data-l10n-id="bookmark"><span data-l10n-id="bookmark_label">Current View</span></a>
               </div>

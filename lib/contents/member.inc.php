@@ -45,6 +45,18 @@ define('CURR_PASSWD_WRONG', -1);
 define('PASSWD_NOT_MATCH', -2);
 define('CANT_UPDATE_PASSWD', -3);
 
+if (isset($_GET['destination'])) {
+    $destination = $_GET['destination'];
+    if (isset($_GET['fid'])) {
+        $destination .= '&fid='.$_GET['fid'];
+    }
+    if (isset($_GET['bid'])) {
+        $destination .= '&bid='.$_GET['bid'];
+    }
+} else {
+    $destination = FALSE;
+}
+
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
@@ -73,8 +85,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 $privatekey = $sysconf['captcha']['member']['privatekey'];
                 $resp = recaptcha_check_answer ($privatekey,
                     $_SERVER["REMOTE_ADDR"],
-                    $_POST["recaptcha_challenge_field"],
-                    $_POST["recaptcha_response_field"]);
+                    $_POST["g-recaptcha-response"]);
 
                 if (!$resp->is_valid) {
                     // What happens when the CAPTCHA was entered incorrectly
@@ -98,39 +109,43 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', 'Login success for member '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            header('Location: index.php?p=member');
+            if ($destination) {
+                header("location:$destination");
+            } else {
+                header('Location: index.php?p=member');
+            }
             exit();
         } else {
-            // md5 password
-            $md5_password = MD5($password);
-            // query password
-            $_pass_q = $dbs->query('SELECT mpasswd FROM member WHERE member_id = \''.$username.'\'');
-            $_pass_d = $_pass_q->fetch_row();
-            if ($_pass_d[0] === $md5_password) {
+            $_member_sql = sprintf('SELECT member_name FROM member
+            WHERE mpasswd=MD5(\'%s\') AND member_id=\'%s\'',
+            $dbs->escape_string(trim($password)), $dbs->escape_string(trim($username)));
+            $_member_q = $dbs->query($_member_sql);
+            if ($_member_q->num_rows > 0) {
+                $_member_d = $_member_q->fetch_row();
                 $msg  = '';
                 $msg .= '<div class="panel panel-danger">';
-                $msg .= '<div class="panel-heading">'.__('Please update your password!').'</div>';
+                $msg .= '<div class="panel-heading">Hi, '. $_member_d[0] .'! '.__('Please update your password!').'</div>';
                 $msg .= '<div class="panel-body">';
                 $msg .= '<form method="post" action="index.php?p=member">';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isusername">Username</label>';
-                $msg .= '<input type="text" class="form-control" id="isusername" name="isusername" placeholder="Username">';
+                $msg .= '<label for="isusername">'.__('Username').'</label>';
+                $msg .= '<input type="text" class="form-control" id="isusername" name="isusername" placeholder="'.__('Username').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isoldpassword">Current Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isoldpassword" name="isoldpassword" placeholder="Old Password">';
+                $msg .= '<label for="isoldpassword">'.__('Current Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isoldpassword" name="isoldpassword" placeholder="'.__('Current Password').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isnewpassword">New Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isnewpassword" name="isnewpassword" placeholder="New Password">';
+                $msg .= '<label for="isnewpassword">'.__('New Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isnewpassword" name="isnewpassword" placeholder="'.__('New Password').'">';
                 $msg .= '</div>';
                 $msg .= '<div class="form-group">';
-                $msg .= '<label for="isconfirmnewpassword">Confirm New Password</label>';
-                $msg .= '<input type="password" class="form-control" id="isconfirmnewpassword" name="isconfirmnewpassword" placeholder="Confirm New Password">';
+                $msg .= '<label for="isconfirmnewpassword">'.__('Confirm New Password').'</label>';
+                $msg .= '<input type="password" class="form-control" id="isconfirmnewpassword" name="isconfirmnewpassword" placeholder="'.__('Confirm New Password').'">';
                 $msg .= '</div>';
                 $msg .= '</div>';
                 $msg .= '<div class="panel-footer">';
-                $msg .= '<button type="submit" name="renewPass" class="btn btn-success">Update</button>';
+                $msg .= '<button type="submit" name="renewPass" class="btn btn-success">'.__('Update').'</button>';
                 $msg .= '</form></div></div>';
                 simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);                
             } else {
@@ -207,33 +222,8 @@ if (!$is_member_login) {
 	}
 	?>
     <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
-    <!-- Captcha preloaded javascript - start -->
-    <?php if ($sysconf['captcha']['member']['enable']) { ?>
-      <?php if ($sysconf['captcha']['member']['type'] == "recaptcha") { ?>
-      <script type="text/javascript">
-        var RecaptchaOptions = {
-          theme : '<?php echo$sysconf['captcha']['member']['recaptcha']['theme']; ?>',
-          lang : '<?php echo$sysconf['captcha']['member']['recaptcha']['lang']; ?>',
-          <?php if($sysconf['captcha']['member']['recaptcha']['customlang']['enable']) { ?>
-                custom_translations : {
-                instructions_visual : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['instructions_visual']; ?>",
-                instructions_audio : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['instructions_audio']; ?>",
-                play_again : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['play_again']; ?>",
-                cant_hear_this : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['cant_hear_this']; ?>",
-                visual_challenge : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['visual_challenge']; ?>",
-                audio_challenge : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['audio_challenge']; ?>",
-                refresh_btn : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['refresh_btn']; ?>",
-                help_btn : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['help_btn']; ?>",
-                incorrect_try_again : "<?php echo $sysconf['captcha']['member']['recaptcha']['customlang']['incorrect_try_again']; ?>",
-                },
-          <?php } ?>
-        };
-      </script>
-      <?php } ?>
-    <?php } ?>
-    <!-- Captcha preloaded javascript - end -->
     <div class="loginInfo">
-    <form action="index.php?p=member" method="post">
+    <form action="index.php?p=member&destination=<?php echo $destination; ?>" method="post">
     <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
         <div class="login_input"><input type="text" name="memberID" /></div>
     <div class="fieldLabel marginTop"><?php echo __('Password'); ?></div>
@@ -572,7 +562,7 @@ if (!$is_member_login) {
         $_loan_list->using_AJAX = false;
         // return the result
         $_result = $_loan_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
-        $_result = '<div class="memberLoanListInfo">'.$_loan_list->num_rows.' '.__('item(s) currently on loan').' | <a href="?p=download_current_loan">Download All Current Loan</a></div>'."\n".$_result;
+        $_result = '<div class="memberLoanListInfo">'.$_loan_list->num_rows.' '.__('item(s) currently on loan').' | <a href="?p=download_current_loan">' . __('Download All Current Loan') . '</a></div>'."\n".$_result;
         return $_result;
     }
 
@@ -607,7 +597,7 @@ if (!$is_member_login) {
         $_loan_hist->using_AJAX = false;
         // return the result
         $_result = $_loan_hist->createDataGrid($dbs, $_table_spec, $num_recs_show);
-        $_result = '<div class="memberLoanHistInfo"> &nbsp;'.$_loan_hist->num_rows.' '.__('item(s) loan history').' | <a href="?p=download_loan_history">Download All Loan History</a></div>'."\n".$_result;
+        $_result = '<div class="memberLoanHistInfo"> &nbsp;'.$_loan_hist->num_rows.' '.__('item(s) loan history').' | <a href="?p=download_loan_history">' . __('Download All Loan History') . '</a></div>'."\n".$_result;
         return $_result;
     }
     /* Experimental Loan History - end */
@@ -699,10 +689,14 @@ if (!$is_member_login) {
     echo '</div>';
     echo showLoanHist();
     echo '</div>';
+
+    // default is to show the title basket
+    if (!isset($sysconf['enable_mark']) || $sysconf['enable_mark']) {
 	echo '<div class="tagline">';
-    echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
-    echo showBasket();
-    echo '</div>';
+        echo '<div class="memberInfoHead">'.__('Your Title Basket').'</div><a name="biblioBasket"></a>'."\n";
+        echo showBasket();
+        echo '</div>';
+    }
     // change password only form NATIVE authentication, not for others such as LDAP
     if ($sysconf['auth']['member']['method'] == 'native') {
 	echo '<div class="tagline">';

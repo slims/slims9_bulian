@@ -18,7 +18,7 @@ $table_fields = $dbs->escape_string(trim($_POST['tableFields']));
 if (isset($_POST['id']) AND !empty($_POST['id'])) {
   $id = $dbs->escape_string(trim($_POST['id']));
 } else {
-  die('<strong style="color: #FF0000;">No ID Supplied!</strong>');
+  die('<strong style="color: #FF0000;">' . __('No ID Supplied!') . '</strong>');
 }
 
 // sql string
@@ -32,8 +32,8 @@ if ($error) {
 }
 
 if ($query->num_rows > 0) {
-  echo '<strong style="color: #FF0000;">ID Already exists! Please use another ID</strong>';
+  echo '<strong style="color: #FF0000;">' . __('ID Already exists! Please use another ID') . '</strong>';
 } else {
   // output the SQL string
-  echo '<strong>ID Available</strong>';
+  echo '<strong>' . __('ID Available') . '</strong>';
 }

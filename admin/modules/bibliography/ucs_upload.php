@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2010  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2010  Arie Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@ define('INDEX_AUTH', '1');
 // main system configuration
 require '../../../sysconfig.inc.php';
 
+// load settings
+utility::loadSettings($dbs);
+
 // check if UCS is enabled or not
 if (!$sysconf['ucs']['enable']) {
 	die(__('UCS is not enabled! Change global system configuration to enable UCS'));
@@ -33,7 +36,6 @@ if (!$sysconf['ucs']['enable']) {
 
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
-require SB.'ucnode.inc.php';
 require LIB.'http_request.inc.php';
 
 // privileges checking
@@ -98,20 +100,26 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
 
     // encode array to json format
     if ($data) {
-        $to_sent['node_info'] = $node;
+        $to_sent['node_info'] = $sysconf['ucs'];
         $to_sent['node_data'] = $data;
         // create HTTP request
         $http_request = new http_request();
         // send HTTP POST request
         $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-        $http_request->send_http_request($ucs['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
-        // below is for debugging purpose only
-	// die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
 
-	// check for http request error
-	if ($req_error = $http_request->error()) {
-		die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
-	}
+		if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
+          $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
+		} else {
+		  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
+		}
+
+        // below is for debugging purpose only
+	    // die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
+
+	    // check for http request error
+	    if ($req_error = $http_request->error()) {
+		  die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
+	    }
 
         // print out body of request result
         echo $http_request->body();

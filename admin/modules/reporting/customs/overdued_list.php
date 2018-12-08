@@ -117,7 +117,7 @@ if (!$reportView) {
   // create datagrid
   $reportgrid = new report_datagrid();
   $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'');
-  $reportgrid->setSQLorder('l.due_date DESC');
+  $reportgrid->setSQLorder('MAX(l.due_date) DESC');
   $reportgrid->sql_group_by = 'm.member_id';
 
   $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\''.date('Y-m-d').'\')) ';
@@ -176,7 +176,7 @@ if (!$reportView) {
           WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\''.date('Y-m-d').'\')) AND l.member_id=\''.$array_data[0].'\''.( !empty($date_criteria)?$date_criteria:'' ));
       $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_name.' ('.$array_data[0].')</div>';
       $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_mail_address.'</div>';
-      $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="'.$array_data[0].'emailStatus"></div>'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - <a class="usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$array_data[0].'" loadcontainer="'.$array_data[0].'emailStatus">Send Notification e-mail</a> - '.__('Phone Number').': '.$member_d[2].'</div>';
+      $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="'.$array_data[0].'emailStatus"></div>'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - <a class="usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$array_data[0].'" loadcontainer="'.$array_data[0].'emailStatus">' . __('Send Notification e-mail') . '</a> - '.__('Phone Number').': '.$member_d[2].'</div>';
       $_buffer .= '<table width="100%" cellspacing="0">';
       while ($ovd_title_d = $ovd_title_q->fetch_assoc()) {
           $_buffer .= '<tr>';

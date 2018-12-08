@@ -21,6 +21,7 @@
 <?php endif; ?>
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 <meta name="generator" content="<?php echo SENAYAN_VERSION ?>">
+<meta name="theme-color" content="#000">
 
 <!-- Opengraph
 ============================================= -->
@@ -63,7 +64,6 @@
 <!-- Script
 ============================================= -->
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
-<script src="<?php echo JWB; ?>modernizr.js"></script>
 <script src="<?php echo JWB; ?>form.js"></script>
 <script src="<?php echo JWB; ?>gui.js"></script>
 <script src="<?php echo JWB; ?>highlight.js"></script>
@@ -73,19 +73,24 @@
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
+<script src="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/js/vegas.min.js"></script>
+
+<!-- Animation options
+============================================= -->
+<?php if($sysconf['template']['run_animation']) echo '<link rel="stylesheet" type="text/css" href="'.SWB.'template/default/css/animate.min.css" />'; ?>
 
 <!-- Style Minified
 ============================================= -->
-<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.css" />
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" /> -->
 
 <!-- Style
 ============================================= -->
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['css']; ?>" /> -->
+<link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['css']; ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/css/vegas.min.css" />
 
 <!-- Less
 ============================================= -->
-<!-- For Developmet Only
-<link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css"/>
-<script>less = { env: "development" };</script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
--->
+<!-- For Developmet Only -->
+<!-- <link rel="stylesheet/less" type="text/css" href="<?php echo SWB; ?>template/default/style.less"/> -->
+<!-- <script>less = { env: "development" };</script>
+<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script> -->

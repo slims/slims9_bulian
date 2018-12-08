@@ -141,6 +141,12 @@ if (!$reportView) {
             </div>
         </div>
         <div class="divRow">
+            <div class="divRowLabel"><?php echo __('Publish year'); ?></div>
+            <div class="divRowContent">
+            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'style="width: 50%"'); ?>
+            </div>
+        </div>
+        <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
             <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
         </div>
@@ -162,15 +168,14 @@ if (!$reportView) {
     // table spec
     $table_spec = 'item AS i
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
-        LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
-        LEFT JOIN mst_item_status AS s ON i.item_status_id=s.item_status_id';
+        LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id';
 
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->setSQLColumn('i.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'ct.coll_type_name AS \''.__('Collection Type').'\'',
-        's.item_status_name AS \''.__('Item Status').'\'',
+        'i.item_status_id AS \''.__('Item Status').'\'',
         'b.call_number AS \''.__('Call Number').'\'', 'i.biblio_id');
     $reportgrid->setSQLorder('b.title ASC');
 
@@ -234,6 +239,10 @@ if (!$reportView) {
         $location = $dbs->escape_string(trim($_GET['location']));
         $criteria .= ' AND i.location_id=\''.$location.'\'';
     }
+    if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
+        $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
+        $criteria .= ' AND b.publish_year LIKE \'%'.$publish_year.'%\'';
+    }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
@@ -261,8 +270,23 @@ if (!$reportView) {
         $_output = $_title.'<br /><i>'.$_authors.'</i>'."\n";
         return $_output;
     }
+    function showStatus($obj_db, $array_data)
+    {
+
+        $q = $obj_db->query('SELECT item_status_name FROM mst_item_status WHERE item_status_id=\''.$array_data[3].'\'');
+        $d = $q->fetch_row();
+        $s = $d[0];
+        $output = $s;
+
+        if (!$s) {
+            $output = __('Available');
+        }
+
+        return $output;
+    }
     // modify column value
     $reportgrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
+    $reportgrid->modifyColumnContent(3, 'callback{showStatus}');
     $reportgrid->invisible_fields = array(5);
 
     // put the result into variables

@@ -351,8 +351,8 @@ a:hover {
 		height: 63px;
 	}
 	.s-user-photo img {
-		width: auto;
-		height: 80px;
+		width: 100%;
+		height: 100%;
 		background-size: cover;
 	}
 	.s-user-name {
@@ -1432,6 +1432,7 @@ tr.dataListHeader > td > a {
 #memberIDList {
 	margin-top: -5px;
 	width: 181px !important;
+        z-index: 1;
 }
 .ajaxDDlist {
 	border-color: #ddd !important;
@@ -2342,4 +2343,127 @@ table {
   bottom: 0px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
+}
+
+#topicID {
+	list-style: none;
+	line-height: 2em;
+	margin: 15px 0;
+	padding:10px;
+	border: solid 1px #ddd;
+	min-height: 100px;
+	max-height: 110px;
+	overflow: scroll;
+}
+
+.popUpForm {
+	padding: 15px;
+}
+
+@media print {
+	a[href]:after {
+		content: none !important;
+	}
+
+	.dataListHeaderPrinted {
+		background: #fff;
+		color: #000;
+		letter-spacing: normal;
+		text-transform: normal;
+		font-weight: normal;
+		font-size: 100%;
+		white-space: nowrap;
+	}
+
+	td.dataListHeaderPrinted,
+	.dataListHeaderPrinted td {
+		padding: 25px 10px !important;
+		border: solid 1px #000 !important;
+	}
+
+	.dataListHeaderPrinted * {
+		font-weight: normal;
+		color: #FFFFFF;
+	}
+
+	.dataListPrinted {
+	    width: 100%;
+	    background-color: #000000;
+	}
+
+	/* printed tabular data styles */
+	.alterCellPrinted, .alterCellPrinted2 {
+	    color: #000000;
+	    background: #CCCCCC;
+	    border: solid 1px #000;
+	}
+
+	.alterCellPrinted2 {
+	    background: #FFFFFF;
+	}
+
+	.dataListHeaderPrinted {
+	    background: #000000;
+	    color: #FFFFFF;
+	}
+
+	.dataListHeaderPrinted * {
+	    font-weight: bold;
+	    color: #FFFFFF;
+	}
+
+	.printPageInfo {
+		display: none;
+		visibility: hidden;
+	}
+
+	.calendar {
+	    width: 100%;
+	    clear: both;
+	    font-size: 110%;
+	    border: 1px solid #999;
+	    border-right: 0;
+	}
+
+	.calendar .dayname {
+	    background: #999;
+	    color: #000;
+	    width: 14%;
+	}
+
+	.calendar td {
+	    text-align: center;
+	}
+
+	.calendar td a {
+	    color: #555555;
+	    display: block;
+	}
+
+	.calendar .week .even {
+	    background-color: #fff;
+	}
+
+	.calendar .week .odd {
+	    background-color: #ccc;
+	}
+
+	.calendar .day {
+	    border-right: 1px solid #999;
+	}
+
+	.calendar .week .none {
+	    background: #999;
+	}
+
+	.calendar .day .data {
+	    font-weight: bold;
+	    font-size: 120%;
+	    color: #f33;
+	}
+
+	.button {
+		display: none;
+		visibility: hidden;
+	}
 }
