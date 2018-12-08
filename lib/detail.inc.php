@@ -264,6 +264,62 @@ class detail
         return $_output;
     }
 
+    /**
+     * Method to get biblio custom data
+     *
+     * @return  array
+     */
+    public function getBiblioCustom() {
+      $_return = array();
+      // include custom fields file
+      if (file_exists(MDLBS.'bibliography/custom_fields.inc.php')) {
+        include MDLBS.'bibliography/custom_fields.inc.php';
+      }
+      $columns = '';
+      if (isset($biblio_custom_fields)) {
+        foreach ($biblio_custom_fields as $custom_field) {
+          if (isset($custom_field['is_public']) && $custom_field['is_public'] === true)
+            $columns .= $custom_field['dbfield'] . ', ';
+        }
+        if ($columns !== '') {
+          $columns = substr($columns, 0, -2);
+        }
+      } else {
+        $columns = '*';
+      }
+      $query = $this->db->query(sprintf("SELECT %s FROM biblio_custom WHERE biblio_id=%d", $columns, $this->detail_id));
+      if ($query) {
+        $data = $query->fetch_assoc();
+        if (isset($biblio_custom_fields)) {
+          foreach ($biblio_custom_fields as $custom_field) {
+            if (isset($custom_field['is_public']) && $custom_field['is_public'] === true) {
+              $value = $data[$custom_field['dbfield']];
+              switch ($custom_field['type']) {
+                case 'dropdown':
+                case 'choice':
+                  $n = 0;
+                  foreach ($custom_field['data'] as $datum) {
+                    if ($datum[0] == $value) {
+                      $value = $datum[1];
+                      $n++;
+                    }
+                    if ($n > 0) break;
+                  }
+                  break;
+              }
+
+              $_return[] = array(
+                'label' => $custom_field['label'],
+                'value' => $value
+              );
+            }
+          }
+        }
+      }
+
+      return $_return;
+    }
+
 
     /**
      * Record detail output in HTML mode
@@ -346,6 +402,7 @@ class detail
         $this->record_detail['availability'] = $this->getItemCopy();
         $this->record_detail['file_att'] = $this->getAttachments();
         $this->record_detail['related'] = $this->getRelatedBiblio();
+        $this->record_detail['biblio_custom'] = $this->getBiblioCustom();
 
         if ($sysconf['social_shares']) {
         // share buttons
