@@ -41,8 +41,8 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
-$serverType = array(array(1,'P2P Server'), array(2,'z3950 server'), array(3,'z3950 SRU server'));
-$lookupType = array(1=>'P2P Server', 2=>'z3950 server', 3=>'z3950 SRU server');
+$serverType = array(array(1,'P2P Server'), array(2,'z3950 server'), array(3,'z3950 SRU server'), array(4,'MARC SRU server'));
+$lookupType = array(1=>'P2P Server', 2=>'z3950 server', 3=>'z3950 SRU server', 4=>'MARC SRU server');
 
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   $server_name = trim(strip_tags($_POST['serverName']));

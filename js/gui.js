@@ -294,7 +294,7 @@ var showHideTableRows = function(str_table_id, int_start_row, obj_button, str_hi
  * Register all events
  */
 $('document').ready(function() {
-  var container = $('#mainContent,#pageContent,#sidepan');
+  var container = $('#mainContent,#pageContent,#sidepan,.ajaxRegister');
 
   // change all anchor behaviour to AJAX in main content
   container.on('click', 'a', function(evt) {

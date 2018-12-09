@@ -44,7 +44,7 @@ class content_custom
 
     function do_content_custom($content_path)
     {
-        $this->link = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
+        $this->link = new mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
         $this->db = mysql_select_db(DB_NAME);
         $this->sql = "SELECT * FROM content WHERE content_path='$content_path'";
         $this->query = mysql_query($this->sql);
