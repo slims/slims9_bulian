@@ -447,10 +447,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
           WHERE b.biblio_id=%d GROUP BY title', $itemID);
         $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
-        $serial_kardex_d = $serial_kardex_q->fetch_row();
-        // delete kardex
-        if ($serial_kardex_d[1] > 1) {
-          $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+        if ($serial_kardex_q) {
+          $serial_kardex_d = $serial_kardex_q->fetch_row();
+          // delete kardex
+          if ($serial_kardex_d[1] > 1) {
+            $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+          }
         }
         //delete serial data
           $sql_op->delete('serial', "biblio_id=$itemID");

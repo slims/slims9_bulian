@@ -89,8 +89,8 @@ if (isset($_POST['saveData'])) {
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
         exit();
-    } else if ($_POST['csrf_token'] != $_SESSION['csrf_token']['mainForm']) {
-        utility::jsAlert(__('Invalid token!'));
+    } else if (!simbio_form_maker::isTokenValid()) {
+        utility::jsAlert(__('Invalid form submission token!'));
         exit();
     }else {
         $data['username'] = $dbs->escape_string(trim($userName));

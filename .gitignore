@@ -2,6 +2,7 @@ images/barcodes/*
 images/persons/*
 images/docs/*
 images/labels/*
+images/cache/*
 files/*
 repository/*
 config/*
@@ -10,6 +11,7 @@ cache/*
 ._.*
 ._*
 .project
+.idea/*
 sysconfig.local.inc.php
 config/sysconfig.local.inc.php
 sysconfig.inc.php

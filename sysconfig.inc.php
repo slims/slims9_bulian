@@ -56,7 +56,7 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.3.1 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -385,6 +385,12 @@ $sysconf['z3950_source'][1] = array('uri' => 'z3950.loc.gov:7090/voyager', 'name
 $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voyager', 'name' => 'Library of Congress SRU Voyager');
 
 /**
+ * MARC copy cataloguing sources
+ */
+$sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
+
+
+/**
  * Peer to peer server config
  */
 $sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims8_akasia', 'name' => 'SLiMS Library');
@@ -513,7 +519,7 @@ $sysconf['OAI']['MetadataFormats']['Dublin Core'] = array(
   'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/');
 
 // Search clustering
-$sysconf['enable_search_clustering'] = true;
+$sysconf['enable_search_clustering'] = false;
 
 // comment
 $sysconf['comment']['enable'] =  true;
@@ -537,7 +543,7 @@ $sysconf['chat_system']['enabled']    	= false;
 $sysconf['chat_system']['vendors']    	= 'phpwebscoketchat';
 $sysconf['chat_system']['opac']       	= false;
 $sysconf['chat_system']['librarian']  	= false;
-$sysconf['chat_system']['server']  		 = '127.0.0.1';
+$sysconf['chat_system']['server']  		= '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
 /* NEWS */

@@ -106,8 +106,9 @@ class simbio_form_maker
   public static function isTokenValid(){
     if (isset($_SESSION['csrf_token']) && isset($_POST['csrf_token']) && isset($_POST['form_name'])) {
       if ($_SESSION['csrf_token'][$_POST['form_name']] === $_POST['csrf_token']) {
-        // remove token session var
-        unset($_SESSION['csrf_token'][$_POST['form_name']]);
+        // update token session
+        $_SESSION['csrf_token'][$_POST['form_name']] = self::genRandomToken();
+        self::updateToken($_POST['form_name'], $_SESSION['csrf_token'][$_POST['form_name']]);
         return true;
       } else {
         // remove token session var
@@ -116,6 +117,22 @@ class simbio_form_maker
       }
     }
     return false;
+  }
+
+  /**
+   * Static method update token in form
+   * @param $form_name
+   * @param $token
+   *
+   * @return void
+   */
+  public static function updateToken($form_name, $token) {
+    ?>
+    <script type="application/javascript">
+      parent.document.querySelector('form[name="<?php echo $form_name; ?>"] > input[name="csrf_token"]')
+          .value = '<?php echo $token;?>';
+    </script>
+    <?php
   }
 
 
