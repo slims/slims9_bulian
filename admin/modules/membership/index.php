@@ -242,7 +242,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // insert custom data
                 if ($custom_data) {
                   $custom_data['member_id'] = $data['member_id'];
-                  utility::jsAlert(json_encode($custom_data));
                   @$sql_op->insert('member_custom', $custom_data);
                 }
 
