@@ -448,7 +448,7 @@ $sysconf['index']['sphinx_opts'] = array(
     'max_limit' => 100000, // must be less or same with max_matches in sphinx.conf
 	'ranker' => null);
 
-$sysconf['index']['engine']['enable'] = TRUE; // value can be 'default', 'index' OR 'sphinx'
+$sysconf['index']['engine']['enable'] = FALSE; // value can be 'default', 'index' OR 'sphinx'
 $sysconf['index']['engine']['type'] = 'solr'; // value can be 'solr' OR 'es' for ElasticSearch
 $sysconf['index']['engine']['solr_opts'] = array(
     'host' => 'http://172.17.0.4',
