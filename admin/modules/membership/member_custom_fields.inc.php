@@ -27,7 +27,7 @@ if (INDEX_AUTH != 1) {
 
 /**
  * Here you can add custom field to SLiMS Membership database
- * The field you define here must also exists in 'biblio' table in database
+ * The field you define here must also exists in 'member_custom' table in database
  * field 'type' can be on of these: 'text', 'longtext', 'numeric', 'dropdown', 'checklist', 'date' or 'choice'
  *
  */
@@ -35,7 +35,7 @@ if (INDEX_AUTH != 1) {
 /*
 $member_custom_fields = array(
 	'customfield1' => array(
-		'dbfield' => 'customfield1', // name of field in 'biblio' table in database, make sure you already define it!
+		'dbfield' => 'customfield1', // name of field in 'member_custom' table in database, make sure you already define it!
 		'label' => __('Custom Field 1'), // label of field in form
 		'type' => 'text', // type of field
 		'default' => '', // default value of field

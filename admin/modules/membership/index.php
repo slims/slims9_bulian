@@ -105,7 +105,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     // custom field
                     $cf_dbfield = $cfield['dbfield'];
                     if (isset($_POST[$cf_dbfield]) AND trim($_POST[$cf_dbfield]) != '') {
-                        $data[$cf_dbfield] = trim($dbs->escape_string(strip_tags($_POST[$cf_dbfield], $sysconf['content']['allowable_tags'])));
+                        $custom_data[$cf_dbfield] = trim($dbs->escape_string(strip_tags($_POST[$cf_dbfield], $sysconf['content']['allowable_tags'])));
                     }
                 }
             }
@@ -195,6 +195,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('member', $data, "member_id='$updateRecordID'");
             if ($update) {
+                // update custom data
+                if (isset($custom_data)) {
+                  // check if custom data for this record exists
+                  $_sql_check_custom_q = sprintf('SELECT member_id FROM member_custom WHERE member_id=%d', $updateRecordID);
+                  $check_custom_q = $dbs->query($_sql_check_custom_q);
+                  if ($check_custom_q->num_rows) {
+                    @$sql_op->update('member_custom', $custom_data, 'member_id=\''.$updateRecordID.'\'');
+                  } else {
+                    $custom_data['member_id'] = $updateRecordID;
+                    @$sql_op->insert('member_custom', $custom_data);
+                  }
+                }
                 // update other tables contain this member ID
                 @$dbs->query('UPDATE loan SET member_id=\''.$data['member_id'].'\' WHERE member_id=\''.$old_member_ID.'\'');
                 @$dbs->query('UPDATE fines SET member_id=\''.$data['member_id'].'\' WHERE member_id=\''.$old_member_ID.'\'');
@@ -226,6 +238,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // insert the data
             $insert = $sql_op->insert('member', $data);
             if ($insert) {
+
+                // insert custom data
+                if ($custom_data) {
+                  $custom_data['member_id'] = $data['member_id'];
+                  @$sql_op->insert('member_custom', $custom_data);
+                }
+
                 utility::jsAlert(__('New Member Data Successfully Saved'));
                 // upload status alert
                 if (isset($upload_status)) {
@@ -370,6 +389,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->record_title = $rec_d['member_name'];
         // submit button attribute
         $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+
+        // custom field data query
+        $_sql_rec_cust_q = sprintf('SELECT * FROM member_custom WHERE member_id=%d', $itemID);
+        $rec_cust_q = $dbs->query($_sql_rec_cust_q);
+        $rec_cust_d = $rec_cust_q->fetch_assoc();
+
     }
 
     /* Form Element(s) */
@@ -449,25 +474,25 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         if (is_array($member_custom_fields) && $member_custom_fields) {
             foreach ($member_custom_fields as $fid => $cfield) {
 
-                // custom field properties
-                $cf_dbfield = $cfield['dbfield'];
-                $cf_label = $cfield['label'];
-                $cf_default = $cfield['default'];
-                $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
+            // custom field properties
+            $cf_dbfield = $cfield['dbfield'];
+            $cf_label = $cfield['label'];
+            $cf_default = $cfield['default'];
+            $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
 
                 // custom field processing
                 if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
-                    $cf_max = isset($cfield['max'])?$cfield['max']:'200';
-                    $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-                    $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($rec_d[$cf_dbfield])?$rec_d[$cf_dbfield]:$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+                  $cf_max = isset($cfield['max'])?$cfield['max']:'200';
+                  $cf_width = isset($cfield['width'])?$cfield['width']:'50';
+                  $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
                 } else if ($cfield['type'] == 'dropdown') {
-                    $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($rec_d[$cf_dbfield])?$rec_d[$cf_dbfield]:$cf_default);
+                  $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
                 } else if ($cfield['type'] == 'checklist') {
-                    $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($rec_d[$cf_dbfield])?$rec_d[$cf_dbfield]:$cf_default);
+                  $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
                 } else if ($cfield['type'] == 'choice') {
-                    $form->addRadio($cf_dbfield, $cf_label, $cf_data, isset($rec_d[$cf_dbfield])?$rec_d[$cf_dbfield]:$cf_default);
+                  $form->addRadio($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
                 } else if ($cfield['type'] == 'date') {
-                    $form->addDateField($cf_dbfield, $cf_label, isset($rec_d[$cf_dbfield])?$rec_d[$cf_dbfield]:$cf_default);
+                  $form->addDateField($cf_dbfield, $cf_label, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
                 }
             }
         }
