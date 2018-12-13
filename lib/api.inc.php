@@ -370,6 +370,34 @@ class api
     return json_decode(json_encode($array));
   }
 
+  /**
+   * Send to indexing engine (Solr / ElasticSearch) via REST
+   *
+   * @param array $array
+   * @return void
+   */
+  public static function update_to_index($array_data)
+  {
+    global $sysconf;
+    if ($sysconf['index']['engine']['type'] == 'solr') {
+      #$_url = 'http://172.17.0.4:8983/solr/slims/update';
+      $_url = $sysconf['index']['engine']['solr_opts']['host'].':'.$sysconf['index']['engine']['solr_opts']['port'].'/solr/'.$sysconf['index']['engine']['solr_opts']['collection'].'/update';
+      $_onlydata = json_encode($array_data);
+      $json_data = '{"add":{"doc":'.$_onlydata.',"commitWithin": 5000,"overwrite": true}}';
+      $ch = curl_init($_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);                                                                  
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        'Content-Type: application/json',                                                                                
+        'Content-Length: ' . strlen($json_data))                                                                    
+        );
+        curl_exec($ch);
+    } elseif ($sysconf['index']['engine']['type'] == 'es') {
+      #here is the codes for accessing ES
+    }
+  }
+
 }
 
 require_once 'member_api.inc.php';
