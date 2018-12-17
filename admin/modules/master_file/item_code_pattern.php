@@ -76,19 +76,19 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
     <div class="per_title">
         <h2><?php echo __('Item Code Pattern'); ?></h2>
   </div>
     <div class="sub_section">
       <div class="btn-group">
-      <a href="<?php echo MWB; ?>master_file/item_code_pattern.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Pattern List'); ?></a>
-          <a href="<?php echo MWB; ?>bibliography/pop_pattern.php?in=master" class="notAJAX btn btn-default openPopUp notIframe"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Pattern'); ?></a>
+      <a href="<?php echo MWB; ?>master_file/item_code_pattern.php" class="btn btn-default"><?php echo __('Pattern List'); ?></a>
+          <a href="<?php echo MWB; ?>bibliography/pop_pattern.php?in=master" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="<?php echo __('Add new pattern') ?>"><?php echo __('Add new pattern'); ?></a>
       </div>
     </div>
 </div>
-</fieldset>
+</div>
 <div class="fluid-container">
 <?php 
 /* search form end */

@@ -47,7 +47,7 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('System Environment'); ?></h2>
@@ -56,7 +56,7 @@ require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
       <?php echo __('Information on SLiMS System Environment. Use this to support troubleshotting problem.'); ?>
     </div>
   </div>
-</fieldset>
+</div>
 
 <form id="mainForm" class="form-horizontal envinfo">
 

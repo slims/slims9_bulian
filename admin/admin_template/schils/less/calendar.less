@@ -1,0 +1,108 @@
+// main: style.less
+.dateField {
+  padding: 2px 2px 1px;
+  width: 200px;
+  display: inline-block;
+  height: 38px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  margin-bottom: 5px;
+  background-image: none;
+}
+.dateInput {
+  width: 160px;
+  float: left;
+  background: #fff;
+}
+.calendarLink {
+  width: 22px;
+  height: 22px;
+  float: right;
+  margin: -35px;
+  color: @color-3;
+}
+.calendarLink:hover {
+  color: @color-5;
+}
+.calendarLink:before {
+  font-family: 'FontAwesome';
+  // content: "\f133";
+  content: "\f073";
+  font-size: 16pt;
+}
+#calendarPop {
+  box-shadow: 10px 10px 30px #eee;
+  background-color: @black;
+  margin-left: -1px;
+  margin-top: -1px;
+  padding: 0;
+  color: #666;
+  border: none;
+}
+#calendarPop select {
+  padding: 5px 2px;
+  height: auto;
+  color: #666;
+}
+#calendarPop div:nth-child(1) {
+  padding: 10px;
+  color: #fff;
+}
+#calendarPop div:nth-child(2) {
+  padding: 10px;
+  color: #fff;
+}
+.calendar {
+  background-color: @white;
+  border-color: @white;
+  clear: both;
+}
+.calendar td {
+  text-align: center;
+}
+.calendar th {
+  color: @black;
+  background-color: @white;
+  font-weight: 700;
+  text-align: center;
+  padding: 5px 2px;
+}
+.calendar a:hover,
+.calendar td.selected {
+  background-color: @black;
+  color: @white;
+}
+.calendar td.selected {
+  font-weight: 700;
+  color: @white;
+}
+.calendar .dayname {
+  color: #fff;
+}
+.calendar .day {
+  border-color: #eee;
+}
+.calendar .week .none {
+  background-color: #eee;
+}
+.calendar .week .odd {
+  background-color: #fff;
+  border-top: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+}
+.monthyearselect th {
+  background-color: @color-6 !important;
+  border-top: solid 1px @color-6;
+}
+.monthyearselect th a {
+  font-size: 14px;
+  padding: 0px 5px;
+}
+#clockContainer {
+  visibility: hidden !important;
+  display: none !important;
+  height: 0px;
+  margin: 0;
+  padding: 0;
+}

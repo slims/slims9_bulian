@@ -57,7 +57,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
+    <div>
     <div class="per_title">
       <h2><?php echo __('Due Date Warning'); ?></h2>
     </div>
@@ -87,7 +87,7 @@ if (!$reportView) {
     <input type="hidden" name="reportView" value="true" />
     </div>
     </form>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>

@@ -246,7 +246,7 @@ if (isset($_POST['saveData'])) {
 if (!$changecurrent) {
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner userIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Librarian & System Users'); ?></h2>
@@ -254,15 +254,15 @@ if (!$changecurrent) {
 	<div class="sub_section">
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>/system/app_user.php" class="btn btn-default"><i class="glyphicon glyphicon-user"></i>&nbsp;<?php echo __('User List'); ?></a>
-      <a href="<?php echo MWB; ?>system/app_user.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New User'); ?></a>
+      <a href="<?php echo MWB; ?>system/app_user.php?action=detail" class="btn btn-default"><?php echo __('Add New User'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/app_user.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
+    <form name="search" action="<?php echo MWB; ?>system/app_user.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" size="30" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 }
@@ -286,7 +286,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -428,7 +428,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->setSQLCriteria($criteria);
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

@@ -25,7 +25,6 @@ if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
 }
 
-
 // main system configuration
 require '../../../sysconfig.inc.php';
 // IP based access limitation
@@ -120,11 +119,11 @@ if (isset($_SESSION['memberID'])) {
     $memberID = trim($_SESSION['memberID']);
     ?>
     <!--item loan form-->
-    <div class="loanItemCodeInput">
-        <form name="itemLoan" id="loanForm" action="circulation_action.php" method="post" style="display: inline;">
-            <?php echo __('Insert Item Code/Barcode'); ?> :
-            <input type="text" id="tempLoanID" name="tempLoanID" />
-            <input type="submit" value="<?php echo __('Loan'); ?>" class="btn btn-warning button" />
+    <div class="s-circulation__loan loanItemCodeInput">
+        <form name="itemLoan" id="loanForm" action="circulation_action.php" method="post" class="form-inline">
+            <?php echo __('Insert Item Code/Barcode'); ?>&nbsp;
+            <input type="text" id="tempLoanID" name="tempLoanID" class="form-control col-4"  />
+            <input type="submit" value="<?php echo __('Loan'); ?>" class="s-btn btn btn-default" />
         </form>
     </div>
     <script type="text/javascript">$('#tempLoanID').focus();</script>
@@ -134,7 +133,7 @@ if (isset($_SESSION['memberID'])) {
     if (count($_SESSION['temp_loan']) > 0) {
         // create table object
         $temp_loan_list = new simbio_table();
-        $temp_loan_list->table_attr = "align='center' style='width: 100%;' cellpadding='3' cellspacing='0'";
+        $temp_loan_list->table_attr = 'class="s-circulation__loan-list" align="center" id="dataList" cellpadding="3" cellspacing="0"';
         $temp_loan_list->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
         $temp_loan_list->highlight_row = true;
         // table header
@@ -147,7 +146,7 @@ if (isset($_SESSION['memberID'])) {
             $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
             // remove link
-            $remove_link = '<a href="circulation_action.php?removeID='.$temp_loan_list_d['item_code'].'" title="Remove this item" class="trashLink">&nbsp;</a>';
+            $remove_link = '<a href="circulation_action.php?removeID='.$temp_loan_list_d['item_code'].'" title="'.__('Remove this item').'" class="btn btn-danger btn-sm"><span>'.__('Remove').'</span></a>';
 
             // check if manually changes loan and due date allowed
             if ($sysconf['allow_loan_date_change']) {

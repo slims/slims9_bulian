@@ -49,16 +49,16 @@ if (!($can_read AND $can_write)) {
 }
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner backupIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Database Backup'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
-      <button onclick="$('#createBackup').submit()" class="notAJAX btn btn-success"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Start New Backup'); ?></button>
+      <button onclick="$('#createBackup').submit()" class="notAJAX btn btn-success"><?php echo __('Start New Backup'); ?></button>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/backup_proc.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
+    <form name="search" action="<?php echo MWB; ?>system/backup_proc.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" size="30" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
@@ -68,7 +68,7 @@ if (!($can_read AND $can_write)) {
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* BACKUP LOG LIST */
 // table spec
@@ -86,7 +86,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
 }
 
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->delete_URL = $_SERVER['PHP_SELF'];

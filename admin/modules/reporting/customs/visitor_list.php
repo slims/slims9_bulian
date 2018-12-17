@@ -59,7 +59,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
+    <div>
     <div class="per_title">
     	<h2><?php echo __('Visitor List'); ?></h2>
 	  </div>
@@ -120,7 +120,7 @@ if (!$reportView) {
     </div>
     </form>
 	</div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
@@ -187,7 +187,7 @@ if (!$reportView) {
 		$_SESSION['xlsquery'] = $xlsquery;
 		$_SESSION['tblout'] = "visitor_list";
 
-	echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
+	echo '<p><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></p>';
 
     $content = ob_get_clean();
     // include the page template

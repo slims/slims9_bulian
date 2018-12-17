@@ -67,7 +67,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset style="margin-bottom: 3px;">
+    <div style="margin-bottom: 3px;">
 	  <div class="per_title">
 	    <h2><?php echo __('Visitor Report'); ?></h2>
     </div>
@@ -108,7 +108,7 @@ if (!$reportView) {
     </div>
     </form>
     </div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
@@ -137,7 +137,7 @@ if (!$reportView) {
     $output = simbio_date::generateCalendar($selected_year, $selected_month, $visitor_data);
 
     // print out
-    echo '<div class="printPageInfo">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>')) . ' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="printPageInfo">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>')) . ' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();

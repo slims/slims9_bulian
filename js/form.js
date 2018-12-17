@@ -34,7 +34,7 @@ var ajaxCheckID = function(str_handler_file, str_table_name, str_ID_fields, str_
     inputEl.css('color','#000');
     inputEl.css('border-color','#ddd');
   } else {
-    $('#'+str_container_ID).html('<strong style="color: #D9534F;">Please supply valid ID!</strong>');
+    $('#'+str_container_ID).html('<strong class="text-danger;">Please supply valid ID</strong>');
     inputEl.css('background-color','#D9534F');
     inputEl.css('color','#fff');
     inputEl.css('border-color','#D9534F');
@@ -74,7 +74,7 @@ var chboxFormSubmit = function(strFormID, strMessage) {
     var confirmMsg;
     if (arguments[1] != undefined) {
       confirmMsg = arguments[1];
-    } else { confirmMsg = 'Are You SURE to do this action?'; }
+    } else { confirmMsg = 'Are you sure to do this action?'; }
     var isConfirm = confirm(confirmMsg);
     if (isConfirm) {
       // submit the form

@@ -391,8 +391,8 @@
 	        ?>
     	    <hr>
     	    <div class="toright">
-        		<input type="button" class="button" value="Back" name="submit" onclick="javascript: history.go(-1);">
-        		<input type="button" class="button" value="Retry" name="submit" onclick="javascript: location.reload();">
+        		<input type="button" class="s-btn btn btn-default" value="Back" name="submit" onclick="javascript: history.go(-1);">
+        		<input type="button" class="s-btn btn btn-default" value="Retry" name="submit" onclick="javascript: location.reload();">
     	    </div>
 	    </div>
         <?php else : ?>
@@ -404,7 +404,7 @@
 	        <p>For security reasons, please remove <code style="font-weight: bold;">install/</code> folder from your server.</p>
 		    <hr>
     		<div class="toright">
-    		    <?php if($application_start_file != ""){ ?><a href="<?php echo $application_start_file;?>" class="button">OK, start the SLiMS</a><?php } ?>
+    		    <?php if($application_start_file != ""){ ?><a href="<?php echo $application_start_file;?>" class="s-btn btn btn-default">OK, start the SLiMS</a><?php } ?>
     		</div>
 	    <?php endif ?>
         <br>

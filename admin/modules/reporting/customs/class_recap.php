@@ -57,7 +57,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
+    <div>
     <div class="per_title">
     	<h2><?php echo __('Custom Recapitulations'); ?></h2>
 	  </div>
@@ -89,7 +89,7 @@ if (!$reportView) {
     </div>
     </form>
     </div>
-    </fieldset>
+    </div>
     <script type="text/javascript">hideRows('filterForm', 1);</script>
     <!-- filter end -->
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
@@ -284,13 +284,13 @@ if (!$reportView) {
     $output .= '</table>';
 
     // print out
-    echo '<div class="printPageInfo">'.__('Title and Collection Recap by').' <strong>'.$recapby.'</strong> <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></div>'."\n";
+    echo '<div class="printPageInfo">'.__('Title and Collection Recap by').' <strong>'.$recapby.'</strong> <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
     echo $output;
 
 	unset($_SESSION['xlsquery']); 
 	$_SESSION['xlsdata'] = $xlsrows;
 	$_SESSION['tblout'] = "recap_list";
-	// echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
+	// echo '<p><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></p>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

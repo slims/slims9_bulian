@@ -54,7 +54,7 @@ require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require LIB.'module.inc.php';
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('Shortcut Settings'); ?></h2>
@@ -73,7 +73,7 @@ require LIB.'module.inc.php';
     }
     ?>
   </div>
-</fieldset>
+</div>
 <?php
 /* main content */
 ob_start();

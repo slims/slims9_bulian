@@ -128,7 +128,7 @@ if (isset($_POST['saveData']) AND $can_write) {
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('Barcode Generator'); ?></h2>
@@ -137,7 +137,7 @@ if (isset($_POST['saveData']) AND $can_write) {
       <?php echo __('Enter your barcodes code on one or more textboxes below to create barcode'); ?>
     </div>
   </div>
-</fieldset>
+</div>
 <?php
 
 // create table object

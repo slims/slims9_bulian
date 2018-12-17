@@ -53,7 +53,7 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('System Configuration'); ?></h2>
@@ -62,7 +62,7 @@ require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
       <?php echo __('Modify global application preferences'); ?>
     </div>
   </div>
-</fieldset>
+</div>
 <?php
 /* main content */
 /* Config Vars EDIT FORM */
@@ -170,7 +170,7 @@ $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
 $form->submit_button_attr = 'name="updateData" value="'.__('Save Settings').'" class="btn btn-default"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 

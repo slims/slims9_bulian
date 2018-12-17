@@ -61,7 +61,7 @@ foreach($matches as $match)
 		    	</div>
 		    	<div class="content-footer">
 		    		<div class="toright">
-				    	<input type="button" class="button" value="Let's Start The Installation" name="submit" title="Click to start installation" onclick="document.location.href='check_system.php'">	    
+				    	<input type="button" class="s-btn btn btn-default" value="Let's Start The Installation" name="submit" title="Click to start installation" onclick="document.location.href='check_system.php'">	    
 				    </div>
 		    	</div>
     		</div>

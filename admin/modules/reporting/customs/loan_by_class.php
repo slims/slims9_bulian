@@ -54,7 +54,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset style="margin-bottom: 3px;">
+    <div style="margin-bottom: 3px;">
     <div class="per_title">
     	<h2><?php echo __('Loans by Classification'); ?></h2>
 	  </div>
@@ -131,7 +131,7 @@ if (!$reportView) {
     </div>
     </form>
     </div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
@@ -275,14 +275,14 @@ if (!$reportView) {
     $output .= '</table>';
 
     // print out
-    echo '<div class="printPageInfo">Loan Recap By Class <strong>'.$class_num.'</strong> for year <strong>'.$selected_year.'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
-	echo '<a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></div>'."\n";
+    echo '<div class="printPageInfo">Loan Recap By Class <strong>'.$class_num.'</strong> for year <strong>'.$selected_year.'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
+	echo '<a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
     echo $output;
 
 	unset($_SESSION['xlsquery']); 
 	$_SESSION['xlsdata'] = $xlsrows;
 	$_SESSION['tblout'] = "loan_by_class_list";
-	// echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
+	// echo '<p><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></p>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

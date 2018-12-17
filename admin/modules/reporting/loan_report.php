@@ -156,19 +156,19 @@ if (isset($_GET['print'])) {
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner statisticIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Loan Report'); ?></h2>
   </div>
 	<div class="infoBox">
-    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" method="get" class="notAJAX" style="display: inline;">
-    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="button" />
+    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" method="get" class="notAJAX" class="form-inline">
+    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="s-btn btn btn-default" />
     </form>
     <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 echo $table->printTable();
 /* loan report end */

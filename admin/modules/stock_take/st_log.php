@@ -49,20 +49,20 @@ if (!$can_read) {
 }
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner stockTakeIcon">
 <div class="menuBoxInner errorIcon">
   <div class="per_title">
     <h2><?php echo __('Stock Take Log'); ?></h2>
   </div>
   <div class="sub_section">
-    <form name="search" action="<?php echo MWB; ?>stock_take/st_log.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
+    <form name="search" action="<?php echo MWB; ?>stock_take/st_log.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" size="30" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* STOCK TAKE LOGS LIST */
@@ -98,7 +98,7 @@ $datagrid->setSQLCriteria($criteria);
 
 // set table and table header attributes
 $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->delete_URL = $_SERVER['PHP_SELF'];

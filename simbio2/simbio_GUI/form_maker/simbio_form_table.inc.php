@@ -35,7 +35,7 @@ class simbio_form_table extends simbio_form_maker
     public $table_attr;
     public $table_header_attr;
     public $table_content_attr;
-    public $submit_button_attr = 'name="submit" value="Save Data"';
+    public $submit_button_attr = 'name="submit" value="Save Data" class="s-btn btn btn-primary"';
     public $with_form_tag = true;
     public $edit_mode = false;
     public $record_id = false;
@@ -107,21 +107,21 @@ class simbio_form_table extends simbio_form_maker
 
         // check if we are on edit form mode
         if ($this->edit_mode) {
-            $_edit_link .= '<a href="#" class="editFormLink notAJAX">' . __('Edit') . '</a>';
-            // delete button exists if the record_id exists
-            if ($this->record_id && $this->delete_button) {
-                $_delete_button = '<input type="button" value="'.$_del_value.'" class="button btn btn-danger btn-delete" onclick="confSubmit(\'deleteForm\', \'' . addslashes(str_replace('{recordTitle}', $this->record_title, __('Are you sure to delete {recordTitle}?'))) . '\n' . addslashes(__('Once deleted, it can\'t be restored!')) .'\')" style="color: red; font-weight: bold;" />';
-            }
+            $_edit_link .= '<a href="#" class="s-btn btn btn-default editFormLink notAJAX">' . __('Edit') . '</a>';
             // back button
             if ($this->back_button) {
-                $_back_button = '<input type="button" class="cancelButton button" value="'.$_cancel_value.'" onclick="javascript: self.history.back();" />';
+                $_back_button = '<input type="button" class="s-btn btn btn-default cancelButton" value="'.$_cancel_value.'" onclick="javascript: self.history.back();" />';
+            }
+            // delete button exists if the record_id exists
+            if ($this->record_id && $this->delete_button) {
+                $_delete_button = '<input type="button" value="'.$_del_value.'" class="s-btn btn btn-danger" onclick="confSubmit(\'deleteForm\', \'' . addslashes(str_replace('{recordTitle}', $this->record_title, __('Are you sure to delete {recordTitle}?'))) . '\n' . addslashes(__('Once deleted, it can\'t be restored!')) .'\')" />';
             }
         }
 
         $_buttons = '';
         if ($this->with_form_tag) {
-            $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%; background-color: #dcdcdc;">'
-                .'<tr><td><input type="submit" '.$this->submit_button_attr.' /> '.$_delete_button.' '.$_back_button.'</td><td align="right">'.$_edit_link.'</td>'
+            $_buttons = '<table class="s-table__action" cellspacing="0" cellpadding="0" style="width: 100%;">'
+                .'<tr><td><input type="submit" '.$this->submit_button_attr.' />&nbsp;'.$_delete_button.'</td><td align="right">'.$_back_button.'&nbsp;'.$_edit_link.'</td>'
                 .'</tr></table>'."\n";
         }
         // get the table result
@@ -146,7 +146,7 @@ class simbio_form_table extends simbio_form_maker
 
         if ($this->edit_mode) {
             // hidden form for deleting records
-            $_buffer .= '<form action="'.$this->form_action.'" id="deleteForm" class="disabled" method="post" style="display: inline;"><input type="hidden" name="itemID" value="'.$this->record_id.'" /><input type="hidden" name="itemAction" value="true" /></form>';
+            $_buffer .= '<form action="'.$this->form_action.'" id="deleteForm" class="disabled" method="post" class="form-inline"><input type="hidden" name="itemID" value="'.$this->record_id.'" /><input type="hidden" name="itemAction" value="true" /></form>';
         }
         // output
         return $_buffer;

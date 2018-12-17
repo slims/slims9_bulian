@@ -260,33 +260,33 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner printIcon">
 	<div class="per_title">
     	<h2><?php echo __('Member Card Printing'); ?></h2>
     </div>
 	<div class="sub_section">
 		<div class="btn-group">
-		<a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=clear" class="notAJAX btn btn-default" style="color: #f00;"><i class="glyphicon glyphicon-trash"></i>&nbsp;<?php echo __('Clear Print Queue'); ?></a>
-		<a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=print" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-print"></i>&nbsp;<?php echo __('Print Member Cards for Selected Data'); ?></a>
-		<a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=membercard" class="notAJAX btn btn-default openPopUp" title="<?php echo __('Member card print settings'); ?>"><i class="glyphicon glyphicon-wrench"></i></a>
-    </div>
-	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?>:
-	    <input type="text" name="keywords" size="30" />
-	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button" />
-	    </form>
+            <a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=clear" class="btn btn-default notAJAX" > <?php echo __('Clear Print Queue'); ?></a>
+            <a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=print" class="btn btn-default notAJAX"><?php echo __('Print Member Cards for Selected Data'); ?></a>
+            <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=membercard" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Member card print settings'); ?>"><?php echo __('Member card print settings'); ?></a>
+        </div>
+	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
+            <input type="text" name="keywords" size="30" class="form-control" />
+            <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+            </form>
     </div>
     <div class="infoBox">
     <?php
-    echo __('Maximum').' <font style="color: #f00">'.$max_print.'</font> '.__('records can be printed at once. Currently there is').' '; //mfc
+    echo __('Maximum').' <strong class="text-danger">'.$max_print.'</strong> '.__('records can be printed at once. Currently there is').' '; //mfc
     if (isset($_SESSION['card'])) {
-        echo '<font id="queueCount" style="color: #f00">'.count($_SESSION['card']).'</font>';
-    } else { echo '<font id="queueCount" style="color: #f00">0</font>'; }
+        echo '<strong id="queueCount" class="text-danger">'.count($_SESSION['card']).'</strong>';
+    } else { echo '<strong id="queueCount" class="text-danger">0</strong>'; }
     echo ' '.__('in queue waiting to be printed.'); //mfc
     ?>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* ITEM LIST */
@@ -318,7 +318,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
     }
 }
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // edit and checkbox property
 $datagrid->edit_property = false;

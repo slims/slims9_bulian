@@ -56,7 +56,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
+    <div>
     <div class="per_title">
     	<h2><?php echo __('Reservation'); ?></h2>
     </div>
@@ -69,26 +69,26 @@ if (!$reportView) {
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'member', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'member', '', 'class="form-control col-6"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Title/ISBN'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-6"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Item Code'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-3"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Reserve Date From'); ?></div>
             <div class="divRowContent">
             <?php
-            echo simbio_form_element::dateField('startDate', '2000-01-01');
+            echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
             ?>
             </div>
         </div>
@@ -96,19 +96,19 @@ if (!$reportView) {
             <div class="divRowLabel"><?php echo __('Reserve Date Until'); ?></div>
             <div class="divRowContent">
             <?php
-            echo simbio_form_element::dateField('untilDate', date('Y-m-d'));
+            echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
             ?>
             </div>
         </div>
     </div>
     <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" class="button" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
+    <input type="button" name="moreFilter" class="s-btn btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+    <input type="submit" name="applyFilter" class="s-btn btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
     <input type="hidden" name="reportView" value="true" />
     </div>
     </form>
     </div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>

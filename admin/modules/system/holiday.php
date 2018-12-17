@@ -161,7 +161,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 /* RECORD OPERATION */
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner calendarIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Holiday Settings'); ?></h2>
@@ -171,11 +171,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>system/holiday.php" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Holiday Setting'); ?></a>
       <a href="<?php echo MWB; ?>system/holiday.php?mode=special" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Special holiday'); ?></a>
-      <a href="<?php echo MWB; ?>system/holiday.php?mode=special&action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add Special holiday'); ?></a>
+      <a href="<?php echo MWB; ?>system/holiday.php?mode=special&action=detail" class="btn btn-default"><?php echo __('Add Special holiday'); ?></a>
 	  </div>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 if (isset($_GET['mode'])) {
     if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
@@ -189,7 +189,7 @@ if (isset($_GET['mode'])) {
         $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
 
         // form table attributes
-        $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+        $form->table_attr = 'id="dataList" class="s-table table"';
         $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
         $form->table_content_attr = 'class="alterCell2"';
 
@@ -249,7 +249,7 @@ if (isset($_GET['mode'])) {
 
         // set table and table header attributes
         $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-        $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+        $datagrid->table_attr = 'id="dataList" class="s-table table"';
         $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
         // set delete proccess URL
         $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

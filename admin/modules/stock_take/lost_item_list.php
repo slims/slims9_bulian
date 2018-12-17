@@ -49,7 +49,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
+    <div>
 	  <div class="per_title">
 	    <h2><?php echo __('Current Lost Item'); ?></h2>
     </div>
@@ -132,7 +132,7 @@ if (!$reportView) {
     </div>
     </form>
     </div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <div class="dataListHeader reportHeader"><span id="pagingBox"></span></div>
     <iframe name="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>

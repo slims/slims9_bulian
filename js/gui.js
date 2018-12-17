@@ -35,15 +35,15 @@ jQuery.fn.simbioTable = function(params) {
   // event register
   tableRows.mouseover(function() {
     // on mouse over change background color
-    if (!this.highlighted) {
-      this.originColor = $(this).css('background-color');
-      $(this).css('background-color', options.mouseoverCol);
-    }
+    // if (!this.highlighted) {
+    //   this.originColor = $(this).css('background-color');
+    //   $(this).css('background-color', options.mouseoverCol);
+    // }
   }).mouseout(function() {
     // on mouse over revert background color to original
-    if (!this.highlighted) {
-      $(this).css('background-color', this.originColor);
-    }
+    // if (!this.highlighted) {
+    //   $(this).css('background-color', this.originColor);
+    // }
   }).click(function(evt) {
     var currRow = $(this);
     if (!this.originColor) {
@@ -438,6 +438,25 @@ $('document').ready(function() {
   });
 
   // Google Voice Search
+  function startDictation() 
+  {
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+      recognition.start();
+      recognition.onresult = function (e) {
+        document.getElementById('transcript').value = e.results[0][0].transcript;
+        recognition.stop();
+        document.getElementById('labnol').submit();
+      };
+      recognition.onerror = function (e) {
+        recognition.stop();
+      }
+    }
+  }
+
   $('#keyword').bind('webkitspeechchange', function() {
     $(this).closest('form').submit();
   });

@@ -1,0 +1,32 @@
+// main: style.less
+.pagingList {
+
+  a,b {
+    padding: 10.5px .85rem;
+    border-radius: 3px;
+    transition: all 0.25s ease;
+    font-weight: 700;
+  }
+
+  b {
+    color: #fff;
+    background: @color-3;
+    border-color: @color-3;
+  }
+
+  a {
+    color: @white;
+    border-color: lighten(@black,50%);
+    background-color: lighten(@black,50%);
+
+    &:hover {
+      color: #fff;
+      background: @color-3;
+      border-color: @color-3;
+   }
+  }
+}
+
+.paging-area {
+  text-align: right;
+}

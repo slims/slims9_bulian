@@ -54,7 +54,7 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
               <label for="institution"><?php echo __('Institution'); ?></label>
               <input type="text" name="institution" id="institution" class="" placeholder="Enter your institution" />
             </div>
-            <input type="submit" id="counter" name="counter" class="slims-button slims-button--blue" value="<?php echo __('Add'); ?>">
+            <input type="submit" id="counter" name="counter" class="slims-btn slims-btn--blue" value="<?php echo __('Add'); ?>">
           </form>
         </div>
 

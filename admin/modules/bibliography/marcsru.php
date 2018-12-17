@@ -305,9 +305,9 @@ if (isset($_GET['keywords'])) {
   if ($marc->count() > 0) {
     echo '<div class="infoBox">' . str_replace('{hits}', $marc->count(),__('Found {hits} records from Marc SRU Server.')) . '</div>';
     echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/marcsru.php" target="blindSubmit">';
-    echo '<table align="center" id="dataList" cellpadding="5" cellspacing="0">';
+    echo '<table id="dataList" class="s-table table">';
     echo '<tr>';
-    echo '<td colspan="3"><input type="submit" name="saveZ" value="' . __('Save Marc Records to Database') . '" /></td>';
+    echo '<td colspan="3"><input type="submit" name="saveZ" class="s-btn btn btn-primary" value="' . __('Save Marc Records to Database') . '" /></td>';
     echo '</tr>';
     for ($i=1; $i <= $marc->count(); $i++) {
       $record = $marc->get($i);
@@ -345,28 +345,28 @@ if (isset($_GET['keywords'])) {
 
 ?>
 
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner biblioIcon">
 	<div class="per_title">
 	    <h2><?php echo __('MARC Search/Retrieve via URL (SRU)'); ?></h2>
     </div>
-    <div class="sub_section">
-    <form name="search" id="search" action="<?php echo MWB; ?>bibliography/marcsru.php" loadcontainer="searchResult" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" id="keywords" size="30" />
-    <select name="index">
+    <div class="sub_section form-inline">
+    <form name="search" id="search" action="<?php echo MWB; ?>bibliography/marcsru.php" loadcontainer="searchResult" method="get" class="form-inline"><?php echo __('Search'); ?>
+    <input type="text" name="keywords" id="keywords" size="30" class="form-control col-4" />
+    <select name="index" class="form-control ">
       <option value="0"><?php echo __('All fields'); ?></option>
       <option value="bath.isbn"><?php echo __('ISBN/ISSN'); ?></option>
       <option value="dc.title"><?php echo __('Title/Series Title'); ?></option>
       <option value="bath.name"><?php echo __('Authors'); ?></option>
     </select>
-    <?php echo __('SRU Server'); ?>:
-    <select name="marc_SRU_source" style="width: 20%;">
+    <?php echo __('SRU Server'); ?>
+    <select name="marc_SRU_source" class="form-control">
       <?php foreach ($sysconf['marc_SRU_source'] as $serverid => $sru_source) { echo '<option value="'.$sru_source['uri'].'">'.$sru_source['name'].'</option>';  } ?>
     </select>
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
     </div>
     <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
 </div>
-</fieldset>
+</div>
 <div id="searchResult">&nbsp;</div>

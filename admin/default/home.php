@@ -29,13 +29,13 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     include_once '../../sysconfig.inc.php';
 }
 ?>
-<fieldset class="menuBox adminHome">
+<div class="menuBox adminHome">
 <div class="menuBoxInner">
     <div class="per_title">
         <h2><?php echo __('Library Administration'); ?></h2>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 
 // generate warning messages

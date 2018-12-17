@@ -110,7 +110,7 @@ $slimsold = array(
 			    <hr>
 				<div class="toright">
 					<input type="button" class="button upgrade" name="btn_cancel" value="Back" title="Click to start upgrade" onclick="document.location.href='check_system.php'">
-					<input type="submit" class="button" name="btn_submit" value="Next">
+					<input type="submit" class="s-btn btn btn-default" name="btn_submit" value="Next">
 			    </div>
 		    </div>
 	    </div>

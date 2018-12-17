@@ -160,10 +160,10 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
 
     // create new instance
     $form = new simbio_form_table('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-primary"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" style="width: 100%;" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'class="s-table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -175,20 +175,20 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
         // form record title
         $form->record_title = $rec_d['period'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // serial date start
-    $form->addDateField('dateStart', __('Subscription Start').'*', $rec_d['date_start']);
+    $form->addDateField('dateStart', __('Subscription Start').'*', $rec_d['date_start'],'class="form-control"');
     if (!$form->edit_mode) {
         // serial exemplar
-        $form->addTextField('text', 'exemplar', __('Total Exemplar Expected').'*', '1');
+        $form->addTextField('text', 'exemplar', __('Total Exemplar Expected').'*', '1', 'class="form-control col-2"');
     }
     // serial periode name
-    $form->addTextField('text', 'period', __('Period Name').'*', $rec_d['period'], 'style="width: 100%;"');
+    $form->addTextField('text', 'period', __('Period Name').'*', $rec_d['period'], 'class="form-control');
     // serial notes
-    $form->addTextField('textarea', 'notes', __('Subscription Notes'), $rec_d['notes'], 'style="width: 100%;" rows="3"');
+    $form->addTextField('textarea', 'notes', __('Subscription Notes'), $rec_d['notes'], 'class="form-control" rows="3"');
     // serial gmd
         // get gmd data related to this record from database
         $gmd_q = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
@@ -196,7 +196,7 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
         while ($gmd_d = $gmd_q->fetch_row()) {
             $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
         }
-    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id']);
+    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="form-control col-3"');
     // serial biblio ID
     $form->addHidden('biblioID', $biblioID);
 
@@ -211,8 +211,8 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
     function serialTitle($obj_db, $array_data)
     {
         $_output = '';
-        $_output .= '<div style="font-weight: bold; font-size: 110%;">'.$array_data[1].'</div>';
-        $_output .= '<div style="font-weight: bold; font-size: 90%;"><a href="'.MWB.'serial_control/kardex.php?serialID='.$array_data[0].'" title="'.__('View/Edit Kardex Detail').'">'.__('View/Edit Kardex Detail').'</a></div>';
+        $_output .= '<strong>'.$array_data[1].'</strong>';
+        $_output .= '<div><a href="'.MWB.'serial_control/kardex.php?serialID='.$array_data[0].'" title="'.__('View/Edit Kardex Detail').'" class="s-btn btn btn-success btn-sm">'.__('View/Edit Kardex Detail').'</a></div>';
         return $_output;
     }
 
