@@ -66,7 +66,7 @@ if ($stk_query->num_rows < 1) {
           <form name="printForm" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; ?>" target="submitPrint" id="printForm" method="get" class="form-inline">
           <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="btn btn-default" />
           </form>
-          <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
+          <iframe name="submitPrint" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
         </div>
       </div>
     </div>

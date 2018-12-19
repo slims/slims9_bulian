@@ -150,7 +150,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // for debugging purpose only
       // $_buffer .= '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 500px;"></iframe>';
       // hidden iframe for form executing
-      $_buffer .= '<iframe name="submitExec" class="noBlock" style="visibility: hidden; width: 100%; height: 0;"></iframe>';
+      $_buffer .= '<iframe name="submitExec" class="noBlock" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>';
 
       return $_buffer;
     }

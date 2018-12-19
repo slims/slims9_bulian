@@ -4,8 +4,8 @@
 	<title><?php echo $page_title; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="<?php echo SWB.'css/bootstrap.min.css'; ?>" />
-	<link rel="stylesheet" type="text/css" href="<?php echo SWB.'css/printed.css'; ?>" />
-	<link rel="stylesheet" type="text/css" href="<?php echo SWB.'admin/'.$sysconf['admin_template']['css']; ?>" />
+	<link rel="stylesheet" type="text/css" href="<?php echo SWB.'css/printed.css?v='.date('this'); ?>" />
+	<link rel="stylesheet" type="text/css" href="<?php echo SWB.'admin/'.$sysconf['admin_template']['css'].'?'.date('this'); ?>" />
 	<?php if (isset($css)) { echo $css; } ?>
 	<style type="text/css">
 		body { 

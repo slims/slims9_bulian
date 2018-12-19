@@ -123,7 +123,7 @@ include 'function.php';
   </main>
 
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
-  <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
+  <iframe name="blindSubmit" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
   <script>
 

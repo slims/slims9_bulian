@@ -71,19 +71,19 @@ if (!$reportView) {
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Title/ISBN'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%" class="form-control"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Author'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'author', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'author', '', 'style="width: 50%" class="form-control"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Classification'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'class', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'class', '', 'style="width: 50%" class="form-control"'); ?>
             </div>
         </div>
         <div class="divRow">
@@ -95,8 +95,8 @@ if (!$reportView) {
             while ($gmd_d = $gmd_q->fetch_row()) {
                 $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
             }
-            echo simbio_form_element::selectList('gmd[]', $gmd_options, '','multiple="multiple" size="5"');
-            ?> <?php echo __('Press Ctrl and click to select multiple entries'); ?>
+            echo simbio_form_element::selectList('gmd[]', $gmd_options, '','multiple="multiple" size="5" class="form-control col-3"');
+            ?><small class="text-muted"><?php echo __('Press Ctrl and click to select multiple entries'); ?></small>
             </div>
         </div>
         <div class="divRow">
@@ -109,7 +109,7 @@ if (!$reportView) {
             while ($coll_type_d = $coll_type_q->fetch_row()) {
                 $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
             }
-            echo simbio_form_element::selectList('collType[]', $coll_type_options, '', 'multiple="multiple" size="5"');
+            echo simbio_form_element::selectList('collType[]', $coll_type_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
             ?>
             </div>
         </div>
@@ -123,7 +123,7 @@ if (!$reportView) {
             while ($lang_d = $lang_q->fetch_row()) {
                 $lang_options[] = array($lang_d[0], $lang_d[1]);
             }
-            echo simbio_form_element::selectList('language', $lang_options);
+            echo simbio_form_element::selectList('language', $lang_options,'','class="form-control col-3"');
             ?>
             </div>
         </div>
@@ -137,24 +137,24 @@ if (!$reportView) {
             while ($loc_d = $loc_q->fetch_row()) {
                 $loc_options[] = array($loc_d[0], $loc_d[1]);
             }
-            echo simbio_form_element::selectList('location', $loc_options);
+            echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
             ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Publish year'); ?></div>
             <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'style="width: 50%"'); ?>
+            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'style="width: 50%" class="form-control"'); ?>
             </div>
         </div>
         <div class="divRow">
             <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
+            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" /><small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small></div>
         </div>
     </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
+    <div class="pt-2">
+    <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+    <input type="submit" name="applyFilter" class="btn btn-default" value="<?php echo __('Apply Filter'); ?>" />
     <input type="hidden" name="reportView" value="true" />
     </div>
     </form>

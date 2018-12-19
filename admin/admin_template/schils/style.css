@@ -703,7 +703,6 @@ buttton
   margin-left: 225px;
   background: #fafafa;
   min-height: 550px;
-  margin-bottom: 100px;
 }
 .loader {
   position: absolute;
@@ -1202,6 +1201,7 @@ sidebar
 table {
   width: 100%;
   background: #fff;
+  margin-bottom: 0 !important;
 }
 #dataList {
   position: relative;
@@ -1413,9 +1413,4 @@ table {
 }
 .alterCellPrinted {
   background: transparent;
-}
-.printReport {
-  position: absolute;
-  right: 20px;
-  top: 23px;
 }
