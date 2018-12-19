@@ -48,7 +48,7 @@ if (isset($_POST['remove'])) {
 
 if($itemID){
 $table = new simbio_table();
-$table->table_attr = 'align="center" class="detailTable" style="width: 98%;" cellpadding="2" cellspacing="0"';
+$table->table_attr = 'class="s-table table" cellpadding="2" cellspacing="0"';
 
 // query database
 $voc_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE topic_id='.$itemID);
@@ -57,7 +57,7 @@ $row = 1;
 while ($voc_d = $voc_q->fetch_assoc()) {
 
   if (!is_null($voc_d['scope'])) {
-    echo '<b>' . __('Scope note') . ': </b>'.$voc_d['scope'].'<hr>';
+    echo '<strong>' . __('Scope note') . ': </strong>'.$voc_d['scope'];
   }
 
   if (is_null($voc_d['scope'])) {
@@ -69,8 +69,8 @@ while ($voc_d = $voc_q->fetch_assoc()) {
       $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
       // links
-      $edit_link = '<a class="notAJAX btn btn-primary button openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;"><i class="glyphicon glyphicon-pencil"></i></a>';
-      $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].')"><i class="glyphicon glyphicon-trash"></i></a>';
+      $edit_link = '<a class="s-btn btn btn-primary btn-sm notAJAX openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;">'.__('Edit').'</a>';
+      $remove_link = '<a class="s-btn btn btn-danger btn-sm notAJAX" href="#" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].')">'.__('Remove').'</a>';
       $related_term = $voc_d['rt_id'];
 
       $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_d[0]));

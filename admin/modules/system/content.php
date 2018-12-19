@@ -149,7 +149,7 @@ if (isset($_POST['saveData'])) {
       <a href="<?php echo MWB; ?>system/content.php?action=detail" class="btn btn-default"><?php echo __('Add New Content'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>system/content.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>
@@ -190,15 +190,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // content title
-    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title'], 'style="width: 100%;"');
+    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title'], 'class="form-control" style="width: 100%;"');
     // content news flag
     $news_chbox[0] = array('0', __('No'));
     $news_chbox[1] = array('1', __('Yes'));
     $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']);
     // content path
-    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'style="width: 50%;"');
+    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'class="form-control" style="width: 50%;"');
     // content description
-    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'class="texteditor" tyle="width: 100%; height: 500px;"');
+    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

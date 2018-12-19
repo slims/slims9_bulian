@@ -52,7 +52,7 @@ $vocID = (integer)isset($_GET['vocID'])?$_GET['vocID']:0;
 ob_start();
 // save proses
 
-$page_title = 'Vocabulary Control';
+$page_title = __('Vocabulary Control');
 
 // utility function to check subject/topic
 function checkSubject($str_subject, $str_subject_type = 't')
@@ -199,12 +199,15 @@ if (isset($_GET['editTopic'])) {
 // edit mode
   ?>
 <div class="popUpForm container">
-  <div class="page-header"><h2><?php echo __('Edit Mode'); ?></h2></div>
+  <div class="page-header">
+  <strong><?php echo __('Edit Mode'); ?></strong>
+  <hr>
+  </div>
   <form name="mainForm" class="form-horizontal" role="form" action="pop_vocabolary_control.php?itemID=<?php echo $itemID; ?>&vocID=<?php echo $vocID; ?>" method="post">
     <div class="form-group">
       <label for="ref" class="col-xs-2 control-label"><?php echo __('Related Term');?></label>
       <div class="col-xs-10">
-        <select id="relatedterm" name="relatedterm">
+        <select id="relatedterm" name="relatedterm" class="form-control">
         <?php 
         $ref_q = $dbs->query('SELECT * FROM mst_relation_term');
         while ($ref_d = $ref_q->fetch_row()) {
@@ -233,8 +236,8 @@ if (isset($_GET['editTopic'])) {
   </div>
     <div class="form-group">
       <div class="col-xs-offset-2 col-xs-10">
-        <button type="submit" name="saveData" class="btn btn-success"><?php echo __('Update');?></button>
-        <button type="button" onclick="top.jQuery.colorbox.close()" class="btn btn-warning"><?php echo __('Cancel');?></button>
+        <button type="submit" name="saveData" class="btn btn-primary"><?php echo __('Update');?></button>
+        <button type="button" onclick="top.jQuery.colorbox.close()" class="btn btn-default"><?php echo __('Cancel');?></button>
       </div>
     </div>
   </form>
@@ -247,13 +250,16 @@ if (isset($_GET['editTopic'])) {
   // new related topic
   ?>
 
-<div class="popUpForm container">
-<div class="page-header"><h2><?php echo __('Add Vocabulary Control'); ?></h2></div>
+<div class="popUpForm">
+<div class="page-header">
+<strong><?php echo __('Add Vocabulary Control'); ?></strong>
+<hr>
+</div>
 <form name="mainForm" class="form-horizontal" role="form" action="pop_vocabolary_control.php?itemID=<?php echo $itemID; ?>" method="post">
   <div class="form-group">
     <label for="ref" class="col-xs-2 control-label"><?php echo __('Related Term');?></label>
     <div class="col-xs-10">
-      <select id="relatedterm" name="relatedterm">
+      <select id="relatedterm" name="relatedterm" class="form-control col-3">
       <?php 
       $ref_q = $dbs->query('SELECT * FROM mst_relation_term');
       while ($ref_d = $ref_q->fetch_row()) {

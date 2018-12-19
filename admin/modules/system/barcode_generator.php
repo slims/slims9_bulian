@@ -149,7 +149,7 @@ $row = 1;
 $row_num = 6;
 
 // submit button
-$table->appendTableRow(array(__('Barcode Size').' : <select name="size"><option value="1">'.__('Small').'</option>
+$table->appendTableRow(array(__('Barcode Size').' : <select name="size" class="form-control"><option value="1">'.__('Small').'</option>
   <option value="2" selected>'.__('Medium').'</option>
   <option value="3">'.__('Big').'</option></select>'));
 // set cell attribute
@@ -158,17 +158,17 @@ $row++;
 
 // barcode text fields
 while ($row <= $row_num) {
-  $table->appendTableRow(array('<input type="text" name="barcode[]" style="width: 100%;" />',
-    '<input type="text" name="barcode[]" style="width: 100%;" />',
-    '<input type="text" name="barcode[]" style="width: 100%;" />'));
+  $table->appendTableRow(array('<input type="text" name="barcode[]" style="width: 100%;" class="form-control" />',
+    '<input type="text" name="barcode[]" style="width: 100%;" class="form-control" />',
+    '<input type="text" name="barcode[]" style="width: 100%;" class="form-control" />'));
   $row++;
 }
 
 // submit button
-$table->appendTableRow(array('<input type="submit" name="saveData" value="'.__('Generate Barcodes').'" />'));
+$table->appendTableRow(array('<input type="submit" class="btn btn-primary" name="saveData" value="'.__('Generate Barcodes').'" />'));
 // set cell attribute
 $table->setCellAttr($row_num+1, 0, 'colspan="3" class="alterCell"');
-echo '<form name="barcodeForm" id="barcodeForm" target="submitExec" method="post" action="'.$_SERVER['PHP_SELF'].'">';
+echo '<form name="barcodeForm" class="form-inline" id="barcodeForm" target="submitExec" method="post" action="'.$_SERVER['PHP_SELF'].'">';
 echo $table->printTable();
 echo '</form>';
 // for debugging purpose only

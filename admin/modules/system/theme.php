@@ -74,7 +74,11 @@ if (isset($_POST['updateData'])) {
 
 if (isset($_GET['customize'])) {
 
-  include_once SB.$sysconf['template']['dir'].DS.$_GET['theme'].DS.'tinfo.inc.php';
+  if($_GET['customize'] == 'admin') {
+    include_once SB.$_GET['customize'].DS.'admin_template'.DS.$_GET['theme'].DS.'tinfo.inc.php';
+  } else {
+    include_once SB.$sysconf['template']['dir'].DS.$_GET['theme'].DS.'tinfo.inc.php';
+  }
 
   if (isset($sysconf['template']['option'][$_GET['theme']]) && $_GET['customize'] == 'public') {
 
@@ -100,13 +104,13 @@ if (isset($_GET['customize'])) {
         $cf_width = isset($cfield['width'])?$cfield['width']:'50';
         $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
       } else if ($cfield['type'] == 'dropdown') {
-        $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default);
+        $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default,'class="form-control"');
       } else if ($cfield['type'] == 'checklist') {
-        $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default);
+        $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default,'class="form-control"');
       } else if ($cfield['type'] == 'choice') {
-        $form->addRadio($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default);
+        $form->addRadio($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default,'class="form-control"');
       } else if ($cfield['type'] == 'date') {
-        $form->addDateField($cf_dbfield, $cf_label, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default);
+        $form->addDateField($cf_dbfield, $cf_label, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default,'class="form-control"');
       }
     }
 
@@ -139,26 +143,30 @@ $dir = new simbio_directory($template_dir);
 $dir_tree = $dir->getDirectoryTree(1);
 // sort array by index
 ksort($dir_tree);
-echo '<div class="row" style="width=100%"><div class="col-md-12">';
+echo '<div class="container-fluid">';
+echo '<div class="row">';
+echo '<div class="col-12 my-3">
+        <h5 class="font-weight-bold">'.__('Public Template').'</h5>
+      </div>';
+
 foreach ($dir_tree as $dir) {
-  $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-public-theme">'.__('Activate').'</a>';
+  $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn btn-default notAJAX setPublicTheme">'.__('Activate').'</a>';
   if ($dir == $sysconf['template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-public-theme openPopUp">'.__('Customize').'</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=public&theme='.$dir.'" data-value="'.$dir.'" title="'.__('Theme Configuration') .'" class="btn btn-success customePublicTheme notAJAX openPopUp">'.__('Customize').'</a>';
   }
-  $output  = '<div class="col-md-3">';
-  $output .= '<div class="panel panel-default">';
-  $output .= '<div class="panel-heading">';
-  $output .= '<h3 class="panel-title">'.__('Public Template').' '.$dir.'</h3>';
+
+  $output  = '<div class="col-3">';
+  $output .= '<div class="card border-0 shadow mb-4">';
+  $output .= '<div class="card-body">';
+  $output .= '<div class="mb-2 font-weight-bold">'.ucwords($dir).'</div>';
+  $output .= '<img class="card-img-top rounded" src="../template/'.$dir.'/preview.png" height="150" />';
   $output .= '</div>';
-  $output .= '<div class="panel-body">';
-  $output .= '<img style="width: 100%;" src="../template/'.$dir.'/preview.png" />';
-  $output .= '</div>';
-  $output .= '<div class="panel-footer">'.$_btn.'</div>';
+  $output .= '<div class="card-footer border-0">'.$_btn.'</div>';
   $output .= '</div>';
   $output .= '</div>';
   echo $output;
 }
-echo '</div></div>';
+echo '</div>';
 
 // admin template
 // scan admin template directory
@@ -167,32 +175,34 @@ $dir = new simbio_directory($admin_template_dir);
 $dir_tree = $dir->getDirectoryTree(1);
 // sort array by index
 ksort($dir_tree);
-echo '<div class="row" style="width=100%"><div class="col-md-12">';
+echo '<div class="row">';
+echo '<div class="col-12 my-3">
+        <h5 class="font-weight-bold">'.__('Admin Template').'</h5>
+      </div>';
 foreach ($dir_tree as $dir) {
-  $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-default set-admin-theme">'.__('Activate').'</a>';
+  $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn btn-default notAJAX setAdminTheme">'.__('Activate').'</a>';
   if ($dir == $sysconf['admin_template']['theme']) {
-    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" class="btn notAJAX btn-success custome-admin-theme openPopUp">'.__('Customize').'</a>';
+    $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" title="'.__('Admin Theme Configuration').'" class="btn btn-success notAJAX customeAdminTheme openPopUp">'.__('Customize').'</a>';
   }
-  $output  = '<div class="col-md-3">';
-  $output .= '<div class="panel panel-default">';
-  $output .= '<div class="panel-heading">';
-  $output .= '<h3 class="panel-title">'.__('Admin Template').' '.$dir.'</h3>';
+  $output  = '<div class="col-3">';
+  $output .= '<div class="card border-0 shadow mb-4">';
+  $output .= '<div class="card-body">';
+  $output .= '<div class="mb-2 font-weight-bold">'.ucwords($dir).'</div>';
+  $output .= '<img class="card-img-top rounded" src="admin_template/'.$dir.'/preview.png" height="150" />';
   $output .= '</div>';
-  $output .= '<div class="panel-body">';
-  $output .= '<img style="width: 100%;" src="admin_template/'.$dir.'/preview.png" />';
-  $output .= '</div>';
-  $output .= '<div class="panel-footer">'.$_btn.'</div>';
+  $output .= '<div class="card-footer border-0">'.$_btn.'</div>';
   $output .= '</div>';
   $output .= '</div>';
   echo $output;
 }
-echo '</div></div>';
+echo '</div>';
+echo '</div>';
 ?>
 
 <script type="text/javascript">
   (function() {
     $(document).ready(function() {
-      $(document).on('click', '.set-public-theme', function(e) {
+      $(document).on('click', '.setPublicTheme', function(e) {
         e.preventDefault();
         var current = $(this);
         var theme = current.attr('data-value');
@@ -201,12 +211,12 @@ echo '</div></div>';
           method: 'POST',
           data: {theme: 'public', name: theme}
         }).done(function(msg) {
-          $('a.btn-success.custome-public-theme').removeClass('btn-success custome-public-theme openPopUp').addClass('btn-default set-public-theme').text('<?php echo __('Activate') ?>');
-          current.removeClass('btn-default set-public-theme').addClass('btn-success custome-public-theme openPopUp').text('<?php echo __('Customize') ?>');
+          $('a.btn-success.customePublicTheme').removeClass('btn-success customePublicTheme openPopUp').addClass('btn-default setPublicTheme').text('<?php echo __('Activate') ?>');
+          current.removeClass('btn-default setPublicTheme').addClass('btn-success customePublicTheme openPopUp').text('<?php echo __('Customize') ?>');
         });
       });
 
-      $(document).on('click', '.set-admin-theme', function(e) {
+      $(document).on('click', '.setAdminTheme', function(e) {
         e.preventDefault();
         var current = $(this);
         var theme = current.attr('data-value');
@@ -215,8 +225,8 @@ echo '</div></div>';
           method: 'POST',
           data: {theme: 'admin', name: theme}
         }).done(function(msg) {
-          $('a.btn-success.custome-admin-theme').removeClass('btn-success custome-admin-theme openPopUp').addClass('btn-default set-admin-theme').text('<?php echo __('Activate') ?>');
-          current.removeClass('btn-default set-admin-theme').addClass('btn-success custome-admin-theme openPopUp').text('<?php echo __('Customize') ?>');
+          $('a.btn-success.customeAdminTheme').removeClass('btn-success customeAdminTheme openPopUp').addClass('btn-default setAdminTheme').text('<?php echo __('Activate') ?>');
+          current.removeClass('btn-default setAdminTheme').addClass('btn-success customeAdminTheme openPopUp').text('<?php echo __('Customize') ?>');
           window.location.href = 'index.php';
         });
       });

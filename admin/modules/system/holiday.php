@@ -206,13 +206,13 @@ if (isset($_GET['mode'])) {
 
         /* Form Element(s) */
         // holiday date start
-        $form->addDateField('holDate', __('Holiday Date Start'), $rec_d['holiday_date']);
+        $form->addDateField('holDate', __('Holiday Date Start'), $rec_d['holiday_date'],'class="form-control"');
         // holiday date end
         if (!$form->edit_mode) {
-            $form->addDateField('holDateEnd', __('Holiday Date End'), $rec_d['holiday_date']);
+            $form->addDateField('holDateEnd', __('Holiday Date End'), $rec_d['holiday_date'],'class="form-control"');
         }
         // holiday description
-        $form->addTextField('text', 'holDesc', __('Holiday Description').'*', $rec_d['description'], 'style="width: 100%;"');
+        $form->addTextField('text', 'holDesc', __('Holiday Description').'*', $rec_d['description'], 'style="width: 100%;" class="form-control"');
 
         // edit mode messagge
         if ($form->edit_mode) {
@@ -307,7 +307,7 @@ if (isset($_GET['mode'])) {
 
     // create table object
     $table = new simbio_table();
-    $table->table_attr = 'align="center" class="border fullWidth" cellpadding="5" cellspacing="0"';
+    $table->table_attr = 'align="center" class="table table-bordered" cellpadding="5" cellspacing="0"';
 
     // dayname list
     $table->appendTableRow(array('<input type="checkbox" name="dayname[]" value="mon" '.isChecked('mon').' /> '.__('Monday'),
@@ -323,11 +323,11 @@ if (isset($_GET['mode'])) {
     $table->setCellAttr(3, 0, 'colspan="3"');
 
     // submit button
-    $table->appendTableRow(array('<input type="button" name="saveDaynameData" value="'.__('Save Settings').'" onclick="$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', { method: \'POST\', addData: $(\'#holidayForm\').serialize() } )" />'));
+    $table->appendTableRow(array('<input type="button" name="saveDaynameData" class="btn btn-primary" value="'.__('Save Settings').'" onclick="$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', { method: \'POST\', addData: $(\'#holidayForm\').serialize() } )" />'));
     // set cell attribute
     $table->setCellAttr(4, 0, 'colspan="3" class="alterCell"');
 
-    echo '<form name="holidayForm" id="holidayForm">';
+    echo '<form name="holidayForm" id="holidayForm" class="p-3">';
     echo $table->printTable();
     echo '</form>';
 }

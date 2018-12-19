@@ -83,8 +83,8 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   </div>
     <div class="sub_section">
       <div class="btn-group">
-      <a href="<?php echo MWB; ?>master_file/item_code_pattern.php" class="btn btn-default"><?php echo __('Pattern List'); ?></a>
-          <a href="<?php echo MWB; ?>bibliography/pop_pattern.php?in=master" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="<?php echo __('Add new pattern') ?>"><?php echo __('Add new pattern'); ?></a>
+        <a href="<?php echo MWB; ?>master_file/item_code_pattern.php" class="btn btn-default"><?php echo __('Pattern List'); ?></a>
+        <a href="<?php echo MWB; ?>bibliography/pop_pattern.php?in=master" height="500px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="<?php echo __('Add new pattern') ?>"><?php echo __('Add new pattern'); ?></a>
       </div>
     </div>
 </div>
@@ -107,11 +107,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
         $table = new simbio_table();
 
-        $table->table_attr = 'align="center" class="border" cellpadding="5" cellspacing="0" width="98%"';
+        $table->table_attr = 'align="center" class="s-table table" cellpadding="5" cellspacing="0"';
 
         if(count($patterns) > 0){
 
-            echo  '<div style="padding:20px 0px 10px 10px;">
+            echo  '<div class="p-3">
             <input value="'.__('Delete Selected Data').'" class="button btn btn-danger btn-delete" type="button"> 
             <input value="'.__('Check All').'" class="check-all button btn btn-default" type="button"> 
             <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button"></div>';
@@ -122,8 +122,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             // initial row count
             $row = 1;
             foreach ($patterns  as $pattern) {
-                $link = '<a href="'.MWB.'bibliography/pop_pattern.php?in=master" class="notAJAX openPopUp notIframe editLink"></a>';
                 $cb = '<input type="checkbox" name="pattern" value="'.$pattern.'">';
+                $link = '<a href="'.MWB.'bibliography/pop_pattern.php?in=master" class="notAJAX openPopUp notIframe">'.__('Edit').'</a>';
                 $table->appendTableRow(array($cb, $pattern));
                 // set cell attribute
                 $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 5px;"');

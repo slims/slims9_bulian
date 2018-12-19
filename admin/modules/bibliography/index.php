@@ -564,7 +564,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // form record title
     $form->record_title = $rec_d['title'];
     // submit button attribute
-    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     // element visibility class toogle
     $visibility = 'makeHidden s-margin__bottom-1';
 

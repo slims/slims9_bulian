@@ -147,7 +147,7 @@ if (isset($_POST['saveData'])) {
       <a href="<?php echo MWB; ?>system/module.php?action=detail" class="btn btn-default"><?php echo __('Add New Modules'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>system/module.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>

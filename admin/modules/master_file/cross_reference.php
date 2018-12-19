@@ -128,11 +128,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	<div class="sub_section">
 	  <div class="btn-group">
 		  <a href="<?php echo MWB; ?>master_file/cross_reference.php" class="btn btn-default"><?php echo __('Cross Reference List'); ?></a>
-		  <a href="<?php echo MWB; ?>master_file/cross_reference.php?action=detail" class="btn btn-primary"><?php echo __('Add New Term'); ?></a>
-		  <a href="<?php echo MWB; ?>master_file/topic.php" class="btn btn-default"><?php echo __('Subject List'); ?></a>
+		  <a href="<?php echo MWB; ?>master_file/cross_reference.php?action=detail" class="btn btn-default"><?php echo __('Add New Term'); ?></a>
+		  <a href="<?php echo MWB; ?>master_file/topic.php" class="btn btn-success"><?php echo __('Subject List'); ?></a>
 	  </div>
 	  <form name="search" action="<?php echo MWB; ?>master_file/cross_reference.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-		  <input type="text" name="keywords" size="30" />
+		  <input type="text" name="keywords" size="30" class="form-control" />
 		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	  </form>
   </div>
@@ -168,14 +168,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['rt_desc'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // code
-    $form->addTextField('text', 'rt-code', __('Cross Reference Code').'*', $rec_d['rt_id'], 'style="width: 30%;"');
+    $form->addTextField('text', 'rt-code', __('Cross Reference Code').'*', $rec_d['rt_id'], 'class="form-control" style="width: 30%;"');
 	// description
-    $form->addTextField('text', 'rt-desc', __('Cross Reference Description').'*', $rec_d['rt_desc'], 'style="width: 60%;"');
+    $form->addTextField('text', 'rt-desc', __('Cross Reference Description').'*', $rec_d['rt_desc'], 'class="form-control" style="width: 60%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

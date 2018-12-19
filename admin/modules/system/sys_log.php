@@ -63,6 +63,7 @@ if (isset($_POST['saveLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 // log data clearance action
 if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
     $dbs->query('TRUNCATE TABLE system_log');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' is cleaning all logs ');
     utility::jsAlert(__('System Log data completely cleared!'));
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/sys_log.php\');</script>';
     exit();
@@ -78,12 +79,12 @@ if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 	<div class="sub_section">
     <?php if ($_SESSION['uid'] == 1) { ?>
 	  <div class="btn-group">
-      <a href="#" onclick="confSubmit('clearLogsForm', '<?php echo __('Are you SURE to completely clear system log data? This action cannot be undo!'); ?>')" class="notAJAX btn btn-default" style="color: red;"> <?php echo __('CLEAR LOGS'); ?></a>
-      <a href="#" onclick="confSubmit('saveLogsForm', '<?php echo __('Save Logs record to file?'); ?>')" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-download"></i>&nbsp;<?php echo __('Save Logs To File'); ?></a>
+      <a href="#" onclick="confSubmit('clearLogsForm', '<?php echo __('Are you SURE to completely clear system log data? This action cannot be undo!'); ?>')" class="notAJAX btn btn-danger"> <?php echo __('CLEAR LOGS'); ?></a>
+      <a href="#" onclick="confSubmit('saveLogsForm', '<?php echo __('Save Logs record to file?'); ?>')" class="notAJAX btn btn-default"><?php echo __('Save Logs To File'); ?></a>
 	  </div>
     <?php } ?>
     <form name="search" action="<?php echo MWB; ?>system/sys_log.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
     <!-- LOG CLEARANCE FORM -->

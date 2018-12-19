@@ -135,7 +135,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       <a href="<?php echo MWB; ?>master_file/doc_language.php?action=detail" class="btn btn-default"><?php echo __('Add New Language'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>master_file/doc_language.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -170,17 +170,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['language_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // language ID
-    $form->addTextField('text', 'langID', __('Language Code').'*', $rec_d['language_id'], 'style="width: 20%;" maxlength="5"');
+    $form->addTextField('text', 'langID', __('Language Code').'*', $rec_d['language_id'], 'style="width: 20%;" maxlength="5" class="form-control"');
     // language_name
-    $form->addTextField('text', 'langName', __('Language').'*', $rec_d['language_name'], 'style="width: 60%;"');
+    $form->addTextField('text', 'langName', __('Language').'*', $rec_d['language_name'], 'style="width: 60%;" class="form-control"');
 
     // print out the form object
-    echo '<div class="infoBox">'.__('You are going to edit language data').' : <b>'.$rec_d['language_name'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+    echo '<div class="infoBox">'.__('You are going to edit language data').' : <b>'.$rec_d['language_name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     echo $form->printOut();
 } else {
     /* DOCUMENT LANGUAGE LIST */

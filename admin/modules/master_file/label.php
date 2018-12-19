@@ -154,7 +154,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       <a href="<?php echo MWB; ?>master_file/label.php?action=detail" class="btn btn-default"><?php echo __('Add New Label'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>master_file/label.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -189,12 +189,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = str_ireplace('label-', '', $rec_d['label_name']);
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // label name
-    $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name'], 'style="width: 60%;" maxlength="20"');
+    $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name'], 'style="width: 60%;" maxlength="20" class="form-control"');
     // label image
     if (empty($rec_d['label_image'])) {
         $str_input = simbio_form_element::textField('file', 'labelImage');
@@ -207,11 +207,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->addAnything(__('File Attachment'), $str_input);
     }
     // label desc
-    $form->addTextField('text', 'labelDesc', __('Label Description'), $rec_d['label_desc'], 'style="width: 100%;" maxlength="50"');
+    $form->addTextField('text', 'labelDesc', __('Label Description'), $rec_d['label_desc'], 'style="width: 100%;" maxlength="50" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit Label data').' : <b>'.$rec_d['label_name'].' - '.$rec_d['label_desc'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit Label data').' : <b>'.$rec_d['label_name'].' - '.$rec_d['label_desc'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

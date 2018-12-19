@@ -159,7 +159,7 @@ if (isset($_POST['saveData'])) {
 		  <a href="<?php echo MWB; ?>master_file/item_status.php?action=detail" class="btn btn-default"><?php echo __('Add New Item Status'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>master_file/item_status.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
 	</div>
@@ -194,14 +194,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['item_status_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // item status code
-    $form->addTextField('text', 'itemStatusID', __('Item Status Code').'*', $rec_d['item_status_id'], 'style="width: 20%;" maxlength="3"');
+    $form->addTextField('text', 'itemStatusID', __('Item Status Code').'*', $rec_d['item_status_id'], 'style="width: 20%;" maxlength="3" class="form-control"');
     // item status name
-    $form->addTextField('text', 'itemStatus', __('Item Status Name').'*', $rec_d['item_status_name'], 'style="width: 60%;"');
+    $form->addTextField('text', 'itemStatus', __('Item Status Name').'*', $rec_d['item_status_name'], 'style="width: 60%;" class="form-control"');
     // item status rules
 	$rules = array();
 	if ($rec_d['no_loan']) {
@@ -214,7 +214,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit Item Status data').' : <b>'.$rec_d['item_status_name'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit Item Status data').' : <b>'.$rec_d['item_status_name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

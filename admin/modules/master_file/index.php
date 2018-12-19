@@ -131,13 +131,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	    <h2><?php echo __('GMD (General Material Designation)'); ?></h2>
   </div>
 	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/index.php" class="btn btn-default"><?php echo __('GMD List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/index.php?action=detail" class="btn btn-default"><?php echo __('Add New GMD'); ?></a>
-	  </div>
+    </div>
     <form name="search" action="<?php echo MWB; ?>master_file/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+      <input type="text" name="keywords" class="form-control col-3" />
+      <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
 </div>
@@ -171,18 +171,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['gmd_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // gmd code
-    $form->addTextField('text', 'gmdCode', __('GMD Code').'*', $rec_d['gmd_code'], 'style="width: 20%;" maxlength="3"');
+    $form->addTextField('text', 'gmdCode', __('GMD Code').'*', $rec_d['gmd_code'], 'style="width: 20%;" maxlength="3" class="form-control col-1"');
     // gmd name
-    $form->addTextField('text', 'gmdName', __('GMD Name').'*', $rec_d['gmd_name'], 'style="width: 60%;"');
+    $form->addTextField('text', 'gmdName', __('GMD Name').'*', $rec_d['gmd_name'], 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit gmd data').' : <b>'.$rec_d['gmd_name'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit gmd data').' : <b>'.$rec_d['gmd_name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

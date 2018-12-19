@@ -181,10 +181,10 @@ utility::loadSettings($dbs);
 $form->addAnything('Senayan Version', '<strong>'.SENAYAN_VERSION.'</strong>');
 
 // library name
-$form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'style="width: 100%;"');
+$form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'class="form-control"');
 
 // library subname
-$form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['library_subname'], 'style="width: 100%;"');
+$form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['library_subname'], 'class="form-control"');
 
 /* Form Element(s) */
 // public template
@@ -215,7 +215,7 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 
 // application language
 require_once(LANG.'localisation.php');
-$form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang']);
+$form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang'], 'class="form-control col-3"');
 
 // opac result list number
 $result_num_options[] = array('10', '10');
@@ -223,81 +223,81 @@ $result_num_options[] = array('20', '20');
 $result_num_options[] = array('30', '30');
 $result_num_options[] = array('40', '40');
 $result_num_options[] = array('50', '50');
-$form->addSelectList('opac_result_num', __('Number Of Collections To Show In OPAC Result List'), $result_num_options, $sysconf['opac_result_num'] );
+$form->addSelectList('opac_result_num', __('Number Of Collections To Show In OPAC Result List'), $result_num_options, $sysconf['opac_result_num'],'class="form-control col-1"');
 
 // homepage setting
 $promote_options[] = array('1', __('Yes'));
-$form->addCheckBox('enable_promote_titles', __('Show Promoted Titles at Homepage'), $promote_options, $sysconf['enable_promote_titles']?'1':'0');
+$form->addCheckBox('enable_promote_titles', __('Show Promoted Titles at Homepage'), $promote_options, $sysconf['enable_promote_titles']?'1':'0','class="form-control col-3"');
 
 // enable quick return
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('quick_return', __('Quick Return'), $options, $sysconf['quick_return']?'1':'0');
+$form->addSelectList('quick_return', __('Quick Return'), $options, $sysconf['quick_return']?'1':'0','class="form-control col-3"');
 
 // circulation receipt
 $options = null;
 $options[] = array('0', __('Don\'t Print'));
 $options[] = array('1', __('Print'));
-$form->addSelectList('circulation_receipt', __('Print Circulation Receipt'), $options, $sysconf['circulation_receipt']?'1':'0');
+$form->addSelectList('circulation_receipt', __('Print Circulation Receipt'), $options, $sysconf['circulation_receipt']?'1':'0','class="form-control col-3"');
 
 // enable manual changes of loan and due date in circulation transaction
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('allow_loan_date_change', __('Loan and Due Date Manual Change'), $options, $sysconf['allow_loan_date_change']?'1':'0');
+$form->addSelectList('allow_loan_date_change', __('Loan and Due Date Manual Change'), $options, $sysconf['allow_loan_date_change']?'1':'0','class="form-control col-3"');
 
 // enable loan limit overriden
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('loan_limit_override', __('Loan Limit Override'), $options, $sysconf['loan_limit_override']?'1':'0');
+$form->addSelectList('loan_limit_override', __('Loan Limit Override'), $options, $sysconf['loan_limit_override']?'1':'0','class="form-control col-3"');
 
 // enable ignore holidays fine calc
 // added by Indra Sutriadi
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('ignore_holidays_fine_calc', __('Ignore Holidays Fine Calculation'), $options, $sysconf['ignore_holidays_fine_calc']?'1':'0');
+$form->addSelectList('ignore_holidays_fine_calc', __('Ignore Holidays Fine Calculation'), $options, $sysconf['ignore_holidays_fine_calc']?'1':'0','class="form-control col-3"');
 
 // enable bibliography xml detail
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('enable_xml_detail', __('OPAC XML Detail'), $options, $sysconf['enable_xml_detail']?'1':'0');
+$form->addSelectList('enable_xml_detail', __('OPAC XML Detail'), $options, $sysconf['enable_xml_detail']?'1':'0','class="form-control col-3"');
 
 // enable bibliography xml result set
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('enable_xml_result', __('OPAC XML Result'), $options, $sysconf['enable_xml_result']?'1':'0');
+$form->addSelectList('enable_xml_result', __('OPAC XML Result'), $options, $sysconf['enable_xml_result']?'1':'0','class="form-control col-3"');
 
 // enable spell checker on search
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('spellchecker_enabled', __('Enable Search Spellchecker'), $options, $sysconf['spellchecker_enabled']?'1':'0');
+$form->addSelectList('spellchecker_enabled', __('Enable Search Spellchecker'), $options, $sysconf['spellchecker_enabled']?'1':'0','class="form-control col-3"');
 
 // allow file attachment download
 $options = null;
 $options[] = array('0', __('Forbid'));
 $options[] = array('1', __('Allow'));
-$form->addSelectList('allow_file_download', __('Allow OPAC File Download'), $options, $sysconf['allow_file_download']?'1':'0');
+$form->addSelectList('allow_file_download', __('Allow OPAC File Download'), $options, $sysconf['allow_file_download']?'1':'0','class="form-control col-3"');
 
 // session timeout
-$form->addTextField('text', 'session_timeout', __('Session Login Timeout'), $sysconf['session_timeout'], 'style="width: 10%;"');
+$form->addTextField('text', 'session_timeout', __('Session Login Timeout'), $sysconf['session_timeout'], 'style="width: 10%;" class="form-control"');
 
 // barcode encoding
-$form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encoding, $sysconf['barcode_encoding'] );
+$form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encoding, $sysconf['barcode_encoding'],'class="form-control col-3"');
 
 // enable visitor limitation
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('enable_visitor_limitation', __('Visitor Limitation'), $options, $sysconf['enable_visitor_limitation']?'1':'0');
+$form->addSelectList('enable_visitor_limitation', __('Visitor Limitation'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 
 // time visitor limitation
-$form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;"');
+$form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;" class="form-control"');
 
 // print out the object
 echo $form->printOut();

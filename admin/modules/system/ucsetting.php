@@ -87,25 +87,25 @@ $form->table_content_attr = 'class="alterCell2"';
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('enable', __('Enable UCS'), $options, $sysconf['ucs']['enable']?'1':'0');
+$form->addSelectList('enable', __('Enable UCS'), $options, $sysconf['ucs']['enable']?'1':'0','class="form-control col-3"');
 
 // auto delete same record on UCS?
-$form->addSelectList('auto_delete', __('Auto delete record'), $options, $sysconf['ucs']['auto_delete']?'1':'0');
+$form->addSelectList('auto_delete', __('Auto delete record'), $options, $sysconf['ucs']['auto_delete']?'1':'0','class="form-control col-3"');
 
 // auto insert new record to UCS?
-$form->addSelectList('auto_insert', __('Auto insert record'), $options, $sysconf['ucs']['auto_insert']?'1':'0');
+$form->addSelectList('auto_insert', __('Auto insert record'), $options, $sysconf['ucs']['auto_insert']?'1':'0','class="form-control col-3"');
 
 // server uri
-$form->addTextField('text', 'serveraddr', __('Server address'), $sysconf['ucs']['serveraddr'], 'style="width: 60%;"');
+$form->addTextField('text', 'serveraddr', __('Server address'), $sysconf['ucs']['serveraddr'], 'style="width: 60%;" class="form-control"');
 
 // server uri
-$form->addTextField('text', 'id', __('Server ID'), $sysconf['ucs']['id'], 'style="width: 60%;"');
+$form->addTextField('text', 'id', __('Server ID'), $sysconf['ucs']['id'], 'style="width: 60%;" class="form-control"');
 
 // server uri
-$form->addTextField('text', 'password', __('Server Password'), $sysconf['ucs']['password'], 'style="width: 60%;"');
+$form->addTextField('text', 'password', __('Server Password'), $sysconf['ucs']['password'], 'style="width: 60%;" class="form-control"');
 
 // server uri
-$form->addTextField('text', 'name', __('Server Name'), $sysconf['ucs']['name'], 'style="width: 60%;"');
+$form->addTextField('text', 'name', __('Server Name'), $sysconf['ucs']['name'], 'style="width: 60%;" class="form-control"');
 
 // print out the object
 echo $form->printOut();

@@ -143,11 +143,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	<div class="sub_section">
 	  <div class="btn-group">
 		  <a href="<?php echo MWB; ?>master_file/topic.php" class="btn btn-default"><?php echo __('Subject List'); ?></a>
-		  <a href="<?php echo MWB; ?>master_file/topic.php?action=detail" class="btn btn-primary"><?php echo __('Add New Subject'); ?></a>
-          <a href="<?php echo MWB; ?>master_file/cross_reference.php" class="btn btn-default"><?php echo __('Cross Reference'); ?></a>
+		  <a href="<?php echo MWB; ?>master_file/topic.php?action=detail" class="btn btn-default"><?php echo __('Add New Subject'); ?></a>
+          <a href="<?php echo MWB; ?>master_file/cross_reference.php" class="btn btn-success"><?php echo __('Cross Reference'); ?></a>
 	  </div>
 	  <form name="search" action="<?php echo MWB; ?>master_file/topic.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-		  <input type="text" name="keywords" size="30" />
+		  <input type="text" name="keywords" size="30" class="form-control" />
 		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	  </form>
   </div>
@@ -182,34 +182,34 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['topic'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // subject
-    $form->addTextField('text', 'topic', __('Subject').'*', $rec_d['topic'], 'style="width: 60%;"');
+    $form->addTextField('text', 'topic', __('Subject').'*', $rec_d['topic'], 'class="form-control" style="width: 60%;"');
 	// classification
-    $form->addTextField('text', 'class', __('Classification Code'), $rec_d['classification'], 'style="width: 30%;"');
+    $form->addTextField('text', 'class', __('Classification Code'), $rec_d['classification'], 'class="form-control" style="width: 30%;"');
     // subject type
     foreach ($sysconf['subject_type'] as $subj_type_id => $subj_type) {
         $subj_type_options[] = array($subj_type_id, $subj_type);
     }
-    $form->addSelectList('subjectType', __('Subject Type'), $subj_type_options, $rec_d['topic_type']);
+    $form->addSelectList('subjectType', __('Subject Type'), $subj_type_options, $rec_d['topic_type'],'class="form-control col-3"');
     // authority list
-    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'style="width: 30%;"');
+    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'class="form-control" style="width: 30%;"');
     //  vocabolary control
     if (!$in_pop_up AND $form->edit_mode) {
     $str_input  = '<div class="makeHidden">';
-    $str_input .= '<a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?itemID='.$itemID.'" height="550px" title="'.__('Vocabulary Control').'">'.__('Add New Vocabulary').'</a>';
-    $str_input .= '<a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'master_file/pop_scope_vocabolary.php?itemID='.$itemID.'" title="'.__('Scope Note Vocabulary').'" height="400">'.__('Scope Note').'</a>';
+    $str_input .= '<a class="s-margin__bottom-1 s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?itemID='.$itemID.'" height="550px" title="'.__('Vocabulary Control').'">'.__('Add New Vocabulary').'</a>';
+    $str_input .= '<a class="s-margin__bottom-1 s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'master_file/pop_scope_vocabolary.php?itemID='.$itemID.'" title="'.__('Scope Note Vocabulary').'" height="400">'.__('Scope Note').'</a>';
     $str_input .= '</div>';
-    $str_input .= '<iframe name="itemIframe" id="itemIframe" class="borderAll" style="width: 98%; height: 200px;" src="'.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'"></iframe>'."\n";
+    $str_input .= '<iframe name="itemIframe" id="itemIframe" class="form-control" style="width: 100%; height: 200px;" src="'.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$itemID.'"></iframe>'."\n";
     $form->addAnything(__('Vocabulary Control'), $str_input);
     }
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit Subject data').' : <b>'.$rec_d['topic'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit Subject data').' : <b>'.$rec_d['topic'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

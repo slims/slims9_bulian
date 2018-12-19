@@ -126,7 +126,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     </div>
 
     <form name="search" action="<?php echo MWB; ?>master_file/p2pservers.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -159,20 +159,20 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // form record title
     $form->record_title = $rec_d['name'];
     // submit button attribute
-    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
   }
 
   /* Form Element(s) */
   // Server name
-  $form->addTextField('text', 'serverName', __('Server Name').'*', $rec_d['name'], 'style="width: 50%;" maxlength="255"');
+  $form->addTextField('text', 'serverName', __('Server Name').'*', $rec_d['name'], 'style="width: 50%;" class="form-control"');
   // Server URI
-  $form->addTextField('text', 'serverUri', __('URI').'*', $rec_d['uri'], 'style="width: 100%;"');
+  $form->addTextField('text', 'serverUri', __('URI').'*', $rec_d['uri'], 'class="form-control"');
   // Server type
-  $form->addSelectList('serverType', __('Server Type'), $serverType, $rec_d['server_type']);
+  $form->addSelectList('serverType', __('Server Type'), $serverType, $rec_d['server_type'],'class="form-control col-3"');
 
   // edit mode messagge
   if ($form->edit_mode) {
-      echo '<div class="infoBox">'.__('You are going to edit server data').' : <b>'.$rec_d['name'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+      echo '<div class="infoBox">'.__('You are going to edit server data').' : <b>'.$rec_d['name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
   }
   // print out the form object
   echo $form->printOut();

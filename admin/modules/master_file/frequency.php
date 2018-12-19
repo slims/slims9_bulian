@@ -131,9 +131,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/frequency.php" class="btn btn-default"><?php echo __('Frequency Available'); ?></a>
       <a href="<?php echo MWB; ?>master_file/frequency.php?action=detail" class="btn btn-default"><?php echo __('Add New Frequency'); ?></a>
-	  </div>
+    </div>
     <form name="search" action="<?php echo MWB; ?>master_file/frequency.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -168,12 +168,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['frequency'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // frequency name
-    $form->addTextField('text', 'frequencyName', __('Frequency').'*', $rec_d['frequency'], 'style="width: 60%;"');
+    $form->addTextField('text', 'frequencyName', __('Frequency').'*', $rec_d['frequency'], 'style="width: 60%;" class="form-control"');
     // frequency language
         // get language data related to this record from database
         $lang_q = $dbs->query('SELECT language_id, language_name FROM mst_language');
@@ -181,15 +181,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($lang_d = $lang_q->fetch_row()) {
             $lang_options[] = array($lang_d[0], $lang_d[1]);
         }
-    $form->addSelectList('languagePrefix', __('Language'), $lang_options, $rec_d['language_prefix']);
+    $form->addSelectList('languagePrefix', __('Language'), $lang_options, $rec_d['language_prefix'],'class="form-control col-3"');
     // frequency time increment
-    $form->addTextField('text', 'timeIncrement', __('Time Increment').'*', $rec_d['time_increment'], 'style="width: 10%;"');
+    $form->addTextField('text', 'timeIncrement', __('Time Increment').'*', $rec_d['time_increment'], 'style="width: 10%;" class="form-control"');
     // frequency time unit
     $unit_options[] = array('day', __('Day'));
     $unit_options[] = array('week', __('Week'));
     $unit_options[] = array('month', __('Month'));
     $unit_options[] = array('year', __('Year'));
-    $form->addSelectList('timeUnit', __('Time Unit'), $unit_options, $rec_d['time_unit']);
+    $form->addSelectList('timeUnit', __('Time Unit'), $unit_options, $rec_d['time_unit'],'class="form-control col-3"');
 
     // edit mode messagge
     if ($form->edit_mode) {

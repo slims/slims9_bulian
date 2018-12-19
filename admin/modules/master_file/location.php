@@ -156,7 +156,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       <a href="<?php echo MWB; ?>master_file/location.php?action=detail" class="btn btn-default"><?php echo __('Add New Location'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>master_file/location.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" />
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -191,18 +191,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['location_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-default"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // location code
-    $form->addTextField('text', 'locationID', __('Location Code').'*', $rec_d['location_id'], 'style="width: 20%;" maxlength="3"');
+    $form->addTextField('text', 'locationID', __('Location Code').'*', $rec_d['location_id'], 'style="width: 20%;" maxlength="3" class="form-control"');
     // location name
-    $form->addTextField('text', 'locationName', __('Location Name').'*', $rec_d['location_name'], 'style="width: 60%;"');
+    $form->addTextField('text', 'locationName', __('Location Name').'*', $rec_d['location_name'], 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit location data').' : <b>'.$rec_d['location_name'].'</b> <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit location data').' : <b>'.$rec_d['location_name'].'</b> <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();

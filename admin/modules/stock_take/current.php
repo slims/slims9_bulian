@@ -85,7 +85,7 @@ if ($stk_query->num_rows < 1) {
       }
       ?>
       <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
-      <div style="margin-top: 3px;"><div style="width: 90px; float: left;"><?php echo __('Search'); ?>  </div><input type="text" name="keywords" size="30" /> <input type="hidden" name="view" value="<?php echo $view; ?>" /> <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" /></div>
+      <div style="margin-top: 3px;"><div style="width: 90px; float: left;"><?php echo __('Search'); ?>  </div><input type="text" name="keywords" size="30" class="form-control" /> <input type="hidden" name="view" value="<?php echo $view; ?>" /> <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" /></div>
       </form>
       </div>
     </div>
