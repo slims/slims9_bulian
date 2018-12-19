@@ -58,7 +58,6 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <div>
     <div class="per_title">
     	<h2><?php echo __('Loan History'); ?></h2>
 	  </div>
@@ -68,65 +67,50 @@ if (!$reportView) {
     <div class="sub_section">
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
     <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control col-5"'); ?>
-            </div>
+        <div class="form-group divRow">
+            <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
+            <?php echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control col-4"'); ?>
         </div>
-        <div class="divRow">
-          <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
-          <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Membership Type'); ?></label>
             <select name="membershipType" class="form-control col-5">
-              <?php 
-              foreach ($membershipTypes as $key => $membershipType) {
-                echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
-              }
-              ?>
+            <?php 
+            foreach ($membershipTypes as $key => $membershipType) {
+            echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+            }
+            ?>
             </select>
-          </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Title'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Title'); ?></label>
             <?php
             echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-5"');
             ?>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Item Code'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Item Code'); ?></label>
             <?php
             echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-5"');
             ?>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Loan Date From'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Loan Date From'); ?></label>
             <?php
             echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
             ?>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Loan Date Until'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Loan Date Until'); ?></label>
             <?php
             echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
             ?>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Loan Status'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Loan Status'); ?></label>
             <select name="loanStatus" class="form-control col-2"><option value="ALL"><?php echo __('ALL'); ?></option><option value="0"><?php echo __('On Loan'); ?></option><option value="1"><?php echo __('Returned'); ?></option></select>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Location'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Location'); ?></label>
             <?php
             $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
             $loc_options = array();
@@ -136,23 +120,20 @@ if (!$reportView) {
             }
             echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
             ?>
-        	</div> 
         </div>	    
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
+        <div class="form-group divRow">
+            <label><?php echo __('Record each page'); ?></label>
+            <input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" />
+            <small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
         </div>
     </div>
-    <div style="padding-top: 10px; clear: both;">
     <input type="button" class="s-btn btn btn-default" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
     <input type="submit" class="s-btn btn btn-primary" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
     <input type="hidden" name="reportView" value="true" />
-    </div>
     </form>
 	</div>
-    </div>
     <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
+    <div class="paging-area pt-3 pr-3"><div id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {

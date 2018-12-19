@@ -74,7 +74,7 @@ if (!$reportView) {
                 $recapby_options[] = array('language', __('Language'));
                 echo simbio_form_element::selectList('recapBy', $recapby_options,'','class="form-control"');
                 ?>
-                <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" class="btn btn-default" />
+                <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" class="btn btn-primary" />
                 <input type="hidden" name="reportView" value="true" />
             </form>
         </div>
