@@ -108,6 +108,39 @@ var changeLoanDate = function(intLoanID, strDateToChange, dateElement, strDate)
     dateElement.remove();
     dateText.show();
 }
+
+function triggerKeys(){
+    // ESC
+    if(event.keyCode == 27) {
+        parent.$('#circFinish').click();
+    }
+
+    // F2
+    if(event.keyCode == 113) {
+        parent.$('#circLoan').click().focus();
+        parent.$('#listsFrame').attr('src', parent.$('#circLoan').attr('href'));
+    }
+    // // F3
+    if(event.keyCode == 114) {
+        parent.$('#circInLoan').click().focus();
+        parent.$('#listsFrame').attr('src', parent.$('#circInLoan').attr('href'));
+    }
+    // // F4
+    if(event.keyCode == 115) {
+        parent.$('#circReserve').click().focus();
+        parent.$('#listsFrame').attr('src', parent.$('#circReserve').attr('href'));
+    }
+    // // F9
+    if(event.keyCode == 120) {
+        parent.$('#circFine').click().focus();
+        parent.$('#listsFrame').attr('src', parent.$('#circFine').attr('href'));
+    }
+    // // F10
+    if(event.keyCode == 121) {
+        parent.$('#circHistory').click().focus();
+        parent.$('#listsFrame').attr('src', parent.$('#circHistory').attr('href'));
+    }
+}
 </script>
 <?php
 $js = ob_get_clean();
@@ -122,7 +155,7 @@ if (isset($_SESSION['memberID'])) {
     <div class="s-circulation__loan loanItemCodeInput">
         <form name="itemLoan" id="loanForm" action="circulation_action.php" method="post" class="form-inline">
             <?php echo __('Insert Item Code/Barcode'); ?>&nbsp;
-            <input type="text" id="tempLoanID" name="tempLoanID" class="form-control col-4"  />
+            <input type="text" id="tempLoanID" name="tempLoanID" onKeyUp="triggerKeys()" class="form-control col-4"  />
             <input type="submit" value="<?php echo __('Loan'); ?>" class="s-btn btn btn-default" />
         </form>
     </div>

@@ -12,19 +12,19 @@
 
     <link rel="icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
-    <link href="<?php echo SWB; ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo SWB; ?>css/core.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo SWB; ?>css/bootstrap.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo SWB; ?>css/core.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo JWB; ?>colorbox/colorbox.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo JWB; ?>chosen/chosen.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo JWB; ?>jquery.imgareaselect/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $sysconf['admin_template']['css'].'?'.date('tHis'); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $sysconf['admin_template']['css'].'?'.date('this'); ?>" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
     <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>updater.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>gui.js?"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>calendar.js"></script>
+    <script type="text/javascript" src="<?php echo JWB; ?>calendar.js?v=<?php echo date('this') ?>"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>chosen/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>chosen/ajax-chosen.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>ckeditor/ckeditor.js"></script>
@@ -86,6 +86,5 @@
 <script>
 $('.loader').toggleClass('hidden');
 </script>
-
 </body>
 </html>

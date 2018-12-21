@@ -243,13 +243,13 @@ class simbio_date
         $_lastdate_ts = mktime(0, 0, 0, preg_replace('@^0+@i', '', $mix_month)+1, 0, (integer)$mix_year);
         $_lastdate =  date('j', $_lastdate_ts);
 
-        $_day[0] = 'Sunday';
-        $_day[1] = 'Monday';
-        $_day[2] = 'Tuesday';
-        $_day[3] = 'Wednesday';
-        $_day[4] = 'Thursday';
-        $_day[5] = 'Friday';
-        $_day[6] = 'Saturday';
+        $_day[0] = __('Sunday');
+        $_day[1] = __('Monday');
+        $_day[2] = __('Tuesday');
+        $_day[3] = __('Wednesday');
+        $_day[4] = __('Thursday');
+        $_day[5] = __('Friday');
+        $_day[6] = __('Saturday');
 
         // calendar table head
         $_calendar .= '<tr class="week">';
@@ -266,13 +266,13 @@ class simbio_date
                 if ($_w == 1 && $_wday == $_start_day ) {
                     $_mday = 1;
                     $_date_data = (isset($arr_date_data[$_mday]))?$arr_date_data[$_mday]:'';
-                    $_calendar .= '<td class="day '.$_week_alter.'">'.$_mday.$_date_data.'</td>';
+                    $_calendar .= '<td class="day '.$_week_alter.'"><div class="day_number">'.$_mday.$_date_data.'</div></td>';
                 } else if (isset($_mday) && $_mday < $_lastdate) {
                     $_mday++;
                     $_date_data = (isset($arr_date_data[$_mday]))?$arr_date_data[$_mday]:'';
-                    $_calendar .= '<td class="day '.$_week_alter.'">'.$_mday.$_date_data.'</td>';
+                    $_calendar .= '<td class="day '.$_week_alter.'"><div class="day_number">'.$_mday.$_date_data.'</div></td>';
                 } else {
-                    $_calendar .= '<td class="day '.$_week_alter.' none">&nbsp;</td>';
+                    $_calendar .= '<td class="day '.$_week_alter.' none"><div class="day_number">&nbsp;</div></td>';
                 }
             }
             $_calendar .= '</tr>'."\n";

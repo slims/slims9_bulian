@@ -132,18 +132,16 @@ if (!$reportView) {
             </div>
             <div class="form-group divRow">
                 <label><?php echo __('Record each page'); ?></label>
-                <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" /><small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small></div>
+                <input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" /><small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
             </div>
         </div>
-        <div class="pt-2">
-            <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
-            <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
-            <input type="hidden" name="reportView" value="true" />
-        </div>
+        <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+        <input type="hidden" name="reportView" value="true" />
     </form>
 </div>
 <!-- filter end -->
-<div class="paging-area pt-3 pr-3"><div id="pagingBox"></div></div>
+<div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
 <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -268,6 +266,8 @@ if (!$reportView) {
     // modify column value
     $reportgrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
 
+    // show spreadsheet export button
+    $reportgrid->show_spreadsheet_export = true;
 
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
@@ -286,7 +286,6 @@ if (!$reportView) {
         unset($_SESSION['xlsdata']);
         $_SESSION['xlsquery'] = $xlsquery;
         $_SESSION['tblout'] = "title_list";
-	echo '<a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

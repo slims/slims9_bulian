@@ -264,6 +264,6 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
 // get the buffered content
 $content = ob_get_clean();
 // js include
-$js = '<script type="text/javascript" src="'.JWB.'calendar.js"></script>';
+$js = '<script type="text/javascript" src="'.JWB.'calendar.js?"></script>';
 // include the page template
 require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';

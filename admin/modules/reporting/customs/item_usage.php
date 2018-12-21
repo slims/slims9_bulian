@@ -91,7 +91,7 @@ if (!$reportView) {
     </form>
 </div>
 <!-- filter end -->
-<div class="paging-area pt-3 pr-3"><span id="pagingBox"></span></div>
+<div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
 <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {

@@ -57,27 +57,25 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <div>
-        <div class="per_title">
-            <h2><?php echo __('Custom Recapitulations'); ?></h2>
-        </div>
-        <div class="infoBox">
-            <?php echo __('Report Filter'); ?>
-        </div>
-        <div class="sub_section">
-            <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
-                <?php echo __('Recap By'); ?>&nbsp;
-                <?php
-                $recapby_options[] = array('', __('Classification'));
-                $recapby_options[] = array('gmd', __('GMD'));
-                $recapby_options[] = array('collType', __('Collection Type'));
-                $recapby_options[] = array('language', __('Language'));
-                echo simbio_form_element::selectList('recapBy', $recapby_options,'','class="form-control"');
-                ?>
-                <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" class="btn btn-primary" />
-                <input type="hidden" name="reportView" value="true" />
-            </form>
-        </div>
+    <div class="per_title">
+        <h2><?php echo __('Custom Recapitulations'); ?></h2>
+    </div>
+    <div class="infoBox">
+        <?php echo __('Report Filter'); ?>
+    </div>
+    <div class="sub_section">
+        <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
+            <?php echo __('Recap By'); ?>&nbsp;
+            <?php
+            $recapby_options[] = array('', __('Classification'));
+            $recapby_options[] = array('gmd', __('GMD'));
+            $recapby_options[] = array('collType', __('Collection Type'));
+            $recapby_options[] = array('language', __('Language'));
+            echo simbio_form_element::selectList('recapBy', $recapby_options,'','class="form-control"');
+            ?>
+            <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" class="btn btn-primary" />
+            <input type="hidden" name="reportView" value="true" />
+        </form>
     </div>
     <script type="text/javascript">hideRows('filterForm', 1);</script>
     <!-- filter end -->
@@ -270,7 +268,8 @@ if (!$reportView) {
 
     // print out
     echo '<div class="mb-2">'.__('Title and Collection Recap by').' <strong>'.$recapby.'</strong>
-    <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
+    <a href="#" class="s-btn btn btn-default printReport" onclick="window.print()">'.__('Print Current Page').'</a>
+    <a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
     echo $output;
 
 	unset($_SESSION['xlsquery']); 

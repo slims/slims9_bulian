@@ -39,7 +39,7 @@
     background: #000;
     padding: 10px;
     position: fixed;
-    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 #htmlPopTitle {
@@ -54,36 +54,77 @@
 
 /* Calendar */
 #calendarPop {
-    padding: 5px;
-    background: #CCCCCC;
-    border: 1px solid #666666;
+    box-shadow: 0 0 30px #eee;
+    background-color: #fff;
+    padding: 0;
+    color: #000;
+    border: none;
+    overflow: hidden;
 }
 
-.calendar {
+#calendarPop .calendarTitle {
+    padding: 10px;
+}
+
+#calendarPop .calendarClose {
+    right: 10px;
+    top: 10px;
+    position: absolute;
+}
+#calendarPop .calendarClose a {
+    font-weight: bold;
+}
+
+#calendarPop .calendarClose a:hover {
+    color: #ff0000;
+}
+
+#calendarPop,
+#calendarContainer {
+    border-radius: 5px;
+}
+
+#calendarPop {
     width: 100%;
     clear: both;
     font-size: 90%;
 }
 
-.calendar th {
-    background: #FFFFFF;
+#calendarPop th {
+    background: #fafafa;
+    padding: 10px;
+    border: none;
 }
 
-.calendar td {
+#calendarPop td {
     text-align: center;
+    height: 5px;
+    position: relative;
+    border: none;
 }
 
-.calendar td a {
+#calendarPop td a {
     color: #555555;
     display: block;
 }
 
-.calendar td.selected {
-    background-color:   #00ff70;
+#calendarPop td a:hover {
+    background: #000;
+    color: #fff;
+    font-weight: 700;
+}
+
+#calendarPop td.selected a {
+    background-color: #000;
+    color: #fff;
 }
 
 .monthyearselect {
     background: #FFFFFF;
+}
+
+#clockContainer {
+    display: none;
 }
 
 form.clock {

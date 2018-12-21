@@ -367,7 +367,6 @@ buttton
 .dateField {
   padding: 2px 2px 1px;
   width: 200px;
-  display: inline-block;
   height: 38px;
   font-size: 14px;
   line-height: 1.42857143;
@@ -386,6 +385,7 @@ buttton
   float: right;
   margin: -35px;
   color: #00a9ff;
+  cursor: pointer;
 }
 .calendarLink:hover {
   color: #ffffff;
@@ -395,80 +395,38 @@ buttton
   content: "\f073";
   font-size: 16pt;
 }
-#calendarPop {
-  box-shadow: 10px 10px 30px #eee;
-  background-color: #000000;
-  margin-left: -1px;
-  margin-top: -1px;
-  padding: 0;
-  color: #666;
-  border: none;
+.calendar th {
+  padding: 20px 0;
+  width: 10%;
+  text-align: center;
 }
-#calendarPop select {
-  padding: 5px 2px;
-  height: auto;
-  color: #666;
-}
-#calendarPop div:nth-child(1) {
-  padding: 10px;
-  color: #fff;
-}
-#calendarPop div:nth-child(2) {
-  padding: 10px;
-  color: #fff;
-}
-.calendar {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  clear: both;
+.calendar th,
+.calendar td {
+  border: solid 1px #f2f2f2;
 }
 .calendar td {
-  text-align: center;
+  text-align: right;
+  height: 50px;
+  padding-top: 0px;
+  padding-right: 10px;
+  position: relative;
 }
-.calendar th {
-  color: #000000;
-  background-color: #ffffff;
+.calendar td .day_number {
+  height: 20px;
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  width: 100%;
+}
+.calendar td .data {
+  font-size: 12pt;
   font-weight: 700;
+  width: 100%;
   text-align: center;
-  padding: 5px 2px;
-}
-.calendar a:hover,
-.calendar td.selected {
-  background-color: #000000;
-  color: #ffffff;
-}
-.calendar td.selected {
-  font-weight: 700;
-  color: #ffffff;
+  margin-top: -12px;
 }
 .calendar .dayname {
-  color: #fff;
-}
-.calendar .day {
-  border-color: #eee;
-}
-.calendar .week .none {
-  background-color: #eee;
-}
-.calendar .week .odd {
-  background-color: #fff;
-  border-top: solid 1px #eee;
-  border-bottom: solid 1px #eee;
-}
-.monthyearselect th {
-  background-color: #fafafa !important;
-  border-top: solid 1px #fafafa;
-}
-.monthyearselect th a {
-  font-size: 14px;
-  padding: 0px 5px;
-}
-#clockContainer {
-  visibility: hidden !important;
-  display: none !important;
-  height: 0px;
-  margin: 0;
-  padding: 0;
+  background: #dee2e6;
 }
 .s-chart-left {
   display: inline-block;
@@ -988,6 +946,13 @@ header
 .paging-area {
   background: #ffffff;
   text-align: right;
+}
+#pagingBox:blank,
+#pagingBox:empty {
+  background: #000000;
+  height: 0px;
+  display: none;
+  visibility: hidden;
 }
 .panel {
   border-radius: 0px;

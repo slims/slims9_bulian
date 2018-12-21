@@ -73,7 +73,7 @@ if (!$reportView) {
         </div>
         <div class="form-group divRow">
             <label><?php echo __('Membership Type'); ?></label>
-            <select name="membershipType" class="form-control col-5">
+            <select name="membershipType" class="form-control col-3">
             <?php 
             foreach ($membershipTypes as $key => $membershipType) {
             echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
@@ -133,7 +133,7 @@ if (!$reportView) {
     </form>
 	</div>
     <!-- filter end -->
-    <div class="paging-area pt-3 pr-3"><div id="pagingBox"></div></div>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -146,6 +146,8 @@ if (!$reportView) {
 
     // create datagrid
     $reportgrid = new report_datagrid();
+    $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
+
     $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
         'm.member_name AS \''.__('Member Name').'\'',
         'm.member_type_id AS \''.__('Membership Type').'\'',
@@ -229,6 +231,9 @@ if (!$reportView) {
     $reportgrid->modifyColumnContent(7, 'callback{loanStatus}');
     $reportgrid->modifyColumnContent(2, 'callback{showMembershipType}');
 
+    // show spreadsheet export button
+    $reportgrid->show_spreadsheet_export = true;
+
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
@@ -247,7 +252,7 @@ if (!$reportView) {
 		$_SESSION['xlsquery'] = $xlsquery;
 		$_SESSION['tblout'] = "loan_history";
 
-	echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
+	// echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
 
     $content = ob_get_clean();
     // include the page template

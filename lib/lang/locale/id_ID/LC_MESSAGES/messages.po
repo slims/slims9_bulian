@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-14 06:19+0700\n"
-"PO-Revision-Date: 2018-12-14 07:10+0700\n"
+"PO-Revision-Date: 2018-12-21 08:41+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -22,10 +22,8 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:21
-#, fuzzy
-#| msgid "Item Supplier"
 msgid "No ID Supplied!"
-msgstr "Penyuplai Eksemplar"
+msgstr "ID Supplier Kosong!"
 
 #: admin/AJAX_check_id.php:35
 msgid "ID Already exists! Please use another ID"
@@ -244,10 +242,8 @@ msgid "Summary"
 msgstr ""
 
 #: admin/default/home.php:352 admin/default/home.php:458
-#, fuzzy
-#| msgid "Total Loan"
 msgid "Total"
-msgstr "Total Peminjaman"
+msgstr "Jumlah"
 
 #: admin/default/home.php:364 admin/modules/reporting/customs/staff_act.php:108
 msgid "Extends"
@@ -260,16 +256,12 @@ msgid "Overdue"
 msgstr "Keterlambatan"
 
 #: admin/default/home.php:382
-#, fuzzy
-#| msgid "All Collections"
 msgid "Total of Collections"
-msgstr "Semua Koleksi"
+msgstr "Jumlah Koleksi"
 
 #: admin/default/home.php:391
-#, fuzzy
-#| msgid "Total Checkout Items"
 msgid "Total of Items"
-msgstr "Total Eksemplar Dipinjam"
+msgstr "Jumlah Item"
 
 #: admin/default/home.php:400
 msgid "Lent"
@@ -1001,17 +993,13 @@ msgid "Are you sure to remove selected topic?"
 msgstr "Anda yakin untuk menghapus topik yang dipilih?"
 
 #: admin/modules/bibliography/iframe_topic.php:80
-#, fuzzy
-#| msgid "Author removed!"
 msgid "Topic removed!"
-msgstr "Pengarang dihapus!"
+msgstr "Topik telah dihapus!"
 
 #: admin/modules/bibliography/iframe_topic.php:91
 #: admin/modules/master_file/iframe_vocabolary_control.php:44
-#, fuzzy
-#| msgid "Author succesfully removed!"
 msgid "Topic succesfully removed!"
-msgstr "Pengarang berhasil dihapus!"
+msgstr "Topic berhasil dihapus!"
 
 #: admin/modules/bibliography/import.php:61
 #: admin/modules/bibliography/item_import.php:54
@@ -1064,10 +1052,8 @@ msgstr "Berkas untuk di impor"
 
 #: admin/modules/bibliography/import.php:268
 #: admin/modules/bibliography/item_import.php:218
-#, fuzzy
-#| msgid "Number of Records To Export (0 for all records)"
 msgid "Number of Records To Import (0 for all records)"
-msgstr "Jumlah Cantuman untuk diekspor (0 untuk semua rekod)"
+msgstr "Jumlah cantuman untuk di impor (0 untuk semua rekod)"
 
 #: admin/modules/bibliography/index.php:87
 #: admin/modules/membership/index.php:74 admin/modules/system/app_user.php:72
@@ -1410,10 +1396,8 @@ msgid "Add New Pattern"
 msgstr "Tambah Pola Baru"
 
 #: admin/modules/bibliography/index.php:630
-#, fuzzy
-#| msgid "Total Titles"
 msgid "Total item(s)"
-msgstr "Total Judul"
+msgstr "Total item"
 
 #: admin/modules/bibliography/index.php:633
 #: admin/modules/bibliography/item.php:315
@@ -1673,10 +1657,8 @@ msgid "Click to enlarge preview"
 msgstr ""
 
 #: admin/modules/bibliography/index.php:753
-#, fuzzy
-#| msgid "Remove"
 msgid "Remove Image"
-msgstr "Hapus"
+msgstr "Hapus Gambar"
 
 #: admin/modules/bibliography/index.php:765
 msgid "or scan a cover"
@@ -2032,7 +2014,7 @@ msgstr "Harga"
 
 #: admin/modules/bibliography/item.php:353
 msgid "You are going to edit Item data"
-msgstr "Anda akan memperbaharui data Eksemplar"
+msgstr "Anda akan memperbaharui data eksemplar"
 
 #: admin/modules/bibliography/item.php:439
 #: admin/modules/bibliography/item.php:451
@@ -2263,10 +2245,8 @@ msgid "No Results Found!"
 msgstr ""
 
 #: admin/modules/bibliography/marcsru.php:351
-#, fuzzy
-#| msgid "Z3950 Search/Retrieve via URL (SRU)"
 msgid "MARC Search/Retrieve via URL (SRU)"
-msgstr "Cari/Terima z3950 lewat URL (SRU)"
+msgstr "Pencarian/Pengambilan MARC lewat URL (SRU)"
 
 #: admin/modules/bibliography/marcsru.php:357
 #: admin/modules/bibliography/z3950sru.php:263
@@ -2716,10 +2696,8 @@ msgid "MARC SRU"
 msgstr ""
 
 #: admin/modules/bibliography/submenu.php:34
-#, fuzzy
-#| msgid "Grab Bibliographic Data from Other SLiMS Web Services"
 msgid "Grab Bibliographic Data from Other MARC Services"
-msgstr "Ambil Data Bibliografi dari Layanan Situs SLiMS Lainnya"
+msgstr "Ambil Data Bibliografi dari Layanan MARC Lainnya"
 
 #: admin/modules/bibliography/submenu.php:35
 msgid "Z3950 SRU"
@@ -2785,7 +2763,7 @@ msgstr "Impor Data ke Bibliografi dari berkas CSV"
 
 #: admin/modules/bibliography/submenu.php:46
 msgid "Item Export"
-msgstr "Ekspor Item"
+msgstr "Ekspor Eksemplar"
 
 #: admin/modules/bibliography/submenu.php:46
 msgid "Export Item/Copies data To CSV format"
@@ -2793,7 +2771,7 @@ msgstr "Ekspor Item/Salin data ke dalam Format CSV"
 
 #: admin/modules/bibliography/submenu.php:47
 msgid "Item Import"
-msgstr "Impor Item"
+msgstr "Impor Eksemplar"
 
 #: admin/modules/bibliography/submenu.php:47
 msgid "Import Data to Item/Copies database from CSV file"
@@ -2914,10 +2892,8 @@ msgid "Item {itemCode} is being reserved by member {member}"
 msgstr "Eksemplar {itemCode} saat ini sudah dipesan oleh anggota {member}"
 
 #: admin/modules/circulation/circulation_action.php:318
-#, fuzzy
-#| msgid " successfully returned on"
 msgid "Item {itemCode} successfully returned on&nbsp;{returnDate}"
-msgstr " sudah dikembalikan pada"
+msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
@@ -3235,10 +3211,8 @@ msgid "Send overdues notice e-mail"
 msgstr "Kirim surel  tentang informasi keterlambatan"
 
 #: admin/modules/circulation/loan_list.php:178
-#, fuzzy
-#| msgid "Total Items/Copies"
 msgid "Total of temporary fines"
-msgstr "Total Eksemplar/Kopi"
+msgstr "Jumlah denda sementara"
 
 #: admin/modules/circulation/loan_rules.php:77
 msgid "Loan Rules Successfully Updated"
@@ -3726,10 +3700,8 @@ msgstr "Anda akan menyunting data GMD"
 #: admin/modules/master_file/item_code_pattern.php:82
 #: admin/modules/master_file/item_code_pattern.php:119
 #: admin/modules/master_file/submenu.php:45
-#, fuzzy
-#| msgid "Item Code"
 msgid "Item Code Pattern"
-msgstr "Kode Eksemplar"
+msgstr "Pola Kode Eksemplar"
 
 #: admin/modules/master_file/item_code_pattern.php:86
 #, fuzzy
@@ -3814,10 +3786,8 @@ msgid "Label Name OR Label Description must be filled!"
 msgstr ""
 
 #: admin/modules/master_file/label.php:76
-#, fuzzy
-#| msgid "Label Data Successfully Updated"
 msgid "Label image file successfully uploaded"
-msgstr "Data Label Berhasil Diperbaharui"
+msgstr "Gambar label berhasil diunggah"
 
 #: admin/modules/master_file/label.php:80
 msgid ""
@@ -3933,10 +3903,8 @@ msgid "Server Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Pengguna GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/p2pservers.php:78
-#, fuzzy
-#| msgid "New Member Data Successfully Saved"
 msgid "New Server Data Successfully Saved"
-msgstr "Data Anggota Baru Berhasil Disimpan"
+msgstr "Data server baru berhasil disimpan"
 
 #: admin/modules/master_file/p2pservers.php:80
 #, fuzzy
@@ -3972,10 +3940,8 @@ msgstr "Nama Anggota"
 #: admin/modules/master_file/p2pservers.php:169
 #: admin/modules/master_file/p2pservers.php:189
 #: admin/modules/master_file/p2pservers.php:195
-#, fuzzy
-#| msgid "URL"
 msgid "URI"
-msgstr "URL"
+msgstr "URI"
 
 #: admin/modules/master_file/p2pservers.php:171
 #, fuzzy
@@ -4100,10 +4066,8 @@ msgid "Add Vocabulary Control"
 msgstr "Tambahkan Pengendali Kosakata"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:272
-#, fuzzy
-#| msgid "Vocabulary"
 msgid "Enter Vocabulary"
-msgstr "Kosakata"
+msgstr "Masukkan Kosakata"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:284
 msgid "Add Vocabulary"
@@ -4284,10 +4248,8 @@ msgid "List of available Copy Cataloging Servers"
 msgstr ""
 
 #: admin/modules/master_file/submenu.php:45
-#, fuzzy
-#| msgid "Change print barcode settings"
 msgid "Manage item code pattern"
-msgstr "Ubah setelan cetak barkod"
+msgstr "Pengaturan pola kode pada Item"
 
 #: admin/modules/master_file/submenu.php:46
 msgid "Orphaned Author"
@@ -4462,10 +4424,8 @@ msgid "Import for members data from CSV file"
 msgstr "Impor data anggota dari berkas CSV"
 
 #: admin/modules/membership/index.php:87
-#, fuzzy
-#| msgid "Member ID and Name can't be empty"
 msgid "Member ID, Name and Birthday cannot be empty"
-msgstr "ID dan Nama Anggota tidak boleh kosong"
+msgstr "ID dan Nama Anggota dan Tanggal Lahit tidak boleh kosong"
 
 #: admin/modules/membership/index.php:90 admin/modules/system/app_user.php:90
 #: lib/contents/login.inc.php:140
@@ -5723,10 +5683,8 @@ msgid "Stock Take Report"
 msgstr "Laporan Inventarisasi"
 
 #: admin/modules/stock_take/finish.php:99
-#, fuzzy
-#| msgid "Item List"
 msgid "LOST Item list"
-msgstr "Daftar Eksemplar"
+msgstr "Daftar Item Hilang"
 
 #: admin/modules/stock_take/finish.php:121
 msgid "Stock Take Error Logs"
@@ -6297,10 +6255,8 @@ msgid "HTML5 Support?"
 msgstr "Mendukung HTML5?"
 
 #: admin/modules/system/holiday.php:58
-#, fuzzy
-#| msgid "Holiday Description"
 msgid "Holiday description can't be empty!"
-msgstr "Keterangan Hari Libur"
+msgstr "Keterangan hari mohon diisi!"
 
 #: admin/modules/system/holiday.php:63
 msgid "Holiday Date Start must have the format YYYY-MM-DD!"
@@ -6489,14 +6445,12 @@ msgid "Barcode Encoding"
 msgstr "Penyandian Barkod"
 
 #: admin/modules/system/index.php:297
-#, fuzzy
-#| msgid "Visitor List"
 msgid "Visitor Limitation"
-msgstr "Daftar Pengunjung"
+msgstr "Pembatasan Kunjungan"
 
 #: admin/modules/system/index.php:300
 msgid "Time visitor limitation (in minute)"
-msgstr ""
+msgstr "Maksimal waktu kunjungan (dalam menit)"
 
 #: admin/modules/system/module.php:56
 msgid "Module name and path can't be empty"
@@ -6589,10 +6543,8 @@ msgid "Information about System Environment"
 msgstr "Informasi terkait Sistem"
 
 #: admin/modules/system/submenu.php:31
-#, fuzzy
-#| msgid "Save Settings"
 msgid "UCS Setting"
-msgstr "Simpan Pengaturan"
+msgstr "Pengaturan UCS"
 
 #: admin/modules/system/submenu.php:31
 msgid "Configure UCS Preferences"
@@ -6678,23 +6630,16 @@ msgid "Custom data saved!"
 msgstr "Kustom data telah disimpan."
 
 #: admin/modules/system/theme.php:68
-#, fuzzy
-#| msgid "Error inserting counter data to database!"
 msgid "Error saving custom data!"
-msgstr ""
-"Terjadi galat dalam memasukkan data penghitung ke dalam pangkalan data!"
+msgstr "Terjadi galat saat menyimpan data!"
 
 #: admin/modules/system/theme.php:117
-#, fuzzy
-#| msgid "This Item is currently not available"
 msgid "This theme not customizable"
-msgstr "Saat ini, eksemplar tidak tersedia"
+msgstr "Tema tidak dapat diubah"
 
 #: admin/modules/system/theme.php:127
-#, fuzzy
-#| msgid "System Configuration"
 msgid "Theme Configuration"
-msgstr "Pengaturan Sistem"
+msgstr "Pengaturan Tema"
 
 #: admin/modules/system/theme.php:130
 msgid "Customize theme preferences"
@@ -6721,10 +6666,8 @@ msgid "Admin Template"
 msgstr "Templat Admin"
 
 #: admin/modules/system/ucsetting.php:45
-#, fuzzy
-#| msgid "Settings saved"
 msgid "Settings updated."
-msgstr "Setelan tersimpan"
+msgstr "Pengaturan tersimpan."
 
 #: admin/modules/system/ucsetting.php:49
 msgid "Failed save settings!"
@@ -6735,16 +6678,12 @@ msgid "Settings inserted."
 msgstr "Setelan tersimpan."
 
 #: admin/modules/system/ucsetting.php:62
-#, fuzzy
-#| msgid "System Configuration"
 msgid "UCS Configuration"
-msgstr "Pengaturan Sistem"
+msgstr "Pengaturan UCS"
 
 #: admin/modules/system/ucsetting.php:65
-#, fuzzy
-#| msgid "Modify global application preferences"
 msgid "Modify UCS preferences"
-msgstr "Merubah preferensi aplikasi global"
+msgstr "Ubah Preferensi UCS"
 
 #: admin/modules/system/ucsetting.php:90
 #, fuzzy
@@ -6992,10 +6931,8 @@ msgstr ""
 "diaktifkan. Aplikasi tidak dapat dijalankan tanpa <i>Javascript</i>!"
 
 #: lib/contents/login.inc.php:174
-#, fuzzy
-#| msgid "Please update your password!"
 msgid "Hi {username}, please update your password!"
-msgstr "Perbarui kata kunci Anda"
+msgstr "Hai {username}, mohon perbararui password anda!"
 
 #: lib/contents/login.inc.php:175 lib/contents/member.inc.php:135
 #: lib/contents/member.inc.php:136 lib/contents/member.inc.php:269
@@ -7004,10 +6941,8 @@ msgstr "Kata Sandi Terkini"
 
 #: lib/contents/login.inc.php:210 lib/contents/member.inc.php:131
 #: lib/contents/member.inc.php:132
-#, fuzzy
-#| msgid "Login Username"
 msgid "Username"
-msgstr "Nama masuk Pengguna"
+msgstr "Nama Akun"
 
 #: lib/contents/login.inc.php:212 lib/contents/member.inc.php:229
 msgid "Password"
@@ -7196,10 +7131,8 @@ msgstr "Informasi Detil"
 #: template/default-dz/biblio_list_template.php:81
 #: template/default/biblio_list_template.php:82
 #: template/lightweight/biblio_list_template.php:81
-#, fuzzy
-#| msgid "OPAC XML Detail"
 msgid "XML Detail"
-msgstr "Detil XML OPAC"
+msgstr "Detail XML"
 
 #: lib/contents/show_detail.inc.php:112
 #: template/classic-dz/biblio_list_template.php:85
@@ -7226,10 +7159,8 @@ msgstr ""
 "Masa berlaku keanggotaan sudah BERAKHIR! Harap perpanjang keanggotaan anda"
 
 #: lib/contents/visitor.inc.php:166
-#, fuzzy
-#| msgid "Move back"
 msgid "Welcome back"
-msgstr "Mundur"
+msgstr "Selamat datang kembali"
 
 #: lib/contents/visitor.inc.php:168
 msgid "Sorry, Please fill institution field if you are not library member"
@@ -7321,7 +7252,7 @@ msgstr "Persia"
 #: template/lightweight/partials/footer.php:51
 #: template/lightweight/partials/nav.php:5
 msgid "Home"
-msgstr "Beranda depan"
+msgstr "Beranda"
 
 #: lib/module.inc.php:41
 msgid "View OPAC in New Window"
@@ -7483,10 +7414,8 @@ msgstr "Tampilkan penjelasan lengkap untuk judul ini"
 #: template/default-dz/biblio_list_template.php:81
 #: template/default/biblio_list_template.php:82
 #: template/lightweight/biblio_list_template.php:81
-#, fuzzy
-#| msgid "View record detail description for this title"
 msgid "View record detail description in XML Format"
-msgstr "Tampilkan penjelasan lengkap untuk judul ini"
+msgstr "Tampilkan penjelasan lengkap dalam Format XML"
 
 #: template/classic-dz/biblio_list_template.php:149
 #: template/classic/biblio_list_template.php:149
@@ -7841,10 +7770,8 @@ msgstr "Koleksi"
 #: template/default-dz/index_template.inc.php:113
 #: template/default/index_template.inc.php:112
 #: template/lightweight/index_template.inc.php:112
-#, fuzzy
-#| msgid "Result"
 msgid "No Result"
-msgstr "Hasil"
+msgstr "Data kosong"
 
 #: template/default-dz/index_template.inc.php:113
 #: template/default/index_template.inc.php:112
@@ -7878,10 +7805,8 @@ msgid "About SLiMS"
 msgstr "Tentang SLiMS"
 
 #: template/default/detail_template.php:164
-#, fuzzy
-#| msgid "Information"
 msgid "Other Information"
-msgstr "Informasi"
+msgstr "Informasi Lainnya"
 
 #: template/lightweight/index_template.inc.php:93
 #: template/lightweight/index_template.inc.php:195

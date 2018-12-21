@@ -77,7 +77,7 @@ if (!$reportView) {
                     while ($mtype_d = $mtype_q->fetch_row()) {
                         $mtype_options[] = array($mtype_d[0], $mtype_d[1]);
                     }
-                    echo simbio_form_element::selectList('member_type', $mtype_options,'','class="form-control col-3"');
+                    echo simbio_form_element::selectList('member_type', $mtype_options,'','class="form-control col-2"');
                     ?>
                 </div>
                 <div class="form-group divRow">
@@ -117,7 +117,7 @@ if (!$reportView) {
         </form>
 	</div>
     <!-- filter end -->
-    <div class="paging-area pt-3 pr-3"><div id="pagingBox"></div></div>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -163,6 +163,9 @@ if (!$reportView) {
     }
     $reportgrid->setSQLCriteria($criteria);
 
+    // show spreadsheet export button
+    $reportgrid->show_spreadsheet_export = true;
+    
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
@@ -176,8 +179,6 @@ if (!$reportView) {
 	unset($_SESSION['xlsdata']);
 	$_SESSION['xlsquery'] = $xlsquery;
 	$_SESSION['tblout'] = "member_list";
-
-	echo '<a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

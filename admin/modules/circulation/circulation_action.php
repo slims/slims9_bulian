@@ -488,7 +488,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '<td colspan="5">';
         // hidden form for transaction finish
         echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php">
-        <input type="button" class="btn btn-danger" accesskey="T" value="'.__('Finish Transaction').'" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
+        <input type="button" class="btn btn-danger" id="circFinish" accesskey="T" value="'.__('Finish Transaction').' (Esc)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
         echo '</td>';
         echo '</tr>'."\n";
         echo '<tr>'."\n";
@@ -540,17 +540,17 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         }
 
 		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
-        echo '<a class="nav-item nav-link notAJAX" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').'</a>';
-        echo '<a class="nav-item nav-link active notAJAX" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').'</a>';
+        echo '<a class="nav-item nav-link notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
+        echo '<a class="nav-item nav-link active notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {
-          echo '<a class="nav-item nav-link notAJAX" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').'</a>';
+          echo '<a class="nav-item nav-link notAJAX" id="circReserve" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').' (F4)</a>';
         }
         if ($fines_alert) {
-            echo '<a class="nav-item nav-link notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame"><strong class="text-danger">'.__('Fines').'</strong></a>';
+            echo '<a class="nav-item nav-link notAJAX" id="circFine" href="'.MWB.'circulation/fines_list.php" target="listsFrame"><strong class="text-danger">'.__('Fines').' (F9)</strong></a>';
         } else {
-            echo '<a class="nav-item nav-link notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').'</a>';            
+            echo '<a class="nav-item nav-link notAJAX" id="circFine" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').' (F9)</a>';            
         }
-        echo '<a class="nav-item nav-link notAJAX" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').'</a>'."\n";
+        echo '<a class="nav-item nav-link notAJAX" id="circHistory" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').' (F10)</a>'."\n";
         echo '</div>';
         echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="s-iframe expandable"></iframe>'."\n";
     }
@@ -585,6 +585,40 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         });
         $(this).addClass('active');
     });
+
+    $(document.body).bind('keyup', this, function(e){
+        // alert(e.keyCode);
+        // ESC
+        if(e.keyCode == 27) {
+            $('#circFinish').click();
+        }
+        // F2
+        if(e.keyCode == 113) {
+            $('#circLoan').click();
+            $('#listsFrame').attr('src', $('#circLoan').attr('href'));
+        }
+        // F3
+        if(e.keyCode == 114) {
+            $('#circInLoan').click();
+            $('#listsFrame').attr('src', $('#circInLoan').attr('href'));
+        }
+        // F4
+        if(e.keyCode == 115) {
+            $('#circReserve').click();
+            $('#listsFrame').attr('src', $('#circReserve').attr('href'));
+        }
+        // F9
+        if(e.keyCode == 120) {
+            $('#circFine').click();
+            $('#listsFrame').attr('src', $('#circFine').attr('href'));
+        }
+        // F10
+        if(e.keyCode == 121) {
+            $('#circHistory').click();
+            $('#listsFrame').attr('src', $('#circHistory').attr('href'));
+        }
+    });
+
     </script>
     <?php
     exit();
