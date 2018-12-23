@@ -135,6 +135,8 @@ $measure['print']['receipt']['receipt_header_fontSize']     = __('pt');
 $measure['print']['receipt']['receipt_titleLength']         = __('(number)');
 
 // member card print settings
+$measure['print']['membercard']['template']                 = 'classic';
+
 /* measurement in cm */
 $measure['print']['membercard']['page_margin']              = __('(decimal)');
 $measure['print']['membercard']['items_margin']             = __('(decimal)');

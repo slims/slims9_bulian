@@ -350,9 +350,9 @@ if (isset($_GET['keywords'])) {
 	<div class="per_title">
 	    <h2><?php echo __('MARC Search/Retrieve via URL (SRU)'); ?></h2>
     </div>
-    <div class="sub_section form-inline">
+    <div class="sub_section">
     <form name="search" id="search" action="<?php echo MWB; ?>bibliography/marcsru.php" loadcontainer="searchResult" method="get" class="form-inline"><?php echo __('Search'); ?>
-    <input type="text" name="keywords" id="keywords" size="30" class="form-control col-4" />
+    <input type="text" name="keywords" id="keywords" size="30" class="form-control" />
     <select name="index" class="form-control ">
       <option value="0"><?php echo __('All fields'); ?></option>
       <option value="bath.isbn"><?php echo __('ISBN/ISSN'); ?></option>
