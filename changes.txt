@@ -28,9 +28,14 @@ Arabic: Rasyid Ridho <rasyidridho@gmail.com>, Bounama Kouider (for full Arabic s
 Malay: Jerry Mohd. Arif 
 Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
 Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
+Urdu (Pakistan): Faheem Akbar <onlinevws@gmail.com>
 
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 8.5
+========================================================================
+Added : New localisation for Urdu (Pakistan) language
 
 SLiMS 8.3.1 (Akasia)
 ========================================================================

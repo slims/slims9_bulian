@@ -86,6 +86,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
                 // adding new topic
                 $topic_data['topic'] = $subject;
                 $topic_data['topic_type'] = $_POST['type'];
+                $topic_data['classification'] = '';
                 $topic_data['input_date'] = date('Y-m-d');
                 $topic_data['last_update'] = date('Y-m-d');
                 // insert new topic to topic master table
@@ -117,6 +118,7 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
                 // adding new topic
                 $topic_data['topic'] = $subject;
                 $topic_data['topic_type'] = $_POST['type'];
+                $topic_data['classification'] = '';
                 $topic_data['input_date'] = date('Y-m-d');
                 $topic_data['last_update'] = date('Y-m-d');
                 // insert new topic to topic master table

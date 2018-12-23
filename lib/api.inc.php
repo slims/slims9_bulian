@@ -40,6 +40,7 @@ class api
    */
   public static function biblio_load($obj_db, $biblio_id)
   {
+    global $sysconf;
     $_return = FALSE;
     $i = 0;
     $s_bib = 'SELECT mg.gmd_name, mp.publisher_name, ml.language_name, ';
@@ -59,87 +60,145 @@ class api
     $q_bib = $obj_db->query($s_bib);
     if (!$obj_db->errno) {
       while ($r_bib = $q_bib->fetch_assoc()) {
-        $_return[$i]['biblio_id'] = $r_bib['biblio_id'];
-        $_return[$i]['title'] = $r_bib['title'];
-        $_return[$i]['gmd_name'] = $r_bib['gmd_name'];
-        $_return[$i]['sor'] = $r_bib['sor'];
-        $_return[$i]['edition'] = $r_bib['edition'];
-        $_return[$i]['isbn_issn'] = $r_bib['isbn_issn'];
-        $_return[$i]['publisher_name'] = $r_bib['publisher_name'];
-        $_return[$i]['publish_year'] = $r_bib['publish_year'];
-        $_return[$i]['collation'] = $r_bib['collation'];
-        $_return[$i]['series_title'] = $r_bib['series_title'];
-        $_return[$i]['call_number'] = $r_bib['call_number'];
-        $_return[$i]['language_name'] = $r_bib['language_name'];
-        $_return[$i]['source'] = $r_bib['source'];
-        $_return[$i]['place_place'] = $r_bib['place_name'];
-        $_return[$i]['classification'] = $r_bib['classification'];
-        $_return[$i]['notes'] = $r_bib['notes'];
-        $_return[$i]['image'] = $r_bib['image'];
-        $_return[$i]['opac_hide'] = $r_bib['opac_hide'];
-        $_return[$i]['promoted'] = $r_bib['promoted'];
-        $_return[$i]['labels'] = $r_bib['labels'];
-        $_return[$i]['frequency'] = $r_bib['frequency'];
-        $_return[$i]['spec_detail_info'] = $r_bib['spec_detail_info'];
-        $_return[$i]['content_type'] = $r_bib['content_type'];
-        $_return[$i]['media_type'] = $r_bib['media_type'];
-        $_return[$i]['carrier_type'] = $r_bib['carrier_type'];
-        #$_return[$i]['input_date'] = $r_bib['input_date'];
-        #$_return[$i]['last_update'] = $r_bib['last_update'];
-        $_return[$i]['uid'] = $r_bib['uid'];
+        $_return['id'] = $r_bib['biblio_id'];
+        $_return['_id'] = $r_bib['biblio_id'];
+        $_return['biblio_id'] = $r_bib['biblio_id'];
+        $_return['title'] = $r_bib['title'];
+        $_return['gmd_name'] = $r_bib['gmd_name'];
+        $_return['sor'] = $r_bib['sor'];
+        $_return['edition'] = $r_bib['edition'];
+        $_return['isbn_issn'] = $r_bib['isbn_issn'];
+        $_return['publisher_name'] = $r_bib['publisher_name'];
+        $_return['publish_year'] = $r_bib['publish_year'];
+        $_return['collation'] = $r_bib['collation'];
+        $_return['series_title'] = $r_bib['series_title'];
+        $_return['call_number'] = $r_bib['call_number'];
+        $_return['language_name'] = $r_bib['language_name'];
+        $_return['source'] = $r_bib['source'];
+        $_return['place'] = $r_bib['place_name'];
+        $_return['classification'] = $r_bib['classification'];
+        $_return['notes'] = $r_bib['notes'];
+        $_return['image'] = $r_bib['image'];
+        $_return['opac_hide'] = $r_bib['opac_hide'];
+        $_return['promoted'] = $r_bib['promoted'];
+        $_return['labels'] = $r_bib['labels'];
+        $_return['frequency'] = $r_bib['frequency'];
+        $_return['spec_detail_info'] = $r_bib['spec_detail_info'];
+        $_return['content_type'] = $r_bib['content_type'];
+        $_return['media_type'] = $r_bib['media_type'];
+        $_return['carrier_type'] = $r_bib['carrier_type'];
+        #$_return['input_date'] = $r_bib['input_date'];
+        #$_return['last_update'] = $r_bib['last_update'];
+        $_return['uid'] = $r_bib['uid'];
         #AUTHORS
-        $_return[$i]['authors'] = NULL;
-        $s_aut = 'SELECT an.author_name, an.authority_type ';
+        $_return['authors'] = NULL;
+        $s_aut = 'SELECT an.author_name, an.authority_type, ba.level ';
         $s_aut .= 'FROM biblio AS bi, biblio_author AS ba, mst_author AS an ';
         $s_aut .= 'WHERE bi.biblio_id=ba.biblio_id AND ba.author_id=an.author_id ';
         $s_aut .= 'AND bi.biblio_id='.$r_bib['biblio_id'].' ';
         $s_aut .= 'ORDER BY an.author_id ASC ';
         #debug $s_aut
-        #$_return[$i]['authors_sql'] = $s_aut;
+        #$_return['authors_sql'] = $s_aut;
         $q_aut = $obj_db->query($s_aut);
         $_ca = 0;
         while ($r_aut = $q_aut->fetch_assoc()) {
-          $_return[$i]['authors'][$_ca]['author_name'] = $r_aut['author_name'];
-          $_return[$i]['authors'][$_ca]['authority_type'] = $r_aut['authority_type'];
+          $_return['authors'][$_ca]['author_name'] = $r_aut['author_name'];
+          $_type = $r_aut['authority_type'];
+          $_return['authors'][$_ca]['authority_type'] = $sysconf['authority_type'][$_type];
+          #$_return['authors'][$_ca]['authority_level'] = $r_aut['level'];
+          $_level = $r_aut['level'];
+          $_return['authors'][$_ca]['authority_level'] = $sysconf['authority_level'][$_level];
           $_ca++;
         }
         #SUBJECT/TOPIC
-        $_return[$i]['subjects'] = NULL;
-        $s_sub = 'SELECT mt.topic, mt.topic_type ';
+        $_return['subjects'] = NULL;
+        $s_sub = 'SELECT mt.topic, mt.topic_type, bt.level ';
         $s_sub .= 'FROM biblio AS bi, biblio_topic AS bt, mst_topic AS mt ';
         $s_sub .= 'WHERE bi.biblio_id=bt.biblio_id AND bt.topic_id=mt.topic_id ';
         $s_sub .= 'AND bi.biblio_id='.$r_bib['biblio_id'].' ';
         $s_sub .= 'ORDER BY mt.topic_id ASC ';
         #debug $s_sub
-        #$_return[$i]['subjects_sql'] = $s_sub;
+        #$_return['subjects_sql'] = $s_sub;
         $q_sub = $obj_db->query($s_sub);
         $_ct = 0;
         while ($r_sub = $q_sub->fetch_assoc()) {
-          $_return[$i]['subjects'][$_ct]['topic'] = $r_sub['topic'];
-          $_return[$i]['subjects'][$_ct]['topic_type'] = $r_sub['topic_type'];
+          $_return['subjects'][$_ct]['topic'] = $r_sub['topic'];
+          $_type = $r_sub['topic_type'];
+          $_return['subjects'][$_ct]['topic_type'] = $r_sub['topic_type'];
+          $_return['subjects'][$_ct]['topic_type'] = $sysconf['subject_type'][$_type];
+          $_level = $r_sub['level'];
+          if ($_level == '1') {
+            $_return['subjects'][$_ct]['topic_level'] = 'Primary';
+          } elseif ($_level == '2') {
+            $_return['subjects'][$_ct]['topic_level'] = 'Additional';
+          } else {
+            $_return['subjects'][$_ct]['topic_level'] = null;
+          }
           $_ct++;
         }
         #ITEM/HOLDING
-        $_return[$i]['items'] = NULL;
-        $s_ite = 'SELECT * FROM item AS i ';
-        $s_ite .= 'WHERE i.biblio_id='.$r_bib['biblio_id'].' ';
+        $_return['items'] = NULL;
+        $s_ite = 'SELECT i.*, ct.*, loc.*, mis.*, msp.* ';
+        $s_ite .= 'FROM item AS i ';
+        $s_ite .= 'LEFT JOIN ';
+        $s_ite .= 'mst_coll_type AS ct ';
+        $s_ite .= 'ON i.coll_type_id=ct.coll_type_id ';
+        $s_ite .= 'LEFT JOIN ';
+        $s_ite .= 'mst_location AS loc ';
+        $s_ite .= 'ON i.location_id=loc.location_id ';
+        $s_ite .= 'LEFT JOIN ';
+        $s_ite .= 'mst_item_status AS mis ';
+        $s_ite .= 'ON i.item_status_id=mis.item_status_id ';
+        $s_ite .= 'LEFT JOIN ';
+        $s_ite .= 'mst_supplier AS msp ';
+        $s_ite .= 'ON i.supplier_id=msp.supplier_id ';
+        $s_ite .= 'WHERE ';
+        $s_ite .= 'biblio_id=\''.$r_bib['biblio_id'].'\' ';
         $s_ite .= 'ORDER BY i.item_id ASC ';
+
         #debug $s_ite
-        #$_return[$i]['items_sql'] = $s_ite;
+        #$_return['items_sql'] = $s_ite;
         $q_ite = $obj_db->query($s_ite);
         $_ci = 0;
         while ($r_ite = $q_ite->fetch_assoc()) {
-          $_return[$i]['items'][$_ci]['item_code'] = $r_ite['item_code'];
-          $_return[$i]['items'][$_ci]['inventory_code'] = $r_ite['inventory_code'];
+          $_return['items'][$_ci]['item_id'] = $r_ite['item_id'];
+          $_return['items'][$_ci]['item_code'] = $r_ite['item_code'];
+          $_return['items'][$_ci]['call_number'] = $r_ite['call_number'];
+          $_return['items'][$_ci]['coll_type_name'] = $r_ite['coll_type_name'];
+          $_return['items'][$_ci]['shelf_location'] = $r_ite['site'];
+          $_return['items'][$_ci]['location_name'] = $r_ite['location_name'];
+          $_return['items'][$_ci]['inventory_code'] = $r_ite['inventory_code'];
+          if (is_null($r_ite['item_status_name'])) {
+            $_return['items'][$_ci]['item_status'] = 'Available';
+          } else {
+            $_return['items'][$_ci]['item_status'] = $r_ite['item_status_name'];
+          }
+          $_return['items'][$_ci]['order_no'] = $r_ite['order_no'];
+          $_return['items'][$_ci]['order_date'] = $r_ite['order_date'];
+          $_return['items'][$_ci]['received_date'] = $r_ite['received_date'];
+          $_return['items'][$_ci]['supplier_name'] = $r_ite['supplier_name'];
+          $_source = $r_ite['source'];
+          if ($_source == '1') {
+            $_return['items'][$_ci]['source'] = 'Buy';
+          } elseif ($_source == '2') {
+            $_return['items'][$_ci]['source'] = 'Prize/Grant';
+          }
+          $_return['items'][$_ci]['invoice'] = $r_ite['invoice'];
+          $_return['items'][$_ci]['invoice_date'] = $r_ite['invoice_date'];
+          $_return['items'][$_ci]['price'] = $r_ite['price'];
+          $_return['items'][$_ci]['price_currency'] = $r_ite['price_currency'];
+          $_return['items'][$_ci]['input_date'] = $r_ite['input_date'];
+          $_return['items'][$_ci]['last_update'] = $r_ite['last_update'];
+          $_return['items'][$_ci]['uid'] = $r_ite['uid'];
           $_ci++;
         }
-        $_return[$i]['hash']['biblio'] = sha1(urlencode(serialize($_return[$i])));
-        $_return[$i]['hash']['classification'] = sha1(urlencode(serialize($_return[$i]['classification'])));
-        $_return[$i]['hash']['authors'] = sha1(urlencode(serialize($_return[$i]['authors'])));
-        $_return[$i]['hash']['subjects'] = sha1(urlencode(serialize($_return[$i]['subjects'])));
-        $_return[$i]['hash']['image'] = sha1(urlencode(serialize($_return[$i]['image'])));
-        $_return[$i]['input_date'] = $r_bib['input_date'];
-        $_return[$i]['last_update'] = $r_bib['last_update'];
+        $_return['hash']['biblio'] = sha1(urlencode(serialize($_return)));
+        $_return['hash']['classification'] = sha1(urlencode(serialize($_return['classification'])));
+        $_return['hash']['authors'] = sha1(urlencode(serialize($_return['authors'])));
+        $_return['hash']['subjects'] = sha1(urlencode(serialize($_return['subjects'])));
+        $_return['hash']['image'] = sha1(urlencode(serialize($_return['image'])));
+        $_return['input_date'] = $r_bib['input_date'];
+        $_return['last_update'] = $r_bib['last_update'];
         $i++;
       }
     }
@@ -207,46 +266,46 @@ class api
   public static function bibliolog_compare($obj_db, $biblio_id, $user_id, $realname, $title, $current, $previous = NULL)
   {
     if ($previous == NULL) {
-      if ($current[0]['classification'] != 'NONE') {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'New data. Classification. Number: '.$current[0]['classification']);
+      if ($current['classification'] != 'NONE') {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'New data. Classification. Number: '.$current['classification']);
       }
-      if ($current[0]['image'] != NULL) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'New data. Image. File: '.$current[0]['image']);
+      if ($current['image'] != NULL) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'New data. Image. File: '.$current['image']);
       }
-      if ($current[0]['authors'] != NULL) {
+      if ($current['authors'] != NULL) {
         $_authors = '';
-        foreach ($current[0]['authors'] as $key => $value) {
+        foreach ($current['authors'] as $key => $value) {
           $_authors .= $value['author_name'].'; ';
         }
         api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'New data. Author. Names: '.$_authors);
       }
-      if ($current[0]['subjects'] != NULL) {
+      if ($current['subjects'] != NULL) {
         $_subjects = '';
-        foreach ($current[0]['subjects'] as $key => $value) {
+        foreach ($current['subjects'] as $key => $value) {
           $_subjects .= $value['topic'].'; ';
         }
         api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'New data. Subject. Names: '.$_subjects);
       }
     } else {
-      if ($current[0]['hash']['biblio'] != $previous[0]['hash']['biblio']) {
+      if ($current['hash']['biblio'] != $previous['hash']['biblio']) {
         api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'description', $current, 'Updated data. Bibliography.');
       }
-      if ( ($current[0]['classification'] != 'NONE') AND ($current[0]['classification'] != $previous[0]['classification']) ) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'Updated data. Classification. Number: '.$current[0]['classification']);
+      if ( ($current['classification'] != 'NONE') AND ($current['classification'] != $previous['classification']) ) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'classification', $current, 'Updated data. Classification. Number: '.$current['classification']);
       }
-      if ( ($current[0]['image'] != NULL) AND ($current[0]['image'] != $previous[0]['image']) ) {
-        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Updated data. Image. File: '.$current[0]['image']);
+      if ( ($current['image'] != NULL) AND ($current['image'] != $previous['image']) ) {
+        api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'cover', $current, 'Updated data. Image. File: '.$current['image']);
       }
-      if ( ($current[0]['authors'] != NULL) AND ($current[0]['hash']['authors'] != $previous[0]['hash']['authors']) ) {
+      if ( ($current['authors'] != NULL) AND ($current['hash']['authors'] != $previous['hash']['authors']) ) {
         $_authors = '';
-        foreach ($current[0]['authors'] as $key => $value) {
+        foreach ($current['authors'] as $key => $value) {
           $_authors .= $value['author_name'].'; ';
         }
         api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'author', $current, 'Updated data. Author. Names: '.$_authors);
       }
-      if ( ($current[0]['subjects'] != NULL) AND ($current[0]['hash']['subjects'] != $previous[0]['hash']['subjects']) ) {
+      if ( ($current['subjects'] != NULL) AND ($current['hash']['subjects'] != $previous['hash']['subjects']) ) {
         $_subjects = '';
-        foreach ($current[0]['subjects'] as $key => $value) {
+        foreach ($current['subjects'] as $key => $value) {
           $_subjects .= $value['topic'].'; ';
         }
         api::bibliolog_write($obj_db, $biblio_id, $user_id, $realname, $title, 'update', 'subject', $current, 'Updated data. Subject. Names: '.$_subjects);
@@ -309,6 +368,34 @@ class api
   public static function to_object($array)
   {
     return json_decode(json_encode($array));
+  }
+
+  /**
+   * Send to indexing engine (Solr / ElasticSearch) via REST
+   *
+   * @param array $array
+   * @return void
+   */
+  public static function update_to_index($array_data)
+  {
+    global $sysconf;
+    if ($sysconf['index']['engine']['type'] == 'solr') {
+      #$_url = 'http://172.17.0.4:8983/solr/slims/update';
+      $_url = $sysconf['index']['engine']['solr_opts']['host'].':'.$sysconf['index']['engine']['solr_opts']['port'].'/solr/'.$sysconf['index']['engine']['solr_opts']['collection'].'/update';
+      $_onlydata = json_encode($array_data);
+      $json_data = '{"add":{"doc":'.$_onlydata.',"commitWithin": 5000,"overwrite": true}}';
+      $ch = curl_init($_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);                                                                  
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        'Content-Type: application/json',                                                                                
+        'Content-Length: ' . strlen($json_data))                                                                    
+        );
+        curl_exec($ch);
+    } elseif ($sysconf['index']['engine']['type'] == 'es') {
+      #here is the codes for accessing ES
+    }
   }
 
 }

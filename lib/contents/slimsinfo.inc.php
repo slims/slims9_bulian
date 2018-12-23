@@ -34,17 +34,17 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 
 ?>
 <div style="padding-left: 10px;">
-<h2>SLiMS Version 8.3.1 codename Akasia</h2>
+<h2>SLiMS Version 8 codename Akasia</h2>
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2017 Senayan Developer Community<br />
-Simbio Engine v2.0, Copyright (c) 2007-2017 Arie Nugraha
+Copyright (c) 2007-2013 Senayan Developer Community<br />
+Simbio Engine v2.0, Copyright (c) 2007-2013 Arie Nugraha
 </p>
 
 <p>
 <div style="font-weight:bold;">Developers:</div>
-Lead Developer: Wardiyono (2015-...)<br />
+Lead Developer: Hendro Wicaksono<br />
 Programmer: Arie Nugraha, Hendro Wicaksono, Tobias Zeumer, Wardiyono, Indra Sutriadi, Eddy Subratha, Waris Agung Widodo<br />
 Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Zayd, Wardiyono
 </p>
@@ -52,21 +52,20 @@ Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Z
 <p>
 <div style="font-weight:bold;">Translator:</div>
 Germany: Tobias Zeumer<br />
-Arabic: Rasyid Ridho, Bounama Kouider<br />
-Thai: Prasitichai เรารักในหลวง<br />
+Arabic: Rasyid Ridho<br />
+Thai: Prasitichai 2Õ22Ò32Ó82Ò32Ó72Î92Õ52Ñ32Ó12Ò52Ò72Ï5<br />
 Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
 Brazilian Portuguese: <br />
 Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)<br />
-Bengali: A. K. M. Nurul Alam (Apu)
+Bengali: A. K. M. Nurul Alam
 </p>
 
 <p>
 <div style="font-weight:bold;">Contribution:</div>
 Gettext support: Tobias Zeumer<br />
 Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)<br />
-English documentation: Jim Richardson<br />
-OAI Support for Indonesia One Search: Ismail Fahmi
+English documentation: Jim Richardson
 </p>
 
 </div>

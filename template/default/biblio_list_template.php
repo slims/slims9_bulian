@@ -76,13 +76,14 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   
   // button
   $xml_button = '';
-  $detail_button = '<a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
+  #$detail_button = '<a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
+  $detail_button = '<div style="margin-top: 20px;"><a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
   if ($settings['xml_detail']) {
     $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink" title="'.__('View record detail description in XML Format').'" target="_blank">'.__('XML Detail').'</a>';
   }
   
   // citation button
-  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a>';
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a></div>';
   
   // cover images var
   $image_cover = '';

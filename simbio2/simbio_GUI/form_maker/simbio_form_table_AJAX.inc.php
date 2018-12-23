@@ -104,7 +104,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
 
       // check if we are on edit form mode
       if ($this->edit_mode) {
-          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('EDIT') . '</a>';
+          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('Edit') . '</a>';
           // delete button exists if the record_id properties exists
           if ($this->record_id && $this->delete_button) {
               // create delete button
@@ -145,8 +145,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
 
       if ($this->edit_mode) {
           // hidden form for deleting records
-          $_buffer .= '<form action="'.preg_replace('/\?.+/i', '', $this->form_action).'" id="deleteForm" target="submitExec" method="post" style="display: inline;">'
-              .'<input type="hidden" name="itemID" value="'.$this->record_id.'" /><input type="hidden" name="itemAction" value="true" /></form>';
+          $_buffer .= $this->createDeleteForm();
       }
       // for debugging purpose only
       // $_buffer .= '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 500px;"></iframe>';
@@ -154,5 +153,23 @@ class simbio_form_table_AJAX extends simbio_form_maker
       $_buffer .= '<iframe name="submitExec" class="noBlock" style="visibility: hidden; width: 100%; height: 0;"></iframe>';
 
       return $_buffer;
+    }
+
+    /**
+     * Private method to create hidden form for deleting records
+     */
+    private function createDeleteForm() {
+      $form_name = 'deleteForm';
+      $form_token = self::genRandomToken();
+      $form  = '<form action="'.preg_replace('/\?.+/i', '', $this->form_action)
+                .'" name="'.$form_name.'" id="'.$form_name.'" target="submitExec" method="post" style="display: inline;">';
+      $form .= '<input type="hidden" name="csrf_token" value="'.$form_token.'" />';
+      $form .= '<input type="hidden" name="form_name" value="'.$form_name.'" />';
+      $form .= '<input type="hidden" name="itemID" value="'.$this->record_id.'" /><input type="hidden" name="itemAction" value="true" /></form>';
+      if (isset($_SESSION)) {
+        $_SESSION['csrf_token'][$form_name] = $form_token;
+      }
+
+      return $form;
     }
 }

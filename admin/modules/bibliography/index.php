@@ -271,7 +271,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
           unset($_SESSION['_prevrawdata'][$updateRecordID]);
         }
-
+        if ($sysconf['index']['engine']['enable']) {
+          api::update_to_index($_currrawdata);
+        }
         // close window OR redirect main page
         if ($in_pop_up) {
           $itemCollID = (integer)$_POST['itemCollID'];
@@ -330,6 +332,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           $_rawdata = api::biblio_load($dbs, $last_biblio_id);
           api::bibliolog_write($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], 'create', 'description', $_rawdata, 'New data. Bibliography.');
           api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_rawdata, NULL);
+        }
+        if ($sysconf['index']['engine']['enable']) {
+          api::update_to_index($_rawdata);
         }
         // clear related sessions
         $_SESSION['biblioAuthor'] = array();
@@ -447,10 +452,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
           WHERE b.biblio_id=%d GROUP BY title', $itemID);
         $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
-        $serial_kardex_d = $serial_kardex_q->fetch_row();
-        // delete kardex
-        if ($serial_kardex_d[1] > 1) {
-          $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+        if ($serial_kardex_q) {
+          $serial_kardex_d = $serial_kardex_q->fetch_row();
+          // delete kardex
+          if ($serial_kardex_d[1] > 1) {
+            $sql_op->delete('kardex', "serial_id=".$serial_kardex_d[2]);
+          }
         }
         //delete serial data
           $sql_op->delete('serial', "biblio_id=$itemID");
