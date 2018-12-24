@@ -23,7 +23,7 @@
       </p>
     </div>
     <input type="text" placeholder="<?php echo __('Keyword'); ?>" class="s-search animated fadeInUp delay4" id="keyword" name="keywords" value="" lang="<?php echo $sysconf['default_lang']; ?>" aria-hidden="true" autocomplete="off">
-    <button type="submit" name="search" value="search" class="slims-button slims-button--blue"><?php echo __('Search'); ?></button>
+    <button type="submit" name="search" value="search" class="slims-btn slims-btn--blue"><?php echo __('Search'); ?></button>
     <div id="fkbx-spch" tabindex="0" aria-label="Telusuri dengan suara" style="display: block;"></div>
   </form>
 </div>

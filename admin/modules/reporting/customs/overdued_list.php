@@ -57,55 +57,45 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
     <div class="per_title">
     	<h2><?php echo __('Overdued List'); ?></h2>
     </div>
     <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
+        <?php echo __('Report Filter'); ?>
     </div>
     <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
-            <div class="divRowContent">
-            <?php
-            echo simbio_form_element::textField('text', 'id_name', '', 'style="width: 50%"');
-            ?>
+        <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+            <div id="filterForm">
+                <div class="form-group divRow">
+                    <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
+                    <?php
+                    echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control col-4"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Loan Date From'); ?></label>
+                    <?php
+                    echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Loan Date Until'); ?></label>
+                    <?php
+                    echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Record each page'); ?></label>
+                    <input type="text" name="recsEachPage" class="form-control col-1" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?>
+                </div>
             </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Loan Date From'); ?></div>
-            <div class="divRowContent">
-            <?php
-            echo simbio_form_element::dateField('startDate', '2000-01-01');
-            ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Loan Date Until'); ?></div>
-            <div class="divRowContent">
-            <?php
-            echo simbio_form_element::dateField('untilDate', date('Y-m-d'));
-            ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
-        </div>
+            <input type="button" name="moreFilter" class="s-btn btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+            <input type="submit" name="applyFilter" class="s-btn btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+            <input type="hidden" name="reportView" value="true" />
+        </form>
     </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" class="button" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
-    </form>
-    </div>
-    </fieldset>
     <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -151,7 +141,7 @@ if (!$reportView) {
   $reportgrid->setSQLCriteria($overdue_criteria);
 
   // set table and table header attributes
-  $reportgrid->table_attr = 'align="center" class="dataListPrinted" cellpadding="5" cellspacing="0"';
+  $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
   $reportgrid->table_header_attr = 'class="dataListHeaderPrinted"';
   $reportgrid->column_width = array('1' => '80%');
 
@@ -174,16 +164,18 @@ if (!$reportView) {
               LEFT JOIN item AS i ON l.item_code=i.item_code
               LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
           WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\''.date('Y-m-d').'\')) AND l.member_id=\''.$array_data[0].'\''.( !empty($date_criteria)?$date_criteria:'' ));
-      $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_name.' ('.$array_data[0].')</div>';
-      $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_mail_address.'</div>';
-      $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="'.$array_data[0].'emailStatus"></div>'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - <a class="usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$array_data[0].'" loadcontainer="'.$array_data[0].'emailStatus">' . __('Send Notification e-mail') . '</a> - '.__('Phone Number').': '.$member_d[2].'</div>';
+      $_buffer = '<div class="font-weight-bold">'.$member_name.' ('.$array_data[0].')</div>';
+      $_buffer .= '<div class="">'.$member_mail_address.'</div>';
+      $_buffer .= '<div"><div id="'.$array_data[0].'emailStatus"></div>'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - ';
+      if($member_d[1] != '') $_buffer .= '<a class="btn btn-danger btn-sm chartLink usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$array_data[0].'" loadcontainer="'.$array_data[0].'emailStatus">' . __('Send Notification e-mail') . '</a> - ';
+      $_buffer .= __('Phone Number').': '.$member_d[2].'</div>';
       $_buffer .= '<table width="100%" cellspacing="0">';
       while ($ovd_title_d = $ovd_title_q->fetch_assoc()) {
           $_buffer .= '<tr>';
           $_buffer .= '<td valign="top" width="10%">'.$ovd_title_d['item_code'].'</td>';
           $_buffer .= '<td valign="top" width="40%">'.$ovd_title_d['title'].'<div>'.__('Price').': '.$ovd_title_d['price'].' '.$ovd_title_d['price_currency'].'</div></td>';
           $_buffer .= '<td width="20%">'.__('Overdue').': '.$ovd_title_d['Overdue Days'].' '.__('day(s)').'</td>';
-          $_buffer .= '<td width="30%">'.__('Loan Date').': '.$ovd_title_d['loan_date'].' &nbsp; '.__('Due Date').': '.$ovd_title_d['due_date'].'</td>';
+          $_buffer .= '<td width="30%">'.__('Loan Date').': '.$ovd_title_d['loan_date'].'<br>'.__('Due Date').': '.$ovd_title_d['due_date'].'</td>';
           $_buffer .= '</tr>';
       }
       $_buffer .= '</table>';

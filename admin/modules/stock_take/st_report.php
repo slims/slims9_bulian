@@ -57,19 +57,19 @@ if ($stk_query->num_rows < 1) {
     // check if this file included directly
     if (!defined('REPECT_INCLUDE') AND !isset($_GET['print'])) {
 ?>
-    <fieldset class="menuBox">
+    <div class="menuBox">
       <div class="menuBoxInner reportIcon">
         <div class="per_title">
           <h2><?php echo __('Current Stock Take Report'); ?></h2>
         </div>
         <div class="sub_section">
-          <form name="printForm" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; ?>" target="submitPrint" id="printForm" method="get" style="display: inline;">
+          <form name="printForm" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; ?>" target="submitPrint" id="printForm" method="get" class="form-inline">
           <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="btn btn-default" />
           </form>
-          <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
+          <iframe name="submitPrint" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
         </div>
       </div>
-    </fieldset>
+    </div>
 <?php
     }
     $table = new simbio_table();

@@ -7,7 +7,7 @@
 .xmlResultLink,
 .jsonResultLink,
 .btn,
-.slims-button {
+.slims-btn {
     margin-top: 8px;
     text-transform: uppercase;
     padding: 8px 16px;
@@ -19,7 +19,7 @@
 
     @include box-shadow(0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));
 
-    &.slims-button--flat {
+    &.slims-btn--flat {
         box-shadow: none !important;
         background-color: transparent;
 
@@ -27,20 +27,20 @@
             background-color: #eee;
         }
 
-        &.slims-button--default {
+        &.slims-btn--default {
             color: #333;
         }
 
-        &.slims-button--blue {
+        &.slims-btn--blue {
             color: #2196f3;
         }
 
-        &.slims-button--red {
+        &.slims-btn--red {
             color: #f44336;
         }
     }
 
-    &.slims-button--circle {
+    &.slims-btn--circle {
         padding: 0;
         width: 32px;
         height: 32px;
@@ -63,7 +63,7 @@
 }
 
 .homeButton,
-.slims-button--default {
+.slims-btn--default {
     background-color: #fff;
     color: #333;
 }
@@ -73,13 +73,13 @@
 .memberButton,
 .loginButton,
 .s-chat-content .btn,
-.slims-button--blue {
+.slims-btn--blue {
     background-color: #2196f3;
     color: #fff;
 }
 
 #loginButton,
-.slims-button--red {
+.slims-btn--red {
     background-color: #f44336;
     color: #fff;
 }

@@ -130,23 +130,24 @@ if (isset($_POST['saveData'])) {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner loanRulesIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Loan Rules'); ?></h2>
     </div>
     <div class="sub_section">
 	    <div class="btn-group">
-		    <a href="<?php echo MWB; ?>circulation/loan_rules.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Loan Rules List'); ?></a>
-		    <a href="<?php echo MWB; ?>circulation/loan_rules.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Loan Rules'); ?></a>
+		    <a href="<?php echo MWB; ?>circulation/loan_rules.php" class="btn btn-default"><?php echo __('Loan Rules List'); ?></a>
+		    <a href="<?php echo MWB; ?>circulation/loan_rules.php?action=detail" class="btn btn-default"><?php echo __('Add New Loan Rules'); ?></a>
 	    </div>
-	    <form name="search" action="<?php echo MWB; ?>circulation/loan_rules.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-		    <input type="text" name="keywords" size="30">
-		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button">
+        <form name="search" action="<?php echo MWB; ?>circulation/loan_rules.php" id="search" method="get" class="form-inline">
+            <?php echo __('Search'); ?>
+		    <input type="text" name="keywords" size="30" class="form-control col-3">
+		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default">
 	    </form>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* main content */
@@ -162,10 +163,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-primary"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -178,7 +179,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = 'Loan Rules';
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
@@ -189,7 +190,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($mtype_data = $mtype_query->fetch_row()) {
             $mtype_options[] = array($mtype_data[0], $mtype_data[1]);
         }
-    $form->addSelectList('memberTypeID', __('Member Type'), $mtype_options, $rec_d['member_type_id'], 'style="width: 50%;"');
+    $form->addSelectList('memberTypeID', __('Member Type'), $mtype_options, $rec_d['member_type_id'], 'class="form-control col-5"');
     // collection type
         // get collection type data related to this record from database
         $ctype_query = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
@@ -198,7 +199,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $ctype_options[] = array($ctype_data[0], $ctype_data[1]);
         }
         $ctype_options[] = array('0', __('ALL'));
-    $form->addSelectList('collTypeID', __('Collection Type'), $ctype_options, $rec_d['coll_type_id'], 'style="width: 50%;"');
+    $form->addSelectList('collTypeID', __('Collection Type'), $ctype_options, $rec_d['coll_type_id'], 'class="form-control col-5"');
     // gmd
         // get gmd data related to this record from database
         $gmd_query = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
@@ -206,21 +207,21 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($gmd_data = $gmd_query->fetch_row()) {
             $gmd_options[] = array($gmd_data[0], $gmd_data[1]);
         }
-    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'style="width: 50%;"');
+    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="form-control col-5"');
     // loan limit
-    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'size="5"');
+    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'class="form-control col-2"');
     // loan periode
-    $form->addTextField('text', 'loanPeriode', __('Loan Period'), $rec_d['loan_periode'], 'size="5"');
+    $form->addTextField('text', 'loanPeriode', __('Loan Period'), $rec_d['loan_periode'], 'class="form-control col-2"');
     // reborrow limit
-    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']?$rec_d['reborrow_limit']:'0', 'size="5"');
+    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']?$rec_d['reborrow_limit']:'0', 'class="form-control col-2"');
     // fine each day
-    $form->addTextField('text', 'fineEachDay', __('Fines Each Day'), $rec_d['fine_each_day']?$rec_d['fine_each_day']:'0');
+    $form->addTextField('text', 'fineEachDay', __('Fines Each Day'), $rec_d['fine_each_day']?$rec_d['fine_each_day']:'0','class="form-control col-2"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']?$rec_d['grace_periode']:'0');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']?$rec_d['grace_periode']:'0','class="form-control col-2"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit loan rules').' : <br />'.__('Last Update').$rec_d['last_update'].'</div>'."\n"; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit loan rules').' : <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'."\n"; //mfc
     }
     // print out the form object
     echo $form->printOut();
@@ -260,7 +261,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // set table and table header attributes
     $datagrid->icon_edit = $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

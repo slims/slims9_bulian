@@ -56,61 +56,47 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
     <div class="per_title">
     	<h2><?php echo __('Reservation'); ?></h2>
     </div>
     <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
+        <?php echo __('Report Filter'); ?>
     </div>
     <div class="sub_section">
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
     <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'member', '', 'style="width: 50%"'); ?>
-            </div>
+        <div class="form-group divRow">
+            <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
+            <?php echo simbio_form_element::textField('text', 'member', '', 'class="form-control col-4"'); ?>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Title/ISBN'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%"'); ?>
-            </div>
+        <div class="form-group divRow">
+            <label><?php echo __('Title/ISBN'); ?></label>
+            <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-6"'); ?>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Item Code'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'style="width: 50%"'); ?>
-            </div>
+        <div class="form-group divRow">
+            <label><?php echo __('Item Code'); ?></label>
+            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-3"'); ?>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Reserve Date From'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Reserve Date From'); ?></label>
             <?php
-            echo simbio_form_element::dateField('startDate', '2000-01-01');
+            echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
             ?>
-            </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Reserve Date Until'); ?></div>
-            <div class="divRowContent">
+        <div class="form-group divRow">
+            <label><?php echo __('Reserve Date Until'); ?></label>
             <?php
-            echo simbio_form_element::dateField('untilDate', date('Y-m-d'));
+            echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
             ?>
-            </div>
         </div>
     </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" class="button" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
+    <input type="button" name="moreFilter" class="s-btn btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+    <input type="submit" name="applyFilter" class="s-btn btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
     <input type="hidden" name="reportView" value="true" />
-    </div>
     </form>
     </div>
-    </fieldset>
     <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
+    <div class="paging-area"><div class="pb-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -122,6 +108,7 @@ if (!$reportView) {
 
     // create datagrid
     $reportgrid = new report_datagrid();
+    $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
     $reportgrid->setSQLColumn('r.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         'm.member_name AS \''.__('Member Name').'\'',

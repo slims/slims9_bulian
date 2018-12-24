@@ -57,39 +57,35 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
     <div class="per_title">
       <h2><?php echo __('Due Date Warning'); ?></h2>
     </div>
     <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
+        <?php echo __('Report Filter'); ?>
+        <div><?php echo __('This report loan items which will due in 3 to 0 days'); ?></div>
     </div>
     <div class="sub_section">
-    <div><?php echo __('This report loan items which will due in 3 to 0 days'); ?></div>
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
-            <div class="divRowContent">
-            <?php
-            echo simbio_form_element::textField('text', 'id_name', '', 'style="width: 50%"');
-            ?>
+        <div id="filterForm">
+            <div class="form-group divRow">
+                <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
+                <?php
+                echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control col-4"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Record each page'); ?></label>
+                <input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" />
+                <small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
             </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
+        <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+        <input type="hidden" name="reportView" value="true" />
     </form>
-    </fieldset>
+    </div>
     <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -129,7 +125,7 @@ if (!$reportView) {
     $reportgrid->setSQLCriteria($overdue_criteria);
 
     // set table and table header attributes
-    $reportgrid->table_attr = 'align="center" class="dataListPrinted" cellpadding="5" cellspacing="0"';
+    $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
     $reportgrid->table_header_attr = 'class="dataListHeaderPrinted"';
     $reportgrid->column_width = array('1' => '80%');
 
@@ -151,15 +147,15 @@ if (!$reportView) {
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
             WHERE (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(due_date)-TO_DAYS(\''.date('Y-m-d').'\')) BETWEEN 0 AND 3) AND l.member_id=\''.$array_data[0].'\')');
-        $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_name.' ('.$array_data[0].')</div>';
-        $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">'.$member_mail_address.'</div>';
-        $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;">'.__('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - '.__('Phone Number').': '.$member_d[2].'</div>';
+        $_buffer = '<div class="font-weight-bold">'.$member_name.' ('.$array_data[0].')';
+        $_buffer .= '<div>'.$member_mail_address;
+        $_buffer .= __('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - '.__('Phone Number').': '.$member_d[2].'</div></div>';
         $_buffer .= '<table width="100%" cellspacing="0">';
         while ($_title_d = $_title_q->fetch_assoc()) {
             $_buffer .= '<tr>';
             $_buffer .= '<td valign="top" width="10%">'.$_title_d['item_code'].'</td>';
             $_buffer .= '<td valign="top" width="40%">'.$_title_d['title'].'</td>';
-            $_buffer .= '<td width="30%">'.__('Loan Date').': '.$_title_d['loan_date'].' &nbsp; '.__('Due Date').': '.$_title_d['due_date'].'</td>';
+            $_buffer .= '<td width="1%" style="white-space:nowrap">'.__('Loan Date').': '.$_title_d['loan_date'].'</td><td width="1%" style="white-space:nowrap">'.__('Due Date').': '.$_title_d['due_date'].'</td>';
             $_buffer .= '</tr>';
         }
         $_buffer .= '</table>';

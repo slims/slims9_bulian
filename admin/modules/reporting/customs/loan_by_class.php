@@ -53,87 +53,75 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <fieldset style="margin-bottom: 3px;">
-    <div class="per_title">
-    	<h2><?php echo __('Loans by Classification'); ?></h2>
-	  </div>
-    <div class="infoBox">
+<!-- filter -->
+<div class="per_title">
+    <h2><?php echo __('Loans by Classification'); ?></h2>
+</div>
+<div class="infoBox">
     <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
+</div>
+<div class="sub_section">
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Classification'); ?>:</div>
-            <div class="divRowContent">
-            <?php
-            $class_options[] = array('0', __('0 Classes'));
-            $class_options[] = array('1', __('1 Classes'));
-            $class_options[] = array('2', __('2 Classes'));
-            $class_options[] = array('2X', __('2X Classes (Islamic Related)'));
-            $class_options[] = array('3', __('3 Classes'));
-            $class_options[] = array('4', __('4 Classes'));
-            $class_options[] = array('5', __('5 Classes'));
-            $class_options[] = array('6', __('6 Classes'));
-            $class_options[] = array('7', __('7 Classes'));
-            $class_options[] = array('8', __('8 Classes'));
-            $class_options[] = array('9', __('9 Classes'));
-            $class_options[] = array('NONDECIMAL', __('NON Decimal Classes'));
-            echo simbio_form_element::selectList('class', $class_options);
-            ?>
+        <div id="filterForm">
+            <div class="form-group divRow">
+                <label><?php echo __('Classification'); ?></label>
+                <?php
+                $class_options[] = array('0', __('0 Classes'));
+                $class_options[] = array('1', __('1 Classes'));
+                $class_options[] = array('2', __('2 Classes'));
+                $class_options[] = array('2X', __('2X Classes (Islamic Related)'));
+                $class_options[] = array('3', __('3 Classes'));
+                $class_options[] = array('4', __('4 Classes'));
+                $class_options[] = array('5', __('5 Classes'));
+                $class_options[] = array('6', __('6 Classes'));
+                $class_options[] = array('7', __('7 Classes'));
+                $class_options[] = array('8', __('8 Classes'));
+                $class_options[] = array('9', __('9 Classes'));
+                $class_options[] = array('NONDECIMAL', __('NON Decimal Classes'));
+                echo simbio_form_element::selectList('class', $class_options,'','class="form-control col-2"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Collection Type'); ?></label>
+                <?php
+                $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
+                $coll_type_options = array();
+                $coll_type_options[] = array('0', __('ALL'));
+                while ($coll_type_d = $coll_type_q->fetch_row()) {
+                    $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+                }
+                echo simbio_form_element::selectList('collType', $coll_type_options,'','class="form-control col-2"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Year'); ?></label>
+                <?php
+                $current_year = date('Y');
+                $year_options = array();
+                for ($y = $current_year; $y > 1999; $y--) {
+                    $year_options[] = array($y, $y);
+                }
+                echo simbio_form_element::selectList('year', $year_options, $current_year-1,'class="form-control col-1"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Membership Type'); ?></label>
+                <select name="membershipType" class="form-control col-1">
+                <?php 
+                foreach ($membershipTypes as $key => $membershipType) {
+                    echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+                }
+                ?>
+                </select>
             </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Collection Type'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
-            $coll_type_options = array();
-            $coll_type_options[] = array('0', __('ALL'));
-            while ($coll_type_d = $coll_type_q->fetch_row()) {
-                $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-            }
-            echo simbio_form_element::selectList('collType', $coll_type_options);
-            ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Year'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $current_year = date('Y');
-            $year_options = array();
-            for ($y = $current_year; $y > 1999; $y--) {
-                $year_options[] = array($y, $y);
-            }
-            echo simbio_form_element::selectList('year', $year_options, $current_year-1);
-            ?>
-            </div>
-        </div>
-        <div class="divRow">
-          <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
-          <div class="divRowContent">
-            <select name="membershipType">
-              <?php 
-              foreach ($membershipTypes as $key => $membershipType) {
-                echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
-              }
-              ?>
-            </select>
-          </div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
+        <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+        <input type="hidden" name="reportView" value="true" />
     </form>
-    </div>
-    </fieldset>
-    <!-- filter end -->
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+</div>
+<!-- filter end -->
+<iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -155,15 +143,15 @@ if (!$reportView) {
 
     // table start
     $row_class = 'alterCellPrinted';
-    $output = '<table align="center" class="border" style="width: 100%;" cellpadding="3" cellspacing="0">';
+    $output = '<table class="s-table table table-sm table-bordered">';
 
     // header
     $output .= '<tr>';
-    $output .= '<td class="dataListHeaderPrinted">'.__('Classification').'</td>';
+    $output .= '<th class="dataListHeaderPrinted">'.__('Classification').'</th>';
 	$xlsrows = array($xls_rc => array(__('Classification'),__('Jan'),__('Feb'),__('Mar'),__('Apr'),__('May'),__('Jun'),__('Jul'),__('Aug'),__('Sep'),__('Oct'),__('Nov'),__('Dec')));
 	$xls_rc++;
     foreach ($months as $month) {
-        $output .= '<td class="dataListHeaderPrinted">'.$month.'</td>';
+        $output .= '<th class="dataListHeaderPrinted">'.$month.'</th>';
     }
     $output .= '</tr>';
 
@@ -189,9 +177,8 @@ if (!$reportView) {
         $coll_type_name = $coll_type_d[0];
     }
 
-    $row_class = ($class_num%2 == 0)?'alterCellPrinted':'alterCellPrinted2';
     if ($class_num == 'NONDECIMAL') {
-        $output .= '<tr><td class="'.$row_class.'"><strong style="font-size: 1.5em;">NON DECIMAL Classification</strong></td>';
+        $output .= '<tr class="table-warning"><td><strong>NON DECIMAL Classification</strong></td>';
 		$xlsrows[$xls_rc][$xls_cc] = 'NON DECIMAL Classification';
 		$xls_cc++;
         // count loan each month
@@ -203,9 +190,9 @@ if (!$reportView) {
                 WHERE classification REGEXP '^[^0-9]' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
             $loan_d = $loan_q->fetch_row();
             if ($loan_d[0] > 0) {
-                $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';
+                $output .= '<td>'.$loan_d[0].'</td>';
             } else {
-                $output .= '<td class="'.$row_class.'"><span style="color: #ff0000;">'.$loan_d[0].'</span></td>';
+                $output .= '<td>'.$loan_d[0].'</td>';
             }
 			$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
 			$xls_cc++;
@@ -215,7 +202,7 @@ if (!$reportView) {
 		$xls_cc =0;
         $output .= '</tr>';
     } else {
-        $output .= '<tr><td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$class_num.'00</strong></td>';
+        $output .= '<tr class="table-warning"><td>'.$class_num.'00</td>';
 		$xlsrows[$xls_rc][$xls_cc] = $class_num;
 		$xls_cc++;
 
@@ -228,9 +215,9 @@ if (!$reportView) {
                 WHERE TRIM(classification) LIKE '$class_num%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
             $loan_d = $loan_q->fetch_row();
             if ($loan_d[0] > 0) {
-                $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';
+                $output .= '<td><strong>'.$loan_d[0].'</strong></td>';
             } else {
-                $output .= '<td class="'.$row_class.'"><span style="color: #ff0000;">'.$loan_d[0].'</span></td>';
+                $output .= '<td>'.$loan_d[0].'</td>';
             }
 			$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
 			$xls_cc++;
@@ -243,9 +230,8 @@ if (!$reportView) {
         $class_num2 = 0;
         // 2nd subclasses
         while ($class_num2 < 10) {
-            $row_class = ($row_class == 'alterCellPrinted')?'alterCellPrinted2':'alterCellPrinted';
 
-            $output .= '<tr><td class="'.$row_class.'"><strong>&nbsp;&nbsp;&nbsp;'.$class_num.$class_num2.'0</strong></td>';
+            $output .= '<tr><td>'.$class_num.$class_num2.'0</td>';
 			$xlsrows[$xls_rc][$xls_cc] = '   '.$class_num;
 			$xls_cc++;
 
@@ -258,9 +244,9 @@ if (!$reportView) {
                     WHERE TRIM(classification) LIKE '$class_num"."$class_num2%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
                 $loan_d = $loan_q->fetch_row();
                 if ($loan_d[0] > 0) {
-                    $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$loan_d[0].'</strong></td>';
+                    $output .= '<td><strong>'.$loan_d[0].'</strong></td>';
                 } else {
-                    $output .= '<td class="'.$row_class.'"><span style="color: #ff0000;">'.$loan_d[0].'</span></td>';
+                    $output .= '<td>'.$loan_d[0].'</td>';
                 }
 				$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
 				$xls_cc++;
@@ -275,14 +261,14 @@ if (!$reportView) {
     $output .= '</table>';
 
     // print out
-    echo '<div class="printPageInfo">Loan Recap By Class <strong>'.$class_num.'</strong> for year <strong>'.$selected_year.'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
-	echo '<a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></div>'."\n";
+    echo '<div class="mb-2">'.__('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.$selected_year.'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
+	echo '<a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
     echo $output;
 
 	unset($_SESSION['xlsquery']); 
 	$_SESSION['xlsdata'] = $xlsrows;
 	$_SESSION['tblout'] = "loan_by_class_list";
-	// echo '<p><a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a></p>';
+	// echo '<p><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></p>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

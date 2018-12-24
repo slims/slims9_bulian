@@ -120,15 +120,15 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // links
-    $edit_link = '<a class="notAJAX btn btn-default button openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$biblioID.'&itemID='.$item_d['item_id'].'" width="650" height="400" title="'.__('Items/Copies').'" style="text-decoration: underline;">' . __('Edit') . '</a>';
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="javascript: confirmProcess('.$biblioID.', '.$item_d['item_id'].')">' . __('Delete') . '</a>';
+    $edit_link = '<a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$biblioID.'&itemID='.$item_d['item_id'].'" width="650" height="400" title="'.__('Items/Copies').'" style="text-decoration: underline;">' . __('Edit') . '</a>';
+    $remove_link = '<a href="#" class="s-btn btn btn-danger notAJAX" onclick="javascript: confirmProcess('.$biblioID.', '.$item_d['item_id'].')">' . __('Delete') . '</a>';
     $title = $item_d['item_code'];
 
     $table->appendTableRow(array($edit_link, $remove_link, $title, $item_d['location_name'], $item_d['site'], $item_d['coll_type_name'], $item_d['item_status_name']));
-    $table->setCellAttr($row, null, 'class="'.$row_class.'" style="font-weight: bold; width: auto;"');
-    $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-    $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
-    $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="font-weight: bold; width: 40%;"');
+    $table->setCellAttr($row, null, 'class="'.$row_class.'" style="width: auto;"');
+    $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="width: 7%;"');
+    $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="width: 10%;"');
+    $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="width: 40%;"');
 
     $row++;
   }

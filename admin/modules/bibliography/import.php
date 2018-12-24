@@ -233,7 +233,7 @@ if (isset($_POST['doImport'])) {
   }
 }
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner importIcon">
 	<div class="per_title">
     <h2><?php echo __('Import Tool'); ?></h2>
@@ -242,7 +242,7 @@ if (isset($_POST['doImport'])) {
     <?php echo __('Import for bibliographics data from CSV file. For guide on CVS fields order and format please refer to documentation or visit <a href="http://slims.web.id" target="_blank">Official Website</a>'); ?>
 	</div>
 </div>
-</fieldset>
+</div>
 <div id="importInfo" class="infoBox" style="display: none;">&nbsp;</div><div id="importError" class="errorBox" style="display: none;">&nbsp;</div>
 <?php
 
@@ -251,22 +251,38 @@ $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
 $form->submit_button_attr = 'name="doImport" value="'.__('Import Now').'" class="btn btn-default"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // csv files
-$str_input = simbio_form_element::textField('file', 'importFile');
-$str_input .= ' Maximum '.$sysconf['max_upload'].' KB';
+$str_input  = '<div class="container">';
+$str_input .= '<div class="row">';
+$str_input .= '<div class="custom-file col-6">';
+$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');
+$str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+$str_input .= '</div>';
+$str_input .= '<div class="col">';
+$str_input .= '<div class="mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';
+$str_input .= '</div>';
+$str_input .= '</div>';
+$str_input .= '</div>';
 $form->addAnything(__('File To Import'), $str_input);
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
-$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;"');
+$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // number of records to import
-$form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;"');
+$form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
-$form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;"');
+$form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
 // output the form
 echo $form->printOut();
+?>
+<script>
+$(document).on('change', '.custom-file-input', function () {
+    let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+    $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+});
+</script>

@@ -40,7 +40,7 @@ $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
-  $file_loc_url = SWB.'index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
+  $file_loc_url = SWB.'index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
   $file_loc = REPOBS.( $file_d['file_dir']?$file_d['file_dir'].'/':'' ).$file_d['file_name'];
   if (file_exists($file_loc)) {
     // check access limit

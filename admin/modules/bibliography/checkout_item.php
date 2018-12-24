@@ -45,19 +45,19 @@ if (!$can_read) {
 }
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner itemOutIcon">
 	<div class="per_title">
     	<h2><?php echo __('Checkout Items'); ?></h2>
     </div>
     <div class="sub_section">
-    <form name="search" action="<?php echo MWB; ?>bibliography/checkout_item.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
-    </form>
+        <form name="search" action="<?php echo MWB; ?>bibliography/checkout_item.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
+        <input type="text" name="keywords" class="form-control col-md-3" />
+        <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+        </form>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* ITEM LIST */
 // table spec
@@ -103,7 +103,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
 }
 
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 
 // set column width

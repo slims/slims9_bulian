@@ -383,7 +383,7 @@ if (isset($_POST['doImport'])) {
     }
 }
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner importIcon">
 	<div class="per_title">
     	<h2><?php echo __('MARC Import tool'); ?></h2>
@@ -396,25 +396,42 @@ if (isset($_POST['doImport'])) {
         you can use <a class="notAJAX" href="http://www.loc.gov/standards/marcxml/marcxml.zip">MARCXML Toolkit</a>'); ?>
 	</div>
 </div>
-</fieldset>
+</div>
 <div id="importInfo" class="infoBox" style="display: none;">&nbsp;</div><div id="importError" class="errorBox" style="display: none;">&nbsp;</div>
 <?php
 // create new instance
 $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
-$form->submit_button_attr = 'name="doImport" value="'.__('Import Now').'" class="btn btn-default"';
+$form->submit_button_attr = 'name="doImport" value="'.__('Import Now').'" class="s-btn btn btn-default"';
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // csv files
-$str_input = simbio_form_element::textField('file', 'importFile');
-$str_input .= ' Maximum '.$sysconf['max_upload'].' KB';
+$str_input  = '<div class="container">';
+$str_input .= '<div class="row">';
+$str_input .= '<div class="custom-file col-6">';
+$str_input .= simbio_form_element::textField('file', 'importFile','class="custom-file-input"');
+$str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+$str_input .= '</div>';
+$str_input .= '<div class="col">';
+$str_input .= '<div class="mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';
+$str_input .= '</div>';
+$str_input .= '</div>';
+$str_input .= '</div>';
 $form->addAnything(__('File To Import'), $str_input);
 // text import
 // $form->addTextField('textarea', 'MARCtext', __('MARC record text'), '', 'style="width: 100%; height: 500px;"');
 // number of records to import
-$form->addTextField('text', 'recordNum', __('Number of records to import (0 for all records)'), '0', 'style="width: 10%;"');
+$form->addTextField('text', 'recordNum', __('Number of records to import (0 for all records)'), '0', 'class="form-control" style="width: 10%;"');
 // output the form
+
 echo $form->printOut();
+?>
+<script>
+$(document).on('change', '.custom-file-input', function () {
+    let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+    $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+});
+</script>

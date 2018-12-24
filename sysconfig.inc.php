@@ -45,7 +45,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -338,7 +338,7 @@ $sysconf['reserve_expire_periode'] = 7;
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
 $sysconf['library_subname'] = 'Open Source Library Management System';
-$sysconf['page_footer'] = ' SENAYAN Library Automation System (SLiMS) - SLiMS Developer Community - Released Under GNU GPL License';
+$sysconf['page_footer'] = ' Senayan Library Management System (SLiMS). Released Under GNU GPL License.<br>Made with love by SLiMS Developer Community';
 
 /* HTTPS Setting */
 $sysconf['https_enable'] = false;

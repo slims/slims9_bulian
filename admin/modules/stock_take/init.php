@@ -151,13 +151,13 @@ if ($stk_q->num_rows) {
     $form->submit_button_attr = 'name="saveData" value="'.__('Initialize Stock Take').'" class="btn btn-default"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
     /* Form Element(s) */
     // stock take name
-    $form->addTextField('text', 'name', __('Stock Take Name').'*', '', 'style="width: 60%;"');
+    $form->addTextField('text', 'name', __('Stock Take Name').'*', '', 'style="width: 60%;" class="form-control"');
     // gmd
         // get gmd data related to this record from database
         $gmd_q = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
@@ -165,7 +165,7 @@ if ($stk_q->num_rows) {
         while ($gmd_d = $gmd_q->fetch_row()) {
             $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
         }
-    $form->addSelectList('gmdID', __('GMD'), $gmd_options);
+    $form->addSelectList('gmdID', __('GMD'), $gmd_options,'','class="form-control col-3"');
     // collection type
         // get coll_type data related to this record from database
         $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
@@ -173,7 +173,7 @@ if ($stk_q->num_rows) {
         while ($coll_type_d = $coll_type_q->fetch_row()) {
             $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
         }
-    $form->addSelectList('collTypeID', __('Collection Type'), $coll_type_options);
+    $form->addSelectList('collTypeID', __('Collection Type'), $coll_type_options,'','class="form-control col-3"');
     // location
         // get language data related to this record from database
         $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
@@ -181,22 +181,22 @@ if ($stk_q->num_rows) {
         while ($location_d = $location_q->fetch_row()) {
             $location_options[] = array($location_d[0], $location_d[1]);
         }
-    $form->addSelectList('location', __('Location'), $location_options);
+    $form->addSelectList('location', __('Location'), $location_options,'','class="form-control col-3"');
     // item site
-    $form->addTextField('text', 'itemSite', __('Shelf Location'), '', 'style="width: 20%;"');
+    $form->addTextField('text', 'itemSite', __('Shelf Location'), '', 'style="width: 20%;" class="form-control"');
     // classification;
-    $str_input = simbio_form_element::textField('text', 'classification', '', 'style="width: 60%;"');
-    $str_input .= '<br />'.__('Separate each class comma sign. Use * for wildcard');
+    $str_input = simbio_form_element::textField('text', 'classification', '', 'style="width: 60%;" class="form-control"');
+    $str_input .= '<small class="text-muted font-weight-bold">'.__('Separate each class comma sign. Use * for wildcard').'</small>';
     $form->addAnything(__('Classification'), $str_input);
     // print out the object
     ?>
-    <fieldset class="menuBox">
+    <div class="menuBox">
     <div class="menuBoxInner printIcon">
 	   <div class="per_title">
       <h2><?php echo __('Initialize Stock Take Process'); ?></h2>
      </div>
     </div>
-    </fieldset>
+    </div>
     <?php
     echo $form->printOut();
 }

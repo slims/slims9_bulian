@@ -144,23 +144,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner memberTypeIcon">
 	<div class="per_title">
     	<h2><?php echo __('Member Type'); ?></h2>
     </div>
     <div class="sub_section">
 	    <div class="btn-group">
-		    <a href="<?php echo MWB; ?>membership/member_type.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Member Type List'); ?></a>
-		    <a href="<?php echo MWB; ?>membership/member_type.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Member Type'); ?></a>
+		    <a href="<?php echo MWB; ?>membership/member_type.php" class="btn btn-default"><?php echo __('Member Type List'); ?></a>
+		    <a href="<?php echo MWB; ?>membership/member_type.php?action=detail" class="btn btn-default"><?php echo __('Add New Member Type'); ?></a>
 	    </div>
-	    <form name="search" action="<?php echo MWB; ?>membership/member_type.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-		    <input type="text" name="keywords" size="30" />
-		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button" />
+	    <form name="search" action="<?php echo MWB; ?>membership/member_type.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+		    <input type="text" name="keywords" size="30" class="form-control" />
+		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	    </form>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* main content */
@@ -175,10 +175,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -190,30 +190,30 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['member_type_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // member type name
-    $form->addTextField('text', 'memberTypeName', __('Member Type Name').'*', $rec_d['member_type_name'], 'style="width: 100%;"');
+    $form->addTextField('text', 'memberTypeName', __('Member Type Name').'*', $rec_d['member_type_name'], 'class="form-control"');
     // loan limit
-    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'size="5"');
+    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'style="width:25%" class="form-control"');
     // loan periode
-    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode'], 'size="5"');
+    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode'], 'style="width:25%"  class="form-control"');
     // enable reserve
     $enable_resv_chbox[0] = array('1', __('Enable'));
     $enable_resv_chbox[1] = array('0', __('Disable'));
     $form->addRadio('enableReserve', __('Reserve'), $enable_resv_chbox, !empty($rec_d['enable_reserve'])?$rec_d['enable_reserve']:'1');
     // reserve limit
-    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit'], 'size="5"');
+    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit'], 'style="width:25%" class="form-control"');
     // membership periode
-    $form->addTextField('text', 'memberPeriode', __('Membership Periode (In Days)'), $rec_d['member_periode'], 'size="5"');
+    $form->addTextField('text', 'memberPeriode', __('Membership Periode (In Days)'), $rec_d['member_periode'], 'style="width:25%" class="form-control"');
     // reborrow limit
-    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit'], 'size="5"');
+    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit'], 'style="width:25%" class="form-control"');
     // fine each day
-    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']);
+    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day'],'style="width:25%" class="form-control"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']);
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode'],'style="width:25%" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -252,7 +252,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // set table and table header attributes
     $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

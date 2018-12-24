@@ -122,23 +122,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Place'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
-      <a href="<?php echo MWB; ?>master_file/place.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Place List'); ?></a>
-      <a href="<?php echo MWB; ?>master_file/place.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Place'); ?></a>
+      <a href="<?php echo MWB; ?>master_file/place.php" class="btn btn-default"><?php echo __('Place List'); ?></a>
+      <a href="<?php echo MWB; ?>master_file/place.php?action=detail" class="btn btn-default"><?php echo __('Add New Place'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>master_file/place.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button" />
+    <form name="search" action="<?php echo MWB; ?>master_file/place.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <input type="text" name="keywords" size="30" class="form-control" />
+    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* main content */
@@ -153,10 +153,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -168,16 +168,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // form record title
         $form->record_title = $rec_d['place_name'];
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // place name
-    $form->addTextField('text', 'placeName', __('Place Name').'*', $rec_d['place_name'], 'style="width: 60%;"');
+    $form->addTextField('text', 'placeName', __('Place Name').'*', $rec_d['place_name'], 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit place data').' : <b>'.$rec_d['place_name'].'</b>  <br />'.__('Last Update').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to edit place data').' : <b>'.$rec_d['place_name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();
@@ -213,7 +213,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->setSQLCriteria($sql_criteria);
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

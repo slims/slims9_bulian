@@ -61,7 +61,7 @@ if ($stk_query->num_rows < 1) {
         $view = trim($_GET['view']);
     }
 ?>
-    <fieldset class="menuBox">
+    <div class="menuBox">
     <div class="menuBoxInner stockTakeIcon">
       <div class="per_title">
         <h2><?php
@@ -75,7 +75,7 @@ if ($stk_query->num_rows < 1) {
       <div class="sub_section">
       <?php
       if ($view != 'm') {
-        echo '<form name="stockTakeForm" class="notAJAX" action="'.MWB.'stock_take/stock_take_action.php" target="stockTakeAction" method="post" style="display: inline;">
+        echo '<form name="stockTakeForm" class="notAJAX" action="'.MWB.'stock_take/stock_take_action.php" target="stockTakeAction" method="post" class="form-inline">
           <div><div style="width: 140px; float: left;">'.__('Item Code').':</div><input type="text" id="itemCode" name="itemCode" size="30" autofocus /> <input type="submit" value="'.__('Change Status').'" class="btn btn-default" /></div>
           <div style="margin-top: 3px;"><div style="width: 140px; float: left;">'.__('List stocktakes by').':</div>
           <input type="radio" id="listShow" name="listShow" value="1" onclick="$(\'mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow=1\')" '.( isset($show_only_current)?'checked="checked"':'' ).' /> '.__('Current User Only').'
@@ -84,12 +84,12 @@ if ($stk_query->num_rows < 1) {
           </form>';
       }
       ?>
-      <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" style="display: inline;">
-      <div style="margin-top: 3px;"><div style="width: 90px; float: left;"><?php echo __('Search'); ?> : </div><input type="text" name="keywords" size="30" /> <input type="hidden" name="view" value="<?php echo $view; ?>" /> <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" /></div>
+      <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
+      <div style="margin-top: 3px;"><div style="width: 90px; float: left;"><?php echo __('Search'); ?>  </div><input type="text" name="keywords" size="30" class="form-control" /> <input type="hidden" name="view" value="<?php echo $view; ?>" /> <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" /></div>
       </form>
       </div>
     </div>
-    </fieldset>
+    </div>
     <!-- give focus to itemCode text field -->
     <script type="text/javascript">
     //Form.Element.focus('itemCode');
@@ -139,7 +139,7 @@ if ($stk_query->num_rows < 1) {
     $datagrid->setSQLCriteria($criteria);
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->delete_URL = $_SERVER['PHP_SELF'];

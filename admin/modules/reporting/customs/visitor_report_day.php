@@ -58,7 +58,7 @@ $months['10'] = __('Oct');
 $months['11'] = __('Nov');
 $months['12'] = __('Dec');
 
-$page_title = 'Visitor Report by Day';
+$page_title = __('Visitor Report by Day');
 $reportView = false;
 if (isset($_GET['reportView'])) {
     $reportView = true;
@@ -66,51 +66,39 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <fieldset style="margin-bottom: 3px;">
-	  <div class="per_title">
-	    <h2><?php echo __('Visitor Report'); ?></h2>
-    </div>
-    <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
-    </div>
-	  <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Year'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $current_year = date('Y');
-            $year_options = array();
-            for ($y = $current_year; $y > 1999; $y--) {
-                $year_options[] = array($y, $y);
-            }
-            echo simbio_form_element::selectList('year', $year_options, $current_year);
-            ?>
-            </div>
-            <div class="divRowLabel"><?php echo __('Month'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $current_month = date('m');
-            $month_options = array();
-            foreach ($months as $idx => $month) {
-                $month_options[] = array($idx, $month);
-            }
-            echo simbio_form_element::selectList('month', $month_options, $current_month);
-            ?>
-            </div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
-    </form>
-    </div>
-    </fieldset>
-    <!-- filter end -->
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+<!-- filter -->
+<div class="per_title">
+  <h2><?php echo $page_title; ?></h2>
+</div>
+<div class="infoBox">
+  <?php echo __('Report Filter'); ?>
+</div>
+<div class="sub_section">
+<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
+          <label><?php echo __('Year'); ?></label>
+          <?php
+          $current_year = date('Y');
+          $year_options = array();
+          for ($y = $current_year; $y > 1999; $y--) {
+              $year_options[] = array($y, $y);
+          }
+          echo simbio_form_element::selectList('year', $year_options, $current_year,'class="form-control col-1"');
+          ?>
+          <label><?php echo __('Month'); ?></label>
+          <?php
+          $current_month = date('m');
+          $month_options = array();
+          foreach ($months as $idx => $month) {
+              $month_options[] = array($idx, $month);
+          }
+          echo simbio_form_element::selectList('month', $month_options, $current_month,'class="form-control col-1"');
+          ?>
+  <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+  <input type="hidden" name="reportView" value="true" />
+</form>
+</div>
+<!-- filter end -->
+<iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -137,7 +125,7 @@ if (!$reportView) {
     $output = simbio_date::generateCalendar($selected_year, $selected_month, $visitor_data);
 
     // print out
-    echo '<div class="printPageInfo">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>')) . ' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="mb-2">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>')) . ' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();
