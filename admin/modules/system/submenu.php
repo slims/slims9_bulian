@@ -23,6 +23,8 @@
 do_checkIP('smc');
 do_checkIP('smc-system');
 
+global $sysconf;
+
 $menu[] = array('Header', __('System'));
 // only administrator have privileges for below menus
 if ($_SESSION['uid'] == 1) {
@@ -34,7 +36,11 @@ if ($_SESSION['uid'] == 1) {
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus
 if ($_SESSION['uid'] == 1) {
-    $menu[] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes.php', __('Bibliographic Indexes management'));
+    if ($sysconf['index']['engine']['enable']) {
+      $menu[] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes_'.$sysconf['index']['engine']['type'].'.php', __('Bibliographic Indexes management'));
+    } else {
+      $menu[] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes.php', __('Bibliographic Indexes management'));
+    }
     $menu[] = array(__('Modules'), MWB.'system/module.php', __('Configure Application Modules'));
     $menu[] = array(__('Librarian & System Users'), MWB.'system/app_user.php', __('Manage Application User or Library Staff'));
     $menu[] = array(__('User Group'), MWB.'system/user_group.php', __('Manage Group of Application User'));
