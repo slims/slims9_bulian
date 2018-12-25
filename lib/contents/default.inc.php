@@ -31,17 +31,25 @@ if (!defined('INDEX_AUTH')) {
 require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require LIB.'biblio_list_model.inc.php';
+
 // index choice
-if ($sysconf['index']['type'] == 'index') {
-  require LIB.'biblio_list_index.inc.php';
-} else if ($sysconf['index']['type'] == 'mongodb' && class_exists('MongoClient')) {
-  require LIB.'biblio_list_mongodb.inc.php';
-} else if ($sysconf['index']['type'] == 'sphinx' && file_exists(LIB.'sphinx/sphinxapi.php')) {
-  require LIB.'sphinx/sphinxapi.php';
-  require LIB.'biblio_list_sphinx.inc.php';
-  $sysconf['opac_result_num'] = (int)$sysconf['opac_result_num'];
+if ($sysconf['index']['engine']['enable']) {
+  if ($sysconf['index']['engine']['type'] === 'es') {
+    // elastic search
+    require LIB . 'biblio_list_elasticsearch.inc.php';
+  }
 } else {
-  require LIB.'biblio_list.inc.php';
+  if ($sysconf['index']['type'] == 'index') {
+    require LIB.'biblio_list_index.inc.php';
+  } else if ($sysconf['index']['type'] == 'mongodb' && class_exists('MongoClient')) {
+    require LIB.'biblio_list_mongodb.inc.php';
+  } else if ($sysconf['index']['type'] == 'sphinx' && file_exists(LIB.'sphinx/sphinxapi.php')) {
+    require LIB . 'sphinx/sphinxapi.php';
+    require LIB . 'biblio_list_sphinx.inc.php';
+    $sysconf['opac_result_num'] = (int)$sysconf['opac_result_num'];
+  } else {
+    require LIB.'biblio_list.inc.php';
+  }
 }
 
 // create biblio list object

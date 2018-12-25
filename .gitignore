@@ -36,3 +36,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/vendor/

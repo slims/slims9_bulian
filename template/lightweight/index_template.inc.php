@@ -141,31 +141,40 @@ include "partials/nav.php";
         <p><?php echo (utility::isMemberLogin()) ? $header_info : $info; ?></p>
         <br/>
 
-        <!-- Show if clustering search is enabled
-        ============================================= -->
         <?php
-          if(isset($_GET['keywords']) && (!empty($_GET['keywords']))) :
-            if (($sysconf['enable_search_clustering'])) : ?>
+        if (($sysconf['enable_search_clustering'])) : ?>
             <h2><?php echo __('Search Cluster'); ?></h2>
 
             <hr/>
 
+        <?php
+        if ($sysconf['index']['engine']['enable']) {
+          echo $biblio_list->getClustering();
+        } else {
+        if (isset($_GET['keywords']) && (!empty($_GET['keywords']))) :
+        ?>
+
             <div id="search-cluster">
-              <div class="cluster-loading"><?php echo __('Generating search cluster...');  ?></div>
+                <div class="cluster-loading"><?php echo __('Generating search cluster...'); ?></div>
             </div>
 
             <script type="text/javascript">
-              $('document').ready( function() {
-                $.ajax({
-                  url     : 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
-                  type    : 'GET',
-                  success : function(data, status, jqXHR) { $('#search-cluster').html(data); }
+                $('document').ready(function () {
+                    $.ajax({
+                        url: 'index.php?p=clustering&q=<?php echo urlencode($criteria); ?>',
+                        type: 'GET',
+                        success: function (data, status, jqXHR) {
+                            $('#search-cluster').html(data);
+                        }
+                    });
                 });
-              });
             </script>
 
-            <?php endif; ?>
-          <?php endif; ?>
+        <?php endif; ?>
+
+        <?php } ?>
+
+        <?php endif; ?>
       </div>
     </div>
   </div>
