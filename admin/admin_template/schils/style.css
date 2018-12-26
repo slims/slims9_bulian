@@ -281,6 +281,7 @@ animate
 }
 .title {
   color: #000000;
+  font-weight: 700;
 }
 .authors {
   font-style: italic;
@@ -1286,15 +1287,20 @@ table {
 }
 .s-widget-value {
   font-size: 30px;
-  color: #4AC49B;
+  color: #000000;
 }
 .s-widget-icon {
   float: left;
-  margin: 0;
-  padding-left: 10px;
-  padding-right: 20px;
-  color: #eee;
-  font-size: 50px;
+  color: #e6e6e6;
+  font-size: 30px;
+  line-height: 90px;
+  border: solid 1px #e6e6e6;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  border-radius: 50px;
+  padding: 0;
+  margin-right: 10px;
 }
 .icon {
   width: 24px;

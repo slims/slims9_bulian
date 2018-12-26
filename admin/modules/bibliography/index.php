@@ -624,10 +624,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<div class="makeHidden s-margin__bottom-1">';
+  $str_input  = '<div class="'.$visibility.'">';
   $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a>&nbsp;';
   // Modified by Eddy Subratha
-  // To avoid a miss processing after a pattern created, I think this linked below should be not appear 
+  // To avoid a miss processing after a pattern created, I think we should hide the Item Code Manager below  
   // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
   $str_input .= '</div>';
   $str_input .= '<div class="form-inline">';

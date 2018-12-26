@@ -72,23 +72,42 @@ if ($stk_query->num_rows < 1) {
         }
         ?></h2>
       </div>
-      <div class="sub_section">
+      <div class="infoBox">
       <?php
-      if ($view != 'm') {
-        echo '<form name="stockTakeForm" class="notAJAX" action="'.MWB.'stock_take/stock_take_action.php" target="stockTakeAction" method="post" class="form-inline">
-          <div><div style="width: 140px; float: left;">'.__('Item Code').':</div><input type="text" id="itemCode" name="itemCode" size="30" autofocus /> <input type="submit" value="'.__('Change Status').'" class="btn btn-default" /></div>
-          <div style="margin-top: 3px;"><div style="width: 140px; float: left;">'.__('List stocktakes by').':</div>
-          <input type="radio" id="listShow" name="listShow" value="1" onclick="$(\'mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow=1\')" '.( isset($show_only_current)?'checked="checked"':'' ).' /> '.__('Current User Only').'
-          <input type="radio" id="listShow2" name="listShow" value="0" onclick="$(\'mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow=0\')" '.( isset($show_only_current)?'':'checked="checked"' ).' /> '.__('All User').'
-          <iframe name="stockTakeAction" style="width: 0; height: 0; visibility: hidden;"></iframe></div>
-          </form>';
-      }
-      ?>
-      <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
-      <div style="margin-top: 3px;"><div style="width: 90px; float: left;"><?php echo __('Search'); ?>  </div><input type="text" name="keywords" size="30" class="form-control" /> <input type="hidden" name="view" value="<?php echo $view; ?>" /> <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" /></div>
+      if ($view != 'm') { ?>
+      <form name="stockTakeForm" action="<?php echo MWB ?>stock_take/stock_take_action.php" target="stockTakeAction" method="post" class="notAJAX">
+          <div class="form-group">
+              <label><?php echo __('Item Code') ?></label>
+              <div class="form-row">
+                  <input type="text" id="itemCode" name="itemCode" size="30" class="form-control col-2" autofocus />
+                  <input type="submit" value="<?php echo __('Change Status') ?>" class="btn btn-primary" />
+              </div>
+          </div>
+          <div class="form-row">
+              <label><?php echo __('List stocktakes by') ?></label>
+              <div class="form-check">
+                  <input type="radio" id="listShow" name="listShow" value="1" onclick="$(\'mainContent\').simbioAJAX(\'<?php echo MWB ?>stock_take/current.php?listShow=1\')" <?php echo ( isset($show_only_current)?'checked="checked"':'' ) ?> />
+                  <label for="listShow"><?php echo __('Current User Only') ?></label>
+              </div>
+              <div class="form-check">
+                  <input type="radio" id="listShow2" name="listShow" value="0" onclick="$(\'mainContent\').simbioAJAX(\'<?php echo MWB ?>stock_take/current.php?listShow=0\')" <?php echo ( isset($show_only_current)?'':'checked="checked"' ) ?> />
+                  <label for="listShow2"><?php echo __('All User') ?></label>
+              </div>
+          </div>
+          <iframe name="stockTakeAction" style="display: none; width: 0; height: 0; visibility: hidden;"></iframe></div>
       </form>
+      <?php } ?>
       </div>
-    </div>
+      <div class="sub_section">
+        <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
+          <div class="form-group">
+            <label><?php echo __('Search'); ?></label>
+            <input type="text" name="keywords" size="30" class="form-control" />
+            <input type="hidden" name="view" value="<?php echo $view; ?>" />
+            <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+          </div>
+        </form>
+      </div>
     </div>
     <!-- give focus to itemCode text field -->
     <script type="text/javascript">

@@ -4,6 +4,7 @@ images/docs/*
 images/labels/*
 images/cache/*
 files/*
+!files/membercard/*
 repository/*
 config/*
 cache/*

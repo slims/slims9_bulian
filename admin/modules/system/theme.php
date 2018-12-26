@@ -156,7 +156,7 @@ foreach ($dir_tree as $dir) {
   }
 
   $output  = '<div class="col-3">';
-  $output .= '<div class="card border-0 shadow mb-4">';
+  $output .= '<div class="card border-0 mb-4">';
   $output .= '<div class="card-body">';
   $output .= '<div class="mb-2 font-weight-bold">'.ucwords($dir).'</div>';
   $output .= '<img class="card-img-top rounded" src="../template/'.$dir.'/preview.png" height="150" />';
@@ -185,7 +185,7 @@ foreach ($dir_tree as $dir) {
     $_btn = '<a href="'.MWB.'system/theme.php?customize=admin&theme='.$dir.'" data-value="'.$dir.'" title="'.__('Admin Theme Configuration').'" class="btn btn-success notAJAX customeAdminTheme openPopUp">'.__('Customize').'</a>';
   }
   $output  = '<div class="col-3">';
-  $output .= '<div class="card border-0 shadow mb-4">';
+  $output .= '<div class="card border-0 mb-4">';
   $output .= '<div class="card-body">';
   $output .= '<div class="mb-2 font-weight-bold">'.ucwords($dir).'</div>';
   $output .= '<img class="card-img-top rounded" src="admin_template/'.$dir.'/preview.png" height="150" />';
@@ -229,6 +229,13 @@ echo '</div>';
           current.removeClass('btn-default setAdminTheme').addClass('btn-success customeAdminTheme openPopUp').text('<?php echo __('Customize') ?>');
           window.location.href = 'index.php';
         });
+      });
+
+      $('.card').hover(
+      function() {
+        $(this).addClass('shadow').css('cursor', 'pointer'); 
+      }, function() {
+        $(this).removeClass('shadow');
       });
     });
   })();
