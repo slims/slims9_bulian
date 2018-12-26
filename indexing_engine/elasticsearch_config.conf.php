@@ -175,6 +175,11 @@ $params['body'] = [
           'items' =>
             array (
               'type' => 'nested',
+              'properties' => [
+                'inventory_code' => [
+                  'type' => 'text',
+                ]
+              ]
             ),
           'hash' =>
             array (
