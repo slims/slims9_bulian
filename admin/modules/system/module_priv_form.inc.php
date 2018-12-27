@@ -27,7 +27,7 @@ if (INDEX_AUTH != 1) {
 // start the output buffer
 ob_start();
 $table = new simbio_table();
-$table->table_attr = 'align="center" class="detailTable noAutoFocus" style="width: 100%;" cellpadding="2" cellspacing="0"';
+$table->table_attr = 'align="center" class="table table-bordered detailTable noAutoFocus" style="width: 100%;" cellpadding="2" cellspacing="0"';
 $table->setHeader(array(__('Module Name'), '<a id="allRead" class="notAJAX" href="#">'.__('Read').'</a>', '<a id="allWrite" class="notAJAX" href="#">'.__('Write').'</a>'));
 $table->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 

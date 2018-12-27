@@ -1,0 +1,39 @@
+@media print {
+    .dataListPrinted {
+        width: 100%;
+        background-color: #000000;
+    }
+
+    /* printed tabular data styles */
+    .alterCellPrinted,
+    .alterCellPrinted2 {
+        color: #000000;
+        background: #CCCCCC;
+    }
+
+    .alterCellPrinted2 {
+        background: #FFFFFF;
+    }
+
+    .dataListHeaderPrinted {
+        background: #000000;
+        color: #FFFFFF;
+    }
+
+    .dataListHeaderPrinted * {
+        font-weight: bold;
+    }
+
+    .printPageInfo {
+        font-size: 120%;
+        padding: 5px;
+        color: #000000;
+        background-color: #999999;
+    }
+    
+    .printReport,
+    .chartLink {
+        display: none;
+        visibility: hidden;
+    }
+}

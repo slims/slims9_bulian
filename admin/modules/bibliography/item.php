@@ -203,20 +203,20 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 if (!$in_pop_up) {
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner itemIcon">
 	<div class="per_title">
     	<h2><?php echo __('Items'); ?></h2>
 	</div>
 	<div class="sub_section">
-	    <form name="search" action="<?php echo MWB; ?>bibliography/item.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-		    <input type="text" name="keywords" id="keywords" size="30" />
-		    <select name="searchby"><option value="item">Item</option><option value="others"><?php echo __('Others'); ?> </option></select>
-		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+	    <form name="search" action="<?php echo MWB; ?>bibliography/item.php" id="search" method="get"  class="form-inline"><?php echo __('Search'); ?>
+		    <input type="text" name="keywords" id="keywords" size="30" class="form-control col-md-3" />
+		    <select name="searchby" class="form-control col-md-2"><option value="item">Item</option><option value="others"><?php echo __('Others'); ?> </option></select>
+		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	    </form>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 }
@@ -237,9 +237,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // create new instance
     $form = new simbio_form_table_AJAX('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -282,19 +282,23 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // title
     if (!$in_pop_up) {
       $str_input = $b_title;
-      $str_input .= '<div class="makeHidden"><a class="notAJAX button btn btn-primary openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="750" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
+      $str_input .= '<div class="makeHidden"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.$rec_d['biblio_id'].'&itemCollID='.$rec_d['item_id'].'" width="750" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
     } else { $str_input = $b_title; }
     $form->addAnything(__('Title'), $str_input);
     $form->addHidden('biblioTitle', $b_title);
     $form->addHidden('biblioID', $b_id);
     // item code
-    $str_input = simbio_form_element::textField('text', 'itemCode', $rec_d['item_code'], 'onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'item\', \'item_code\', \'msgBox\', \'itemCode\')" style="width: 40%;"');
-    $str_input .= ' &nbsp; <span id="msgBox">&nbsp;</span>';
+    $str_input  = '<div class="container">';
+    $str_input .= '<div class="row">';
+    $str_input .= simbio_form_element::textField('text', 'itemCode', $rec_d['item_code'], 'onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'item\', \'item_code\', \'msgBox\', \'itemCode\')" style="width: 50%;" class="form-control col-5"');
+    $str_input .= '<span id="msgBox" class="col p-2"></span>';
+    $str_input .= '</div>';
+    $str_input .= '</div>';
     $form->addAnything(__('Item Code'), $str_input);
     // call number
-    $form->addTextField('text', 'callNumber', __('Call Number'), isset($rec_d['call_number'])?$rec_d['call_number']:$def_call_number, 'style="width: 40%;"');
+    $form->addTextField('text', 'callNumber', __('Call Number'), isset($rec_d['call_number'])?$rec_d['call_number']:$def_call_number, 'style="width: 50%;" class="form-control"');
     // inventory code
-    $form->addTextField('text', 'inventoryCode', __('Inventory Code'), $rec_d['inventory_code'], 'style="width: 100%;"');
+    $form->addTextField('text', 'inventoryCode', __('Inventory Code'), $rec_d['inventory_code'], 'style="width: 50%;" class="form-control"');
     // item location
         // get location data related to this record from database
         $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
@@ -302,9 +306,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($location_d = $location_q->fetch_row()) {
             $location_options[] = array($location_d[0], $location_d[1]);
         }
-    $form->addSelectList('locationID', __('Location'), $location_options, $rec_d['location_id']);
+    $form->addSelectList('locationID', __('Location'), $location_options, $rec_d['location_id'],'style="width: 50%" class="form-control"');
     // item site
-    $form->addTextField('text', 'itemSite', __('Shelf Location'), $rec_d['site'], 'style="width: 40%;"');
+    $form->addTextField('text', 'itemSite', __('Shelf Location'), $rec_d['site'], 'style="width: 50%;" class="form-control"');
     // collection type
         // get collection type data related to this record from database
         $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
@@ -312,7 +316,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($coll_type_d = $coll_type_q->fetch_row()) {
             $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
         }
-    $form->addSelectList('collTypeID', __('Collection Type'), $coll_type_options, $rec_d['coll_type_id']);
+    $form->addSelectList('collTypeID', __('Collection Type'), $coll_type_options, $rec_d['coll_type_id'],'style="width: 40%" class="form-control"');
     // item status
         // get item status data from database
         $item_status_q = $dbs->query("SELECT item_status_id, item_status_name FROM mst_item_status");
@@ -320,13 +324,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($item_status_d = $item_status_q->fetch_row()) {
             $item_status_options[] = array($item_status_d[0], $item_status_d[1]);
         }
-    $form->addSelectList('itemStatusID', __('Item Status'), $item_status_options, $rec_d['item_status_id']);
+    $form->addSelectList('itemStatusID', __('Item Status'), $item_status_options, $rec_d['item_status_id'],'style="width:40%" class="form-control"');
     // order number
-    $form->addTextField('text', 'orderNo', __('Order Number'), $rec_d['order_no'], 'style="width: 40%;"');
+    $form->addTextField('text', 'orderNo', __('Order Number'), $rec_d['order_no'], 'style="width: 40%;" class="form-control"');
     // order date
-    $form->addDateField('ordDate', __('Order Date'), $rec_d['order_date']?$rec_d['order_date']:date('Y-m-d'));
+    $form->addDateField('ordDate', __('Order Date'), $rec_d['order_date']?$rec_d['order_date']:date('Y-m-d'), 'class="form-control"');
     // received date
-    $form->addDateField('recvDate', __('Receiving Date'), $rec_d['received_date']?$rec_d['received_date']:date('Y-m-d'));
+    $form->addDateField('recvDate', __('Receiving Date'), $rec_d['received_date']?$rec_d['received_date']:date('Y-m-d'),'class="form-control"');
     // item supplier
         // get item status data from database
         $supplier_q = $dbs->query("SELECT supplier_id, supplier_name FROM mst_supplier");
@@ -334,24 +338,28 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($supplier_d = $supplier_q->fetch_row()) {
             $supplier_options[] = array($supplier_d[0], $supplier_d[1]);
         }
-    $form->addSelectList('supplierID', __('Supplier'), $supplier_options, $rec_d['supplier_id']);
+    $form->addSelectList('supplierID', __('Supplier'), $supplier_options, $rec_d['supplier_id'],'class="form-control"');
     // item source
         $source_options[] = array('1', __('Buy'));
         $source_options[] = array('2', __('Prize/Grant'));
     $form->addRadio('source', __('Source'), $source_options, !empty($rec_d['source'])?$rec_d['source']:'1');
     // item invoice
-    $form->addTextField('text', 'invoice', __('Invoice'), $rec_d['invoice'], 'style="width: 100%;"');
+    $form->addTextField('text', 'invoice', __('Invoice'), $rec_d['invoice'], 'style="width: 100%;" class="form-control"');
     // invoice date
-    $form->addDateField('invcDate', __('Invoice Date'), $rec_d['invoice_date']?$rec_d['invoice_date']:date('Y-m-d'));
+    $form->addDateField('invcDate', __('Invoice Date'), $rec_d['invoice_date']?$rec_d['invoice_date']:date('Y-m-d'),'class="form-control"');
     // price
-    $str_input = simbio_form_element::textField('text', 'price', !empty($rec_d['price'])?$rec_d['price']:'0', 'style="width: 40%;"');
-    $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], $rec_d['price_currency']);;
+    $str_input  = '<div class="container">';
+    $str_input .= '<div class="row">';
+    $str_input .= simbio_form_element::textField('text', 'price', !empty($rec_d['price'])?$rec_d['price']:'0', 'style="width: 40%;" class="form-control col-4"');
+    $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], $rec_d['price_currency'],'style="width: 10%;" class="form-control col-2"');
+    $str_input .= '</div>';
+    $str_input .= '</div>';
     $form->addAnything(__('Price'), $str_input);
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit Item data').': <b>'.$rec_d['title'].'</b> ' //mfc
-            .'<br />'.__('Last Updated').'&nbsp;'.$rec_d['last_update'];
+        echo '<div class="s-alert infoBox">'.__('You are going to edit Item data').': <b>'.$rec_d['title'].'</b> ' //mfc
+            .'<br />'.__('Last Updated').'&nbsp;'.date('d F Y h:i:s',strtotime($rec_d['last_update']));
         echo '</div>'."\n";
     }
     // print out the form object
@@ -483,7 +491,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

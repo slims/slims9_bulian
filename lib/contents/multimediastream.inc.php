@@ -19,6 +19,13 @@
  *
  */
 
+/* Modified by Eddy Subratha 
+ * -------------------------
+ * Replaced Flash Player by HTML5 Player only. 
+ * As we know, Flash Player need more resources
+ * and also it's not supported by Adobe anymore. 
+ */
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -43,42 +50,50 @@ if ($file_q->num_rows < 1) {
 // check if file exists
 $file_d = $file_q->fetch_assoc();
 $file_loc = REPOBS.str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
+$mime = $file_d['mime_type'];
 if (!file_exists($file_loc)) {
   die();
 }
 // multimedia URL
-$multimedia_url = SWB.'/index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
-$multimedia_url = urlencode($multimedia_url);
+$multimedia_url = SWB.'index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
+// $multimedia_url = urlencode($multimedia_url);
 
 // flowplayer settings
-$splash = SWB.IMG.'/senayan-player-splash.png';
-$flowplayer_core = JWB.'flowplayer/flowplayer-3.1.0.swf';
-$flowplayer_api = JWB.'flowplayer/flowplayer-3.1.0.min.js';
-$flowplayer_audio_plugin = JWB.'flowplayer/flowplayer.audio-3.1.0.swf';
+$cover = SWB.IMG.'/slims-splash.png';
+$plyr_core = JWB.'plyr/';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<!-- by Hendro Wicaksono -->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="<?php echo $flowplayer_api; ?>"></script>
-<title>SLiMS Multimedia Viewer</title>
+<link rel="stylesheet" href="<?php echo SWB.'css/bootstrap.min.css'?>">
+<link rel="stylesheet" href="<?php echo $plyr_core ?>plyr.css">
+<title>Multimedia Viewer</title>
 </head>
-<body style="padding: 0; margin: 0;">
-<a href="#" style="display: block; width: 640px; height: 480px;" id="player"></a>
-<script type="text/javascript">
-flowplayer("player", "<?php echo $flowplayer_core; ?>", {
-    plugins: { audio: { url: '<?php echo $flowplayer_audio_plugin; ?>' } },
-    playlist: [
-        {
-            url: '<?php echo $multimedia_url; ?>',
-            onFinish: function() {
-                this.unload();
-            }
-        }
-    ]
+<body>
+    <div class="container">
+            <div class="text-align-center align-middle">
+            <?php if($mime == 'audio/mpeg') : ?>
+            <audio id="player" controls class="col" >
+                <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>">
+            </audio>
+            <?php else : ?>
+            <div class="row">
+            <video controls crossorigin playsinline poster="<?php echo $cover ?>" id="player">
+                <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>" >
+            </video>
+            </div>
+            <?php endif ?>
+            </div>  
+    </div>
+</body>
+<script src="<?php echo $plyr_core ?>plyr.polyfilled.js" crossorigin="anonymous"></script>
+<script>const player = new Plyr('#player',{
+loadSprite: true,
+iconUrl: '<?php echo $plyr_core ?>plyr.svg',
+blankVideo: '<?php echo $plyr_core ?>blank.mp4',
+autoplay: true
 });
 </script>
-</body>
 </html>
 <?php exit(); ?>

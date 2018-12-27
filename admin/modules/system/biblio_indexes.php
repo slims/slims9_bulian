@@ -83,7 +83,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // message
     $message = sprintf(__('<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d minutes %d second(s)'), $indexer->indexed, $indexer->total_records, $finish_minutes, $finish_sec);
     if ($indexer->failed) {
-      $message = '<div style="color: #f00;">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
+      $message = '<div class="font-danger">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
     }
     $_SESSION['message'] = $message;
   }
@@ -105,7 +105,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     	// message
     	$message = sprintf(__('<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d second(s)'), $indexer->indexed, $indexer->total_records, $finish_minutes, $finish_sec);
     	if ($indexer->failed) {
-    	  $message = '<div style="color: #f00;">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
+    	  $message = '<div class="text-danger">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
     	}
     	$_SESSION['message'] = $message;
     }
@@ -115,21 +115,21 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   exit();
 } else {
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner systemIcon">
   <div class="per_title">
   <h2><?php echo __('Bibliographic Index'); ?></h2>
   </div>
       <div class="sub_section">.
         <div class="btn-group">
-          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=empty" class="btn btn-default" style="color: red"><i class="glyphicon glyphicon-trash"></i>&nbsp;<?php echo __('Emptying Index'); ?></a>
-          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=reindex" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i>&nbsp;<?php echo __('Re-create Index'); ?></a>
-          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=update" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Update Index'); ?></a>
+          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=empty" class="btn btn-danger" > <?php echo __('Emptying Index'); ?></a>
+          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=reindex" class="btn btn-default"><?php echo __('Re-create Index'); ?></a>
+          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=update" class="btn btn-default"><?php echo __('Update Index'); ?></a>
         </div>
       </div>
-      <div class="infoBox">Bibliographic Index will speed up catalog search</div>
+      <div class="infoBox"><?php echo __('Bibliographic indexing will speed up on cataloging search') ?></div>
 </div>
-</fieldset>
+</div>
 <?php
 echo '<div class="infoBox">'."\n";
 // Index info

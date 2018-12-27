@@ -1,0 +1,111 @@
+//main: style.less
+
+@media (min-width: 960px) and (max-width: 1024px) {
+  #header .s-user {
+    padding-left: 0;
+    width: 60px;
+  }
+  #mainMenu a {
+    font-size: 8.5pt;
+    padding: 10px;
+  }
+  #sidepan {
+    top: 53px;
+  }
+  #mainContent {
+    top: 53px;
+  }
+  .sub_section .btn-group {
+    top: 25px;
+  }
+  .datagrid-action-bar td {
+    padding: 5px;
+  }
+  #mainForm td {
+    padding: 5px;
+  }
+  #dataList td {
+    padding: 5px;
+  }
+  .s-member-account td {
+    padding: 5px;
+  }
+  .s-user-name {
+    display: none;
+  }
+  .s-user-frame {
+    left: 10px;
+    top: 10px;
+  }
+}
+.per_title {
+  border-bottom: solid 1px lighten(@black,96%);
+}
+@media (min-width: 960px) and (min-width: 1024px) {
+  .per_title h2 {
+    font-size: 20pt;
+  }
+}
+@media only screen and (min-width: 768px) {
+  #pchat-toggle {
+    right: 100px;
+  }
+}
+@media print {
+  .printPageInfo {
+    display: none;
+  }
+  .s-export {
+    display: none;
+  }
+  .dataListPrinted {
+    border-top: solid 1px #000 !important;
+    border-left: left 1px #000 !important;
+  }
+  .dataListPrinted td {
+    font-size: 12pt !important;
+    padding: 10px 5px;
+    border-bottom: solid 1px #000;
+    border-right: left 1px #000;
+  }
+  a[href]:after {
+    content: none !important;
+  }
+  a[href="../xlsoutput.php"] {
+    display: none;
+  }
+  #dataList td:nth-child(1) {
+    display: none;
+  }
+  #dataList td:nth-child(2) {
+    display: none;
+  }
+  .datagrid-action-bar {
+    display: none;
+  }
+  .sub_section {
+    display: none;
+  }
+  .s-chat {
+    display: none;
+  }
+  #header {
+    display: none;
+  }
+  #sidepan {
+    display: none;
+  }
+  #mainContent {
+    position: relative;
+    top: 0;
+    margin-left: 0;
+  }
+  strong {
+    font-weight: normal !important;
+    font-size: inherit !important;
+    padding: 0 !important;
+  }
+  td {
+    padding: 5px !important;
+  }
+}

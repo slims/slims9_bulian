@@ -55,54 +55,44 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <fieldset>
-    <div class="per_title">
-      <h2><?php echo __('Items Usage Statistics'); ?></h2>
-    </div>
-    <div class="infoBox">
+<!-- filter -->
+<div class="per_title">
+    <h2><?php echo __('Items Usage Statistics'); ?></h2>
+</div>
+<div class="infoBox">
     <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
+</div>
+<div class="sub_section">
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Title/ISBN'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%"'); ?>
+        <div id="filterForm">
+            <div class="form-group divRow">
+                <label><?php echo __('Title/ISBN'); ?></label>
+                <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-4"'); ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Item Code'); ?></label>
+                <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-4"'); ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Year'); ?></label>
+                <?php
+                $current_year = date('Y');
+                $year_options = array();
+                for ($y = $current_year; $y > 1999; $y--) {
+                    $year_options[] = array($y, $y);
+                }
+                echo simbio_form_element::selectList('year', $year_options, $current_year-1,'class="form-control col-1"');
+                ?>
             </div>
         </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Item Code'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'style="width: 50%"'); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Year'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $current_year = date('Y');
-            $year_options = array();
-            for ($y = $current_year; $y > 1999; $y--) {
-                $year_options[] = array($y, $y);
-            }
-            echo simbio_form_element::selectList('year', $year_options, $current_year-1);
-            ?>
-            </div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
+        <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+        <input type="hidden" name="reportView" value="true" />
     </form>
-    </div>
-    </fieldset>
-    <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+</div>
+<!-- filter end -->
+<div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
+<iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -112,6 +102,8 @@ if (!$reportView) {
 
     // create datagrid
     $reportgrid = new report_datagrid();
+    $reportgrid->table_attr = 'class="s-table table table-bordered"';
+
     $reportgrid->setSQLColumn('i.item_code AS \''.__('Item Code').'\'',
         'b.title AS \''.__('Title').'\'',
         '\'01\' AS \''.__('Jan').'\'',
@@ -165,7 +157,7 @@ if (!$reportView) {
         $_usage_q = $obj_db->query('SELECT COUNT(*) FROM loan AS l
             WHERE l.item_code=\''.$array_data[0].'\' AND l.loan_date LIKE \''.$selected_year.'-'.$array_data[$int_current_field_num].'%\'');
         $_usage_d = $_usage_q->fetch_row();
-        return ($_usage_d[0]=='0')?'<span style="color: #ff0000;">0</span>':'<strong>'.$_usage_d[0].'</strong>';
+        return ($_usage_d[0]=='0')?'<span>0</span>':'<strong>'.$_usage_d[0].'</strong>';
     }
     // modify column value
     $reportgrid->modifyColumnContent(2, 'callback{showUsage}');

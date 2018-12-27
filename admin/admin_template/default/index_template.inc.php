@@ -48,7 +48,7 @@ include 'function.php';
 
   <link rel="icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
-  <link href="<?php echo SWB; ?>template/core.style.css" rel="stylesheet" type="text/css" />
+  <link href="<?php echo SWB; ?>css/core.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>jquery.imgareaselect/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
@@ -121,7 +121,7 @@ include 'function.php';
   </main>
 
   <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
-  <iframe name="blindSubmit" style="visibility: hidden; width: 0; height: 0;"></iframe>
+  <iframe name="blindSubmit" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
   <!-- fake submit iframe -->
   <script>
 

@@ -57,23 +57,24 @@ if ($stk_query->num_rows < 1) {
     // check if this file included directly
     if (!defined('REPECT_INCLUDE') AND !isset($_GET['print'])) {
 ?>
-    <fieldset class="menuBox">
+    <div class="menuBox">
       <div class="menuBoxInner reportIcon">
         <div class="per_title">
           <h2><?php echo __('Current Stock Take Report'); ?></h2>
         </div>
         <div class="sub_section">
-          <form name="printForm" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; ?>" target="submitPrint" id="printForm" method="get" style="display: inline;">
-          <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="btn btn-default" />
+          <form name="printForm" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']; ?>" target="submitPrint" id="printForm" method="get" class="form-inline">
+              <input type="hidden" name="print" value="true" />
+              <input type="submit" value="<?php echo __('Download Report'); ?>" class="btn btn-default" />
           </form>
-          <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
+          <iframe name="submitPrint" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
         </div>
       </div>
-    </fieldset>
+    </div>
 <?php
     }
     $table = new simbio_table();
-    $table->table_attr = 'align="center" id="dataList" cellpadding="3" cellspacing="0"';
+    $table->table_attr = 'align="center" class="table" id="dataList" cellpadding="3" cellspacing="0"';
     // make an array for report table row
     $report_row[__('Stock Take Name')] = $stk_data['stock_take_name'];
     $report_row[__('Total Item Stock Taked')] = $stk_data['total_item_stock_taked'];
@@ -91,7 +92,7 @@ if ($stk_query->num_rows < 1) {
     // stock take total checked item
     $checked_count = $stk_data['total_item_stock_taked']-$stk_data['total_item_lost'];
     $checked_procent = floor(($checked_count/$stk_data['total_item_stock_taked'])*100);
-    $progress_bar = '<div style="height: 15px; border: 1px solid #999; background-color: red;"><div style="height: 15px; width: '.$checked_procent.'%; background-color: #3161ff;">&nbsp;</div></div>';
+    $progress_bar = '<div style="height: 15px; background-color: red;"><div style="height: 15px; width: '.$checked_procent.'%; background-color: #3161ff;">&nbsp;</div></div>';
     $report_row[__('Total Checked/Scanned Items')] = $checked_count.' ('.$checked_procent.'%) '.$progress_bar;
     // stock take participants data
     $report_row[__('Stock Take Participants')] = '<ul>';
@@ -127,7 +128,7 @@ if ($stk_query->num_rows < 1) {
     $class_num = 0;
     $row_class = 'alterCell';
     $arr_status = array('m', 'e', 'l');
-    $class_count_str = '<table align="center" class="border" style="width: 100%; margin-top: 5px;" cellpadding="3" cellspacing="0">';
+    $class_count_str = '<table align="center" class="table table-bordered table-sm" style="width: 100%; margin-top: 5px;" cellpadding="3" cellspacing="0">';
     $class_count_str .= '<tr><td class="dataListHeader">'.__('Classification').'</td>
         <td class="dataListHeader">'.__('Lost Items').'</td>
         <td class="dataListHeader">'.__('Existing Items').'</td>
@@ -165,7 +166,7 @@ if ($stk_query->num_rows < 1) {
     echo $class_count_str;
 
     /* COLLECTION TYPE ITEM STATUS */
-    $coll_type_count_str = '<table align="center" class="border" style="width: 100%; margin-top: 5px;" cellpadding="3" cellspacing="0">';
+    $coll_type_count_str = '<table align="center" class="table table-bordered table-sm" style="width: 100%; margin-top: 5px;" cellpadding="3" cellspacing="0">';
     $coll_type_count_str .= '<tr><td class="dataListHeader">'.__('Collection Type').'</td>
         <td class="dataListHeader">'.__('Lost Items').'</td>
         <td class="dataListHeader">'.__('Existing Items').'</td>

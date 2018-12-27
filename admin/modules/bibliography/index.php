@@ -499,32 +499,32 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 if (!$in_pop_up) {
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner biblioIcon">
   <div class="per_title">
 	  <h2><?php echo __('Bibliographic'); ?></h2>
   </div>
   <div class="sub_section">
 	  <div class="btn-group">
-		  <a href="<?php echo MWB; ?>bibliography/index.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Bibliographic List'); ?></a>
-		  <a href="<?php echo MWB; ?>bibliography/index.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Bibliography'); ?></a>
+		  <a href="<?php echo MWB; ?>bibliography/index.php" class="btn btn-default"><?php echo __('Bibliographic List'); ?></a>
+		  <a href="<?php echo MWB; ?>bibliography/index.php?action=detail" class="btn btn-default"><?php echo __('Add New Bibliography'); ?></a>
 	  </div>
-	  <form name="search" action="<?php echo MWB; ?>bibliography/index.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-		  <input type="text" name="keywords" id="keywords" size="30" />
-		  <select name="field"><option value="0"><?php echo __('All Fields'); ?></option><option value="title"><?php echo __('Title/Series Title'); ?> </option><option value="subject"><?php echo __('Topics'); ?></option><option value="author"><?php echo __('Authors'); ?></option><option value="isbn"><?php echo __('ISBN/ISSN'); ?></option><option value="publisher"><?php echo __('Publisher'); ?></option></select>
-		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
-	  </form>
+	  <form name="search" action="<?php echo MWB; ?>bibliography/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
+		  <input type="text" name="keywords" id="keywords" class="form-control col-md-2" />
+		  <select name="field" class="form-control col-md-2"><option value="0"><?php echo __('All Fields'); ?></option><option value="title"><?php echo __('Title/Series Title'); ?> </option><option value="subject"><?php echo __('Topics'); ?></option><option value="author"><?php echo __('Authors'); ?></option><option value="isbn"><?php echo __('ISBN/ISSN'); ?></option><option value="publisher"><?php echo __('Publisher'); ?></option></select>
+		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 		  <?php
 		  // enable UCS?
 			if ($sysconf['ucs']['enable']) {
 		  ?>
-		  <a href="#" onclick="ucsUpload('<?php echo MWB; ?>bibliography/ucs_upload.php', serializeChbox('dataList'))" class="notAJAX"><div class="btn btn-default"><?php echo __('Upload Selected Bibliographic data to Union Catalog Server*'); ?></div></a>
+		  <a href="#" onclick="ucsUpload('<?php echo MWB; ?>bibliography/ucs_upload.php', serializeChbox('dataList'))" class="s-btn btn btn-default notAJAX"><?php echo __('Upload Selected Bibliographic data to Union Catalog Server*'); ?></a>
 		  <?php
 		  }
 		  ?>
+	  </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 }
@@ -545,13 +545,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
   // create new instance
   $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-  $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
+  $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
   // form table attributes
-  $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
-  $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+  $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
+  $form->table_header_attr = 'class="alterCell"';
   $form->table_content_attr = 'class="alterCell2"';
 
-  $visibility = 'makeVisible';
+  $visibility = 'makeVisible s-margin__bottom-1';
   // edit mode flag set
   if ($rec_q->num_rows > 0) {
     $form->edit_mode = true;
@@ -569,9 +569,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // form record title
     $form->record_title = $rec_d['title'];
     // submit button attribute
-    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="btn btn-default"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     // element visibility class toogle
-    $visibility = 'makeHidden';
+    $visibility = 'makeHidden s-margin__bottom-1';
 
     // custom field data query
     $_sql_rec_cust_q = sprintf('SELECT * FROM biblio_custom WHERE biblio_id=%d', $itemID);
@@ -588,24 +588,24 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
   /* Form Element(s) */
   // biblio title
-  $form->addTextField('textarea', 'title', __('Title').'*', $rec_d['title'], 'rows="1" style="width: 100%; overflow: auto;"',
+  $form->addTextField('textarea', 'title', __('Title').'*', $rec_d['title'], 'rows="1" class="form-control"',
     __('Main title of collection. Separate child title with colon and pararel title with equal (=) sign.'));
 
   // biblio authors
   // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_author.php?biblioID='.$rec_d['biblio_id'].'\', 500, 200, \''.__('Authors/Roles').'\')">'.__('Add Author(s)').'</a></div>';
-  $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_author.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Authors/Roles').'">'.__('Add Author(s)').'</a></div>';
-  $str_input .= '<iframe name="authorIframe" id="authorIframe" class="borderAll" style="width: 100%; height: 70px;" src="'.MWB.'bibliography/iframe_author.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
+  $str_input = '<div class="'.$visibility.'"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_author.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Authors/Roles').'">'.__('Add Author(s)').'</a></div>';
+  $str_input .= '<iframe name="authorIframe" id="authorIframe" class="form-control" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_author.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('Author(s)'), $str_input);
 
   // modified by hendro wicaksono
   // biblio sor statement of responsibility
-  $form->addTextField('text', 'sor', __('Statement of Responsibility'), $rec_d['sor'], 'style="width: 40%;"', __('Main source of information to show who has written, composed, illustrated, or in other ways contributed to the existence of the item.'));
+  $form->addTextField('text', 'sor', __('Statement of Responsibility'), $rec_d['sor'], 'class="form-control" style="width: 50%;"', __('Main source of information to show who has written, composed, illustrated, or in other ways contributed to the existence of the item.'));
   // end of modification
 
   // biblio edition
-  $form->addTextField('text', 'edition', __('Edition'), $rec_d['edition'], 'style="width: 40%;"', __('A version of publication having substantial changes or additions.'));
+  $form->addTextField('text', 'edition', __('Edition'), $rec_d['edition'], 'class="form-control" style="width: 50%;"', __('A version of publication having substantial changes or additions.'));
   // biblio specific detail info/area
-  $form->addTextField('textarea', 'specDetailInfo', __('Specific Detail Info'), $rec_d['spec_detail_info'], 'rows="2" style="width: 100%"', __('explain more details about an item e.g. scale within a map, running time in a movie dvd.'));
+  $form->addTextField('textarea', 'specDetailInfo', __('Specific Detail Info'), $rec_d['spec_detail_info'], 'rows="2" class="form-control', __('explain more details about an item e.g. scale within a map, running time in a movie dvd.'));
   // biblio item batch add (by.ido alit)
   $pattern_options = array(
     // default value
@@ -615,7 +615,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $pattern_q = $dbs->query('SELECT setting_value FROM setting WHERE setting_name = \'batch_item_code_pattern\'');
   if (!$dbs->errno) {
     // empty pattern
-    $pattern_options = array();
+    $pattern_options = array(array('','-- '.__('Choose pattern').' --'));
     $pattern_d = $pattern_q->fetch_row();
     $val = @unserialize($pattern_d[0]);
     if (!empty($val)) {
@@ -624,33 +624,36 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<div class="btn-group">';
-  $str_input .= '<a style="margin-right:0px" class="notAJAX btn btn-primary openPopUp notIframe" href="'.MWB.'bibliography/pop_pattern.php" height="420px" title="'.__('Add new pattern').'">
-                  <i class="glyphicon glyphicon-plus"></i> '.__('Add New Pattern').'</a>';
-  $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" class="notAjax btn btn-default openPopUp" title="'.__('Item code pattern manager.').'"><i class="glyphicon glyphicon-wrench"></i></a>';
-  $str_input .= '</div>&nbsp;';
-  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'style="width: auto"').' &nbsp;';
-  $str_input .= '<label id="totalItemsLabel">' . __('Total item(s)').':</label> <input type="text" class="small_input" style="width: 100px;" name="totalItems" value="0" /> &nbsp;';
+  $str_input  = '<div class="'.$visibility.'">';
+  $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a>&nbsp;';
+  // Modified by Eddy Subratha
+  // To avoid a miss processing after a pattern created, I think we should hide the Item Code Manager below  
+  // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
+  $str_input .= '</div>';
+  $str_input .= '<div class="form-inline">';
+  $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"').'&nbsp;';
+  $str_input .= '<input type="text" class="form-control col-2" name="totalItems" placeholder="'.__('Total item(s)').'" />&nbsp;';;
   // get collection type data related to this record from database
-    $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
-    $coll_type_options = array();
-    while ($coll_type_d = $coll_type_q->fetch_row()) {
-        $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-    }
-  $str_input .= '<label id="collTypeIDLabel">' . __('Collection Type').':</label> '.simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'style="width: 100px;"');;
+  $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
+  $coll_type_options = array(array('','--'.__('Collection Type').'--'));
+  while ($coll_type_d = $coll_type_q->fetch_row()) {
+      $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+  }
+  $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-3"').'&nbsp;';
   // get location data related to this record from database
   $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
-  $location_options = array();
+  $location_options = array(array('','-- '.__('Location').' --'));
   while ($location_d = $location_q->fetch_row()) {
     $location_options[] = array($location_d[0], $location_d[1]);
   }
-  $str_input .= __('Location').': '.simbio_form_element::selectList('locationID', $location_options, '', 'style="width: 100px;"');;
+  $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-3"').'&nbsp;';
+  $str_input .= '</div>';
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
-    // $str_input = '<div class="makeHidden"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$rec_d['biblio_id'].'\', 650, 400, \''.__('Items/Copies').'\')">'.__('Add New Items').'</a></div>';
-    $str_input = '<div class="makeHidden"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$rec_d['biblio_id'].'" title="'.__('Items/Copies').'" height="500">'.__('Add New Items').'</a></div>';
-    $str_input .= '<iframe name="itemIframe" id="itemIframe" class="borderAll" style="width: 100%; height: 70px;" src="'.MWB.'bibliography/iframe_item_list.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>'."\n";
+    // $str_input = '<div class="makeHidden s-margin__bottom-1"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$rec_d['biblio_id'].'\', 650, 400, \''.__('Items/Copies').'\')">'.__('Add New Items').'</a></div>';
+    $str_input = '<div class="makeHidden s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$rec_d['biblio_id'].'" title="'.__('Items/Copies').'" width="780" height="500">'.__('Add New Items').'</a></div>';
+    $str_input .= '<iframe name="itemIframe" id="itemIframe" class="form-control" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_item_list.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>'."\n";
     $form->addAnything(__('Item(s) Data'), $str_input);
   }
   // biblio gmd
@@ -686,12 +689,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   while ($freq_d = $freq_q->fetch_row()) {
     $freq_options[] = array($freq_d[0], $freq_d[1]);
   }
-  $str_input = simbio_form_element::selectList('frequencyID', $freq_options, $rec_d['frequency_id'], 'class="select2"');
-  $str_input .= '&nbsp;';
-  $str_input .= ' '.__('Use this for Serial publication');
+  $str_input  = '<div class="form-inline">';
+  $str_input .= simbio_form_element::selectList('frequencyID', $freq_options, $rec_d['frequency_id'], 'class="select2 col-3"');
+  $str_input .= '<div class="col">'.__('Use this for Serial publication').'</div>';
+  $str_input .= '</div>';
   $form->addAnything(__('Frequency'), $str_input);
   // biblio ISBN/ISSN
-  $form->addTextField('text', 'isbn_issn', __('ISBN/ISSN'), $rec_d['isbn_issn'], 'style="width: 40%;"', __('Unique publishing number for each title of publication.'));
+  $form->addTextField('text', 'isbn_issn', __('ISBN/ISSN'), $rec_d['isbn_issn'], 'class="form-control" style="width: 40%;"', __('Unique publishing number for each title of publication.'));
   // biblio publisher
   $publ_options[] = array('NONE', '');
   if ($rec_d['publisher_id']) {
@@ -702,7 +706,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $form->addSelectList('publisherID', __('Publisher'), $publ_options, $rec_d['publisher_id'], 'class="select2" data-src="'.SWB.'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_publisher" data-src-cols="publisher_id:publisher_name"');
   // biblio publish year
-  $form->addTextField('text', 'year', __('Publishing Year'), $rec_d['publish_year'], 'style="width: 40%;"', __('Year of publication'));
+  $form->addTextField('text', 'year', __('Publishing Year'), $rec_d['publish_year'], 'class="form-control" style="width: 40%;"', __('Year of publication'));
   // biblio publish place
   $plc_options[] = array('NONE', '');
   if ($rec_d['publish_place_id']) {
@@ -713,9 +717,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $form->addSelectList('placeID', __('Publishing Place'), $plc_options, $rec_d['publish_place_id'], 'class="select2" data-src="'.SWB.'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_place" data-src-cols="place_id:place_name"');
   // biblio collation
-  $form->addTextField('text', 'collation', __('Collation'), $rec_d['collation'], 'style="width: 40%;"', __('Physical description of a publication e.g. publication length, width, page numbers, etc.'));
+  $form->addTextField('text', 'collation', __('Collation'), $rec_d['collation'], 'class="form-control" style="width: 40%;"', __('Physical description of a publication e.g. publication length, width, page numbers, etc.'));
   // biblio series title
-  $form->addTextField('textarea', 'seriesTitle', __('Series Title'), $rec_d['series_title'], 'rows="1" style="width: 100%;"');
+  $form->addTextField('textarea', 'seriesTitle', __('Series Title'), $rec_d['series_title'], 'rows="1" class="form-control');
   // biblio classification
   $cls_options[] = array('NONE', '');
   if ($rec_d['classification']) {
@@ -723,11 +727,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $form->addSelectList('class', __('Classification'), $cls_options, $rec_d['classification'], 'class="select2" data-src="'.SWB.'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_topic" data-src-cols="classification:classification:topic"');
   // biblio call_number
-  $form->addTextField('text', 'callNumber', __('Call Number'), $rec_d['call_number'], 'style="width: 40%;"', __('Sets of ID that put in the book spine.'));
+  $form->addTextField('text', 'callNumber', __('Call Number'), $rec_d['call_number'], 'class="form-control" style="width: 40%;"', __('Sets of ID that put in the book spine.'));
   // biblio topics
   // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_topic.php?biblioID='.$rec_d['biblio_id'].'\', 500, 200, \''.__('Subjects/Topics').'\')">'.__('Add Subject(s)').'</a></div>';
-  $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_topic.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Subjects/Topics').'">'.__('Add Subject(s)').'</a></div>';
-  $str_input .= '<iframe name="topicIframe" id="topicIframe" class="borderAll" style="width: 100%; height: 70px;" src="'.MWB.'bibliography/iframe_topic.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
+  $str_input = '<div class="'.$visibility.' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_topic.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Subjects/Topics').'">'.__('Add Subject(s)').'</a></div>';
+  $str_input .= '<iframe name="topicIframe" id="topicIframe" class="form-control" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_topic.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('Subject(s)'), $str_input);
   // biblio language
   // get language data related to this record from database
@@ -738,14 +742,35 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $form->addSelectList('languageID', __('Language'), $lang_options, $rec_d['language_id'], 'class="select2"', __('Language use by publication.'));
   // biblio note
-  $form->addTextField('textarea', 'notes', __('Abstract/Notes'), $rec_d['notes'], 'style="width: 100%;" rows="2"', __('Insert here any abstract or notes from the publication.'));
+  $form->addTextField('textarea', 'notes', __('Abstract/Notes'), $rec_d['notes'], 'class="form-control" style="width: 100%;" rows="3"', __('Insert here any abstract or notes from the publication.'));
   // biblio cover image
-  $str_input = '';
-  if ($rec_d['image']) {
-    $str_input = '<div id="imageFilename"><a href="'.SWB.'images/docs/'.$rec_d['image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['image'].'</strong></a> <a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.$rec_d['image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
+  $str_input = '<div class="row">';
+  $str_input .= '<div class="col-2">';
+  $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
+  $upper_dir = '';
+  if ($in_pop_up) {
+    $upper_dir = '../../';
   }
-  $str_input .= simbio_form_element::textField('file', 'image');
-  $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB';
+  if ($rec_d['image']) {
+    $str_input .= '<a href="'.SWB.'images/docs/'.$rec_d['image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
+    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '</a>';
+    $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.$rec_d['image'].'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+  } else {
+    $str_input .= '<a href="'.SWB.'images/docs/'.$rec_d['image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
+    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '</a>';
+  }
+  $str_input .= '</div>';
+  $str_input .= '</div>';
+  $str_input .= '<div class="custom-file col-4">';
+  $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input"');
+  $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+  $str_input .= '</div>';
+  $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+  $str_input .= '</div>';
+  
+  //for scanner
   if ($sysconf['scanner'] !== false) {
     $str_input .= '<p>'.__('or scan a cover').'</p>';
     $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
@@ -759,7 +784,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<option value="png">PNG</option><option value="jpg">JPEG</option></select></label> ';
         $str_input .= '<input type="button" id="btn_getscan" class="button btn" onclick="scan()" value="'.__('Scan').'" />';
         $str_input .= '<i style="margin-left: 10px; cursor: pointer; cursor: hand;" title="'.__('Click to show or hide options').'" onclick="toggle_options()" class="fa fa-gear fa-2x"></i></div>';
-        $str_input .= '<div id="scan_options" class="makeHidden" style="margin: 5px;">';
+        $str_input .= '<div id="scan_options" class="makeHidden s-margin__bottom-1" style="margin: 5px;">';
         $str_input .= '<p style="padding: 3px 0;"><label>'.__('History index:').' <input type="text" id="scan_history" value="1" style="width: 60px;" /></label> <input type="button" id="btn_getrecall" class="button btn" onclick="scan_recall" value="'.__('Recall').'" /></p>';
         $str_input .= '<p style="padding: 3px 0;"><label>'.__('Host:').' <input type="text" id="scan_host" value="localhost" /></label> | <label>Port: <input type="text" id="scan_port" patter="\d*" maxlength="6" size="6" style="width: 60px;" value="8811" /></label> <input type="button" id="btn_getmachine" class="button btn" onclick="scan_init()" value="'.__('Get machine').'" /></p>';
         $str_input .= '<p style="padding: 3px 0;"><label>'.__('Scanner:').' <select id="scan_machine" readonly><option>'.__('Default').'</option></select></label></p>';
@@ -775,13 +800,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
   // biblio file attachment
   // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_attach.php?biblioID='.$rec_d['biblio_id'].'\', 600, 300, \''.__('File Attachments').'\')">'.__('Add Attachment').'</a></div>';
-  $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('File Attachments').'">'.__('Add Attachment').'</a></div>';
-  $str_input .= '<iframe name="attachIframe" id="attachIframe" class="borderAll" style="width: 100%; height: 70px;" src="'.MWB.'bibliography/iframe_attach.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
+  $str_input = '<div class="'.$visibility.' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$rec_d['biblio_id'].'" width="780" height="500" title="'.__('File Attachments').'">'.__('Add Attachment').'</a></div>';
+  $str_input .= '<iframe name="attachIframe" id="attachIframe" class="form-control" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_attach.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('File Attachment'), $str_input);
 
   // biblio relation
-  $str_input = '<div class="'.$visibility.'"><a class="notAJAX button btn btn-info openPopUp" href="'.MWB.'bibliography/pop_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Biblio Relation').'">'.__('Add Relation').'</a></div>';
-  $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="borderAll" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
+  $str_input = '<div class="'.$visibility.' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'" title="'.__('Biblio Relation').'">'.__('Add Relation').'</a></div>';
+  $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="form-control" style="width: 100%; height: 100px;" src="'.MWB.'bibliography/iframe_biblio_rel.php?biblioID='.$rec_d['biblio_id'].'&block=1"></iframe>';
   $form->addAnything(__('Related Biblio Data'), $str_input);
 
   /**
@@ -830,30 +855,39 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   $str_input = '';
   // get label data from database
+  // Modified by Eddy Subratha
   $label_q = $dbs->query("SELECT * FROM mst_label LIMIT 20");
   while ($label_d = $label_q->fetch_assoc()) {
     $checked = isset($arr_labels[$label_d['label_name']])?' checked':'';
     $url = isset($arr_labels[$label_d['label_name']])?$arr_labels[$label_d['label_name']]:'';
-    $str_input .= '<div '
-    .'style="background: url('.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_d['label_image']).'&amp;width=24&amp;height=24) left center no-repeat; padding-left: 30px; height: 45px;" class="'.$label_d['label_name'].'"> '
-    .'<input type="checkbox" name="labels[]" value="'.$label_d['label_name'].'"'.$checked.' /> '.$label_d['label_desc']
-    .'<div>URL : <input type="text" title="Enter a website link/URL to make this label clickable" '
-    .'name="label_urls['.$label_d['label_name'].']" size="50" maxlength="300" value="'.$url.'" /></div></div>';
-  }
+    $str_input .= '
+      <div class="input-group s-labels__group noAutoFocus">
+        <div class="input-group-prepend">
+          <span class="input-group-text" style="width:150px">
+            <input type="checkbox" name="labels[]" value="'.$label_d['label_name'].'"'.$checked.' aria-label="Labels">&nbsp;'.$label_d['label_desc'].'
+          </span>
+          <span class="input-group-text s-labels__icon">
+            <img src="../lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_d['label_image']).'&amp;width=24" class="'.$label_d['label_name'].'" id="'.$label_d['label_name'].'" alt="'.$label_d['label_name'].'"/>
+          </span>
+        </div>
+        <input type="text" value="'.$url.'" placeholder="Enter a website link/URL to make this label clickable" title="Enter a website link/URL to make this label clickable" name="label_urls['.$label_d['label_name'].']" id="label_urls['.$label_d['label_name'].']" class="form-control" aria-label="Url for current label" style="border-left:none;">
+        </div>';  }
   $form->addAnything('Label', $str_input);
   // $form->addCheckBox('labels', 'Label', $label_options, explode(' ', $rec_d['labels']));
 
   // edit mode messagge
   if ($form->edit_mode) {
-  echo '<div class="infoBox">'
-    .'<div style="float: left; width: 80%;">'.__('You are going to edit biblio data').' : <b>'.$rec_d['title'].'</b>  <br />'.__('Last Updated').'&nbsp;'. $rec_d['last_update'].'</div>'; //mfc
+  echo '<div class="s-alert infoBox">'
+    .__('You are going to edit biblio data').' : <b>'.$rec_d['title'].'</b>  <br />'.__('Last Updated').'&nbsp;'. date('d F Y h:i:s',strtotime($rec_d['last_update'])); //mfc
     if ($rec_d['image']) {
     if (file_exists(IMGBS.'docs/'.$rec_d['image'])) {
       $upper_dir = '';
       if ($in_pop_up) {
       $upper_dir = '../../';
       }
-      echo '<div id="biblioImage" style="float: right;"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=53" style="border: 1px solid #999999" /></div>';
+      // Modified by Eddy Subratha
+      // We removed image near the upload form 
+      // echo '<div id="biblioImage" class="s-biblio__cover"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=53" /></div>';
     }
     }
   echo '</div>'."\n";
@@ -864,12 +898,25 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   ?>
   <script type="text/javascript">
   $(document).ready(function() {
+    // popup pattern
     $('#class').change(function() {
       $('#callNumber').val($(this).val().replace('NEW:',''));
     });
 
-    // popup pattern
-  });
+    $('.removeImage').click(function (e) {
+      if (confirm('Are you sure you want to permanently remove this image?')) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    $(document).on('change', '.custom-file-input', function () {
+        let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+        $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+    });
+
+});
   </script>
   <?php
 } else {
@@ -970,7 +1017,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
 
   // set table and table header attributes
-  $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+  $datagrid->table_attr = 'id="dataList" class="s-table table"';
   $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
   // set delete proccess URL
   $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

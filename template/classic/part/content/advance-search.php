@@ -68,7 +68,7 @@
             </div>
         </div>
         </div>
-        <button type="submit" class="slims-button slims-button--blue" name="search" value="search"><?php echo __('Search'); ?></button>
+        <button type="submit" class="slims-btn slims-btn--blue" name="search" value="search"><?php echo __('Search'); ?></button>
         </form>
     </div>
 </div>

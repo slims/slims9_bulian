@@ -1,6 +1,6 @@
 <?php
 #This file is not for public access.
-if (defined("INDEXING", "SOLR/") {
+if (defined("INDEXING", "SOLR/")) {
   die("Not for public.");
 }
 #Assume that the collection/index name is "slims".

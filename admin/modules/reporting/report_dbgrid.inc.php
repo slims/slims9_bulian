@@ -30,6 +30,8 @@ class report_datagrid extends simbio_datagrid
 {
     public $paging_set = null;
     public $using_AJAX = false;
+    public $show_spreadsheet_export = false;
+    public $spreadsheet_export_btn = '<a href="../xlsoutput.php" class="s-btn btn btn-default">Export to spreadsheet format</a>';
 
     public function __construct()
     {
@@ -85,7 +87,12 @@ class report_datagrid extends simbio_datagrid
         } else {
             $this->paging_set =  '&nbsp;';
         }
-        $_buffer .= '<div class="printPageInfo"><strong>'.$this->num_rows.'</strong> '.__('record(s) found. Currently displaying page').' '.$this->current_page.' ('.$int_num2show.' '.__('record each page').') <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n"; //mfc
+        $_buffer .= '<div class="s-print__page-info printPageInfo"><strong>'.$this->num_rows.'</strong> '.__('record(s) found. Currently displaying page').' '.$this->current_page.' ('.$int_num2show.' '.__('record each page').') <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
+        // put the additional button process
+        if($this->show_spreadsheet_export) {
+            $_buffer .= $this->spreadsheet_export_btn;
+        }
+        $_buffer .= '</div>'."\n"; //mfc
         $_buffer .= $this->printTable();
 
         return $_buffer;

@@ -19,6 +19,6 @@
     "gulp-uglify": "~0.2.x",
     "gulp-util": "~2.2.x",
     "inquirer": "^0.5.1",
-    "semver": "^3.0.1"
+    "semver": ">=4.3.2"
   }
 }
