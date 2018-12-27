@@ -133,9 +133,9 @@ if (isset($_POST['saveData'])) {
 ?>
 <div class="sub_section">
 <div class="btn-group">
-    <a href="fines_list.php?action=detail" class="btn btn-default" style="color: #FF0000;"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New Fines'); ?></a>
-    <a href="fines_list.php" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('Fines List'); ?></a>
-    <a href="fines_list.php?balance=true" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<?php echo __('View Balanced Overdue'); ?></a>
+    <a href="fines_list.php?action=detail" class="btn btn-danger"><?php echo __('Add New Fines'); ?></a>
+    <a href="fines_list.php" class="btn btn-default"><?php echo __('Fines List'); ?></a>
+    <a href="fines_list.php?balance=true" class="btn btn-default"><?php echo __('View Balanced Overdue'); ?></a>
 </div>
 </div>
 <?php
@@ -149,7 +149,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 
     // create new instance
     $form = new simbio_form_table('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="button"';
+    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-primary"';
 
     // form table attributes
     $form->table_attr = 'align="center" id="dataList" style="width: 100%;" cellpadding="5" cellspacing="0"';
@@ -168,22 +168,22 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
         // form record title
         $form->record_title = 'Fines Detail';
         // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="button"';
+        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // fines dates
-    $form->addDateField('finesDate', __('Fines Date'), $rec_d['fines_date']);
+    $form->addDateField('finesDate', __('Fines Date'), $rec_d['fines_date'],'class="form-control"');
     // fines description
-    $form->addTextField('text', 'finesDesc', __('Description/Name').'*', $rec_d['description'], 'style="width: 60%;"');
+    $form->addTextField('text', 'finesDesc', __('Description/Name').'*', $rec_d['description'], 'style="width: 60%;" class="form-control"');
     // fines debet
-    $form->addTextField('text', 'debet', __('Debit').'*', !empty($rec_d['debet'])?$rec_d['debet']:'0', 'style="width: 60%;"');
+    $form->addTextField('text', 'debet', __('Debit').'*', !empty($rec_d['debet'])?$rec_d['debet']:'0', 'style="width: 20%;" class="form-control"');
     // fines credit
-    $form->addTextField('text', 'credit', __('Credit'), !empty($rec_d['credit'])?$rec_d['credit']:'0', 'style="width: 60%;"');
+    $form->addTextField('text', 'credit', __('Credit'), !empty($rec_d['credit'])?$rec_d['credit']:'0', 'style="width: 20%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to edit fines data').' : <b>'.$rec_d['description'].'</b></div>'; //mfc
+        echo '<br><div class="infoBox">'.__('You are going to edit fines data').' : <b>'.$rec_d['description'].'</b></div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();
@@ -200,7 +200,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     if ($total_unpaid_fines > 0) {
         $fines_alert = TRUE;
     }
-    echo '<div style="color:red; font-weight:bold;">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</div>';
+    echo '<strong class="text-danger col">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</strong>';
 
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);

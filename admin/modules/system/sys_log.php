@@ -63,6 +63,7 @@ if (isset($_POST['saveLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 // log data clearance action
 if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
     $dbs->query('TRUNCATE TABLE system_log');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' is cleaning all logs ');
     utility::jsAlert(__('System Log data completely cleared!'));
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/sys_log.php\');</script>';
     exit();
@@ -70,7 +71,7 @@ if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner syslogIcon">
 	<div class="per_title">
 	  <h2><?php echo __('System Log'); ?></h2>
@@ -78,23 +79,23 @@ if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 	<div class="sub_section">
     <?php if ($_SESSION['uid'] == 1) { ?>
 	  <div class="btn-group">
-      <a href="#" onclick="confSubmit('clearLogsForm', '<?php echo __('Are you SURE to completely clear system log data? This action cannot be undo!'); ?>')" class="notAJAX btn btn-default" style="color: red;"><i class="glyphicon glyphicon-trash"></i>&nbsp;<?php echo __('CLEAR LOGS'); ?></a>
-      <a href="#" onclick="confSubmit('saveLogsForm', '<?php echo __('Save Logs record to file?'); ?>')" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-download"></i>&nbsp;<?php echo __('Save Logs To File'); ?></a>
+      <a href="#" onclick="confSubmit('clearLogsForm', '<?php echo __('Are you SURE to completely clear system log data? This action cannot be undo!'); ?>')" class="notAJAX btn btn-danger"> <?php echo __('CLEAR LOGS'); ?></a>
+      <a href="#" onclick="confSubmit('saveLogsForm', '<?php echo __('Save Logs record to file?'); ?>')" class="notAJAX btn btn-default"><?php echo __('Save Logs To File'); ?></a>
 	  </div>
     <?php } ?>
-    <form name="search" action="<?php echo MWB; ?>system/sys_log.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
+    <form name="search" action="<?php echo MWB; ?>system/sys_log.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
     <!-- LOG CLEARANCE FORM -->
     <?php if ($_SESSION['uid'] == 1) { ?>
-    <form action="<?php echo MWB; ?>system/sys_log.php" id="clearLogsForm" target="blindSubmit" method="post" style="display: inline;"><input type="hidden" name="clearLogs" value="true" /></form>
-    <form action="<?php echo MWB; ?>system/sys_log.php" id="saveLogsForm" target="blindSubmit" method="post" style="display: inline;"><input type="hidden" name="saveLogs" value="true" /></form>
+    <form action="<?php echo MWB; ?>system/sys_log.php" id="clearLogsForm" target="blindSubmit" method="post" class="form-inline"><input type="hidden" name="clearLogs" value="true" /></form>
+    <form action="<?php echo MWB; ?>system/sys_log.php" id="saveLogsForm" target="blindSubmit" method="post" class="form-inline"><input type="hidden" name="saveLogs" value="true" /></form>
     <?php } ?>
     <!-- LOG CLEARANCE FORM END -->
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* SYSTEM LOGS LIST */
@@ -128,7 +129,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
 }
 
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->delete_URL = $_SERVER['PHP_SELF'];

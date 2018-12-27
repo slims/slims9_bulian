@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // require composer library
-require 'vendor/autoload.php';
+if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
 // be sure that magic quote is off
 @ini_set('magic_quotes_gpc', false);
@@ -48,7 +48,7 @@ if (get_magic_quotes_gpc()) {
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 // turn off all error messages for security reason
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -341,7 +341,7 @@ $sysconf['reserve_expire_periode'] = 7;
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
 $sysconf['library_subname'] = 'Open Source Library Management System';
-$sysconf['page_footer'] = ' SENAYAN Library Automation System (SLiMS) - SLiMS Developer Community - Released Under GNU GPL License';
+$sysconf['page_footer'] = ' Senayan Library Management System (SLiMS). Released Under GNU GPL License.<br>Made with love by SLiMS Developer Community';
 
 /* HTTPS Setting */
 $sysconf['https_enable'] = false;
@@ -451,7 +451,7 @@ $sysconf['index']['sphinx_opts'] = array(
     'max_limit' => 100000, // must be less or same with max_matches in sphinx.conf
 	'ranker' => null);
 
-$sysconf['index']['engine']['enable'] = FALSE;
+$sysconf['index']['engine']['enable'] = true;
 $sysconf['index']['engine']['type'] = 'es'; // value can be 'solr' OR 'es' for ElasticSearch
 $sysconf['index']['engine']['solr_opts'] = array(
     'host' => 'http://172.17.0.4',

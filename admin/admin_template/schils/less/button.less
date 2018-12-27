@@ -1,0 +1,97 @@
+//main: style.less
+/*------------------
+buttton
+--------------------*/
+.s-btn {
+  margin-right: 3px;
+}
+
+.s-export {
+  padding: 15px 0;
+}
+
+.btn {
+  font-weight: bold;
+  padding: .505rem .85rem;
+  font-size: @font-size;
+
+  &-default {
+    color: @white;
+    border-color: lighten(@black,50%);
+    background-color: lighten(@black,50%);
+
+    &:hover {
+      color: #fff;
+      background: @color-3;
+      border-color: @color-3;
+    }
+  }  
+
+  &-primary {
+    color: @white;
+    border-color: @color-4;
+    background-color: @color-4;
+  }
+
+  &-sm {
+    font-size: 8pt;
+    padding: 5px;    
+  }
+
+
+}
+
+.editLink {
+  color: @black;
+  display: block;
+  position: relative;
+
+  &:hover {
+    color: @color-2;
+  }
+
+  &:before {
+    content: "\f14b";
+    font-size: 16pt;
+    font-family: 'FontAwesome';
+    line-height: 1.4;
+  }
+}
+
+.action_button {
+  font-weight: 700;
+  background-color: lighten(@color-3,45%);
+  padding: 15px;
+  margin-bottom: 20px;
+  color: lighten(@black, 50%);
+  border-radius: 3px;
+  width: 100%;
+  display: inline-block;
+}
+
+.social-label {
+  float: left;
+  width: 217px;
+  padding-top: 15px;
+}
+.social-form input {
+  margin-top: 5px;
+}
+
+.s-labels {
+  &__group {
+    margin-bottom:5px;
+    .input-group-text {
+      font-weight: 700;
+      font-size: (@font-size - 1pt);
+    }
+  }
+  &__icon {
+    background-color: @white;
+    border-right: none;
+  }
+}
+
+.makeHidden {
+  display: none;
+}

@@ -91,7 +91,7 @@ if (isset($_SESSION['memberID'])) {
 
     // create table object
     $loan_list = new simbio_table();
-    $loan_list->table_attr = 'align="center" width="100%" cellpadding="3" cellspacing="0"';
+    $loan_list->table_attr = 'id="dataList" width="100%" cellpadding="3" cellspacing="0"';
     $loan_list->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     $loan_list->highlight_row = true;
     // table header
@@ -111,7 +111,7 @@ if (isset($_SESSION['memberID'])) {
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
         // return link
-        $return_link = '<a href="#" onclick="confirmProcess('.$loan_list_data['loan_id'].', \''.$loan_list_data['item_code'].'\', \'return\')" title="'.__('Return this item').'" class="returnLink">&nbsp;</a>';
+        $return_link = '<a href="#" onclick="confirmProcess('.$loan_list_data['loan_id'].', \''.$loan_list_data['item_code'].'\', \'return\')" title="'.__('Return this item').'" class="btn btn-primary btn-sm">'.__('Return').'</a>';
         // extend link
         // check if membership already expired
         if ($_SESSION['is_expire']) {
@@ -121,19 +121,19 @@ if (isset($_SESSION['memberID'])) {
             if ($loan_list_data['return_date'] == date('Y-m-d') || in_array($loan_list_data['loan_id'], $_SESSION['reborrowed']) || $loan_list_data['extend'] == 1) {
                 $extend_link = '<span class="noExtendLink" title="'.__('No Extend').'">&nbsp;</span>';
             } else {
-                $extend_link = '<a href="#" onclick="confirmProcess('.$loan_list_data['loan_id'].', \''.$loan_list_data['item_code'].'\', \'extend\')" title="'.__('Extend loan for this item').'" class="extendLink">&nbsp;</a>';
+                $extend_link = '<a href="#" onclick="confirmProcess('.$loan_list_data['loan_id'].', \''.$loan_list_data['item_code'].'\', \'extend\')" title="'.__('Extend loan for this item').'" class="btn btn-success btn-sm"><span>'.__('Extend').'</span></a>';
             }
         }
         // renewed flag
         if ($loan_list_data['renewed'] > 0) {
-            $loan_list_data['title'] = $loan_list_data['title'].' - <strong style="color: blue;">'.__('Extended').'</strong>';
+            $loan_list_data['title'] = $loan_list_data['title'].' - <strong class="text-success">'.__('Extended').'</strong>';
         }
         // check for overdue
         $curr_date = date('Y-m-d');
         $overdue = $circulation->countOverdueValue($loan_list_data['loan_id'], $curr_date);
         if ($overdue) {
             $is_overdue = true;
-            $loan_list_data['title'] .= '<div style="color: red; font-weight: bold;">'.__('OVERDUED for').' '.$overdue['days'].' '.__('days(s) with fines value').' '.$overdue['value'].'</div>'; //mfc
+            $loan_list_data['title'] .= ' - <strong class="text-danger">'.__('OVERDUED for').' '.$overdue['days'].' '.__('days(s) with fines value').' '.$overdue['value'].'</strong>'; //mfc
             $_total_temp_fines = $_total_temp_fines + $overdue['value']; #newly added
         }
         // row colums array
@@ -175,7 +175,13 @@ if (isset($_SESSION['memberID'])) {
 
     // create e-mail lin if there is overdue
     if ($is_overdue) {
-        echo '<div style="padding: 5px; background: #ccc;"><div id="emailStatus"></div><a class="sendEmail usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$memberID.'" loadcontainer="emailStatus">'.__('Send overdues notice e-mail').'</a> | <span style="color: red; font-weight: bold;">'.__('Total of temporary fines').': '.$_total_temp_fines.'.</span></div>'."\n";
+        echo '  <div class="alert alert-danger p-2 rounded-0">
+                    <div class="row">
+                        <div class="pt-2 col"><strong>'.__('Total of temporary fines').' is '.$_total_temp_fines.'</strong></div>
+                        <div class="col text-right"><a class="btn btn-danger sendEmail usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$memberID.'" loadcontainer="emailStatus">'.__('Send overdues notice e-mail').'</a></div>
+                    </div>
+                </div>
+                <div id="emailStatus" class="text-danger alert"></div>';
     }
     echo $loan_list->printTable();
     // hidden form for return and extend process

@@ -120,18 +120,15 @@ class simbio_paging
 				$_prev = __('Previous');
 
         if ($_page > 1) {
-            $_buffer .= ' &nbsp;';
-            $_buffer .= '<a href="'.$_current_page.(1).$str_fragment.'" '.$str_target_frame.' class="first_link">'.$_first.'</a>&nbsp; '."\n";
-            $_buffer .= ' &nbsp;';
-            $_buffer .= '<a href="'.$_current_page.($_page-1).$str_fragment.'" '.$str_target_frame.' class="prev_link">'.$_prev.'</a>&nbsp; '."\n";
+            $_buffer .= '<a href="'.$_current_page.(1).$str_fragment.'" '.$str_target_frame.' class="first_link">'.$_first.'</a>'."\n";
+            $_buffer .= '<a href="'.$_current_page.($_page-1).$str_fragment.'" '.$str_target_frame.' class="prev_link">'.$_prev.'</a>'."\n";
         }
 
         for ($p = $_pager_offset; ($p <= $_num_page_total) AND ($_stopper < $int_pages_each_set+1); $p++) {
             if ($p == $_page) {
-                $_buffer .= ' &nbsp;<b>'.$p.'</b>&nbsp; '."\n";
+                $_buffer .= '<b>'.$p.'</b>'."\n";
             } else {
-                $_buffer .= ' &nbsp;';
-                $_buffer .= '<a href="'.$_current_page.$p.$str_fragment.'" '.$str_target_frame.'>'.$p.'</a>&nbsp; '."\n";
+                $_buffer .= '<a href="'.$_current_page.$p.$str_fragment.'" '.$str_target_frame.'>'.$p.'</a>'."\n";
             }
 
             $_stopper++;
@@ -141,16 +138,14 @@ class simbio_paging
 				$_next = __('Next');
 
         if (($_pager_offset != $_num_page_total-4) AND ($_page != $_num_page_total)) {
-            $_buffer .= ' &nbsp;';
-            $_buffer .= '<a href="'.$_current_page.($_page+1).$str_fragment.'" '.$str_target_frame.' class="next_link">'.$_next.'</a>&nbsp; '."\n";
+            $_buffer .= '<a href="'.$_current_page.($_page+1).$str_fragment.'" '.$str_target_frame.' class="next_link">'.$_next.'</a>'."\n";
         }
 
         // Last page link
 				$_last = __('Last Page');
 
         if ($_page < $_num_page_total) {
-            $_buffer .= ' &nbsp;';
-            $_buffer .= '<a href="'.$_current_page.($_num_page_total).$str_fragment.'" '.$str_target_frame.' class="last_link">'.$_last.'</a>&nbsp; '."\n";
+            $_buffer .= '<a href="'.$_current_page.($_num_page_total).$str_fragment.'" '.$str_target_frame.' class="last_link">'.$_last."\n";
         }
 
         $_buffer .= '</span>';

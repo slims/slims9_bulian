@@ -74,7 +74,7 @@ if (isset($_SESSION['memberID']) AND !empty($_SESSION['memberID'])) {
     $datagrid->setSQLCriteria($criteria);
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
     // special properties

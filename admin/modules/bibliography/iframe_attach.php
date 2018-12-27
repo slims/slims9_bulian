@@ -121,16 +121,16 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" onclick="confirmProcess('.$biblioID.', '.$biblio_attach_d['file_id'].', \''.addslashes($biblio_attach_d['file_name']).'\')" class="notAJAX btn button btn-danger btn-delete">' . __('Delete') . '</a>';
+    $remove_link = '<a href="#" onclick="confirmProcess('.$biblioID.', '.$biblio_attach_d['file_id'].', \''.addslashes($biblio_attach_d['file_name']).'\')" class="s-btn btn btn-danger notAJAX">' . __('Delete') . '</a>';
 
     // edit link
-    $edit_link = '<a class="notAJAX button btn btn-default openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$biblioID.'&fileID='.$biblio_attach_d['file_id'].'" width="600" height="300" title="'.__('File Attachments').'">' . __('Edit') . '</a>';
+    $edit_link = '<a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$biblioID.'&fileID='.$biblio_attach_d['file_id'].'" width="780" height="500" title="'.__('File Attachments').'">' . __('Edit') . '</a>';
 
     // file link
     if (preg_match('@(video|audio|image)/.+@i', $biblio_attach_d['mime_type'])) {
-        $file = '<a class="notAJAX openPopUp" href="'.SWB.'index.php?p=multimediastream&fid='.$biblio_attach_d['file_id'].'&bid='.$biblio_attach_d['biblio_id'].'" width="640" height="480" title="'.$biblio_attach_d['file_title'].'">'.$biblio_attach_d['file_title'].'</a>';
+        $file = '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'index.php?p=multimediastream&fid='.$biblio_attach_d['file_id'].'&bid='.$biblio_attach_d['biblio_id'].'" width="480" height="320" title="'.$biblio_attach_d['file_title'].'">'.$biblio_attach_d['file_title'].'</a>';
     } else {
-        $file = '<a class="notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($biblio_attach_d['file_id']).'" width="640" height="480" target="_blank">'.$biblio_attach_d['file_title'].'</a>';
+        $file = '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($biblio_attach_d['file_id']).'" width="780" height="500" target="_blank">'.$biblio_attach_d['file_title'].'</a>';
     }
 
     $table->appendTableRow(array($remove_link, $edit_link, $file, $biblio_attach_d['file_desc']));
@@ -154,8 +154,7 @@ if ($biblioID) {
     $row_class = 'alterCell2';
     foreach ($_SESSION['biblioAttach'] as $idx=>$biblio_session) {
       // remove link
-      $remove_link = '<a href="iframe_attach.php?removesess='.$idx.'" class="notAJAX btn button btn-danger btn-delete">' . __('Remove') . '</a>';
-
+      $remove_link = '<a href="iframe_attach.php?removesess='.$idx.'" class="s-btn btn btn-danger notAJAX">' . __('Remove') . '</a>';
       $table->appendTableRow(array($remove_link, $biblio_session['file_name'], $biblio_session['last_update']));
       $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; background-color: #ffc466; width: 10%;"');
       $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="background-color: #ffc466; width: 60%;"');

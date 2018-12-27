@@ -139,20 +139,19 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
 
 <div class="popUpForm">
 <form name="mainForm" action="pop_topic.php?biblioID=<?php echo $biblioID; ?>" method="post">
-<div>
-    <strong><?php echo __('Add Subject'); ?></strong>
-    <hr />
-    <form name="searchTopic" method="post" style="display: inline;">
+<strong><?php echo __('Add Subject'); ?></strong>
+<hr />
+<div class="form-inline">
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_vocabolary_control.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
-    ?>
-    <?php echo __('Keyword'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>" />
-    <select name="type" style="width: 20%;"><?php
+    ?>    
+    <input type="text" name="search_str" class="form-control col" id="search_str" placeholder="<?php echo __('Keyword'); ?>" oninput="<?php echo $ajax_exp; ?>" />
+    <select name="type" class="form-control col"><?php
     foreach ($sysconf['subject_type'] as $type_id => $type) {
         echo '<option value="'.$type_id.'">'.$type.'</option>';
     }
     ?></select>
-    <select name="level" style="width: 20%;">
+    <select name="level" class="form-control col">
     <?php
     echo '<option value="1">' . __('Primary') . '</option>';
     echo '<option value="2">' . __('Additional') . '</option>';
@@ -160,11 +159,11 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     </select>
 </div>
 <div class="popUpSubForm">
-    <ul id="topicID">
+    <ul id="topicID" class="form-control">
         <li><?php echo __('Type to search for existing topics or to add a new one'); ?></li>
     </ul>
     <?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
-    <input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="popUpSubmit btn btn-primary" />
+    <input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="s-btn btn btn-primary popUpSubmit" />
 </div>
 </form>
 <script type="text/javascript">

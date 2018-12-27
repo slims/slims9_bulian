@@ -357,7 +357,7 @@ class simbio_datagrid extends simbio_table
         $_target = '_self';
         if ($this->using_AJAX) {
             $_target = 'submitExec';
-            $_iframe = '<iframe name="submitExec" style="visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
+            $_iframe = '<iframe name="submitExec" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
             // below is for debugging purpose only
             // $_iframe = '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 300px;"></iframe>'."\n";
         }
@@ -366,10 +366,10 @@ class simbio_datagrid extends simbio_table
             if (class_exists('simbio_form_maker')) {
               $form_maker = new simbio_form_maker($this->table_name, $this->chbox_form_URL, $str_form_method = 'post', false);
               $form_maker->submit_target = $_target;
-              $form_maker->add_form_attributes= 'style="display: inline;"';
+              $form_maker->add_form_attributes= 'class="form-inline"';
               $_buffer .= $form_maker->startForm();
             } else {
-              $_buffer .= '<form action="'.$this->chbox_form_URL.'" name="'.$this->table_name.'" id="'.$this->table_name.'" target="'.$_target.'" method="post" style="display: inline;">'."\n";
+              $_buffer .= '<form action="'.$this->chbox_form_URL.'" name="'.$this->table_name.'" id="'.$this->table_name.'" target="'.$_target.'" method="post" class="form-inline">'."\n";
             }
 
 
@@ -380,7 +380,7 @@ class simbio_datagrid extends simbio_table
             $_button_grp = '<table cellspacing="0" cellpadding="5" class="datagrid-action-bar" style="width: 100%;"><tr>';
             // if checkbox is include then show button
             if ($this->chbox_property) {
-                $_button_grp .= '<td><input type="button" onclick="chboxFormSubmit(\''.$this->table_name.'\', \''.$this->chbox_confirm_msg.'\')" value="'.($this->chbox_action_button?$this->chbox_action_button:__('Delete Selected Data')).'" class="button btn '.($this->chbox_action_button?'btn-warning btn-other':'btn-danger btn-delete').'" /> '
+                $_button_grp .= '<td><input type="button" onclick="chboxFormSubmit(\''.$this->table_name.'\', \''.$this->chbox_confirm_msg.'\')" value="'.($this->chbox_action_button?$this->chbox_action_button:__('Delete Selected Data')).'" class="s-btn btn '.($this->chbox_action_button?'btn-success':'btn-danger').'" /> '
                     .'<input type="button" value="'.$_check_all.'" class="check-all button btn btn-default" /> '
                     .'<input type="button" value="'.$_uncheck_all.'" class="uncheck-all button btn btn-default" /> '
                     .'</td>';

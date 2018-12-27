@@ -199,11 +199,11 @@
   padding: 0;
   margin: 0;
   vertical-align: middle; }
-  .slims-card--menu .slims-button {
+  .slims-card--menu .slims-btn {
     padding: 0 8px;
     font-size: 14px;
     line-height: 32px; }
-    .slims-card--menu .slims-button .material-icons {
+    .slims-card--menu .slims-btn .material-icons {
       color: #aaa; }
 
 .slims-card--header {
@@ -243,7 +243,7 @@
 .xmlResultLink,
 .jsonResultLink,
 .btn,
-.slims-button {
+.slims-btn {
   margin-top: 8px;
   text-transform: uppercase;
   padding: 8px 16px;
@@ -255,72 +255,72 @@
   -moz-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); }
-  .button.slims-button--flat,
-  .biblioMarkFormAction input.slims-button--flat,
-  #loginButton.slims-button--flat,
-  .memberButton.slims-button--flat,
-  .homeButton.slims-button--flat,
-  .loginButton.slims-button--flat,
-  .xmlResultLink.slims-button--flat,
-  .jsonResultLink.slims-button--flat,
-  .btn.slims-button--flat,
-  .slims-button.slims-button--flat {
+  .button.slims-btn--flat,
+  .biblioMarkFormAction input.slims-btn--flat,
+  #loginButton.slims-btn--flat,
+  .memberButton.slims-btn--flat,
+  .homeButton.slims-btn--flat,
+  .loginButton.slims-btn--flat,
+  .xmlResultLink.slims-btn--flat,
+  .jsonResultLink.slims-btn--flat,
+  .btn.slims-btn--flat,
+  .slims-btn.slims-btn--flat {
     box-shadow: none !important;
     background-color: transparent; }
-    .button.slims-button--flat:hover,
-    .biblioMarkFormAction input.slims-button--flat:hover,
-    #loginButton.slims-button--flat:hover,
-    .memberButton.slims-button--flat:hover,
-    .homeButton.slims-button--flat:hover,
-    .loginButton.slims-button--flat:hover,
-    .xmlResultLink.slims-button--flat:hover,
-    .jsonResultLink.slims-button--flat:hover,
-    .btn.slims-button--flat:hover,
-    .slims-button.slims-button--flat:hover {
+    .button.slims-btn--flat:hover,
+    .biblioMarkFormAction input.slims-btn--flat:hover,
+    #loginButton.slims-btn--flat:hover,
+    .memberButton.slims-btn--flat:hover,
+    .homeButton.slims-btn--flat:hover,
+    .loginButton.slims-btn--flat:hover,
+    .xmlResultLink.slims-btn--flat:hover,
+    .jsonResultLink.slims-btn--flat:hover,
+    .btn.slims-btn--flat:hover,
+    .slims-btn.slims-btn--flat:hover {
       background-color: #eee; }
-    .button.slims-button--flat.slims-button--default,
-    .biblioMarkFormAction input.slims-button--flat.slims-button--default,
-    #loginButton.slims-button--flat.slims-button--default,
-    .memberButton.slims-button--flat.slims-button--default,
-    .homeButton.slims-button--flat.slims-button--default,
-    .loginButton.slims-button--flat.slims-button--default,
-    .xmlResultLink.slims-button--flat.slims-button--default,
-    .jsonResultLink.slims-button--flat.slims-button--default,
-    .btn.slims-button--flat.slims-button--default,
-    .slims-button.slims-button--flat.slims-button--default {
+    .button.slims-btn--flat.slims-btn--default,
+    .biblioMarkFormAction input.slims-btn--flat.slims-btn--default,
+    #loginButton.slims-btn--flat.slims-btn--default,
+    .memberButton.slims-btn--flat.slims-btn--default,
+    .homeButton.slims-btn--flat.slims-btn--default,
+    .loginButton.slims-btn--flat.slims-btn--default,
+    .xmlResultLink.slims-btn--flat.slims-btn--default,
+    .jsonResultLink.slims-btn--flat.slims-btn--default,
+    .btn.slims-btn--flat.slims-btn--default,
+    .slims-btn.slims-btn--flat.slims-btn--default {
       color: #333; }
-    .button.slims-button--flat.slims-button--blue,
-    .biblioMarkFormAction input.slims-button--flat.slims-button--blue,
-    #loginButton.slims-button--flat.slims-button--blue,
-    .memberButton.slims-button--flat.slims-button--blue,
-    .homeButton.slims-button--flat.slims-button--blue,
-    .loginButton.slims-button--flat.slims-button--blue,
-    .xmlResultLink.slims-button--flat.slims-button--blue,
-    .jsonResultLink.slims-button--flat.slims-button--blue,
-    .btn.slims-button--flat.slims-button--blue,
-    .slims-button.slims-button--flat.slims-button--blue {
+    .button.slims-btn--flat.slims-btn--blue,
+    .biblioMarkFormAction input.slims-btn--flat.slims-btn--blue,
+    #loginButton.slims-btn--flat.slims-btn--blue,
+    .memberButton.slims-btn--flat.slims-btn--blue,
+    .homeButton.slims-btn--flat.slims-btn--blue,
+    .loginButton.slims-btn--flat.slims-btn--blue,
+    .xmlResultLink.slims-btn--flat.slims-btn--blue,
+    .jsonResultLink.slims-btn--flat.slims-btn--blue,
+    .btn.slims-btn--flat.slims-btn--blue,
+    .slims-btn.slims-btn--flat.slims-btn--blue {
       color: #2196f3; }
-    .button.slims-button--flat.slims-button--red,
-    .biblioMarkFormAction input.slims-button--flat.slims-button--red,
-    #loginButton.slims-button--flat.slims-button--red,
-    .memberButton.slims-button--flat.slims-button--red,
-    .homeButton.slims-button--flat.slims-button--red,
-    .loginButton.slims-button--flat.slims-button--red,
-    .xmlResultLink.slims-button--flat.slims-button--red,
-    .jsonResultLink.slims-button--flat.slims-button--red,
-    .btn.slims-button--flat.slims-button--red,
-    .slims-button.slims-button--flat.slims-button--red {
+    .button.slims-btn--flat.slims-btn--red,
+    .biblioMarkFormAction input.slims-btn--flat.slims-btn--red,
+    #loginButton.slims-btn--flat.slims-btn--red,
+    .memberButton.slims-btn--flat.slims-btn--red,
+    .homeButton.slims-btn--flat.slims-btn--red,
+    .loginButton.slims-btn--flat.slims-btn--red,
+    .xmlResultLink.slims-btn--flat.slims-btn--red,
+    .jsonResultLink.slims-btn--flat.slims-btn--red,
+    .btn.slims-btn--flat.slims-btn--red,
+    .slims-btn.slims-btn--flat.slims-btn--red {
       color: #f44336; }
-  .button.slims-button--circle,
-  .biblioMarkFormAction input.slims-button--circle,
-  #loginButton.slims-button--circle,
-  .memberButton.slims-button--circle,
-  .homeButton.slims-button--circle,
-  .loginButton.slims-button--circle,
-  .xmlResultLink.slims-button--circle,
-  .jsonResultLink.slims-button--circle,
-  .btn.slims-button--circle,
-  .slims-button.slims-button--circle {
+  .button.slims-btn--circle,
+  .biblioMarkFormAction input.slims-btn--circle,
+  #loginButton.slims-btn--circle,
+  .memberButton.slims-btn--circle,
+  .homeButton.slims-btn--circle,
+  .loginButton.slims-btn--circle,
+  .xmlResultLink.slims-btn--circle,
+  .jsonResultLink.slims-btn--circle,
+  .btn.slims-btn--circle,
+  .slims-btn.slims-btn--circle {
     padding: 0;
     width: 32px;
     height: 32px;
@@ -340,7 +340,7 @@
     background-color: #eee; }
 
 .homeButton,
-.slims-button--default {
+.slims-btn--default {
   background-color: #fff;
   color: #333; }
 
@@ -349,12 +349,12 @@
 .memberButton,
 .loginButton,
 .s-chat-content .btn,
-.slims-button--blue {
+.slims-btn--blue {
   background-color: #2196f3;
   color: #fff; }
 
 #loginButton,
-.slims-button--red {
+.slims-btn--red {
   background-color: #f44336;
   color: #fff; }
 
@@ -971,7 +971,7 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none; }
 
-fieldset {
+div {
   border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em; }

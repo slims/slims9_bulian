@@ -78,7 +78,7 @@ $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
 $form->submit_button_attr = 'name="updateSettings" value="'.__('Save Settings').'" class="btn btn-primary"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
@@ -95,7 +95,7 @@ $measure['print']['label']['items_per_row']       = __('(default is 3)');
 $measure['print']['label']['items_margin']        = __('(cm)');
 $measure['print']['label']['box_width']           = __('(cm)');
 $measure['print']['label']['box_height']          = __('(cm)');
-$measure['print']['label']['include_header_text'] = __('(0=No or 1=Yes)'); 
+$measure['print']['label']['include_header_text'] = ['0' => 'No', '1' => 'Yes'];
 $measure['print']['label']['header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['label']['fonts']               = __('(name of the font used)');
 $measure['print']['label']['font_size']           = __('(pt)');
@@ -108,8 +108,8 @@ $measure['print']['barcode']['barcode_items_per_row']       = __('(cm)');
 $measure['print']['barcode']['barcode_items_margin']        = __('(cm)');
 $measure['print']['barcode']['barcode_box_width']           = __('(cm)');
 $measure['print']['barcode']['barcode_box_height']          = __('(cm)');
-$measure['print']['barcode']['barcode_include_header_text'] = __('(0=No or 1=Yes)'); 
-$measure['print']['barcode']['barcode_cut_title']           = __('(0=No or 1=Yes)');
+$measure['print']['barcode']['barcode_include_header_text'] = ['0' => 'No', '1' => 'Yes'];
+$measure['print']['barcode']['barcode_cut_title']           = ['0' => 'No', '1' => 'Yes'];
 $measure['print']['barcode']['barcode_header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['barcode']['barcode_fonts']               = __('(name of the font used)');
 $measure['print']['barcode']['barcode_font_size']           = __('(pt)');
@@ -120,7 +120,7 @@ $measure['print']['barcode']['barcode_border_size']         = __('(px)');
 $measure['print']['barcodegen']['box_width']                = __('(cm)');
 $measure['print']['barcodegen']['page_margin']              = __('(decimal value. default is 0.2)');
 $measure['print']['barcodegen']['items_margin']             = __('(decimal value. default is 0.05)');
-$measure['print']['barcodegen']['include_border']           = __('(0=No or 1=Yes)');
+$measure['print']['barcodegen']['include_border']           = ['0' => 'No', '1' => 'Yes'];
 $measure['print']['barcodegen']['items_per_row']            = __('(default is 3)');
 
 /* Receipt Printing */
@@ -135,6 +135,8 @@ $measure['print']['receipt']['receipt_header_fontSize']     = __('pt');
 $measure['print']['receipt']['receipt_titleLength']         = __('(number)');
 
 // member card print settings
+$measure['print']['membercard']['template']                 = array_values(array_diff(scandir(UPLOAD.'membercard'), array('..', '.')));
+
 /* measurement in cm */
 $measure['print']['membercard']['page_margin']              = __('(decimal)');
 $measure['print']['membercard']['items_margin']             = __('(decimal)');
@@ -145,14 +147,14 @@ $measure['print']['membercard']['factor']                   = __('(cm)');
 
 // Items Settings
 // change to 0 if dont want to use selected items
-$measure['print']['membercard']['include_id_label']         = __('(0=No or 1=Yes)'); // id 
-$measure['print']['membercard']['include_name_label']       = __('(0=No or 1=Yes)'); // name
-$measure['print']['membercard']['include_pin_label']        = __('(0=No or 1=Yes)'); // identify
-$measure['print']['membercard']['include_inst_label']       = __('(0=No or 1=Yes)'); // institution
-$measure['print']['membercard']['include_email_label']      = __('(0=No or 1=Yes)'); // mail address
-$measure['print']['membercard']['include_address_label']    = __('(0=No or 1=Yes)'); // home or office address
-$measure['print']['membercard']['include_barcode_label']    = __('(0=No or 1=Yes)'); // barcode
-$measure['print']['membercard']['include_expired_label']    = __('(0=No or 1=Yes)'); // expired date
+$measure['print']['membercard']['include_id_label']         = ['0' => 'No', '1' => 'Yes']; // id
+$measure['print']['membercard']['include_name_label']       = ['0' => 'No', '1' => 'Yes']; // name
+$measure['print']['membercard']['include_pin_label']        = ['0' => 'No', '1' => 'Yes']; // identify
+$measure['print']['membercard']['include_inst_label']       = ['0' => 'No', '1' => 'Yes']; // institution
+$measure['print']['membercard']['include_email_label']      = ['0' => 'No', '1' => 'Yes']; // mail address
+$measure['print']['membercard']['include_address_label']    = ['0' => 'No', '1' => 'Yes']; // home or office address
+$measure['print']['membercard']['include_barcode_label']    = ['0' => 'No', '1' => 'Yes']; // barcode
+$measure['print']['membercard']['include_expired_label']    = ['0' => 'No', '1' => 'Yes']; // expired date
 
 // Cardbox Settings
 $measure['print']['membercard']['box_width']                = __('(cm)');
@@ -231,10 +233,20 @@ $measure['print']['membercard']['address_top']              = __('(px)');
 $form->addAnything(__('Print setting for'), ucwords($type));
 foreach ($sysconf['print'][$type] as $setting_name => $val) {
   $setting_name_label = ucwords(str_ireplace('_', ' ', $setting_name));
-  $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'style="width: 75%;"');
+  if (is_array($measure['print'][$type][$setting_name])) {
+      $form->addSelectList($type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>(options)</em></small>', $measure['print'][$type][$setting_name], $val, 'style="width: 75%;" class="form-control"');
+      continue;
+  }
+  if(trim($setting_name_label) === 'Rules' || trim($setting_name_label) === 'Address') {
+    $form->addTextField('textarea', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'rows="5" class="form-control"');
+  } else {
+    $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'style="width: 75%;" class="form-control"');
+  }
 }
 $form->addHidden('settingType', $type);
-
+?>
+<strong><?php echo __('Change print barcode settings'); ?></strong>
+<?php
 // print out the object
 echo $form->printOut();
 /* main content end */

@@ -145,52 +145,50 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
   $item_ids = substr_replace($item_ids, '', -1);
   // unset the session
   unset($_SESSION['marcexport']);
-  
+  $biblio = new Biblio($dbs, null);
   header('Content-type: application/marc');
   header('Content-disposition: attachment; filename=slims-marc-export.mrc');
-  $biblio = new Biblio($dbs, null);
   echo $biblio->marc_export($item_ids);
-  // utility::jsAlert('Done..');
-  
+  // utility::jsAlert('Done..');  
   exit();
 }
 ?>
 
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner printIcon">
   <div class="per_title">
 	  <h2><?php echo __('Export Catalog to Marc Format '); ?></h2>
   </div>
   <div class="sub_section">
 	  <div class="btn-group">
-      <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/marcexport.php?action=clear" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-trash"></i>&nbsp;<?php echo __('Clear selected catalog'); ?></a>
-      <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/marcexport.php?action=export" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-print"></i>&nbsp;<?php echo __('Export now');?></a>
-      <a href="<?php echo MWB; ?>bibliography/marcexport.php?action=batch" class="btn btn-default"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;<?php echo __('Batch Export');?></a>
+      <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/marcexport.php?action=clear" class="btn btn-default notAJAX"><?php echo __('Clear selected catalog'); ?></a>
+      <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/marcexport.php?action=export" class="btn btn-default notAJAX"><?php echo __('Export now');?></a>
+      <a href="<?php echo MWB; ?>bibliography/marcexport.php?action=batch" class="  btn btn-default"><?php echo __('Batch Export');?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>bibliography/marcexport.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+    <form name="search" action="<?php echo MWB; ?>bibliography/marcexport.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
+      <input type="text" name="keywords" size="30" class="form-control" />
+      <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
   <div class="infoBox">
   <?php
   echo __('Currently there is').' ';
   if (isset($_SESSION['marcexport'])) {
-    echo '<font id="queueCount" style="color: #f00">'.count($_SESSION['marcexport']).'</font>';
-  } else { echo '<font id="queueCount" style="color: #f00">0</font>'; }
+    echo '<strong id="queueCount" class="text-danger">'.count($_SESSION['marcexport']).'</strong>';
+  } else { echo '<strong id="queueCount" class="text-danger">0</strong>'; }
   echo ' '.__('in queue waiting to be processed.');
   ?>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 if (isset($_GET['action']) && $_GET['action'] == 'batch') {
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
-    $form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class="btn btn-default"';
+    $form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class="sbtn btn btn-default"';
     
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
     
@@ -199,11 +197,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'batch') {
     $rec_sep_options[] = array('RAW', 'MARC RAW');
     $rec_sep_options[] = array('XML', 'MARCXML');
     $rec_sep_options[] = array('JSON', 'MARCJSON');
-    $form->addSelectList('exportType', __('Export Type'), $rec_sep_options);
+    $form->addSelectList('exportType', __('Export Type'), $rec_sep_options,'','class="form-control col-3"');
     // number of records to export
-    $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;"');
+    $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
     // records offset
-    $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;"');
+    $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
     // output the form
     echo $form->printOut();    
 } else {
@@ -254,7 +252,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'batch') {
       $datagrid->setSQLcriteria('('.$criteria['sql_criteria'].')');
     }
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // edit and checkbox property
     $datagrid->edit_property = false;

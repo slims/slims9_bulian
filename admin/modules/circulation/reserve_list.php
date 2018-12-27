@@ -64,16 +64,16 @@ function confirmProcess(intReserveID, strTitle)
 <!--reserve specific javascript functions end-->
 
 <!--item loan form-->
-<div class="s-transc-reserve" style="padding: 5px; background-color: #ccc;">
-    <form name="reserveForm" id="search" action="circulation_action.php" method="post" style="display: inline;">
-        <?php echo __('Search Collection'); ?> :<br />
+<div class="s-circulation__reserve">
+    <form name="reserveForm" id="search" action="circulation_action.php" method="post" class="form-inline">
+        <?php echo __('Search Collection'); ?>&nbsp;
         <?php
         // AJAX expression
         $ajax_exp = "ajaxFillSelect('item_AJAX_lookup_handler.php', 'item', 'i.item_code:title', 'reserveItemID', $('#bib_search_str').val())";
         $biblio_options[] = array('0', 'Title');
-        echo simbio_form_element::textField('text', 'bib_search_str', '', 'style="width: 10%;" oninput="'.$ajax_exp.'"');
-        echo simbio_form_element::selectList('reserveItemID', $biblio_options, '', 'class="marginTop" style="width: 70%;"');
-        echo simbio_form_element::textField('submit', 'addReserve', __('Add Reserve'));
+        echo simbio_form_element::textField('text', 'bib_search_str', '', 'class="form-control col-3" oninput="'.$ajax_exp.'"');
+        echo simbio_form_element::selectList('reserveItemID', $biblio_options, '', 'class="form-control col-3"');
+        echo simbio_form_element::textField('submit', 'addReserve', __('Add Reserve'),'class="s-btn btn btn-default"');
         ?>
     </form>
 </div>
@@ -102,7 +102,7 @@ if (isset($_SESSION['memberID'])) {
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
         // remove reserve link
-        $remove_link = '<a href="#" onclick="confirmProcess('.$reserve_list_d['reserve_id'].', \''.$reserve_list_d['title'].'\')" title="Remove Reservation" class="trashLink">&nbsp;</a>';
+        $remove_link = '<a href="#" onclick="confirmProcess('.$reserve_list_d['reserve_id'].', \''.$reserve_list_d['title'].'\')" title="'.__('Remove Reservation').'" class="btn btn-danger btn-sm">'.__('Remove').'</a>';
         // check if item/collection is available
         $avail_q = $dbs->query("SELECT COUNT(loan_id) FROM loan WHERE item_code='".$reserve_list_d['item_code']."' AND is_lent=1 AND is_return=0");
         $avail_d = $avail_q->fetch_row();

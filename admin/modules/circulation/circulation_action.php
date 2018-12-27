@@ -483,11 +483,12 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '<div class="per_title">';
         echo '<h2>'.__('Circulation').'</h2>';
         echo '</div>';
-        echo '<table width="100%" class="border s-member-account" style="margin-bottom: 5px;" cellpadding="5" cellspacing="0">'."\n";
+        echo '<table width="100%" class="s-member__account" cellpadding="5" cellspacing="0">'."\n";
         echo '<tr>'."\n";
-        echo '<td class="dataListHeader s-transc" colspan="5">';
+        echo '<td colspan="5">';
         // hidden form for transaction finish
-        echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php" style="display: inline;"><input type="button" class="btn btn-danger" accesskey="T" value="'.__('Finish Transaction').' (T)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
+        echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php">
+        <input type="button" class="btn btn-danger" id="circFinish" accesskey="T" value="'.__('Finish Transaction').' (Esc)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
         echo '</td>';
         echo '</tr>'."\n";
         echo '<tr>'."\n";
@@ -496,9 +497,9 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         // member photo
         if ($member->member_image) {
           if (file_exists(IMGBS.'persons/'.$member->member_image)) {
-            echo '<td class="alterCell2 s-person-photo" valign="top" rowspan="3">';
-            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($member->member_image).'&amp;width=100" style="border: 1px solid #999999" />';
-            echo '</td>';
+            echo '<div class="s-member__photo">';
+            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($member->member_image).'&amp;width=100" />';
+            echo '</div>';
           }
         }
         echo '</tr>'."\n";
@@ -518,7 +519,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         // member notes and pending information
         if (!empty($member->member_notes) OR $_SESSION['is_pending']) {
           echo '<tr>'."\n";
-          echo '<td class="alterCell" width="15%"><strong>Notes</strong></td><td class="alterCell2" colspan="4">';
+          echo '<td class="alterCell" width="15%"><strong>'.__('Notes').'</strong></td><td class="alterCell2" colspan="4">';
           if ($member->member_notes) {
               echo '<div class=\'member_notes\'>'.$member->member_notes.'</div>';
           }
@@ -538,20 +539,20 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
             $fines_alert = TRUE;
         }
 
-		echo '<ul class="nav nav-tabs nav-justified circ-action-btn">';
-        echo '<li><a accesskey="L" class="tab notAJAX" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (L)</a></li>';
-        echo '<li class="active"><a accesskey="C" class="tab notAJAX" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (C)</a></li>';
+		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
+        echo '<a class="nav-item nav-link notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
+        echo '<a class="nav-item nav-link active notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {
-          echo '<li><a accesskey="R" class="tab notAJAX" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').' (R)</a></li>';
+          echo '<a class="nav-item nav-link notAJAX" id="circReserve" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').' (F4)</a>';
         }
         if ($fines_alert) {
-            echo '<li><a accesskey="F" class="tab notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame"><span style="color: red; font-weight: bold;">'.__('Fines').' (F)</span></a></li>';
+            echo '<a class="nav-item nav-link notAJAX" id="circFine" href="'.MWB.'circulation/fines_list.php" target="listsFrame"><strong class="text-danger">'.__('Fines').' (F9)</strong></a>';
         } else {
-            echo '<li><a accesskey="F" class="tab notAJAX" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').' (F)</a></li>';            
+            echo '<a class="nav-item nav-link notAJAX" id="circFine" href="'.MWB.'circulation/fines_list.php" target="listsFrame">'.__('Fines').' (F9)</a>';            
         }
-        echo '<li><a accesskey="H" class="tab notAJAX" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').' (H)</a></li>'."\n";
-        echo '</ul>';
-				echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="expandable border"></iframe>'."\n";
+        echo '<a class="nav-item nav-link notAJAX" id="circHistory" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').' (F10)</a>'."\n";
+        echo '</div>';
+        echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="s-iframe expandable"></iframe>'."\n";
     }
     ?>
     <script type="text/javascript">
@@ -577,6 +578,47 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
     resizeIframe();
     // and again if the window is resized
     $(window).on('resize', resizeIframe);
+
+    $('#transaction .nav-link').click(function(){
+        $(this).each(function(){
+            $('a').removeClass('active');
+        });
+        $(this).addClass('active');
+    });
+
+    $(document.body).bind('keyup', this, function(e){
+        // alert(e.keyCode);
+        // ESC
+        if(e.keyCode == 27) {
+            $('#circFinish').click();
+        }
+        // F2
+        if(e.keyCode == 113) {
+            $('#circLoan').click();
+            $('#listsFrame').attr('src', $('#circLoan').attr('href'));
+        }
+        // F3
+        if(e.keyCode == 114) {
+            $('#circInLoan').click();
+            $('#listsFrame').attr('src', $('#circInLoan').attr('href'));
+        }
+        // F4
+        if(e.keyCode == 115) {
+            $('#circReserve').click();
+            $('#listsFrame').attr('src', $('#circReserve').attr('href'));
+        }
+        // F9
+        if(e.keyCode == 120) {
+            $('#circFine').click();
+            $('#listsFrame').attr('src', $('#circFine').attr('href'));
+        }
+        // F10
+        if(e.keyCode == 121) {
+            $('#circHistory').click();
+            $('#listsFrame').attr('src', $('#circHistory').attr('href'));
+        }
+    });
+
     </script>
     <?php
     exit();

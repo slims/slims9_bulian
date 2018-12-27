@@ -35,15 +35,15 @@ jQuery.fn.simbioTable = function(params) {
   // event register
   tableRows.mouseover(function() {
     // on mouse over change background color
-    if (!this.highlighted) {
-      this.originColor = $(this).css('background-color');
-      $(this).css('background-color', options.mouseoverCol);
-    }
+    // if (!this.highlighted) {
+    //   this.originColor = $(this).css('background-color');
+    //   $(this).css('background-color', options.mouseoverCol);
+    // }
   }).mouseout(function() {
     // on mouse over revert background color to original
-    if (!this.highlighted) {
-      $(this).css('background-color', this.originColor);
-    }
+    // if (!this.highlighted) {
+    //   $(this).css('background-color', this.originColor);
+    // }
   }).click(function(evt) {
     var currRow = $(this);
     if (!this.originColor) {
@@ -237,7 +237,7 @@ jQuery.fn.registerAdminEvents = function(params) {
 
 var log = function (container, type, message) {
     if (container.children().size() > 9) container.find('p:first').remove()
-    container.append(`<p><span style="width: 50px; font-size: 10px; line-height: 16px; font-weight: bold; border-radius: 2px; display: inline-block" class="label-${type} text-capitalize text-center">${type}</span> ${message}</p>`)
+    container.append(`<p><span style="width: 50px; font-size: 10px; line-height: 16px; font-weight: bold; border-radius: 2px; display: inline-block" class="badge badge-${type} text-capitalize text-center">${type}</span> ${message}</p>`)
 };
 
 /* Javasript function to open new window  */
@@ -443,6 +443,25 @@ $('document').ready(function() {
   });
 
   // Google Voice Search
+  function startDictation() 
+  {
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+      recognition.start();
+      recognition.onresult = function (e) {
+        document.getElementById('transcript').value = e.results[0][0].transcript;
+        recognition.stop();
+        document.getElementById('labnol').submit();
+      };
+      recognition.onerror = function (e) {
+        recognition.stop();
+      }
+    }
+  }
+
   $('#keyword').bind('webkitspeechchange', function() {
     $(this).closest('form').submit();
   });

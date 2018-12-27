@@ -70,7 +70,7 @@ function showComment($_detail_id)
 		// Comment form
 			$_forms  = '<form method="post" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
 			$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input"'). '<br />';
-			$_forms .= '<input type="submit" name="SaveComment" value="Save comment" class="button">';
+			$_forms .= '<input type="submit" name="SaveComment" value="Save comment" class="s-btn btn btn-default">';
 			$_forms .= '</form>';
 			return $_list_comment.$_forms;
 		} else  {
