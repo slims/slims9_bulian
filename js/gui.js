@@ -237,7 +237,7 @@ jQuery.fn.registerAdminEvents = function(params) {
 
 var log = function (container, type, message) {
     if (container.children().size() > 9) container.find('p:first').remove()
-    container.append(`<p><span style="width: 50px; font-size: 10px; line-height: 16px; font-weight: bold; border-radius: 2px; display: inline-block" class="label-${type} text-capitalize text-center">${type}</span> ${message}</p>`)
+    container.append(`<p><span style="width: 50px; font-size: 10px; line-height: 16px; font-weight: bold; border-radius: 2px; display: inline-block" class="badge badge-${type} text-capitalize text-center">${type}</span> ${message}</p>`)
 };
 
 /* Javasript function to open new window  */

@@ -140,7 +140,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   exit();
 } else {
   ?>
-    <fieldset class="menuBox">
+    <div class="menuBox">
         <div class="menuBoxInner systemIcon">
             <div class="per_title">
                 <h2><?php echo __('Bibliographic Index (ElasticSearch)'); ?></h2>
@@ -155,7 +155,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             </div>
             <div class="infoBox">Bibliographic Index will speed up catalog search</div>
         </div>
-    </fieldset>
+    </div>
   <?php
   echo '<div class="index-log-cat infoBox" style="background: #333333; color: #f0fafb; font-size: 10pt"></div>';
   ?>
