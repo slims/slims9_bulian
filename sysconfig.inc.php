@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // require composer library
-require 'vendor/autoload.php';
+if (file_exists('vendor/autoload.php')) require 'vendor/autoload.php';
 
 // be sure that magic quote is off
 @ini_set('magic_quotes_gpc', false);
