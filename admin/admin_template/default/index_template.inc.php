@@ -53,6 +53,7 @@ include 'function.php';
   <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>jquery.imgareaselect/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo $sysconf['admin_template']['css']; ?>" rel="stylesheet" type="text/css" />
+  <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>updater.js"></script>
@@ -69,6 +70,7 @@ include 'function.php';
   <script type="text/javascript" src="<?php echo JWB; ?>webcam.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>scanner.js"></script>
   <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+  <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
   <?php if($sysconf['chat_system']['enabled']) : ?>
   <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
   <?php endif; ?>
