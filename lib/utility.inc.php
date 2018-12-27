@@ -49,6 +49,44 @@ class utility
         echo '</script>'."\n";
     }
 
+  /**
+   * Static Method to send out toastr notification
+   *
+   * @param   string $type [info, success, warning, error]
+   * @param   string $str_message
+   * @return  void
+   */
+    public static function jsToastr($title, $str_message, $type = 'info')
+    {
+      if (!$str_message) {
+        return;
+      }
+
+      $options = [
+        'closeButton' => true,
+        'debug' => false,
+        'newestOnTop' => false,
+        'progressBar' => false,
+        'positionClass' => 'toast-bottom-right',
+        'preventDuplicates' => false,
+        'onclick' => null,
+        'showDuration' => 300,
+        'hideDuration' => 1000,
+        'timeOut' => 5000,
+        'extendedTimeOut' => 1000,
+        'showEasing' => 'swing',
+        'hideEasing' => 'linear',
+        'showMethod' => 'fadeIn',
+        'hideMethod' => 'fadeOut'
+      ];
+
+      // replace newline with javascripts newline
+      $str_message = str_replace("\n", '\n', addslashes($str_message));
+      echo '<script type="text/javascript">'."\n";
+      echo 'parent.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
+      echo '</script>'."\n";
+    }
+
 
     /**
      * Static Method to create random string
