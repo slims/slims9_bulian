@@ -91,14 +91,14 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   if (!simbio_form_maker::isTokenValid()) {
-    utility::jsAlert(__('Invalid form submission token!'));
+    utility::jsToastr('Bibliography', __('Invalid form submission token!'), 'error');
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
     exit();
   }
   $title = trim(strip_tags($_POST['title']));
   // check form validity
   if (empty($title)) {
-    utility::jsAlert(__('Title can not be empty'));
+    utility::jsToastr('Bibliography', __('Title can not be empty'), 'error');
     exit();
   } else {
     // include custom fields file
@@ -205,11 +205,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['image'] = $dbs->escape_string($image_upload->new_filename);
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload image file '.$image_upload->new_filename);
-        utility::jsAlert(__('Image Uploaded Successfully'));
+        utility::jsToastr('Bibliography', __('Image Uploaded Successfully'), 'success');
       } else {
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')');
-        utility::jsAlert(__('Image Uploaded Failed'));
+        utility::jsToastr('Bibliography', __('Image Uploaded Failed'), 'error');
       }
     } else if (!empty($_POST['base64picstring'])) {
       list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -257,7 +257,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           }
         }
       	if ($sysconf['bibliography_update_notification']) {
-          utility::jsAlert(__('Bibliography Data Successfully Updated'));
+          utility::jsToastr('Bibliography', __('Bibliography Data Successfully Updated'), 'success');
 			  }
         // auto insert catalog to UCS if enabled
         if ($sysconf['ucs']['enable']) {
@@ -286,7 +286,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         // delete from index first
         $sql_op->delete('search_biblio', "biblio_id=$updateRecordID");
         $indexer->makeIndex($updateRecordID);
-      } else { utility::jsAlert(__('Bibliography Data FAILED to Updated. Please Contact System Administrator')."\n".$sql_op->error); }
+      } else {
+          utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator')."\n".$sql_op->error, 'error');
+      }
     } else {
       /* INSERT RECORD MODE */
       // insert the data
@@ -325,7 +327,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
 
 
-        utility::jsAlert(__('New Bibliography Data Successfully Saved'));
+        utility::jsToastr('Bibliography', __('New Bibliography Data Successfully Saved'), 'success');
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data ('.$data['title'].') with biblio_id ('.$last_biblio_id.')');
         if ($sysconf['log']['biblio']) {
@@ -347,7 +349,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         if ($sysconf['ucs']['enable'] && $sysconf['ucs']['auto_insert']) {
           echo '<script type="text/javascript">parent.ucsUpload(\''.MWB.'bibliography/ucs_upload.php\', \'itemID[]='.$last_biblio_id.'\');</script>';
         }
-      } else { utility::jsAlert(__('Bibliography Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+      } else {
+          utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error, 'error');
+      }
     }
 
     // item batch insert
@@ -401,7 +405,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     die();
   }
   if (!simbio_form_maker::isTokenValid()) {
-    utility::jsAlert(__('Invalid form submission token!'));
+    utility::jsToastr('Bibliography', __('Invalid form submission token!'), 'error');
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from '.$_SERVER['REMOTE_ADDR']);
     exit();
   }
@@ -476,7 +480,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     foreach ($still_have_item as $title) {
       $titles .= $title."\n";
     }
-    utility::jsAlert(__('Below data can not be deleted:')."\n".$titles);
+    utility::jsToastr('Bibliography',__('Below data can not be deleted:')."\n".$titles, 'error');
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', {addData: \''.$_POST['lastQueryStr'].'\'});</script>';
     exit();
   }
@@ -486,10 +490,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   }
   // error alerting
   if ($error_num == 0) {
-    utility::jsAlert(__('All Data Successfully Deleted'));
+    utility::jsToastr('Bibliography', __('All Data Successfully Deleted'), 'success');
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', {addData: \''.$_POST['lastQueryStr'].'\'});</script>';
   } else {
-    utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+    utility::jsToastr('Bibliography', __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', {addData: \''.$_POST['lastQueryStr'].'\'});</script>';
   }
   exit();

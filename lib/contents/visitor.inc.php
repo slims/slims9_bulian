@@ -39,7 +39,7 @@ $limit_time_visit = $sysconf['time_visitor_limitation'];
 foreach ($allowed_counter_ip as $ip) {
 // change wildcard
     $ip = preg_replace('@\*$@i', '.', $ip);
-    if ($ip == $remote_addr || $_SERVER['HTTP_HOST'] == 'localhost' || preg_match("@$ip@i", $ip)) {
+    if ($ip == $remote_addr || $_SERVER['HTTP_HOST'] == 'localhost' || preg_match("@$ip@i", $remote_addr)) {
         $confirmation = 1;
     }
 }
