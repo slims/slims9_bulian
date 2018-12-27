@@ -45,7 +45,7 @@ if (!$can_read) {
 
 /* loan report */
 $table = new simbio_table();
-$table->table_attr = 'align="center" class="border" cellpadding="5" cellspacing="0"';
+$table->table_attr = 'class="s-table table table-bordered mb-0"';
 
 // total number of member
 $report_q = $dbs->query('SELECT COUNT(member_id) FROM member');
@@ -63,10 +63,13 @@ $report_q = $dbs->query('SELECT member_type_name, COUNT(member_id) FROM mst_memb
     LEFT JOIN member AS m ON mt.member_type_id=m.member_type_id
     WHERE TO_DAYS(expire_date)>TO_DAYS(\''.date('Y-m-d').'\')
     GROUP BY m.member_type_id ORDER BY COUNT(member_id) DESC');
-$report_d = '<div class="chartLink"><a class="notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_member_by_type" width="700" height="470" title="'.__('Total Members By Membership Type').'">'.__('Show in chart/plot').'</a></div>';;
+
+$report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_member_by_type" width="700" height="470" title="'.__('Total Members By Membership Type').'">'.__('Show in chart/plot').'</a></div>';;
+$stat_data = '';
 while ($data = $report_q->fetch_row()) {
-    $report_d .= '<strong>'.$data[0].'</strong> : '.$data[1].', ';
+    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>),';
 }
+$report_d = substr($stat_data,0,-1);
 $loan_report[__('Total Members By Membership Type')] = $report_d;
 
 // total expired member
@@ -76,75 +79,72 @@ $report_d = $report_q->fetch_row();
 $loan_report[__('Total Expired Member')] = $report_d[0];
 
 // 10 most active member
+$report_d = '';
 $report_q = $dbs->query('SELECT m.member_name, m.member_id, COUNT(loan_id) FROM loan AS l
     INNER JOIN member AS m ON m.member_id=l.member_id
     WHERE TO_DAYS(expire_date)>TO_DAYS(\''.date('Y-m-d').'\')
     GROUP BY l.member_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
-$report_d = '<ul>';
-while ($data = $report_q->fetch_row()) {
-    $report_d .= '<li>'.$data[0].' ('.$data[1].')</li>';
+if(count($report_q->fetch_row()) > 0) {    
+    $report_d = '<ol class="p-2">';
+    while ($data = $report_q->fetch_row()) {
+        $report_d .= '<li>'.$data[0].' ('.$data[1].')</li>';
+    }
+    $report_d .= '</ol>';
 }
 $loan_report[__('10 most active members')] = $report_d;
 
 // table header
 $table->setHeader(array(__('Membership Data Summary')));
 $table->table_header_attr = 'class="dataListHeader"';
-$table->setCellAttr(0, 0, 'colspan="3"');
+$table->setCellAttr(0, 0, 'colspan="2"');
 // initial row count
 $row = 1;
 foreach ($loan_report as $headings=>$report_d) {
-    $table->appendTableRow(array($headings, ':', $report_d));
+    $table->appendTableRow(array($headings, $report_d));
     // set cell attribute
-    $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 170px;"');
-    $table->setCellAttr($row, 1, 'class="alterCell" valign="top" style="width: 1%;"');
-    $table->setCellAttr($row, 2, 'class="alterCell2" valign="top" style="width: auto;"');
+    $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 350px;"');
+    $table->setCellAttr($row, 1, 'class="alterCell2" valign="top" style="width: auto;"');
     // add row count
     $row++;
 }
 
 // if we are in print mode
+$page_title = __('Membership Report');
 if (isset($_GET['print'])) {
-    // html strings
-    $html_str = '<!DOCTYPE html>';
-    $html_str .= '<html><head><title>'.$sysconf['library_name'].' '.__('Membership Report').'</title>';
-    $html_str .= '<style type="text/css">'."\n";
-    $html_str .= 'body {padding: 0.2cm}'."\n";
-    $html_str .= 'body * {color: black; font-size: 11pt;}'."\n";
-    $html_str .= 'table {border: 1px solid #000;}'."\n";
-    $html_str .= '.dataListHeader {background-color: #000; color: white; font-weight: bold;}'."\n";
-    $html_str .= '.alterCell {border-bottom: 1px solid #666; background-color: #CCCCCC;}'."\n";
-    $html_str .= '.alterCell2 {border-bottom: 1px solid #666; background-color: #FFFFFF;}'."\n";
-    $html_str .= '</style>'."\n";
-    $html_str .= '</head>';
-    $html_str .= '<body>'."\n";
-    $html_str .= '<h3>'.$sysconf['library_name'].' - '.__('Membership Report').'</h3>';
-    $html_str .= '<hr size="1" />'."\n";
-    $html_str .= $table->printTable();
-    $html_str .= '<script type="text/javascript">self.print();</script>'."\n";
-    $html_str .= '</body></html>'."\n";
+    // load print template
+    require_once SB.'admin/admin_template/printed.tpl.php';
     // write to file
     $file_write = @file_put_contents(REPBS.'member_stat_print_result.html', $html_str);
     if ($file_write) {
         // open result in new window
-        echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.REP.'/member_stat_print_result.html", width: 800, height: 500})</script>';
+        echo '<script type="text/javascript">
+        top.$.colorbox({
+            href: "'.SWB.FLS.'/'.REP.'/member_stat_print_result.html", 
+            height: 500,  
+            width: 800,
+            iframe : true,
+            fastIframe: false,
+            title: function(){return "'.$page_title.'";}
+        })
+        </script>';
     } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Membership Report failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner statisticIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Membership Report'); ?></h2>
   </div>
 	<div class="infoBox">
-    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" class="notAJAX" method="get" style="display: inline;">
-    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="button" />
+    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" class="notAJAX" method="get" class="form-inline">
+    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="s-btn btn btn-default" />
     </form>
-    <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
+    <iframe name="submitPrint" style="display:none; visibility: hidden; width: 0; height: 0;"></iframe>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 echo $table->printTable();
 /* loan report end */

@@ -82,18 +82,21 @@ if (isset($_POST['save']) AND (isset($_POST['biblioID']) OR trim($_POST['search_
 
 <div class="popUpForm">
 <form name="mainForm" action="pop_biblio_rel.php?biblioID=<?php echo $biblioID; ?>" method="post">
-<div>
-    <strong><?php echo __('Add Biblio Relation'); ?> </strong>
-    <hr />
-    <form name="searchBiblio" method="post" style="display: inline;">
+<strong><?php echo __('Add Biblio Relation'); ?> </strong>
+<hr />
+<div class="form-inline s-margin__bottom-1">
     <?php
     $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'biblio', 'biblio_id:title:edition:publish_year', 'relBiblioID', $('#search_str').val())";
-    echo __('Title'); ?> : <input type="text" name="search_str" id="search_str" style="width: 30%;" oninput="<?php echo $ajax_exp; ?>" />
+    echo '<div class="col-1 p-0">'.__('Title').'</div>';
+    ?>
+    <input type="text" name="search_str" id="search_str" class="form-control col" placeholder="<?php echo __('Title'); ?>" oninput="<?php echo $ajax_exp; ?>" />
 </div>
 <div class="popUpSubForm">
-<select name="relBiblioID" id="relBiblioID" size="5" style="width: 100%;"><option value="0"><?php echo __('Type to search for existing biblio data'); ?></option></select>
-<?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
-<input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="popUpSubmit btn btn-primary" />
+    <select name="relBiblioID" id="relBiblioID" size="5" class="form-control s-margin__bottom-1">
+        <option value="0"><?php echo __('Type to search for existing biblio data'); ?></option>
+    </select>
+    <?php if ($biblioID) { echo '<input type="hidden" name="biblioID" value="'.$biblioID.'" />'; } ?>
+    <input type="submit" name="save" value="<?php echo __('Insert To Bibliography'); ?>" class="s-btn btn btn-primary popUpSubmit" />
 </div>
 </form>
 </div>

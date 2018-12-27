@@ -45,7 +45,7 @@ if (!$can_read) {
 
 /* loan report */
 $table = new simbio_table();
-$table->table_attr = 'align="center" class="border" cellpadding="5" cellspacing="0"';
+$table->table_attr = 'class="s-table table table-bordered mb-0"';
 
 // total number of loan transaction
 $report_q = $dbs->query('SELECT COUNT(loan_id) FROM loan');
@@ -58,10 +58,13 @@ $report_q = $dbs->query('SELECT gmd_name, COUNT(loan_id) FROM loan AS l
     INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id
     INNER JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
     GROUP BY b.gmd_id ORDER BY COUNT(loan_id) DESC');
-$report_d = '<div class="chartLink"><a class="notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_gmd" width="700" height="470" title="'.__('Total Loan By GMD/Medium').'">'.__('Show in chart/plot').'</a></div>';
+
+$report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_gmd" width="700" height="470" title="'.__('Total Loan By GMD/Medium').'">'.__('Show in chart/plot').'</a></div>';
+$stat_d = '';
 while ($data = $report_q->fetch_row()) {
-    $report_d .= '<strong>'.$data[0].'</strong> : '.$data[1].', ';
+    $stat_d .= $data[0] . ' (<strong>'.$data[1].'</strong>),';
 }
+$report_d .= substr($stat_d,0,-1);
 $loan_report[__('Total Loan By GMD/Medium')] = $report_d;
 
 // total number of loan transaction by Collection type
@@ -69,10 +72,13 @@ $report_q = $dbs->query('SELECT coll_type_name, COUNT(loan_id) FROM loan AS l
     INNER JOIN item AS i ON l.item_code=i.item_code
     INNER JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
     GROUP BY i.coll_type_id ORDER BY COUNT(loan_id) DESC');
-$report_d = '<div class="chartLink"><a class="notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_colltype" width="700" height="470" title="'.__('Total Loan By Collection Type').'">'.__('Show in chart/plot').'</a></div>';
+
+$report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_colltype" width="700" height="470" title="'.__('Total Loan By Collection Type').'">'.__('Show in chart/plot').'</a></div>';
+$stat_d = '';
 while ($data = $report_q->fetch_row()) {
-    $report_d .= '<strong>'.$data[0].'</strong> : '.$data[1].', ';
+    $stat_d .= $data[0].' (<strong>'.$data[1].'</strong>),';
 }
+$report_d .= substr($stat_d,0,-1);
 $loan_report[__('Total Loan By Collection Type')] = $report_d;
 
 // total number of loan transaction
@@ -117,58 +123,51 @@ $table->setCellAttr(0, 0, 'colspan="3"');
 // initial row count
 $row = 1;
 foreach ($loan_report as $headings=>$report_d) {
-    $table->appendTableRow(array($headings, ':', $report_d));
+    $table->appendTableRow(array($headings, $report_d));
     // set cell attribute
-    $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 170px;"');
-    $table->setCellAttr($row, 1, 'class="alterCell" valign="top" style="width: 1%;"');
-    $table->setCellAttr($row, 2, 'class="alterCell2" valign="top" style="width: auto;"');
+    $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 350px;"');
+    $table->setCellAttr($row, 1, 'class="alterCell" valign="top" style="width: auto;"');
     // add row count
     $row++;
 }
 
 // if we are in print mode
+$page_title = __('Loan Report');
 if (isset($_GET['print'])) {
-    // html strings
-    $html_str = '<!DOCTYPE html>';
-    $html_str .= '<html><head><title>'.$sysconf['library_name'].' '.__('Loan Report').'</title>';
-    $html_str .= '<style type="text/css">'."\n";
-    $html_str .= 'body {padding: 0.2cm}'."\n";
-    $html_str .= 'body * {color: black; font-size: 11pt;}'."\n";
-    $html_str .= 'table {border: 1px solid #000000;}'."\n";
-    $html_str .= '.dataListHeader {background-color: #000000; color: white; font-weight: bold;}'."\n";
-    $html_str .= '.alterCell {border-bottom: 1px solid #666666; background-color: #CCCCCC;}'."\n";
-    $html_str .= '.alterCell2 {border-bottom: 1px solid #666666; background-color: #FFFFFF;}'."\n";
-    $html_str .= '</style>'."\n";
-    $html_str .= '</head>';
-    $html_str .= '<body>'."\n";
-    $html_str .= '<h3>'.$sysconf['library_name'].' - '.__('Loan Report').'</h3>';
-    $html_str .= '<hr size="1" />';
-    $html_str .= $table->printTable();
-    $html_str .= '<script type="text/javascript">self.print();</script>'."\n";
-    $html_str .= '</body></html>';
+    // load print template
+    require_once SB.'admin/admin_template/printed.tpl.php';
     // write to file
     $file_write = @file_put_contents(REPBS.'loan_stat_print_result.html', $html_str);
     if ($file_write) {
         // open result in new window
-        echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.REP.'/loan_stat_print_result.html", width: 800, height: 500})</script>';
+        echo '<script type="text/javascript">
+        top.$.colorbox({
+            href: "'.SWB.FLS.'/'.REP.'/loan_stat_print_result.html", 
+            height: 500,  
+            width: 800,
+            iframe : true,
+            fastIframe: false,
+            title: function(){return "'.$page_title.'";}
+        })
+        </script>';
     } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Loan Report failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner statisticIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Loan Report'); ?></h2>
   </div>
 	<div class="infoBox">
-    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" method="get" class="notAJAX" style="display: inline;">
-    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="button" />
+    <form name="printForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="submitPrint" id="printForm" method="get" class="notAJAX" class="form-inline">
+    <input type="hidden" name="print" value="true" /><input type="submit" value="<?php echo __('Download Report'); ?>" class="s-btn btn btn-default" />
     </form>
-    <iframe name="submitPrint" style="visibility: hidden; width: 0; height: 0;"></iframe>
+    <iframe name="submitPrint" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 echo $table->printTable();
 /* loan report end */

@@ -54,20 +54,26 @@ if (!$can_read) {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner serialIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Serial Control'); ?></h2>
   </div>
 	<div class="sub_section">
-    <form name="search" action="<?php echo MWB; ?>serial_control/index.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" id="keywords" size="30" />
-    <select name="field"><option value="0"><?php echo __('ALL'); ?></option><option value="title"><?php echo __('Title'); ?></option><option value="topic"><?php echo __('Subject(s)'); ?></option><option value="author_name"><?php echo __('Author(s)'); ?></option><option value="isbn_issn"><?php echo __('ISBN/ISSN'); ?></option></select>
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button" />
+    <form name="search" action="<?php echo MWB; ?>serial_control/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <input type="text" name="keywords" id="keywords" class="form-control col-3" />
+    <select name="field" class="form-control col-2">
+        <option value="0"><?php echo __('ALL'); ?></option>
+        <option value="title"><?php echo __('Title'); ?></option>
+        <option value="topic"><?php echo __('Subject(s)'); ?></option>
+        <option value="author_name"><?php echo __('Author(s)'); ?></option>
+        <option value="isbn_issn"><?php echo __('ISBN/ISSN'); ?></option>
+    </select>
+    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <script type="text/javascript">
 // focus text field
 $('keywords').focus();
@@ -82,13 +88,13 @@ $count = 1;
 function subscriptionDetail($obj_db, $array_data)
 {
     global $can_read, $can_write, $count;
-    $_output = '<div style="float: left;"><strong style="font-size: 120%;"><a class="notAJAX openPopUp" width="650" height="500" title="' . __('Edit Bibliographic data') . '" href="'.MWB.'bibliography/pop_biblio.php?action=detail&inPopUp=true&itemID='.$array_data[0].'&itemCollID=0">'.$array_data[1].'</a></strong> ('.$array_data[2].')</div>';
+    $_output = '<span class="pr-2"><a class="font-weight-bold notAJAX openPopUp" width="780" height="500" title="' . __('Edit Bibliographic data') . '" href="'.MWB.'bibliography/pop_biblio.php?action=detail&inPopUp=true&itemID='.$array_data[0].'&itemCollID=0">'.$array_data[1].'</a> - <em>('.$array_data[2].')</em></span>';
     if ($can_read AND $can_write) {
-        $_output .= ' <a href="#" class="addSubscription notAJAX" onclick="javascript: $(\'#subscriptionListCont'.$count.'\').show(); setIframeContent(\'subscriptionList'.$count.'\', \''.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'&detail=true\');" title="'.__('Add New Subscription').'">&nbsp;</a> ';
+        $_output .= '<a href="#" class="s-btn btn btn-default btn-sm notAJAX" onclick="javascript: $(\'#subscriptionListCont'.$count.'\').show(); setIframeContent(\'subscriptionList'.$count.'\', \''.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'&detail=true\');" title="'.__('Add New Subscription').'">'.__('Add New Subscription').'</a>';
     }
-    $_output .= ' <a href="#" class="viewSubscription notAJAX" onclick="$(\'#subscriptionListCont'.$count.'\').show(); setIframeContent(\'subscriptionList'.$count.'\', \''.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'\');" title="'.__('View Subscriptions').'">&nbsp;</a> ';
-    $_output .= '<div id="subscriptionListCont'.$count.'" style="clear: both; display: none;">';
-    $_output .= '<div><a href="#" class="notAJAX" style="font-weight: bold; color: red;" title="Close Box" onclick="$(\'#subscriptionListCont'.$count.'\').hide()">'.__('CLOSE').'</a></div>';
+    $_output .= '<a href="#" class="s-btn btn btn-success btn-sm notAJAX" onclick="$(\'#subscriptionListCont'.$count.'\').show(); setIframeContent(\'subscriptionList'.$count.'\', \''.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'\');" title="'.__('View Subscriptions').'">'.__('View Subscriptions').'</a> ';
+    $_output .= '<div id="subscriptionListCont'.$count.'" style="display: none;">';
+    $_output .= '<a href="#" class="btn btn-danger notAJAX" title="'.__('Close').'" onclick="$(\'#subscriptionListCont'.$count.'\').hide()">'.__('Close').'</a>';
     $_output .= '<iframe id="subscriptionList'.$count.'" src="'.MWB.'serial_control/subscription.php?biblioID='.$array_data[0].'" style="width: 100%; height: 270px;"></iframe>';
     $_output .= '</div>';
     $count++;
@@ -160,8 +166,8 @@ $subquery_str = '(SELECT DISTINCT bsub.biblio_id, bsub.title, bsub.frequency_id,
 $table_spec = $subquery_str.' AS b
     LEFT JOIN mst_frequency AS fr ON b.frequency_id=fr.frequency_id';
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
-$datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+$datagrid->table_attr = 'class="s-table table"';
+$datagrid->table_header_attr = '';
 // put the result into variables
 $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, false);
 if (isset($_GET['keywords']) AND $_GET['keywords']) {

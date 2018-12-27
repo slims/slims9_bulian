@@ -34,8 +34,8 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_write) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
-$succces_msg = 'Pattern Saved!';
-$failed_msg = 'Pattern Saved Failed!';
+$succces_msg = 'Pattern saved';
+$failed_msg = 'Failed to save Pattern';
 if (isset($_POST['saveData'])) {
   $prefix = trim($dbs->escape_string(strip_tags($_POST['prefix'])));
   $suffix = trim($dbs->escape_string(strip_tags($_POST['suffix'])));
@@ -99,21 +99,21 @@ $page_title = 'Add New Pattern';
 ob_start();
 // create form instance
 $form = new simbio_form_table_AJAX('mainFormPattern', $_SERVER['PHP_SELF'], 'post');
-$form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-primary"';
+$form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-primary"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
-$form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+$form->table_attr = 'id="dataList" class="s-table table"';
+$form->table_header_attr = 'class="alterCell" style="font-weight: bold; white-space: nowrap"';
 $form->table_content_attr = 'class="alterCell2"';
 
 // Prefix code pattern
-$form->addTextField('text', 'prefix', __('Prefix'), 'P', 'style="width: 60%;"');
+$form->addTextField('text', 'prefix', __('Prefix'), 'P', 'class="form-control"');
 
 // Suffix code pattern
-$form->addTextField('text', 'suffix', __('Suffix'), 'S', 'style="width: 60%;"');
+$form->addTextField('text', 'suffix', __('Suffix'), 'S', 'class="form-control"');
 
 // length serial number
-$form->addTextField('text', 'length_serial', __('Length serial number'), '5', 'style="width: 60%;"');
+$form->addTextField('text', 'length_serial', __('Length serial number'), '5', 'class="form-control"');
 
 $form->addHidden('saveData', 'save');
 
@@ -122,12 +122,12 @@ if (isset($_GET['in'])) {
 }
 
 // print out the object
-echo '<div style="padding:20px;">';
-echo $form->printOut();
-
+echo '<strong>'.__('Add New Pattern').'</strong>';
+echo '<hr>';
 // preview patternt
-echo '<hr><h4>'.__('Preview').': <b id="preview">P00000S</b></h4><hr>';
-echo '</div>';
+echo '<strong>'.__('Preview').'</strong>';
+echo '<div class="alert alert-primary text-center"><div class="h4 m-0" id="preview">P00000S</div></div>';
+echo $form->printOut();
 
 ?>
 <script type="text/javascript">

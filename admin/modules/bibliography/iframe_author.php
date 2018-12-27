@@ -111,7 +111,7 @@ if ($biblioID) {
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
     // remove link
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">' . __('Delete') . '</a>';
+    $remove_link = '<a href="#" class="s-btn btn btn-danger notAJAX" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">' . __('Delete') . '</a>';
     $author = $biblio_author_d['author_name'];
     $author_year = $biblio_author_d['author_year'];
     $authority_type = $sysconf['authority_type'][$biblio_author_d['authority_type']];

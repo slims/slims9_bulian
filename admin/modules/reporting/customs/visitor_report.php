@@ -52,37 +52,27 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
     <div class="per_title">
-        <h2><?php echo __('Library Visitor Report'); ?></h2>
+      <h2><?php echo __('Library Visitor Report'); ?></h2>
     </div>
     <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
+      <?php echo __('Report Filter'); ?>
     </div>
     <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Year'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $current_year = date('Y');
-            $year_options = array();
-            for ($y = $current_year; $y > 1999; $y--) {
-                $year_options[] = array($y, $y);
-            }
-            echo simbio_form_element::selectList('year', $year_options, $current_year);
-            ?>
-            </div>
-        </div>
+      <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView"  class="form-inline">
+        <label><?php echo __('Year'); ?></label>
+        <?php
+        $current_year = date('Y');
+        $year_options = array();
+        for ($y = $current_year; $y > 1999; $y--) {
+            $year_options[] = array($y, $y);
+        }
+        echo simbio_form_element::selectList('year', $year_options, $current_year,'class="form-control col-2"');
+        ?>
+        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+        <input type="hidden" name="reportView" value="true" />
+      </form>
     </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
-    </form>
-    </div>
-    </fieldset>
     <!-- filter end -->
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
@@ -104,14 +94,14 @@ if (!$reportView) {
 
     // table start
     $row_class = 'alterCellPrinted';
-    $output = '<table align="center" class="border" style="width: 100%;" cellpadding="3" cellspacing="0">';
+    $output = '<table class="s-table table table-sm table-bordered">';
 
     // header
-    $output .= '<tr>';
-    $output .= '<td class="dataListHeaderPrinted">'.__('Member Type').'</td>';
+    $output .= '<tr class="dataListHeaderPrinted">';
+    $output .= '<td><a>'.__('Member Type').'</a></td>';
     foreach ($months as $month_num => $month) {
         $total_month[$month_num] = 0;
-        $output .= '<td class="dataListHeaderPrinted">'.$month.'</td>';
+        $output .= '<td>'.$month.'</td>';
     }
     $output .= '</tr>';
 
@@ -129,9 +119,8 @@ if (!$reportView) {
     $r = 1;
     // count library member visitor each month
     foreach ($member_types as $id => $member_type) {
-        $row_class = ($r%2 == 0)?'alterCellPrinted':'alterCellPrinted2';
         $output .= '<tr>';
-        $output .= '<td class="'.$row_class.'">'.$member_type.'</td>'."\n";
+        $output .= '<td>'.$member_type.'</td>'."\n";
         foreach ($months as $month_num => $month) {
             $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
                 INNER JOIN (member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id) ON m.member_id=vc.member_id
@@ -139,9 +128,9 @@ if (!$reportView) {
             $visitor_q = $dbs->query($sql_str);
             $visitor_d = $visitor_q->fetch_row();
             if ($visitor_d[0] > 0) {
-                $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$visitor_d[0].'</strong></td>';
+              $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
             } else {
-                $output .= '<td class="'.$row_class.'"><span style="color: #ff0000;">'.$visitor_d[0].'</span></td>';
+              $output .= '<td>'.$visitor_d[0].'</td>';
             }
             $total_month[$month_num] += $visitor_d[0];
         }
@@ -150,35 +139,34 @@ if (!$reportView) {
     }
 
     // non member visitor count
-    $row_class = ($r%2 == 0)?'alterCellPrinted':'alterCellPrinted2';
     $output .= '<tr>';
-    $output .= '<td class="'.$row_class.'">'.__('NON-Member Visitor').'</td>'."\n";
+    $output .= '<td>'.__('NON-Member Visitor').'</td>'."\n";
     foreach ($months as $month_num => $month) {
         $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
             WHERE (vc.member_id IS NULL OR vc.member_id='') AND vc.checkin_date LIKE '$selected_year-$month_num-%'";
         $visitor_q = $dbs->query($sql_str);
         $visitor_d = $visitor_q->fetch_row();
         if ($visitor_d[0] > 0) {
-            $output .= '<td class="'.$row_class.'"><strong style="font-size: 1.5em;">'.$visitor_d[0].'</strong></td>';
+            $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
         } else {
-            $output .= '<td class="'.$row_class.'"><span style="color: #ff0000;">'.$visitor_d[0].'</span></td>';
+            $output .= '<td>'.$visitor_d[0].'</td>';
         }
         $total_month[$month_num] += $visitor_d[0];
     }
     $output .= '</tr>';
 
     // total for each month
-    $output .= '<tr>';
-    $output .= '<td class="dataListHeaderPrinted">'.__('Total visit/month').'</td>';
+    $output .= '<tr class="table-warning">';
+    $output .= '<td>'.__('Total visit/month').'</td>';
     foreach ($months as $month_num => $month) {
-        $output .= '<td class="dataListHeaderPrinted">'.$total_month[$month_num].'</td>';
+        $output .= '<td>'.$total_month[$month_num].'</td>';
     }
     $output .= '</tr>';
 
     $output .= '</table>';
 
     // print out
-    echo '<div class="printPageInfo">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>')).' <a class="printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="mb-2">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>')).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();

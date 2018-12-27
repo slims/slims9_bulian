@@ -616,22 +616,22 @@ input[name="applyFilter"].active,
 }
 .button.disabled,
 .button[disabled],
-fieldset[disabled] .button,
+div[disabled] .button,
 .button.disabled:hover,
 .button[disabled]:hover,
-fieldset[disabled] .button:hover,
+div[disabled] .button:hover,
 .button.disabled:focus,
 .button[disabled]:focus,
-fieldset[disabled] .button:focus,
+div[disabled] .button:focus,
 .button.disabled.focus,
 .button[disabled].focus,
-fieldset[disabled] .button.focus,
+div[disabled] .button.focus,
 .button.disabled:active,
 .button[disabled]:active,
-fieldset[disabled] .button:active,
+div[disabled] .button:active,
 .button.disabled.active,
 .button[disabled].active,
-fieldset[disabled] .button.active {
+div[disabled] .button.active {
 	background-color: #337ab7;
 	border-color: #2e6da4;
 }
@@ -686,22 +686,22 @@ input[name="saveZ"],
 }
 .btn-success.disabled,
 .btn-success[disabled],
-fieldset[disabled] .btn-success,
+div[disabled] .btn-success,
 .btn-success.disabled:hover,
 .btn-success[disabled]:hover,
-fieldset[disabled] .btn-success:hover,
+div[disabled] .btn-success:hover,
 .btn-success.disabled:focus,
 .btn-success[disabled]:focus,
-fieldset[disabled] .btn-success:focus,
+div[disabled] .btn-success:focus,
 .btn-success.disabled.focus,
 .btn-success[disabled].focus,
-fieldset[disabled] .btn-success.focus,
+div[disabled] .btn-success.focus,
 .btn-success.disabled:active,
 .btn-success[disabled]:active,
-fieldset[disabled] .btn-success:active,
+div[disabled] .btn-success:active,
 .btn-success.disabled.active,
 .btn-success[disabled].active,
-fieldset[disabled] .btn-success.active {
+div[disabled] .btn-success.active {
 	background-color: #A9E2D0;
 	border-color: #A9E2D0;
 }
@@ -728,22 +728,22 @@ fieldset[disabled] .btn-success.active {
 
 .btn-warning.disabled,
 .btn-warning[disabled],
-fieldset[disabled] .btn-warning,
+div[disabled] .btn-warning,
 .btn-warning.disabled:hover,
 .btn-warning[disabled]:hover,
-fieldset[disabled] .btn-warning:hover,
+div[disabled] .btn-warning:hover,
 .btn-warning.disabled:focus,
 .btn-warning[disabled]:focus,
-fieldset[disabled] .btn-warning:focus,
+div[disabled] .btn-warning:focus,
 .btn-warning.disabled.focus,
 .btn-warning[disabled].focus,
-fieldset[disabled] .btn-warning.focus,
+div[disabled] .btn-warning.focus,
 .btn-warning.disabled:active,
 .btn-warning[disabled]:active,
-fieldset[disabled] .btn-warning:active,
+div[disabled] .btn-warning:active,
 .btn-warning.disabled.active,
 .btn-warning[disabled].active,
-fieldset[disabled] .btn-warning.active {
+div[disabled] .btn-warning.active {
 	background-color: #FBF0BF;
 	border-color: #FBF0BF;
 }
@@ -784,40 +784,40 @@ fieldset[disabled] .btn-warning.active {
 }
 .btn-delete.disabled,
 .btn-delete[disabled],
-fieldset[disabled] .btn-delete,
+div[disabled] .btn-delete,
 .btn-delete.disabled:hover,
 .btn-delete[disabled]:hover,
-fieldset[disabled] .btn-delete:hover,
+div[disabled] .btn-delete:hover,
 .btn-delete.disabled:focus,
 .btn-delete[disabled]:focus,
-fieldset[disabled] .btn-delete:focus,
+div[disabled] .btn-delete:focus,
 .btn-delete.disabled.focus,
 .btn-delete[disabled].focus,
-fieldset[disabled] .btn-delete.focus,
+div[disabled] .btn-delete.focus,
 .btn-delete.disabled:active,
 .btn-delete[disabled]:active,
-fieldset[disabled] .btn-delete:active,
+div[disabled] .btn-delete:active,
 .btn-delete.disabled.active,
 .btn-delete[disabled].active,
-fieldset[disabled] .btn-delete.active,
+div[disabled] .btn-delete.active,
 .btn-danger.disabled,
 .btn-danger[disabled],
-fieldset[disabled] .btn-danger,
+div[disabled] .btn-danger,
 .btn-danger.disabled:hover,
 .btn-danger[disabled]:hover,
-fieldset[disabled] .btn-danger:hover,
+div[disabled] .btn-danger:hover,
 .btn-danger.disabled:focus,
 .btn-danger[disabled]:focus,
-fieldset[disabled] .btn-danger:focus,
+div[disabled] .btn-danger:focus,
 .btn-danger.disabled.focus,
 .btn-danger[disabled].focus,
-fieldset[disabled] .btn-danger.focus,
+div[disabled] .btn-danger.focus,
 .btn-danger.disabled:active,
 .btn-danger[disabled]:active,
-fieldset[disabled] .btn-danger:active,
+div[disabled] .btn-danger:active,
 .btn-danger.disabled.active,
 .btn-danger[disabled].active,
-fieldset[disabled] .btn-danger.active {
+div[disabled] .btn-danger.active {
 	background-color: #F0B9B8;
 	border-color: #F0B9B8;
 }
@@ -1012,7 +1012,7 @@ input[type="text"]::-webkit-input-placeholder {
 textarea[disabled],
 input[type="text"][disabled],
 input[type="text"][readonly],
-fieldset[disabled] input[type="text"] {
+div[disabled] input[type="text"] {
 	cursor: not-allowed;
 	background-color: #eee;
 	opacity: 1;
@@ -1604,7 +1604,7 @@ tr.dataListHeader > td > a {
 	padding: 20px 0;
 	border-bottom: solid 1px #f2f2f2;
 }
-.s-transc-reserve {
+.s-circulation__reserve {
 	background-color: transparent !important;
 	padding: 15px 0 !important;
 }

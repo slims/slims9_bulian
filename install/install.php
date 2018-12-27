@@ -2,7 +2,7 @@
 /**
  * Slims Installer files
  *
- * Copyright © 2006 - 2012 Advanced Power of PHP
+ * Copyright ï¿½ 2006 - 2012 Advanced Power of PHP
  * Some modifications & patches by Eddy Subratha (eddy.subratha@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -96,8 +96,8 @@ require 'settings.php';
             </table>
             <hr/>
             <div class="toright">
-                <input type="button" class="button" name="btn_cancel" value="Back" onclick="document.location.href='check_system.php'">
-                <input type="submit" class="button" name="btn_submit" value="Next">
+                <input type="button" class="s-btn btn btn-default" name="btn_cancel" value="Back" onclick="document.location.href='check_system.php'">
+                <input type="submit" class="s-btn btn btn-default" name="btn_submit" value="Next">
             </div>
         </div>
     </div>

@@ -29,13 +29,16 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     include_once '../../sysconfig.inc.php';
 }
 ?>
-<fieldset class="menuBox adminHome">
-<div class="menuBoxInner">
+<div class="menuBox adminHome">
+  <div class="menuBoxInner">
     <div class="per_title">
         <h2><?php echo __('Library Administration'); ?></h2>
     </div>
+  </div>
 </div>
-</fieldset>
+<div class="contentDesc">
+  <div class="container-fluid">
+
 <?php
 
 // generate warning messages
@@ -123,12 +126,10 @@ if ($_SESSION['uid'] === '1') {
 
 // if there any warnings
 if ($warnings) {
-echo '<div class="message">';
-echo '<ul>';
-    foreach ($warnings as $warning_msg) {
-        echo '<li>'.$warning_msg.'</li>';
-    }
-echo '</ul>';
+echo '<div class="alert alert-warning border-0 mt-3">';
+  foreach ($warnings as $warning_msg) {
+    echo '<div>'.$warning_msg.'</div>';
+  }
 echo '</div>';
 }
 
@@ -316,104 +317,93 @@ if($sysconf['admin_home']['mode'] == 'default') {
     $get_total_available = $item->total - $get_total_loan;
     $get_total_available = number_format($get_total_available,0,'.',',');
 ?>
-<div class="contentDesc">    
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-8 s-dashboard">
-              <div class="panel panel-info">
-                <div class="panel-heading">
-                  <h2 class="panel-title"><?php echo __('Latest Transactions') ?></h2>
-                </div>
-                <div class="panel-body">
-                    <canvas id="line-chartjs" height="319"></canvas>            
-                </div>
-                <div class="panel-footer">
-                    <div class="s-dashboard-legend">
-                        <div><i class="fa fa-square" style="color:#f2f2f2;"></i> <?php echo __('New') ?></div>
-                        <div><i class="fa fa-square" style="color:#459CBD;"></i> <?php echo __('Return') ?></div>
-                        <div><i class="fa fa-square" style="color:#5D45BD;"></i> <?php echo __('Extend') ?></div>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 s-dashboard">
-              <div class="panel panel-default s-dashboard">
-                <div class="panel-heading">
-                  <h2 class="panel-title"><?php echo __('Summary') ?></h2>
-                </div>
-                <div class="panel-body">
-                    <div class="s-chart">                        
-                        <canvas id="radar-chartjs" width="175" height="175"></canvas>              
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <table class="table">
-                        <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#f2f2f2;"></i>&nbsp;&nbsp;<?php echo __('Total') ?></td>
-                            <td class="text-right"><?php echo $get_total?></td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#337AB7;"></i>&nbsp;&nbsp;<?php echo __('New') ?></td>
-                            <td class="text-right"><?php echo $get_total_loan?></td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#06B1CD;"></i>&nbsp;&nbsp;<?php echo __('Return') ?></td>
-                            <td class="text-right"><?php echo $get_total_return?></td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#4AC49B;"></i>&nbsp;&nbsp;<?php echo __('Extends') ?></td>
-                            <td class="text-right"><?php echo $get_total_extends?></td>
-                        </tr>
-                        <tr>
-                            <td class="text-left"><i class="fa fa-square" style="color:#F4CC17;"></i>&nbsp;&nbsp;<?php echo __('Overdue') ?></dd>
-                            <td class="text-right"><?php echo $get_total_overdue?></td>
-                        </tr>
-                    </table>                                      
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6 col-md-3 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="s-widget-icon"><i class="fa fa-bookmark"></i></div>
-                        <div class="s-widget-value"><?php echo $get_total_title?></div>
-                        <div class="s-widget-title"><?php echo __('Total of Collections') ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-md-3 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="s-widget-icon"><i class="fa fa-barcode"></i></div>
-                        <div class="s-widget-value"><?php echo $get_total_item?></div>
-                        <div class="s-widget-title"><?php echo __('Total of Items') ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-md-3 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="s-widget-icon"><i class="fa fa-archive"></i></div>
-                        <div class="s-widget-value"><?php echo $get_total_loan?></div>
-                        <div class="s-widget-title"><?php echo __('Lent') ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-md-3 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="s-widget-icon"><i class="fa fa-check"></i></div>
-                        <div class="s-widget-value"><?php echo $get_total_available?></div>
-                        <div class="s-widget-title"><?php echo __('Available') ?></div>
-                    </div>
+    <div class="row">
+        <div class="col-xs-6 col-md-3 col-lg-3">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="s-widget-icon"><i class="fa fa-bookmark"></i></div>
+                    <div class="s-widget-value"><?php echo $get_total_title?></div>
+                    <div class="s-widget-title"><?php echo __('Total of Collections') ?></div>
                 </div>
             </div>
         </div>
-        <div class="clearfix"></div>
-
+        <div class="col-xs-6 col-md-3 col-lg-3">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="s-widget-icon"><i class="fa fa-barcode"></i></div>
+                    <div class="s-widget-value"><?php echo $get_total_item?></div>
+                    <div class="s-widget-title"><?php echo __('Total of Items') ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-3 col-lg-3">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="s-widget-icon"><i class="fa fa-archive"></i></div>
+                    <div class="s-widget-value"><?php echo $get_total_loan?></div>
+                    <div class="s-widget-title"><?php echo __('Lent') ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-3 col-lg-3">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="s-widget-icon"><i class="fa fa-check"></i></div>
+                    <div class="s-widget-value"><?php echo $get_total_available?></div>
+                    <div class="s-widget-title"><?php echo __('Available') ?></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="row mt-3">
+        <div class="col col-md-8 s-dashboard">
+          <div class="card border-0" >
+            <div class="card-body">
+              <h5 class="card-title"><?php echo __('Latest Transactions') ?></h5>
+              <canvas id="line-chartjs" height="294"></canvas>            
+              <div class="s-dashboard-legend">
+                  <i class="fa fa-square" style="color:#f2f2f2;"></i> <?php echo __('Loan') ?>
+                  <i class="fa fa-square" style="color:#459CBD;"></i> <?php echo __('Return') ?>
+                  <i class="fa fa-square" style="color:#5D45BD;"></i> <?php echo __('Extend') ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-4 s-dashboard">
+          <div class="card border-0">
+            <div class="card-body">
+                <h5 class="card-title"><?php echo __('Summary') ?></h5>
+                <div class="s-chart">                        
+                    <canvas id="radar-chartjs" width="175" height="175"></canvas>              
+                </div>
+                <table class="table">
+                    <tr>
+                        <td class="text-left"><i class="fa fa-square" style="color:#f2f2f2;"></i>&nbsp;&nbsp;<?php echo __('Total') ?></td>
+                        <td class="text-right"><?php echo $get_total?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><i class="fa fa-square" style="color:#337AB7;"></i>&nbsp;&nbsp;<?php echo __('New') ?></td>
+                        <td class="text-right"><?php echo $get_total_loan?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><i class="fa fa-square" style="color:#06B1CD;"></i>&nbsp;&nbsp;<?php echo __('Return') ?></td>
+                        <td class="text-right"><?php echo $get_total_return?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><i class="fa fa-square" style="color:#4AC49B;"></i>&nbsp;&nbsp;<?php echo __('Extends') ?></td>
+                        <td class="text-right"><?php echo $get_total_extends?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left"><i class="fa fa-square" style="color:#F4CC17;"></i>&nbsp;&nbsp;<?php echo __('Overdue') ?></dd>
+                        <td class="text-right"><?php echo $get_total_overdue?></td>
+                    </tr>
+                </table>                                      
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
 </div>
 <script src="<?php echo JWB?>chartjs/Chart.min.js"></script>
 <script>

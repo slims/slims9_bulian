@@ -87,6 +87,8 @@ $sysconf['print']['receipt']['receipt_header_fontSize'] = '7pt';
 $sysconf['print']['receipt']['receipt_titleLength'] = 100;
 
 // member card print settings
+$sysconf['print']['membercard']['template'] = 'classic';
+
 /* measurement in cm */
 $sysconf['print']['membercard']['page_margin'] = 0.2;
 $sysconf['print']['membercard']['items_margin'] = 0.1;
@@ -110,8 +112,8 @@ $sysconf['print']['membercard']['include_expired_label'] = 1; // expired date
 // Cardbox Settings
 $sysconf['print']['membercard']['box_width'] = 8.6;
 $sysconf['print']['membercard']['box_height'] = 5.4;
-$sysconf['print']['membercard']['front_side_image'] = 'membercard_background.jpg';
-$sysconf['print']['membercard']['back_side_image'] = 'membercard_background.jpg';
+$sysconf['print']['membercard']['front_side_image'] = 'bg-front.svg';
+$sysconf['print']['membercard']['back_side_image'] = 'bg-back.svg';
 
 // Logo Setting
 $sysconf['print']['membercard']['logo'] = "logo.png";

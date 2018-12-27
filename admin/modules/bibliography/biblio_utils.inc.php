@@ -120,35 +120,34 @@ function showTitleAuthors($obj_db, $array_data)
           $_labels = $_biblio_d[4];
       }
       $_authors = substr_replace($_authors, '', -3);
-      $_output = '<div style="float: left;"><span class="title">'.$_title.'</span><div class="authors">'.$_authors.'</div></div>';
+      $_output = '<div class="title">'.$_title.'</div><div class="authors">'.$_authors.'</div>';
   } else {
-      $_output = '<div style="float: left;"><span class="title">'.$array_data[1].'</span><div class="authors">'.$array_data[3].'</div></div>';
+      $_output = '<div class="title">'.$array_data[1].'</div><div class="authors">'.$array_data[3].'</div>';
       $_labels = $array_data[2];
   }
   // check for opac hide flag
   if ($_opac_hide) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="lockFlagIcon" title="' . __('Hidden in OPAC') . '">&nbsp;</div>';
+      $_output .= '<div class="badge badge-light" title="' . __('Hidden in OPAC') . '">'.__('Hidden in OPAC').'</div>&nbsp;';
   }
   // check for promoted flag
   if ($_promoted) {
-      $_output .= '<div style="float: right; width: 20px; height: 20px;" class="homeFlagIcon" title="' . __('Promoted To Homepage') . '">&nbsp;</div>';
+      $_output .= '<div class="badge badge-light" title="' . __('Promoted To Homepage') . '">'.__('Promoted To Homepage').'</div>&nbsp;';
   }
   // labels
+  // Edit by Eddy Subratha
   if ($_labels) {
-      $_output .= '<div class="labels">';
       $arr_labels = @unserialize($_labels);
       if ($arr_labels !== false) {
 	  foreach ($arr_labels as $label) {
 	      if (!isset($label_cache[$label[0]]['name'])) {
-	          $_label_q = $obj_db->query('SELECT label_name, label_desc, label_image FROM mst_label AS lb
-	              WHERE lb.label_name=\''.$label[0].'\'');
-	          $_label_d = $_label_q->fetch_row();
+	          $_label_q = $obj_db->query('SELECT label_name, label_desc, label_image FROM mst_label AS lb WHERE lb.label_name=\''.$label[0].'\'');
+              $_label_d = $_label_q->fetch_row();
 	          $label_cache[$_label_d[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
 	      }
-	      $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=24&amp;height=24" title="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
+	    //   $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=16&amp;" title="'.$label_cache[$label[0]]['desc'].'" />';
+	      $_output .= '<div class="badge badge-light">'.$label_cache[$label[0]]['desc'].'</div>&nbsp;';
 	  }
 	}
-  $_output .= '</div>';
   }
   return $_output;
 }

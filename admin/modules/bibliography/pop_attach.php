@@ -181,7 +181,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
 $form = new simbio_form_table('attachUploadForm', $_SERVER['PHP_SELF'].'?biblioID='.$biblioID, 'post');
 $form->submit_button_attr = 'name="upload" value="'.__('Upload Now').'" class="btn btn-primary"';
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
@@ -200,7 +200,7 @@ if ($file_attach_d['biblio_id'] AND $file_attach_d['file_id']) {
 }
 
 // file title
-$form->addTextField('text', 'fileTitle', __('Title').'*', $file_attach_d['file_title'], 'style="width: 75%; overflow: auto;"');
+$form->addTextField('text', 'fileTitle', __('Title').'*', $file_attach_d['file_title'], 'class="form-control"');
 // file attachment
 if ($file_attach_d['file_name']) {
   $form->addAnything('Attachment', $file_attach_d['file_dir'].'/'.$file_attach_d['file_name']);
@@ -219,20 +219,27 @@ if ($file_attach_d['file_name']) {
     }
   }
   // add repo directory options to select list
-  $form->addSelectList('fileDir', __('Repo. Directory'), $repodir_options);
+  $form->addSelectList('fileDir', __('Repo. Directory'), $repodir_options,'','class="form-control"');
   // file upload
-  $str_input = simbio_form_element::textField('file', 'file2attach');
-  $str_input .= ' Maximum '.$sysconf['max_upload'].' KB';
+  $str_input  = '<div class="container">';
+  $str_input .= '<div class="row">';
+  $str_input .= '<div class="custom-file col">';
+  $str_input .= simbio_form_element::textField('file', 'file2attach','','class="custom-file-input"');
+  $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+  $str_input .= '</div>';
+  $str_input .= ' <div class="col-4 mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';
+  $str_input .= '</div>';
+  $str_input .= '</div>';
   $form->addAnything(__('File To Attach'), $str_input);
 }
 // file url
-$form->addTextField('textarea', 'fileURL', __('URL'), $file_attach_d['file_url'], 'rows="1" style="width: 100%; overflow: auto;"');
+$form->addTextField('textarea', 'fileURL', __('URL'), $file_attach_d['file_url'], 'rows="1" class="form-control"');
 // file description
-$form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc'], 'rows="2" style="width: 100%; overflow: auto;"');
+$form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc'], 'rows="2" class="form-control"');
 // file access
 $acctype_options[] = array('public', __('Public'));
 $acctype_options[] = array('private', __('Private'));
-$form->addSelectList('accessType', __('Access'), $acctype_options, $file_attach_d['access_type']);
+$form->addSelectList('accessType', __('Access'), $acctype_options, $file_attach_d['access_type'],'class="form-control col-4"');
 // file access limit if set to public
 $group_query = $dbs->query('SELECT member_type_id, member_type_name FROM mst_member_type');
 $group_options = array();
@@ -240,10 +247,21 @@ while ($group_data = $group_query->fetch_row()) {
   $group_options[] = array($group_data[0], $group_data[1]);
 }
 $form->addCheckBox('accLimit', __('Access Limit by Member Type'), $group_options, !empty($file_attach_d['access_limit'])?unserialize($file_attach_d['access_limit']):null );
-
+?>
+<strong><?php echo __('File Attachment'); ?></strong>
+<hr />
+<?php
 // print out the object
 echo $form->printOut();
-
+?>
+<br>
+<script type="text/javascript">
+  $(document).on('change', '.custom-file-input', function () {
+      let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+      $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+  });
+</script>
+<?php
 /* main content end */
 $content = ob_get_clean();
 // include the page template

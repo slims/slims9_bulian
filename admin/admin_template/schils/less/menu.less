@@ -1,0 +1,66 @@
+// main: style.less
+#mainMenu {
+  z-index: 1;
+  display: inline-flex;
+  position: relative;
+  background: @bg-menu;
+  left: 226px;
+
+  li {
+    display: inline-flex;
+  }
+
+  a {
+    margin: 0;
+    position: relative;
+    padding: @menu-padding;
+    font-family: @font-family ;
+    transition: all 0.25s ease;
+    font-weight: 700;
+    font-size: @font-size;
+
+    &:after {
+      left: 0;
+      opacity: 0;
+      height: 1em;
+      content: '';
+      width: 100%;
+      position: absolute;
+      display: inline-block;
+      border-bottom: 3px solid;
+      margin-top: 43px;
+      -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+      transition: opacity 0.35s, transform 0.35s;
+      -webkit-transform: scale(0, 1);
+      transform: scale(0, 1);
+    }
+
+    &.menuCurrent {
+      color: @color-3;
+      font-weight: bold;
+    }
+
+    &:hover {
+      color: @menu-anchor-color-hover;
+      &:after {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        
+        &.logout {
+          color: @color-2;
+        }        
+      }
+    }
+  }
+}
+
+#menuList {
+  margin: 0;
+  padding: 0;
+  line-height: 3;
+}
+
+.edit-link-area {
+  text-align: right;
+}

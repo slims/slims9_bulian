@@ -148,16 +148,20 @@ class serial
         $_table->table_attr = 'align="center" class="detailTable" style="width: 100%;" cellpadding="2" cellspacing="0"';
         $_table->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
         $_table->highlight_row = true;
-        $_table->setHeader(array('&nbsp;', __('Date Expected'),
-            __('Date Received'), __('Seq. Number'),
-            __('Note')));
+        $_table->setHeader(array(
+            '', 
+            __('Date Expected'),
+            __('Date Received'), 
+            __('Seq. Number'),
+            __('Note'))
+        );
 
         if ($_can_read AND $_can_write) {
-            $_add_link = '<span title="' . __('Add New Kardex') . '" class="extendLink">&nbsp;</span>';
-            $_date_exp = simbio_form_element::dateField('dateExpected[0]');
-            $_date_rec = simbio_form_element::dateField('dateReceived[0]');
-            $_seq_num = simbio_form_element::textField('text', 'seqNumber[0]', '', 'width: 100%;');
-            $_notes = simbio_form_element::textField('text', 'notes[0]', '', 'width: 100%;');
+            $_add_link = '<div style="white-space:nowrap" class="pt-2" title="' . __('Add New Kardex') . '">'.__('Add New Kardex').'</div>';
+            $_date_exp = simbio_form_element::dateField('dateExpected[0]','','class="form-control"');
+            $_date_rec = simbio_form_element::dateField('dateReceived[0]','','class="form-control"');
+            $_seq_num = simbio_form_element::textField('text', 'seqNumber[0]', '', 'class="form-control"');
+            $_notes = simbio_form_element::textField('text', 'notes[0]', '', 'class="form-control"');
 
             $_table->appendTableRow(array($_add_link, $_date_exp, $_date_rec, $_seq_num, $_notes));
             $_table->setCellAttr(1, null, 'valign="top" class="alterCell2" style="font-weight: bold; width: auto;"');
@@ -174,11 +178,11 @@ class serial
 
             if ($_can_read AND $_can_write) {
                 // kardex removal links
-                $_remove_link = '<a href="#" onclick="confirmProcess('.$this->serial_id.', '.$_kardex['kardex_id'].')" class="trashLink notAJAX">&nbsp;</a>';
-                $_date_exp = simbio_form_element::dateField('dateExpected['.$_kardex['kardex_id'].']', $_kardex['date_expected']);
-                $_date_rec = simbio_form_element::dateField('dateReceived['.$_kardex['kardex_id'].']', $_kardex['date_received']);
-                $_seq_num = simbio_form_element::textField('text', 'seqNumber['.$_kardex['kardex_id'].']', $_kardex['seq_number'], 'width: 100%;');
-                $_notes = simbio_form_element::textField('text', 'notes['.$_kardex['kardex_id'].']', $_kardex['notes'], 'width: 100%;');
+                $_remove_link = '<div class="mt-2"><a href="#" onclick="confirmProcess('.$this->serial_id.', '.$_kardex['kardex_id'].')" class="s-btn btn-danger btn-sm notAJAX">'.__('Trash').'</a></div>';
+                $_date_exp = simbio_form_element::dateField('dateExpected['.$_kardex['kardex_id'].']', $_kardex['date_expected'],'class="form-control"');
+                $_date_rec = simbio_form_element::dateField('dateReceived['.$_kardex['kardex_id'].']', $_kardex['date_received'],'class="form-control"');
+                $_seq_num = simbio_form_element::textField('text', 'seqNumber['.$_kardex['kardex_id'].']', $_kardex['seq_number'], 'class="form-control"');
+                $_notes = simbio_form_element::textField('text', 'notes['.$_kardex['kardex_id'].']', $_kardex['notes'], 'class="form-control"');
             } else {
                 $_remove_link = '&nbsp;';
                 $_date_exp = $_kardex['date_expected']; $_date_rec = $_kardex['date_received'];
@@ -195,10 +199,10 @@ class serial
         }
 
         // button
-        $_button_grp = '<div style="padding: 3px; background: #999999;"><input type="submit" class="button" name="saveKardexes" value="'.__('Save').'" /></div>';
+        $_button_grp = '<div><input type="submit" class="s-btn btn btn-primary" name="saveKardexes" value="'.__('Save').'" /></div>';
 
         // header
-        echo '<div style="padding: 5px; background: #CCCCCC;">'.__('Kardex Detail for subscription').' <strong>'.$this->serial_period.'</strong></div>';
+        echo '<div class="alert alert-warning">'.__('Kardex Detail for subscription').' <strong>'.$this->serial_period.'</strong></div>';
         if ($_can_read AND $_can_write) {
             echo '<form method="post" name="kardexListForm" id="kardexListForm" action="'.$_SERVER['PHP_SELF'].'">';
             echo $_button_grp;

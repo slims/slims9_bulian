@@ -195,8 +195,8 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver']))  {
     if ($data['records']) {
         echo '<div class="infoBox">Found '.$data['result_num'].' records from <strong>'.$p2pserver_name.'</strong> Server</div>';
         echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/p2p.php" target="blindSubmit">';
-        echo '<table align="center" id="dataList" cellpadding="5" cellspacing="0">';
-        echo '<tr><td colspan="3"><input type="submit" name="saveResults" value="Save P2P Records to Database" /></td></tr>';
+        echo '<table id="dataList" class="s-table table">';
+        echo '<tr><td colspan="3"><input type="submit" name="saveResults" class="s-btn btn btn-primary" value="Save P2P Records to Database" /></td></tr>';
         $row = 1;
         foreach($data['records'] as $record) {
             if ($row > $max_fetch) {
@@ -228,19 +228,20 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver']))  {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner biblioIcon">
     <div class="per_title">
 	    <h2><?php echo __('P2P Service'); ?></h2>
     </div>
     <div class="sub_section">
-      <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" loadcontainer="searchResult" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-      <input type="text" name="keywords" id="keywords" size="30" />
-      <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) { echo '<option value="'.$serverid.'">'.$p2pserver['name'].'</option>';  } ?></select>
-      <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+      <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" loadcontainer="searchResult" id="search" method="get" class="form-inline">
+        <?php echo __('Search'); ?>
+        <input type="text" name="keywords" id="keywords" size="30" class="form-control" />
+        <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"  class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) { echo '<option value="'.$serverid.'">'.$p2pserver['name'].'</option>';  } ?></select>
+        <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
       </form>
     </div>
-      <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
+    <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
 </div>
-</fieldset>
+</div>
 <div id="searchResult">&nbsp;</div>
