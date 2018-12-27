@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // require composer library
-if (file_exists('vendor/autoload.php')) require 'vendor/autoload.php';
+if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
 // be sure that magic quote is off
 @ini_set('magic_quotes_gpc', false);
@@ -451,7 +451,7 @@ $sysconf['index']['sphinx_opts'] = array(
     'max_limit' => 100000, // must be less or same with max_matches in sphinx.conf
 	'ranker' => null);
 
-$sysconf['index']['engine']['enable'] = FALSE;
+$sysconf['index']['engine']['enable'] = true;
 $sysconf['index']['engine']['type'] = 'es'; // value can be 'solr' OR 'es' for ElasticSearch
 $sysconf['index']['engine']['solr_opts'] = array(
     'host' => 'http://172.17.0.4',
