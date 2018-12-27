@@ -35,7 +35,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
     public $table_attr;
     public $table_header_attr;
     public $table_content_attr;
-    public $submit_button_attr = 'name="submit" value="Save Data"';
+    public $submit_button_attr = 'name="submit" value="Save Data" class="s-btn btn btn-primary"';
     public $with_form_tag = true;
     public $edit_mode = false;
     public $record_id = false;
@@ -104,23 +104,23 @@ class simbio_form_table_AJAX extends simbio_form_maker
 
       // check if we are on edit form mode
       if ($this->edit_mode) {
-          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-danger">' . __('Edit') . '</a>';
+          $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-default">' . __('Edit') . '</a>';
+          // back button
+          if ($this->back_button) {
+              $_back_button = '<input type="button" class="s-btn btn btn-default cancelButton " value="'.$_cancel_value.'" />';
+          }
           // delete button exists if the record_id properties exists
           if ($this->record_id && $this->delete_button) {
               // create delete button
-              $_delete_button = '<input type="button" value="'.$_del_value.'" class="button btn btn-danger btn-delete confirmSubmit" onclick="confSubmit(\'deleteForm\', \'' . addslashes(str_replace('{recordTitle}', $this->record_title, __('Are you sure to delete {recordTitle}?'))) . '\n' . addslashes(__('Once deleted, it can\'t be restored!')) .'\')" />';
-          }
-          // back button
-          if ($this->back_button) {
-              $_back_button = '<input type="button" class="cancelButton button btn btn-warning" value="'.$_cancel_value.'" />';
+              $_delete_button = '<input type="button" value="'.$_del_value.'" class="s-btn btn btn-danger confirmSubmit" onclick="confSubmit(\'deleteForm\', \'' . addslashes(str_replace('{recordTitle}', $this->record_title, __('Are you sure to delete {recordTitle}?'))) . '\n' . addslashes(__('Once deleted, it can\'t be restored!')) .'\')" />';
           }
       }
 
       $_buttons = '';
       // check if form tag is included
       if ($this->with_form_tag) {
-          $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%; background-color: #dcdcdc;">'
-              .'<tr><td><input type="submit" class="button btn btn-success" '.$this->submit_button_attr.' /> '.$_back_button.' '.$_delete_button.'</td><td class="edit-link-area">'.$_edit_link.'</td>'
+          $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%;">'
+              .'<tr><td><input type="submit" class="s-btn btn btn-primary" '.$this->submit_button_attr.' />&nbsp;'.$_delete_button.'</td><td class="edit-link-area">'.$_back_button.'&nbsp;'.$_edit_link.'</td>'
               .'</tr></table>'."\n";
       }
       // get the table result
@@ -150,7 +150,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // for debugging purpose only
       // $_buffer .= '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 500px;"></iframe>';
       // hidden iframe for form executing
-      $_buffer .= '<iframe name="submitExec" class="noBlock" style="visibility: hidden; width: 100%; height: 0;"></iframe>';
+      $_buffer .= '<iframe name="submitExec" class="noBlock" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>';
 
       return $_buffer;
     }
@@ -162,7 +162,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
       $form_name = 'deleteForm';
       $form_token = self::genRandomToken();
       $form  = '<form action="'.preg_replace('/\?.+/i', '', $this->form_action)
-                .'" name="'.$form_name.'" id="'.$form_name.'" target="submitExec" method="post" style="display: inline;">';
+                .'" name="'.$form_name.'" id="'.$form_name.'" target="submitExec" method="post" class="form-inline">';
       $form .= '<input type="hidden" name="csrf_token" value="'.$form_token.'" />';
       $form .= '<input type="hidden" name="form_name" value="'.$form_name.'" />';
       $form .= '<input type="hidden" name="itemID" value="'.$this->record_id.'" /><input type="hidden" name="itemAction" value="true" /></form>';

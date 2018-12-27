@@ -199,7 +199,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 }
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner printIcon">
 	<div class="per_title">
     	<h2><?php echo __('Member Card Printing'); ?></h2>
@@ -209,9 +209,9 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 		<a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=clear" class="notAJAX headerText2" style="color: #f00;"><?php echo __('Clear Print Queue'); ?></a>
 		<a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=print" class="notAJAX headerText2"><?php echo __('Print Member Cards for Selected Data'); ?></a>
 		</div>
-	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?>:
-	    <input type="text" name="keywords" size="30" />
-	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="button" />
+	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>:
+	    <input type="text" name="keywords" size="30" class="form-control" />
+	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	    </form>
     </div>
     <div class="infoBox">
@@ -224,7 +224,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     ?>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 /* ITEM LIST */
@@ -256,7 +256,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
     }
 }
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // edit and checkbox property
 $datagrid->edit_property = false;

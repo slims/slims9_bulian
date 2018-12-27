@@ -246,23 +246,23 @@ if (isset($_POST['saveData'])) {
 if (!$changecurrent) {
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner userIcon">
 	<div class="per_title">
 	    <h2><?php echo __('Librarian & System Users'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
-      <a href="<?php echo MWB; ?>/system/app_user.php" class="btn btn-default"><i class="glyphicon glyphicon-user"></i>&nbsp;<?php echo __('User List'); ?></a>
-      <a href="<?php echo MWB; ?>system/app_user.php?action=detail" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i>&nbsp;<?php echo __('Add New User'); ?></a>
+      <a href="<?php echo MWB; ?>/system/app_user.php" class="btn btn-default"><?php echo __('User List'); ?></a>
+      <a href="<?php echo MWB; ?>system/app_user.php?action=detail" class="btn btn-default"><?php echo __('Add New User'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/app_user.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
+    <form name="search" action="<?php echo MWB; ?>system/app_user.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 }
@@ -286,7 +286,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
 
     // form table attributes
-    $form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
     $form->table_content_attr = 'class="alterCell2"';
 
@@ -309,26 +309,28 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // user name
-    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username'], 'style="width: 50%;"');
+    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username'], 'style="width: 50%;" class="form-control"');
     // user real name
-    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname'], 'style="width: 50%;"');
+    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname'], 'style="width: 50%;" class="form-control"');
     // user type
     $utype_options = array();
     foreach ($sysconf['system_user_type'] as $id => $name) {
       $utype_options[] = array($id, $name);
     }
-    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type']);
+    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type'],'class="form-control col-3"');
     // user e-mail
-    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email'], 'style="width: 50%;"');
+    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email'], 'style="width: 50%;" class="form-control"');
     // social media link
     $str_input = '';
     $social_media = array();
     if ($rec_d['social_media']) {
       $social_media = @unserialize($rec_d['social_media']);
     }
+    $str_input = '<div class="row">';
     foreach ($sysconf['social'] as $id => $social) {
-      $str_input .= '<div class="social-input"><span class="social-label">'.$social.'</span><span class="social-form"><input type="text" name="social['.$id.']" value="'.(isset($social_media[$id])?$social_media[$id]:'').'" placeholder="'.$social.'" /></span></div>'."\n";
+      $str_input .= '<div class="social-input col-4"><span class="social-form"><input type="text" name="social['.$id.']" value="'.(isset($social_media[$id])?$social_media[$id]:'').'" placeholder="'.$social.'" class="form-control" /></span></div>'."\n";
     }
+    $str_input .= '</div>';
     $form->addAnything(__('Social Media'), $str_input);
     // user photo
     $str_input = '';
@@ -338,7 +340,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= simbio_form_element::textField('file', 'image');
     $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
-      $str_input .= '<p>'.__('or take a photo').'</p>';
+      $str_input .= '<p><strong>'.__('or take a photo').'</strong></p>';
       $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
       $str_input .= '<button id="btn_load" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
       $str_input .= __('Ratio:').' <select onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select> | ';
@@ -370,9 +372,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']));
     }
     // user password
-    $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;"');
+    $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;" class="form-control"');
     // user password confirm
-    $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;"');
+    $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -428,7 +430,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->setSQLCriteria($criteria);
 
     // set table and table header attributes
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];

@@ -87,11 +87,12 @@ $scope_d = $scope_q->fetch_row();
 
 $page_title = __('Scope Note Vocabulary');
 ?>
-<h1><?php echo $page_title; ?></h1>
+<strong><?php echo $page_title; ?></strong>
+<hr>
 <form name="scopeForm" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
   <div class="form-group">
-      <label for="exampleInputEmail1"><?php echo __('Scope'); ?></label>
-    <textarea style="height:auto;" class="form-control" name="scope" rows="5"><?php echo $scope_d[0]; ?></textarea>
+    <label for="exampleInputEmail1"><?php echo __('Scope'); ?></label>
+    <textarea class="form-control" name="scope" rows="5"><?php echo $scope_d[0]; ?></textarea>
   </div>
   <input type="hidden" name="topic_id" value="<?php echo $itemID; ?>">
   <input type="hidden" name="vocabolary_id" value="<?php echo $scope_d[1]; ?>">

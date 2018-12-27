@@ -82,8 +82,13 @@ class simbio_fe_text extends abs_simbio_form_element
       $_buffer .= $this->element_value;
       $_buffer .= '</textarea>'."\n";
     } else if (stripos($this->element_type, 'date', 0) !== false) {
-      $_buffer .= '<div class="dateField"><input class="dateInput" type="'.$this->element_type.'" name="'.$this->element_name.'" id="'.$_elID.'" ';
-      $_buffer .= 'value="'.$this->element_value.'" '.$this->element_attr.''.$_disabled.' /><a class="calendarLink notAJAX" style="cursor: pointer;" onclick="javascript: dateType = \''.$this->element_type.'\'; openCalendar(\''.$_elID.'\');" title="Open Calendar"></a></div>'."\n";
+      // Modified by Eddy Subratha
+      // Remove class="dateInput" because it should be defined by $this->element_attr
+      // $_buffer .= '<div class="dateField"><input class="dateInput" type="'.$this->element_type.'" name="'.$this->element_name.'" id="'.$_elID.'" ';
+      $_buffer .= '<div class="dateField">';
+      $_buffer .= '<input type="'.$this->element_type.'" name="'.$this->element_name.'" id="'.$_elID.'" value="'.$this->element_value.'" '.$this->element_attr.''.$_disabled.' />';
+      $_buffer .= '<a class="calendarLink notAJAX" onclick="javascript: dateType = \''.$this->element_type.'\'; openCalendar(\''.$_elID.'\');" title="Open Calendar"></a>';
+      $_buffer .= '</div>'."\n";
     } else {
       $_buffer .= '<input type="'.$this->element_type.'" name="'.$this->element_name.'" id="'.$_elID.'" ';
       $_buffer .= 'value="'.$this->element_value.'" '.$this->element_attr.''.$_disabled.' />'."\n";

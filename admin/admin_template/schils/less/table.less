@@ -1,0 +1,77 @@
+//main: style.less
+table {
+  width: 100%;
+  background: #fff;
+  margin-bottom: 0 !important;  
+}
+
+#dataList {
+	position: relative;
+  
+  td {
+    padding: 10px;  
+  }
+}
+
+.s-table__no-data {
+
+}
+
+.dataListHeader {
+  background: transparent;
+  td {
+    text-transform: uppercase !important;
+    background: #fff;
+    white-space: nowrap;
+    font-size: 10pt;
+    padding: 7px 15px;
+    border-bottom: solid 1px @border-color;
+  }
+
+  a {
+    white-space: nowrap;
+  }
+
+  & a[href*='ASC']:after,
+  & a[href*='DESC']:after {
+    font-family: 'FontAwesome';
+    content: "\f0d8";
+    padding-left: 3px;
+    font-size: 12px;
+  }
+
+  & a[href*='ASC']:after {
+    content: "\f0d8";
+  }
+
+  & a[href*='DESC']:after {
+    content: "\f0d7";
+  }
+  
+}
+
+#mainForm {
+  & > table {
+    border-top: solid 1px #eee;
+  }
+  & td {
+    padding: 10px 15px;
+  }
+}  
+.alterCell,
+.alterCell2 {
+  background-color: #fff !important;
+  border-color: @border-color;
+
+  &:hover{
+    background-color: #fbfbfb !important;
+    transition: all 1 ease-in-out;
+
+  }
+
+  &.highlighted {
+    background: lighten(@color-2,40%) !important;
+    background-color: lighten(@color-3,40%);
+    color: @color-1 !important;
+  }
+}

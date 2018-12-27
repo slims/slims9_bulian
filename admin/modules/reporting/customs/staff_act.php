@@ -55,41 +55,33 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <fieldset>
-    <div class="per_title">
-    	<h2><?php echo __('Staff Activity'); ?></h2>
-	  </div>
-    <div class="infoBox">
-    <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Activity Date From'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::dateField('startDate', '2000-01-01'); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Activity Date Until'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::dateField('untilDate', date('Y-m-d')); ?>
-            </div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
-    </form>
-    </div>
-    </fieldset>
-    <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+  <!-- filter -->
+  <div class="per_title">
+    <h2><?php echo __('Staff Activity'); ?></h2>
+  </div>
+  <div class="infoBox">
+      <?php echo __('Report Filter'); ?>
+  </div>
+  <div class="sub_section">
+      <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+      <div id="filterForm">
+          <div class="form-group divRow">
+              <label><?php echo __('Activity Date From'); ?></label>
+              <?php echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"'); ?>
+          </div>
+          <div class="form-group divRow">
+              <label><?php echo __('Activity Date Until'); ?></label>
+              <?php echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"'); ?>
+          </div>
+      </div>
+      <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+      <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+      <input type="hidden" name="reportView" value="true" />
+      </form>
+  </div>
+  <!-- filter end -->
+  <div class="paging-area"><div class="pb-3 pr-3" id="pagingBox"></div></div>
+  <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -180,6 +172,7 @@ if (!$reportView) {
 
     // columns modification settings
     $reportgrid->column_width = array(0 => '10%', 1 => '10%');
+    $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
     $reportgrid->modifyColumnContent(2, 'callback{showBiblioEntries}');
     $reportgrid->modifyColumnContent(3, 'callback{showItemEntries}');
     $reportgrid->modifyColumnContent(4, 'callback{showMemberEntries}');

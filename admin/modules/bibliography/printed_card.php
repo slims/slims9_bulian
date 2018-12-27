@@ -282,18 +282,19 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 
 /* search form */
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner printIcon">
 	<div class="per_title">
     <h2><?php echo __('Print Catalog Format'); ?></h2>
     </div>
 	<div class="sub_section">
     <div class="btn-group">
-    <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=clear" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-trash"></i>&nbsp;<?php echo __('Clear Print Queue'); ?></a>
-	  <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=print" class="notAJAX btn btn-default"><i class="glyphicon glyphicon-print"></i>&nbsp;<?php echo __('Print Catalog for Selected Data'); ?></a>
+        <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=clear" class="notAJAX btn btn-default"><?php echo __('Clear Print Queue'); ?></a>
+        <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=print" class="notAJAX btn btn-default"><?php echo __('Print Catalog for Selected Data'); ?></a>
 	</div>
-    <form name="search" action="<?php echo MWB; ?>bibliography/printed_card.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
+    <form name="search" action="<?php echo MWB; ?>bibliography/printed_card.php" id="search" method="get" class="form-inline">
+    <?php echo __('Search'); ?>
+    <input type="text" name="keywords" size="30" class="form-control" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
     </div>
@@ -307,7 +308,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         ?>
     </div>
 </div>
-</fieldset>
+</div>
 <?php
 /* search form end */
 
@@ -368,7 +369,7 @@ if (isset($criteria)) {
 $datagrid->sql_group_by = "biblio.biblio_id";
 
 // set table and table header attributes
-$datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // edit and checkbox property
 $datagrid->edit_property = false;

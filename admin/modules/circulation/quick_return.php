@@ -54,22 +54,22 @@ if (!$sysconf['quick_return']) {
 }
 ?>
 
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner quickReturnIcon">
     <div class="per_title">
 	    <h2><?php echo __('Quick Return'); ?></h2>
     </div>
+    <div class="infoBox">
+        <?php echo __('Insert an item ID to return collection with keyboard or barcode reader'); ?>
+    </div>
     <div class="sub_section">
-	    <div class="action_button">
-		    <?php echo __('Insert an item ID to return collection with keyboard or barcode reader'); ?>
-	    </div>
-      <form class="notAJAX" action="<?php echo MWB; ?>circulation/ajax_action.php" target="circAction" method="post" style="display: inline;">
-      <?php echo __('Item ID'); ?> :
-      <input type="text" name="quickReturnID" id="quickReturnID" size="30" />
-      <input type="submit" value="<?php echo __('Return'); ?>" class="button" />
+      <form action="<?php echo MWB; ?>circulation/ajax_action.php" target="circAction" method="post" class="form-inline notAJAX">
+      <?php echo __('Item ID'); ?>
+      <input type="text" name="quickReturnID" id="quickReturnID" size="30" class="form-control col-3" />
+      <input type="submit" value="<?php echo __('Return'); ?>" class="s-btn btn btn-default" />
       </form>
       <iframe name="circAction" id="circAction" style="display: inline; width: 5px; height: 5px; visibility: hidden;"></iframe>
     </div>
 </div>
-</fieldset>
+</div>
 <div id="circulationLayer">&nbsp;</div>

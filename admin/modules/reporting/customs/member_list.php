@@ -59,7 +59,6 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <fieldset>
     <div class="per_title">
       <h2><?php echo __('Member List'); ?></h2>
     </div>
@@ -67,72 +66,58 @@ if (!$reportView) {
     <?php echo __('Report Filter'); ?>
     </div>
     <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Membership Type'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $mtype_q = $dbs->query('SELECT member_type_id, member_type_name FROM mst_member_type');
-            $mtype_options = array();
-            $mtype_options[] = array('0', __('ALL'));
-            while ($mtype_d = $mtype_q->fetch_row()) {
-                $mtype_options[] = array($mtype_d[0], $mtype_d[1]);
-            }
-            echo simbio_form_element::selectList('member_type', $mtype_options);
-            ?>
+        <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+            <div id="filterForm">
+                <div class="form-group divRow">
+                    <label><?php echo __('Membership Type'); ?></label>
+                    <?php
+                    $mtype_q = $dbs->query('SELECT member_type_id, member_type_name FROM mst_member_type');
+                    $mtype_options = array();
+                    $mtype_options[] = array('0', __('ALL'));
+                    while ($mtype_d = $mtype_q->fetch_row()) {
+                        $mtype_options[] = array($mtype_d[0], $mtype_d[1]);
+                    }
+                    echo simbio_form_element::selectList('member_type', $mtype_options,'','class="form-control col-2"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
+                    <?php echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control col-3"'); ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Sex'); ?></label>
+                    <?php
+                    $gender_chbox[0] = array('ALL', __('ALL'));
+                    $gender_chbox[1] = array('1', __('Male'));
+                    $gender_chbox[2] = array('0', __('Female'));
+                    echo simbio_form_element::selectList('gender', $gender_chbox, 'ALL','class="form-control col-1"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Address'); ?></label>
+                    <?php echo simbio_form_element::textField('text', 'address', '', 'class="form-control col-3"'); ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Register Date From'); ?></label>
+                    <?php echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"'); ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Register Date Until'); ?></label>
+                    <?php echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"'); ?>
+                </div>
+                <div class="form-group divRow">
+                    <label><?php echo __('Record each page'); ?></label>
+                    <input type="text" name="recsEachPage" class="form-control col-1" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" />
+                    <small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
+                </div>
             </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Member ID').'/'.__('Member Name'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'id_name', '', 'style="width: 50%"'); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Sex'); ?></div>
-            <div class="divRowContent">
-            <?php
-            $gender_chbox[0] = array('ALL', __('ALL'));
-            $gender_chbox[1] = array('1', __('Male'));
-            $gender_chbox[2] = array('0', __('Female'));
-            echo simbio_form_element::radioButton('gender', $gender_chbox, 'ALL');
-            ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Address'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::textField('text', 'address', '', 'style="width: 50%"'); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Register Date From'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::dateField('startDate', '2000-01-01'); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Register Date Until'); ?></div>
-            <div class="divRowContent">
-            <?php echo simbio_form_element::dateField('untilDate', date('Y-m-d')); ?>
-            </div>
-        </div>
-        <div class="divRow">
-            <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-            <div class="divRowContent"><input type="text" name="recsEachPage" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?></div>
-        </div>
-    </div>
-    <div style="padding-top: 10px; clear: both;">
-    <input type="button" name="moreFilter" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </div>
-    </form>
+            <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+            <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+            <input type="hidden" name="reportView" value="true" />
+        </form>
 	</div>
-    </fieldset>
     <!-- filter end -->
-    <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
@@ -143,6 +128,7 @@ if (!$reportView) {
 
     // create datagrid
     $reportgrid = new report_datagrid();
+    $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
     $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
         'm.member_name AS \''.__('Member Name').'\'',
         'mt.member_type_name AS \''.__('Membership Type').'\'');
@@ -177,6 +163,9 @@ if (!$reportView) {
     }
     $reportgrid->setSQLCriteria($criteria);
 
+    // show spreadsheet export button
+    $reportgrid->show_spreadsheet_export = true;
+    
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
@@ -190,8 +179,6 @@ if (!$reportView) {
 	unset($_SESSION['xlsdata']);
 	$_SESSION['xlsquery'] = $xlsquery;
 	$_SESSION['tblout'] = "member_list";
-
-	echo '<a href="../xlsoutput.php" class="button">'.__('Export to spreadsheet format').'</a>';
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

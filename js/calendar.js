@@ -30,10 +30,10 @@ function openCalendar(strDatefieldID) {
     calendarPop.show();
   } else {
     // inject calendar container to body
-    $(document.body).append('<div style="width: 300px;" id="calendarPop">'
-      + '<div style="float: left; width: 70%">Calendar</div>'
-      + '<div style="float: right; width: 20%; text-align: right;">'
-      + '<a style="color: red; font-weight: bold; cursor: pointer;" onclick="calendarPop.hide()">Close</a>'
+    $(document.body).append('<div style="width: 300px; position: relative;" id="calendarPop">'
+      + '<div class="calendarTitle">Calendar</div>'
+      +'<div class="calendarClose">'
+      + '<a href="#" onclick="calendarPop.hide()">Close</a>'
       + '</div>'
       + '<div id="calendarContainer">&nbsp;</div>'
       + '<div id="clockContainer">&nbsp;</div>'

@@ -1,0 +1,84 @@
+//main: style.less
+.s-biblio__cover {
+  float: right;
+  margin-top: -78px;
+  margin-right: 0;
+  border-radius: 3px;
+  img {
+    height: 78px;
+    border: none !important;
+    border-radius: 3px;
+  }
+}
+
+.extendLink:before {
+  font-size: 16pt;
+  font-family: 'FontAwesome';
+  content: '\f055';
+}
+
+.trashLink:before {
+  font-size: 16pt;
+  font-family: 'FontAwesome';
+  content: '\f014';
+}
+
+.returnLink:before {
+  font-size: 16pt;
+  font-family: 'FontAwesome';
+  content: '\f18e';
+}
+
+.addSubscription:before {
+  font-family: 'FontAwesome';
+  content: '\f0fe';
+  font-size: 16pt;
+  color: #276897;
+}
+
+.addSubscription:hover {
+  text-decoration: none;
+  color: #fff !important;
+}
+
+#topicID {
+  list-style: none;
+  line-height: 2em;
+  margin: 15px 0;
+  padding: 10px;
+  border: solid 1px #ddd;
+  min-height: 100px;
+  max-height: 110px;
+  overflow: scroll;
+}
+
+.authors {
+  font-size: 10pt;
+  color: lighten(@black,50%);
+}
+
+.makeHidden > a {
+  background-color: #eee !important;
+  border-color: #ccc !important;
+  color: #ccc !important;
+}
+
+.keytip {
+  position: absolute;
+  right: 0;
+  font-size: 10px;
+  margin: 0;
+}
+
+#stockTakeForm {
+  padding: 15px;
+}
+
+.title {
+  color: @black;
+  font-weight: 700;
+}
+
+.authors {
+  font-style: italic;
+}

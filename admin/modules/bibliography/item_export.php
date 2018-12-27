@@ -134,7 +134,7 @@ if (isset($_POST['doExport'])) {
     exit();
 }
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner exportIcon">
 	<div class="per_title">
     	<h2><?php echo __('Item Export Tool'); ?></h2>
@@ -143,30 +143,30 @@ if (isset($_POST['doExport'])) {
     <?php echo __('Export item data to CSV file'); ?>
 	</div>
 </div>
-</fieldset>
+</div>
 <?php
 
 // create new instance
 $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
-$form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class="btn btn-default"';
+$form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class="s-btn btn btn-default"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
-$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;"');
+$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // record separator
 $rec_sep_options[] = array('NEWLINE', 'NEWLINE');
 $rec_sep_options[] = array('RETURN', 'CARRIAGE RETURN');
-$form->addSelectList('recordSep', __('Record Separator'), $rec_sep_options);
+$form->addSelectList('recordSep', __('Record Separator'), $rec_sep_options,'','class="form-control col-3"');
 // number of records to export
-$form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;"');
+$form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
-$form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;"');
+$form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
 // output the form
 echo $form->printOut();

@@ -54,7 +54,7 @@ require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require LIB.'module.inc.php';
 
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('Shortcut Settings'); ?></h2>
@@ -73,15 +73,16 @@ require LIB.'module.inc.php';
     }
     ?>
   </div>
-</fieldset>
+</div>
 <?php
 /* main content */
 ob_start();
 ?>
 <form name="shortcut-form" class="shortcut-form submitViaAJAX" id="mainForm" method="post" action="<?php echo MWB.'system/shortcut.php' ?>">
+<div class="container-fluid mt-4">
 <div class="row">
   <div class="col-md-5">
-    <select class="form-control shortcuts-list" name="shortcutsOptions" id="shortcuts-options" multiple="multiple" size="10">
+    <select class="form-control shortcuts-list mb-2" name="shortcutsOptions" id="shortcuts-options" multiple="multiple" size="10">
       <?php
         $modules = new module();
         $modules->setModulesDir(MDLBS);
@@ -108,7 +109,7 @@ ob_start();
     <button type="button" class="btn btn-default btn-full btn-remove-shortcuts"><i class="glyphicon glyphicon-fast-backward"></i> <?php echo __('Move back') ?></button>
   </div>
   <div class="col-md-5">
-    <select class="form-control shortcuts-list" name="selectedShortcuts[]" id="selected-shortcuts" multiple="multiple" size="10">
+    <select class="form-control shortcuts-list mb-2" name="selectedShortcuts[]" id="selected-shortcuts" multiple="multiple" size="10">
       <?php
       // current selected shortcuts
       $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$_SESSION['uid'].'\'');
@@ -125,6 +126,7 @@ ob_start();
 </div>
 <div class="row">
   <div class="col-md-12"><input type="submit" class="btn btn-primary btn-full save-shortcuts" name="updateData" value="<?php echo __('Save') ?>" /></div>
+</div>
 </div>
 </form>
 <script type="text/javascript">

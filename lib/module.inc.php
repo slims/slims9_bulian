@@ -39,7 +39,7 @@ class module extends simbio
 
     public function __construct() {
         $this->appended_first = '<li><a class="menu home#replaced#" href="index.php"><span>' . __('Home') . '</a></li><li><a class="menu opac" href="../index.php" title="' . __('View OPAC in New Window') . '" target="_blank"><span>' . __('OPAC') . '</span></a></li>';
-        $this->appended_last = '<li><a class="menu logout" href="logout.php"><span>' . __('LOGOUT') . '</span></a></li>';
+        $this->appended_last = '<li><a class="menu logout" href="logout.php"><span>' . __('Logout') . '</span></a></li>';
     }
 
     /**
@@ -123,16 +123,20 @@ class module extends simbio
     {
       global $dbs;
       $_submenu = '';
+      $_submenu_current = 'curModuleLink'; 
+      $i=0;
       $menu = $this->getSubMenuItems($str_module);
       // iterate menu array
       foreach ($menu as $_list) {
         if ($_list[0] == 'Header') {
           $_submenu .= '<div class="subMenuHeader">'.$_list[1].'</div>';
         } else {
-          $_submenu .= '<a class="subMenuItem" '
+          if($i > 1) $_submenu_current = '';
+          $_submenu .= '<a class="subMenuItem '.$_submenu_current.'" '
               .' href="'.$_list[1].'"'
               .' title="'.( isset($_list[2])?$_list[2]:$_list[0] ).'" href="#"><span>'.$_list[0].'</span></a>';
         }
+        $i++;
       }
       $_submenu .= '&nbsp;';
       return $_submenu;

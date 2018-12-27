@@ -78,7 +78,7 @@ $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
 $form->submit_button_attr = 'name="updateSettings" value="'.__('Save Settings').'" class="btn btn-primary"';
 
 // form table attributes
-$form->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+$form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
 $form->table_content_attr = 'class="alterCell2"';
 
@@ -135,6 +135,8 @@ $measure['print']['receipt']['receipt_header_fontSize']     = __('pt');
 $measure['print']['receipt']['receipt_titleLength']         = __('(number)');
 
 // member card print settings
+$measure['print']['membercard']['template']                 = 'classic';
+
 /* measurement in cm */
 $measure['print']['membercard']['page_margin']              = __('(decimal)');
 $measure['print']['membercard']['items_margin']             = __('(decimal)');
@@ -231,10 +233,16 @@ $measure['print']['membercard']['address_top']              = __('(px)');
 $form->addAnything(__('Print setting for'), ucwords($type));
 foreach ($sysconf['print'][$type] as $setting_name => $val) {
   $setting_name_label = ucwords(str_ireplace('_', ' ', $setting_name));
-  $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'style="width: 75%;"');
+  if(trim($setting_name_label) === 'Rules' || trim($setting_name_label) === 'Address') {
+    $form->addTextField('textarea', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'rows="5" class="form-control"');
+  } else {
+    $form->addTextField('text', $type.'['.$setting_name.']', __($setting_name_label).'<br/><small><em>'.$measure['print'][$type][$setting_name].'</em></small>', $val, 'style="width: 75%;" class="form-control"');
+  }
 }
 $form->addHidden('settingType', $type);
-
+?>
+<strong><?php echo __('Change print barcode settings'); ?></strong>
+<?php
 // print out the object
 echo $form->printOut();
 /* main content end */

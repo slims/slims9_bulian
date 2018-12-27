@@ -49,19 +49,19 @@ if (!$can_read) {
   die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 ?>
-<fieldset class="menuBox">
+<div class="menuBox">
 <div class="menuBoxInner stockTakeIcon">
 	<div class="per_title">
 	  <h2><?php echo __('Stock Take'); ?></h2>
   </div>
 	<div class="sub_section">
-    <form name="search" action="<?php echo MWB; ?>stock_take/index.php" id="search" method="get" style="display: inline;"><?php echo __('Search'); ?> :
-    <input type="text" name="keywords" size="30" />
-    <input type="submit" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+    <form name="search" action="<?php echo MWB; ?>stock_take/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
+    <input type="text" name="keywords" size="30" class="form-control" />
+    <input type="submit" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
 </div>
-</fieldset>
+</div>
 <?php
 if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
     $itemID = (integer)$_POST['itemID'];
@@ -81,10 +81,10 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
     $rec_d = $rec_q->fetch_assoc();
     // create table object
     $table = new simbio_table();
-    $table->table_attr = 'align="center" class="border" cellpadding="5" cellspacing="0"';
+    $table->table_attr = 'class="s-table table" ';
     // table header
     $table->setHeader(array($rec_d[__('Stock Take Name')]));
-    $table->table_header_attr = 'class="dataListHeader" colspan="3"';
+    $table->table_header_attr = 'colspan="3"';
     // initial row count
     $row = 1;
     foreach ($rec_d as $headings => $stk_data) {
@@ -142,7 +142,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
 
     // set table and table header attributes
     $datagrid->icon_edit = $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-    $datagrid->table_attr = 'align="center" id="dataList" cellpadding="5" cellspacing="0"';
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     $datagrid->chbox_property = false;
     // set delete proccess URL

@@ -76,13 +76,13 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   
   // button
   $xml_button = '';
-  $detail_button = '<a href="'.$detail_url.'" class="detailLink slims-button slims-button--flat slims-button--blue" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
+  $detail_button = '<a href="'.$detail_url.'" class="detailLink slims-btn slims-btn--flat slims-btn--blue" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
   if ($settings['xml_detail']) {
-    $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink slims-button slims-button--flat slims-button--default" title="'.__('View record detail description in XML Format').'" target="_blank">'.__('XML Detail').'</a>';
+    $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink slims-btn slims-btn--flat slims-btn--default" title="'.__('View record detail description in XML Format').'" target="_blank">'.__('XML Detail').'</a>';
   }
   
   // citation button
-  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-button slims-button--circle slims-button--flat slims-button--default" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank"><i class="material-icons">description</i></a>';
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink slims-btn slims-btn--circle slims-btn--flat slims-btn--default" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank"><i class="material-icons">description</i></a>';
   
   // cover images var
   $image_cover = '';
@@ -184,9 +184,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // share menu
   $menu  = '<div class="slims-card--menu">';
   $menu .= $cite_button;
-  $menu .= '<button class="slims-button slims-button--circle slims-button--flat slims-button--default"><i class="material-icons">favorite_border</i></button>';
-  $menu .= '<button class="slims-button slims-button--circle slims-button--flat slims-button--default"><i class="material-icons">file_download</i></button>';
-  $menu .= '<button class="slims-button slims-button--circle slims-button--flat slims-button--default"><i class="material-icons">share</i></button>';
+  $menu .= '<button class="slims-btn slims-btn--circle slims-btn--flat slims-btn--default"><i class="material-icons">favorite_border</i></button>';
+  $menu .= '<button class="slims-btn slims-btn--circle slims-btn--flat slims-btn--default"><i class="material-icons">file_download</i></button>';
+  $menu .= '<button class="slims-btn slims-btn--circle slims-btn--flat slims-btn--default"><i class="material-icons">share</i></button>';
   $menu .= '</div>';
   $output .= $menu;
 

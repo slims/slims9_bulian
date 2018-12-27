@@ -81,7 +81,7 @@ $menus = array (
   foreach ($menus as $path => $menu) {
     if (isset($menu['dropdown']) && !empty($menu['dropdown'])) {
       $d .= '<li class="dropdown">';
-      $d .= '<a class="slims-button slims-button--default dropdown-toggle" id="m-'.$path.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
+      $d .= '<a class="slims-btn slims-btn--default dropdown-toggle" id="m-'.$path.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
       $d .= $menu['text'];
       $d .= '<span class="caret"></span>';
       $d .= '</a>';
@@ -93,11 +93,11 @@ $menus = array (
     } else {
       $d .= '<li>';
       if ($p == $path) {
-        $c = 'slims-button--blue';
+        $c = 'slims-btn--blue';
       } else {
-        $c = 'slims-button--default';
+        $c = 'slims-btn--default';
       }
-      $d .= '<a href="'.$menu['url'].'" class="slims-button '.$c.'">'.$menu['text'].'</a>';
+      $d .= '<a href="'.$menu['url'].'" class="slims-btn '.$c.'">'.$menu['text'].'</a>';
       $d .= '</li>';
     }
   }
