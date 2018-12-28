@@ -82,19 +82,19 @@ if (isset($_POST['remove'])) {
   $loan_d = $loan_q->fetch_row();
   // send an alert if the member cant be deleted
   if ($loan_q->num_rows > 0) {
+      utility::jsToastr('Items', __('Item data can not be deleted because still on hold by members'), 'error');
     echo '<script type="text/javascript">';
-    echo 'alert(\''.__('Item data can not be deleted because still on hold by members').'\');';
     echo 'self.location.href = \'iframe_item_list.php?biblioID='.$bid.'\';';
     echo '</script>';
   } else {
     if ($sql_op->delete('item', 'item_id='.$id)) {
+        utility::jsToastr('Item', __('Item succesfully removed!'), 'success');
       echo '<script type="text/javascript">';
-      echo 'alert(\''.__('Item succesfully removed!').'\');';
       echo 'self.location.href = \'iframe_item_list.php?biblioID='.$bid.'\';';
       echo '</script>';
     } else {
+        utility::jsToastr('Item', __('Item FAILED to removed!'), 'error');
       echo '<script type="text/javascript">';
-      echo 'alert(\''.__('Item FAILED to removed!').'\');';
       echo 'self.location.href = \'iframe_item_list.php?biblioID='.$bid.'\';';
       echo '</script>';
     }

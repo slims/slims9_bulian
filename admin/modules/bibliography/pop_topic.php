@@ -98,12 +98,12 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
         $data['level'] = intval($_POST['level']);
 
         if ($sql_op->insert('biblio_topic', $data)) {
+            utility::jsToastr('Subject', __('Topic succesfully updated!'), 'success');
             echo '<script type="text/javascript">';
-            echo 'alert(\'' . addslashes(__('Topic succesfully updated!')) . '\');';
             echo 'parent.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$data['biblio_id'].'\');';
             echo '</script>';
         } else {
-            utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+            utility::jsToastr('Subject', __('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error, 'error');
         }
     } else {
         if (!empty($_POST['topicID'])) {
@@ -128,8 +128,8 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
             $_SESSION['biblioTopic'][$last_id] = array($last_id, intval($_POST['level']));
         }
 
+        utility::jsToastr('Subject', __('Subject added!'), 'success');
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Subject added!').'\');';
         echo 'parent.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php\');';
         echo '</script>';
     }

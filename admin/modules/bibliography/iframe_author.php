@@ -78,8 +78,8 @@ function confirmProcess(int_biblio_id, int_item_id)
 if (isset($_GET['removesess'])) {
   $idx = $_GET['removesess'];
   unset($_SESSION['biblioAuthor'][$idx]);
+  utility::jsToastr('Author', __('Author succesfully removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''.__('Author succesfully removed!').'\');';
   echo 'location.href = \'iframe_author.php\';';
   echo '</script>';
 }
@@ -89,8 +89,8 @@ if (isset($_POST['remove'])) {
   $bid = (integer)$_POST['bid'];
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('biblio_author', 'author_id='.$id.' AND biblio_id='.$bid);
+  utility::jsToastr('Author', __('Author removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''.__('Author removed!').'\');';
   echo 'location.href = \'iframe_author.php?biblioID='.$bid.'\';';
   echo '</script>';
 }

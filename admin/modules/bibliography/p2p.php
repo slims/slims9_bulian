@@ -169,7 +169,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
           }
       }
   }
-  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')));
+  utility::jsToastr('P2P', str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')), 'success');
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }

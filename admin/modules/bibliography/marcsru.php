@@ -256,7 +256,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
 
   // destroy result Z3950 session
   unset($_SESSION['marcresult']);
-  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
+  utility::jsToastr('MARC SRU', str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')), 'success');
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   //exit();
 }

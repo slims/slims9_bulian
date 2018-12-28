@@ -58,10 +58,10 @@ $max_chars = 1024*100;
 if (isset($_POST['doImport'])) {
   // check for form validity
   if (!$_FILES['importFile']['name']) {
-    utility::jsAlert(__('Please select the file to import!'));
+    utility::jsToastr(__('Import Tool'), __('Please select the file to import!'), 'error');
     exit();
   } else if (empty($_POST['fieldSep']) OR empty($_POST['fieldEnc'])) {
-    utility::jsAlert(__('Required fields (*)  must be filled correctly!'));
+    utility::jsToastr(__('Import Tool'), __('Required fields (*)  must be filled correctly!'), 'error');
     exit();
   } else {
     $start_time = time();
@@ -82,7 +82,7 @@ if (isset($_POST['doImport'])) {
     $upload->setUploadDir($temp_dir);
     $upload_status = $upload->doUpload('importFile');
     if ($upload_status != UPLOAD_SUCCESS) {
-        utility::jsAlert(__('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB'); //mfc
+        utility::jsToastr(__('Import Tool'), __('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB', 'error'); //mfc
         exit();
     }
     // uploaded file path
