@@ -238,6 +238,9 @@ $sysconf['webcam'] = 'flex'; //enabled this feature by changed to 'html5' or 'fl
 /* SCANNER feature */
 $sysconf['scanner'] = false;
 
+/* Barcode Reader */
+$sysconf['barcode_reader'] = true;
+
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
 // Zend Barcode Engine Encoding selection
@@ -331,6 +334,7 @@ $sysconf['mimetype']['flv'] = 'video/x-flv';
 $sysconf['mimetype']['mp4'] = 'video/mp4';
 $sysconf['mimetype']['xml'] = 'text/xml';
 $sysconf['mimetype']['mrc'] = 'text/marc';
+$sysconf['mimetype']['txt'] = 'text/plain';
 
 /* PRICE CURRENCIES SETTING */
 $sysconf['currencies'] = array( array('0', 'NONE'), 'Rupiah', 'USD', 'Euro', 'DM', 'Pounds', 'Yen', 'Won', 'Yuan', 'SGD', 'Bath', 'Ruppee', 'Taka', 'AUD');

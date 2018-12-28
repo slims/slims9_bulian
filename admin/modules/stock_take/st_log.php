@@ -57,7 +57,7 @@ if (!$can_read) {
   </div>
   <div class="sub_section">
     <form name="search" action="<?php echo MWB; ?>stock_take/st_log.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" class="form-control" />
+    <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
   </div>

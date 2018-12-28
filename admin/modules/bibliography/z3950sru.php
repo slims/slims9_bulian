@@ -259,7 +259,7 @@ if (isset($_GET['keywords']) AND $can_read) {
     </div>
     <div class="sub_section">
     <form name="search" id="search" action="<?php echo MWB; ?>bibliography/z3950sru.php" loadcontainer="searchResult" method="get" class="form-inline"><?php echo __('Search'); ?>
-    <input type="text" name="keywords" id="keywords" size="30" class="form-control" />
+    <input type="text" name="keywords" id="keywords" class="form-control col-md-3" />
     <select name="index" class="form-control"><option value="0"><?php echo __('All fields'); ?></option><option value="bath.isbn"><?php echo __('ISBN/ISSN'); ?></option><option value="dc.title"><?php echo __('Title/Series Title'); ?></option><option value="bath.name"><?php echo __('Authors'); ?></option></select>
     <?php echo __('SRU Server'); ?>: <select name="z3950_SRU_source" class="form-control"><?php foreach ($sysconf['z3950_SRU_source'] as $serverid => $z3950_source) { echo '<option value="'.$z3950_source['uri'].'">'.$z3950_source['name'].'</option>';  } ?></select>
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />

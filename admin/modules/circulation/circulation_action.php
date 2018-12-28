@@ -555,6 +555,34 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="s-iframe expandable"></iframe>'."\n";
     }
     ?>
+
+    <?php if($sysconf['barcode_reader']) : ?>
+    <div class="modal fade" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="barcodeModalLabel">Barcode Reader</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body m-0">
+            <iframe frameborder="0" height="320" id="iframeBarcodeReader"></iframe>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+    $('#barcodeModal').on('hidden.bs.modal', function(e){
+        $('#iframeBarcodeReader').removeAttr('src');            
+    });
+    </script>
+    <?php endif ?>
+
     <script type="text/javascript">
     /**
      * increase the height of the iframe so that it uses all remaining space
@@ -618,7 +646,6 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
             $('#listsFrame').attr('src', $('#circHistory').attr('href'));
         }
     });
-
     </script>
     <?php
     exit();

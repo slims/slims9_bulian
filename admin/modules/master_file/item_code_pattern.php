@@ -89,7 +89,6 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
     </div>
 </div>
 </div>
-<div class="fluid-container">
 <?php 
 /* search form end */
 /* main content */
@@ -117,7 +116,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button"></div>';
             // table header
             $table->setHeader(array(__('Select'),__('Item Code Pattern')));
-            $table->table_header_attr = 'class="dataListHeader"';
+            $table->table_header_attr = 'class="alterCell font-weight-bold"';
             $table->setCellAttr(0, 0, '');
             // initial row count
             $row = 1;
@@ -137,8 +136,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 }
 /* main content end */
 ?>
-</div>
-
 <script>
     $('.btn-delete').on('click', function (e) {
     var data = [];

@@ -202,7 +202,7 @@ $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
 $form->submit_button_attr = 'name="doImport" value="'.__('Import Now').'" class="btn btn-default"';
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';
-$form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+$form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
