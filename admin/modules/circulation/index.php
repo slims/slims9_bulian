@@ -76,6 +76,9 @@ if (isset($_SESSION['memberID']) AND !empty($_SESSION['memberID'])) {
     </div>
   </div>
 </div>
+<script>
+    parent.$(".modal-backdrop").remove();
+</script>
 <?php
     if (isset($_POST['finishID'])) {
       $msg = str_ireplace('{member_id}', $_POST['finishID'], __('Transaction with member {member_id} is completed'));

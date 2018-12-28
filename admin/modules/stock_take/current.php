@@ -102,7 +102,7 @@ if ($stk_query->num_rows < 1) {
         <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
           <div class="form-group">
             <label><?php echo __('Search'); ?></label>
-            <input type="text" name="keywords" size="30" class="form-control" />
+            <input type="text" name="keywords" class="form-control col-md-3" />
             <input type="hidden" name="view" value="<?php echo $view; ?>" />
             <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
           </div>

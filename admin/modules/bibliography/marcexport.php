@@ -166,7 +166,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
       <a href="<?php echo MWB; ?>bibliography/marcexport.php?action=batch" class="  btn btn-default"><?php echo __('Batch Export');?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>bibliography/marcexport.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-      <input type="text" name="keywords" size="30" class="form-control" />
+      <input type="text" name="keywords" class="form-control col-md-3" />
       <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -189,7 +189,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'batch') {
     
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+    $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
     
     /* Form Element(s) */

@@ -515,7 +515,7 @@ if (!$in_pop_up) {
 		  <a href="<?php echo MWB; ?>bibliography/index.php?action=detail" class="btn btn-default"><?php echo __('Add New Bibliography'); ?></a>
 	  </div>
 	  <form name="search" action="<?php echo MWB; ?>bibliography/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-		  <input type="text" name="keywords" id="keywords" class="form-control col-md-2" />
+		  <input type="text" name="keywords" id="keywords" class="form-control col-md-3" />
 		  <select name="field" class="form-control col-md-2"><option value="0"><?php echo __('All Fields'); ?></option><option value="title"><?php echo __('Title/Series Title'); ?> </option><option value="subject"><?php echo __('Topics'); ?></option><option value="author"><?php echo __('Authors'); ?></option><option value="isbn"><?php echo __('ISBN/ISSN'); ?></option><option value="publisher"><?php echo __('Publisher'); ?></option></select>
 		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 		  <?php

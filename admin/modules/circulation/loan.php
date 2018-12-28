@@ -53,6 +53,8 @@ $page_title = 'Member Loan List';
 
 ob_start();
 ?>
+<script src="<?php echo JWB ?>quaggaJS/adapter.js" type="text/javascript"></script>
+<script src="<?php echo JWB ?>quaggaJS/quagga.js" type="text/javascript"></script>
 <script type="text/javascript">
 /**
  * Change date text to input text
@@ -110,6 +112,7 @@ var changeLoanDate = function(intLoanID, strDateToChange, dateElement, strDate)
 }
 
 function triggerKeys(){
+    // alert(event.keyCode);
     // ESC
     if(event.keyCode == 27) {
         parent.$('#circFinish').click();
@@ -130,6 +133,14 @@ function triggerKeys(){
         parent.$('#circReserve').click().focus();
         parent.$('#listsFrame').attr('src', parent.$('#circReserve').attr('href'));
     }
+
+    <?php if($sysconf['barcode_reader']) : ?>
+    // // F8
+    if(event.keyCode == 119) {
+        $('#barcodeReader').click();
+    }
+    <?php endif ?>
+
     // // F9
     if(event.keyCode == 120) {
         parent.$('#circFine').click().focus();
@@ -155,11 +166,25 @@ if (isset($_SESSION['memberID'])) {
     <div class="s-circulation__loan loanItemCodeInput">
         <form name="itemLoan" id="loanForm" action="circulation_action.php" method="post" class="form-inline">
             <?php echo __('Insert Item Code/Barcode'); ?>&nbsp;
-            <input type="text" id="tempLoanID" name="tempLoanID" onKeyUp="triggerKeys()" class="form-control col-4"  />
-            <input type="submit" value="<?php echo __('Loan'); ?>" class="s-btn btn btn-default" />
+            <input type="text" id="tempLoanID" name="tempLoanID" onKeyUp="triggerKeys()" class="form-control col-md-3"  />
+            <input type="submit" value="<?php echo __('Loan'); ?>" id="executeLoan" class="s-btn btn btn-default" />
+            <?php if($sysconf['barcode_reader']) : ?>
+            <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'bibliography/barcode_reader.php' ?>">Open Barcode Reader - Experimental (F8)</a>
+            <?php endif ?>
         </form>
     </div>
     <script type="text/javascript">$('#tempLoanID').focus();</script>
+    <?php if($sysconf['barcode_reader']) : ?>
+    <script type="text/javascript">
+        $('#barcodeReader').click(function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            parent.$('#iframeBarcodeReader').attr('src', url);
+            parent.$('#listsFrame').find('#tempLoanID').focus();
+            parent.$('#barcodeModal').modal('show');
+        });
+    </script>
+    <?php endif ?>
     <!--item loan form end-->
     <?php
     // make a list of temporary loan if there is any

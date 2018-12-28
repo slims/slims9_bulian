@@ -87,7 +87,7 @@ if (isset($_GET['customize'])) {
     $form->submit_button_attr = 'name="updateData" value="'.__('Save Settings').'" class="btn btn-default"';
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+    $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
 
     foreach ($sysconf['template']['option'][$_GET['theme']] as $fid => $cfield) {

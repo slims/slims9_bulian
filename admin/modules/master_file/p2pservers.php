@@ -126,7 +126,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     </div>
 
     <form name="search" action="<?php echo MWB; ?>master_file/p2pservers.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" class="form-control" />
+    <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -148,7 +148,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
   // form table attributes
   $form->table_attr = 'id="dataList" class="s-table table"';
-  $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+  $form->table_header_attr = 'class="alterCell font-weight-bold"';
   $form->table_content_attr = 'class="alterCell2"';
 
   // edit mode flag set

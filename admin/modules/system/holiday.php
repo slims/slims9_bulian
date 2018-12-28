@@ -190,7 +190,7 @@ if (isset($_GET['mode'])) {
 
         // form table attributes
         $form->table_attr = 'id="dataList" class="s-table table"';
-        $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+        $form->table_header_attr = 'class="alterCell font-weight-bold"';
         $form->table_content_attr = 'class="alterCell2"';
 
         // edit mode flag set

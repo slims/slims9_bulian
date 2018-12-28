@@ -79,7 +79,7 @@ $form->submit_button_attr = 'name="updateSettings" value="'.__('Save Settings').
 
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';
-$form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+$form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
 // load print settings from database

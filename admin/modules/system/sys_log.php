@@ -84,7 +84,7 @@ if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 	  </div>
     <?php } ?>
     <form name="search" action="<?php echo MWB; ?>system/sys_log.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" size="30" class="form-control" />
+    <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
     <!-- LOG CLEARANCE FORM -->
