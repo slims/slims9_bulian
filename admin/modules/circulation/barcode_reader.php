@@ -1,15 +1,31 @@
 <?php
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');
+}
+
+// key to get full database access
+define('DB_ACCESS', 'fa');
 
 // main system configuration
 require '../../../sysconfig.inc.php';
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-bibliography');
+
 // start the session
-require SB.'admin/default/session.inc.php';?>
+require SB.'admin/default/session.inc.php';
+
+// privileges checking
+$can_read = utility::havePrivilege('bibliography', 'r');
+
+if (!$can_read) {
+  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
