@@ -96,12 +96,12 @@ if (isset($_POST['save']) AND (isset($_POST['authorID']) OR trim($_POST['search_
       $data['level'] = intval($_POST['level']);
 
       if ($sql_op->insert('biblio_author', $data)) {
+          utility::jsToastr('Author', __('Author succesfully updated!'), 'success');
           echo '<script type="text/javascript">';
-          echo 'alert(\''.__('Author succesfully updated!').'\');';
           echo 'parent.setIframeContent(\'authorIframe\', \''.MWB.'bibliography/iframe_author.php?biblioID='.$data['biblio_id'].'\');';
           echo '</script>';
       } else {
-          utility::jsAlert(__('Author FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+          utility::jsToastr('Author', __('Author FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error, 'error');
       }
   } else {
       if (isset($_POST['authorID']) AND !empty($_POST['authorID'])) {
@@ -125,8 +125,8 @@ if (isset($_POST['save']) AND (isset($_POST['authorID']) OR trim($_POST['search_
           $_SESSION['biblioAuthor'][$last_id] = array($last_id, intval($_POST['level']));
       }
 
+      utility::jsToastr('Author', __('Author added!'), 'success');
       echo '<script type="text/javascript">';
-      echo 'alert(\''.__('Author added!').'\');';
       echo 'parent.setIframeContent(\'authorIframe\', \''.MWB.'bibliography/iframe_author.php\');';
       echo '</script>';
   }

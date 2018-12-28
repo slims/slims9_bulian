@@ -51,7 +51,7 @@ if (isset($_POST['updateSettings'])) {
       $setting_name, $dbs->escape_string(serialize($_POST[$setting_type]))));
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings');
-    utility::jsAlert(__('Settings saved'));
+    utility::jsToastr('Print Setting', __('Settings saved'), 'success');
     echo '<script type="text/javascript"></script>';
 }
 /* Config Vars update process end */
@@ -79,7 +79,7 @@ $form->submit_button_attr = 'name="updateSettings" value="'.__('Save Settings').
 
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';
-$form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+$form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
 // load print settings from database

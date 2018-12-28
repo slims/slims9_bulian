@@ -169,7 +169,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
           }
       }
   }
-  utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')));
+  utility::jsToastr('P2P', str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')), 'success');
   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }
@@ -236,7 +236,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver']))  {
     <div class="sub_section">
       <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" loadcontainer="searchResult" id="search" method="get" class="form-inline">
         <?php echo __('Search'); ?>
-        <input type="text" name="keywords" id="keywords" size="30" class="form-control" />
+        <input type="text" name="keywords" id="keywords" class="form-control col-md-3" />
         <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"  class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) { echo '<option value="'.$serverid.'">'.$p2pserver['name'].'</option>';  } ?></select>
         <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
       </form>

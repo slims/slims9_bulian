@@ -357,7 +357,7 @@ if(isset($_GET['expire'])) {
     <a href="<?php echo MWB; ?>membership/index.php?expire=true" class="btn btn-danger"><?php echo __('View Expired Member'); ?></a>
 	</div>
     <form name="search" action="<?php echo MWB; ?>membership/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-	    <input type="text" name="keywords" size="30" class="form-control" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
+	    <input type="text" name="keywords" class="form-control col-md-3" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
 	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	</form>
 	</div>
@@ -381,7 +381,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+    $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
 
     // edit mode flag set

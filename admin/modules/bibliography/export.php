@@ -47,7 +47,7 @@ if (!$can_read) {
 if (isset($_POST['doExport'])) {
   // check for form validity
   if (empty($_POST['fieldSep']) OR empty($_POST['fieldEnc'])) {
-      utility::jsAlert(__('Required fields (*)  must be filled correctly!'));
+      utility::jsToastr('Data Export', __('Required fields (*)  must be filled correctly!'), 'error');
       exit();
   } else {
     // set PHP time limit
@@ -106,7 +106,7 @@ if (isset($_POST['doExport'])) {
     // die($sql);
     $all_data_q = $dbs->query($sql);
     if ($dbs->error) {
-      utility::jsAlert(__('Error on query to database, Export FAILED!'));
+      utility::jsToastr('Data Export', __('Error on query to database, Export FAILED!'), 'error');
     } else {
         if ($all_data_q->num_rows > 0) {
           header('Content-type: text/plain');
@@ -144,7 +144,7 @@ if (isset($_POST['doExport'])) {
           }
           exit();
         } else {
-          utility::jsAlert(__('There is no record in bibliographic database yet, Export FAILED!'));
+          utility::jsToastr('Data Export', __('There is no record in bibliographic database yet, Export FAILED!'), 'error');
         }
     }
   }
@@ -169,7 +169,7 @@ $form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class=
 
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';
-$form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+$form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */

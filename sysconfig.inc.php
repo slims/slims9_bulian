@@ -238,6 +238,9 @@ $sysconf['webcam'] = 'flex'; //enabled this feature by changed to 'html5' or 'fl
 /* SCANNER feature */
 $sysconf['scanner'] = false;
 
+/* Barcode Reader */
+$sysconf['barcode_reader'] = true;
+
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
 // Zend Barcode Engine Encoding selection
@@ -331,6 +334,7 @@ $sysconf['mimetype']['flv'] = 'video/x-flv';
 $sysconf['mimetype']['mp4'] = 'video/mp4';
 $sysconf['mimetype']['xml'] = 'text/xml';
 $sysconf['mimetype']['mrc'] = 'text/marc';
+$sysconf['mimetype']['txt'] = 'text/plain';
 
 /* PRICE CURRENCIES SETTING */
 $sysconf['currencies'] = array( array('0', 'NONE'), 'Rupiah', 'USD', 'Euro', 'DM', 'Pounds', 'Yen', 'Won', 'Yuan', 'SGD', 'Bath', 'Ruppee', 'Taka', 'AUD');
@@ -451,7 +455,7 @@ $sysconf['index']['sphinx_opts'] = array(
     'max_limit' => 100000, // must be less or same with max_matches in sphinx.conf
 	'ranker' => null);
 
-$sysconf['index']['engine']['enable'] = true;
+$sysconf['index']['engine']['enable'] = FALSE;
 $sysconf['index']['engine']['type'] = 'es'; // value can be 'solr' OR 'es' for ElasticSearch
 $sysconf['index']['engine']['solr_opts'] = array(
     'host' => 'http://172.17.0.4',

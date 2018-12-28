@@ -56,7 +56,7 @@ if (!class_exists('File_MARC')) {
 if (isset($_GET['action']) AND $_GET['action'] == 'clear') {
   // update print queue count object
   echo '<script type="text/javascript">top.$(\'#queueCount\').html(\'0\');</script>';
-  utility::jsAlert(__('Export queue cleared!'));
+  utility::jsToastr('MARC Export', __('Export queue cleared!'), 'success');
   unset($_SESSION['marcexport']);
   exit();
 }
@@ -97,7 +97,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   }
   echo 'top.$(\'#queueCount\').html(\''.$print_count.'\')';
   echo '</script>';
-  utility::jsAlert(__('Selected items added to print queue'));
+  utility::jsToastr('MARC Export', __('Selected items added to print queue'), 'success');
   exit();
 }
 
@@ -130,10 +130,10 @@ if (isset($_POST['doExport'])) {
 if (isset($_GET['action']) AND $_GET['action'] == 'export') {
   // check if label session array is available
   if (!isset($_SESSION['marcexport'])) {
-    utility::jsAlert(__('There is no data to export!*'));
+    utility::jsToastr('MARC Export', __('There is no data to export!*'), 'error');
   }
   if (count($_SESSION['marcexport']) < 1) {
-    utility::jsAlert(__('There is no data to export!'));
+    utility::jsToastr('MARC Export', __('There is no data to export!'), 'error');
   }
   
   // concat all ID together
@@ -166,7 +166,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
       <a href="<?php echo MWB; ?>bibliography/marcexport.php?action=batch" class="  btn btn-default"><?php echo __('Batch Export');?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>bibliography/marcexport.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-      <input type="text" name="keywords" size="30" class="form-control" />
+      <input type="text" name="keywords" class="form-control col-md-3" />
       <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
   </div>
@@ -189,7 +189,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'batch') {
     
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell" style="font-weight: bold;"';
+    $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
     
     /* Form Element(s) */

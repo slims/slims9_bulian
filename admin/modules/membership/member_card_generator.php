@@ -195,7 +195,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
             <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=membercard" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Member card print settings'); ?>"><?php echo __('Member card print settings'); ?></a>
         </div>
 	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-            <input type="text" name="keywords" size="30" class="form-control" />
+            <input type="text" name="keywords" class="form-control col-md-3" />
             <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
             </form>
     </div>
