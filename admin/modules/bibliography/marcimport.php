@@ -69,7 +69,7 @@ if ($sysconf['index']['type'] == 'index') {
 if (isset($_POST['doImport'])) {
     // check for form validity
     if (!$_FILES['importFile']['name']) {
-        utility::jsAlert(__('Please select the file to import!'));
+        utility::jsToastr('MARC Import', __('Please select the file to import!'), 'error');
         exit();
     } else {
       require MDLBS.'bibliography/biblio_utils.inc.php';
@@ -95,7 +95,7 @@ if (isset($_POST['doImport'])) {
       $upload->setUploadDir($temp_dir);
       $upload_status = $upload->doUpload('importFile');
       if ($upload_status !== UPLOAD_SUCCESS) {
-          utility::jsAlert(__('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB');
+          utility::jsToastr('MARC Import', __('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB', 'error');
           exit();
       }
       $updated_row = 0;

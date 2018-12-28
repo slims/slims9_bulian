@@ -76,8 +76,8 @@ function confirmProcess(int_biblio_id, int_item_id)
 if (isset($_GET['removesess'])) {
   $idx = $_GET['removesess'];
   unset($_SESSION['biblioTopic'][$idx]);
+  utility::jsToastr('Subject', __('Topic removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''. addslashes(__('Topic removed!')) . '\');';
   echo 'location.href = \'iframe_topic.php\';';
   echo '</script>';
 }
@@ -87,8 +87,8 @@ if (isset($_POST['remove'])) {
   $bid = (integer)$_POST['bid'];
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('biblio_topic', 'topic_id='.$id.' AND biblio_id='.$bid);
+  utility::jsToastr('Subject', __('Topic succesfully removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''. addslashes(__('Topic succesfully removed!')) . '\');';
   echo 'location.href = \'iframe_topic.php?biblioID='.$bid.'\';';
   echo '</script>';
 }

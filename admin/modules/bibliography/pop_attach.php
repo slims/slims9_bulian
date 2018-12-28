@@ -96,8 +96,8 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         $uploaded_file_id = $sql_op->insert_id;
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')');
     } else {
+      utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
       echo '<script type="text/javascript">';
-      echo 'alert(\''.__('Upload FAILED! Forbidden file type or file size too big!').'\');';
       echo 'self.close();';
       echo '</script>';
       die();
@@ -145,21 +145,21 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       // file description update
       $update2 = $sql_op->update('files', array('file_title' => $title, 'file_url' => $url, 'file_desc' => $dbs->escape_string(trim($_POST['fileDesc']))), 'file_id='.$fileID);
       if ($update1) {
+        utility::jsToastr('File Attachment', __('File Attachment data updated!'), 'success');
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('File Attachment data updated!').'\');';
         echo 'parent.setIframeContent(\'attachIframe\', \''.MWB.'bibliography/iframe_attach.php?biblioID='.$updateBiblioID.'\');';
         echo '</script>';
       } else {
-          utility::jsAlert(''.__('File Attachment data FAILED to update!').''."\n".$sql_op->error);
+          utility::jsToastr('File Attachment', ''.__('File Attachment data FAILED to update!').''."\n".$sql_op->error, 'error');
       }
     } else {
       if ($sql_op->insert('biblio_attachment', $data)) {
+        utility::jsToastr('File Attachment', __('File Attachment uploaded succesfully!'), 'success');
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('File Attachment uploaded succesfully!').'\');';
         echo 'parent.setIframeContent(\'attachIframe\', \''.MWB.'bibliography/iframe_attach.php?biblioID='.$data['biblio_id'].'\');';
         echo '</script>';
       } else {
-        utility::jsAlert(''.__('File Attachment data FAILED to save!').''."\n".$sql_op->error);
+        utility::jsToastr('File Attachment',''.__('File Attachment data FAILED to save!').''."\n".$sql_op->error, 'error');
       }
     }
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' updating file attachment data');
@@ -169,8 +169,8 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       $fdata['file_id'] = $uploaded_file_id;
       $fdata['access_type'] = trim($_POST['accessType']);
       $_SESSION['biblioAttach'][$uploaded_file_id] = $fdata;
+      utility::jsToastr('File Attachment', __('File Attachment uploaded succesfully!'), 'success');
       echo '<script type="text/javascript">';
-      echo 'alert(\''.__('File Attachment uploaded succesfully!').'\');';
       echo 'parent.setIframeContent(\'attachIframe\', \''.MWB.'bibliography/iframe_attach.php\');';
       echo '</script>';
     }

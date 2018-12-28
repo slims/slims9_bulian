@@ -180,7 +180,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
     }
     // destroy result Z3950 session
     unset($_SESSION['z3950result']);
-    utility::jsAlert(str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
+    utility::jsToastr('Z3950', str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')));
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
     exit();
 }

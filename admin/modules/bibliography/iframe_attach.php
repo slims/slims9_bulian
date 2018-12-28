@@ -79,8 +79,8 @@ if (isset($_GET['removesess'])) {
   @unlink(REPOBS.str_replace('/', DS, $_SESSION['biblioAttach'][$idx]['file_dir']).DS.$_SESSION['biblioAttach'][$idx]['file_name']);
   // remove session array
   unset($_SESSION['biblioAttach'][$idx]);
+  utility::jsToastr('Attachment', __('Attachment removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''.__('Attachment removed!').'\');';
   echo 'location.href = \'iframe_attach.php\';';
   echo '</script>';
 }
@@ -95,12 +95,12 @@ if (isset($_POST['bid']) AND isset($_POST['remove'])) {
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('biblio_attachment', "file_id=$file AND biblio_id=$bid");
 
-  echo '<script type="text/javascript">';
   if ($_POST['alsoDeleteFile'] == '1') {
-      // remove file from repository and filesystem
-      @unlink(REPOBS.str_replace('/', DS, $file_d['file_dir']).DS.$file_d['file_name']);
-      echo 'alert(\'' . addslashes(str_replace('{filename}', $file_d['file_name'], __('Attachment {filename} succesfully removed!'))) .'\');';
+    // remove file from repository and filesystem
+    @unlink(REPOBS.str_replace('/', DS, $file_d['file_dir']).DS.$file_d['file_name']);
+    utility::jsToastr('Attachment', addslashes(str_replace('{filename}', $file_d['file_name'], __('Attachment {filename} succesfully removed!'))), 'success');
   }
+  echo '<script type="text/javascript">';
   echo 'location.href = \'iframe_attach.php?biblioID='.$bid.'\';';
   echo '</script>';
 }

@@ -73,8 +73,8 @@ function confirmProcess(int_biblio_id, int_item_id)
 if (isset($_GET['removesess'])) {
   $idx = $_GET['removesess'];
   unset($_SESSION['biblioToBiblio'][$idx]);
+  utility::jsToastr('Biblio Relation', __('Biblio relation succesfully removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''.__('Biblio relation succesfully removed!').'\');';
   echo 'location.href = \'iframe_biblio_rel.php\';';
   echo '</script>';
 }
@@ -84,8 +84,8 @@ if (isset($_POST['remove'])) {
   $bid = (integer)$_POST['bid'];
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('biblio_relation', 'biblio_id='.$bid.' AND rel_biblio_id='.$id);
+  utility::jsToastr('Biblio Relation', __('Biblio relation removed!'), 'success');
   echo '<script type="text/javascript">';
-  echo 'alert(\''.__('Biblio relation removed!').'\');';
   echo 'location.href = \'iframe_biblio_rel.php?biblioID='.$bid.'\';';
   echo '</script>';
 }

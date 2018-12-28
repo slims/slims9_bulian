@@ -94,9 +94,9 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   sleep(2);
   if (isset($limit_reach)) {
     $msg = str_replace('{max_print}', $max_print, __('Selected items NOT ADDED to print queue. Only {max_print} can be printed at once'));
-    utility::jsAlert($msg);
+    utility::jsToastr('Item Barcode', $msg, 'warning');
   } else {
-    utility::jsAlert(__('Selected items added to print queue'));
+    utility::jsToastr('Item Barcode', __('Selected items added to print queue'), 'success');
   }
   exit();
 }
@@ -105,7 +105,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 if (isset($_GET['action']) AND $_GET['action'] == 'clear') {
   // update print queue count object
   echo '<script type="text/javascript">top.$(\'#queueCount\').html(\'0\');</script>';
-  utility::jsAlert(__('Print queue cleared!'));
+  utility::jsToastr('Item Barcode', __('Print queue cleared!'), 'success');
   unset($_SESSION['barcodes']);
   exit();
 }
@@ -114,11 +114,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'clear') {
 if (isset($_GET['action']) AND $_GET['action'] == 'print') {
   // check if label session array is available
   if (!isset($_SESSION['barcodes'])) {
-    utility::jsAlert(__('There is no data to print!'));
+    utility::jsToastr('Item Barcode', __('There is no data to print!'), 'error');
     die();
   }
   if (count($_SESSION['barcodes']) < 1) {
-    utility::jsAlert(__('There is no data to print!'));
+    utility::jsToastr('Item Barcode', __('There is no data to print!'), 'error');
     die();
   }
 
@@ -200,7 +200,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
     // open result in window
     echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Item Barcodes Printing').'"})</script>';
-  } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Item barcodes failed to generate, possibly because {directory} directory is not writable'))); }
+  } else { utility::jsToastr('Item Barcode', str_replace('{directory}', SB.FLS, __('ERROR! Item barcodes failed to generate, possibly because {directory} directory is not writable')), 'error'); }
   exit();
 }
 
