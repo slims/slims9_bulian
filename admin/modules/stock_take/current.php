@@ -60,6 +60,15 @@ if ($stk_query->num_rows < 1) {
     if (isset($_GET['view']) AND $_GET['view']) {
         $view = trim($_GET['view']);
     }
+    // Include Barcode Scanner
+    if($sysconf['barcode_reader']) {
+        ob_start();
+        require SB.'admin/'.$sysconf['admin_template']['dir'].'/barcodescannermodal.tpl.php';
+        $barcode = ob_get_clean();
+        echo $barcode;
+        echo '<script>parent.$(".modal-backdrop").remove(); </script>';
+    } 
+
 ?>
     <div class="menuBox">
     <div class="menuBoxInner stockTakeIcon">
@@ -70,17 +79,21 @@ if ($stk_query->num_rows < 1) {
         } else {
           echo __('Current Missing/Lost Items');
         }
-        ?></h2>
+        ?>
+        </h2>
       </div>
       <div class="infoBox">
       <?php
       if ($view != 'm') { ?>
-      <form name="stockTakeForm" action="<?php echo MWB ?>stock_take/stock_take_action.php" target="stockTakeAction" method="post" class="notAJAX">
+      <form action="<?php echo MWB ?>stock_take/stock_take_action.php" method="post" target="stockTakeAction" name="stockTakeForm" class="notAJAX" >
           <div class="form-group">
               <label><?php echo __('Item Code') ?></label>
               <div class="form-row">
                   <input type="text" id="itemCode" name="itemCode" size="30" class="form-control col-2" autofocus />
-                  <input type="submit" value="<?php echo __('Change Status') ?>" class="btn btn-primary" />
+                  <input type="submit" value="<?php echo __('Change Status') ?>" class="btn btn-primary" id="checkItem" />
+                  <?php if($sysconf['barcode_reader']) : ?>
+                  &nbsp;<a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=stockopname' ?>">Open Barcode Reader - Experimental (F8)</a>
+                  <?php endif ?>
               </div>
           </div>
           <div class="form-row">
@@ -95,14 +108,24 @@ if ($stk_query->num_rows < 1) {
               </div>
           </div>
           <iframe name="stockTakeAction" style="display: none; width: 0; height: 0; visibility: hidden;"></iframe></div>
+          <?php if($sysconf['barcode_reader']) : ?>
+          <script type="text/javascript">
+              $('#barcodeReader').click(function(e){
+                  e.preventDefault();
+                  var url = $(this).attr('href');
+                  parent.$('#iframeBarcodeReader').attr('src', url);
+                  parent.$('#barcodeModal').modal('show');
+              });
+          </script>
+          <?php endif ?>
       </form>
       <?php } ?>
       </div>
       <div class="sub_section">
         <form name="search" id="search" action="<?php echo MWB; ?>stock_take/current.php" method="get" class="form-inline">
           <div class="form-group">
-            <label><?php echo __('Search'); ?></label>
-            <input type="text" name="keywords" class="form-control col-md-3" />
+            <label><?php echo __('Search'); ?> </label>
+            <input type="text" name="keywords" class="form-control" />
             <input type="hidden" name="view" value="<?php echo $view; ?>" />
             <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
           </div>

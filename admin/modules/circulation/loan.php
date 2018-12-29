@@ -50,11 +50,8 @@ require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 
 // page title
 $page_title = 'Member Loan List';
-
 ob_start();
 ?>
-<script src="<?php echo JWB ?>quaggaJS/adapter.js" type="text/javascript"></script>
-<script src="<?php echo JWB ?>quaggaJS/quagga.js" type="text/javascript"></script>
 <script type="text/javascript">
 /**
  * Change date text to input text
@@ -169,7 +166,7 @@ if (isset($_SESSION['memberID'])) {
             <input type="text" id="tempLoanID" name="tempLoanID" onKeyUp="triggerKeys()" class="form-control col-md-3"  />
             <input type="submit" value="<?php echo __('Loan'); ?>" id="executeLoan" class="s-btn btn btn-default" />
             <?php if($sysconf['barcode_reader']) : ?>
-            <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php' ?>">Open Barcode Reader - Experimental (F8)</a>
+            <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=circulation' ?>">Open Barcode Reader - Experimental (F8)</a>
             <?php endif ?>
         </form>
     </div>

@@ -322,12 +322,4 @@ $(function () {
       }
     }
   });
-
-  Quagga.onDetected(function (result) {
-    var code = result.codeResult.code;
-    $('#barcodeAudio')[0].play();
-    parent.$('#listsFrame').contents().find('#tempLoanID').focus().val(code);
-    parent.$('#listsFrame').contents().find('#loanForm').submit();
-  });
-
 });

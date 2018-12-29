@@ -72,14 +72,37 @@ if (isset($_SESSION['memberID']) AND !empty($_SESSION['memberID'])) {
       echo $ajaxDD->out();
       ?>
       <input type="submit" value="<?php echo __('Start Transaction'); ?>" name="start" id="start" class="s-btn btn btn-default" />
+      <?php if($sysconf['barcode_reader']) : ?>
+      <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=membership' ?>">Open Barcode Reader - Experimental (F8)</a>
+      <?php endif ?>
       </form>
     </div>
   </div>
 </div>
-<script>
+<?php 
+  if($sysconf['barcode_reader']) {
+    ob_start();
+    require SB.'admin/'.$sysconf['admin_template']['dir'].'/barcodescannermodal.tpl.php';
+    $barcode = ob_get_clean();
+    echo $barcode;
+  ?>
+  <script type="text/javascript">
+    $('#barcodeReader').click(function(e){
+      e.preventDefault();
+      var url = $(this).attr('href');
+      $('#iframeBarcodeReader').attr('src', url);
+      $('#barcodeModal').modal('show');
+    });
+
+    $(document.body).bind('keyup', this, function(e){
+      // F8
+      if(e.keyCode == 119) {
+        $('#barcodeReader').click();
+      }
+    });
     parent.$(".modal-backdrop").remove();
-</script>
-<?php
+  </script>
+  <?php }
     if (isset($_POST['finishID'])) {
       $msg = str_ireplace('{member_id}', $_POST['finishID'], __('Transaction with member {member_id} is completed'));
       echo '<div class="infoBox">'.$msg.'</div>';
