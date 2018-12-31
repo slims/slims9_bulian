@@ -1,15 +1,3 @@
-<?php
-// key to authenticate
-define('INDEX_AUTH', '1');
-
-// main system configuration
-require '../../../sysconfig.inc.php';
-// IP based access limitation
-require LIB.'ip_based_access.inc.php';
-do_checkIP('smc');
-do_checkIP('smc-bibliography');
-// start the session
-require SB.'admin/default/session.inc.php';?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,8 +14,8 @@ require SB.'admin/default/session.inc.php';?>
 
   <body>
 		<audio id="barcodeAudio">
-			<source src="<?php echo JWB ?>quaggaJS/sound.ogg" type="audio/ogg">
-			<source src="<?php echo JWB ?>quaggaJS/sound.mp3" type="audio/mpeg">
+			<source src="<?php echo JWB ?>quaggaJS/sound.ogg?v=1" type="audio/ogg">
+			<source src="<?php echo JWB ?>quaggaJS/sound.mp3?v=1" type="audio/mpeg">
 			Your browser does not support the audio element.
 		</audio>
     <section id="container">
@@ -112,8 +100,11 @@ require SB.'admin/default/session.inc.php';?>
     </section>
 
     <script src="<?php echo JWB ?>jquery.js" type="text/javascript"></script>
-    <script src="<?php echo JWB ?>quaggaJS/adapter-latest.js" type="text/javascript"></script>
+    <script src="<?php echo JWB ?>quaggaJS/adapter.js" type="text/javascript"></script>
     <script src="<?php echo JWB ?>quaggaJS/quagga.js" type="text/javascript"></script>
     <script src="<?php echo JWB ?>barcodereader.js?v=<?php echo date('this') ?>" type="text/javascript"></script>
+		<?php if(isset($script)) {
+		echo '<script>'.$script.'</script>';
+    } ?>
   </body>
 </html>
