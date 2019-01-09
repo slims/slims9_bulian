@@ -62,7 +62,7 @@ if ($file_q->num_rows > 0) {
 
       if ($file_d['mime_type'] == 'application/pdf') {
         if ($sysconf['pdf']['viewer'] == 'pdfjs') {
-          // header('Location: ./js/pdfjs/web/viewer.php?file=../../../repository/'.$file_d['file_dir'].'/'.$file_d['file_name']);
+          $file_loc_url = SWB.'index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
           require './js/pdfjs/web/viewer.php';
           exit();
         }

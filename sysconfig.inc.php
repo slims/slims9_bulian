@@ -363,7 +363,6 @@ if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'
 }
 
 $sysconf['pdf']['viewer'] = 'pdfjs'; # 'pdfjs'
-$sysconf['allow_pdf_download'] = true;
 
 /**
  * UCS global settings
