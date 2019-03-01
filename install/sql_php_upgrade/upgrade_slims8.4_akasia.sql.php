@@ -34,5 +34,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_log` (
 // -- Set new field for 'uid' in 'loan'
 // --
 
-$sql['alter'][] = "ALTER TABLE  `loan` ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
-ADD INDEX (  `uid` ) ;";
+$sql['alter'][] = "ALTER TABLE  `loan` ADD  `input_date` DATETIME NULL DEFAULT NULL ,
+ADD  `last_update` DATETIME NULL DEFAULT NULL ,
+ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
+ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
