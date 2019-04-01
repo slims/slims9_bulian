@@ -9,15 +9,16 @@ Hendro Wicaksono (hendrowicaksono@yahoo.com, hendrowicaksono@gmail.com)
 Arie Nugraha (dicarve@yahoo.com, dicarve@gmail.com)
 Wardiyono (wynerst@gmail.com)
 Purwoko (purgeologi@yahoo.com, tamanjiwa@gmail.com)
-Arif Syamsudin (buitenzorg812@yahoo.com, buitenzorg812@gmail.com)
+Arif Syamsudin (aarif.syamsudin@gmail.com)
 Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)
-Eddy Subratha (eddy.subratha@slims.web.id) 
+Eddy Subratha (eddy.subratha@gmail.com, mucill@gmail.com) 
 Indra Sutriadi (indra.sutriadi@gmail.com)
-Widianto Nugroho (wnugroho@gmail.com)
 Waris Agung Widodo (idoalit@gmail.com, ido.alit@gmail.com)
+Heru Subekti (heroe.soebekti@gmail.com)
 
 Past Developers:
 Sulfan Zayd (sulfan@gmail.com, sulfan.zayd@gmail.com)
+Widianto Nugroho (wnugroho@gmail.com)
 
 Localisation contributors :
 Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
@@ -29,13 +30,23 @@ Malay: Jerry Mohd. Arif
 Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
 Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
 Urdu (Pakistan): Faheem Akbar <onlinevws@gmail.com>
+Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)
 
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 8.5
+SLiMS 9 Bulian
+========================================================================
+xxx
+xxx
+
+SLiMS 8.5 (Akasia)
 ========================================================================
 Added : New localisation for Urdu (Pakistan) language
+Added : New localisation for Turkish language
+Added : New Admin template
+Added : MARC SRU as new copy cataloguing feature
+Modified : Added new menu for adding copy cataloguing servers, including MARC SRU servers
 
 SLiMS 8.3.1 (Akasia)
 ========================================================================
