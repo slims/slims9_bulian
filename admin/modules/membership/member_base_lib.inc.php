@@ -213,11 +213,11 @@ class member
 
         $_sent = $_mail->Send();
         if (!$_sent) {
-            return array('status' => 'ERROR', 'message' => $_mail->ErrorInfo);
             utility::writeLogs($this->obj_db, 'staff', isset($_SESSION['uid'])?$_SESSION['uid']:'1', 'membership', 'FAILED to send overdue notification e-mail to '.$this->member_email.' ('.$_mail->ErrorInfo.')');
+            return array('status' => 'ERROR', 'message' => $_mail->ErrorInfo);
         } else {
-            return array('status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to '.$this->member_email);
             utility::writeLogs($this->obj_db, 'staff', isset($_SESSION['uid'])?$_SESSION['uid']:'1', 'membership', 'Overdue notification e-mail sent to '.$this->member_email);
+            return array('status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to '.$this->member_email);
         }
     }
 }
