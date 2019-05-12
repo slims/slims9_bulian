@@ -130,8 +130,8 @@ if (isset($_POST['counter'])) {
     } else {
     // non member
         $_d = $_q->fetch_assoc();
-        $member_name = $dbs->escape_string(trim($_POST['memberID']));
-        $_institution = $dbs->escape_string(trim($_POST['institution']));
+        $member_name = $dbs->escape_string(trim(strip_tags($_POST['memberID'])));
+        $_institution = $dbs->escape_string(trim(strip_tags($_POST['institution'])));
         $photo = 'non_member.png';
         $_checkin_date = date('Y-m-d H:i:s');
         if (!$_institution) {
