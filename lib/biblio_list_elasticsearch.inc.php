@@ -19,7 +19,7 @@ class biblio_list extends biblio_list_model
 {
   private $client;
 
-  public function __construct(object $obj_db, int $int_num_show = 20)
+  public function __construct($obj_db, int $int_num_show = 20)
   {
     global $sysconf;
 
