@@ -158,7 +158,19 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
       unset($biblio['create_date']);
       unset($biblio['modified_date']);
       unset($biblio['origin']);
-      unset($biblio['image']);
+
+      // download image
+      if (isset($biblio['image']) && $biblio['image'] !== '') {
+        $image_path = IMGBS . 'docs' . DS . $biblio['image'];
+        $url_image = $p2pserver . 'images/docs/' . $biblio['image'];
+        $arrContextOptions = array(
+          "ssl" => array(
+            "verify_peer" => false,
+            "verify_peer_name" => false,
+          ),
+        );
+        file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+      }
 
       // fot debugging purpose
       // var_dump($biblio);
@@ -205,7 +217,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
             $stream_file = $p2pserver . '/index.php?p=fstream&fid=' . $digital['id'] . '&bid=' . $id . '&fname=' . $file_name;
             $target_path = REPOBS . str_replace('/', DS, $digital['path']);
             if ($result = downloadFile($url_file, $target_path) !== true) {
-                echo '<p>' . $result . '</p>';
+              echo '<p>' . $result . '</p>';
             } else {
               // save to files
               $fdata['uploader_id'] = $_SESSION['uid'];
@@ -226,7 +238,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
               $ba['access_limit'] = 'literal{NULL}';
               $sql_op->insert('biblio_attachment', $ba);
 
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' download file ('.$fdata['file_title'].') from (' . $stream_file. ')');
+              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' download file (' . $fdata['file_title'] . ') from (' . $stream_file . ')');
             }
           }
         }
@@ -274,6 +286,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
     $header = <<<HTML
 <tr>
   <th scope="col">#</th>
+  <th scope="col">&nbsp;</th>
   <th scope="col">Title</th>
   <th scope="col">Digital Files</th>
 </tr>
@@ -305,11 +318,16 @@ HTML;
       } else {
         $digital_str .= '-';
       }
+
+      $image_str = $p2pserver . 'images/docs/' . $record['image'];
       $row_str = <<<HTML
 <tr class="{$row_class}">
     <th scope="row">
         <input type="checkbox" name="p2precord[]" value="{$record['id']}" />
     </th>
+    <td>
+        <img width="80" src="{$image_str}" alt="{$record['image']}">
+    </td>
     <td>
         <div>{$record['title']}</div>
         <div><i>{$authors}</i></div>
