@@ -692,3 +692,5 @@ $sysconf['log']['biblio'] = TRUE;
 
 // REST Api
 $sysconf['api']['version'] = 1;
+
+$sysconf['visitor_lang'] = 'en-EN'; // Please see lib/lang/locale as reference 

@@ -158,7 +158,7 @@ if (isset($_POST['counter'])) {
   $memberID = trim($_POST['memberID']);
   $counter = setCounter($memberID);
   if ($counter === true) {
-    echo __($member_name.', thank you for inserting your data to our visitor log').'<div id="memberImage" data-img="./images/persons/'.urlencode($photo).'"></div>';
+    echo __($member_name.', thank you for inserting your data to our visitor log');
     if ($expire) {
       echo '<div class="error visitor-error">'.__('Your membership already EXPIRED, please renew/extend your membership immediately').'</div>';
     }
@@ -176,8 +176,16 @@ if (isset($_POST['counter'])) {
 require SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/visitor_template.php';
 
 ?>
+<div style="display: none !important;">
+<input type="text" id="text_voice" value=""></input>
+<button type="button" id="speak">Speak</button>
+</div>
+
 <script type="text/javascript">
 $(document).ready( function() {
+  var success_text = '<?php echo __('Welcome to our library.') ?>';
+  var empty_text = '<?php echo __('Please fill your member ID or name.') ?>';
+  var error_text = '<?php echo __('Error while inserting counter data to database.') ?>';
   // give focus to first field
   $('#memberID').focus();
   var visitorCounterForm = $('#visitorCounterForm');
@@ -187,7 +195,7 @@ $(document).ready( function() {
     e.preventDefault();
     // check member ID or name
     if ($.trim($('#memberID').val()) == '') {
-      $('#counterInfo').html('Please fill your member ID or name');
+      $('#counterInfo').html(error_text);
       return false;
     }
     var theForm     = $(this);
@@ -205,13 +213,15 @@ $(document).ready( function() {
           cache: false,
           success: function(respond) {
             $('#counterInfo').html(respond);
+            $('#text_voice').val(success_text + respond); 
             // reset counter
             setTimeout(function() { 
+              $('#speak').trigger('click');
               $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
               $('#counterInfo').html(defaultMsg); 
               visitorCounterForm.enableForm().find('input[type=text]').val('');
               $('#memberID').focus();
-            }, 5000);
+            }, 1000);
           },
           complete: function() {
             $(this).enableForm().find('input[type=text]').val('');
@@ -224,7 +234,8 @@ $(document).ready( function() {
             $('#memberID').focus();            
           },
           error: function(){
-            alert('Error inserting counter data to database!');
+            // alert('Error inserting counter data to database!');
+            $('#text_voice').val(error_text);            
             $(this).enableForm().find('input[type=text]').val('');
             $('#memberID').focus();
           }
@@ -232,6 +243,20 @@ $(document).ready( function() {
   });
 
 });
+
+$("#speak").on("click", function () {
+    var message = new SpeechSynthesisUtterance($("#text_voice").val());
+    var voices = speechSynthesis.getVoices();
+    // console.log(message);
+    message['volume'] = 1;
+    message['rate'] = 1;
+    message['pitch'] = 1;
+    message['lang'] = '<?php echo $sysconf['visitor_lang']; ?>';
+    message['voice'] = voices[1];
+    speechSynthesis.cancel();
+    speechSynthesis.speak(message);
+});
+
 </script>
 
 <?php
