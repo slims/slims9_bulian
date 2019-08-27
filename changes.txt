@@ -22,16 +22,18 @@ Widianto Nugroho (wnugroho@gmail.com)
 
 Localisation contributors :
 Germany: Tobias Zeumer (tzeumer@verweisungsform.de)
-Thai: Prasitichai เรารักในหลวง <eak.pras@facebook.com>
-Bengali: A. K. M. Nurul Alam <nalamapu@gmail.com>
-Persian: Mohammad Javad Mansourzadeh <info@mansourzadeh.ir>
-Arabic: Rasyid Ridho <rasyidridho@gmail.com>, Bounama Kouider (for full Arabic support)        
+Thai: Prasitichai เรารักในหลวง (eak.pras@facebook.com)
+Bengali: A. K. M. Nurul Alam (nalamapu@gmail.com)
+Persian: Mohammad Javad Mansourzadeh (info@mansourzadeh.ir)
+Arabic: Rasyid Ridho (rasyidridho@gmail.com), Bounama Kouider (for full Arabic support)        
 Malay: Jerry Mohd. Arif 
-Brazilian Portuguese: Eduardo Koiti Kataoka <edukataoka@yahoo.com.br>
-Spain: Jhon Urrego Felipe Mejia <ingenierofelipeurrego@gmail.com>
-Urdu (Pakistan): Faheem Akbar <onlinevws@gmail.com>
+Brazilian Portuguese: Eduardo Koiti Kataoka (edukataoka@yahoo.com.br)
+Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)
+Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com)
 Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)
 
+Code enhancement contributors:
+Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
