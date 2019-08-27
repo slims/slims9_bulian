@@ -47,6 +47,8 @@ Added : New localisation for Turkish language
 Added : New Admin template
 Added : MARC SRU as new copy cataloguing feature
 Modified : Added new menu for adding copy cataloguing servers, including MARC SRU servers
+Added : Voice synthesizer for visitor counter
+Added : Feature to download cover and attachment files (if any) from P2P servers
 
 SLiMS 8.3.1 (Akasia)
 ========================================================================
