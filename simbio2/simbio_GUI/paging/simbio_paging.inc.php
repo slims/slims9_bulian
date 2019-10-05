@@ -145,7 +145,7 @@ class simbio_paging
 				$_last = __('Last Page');
 
         if ($_page < $_num_page_total) {
-            $_buffer .= '<a href="'.$_current_page.($_num_page_total).$str_fragment.'" '.$str_target_frame.' class="last_link">'.$_last."\n";
+            $_buffer .= '<a href="'.$_current_page.($_num_page_total).$str_fragment.'" '.$str_target_frame.' class="last_link">'.$_last.'</a>'."\n";
         }
 
         $_buffer .= '</span>';
