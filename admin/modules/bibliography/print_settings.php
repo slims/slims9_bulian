@@ -88,6 +88,9 @@ loadPrintSettings($dbs, $type);
 //Modified by Eddy Subratha
 //Measure for each configuration
 
+$visibility_options[] = array('0', __('Hide'));
+$visibility_options[] = array('1', __('Show'));
+
 // label print settings
 /* measurement in cm */
 $measure['print']['label']['page_margin']         = __('(px)');
@@ -108,8 +111,10 @@ $measure['print']['barcode']['barcode_items_per_row']       = __('(cm)');
 $measure['print']['barcode']['barcode_items_margin']        = __('(cm)');
 $measure['print']['barcode']['barcode_box_width']           = __('(cm)');
 $measure['print']['barcode']['barcode_box_height']          = __('(cm)');
-$measure['print']['barcode']['barcode_include_header_text'] = ['0' => 'No', '1' => 'Yes'];
-$measure['print']['barcode']['barcode_cut_title']           = ['0' => 'No', '1' => 'Yes'];
+$measure['print']['barcode']['barcode_include_header_text'] = $visibility_options;
+
+
+$measure['print']['barcode']['barcode_cut_title']           = $visibility_options;
 $measure['print']['barcode']['barcode_header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['barcode']['barcode_fonts']               = __('(name of the font used)');
 $measure['print']['barcode']['barcode_font_size']           = __('(pt)');
@@ -120,7 +125,7 @@ $measure['print']['barcode']['barcode_border_size']         = __('(px)');
 $measure['print']['barcodegen']['box_width']                = __('(cm)');
 $measure['print']['barcodegen']['page_margin']              = __('(decimal value. default is 0.2)');
 $measure['print']['barcodegen']['items_margin']             = __('(decimal value. default is 0.05)');
-$measure['print']['barcodegen']['include_border']           = ['0' => 'No', '1' => 'Yes'];
+$measure['print']['barcodegen']['include_border']           = $visibility_options;
 $measure['print']['barcodegen']['items_per_row']            = __('(default is 3)');
 
 /* Receipt Printing */
@@ -147,14 +152,14 @@ $measure['print']['membercard']['factor']                   = __('(cm)');
 
 // Items Settings
 // change to 0 if dont want to use selected items
-$measure['print']['membercard']['include_id_label']         = ['0' => 'No', '1' => 'Yes']; // id
-$measure['print']['membercard']['include_name_label']       = ['0' => 'No', '1' => 'Yes']; // name
-$measure['print']['membercard']['include_pin_label']        = ['0' => 'No', '1' => 'Yes']; // identify
-$measure['print']['membercard']['include_inst_label']       = ['0' => 'No', '1' => 'Yes']; // institution
-$measure['print']['membercard']['include_email_label']      = ['0' => 'No', '1' => 'Yes']; // mail address
-$measure['print']['membercard']['include_address_label']    = ['0' => 'No', '1' => 'Yes']; // home or office address
-$measure['print']['membercard']['include_barcode_label']    = ['0' => 'No', '1' => 'Yes']; // barcode
-$measure['print']['membercard']['include_expired_label']    = ['0' => 'No', '1' => 'Yes']; // expired date
+$measure['print']['membercard']['include_id_label']         = $visibility_options; // id
+$measure['print']['membercard']['include_name_label']       = $visibility_options; // name
+$measure['print']['membercard']['include_pin_label']        = $visibility_options; // identify
+$measure['print']['membercard']['include_inst_label']       = $visibility_options; // institution
+$measure['print']['membercard']['include_email_label']      = $visibility_options; // mail address
+$measure['print']['membercard']['include_address_label']    = $visibility_options; // home or office address
+$measure['print']['membercard']['include_barcode_label']    = $visibility_options; // barcode
+$measure['print']['membercard']['include_expired_label']    = $visibility_options; // expired date
 
 // Cardbox Settings
 $measure['print']['membercard']['box_width']                = __('(cm)');
