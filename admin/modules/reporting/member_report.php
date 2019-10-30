@@ -93,7 +93,7 @@ $report_q = $dbs->query('SELECT m.member_name, m.member_id, COUNT(loan_id) FROM 
     WHERE TO_DAYS(expire_date)>TO_DAYS(\'' . date('Y-m-d') . '\')
     AND (loan_date BETWEEN \'' . $start . '\' AND \'' . $end . '\')
     GROUP BY l.member_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
-if (count($report_q->fetch_row()) > 0) {
+if ($report_q->num_rows > 0) {
   $_ = '__';
   if (!isset($_POST['print'])) {
     $report_d = <<<HTML
@@ -113,6 +113,8 @@ HTML;
     $report_d .= '<li>' . $data[0] . ' (' . $data[1] . ')</li>';
   }
   $report_d .= '</ol>';
+} else {
+    $report_d = '<i>'.__('There are no active members in this period').'</i>';
 }
 $loan_report[__('10 most active members')] = $report_d;
 
