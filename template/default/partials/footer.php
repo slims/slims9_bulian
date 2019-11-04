@@ -1,7 +1,7 @@
 <footer class="s-footer">
   <?php
   // Promoted titles - Only show at the homepage
-  if(  !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
+  if($sysconf['enable_promote_titles'] && !( isset($_GET['search']) || isset($_GET['title']) || isset($_GET['keywords']) || isset($_GET['p']) ) ) :
     // query top book
     $topbook = $dbs->query('SELECT biblio_id, title, image FROM biblio WHERE
         promoted=1 ORDER BY last_update DESC LIMIT 30');
