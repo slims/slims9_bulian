@@ -47,7 +47,7 @@ if (isset($_POST['itemCode'])) {
     echo '<!DOCTYPE html>';
     echo '<html><body>';
     // update item data
-    $item_code = $dbs->escape_string(trim($_POST['itemCode']));
+    $item_code = utility::filterData('itemCode', 'post', true, true, true);
     if (!$item_code) {
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#stError\').html(\'Please enter a valid item code/barcode. You enter a BLANK code!\')';

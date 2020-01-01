@@ -275,7 +275,7 @@ if ($sysconf['index']['type'] == 'index' || ($sysconf['index']['type'] == 'sphin
 $datagrid->setSQLorder('item.last_update DESC');
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    $keywords = $dbs->escape_string(trim($_GET['keywords']));
+    $keywords = utility::filterData('keywords', 'get', true, true, true);
     $searchable_fields = array('title', 'author', 'class', 'callnumber', 'itemcode');
     $search_str = '';
     // if no qualifier in fields
@@ -307,7 +307,7 @@ $datagrid->column_width = array(0 => '75%', 1 => '20%');
 $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, $can_read);
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
     $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords'));
-    echo '<div class="infoBox">'.$msg.' : "'.$_GET['keywords'].'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>';
+    echo '<div class="infoBox">'.$msg.' : "'.htmlspecialchars($_GET['keywords']).'"<div>'.__('Query took').' <b>'.$datagrid->query_time.'</b> '.__('second(s) to complete').'</div></div>';
 }
 echo $datagrid_result;
 /* main content end */

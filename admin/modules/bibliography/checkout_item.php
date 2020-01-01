@@ -84,7 +84,7 @@ $checkout_criteria = ' (l.is_lent=1 AND l.is_return=0) ';
 
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    $keyword = $dbs->escape_string(trim($_GET['keywords']));
+    $keyword = utility::filterData('keywords', 'get', true, true, true);
     $words = explode(' ', $keyword);
     if (count($words) > 1) {
         $concat_sql = ' (';
@@ -114,7 +114,7 @@ $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, false);
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
     echo '<div class="infoBox">';
     $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-    echo $msg.' : "'.$_GET['keywords'].'"</div>';
+    echo $msg.' : "'.htmlspecialchars($_GET['keywords']).'"</div>';
 }
 
 echo $datagrid_result;

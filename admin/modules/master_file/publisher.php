@@ -209,7 +209,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
-        $keywords = $dbs->escape_string($_GET['keywords']);
+        $keywords = utility::filterData('keywords', 'get', true, true, true);
         if (isset($sql_criteria)) {
 		    $sql_criteria .= " AND p.publisher_name LIKE '%$keywords%'";
 		} else {
@@ -232,7 +232,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
         echo '<table cellpadding="3" cellspacing="0" class="infoBox">';
         $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-        echo '<tr><th>'.$msg.' : "'.$_GET['keywords'].'"</th></tr>';
+        echo '<tr><th>'.$msg.' : "'.htmlspecialchars($_GET['keywords']).'"</th></tr>';
         echo '</table>';
     }
 

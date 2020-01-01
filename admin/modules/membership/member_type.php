@@ -246,7 +246,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
-       $keywords = $dbs->escape_string($_GET['keywords']);
+       $keywords = utility::filterData('keywords', 'get', true, true, true);
        $datagrid->setSQLCriteria("mt.member_type_name LIKE '%$keywords%'");
     }
 
@@ -261,7 +261,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
         $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-        echo '<div class="infoBox">'.$msg.' : "'.$_GET['keywords'].'"</div>';
+        echo '<div class="infoBox">'.$msg.' : "'.htmlspecialchars($_GET['keywords']).'"</div>';
     }
 
     echo $datagrid_result;

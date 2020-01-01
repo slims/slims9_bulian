@@ -225,7 +225,7 @@ $datagrid->setSQLColumn('m.member_id',
 $datagrid->setSQLorder('m.last_update DESC');
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    $keyword = $dbs->escape_string(trim($_GET['keywords']));
+    $keyword = utility::filterData('keywords', 'get', true, true, true);
     $words = explode(' ', $keyword);
     if (count($words) > 1) {
         $concat_sql = ' (';
@@ -254,7 +254,7 @@ $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
 // put the result into variables
 $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, $can_read);
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    echo '<div class="infoBox">'.__('Found').' '.$datagrid->num_rows.' '.__('from your search with keyword').': "'.$_GET['keywords'].'"</div>'; //mfc
+    echo '<div class="infoBox">'.__('Found').' '.$datagrid->num_rows.' '.__('from your search with keyword').': "'.htmlspecialchars($_GET['keywords']).'"</div>'; //mfc
 }
 echo $datagrid_result;
 /* main content end */

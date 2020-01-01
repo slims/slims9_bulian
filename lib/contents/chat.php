@@ -105,10 +105,19 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
 <script>
   $.get('chatserver.php', {}, function(){});
   var Server;
+  function escapeHtml(unsafe) {
+      return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+  }
+
   function log( text ) {
     $log = $('#log');
     //Add text to log
-    $log.append(($log.html()?'<br>':'') + text);
+    $log.append(($log.html()?'<br>':'') + escapeHtml(text));
     //Autoscroll
     //$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
   }
