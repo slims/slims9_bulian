@@ -78,14 +78,21 @@ $rda_cmc = array('content' => 'Content Type', 'media' => 'Media Type', 'carrier'
 
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img'])) {
-  $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
-  $_delete2 = $dbs->query(sprintf('UPDATE search_biblio SET image=NULL WHERE biblio_id=%d', $_POST['bimg']));
-  if ($_delete) {
-    $postImage = stripslashes($_POST['img']);
-    $postImage = str_replace('/', '', $postImage);
-    @unlink(sprintf(IMGBS.'docs/%s',$postImage));
-    utility::jsToastr('Bibliography', str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')), 'success');
-    exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+  // validate post image
+  $biblio_id = utility::filterData('bimg', 'post', true, true, true);
+  $image_name = utility::filterData('img', 'post', true, true, true);
+
+  $query_image = $dbs->query("SELECT biblio_id FROM biblio WHERE biblio_id='{$biblio_id}' AND image='{$image_name}'");
+  if ($query_image->num_rows > 0) {
+    $_delete = $dbs->query(sprintf('UPDATE biblio SET image=NULL WHERE biblio_id=%d', $biblio_id));
+    $_delete2 = $dbs->query(sprintf('UPDATE search_biblio SET image=NULL WHERE biblio_id=%d', $biblio_id));
+    if ($_delete) {
+      $postImage = stripslashes($_POST['img']);
+      $postImage = str_replace('/', '', $postImage);
+      @unlink(sprintf(IMGBS.'docs/%s',$postImage));
+      utility::jsToastr('Bibliography', str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')), 'success');
+      exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+    }
   }
   exit();
 }

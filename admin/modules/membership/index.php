@@ -68,10 +68,19 @@ if (version_compare(phpversion(), '5.4', '<'))
 
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img'])) {
-  $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $_POST['mimg']));
-  if ($_delete) {
-    @unlink(sprintf(IMGBS.'persons/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+  // validate post image
+  $member_id = utility::filterData('mimg', 'post', true, true, true);
+  $image_name = utility::filterData('img', 'post', true, true, true);
+
+  $query_image = $dbs->query("SELECT mameber_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
+  if ($query_image > 0) {
+    $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $member_id));
+    if ($_delete) {
+      $postImage = stripslashes($_POST['img']);
+      $postImage = str_replace('/', '', $postImage);
+      @unlink(sprintf(IMGBS.'persons/%s', $postImage));
+      exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+    }
   }
   exit();
 }
