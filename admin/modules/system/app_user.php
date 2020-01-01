@@ -158,7 +158,7 @@ if (isset($_POST['saveData'])) {
             // remove input date
             unset($data['input_date']);
             // filter update record ID
-            $updateRecordID = (integer)$_POST['updateRecordID'];
+            $updateRecordID = $_SESSION['uid'] > 1 ? $_SESSION['uid'] : (integer)$_POST['updateRecordID'];
             // update the data
             $update = $sql_op->update('user', $data, 'user_id='.$updateRecordID);
             if ($update) {
