@@ -132,12 +132,15 @@ class simbio_datagrid extends simbio_table
         $_next_dir = 'DESC';
         $_sort_dir_info = __('ascendingly');
         if (isset($_GET[$_fld_sort]) AND !empty($_GET[$_fld_sort])) {
-            $this->sql_order = 'ORDER BY `'.urldecode($_GET[$_fld_sort]).'` ';
+            $orderBy = str_replace(["`"], '', utility::filterData($_fld_sort, 'get', true, true, true));
+            $this->sql_order = 'ORDER BY `'.urldecode($orderBy).'` ';
             // record order direction
             if (isset($_GET['dir']) AND ($_dir = trim($_GET['dir']))) {
                 if ($_dir == 'DESC') {
+                    $_dir = 'DESC';
                     $_next_dir = 'ASC';
                 } else {
+                    $_dir = 'ASC';
                     $_next_dir = 'DESC';
                     $_sort_dir_info = __('descendingly');
                 }
