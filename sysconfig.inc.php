@@ -34,6 +34,8 @@ if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require '
 @ini_set('magic_quotes_gpc', false);
 @ini_set('magic_quotes_runtime', false);
 @ini_set('magic_quotes_sybase', false);
+// use httpOnly for cookie
+@ini_set( 'session.cookie_httponly', true );
 // force disabling magic quotes
 if (get_magic_quotes_gpc()) {
   function stripslashes_deep($value)
