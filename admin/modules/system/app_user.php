@@ -66,10 +66,19 @@ if (!$changecurrent) {
 
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img'])) {
-  $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $_POST['uimg']));
-  if ($_delete) {
-    @unlink(sprintf(IMGBS.'persons/%s',$_POST['img']));
-    exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')).'\'); $(\'#userImage, #imageFilename\').remove();</script>');
+  // validate post image
+  $user_id = $_SESSION['uid'] > 1 ? $_SESSION['uid'] : utility::filterData('uimg', 'post', true, true, true);
+  $image_name = utility::filterData('img', 'post', true, true, true);
+
+  $query_image = $dbs->query("SELECT user_id FROM user WHERE user_id='{$user_id}' AND user_image='{$image_name}'");
+  if ($query_image->num_rows > 0) {
+    $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $_POST['uimg']));
+    if ($_delete) {
+      $postImage = stripslashes($_POST['img']);
+      $postImage = str_replace('/', '', $postImage);
+      @unlink(sprintf(IMGBS.'persons/%s', $postImage));
+      exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $postImage, __('{imageFilename} successfully removed!')).'\'); $(\'#userImage, #imageFilename\').remove();</script>');
+    }
   }
   exit();
 }
