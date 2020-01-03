@@ -1,78 +1,53 @@
 <?php
-/**
- * @Author: ido_alit
- * @Date:   2015-11-12 18:45:37
- * @Last Modified by:   ido_alit
- * @Last Modified time: 2015-11-22 19:23:00
- */
+# @Author: Waris Agung Widodo <user>
+# @Date:   2018-01-21T11:36:53+07:00
+# @Email:  ido.alit@gmail.com
+# @Filename: index_template.inc.php
+# @Last modified by:   user
+# @Last modified time: 2018-01-26T11:37:10+07:00
 
-/*
-=========================
-Be sure that this file not accessed directly
-=========================
-*/
-if (!defined('INDEX_AUTH')) {
-  die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) {
-  die("can not access this file directly");
+//$a = get_defined_vars();
+//$a['sysconf'] = null;
+//$a['main_content'] = null;
+//echo '<pre>'; print_r($a); echo '</pre>'; die();
+//echo '<pre>'; print_r($_SESSION); echo '</pre>'; die();
+
+// ----------------------------------------------------------------------------
+// load function library for classic template
+// ----------------------------------------------------------------------------
+include_once 'classic.php';
+
+// ----------------------------------------------------------------------------
+// load header
+// ----------------------------------------------------------------------------
+include 'parts/header.php';
+
+// ----------------------------------------------------------------------------
+// load content by URI
+// ----------------------------------------------------------------------------
+if (isset($_GET['p']) || isset($_GET['search'])) {
+  // --------------------------------------------------------------------------
+  // handle result search
+  if (isset($_GET['search'])) {
+    // ------------------------------------------------------------------------
+    // load parts result search template
+    include 'parts/_result-search.php';
+  } else {
+    // --------------------------------------------------------------------------
+    // handle member page
+    if ($_GET['p'] == 'member') {
+      include 'parts/_member.php';
+    } else {
+      include 'parts/_other.php';
+    }
+  }
+} else {
+  // --------------------------------------------------------------------------
+  // not found query string: load home page
+  include 'parts/_home.php';
 }
 
-/*
-=========================
-Define current public template directory
-=========================
-*/
-define('CURRENT_TEMPLATE_DIR', $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/');
-
-/*
-=========================
-Load config template
-=========================
-*/
-include 'tinfo.inc.php';
-utility::loadSettings($dbs);
-
-/*
-=========================
-Load custome function
-=========================
-*/
-include 'function.php';
-
-/*
-=========================
-Load header
-- open html tag
-- head tag
-- open body tag
-=========================
-*/
-include 'part/header.php';
-
-/*
-=========================
-Load content
-=========================
-| You can change the layout of template part
-| by change/move/remove structure of load content part
-*/
-include 'part/content/library-name.php';
-include 'part/content/nav.php';
-
-// open row for grouping
-include 'part/content/row_open.php';
-include 'part/main-content.php';
-include 'part/sidebar.php';
-// close row
-include 'part/content/row_close.php';
-
-// include 'part/content/footer.php';
-
-/*
-=========================
-Load footer
-- close body tag
-- close html tag
-=========================
-*/
-include 'part/footer.php';
+// ----------------------------------------------------------------------------
+// load footer
+// ----------------------------------------------------------------------------
+include 'parts/footer.php';

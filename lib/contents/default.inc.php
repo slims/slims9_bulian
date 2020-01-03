@@ -127,7 +127,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
       $callnumber = trim(strip_tags(urldecode($_GET['callnumber'])));
     }
     // don't do search if all search field is empty
-    if ($title || $author || $subject || $isbn || $gmd || $colltype || $location || $publisher || $callnumber) {
+    if ($title || $author || $subject || $isbn || $gmd || $colltype || $location || $publisher || $callnumber !== '') {
       $criteria = '';
       if ($title) { $criteria .= ' title='.$title; }
       if ($author) { $criteria .= ' author='.$author; }
@@ -137,7 +137,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
       if ($colltype) { $criteria .= ' colltype="'.$colltype.'"'; }
       if ($location) { $criteria .= ' location="'.$location.'"'; }
       if ($publisher) { $criteria .= ' publisher="'.$publisher.'"'; }
-      if ($callnumber) { $criteria .= ' callnumber="'.$callnumber.'"'; }
+      if ($callnumber !== '') { $criteria .= ' callnumber="'.$callnumber.'"'; }
       $criteria = trim($criteria);
       $biblio_list->setSQLcriteria($criteria);
     }
@@ -167,7 +167,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     if ($colltype) { $search_result_info .= 'Collection Type : <strong><cite>'.$colltype.'</cite></strong>, '; }
     if ($location) { $search_result_info .= 'Location : <strong><cite>'.$location.'</cite></strong>, '; }
     if ($publisher) { $search_result_info .= 'Publisher : <strong><cite>'.$publisher.'</cite></strong>, '; }
-    if ($callnumber) { $search_result_info .= 'Call Number : <strong><cite>'.$callnumber.'</cite></strong>, '; }
+    if ($callnumber !== '') { $search_result_info .= 'Call Number : <strong><cite>'.$callnumber.'</cite></strong>, '; }
     // strip last comma
     $search_result_info = substr_replace($search_result_info, '', -2);
   } else {
