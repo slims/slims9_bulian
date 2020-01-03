@@ -98,6 +98,10 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
                     })
             },
             onSubmit: function() {
+                if (this.memberId === '') {
+                    this.resetForm()
+                    return
+                }
                 let url = 'index.php?p=visitor'
                 let data = new FormData()
                 data.append('memberID', this.memberId)
@@ -118,14 +122,17 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
                         console.log(err);
                     })
                     .finally(() => {
-                        this.memberId = ''
-                        this.institution = ''
-                        this.$refs.memberId.focus()
+                        this.resetForm()
                         clearTimeout(this.timeout)
                         this.timeout = setTimeout(() => {
                             this.getQuotes()
                         }, 5000)
                     })
+            },
+            resetForm: function () {
+                this.memberId = ''
+                this.institution = ''
+                this.$refs.memberId.focus()
             }
         }
     })
