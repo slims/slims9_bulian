@@ -73,7 +73,7 @@
     <link rel="shortcut icon" href="webicon.ico" type="image/x-icon"/>
 
     <!-- // load vue js -->
-    <script src="<?php echo assets('js/vue.js'); ?>"></script>
+    <script src="<?php echo assets('js/vue.min.js'); ?>"></script>
     <!-- // load jquery library -->
     <script src="<?php echo assets('js/jquery.min.js'); ?>"></script>
     <!-- // load bootstrap javascript -->
