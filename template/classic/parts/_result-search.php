@@ -46,7 +46,7 @@
               $randome = getRandomBiblio($dbs);
               if (count($randome) > 0) {
               ?>
-                <h6 class="mb-2">Sugestion</h6>
+                <h6 class="mb-2">Suggestion</h6>
                 <div class="card-list d-flex flex-column mb-4">
                   <?php
                   foreach ($randome as $biblio) {
@@ -59,7 +59,7 @@
                                   <img src="<?= $thumb_url; ?>" alt="image" class="img-fluid">
                               </div>
                               <div class="card-text title">
-                                  <?= $biblio['title']; ?>
+                                  <a class="text-decoration-none text-grey-darker" href="<?= SWB . 'index.php?p=show_detail&id=' . $biblio['biblio_id']; ?>"><?= $biblio['title']; ?></a>
                               </div>
                               <div class="card-text author">
                                   <i><?= $biblio['author']; ?></i>
