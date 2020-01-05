@@ -34,38 +34,42 @@
                   if (strlen($main_content) == 7) {
                     echo '<h2 class="text-danger">' . __('No Result') . '</h2><hr/><p class="text-danger">' . __('Please try again') . '</p>';
                   } else {
-                      echo $main_content;
+                    echo $main_content;
                   }
                   ?>
                 </div>
             </div>
             <div class="col-md-4">
                 <h4 class="mb-2">Search Result</h4>
-                <?php
-                echo '<div class=" mb-4 text-sm">'.$search_result_info.'</div><hr>';
-                ?>
-<!--                <h6>Sugestion</h6>-->
-<!--                <div class="card-list d-flex flex-column">-->
-<!--                  --><?php
-//                  for ($i = 0; $i < 5; $i++) {
-//                    ?>
-<!--                      <div class="card sugestion border-0 elevation-1 mb-2">-->
-<!--                          <div class="card-body">-->
-<!--                              <div class="container-img elevation-2">-->
-<!--                                  <img src="images/docs/ajax.jpg" alt="image" class="img-fluid">-->
-<!--                              </div>-->
-<!--                              <div class="card-text title">-->
-<!--                                  Ut malis arbitror qui fabulas magna litteris constias.-->
-<!--                              </div>-->
-<!--                              <div class="card-text author">-->
-<!--                                  <i>Commodo enim - consequat est enim</i>-->
-<!--                              </div>-->
-<!--                          </div>-->
-<!--                      </div>-->
-<!--                    --><?php
-//                  }
-//                  ?>
-<!--                </div>-->
+              <?php
+              echo '<div class=" mb-4 text-sm">' . $search_result_info . '</div><hr>';
+              $randome = getRandomBiblio($dbs);
+              if (count($randome) > 0) {
+              ?>
+                <h6 class="mb-2">Sugestion</h6>
+                <div class="card-list d-flex flex-column mb-4">
+                  <?php
+                  foreach ($randome as $biblio) {
+                    $images_loc = '../../images/docs/'.$biblio['image'];
+                    $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
+                    ?>
+                      <div class="card sugestion border-0 elevation-1 mb-2">
+                          <div class="card-body">
+                              <div class="container-img elevation-2">
+                                  <img src="<?= $thumb_url; ?>" alt="image" class="img-fluid">
+                              </div>
+                              <div class="card-text title">
+                                  <?= $biblio['title']; ?>
+                              </div>
+                              <div class="card-text author">
+                                  <i><?= $biblio['author']; ?></i>
+                              </div>
+                          </div>
+                      </div>
+                    <?php
+                  }}
+                  ?>
+                </div>
             </div>
         </div>
     </section>

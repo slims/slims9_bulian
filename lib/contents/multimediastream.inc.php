@@ -71,21 +71,17 @@ $plyr_core = JWB.'plyr/';
 <title>Multimedia Viewer</title>
 </head>
 <body>
-    <div class="container">
-            <div class="text-align-center align-middle">
-            <?php if($mime == 'audio/mpeg') : ?>
-            <audio id="player" controls class="col" >
-                <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>">
-            </audio>
-            <?php else : ?>
-            <div class="row">
-            <video controls crossorigin playsinline poster="<?php echo $cover ?>" id="player">
-                <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>" >
-            </video>
-            </div>
-            <?php endif ?>
-            </div>  
-    </div>
+<div class="d-flex align-items-center justify-content-center" style="height: 100vh">
+  <?php if($mime == 'audio/mpeg') : ?>
+      <audio id="player" controls class="col" >
+          <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>">
+      </audio>
+  <?php else : ?>
+      <video controls crossorigin playsinline poster="<?php echo $cover ?>" id="player">
+          <source src="<?php echo $multimedia_url ?>" type="<?php echo $mime ?>" >
+      </video>
+  <?php endif ?>
+</div>
 </body>
 <script src="<?php echo $plyr_core ?>plyr.polyfilled.js" crossorigin="anonymous"></script>
 <script>const player = new Plyr('#player',{
