@@ -60,8 +60,6 @@
   <?php endif; ?>
     <!-- // load bootstrap style -->
     <link rel="stylesheet" href="<?php echo assets('css/bootstrap.min.css'); ?>">
-    <!-- // my custom style -->
-    <link rel="stylesheet" href="<?php echo assets('css/style.css?v=' . date('Ymd-his')); ?>">
     <!-- // font awesome -->
     <link rel="stylesheet" href="<?php echo assets('plugin/font-awesome/css/fontawesome-all.min.css'); ?>">
     <!-- Tailwind CSS -->
@@ -69,6 +67,10 @@
     <!-- Vegas CSS -->
     <link rel="stylesheet" href="<?php echo assets('plugin/vegas/vegas.min.css'); ?>">
     <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+    <!-- SLiMS CSS -->
+    <link rel="stylesheet" href="<?= JWB; ?>colorbox/colorbox.css">
+    <!-- // my custom style -->
+    <link rel="stylesheet" href="<?php echo assets('css/style.css?v=' . date('Ymd-his')); ?>">
 
     <link rel="shortcut icon" href="webicon.ico" type="image/x-icon"/>
 
@@ -81,6 +83,10 @@
     <!-- // load vegas javascript -->
     <script src="<?php echo assets('plugin/vegas/vegas.min.js'); ?>"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
+    <!-- // load SLiMS javascript -->
+    <script type="text/javascript" src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
+
 
 </head>
 <body class="bg-grey-lightest">

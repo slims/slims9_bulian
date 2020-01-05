@@ -28,20 +28,20 @@ if (!defined('INDEX_AUTH')) {
 /* File Viewer */
 
 // get file ID
-$fileID = isset($_GET['fid'])?(integer)$_GET['fid']:0;
+$fileID = isset($_GET['fid']) ? (integer)$_GET['fid'] : 0;
 // get biblioID
-$biblioID = isset($_GET['bid'])?(integer)$_GET['bid']:0;
+$biblioID = isset($_GET['bid']) ? (integer)$_GET['bid'] : 0;
 
 // query file to database
 $sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
   LEFT JOIN files AS f ON att.file_id=f.file_id
-  WHERE att.file_id='.$fileID.' AND att.biblio_id='.$biblioID.' AND att.access_type=\'public\'';
+  WHERE att.file_id=' . $fileID . ' AND att.biblio_id=' . $biblioID . ' AND att.access_type=\'public\'';
 $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
-  $file_loc_url = SWB.'index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
-  $file_loc = REPOBS.( $file_d['file_dir']?$file_d['file_dir'].'/':'' ).$file_d['file_name'];
+  $file_loc_url = SWB . 'index.php?p=fstream&fid=' . $fileID . '&bid=' . $biblioID;
+  $file_loc = REPOBS . ($file_d['file_dir'] ? $file_d['file_dir'] . '/' : '') . $file_d['file_name'];
   if (file_exists($file_loc)) {
     // check access limit
     if ($file_d['access_limit']) {
@@ -54,32 +54,37 @@ if ($file_q->num_rows > 0) {
           exit();
         }
       } else {
-        $referto = SWB.'index.php?p=member&destination=index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
+        $referto = SWB . 'index.php?p=member&destination=index.php?p=fstream&fid=' . $fileID . '&bid=' . $biblioID;
         header("location:$referto");
-        exit();
-        }
-      }
-
-      if ($file_d['mime_type'] == 'application/pdf') {
-        if ($sysconf['pdf']['viewer'] == 'pdfjs') {
-          $file_loc_url = SWB.'index.php?p=fstream-pdf&fid='.$fileID.'&bid='.$biblioID;
-          require './js/pdfjs/web/viewer.php';
-          exit();
-        }
-      } else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
-        header('Content-Disposition: inline; filename="'.basename($file_loc).'"');
-        header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
-        exit();
-      } else {
-        header('Content-Disposition: Attachment; filename="'.basename($file_loc).'"');
-        header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
         exit();
       }
     }
-    exit();
+
+    if ($file_d['mime_type'] == 'application/pdf') {
+      if ($sysconf['pdf']['viewer'] == 'pdfjs') {
+        $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
+        require './js/pdfjs/web/viewer.php';
+        exit();
+      }
+    } else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
+      header('Content-Disposition: inline; filename="' . basename($file_loc) . '"');
+      header('Content-Type: ' . $file_d['mime_type']);
+      readfile($file_loc);
+      exit();
+    } else {
+      if (strpos($file_d['mime_type'], 'video') !== false) {
+        require_once LIB . 'VideoStream.php';
+        $stream = new VideoStream($file_loc, $file_d['mime_type']);
+        $stream->start();
+      } else {
+        header('Content-Disposition: Attachment; filename="' . basename($file_loc) . '"');
+        header('Content-Type: ' . $file_d['mime_type']);
+        readfile($file_loc);
+      }
+      exit();
+    }
+  }
+  exit();
 } else {
   die('<div class="errorBox">File Not Found!</div>');
 }
-exit();
