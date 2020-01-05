@@ -220,7 +220,10 @@ $sysconf['jsonld_detail'] = true;
 if (preg_match("/(Windows)/i", php_uname('a'))) {
    if (preg_match("/(xampp)/i", __DIR__)) {
       $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
-      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";  
+      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";
+    } else {
+      // not use XAMPP? change this value with full path of mysqldump.exe
+      $sysconf['mysqldump'] = 'C:\...\mysqldump.exe';
     }
 } else {
    // For Linux Platform
