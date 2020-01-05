@@ -10,15 +10,15 @@
 // Be sure that this file not accessed directly
 // ----------------------------------------------------------------------------
 if (!defined('INDEX_AUTH')) {
-    die("can not access this file directly");
+  die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
-    die("can not access this file directly");
+  die("can not access this file directly");
 }
 
 // ----------------------------------------------------------------------------
 // Define current public template directory
 // ----------------------------------------------------------------------------
-define('CURRENT_TEMPLATE_DIR', $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/');
+define('CURRENT_TEMPLATE_DIR', $sysconf['template']['dir'] . '/' . $sysconf['template']['theme'] . '/');
 
 // ----------------------------------------------------------------------------
 // Define member login state
@@ -32,7 +32,7 @@ $member_image_path = getImagePath($sysconf, $member_image_name, 'persons');
 // ----------------------------------------------------------------------------
 function assets($path = '')
 {
-  return CURRENT_TEMPLATE_DIR . 'assets/'  . $path;
+  return CURRENT_TEMPLATE_DIR . 'assets/' . $path;
 }
 
 // ----------------------------------------------------------------------------
@@ -134,6 +134,28 @@ function getLatestBiblio($dbs, $limit = 5)
 // ----------------------------------------------------------------------------
 // Get latest update collection
 // ----------------------------------------------------------------------------
+function getRandomBiblio($dbs, $limit = 5)
+{
+  $sql = "SELECT biblio.biblio_id, biblio.title, biblio.image, GROUP_CONCAT(mst_author.author_name SEPARATOR ' - ') AS author
+          FROM biblio
+          LEFT JOIN biblio_author ON biblio.biblio_id=biblio_author.biblio_id
+          LEFT JOIN mst_author ON biblio_author.author_id=mst_author.author_id
+          GROUP BY biblio_author.biblio_id
+          ORDER BY RAND()
+          LIMIT {$limit}";
+
+  $query = $dbs->query($sql);
+  $return = array();
+  while ($data = $query->fetch_assoc()) {
+    $return[] = $data;
+  }
+
+  return $return;
+}
+
+// ----------------------------------------------------------------------------
+// Get latest update collection
+// ----------------------------------------------------------------------------
 function getLatestTopic($dbs, $limit = 5)
 {
   $sql = "SELECT mt.topic
@@ -154,7 +176,7 @@ function getLatestTopic($dbs, $limit = 5)
 }
 
 $content = file_get_contents(__DIR__ . '/parts/header.php');
-if (!strpos(strtolower($content), implode('', ['i','d','o','.','a','l','i','t']))) echo '<div id="'.implode('', ['v', 'i', 'o']).'"></div>';
+if (!strpos(strtolower($content), implode('', ['i', 'd', 'o', '.', 'a', 'l', 'i', 't']))) echo '<div id="' . implode('', ['v', 'i', 'o']) . '"></div>';
 
 // ----------------------------------------------------------------------------
 // Get topics from biblio
@@ -203,30 +225,32 @@ function getActiveMembers($dbs, $year, $limit = 3)
 // get thumbnail image url
 // ----------------------------------------------------------------------------
 function getImagePath($sysconf, $image, $path = 'docs')
-  {
-    // cover images var
-    $thumb_url = '';
-    $image = urlencode($image);
-    $images_loc = '../../images/'.$path.'/'.$image;
-    $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
+{
+  // cover images var
+  $thumb_url = '';
+  $image = urlencode($image);
+  $images_loc = '../../images/' . $path . '/' . $image;
+  $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
 
-    return $thumb_url;
-  }
+  return $thumb_url;
+}
 
 // ----------------------------------------------------------------------------
 // Truncate a string only at a whitespace (by nogdog)
 // ----------------------------------------------------------------------------
-function truncate($text, $length) {
-   $length = abs((int)$length);
-   if(strlen($text) > $length) {
-      $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
-   }
-   return($text);
+function truncate($text, $length)
+{
+  $length = abs((int)$length);
+  if (strlen($text) > $length) {
+    $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
+  }
+  return ($text);
 }
 
 // ----------------------------------------------------------------------------
 // Get query params value
 // ----------------------------------------------------------------------------
-function getQuery($key, $optional = '') {
+function getQuery($key, $optional = '')
+{
   return isset($_GET[$key]) ? trim($_GET[$key]) : $optional;
 }
