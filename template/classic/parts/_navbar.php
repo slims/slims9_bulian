@@ -95,16 +95,51 @@ HTML;
                       <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> Profile</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="index.php?p=member&logout=1"><i
-                                  class="fas fa-sign-out-alt mr-3"></i> Logout</a>
+                                  class="fas fa-sign-out-alt mr-3"></i> <?= __('Logout'); ?></a>
                   </div>
               </li>
           <?php } else { ?>
               <li class="nav-item <?= $menu_member_active; ?>">
-                  <a class="nav-link" href="index.php?p=member">Member login</a>
+                  <a class="nav-link" href="index.php?p=member"><?= __('Member Area') ?></a>
               </li>
           <?php } ?>
-            <li class="nav-item">
-                <a href="https://slims.web.id/web/pages/support-us/" class="btn btn-outline-success"><i class="fas fa-heart mr-2"></i>Support Us</a>
+            <li class="nav-item dropdown">
+              <?php
+              $langstr = '';
+              $current_lang = '';
+              require_once(LANG . 'localisation.php');
+              foreach ($available_languages AS $lang_index) {
+                $selected = null;
+                $lang_code = $lang_index[0];
+                $lang_name = $lang_index[1];
+                $code_arr = explode('_', $lang_code);
+                $code_flag = strtolower($code_arr[1]);
+                // code flag correction
+                switch ($code_flag) {
+                  case 'ar':
+                    $code_flag = 'sa';
+                }
+                if ($lang_code == $sysconf['default_lang']) {
+                  $current_lang = [
+                    'name' => $lang_name,
+                    'code' => $code_flag
+                  ];
+                }
+                $langstr .= <<<HTML
+    <a class="dropdown-item" href="index.php?select_lang={$lang_code}">
+        <span class="flag-icon flag-icon-{$code_flag} mr-2" style="border-radius: 2px;"></span> {$lang_name}
+    </a>
+HTML;
+              }
+              ?>
+                <a class="nav-link dropdown-toggle cursor-pointer" type="button" id="languageMenuButton"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="flag-icon flag-icon-<?= $current_lang['code'] ?>" style="border-radius: 2px;"></span>
+                </a>
+                <div class="dropdown-menu bg-grey-lighter dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton">
+                    <h6 class="dropdown-header"><?= __('Select Language'); ?> : </h6>
+                  <?= $langstr; ?>
+                </div>
             </li>
         </ul>
     </div>

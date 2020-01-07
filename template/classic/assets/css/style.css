@@ -662,3 +662,7 @@ html {
 #cboxTopCenter {
     height: 0;
 }
+
+#languageMenuButton::after {
+    display: none;
+}
