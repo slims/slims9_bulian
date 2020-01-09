@@ -69,6 +69,8 @@
     <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
     <!-- SLiMS CSS -->
     <link rel="stylesheet" href="<?= JWB; ?>colorbox/colorbox.css">
+    <!-- // Flag css -->
+    <link rel="stylesheet" href="<?php echo assets('css/flag-icon.min.css'); ?>">
     <!-- // my custom style -->
     <link rel="stylesheet" href="<?php echo assets('css/style.css?v=' . date('Ymd-his')); ?>">
 
@@ -78,6 +80,8 @@
     <script src="<?php echo assets('js/vue.min.js'); ?>"></script>
     <!-- // load jquery library -->
     <script src="<?php echo assets('js/jquery.min.js'); ?>"></script>
+    <!-- // load popper javascript -->
+    <script src="<?php echo assets('js/popper.min.js'); ?>"></script>
     <!-- // load bootstrap javascript -->
     <script src="<?php echo assets('js/bootstrap.min.js'); ?>"></script>
     <!-- // load vegas javascript -->

@@ -62,7 +62,7 @@ _textdomain($domain);
 
 // Array with available translations
 // $available_languages[] = array('CODE', __('ENGLISH NAME'), 'NATIVE NAME');
-$available_languages[] = array('ar_AR', __('Arabic'), 'Arabic');
+$available_languages[] = array('ar_SA', __('Arabic'), 'Arabic');
 $available_languages[] = array('bn_BD', __('Bengali'), 'Bengali');
 $available_languages[] = array('pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese');
 $available_languages[] = array('en_US', __('English'), 'English');
