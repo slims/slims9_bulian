@@ -1,0 +1,4499 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Senayan5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-05 16:43+0500\n"
+"PO-Revision-Date: 2012-11-05 16:43+0500\n"
+"Last-Translator: Igor Gaidyshev <igor.gaidyshev@gmail.com>\n"
+"Language-Team: Igor Gaidyshev <igor.gaidyshev@gmail.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_ngettext\n"
+"X-Poedit-Basepath: ../../../../../\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: sysconfig.inc.php:552
+msgid "Personal Name"
+msgstr "Персональное имя"
+
+#: sysconfig.inc.php:553
+msgid "Organizational Body"
+msgstr "Организационная основа"
+
+#: sysconfig.inc.php:554
+msgid "Conference"
+msgstr "Конференция"
+
+#: sysconfig.inc.php:557
+msgid "Topic"
+msgstr "Тема"
+
+#: sysconfig.inc.php:558
+msgid "Geographic"
+msgstr "Географический"
+
+#: sysconfig.inc.php:559
+msgid "Name"
+msgstr "Имя"
+
+#: sysconfig.inc.php:560
+msgid "Temporal"
+msgstr "Временный"
+
+#: sysconfig.inc.php:561
+msgid "Genre"
+msgstr "Жанр"
+
+#: sysconfig.inc.php:562
+msgid "Occupation"
+msgstr "Занятость"
+
+#: sysconfig.inc.php:565
+msgid "Primary Author"
+msgstr "Первый автор"
+
+#: sysconfig.inc.php:566
+msgid "Additional Author"
+msgstr "Дополнительный автор"
+
+#: sysconfig.inc.php:567
+msgid "Editor"
+msgstr "Редактор"
+
+#: sysconfig.inc.php:568
+msgid "Translator"
+msgstr "Переводчик"
+
+#: sysconfig.inc.php:569
+msgid "Director"
+msgstr "Директор"
+
+#: sysconfig.inc.php:570
+msgid "Producer"
+msgstr "Издатель"
+
+#: sysconfig.inc.php:571
+msgid "Composer"
+msgstr "Составитель"
+
+#: sysconfig.inc.php:572
+msgid "Illustrator"
+msgstr "Иллюстратор"
+
+#: sysconfig.inc.php:573
+msgid "Creator"
+msgstr "Создатель"
+
+#: sysconfig.inc.php:574
+msgid "Contributor"
+msgstr "Распространитель"
+
+#: index.php:43
+msgid "Web Online Public Access Catalog - Use the search options to find documents quickly"
+msgstr "Электронный каталог публичного доступа - используйте возможности поиска для быстрого нахождения документов"
+
+#: index.php:52
+msgid "You are currently Logged on as member"
+msgstr "Сейчас Вы вошли как читатель"
+
+#: index.php:52
+msgid "LOGOUT"
+msgstr "ВЫХОД"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:89
+msgid "DELETE"
+msgstr "УДАЛИТЬ"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:90
+msgid "EDIT"
+msgstr "РЕДАКТИРОВАТЬ"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:105
+msgid "Are You Sure Want to DELETE Selected Data?"
+msgstr "Вы уверены, что хотите СТЕРЕТЬ выбранные данные?"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:109
+msgid "Delete Selected Data"
+msgstr "Стереть выбранные данные"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:137
+msgid "ascendingly"
+msgstr "по возрастанию"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:146
+msgid "descendingly"
+msgstr "по убыванию"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:215
+msgid "Order list by"
+msgstr "Сортировать список по"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:372
+msgid "Check All"
+msgstr "Отметить все"
+
+#: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:373
+msgid "Uncheck All"
+msgstr "Снять все отметки"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:118
+msgid "First Page"
+msgstr "Первая страница"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:120
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:141
+msgid "Next"
+msgstr "Следующий"
+
+#: simbio2/simbio_GUI/paging/simbio_paging.inc.php:149
+msgid "Last Page"
+msgstr "Последняя страница"
+
+#: simbio2/simbio_GUI/table/simbio_table.inc.php:223
+msgid "No Data"
+msgstr "Нет данных"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:267
+msgid "Date"
+msgstr "Дата"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:270
+msgid "Month"
+msgstr "Месяц"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:105
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:98
+msgid "Delete Record"
+msgstr "Стереть запись"
+
+#: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:106
+#: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:99
+msgid "Cancel"
+msgstr "Прервать"
+
+#: admin/index.php:66
+msgid "Welcome To The Library Automation System, you are currently logged in as"
+msgstr "Добро пожаловать в Систему Автоматизации Библиотеки, Вы вошли как"
+
+#: admin/logout.php:36
+msgid "You Have Been Logged Out From Library Automation System"
+msgstr "Вы вышли из Системы Автоматизации Библиотеки"
+
+#: admin/default/home.php:45
+msgid "<strong>PHP GD</strong> extension is not installed. Please install it or application won't be able to create image thumbnail and barcode."
+msgstr "<strong>PHP GD</strong> не установлено. Установите это приложение для возможности создания изображений предпросмотра и штрих-кода."
+
+#: admin/default/home.php:49
+msgid "<strong>Freetype</strong> support is not enabled in PHP GD extension. Rebuild PHP GD extension with Freetype support or application won't be able to create barcode."
+msgstr "Поддержка <strong>Freetype</strong> недоступна в расширении PHP GD. Перестройте расширение PHP GD с поддержкой Freetype, или приложению будет недоступно создание штрих-кода."
+
+#: admin/default/home.php:56
+msgid "There is currently <strong>{num_overdue}</strong> library members having overdue. Please check at <b>Circulation</b> module at <b>Overdues</b> section for more detail"
+msgstr "Это текущие <strong>{num_overdue}</strong> читатели библиотеки, имеющие просрочки. Пожалуйста, отметьте в модуле <b>Обращения</b> секцию <b>Просрочки</b> для подробностей"
+
+#: admin/default/home.php:61
+msgid "<strong>Images</strong> directory and directories under it is not writable. Make sure it is writable by changing its permission or you won't be able to upload any images and create barcodes"
+msgstr "Каталог <strong>изображений</strong> или его подкаталоги недоступны для записи. Будьте уверены, что они доступны для записи путем изменения прав доступа, или Вы не сможете загружать изображения и создавать штрих-коды"
+
+#: admin/default/home.php:65
+msgid "<strong>Repository</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any bibliographic attachments."
+msgstr "Каталог <strong>репозитория</strong> недоступен для записи. Будьте уверены, что он и все его подкаталоги доступны для записи путем изменения прав доступа, или Вы не сможете загружать библиографические вложения"
+
+#: admin/default/home.php:69
+msgid "<strong>File upload</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won't be able to upload any file, create report files and create database backups."
+msgstr "Каталог <strong>загрузки файлов</strong> недоступен для записи. Будьте уверены, что он и все его подкаталоги доступны для записи путем изменения прав доступа, или Вы не сможете загружать файлы, создавать отчеты и резервные копии базы данных"
+
+#: admin/default/home.php:73
+msgid "The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won't be able to do any database backups."
+msgstr "ПУТЬ для программы <strong>mysqldump</strong> неправильный! Пожалуйста, проверьте файл конфигурации, или Вам будет недоступно резервное копирование базы данных."
+
+#: admin/default/session_check.inc.php:32
+#: admin/default/session_check.inc.php:45
+msgid "You are not authorized to view this section"
+msgstr "Вы не авторизованы для просмотра данной секции"
+
+#: admin/default/session_check.inc.php:57
+msgid "Your Login Session has already timeout!"
+msgstr "Время Вашей сессии истекло!"
+
+#: admin/default/submenu.php:21
+msgid "Panel"
+msgstr "Панель"
+
+#: admin/default/submenu.php:22
+msgid "Change User Profiles"
+msgstr "Изменить профиль пользователя"
+
+#: admin/default/submenu.php:22
+msgid "Change Current User Profiles and Password"
+msgstr "Изменить текущий профиль пользователя и пароль"
+
+#: admin/default/submenu.php:24
+msgid "Add New Bibliography"
+msgstr "Добавить новую библиографию"
+
+#: admin/default/submenu.php:24
+msgid "Add New Bibliographic Data/Catalog"
+msgstr "Добавить новые библиографические данные/Каталог"
+
+#: admin/default/submenu.php:27
+msgid "Start Transaction"
+msgstr "Старт транзакции"
+
+#: admin/default/submenu.php:27
+msgid "Start Circulation Transaction Proccess"
+msgstr "Начало процесса транзакции обращений"
+
+#: admin/default/submenu.php:30
+msgid "Quick Return"
+msgstr "Быстрое возвращение"
+
+#: admin/default/submenu.php:30
+msgid "Quick Return Collection"
+msgstr "Быстрое возвращение коллекции"
+
+#: admin/default/submenu.php:33
+msgid "Add New Member"
+msgstr "Добавить нового читателя"
+
+#: admin/default/submenu.php:33
+msgid "Add New Library Member Data"
+msgstr "Добавить данные нового читателя библиотеки"
+
+#: admin/modules/stock_take/init.php:46
+msgid "You don't have enough privileges to access this area!"
+msgstr "Вы не имеете достаточных привилегий для доступа к этой области!"
+
+#: admin/modules/stock_take/init.php:52
+msgid "There is already stock taking proccess running!"
+msgstr "Уже существует запущенный процесс инвентаризации!"
+
+#: admin/modules/stock_take/init.php:56
+msgid "Stock Take Name must be filled!"
+msgstr "Имя инвентаризации должно быть заполнено!"
+
+#: admin/modules/stock_take/init.php:135
+msgid "Stock Taking Initialized"
+msgstr "Инвентаризация инициализирована"
+
+#: admin/modules/stock_take/init.php:140
+msgid ""
+"Stock Taking FAILED to Initialized.\\n"
+"No item to stock take!"
+msgstr ""
+"Инвентаризацию НЕ УДАЛОСЬ инициализировать.\\n"
+"Ни один пункт на складе не взять!"
+
+#: admin/modules/stock_take/init.php:148
+msgid "Initialize Stock Take"
+msgstr "Инициализировать инвентаризацию"
+
+#: admin/modules/stock_take/init.php:157
+msgid "Stock Take Name"
+msgstr "Имя инвентаризации"
+
+#: admin/modules/stock_take/init.php:161
+#: admin/modules/stock_take/init.php:169
+#: admin/modules/stock_take/init.php:177
+msgid "ALL"
+msgstr "Все"
+
+#: admin/modules/stock_take/init.php:165
+msgid "GMD"
+msgstr "GMD"
+
+#: admin/modules/stock_take/init.php:173
+msgid "Collection Type"
+msgstr "Тип коллекции"
+
+#: admin/modules/stock_take/init.php:181
+msgid "Location"
+msgstr "Местоположение"
+
+#: admin/modules/stock_take/init.php:183
+msgid "Shelf Location"
+msgstr "Срок местонахождения"
+
+#: admin/modules/stock_take/init.php:186
+msgid "Separate each class comma sign. Use * for wildcard"
+msgstr "Разделяйте каждый класс знаком запятой. Используйте * в качестве шаблона"
+
+#: admin/modules/stock_take/init.php:187
+msgid "Classification"
+msgstr "Классификация"
+
+#: admin/modules/stock_take/current.php:56
+#: admin/modules/stock_take/st_upload.php:49
+#: admin/modules/stock_take/st_report.php:53
+msgid "NO stock taking proccess initialized yet!"
+msgstr "Еще НЕТ инициализированных процессов инвентаризации!"
+
+#: admin/modules/stock_take/current.php:69
+msgid "Stock Take Proccess"
+msgstr "Процесс инвентаризации"
+
+#: admin/modules/stock_take/current.php:71
+msgid "Current Missing/Lost Items"
+msgstr "Текущие отсутствующие/потерянные позиции"
+
+#: admin/modules/stock_take/current.php:79
+#: admin/modules/stock_take/current.php:105
+#: admin/modules/stock_take/lost_item_list.php:71
+#: admin/modules/stock_take/lost_item_list.php:147
+msgid "Item Code"
+msgstr "Код позиции"
+
+#: admin/modules/stock_take/current.php:79
+msgid "Change Status"
+msgstr "Изменить статус"
+
+#: admin/modules/stock_take/current.php:80
+msgid "List stocktakes by"
+msgstr "Список инвентаризации по"
+
+#: admin/modules/stock_take/current.php:81
+msgid "Current User Only"
+msgstr "Только текущий пользователь"
+
+#: admin/modules/stock_take/current.php:82
+msgid "All User"
+msgstr "Все пользователи"
+
+#: admin/modules/stock_take/current.php:88
+#: admin/modules/stock_take/index.php:58
+#: admin/modules/stock_take/index.php:60
+#: admin/modules/stock_take/st_log.php:59
+#: admin/modules/stock_take/st_log.php:61
+#: admin/modules/system/backup.php:61
+#: admin/modules/system/backup.php:63
+#: admin/modules/system/sys_log.php:85
+#: admin/modules/system/sys_log.php:87
+#: admin/modules/system/app_user.php:175
+#: admin/modules/system/app_user.php:177
+#: admin/modules/system/user_group.php:175
+#: admin/modules/system/user_group.php:177
+msgid "Search"
+msgstr "Поиск"
+
+#: admin/modules/stock_take/current.php:106
+#: admin/modules/stock_take/lost_item_list.php:148
+msgid "Title"
+msgstr "Наименование"
+
+#: admin/modules/stock_take/current.php:107
+#: admin/modules/stock_take/lost_item_list.php:152
+msgid "Call Number"
+msgstr "Номер вызова"
+
+#: admin/modules/stock_take/current.php:110
+msgid "Exists"
+msgstr "Имеется"
+
+#: admin/modules/stock_take/current.php:110
+msgid "On Loan"
+msgstr "Взято"
+
+#: admin/modules/stock_take/current.php:110
+msgid "Missing"
+msgstr "Отсутствует"
+
+#: admin/modules/stock_take/current.php:151
+#: admin/modules/stock_take/index.php:154
+#: admin/modules/stock_take/st_log.php:111
+#: admin/modules/system/backup.php:98
+#: admin/modules/system/sys_log.php:141
+#: admin/modules/system/app_user.php:301
+#: admin/modules/system/user_group.php:261
+msgid "Found <strong>{result->num_rows}</strong> from your keywords"
+msgstr "Найдено <strong>{result->num_rows}</strong> из Ваших ключевых слов"
+
+#: admin/modules/stock_take/index.php:55
+#: admin/modules/stock_take/submenu.php:26
+msgid "Stock Take"
+msgstr "Взять единицу хранения"
+
+#: admin/modules/stock_take/index.php:70
+#: admin/modules/stock_take/index.php:119
+#: admin/modules/stock_take/st_report.php:109
+msgid "Start Date"
+msgstr "Дата начала"
+
+#: admin/modules/stock_take/index.php:71
+#: admin/modules/stock_take/index.php:120
+#: admin/modules/stock_take/st_report.php:111
+msgid "End Date"
+msgstr "Дата окончания"
+
+#: admin/modules/stock_take/index.php:72
+msgid "Initializer"
+msgstr "Инициализатор"
+
+#: admin/modules/stock_take/index.php:73
+#: admin/modules/stock_take/st_report.php:79
+msgid "Total Item Stock Taked"
+msgstr "Общее число взятых единиц хранения"
+
+#: admin/modules/stock_take/index.php:74
+#: admin/modules/stock_take/st_report.php:81
+#: admin/modules/stock_take/st_report.php:82
+#: admin/modules/stock_take/st_report.php:83
+msgid "Total Item Lost"
+msgstr "Всего потеряно позиций"
+
+#: admin/modules/stock_take/index.php:75
+msgid "Total Item Exists"
+msgstr "Всего имеется позиций"
+
+#: admin/modules/stock_take/index.php:76
+#: admin/modules/stock_take/st_report.php:87
+#: admin/modules/stock_take/st_report.php:89
+msgid "Total Item On Loan"
+msgstr "Всего выдано позиций"
+
+#: admin/modules/stock_take/index.php:77
+#: admin/modules/stock_take/st_report.php:97
+#: admin/modules/stock_take/st_report.php:102
+#: admin/modules/stock_take/st_report.php:107
+msgid "Stock Take Participants"
+msgstr "Участники, взявшие единицы хранения"
+
+#: admin/modules/stock_take/index.php:78
+#: admin/modules/stock_take/index.php:93
+msgid "Status"
+msgstr "Статус"
+
+#: admin/modules/stock_take/index.php:79
+#: admin/modules/stock_take/index.php:121
+msgid "Report"
+msgstr "Отчет"
+
+#: admin/modules/stock_take/index.php:95
+msgid "Currently Active"
+msgstr "Активно"
+
+#: admin/modules/stock_take/st_upload.php:108
+msgid "Succesfully upload stock take file"
+msgstr "Файл инвентаризации успешно загружен"
+
+#: admin/modules/stock_take/st_upload.php:108
+msgid " item codes scanned!"
+msgstr "код единицы хранения сканирован!"
+
+#: admin/modules/stock_take/st_upload.php:126
+msgid "Stock Take Upload"
+msgstr "Единица хранения загружена"
+
+#: admin/modules/stock_take/st_upload.php:128
+msgid "Upload a plain text file (.txt) containing list of Item Code to stock take. Each Item Code separated by line."
+msgstr "Загрузка текстового файла (.txt, содержащего список кодов позиций для инвентаризации. Каждый код позиции отделяется линией."
+
+#: admin/modules/stock_take/st_upload.php:131
+msgid "File"
+msgstr "Файл"
+
+#: admin/modules/stock_take/st_upload.php:132
+msgid "Upload File"
+msgstr "Загрузить файл"
+
+#: admin/modules/stock_take/st_log.php:56
+#: admin/modules/stock_take/submenu.php:35
+msgid "Stock Take Log"
+msgstr "Журнал инвентаризации"
+
+#: admin/modules/stock_take/lost_item_list.php:54
+#: admin/modules/stock_take/submenu.php:34
+msgid "Current Lost Item"
+msgstr "Текущая потерянная позиция"
+
+#: admin/modules/stock_take/lost_item_list.php:57
+msgid "Report Filter"
+msgstr "Фильтр отчета"
+
+#: admin/modules/stock_take/lost_item_list.php:63
+msgid "Title/ISBN"
+msgstr "Название/ISBN"
+
+#: admin/modules/stock_take/lost_item_list.php:129
+msgid "Apply Filter"
+msgstr "Добавить фильтр"
+
+#: admin/modules/stock_take/lost_item_list.php:130
+msgid "Show More Filter Options"
+msgstr "Показать больше опций фильтра"
+
+#: admin/modules/stock_take/submenu.php:27
+msgid "Stock Take History"
+msgstr "История инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:27
+msgid "View Stock Take History"
+msgstr "Просмотр истории инвентаризаций"
+
+#: admin/modules/stock_take/submenu.php:31
+msgid "Current Stock Take"
+msgstr "Текущая инвентаризация"
+
+#: admin/modules/stock_take/submenu.php:31
+msgid "View Current Stock Take Process"
+msgstr "Просмотр текущего процесса инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "Stock Take Report"
+msgstr "Отчет об инветаризации"
+
+#: admin/modules/stock_take/submenu.php:32
+msgid "View Current Stock Take Report"
+msgstr "Просмотр отчета о текущей инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:33
+#: admin/modules/stock_take/finish.php:164
+#: admin/modules/stock_take/finish.php:174
+msgid "Finish Stock Take"
+msgstr "Завершение инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:33
+msgid "Finish Current Stock Take Proccess"
+msgstr "Завершение процесса текущей инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:34
+msgid "View Lost Item in Current Stock Take Proccess"
+msgstr "Просмотр потерянных позиций в процессе текущей инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:35
+msgid "View Log of Current Stock Take Proccess"
+msgstr "Просмотр журнала процесса текущей инвентаризации"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Resynchronize"
+msgstr "Повторно синхронизировать"
+
+#: admin/modules/stock_take/submenu.php:36
+msgid "Resynchronize bibliographic data with current stock take"
+msgstr "Повторно синхронизировать библиографические данные с текущей инветаризацией"
+
+#: admin/modules/stock_take/submenu.php:37
+msgid "Upload List"
+msgstr "Список загрузки"
+
+#: admin/modules/stock_take/submenu.php:37
+msgid "Upload List in text file"
+msgstr "Список загрузки в текстовом файле"
+
+#: admin/modules/stock_take/submenu.php:39
+msgid "Initialize"
+msgstr "Инициализировать"
+
+#: admin/modules/stock_take/submenu.php:39
+msgid "Initialize New Stock Take Proccess"
+msgstr "Инициализировать новый процесс инвентаризации"
+
+#: admin/modules/stock_take/finish.php:52
+msgid "NO stock taking proccess running!"
+msgstr "НЕТ выполняемых процессов инвентаризации!"
+
+#: admin/modules/stock_take/finish.php:154
+msgid "Stock Take Proccess Finished!"
+msgstr "Процесс инвентаризации завершен!"
+
+#: admin/modules/stock_take/finish.php:167
+msgid "Are you sure to end current stock take proccess? Once it finished there is no way you can rollback this stock take"
+msgstr "Вы уверены, что хотите завершить текущий процесс инвентаризации? Как только он закончится, не существует способа, которым Вы сможете откатить эту инвентаризацию"
+
+#: admin/modules/stock_take/finish.php:183
+msgid "Yes"
+msgstr "Да"
+
+#: admin/modules/stock_take/finish.php:184
+msgid "Purge Lost Item"
+msgstr "Очистить потерянные позиции"
+
+#: admin/modules/stock_take/resync.php:67
+msgid "Re-synchronize will only update current stock take's item data. It won't update any new bibliographic or item data that were inserted in the middle of stock take proccess"
+msgstr "Повторная синхронизация обновит только данные позиций последней инвентаризации. Она не обновит новые библиографические данные или данные фондов, которые были введены в середине процесса инвентаризации"
+
+#: admin/modules/stock_take/resync.php:70
+msgid "Resynchronize Now"
+msgstr "Повторно синхронизировать сейчас"
+
+#: admin/modules/stock_take/st_report.php:63
+msgid "Current Stock Take Report"
+msgstr "Отчет о текущей инвентаризации"
+
+#: admin/modules/stock_take/st_report.php:67
+msgid "Download Report"
+msgstr "Скачать отчет"
+
+#: admin/modules/stock_take/st_report.php:83
+#: admin/modules/stock_take/st_report.php:87
+msgid "None"
+msgstr "Нет"
+
+#: admin/modules/stock_take/st_report.php:95
+msgid "Total Checked/Scanned Items"
+msgstr "Общее количество отмеченных/сканированных позиций"
+
+#: admin/modules/stock_take/st_report.php:102
+msgid "items already checked"
+msgstr "Позиции, уже отмеченные"
+
+#: admin/modules/stock_take/st_report.php:132
+#: admin/modules/stock_take/st_report.php:170
+msgid "Lost Items"
+msgstr "Потерянные единицы хранения"
+
+#: admin/modules/stock_take/st_report.php:133
+#: admin/modules/stock_take/st_report.php:171
+msgid "Existing Items"
+msgstr "Существующие позции"
+
+#: admin/modules/stock_take/st_report.php:134
+#: admin/modules/stock_take/st_report.php:172
+msgid "On Loan Items"
+msgstr "Взятые позиции"
+
+#: admin/modules/stock_take/st_report.php:137
+msgid " classes"
+msgstr " классы"
+
+#: admin/modules/system/backup.php:48
+#: admin/modules/system/sys_log.php:48
+#: admin/modules/system/app_user.php:55
+#: admin/modules/system/app_user.php:189
+#: admin/modules/system/app_user.php:261
+#: admin/modules/system/user_group.php:41
+#: admin/modules/system/barcode_generator.php:43
+msgid "You don't have enough privileges to view this section"
+msgstr "Вы не имеете достаточных привилегий для просмотра этой секции"
+
+#: admin/modules/system/backup.php:55
+msgid "Database Backup"
+msgstr "Архивирование базы данных"
+
+#: admin/modules/system/backup.php:59
+msgid "Start New Backup"
+msgstr "Начать новое архивирование"
+
+#: admin/modules/system/sys_log.php:66
+msgid "System Log data completely cleared!"
+msgstr "Данные системных журналов полностью очищены!"
+
+#: admin/modules/system/sys_log.php:76
+msgid "System Log"
+msgstr "Системный журнал"
+
+#: admin/modules/system/sys_log.php:81
+msgid "Are you SURE to completely clear system log data? This action cannot be undo!"
+msgstr "Вы УВЕРЕНЫ, что хотите полностью очистить журнал системных данных? Это действие не может быть отменено! "
+
+#: admin/modules/system/sys_log.php:81
+msgid "CLEAR LOGS"
+msgstr "ОЧИСТИТЬ ЖУРНАЛЫ"
+
+#: admin/modules/system/sys_log.php:82
+msgid "Save Logs record to file?"
+msgstr "Сохранить журнал записи в файл?"
+
+#: admin/modules/system/sys_log.php:82
+msgid "Save Logs To File"
+msgstr "Сохранить журналы в файл"
+
+#: admin/modules/system/sys_log.php:107
+msgid "Time"
+msgstr "Время"
+
+#: admin/modules/system/sys_log.php:109
+msgid "Message"
+msgstr "Сообщение"
+
+#: admin/modules/system/app_user.php:67
+msgid "User Name or Real Name can't be empty"
+msgstr "Имя пользователя или Настоящее имя не могут быть пустыми"
+
+#: admin/modules/system/app_user.php:70
+msgid "Login username or Real Name is probihited!"
+msgstr "Вход под именем пользователя или настоящим именем запрещен!"
+
+#: admin/modules/system/app_user.php:73
+msgid "Password confirmation does not match. See if your Caps Lock key is on!"
+msgstr "Подтверждение пароля не соответствует. Посмотрите, не нажата ли клавиша Caps Lock!"
+
+#: admin/modules/system/app_user.php:107
+msgid "User Data Successfully Updated"
+msgstr "Данные пользователя успешно обновлены"
+
+#: admin/modules/system/app_user.php:109
+msgid "User Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные пользователя НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/app_user.php:117
+msgid "New User Data Successfully Saved"
+msgstr "Данные пользователя успешно сохранены"
+
+#: admin/modules/system/app_user.php:119
+msgid "User Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные пользователя НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/app_user.php:152
+#: admin/modules/system/user_group.php:153
+msgid "All Data Successfully Deleted"
+msgstr "Все данные успешно удалены"
+
+#: admin/modules/system/app_user.php:155
+#: admin/modules/system/user_group.php:156
+msgid ""
+"Some or All Data NOT deleted successfully!\\n"
+"Please contact system administrator"
+msgstr ""
+"Некоторые или все данные НЕ удалены успешно!\\n"
+"Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/app_user.php:168
+msgid "System Users"
+msgstr "Системные пользователи"
+
+#: admin/modules/system/app_user.php:172
+msgid "User List"
+msgstr "Список пользователей"
+
+#: admin/modules/system/app_user.php:173
+msgid "Add New User"
+msgstr "Добавить нового пользователя"
+
+#: admin/modules/system/app_user.php:202
+#: admin/modules/system/user_group.php:193
+msgid "Save"
+msgstr "Сохранить"
+
+#: admin/modules/system/app_user.php:223
+#: admin/modules/system/user_group.php:208
+msgid "Update"
+msgstr "Обновить"
+
+#: admin/modules/system/app_user.php:228
+#: admin/modules/system/app_user.php:273
+msgid "Login Username"
+msgstr "Имя пользователя"
+
+#: admin/modules/system/app_user.php:230
+#: admin/modules/system/app_user.php:272
+#: admin/modules/system/app_user.php:277
+#: admin/modules/system/app_user.php:278
+msgid "Real Name"
+msgstr "Настоящее имя"
+
+#: admin/modules/system/app_user.php:244
+msgid "Group(s)"
+msgstr "Группа(ы)"
+
+#: admin/modules/system/app_user.php:247
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: admin/modules/system/app_user.php:249
+msgid "Confirm New Password"
+msgstr "Подтвердить новый пароль"
+
+#: admin/modules/system/app_user.php:253
+msgid "You are going to edit user profile"
+msgstr "Вы собираетесь редактировать профиль пользователя"
+
+#: admin/modules/system/app_user.php:253
+#: admin/modules/system/app_user.php:275
+#: admin/modules/system/app_user.php:280
+#: admin/modules/system/user_group.php:229
+#: admin/modules/system/user_group.php:241
+msgid "Last Update"
+msgstr "Последнее обновление"
+
+#: admin/modules/system/app_user.php:254
+msgid "Leave Password field blank if you don't want to change the password"
+msgstr "Оставьте поле пароля пустым, если вы не хотите сменить пароль"
+
+#: admin/modules/system/app_user.php:274
+#: admin/modules/system/app_user.php:279
+msgid "Last Login"
+msgstr "Последний вход"
+
+#: admin/modules/system/user_group.php:55
+msgid "Group name can't be empty"
+msgstr "Имя группы не должно быть пустым"
+
+#: admin/modules/system/user_group.php:90
+msgid "Group Data Successfully Updated"
+msgstr "Данные группы успешно обновлены"
+
+#: admin/modules/system/user_group.php:92
+msgid "Group Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные группы НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/user_group.php:118
+msgid "New Group Data Successfully Saved"
+msgstr "Данные группы успешно сохранены"
+
+#: admin/modules/system/user_group.php:120
+msgid "Group Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные группы НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/user_group.php:168
+msgid "User Group"
+msgstr "Группа пользователей"
+
+#: admin/modules/system/user_group.php:172
+msgid "Group List"
+msgstr "Список группы"
+
+#: admin/modules/system/user_group.php:173
+msgid "Add New Group"
+msgstr "Добавить новую группу"
+
+#: admin/modules/system/user_group.php:213
+#: admin/modules/system/user_group.php:240
+msgid "Group Name"
+msgstr "Имя группы"
+
+#: admin/modules/system/user_group.php:224
+msgid "Privileges"
+msgstr "Привилегии"
+
+#: admin/modules/system/user_group.php:229
+msgid "You are going to edit Group data"
+msgstr "Вы собираетесь редактировать данные группы"
+
+#: admin/modules/system/barcode_generator.php:98
+#: admin/modules/system/barcode_generator.php:130
+msgid "Barcode Generator"
+msgstr "Генератор штрих-кода"
+
+#: admin/modules/system/barcode_generator.php:113
+msgid "Error creating barcode!"
+msgstr "Ошибка создания штрих-кода!"
+
+#: admin/modules/system/barcode_generator.php:119
+msgid "Barcode generation finished"
+msgstr "Создание штрих-кода завершено"
+
+#: admin/modules/system/barcode_generator.php:133
+msgid "Enter your barcodes code on one or more textboxes below to create barcode"
+msgstr "Введите коды баркодов в одном или нескольких текстовых полях для создания штрих-кода"
+
+#: admin/modules/system/barcode_generator.php:148
+msgid "Barcode Size"
+msgstr "Размер штрих-кода"
+
+#: admin/modules/system/barcode_generator.php:148
+msgid "Small"
+msgstr "Малый"
+
+#: admin/modules/system/barcode_generator.php:149
+msgid "Medium"
+msgstr "Средний"
+
+#: admin/modules/system/barcode_generator.php:150
+msgid "Big"
+msgstr "Большой"
+
+#: admin/modules/system/barcode_generator.php:164
+msgid "Generate Barcodes"
+msgstr "Генерировать штрих-коды"
+
+#: admin/modules/system/index.php:56
+#: admin/modules/system/submenu.php:29
+msgid "System Configuration"
+msgstr "Конфигурация системы"
+
+#: admin/modules/system/index.php:59
+msgid "Modify global application preferences"
+msgstr "Изменить глобальные настройки приложения"
+
+#: admin/modules/system/index.php:147
+msgid "Settings saved. Refreshing page"
+msgstr "Установки сохранены. Обновите страницу"
+
+#: admin/modules/system/index.php:154
+#: admin/modules/system/holiday.php:318
+msgid "Save Settings"
+msgstr "Сохранить установки"
+
+#: admin/modules/system/index.php:168
+msgid "Library Name"
+msgstr "Имя библиотеки"
+
+#: admin/modules/system/index.php:171
+msgid "Library Subname"
+msgstr "Подимя библиотеки"
+
+#: admin/modules/system/index.php:185
+msgid "Public Template"
+msgstr "Публичный шаблон"
+
+#: admin/modules/system/index.php:198
+msgid "Admin Template"
+msgstr "Административный шаблон"
+
+#: admin/modules/system/index.php:202
+msgid "Default App. Language"
+msgstr "Язык приложения по умолчанию"
+
+#: admin/modules/system/index.php:210
+msgid "Number Of Collections To Show In OPAC Result List"
+msgstr "Число коллекций для показа в списке результатов каталога библиотеки"
+
+#: admin/modules/system/index.php:214
+msgid "Show Promoted Titles at Homepage"
+msgstr "Показывать рекламируемые наименования на домашней странице"
+
+#: admin/modules/system/index.php:218
+#: admin/modules/system/index.php:230
+#: admin/modules/system/index.php:236
+#: admin/modules/system/index.php:243
+#: admin/modules/system/index.php:249
+#: admin/modules/system/index.php:255
+msgid "Disable"
+msgstr "Недоступно"
+
+#: admin/modules/system/index.php:219
+#: admin/modules/system/index.php:231
+#: admin/modules/system/index.php:237
+#: admin/modules/system/index.php:244
+#: admin/modules/system/index.php:250
+#: admin/modules/system/index.php:256
+msgid "Enable"
+msgstr "Доступно"
+
+#: admin/modules/system/index.php:224
+msgid "Don't Print"
+msgstr "Не печатать"
+
+#: admin/modules/system/index.php:225
+msgid "Print"
+msgstr "Печатать"
+
+#: admin/modules/system/index.php:226
+msgid "Print Circulation Receipt"
+msgstr "Печать квитанции обращения"
+
+#: admin/modules/system/index.php:232
+msgid "Loan and Due Date Manual Change"
+msgstr "Ручное изменение выдачи и срока оплаты"
+
+#: admin/modules/system/index.php:238
+msgid "Loan Limit Override"
+msgstr "Превышен лимит выдачи"
+
+#: admin/modules/system/index.php:245
+msgid "Ignore Holidays Fine Calculation"
+msgstr "Игнорировать точный подсчет праздников"
+
+#: admin/modules/system/index.php:251
+msgid "OPAC XML Detail"
+msgstr "Подробности OPAC XML"
+
+#: admin/modules/system/index.php:257
+msgid "OPAC XML Result"
+msgstr "Результаты OPAC XML"
+
+#: admin/modules/system/index.php:261
+msgid "Forbid"
+msgstr "Запрещать"
+
+#: admin/modules/system/index.php:262
+msgid "Allow"
+msgstr "Доступно"
+
+#: admin/modules/system/index.php:263
+msgid "Allow OPAC File Download"
+msgstr "Доступна загрузка файла каталога библиотеки"
+
+#: admin/modules/system/index.php:266
+msgid "Session Login Timeout"
+msgstr "Таймаут времени сессии"
+
+#: admin/modules/system/index.php:269
+msgid "Barcode Encoding"
+msgstr "Кодирование штрих-кода"
+
+#: admin/modules/system/holiday.php:73
+msgid "Holiday Data Successfully updated"
+msgstr "Данные праздников успешно обновлены"
+
+#: admin/modules/system/holiday.php:79
+msgid "Holiday FAILED to update. Please Contact System Administrator"
+msgstr "Праздник НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/holiday.php:85
+msgid "New Holiday Successfully Saved"
+msgstr "Новый праздник успешно сохранен"
+
+#: admin/modules/system/holiday.php:112
+msgid "Holiday FAILED to Save. Please Contact System Administrator"
+msgstr "Праздник НЕ СОХРАНЕН. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/holiday.php:159
+msgid "Holiday Setings"
+msgstr "Установки празников"
+
+#: admin/modules/system/holiday.php:164
+#: admin/modules/system/submenu.php:39
+msgid "Holiday Setting"
+msgstr "Установка праздника"
+
+#: admin/modules/system/holiday.php:165
+msgid "Special holiday"
+msgstr "Особый праздник"
+
+#: admin/modules/system/holiday.php:166
+msgid "Add Special holiday"
+msgstr "Добавить особый праздник"
+
+#: admin/modules/system/holiday.php:201
+#: admin/modules/system/holiday.php:225
+#: admin/modules/system/holiday.php:229
+msgid "Holiday Date Start"
+msgstr "Начало даты праздника"
+
+#: admin/modules/system/holiday.php:204
+msgid "Holiday Date End"
+msgstr "Конец даты праздника"
+
+#: admin/modules/system/holiday.php:207
+#: admin/modules/system/holiday.php:226
+#: admin/modules/system/holiday.php:230
+msgid "Holiday Description"
+msgstr "Описание праздника"
+
+#: admin/modules/system/holiday.php:211
+msgid "You are going to edit holiday data"
+msgstr "Вы собираетесь редактировать данные праздника"
+
+#: admin/modules/system/holiday.php:224
+#: admin/modules/system/holiday.php:228
+msgid "Day name"
+msgstr "Название дня"
+
+#: admin/modules/system/holiday.php:263
+msgid "Maximum 6 day can be set as holiday!"
+msgstr "Максимально 6 дней могут быть установлены как праздники!"
+
+#: admin/modules/system/holiday.php:276
+msgid "Holiday settings saved"
+msgstr "Установки праздников сохранены"
+
+#: admin/modules/system/holiday.php:305
+msgid "Monday"
+msgstr "Понедельник"
+
+#: admin/modules/system/holiday.php:306
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: admin/modules/system/holiday.php:307
+msgid "Wednesday"
+msgstr "Среда"
+
+#: admin/modules/system/holiday.php:309
+msgid "Thursday"
+msgstr "Четверг"
+
+#: admin/modules/system/holiday.php:310
+msgid "Friday"
+msgstr "Пятница"
+
+#: admin/modules/system/holiday.php:311
+msgid "Saturday"
+msgstr "Суббота"
+
+#: admin/modules/system/holiday.php:313
+msgid "Sunday"
+msgstr "Воскресенье"
+
+#: admin/modules/system/content.php:59
+msgid "Title or Path can't be empty!"
+msgstr "Название или путь не могут быть пустыми!"
+
+#: admin/modules/system/content.php:81
+msgid "Content data updated"
+msgstr "Данные содержания обновлены"
+
+#: admin/modules/system/content.php:83
+msgid "Content data FAILED to update!"
+msgstr "Данные содержания НЕ ОБНОВЛЕНЫ!"
+
+#: admin/modules/system/content.php:91
+msgid "Content data saved"
+msgstr "Данные содержания сохранены"
+
+#: admin/modules/system/content.php:93
+msgid "Content data FAILED to save!"
+msgstr "Данные содержания НЕ СОХРАНЕНЫ!"
+
+#: admin/modules/system/content.php:141
+#: admin/modules/system/submenu.php:31
+msgid "Content"
+msgstr "Содержание"
+
+#: admin/modules/system/content.php:145
+msgid "Content List"
+msgstr "Оглавление"
+
+#: admin/modules/system/content.php:146
+msgid "Add New Content"
+msgstr "Добавить новое содержание"
+
+#: admin/modules/system/content.php:190
+#: admin/modules/system/content.php:223
+#: admin/modules/system/content.php:227
+msgid "Content Title"
+msgstr "Заголовок содержания"
+
+#: admin/modules/system/content.php:192
+#: admin/modules/system/content.php:224
+#: admin/modules/system/content.php:228
+msgid "Path (Must be unique)"
+msgstr "Путь (должен быть уникальным)"
+
+#: admin/modules/system/content.php:194
+msgid "Content Description"
+msgstr "Описание содержания"
+
+#: admin/modules/system/content.php:198
+msgid "You are going to update Content data"
+msgstr "Вы собираетесь обновить данные содержания"
+
+#: admin/modules/system/content.php:198
+#: admin/modules/system/content.php:225
+#: admin/modules/system/content.php:229
+msgid "Last Updated"
+msgstr "Последнее обновление"
+
+#: admin/modules/system/submenu.php:26
+msgid "System"
+msgstr "Система"
+
+#: admin/modules/system/submenu.php:29
+msgid "Configure Global System Preferences"
+msgstr "Настройка глобальных параметров системы"
+
+#: admin/modules/system/submenu.php:34
+msgid "Biblio Indexes"
+msgstr "Индексы библиографии"
+
+#: admin/modules/system/submenu.php:34
+msgid "Bibliographic Indexes management"
+msgstr "Управление библиграфическими индексами"
+
+#: admin/modules/system/submenu.php:35
+#: admin/modules/system/module.php:145
+msgid "Modules"
+msgstr "Модули"
+
+#: admin/modules/system/submenu.php:35
+msgid "Configure Application Modules"
+msgstr "Настройка модулей приложения"
+
+#: admin/modules/system/submenu.php:36
+msgid "Manage Application User or Library Staff"
+msgstr "Управление приложением пользователя или персонала библиотеки"
+
+#: admin/modules/system/submenu.php:37
+msgid "Manage Group of Application User"
+msgstr "Пользователь группы управления приложением"
+
+#: admin/modules/system/submenu.php:39
+msgid "Configure Holiday Setting"
+msgstr "Конфигурировать установки праздника"
+
+#: admin/modules/system/submenu.php:41
+msgid "View Application System Log"
+msgstr "Обзор журналов системных приложений"
+
+#: admin/modules/system/submenu.php:42
+msgid "Backup Application Database"
+msgstr "Приложение резервного копирования базы данных"
+
+#: admin/modules/system/module_priv_form.inc.php:31
+#: admin/modules/system/module.php:190
+#: admin/modules/system/module.php:210
+msgid "Module Name"
+msgstr "Имя модуля"
+
+#: admin/modules/system/module_priv_form.inc.php:31
+msgid "Read"
+msgstr "Читать"
+
+#: admin/modules/system/module_priv_form.inc.php:31
+msgid "Write"
+msgstr "Записать"
+
+#: admin/modules/system/module.php:56
+msgid "Module name and path can't be empty"
+msgstr "Имя модуля и путь не могут быть пустыми"
+
+#: admin/modules/system/module.php:79
+msgid "Module Data Successfully Updated"
+msgstr "Данные модуля успешно обновлены"
+
+#: admin/modules/system/module.php:81
+msgid "Module Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные модуля НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/module.php:92
+msgid "New Module Data Successfully Saved"
+msgstr "Данные модуля успешно сохранены"
+
+#: admin/modules/system/module.php:94
+msgid "Module Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные модуля НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/system/module.php:149
+msgid "Modules List"
+msgstr "Список моделей"
+
+#: admin/modules/system/module.php:150
+msgid "Add New Modules"
+msgstr "Добавить новые модули"
+
+#: admin/modules/system/module.php:192
+msgid "Module Path"
+msgstr "Путь к модулю"
+
+#: admin/modules/system/module.php:194
+#: admin/modules/system/module.php:211
+msgid "Module Description"
+msgstr "Описание модуля"
+
+#: admin/modules/system/module.php:198
+msgid "You are going to edit data"
+msgstr "Вы собираетесь редактировать данные"
+
+#: admin/modules/system/biblio_indexes.php:59
+msgid "Index table truncated!"
+msgstr "Таблица индексов усечена!"
+
+#: admin/modules/system/biblio_indexes.php:61
+msgid "Index table FAILED to truncated, probably because of database query error!"
+msgstr "Таблицу индексов НЕ УДАЛОСЬ усечь, вероятно из-за ошибки запроса к базе данных!"
+
+#: admin/modules/system/biblio_indexes.php:75
+#, php-format
+msgid "<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d minutes %d second(s)"
+msgstr "<strong>%d</strong> записей (из общего количества <strong>%d</strong>) повторно индексируется. окончание через %d минут %d секунд"
+
+#: admin/modules/system/biblio_indexes.php:77
+#: admin/modules/system/biblio_indexes.php:99
+#, php-format
+msgid "<strong>%d</strong> index records failed to indexed. The IDs are: %s"
+msgstr "<strong>%d</strong> индексных записей НЕ УДАЛОСЬ индексировать. Их ID: %s"
+
+#: admin/modules/system/biblio_indexes.php:89
+msgid "Please empty the Index first before re-creating the Index"
+msgstr "Пожалуйста, очистите индекс, прежде чем повторно создавать индекс"
+
+#: admin/modules/system/biblio_indexes.php:97
+#, php-format
+msgid "<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d second(s)"
+msgstr "<strong>%d</strong> записей (из общего количества <strong>%d</strong>) повторно индексируется. Окончание через %d секунд"
+
+#: admin/modules/system/biblio_indexes.php:110
+msgid "Bibliographic Index"
+msgstr "Библиографический индекс"
+
+#: admin/modules/system/biblio_indexes.php:115
+msgid "Emptying Index"
+msgstr "Очистить индекс"
+
+#: admin/modules/system/biblio_indexes.php:116
+msgid "Re-create Index"
+msgstr "Пересоздать индекс"
+
+#: admin/modules/system/biblio_indexes.php:117
+msgid "Update Index"
+msgstr "Обновить индекс"
+
+#: admin/modules/master_file/coll_type.php:56
+msgid "Collection type name can't be empty"
+msgstr "Имя типа коллекции не может быть пустым"
+
+#: admin/modules/master_file/coll_type.php:74
+msgid "Colllection Type Data Successfully Updated"
+msgstr "Данные типа коллекции успешно обновлены"
+
+#: admin/modules/master_file/coll_type.php:76
+msgid "Colllection Type Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные типа коллекции НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/coll_type.php:83
+msgid "New Colllection Type Data Successfully Saved"
+msgstr "Новый тип коллекции успешно сохранен"
+
+#: admin/modules/master_file/coll_type.php:85
+msgid "Author Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные автора НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/coll_type.php:115
+#: admin/modules/master_file/location.php:119
+msgid "Location ({item_name}) still used by {number_items} item(s)"
+msgstr "Местонахождение ({item_name}) используется позицией(ями) {number_items}"
+
+#: admin/modules/master_file/coll_type.php:127
+#: admin/modules/master_file/location.php:131
+msgid "Below data can not be deleted:"
+msgstr "Данные, показанные ниже, не могут быть удалены"
+
+#: admin/modules/master_file/coll_type.php:151
+msgid "Collection Type List"
+msgstr "Список типов коллекций"
+
+#: admin/modules/master_file/coll_type.php:152
+msgid "Add New Collection Type"
+msgstr "Добавить новый тип коллекции"
+
+#: admin/modules/master_file/coll_type.php:198
+msgid "You are going to edit collection type data"
+msgstr "Вы собираетесь редактировать данные типа коллекции"
+
+#: admin/modules/master_file/location.php:57
+msgid "Location ID and Name can't be empty"
+msgstr "ID и имя расположения не могут быть пустыми"
+
+#: admin/modules/master_file/location.php:76
+msgid "Location Data Successfully Updated"
+msgstr "Данные расположения успешно сохранены"
+
+#: admin/modules/master_file/location.php:80
+msgid "Location Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные расположения НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/location.php:87
+msgid "New Location Data Successfully Saved"
+msgstr "Данные нового расположения успешно сохранены"
+
+#: admin/modules/master_file/location.php:89
+msgid "Location Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные расположения НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/location.php:155
+msgid "Location List"
+msgstr "Список местонахождений"
+
+#: admin/modules/master_file/location.php:156
+msgid "Add New Location"
+msgstr "Добавить новое местонахождение"
+
+#: admin/modules/master_file/location.php:199
+#: admin/modules/master_file/location.php:218
+#: admin/modules/master_file/location.php:222
+msgid "Location Code"
+msgstr "Код местонахождения"
+
+#: admin/modules/master_file/location.php:201
+#: admin/modules/master_file/location.php:219
+#: admin/modules/master_file/location.php:223
+msgid "Location Name"
+msgstr "Имя местонахождения"
+
+#: admin/modules/master_file/location.php:205
+msgid "You are going to edit location data"
+msgstr "Вы собираетесь редактировать данные местонахождения"
+
+#: admin/modules/master_file/frequency.php:55
+msgid "Required fields (*)  must be filled correctly!"
+msgstr "Отмеченные поля (*) должны быть заполнены корректно!"
+
+#: admin/modules/master_file/frequency.php:76
+msgid "Frequency Data Successfully Updated"
+msgstr "Данные частоты успешно обновлены"
+
+#: admin/modules/master_file/frequency.php:78
+msgid "Frequency Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные частоты НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/frequency.php:84
+msgid "New Frequency Data Successfully Saved"
+msgstr "Новые данные частоты успешно сохранены"
+
+#: admin/modules/master_file/frequency.php:86
+msgid "Frequency Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные частоты НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/frequency.php:128
+#: admin/modules/master_file/frequency.php:176
+#: admin/modules/master_file/frequency.php:210
+#: admin/modules/master_file/frequency.php:216
+msgid "Frequency"
+msgstr "Частоты"
+
+#: admin/modules/master_file/frequency.php:132
+msgid "Frequency Available"
+msgstr "Доступная частота"
+
+#: admin/modules/master_file/frequency.php:133
+msgid "Add New Frequency"
+msgstr "Добавить новую частоту"
+
+#: admin/modules/master_file/frequency.php:184
+#: admin/modules/master_file/frequency.php:211
+#: admin/modules/master_file/frequency.php:217
+msgid "Language"
+msgstr "Язык"
+
+#: admin/modules/master_file/frequency.php:186
+#: admin/modules/master_file/frequency.php:212
+#: admin/modules/master_file/frequency.php:218
+msgid "Time Increment"
+msgstr "Приращение времени"
+
+#: admin/modules/master_file/frequency.php:188
+msgid "Day"
+msgstr "День"
+
+#: admin/modules/master_file/frequency.php:189
+msgid "Week"
+msgstr "Неделя"
+
+#: admin/modules/master_file/frequency.php:191
+msgid "Year"
+msgstr "Год"
+
+#: admin/modules/master_file/frequency.php:192
+#: admin/modules/master_file/frequency.php:213
+#: admin/modules/master_file/frequency.php:219
+msgid "Time Unit"
+msgstr "Единица времени"
+
+#: admin/modules/master_file/frequency.php:196
+msgid "You are going to edit Frequency data"
+msgstr "Вы собираетесь редактировать данные частоты"
+
+#: admin/modules/master_file/label.php:108
+msgid "Label Data Successfully Updated"
+msgstr "Данные ярлыка успешно обновлены"
+
+#: admin/modules/master_file/label.php:110
+msgid "Label Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные ярлыка НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/label.php:116
+msgid "New Label Data Successfully Saved"
+msgstr "Данные нового ярлыка успешно сохранены"
+
+#: admin/modules/master_file/label.php:118
+msgid "Label Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные ярлыка НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/label.php:160
+msgid "Label"
+msgstr "Ярлык"
+
+#: admin/modules/master_file/label.php:164
+msgid "Label List"
+msgstr "Список ячлыков"
+
+#: admin/modules/master_file/label.php:165
+msgid "Add New Label"
+msgstr "Добавить новый ярлык"
+
+#: admin/modules/master_file/label.php:208
+#: admin/modules/master_file/label.php:239
+#: admin/modules/master_file/label.php:243
+msgid "Label Name"
+msgstr "Имя ярлыка"
+
+#: admin/modules/master_file/label.php:213
+#: admin/modules/master_file/label.php:218
+msgid "File Attachment"
+msgstr "Файл приложения"
+
+#: admin/modules/master_file/label.php:221
+#: admin/modules/master_file/label.php:238
+#: admin/modules/master_file/label.php:242
+msgid "Label Description"
+msgstr "Описание ярлыка"
+
+#: admin/modules/master_file/label.php:225
+msgid "You are going to edit Label data"
+msgstr "Вы собираетесь редактировать данные ярлыка"
+
+#: admin/modules/master_file/place.php:57
+msgid "Place Name can't be empty"
+msgstr "Имя места не может быть пустым"
+
+#: admin/modules/master_file/place.php:75
+msgid "Place Data Successfully Updated"
+msgstr "Имя места успешно обновлено"
+
+#: admin/modules/master_file/place.php:77
+msgid "Place Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные места НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/place.php:84
+msgid "New Place Data Successfully Saved"
+msgstr "Данные нового места успешно сохранены"
+
+#: admin/modules/master_file/place.php:86
+msgid "Place Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные места НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/place.php:128
+msgid "Place"
+msgstr "Место"
+
+#: admin/modules/master_file/place.php:132
+msgid "Place List"
+msgstr "Список мест"
+
+#: admin/modules/master_file/place.php:133
+msgid "Add New Place"
+msgstr "Добавить новое место"
+
+#: admin/modules/master_file/place.php:176
+#: admin/modules/master_file/place.php:199
+#: admin/modules/master_file/place.php:202
+msgid "Place Name"
+msgstr "Имя места"
+
+#: admin/modules/master_file/place.php:180
+msgid "You are going to edit place data"
+msgstr "Вы собираетесь редактировать данные места"
+
+#: admin/modules/master_file/index.php:60
+msgid "GMD Code And Name can't be empty"
+msgstr "Код GMD и имя не могут быть пустыми"
+
+#: admin/modules/master_file/index.php:79
+msgid "GMD Data Successfully Updated"
+msgstr "Данные GMD успешно обновлены"
+
+#: admin/modules/master_file/index.php:81
+msgid "GMD Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные GMD НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/index.php:87
+msgid "New GMD Data Successfully Saved"
+msgstr "Новые данные GMD успешно обновлены"
+
+#: admin/modules/master_file/index.php:89
+msgid "GMD Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные GMD НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/index.php:131
+msgid "GMD (General Material Designation)"
+msgstr "GMD (Общее обозначение материала ISBD)"
+
+#: admin/modules/master_file/index.php:135
+msgid "GMD List"
+msgstr "Список GMD"
+
+#: admin/modules/master_file/index.php:136
+msgid "Add New GMD"
+msgstr "Добавить новый GMD"
+
+#: admin/modules/master_file/index.php:179
+#: admin/modules/master_file/index.php:198
+#: admin/modules/master_file/index.php:202
+msgid "GMD Code"
+msgstr "Код GMD"
+
+#: admin/modules/master_file/index.php:181
+#: admin/modules/master_file/index.php:199
+#: admin/modules/master_file/index.php:203
+msgid "GMD Name"
+msgstr "Имя GMD"
+
+#: admin/modules/master_file/index.php:185
+msgid "You are going to edit gmd data"
+msgstr "Вы собираетесь редактировать данные GMD"
+
+#: admin/modules/master_file/topic.php:56
+msgid "Subject can't be empty"
+msgstr "Тема не может быть пустой"
+
+#: admin/modules/master_file/topic.php:77
+msgid "Subject Data Successfully Updated"
+msgstr "Данные темы успешно обновлены"
+
+#: admin/modules/master_file/topic.php:79
+msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные темы НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/topic.php:86
+msgid "New Subject Data Successfully Saved"
+msgstr "Новые данные темы успешно сохранены"
+
+#: admin/modules/master_file/topic.php:88
+msgid "Subject Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные темы НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/topic.php:131
+#: admin/modules/master_file/topic.php:179
+#: admin/modules/master_file/topic.php:213
+#: admin/modules/master_file/topic.php:219
+msgid "Subject"
+msgstr "Тема"
+
+#: admin/modules/master_file/topic.php:135
+msgid "Subject List"
+msgstr "Список тем"
+
+#: admin/modules/master_file/topic.php:136
+msgid "Add New Subject"
+msgstr "Добавить новую тему"
+
+#: admin/modules/master_file/topic.php:181
+msgid "Classification Code"
+msgstr "Код классификации"
+
+#: admin/modules/master_file/topic.php:186
+#: admin/modules/master_file/topic.php:215
+#: admin/modules/master_file/topic.php:221
+msgid "Subject Type"
+msgstr "Тип темы"
+
+#: admin/modules/master_file/topic.php:188
+#: admin/modules/master_file/topic.php:216
+#: admin/modules/master_file/topic.php:222
+msgid "Authority Files"
+msgstr "Файлы авторизации"
+
+#: admin/modules/master_file/topic.php:192
+msgid "You are going to edit Subject data"
+msgstr "Вы собираетесь редактировать данные темы"
+
+#: admin/modules/master_file/topic.php:214
+#: admin/modules/master_file/topic.php:220
+msgid "Class. Code"
+msgstr "Класс. Код"
+
+#: admin/modules/master_file/supplier.php:56
+msgid "Supplier Name can't be empty"
+msgstr "Имя поставщика не может быть пустым"
+
+#: admin/modules/master_file/supplier.php:80
+msgid "Supplier Data Successfully Updated"
+msgstr "Данные поставщика успешно обновлены"
+
+#: admin/modules/master_file/supplier.php:82
+msgid "Supplier Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные поставщика НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/supplier.php:89
+msgid "New Supplier Data Successfully Saved"
+msgstr "Данные нового поставщика успешно сохранены"
+
+#: admin/modules/master_file/supplier.php:92
+msgid "Supplier Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные поставщика НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/supplier.php:135
+msgid "Supplier"
+msgstr "Поставщик"
+
+#: admin/modules/master_file/supplier.php:139
+msgid "Supplier List"
+msgstr "Список поставщиков"
+
+#: admin/modules/master_file/supplier.php:140
+msgid "Add New Supplier"
+msgstr "Добавить нового поставщика"
+
+#: admin/modules/master_file/supplier.php:183
+#: admin/modules/master_file/supplier.php:210
+#: admin/modules/master_file/supplier.php:216
+msgid "Supplier Name"
+msgstr "Имя поставщика"
+
+#: admin/modules/master_file/supplier.php:185
+msgid "Address"
+msgstr "Адрес"
+
+#: admin/modules/master_file/supplier.php:187
+#: admin/modules/master_file/supplier.php:211
+#: admin/modules/master_file/supplier.php:217
+msgid "Contact"
+msgstr "Контакт"
+
+#: admin/modules/master_file/supplier.php:189
+#: admin/modules/master_file/supplier.php:212
+#: admin/modules/master_file/supplier.php:218
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#: admin/modules/master_file/supplier.php:191
+#: admin/modules/master_file/supplier.php:213
+#: admin/modules/master_file/supplier.php:219
+msgid "Fax Number"
+msgstr "Номер факса"
+
+#: admin/modules/master_file/supplier.php:193
+msgid "Account Number"
+msgstr "Номер банковского счета"
+
+#: admin/modules/master_file/supplier.php:197
+msgid "You are going to edit Supplier data"
+msgstr "Бы собираетесь редактировать данные поставщика"
+
+#: admin/modules/master_file/author.php:57
+msgid "Author name can't be empty"
+msgstr "Имя автора не может быть пустым"
+
+#: admin/modules/master_file/author.php:79
+msgid "Author Data Successfully Updated"
+msgstr "Данные автора успешно обновлены"
+
+#: admin/modules/master_file/author.php:81
+msgid "Author Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные автора НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/author.php:88
+msgid "New Author Data Successfully Saved"
+msgstr "Данные нового автора успешно сохранены"
+
+#: admin/modules/master_file/author.php:132
+#: admin/modules/master_file/submenu.php:30
+msgid "Author"
+msgstr "Автор"
+
+#: admin/modules/master_file/author.php:136
+msgid "Author List"
+msgstr "Список авторов"
+
+#: admin/modules/master_file/author.php:137
+msgid "Add New Author"
+msgstr "Добавить нового автора"
+
+#: admin/modules/master_file/author.php:180
+#: admin/modules/master_file/author.php:215
+#: admin/modules/master_file/author.php:221
+msgid "Author Name"
+msgstr "Имя автора"
+
+#: admin/modules/master_file/author.php:182
+msgid "Author Birth Year"
+msgstr "Год рождения автора"
+
+#: admin/modules/master_file/author.php:187
+#: admin/modules/master_file/author.php:217
+#: admin/modules/master_file/author.php:223
+msgid "Authority Type"
+msgstr "Тип авторизации"
+
+#: admin/modules/master_file/author.php:193
+msgid "You are going to edit author data"
+msgstr "Вы собираетесь редактировать данные автора"
+
+#: admin/modules/master_file/author.php:216
+#: admin/modules/master_file/author.php:222
+msgid "Author Year"
+msgstr "Год автора"
+
+#: admin/modules/master_file/item_status.php:52
+msgid "No Loan Transaction"
+msgstr "Нет транзакции выдачи"
+
+#: admin/modules/master_file/item_status.php:53
+msgid "Skipped By Stock Take"
+msgstr "Прервано инвентаризацией"
+
+#: admin/modules/master_file/item_status.php:61
+msgid "Item Status ID and Name can't be empty"
+msgstr "ID и имя позиции не могут быть пустыми"
+
+#: admin/modules/master_file/item_status.php:99
+msgid "Item Status Data Successfully Updated"
+msgstr "Данные статуса позиции успешно обновлены"
+
+#: admin/modules/master_file/item_status.php:103
+msgid "Item Status Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Двнные статуса позиции НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/item_status.php:110
+msgid "New Item Status Data Successfully Saved"
+msgstr "Данные нового статуса позиции успешно сохранены"
+
+#: admin/modules/master_file/item_status.php:112
+msgid "Item Status Data FAILED to Save. Please Contact System Administrator"
+msgstr "Двнные статуса позиции НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/item_status.php:154
+#: admin/modules/master_file/item_status.php:158
+#: admin/modules/master_file/submenu.php:35
+msgid "Item Status"
+msgstr "Статус позиции"
+
+#: admin/modules/master_file/item_status.php:159
+msgid "Add New Item Status"
+msgstr "Добавить новый статус позиции"
+
+#: admin/modules/master_file/item_status.php:202
+#: admin/modules/master_file/item_status.php:230
+#: admin/modules/master_file/item_status.php:234
+msgid "Item Status Code"
+msgstr "Код статуса позиции"
+
+#: admin/modules/master_file/item_status.php:204
+#: admin/modules/master_file/item_status.php:231
+#: admin/modules/master_file/item_status.php:235
+msgid "Item Status Name"
+msgstr "Имя статуса позиции"
+
+#: admin/modules/master_file/item_status.php:213
+msgid "Rules"
+msgstr "Правила"
+
+#: admin/modules/master_file/item_status.php:217
+msgid "You are going to edit Item Status data"
+msgstr "Вы собираетесь редактировать данные статуса позиции"
+
+#: admin/modules/master_file/doc_language.php:56
+msgid "Language ID or Name can't be empty"
+msgstr "ID и имя языка не могут быть пустыми"
+
+#: admin/modules/master_file/doc_language.php:75
+msgid "Language Data Successfully Updated"
+msgstr "данные языка успешно обновлены"
+
+#: admin/modules/master_file/doc_language.php:79
+msgid "Language Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные языка НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/doc_language.php:86
+msgid "New Language Data Successfully Saved"
+msgstr "Новый язык успешно сохранен"
+
+#: admin/modules/master_file/doc_language.php:88
+msgid "Language Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные языка НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/doc_language.php:130
+#: admin/modules/master_file/submenu.php:37
+msgid "Doc. Language"
+msgstr "Язык документа"
+
+#: admin/modules/master_file/doc_language.php:134
+msgid "Language List"
+msgstr "Список языков"
+
+#: admin/modules/master_file/doc_language.php:135
+msgid "Add New Language"
+msgstr "Добавить новый язык"
+
+#: admin/modules/master_file/doc_language.php:178
+msgid "Language Code"
+msgstr "Код языка"
+
+#: admin/modules/master_file/doc_language.php:183
+msgid "You are going to edit language data"
+msgstr "Вы собираетесь редактировать данные языка"
+
+#: admin/modules/master_file/submenu.php:27
+msgid "General Material Designation"
+msgstr "Общее обозначение материала"
+
+#: admin/modules/master_file/submenu.php:28
+#: admin/modules/master_file/publisher.php:128
+msgid "Publisher"
+msgstr "Издатель"
+
+#: admin/modules/master_file/submenu.php:28
+msgid "Document Publisher"
+msgstr "Издатель документа"
+
+#: admin/modules/master_file/submenu.php:29
+msgid "Item Supplier"
+msgstr "Поставщик позиции"
+
+#: admin/modules/master_file/submenu.php:30
+msgid "Document Authors"
+msgstr "Авторы документа"
+
+#: admin/modules/master_file/submenu.php:32
+msgid "Item Location"
+msgstr "Расположение позиции"
+
+#: admin/modules/master_file/submenu.php:33
+msgid "Lookup Files"
+msgstr "Поиск файлов"
+
+#: admin/modules/master_file/submenu.php:37
+msgid "Document Content Language"
+msgstr "Язык содержимого документа"
+
+#: admin/modules/master_file/submenu.php:38
+msgid "Special Labels for Titles to Show Up On Homepage"
+msgstr "Специальные ярлыки для показа на домашней странице"
+
+#: admin/modules/master_file/submenu.php:40
+msgid "Tools"
+msgstr "Инструменты"
+
+#: admin/modules/master_file/submenu.php:41
+msgid "Orphaned Author"
+msgstr "Осиротевший автор"
+
+#: admin/modules/master_file/submenu.php:41
+msgid "Orphaned Authors"
+msgstr "Осиротевшие авторы"
+
+#: admin/modules/master_file/submenu.php:42
+msgid "Orphaned Subject"
+msgstr "Осиротевшая тема"
+
+#: admin/modules/master_file/submenu.php:43
+msgid "Orphaned Publisher"
+msgstr "Осиротевший издатель"
+
+#: admin/modules/master_file/submenu.php:44
+msgid "Orphaned Place"
+msgstr "Осиротевшее место"
+
+#: admin/modules/master_file/publisher.php:57
+msgid "Publisher Name can't be empty"
+msgstr "Имя издателя не может быть пустым"
+
+#: admin/modules/master_file/publisher.php:75
+msgid "Publisher Data Successfully Updated"
+msgstr "Данные издателя успешно обновлены"
+
+#: admin/modules/master_file/publisher.php:77
+msgid "PUBLISHER Data FAILED to Updated. Please Contact System Administrator"
+msgstr "При обновлении данных ИЗДАТЕЛЯ получена ОШИБКА. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/publisher.php:84
+msgid "New Publisher Data Successfully Saved"
+msgstr "Данные нового издателя успешно сохранены"
+
+#: admin/modules/master_file/publisher.php:86
+msgid "Publisher Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные издателя НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/master_file/publisher.php:132
+msgid "Publisher List"
+msgstr "Список издателей"
+
+#: admin/modules/master_file/publisher.php:133
+msgid "Add New Publisher"
+msgstr "Добавить нового издателя"
+
+#: admin/modules/master_file/publisher.php:176
+#: admin/modules/master_file/publisher.php:200
+#: admin/modules/master_file/publisher.php:204
+msgid "Publisher Name"
+msgstr "Имя издателя"
+
+#: admin/modules/master_file/publisher.php:180
+msgid "You are going to edit publisher data"
+msgstr "Вы собираетесь редактировать данные издателя"
+
+#: admin/modules/circulation/loan_list.php:60
+msgid "Are you sure you want to return the item"
+msgstr "Вы уверены, что хотите вернуть позицию"
+
+#: admin/modules/circulation/loan_list.php:62
+msgid "Are you sure to extend loan for"
+msgstr "Вы уверены, что хотите продлить пользование позицией"
+
+#: admin/modules/circulation/loan_list.php:96
+#: admin/modules/circulation/quick_return.php:69
+#: admin/modules/circulation/pop_loan_receipt.php:141
+msgid "Return"
+msgstr "Возврат"
+
+#: admin/modules/circulation/loan_list.php:96
+msgid "Extend"
+msgstr "Продлить"
+
+#: admin/modules/circulation/loan_list.php:96
+msgid "Col. Type"
+msgstr "Тип колонки"
+
+#: admin/modules/circulation/loan_list.php:96
+#: admin/modules/circulation/loan.php:141
+msgid "Loan Date"
+msgstr "Срок удержания"
+
+#: admin/modules/circulation/loan_list.php:96
+#: admin/modules/circulation/loan.php:141
+msgid "Due Date"
+msgstr "Срок оплаты"
+
+#: admin/modules/circulation/loan_list.php:111
+msgid "Return this item"
+msgstr "Вернуть эту позицию"
+
+#: admin/modules/circulation/loan_list.php:115
+#: admin/modules/circulation/loan_list.php:119
+#: admin/modules/circulation/loan_list.php:121
+msgid "No Extend"
+msgstr "Не продевать"
+
+#: admin/modules/circulation/loan_list.php:123
+msgid "Extend loan for this item"
+msgstr "Пролить удержания для этой позиции"
+
+#: admin/modules/circulation/loan_list.php:128
+#: admin/modules/circulation/pop_loan_receipt.php:86
+msgid "Extended"
+msgstr "Расширенный"
+
+#: admin/modules/circulation/loan_list.php:135
+msgid "OVERDUED for"
+msgstr "ПРОСРОЧЕНО для"
+
+#: admin/modules/circulation/loan_list.php:135
+msgid "days(s) with fines value"
+msgstr "день(и) с величиной штрафа"
+
+#: admin/modules/circulation/loan_list.php:171
+msgid "Item {itemCode} is being reserved by member {member}"
+msgstr "Позиция {itemCode} зарезервирована читателем {member}"
+
+#: admin/modules/circulation/loan_list.php:177
+msgid "Send overdues notice e-mail"
+msgstr "Послать уведомление о просрочке по электронной почте"
+
+#: admin/modules/circulation/quick_return.php:53
+msgid "Quick Return is disabled"
+msgstr "Быстрый возврат недоступен"
+
+#: admin/modules/circulation/quick_return.php:64
+msgid "Insert an item ID to return collection with keyboard or barcode reader"
+msgstr "Введите ID позиции для возврата коллекции с клавиатуры или считывателя штрих-кода"
+
+#: admin/modules/circulation/quick_return.php:67
+msgid "Item ID"
+msgstr "ID позиции"
+
+#: admin/modules/circulation/index.php:58
+msgid "Circulation"
+msgstr "Обращения"
+
+#: admin/modules/circulation/index.php:62
+msgid "CIRCULATION - Insert a member ID to start transaction with keyboard or barcode reader"
+msgstr "ОБРАЩЕНИЯ - Введите ID читателя для старта транзакции с клавиатуры или считывателя штрих-кода"
+
+#: admin/modules/circulation/index.php:65
+msgid "Member ID"
+msgstr "ID читателя"
+
+#: admin/modules/circulation/index.php:81
+msgid "Transaction with member {member_id} is completed"
+msgstr "Транзакция с читателем {member_id} завершена"
+
+#: admin/modules/circulation/loan.php:125
+msgid "Insert Item Code/Barcode"
+msgstr "Введите код позиции/штрих-код"
+
+#: admin/modules/circulation/loan.php:127
+#: admin/modules/circulation/pop_loan_receipt.php:86
+msgid "Loan"
+msgstr "Взять"
+
+#: admin/modules/circulation/loan.php:141
+#: admin/modules/circulation/reserve_list.php:96
+msgid "Remove"
+msgstr "Удалить"
+
+#: admin/modules/circulation/loan.php:154
+msgid "Click To Change Loan Date"
+msgstr "Щелкнуть для изменения даты пользования"
+
+#: admin/modules/circulation/loan.php:155
+msgid "Click To Change Due Date"
+msgstr "Щелкнуть для изменения даты возврата"
+
+#: admin/modules/circulation/reserve_list.php:55
+msgid "Are you sure to remove reservation for"
+msgstr "Вы уверены, что хотите удалить резервирование для"
+
+#: admin/modules/circulation/reserve_list.php:69
+msgid "Search Collection"
+msgstr "Поиск коллекции"
+
+#: admin/modules/circulation/reserve_list.php:76
+msgid "Add Reserve"
+msgstr "Добавить резервирование"
+
+#: admin/modules/circulation/reserve_list.php:96
+msgid "Reserve Date"
+msgstr "Дата резервирования"
+
+#: admin/modules/circulation/reserve_list.php:110
+msgid "Available"
+msgstr "Доступно"
+
+#: admin/modules/circulation/reserve_list.php:114
+msgid "ALREADY EXPIRED"
+msgstr "УЖЕ ПРОСРОЧЕНО"
+
+#: admin/modules/circulation/loan_rules.php:77
+msgid "Loan Rules Successfully Updated"
+msgstr "Правила удержания успешно обновлены"
+
+#: admin/modules/circulation/loan_rules.php:79
+msgid "Loan Rules FAILED to Updated. Please Contact System Administrator"
+msgstr "Правила удержания НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/circulation/loan_rules.php:85
+msgid "New Loan Rules Successfully Saved"
+msgstr "Правила удержания успешно сохранены"
+
+#: admin/modules/circulation/loan_rules.php:87
+msgid "Loan Rules FAILED to Save. Please Contact System Administrator"
+msgstr "Правила удержания НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/circulation/loan_rules.php:129
+msgid "Loan Rules"
+msgstr "Правила удержания"
+
+#: admin/modules/circulation/loan_rules.php:133
+msgid "Loan Rules List"
+msgstr "Список правил пользования"
+
+#: admin/modules/circulation/loan_rules.php:134
+msgid "Add New Loan Rules"
+msgstr "Добавить новое правило пользования"
+
+#: admin/modules/circulation/loan_rules.php:185
+#: admin/modules/circulation/loan_rules.php:232
+#: admin/modules/circulation/loan_rules.php:239
+msgid "Member Type"
+msgstr "Тип читателя"
+
+#: admin/modules/circulation/loan_rules.php:204
+#: admin/modules/circulation/loan_rules.php:235
+#: admin/modules/circulation/loan_rules.php:242
+msgid "Loan Limit"
+msgstr "Лимит пользования"
+
+#: admin/modules/circulation/loan_rules.php:206
+#: admin/modules/circulation/loan_rules.php:236
+#: admin/modules/circulation/loan_rules.php:243
+msgid "Loan Period"
+msgstr "Период пользования"
+
+#: admin/modules/circulation/loan_rules.php:208
+msgid "Reborrow Limit"
+msgstr "Перезаимствованный предел"
+
+#: admin/modules/circulation/loan_rules.php:210
+msgid "Fines Each Day"
+msgstr "Штрафы каждый день"
+
+#: admin/modules/circulation/loan_rules.php:212
+msgid "Overdue Grace Periode"
+msgstr "период просроченной отсрочки"
+
+#: admin/modules/circulation/loan_rules.php:216
+msgid "You are going to edit loan rules"
+msgstr "Вы собираетесь редактировать правила пользования"
+
+#: admin/modules/circulation/submenu.php:29
+msgid "View and Modify Circulation Loan Rules"
+msgstr "Посмотр и модицикация обращения правил пользования"
+
+#: admin/modules/circulation/submenu.php:30
+#: admin/modules/circulation/circulation_action.php:509
+msgid "Loan History"
+msgstr "История пользования"
+
+#: admin/modules/circulation/submenu.php:30
+msgid "Loan History Overview"
+msgstr "Обзор истории пользования"
+
+#: admin/modules/circulation/submenu.php:31
+msgid "Overdued List"
+msgstr "Список просрочек"
+
+#: admin/modules/circulation/submenu.php:31
+msgid "View Members Having Overdues"
+msgstr "Просмотр читателей, имеющих просрочки"
+
+#: admin/modules/circulation/submenu.php:32
+msgid "Reservation"
+msgstr "Резервирование"
+
+#: admin/modules/circulation/member_loan_hist.php:65
+msgid "Not Returned Yet"
+msgstr "Еще не возвращено"
+
+#: admin/modules/circulation/member_loan_hist.php:65
+msgid "Returned Date"
+msgstr "Дата возврата"
+
+#: admin/modules/circulation/fines_list.php:67
+msgid "Fines Description and Debet value can't be empty"
+msgstr "Описание штрафов и величина дебета не могут быть пустыми"
+
+#: admin/modules/circulation/fines_list.php:69
+msgid "Value of Credit can not be higher that Debet Value"
+msgstr "Величина кредита не может быть больше величины дебета"
+
+#: admin/modules/circulation/fines_list.php:87
+msgid "Fines Data Successfully Updated"
+msgstr "Данные штрафов успешно обновлены"
+
+#: admin/modules/circulation/fines_list.php:88
+msgid "Fines Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные штрафов НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/circulation/fines_list.php:94
+msgid "New Fines Data Successfully Saved"
+msgstr "Новые данные трафов успешно сохранены"
+
+#: admin/modules/circulation/fines_list.php:95
+msgid "Fines Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные штрафов НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/circulation/fines_list.php:131
+msgid "Add New Fines"
+msgstr "Добавить новые штрафы"
+
+#: admin/modules/circulation/fines_list.php:132
+msgid "Fines List"
+msgstr "Список штрафов"
+
+#: admin/modules/circulation/fines_list.php:133
+msgid "View Balanced Overdue"
+msgstr "Просмотр баланса просрочек"
+
+#: admin/modules/circulation/fines_list.php:170
+#: admin/modules/circulation/fines_list.php:194
+msgid "Fines Date"
+msgstr "Дата штрафов"
+
+#: admin/modules/circulation/fines_list.php:172
+#: admin/modules/circulation/fines_list.php:193
+msgid "Description/Name"
+msgstr "Описание/Имя"
+
+#: admin/modules/circulation/fines_list.php:174
+#: admin/modules/circulation/fines_list.php:195
+msgid "Debit"
+msgstr "Дебет"
+
+#: admin/modules/circulation/fines_list.php:176
+#: admin/modules/circulation/fines_list.php:196
+msgid "Credit"
+msgstr "Кредит"
+
+#: admin/modules/circulation/fines_list.php:180
+msgid "You are going to edit fines data"
+msgstr "Вы собираетесь редактировать данные штрафов"
+
+#: admin/modules/circulation/circulation_action.php:57
+msgid "ERROR! Loan data can't be saved to database"
+msgstr "ОШИБКА! Данные пользования не могут быть сохранены в базе данных"
+
+#: admin/modules/circulation/circulation_action.php:65
+msgid "Transaction finished"
+msgstr "Транзакция завершена"
+
+#: admin/modules/circulation/circulation_action.php:96
+#: admin/modules/circulation/circulation_action.php:118
+msgid "Overdue fines inserted to fines database"
+msgstr "Штрафы за прострочку вставлены в базу данных штрафов"
+
+#: admin/modules/circulation/circulation_action.php:109
+msgid "Item CANNOT BE Extended! This Item is being reserved by other member"
+msgstr "Позиция НЕ МОЖЕТ БЫТЬ продлена! Данная позиция зарезервирова другим читателем"
+
+#: admin/modules/circulation/circulation_action.php:116
+msgid "Loan Extended"
+msgstr "Пользование проблено"
+
+#: admin/modules/circulation/circulation_action.php:144
+#: admin/modules/circulation/circulation_action.php:151
+msgid "Loan Limit Reached!"
+msgstr "Достигнут предел пользования!"
+
+#: admin/modules/circulation/circulation_action.php:144
+#: admin/modules/circulation/circulation_action.php:165
+msgid "Do You Want To Overide This?"
+msgstr "Вы желаете просрочить это?"
+
+#: admin/modules/circulation/circulation_action.php:165
+msgid "WARNING! This Item is reserved by another member"
+msgstr "ПРЕДУПРЕЖДЕНИЕ! Эта позиция зарезервирована другим читателем"
+
+#: admin/modules/circulation/circulation_action.php:175
+msgid "This Item is not registered in database"
+msgstr "Эта позиция не зарегистрирована в базе данных"
+
+#: admin/modules/circulation/circulation_action.php:180
+msgid "This Item is currently not available"
+msgstr "Эта позиция сейчас недоступна"
+
+#: admin/modules/circulation/circulation_action.php:185
+msgid "Loan NOT PERMITTED! Membership already EXPIRED!"
+msgstr "Пользование НЕ РАЗРЕШЕНО! Членство  уже ИСТЕКЛО!"
+
+#: admin/modules/circulation/circulation_action.php:190
+msgid "Loan NOT PERMITTED! Membership under PENDING State!"
+msgstr "Пользование НЕ РАЗРЕШЕНО! Членство в состоянии ОЖИДАНИЯ!"
+
+#: admin/modules/circulation/circulation_action.php:195
+msgid "Loan Forbidden for this Item!"
+msgstr "Пользование запрещено для этой позиции!"
+
+#: admin/modules/circulation/circulation_action.php:232
+msgid "Item {removeID} removed from session"
+msgstr "Позиция {removeID} удалена из сессии"
+
+#: admin/modules/circulation/circulation_action.php:249
+msgid "This is item already returned or not exists in loan database"
+msgstr "Это позиция, уже возвращенная или не существующая в базе пользования"
+
+#: admin/modules/circulation/circulation_action.php:267
+msgid "OVERDUED for {overdueDays} days(s) with fines value of"
+msgstr "ПОСРОЧЕНО для {overdueDays} days(s) с величиной штрафа"
+
+#: admin/modules/circulation/circulation_action.php:291
+msgid " successfully returned on"
+msgstr "успешно возвращено"
+
+#: admin/modules/circulation/circulation_action.php:293
+#: admin/modules/circulation/circulation_action.php:464
+#: admin/modules/reporting/customs/member_list.php:87
+#: admin/modules/reporting/customs/member_list.php:147
+#: admin/modules/reporting/customs/member_list.php:187
+#: admin/modules/reporting/customs/due_date_warning.php:72
+msgid "Member Name"
+msgstr "Имя читателя"
+
+#: admin/modules/circulation/circulation_action.php:319
+msgid "NO DATA Selected to reserve!"
+msgstr "НЕТ ДАННЫХ, выбранных для резервирования!"
+
+#: admin/modules/circulation/circulation_action.php:332
+msgid "Can not add more reservation. Maximum limit reached"
+msgstr "Нельзя добавить больше резервирований. Достигнут максимум лимита"
+
+#: admin/modules/circulation/circulation_action.php:350
+msgid "Can't reserve this Item. Loan Forbidden!"
+msgstr "Нельзя зарезервировать эту позицию. Пользование запрещено!"
+
+#: admin/modules/circulation/circulation_action.php:368
+msgid "Reservation added"
+msgstr "Резервирование добавлено"
+
+#: admin/modules/circulation/circulation_action.php:373
+msgid "Item for this title is already available or already on hold by this member!"
+msgstr "Позиция с этим наименование уже доступна или уже удерживается этим читателем!"
+
+#: admin/modules/circulation/circulation_action.php:392
+msgid "Reservation removed"
+msgstr "Резервирование снято"
+
+#: admin/modules/circulation/circulation_action.php:407
+msgid "Fines data removed"
+msgstr "Данные штрафов удалены"
+
+#: admin/modules/circulation/circulation_action.php:431
+msgid " not valid (unregistered in database)"
+msgstr " не верно (не зарегистрировано в базе данных)"
+
+#: admin/modules/circulation/circulation_action.php:460
+msgid "Finish Transaction"
+msgstr "Завершение транзакции"
+
+#: admin/modules/circulation/circulation_action.php:460
+msgid "Are you sure want to finish current transaction?"
+msgstr "Вы уверены, что хотите завершить текущую транзакцию?"
+
+#: admin/modules/circulation/circulation_action.php:476
+msgid "Member Email"
+msgstr "Электронная почта читателя"
+
+#: admin/modules/circulation/circulation_action.php:480
+msgid "Register Date"
+msgstr "Дата регистрации"
+
+#: admin/modules/circulation/circulation_action.php:484
+msgid "Membership Already Expired"
+msgstr "Членство истекло"
+
+#: admin/modules/circulation/circulation_action.php:486
+msgid "Expiry Date"
+msgstr "Дата истечения"
+
+#: admin/modules/circulation/circulation_action.php:496
+msgid "Membership currently in pending state, loan transaction is locked."
+msgstr "Членство в настоящее время в состоянии ожидания, транзакции пользования блокированы."
+
+#: admin/modules/circulation/circulation_action.php:503
+msgid "Loans"
+msgstr "Выдачи"
+
+#: admin/modules/circulation/circulation_action.php:504
+msgid "Current Loans"
+msgstr "Текущие выдачи"
+
+#: admin/modules/circulation/circulation_action.php:506
+msgid "Reserve"
+msgstr "Зарезервировано"
+
+#: admin/modules/circulation/circulation_action.php:508
+msgid "Fines"
+msgstr "Штрафы"
+
+#: admin/modules/reporting/charts_report.php:71
+#: admin/modules/reporting/index.php:87
+#: admin/modules/reporting/index.php:92
+msgid "Total Titles By Medium/GMD"
+msgstr "Всего наименований по Носитель/GMD"
+
+#: admin/modules/reporting/charts_report.php:83
+#: admin/modules/reporting/index.php:101
+#: admin/modules/reporting/index.php:106
+msgid "Total Items By Collection Type"
+msgstr "Всего позиций по типу коллекции"
+
+#: admin/modules/reporting/charts_report.php:97
+#: admin/modules/reporting/member_report.php:66
+#: admin/modules/reporting/member_report.php:70
+msgid "Total Members By Membership Type"
+msgstr "Всего читателей по типу членства"
+
+#: admin/modules/reporting/charts_report.php:109
+#: admin/modules/reporting/loan_report.php:61
+#: admin/modules/reporting/loan_report.php:65
+msgid "Total Loan By GMD/Medium"
+msgstr "Всего взято позиций по GMD/Носитель"
+
+#: admin/modules/reporting/charts_report.php:122
+#: admin/modules/reporting/loan_report.php:72
+#: admin/modules/reporting/loan_report.php:76
+msgid "Total Loan By Collection Type"
+msgstr "Всего взято по типу коллекции"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:88
+msgid "record(s) found. Currently displaying page"
+msgstr "записей найдено. Сейчас отображается страница"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:88
+msgid "record each page"
+msgstr "записей на странице"
+
+#: admin/modules/reporting/report_dbgrid.inc.php:88
+msgid "Print Current Page"
+msgstr "Печать текущей страницы"
+
+#: admin/modules/reporting/index.php:60
+msgid "Total Titles"
+msgstr "Печать названий"
+
+#: admin/modules/reporting/index.php:65
+msgid "Total Titles with items"
+msgstr "Всего названий с позициями"
+
+#: admin/modules/reporting/index.php:70
+#: admin/modules/reporting/index.php:80
+msgid "Total Items/Copies"
+msgstr "Всего позиций/копий"
+
+#: admin/modules/reporting/index.php:77
+#: admin/modules/reporting/index.php:80
+msgid "Total Checkout Items"
+msgstr "Всего заказанных позиций"
+
+#: admin/modules/reporting/index.php:80
+msgid "Total Items In Library"
+msgstr "Всего позиций в библиотеке"
+
+#: admin/modules/reporting/index.php:87
+#: admin/modules/reporting/index.php:101
+#: admin/modules/reporting/loan_report.php:61
+#: admin/modules/reporting/loan_report.php:72
+#: admin/modules/reporting/member_report.php:66
+msgid "Show in chart/plot"
+msgstr "Показать на графике"
+
+#: admin/modules/reporting/index.php:118
+msgid "10 Most Popular Titles"
+msgstr "10 наиболее популярных позиций"
+
+#: admin/modules/reporting/index.php:121
+msgid "Collection Statistic Summary"
+msgstr "Резюме статистики коллекции"
+
+#: admin/modules/reporting/index.php:150
+msgid "Collection Statistic Report"
+msgstr "Статистический отчет о коллекции"
+
+#: admin/modules/reporting/index.php:168
+#: admin/modules/reporting/submenu.php:28
+msgid "Collection Statistic"
+msgstr "Статистика коллекции"
+
+#: admin/modules/reporting/loan_report.php:53
+msgid "Total Loan"
+msgstr "Всего выдано"
+
+#: admin/modules/reporting/loan_report.php:84
+#: admin/modules/reporting/loan_report.php:90
+msgid "Total Loan Transactions"
+msgstr "Всего транзакций выдачи"
+
+#: admin/modules/reporting/loan_report.php:90
+msgid "Transaction Average (Per Day)"
+msgstr "Среднее число транзакций (в день)"
+
+#: admin/modules/reporting/loan_report.php:93
+msgid "Total Peak Transaction"
+msgstr "Всего пиков транзакций"
+
+#: admin/modules/reporting/loan_report.php:98
+#: admin/modules/reporting/loan_report.php:105
+msgid "Members Already Had Loans"
+msgstr "Читатели, имеющие позиции на руках"
+
+#: admin/modules/reporting/loan_report.php:105
+msgid "Members Never Have Loans Yet"
+msgstr "Читатели, еще никогда не бравшие позиции на руки"
+
+#: admin/modules/reporting/loan_report.php:111
+msgid "Total Overdued Loans"
+msgstr "Общее число просроченных выданных позиций"
+
+#: admin/modules/reporting/loan_report.php:114
+msgid "Loan Data Summary"
+msgstr "Резюме данных выданных позиций"
+
+#: admin/modules/reporting/loan_report.php:143
+#: admin/modules/reporting/loan_report.php:161
+#: admin/modules/reporting/submenu.php:29
+msgid "Loan Report"
+msgstr "Отчет о выданных позициях"
+
+#: admin/modules/reporting/member_report.php:53
+msgid "Total Registered Members"
+msgstr "Общее число зарегистрированных читателей"
+
+#: admin/modules/reporting/member_report.php:59
+msgid "Total Active Member"
+msgstr "Общее число активных читателей"
+
+#: admin/modules/reporting/member_report.php:76
+msgid "Total Expired Member"
+msgstr "Общее число истекших читателей"
+
+#: admin/modules/reporting/member_report.php:87
+msgid "10 most active members"
+msgstr "10 самых активных читателей"
+
+#: admin/modules/reporting/member_report.php:90
+msgid "Membership Data Summary"
+msgstr "Резюме данных членства в библиотеке"
+
+#: admin/modules/reporting/member_report.php:119
+#: admin/modules/reporting/member_report.php:137
+#: admin/modules/reporting/submenu.php:30
+msgid "Membership Report"
+msgstr "Отчет о членстве"
+
+#: admin/modules/reporting/submenu.php:27
+msgid "Reporting"
+msgstr "Отчет"
+
+#: admin/modules/reporting/submenu.php:28
+msgid "View Library Collection Statistic"
+msgstr "Просмотр статистики библиотечных коллекций"
+
+#: admin/modules/reporting/submenu.php:29
+msgid "View Library Loan Report"
+msgstr "Просмотр отчета о выданных позициях библиотеки"
+
+#: admin/modules/reporting/submenu.php:30
+msgid "View Membership Report"
+msgstr "Просмотр отчета о членстве"
+
+#: admin/modules/reporting/submenu.php:31
+msgid "Other Reports"
+msgstr "Другие отчеты"
+
+#: admin/modules/reporting/customs/visitor_list.php:64
+msgid "Visitor List"
+msgstr "Список посетителей"
+
+#: admin/modules/reporting/customs/visitor_list.php:73
+#: admin/modules/reporting/customs/visitor_list.php:139
+#: admin/modules/reporting/customs/visitor_list.php:181
+#: admin/modules/reporting/customs/member_list.php:73
+#: admin/modules/reporting/customs/member_list.php:148
+#: admin/modules/reporting/customs/member_list.php:188
+msgid "Membership Type"
+msgstr "Тип членства"
+
+#: admin/modules/reporting/customs/visitor_list.php:79
+msgid "NON-Member visitor"
+msgstr "Посетитель, не являющийся зарегистрированным читателем"
+
+#: admin/modules/reporting/customs/visitor_list.php:88
+msgid "Visitor ID"
+msgstr "ID посетителя"
+
+#: admin/modules/reporting/customs/visitor_list.php:88
+#: admin/modules/reporting/customs/visitor_list.php:138
+#: admin/modules/reporting/customs/visitor_list.php:180
+msgid "Visitor Name"
+msgstr "Имя посетителя"
+
+#: admin/modules/reporting/customs/visitor_list.php:94
+#: admin/modules/reporting/customs/visitor_list.php:140
+#: admin/modules/reporting/customs/visitor_list.php:182
+msgid "Institution"
+msgstr "Организация"
+
+#: admin/modules/reporting/customs/visitor_list.php:100
+msgid "Visit Date From"
+msgstr "Дата визита с "
+
+#: admin/modules/reporting/customs/visitor_list.php:106
+msgid "Visit Date Until"
+msgstr "Дата визита до"
+
+#: admin/modules/reporting/customs/visitor_list.php:112
+#: admin/modules/reporting/customs/titles_list.php:145
+#: admin/modules/reporting/customs/member_list.php:122
+#: admin/modules/reporting/customs/due_date_warning.php:80
+msgid "Record each page"
+msgstr "Запись каждой страницы"
+
+#: admin/modules/reporting/customs/visitor_list.php:113
+#: admin/modules/reporting/customs/titles_list.php:146
+#: admin/modules/reporting/customs/member_list.php:123
+#: admin/modules/reporting/customs/due_date_warning.php:81
+msgid "Set between 20 and 200"
+msgstr "Установить между 20 и 200"
+
+#: admin/modules/reporting/customs/visitor_list.php:141
+#: admin/modules/reporting/customs/visitor_list.php:183
+msgid "Visit Date"
+msgstr "Дата визита"
+
+#: admin/modules/reporting/customs/visitor_list.php:190
+#: admin/modules/reporting/customs/titles_list.php:295
+#: admin/modules/reporting/customs/member_list.php:194
+msgid "Export to spreadsheet format"
+msgstr "Экспорт в формат электронных таблиц"
+
+#: admin/modules/reporting/customs/titles_list.php:63
+msgid "Title List"
+msgstr "Список названий"
+
+#: admin/modules/reporting/customs/titles_list.php:99
+msgid "Press Ctrl and click to select multiple entries"
+msgstr "Нажмите Ctrl и щелкните для выбора множественных позиций"
+
+#: admin/modules/reporting/customs/titles_list.php:165
+#: admin/modules/reporting/customs/titles_list.php:285
+msgid "Copies"
+msgstr "Копии"
+
+#: admin/modules/reporting/customs/titles_list.php:166
+#: admin/modules/reporting/customs/titles_list.php:286
+msgid "Publishing Place"
+msgstr "Место публикации"
+
+#: admin/modules/reporting/customs/titles_list.php:168
+#: admin/modules/reporting/customs/titles_list.php:288
+msgid "ISBN/ISSN"
+msgstr "ISBN/ISSN"
+
+#: admin/modules/reporting/customs/member_list.php:64
+msgid "Member List"
+msgstr "Список читателей"
+
+#: admin/modules/reporting/customs/member_list.php:93
+msgid "Gender"
+msgstr "Пол"
+
+#: admin/modules/reporting/customs/member_list.php:97
+msgid "Male"
+msgstr "Мужской"
+
+#: admin/modules/reporting/customs/member_list.php:98
+msgid "Female"
+msgstr "Женский"
+
+#: admin/modules/reporting/customs/member_list.php:110
+msgid "Register Date From"
+msgstr "Дата регистрации от"
+
+#: admin/modules/reporting/customs/member_list.php:116
+msgid "Register Date Until"
+msgstr "Дата регистрации до"
+
+#: admin/modules/reporting/customs/staff_act.php:61
+msgid "Staff Activity"
+msgstr "Деятельность персонала"
+
+#: admin/modules/reporting/customs/staff_act.php:70
+msgid "Activity Date From"
+msgstr "Дата деятельности с"
+
+#: admin/modules/reporting/customs/staff_act.php:76
+msgid "Activity Date Until"
+msgstr "Дата деятельности до"
+
+#: admin/modules/reporting/customs/staff_act.php:103
+msgid "Bibliography Data Entry"
+msgstr "Ввод данных библиографии"
+
+#: admin/modules/reporting/customs/staff_act.php:104
+msgid "Item Data Entry"
+msgstr "Ввод данных о фондах"
+
+#: admin/modules/reporting/customs/staff_act.php:105
+msgid "Member Data Entry"
+msgstr "Ввод данных читателей"
+
+#: admin/modules/reporting/customs/staff_act.php:106
+msgid "Circulation Tasks"
+msgstr "Задачи обращения"
+
+#: admin/modules/reporting/customs/due_date_warning.php:62
+msgid "Due Date Warning"
+msgstr "Предупреждение о дате возврата долга"
+
+#: admin/modules/reporting/customs/due_date_warning.php:68
+msgid "This report loan items which will due in 3 to 0 days"
+msgstr "Это предупреждение о возврате долга будет от 3 до 0 дней"
+
+#: admin/modules/reporting/customs/due_date_warning.php:156
+msgid "E-mail"
+msgstr "Электронная почта"
+
+#: admin/modules/reporting/customs/overdued_list.php:79
+#: admin/modules/reporting/customs/loan_history.php:95
+#: admin/modules/reporting/customs/member_loan_list.php:79
+msgid "Loan Date From"
+msgstr "Даьа выдачи с"
+
+#: admin/modules/reporting/customs/overdued_list.php:87
+#: admin/modules/reporting/customs/loan_history.php:103
+#: admin/modules/reporting/customs/member_loan_list.php:87
+msgid "Loan Date Until"
+msgstr "Дата выдачи до"
+
+#: admin/modules/reporting/customs/overdued_list.php:184
+#: admin/modules/bibliography/item.php:342
+msgid "Price"
+msgstr "Цена"
+
+#: admin/modules/reporting/customs/overdued_list.php:185
+msgid "Overdue"
+msgstr "Просрочено"
+
+#: admin/modules/reporting/customs/overdued_list.php:185
+msgid "day(s)"
+msgstr "день(и)"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:48
+#: admin/modules/reporting/customs/item_usage.php:117
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:48
+#: admin/modules/reporting/customs/visitor_report.php:92
+#: admin/modules/reporting/customs/loan_by_class.php:130
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Jan"
+msgstr "Январь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:49
+#: admin/modules/reporting/customs/item_usage.php:118
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:49
+#: admin/modules/reporting/customs/visitor_report.php:93
+#: admin/modules/reporting/customs/loan_by_class.php:131
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Feb"
+msgstr "Февраль"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:50
+#: admin/modules/reporting/customs/item_usage.php:119
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:50
+#: admin/modules/reporting/customs/visitor_report.php:94
+#: admin/modules/reporting/customs/loan_by_class.php:132
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Mar"
+msgstr "Март"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:51
+#: admin/modules/reporting/customs/item_usage.php:120
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:51
+#: admin/modules/reporting/customs/visitor_report.php:95
+#: admin/modules/reporting/customs/loan_by_class.php:133
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Apr"
+msgstr "Апрель"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:52
+#: admin/modules/reporting/customs/item_usage.php:121
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:52
+#: admin/modules/reporting/customs/visitor_report.php:96
+#: admin/modules/reporting/customs/loan_by_class.php:134
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "May"
+msgstr "Май"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:53
+#: admin/modules/reporting/customs/item_usage.php:122
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:53
+#: admin/modules/reporting/customs/visitor_report.php:97
+#: admin/modules/reporting/customs/loan_by_class.php:135
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Jun"
+msgstr "Июнь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:54
+#: admin/modules/reporting/customs/item_usage.php:123
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:54
+#: admin/modules/reporting/customs/visitor_report.php:98
+#: admin/modules/reporting/customs/loan_by_class.php:136
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Jul"
+msgstr "Июль"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:55
+#: admin/modules/reporting/customs/item_usage.php:124
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:55
+#: admin/modules/reporting/customs/visitor_report.php:99
+#: admin/modules/reporting/customs/loan_by_class.php:137
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Aug"
+msgstr "Август"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:56
+#: admin/modules/reporting/customs/item_usage.php:125
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:56
+#: admin/modules/reporting/customs/visitor_report.php:100
+#: admin/modules/reporting/customs/loan_by_class.php:138
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Sep"
+msgstr "Сентябрь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:57
+#: admin/modules/reporting/customs/item_usage.php:126
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:57
+#: admin/modules/reporting/customs/visitor_report.php:101
+#: admin/modules/reporting/customs/loan_by_class.php:139
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Oct"
+msgstr "Октябрь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:58
+#: admin/modules/reporting/customs/item_usage.php:127
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:58
+#: admin/modules/reporting/customs/visitor_report.php:102
+#: admin/modules/reporting/customs/loan_by_class.php:140
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Nov"
+msgstr "Ноябрь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:59
+#: admin/modules/reporting/customs/item_usage.php:128
+#: admin/modules/reporting/customs/item_usage.php:185
+#: admin/modules/reporting/customs/fines_report.php:59
+#: admin/modules/reporting/customs/visitor_report.php:103
+#: admin/modules/reporting/customs/loan_by_class.php:141
+#: admin/modules/reporting/customs/loan_by_class.php:150
+msgid "Dec"
+msgstr "Декабрь"
+
+#: admin/modules/reporting/customs/visitor_report_day.php:72
+msgid "Visitor Report"
+msgstr "Отчет о посетителях"
+
+#: admin/modules/reporting/customs/loan_history.php:111
+#: admin/modules/reporting/customs/loan_history.php:148
+#: admin/modules/reporting/customs/loan_history.php:215
+msgid "Loan Status"
+msgstr "Статус выдачи"
+
+#: admin/modules/reporting/customs/loan_history.php:113
+#: admin/modules/reporting/customs/loan_history.php:198
+msgid "Returned"
+msgstr "Возвращено"
+
+#: admin/modules/reporting/customs/item_usage.php:61
+#: admin/modules/reporting/customs/customs_report_list.inc.php:31
+msgid "Items Usage Statistics"
+msgstr "Статистика об использовании фондов"
+
+#: admin/modules/reporting/customs/reserve_list.php:88
+msgid "Reserve Date From"
+msgstr "Дата резервирования с"
+
+#: admin/modules/reporting/customs/reserve_list.php:96
+msgid "Reserve Date Until"
+msgstr "Дата резервирования до"
+
+#: admin/modules/reporting/customs/fines_report.php:72
+#: admin/modules/reporting/customs/customs_report_list.inc.php:42
+msgid "Fines Report"
+msgstr "Отчет о штрафах"
+
+#: admin/modules/reporting/customs/item_titles_list.php:62
+#: admin/modules/reporting/customs/customs_report_list.inc.php:30
+msgid "Items Title List"
+msgstr "Список названий позиций"
+
+#: admin/modules/reporting/customs/visitor_report.php:57
+msgid "Library Visitor Report"
+msgstr "Отчет о посетителях библиотеки"
+
+#: admin/modules/reporting/customs/visitor_report.php:155
+msgid "NON-Member Visitor"
+msgstr "Посетитель - НЕ ЗАРЕГИСТРИРОВАННЫЙ ЧИТАТЕЛЬ"
+
+#: admin/modules/reporting/customs/visitor_report.php:172
+msgid "Total visit/month"
+msgstr "Всего визитов/месяц"
+
+#: admin/modules/reporting/customs/loan_by_class.php:58
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+msgid "Loans by Classification"
+msgstr "Выдачи по классификации"
+
+#: admin/modules/reporting/customs/loan_by_class.php:70
+msgid "0 Classes"
+msgstr "0 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:71
+msgid "1 Classes"
+msgstr "1 класс"
+
+#: admin/modules/reporting/customs/loan_by_class.php:72
+msgid "2 Classes"
+msgstr "2 класса"
+
+#: admin/modules/reporting/customs/loan_by_class.php:73
+msgid "2X Classes (Islamic Related)"
+msgstr "2Х классы (имеющие отношение к исламу)"
+
+#: admin/modules/reporting/customs/loan_by_class.php:74
+msgid "3 Classes"
+msgstr "3 класса"
+
+#: admin/modules/reporting/customs/loan_by_class.php:75
+msgid "4 Classes"
+msgstr "4 класса"
+
+#: admin/modules/reporting/customs/loan_by_class.php:76
+msgid "5 Classes"
+msgstr "5 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:77
+msgid "6 Classes"
+msgstr "6 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:78
+msgid "7 Classes"
+msgstr "7 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:79
+msgid "8 Classes"
+msgstr "8 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:80
+msgid "9 Classes"
+msgstr "9 классов"
+
+#: admin/modules/reporting/customs/loan_by_class.php:81
+msgid "NON Decimal Classes"
+msgstr "НЕдесятичные классы"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+#: admin/modules/reporting/customs/class_recap.php:62
+msgid "Custom Recapitulations"
+msgstr "Сверка пользователей"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:28
+msgid "Title and Collection recapitulation based on classification and others"
+msgstr "Сверка названий и коллекций основана на классификации и других"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:29
+msgid "List of bibliographic titles"
+msgstr "Список библиографических названий"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:30
+msgid "List of collection/items"
+msgstr "Список коллекций/позиций"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:31
+msgid "List of Collection/items usage statistic"
+msgstr "Статистика использования списка коллекций/позиций"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:32
+msgid "Loan statistic by classification"
+msgstr "Статистика взятых позиций по классификации"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:33
+msgid "List of library member/patron"
+msgstr "Список читателей библиотеки/покровителей"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:34
+#: admin/modules/reporting/customs/member_loan_list.php:62
+msgid "Loan List by Member"
+msgstr "Список взятых позиций по читателям"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:34
+msgid "List of loan by each member"
+msgstr "Список взятых позиций по каждому читателю"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:36
+msgid "Loan Due Date Warnings"
+msgstr "Предупреждения о дате возврата позиций"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:38
+msgid "Staff activity log recapitulation"
+msgstr "Журнал сверки деятельности персонала"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:39
+msgid "Visitor Statistic"
+msgstr "Статистика посетителей"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:40
+msgid "Visitor Statistic (by Day)"
+msgstr "Статистика посетителей (в день)"
+
+#: admin/modules/reporting/customs/class_recap.php:71
+msgid "Recap By"
+msgstr "Подведение по"
+
+#: admin/modules/reporting/customs/class_recap.php:86
+msgid "Hide Filter Options"
+msgstr "Скрыть опции фильтра"
+
+#: admin/modules/reporting/customs/class_recap.php:107
+#: admin/modules/reporting/customs/class_recap.php:108
+#: admin/modules/bibliography/item.php:202
+msgid "Items"
+msgstr "Позиции"
+
+#: admin/modules/reporting/customs/class_recap.php:287
+msgid "Title and Collection Recap by"
+msgstr "Отчет по позиции и коллекции по"
+
+#: admin/modules/bibliography/export.php:109
+msgid "Error on query to database, Export FAILED!"
+msgstr "Ошибка запроса к базе данных, экспорт НЕ УДАЛСЯ!"
+
+#: admin/modules/bibliography/export.php:147
+msgid "There is no record in bibliographic database yet, Export FAILED!"
+msgstr "Еще нет записей в библиографической базе данных, экспорт НЕ УДАЛСЯ!"
+
+#: admin/modules/bibliography/export.php:157
+msgid "Export Tool"
+msgstr "Инструменты экспорта"
+
+#: admin/modules/bibliography/export.php:160
+msgid "Export bibliographics data to CSV file"
+msgstr "Экспортировать библиографические данные в файл CSV"
+
+#: admin/modules/bibliography/export.php:168
+msgid "Export Now"
+msgstr "Экспортировать немедленно"
+
+#: admin/modules/bibliography/export.php:177
+msgid "Field Separator"
+msgstr "Разделитель полей"
+
+#: admin/modules/bibliography/export.php:179
+msgid "Field Enclosed With"
+msgstr "Поле закрыто с"
+
+#: admin/modules/bibliography/export.php:183
+msgid "Record Separator"
+msgstr "Разделить записей"
+
+#: admin/modules/bibliography/export.php:185
+msgid "Number of Records To Export (0 for all records)"
+msgstr "Число записей для экспорта (0 для всех записей)"
+
+#: admin/modules/bibliography/export.php:187
+msgid "Start From Record"
+msgstr "Начало с записи"
+
+#: admin/modules/bibliography/iframe_author.php:70
+msgid "Author succesfully removed!"
+msgstr "Автор успешно удален!"
+
+#: admin/modules/bibliography/iframe_author.php:81
+msgid "Author removed!"
+msgstr "Автор удален!"
+
+#: admin/modules/bibliography/item.php:62
+msgid "Item Code can't be empty!"
+msgstr "Код позиции не может быть пустым!"
+
+#: admin/modules/bibliography/item.php:109
+msgid "Item Data Successfully Updated"
+msgstr "Данные позиции успешно обновлены"
+
+#: admin/modules/bibliography/item.php:117
+#: admin/modules/bibliography/item.php:133
+msgid "Item Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные позиции НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/bibliography/item.php:126
+msgid "New Item Data Successfully Saved"
+msgstr "Данные новой позиции успешно сохранены"
+
+#: admin/modules/bibliography/item.php:180
+msgid "Item data can not be deleted because still on hold by members"
+msgstr "данные позиции не могут быть удалены, пока она удерживается читателем"
+
+#: admin/modules/bibliography/item.php:186
+msgid "Item succesfully removed!"
+msgstr "Позиция успешно удалена!"
+
+#: admin/modules/bibliography/item.php:189
+msgid "Item FAILED to removed!"
+msgstr "Позиция НЕ УДАЛЕНА!"
+
+#: admin/modules/bibliography/item.php:207
+msgid "Others"
+msgstr "Другие"
+
+#: admin/modules/bibliography/item.php:278
+msgid "Edit Biblographic data"
+msgstr "Редактировать библиографические данные"
+
+#: admin/modules/bibliography/item.php:290
+msgid "Inventory Code"
+msgstr "Инвентарный номер"
+
+#: admin/modules/bibliography/item.php:318
+msgid "Order Number"
+msgstr "Номер заказа"
+
+#: admin/modules/bibliography/item.php:320
+msgid "Order Date"
+msgstr "Дата заказа"
+
+#: admin/modules/bibliography/item.php:322
+msgid "Receiving Date"
+msgstr "Дата возврата"
+
+#: admin/modules/bibliography/item.php:326
+msgid "Not Applicable"
+msgstr "Не применимо"
+
+#: admin/modules/bibliography/item.php:332
+msgid "Buy"
+msgstr "Купить"
+
+#: admin/modules/bibliography/item.php:333
+msgid "Prize/Grant"
+msgstr "Премия/Грант"
+
+#: admin/modules/bibliography/item.php:334
+msgid "Source"
+msgstr "Исходный"
+
+#: admin/modules/bibliography/item.php:336
+msgid "Invoice"
+msgstr "Счет-фактура"
+
+#: admin/modules/bibliography/item.php:338
+msgid "Invoice Date"
+msgstr "Дата счет-фактуры"
+
+#: admin/modules/bibliography/item.php:346
+msgid "You are going to edit Item data"
+msgstr "Вы собираетесь изменить пункт данных"
+
+#: admin/modules/bibliography/item.php:488
+#: admin/modules/bibliography/printed_card.php:383
+msgid "Query took"
+msgstr "Запрос принят"
+
+#: admin/modules/bibliography/item.php:488
+#: admin/modules/bibliography/printed_card.php:383
+msgid "second(s) to complete"
+msgstr "секунд до завершения"
+
+#: admin/modules/bibliography/printed_card.php:91
+msgid "Selected items NOT ADDED to print queue. Only {max_print} can be printed at once"
+msgstr "Выбранные элементы не добавляются в очередь печати. Только {max_print} могут быть напечатаны сразу"
+
+#: admin/modules/bibliography/printed_card.php:96
+msgid "Selected items added to print queue"
+msgstr "Выбранные позиции добавлены в очередь печати"
+
+#: admin/modules/bibliography/printed_card.php:103
+msgid "Print queue cleared!"
+msgstr "Очередь печати очищена!"
+
+#: admin/modules/bibliography/printed_card.php:113
+msgid "There is no data to print!"
+msgstr "Нет данных для печати!"
+
+#: admin/modules/bibliography/printed_card.php:276
+msgid "Catalog Printing"
+msgstr "Печать каталога"
+
+#: admin/modules/bibliography/printed_card.php:286
+msgid "Print Catalog Format"
+msgstr "Формат печати каталога"
+
+#: admin/modules/bibliography/printed_card.php:290
+msgid "Clear Print Queue"
+msgstr "Очистить очередь печати"
+
+#: admin/modules/bibliography/printed_card.php:291
+msgid "Print Catalog for Selected Data"
+msgstr "Печать каталога выбранных данных"
+
+#: admin/modules/bibliography/printed_card.php:300
+msgid "Maximum"
+msgstr "Максимум"
+
+#: admin/modules/bibliography/printed_card.php:300
+msgid "records can be printed at once. Currently there is"
+msgstr "записей, которые могут быть отпечатаны за раз. Текущее значение"
+
+#: admin/modules/bibliography/printed_card.php:304
+msgid "in queue waiting to be printed."
+msgstr "в очереди ожидающих печати."
+
+#: admin/modules/bibliography/printed_card.php:339
+msgid "Item"
+msgstr "Позиция"
+
+#: admin/modules/bibliography/printed_card.php:373
+msgid "Add"
+msgstr "Добавить"
+
+#: admin/modules/bibliography/printed_card.php:374
+msgid "Add To Print Queue"
+msgstr "Добавить в очередь печати"
+
+#: admin/modules/bibliography/printed_card.php:375
+msgid "Add to print queue?"
+msgstr "Добавить в очередь печати?"
+
+#: admin/modules/bibliography/marcimport.php:54
+msgid ""
+"<a href=\"http://pear.php.net/index.php\">PEAR</a>, <a href=\"http://pear.php.net/package/File_MARC\">File_MARC</a>\n"
+"    and <a href=\"http://pear.php.net/package/Structures_LinkedList/\">Structures_LinkedList</a>\n"
+"    packages need to be installed in order\n"
+"    to import MARC record"
+msgstr ""
+"Пакеты <a href=\"http://pear.php.net/index.php\">PEAR</a>, <a href=\"http://pear.php.net/package/File_MARC\">File_MARC</a>\n"
+"    и <a href=\"http://pear.php.net/package/Structures_LinkedList/\">Structures_LinkedList</a>\n"
+"    необходимо установить для\n"
+"   импорта записи MARC"
+
+#: admin/modules/bibliography/marcimport.php:66
+#: admin/modules/bibliography/import.php:54
+msgid "Please select the file to import!"
+msgstr "Пожалуйста, выберите файлы для импорта!"
+
+#: admin/modules/bibliography/marcimport.php:89
+#: admin/modules/bibliography/import.php:78
+msgid "Upload failed! File type not allowed or the size is more than"
+msgstr "Загрузка не удалась! Тип файла недопустим или размер более чем"
+
+#: admin/modules/bibliography/marcimport.php:334
+msgid "MARC Import tool"
+msgstr "Инструмент импорта MARC"
+
+#: admin/modules/bibliography/marcimport.php:337
+msgid ""
+"Import bibliographic records from MARC file. The file can be native MARC record format file (.mrc) or\n"
+"        MARCXML XML file (.xml).\n"
+"        You need to have PHP PEAR and PEAR's File_MARC package installed in your system.\n"
+"        To convert native/legacy MARC file to MARCXML\n"
+"        you can use <a class=\"notAJAX\" href=\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
+msgstr ""
+"Импорт библиографических записей из фала MARC. Файл должен иметь родной формат записи MARC (.mrc) или\n"
+"       файл  MARCXML XML (.xml).\n"
+"        Вам необходимо иметь пакеты PHP PEAR и PEAR File_MARC установленными в Вашей системе.\n"
+"        Для конверирования родного/подлинного файла MARC в MARCXML\n"
+"        Вам нужно использовать <a class=\"notAJAX\" href=\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
+
+#: admin/modules/bibliography/marcimport.php:349
+#: admin/modules/bibliography/import.php:237
+msgid "Import Now"
+msgstr "Импортировать немедленно"
+
+#: admin/modules/bibliography/marcimport.php:359
+#: admin/modules/bibliography/import.php:248
+msgid "File To Import"
+msgstr "Файл для импорта"
+
+#: admin/modules/bibliography/marcimport.php:363
+msgid "Number of records to import (0 for all records)"
+msgstr "Число записей для импорта (0 означает все записи)"
+
+#: admin/modules/bibliography/pop_topic.php:98
+msgid "Subject FAILED to Add. Please Contact System Administrator"
+msgstr "Теме НЕ УДАЛОСЬ добавить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/bibliography/pop_topic.php:123
+msgid "Subject added!"
+msgstr "Тема добавлена!"
+
+#: admin/modules/bibliography/pop_topic.php:134
+msgid "Add Subject"
+msgstr "Добавить тему"
+
+#: admin/modules/bibliography/pop_topic.php:140
+msgid "Keyword"
+msgstr "Ключевое слово"
+
+#: admin/modules/bibliography/pop_topic.php:154
+msgid "Type to search for existing topics or to add a new one"
+msgstr "Печатайте для поиска существующей темы или ввода новой"
+
+#: admin/modules/bibliography/pop_topic.php:156
+msgid "Insert To Bibliography"
+msgstr "Вставка в библиграфию"
+
+#: admin/modules/bibliography/pop_attach.php:93
+msgid "Upload FAILED! Forbidden file type or file size too big!"
+msgstr "Загрузить НЕ УДАЛОСЬ! Запрещенный тип файла или размер файла слишком большой!"
+
+#: admin/modules/bibliography/pop_attach.php:142
+msgid "File Attachment data updated!"
+msgstr "Файл приложенных данных обновлен!"
+
+#: admin/modules/bibliography/pop_attach.php:146
+msgid "File Attachment data FAILED to update!"
+msgstr "Данные файла приложения НЕ УДАЛОСЬ обновить!"
+
+#: admin/modules/bibliography/pop_attach.php:151
+#: admin/modules/bibliography/pop_attach.php:166
+msgid "File Attachment uploaded succesfully!"
+msgstr "Файл приложения обновлен успешно!"
+
+#: admin/modules/bibliography/pop_attach.php:155
+msgid "File Attachment data FAILED to save!"
+msgstr "Данные файла приложения НЕ УДАЛОСЬ сохранить!"
+
+#: admin/modules/bibliography/pop_attach.php:175
+msgid "Upload Now"
+msgstr "Загрузить немедленно"
+
+#: admin/modules/bibliography/pop_attach.php:205
+msgid "Repository ROOT"
+msgstr "КОРЕНЬ репозитория"
+
+#: admin/modules/bibliography/pop_attach.php:215
+msgid "Repo. Directory"
+msgstr "Каталог репозитория"
+
+#: admin/modules/bibliography/pop_attach.php:219
+msgid "File To Attach"
+msgstr "Файл для присоединения"
+
+#: admin/modules/bibliography/pop_attach.php:222
+msgid "URL"
+msgstr "URL"
+
+#: admin/modules/bibliography/pop_attach.php:224
+msgid "Description"
+msgstr "Описание"
+
+#: admin/modules/bibliography/pop_attach.php:226
+msgid "Public"
+msgstr "публичный"
+
+#: admin/modules/bibliography/pop_attach.php:227
+msgid "Private"
+msgstr "Частный"
+
+#: admin/modules/bibliography/pop_attach.php:228
+msgid "Access"
+msgstr "Доступ"
+
+#: admin/modules/bibliography/pop_attach.php:235
+msgid "Access Limit by Member Type"
+msgstr "Лимит доступа для типа читателей"
+
+#: admin/modules/bibliography/ucs_upload.php:31
+msgid "UCS is not enabled! Change global system configuration to enable UCS"
+msgstr "USC недоступен! Измените глобальную конфигурацию системы для доступности USC"
+
+#: admin/modules/bibliography/item_barcode_generator.php:198
+#: admin/modules/bibliography/item_barcode_generator.php:207
+#: admin/modules/bibliography/submenu.php:39
+msgid "Item Barcodes Printing"
+msgstr "Печать штрих-кодов позиций"
+
+#: admin/modules/bibliography/item_barcode_generator.php:212
+msgid "Print Barcodes for Selected Data"
+msgstr "Печатать штрих-коды выбранных данных"
+
+#: admin/modules/bibliography/dl_print.php:205
+#: admin/modules/bibliography/dl_print.php:215
+#: admin/modules/bibliography/submenu.php:38
+msgid "Labels Printing"
+msgstr "Печать ярлыков"
+
+#: admin/modules/bibliography/dl_print.php:220
+msgid "Print Labels for Selected Data"
+msgstr "Печатать ярлыки выбранных данных"
+
+#: admin/modules/bibliography/index.php:67
+msgid "Title can not be empty"
+msgstr "Название не может быть пустым"
+
+#: admin/modules/bibliography/index.php:180
+#: admin/modules/bibliography/index.php:184
+msgid "Image Uploaded Successfully"
+msgstr "Изображение загружено успешно"
+
+#: admin/modules/bibliography/index.php:213
+msgid "Bibliography Data Successfully Updated"
+msgstr "Библиографические данные успешно обновлены"
+
+#: admin/modules/bibliography/index.php:233
+msgid "Bibliography Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Библиографические данные НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/bibliography/index.php:266
+msgid "New Bibliography Data Successfully Saved"
+msgstr "Новые библиографические данные успешно сохранены"
+
+#: admin/modules/bibliography/index.php:279
+msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
+msgstr "Библиографические данные НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/bibliography/index.php:382
+#: admin/modules/bibliography/submenu.php:27
+msgid "Bibliographic"
+msgstr "Библиография"
+
+#: admin/modules/bibliography/index.php:386
+#: admin/modules/bibliography/submenu.php:28
+msgid "Bibliographic List"
+msgstr "Библиографический список"
+
+#: admin/modules/bibliography/index.php:391
+msgid "All Fields"
+msgstr "Все поля"
+
+#: admin/modules/bibliography/index.php:391
+msgid "Title/Series Title"
+msgstr "Название/Название серии"
+
+#: admin/modules/bibliography/index.php:391
+msgid "Topics"
+msgstr "Темы"
+
+#: admin/modules/bibliography/index.php:391
+msgid "Authors"
+msgstr "Авторы"
+
+#: admin/modules/bibliography/index.php:398
+msgid "Upload Selected Bibliographic data to Union Catalog Server*"
+msgstr "Добавить выбранные библиографические данные на сервер объединенного каталога*"
+
+#: admin/modules/bibliography/index.php:468
+msgid "Statement of Responsibility"
+msgstr "Заявление об ответственности"
+
+#: admin/modules/bibliography/index.php:472
+msgid "Edition"
+msgstr "Редакция"
+
+#: admin/modules/bibliography/index.php:474
+msgid "Specific Detail Info"
+msgstr "Специфические детали информации"
+
+#: admin/modules/bibliography/index.php:476
+msgid "Pattern"
+msgstr "Образец"
+
+#: admin/modules/bibliography/index.php:477
+msgid "From"
+msgstr "От"
+
+#: admin/modules/bibliography/index.php:477
+msgid "To"
+msgstr "До"
+
+#: admin/modules/bibliography/index.php:478
+msgid "Item(s) code batch generator"
+msgstr "Элемент(ы) кодов пакетного генератор"
+
+#: admin/modules/bibliography/index.php:481
+#: admin/modules/bibliography/iframe_item_list.php:116
+msgid "Items/Copies"
+msgstr "Элементы/Копии"
+
+#: admin/modules/bibliography/index.php:481
+msgid "Add New Items"
+msgstr "Добавление новых элементов"
+
+#: admin/modules/bibliography/index.php:483
+msgid "Item(s) Data"
+msgstr "Данные элемента(ов)"
+
+#: admin/modules/bibliography/index.php:486
+msgid "Authors/Roles"
+msgstr "Авторы/Роли"
+
+#: admin/modules/bibliography/index.php:486
+msgid "Add Author(s)"
+msgstr "Добавить автора(ов)"
+
+#: admin/modules/bibliography/index.php:488
+msgid "Author(s)"
+msgstr "Автор(ы)"
+
+#: admin/modules/bibliography/index.php:506
+msgid "Use this for Serial publication"
+msgstr "Использовать это для серийной публикации"
+
+#: admin/modules/bibliography/index.php:523
+msgid "Publishing Year"
+msgstr "Год публикации"
+
+#: admin/modules/bibliography/index.php:537
+msgid "Collation"
+msgstr "Сопоставление"
+
+#: admin/modules/bibliography/index.php:539
+msgid "Series Title"
+msgstr "Название серии"
+
+#: admin/modules/bibliography/index.php:543
+msgid "Subjects/Topics"
+msgstr "Темы/Разделы"
+
+#: admin/modules/bibliography/index.php:543
+msgid "Add Subject(s)"
+msgstr "Добавить тему(ы)"
+
+#: admin/modules/bibliography/index.php:545
+msgid "Subject(s)"
+msgstr "Тема(ы)"
+
+#: admin/modules/bibliography/index.php:568
+msgid "Abstract/Notes"
+msgstr "Аннотация/Заметки"
+
+#: admin/modules/bibliography/index.php:573
+#: admin/modules/bibliography/index.php:578
+msgid "Image"
+msgstr "Изображение"
+
+#: admin/modules/bibliography/index.php:581
+#: admin/modules/bibliography/iframe_attach.php:121
+msgid "File Attachments"
+msgstr "Файл вложений"
+
+#: admin/modules/bibliography/index.php:581
+msgid "Add Attachment"
+msgstr "Добавить вложение"
+
+#: admin/modules/bibliography/index.php:617
+msgid "Show"
+msgstr "Показать"
+
+#: admin/modules/bibliography/index.php:618
+msgid "Hide"
+msgstr "Спрятать"
+
+#: admin/modules/bibliography/index.php:619
+msgid "Hide in OPAC"
+msgstr "Спрятать в каталоге библиотеки"
+
+#: admin/modules/bibliography/index.php:621
+msgid "Don't Promote"
+msgstr "Не рекламировать"
+
+#: admin/modules/bibliography/index.php:622
+msgid "Promote"
+msgstr "Рекламировать"
+
+#: admin/modules/bibliography/index.php:623
+msgid "Promote To Homepage"
+msgstr "Рекламировать на домашней странице"
+
+#: admin/modules/bibliography/index.php:647
+msgid "You are going to edit biblio data"
+msgstr "Вы собираетесь редактировать библиографические данные"
+
+#: admin/modules/bibliography/import.php:225
+msgid "Import Tool"
+msgstr "Инструменты импорта"
+
+#: admin/modules/bibliography/import.php:228
+msgid "Import for bibliographics data from CSV file. For guide on CVS fields order and format please refer to documentation or visit <a href=\"http://slims.web.id\" target=\"_blank\">Official Website</a>"
+msgstr "Импорт библиографических данных из файла CSV. Для руководства по порядку и полей CVS и формату, пожалуйства, сверьтесь с документацией или посетите <a href=\"http://slims.web.id\" target=\"_blank\">официальный WEB сайт</a>"
+
+#: admin/modules/bibliography/p2p.php:212
+#, php-format
+msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
+msgstr "извините, не найдено результатов из %s ИЛИ, возможно, XML результаты и подробности недоступны."
+
+#: admin/modules/bibliography/p2p.php:223
+#: admin/modules/bibliography/submenu.php:36
+msgid "P2P Service"
+msgstr "P2P сервис"
+
+#: admin/modules/bibliography/p2p.php:228
+msgid "Server"
+msgstr "Сервис"
+
+#: admin/modules/bibliography/p2p.php:232
+msgid "* Please make sure you have a working Internet connection."
+msgstr "* Пожалуйста, убедитесь, что Вы имеете работающее подключение к Интернет."
+
+#: admin/modules/bibliography/iframe_attach.php:76
+msgid "Attachment removed!"
+msgstr "Вложение удалено!"
+
+#: admin/modules/bibliography/submenu.php:28
+msgid "Show Existing Bibliographic Data"
+msgstr "Показать существубщие библиографические данные"
+
+#: admin/modules/bibliography/submenu.php:31
+msgid "Item List"
+msgstr "Список позиций"
+
+#: admin/modules/bibliography/submenu.php:31
+msgid "Show List of Library Items"
+msgstr "Показать список позиций библиотеки"
+
+#: admin/modules/bibliography/submenu.php:32
+#: admin/modules/bibliography/checkout_item.php:51
+msgid "Checkout Items"
+msgstr "Проверенные позиции"
+
+#: admin/modules/bibliography/submenu.php:32
+msgid "Show List of Checkout Items"
+msgstr "Показать список проверенных позиций"
+
+#: admin/modules/bibliography/submenu.php:33
+msgid "Copy Cataloguing"
+msgstr "Копировать каталогизацию"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Z3950 SRU"
+msgstr "Z3950 SRU"
+
+#: admin/modules/bibliography/submenu.php:34
+msgid "Grab Bibliographic Data from Z3950 SRU Web Services"
+msgstr "Захват библиографических данных из Z3950 SRU Web сервисов"
+
+#: admin/modules/bibliography/submenu.php:35
+msgid "Z3950 Service"
+msgstr "Z3950 сервис"
+
+#: admin/modules/bibliography/submenu.php:35
+msgid "Grab Bibliographic Data from Z3950 Web Services"
+msgstr "Захват библиографических данных из Z3950 Web сервисов"
+
+#: admin/modules/bibliography/submenu.php:36
+msgid "Grab Bibliographic Data from Other SLiMS Web Services"
+msgstr "Захват библиографических данных из других SLiMS Web сервисов"
+
+#: admin/modules/bibliography/submenu.php:38
+msgid "Print Document Labels"
+msgstr "Печатать ярлыки документов"
+
+#: admin/modules/bibliography/submenu.php:39
+msgid "Print Item Barcodes"
+msgstr "Печатать штрих-коды позиций"
+
+#: admin/modules/bibliography/submenu.php:40
+msgid "Print Catalog Card"
+msgstr "Печатать библиографическую карточку"
+
+#: admin/modules/bibliography/submenu.php:41
+msgid "MARC Import"
+msgstr "Импорт MARC"
+
+#: admin/modules/bibliography/submenu.php:41
+msgid "Import Bibliographic Data from MARC file"
+msgstr "Импортировать библиографические данные из файла MARC"
+
+#: admin/modules/bibliography/submenu.php:42
+msgid "Data Export"
+msgstr "Экспорт данных"
+
+#: admin/modules/bibliography/submenu.php:42
+msgid "Export Bibliographic Data To CSV format"
+msgstr "Экспортировать библиографические данные в формат CSV"
+
+#: admin/modules/bibliography/submenu.php:43
+msgid "Data Import"
+msgstr "Импорт данных"
+
+#: admin/modules/bibliography/submenu.php:43
+msgid "Import Data to Bibliographic Database from CSV file"
+msgstr "Импортировать библиографическую базу данных из файла CSV"
+
+#: admin/modules/bibliography/submenu.php:44
+msgid "Item Export"
+msgstr "Экспорт позиции"
+
+#: admin/modules/bibliography/submenu.php:44
+msgid "Export Item/Copies data To CSV format"
+msgstr "Экспорт данных позиции/копий в формат CSV"
+
+#: admin/modules/bibliography/submenu.php:45
+msgid "Item Import"
+msgstr "Импорт позиции"
+
+#: admin/modules/bibliography/submenu.php:45
+msgid "Import Data to Item/Copies database from CSV file"
+msgstr "Импорт данных в позицию/копию базы данных из файла CSV"
+
+#: admin/modules/bibliography/pop_author.php:95
+msgid "Author succesfully updated!"
+msgstr "автор успешно обновлен!"
+
+#: admin/modules/bibliography/pop_author.php:99
+msgid "Author FAILED to Add. Please Contact System Administrator"
+msgstr "Автора НЕ УДАЛОСЬ добавить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/bibliography/pop_author.php:124
+msgid "Author added!"
+msgstr "Автор добавлен!"
+
+#: admin/modules/bibliography/pop_author.php:135
+msgid "Add Author"
+msgstr "Добавить автора"
+
+#: admin/modules/bibliography/pop_author.php:153
+msgid "Type to search for existing authors or to add a new one"
+msgstr "Напечатать для поиска существующего автора или добавления нового"
+
+#: admin/modules/bibliography/item_import.php:191
+msgid "Item Import tool"
+msgstr "Инструменты импорта позиций"
+
+#: admin/modules/bibliography/item_import.php:194
+msgid "Import for item data from CSV file"
+msgstr "Импорт данных позиции из файла CSV"
+
+#: admin/modules/bibliography/item_export.php:130
+msgid "There is no record in item database yet, Export FAILED!"
+msgstr "Пока нет записей в базе данных позиций, экспорт НЕУДАЧЕН!"
+
+#: admin/modules/bibliography/item_export.php:140
+msgid "Item Export Tool"
+msgstr "Инструменты экспорта позиций"
+
+#: admin/modules/bibliography/item_export.php:143
+msgid "Export item data to CSV file"
+msgstr "Экспорт данных позиции в файл CSV"
+
+#: admin/modules/bibliography/z3950sru.php:247
+msgid "Z3950 Search/Retrieve via URL (SRU)"
+msgstr "Z3950 поиск/восстановление через URL (SRU)"
+
+#: admin/modules/bibliography/z3950sru.php:252
+msgid "All fields"
+msgstr "Все поля"
+
+#: admin/modules/bibliography/z3950sru.php:253
+msgid "SRU Server"
+msgstr "SRU сервер"
+
+#: admin/modules/bibliography/z3950.php:275
+msgid "Z3950"
+msgstr "Z3950"
+
+#: admin/modules/serial_control/subscription.php:70
+msgid "Error inserting subscription data, Subscription Date must be filled!"
+msgstr "Ошибка вставки данных подписки, дата подписки должна быть заполнена"
+
+#: admin/modules/serial_control/subscription.php:90
+msgid "Subscription Data Successfully Updated"
+msgstr "Дата подписки успешно обновлена"
+
+#: admin/modules/serial_control/subscription.php:92
+msgid "Subscription Data FAILED to Updated. Please Contact System Administrator"
+msgstr "Данные подписки НЕ УДАЛОСЬ обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/serial_control/subscription.php:106
+msgid "New Subscription Data Successfully Saved"
+msgstr "Новые данные подписки успешно сохранены"
+
+#: admin/modules/serial_control/subscription.php:108
+msgid "Subscription Data FAILED to Save. Please Contact System Administrator"
+msgstr "Данные подписки НЕ УДАЛОСЬ сохранить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/serial_control/subscription.php:144
+msgid "Subscription data successfully deleted"
+msgstr "Данные пописки успешно удалены"
+
+#: admin/modules/serial_control/subscription.php:146
+msgid "Subscription data FAILED to deleted!"
+msgstr "Данные подписки НЕ УДАЛОСЬ удалить"
+
+#: admin/modules/serial_control/subscription.php:183
+#: admin/modules/serial_control/subscription.php:226
+msgid "Subscription Start"
+msgstr "Начало подписки"
+
+#: admin/modules/serial_control/subscription.php:186
+msgid "Total Exemplar Expected"
+msgstr "Всего ожидаемых экземпляров"
+
+#: admin/modules/serial_control/subscription.php:189
+#: admin/modules/serial_control/subscription.php:225
+msgid "Period Name"
+msgstr "Название периода"
+
+#: admin/modules/serial_control/subscription.php:191
+#: admin/modules/serial_control/subscription.php:227
+msgid "Subscription Notes"
+msgstr "Замечания о подписке"
+
+#: admin/modules/serial_control/subscription.php:205
+msgid "You are going to edit Subscription data"
+msgstr "Вы собираетесь редактировать данные подписки"
+
+#: admin/modules/serial_control/subscription.php:215
+msgid "View/Edit Kardex Detail"
+msgstr "ПросмотРедактирование подробностей картотеки"
+
+#: admin/modules/serial_control/kardex.php:67
+msgid "Kardex data updated!"
+msgstr "Данные картотеки обновлены!"
+
+#: admin/modules/serial_control/kardex.php:73
+msgid "Kardex data deleted!"
+msgstr "Данные картотеки удалены!"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:151
+msgid "Date Expected"
+msgstr "Дата поступления"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:152
+msgid "Date Received"
+msgstr "Дата получения"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:152
+msgid "Seq. Number"
+msgstr "Номер последовательности"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:153
+msgid "Note"
+msgstr "Заметки"
+
+#: admin/modules/serial_control/serial_base_lib.inc.php:201
+msgid "Kardex Detail for subscription"
+msgstr "Данные картотеки для подписки"
+
+#: admin/modules/serial_control/index.php:60
+#: admin/modules/serial_control/submenu.php:27
+msgid "Serial Control"
+msgstr "Управление сериями"
+
+#: admin/modules/serial_control/index.php:85
+msgid "Edit Bibliographic data"
+msgstr "Редактировать библиографические данные"
+
+#: admin/modules/serial_control/index.php:87
+msgid "Add New Subscription"
+msgstr "Добавить новую подписку"
+
+#: admin/modules/serial_control/index.php:89
+msgid "View Subscriptions"
+msgstr "Просмотр подписок"
+
+#: admin/modules/serial_control/index.php:91
+msgid "CLOSE"
+msgstr "ЗАКРЫТО"
+
+#: admin/modules/serial_control/index.php:99
+msgid "Serial Title"
+msgstr "Название серии"
+
+#: admin/modules/serial_control/submenu.php:28
+msgid "Subscription"
+msgstr "Пописка"
+
+#: admin/modules/serial_control/submenu.php:28
+msgid "Manage Subscription"
+msgstr "Управление подпиской"
+
+#: admin/modules/membership/export.php:109
+msgid "There is no record in membership database yet, Export FAILED!"
+msgstr "Еще нет записей в базе данных читателей, экспорт НЕУДАЧЕН!"
+
+#: admin/modules/membership/export.php:120
+msgid "Export Data"
+msgstr "Данные экспорта"
+
+#: admin/modules/membership/export.php:123
+msgid "Export member(s) data to CSV file"
+msgstr "Экспортировать данные читателей в файл CSV"
+
+#: admin/modules/membership/member_type.php:57
+msgid "Member Type Name can't be empty"
+msgstr "Имя типа читателя не должно быть пустым"
+
+#: admin/modules/membership/member_type.php:83
+msgid "Member Type Successfully Updated"
+msgstr "Тип читателя успешно обновлен"
+
+#: admin/modules/membership/member_type.php:88
+#: admin/modules/membership/member_type.php:96
+msgid "Member Type Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "Тип читателя НЕ УДАЛОСЬ сохранить/обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/membership/member_type.php:94
+msgid "New Member Type Successfully Saved"
+msgstr "Новый тип читателя успешно сохранен"
+
+#: admin/modules/membership/member_type.php:142
+msgid "Member Type List"
+msgstr "Список типов читателей"
+
+#: admin/modules/membership/member_type.php:143
+msgid "Add New Member Type"
+msgstr "Добавить новый тип читателей"
+
+#: admin/modules/membership/member_type.php:186
+msgid "Member Type Name"
+msgstr "Имя типа читателей"
+
+#: admin/modules/membership/member_type.php:190
+msgid "Loan Periode (In Days)"
+msgstr "Период выдачи (в днях)"
+
+#: admin/modules/membership/member_type.php:196
+msgid "Reserve Limit"
+msgstr "Лимит резервирования"
+
+#: admin/modules/membership/member_type.php:198
+#: admin/modules/membership/member_type.php:223
+#: admin/modules/membership/member_type.php:229
+msgid "Membership Periode (In Days)"
+msgstr "Период членства (в днях)"
+
+#: admin/modules/membership/member_type.php:202
+msgid "Fine Each Day"
+msgstr "Штрафовать каждый день"
+
+#: admin/modules/membership/member_type.php:208
+msgid "You are going to edit member data"
+msgstr "Вы собираетесь редактировать данные читателя"
+
+#: admin/modules/membership/index.php:64
+msgid "Member ID and Name can't be empty"
+msgstr "ID и имя читателя не должны быть пустыми"
+
+#: admin/modules/membership/index.php:172
+msgid "Member Data Successfully Updated"
+msgstr "Данные читателя успешно обновлены"
+
+#: admin/modules/membership/index.php:182
+#: admin/modules/membership/index.php:206
+msgid "Image FAILED to upload"
+msgstr "Изображение НЕ УДАЛОСЬ загрузить"
+
+#: admin/modules/membership/index.php:188
+#: admin/modules/membership/index.php:212
+msgid "Member Data FAILED to Save/Update. Please Contact System Administrator"
+msgstr "Данные читателя НЕ УДАЛОСЬ сохранить/обновить. Пожалуйста, свяжитесь с системным администратором"
+
+#: admin/modules/membership/index.php:196
+msgid "New Member Data Successfully Saved"
+msgstr "Данные нового читателя успешно сохранены"
+
+#: admin/modules/membership/index.php:275
+msgid "Below member data can't be deleted because still have unreturned item(s)"
+msgstr "Показанные ниже данные читателей не могут быть удалены, пока они имеют невозвращенные позиции"
+
+#: admin/modules/membership/index.php:295
+#: admin/modules/membership/submenu.php:26
+msgid "Membership"
+msgstr "Читатели"
+
+#: admin/modules/membership/index.php:300
+msgid "View Expired Member"
+msgstr "Просмотр просроченных читателей"
+
+#: admin/modules/membership/index.php:303
+msgid "Member Search"
+msgstr "Поиск читателя"
+
+#: admin/modules/membership/index.php:352
+msgid "Extend Membership"
+msgstr "Продление членства"
+
+#: admin/modules/membership/index.php:369
+msgid "Birth Date"
+msgstr "Дата рождения"
+
+#: admin/modules/membership/index.php:371
+msgid "Member Since"
+msgstr "Читатель с"
+
+#: admin/modules/membership/index.php:378
+msgid "Auto Set"
+msgstr "Автоматическая установка"
+
+#: admin/modules/membership/index.php:400
+msgid "Postal Code"
+msgstr "Почтовый индекс"
+
+#: admin/modules/membership/index.php:402
+msgid "Mail Address"
+msgstr "Почтовый адрес"
+
+#: admin/modules/membership/index.php:408
+msgid "Personal ID Number"
+msgstr "Персональный ID номер"
+
+#: admin/modules/membership/index.php:410
+msgid "Notes"
+msgstr "Заметки"
+
+#: admin/modules/membership/index.php:444
+msgid "Pending Membership"
+msgstr "Ожидаемое членство"
+
+#: admin/modules/membership/index.php:452
+msgid "or take a photo"
+msgstr "или взять фото"
+
+#: admin/modules/membership/index.php:458
+msgid "Photo"
+msgstr "Фото"
+
+#: admin/modules/membership/index.php:530
+msgid "Expired Member List"
+msgstr "Список просроченных членов"
+
+#: admin/modules/membership/index.php:531
+msgid "Extend Selected Member(s)"
+msgstr "Продление членства выбранных читателей"
+
+#: admin/modules/membership/index.php:531
+msgid "Are you sure to EXTEND membership for selected members?"
+msgstr "Вы уверены, что хотите ПРОДЛИТЬ членство выбранных читателей?"
+
+#: admin/modules/membership/index.php:533
+msgid "members extended!"
+msgstr "членство продлено!"
+
+#: admin/modules/membership/index.php:537
+#: admin/modules/membership/member_card_generator.php:272
+msgid "Found"
+msgstr "Найден"
+
+#: admin/modules/membership/index.php:537
+#: admin/modules/membership/member_card_generator.php:272
+msgid "from your search with keyword"
+msgstr "из Вашего поиска по ключевым словам"
+
+#: admin/modules/membership/import.php:168
+msgid "records inserted successfully to members database, from record"
+msgstr "записи вставлены успешно в базу данных читателей, с записи"
+
+#: admin/modules/membership/import.php:179
+#: admin/modules/membership/submenu.php:33
+msgid "Import Data"
+msgstr "импорт данных"
+
+#: admin/modules/membership/import.php:182
+msgid "Import for members data from CSV file"
+msgstr "Импорт данных читателей из файла CSV"
+
+#: admin/modules/membership/submenu.php:27
+msgid "View Member List"
+msgstr "Посмотреть список читателей"
+
+#: admin/modules/membership/submenu.php:27
+msgid "View Library Member List"
+msgstr "Посмотреть список читателей библиотеки"
+
+#: admin/modules/membership/submenu.php:29
+msgid "View and modify member type"
+msgstr "Посмотреть и изменить тип читателя"
+
+#: admin/modules/membership/submenu.php:31
+#: admin/modules/membership/member_card_generator.php:196
+#: admin/modules/membership/member_card_generator.php:205
+msgid "Member Card Printing"
+msgstr "Печать читательского билета"
+
+#: admin/modules/membership/submenu.php:31
+msgid "Print Member Card"
+msgstr "Печатать читательский билет"
+
+#: admin/modules/membership/submenu.php:32
+msgid "Export Members Data To CSV File"
+msgstr "Экспорт данных читателей в файл CSV"
+
+#: admin/modules/membership/submenu.php:33
+msgid "Import Members Data From CSV File"
+msgstr "Импорт данных читателей из файла CSV"
+
+#: admin/modules/membership/member_card_generator.php:210
+msgid "Print Member Cards for Selected Data"
+msgstr "Печатать читательские билеты для выбранных данных"
+
+#: lib/detail.inc.php:173
+msgid "Click to view others documents with this author"
+msgstr "Щелкнуть для просмотра других документов этого автора"
+
+#: lib/detail.inc.php:187
+msgid "Click to view others documents with this subject"
+msgstr "Щелкнуть для просмотра других документов по этой теме"
+
+#: lib/biblio_list_model.inc.php:184
+#: lib/biblio_list_model.inc.php:205
+msgid "Record Detail"
+msgstr "Подробности записи"
+
+#: lib/biblio_list_model.inc.php:261
+msgid "none copy available"
+msgstr "нет доступных копий"
+
+#: lib/biblio_list_model.inc.php:273
+msgid "mark this"
+msgstr "отметить это"
+
+#: lib/biblio_list_model.inc.php:295
+msgid "Put marked selection into basket"
+msgstr "Положить отмеченные позиции в корзину"
+
+#: lib/contents/member.inc.php:39
+msgid "Welcome to Member's Area where you can view your current loan information and view your membership status."
+msgstr "Добро пожаловать в читательскую область, где Вы можете посмотреть информацию о числящихся за Вами позициях и посмотреть свой читательский статус."
+
+#: lib/contents/member.inc.php:65
+msgid "Please fill your Username and Password to Login!"
+msgstr "Пожалуйста, заполните Ваши имя пользователя и пароль для входа!"
+
+#: lib/contents/member.inc.php:105
+msgid "Login FAILED! Wrong username or password!"
+msgstr "Вход НЕ УДАЛСЯ! Ошибочное имя пользователя или пароль!"
+
+#: lib/contents/member.inc.php:114
+msgid "Library Member Login"
+msgstr "Данные входа читателя библиотеки"
+
+#: lib/contents/member.inc.php:118
+msgid "Wrong Captcha Code entered, Please write the right code!"
+msgstr "Введен ошибочный код Captcha, пожалуйста, введите правильный код!"
+
+#: lib/contents/member.inc.php:121
+msgid "Please insert your member ID and password given by library system administrator. If you are library's member and don't have a password yet, please contact library staff."
+msgstr "Пожалуйста, введите Ваши ID и пароль, данные системным администратором библиотеки. Если Вы являетесь читателем библиотеки и не имеете пароля, пожалуйста, свяжитесь с персоналом библиотеки."
+
+#: lib/contents/member.inc.php:151
+msgid "Password"
+msgstr "Пароль"
+
+#: lib/contents/member.inc.php:174
+#: lib/contents/login.inc.php:172
+msgid "Login"
+msgstr "Вход"
+
+#: lib/contents/member.inc.php:191
+msgid "Current Password"
+msgstr "Текущий пароль"
+
+#: lib/contents/member.inc.php:199
+msgid "Confirm Password"
+msgstr "Подтвердить пароль"
+
+#: lib/contents/member.inc.php:203
+#: lib/contents/member.inc.php:615
+msgid "Change Password"
+msgstr "Сменить пароль"
+
+#: lib/contents/member.inc.php:372
+msgid "Reserve title(s) on Basket"
+msgstr "Зарезервированные наименования в корзине"
+
+#: lib/contents/member.inc.php:373
+msgid "Clear Basket"
+msgstr "Очистить корзину"
+
+#: lib/contents/member.inc.php:374
+msgid "Remove selected title(s) from Basket"
+msgstr "Удалить выбранные названия из корзины"
+
+#: lib/contents/member.inc.php:376
+msgid "title(s) on basket"
+msgstr "Название(я) в корзине"
+
+#: lib/contents/member.inc.php:398
+msgid "Your Membership Already EXPIRED! Please extend your membership."
+msgstr "Ваше членство в библиотеке ПРОСРОЧЕНО! Пожалуйста, продлите Ваше членство."
+
+#: lib/contents/member.inc.php:401
+msgid "Membership currently in pending state, no loan transaction can be made yet."
+msgstr "Членство сейчас в состоянии ожидания, никакие транзакции по взятым позициям не могут быть сделаны."
+
+#: lib/contents/member.inc.php:434
+msgid "OVERDUED"
+msgstr "ПРОСРОЧЕНО"
+
+#: lib/contents/member.inc.php:481
+msgid "item(s) currently on loan"
+msgstr "Позиций, в настоящее время выдано"
+
+#: lib/contents/member.inc.php:503
+msgid "Return Date"
+msgstr "Дата возврата"
+
+#: lib/contents/member.inc.php:516
+msgid "item(s) loan history"
+msgstr "История выдачи позиции(ий)"
+
+#: lib/contents/member.inc.php:525
+msgid "Your password have been changed successfully."
+msgstr "Ваш пароль успешно изменен."
+
+#: lib/contents/member.inc.php:528
+msgid "Current password entered WRONG! Please insert the right password!"
+msgstr "Текущий пароль введен НЕВЕРНО! Пожалуйста, введите правильный пароль!"
+
+#: lib/contents/member.inc.php:530
+msgid "Password confirmation FAILED! Make sure to check undercase or uppercase letters!"
+msgstr "Подтверждение пароля НЕ УДАЛОСЬ! Будьте уверены, что проверили символы в верхнем и нижнем регистрах!"
+
+#: lib/contents/member.inc.php:532
+msgid "Password update FAILED! ERROR ON DATABASE!"
+msgstr "Обновлени пароля НЕ УДАЛОСЬ! ОШИБКА В БАЗЕ ДАННЫХ!"
+
+#: lib/contents/member.inc.php:543
+msgid "Reservation e-mail sent successfully!"
+msgstr "Бронирование электронной почты успешно отправлено!"
+
+#: lib/contents/member.inc.php:592
+msgid "Member Detail"
+msgstr "Подробности о читателе"
+
+#: lib/contents/member.inc.php:598
+#: lib/contents/download_current_loan.inc.php:97
+msgid "Your Current Loan"
+msgstr "Числящиеся за Вами позиции"
+
+#: lib/contents/member.inc.php:604
+msgid "Your Loan History"
+msgstr "История Ваше пользования библиотекой"
+
+#: lib/contents/member.inc.php:609
+msgid "Your Title Basket"
+msgstr "Названия источников в вашей корзине"
+
+#: lib/contents/show_detail.inc.php:60
+msgid "Back To Previous"
+msgstr "Назад к предыдущему"
+
+#: lib/contents/default.inc.php:135
+#: lib/contents/default.inc.php:148
+msgid "Found  <strong>{biblio_list->num_rows}</strong> from your keywords"
+msgstr "Найдено  <strong>{biblio_list->num_rows}</strong> из Ваших ключевых слов"
+
+#: lib/contents/default.inc.php:171
+msgid "You currently on page <strong>{page}</strong> of <strong>{total_pages}</strong> page(s)"
+msgstr "Сейчас Вы на странице <strong>{page}</strong> из <strong>{total_pages}</strong> page(s)"
+
+#: lib/contents/common.inc.php:32
+msgid "All Locations"
+msgstr "Все местонахождения"
+
+#: lib/contents/common.inc.php:41
+msgid "All Collections"
+msgstr "Все коллекции"
+
+#: lib/contents/common.inc.php:50
+msgid "All GMD/Media"
+msgstr "Всего GMD/Носителей"
+
+#: lib/contents/login.inc.php:55
+msgid "Please supply valid username and password"
+msgstr "Пожалуйста, используйте правильные имя пользователя и пароль"
+
+#: lib/contents/login.inc.php:97
+msgid "Welcome to Library Automation, "
+msgstr "Добро пожаловать в автоматизацию библиотеки,"
+
+#: lib/contents/login.inc.php:108
+msgid "Wrong Username or Password. ACCESS DENIED"
+msgstr "Неправильное имя пользователя или пароль. ДОСТУП ЗАПРЕЩЕН"
+
+#: lib/contents/login.inc.php:119
+msgid "Your browser does not support Javascript or Javascript is disabled. Application won't run without Javascript!"
+msgstr "Ваш браузер не поддерживает Javascript или Javascript недоступно. Приложение не будет запущено без Javascript!"
+
+#: lib/contents/download_current_loan.inc.php:88
+msgid "Current Loan item(s)"
+msgstr "Текущие взятые позиции"
+
+#: lib/contents/visitor.inc.php:100
+msgid ", thank you for inserting your data to our visitor log"
+msgstr ", спасибо за ввод Ваших данных в наш журнал посетителей"
+
+#: lib/contents/visitor.inc.php:102
+msgid "Your membership already EXPIRED, please renew/extend your membership immediately"
+msgstr "Ваше членство в библиотеке просрочено, пожалуйста, немедленно обновите/продлите Ваше членство"
+
+#: lib/contents/visitor.inc.php:105
+msgid "Sorry, Please fill institution field if you are not library member"
+msgstr "Извините, пожалуйста, заполните поля учреждение, если вы не читатель библиотеки"
+
+#: lib/contents/visitor.inc.php:107
+msgid "Error inserting counter data to database!"
+msgstr "Ошибка вставки данных счетчика в базу данных!"
+
+#: lib/contents/visitor.inc.php:116
+msgid "Visitor Counter"
+msgstr "Счетчик посетителей"
+
+#: lib/contents/visitor.inc.php:117
+msgid "Please insert your library member ID otherwise your full name instead"
+msgstr "Пожалуйста, введите Ваш ID читателя библиотеки либо Ваше полное имя  вместо него"
+
+#: lib/contents/item_list.php:54
+msgid "There is no item/copy for this title yet"
+msgstr "Еще нет позиций/копий с данным наименованием"
+
+#: lib/contents/item_list.php:76
+msgid "Currently On Loan (Due on"
+msgstr "В настоящее время выдано (подлежит"
+
+#: lib/contents/item_list.php:78
+msgid "Available but not for loan"
+msgstr "Доступно, но не для выдачи"
+
+#: lib/contents/attachment_list.php:54
+msgid "No Attachment"
+msgstr "Нет приложений"
+
+#: lib/lang/localisation.php:65
+msgid "Arabic"
+msgstr "Арабский"
+
+#: lib/lang/localisation.php:66
+msgid "Bengali"
+msgstr "Бенгальский"
+
+#: lib/lang/localisation.php:67
+msgid "Brazilian Portuguese"
+msgstr "Португальский (Бразилия)"
+
+#: lib/lang/localisation.php:68
+msgid "English"
+msgstr "Английский"
+
+#: lib/lang/localisation.php:69
+msgid "Espanol"
+msgstr "Испанский"
+
+#: lib/lang/localisation.php:70
+msgid "German"
+msgstr "Немецкий"
+
+#: lib/lang/localisation.php:71
+msgid "Indonesian"
+msgstr "Индонезийский"
+
+#: lib/lang/localisation.php:72
+msgid "Russian"
+msgstr "Русский"
+
+#: lib/lang/localisation.php:73
+msgid "Thai"
+msgstr "Тайский"
+
+#: lib/lang/localisation.php:74
+msgid "Malay"
+msgstr "Малайский"
+
+#: template/lightweight/detail_template.php:80
+#: template/default/detail_template.php:100
+#: template/default/custom_frontpage_record.inc.php:12
+msgid "Availability"
+msgstr "Доступность"
+
+#: template/lightweight/index_template.inc.php:52
+#: template/default/index_template.inc.php:53
+msgid "Home"
+msgstr "Главная"
+
+#: template/lightweight/index_template.inc.php:55
+#: template/default/index_template.inc.php:56
+msgid "Library Information"
+msgstr "Информация о библиотеке"
+
+#: template/lightweight/index_template.inc.php:58
+#: template/default/index_template.inc.php:59
+msgid "Help on Search"
+msgstr "Помощь для поиска"
+
+#: template/lightweight/index_template.inc.php:61
+#: template/default/index_template.inc.php:62
+msgid "Member Area"
+msgstr "Область читателей"
+
+#: template/lightweight/index_template.inc.php:145
+msgid "Full Site"
+msgstr "Полное местоположение"
+
+#: template/default/detail_template.php:12
+#: template/default/index_template.inc.php:195
+#: template/default/index_template.inc.php:288
+#: template/default/index_template.inc.php:315
+msgid "Back"
+msgstr "Назад"
+
+#: template/default/index_template.inc.php:65
+msgid "Librarian LOGIN"
+msgstr "Вход библиотекаря"
+
+#: template/default/index_template.inc.php:124
+msgid "Select Language"
+msgstr "Выбрать язык"
+
+#: template/default/index_template.inc.php:162
+#: template/default/index_template.inc.php:287
+msgid "Information"
+msgstr "Информация"
+
+#: template/default/index_template.inc.php:175
+msgid "Search Cluster"
+msgstr "Поисковый кластер"
+
+#: template/default/index_template.inc.php:177
+msgid "Generating search cluster..."
+msgstr "Создание поискового кластера..."
+
+#: template/default/index_template.inc.php:194
+msgid "Collections"
+msgstr "Коллекции"
+
+#: template/default/index_template.inc.php:276
+#: template/default/index_template.inc.php:415
+msgid "Advanced Search"
+msgstr "Расширенный поиск"
+
+#: template/default/index_template.inc.php:295
+msgid "User Login"
+msgstr "Вход пользователя"
+
