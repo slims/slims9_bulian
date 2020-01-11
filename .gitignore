@@ -12,7 +12,8 @@ cache/*
 ._.*
 ._*
 .project
-.idea/*
+.idea
+.vscode
 sysconfig.local.inc.php
 config/sysconfig.local.inc.php
 sysconfig.inc.php

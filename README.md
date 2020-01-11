@@ -1,6 +1,6 @@
-SLiMS 8 Akasia
+SLiMS 9 Bulian
 ===============
-SENAYAN Library Management System (SLiMS) version 8 Codename Akasia
+SENAYAN Library Management System (SLiMS) version 9 Codename Bulian
 
 SLiMS is free open source software for library resources management
 (such as books, journals, digital document and other library materials)
