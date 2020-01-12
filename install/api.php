@@ -6,6 +6,7 @@
  */
 
 session_start();
+@ini_set('display_errors', true);
 
 require_once 'SLiMS.inc.php';
 
@@ -67,6 +68,7 @@ switch ($action) {
     break;
 
   case 'test-connection':
+  case 'test-connection-upgrade';
     $_SESSION['db_host'] = $_POST['host'] ?? 'localhost';
     $_SESSION['db_name'] = $_POST['name'] ?? '';
     $_SESSION['db_user'] = $_POST['user'] ?? '';
@@ -76,7 +78,12 @@ switch ($action) {
     if (empty($_SESSION['db_user'])) die(json_encode(array('status' => false, 'field' => 'user', 'message' => 'Database username is required.')));
 
     try {
-      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass']);
+      if ($action === 'test-connection-upgrade') {
+        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+      } else {
+        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass']);
+      }
+
       if (mysqli_connect_error()) {
         die(json_encode(array('status' => false, 'message' => mysqli_connect_error())));
       }
@@ -117,6 +124,26 @@ switch ($action) {
       if (count($error) > 0) die(json_encode(['status' => false, 'message' => $error, 'code' => 5005]));
       // success
       die(json_encode(['status' => true, 'message' => 'SLiMS Successful be installed']));
+    } catch (Exception $exception) {
+      die(json_encode(['status' => false, 'message' => [$exception->getMessage()], 'code' => $exception->getCode()]));
+    }
+    break;
+
+  case 'do-upgrade':
+    sleep(1);
+    try {
+      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+      // write configuration file
+      $slims->createConfigFile($_SESSION);
+
+      require_once 'Upgrade.inc.php';
+      $upgrade = Install\Upgrade::init($slims)->from($_POST['oldVersion']);
+
+      if (count($upgrade) > 0) {
+        die(json_encode(['status' => false, 'message' => $upgrade, 'code' => 5006]));
+      }
+
+      die(json_encode(['status' => true]));
     } catch (Exception $exception) {
       die(json_encode(['status' => false, 'message' => [$exception->getMessage()], 'code' => $exception->getCode()]));
     }

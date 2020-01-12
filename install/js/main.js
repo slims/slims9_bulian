@@ -3,6 +3,7 @@ import System from '../sections/System.js'
 import Tasks from '../sections/Tasks.js'
 import Install from '../sections/Install.js'
 import Upgrade from '../sections/Upgrade.js'
+import SelectVersion from '../sections/SelectVersion.js'
 import Account from '../sections/Account.js'
 import ShowConfig from '../sections/ShowConfig.js'
 import Success from '../sections/Success.js'
@@ -15,6 +16,7 @@ new Vue({
         Tasks,
         Install,
         Upgrade,
+        SelectVersion,
         Account,
         ShowConfig,
         Success

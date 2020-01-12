@@ -137,8 +137,14 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $user, $pass = '') {
-    if (is_null($this->db)) $this->db = @new mysqli($host, $user, $pass);
+  function createConnection($host, $user, $pass = '', $name = null) {
+    if (is_null($this->db)) {
+      if (is_null($name)) {
+        $this->db = @new mysqli($host, $user, $pass);
+      } else {
+        $this->db = @new mysqli($host, $user, $pass, $name);
+      }
+    }
     return $this->db;
   }
 
@@ -167,6 +173,23 @@ class SLiMS
       $r[] = $data[0];
     }
     return $r;
+  }
+
+  function addColumn($table, $column) {
+    try {
+      $null = $column['null'] ? 'NULL' : 'NOT NULL';
+      $default = $column['default'] !== '' ? "DEFAULT '".$column['default']."'" : '';
+      if (is_null($column['default'])) $default = 'DEFAULT NULL';
+      $sql = <<<SQL
+ALTER TABLE `{$table}` ADD `{$column['field']}` {$column['type']} {$null} {$default};
+SQL;
+      $stmt = $this->db->prepare($sql);
+      if (!$stmt) return $this->db->error . '. Your syntax: ' . $sql;
+      $stmt->execute();
+      $stmt->close();
+    } catch (Exception $exception) {
+      return $exception->getMessage();
+    }
   }
 
   function createConfigFile(array $options) {
