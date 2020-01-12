@@ -227,8 +227,9 @@ VALUES (18, 'barcode_print_settings', 'a:12:{s:19:\"barcode_page_margin\";d:0.20
 (20, 'membercard_print_settings', 'a:1:{s:5:\"print\";a:1:{s:10:\"membercard\";a:61:{s:11:\"card_factor\";s:12:\"37.795275591\";s:21:\"card_include_id_label\";i:1;s:23:\"card_include_name_label\";i:1;s:22:\"card_include_pin_label\";i:1;s:23:\"card_include_inst_label\";i:0;s:24:\"card_include_email_label\";i:0;s:26:\"card_include_address_label\";i:1;s:26:\"card_include_barcode_label\";i:1;s:26:\"card_include_expired_label\";i:1;s:14:\"card_box_width\";d:8.5999999999999996447286321199499070644378662109375;s:15:\"card_box_height\";d:5.4000000000000003552713678800500929355621337890625;s:9:\"card_logo\";s:8:\"logo.png\";s:21:\"card_front_logo_width\";s:0:\"\";s:22:\"card_front_logo_height\";s:0:\"\";s:20:\"card_front_logo_left\";s:0:\"\";s:19:\"card_front_logo_top\";s:0:\"\";s:20:\"card_back_logo_width\";s:0:\"\";s:21:\"card_back_logo_height\";s:0:\"\";s:19:\"card_back_logo_left\";s:0:\"\";s:18:\"card_back_logo_top\";s:0:\"\";s:15:\"card_photo_left\";s:0:\"\";s:14:\"card_photo_top\";s:0:\"\";s:16:\"card_photo_width\";d:1.5;s:17:\"card_photo_height\";d:1.8000000000000000444089209850062616169452667236328125;s:23:\"card_front_header1_text\";s:19:\"Library Member Card\";s:28:\"card_front_header1_font_size\";s:2:\"12\";s:23:\"card_front_header2_text\";s:10:\"My Library\";s:28:\"card_front_header2_font_size\";s:2:\"12\";s:22:\"card_back_header1_text\";s:10:\"My Library\";s:27:\"card_back_header1_font_size\";s:2:\"12\";s:22:\"card_back_header2_text\";s:35:\"My Library Full Address and Website\";s:27:\"card_back_header2_font_size\";s:1:\"5\";s:17:\"card_header_color\";s:7:\"#0066FF\";s:18:\"card_bio_font_size\";s:2:\"11\";s:20:\"card_bio_font_weight\";s:4:\"bold\";s:20:\"card_bio_label_width\";s:3:\"100\";s:9:\"card_city\";s:9:\"City Name\";s:10:\"card_title\";s:15:\"Library Manager\";s:14:\"card_officials\";s:14:\"Librarian Name\";s:17:\"card_officials_id\";s:12:\"Librarian ID\";s:15:\"card_stamp_file\";s:9:\"stamp.png\";s:19:\"card_signature_file\";s:13:\"signature.png\";s:15:\"card_stamp_left\";s:0:\"\";s:14:\"card_stamp_top\";s:0:\"\";s:16:\"card_stamp_width\";s:0:\"\";s:17:\"card_stamp_height\";s:0:\"\";s:13:\"card_exp_left\";s:0:\"\";s:12:\"card_exp_top\";s:0:\"\";s:14:\"card_exp_width\";s:0:\"\";s:15:\"card_exp_height\";s:0:\"\";s:18:\"card_barcode_scale\";i:100;s:17:\"card_barcode_left\";s:0:\"\";s:16:\"card_barcode_top\";s:0:\"\";s:18:\"card_barcode_width\";s:0:\"\";s:19:\"card_barcode_height\";s:0:\"\";s:10:\"card_rules\";s:120:\"<ul><li>This card is published by Library.</li><li>Please return this card to its owner if you found it.</li></ul>\";s:20:\"card_rules_font_size\";s:1:\"8\";s:12:\"card_address\";s:76:\"My Library<br />website: http://slims.web.id, email : librarian@slims.web.id\";s:22:\"card_address_font_size\";s:1:\"7\";s:17:\"card_address_left\";s:0:\"\";s:16:\"card_address_top\";s:0:\"\";}}}');";
 
     $sql['update'][] = "UPDATE `setting` SET `setting_value`='a:2:{s:5:\"theme\";s:7:\"default\";s:3:\"css\";s:26:\"template/default/style.css\";}'
-  WHERE `setting_name`='template';
-UPDATE `setting` SET `setting_value`='a:2:{s:5:\"theme\";s:7:\"default\";s:3:\"css\";s:32:\"admin_template/default/style.css\";}'
+  WHERE `setting_name`='template';";
+
+    $sql['update'][] = "UPDATE `setting` SET `setting_value`='a:2:{s:5:\"theme\";s:7:\"default\";s:3:\"css\";s:32:\"admin_template/default/style.css\";}'
   WHERE `setting_name`='admin_template';";
 
     $sql['update'][] = "UPDATE `content` SET `content_desc`='<div class=\"container admin_home\">\r\n<div class=\"row\">\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Bibliography</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon biblioIcon notAJAX\" href=\"index.php?mod=bibliography\"></a></div>\r\n<div class=\"col-sm-8\">The Bibliography module lets you manage your library bibliographical data. It also include collection items management to manage a copies of your library collection so it can be used in library circulation.</div>\r\n</div>\r\n</div>\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Circulation</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon circulationIcon notAJAX\" href=\"index.php?mod=circulation\"></a></div>\r\n<div class=\"col-sm-8\">The Circulation module is used for doing library circulation transaction such as collection loans and return. In this module you can also create loan rules that will be used in loan transaction proccess.</div>\r\n</div>\r\n</div>\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Membership</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon memberIcon notAJAX\" href=\"index.php?mod=membership\"></a></div>\r\n<div class=\"col-sm-8\">The Membership module lets you manage library members such adding, updating and also removing. You can also manage membership type in this module.</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"row\">\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Stock Take</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon stockTakeIcon notAJAX\" href=\"index.php?mod=stock_take\"></a></div>\r\n<div class=\"col-sm-8\">The Stock Take module is the easy way to do Stock Opname for your library collections. Follow several steps that ease your pain in Stock Opname proccess.</div>\r\n</div>\r\n</div>\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Serial Control</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon serialIcon notAJAX\" href=\"index.php?mod=serial_control\"></a></div>\r\n<div class=\"col-sm-8\">Serial Control module help you manage library''s serial publication subscription. You can track issues for each subscription.</div>\r\n</div>\r\n</div>\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Reporting</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon reportIcon notAJAX\" href=\"index.php?mod=reporting\"></a></div>\r\n<div class=\"col-sm-8\">Reporting lets you view various type of reports regardings membership data, circulation data and bibliographic data. All compiled on-the-fly from current library database.</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"row\">\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>Master File</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon masterFileIcon notAJAX\" href=\"index.php?mod=master_file\"></a></div>\r\n<div class=\"col-sm-8\">The Master File modules lets you manage referential data that will be used by another modules. It include Authority File management such as Authority, Subject/Topic List, GMD and other data.</div>\r\n</div>\r\n</div>\r\n<div class=\"col-xs-6 col-md-4\">\r\n<h3>System</h3>\r\n<div class=\"row\">\r\n<div class=\"col-sm-2\"><a class=\"icon systemIcon notAJAX\" href=\"index.php?mod=system\"></a></div>\r\n<div class=\"col-sm-8\">The System module is used to configure application globally, manage index, manage librarian, and also backup database.</div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>'
@@ -276,61 +277,61 @@ ADD `social_media` TEXT NULL AFTER `user_image`;";
     --*/
 
     $sql['insert'][] = "INSERT INTO `mst_carrier_type` (`id`, `carrier_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'audio cartridge', 'sg', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'audio cylinder', 'se', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'audio disc', 'sd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'sound track reel', 'si', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'audio roll', 'sq', 'q', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'audiocassette', 'ss', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'audiotape reel', 'st', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'other (audio)', 'sz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'computer card', 'ck', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'computer chip cartridge', 'cb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 'computer disc', 'cd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 'computer disc cartridge', 'ce', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 'computer tape cartridge', 'ca', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 'computer tape cassette', 'cf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 'computer tape reel', 'ch', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 'online resource', 'cr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 'other (computer)', 'cz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 'aperture card', 'ha', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 'microfiche', 'he', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 'microfiche cassette', 'hf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 'microfilm cartridge', 'hb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'microfilm cassette', 'hc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'microfilm reel', 'hd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'microfilm roll', 'hj', 'j', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'microfilm slip', 'hh', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(26, 'microopaque', 'hg', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(27, 'other (microform)', 'hz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(28, 'microscope slide', 'pp', 'p', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(29, 'other (microscope)', 'pz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(30, 'film cartridge', 'mc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(31, 'film cassette', 'mf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(32, 'film reel', 'mr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(33, 'film roll', 'mo', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(34, 'filmslip', 'gd', 'd', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(35, 'filmstrip', 'gf', 'f', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(36, 'filmstrip cartridge', 'gc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(37, 'overhead transparency', 'gt', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(38, 'slide', 'gs', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(39, 'other (projected image)', 'mz', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(40, 'stereograph card', 'eh', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(41, 'stereograph disc', 'es', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(42, 'other (stereographic)', 'ez', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(43, 'card', 'no', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(44, 'flipchart', 'nn', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(45, 'roll', 'na', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(46, 'sheet', 'nb', 'b', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(47, 'volume', 'nc', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(48, 'object', 'nr', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(49, 'other (unmediated)', 'nz', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(50, 'video cartridge', 'vc', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(51, 'videocassette', 'vf', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(52, 'videodisc', 'vd', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(53, 'videotape reel', 'vr', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(54, 'other (video)', 'vz', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(55, 'unspecified', 'zu', 'u', '0000-00-00 00:00:00', '0000-00-00 00:00:00');";
+(1, 'audio cartridge', 'sg', 'g', now(), now()),
+(2, 'audio cylinder', 'se', 'e', now(), now()),
+(3, 'audio disc', 'sd', 'd', now(), now()),
+(4, 'sound track reel', 'si', 'i', now(), now()),
+(5, 'audio roll', 'sq', 'q', now(), now()),
+(6, 'audiocassette', 'ss', 's', now(), now()),
+(7, 'audiotape reel', 'st', 't', now(), now()),
+(8, 'other (audio)', 'sz', 'z', now(), now()),
+(9, 'computer card', 'ck', 'k', now(), now()),
+(10, 'computer chip cartridge', 'cb', 'b', now(), now()),
+(11, 'computer disc', 'cd', 'd', now(), now()),
+(12, 'computer disc cartridge', 'ce', 'e', now(), now()),
+(13, 'computer tape cartridge', 'ca', 'a', now(), now()),
+(14, 'computer tape cassette', 'cf', 'f', now(), now()),
+(15, 'computer tape reel', 'ch', 'h', now(), now()),
+(16, 'online resource', 'cr', 'r', now(), now()),
+(17, 'other (computer)', 'cz', 'z', now(), now()),
+(18, 'aperture card', 'ha', 'a', now(), now()),
+(19, 'microfiche', 'he', 'e', now(), now()),
+(20, 'microfiche cassette', 'hf', 'f', now(), now()),
+(21, 'microfilm cartridge', 'hb', 'b', now(), now()),
+(22, 'microfilm cassette', 'hc', 'c', now(), now()),
+(23, 'microfilm reel', 'hd', 'd', now(), now()),
+(24, 'microfilm roll', 'hj', 'j', now(), now()),
+(25, 'microfilm slip', 'hh', 'h', now(), now()),
+(26, 'microopaque', 'hg', 'g', now(), now()),
+(27, 'other (microform)', 'hz', 'z', now(), now()),
+(28, 'microscope slide', 'pp', 'p', now(), now()),
+(29, 'other (microscope)', 'pz', 'z', now(), now()),
+(30, 'film cartridge', 'mc', 'c', now(), now()),
+(31, 'film cassette', 'mf', 'f', now(), now()),
+(32, 'film reel', 'mr', 'r', now(), now()),
+(33, 'film roll', 'mo', 'o', now(), now()),
+(34, 'filmslip', 'gd', 'd', now(), now()),
+(35, 'filmstrip', 'gf', 'f', now(), now()),
+(36, 'filmstrip cartridge', 'gc', 'c', now(), now()),
+(37, 'overhead transparency', 'gt', 't', now(), now()),
+(38, 'slide', 'gs', 's', now(), now()),
+(39, 'other (projected image)', 'mz', 'z', now(), now()),
+(40, 'stereograph card', 'eh', 'h', now(), now()),
+(41, 'stereograph disc', 'es', 's', now(), now()),
+(42, 'other (stereographic)', 'ez', 'z', now(), now()),
+(43, 'card', 'no', 'o', now(), now()),
+(44, 'flipchart', 'nn', 'n', now(), now()),
+(45, 'roll', 'na', 'a', now(), now()),
+(46, 'sheet', 'nb', 'b', now(), now()),
+(47, 'volume', 'nc', 'c', now(), now()),
+(48, 'object', 'nr', 'r', now(), now()),
+(49, 'other (unmediated)', 'nz', '', now(), now()),
+(50, 'video cartridge', 'vc', '', now(), now()),
+(51, 'videocassette', 'vf', '', now(), now()),
+(52, 'videodisc', 'vd', '', now(), now()),
+(53, 'videotape reel', 'vr', '', now(), now()),
+(54, 'other (video)', 'vz', '', now(), now()),
+(55, 'unspecified', 'zu', 'u', now(), now());";
 
     /*--
     -- Table structure for table `mst_content_type`
@@ -350,31 +351,31 @@ ADD `social_media` TEXT NULL AFTER `user_image`;";
     --*/
 
     $sql['insert'][] = "INSERT INTO `mst_content_type` (`id`, `content_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'cartographic dataset', 'crd', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'cartographic image', 'cri', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'cartographic moving image', 'crm', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'cartographic tactile image', 'crt', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'cartographic tactile three-dimensional form', 'crn', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'cartographic three-dimensional form', 'crf', 'e', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'computer dataset', 'cod', 'm', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'computer program', 'cop', 'm', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'notated movement', 'ntv', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'notated music', 'ntm', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 'performed music', 'prm', 'j', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 'sounds', 'snd', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 'spoken word', 'spw', 'i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 'still image', 'sti', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 'tactile image', 'tci', 'k', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 'tactile notated music', 'tcm', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 'tactile notated movement', 'tcn', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 'tactile text', 'tct', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 'tactile three-dimensional form', 'tcf', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 'text', 'txt', 'a', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 'three-dimensional form', 'tdf', 'r', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'three-dimensional moving image', 'tdm', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'two-dimensional moving image', 'tdi', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'other', 'xxx', 'o', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'unspecified', 'zzz', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00');";
+(1, 'cartographic dataset', 'crd', 'e', now(), now()),
+(2, 'cartographic image', 'cri', 'e', now(), now()),
+(3, 'cartographic moving image', 'crm', 'e', now(), now()),
+(4, 'cartographic tactile image', 'crt', 'e', now(), now()),
+(5, 'cartographic tactile three-dimensional form', 'crn', 'e', now(), now()),
+(6, 'cartographic three-dimensional form', 'crf', 'e', now(), now()),
+(7, 'computer dataset', 'cod', 'm', now(), now()),
+(8, 'computer program', 'cop', 'm', now(), now()),
+(9, 'notated movement', 'ntv', 'a', now(), now()),
+(10, 'notated music', 'ntm', 'c', now(), now()),
+(11, 'performed music', 'prm', 'j', now(), now()),
+(12, 'sounds', 'snd', 'i', now(), now()),
+(13, 'spoken word', 'spw', 'i', now(), now()),
+(14, 'still image', 'sti', 'k', now(), now()),
+(15, 'tactile image', 'tci', 'k', now(), now()),
+(16, 'tactile notated music', 'tcm', 'c', now(), now()),
+(17, 'tactile notated movement', 'tcn', 'a', now(), now()),
+(18, 'tactile text', 'tct', 'a', now(), now()),
+(19, 'tactile three-dimensional form', 'tcf', 'r', now(), now()),
+(20, 'text', 'txt', 'a', now(), now()),
+(21, 'three-dimensional form', 'tdf', 'r', now(), now()),
+(22, 'three-dimensional moving image', 'tdm', 'g', now(), now()),
+(23, 'two-dimensional moving image', 'tdi', 'g', now(), now()),
+(24, 'other', 'xxx', 'o', now(), now()),
+(25, 'unspecified', 'zzz', ' ', now(), now());";
 
     /*--
     -- Table structure for table `mst_media_type`
@@ -394,16 +395,16 @@ ADD `social_media` TEXT NULL AFTER `user_image`;";
     --*/
 
     $sql['insert'][] = "INSERT INTO `mst_media_type` (`id`, `media_type`, `code`, `code2`, `input_date`, `last_update`) VALUES
-(1, 'audio', 's', 's', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'computer', 'c', 'c', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'microform', 'h', 'h', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'microscopic', 'p', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'projected', 'g', 'g', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'stereographic', 'e', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'unmediated', 'n', 't', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'video', 'v', 'v', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'other', 'x', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'unspecified', 'z', 'z', '0000-00-00 00:00:00', '0000-00-00 00:00:00');";
+(1, 'audio', 's', 's', now(), now()),
+(2, 'computer', 'c', 'c', now(), now()),
+(3, 'microform', 'h', 'h', now(), now()),
+(4, 'microscopic', 'p', ' ', now(), now()),
+(5, 'projected', 'g', 'g', now(), now()),
+(6, 'stereographic', 'e', ' ', now(), now()),
+(7, 'unmediated', 'n', 't', now(), now()),
+(8, 'video', 'v', 'v', now(), now()),
+(9, 'other', 'x', 'z', now(), now()),
+(10, 'unspecified', 'z', 'z', now(), now());";
 
     /*--
     -- Table structure for table `mst_relation_term`
@@ -584,14 +585,32 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     // cek if table not exist
     $tables = require 'tables.php';
     foreach ($tables as $table) {
-      $mtables = $this->slims->getTables($table['table']);
-      foreach ($table['column'] as $column) {
-        if (!in_array($column['field'], $mtables)) {
-          $msg = $this->slims->addColumn($table['table'], $column);
-          if ($msg) $error[] = $msg;
+      $mtables = $this->slims->getTables();
+      if (!in_array($table['table'], $mtables)) {
+        // create table
+        $msg = $this->slims->createTable($table);
+        if ($msg) $error[] = $msg;
+      } else {
+        // check column
+        foreach ($table['column'] as $column) {
+          $mColumn = $this->slims->getColumn($table['table']);
+          if (!in_array($column['field'], $mColumn)) {
+            $msg = $this->slims->addColumn($table['table'], $column);
+            if ($msg) $error[] = $msg;
+          }
         }
       }
     }
+
+    // fix mst_topic:classification
+    $fix_classification = $this->slims->changeColumn('mst_topic', [
+      'field' => 'classification',
+      'type' => 'varchar(50)',
+      'null' => true,
+      'default' => null
+    ]);
+
+    if ($fix_classification) $error[] = $fix_classification;
 
     return $error;
   }

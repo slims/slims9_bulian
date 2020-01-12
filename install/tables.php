@@ -13,7 +13,7 @@ return [
         'field' => 'backup_log_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'user_id',
@@ -42,7 +42,7 @@ return [
         'field' => 'biblio_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'gmd_id',
@@ -284,7 +284,7 @@ return [
         'field' => 'biblio_log_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'biblio_id',
@@ -355,7 +355,7 @@ return [
         'field' => 'biblio_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'rel_biblio_id',
@@ -378,7 +378,7 @@ return [
         'field' => 'biblio_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'topic_id',
@@ -401,7 +401,7 @@ return [
         'field' => 'comment_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'biblio_id',
@@ -442,7 +442,7 @@ return [
         'field' => 'content_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'content_title',
@@ -495,7 +495,7 @@ return [
         'field' => 'file_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'file_title',
@@ -560,7 +560,7 @@ return [
         'field' => 'fines_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'fines_date',
@@ -601,7 +601,7 @@ return [
         'field' => 'group_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'module_id',
@@ -630,7 +630,7 @@ return [
         'field' => 'holiday_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'holiday_dayname',
@@ -659,7 +659,7 @@ return [
         'field' => 'item_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'biblio_id',
@@ -790,7 +790,7 @@ return [
         'field' => 'kardex_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'date_expected',
@@ -843,7 +843,7 @@ return [
         'field' => 'loan_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'item_code',
@@ -1098,7 +1098,7 @@ return [
         'field' => 'author_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'author_name',
@@ -1145,7 +1145,7 @@ return [
         'field' => 'id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'carrier_type',
@@ -1186,7 +1186,7 @@ return [
         'field' => 'coll_type_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'coll_type_name',
@@ -1215,7 +1215,7 @@ return [
         'field' => 'id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'content_type',
@@ -1256,7 +1256,7 @@ return [
         'field' => 'frequency_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'frequency',
@@ -1303,7 +1303,7 @@ return [
         'field' => 'gmd_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'gmd_code',
@@ -1391,7 +1391,7 @@ return [
         'field' => 'label_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'label_name',
@@ -1461,7 +1461,7 @@ return [
         'field' => 'loan_rules_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'member_type_id',
@@ -1561,7 +1561,7 @@ return [
         'field' => 'id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'media_type',
@@ -1602,7 +1602,7 @@ return [
         'field' => 'member_type_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'member_type_name',
@@ -1679,7 +1679,7 @@ return [
         'field' => 'module_id',
         'type' => 'int(3)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'module_name',
@@ -1708,7 +1708,7 @@ return [
         'field' => 'place_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'place_name',
@@ -1737,7 +1737,7 @@ return [
         'field' => 'publisher_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'publisher_name',
@@ -1766,7 +1766,7 @@ return [
         'field' => 'ID',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'rt_id',
@@ -1789,7 +1789,7 @@ return [
         'field' => 'server_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'name',
@@ -1830,7 +1830,7 @@ return [
         'field' => 'supplier_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'supplier_name',
@@ -1901,7 +1901,7 @@ return [
         'field' => 'topic_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'topic',
@@ -1924,8 +1924,8 @@ return [
       [
         'field' => 'classification',
         'type' => 'varchar(50)',
-        'null' => false,
-        'default' => ''
+        'null' => true,
+        'default' => null
       ],
       [
         'field' => 'input_date',
@@ -1948,7 +1948,7 @@ return [
         'field' => 'vocabolary_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'topic_id',
@@ -1983,7 +1983,7 @@ return [
         'field' => 'reserve_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'member_id',
@@ -2197,7 +2197,7 @@ return [
         'field' => 'serial_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'date_start',
@@ -2256,7 +2256,7 @@ return [
         'field' => 'setting_id',
         'type' => 'int(3)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'setting_name',
@@ -2279,7 +2279,7 @@ return [
         'field' => 'stock_take_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'stock_take_name',
@@ -2356,7 +2356,7 @@ return [
         'field' => 'stock_take_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'item_id',
@@ -2433,7 +2433,7 @@ return [
         'field' => 'log_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'log_type',
@@ -2474,7 +2474,7 @@ return [
         'field' => 'user_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'username',
@@ -2557,7 +2557,7 @@ return [
         'field' => 'group_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'group_name',
@@ -2586,7 +2586,7 @@ return [
         'field' => 'visitor_id',
         'type' => 'int(11)',
         'null' => false,
-        'default' => ''
+        'default' => 'AUTO_INCREMENT'
       ],
       [
         'field' => 'member_id',

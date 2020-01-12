@@ -66,6 +66,11 @@ export default {
                     this.loading = false
                     if (this.isPass) this.$emit('success')
                 })
+                .catch((error) => {
+                    this.isPass = false
+                    this.message = [error.message]
+                    this.loading = false
+                });
         }
     },
     template: `<div class="h-screen flex">

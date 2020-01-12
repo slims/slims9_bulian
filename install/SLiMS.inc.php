@@ -15,12 +15,12 @@ class SLiMS
 {
   private $db = null;
 
-  function getAuthorizationHeader(){
+  function getAuthorizationHeader()
+  {
     $headers = null;
     if (isset($_SERVER['Authorization'])) {
       $headers = trim($_SERVER["Authorization"]);
-    }
-    else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+    } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
       $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
     } elseif (function_exists('apache_request_headers')) {
       $requestHeaders = apache_request_headers();
@@ -34,7 +34,8 @@ class SLiMS
     return $headers;
   }
 
-  function getBearerToken() {
+  function getBearerToken()
+  {
     $headers = $this->getAuthorizationHeader();
     // HEADER: Get the access token from the header
     if (!empty($headers)) {
@@ -82,7 +83,7 @@ class SLiMS
   function isGdOk()
   {
     // Homeboy is not rockin GD at all
-    if (! function_exists('gd_info')) {
+    if (!function_exists('gd_info')) {
       return false;
     }
 
@@ -108,7 +109,8 @@ class SLiMS
     return extension_loaded('mbstring');
   }
 
-  function filter($mix_input, $type) {
+  function filter($mix_input, $type)
+  {
     if (extension_loaded('filter')) {
       switch ($type) {
         case 'get':
@@ -137,7 +139,8 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $user, $pass = '', $name = null) {
+  function createConnection($host, $user, $pass = '', $name = null)
+  {
     if (is_null($this->db)) {
       if (is_null($name)) {
         $this->db = @new mysqli($host, $user, $pass);
@@ -148,7 +151,8 @@ class SLiMS
     return $this->db;
   }
 
-  function isDatabaseExist($database_name) {
+  function isDatabaseExist($database_name)
+  {
     $stmt = $this->db->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?");
     $stmt->bind_param('s', $database_name);
     $stmt->execute();
@@ -157,7 +161,8 @@ class SLiMS
     return $result->num_rows > 0;
   }
 
-  function createDatabase($database_name) {
+  function createDatabase($database_name)
+  {
     return $this->db->query("CREATE DATABASE IF NOT EXISTS `{$database_name}` character set UTF8mb4 collate utf8mb4_bin");
   }
 
@@ -166,7 +171,46 @@ class SLiMS
     return $this->db;
   }
 
-  function getTables() {
+  function createTable($table) {
+    try {
+      $column_str = '';
+      $primaryKey = '';
+      foreach ($table['column'] as $column) {
+        $null = $column['null'] ? 'NULL' : 'NOT NULL';
+        $default = $column['default'] !== '' ? "DEFAULT '" . $column['default'] . "'" : '';
+        if (is_null($column['default'])) $default = 'DEFAULT NULL';
+        if ($column['default'] === 'AUTO_INCREMENT') {
+          $default = 'AUTO_INCREMENT';
+          $primaryKey = "PRIMARY KEY (`{$column['field']}`),";
+        }
+        $column_str .= "`{$column['field']}` {$column['type']} COLLATE 'utf8mb4_unicode_ci' {$null} {$default}, ";
+      }
+
+      $column_str .= $primaryKey;
+
+      if ($column_str === '') throw new Exception('Column can not be empty');
+
+      // remove last comma
+      $column_str = substr(trim($column_str), 0, -1);
+
+      $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS `{$table['table']}` ({$column_str})
+ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+SQL;
+
+      // die($sql);
+
+      $stmt = $this->db->prepare($sql);
+      if (!$stmt) return $this->db->error . '. Your syntax: ' . $sql;
+      $stmt->execute();
+      $stmt->close();
+    } catch (Exception $exception) {
+      return $exception->getMessage();
+    }
+  }
+
+  function getTables()
+  {
     $r = [];
     $query = $this->db->query("SHOW TABLES");
     while ($data = $query->fetch_row()) {
@@ -175,11 +219,27 @@ class SLiMS
     return $r;
   }
 
-  function addColumn($table, $column) {
+  function getColumn($table, $all = false)
+  {
+    $r = [];
+    $query = $this->db->query("SHOW COLUMNS FROM {$table}");
+    while ($data = $query->fetch_assoc()) {
+      if ($all) {
+        $r[] = $data;
+      } else {
+        $r[] = $data['Field'];
+      }
+    }
+    return $r;
+  }
+
+  function addColumn($table, $column)
+  {
     try {
       $null = $column['null'] ? 'NULL' : 'NOT NULL';
-      $default = $column['default'] !== '' ? "DEFAULT '".$column['default']."'" : '';
+      $default = $column['default'] !== '' ? "DEFAULT '" . $column['default'] . "'" : '';
       if (is_null($column['default'])) $default = 'DEFAULT NULL';
+      if ($column['default'] === 'AUTO_INCREMENT') $default = 'AUTO_INCREMENT';
       $sql = <<<SQL
 ALTER TABLE `{$table}` ADD `{$column['field']}` {$column['type']} {$null} {$default};
 SQL;
@@ -192,15 +252,34 @@ SQL;
     }
   }
 
-  function createConfigFile(array $options) {
+  function changeColumn($table, $column) {
+    try {
+      $null = $column['null'] ? 'NULL' : 'NOT NULL';
+      $default = $column['default'] !== '' ? "DEFAULT '" . $column['default'] . "'" : '';
+      if (is_null($column['default'])) $default = 'DEFAULT NULL';
+      $sql = <<<SQL
+ALTER TABLE `{$table}` 
+    CHANGE `{$column['field']}` `{$column['field']}` {$column['type']} COLLATE 'utf8_unicode_ci' {$null} {$default};
+SQL;
+      $stmt = $this->db->prepare($sql);
+      if (!$stmt) return $this->db->error . '. Your syntax: ' . $sql;
+      $stmt->execute();
+      $stmt->close();
+    } catch (Exception $exception) {
+      return $exception->getMessage();
+    }
+  }
+
+  function createConfigFile(array $options)
+  {
     $base_config_file = './../config/sysconfig.local.inc-sample.php';
     $config_file_path = './../config/sysconfig.local.inc.php';
 
     if (!is_readable($base_config_file)) {
-      throw new Exception('File '.$base_config_file.' not readable', 5000);
+      throw new Exception('File ' . $base_config_file . ' not readable', 5000);
     }
     if (!is_writable(dirname($base_config_file))) {
-      throw new Exception('Directory '.dirname($base_config_file).' not writable', 5001);
+      throw new Exception('Directory ' . dirname($base_config_file) . ' not writable', 5001);
     }
 
     $config_content = file_get_contents($base_config_file);
@@ -215,13 +294,15 @@ SQL;
     return ['status' => $write];
   }
 
-  function query($array, $types = []) {
+  function query($array, $types = [])
+  {
     $_return = [];
     foreach ($types as $type) {
       if (array_key_exists($type, $array)) {
         foreach ($array[$type] as $item) {
           try {
             $stmt = $this->db->prepare($item);
+            if (!$stmt) throw new Exception($this->db->error . '. Your syntax: ' . $item);
             $stmt->execute();
             $stmt->close();
           } catch (Exception $exception) {
@@ -233,11 +314,12 @@ SQL;
     return $_return;
   }
 
-  function updateAdmin($username, $password) {
+  function updateAdmin($username, $password)
+  {
     $sql_update = " UPDATE user set
-			username = '".$username."',
-			passwd = '".password_hash($password, PASSWORD_BCRYPT)."',
-			realname = '".ucfirst($username)."',
+			username = '" . $username . "',
+			passwd = '" . password_hash($password, PASSWORD_BCRYPT) . "',
+			realname = '" . ucfirst($username) . "',
 			last_login = NULL,
 			last_login_ip = '127.0.0.1',
 			groups = 'a:1:{i:0;s:1:\"1\";}',

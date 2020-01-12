@@ -5,6 +5,11 @@
  * @File name           : index.php
  */
 
+if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
+    header('Location: ' . '../index.php');
+    exit();
+}
+
 session_start();
 $_SESSION['csrf_token'] = bin2hex(random_bytes(24));
 
