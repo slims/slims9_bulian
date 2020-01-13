@@ -50,12 +50,11 @@ export default {
             })
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res)
                     this.loading = false
                     this.isPass = res.status
                     this.message = res.message
 
-                    if (!this.isPass && res.code === 5001) {
+                    if (!this.isPass && (res.code === 5000 || res.code === 5001)) {
                         this.$emit('notwrite')
                     } else if (this.isPass) {
                         this.$emit('success')

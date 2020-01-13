@@ -96,13 +96,13 @@ $_SESSION['csrf_token'] = bin2hex(random_bytes(24));
     <install v-if="section === 'install'" @next="section = 'create-admin'"></install>
     <upgrade v-if="section === 'upgrade'" @next="section = 'select-version'"></upgrade>
     <select-version v-if="section === 'select-version'" @success="section = 'success'"></select-version>
-    <account v-if="section === 'create-admin'" @notwrite="section = 'show-config'"
+    <account v-if="section === 'create-admin'" @notwrite="setSection('show-config', 'create-admin')"
              @success="section = 'success'"></account>
-    <show-config v-if="section === 'show-config'"></show-config>
+    <show-config v-if="section === 'show-config'" :section="lastSection"></show-config>
     <success v-if="section === 'success'"></success>
 </div>
 <!-- Required JavaScript -->
-<script src="js/vue.js"></script>
+<script src="js/vue.min.js"></script>
 <script src="js/main.js?v=<? date('YmdHis'); ?>" type="module" csrf="<?= $_SESSION['csrf_token'] ?>"></script>
 </body>
 </html>

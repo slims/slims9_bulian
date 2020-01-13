@@ -23,12 +23,17 @@ new Vue({
     },
     data() {
         return {
-            section: 'welcome'
+            section: 'welcome',
+            lastSection: ''
         }
     },
     methods: {
         selectTask(task) {
             this.section = task
+        },
+        setSection(current, last) {
+            this.section = current
+            this.last = last
         }
     }
 })

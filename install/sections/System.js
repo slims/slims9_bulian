@@ -38,7 +38,6 @@ export default {
                     this.data = res.data
                     this.isPass = res.is_pass
                     this.loading = false
-                    console.log(res)
                 })
         }
     },

@@ -148,6 +148,9 @@ class SLiMS
         $this->db = @new mysqli($host, $user, $pass, $name);
       }
     }
+    if (mysqli_connect_error()) {
+      throw new Exception("Error Connecting to Database with message: ".mysqli_connect_error());
+    }
     return $this->db;
   }
 
@@ -213,6 +216,9 @@ SQL;
   {
     $r = [];
     $query = $this->db->query("SHOW TABLES");
+    if (!$query) {
+      throw new Exception($this->db->error);
+    }
     while ($data = $query->fetch_row()) {
       $r[] = $data[0];
     }
@@ -223,6 +229,9 @@ SQL;
   {
     $r = [];
     $query = $this->db->query("SHOW COLUMNS FROM {$table}");
+    if (!$query) {
+      throw new Exception($this->db->error);
+    }
     while ($data = $query->fetch_assoc()) {
       if ($all) {
         $r[] = $data;
@@ -272,8 +281,8 @@ SQL;
 
   function createConfigFile(array $options)
   {
-    $base_config_file = './../config/sysconfig.local.inc-sample.php';
-    $config_file_path = './../config/sysconfig.local.inc.php';
+    $base_config_file = __DIR__ . '/../config/sysconfig.local.inc-sample.php';
+    $config_file_path = __DIR__ . '/../config/sysconfig.local.inc.php';
 
     if (!is_readable($base_config_file)) {
       throw new Exception('File ' . $base_config_file . ' not readable', 5000);

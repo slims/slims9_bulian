@@ -64,7 +64,12 @@ export default {
                     this.isPass = res.status
                     this.message = res.message
                     this.loading = false
-                    if (this.isPass) this.$emit('success')
+
+                    if (!this.isPass && (res.code === 5000 || res.code === 5001)) {
+                        this.$emit('notwrite')
+                    } else if (this.isPass) {
+                        this.$emit('success')
+                    }
                 })
                 .catch((error) => {
                     this.isPass = false
