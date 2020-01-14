@@ -49,7 +49,7 @@ export default {
 </div>
 <div class="flex-1 bg-gray-100 py-8 px-16">
     <h1 class="text-3xl font-medium">System requirements</h1>
-    <p class="text-lg text-gray-700 tracking-wide mb-4">Check the minimum system requirements for installing SLiMS</p>
+    <p class="text-lg text-gray-700 tracking-wide mb-4">Checking the minimum system requirements to install SLiMS</p>
     <div v-if="loading">Loading...</div>
     <div v-for="d in data" class="pt-2">
         <h2 class="font-medium">{{d.title}}</h2>

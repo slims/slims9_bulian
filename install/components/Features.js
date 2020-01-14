@@ -9,7 +9,7 @@ export default {
                 },
                 {
                     head: 'Bibliography',
-                    body: 'Faster input with peer-to-peer copy cataloguing.'
+                    body: 'Input data, faster, with peer-to-peer copy cataloguing.'
                 },
                 {
                     head: 'Patron',

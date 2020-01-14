@@ -22,8 +22,8 @@ export default {
                 <h1 class="text-2xl mb-2">Welcome to
                     <slims-text class="tracking-widest"/>
                 </h1>
-                <p class="mb-4">As an integrated Library Management System, <slims-text></slims-text> (Senayan Library Management System) offers a lot of
-                    features in helping libraries and librarians do their jobs quickly, neatly and in style.</p>
+                <p class="mb-4">As an integrated library management system, <slims-text></slims-text> (Senayan Library Management System) offers many
+                    features to assist libraries and librarians do their jobs quickly, neatly, and with style.</p>
                 <slims-button @click="$emit('click')" text="Get Started"></slims-button>
             </div>
         </div>
