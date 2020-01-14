@@ -2,6 +2,7 @@ SENAYAN 3 Stable Branch
 SLiMS 5
 SLiMS 7
 SLiMS 8
+SLiMS 9
 Changes Log
 
 Developers :
@@ -31,26 +32,30 @@ Brazilian Portuguese: Eduardo Koiti Kataoka (edukataoka@yahoo.com.br)
 Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)
 Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com)
 Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)
+Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationforsenayan/)
 
 Code enhancement contributors:
 Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9 Bulian
-========================================================================
-xxx
-xxx
-
-SLiMS 8.5 (Akasia)
+SLiMS 9 (Bulian)
 ========================================================================
 Added : New localisation for Urdu (Pakistan) language
 Added : New localisation for Turkish language
+Added : New localisation for Russian language
+Added : New installer interface with optimized options
 Added : New Admin template
+Added : Optimized Classic Template
+Added : New theme for member card (Classic card theme)
 Added : MARC SRU as new copy cataloguing feature
 Modified : Added new menu for adding copy cataloguing servers, including MARC SRU servers
 Added : Voice synthesizer for visitor counter
 Added : Feature to download cover and attachment files (if any) from P2P servers
+Added : Configuration using ElasticSearch indexing tool
+Fixed : Security enhancement for XSS (cross-site scripting)
+Fixed : Security enhancement for SQLi (SQL injection)
+
 
 SLiMS 8.3.1 (Akasia)
 ========================================================================
