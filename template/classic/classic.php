@@ -197,10 +197,11 @@ function getTopic($dbs, $biblio_id)
 // ----------------------------------------------------------------------------
 function getActiveMembers($dbs, $year, $limit = 3)
 {
-  $sql = "SELECT m.member_name, mm.member_type_name, m.member_image, COUNT(*) AS total
+  $sql = "SELECT m.member_name, mm.member_type_name, m.member_image, COUNT(*) AS total, GROUP_CONCAT(i.biblio_id SEPARATOR ';') AS biblio_id
           FROM loan AS l
           LEFT JOIN member AS m ON l.member_id=m.member_id
           LEFT JOIN mst_member_type AS mm ON m.member_type_id=mm.member_type_id
+          LEFT JOIN item As i ON l.item_code=i.item_code
           WHERE
             l.loan_date LIKE '{$year}-%' AND
             m.member_name IS NOT NULL
@@ -211,12 +212,21 @@ function getActiveMembers($dbs, $year, $limit = 3)
   $query = $dbs->query($sql);
   $return = array();
   if ($query) {
-    while ($data = $query->fetch_row()) {
-      $return[] = array('name' => $data[0], 'type' => $data[1], 'image' => $data[2]);
+    while ($data = $query->fetch_assoc()) {
+      $title = array_unique(explode(';', $data['biblio_id']));
+      $return[] = array(
+        'name' => $data['member_name'],
+        'type' => $data['member_type_name'],
+        'image' => $data['member_image'],
+        'total' => $data['total'],
+        'total_title' => count($title),
+        'order' => $data['total']+count($title));
     }
   }
 
-  // var_dump($sql);
+  usort($return, function ($a, $b) {
+    return $b['order'] <=> $a['order'];
+  });
 
   return $return;
 }

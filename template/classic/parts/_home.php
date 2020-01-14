@@ -175,17 +175,20 @@
             <br>
             <small class="subtitle-section">Noster voluptate ita distinguantur aut est velit reprehenderit.</small>
         </h4>
-        <div class="card-deck">
+        <div class="flex flex-wrap">
           <?php
           $members = getActiveMembers($dbs, date('Y'));
           foreach ($members as $member) {
-            $m = '<div class="card border-0 shadow">';
+            $member_image = $member['image'] ?? 'person.png';
+            $m = '<div class="w-1/3 px-3">';
+            $m .= '<div class="card hover:shadow-md">';
             $m .= '<div class="card-body">';
             $m .= '<div class="card-image-rounded mx-auto">';
-            $m .= '<img src="images/persons/' . $member['image'] . '" class="img-fluid" alt="photo">';
+            $m .= '<img src="'.getImagePath($sysconf, $member_image, 'persons').'" class="img-fluid" alt="photo">';
             $m .= '</div>';
-            $m .= '<h5 class="card-title text-center mt-3">' . $member['name'] . '<br><small>' . $member['type'] . '</small></h5>';
-            $m .= '<p class="card-text text-center">Nescius culpa deserunt laborum, vidisse sunt legam quamquam esse.</p>';
+            $m .= '<h5 class="card-title text-center mt-3">' . $member['name'] . '<br><small class="text-grey-darker">' . $member['type'] . '</small></h5>';
+            $m .= '<p class="card-text text-center"><b>'.$member['total'].'</b> <span class="text-grey-darker">Loans</span><span style="width: 1px" class="inline-block h-4 mx-3 relative bg-grey align-middle"></span><b>'.$member['total_title'].'</b> <span class="text-grey-darker">Title</span></p>';
+            $m .= '</div>';
             $m .= '</div>';
             $m .= '</div>';
 
