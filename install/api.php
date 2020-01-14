@@ -11,7 +11,7 @@ use Install\SLiMS;
 define('INDEX_AUTH', '1');
 
 session_start();
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 
 require_once 'SLiMS.inc.php';
 
