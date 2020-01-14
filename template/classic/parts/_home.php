@@ -61,6 +61,7 @@
     </ul>
 </section>
 
+<?php if ($sysconf['template']['classic_popular_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
         Popular in our collection.
@@ -79,15 +80,15 @@
       ?>
     </div>
 
-    <div class="card-deck mt-4 collection">
+    <div class="flex flex-wrap mt-4 collection">
       <?php
       // ------------------------------------------------------------------------
       // get popular title by loan
       // ------------------------------------------------------------------------
-      $populars = getPopularBiblio($dbs, 6);
+      $populars = getPopularBiblio($dbs, $sysconf['template']['classic_popular_collection_item']);
       foreach ($populars as $p) {
-        $o = '';
-        $o .= '<a href="index.php?p=show_detail&id='.$p['biblio_id'].'" class="card border-0 hover:shadow cursor-pointer text-decoration-none">';
+        $o = '<div class="w-48 pr-4 pb-4">';
+        $o .= '<a href="index.php?p=show_detail&id='.$p['biblio_id'].'" class="card border-0 hover:shadow cursor-pointer text-decoration-none h-full">';
         $o .= '<div class="card-body">';
         $o .= '<div class="card-image fit-height">';
         $o .= '<img src="' . getImagePath($sysconf, $p['image']) . '" class="img-fluid" alt="">';
@@ -96,7 +97,7 @@
         $o .= truncate($p['title'], 30);
         $o .= '</div>';
         $o .= '</div>';
-        $o .= '</a>';
+        $o .= '</a></div>';
         echo $o;
       }
       ?>
@@ -111,7 +112,9 @@
     </div>
 
 </section>
+<?php endif; ?>
 
+<?php if ($sysconf['template']['classic_new_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
         New collection + updated.
@@ -130,15 +133,15 @@
       ?>
     </div>
 
-    <div class="card-deck mt-4 collection">
+    <div class="flex flex-wrap mt-4 collection">
       <?php
       // ------------------------------------------------------------------------
       // get popular title by loan
       // ------------------------------------------------------------------------
-      $latest = getLatestBiblio($dbs, 6);
+      $latest = getLatestBiblio($dbs, $sysconf['template']['classic_new_collection_item']);
       foreach ($latest as $l) {
-        $o = '';
-        $o .= '<a href="index.php?p=show_detail&id='.$l['biblio_id'].'"  class="card border-0 hover:shadow cursor-pointer text-decoration-none">';
+        $o = '<div class="w-48 pr-4 pb-4">';
+        $o .= '<a href="index.php?p=show_detail&id='.$l['biblio_id'].'"  class="card border-0 hover:shadow cursor-pointer text-decoration-none h-full">';
         $o .= '<div class="card-body">';
         $o .= '<div class="card-image fit-height">';
         $o .= '<img src="' . getImagePath($sysconf, $l['image']) . '" class="img-fluid" alt="">';
@@ -147,7 +150,7 @@
         $o .= truncate($l['title'], 30);
         $o .= '</div>';
         $o .= '</div>';
-        $o .= '</a>';
+        $o .= '</a></div>';
         echo $o;
       }
       ?>
@@ -162,7 +165,9 @@
     </div>
 
 </section>
+<?php endif; ?>
 
+<?php if ($sysconf['template']['classic_top_reader']) : ?>
 <section class="mt-5 bg-white">
     <div class="container py-5">
         <h4 class="mb-4">
@@ -194,24 +199,25 @@
         </div>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($sysconf['template']['classic_map']) : ?>
 <section class="my-5 container">
     <div class="row align-items-center">
         <div class="col-md-6">
             <iframe class="embed-responsive"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.288723306273!2d106.80038831428296!3d-6.225610995493402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14efd9abf05%3A0x1659580cc6981749!2sPerpustakaan+Kemendikbud!5e0!3m2!1sid!2sid!4v1516601731218"
+                    src="<?= $sysconf['template']['classic_map_link']; ?>"
                     height="420" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
         <div class="col-md-6">
-            <h4><?php echo $sysconf['library_name']; ?></h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc mi. Donec vehicula turpis a
-                quam venenatis posuere. Aliquam nibh lectus, gravida et leo sit amet, dignissim dapibus mauris.</p>
-            <p class="mb-2">Telp. (021) 9172638<br>Fax. (021) 9172638</p>
+            <h4><?= $sysconf['library_name']; ?></h4>
+            <p><?= $sysconf['template']['classic_map_desc']; ?></p>
             <p class="d-flex flex-row">
-                <a href="javascript:void(0)" class="btn btn-primary mr-2" name="button"><i class="fab fa-facebook-square text-white"></i></a>
-                <a href="javascript:void(0)" class="btn btn-info mr-2" name="button"><i class="fab fa-twitter-square text-white"></i></a>
-                <a href="javascript:void(0)" class="btn btn-danger mr-2" name="button"><i class="fab fa-youtube text-white"></i></a>
+                <a target="_blank" href="<?= $sysconf['template']['classic_fb_link'] ?>" class="btn btn-primary mr-2" name="button"><i class="fab fa-facebook-square text-white"></i></a>
+                <a target="_blank" href="<?= $sysconf['template']['classic_twitter_link'] ?>" class="btn btn-info mr-2" name="button"><i class="fab fa-twitter-square text-white"></i></a>
+                <a target="_blank" href="<?= $sysconf['template']['classic_youtube_link'] ?>" class="btn btn-danger mr-2" name="button"><i class="fab fa-youtube text-white"></i></a>
             </p>
         </div>
     </div>
 </section>
+<?php endif; ?>
