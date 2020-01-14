@@ -109,6 +109,40 @@ class SLiMS
     return extension_loaded('mbstring');
   }
 
+  function chkDir()
+  {
+    $result->status = true;
+    $html = '';
+
+    if(!is_writable(__DIR__ . '/../config/')){
+      $result->status = false;
+      $config = 'NO';
+    }
+
+    if(!is_writable(__DIR__ . '/../files/')){
+      $result->status = false;
+      $files = 'NO';
+    }
+
+    if(!is_writable(__DIR__ . '/../images/')){
+      $result->status = false;
+      $images = 'NO';
+    }
+    
+    if(!is_writable(__DIR__ . '/../repository/')){
+      $result->status = false;
+      $repository = 'NO';
+    }
+
+    $html .= '/config is writable : '.($config??'Yes').'<br/>';
+    $html .= '/files is writable : '.($files??'Yes').'<br/>';  
+    $html .= '/images is writable : '.($images??'Yes').'<br/>';  
+    $html .= '/repository is writable : '.($repository??'Yes').'<br/>';  
+
+    $result->data = $html;
+    return $result;
+  }
+
   function filter($mix_input, $type)
   {
     if (extension_loaded('filter')) {

@@ -40,6 +40,7 @@ switch ($action) {
         $slims->databaseDriverType() &&
         $slims->isGdOk() &&
         $slims->isGettextOk() &&
+        $slims->chkDir()->status &&
         $slims->isMbStringOk(),
       'data' => [
         'php' => [
@@ -77,7 +78,13 @@ switch ($action) {
           'status' => $slims->isYazOk(),
           'version' => '',
           'message' => 'YAZ not installed. It\'s optional, but will be needed if you want to use Z39.50 protocol.'
-        ]
+        ],
+        'chkdir' => [
+          'title' => 'Pre-Installation Step',
+          'status' => $slims->chkDir()->status,
+          'data' => $slims->chkDir()->data,
+          'message' => 'Make the following files and directories (and their contents) writeable (i.e., by changing the owner or permissions with chown or chmod)'
+        ]        
       ]
     ];
     sleep(1);

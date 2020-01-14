@@ -53,7 +53,8 @@ export default {
     <div v-if="loading">Loading...</div>
     <div v-for="d in data" class="pt-2">
         <h2 class="font-medium">{{d.title}}</h2>
-        <div class="text-gray-700">{{d.version || (d.status ? 'installed' : 'not installed')}}</div>
+        <div v-if="!d.data" class="text-gray-700">{{d.version || (d.status ? 'installed' : 'not installed')}}</div>
+        <div v-html="d.data" class="text-gray-700">{{d.data}}</div>
         <div v-if="!d.status" class="text-red-500">{{d.message}}</div>
         <div class="w-1/3 border-b pb-2"></div>
     </div>
