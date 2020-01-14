@@ -82,6 +82,8 @@ if (isset($_GET['customize'])) {
 
   if (isset($sysconf['template']['option'][$_GET['theme']]) && $_GET['customize'] == 'public') {
 
+    utility::loadSettings($dbs);
+
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
     $form->submit_button_attr = 'name="updateData" value="'.__('Save Settings').'" class="btn btn-default"';
@@ -102,7 +104,7 @@ if (isset($_GET['customize'])) {
       if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
         $cf_max = isset($cfield['max'])?$cfield['max']:'200';
         $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-        $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+        $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default, 'class="form-control" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
       } else if ($cfield['type'] == 'dropdown') {
         $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf['template'][$cf_dbfield])?$sysconf['template'][$cf_dbfield]:$cf_default,'class="form-control"');
       } else if ($cfield['type'] == 'checklist') {

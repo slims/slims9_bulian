@@ -178,9 +178,6 @@ header('Content-type: text/html; charset=UTF-8');
 $sysconf['template']['dir'] = 'template';
 $sysconf['template']['theme'] = 'default';
 $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
-ob_start();
-include $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-ob_end_clean();
 
 /* ADMIN SECTION GUI Template config */
 $sysconf['admin_template']['dir'] = 'admin_template';
@@ -359,13 +356,6 @@ $sysconf['https_port'] = 443;
 /* Date Format Setting for OPAC */
 $sysconf['date_format'] = 'Y-m-d'; /* Produce 2009-12-31 */
 // $sysconf['date_format'] = 'd-M-Y'; /* Produce 31-Dec-2009 */
-
-// template info config
-if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
-  $sysconf['template']['base'] = 'php'; /* html OR php */
-} else {
-  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-}
 
 $sysconf['pdf']['viewer'] = 'pdfjs'; # 'pdfjs'
 
@@ -626,6 +616,15 @@ $dbs->query('SET NAMES \'utf8\'');
 
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
+
+// template info config
+if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
+  $sysconf['template']['base'] = 'php'; /* html OR php */
+} else {
+  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
+  // load again for override tinfo setting
+  utility::loadSettings($dbs);
+}
 
 // check for user language selection if we are not in admin areas
 if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {

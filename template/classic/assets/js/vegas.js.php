@@ -9,9 +9,10 @@
 
 <script>
   $('.c-header, .vegas-slide').vegas({
-        delay: 15000,
+        delay: <?= $sysconf['template']['classic_slide_delay']; ?>,
         timer: false,
-        animation: 'random',
+        transition: '<?= $sysconf['template']['classic_slide_transition']; ?>',
+        animation: '<?= $sysconf['template']['classic_slide_animation']; ?>',
         slides: [
             { src: "<?php echo CURRENT_TEMPLATE_DIR; ?>assets/images/slide1.jpg" },
             { src: "<?php echo CURRENT_TEMPLATE_DIR; ?>assets/images/slide2.jpg" },
