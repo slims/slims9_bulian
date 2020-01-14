@@ -94,7 +94,7 @@ export default {
           <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1" for="grid-last-name">
             Database password
           </label>
-          <input v-model="pass" id="db_pass" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Enter password">
+          <input v-model="pass" id="db_pass" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="password" placeholder="Enter password">
       </div>
       
       <button v-if="!isPass" type="submit" class="mt-4 mb-4 rounded-full bg-gray-500 py-2 px-4 text-gray-100 hover:bg-gray-700 focus:outline-none focus:bg-gray-600">Test Connection</button>
