@@ -43,6 +43,7 @@
                 <h4 class="mb-2">Search Result</h4>
               <?php
               echo '<div class=" mb-4 text-sm">' . $search_result_info . '</div><hr>';
+              if ($sysconf['template']['classic_suggestion']) {
               $randome = getRandomBiblio($dbs);
               if (count($randome) > 0) {
               ?>
@@ -50,8 +51,8 @@
                 <div class="card-list d-flex flex-column mb-4">
                   <?php
                   foreach ($randome as $biblio) {
-                    $images_loc = '../../images/docs/'.$biblio['image'];
-                    $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
+                    $images_loc = '../../images/docs/' . $biblio['image'];
+                    $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
                     ?>
                       <div class="card sugestion border-0 elevation-1 mb-2">
                           <div class="card-body">
@@ -59,7 +60,8 @@
                                   <img src="<?= $thumb_url; ?>" alt="image" class="img-fluid">
                               </div>
                               <div class="card-text title">
-                                  <a class="text-decoration-none text-grey-darker" href="<?= SWB . 'index.php?p=show_detail&id=' . $biblio['biblio_id']; ?>"><?= $biblio['title']; ?></a>
+                                  <a class="text-decoration-none text-grey-darker"
+                                     href="<?= SWB . 'index.php?p=show_detail&id=' . $biblio['biblio_id']; ?>"><?= $biblio['title']; ?></a>
                               </div>
                               <div class="card-text author">
                                   <i><?= $biblio['author']; ?></i>
@@ -67,7 +69,9 @@
                           </div>
                       </div>
                     <?php
-                  }}
+                  }
+                  }
+                  }
                   ?>
                 </div>
             </div>
