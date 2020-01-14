@@ -38,13 +38,13 @@ if (!defined('SB')) {
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
-do_checkIP('smc-system');
+//do_checkIP('smc-system');
 
 // only administrator have privileges to change global settings
-if ($_SESSION['uid'] != 1) {
-  header('Location: '.MWB.'system/content.php');
-  die();
-}
+//if ($_SESSION['uid'] != 1) {
+//  header('Location: '.MWB.'system/content.php');
+//  die();
+//}
 
 require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
