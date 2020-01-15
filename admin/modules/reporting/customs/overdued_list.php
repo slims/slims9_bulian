@@ -61,7 +61,7 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
     ?>
     <!-- filter -->
-    <fieldset>
+    <div>
         <div class="per_title">
             <h2><?php echo __('Overdued List'); ?></h2>
         </div>
@@ -110,7 +110,7 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'));
                 </div>
             </form>
         </div>
-    </fieldset>
+    </div>
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>"
