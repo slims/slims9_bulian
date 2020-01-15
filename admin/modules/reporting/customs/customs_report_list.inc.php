@@ -40,3 +40,4 @@ $menu[] = array(__('Visitor Statistic'), MWB.'reporting/customs/visitor_report.p
 $menu[] = array(__('Visitor Statistic (by Day)'), MWB.'reporting/customs/visitor_report_day.php', __('Visitor Statistic (by Day)'));
 $menu[] = array(__('Visitor List'), MWB.'reporting/customs/visitor_list.php', __('Visitor List'));
 $menu[] = array(__('Fines Report'), MWB.'reporting/customs/fines_report.php', __('Fines Report'));
+$menu[] = array(__('Member Fines List'), MWB.'reporting/customs/member_fines_list.php', __('Member Fines List'));
