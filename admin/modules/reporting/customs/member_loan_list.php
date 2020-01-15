@@ -120,7 +120,7 @@ if (!$reportView) {
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'');
-    $reportgrid->setSQLorder('ANY_VALUE(l.due_date) DESC');
+    $reportgrid->setSQLorder('MAX(l.due_date) DESC');
     $reportgrid->sql_group_by = 'm.member_id';
 
     $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0) ';
