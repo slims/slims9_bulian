@@ -64,9 +64,9 @@
 <?php if ($sysconf['template']['classic_popular_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
-        Popular in our collection.
+        Popular among our collections.
         <br>
-        <small class="subtitle-section">Singulis noster incididunt eu pariatur tempor veniam litteris dolor.</small>
+        <small class="subtitle-section">Our library's line of collection that have been favoured by our users were shown here. Look for them. Borrow them. Hope you also like them.</small>
     </h4>
     <div class="d-flex flex-wrap">
       <?php
@@ -117,9 +117,9 @@
 <?php if ($sysconf['template']['classic_new_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
-        New collection + updated.
+        New collections + updated.
         <br>
-        <small class="subtitle-section">Senserit malis duis iudicem legam an quem si probant ea quae.</small>
+        <small class="subtitle-section">These are new collections list. Hope you like them. Maybe not all of them are new. But in term of time, we make sure that these are fresh from our processing oven.</small>
     </h4>
     <div class="d-flex flex-wrap">
       <?php
