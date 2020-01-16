@@ -24,7 +24,7 @@ define('CURRENT_TEMPLATE_DIR', $sysconf['template']['dir'] . '/' . $sysconf['tem
 // Define member login state
 // ----------------------------------------------------------------------------
 $is_login = utility::isMemberLogin();
-$member_image_name = isset($_SESSION['mid']) ? 'member_' . $_SESSION['mid'] . '.jpg' : 'person.png';
+$member_image_name = isset($_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
 $member_image_path = getImagePath($sysconf, $member_image_name, 'persons');
 
 // ----------------------------------------------------------------------------
