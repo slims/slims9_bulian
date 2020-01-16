@@ -61,7 +61,8 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
+define('SENAYAN_VERSION_TAG', 'v9.0.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -394,7 +395,7 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 /**
  * Peer to peer server config
  */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims8_akasia', 'name' => 'SLiMS Library');
+$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims9_bulian', 'name' => 'SLiMS Library');
 
 /**
  * User and member login method
