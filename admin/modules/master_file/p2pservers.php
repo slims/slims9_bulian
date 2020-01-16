@@ -117,7 +117,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
   <div class="per_title">
-      <h2><?php echo __('P2P Servers'); ?></h2>
+      <h2><?php echo __('Copy Cataloging Server Configuration'); ?></h2>
   </div>
   <div class="sub_section">
     <div class="btn-group">
