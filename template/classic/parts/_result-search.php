@@ -31,7 +31,7 @@
                 <div class="wraper">
                   <?php
                   // catch empty list
-                  if (strlen($main_content) == 7) {
+                  if (trim(strip_tags($main_content)) === '') {
                     echo '<h2 class="text-danger">' . __('No Result') . '</h2><hr/><p class="text-danger">' . __('Please try again') . '</p>';
                   } else {
                     echo $main_content;
