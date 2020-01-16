@@ -581,6 +581,9 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
   }
 
   function upgrade_role_20() {
+    // make sure use default template
+    $this->slims->updateTheme('default');
+
     $error = [];
     // cek if table not exist
     $tables = require 'tables.php';

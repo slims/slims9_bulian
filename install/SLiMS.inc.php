@@ -373,4 +373,30 @@ SQL;
     return $this->db->query($sql_update);
   }
 
+  function updateTheme($theme = 'default') {
+    // get template setting
+    $sysconf = [];
+    $query = $this->db->query("SELECT setting_name, setting_value 
+                               FROM setting 
+                               WHERE setting_name = 'template' OR setting_name = 'admin_template'");
+    while ($data = $query->fetch_assoc()) {
+      // get value
+      $value = @unserialize($data['setting_value']);
+      if (is_array($value)) {
+        foreach ($value as $k => $v) {
+          $sysconf[$data['setting_name']][$k] = $v;
+        }
+      }
+
+      // update value
+      if (isset($sysconf[$data['setting_name']]['theme']))
+        $sysconf[$data['setting_name']]['theme'] = $theme;
+      if (isset($sysconf[$data['setting_name']]['css']))
+        $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/'.$theme.'/style.css';
+
+      // save again
+      $this->db->query('UPDATE setting SET setting_value=\''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\' WHERE setting_name=\''.$data['setting_name'].'\'');
+    }
+  }
+
 }
