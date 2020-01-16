@@ -42,7 +42,7 @@
                             <button class="btn btn-light mr-2 mb-2" disabled>OR TRY</button>
                             <a class="btn btn-outline-primary mr-2 mb-2" data-toggle="modal" data-target="#adv-modal">Advanced Search</a>
                         </div>
-                        <p class="label mt-4">Last search:</p>
+                        <p v-if="lastKeywords.length > 0" class="label mt-4">Last search:</p>
                         <a :href="`index.php?${tmpObj[k].searchBy}=${tmpObj[k].text}&search=search`"
                            class="flex items-center justify-between py-1 text-decoration-none text-grey-darkest hover:text-blue"
                            v-for="k in lastKeywords" :key="k"><span><i
