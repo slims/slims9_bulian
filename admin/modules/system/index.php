@@ -52,6 +52,24 @@ require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+if (!function_exists('addOrUpdateSetting')) {
+    function addOrUpdateSetting($name, $value) {
+        global $dbs;
+        $sql_op = new simbio_dbop($dbs);
+        $data['setting_value'] = serialize($value);
+
+        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+        if ($query->num_rows > 0) {
+            // update
+            $sql_op->update('setting', $data, "setting_name='{$name}'");
+        } else {
+            // insert
+            $data['setting_name'] = $name;
+            $sql_op->insert('setting', $data);
+        }
+    }
+}
+
 ?>
 <div class="menuBox">
   <div class="menuBoxInner systemIcon">
@@ -144,6 +162,15 @@ if (isset($_POST['updateData'])) {
 
     // barcode encoding
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['barcode_encoding'])).'\' WHERE setting_name=\'barcode_encoding\'');
+
+    // counter by ip
+    $enable_counter_by_ip = utility::filterData('enable_counter_by_ip', 'post', true, true, true);
+    addOrUpdateSetting('enable_counter_by_ip', $enable_counter_by_ip);
+
+    $allowed_counter_ip = utility::filterData('allowed_counter_ip', 'post', true, true, true);
+    $allowed_counter_ip = explode(';', $allowed_counter_ip);
+    $allowed_counter_ip = array_map(function ($ip) {return trim($ip);}, $allowed_counter_ip);
+    addOrUpdateSetting('allowed_counter_ip', $allowed_counter_ip);
 
     // visitor limitation
     $visitor_limitation = $_POST['enable_visitor_limitation'];
@@ -294,7 +321,10 @@ $form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encod
 $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
-$form->addSelectList('enable_visitor_limitation', __('Visitor Limitation'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
+$form->addSelectList('enable_counter_by_ip', __('Visitor Counter by IP'), $options, $sysconf['enable_counter_by_ip']?'1':'0','class="form-control col-3"');
+$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"');
+
+$form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 
 // time visitor limitation
 $form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;" class="form-control"');

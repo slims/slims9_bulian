@@ -10,12 +10,14 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
 ?>
 <div class="vegas-slide" style="position: fixed; z-index: -1"></div>
 <div class="flex h-screen w-full" id="visitor-counter" style="background: rgba(0,0,0,0.3)">
-    <div class="bg-white w-1/3 px-8 pt-8 pb-3 flex flex-col justify-between">
+    <div class="bg-white w-full md:w-1/3 px-8 pt-8 pb-3 flex flex-col justify-between">
         <div>
             <h3 class="font-light mb-2">Welcome to <?= $sysconf['library_name']; ?></h3>
             <p class="lead">
                 Please, fill your data into our visitor log.
             </p>
+
+            <div v-if="textInfo !== ''" class="rounded p-2 mt-4 bg-blue-lighter text-blue-darker md:hidden">{{textInfo}}</div>
 
             <form class="mt-4" @submit.prevent="onSubmit">
                 <div class="form-group">
@@ -37,7 +39,7 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
             <small class="text-grey-dark">Powered by <code>SLiMS</code></small>
         </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 hidden md:block">
         <div class="h-screen">
             <div v-show="textInfo !== ''" class="flex items-center h-screen p-8">
                 <div class="w-32">

@@ -688,6 +688,8 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
 }
 
 // visitor limitation
+$sysconf['enable_counter_by_ip'] = true;
+$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
 $sysconf['enable_visitor_limitation']     = false; // "true" or "false"
 $sysconf['time_visitor_limitation']       = 60; // in minute
 
