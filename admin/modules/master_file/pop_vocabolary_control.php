@@ -86,7 +86,6 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
   $alert_add .= '</script>';
 
   $data['topic_id'] = $itemID;
-  $data['vocabolary_id'] = '';
   $data['rt_id'] = $relatedterm;
 
   if (!empty($_POST['topicID'])) { # a.
@@ -112,7 +111,6 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
 
   // data secondary vocabulary
   $_data['topic_id'] = $data['related_topic_id'];
-  $_data['vocabolary_id'] = '';
   $_data['related_topic_id'] = $itemID;
 
   $_data['rt_id'] = false;
