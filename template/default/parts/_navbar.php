@@ -31,7 +31,7 @@ $main_menus = [
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-    <a class="navbar-brand" href="index.php">
+    <a class="navbar-brand inline-flex items-center" href="index.php">
         <svg
                 class="fill-current text-white inline-block h-8 w-8"
                 version="1.1"
@@ -45,7 +45,12 @@ $main_menus = [
                     L4.6,99.7l0,0l0,0C4.2,99.5,4,99.2,4,98.8l0-62.5l0,0l0-0.1c0-0.4,0.2-0.7,0.5-0.9l20.8-12l33.9,19.6l33.9-19.6l20.6,11.9l0.1,0
                     c0.3,0.2,0.5,0.5,0.6,0.9l0,62.3L114.4,98.8L114.4,98.8z M95.3,68.6v39.4L23.1,66.4V26.9L95.3,68.6z"/>
                 </svg>
-      <?php echo $sysconf['library_name']; ?>
+        <div class="inline-flex flex-col leading-tight ml-2">
+            <h1 class="text-lg m-0 p-0"><?php echo $sysconf['library_name']; ?></h1>
+            <?php if ($sysconf['template']['classic_library_subname']) : ?>
+            <h2 class="text-sm lead m-0 p-0"><?php echo $sysconf['library_subname']; ?></h2>
+            <?php endif; ?>
+        </div>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
