@@ -8,8 +8,9 @@
 $sysconf['template']['base'] = 'php';
 $sysconf['template']['responsive'] = false;
 
+$sysconf['template']['classic_library_subname'] = 0;
 $sysconf['template']['classic_slide_transition'] = 'blur';
-$sysconf['template']['classic_slide_animation'] = 'kenburnsUpRight';
+$sysconf['template']['classic_slide_animation'] = 'none';
 $sysconf['template']['classic_slide_delay'] = 5000;
 $sysconf['template']['classic_popular_collection'] = 1;
 $sysconf['template']['classic_popular_collection_item'] = 6;
@@ -25,6 +26,16 @@ $sysconf['template']['classic_twitter_link'] = 'https://twitter.com/slims_offici
 $sysconf['template']['classic_youtube_link'] = 'https://youtube.com';
 
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
+  'subtitle' => [
+    'dbfield' => 'classic_library_subname',
+    'label' => 'Library Sub Name',
+    'type' => 'dropdown',
+    'default' => 0,
+    'data' => [
+      [1, 'Show'],
+      [0, 'Hide']
+    ]
+  ],
   'transition' => [
     'dbfield' => 'classic_slide_transition',
     'label' => 'Slide Transition',
