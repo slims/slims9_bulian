@@ -11,7 +11,7 @@ namespace Install;
 class Upgrade
 {
   public $slims;
-  private $version = 20;
+  private $version = 22;
 
   static function init(SLiMS $slims)
   {
@@ -580,7 +580,143 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     return $this->slims->query($sql, ['create', 'alter']);
   }
 
+
   function upgrade_role_20() {
+    $sql['create'][] = "CREATE TABLE IF NOT EXISTS `loan_history` (
+  `loan_id` int(11) NOT NULL,
+  `item_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `biblio_id` int(11) NOT NULL,
+  `title` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `call_number` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `classification` varchar(40) COLLATE utf8_unicode_ci  DEFAULT NULL,
+  `gmd_name` varchar(30) COLLATE utf8_unicode_ci  DEFAULT NULL,
+  `language_name` varchar(20) COLLATE utf8_unicode_ci  DEFAULT NULL,
+  `location_name` varchar(100) COLLATE utf8_unicode_ci  DEFAULT NULL,
+  `collection_type_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `member_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `member_type_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `loan_date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  `renewed` int(11) NOT NULL DEFAULT '0',
+  `is_lent` int(11) NOT NULL DEFAULT '0',
+  `is_return` int(11) NOT NULL DEFAULT '0',
+  `return_date` date DEFAULT NULL,
+  `input_date` datetime DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+   PRIMARY KEY (`loan_id`),
+   KEY `member_name` (`member_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+    $sql['insert'][] = "
+        INSERT INTO `loan_history` 
+      (`loan_id`, 
+        `item_code`, 
+        `biblio_id`,
+        `member_id`, 
+        `loan_date`, 
+        `due_date`, 
+        `renewed`, 
+        `is_lent`, 
+        `is_return`, 
+        `return_date`,
+        `input_date`,
+        `last_update`,
+        `title`,
+        `call_number`,
+        `classification`,
+        `gmd_name`,
+        `language_name`,
+        `location_name`,
+        `collection_type_name`,
+        `member_name`,
+        `member_type_name`
+        )
+    (SELECT l.loan_id,
+        l.item_code,
+        b.biblio_id,
+        l.member_id,
+        l.loan_date,
+        l.due_date,
+        l.renewed,
+        l.is_lent,
+        l.is_return,
+        l.return_date,
+        IF(day(l.input_date) IS NULL,NULL, l.input_date),
+        IF(day(l.last_update) IS NULL,NULL, l.last_update),
+        b.title,
+        IF(i.call_number IS NULL,b.call_number,i.call_number),
+        b.classification,
+        g.gmd_name,
+        ml.language_name,
+        mlc.location_name,
+        mct.coll_type_name,
+        m.member_name,
+        mmt.member_type_name 
+    FROM loan l LEFT JOIN item i ON i.item_code=l.item_code
+    LEFT JOIN biblio b ON b.biblio_id=i.biblio_id
+    LEFT JOIN mst_gmd g ON g.gmd_id=b.gmd_id
+    LEFT JOIN mst_language ml ON ml.language_id=b.language_id 
+    LEFT JOIN mst_location mlc ON mlc.location_id=i.location_id
+    LEFT JOIN member m ON m.member_id=l.member_id
+    LEFT JOIN mst_coll_type mct ON mct.coll_type_id=i.coll_type_id
+    LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL);";
+
+    return $this->slims->query($sql, ['create', 'insert']);
+  }
+
+  function upgrade_role_21() {
+    // create trigger
+    $query_trigger[] = "
+    DROP TRIGGER IF EXISTS `delete_loan_history`;";
+    $query_trigger[] = "
+    CREATE TRIGGER `delete_loan_history` AFTER DELETE ON `loan`
+     FOR EACH ROW DELETE FROM `loan_history` WHERE loan_id=OLD.loan_id;";
+
+    $query_trigger[] = "
+    DROP TRIGGER IF EXISTS `update_loan_history`;";
+    $query_trigger[] = "
+    CREATE TRIGGER `update_loan_history` AFTER UPDATE ON `loan`
+     FOR EACH ROW UPDATE loan_history 
+    SET is_lent=NEW.is_lent,
+    is_return=NEW.is_return,
+    renewed=NEW.renewed,
+    return_date=NEW.return_date
+    WHERE loan_id=NEW.loan_id;";
+
+    $query_trigger[] = "
+    DROP TRIGGER IF EXISTS `insert_loan_history`;";
+
+    $query_trigger[] = "
+    CREATE TRIGGER `insert_loan_history` AFTER INSERT ON `loan`
+     FOR EACH ROW INSERT INTO loan_history
+     SET loan_id=NEW.loan_id,
+     item_code=NEW.item_code,
+     member_id=NEW.member_id,
+     loan_date=NEW.loan_date,
+     due_date=NEW.due_date,
+     renewed=NEW.renewed,
+     is_lent=NEW.is_lent,
+     is_return=NEW.is_return,
+     return_date=NEW.return_date,
+     input_date=NEW.input_date,
+     last_update=NEW.last_update,
+     title=(SELECT b.title FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
+     biblio_id=(SELECT b.biblio_id FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
+     call_number=(SELECT IF(i.call_number IS NULL, b.call_number,i.call_number) FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
+     classification=(SELECT b.classification FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
+     gmd_name=(SELECT g.gmd_name FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id LEFT JOIN mst_gmd g ON g.gmd_id=b.gmd_id WHERE i.item_code=NEW.item_code),
+     language_name=(SELECT l.language_name FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id LEFT JOIN mst_language l ON b.language_id=l.language_id WHERE i.item_code=NEW.item_code),
+     location_name=(SELECT ml.location_name FROM item i LEFT JOIN mst_location ml ON i.location_id=ml.location_id WHERE i.item_code=NEW.item_code),
+     collection_type_name=(SELECT mct.coll_type_name FROM mst_coll_type mct LEFT JOIN item i ON i.coll_type_id=mct.coll_type_id WHERE i.item_code=NEW.item_code),
+     member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
+     member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
+
+    return $this->slims->queryTrigger($query_trigger);
+  }
+
+
+  function upgrade_role_22() {
     // make sure use default template
     $this->slims->updateTheme('default');
 

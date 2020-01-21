@@ -139,6 +139,11 @@ switch ($action) {
       require_once 'install.sql.php';
       $query_type = ['create', 'insert', 'alter', 'update', 'delete', 'truncate', 'drop'];
       $error = $slims->query($sql, $query_type);
+
+      // create trigger
+      $error_trigger = $slims->queryTrigger($query_trigger);
+      $error = array_merge($error, $error_trigger);
+
       if ($_POST['sampleData']) {
         require_once 'install_sample_data.sql.php';
         $error_sample = $slims->query($sample_sql, $query_type);

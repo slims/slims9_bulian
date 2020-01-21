@@ -76,7 +76,7 @@ if (!$reportView) {
             <select name="membershipType" class="form-control col-3">
             <?php 
             foreach ($membershipTypes as $key => $membershipType) {
-            echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+            echo '<option value="'.$membershipType['member_type_name'].'">'.$membershipType['member_type_name'].'</option>';
             }
             ?>
             </select>
@@ -114,9 +114,9 @@ if (!$reportView) {
             <?php
             $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
             $loc_options = array();
-            $loc_options[] = array('0', __('ALL'));
+            $loc_options[] = array('', __('ALL'));
             while ($loc_d = $loc_q->fetch_row()) {
-                $loc_options[] = array($loc_d[0], $loc_d[1]);
+                $loc_options[] = array($loc_d[1], $loc_d[1]);
             }
             echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
             ?>
@@ -139,28 +139,25 @@ if (!$reportView) {
 } else {
     ob_start();
     // table spec
-    $table_spec = 'loan AS l
-    LEFT JOIN member AS m ON l.member_id=m.member_id
-    LEFT JOIN item AS i ON l.item_code=i.item_code
-    LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id';
+    $table_spec = 'loan_history';
 
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
 
-    $reportgrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
-        'm.member_name AS \''.__('Member Name').'\'',
-        'm.member_type_id AS \''.__('Membership Type').'\'',
-        'l.item_code AS \''.__('Item Code').'\'',
-        'b.title AS \''.__('Title').'\'',
-        'l.loan_date AS \''.__('Loan Date').'\'',
-        'l.due_date AS \''.__('Due Date').'\'', 'l.is_return AS \''.__('Loan Status').'\'');
-    $reportgrid->setSQLorder('l.loan_date DESC');
+    $reportgrid->setSQLColumn('member_id AS \''.__('Member ID').'\'',
+        'member_name AS \''.__('Member Name').'\'',
+        'member_type_name AS \''.__('Membership Type').'\'',
+        'item_code AS \''.__('Item Code').'\'',
+        'title AS \''.__('Title').'\'',
+        'loan_date AS \''.__('Loan Date').'\'',
+        'due_date AS \''.__('Due Date').'\'', 'is_return AS \''.__('Loan Status').'\'');
+    $reportgrid->setSQLorder('loan_date DESC');
 
-    $criteria = 'm.member_id IS NOT NULL ';
+    $criteria = 'member_id IS NOT NULL ';
     if (isset($_GET['id_name']) AND !empty($_GET['id_name'])) {
         $id_name = $dbs->escape_string($_GET['id_name']);
-        $criteria .= ' AND (m.member_id LIKE \'%'.$id_name.'%\' OR m.member_name LIKE \'%'.$id_name.'%\')';
+        $criteria .= ' AND (member_id LIKE \'%'.$id_name.'%\' OR member_name LIKE \'%'.$id_name.'%\')';
     }
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
         $keyword = $dbs->escape_string(trim($_GET['title']));
@@ -168,23 +165,23 @@ if (!$reportView) {
         if (count($words) > 1) {
             $concat_sql = ' AND (';
             foreach ($words as $word) {
-                $concat_sql .= " (b.title LIKE '%$word%') AND";
+                $concat_sql .= " (title LIKE '%$word%') AND";
             }
             // remove the last AND
             $concat_sql = substr_replace($concat_sql, '', -3);
             $concat_sql .= ') ';
             $criteria .= $concat_sql;
         } else {
-            $criteria .= ' AND b.title LIKE \'%'.$keyword.'%\'';
+            $criteria .= ' AND title LIKE \'%'.$keyword.'%\'';
         }
     }
     if (isset($_GET['itemCode']) AND !empty($_GET['itemCode'])) {
         $item_code = $dbs->escape_string(trim($_GET['itemCode']));
-        $criteria .= ' AND i.item_code=\''.$item_code.'\'';
+        $criteria .= ' AND item_code=\''.$item_code.'\'';
     }
     // loan date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(l.loan_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
+        $criteria .= ' AND (TO_DAYS(loan_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
             TO_DAYS(\''.$_GET['untilDate'].'\'))';
     }
     // loan status
@@ -194,14 +191,16 @@ if (!$reportView) {
     }
 
     if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != '0')) {
-        $membershipType = (integer)$_GET['membershipType'];
-        $criteria .= ' AND m.member_type_id='.$membershipType;
+        $membershipType = $_GET['membershipType'];
+        $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
+    }else{
+        $criteria .= ' AND member_type_name LIKE \'%%\'';
     }
 	
     // item location	
     if (isset($_GET['location']) AND !empty($_GET['location'])) {
         $location = $dbs->escape_string(trim($_GET['location']));
-        $criteria .= ' AND i.location_id=\''.$location.'\'';
+        $criteria .= ' AND location_name LIKE \''.$location.'\'';
     }
 	
     if (isset($_GET['recsEachPage'])) {
@@ -220,16 +219,8 @@ if (!$reportView) {
         }
     }
 
-    function showMembershipType($obj_db, $array_data)
-    {
-      global  $membershipTypes;
-      $_member_type_id = $array_data[2];
-      return $membershipTypes[$_member_type_id]['member_type_name'];
-    }
-
     // modify column value
     $reportgrid->modifyColumnContent(7, 'callback{loanStatus}');
-    $reportgrid->modifyColumnContent(2, 'callback{showMembershipType}');
 
     // show spreadsheet export button
     $reportgrid->show_spreadsheet_export = true;
@@ -240,19 +231,19 @@ if (!$reportView) {
     echo '<script type="text/javascript">'."\n";
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
-	$xlsquery = 'SELECT m.member_id AS \''.__('Member ID').'\''.
-        ', m.member_name AS \''.__('Member Name').'\''.
-        ', l.item_code AS \''.__('Item Code').'\''.
-        ', b.title AS \''.__('Title').'\''.
-        ', l.loan_date AS \''.__('Loan Date').'\''.
-        ', l.due_date AS \''.__('Due Date').'\', l.is_return AS \''.__('Loan Status').'\''.
+	$xlsquery = 'SELECT member_id AS \''.__('Member ID').'\''.
+        ', member_name AS \''.__('Member Name').'\''.
+        ', item_code AS \''.__('Item Code').'\''.
+        ', title AS \''.__('Title').'\''.
+        ', loan_date AS \''.__('Loan Date').'\''.
+        ', due_date AS \''.__('Due Date').'\', is_return AS \''.__('Loan Status').'\''.
 		' FROM '.$table_spec.' WHERE '.$criteria;
 
 		unset($_SESSION['xlsdata']);
 		$_SESSION['xlsquery'] = $xlsquery;
 		$_SESSION['tblout'] = "loan_history";
 
-	// echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
+	//echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
 
     $content = ob_get_clean();
     // include the page template

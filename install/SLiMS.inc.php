@@ -357,6 +357,21 @@ SQL;
     return $_return;
   }
 
+
+  function queryTrigger($array)
+  {
+    $_return = [];
+    foreach ($array as $key => $item) {
+      try{
+        $sql = $this->db->query($item);
+        if(!$sql) throw new Exception($this->db->error . '. Your syntax: ' . $item);
+      } catch (Exception $exception) {
+        $_return[] = $exception->getMessage();
+      }
+    }
+    return $_return;
+  }
+
   function updateAdmin($username, $password)
   {
     $sql_update = " UPDATE user set
