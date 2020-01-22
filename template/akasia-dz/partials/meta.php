@@ -62,18 +62,18 @@
 
 <!-- Script
 ============================================= -->
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.min.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/jquery.min.js"></script>
 <script src="<?php echo JWB; ?>modernizr.js"></script>
 <script src="<?php echo JWB; ?>form.js"></script>
 <script src="<?php echo JWB; ?>gui.js"></script>
 <script src="<?php echo JWB; ?>highlight.js"></script>
 <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
 <script src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
-<script src="<?php echo SWB; ?>template/default/js/jquery.jcarousel.min.js"></script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/jquery.transit.min.js"></script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/bootstrap.min.js"></script>
-<script src="<?php echo $sysconf['template']['dir']; ?>/default/js/custom.js"></script>
-<script src="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/js/vegas.min.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/jquery.jcarousel.min.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/jquery.transit.min.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/bootstrap.min.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/custom.js"></script>
+<script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/vegas.min.js"></script>
 
 <!-- Animation options
 ============================================= -->
@@ -81,7 +81,7 @@
 
 <!-- Style Minified
 ============================================= -->
-<link rel="stylesheet" type="text/css" href="<?php echo SWB; ?>template/default/style.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/style.min.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo SWB.'template'.DS.$sysconf['template']['theme']; ?>/css/vegas.min.css" />
 
 <!-- Style
