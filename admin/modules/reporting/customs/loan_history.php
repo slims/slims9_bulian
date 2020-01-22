@@ -156,11 +156,11 @@ if (!$reportView) {
 
     $criteria = 'member_id IS NOT NULL ';
     if (isset($_GET['id_name']) AND !empty($_GET['id_name'])) {
-        $id_name = $dbs->escape_string($_GET['id_name']);
+        $id_name = utility::filterData('id_name', 'get', true, true, true);
         $criteria .= ' AND (member_id LIKE \'%'.$id_name.'%\' OR member_name LIKE \'%'.$id_name.'%\')';
     }
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
-        $keyword = $dbs->escape_string(trim($_GET['title']));
+        $keyword = utility::filterData('title', 'get', true, true, true);
         $words = explode(' ', $keyword);
         if (count($words) > 1) {
             $concat_sql = ' AND (';
@@ -176,22 +176,22 @@ if (!$reportView) {
         }
     }
     if (isset($_GET['itemCode']) AND !empty($_GET['itemCode'])) {
-        $item_code = $dbs->escape_string(trim($_GET['itemCode']));
+        $item_code = utility::filterData('itemCode', 'get', true, true, true);
         $criteria .= ' AND item_code=\''.$item_code.'\'';
     }
     // loan date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(loan_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
-            TO_DAYS(\''.$_GET['untilDate'].'\'))';
+        $criteria .= ' AND (TO_DAYS(loan_date) BETWEEN TO_DAYS(\''.utility::filterData('startDate', 'get', true, true, true).'\') AND
+            TO_DAYS(\''.utility::filterData('untilDate', 'get', true, true, true).'\'))';
     }
     // loan status
     if (isset($_GET['loanStatus']) AND $_GET['loanStatus'] != 'ALL') {
-        $loanStatus = (integer)$_GET['loanStatus'];
+        $loanStatus = (integer)utility::filterData('loanStatus', 'get', true, true, true);
         $criteria .= ' AND is_return='.$loanStatus;
     }
 
-    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != '0')) {
-        $membershipType = $_GET['membershipType'];
+    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != 'All')) {
+        $membershipType = utility::filterData('membershipType', 'get', true, true, true);
         $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
     }else{
         $criteria .= ' AND member_type_name LIKE \'%%\'';
@@ -199,12 +199,12 @@ if (!$reportView) {
 	
     // item location	
     if (isset($_GET['location']) AND !empty($_GET['location'])) {
-        $location = $dbs->escape_string(trim($_GET['location']));
+        $location = utility::filterData('location', 'get', true, true, true);
         $criteria .= ' AND location_name LIKE \''.$location.'\'';
     }
 	
     if (isset($_GET['recsEachPage'])) {
-        $recsEachPage = (integer)$_GET['recsEachPage'];
+        $recsEachPage = (integer)utility::filterData('recsEachPage', 'get', true, true, true);
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
     $reportgrid->setSQLCriteria($criteria);
