@@ -173,7 +173,7 @@
         <h4 class="mb-4">
             Top reader of the year.
             <br>
-            <small class="subtitle-section">Noster voluptate ita distinguantur aut est velit reprehenderit.</small>
+            <small class="subtitle-section">Our best users, readers, so far. Continue to read if you want your name being mentioned here.</small>
         </h4>
         <div class="flex flex-wrap">
           <?php
