@@ -518,11 +518,11 @@ class detail
         $_xml_output .= '</originInfo>'."\n";
         */
         $xml->startElement('originInfo');
-        $xml->startElement('place');
-            $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['publish_place']); $xml->endElement();
+            $xml->startElement('place');
+              $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['publish_place']);$xml->endElement();
+            $xml->endElement();
             $xml->startElement('publisher'); $this->xmlWrite($xml, $this->record_detail['publisher_name']); $xml->endElement();
             $xml->startElement('dateIssued'); $this->xmlWrite($xml, $this->record_detail['publish_year']); $xml->endElement();
-        $xml->endElement();
         $xml->endElement();
 
         // language
