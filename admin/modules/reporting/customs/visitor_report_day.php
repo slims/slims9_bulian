@@ -126,7 +126,7 @@ if (!$reportView) {
     while ($_visitor_d = $_visitor_q->fetch_row()) {
         $date = (integer)preg_replace('@^0+@i', '',$_visitor_d[0]);
         $visitor_data[$date] = '<div class="data">'.($_visitor_d[1]?$_visitor_d[1]:'0').'</div>';
-        $data['visitor'][$date] = $_visitor_d[1];
+        $data['visitor'][$_visitor_d[0]] = $_visitor_d[1];
     }
 
     unset($_SESSION['chart']);
