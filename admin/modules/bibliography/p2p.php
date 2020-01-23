@@ -273,12 +273,19 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   # get keywords
   $keywords = urlencode($_GET['keywords']);
   # $p2pquery = $p2pserver.'index.php?resultXML=true&keywords='.$_GET['keywords'];
-  $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&search=Search&keywords=" . $keywords, 'uri');
+
+  if($_GET['fields']!=''){
+    $keywords = $_GET['fields'].'='.$keywords;
+    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&".$keywords."&search=Search", 'uri');
+  }
+  else{
+    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&search=Search&keywords=" . $keywords, 'uri');
+  }
 
   # debugging tools
   # echo $p2pserver."/index.php?resultXML=true&keywords=".$keywords;
   # echo '<br />';
-  if ($data['records']) {
+  if (isset($data['records'])) {
     echo '<div class="infoBox">Found ' . $data['result_num'] . ' records from <strong>' . $p2pserver_name . '</strong> Server</div>';
     echo '<form method="post" class="notAJAX" action="' . MWB . 'bibliography/p2p.php" target="blindSubmit">';
     echo '<table id="dataLists" class="s-table table">';
@@ -289,6 +296,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   <th scope="col">&nbsp;</th>
   <th scope="col">Title</th>
   <th scope="col">Digital Files</th>
+    <th scope="col">Detail</th>
 </tr>
 HTML;
     echo $header;
@@ -319,20 +327,24 @@ HTML;
         $digital_str .= '-';
       }
 
-      $image_str = $p2pserver . 'images/docs/' . $record['image'];
+      $image_uri = isset($record['image'])?$p2pserver . 'images/docs/' . $record['image']:'';
+      $image_str = isset($record['image'])?$record['image']:'';
+      $server = urlencode($p2pserver);
+
       $row_str = <<<HTML
 <tr class="{$row_class}">
     <th scope="row">
         <input type="checkbox" name="p2precord[]" value="{$record['id']}" />
     </th>
     <td>
-        <img width="80" src="{$image_str}" alt="{$record['image']}">
+        <img width="80" src="{$image_uri}" alt="{$image_str}">
     </td>
     <td>
         <div>{$record['title']}</div>
         <div><i>{$authors}</i></div>
     </td>
     <td>{$digital_str}</td>
+    <td><a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri={$server}&biblioID={$record['id']}" title="detail">detail</a></td>
 </tr>
 HTML;
       echo $row_str;
@@ -361,6 +373,13 @@ HTML;
                   method="get" class="form-inline">
               <?php echo __('Search'); ?>
                 <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
+              <?php echo __('Fields'); ?> :  
+              <select name="fields" style="width: 20%;"  class="form-control">
+                <option value=""><?php echo __('ALL'); ?></option>
+                <option value="title"><?php echo __('Title'); ?></option>
+                <option value="isbn"><?php echo __('ISBN'); ?></option>
+                <option value="author"><?php echo __('Author'); ?></option>
+              </select>
               <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"
                                                    class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
                   echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
