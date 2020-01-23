@@ -111,7 +111,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'top-reader' => [
     'dbfield' => 'classic_top_reader',
-    'label' => 'New Collection',
+    'label' => 'Top Reader',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [

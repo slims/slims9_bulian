@@ -76,7 +76,7 @@
 <script>less = { env: "development" };</script>
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
 -->
-<script src="<?php echo JWB; ?>jquery.js"></script>
+<script src="<?php echo JWB;?>jquery.js"></script>
 <style>
     .s-search-advances {
         color: #fff;
