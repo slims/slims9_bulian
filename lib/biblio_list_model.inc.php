@@ -306,11 +306,11 @@ abstract class biblio_list_model
         .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id='.$_biblio_d['biblio_id']);
       while ($_auth_d = $_biblio_authors_q->fetch_assoc()) {
         // some rules to set name type in mods standard
-        if ($sysconf['authority_type'][$_auth_d['authority_type']] == 'Personal Name') {
+        if (isset($sysconf['authority_type'][$_auth_d['authority_type']]) && $sysconf['authority_type'][$_auth_d['authority_type']] == 'Personal Name') {
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'personal';
-        } elseif ($sysconf['authority_type'][$_auth_d['authority_type']] == 'Organizational Body') {
+        } elseif (isset($sysconf['authority_type'][$_auth_d['authority_type']]) && $sysconf['authority_type'][$_auth_d['authority_type']] == 'Organizational Body') {
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'corporate';
-        } elseif ($sysconf['authority_type'][$_auth_d['authority_type']] == 'Conference') {
+        } elseif (isset($sysconf['authority_type'][$_auth_d['authority_type']]) && $sysconf['authority_type'][$_auth_d['authority_type']] == 'Conference') {
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'conference';
         } else {
           $sysconf['authority_type'][$_auth_d['authority_type']] = 'personal';
