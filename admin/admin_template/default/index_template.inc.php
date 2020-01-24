@@ -37,6 +37,13 @@
     <script type="text/javascript" src="<?php echo SWB; ?>js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo SWB; ?>js/popper.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
+
+    <style>
+        .s-user:after,
+        #sidepan {
+            background-color: <?= $sysconf['admin_template']['default_color']; ?> !important;
+        }
+    </style>
 </head>
 <body>
 
