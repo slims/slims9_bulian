@@ -147,7 +147,7 @@ if ($sysconf['zend_barcode_engine'] === true) {
   //$options['backgroundColor'] = "#FFFFFF";
   //$options['reverseColor'] = FALSE;
   // $options['orientation'] = 0;
-  $options['font'] = "./DejaVuSans.ttf";
+  $options['font'] = realpath('./DejaVuSans.ttf');
   $options['fontSize'] = 8;
   // $options['withBorder'] = TRUE;
   // $options['withQuietZones'] = TRUE;
