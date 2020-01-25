@@ -37,11 +37,16 @@
     <script type="text/javascript" src="<?php echo SWB; ?>js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo SWB; ?>js/popper.min.js"></script>
     <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
+    <script type="text/javascript" src="<?php echo $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme']; ?>/js/smooth-scrollbar.js"></script>
+    <script type="text/javascript" src="<?php echo $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme']; ?>/js/overscroll.js"></script>
 
     <style>
         .s-user:after,
         #sidepan {
             background-color: <?= $sysconf['admin_template']['default_color']; ?> !important;
+        }
+        #sidepan .scroll-content {
+            padding: 0;
         }
     </style>
 </head>
@@ -94,6 +99,18 @@
 
 <script>
 $('.loader').toggleClass('hidden');
+
+let Scrollbar = window.Scrollbar;
+Scrollbar.use(window.OverscrollPlugin)
+Scrollbar.init(document.querySelector('#sidepan'), {
+    alwaysShowTracks: true,
+    continuousScrolling: false,
+    plugins: {
+      overscroll: {
+        effect: 'glow'
+      },
+    }
+});
 </script>
 </body>
 </html>
