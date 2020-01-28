@@ -1,0 +1,97 @@
+//main: style.less
+#cboxTitle {
+	bottom: 0px;
+	position: absolute;
+	padding: 20px 10px;
+	background-color: #4AC49B;
+	color: #fff;
+	overflow: hidden;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: lighter;
+	font-size: 10px;
+	white-space: nowrap;
+}
+#cboxOverlay {
+	background: none;
+	background-color: #262930;
+}
+#cboxTopLeft {
+	width: 0;
+	height: 0;
+	background: none;
+}
+#cboxTopRight {
+	width: 0;
+	height: 0;
+	background: none;
+}
+#cboxBottomLeft {
+	width: 0;
+	height: 0;
+	background: none;
+}
+#cboxBottomRight {
+	width: 0;
+	height: 0;
+	background: none;
+}
+#cboxMiddleLeft {
+	width: 0;
+	background: none;
+}
+#cboxMiddleRight {
+	width: 0;
+	background: none;
+}
+#cboxTopCenter {
+	height: 0;
+	background: none;
+}
+#cboxBottomCenter {
+	height: 0;
+	background: none;
+}
+#cboxClose {
+	position: absolute;
+	bottom: 15px;
+	right: 15px;
+	background: none;
+	width: 25px;
+	height: 25px;
+	text-indent: 0px;
+}
+#cboxClose:before {
+	font-family: 'FontAwesome';
+	content: '\f00d';
+	font-size: 20px;
+	padding-right: 20px;
+	padding-left: 8px;
+	color: #fff;
+}
+#cboxClose:hover {
+	background-position: 0;
+}
+#cboxLoadedContent {
+	overflow: hidden !important;
+}
+.popUpForm {
+	background-color: #fff;
+	margin: -10px;
+}
+.popUpForm input[name="search_str"],
+.popUpForm select[name="type"],
+.popUpForm select[name="level"] {
+	display: inline-block;
+}
+.popUpForm select[name="type"],
+.popUpForm select[name="level"] {
+	width: 125px !important;
+}
+.popUpForm form[name="mainForm"] > div > strong,
+.popUpForm form[name="mainForm"] > div > hr {
+	display: none;
+}
+.openPopUp {
+	margin-right: 11px;
+}

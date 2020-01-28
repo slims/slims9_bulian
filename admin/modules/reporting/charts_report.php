@@ -65,10 +65,11 @@ function generateRandomColors()
 if($sysconf['chart']['mode'] == 'plot') {
     // create PHPLot object
     $plot = new PHPlot(770, 515);
-    $plot_data = array();
-    $data_colors = array();    
+    $plot_data = [];
+    $data_colors = [];    
 } else {
-    $plot_data = '';    
+    $plot_data = [];    
+    $data_label = [];
 }
 
 // default chart
@@ -98,10 +99,8 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $plot_data .= '{   value:       '.$data[1].',
-                                    color:      "#'.generateRandomColors().'",
-                                    highlight:  "#'.generateRandomColors().'",
-                                    label:      "'.$data[0].'" },';
+                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $plot_data[] = $data[1];
             }
 
         }
@@ -118,10 +117,8 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $plot_data .= '{   value:       '.$data[1].',
-                                    color:      "#'.generateRandomColors().'",
-                                    highlight:  "#'.generateRandomColors().'",
-                                    label:      "'.$data[0].'" },';
+                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $plot_data[] = $data[1];
             }
         }
         break;
@@ -138,10 +135,8 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $plot_data .= '{   value:       '.$data[1].',
-                                    color:      "#'.generateRandomColors().'",
-                                    highlight:  "#'.generateRandomColors().'",
-                                    label:      "'.$data[0].'" },';
+                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $plot_data[] = $data[1];
             }
         }
         break;
@@ -156,10 +151,8 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $plot_data .= '{   value:       '.$data[1].',
-                                    color:      "#'.generateRandomColors().'",
-                                    highlight:  "#'.generateRandomColors().'",
-                                    label:      "'.$data[0].'" },';
+                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $plot_data[] = $data[1];
             }
         }
         break;
@@ -174,10 +167,8 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $plot_data .= '{   value:       '.$data[1].',
-                                    color:      "#'.generateRandomColors().'",
-                                    highlight:  "#'.generateRandomColors().'",
-                                    label:      "'.$data[0].'" },';
+                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $plot_data[] = $data[1];
             }
         }
         break;
@@ -214,15 +205,76 @@ if($sysconf['chart']['mode'] == 'plot') {
         $plot->DrawGraph();
     }
 } else {
-    echo '<script src="'.JWB.'chartjs/Chart.min.js"></script>
-    <div id="canvas-holder" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
-        <canvas id="chart-area" width="400" height="400" />
+    echo '<script src="'.JWB.'chartjs/chart-2.9.3.min.js"></script>
+    <div id="canvas-holder" style="text-align:center; width:70%; margin-left:auto; margin-right:auto;">
+        <canvas id="chart-area" width="200" height="200" />
     </div>
     <script>
-        var moduleData = ['.substr($plot_data,0,-1).'];
+    var setData = ['.implode(",",$plot_data).'];
+        var setLabel = ['.implode(",",$data_label).'];
         var ctx = document.getElementById("chart-area").getContext("2d");
-        var myChart = new Chart(ctx).Doughnut(moduleData);
-        myChart.generateLegend();
+        window.chartColors = {
+            red: "rgb(255, 99, 132)",
+            orange: "rgb(255, 159, 64)",
+            yellow: "rgb(255, 205, 86)",
+            green: "rgb(75, 192, 192)",
+            blue: "rgb(54, 162, 235)",
+            ocean: "rgb(35, 91, 160)",
+            leaf: "rgb(103, 148, 54)",
+            tree: "rgb(233, 175, 163)",
+            purple: "rgb(153, 102, 255)",
+            pink: "rgb(153, 102, 255)",
+            cyan: "rgb(112, 188, 193)",
+            brown: "rgb(255, 147, 102)",
+            lime: "rgb(165, 190, 0)",
+            lime: "rgb(165, 190, 0)",
+            grey: "rgb(201, 203, 207)"
+        };
+        var config = {
+			type: "doughnut",
+			data: {
+				datasets: [{
+					data: setData,
+					backgroundColor: [
+						window.chartColors.red,
+						window.chartColors.orange,
+						window.chartColors.yellow,
+						window.chartColors.green,
+						window.chartColors.blue,
+						window.chartColors.ocean,
+						window.chartColors.leaf,
+						window.chartColors.tree,
+						window.chartColors.purple,
+						window.chartColors.pink,
+						window.chartColors.cyan,
+						window.chartColors.brown,
+						window.chartColors.lime,
+						window.chartColors.grey,
+					],
+					label: "Dataset 1"
+				}],
+				labels: setLabel
+			},
+			options: {
+				responsive: true,
+				legend: {
+					position: "left",
+				},
+				title: {
+					display: false,
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+                bezierCurve : false,
+            }
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			window.myDoughnut = new Chart(ctx, config);
+		};
     </script>';
 }
 exit();

@@ -1,0 +1,35 @@
+//main: style.less
+/*------------------
+form
+--------------------*/
+.form-control {
+    // padding: 12px;
+    // font-size: @font-size;
+    background-color: lighten(@black,10%);
+    border-color: lighten(@black,10%);
+    color: lighten(@white,100%);
+    &:not(:last-child) {
+        margin-right: 4px;
+    }
+    &:focus{
+        background-color: @black;
+        color: darken(@white, 10%) !important;
+    }
+}
+
+.custom-file-label {
+    padding: 9px;
+    &::after {
+        color: @white;
+        background: lighten(@black, 50%);
+        font-weight: 700;
+        padding: 9px;
+    }
+}
+
+*[disabled] {
+    background-color: @black !important;
+    border-color: @border-color !important;
+    color: darken(@white, 20%) !important;
+  }
+  

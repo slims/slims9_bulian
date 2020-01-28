@@ -1,12 +1,16 @@
 <?php
 
-$sysconf['admin_template']['default_color'] = '#004db6';
+$sysconf['admin_template']['default_color'] = 'style.css';
 
 $sysconf['admin_template']['option'][$sysconf['admin_template']['theme']] = [
-  'color' => [
+  'mode' => [
     'dbfield' => 'default_color',
-    'label' => 'Color Theme',
-    'type' => 'text',
-    'default' => $sysconf['admin_template']['default_color']
-  ]
+    'label' => 'Mode',
+    'type' => 'dropdown',
+    'default' => 0,
+    'data' => [
+      ['style.css', 'Default'],
+      ['style-night.css', 'Night Mode']
+    ]
+    ]
 ];

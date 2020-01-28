@@ -16,8 +16,8 @@ Local Reset
 --------------------*/
 body {
   font: 10pt/1.8 'Quicksand', sans-serif;
-  background: #ffffff;
-  color: #000000;
+  background: #1c1d23 !important;
+  color: #a6a6a6;
 }
 h1,
 h2,
@@ -46,18 +46,14 @@ hr {
   margin-bottom: 10px;
 }
 footer {
-  border-top: solid 1px #f2f2f2;
+  background-color: #1c1d23;
+  border-top: solid 1px #212229;
   position: relative;
   margin-left: 225px;
   margin-bottom: -35px;
   padding: 15px;
-  color: #808080;
+  color: #ffffff;
   font-size: 10pt;
-}
-*[disabled] {
-  background-color: #eee !important;
-  border-color: #ccc !important;
-  color: #ccc !important;
 }
 iframe {
   border: none;
@@ -82,14 +78,14 @@ h6 {
 .s-dashboard {
   min-height: 500px;
 }
-.s-dashboard .panel-footer {
+.s-dashboard .s-dashboard .panel-footer {
   min-height: 75px;
   background-color: #fff;
-  border-color: #fff;
+  border-color: #212229;
   text-align: center;
 }
 .s-dashboard .table td {
-  border-color: #f2f2f2;
+  border-color: #212229;
   padding: 5px;
   font-size: 12px;
 }
@@ -101,7 +97,7 @@ h6 {
   padding-right: 30px;
 }
 .error {
-  color: #c54545;
+  color: #970000;
   font-weight: bold;
 }
 .errorBox {
@@ -109,21 +105,21 @@ h6 {
   padding: 15px;
   margin: 15px;
   position: relative;
-  background-color: #c54545;
+  background-color: #970000;
 }
 .infoBox {
-  background: #e5f6ff;
+  background-color: #33343f;
   padding: 10px 15px;
-  color: #000000;
+  color: #fff;
+  border-color: #212229;
 }
 .message {
-  background: #ffabab;
+  background-color: #0051A5;
   margin-bottom: 10px;
   position: relative;
   color: #fff;
   padding: 15px;
-  margin: 15px 10px;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 .message ul {
   margin: 0;
@@ -132,22 +128,27 @@ h6 {
 .message ul li {
   list-style: none;
 }
+.message ul li:before {
+  font-family: 'FontAwesome';
+  content: "\f1c0";
+  margin-right: 10px;
+}
 .message + form {
-  margin: 10px !important;
+  margin: 0 !important;
 }
 #cboxLoadedContent {
   padding: 10px;
 }
 #cboxOverlay {
-  background: #404040;
+  background: #55586a;
 }
 #cboxTitle {
   font: 10pt/1.8 'Quicksand', sans-serif;
   font-weight: bold;
   padding: 15px 0;
-  background: #000000;
+  background: #1c1d23;
   bottom: 0;
-  color: #ffffff;
+  color: #a6a6a6;
 }
 #cboxTopLeft,
 #cboxTopRight,
@@ -189,6 +190,17 @@ h6 {
 }
 .badge {
   font-weight: normal;
+}
+.modal-content {
+  background-color: #111115;
+}
+.modal-footer,
+.modal-header {
+  border-color: #212229;
+}
+.contentDesc .alert-warning {
+  background-color: #272931 !important;
+  color: #a6a6a6;
 }
 /*------------------
 animate
@@ -263,7 +275,7 @@ animate
 }
 .authors {
   font-size: 10pt;
-  color: #808080;
+  color: #9497aa;
 }
 .makeHidden > a {
   background-color: #eee !important;
@@ -280,7 +292,7 @@ animate
   padding: 15px;
 }
 .title {
-  color: #000000;
+  color: #a6a6a6;
   font-weight: 700;
 }
 .authors {
@@ -300,32 +312,36 @@ buttton
   padding: 0.505rem 0.85rem;
   font-size: 10pt;
 }
+.btn-danger {
+  background-color: #970000;
+  border-color: #970000;
+}
 .btn-default {
-  color: #ffffff;
-  border-color: #808080;
-  background-color: #808080;
+  color: #fff;
+  border-color: #0051A5;
+  background-color: #0051A5;
 }
 .btn-default:hover {
   color: #fff;
-  background: #00a9ff;
-  border-color: #00a9ff;
+  background: #0051A5;
+  border-color: #0051A5;
 }
 .btn-primary {
-  color: #ffffff;
-  border-color: #004db6;
-  background-color: #004db6;
+  color: #fff;
+  border-color: #01804b;
+  background-color: #01804b;
 }
 .btn-sm {
   font-size: 8pt;
   padding: 5px;
 }
 .editLink {
-  color: #000000;
+  color: #0051A5;
   display: block;
   position: relative;
 }
 .editLink:hover {
-  color: #c54545;
+  color: #0077f2;
 }
 .editLink:before {
   content: "\f14b";
@@ -335,10 +351,10 @@ buttton
 }
 .action_button {
   font-weight: 700;
-  background-color: #e5f6ff;
+  background-color: #8cc4ff;
   padding: 15px;
   margin-bottom: 20px;
-  color: #808080;
+  color: #9497aa;
   border-radius: 3px;
   width: 100%;
   display: inline-block;
@@ -359,37 +375,49 @@ buttton
   font-size: 9pt;
 }
 .s-labels__icon {
-  background-color: #ffffff;
+  background-color: #a6a6a6;
   border-right: none;
 }
 .makeHidden {
   display: none;
 }
 .dateField {
-  padding: 2px 2px 1px;
   width: 200px;
   height: 38px;
+  color: 10pt;
   font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
   margin-bottom: 5px;
+  padding: 2px 2px 1px;
   background-image: none;
+  line-height: 1.42857143;
 }
 .dateInput {
   width: 160px;
   float: left;
-  background: #fff;
+  background: #000;
+}
+#calendarPop {
+  box-shadow: 0 0 30px #000;
+  background-color: #000;
+  color: #a6a6a6;
+}
+#calendarPop th,
+#calendarPop td {
+  background-color: #000;
+}
+#calendarPop .calendarClose a {
+  color: #970000;
 }
 .calendarLink {
   width: 22px;
   height: 22px;
   float: right;
   margin: -35px;
-  color: #00a9ff;
+  color: #0051A5;
   cursor: pointer;
 }
 .calendarLink:hover {
-  color: #ffffff;
+  color: #a6a6a6;
 }
 .calendarLink:before {
   font-family: 'FontAwesome';
@@ -403,12 +431,12 @@ buttton
 }
 .calendar th,
 .calendar td {
-  border: solid 1px #f2f2f2;
+  border: solid 1px #212229;
 }
 .calendar td {
-  text-align: right;
   height: 50px;
   padding-top: 0px;
+  text-align: right;
   padding-right: 10px;
   position: relative;
 }
@@ -427,7 +455,7 @@ buttton
   margin-top: -12px;
 }
 .calendar .dayname {
-  background: #dee2e6;
+  background: #1c1d23;
 }
 .s-chart-left {
   display: inline-block;
@@ -658,7 +686,6 @@ buttton
   overflow: hidden;
   position: relative;
   margin-left: 225px;
-  background: #fafafa;
   min-height: 550px;
 }
 .loader {
@@ -672,17 +699,17 @@ buttton
 .loader > div {
   width: 18px;
   height: 18px;
-  background-color: #000000;
+  background-color: #1c1d23;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 .loader > div:nth-child(1) {
-  background-color: #ffffff;
+  background-color: #a6a6a6;
 }
 .loader > div:nth-child(2) {
-  background-color: #00a9ff;
+  background-color: #0051A5;
 }
 .loader .bounce1 {
   -webkit-animation-delay: -0.32s;
@@ -695,14 +722,6 @@ buttton
 .loadingImage {
   display: block;
   background: #000;
-}
-.per_title {
-  padding: 20px 15px;
-}
-.per_title h2 {
-  font-size: 18pt;
-  font-weight: 700;
-  color: #000000;
 }
 .sub_section {
   padding: 20px 15px;
@@ -719,20 +738,30 @@ buttton
 form
 --------------------*/
 .form-control {
-  font-size: 10pt;
-  padding: 10px;
+  background-color: #33343f;
+  border-color: #33343f;
+  color: #ffffff;
 }
 .form-control:not(:last-child) {
   margin-right: 4px;
+}
+.form-control:focus {
+  background-color: #1c1d23;
+  color: #8c8c8c !important;
 }
 .custom-file-label {
   padding: 9px;
 }
 .custom-file-label::after {
-  color: #ffffff;
-  background: #808080;
+  color: #a6a6a6;
+  background: #9497aa;
   font-weight: 700;
   padding: 9px;
+}
+*[disabled] {
+  background-color: #1c1d23 !important;
+  border-color: #212229 !important;
+  color: #737373 !important;
 }
 /*------------------
 header
@@ -741,6 +770,16 @@ header
   z-index: 1;
   position: relative;
   box-shadow: 0 6px 19px 0 rgba(0, 0, 0, 0.04);
+  background-color: #111115;
+}
+.per_title {
+  padding: 20px 15px;
+  border-bottom: solid 1px #212229;
+}
+.per_title h2 {
+  font-size: 18pt;
+  font-weight: 700;
+  color: #a6a6a6;
 }
 .s-help {
   border-left: solid 1px #f2f2f2;
@@ -847,18 +886,18 @@ header
   right: 15px;
   margin-top: 15px;
   position: absolute;
-  background: #ffffff;
+  background: #a6a6a6;
 }
 .s-member__photo img {
   border-radius: 3px;
   padding: 7px;
-  box-shadow: 0 0 10px #e6e6e6;
+  box-shadow: 0 0 10px #ffffff;
 }
 #mainMenu {
   z-index: 1;
   display: inline-flex;
   position: relative;
-  background: #ffffff;
+  background-color: #111115;
   left: 226px;
 }
 #mainMenu li {
@@ -872,6 +911,7 @@ header
   transition: all 0.25s ease;
   font-weight: 700;
   font-size: 10pt;
+  color: #ffffff;
 }
 #mainMenu a:after {
   left: 0;
@@ -889,11 +929,11 @@ header
   transform: scale(0, 1);
 }
 #mainMenu a.menuCurrent {
-  color: #00a9ff;
+  color: #0051A5;
   font-weight: bold;
 }
 #mainMenu a:hover {
-  color: #00a9ff;
+  color: #0051A5;
 }
 #mainMenu a:hover:after {
   opacity: 1;
@@ -901,7 +941,7 @@ header
   transform: scale(1);
 }
 #mainMenu a:hover:after.logout {
-  color: #c54545;
+  color: #970000;
 }
 #menuList {
   margin: 0;
@@ -928,28 +968,27 @@ header
   font-weight: 700;
   display: inline-block;
   margin-left: 2px;
-  color: #ffffff;
+  color: #fff;
 }
 .pagingList b {
-  background: #00a9ff;
-  border-color: #00a9ff;
+  background: #0051A5;
+  border-color: #0051A5;
 }
 .pagingList a {
-  border-color: #808080;
-  background-color: #808080;
+  border-color: #9497aa;
+  background-color: #9497aa;
 }
 .pagingList a:hover {
-  color: #ffffff;
-  background: #00a9ff;
-  border-color: #00a9ff;
+  color: #a6a6a6;
+  background: #0051A5;
+  border-color: #0051A5;
 }
 .paging-area {
-  background: #ffffff;
   text-align: right;
 }
 #pagingBox:blank,
 #pagingBox:empty {
-  background: #000000;
+  background: #1c1d23;
   height: 0px;
   display: none;
   visibility: hidden;
@@ -1033,9 +1072,6 @@ header
     top: 10px;
   }
 }
-.per_title {
-  border-bottom: solid 1px #f5f5f5;
-}
 @media (min-width: 960px) and (min-width: 1024px) {
   .per_title h2 {
     font-size: 20pt;
@@ -1108,13 +1144,14 @@ header
 sidebar
 --------------------*/
 #sidepan {
+  top: 0;
   bottom: 0;
   z-index: 0;
+  z-index: 1090;
   overflow: auto;
   position: fixed;
-  top: 0;
   width: 225px;
-  background-color: #004db6;
+  background-color: #1a1b20;
 }
 #sidepan:before {
   top: 0;
@@ -1124,17 +1161,17 @@ sidebar
   height: 940px;
   position: absolute;
   width: 225px;
-  background: url(media/bg.jpg);
   background-size: cover;
   opacity: 0.15;
 }
 #sidepan .subMenuHeader {
   margin-top: 10px;
+  color: #ffffff;
 }
 #sidepan div,
 #sidepan a {
   margin: 0;
-  color: #ffffff;
+  color: #a6a6a6;
   display: block;
   padding: 3px 15px;
   position: relative;
@@ -1143,17 +1180,17 @@ sidebar
 }
 #sidepan div {
   font-weight: bold;
-  color: #ffffff;
+  color: #a6a6a6;
 }
 #sidepan a:hover,
 #sidepan .curModuleLink,
 #sidepan .subMenuItem:first-child {
-  background-color: #fff !important;
-  color: #c54545;
+  background-color: #1c1d23 !important;
+  color: #970000;
 }
 #sidepan a:hover,
 #sidepan .curModuleLink {
-  color: #00a9ff;
+  color: #0051A5;
 }
 .envinfo {
   background: #fff;
@@ -1163,8 +1200,15 @@ sidebar
 }
 table {
   width: 100%;
-  background: #fff;
+  background: #1c1d23;
   margin-bottom: 0 !important;
+}
+.table {
+  color: #a6a6a6;
+}
+.table td,
+.table th {
+  border-color: #212229;
 }
 #dataList {
   position: relative;
@@ -1177,14 +1221,15 @@ table {
 }
 .dataListHeader td {
   text-transform: uppercase !important;
-  background: #fff;
+  background: #1c1d23;
   white-space: nowrap;
   font-size: 10pt;
   padding: 7px 15px;
-  border-bottom: solid 1px #f2f2f2;
+  border-bottom: solid 1px #212229;
 }
 .dataListHeader a {
   white-space: nowrap;
+  color: #0051A5;
 }
 .dataListHeader a[href*='ASC']:after,
 .dataListHeader a[href*='DESC']:after {
@@ -1200,32 +1245,32 @@ table {
   content: "\f0d7";
 }
 #mainForm > table {
-  border-top: solid 1px #eee;
+  border-top: solid 1px #212229;
 }
 #mainForm td {
   padding: 10px 15px;
 }
 .alterCell,
 .alterCell2 {
-  background-color: #fff !important;
-  border-color: #f2f2f2;
+  background-color: #1c1d23 !important;
+  border-color: #212229;
 }
 .alterCell:hover,
 .alterCell2:hover {
-  background-color: #fbfbfb !important;
+  background-color: #1e1f26 !important;
   transition: all 1 ease-in-out;
 }
 .alterCell.highlighted,
 .alterCell2.highlighted {
-  background: #f5e1e1 !important;
-  background-color: #cceeff;
-  color: #000000 !important;
+  background: #ff6464 !important;
+  background-color: #72b7ff;
+  color: #1c1d23 !important;
 }
 .s-user {
   margin: 0;
   z-index: 0;
-  height: 70px;
-  color: #ffffff;
+  height: 69px;
+  color: #a6a6a6;
   display: block;
   overflow: hidden;
   position: relative;
@@ -1236,12 +1281,9 @@ table {
   left: 0;
   z-index: -2;
   content: '';
-  height: 174px;
+  height: 173px;
   position: absolute;
   width: 225px;
-  background: url(media/bg.jpg);
-  background-size: cover;
-  filter: blur(5px);
 }
 .s-user:after {
   opacity: 0.75;
@@ -1249,10 +1291,10 @@ table {
   left: 0;
   z-index: -1;
   content: '';
-  height: 74px;
+  height: 73px;
   position: absolute;
   width: 225px;
-  background-color: #004db6;
+  background-color: #111115;
 }
 .s-user-frame {
   padding: 0 !important;
@@ -1264,7 +1306,7 @@ table {
   position: relative;
   top: 7px;
   float: left;
-  border: solid 5px #ffffff;
+  border: solid 5px #a6a6a6;
   border-radius: 50px;
   overflow: hidden;
   width: 50px;
@@ -1286,14 +1328,14 @@ table {
 }
 .s-widget-value {
   font-size: 30px;
-  color: #000000;
+  color: #a6a6a6;
 }
 .s-widget-icon {
   float: left;
-  color: #e6e6e6;
+  color: #ffffff;
   font-size: 30px;
   line-height: 90px;
-  border: solid 1px #e6e6e6;
+  border: solid 1px #212229;
   width: 90px;
   height: 90px;
   text-align: center;
@@ -1315,19 +1357,22 @@ table {
 }
 .s-iframe {
   min-height: 500px;
-  background: #ffffff;
+  background: #1c1d23;
+}
+#blocker {
+  background: #1c1d23 !important;
 }
 .s-circulation__loan-list {
   margin-left: 5px;
 }
 .s-circulation__loan,
 .s-circulation__reserve {
-  border-bottom: solid 1px #e6e6e6;
+  border-bottom: solid 1px #ffffff;
   padding: 15px;
 }
 #transaction {
   margin-top: 20px;
-  background: #fafafa;
+  background: #000000;
 }
 #finishForm {
   margin: 20px 0 10px 0;
@@ -1339,23 +1384,26 @@ table {
   font-weight: 700;
 }
 .nav-tabs .nav-link.active {
-  color: #004db6;
+  color: #01804b;
+}
+.card {
+  background-color: #131317;
 }
 .s-print__page-info {
   font-size: 10pt;
-  background-color: #cceeff;
-  color: #000000;
+  background-color: #72b7ff;
+  color: #1c1d23;
   border-radius: 3px;
   padding: 15px;
   margin-bottom: 15px;
 }
 .dataListHeaderPrinted {
-  background: #f2f2f2;
+  background: #ffffff;
   white-space: nowrap;
-  color: #000000;
+  color: #1c1d23;
 }
 .dataListHeaderPrinted a {
-  color: #000000;
+  color: #1c1d23;
   display: block;
   padding: 15px 0;
   font-weight: 700;
@@ -1380,7 +1428,7 @@ table {
 }
 .alterCellPrinted,
 .alterCellPrinted2 {
-  border-bottom: solid 1px #f2f2f2;
+  border-bottom: solid 1px #212229;
 }
 .alterCellPrinted {
   background: transparent;
