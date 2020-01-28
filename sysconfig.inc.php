@@ -623,9 +623,15 @@ if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'
   $sysconf['template']['base'] = 'php'; /* html OR php */
 } else {
   require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-  // load again for override tinfo setting
-  utility::loadSettings($dbs);
 }
+
+// admin template info config
+if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php')) {
+  require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
+}
+
+// load global settings again for override tinfo setting
+utility::loadSettings($dbs);
 
 // check for user language selection if we are not in admin areas
 if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
