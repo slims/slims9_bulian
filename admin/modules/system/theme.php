@@ -155,6 +155,8 @@ if (isset($_GET['customize'])) {
 
       // print out the form object
       echo $form->printOut();
+    } else {
+      echo __('This theme not customizable');
     }
   } else {
     echo __('This theme not customizable');
