@@ -134,6 +134,7 @@ if (isset($_GET['customize'])) {
         $cf_dbfield = $cfield['dbfield'];
         $cf_label = $cfield['label'];
         $cf_default = $cfield['default'];
+        $cf_class = $cfield['class']??'';
         $cf_data = (isset($cfield['data']) && $cfield['data']) ? $cfield['data'] : array();
         $form->addHidden('themeDir', $_GET['theme']);
         $form->addHidden('themeType', $_GET['customize']);
@@ -141,7 +142,7 @@ if (isset($_GET['customize'])) {
         if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
           $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
           $cf_width = isset($cfield['width']) ? $cfield['width'] : '50';
-          $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
+          $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
           $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
         } else if ($cfield['type'] == 'checklist') {
@@ -162,12 +163,15 @@ if (isset($_GET['customize'])) {
     echo __('This theme not customizable');
   }
   $content = ob_get_clean();
+  $css = '<link rel="stylesheet" href="'.SWB.'css/bootstrap-colorpicker.min.css"/>';
+  $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
+  $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }
 
 ?>
-
+<style type="text/css"></style>
 <div class="menuBox">
     <div class="menuBoxInner systemIcon">
         <div class="per_title">
@@ -280,6 +284,8 @@ echo '</div>';
                 }, function () {
                     $(this).removeClass('shadow');
                 });
+
+
         });
     })();
 </script>
