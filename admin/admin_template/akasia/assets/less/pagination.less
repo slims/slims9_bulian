@@ -1,0 +1,51 @@
+// main: style.less
+.pagingList {
+
+  a,b {
+    padding: 7px .85rem;
+    border-radius: @border-radius;
+    transition: all 0.25s ease;
+    display: inline-block;
+    margin-left: 2px;
+    color: @white;
+  }
+
+  b {
+    background: @color-3;
+    border-color: @color-3;
+  }
+
+  a {
+    border-color: lighten(@black,50%);
+    background-color: lighten(@black,50%);
+
+    &:hover {
+      color: @white;
+      background: @color-3;
+      border-color: @color-3;
+   }
+  }
+}
+
+.paging-area {
+  text-align: right;
+}
+#pagingBox:blank,
+#pagingBox:empty {
+  background: @black;
+  height: 0px;
+  display: none;
+  visibility: hidden;
+}
+
+#pagingBox {
+	background-color: transparent;
+	padding: 15px 0px;
+}
+#pagingBox:empty{
+	display: none;
+}
+.pagingList b {
+	color: #fff;
+}
+

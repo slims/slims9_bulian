@@ -21,7 +21,7 @@
     <section id="container">
       <div id="interactive" class="viewport"></div>
 			<div class="controls">
-				<div class="reader-config-group">
+				<div class="reader-config-group d-none">
 
 						<div class="form-group">
 						<label>Barcode-Type</label>
@@ -100,7 +100,7 @@
     </section>
 
     <script src="<?php echo JWB ?>jquery.js" type="text/javascript"></script>
-    <script src="<?php echo JWB ?>quaggaJS/adapter.js" type="text/javascript"></script>
+    <script src="<?php echo JWB ?>quaggaJS/adapter-latest.js" type="text/javascript"></script>
     <script src="<?php echo JWB ?>quaggaJS/quagga.js" type="text/javascript"></script>
     <script src="<?php echo JWB ?>barcodereader.js?v=<?php echo date('this') ?>" type="text/javascript"></script>
 		<?php if(isset($script)) {

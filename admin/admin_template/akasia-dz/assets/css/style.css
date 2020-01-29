@@ -1934,94 +1934,94 @@ icon
 }
 
 .backupIcon {
-  background-image: url(../../media/modules/backup.png);
+  /* background-image: url(../../media/modules/backup.png); */
 }
 
 .barcodeIcon {
-  background-image: url(../../media/modules/barcode.png);
+  /* background-image: url(../../media/modules/barcode.png); */
 }
 
 .biblioIcon {
-  background-image: url(../../media/modules/biblio.png);
+  /* background-image: url(../../media/modules/biblio.png); */
 }
 .calendarIcon {
-  background-image: url(../../media/modules/calendar.png);
+  /* background-image: url(../../media/modules/calendar.png); */
 }
 
 .circulationIcon {
-  background-image: url(../../media/modules/circ.png);
+  /* background-image: url(../../media/modules/circ.png); */
 }
 
 .exportIcon {
-  background-image: url(../../media/modules/export.png);
+  /* background-image: url(../../media/modules/export.png); */
 }
 
 .importIcon {
-  background-image: url(../../media/modules/import.png);
+  /* background-image: url(../../media/modules/import.png); */
 }
 
 .itemIcon {
-  background-image: url(../../media/modules/item.png);
+  /* background-image: url(../../media/modules/item.png); */
 }
 
 .itemOutIcon {
-  background-image: url(../../media/modules/item_out.png);
+  /* background-image: url(../../media/modules/item_out.png); */
 }
 
 .loanRulesIcon {
-  background-image: url(../../media/modules/loan_rules.png);
+  /* background-image: url(../../media/modules/loan_rules.png); */
 }
 
 .masterFileIcon {
-  background-image: url(../../media/modules/masterfile.png);
+  /* background-image: url(../../media/modules/masterfile.png); */
 }
 
 .memberIcon {
-  background-image: url(../../media/modules/membership.png);
+  /* background-image: url(../../media/modules/membership.png); */
 }
 
 .memberTypeIcon {
-  background-image: url(../../media/modules/member_type.png);
+  /* background-image: url(../../media/modules/member_type.png); */
 }
 
 .moduleIcon {
-  background-image: url(../../media/modules/module.png);
+  /* background-image: url(../../media/modules/module.png); */
 }
 
 .overdueIcon {
-  background-image: url(../../media/modules/overdue.png);
+  /* background-image: url(../../media/modules/overdue.png); */
 }
 
 .quickReturnIcon {
-  background-image: url(../../media/modules/quick_return.png);
+  /* background-image: url(../../media/modules/quick_return.png); */
 }
 
 .reportIcon {
-  background-image: url(../../media/modules/report.png);
+  /* background-image: url(../../media/modules/report.png); */
 }
 
 .stockTakeIcon {
-  background-image: url(../../media/modules/sstake.png);
+  /* background-image: url(../../media/modules/sstake.png); */
 }
 
 .syslogIcon {
-  background-image: url(../../media/modules/syslog.png);
+  /* background-image: url(../../media/modules/syslog.png); */
 }
 
 .systemIcon {
-  background-image: url(../../media/modules/system.png);
+  /* background-image: url(../../media/modules/system.png); */
 }
 
 .userIcon {
-  background-image: url(../../media/modules/user.png);
+  /* background-image: url(../../media/modules/user.png); */
 }
 
 .userGroupIcon {
-  background-image: url(../../media/modules/user_group.png);
+  /* background-image: url(../../media/modules/user_group.png); */
 }
 
 .serialIcon {
-  background-image: url(../../media/modules/serial_control.png);
+  /* background-image: url(../../media/modules/serial_control.png); */
 }
 .menuBoxInner.systemIcon,
 .menuBoxInner.importIcon,

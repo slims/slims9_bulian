@@ -1,0 +1,123 @@
+// main: style.less
+.s-header {
+	background-color: #31353E;
+	text-align: center;
+	padding: 10px 5px 11px 5px;
+	border-bottom: solid 1px rgba(100, 100, 100, 0.1);
+	color: #fff;
+  @media (min-width: 768px) {
+    & {
+      padding: 19px 0;
+    }
+  }
+}
+
+.s-user-frame.active,
+.s-user-frame {
+	background: -moz-linear-gradient(45deg, #4AB1DD 10%, #861FA4 80%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4AB1DD), color-stop(80%, #861FA4));
+	background: -webkit-linear-gradient(45deg, #4AB1DD 10%, #861FA4 80%);
+	background: -o-linear-gradient(45deg, #4AB1DD 10%, #861FA4 80%);
+	background: -ms-linear-gradient(45deg, #4AB1DD 10%, #861FA4 80%);
+	background: linear-gradient(to 45deg, #4AB1DD 10%, #861FA4 80%);
+	border: none;
+	padding: 3px;
+	width: 31px;
+	height: 31px;
+	border-radius: 50px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+@-webkit-keyframes rolling {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 51%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+@-moz-keyframes rolling {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 51%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+@-o-keyframes rolling {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 51%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+@keyframes rolling {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 51%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+@media (min-width: 768px) {
+	.s-user-frame {
+		border: solid 2px #31353E;
+		padding: 6px;
+		width: 79px;
+		height: 79px;
+	}
+}
+.s-user-photo {
+	border: none;
+	border-radius: 50px;
+	overflow: hidden;
+	font-size: 12px;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	border-radius: 50px;
+	text-align: center;
+	position: relative;
+}
+.s-user-photo img {
+	width: 25px;
+}
+.s-user-name {
+	font-family: Abel, sans-serif;
+	font-size: 10px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: lighter;
+	letter-spacing: 2px;
+	display: none;
+	margin-top: 15px;
+}
+@media (min-width: 768px) {
+	.s-user-photo {
+		border: solid 4px #31353E;
+		width: 63px;
+		height: 63px;
+	}
+	.s-user-photo img {
+		width: 100%;
+		height: 100%;
+		background-size: cover;
+	}
+	.s-user-name {
+		display: block;
+	}
+}

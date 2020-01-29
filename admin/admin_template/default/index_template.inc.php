@@ -39,7 +39,9 @@
     <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
     <script type="text/javascript" src="<?php echo $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme']; ?>/js/smooth-scrollbar.js"></script>
     <script type="text/javascript" src="<?php echo $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme']; ?>/js/overscroll.js"></script>
-
+    <?php if($sysconf['chat_system']['enabled']) : ?>
+    <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
+    <?php endif; ?>
     <style>
         .s-user:after,
         #sidepan {
@@ -112,5 +114,6 @@ Scrollbar.init(document.querySelector('#sidepan'), {
     }
 });
 </script>
+<?php include "chat.php" ?>
 </body>
 </html>

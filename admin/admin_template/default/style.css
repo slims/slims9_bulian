@@ -297,7 +297,7 @@ buttton
 }
 .btn {
   font-weight: bold;
-  padding: .505rem .85rem;
+  padding: 0.505rem 0.85rem;
   font-size: 10pt;
 }
 .btn-default {
@@ -437,7 +437,6 @@ buttton
   padding: 15px;
 }
 .s-chart-right {
-  float: right;
   display: inline-block;
   width: 25%;
   margin: 0px 10px 0px 0px;
@@ -613,7 +612,7 @@ buttton
   padding: 10px;
 }
 .s-minimize {
-  bottom: -379px;
+  bottom: -417px;
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
 }
@@ -634,7 +633,7 @@ buttton
   height: auto;
   padding: 7px 10px;
   box-shadow: none;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   border-color: #ced4da;
 }
 .chzn-container-single .chzn-single div {
@@ -923,7 +922,7 @@ header
 }
 .pagingList a,
 .pagingList b {
-  padding: 7px .85rem;
+  padding: 7px 0.85rem;
   border-radius: 3px;
   transition: all 0.25s ease;
   font-weight: 700;

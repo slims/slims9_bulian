@@ -1,0 +1,139 @@
+//main: style.less
+.error {
+  color: @bg-error;
+  font-weight: bold;
+}
+
+.errorBox {
+  color: #fff;
+  padding: 15px;
+  margin: 15px;
+  position: relative;
+  background-color: @color-2;
+}
+
+.infoBox {
+  background-color: lighten(@black,10%);
+  padding: 10px 15px;
+  color:#fff;
+  border-color: @border-color;
+}
+
+.message {
+  background-color: @color-3;
+  margin-bottom: 10px;
+  position: relative;
+  color: #fff;
+  padding: 15px;
+  border-radius: @border-radius;
+  // margin: 15px 10px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style: none;
+      &:before {
+        font-family: 'FontAwesome';
+        content: "\f1c0";
+        margin-right: 10px;     
+      }
+    }
+  }
+
+  & + form {
+    margin: 0 !important;
+  }
+}
+
+#cbox {
+  &LoadedContent {
+    padding: 10px;
+  }
+
+  &Overlay {
+    background: lighten(@black,25%);
+  }
+
+  &Title {
+    font: @font-size/@font-line-height @font-family;
+    font-weight: bold;
+    padding: 15px 0;
+    background: @color-1;
+    bottom: 0;
+    color: @white;
+  }
+
+  &TopLeft,
+  &TopRight,
+  &BottomLeft,
+  &BottomRight {
+    width: 0;
+    height: 0;
+  }
+
+  &MiddleLeft,
+  &MiddleRight {
+    width: 0;
+  }
+
+  &BottomCenter,
+  &TopCenter {
+    height: 0;
+  }
+}
+
+.tooltipsy {
+  padding: 10px;
+  max-width: 200px;
+  color: #fff;
+  background-color: #3dc4e4;
+  border-radius: 3px;
+  box-shadow: 0 0 10px @black;
+}
+
+.important {
+  background-color: #5cb85c;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #fff;
+  border-radius: 3px;
+  width: 100%;
+  display: inline-block;
+}
+
+#colorbox {
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  font-weight: normal;
+}
+
+.modal-content {
+  background-color: darken(@black,5%);
+}
+
+.modal-footer,
+.modal-header {
+  border-color: @border-color;
+}
+
+.contentDesc {
+  .alert-warning {
+    background-color: lighten(@black,5%) !important;
+    color: @white;
+  }
+}
+
+#cboxContent {
+  background-color: @black;
+}
+
+.cboxIframe {
+  background: @black;
+}

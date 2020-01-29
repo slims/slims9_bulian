@@ -119,7 +119,7 @@ class PHPlot {
     public $label_format = array('x' => array(), 'xd' => array(), 'y' => array(), 'yd' => array());
     // data_units_text is retained for backward compatibility, because there was never a function
     // to set it. Use the 'suffix' argument to Set[XY]LabelType instead.
-    public $data_units_text = '';              // Units text for 'data' labels (i.e: '¤', '$', etc.)
+    public $data_units_text = '';              // Units text for 'data' labels (i.e: 'ï¿½', '$', etc.)
 
 // Legend
     public $legend = '';                       // An array with legend titles
@@ -229,7 +229,7 @@ class PHPlot {
      * \param which_output_file string Filename for output.
      * \param which_input_file  string Path to a file to be used as background.
      */
-    function PHPlot($which_width=600, $which_height=400, $which_output_file=NULL, $which_input_file=NULL)
+    function __construct($which_width=600, $which_height=400, $which_output_file=NULL, $which_input_file=NULL)
     {
         $this->SetRGBArray($this->color_array);
 

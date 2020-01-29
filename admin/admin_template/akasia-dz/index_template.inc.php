@@ -50,6 +50,7 @@ include 'function.php';
 
   <link rel="icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
+  <link href="<?php echo SWB; ?>css/bootstrap.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
   <link href="<?php echo SWB; ?>css/core.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />

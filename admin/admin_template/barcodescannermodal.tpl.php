@@ -1,6 +1,6 @@
 <script src="<?php echo JWB ?>quaggaJS/adapter-latest.js" type="text/javascript"></script>
 <script src="<?php echo JWB ?>quaggaJS/quagga.js" type="text/javascript"></script>
-<div class="modal fade" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+<div class="modal" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
     <div class="modal-content">
     <div class="modal-header">

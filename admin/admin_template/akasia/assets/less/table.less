@@ -1,0 +1,126 @@
+//main: style.less
+table {
+  width: 100%;
+  margin-bottom: 0 !important;  
+  &.datagrid-action-bar {
+    // margin-top: 20px;
+    margin-bottom: 25px;
+    & > tbody > tr:first-child > td {
+      padding: 0px 10px;
+    }
+  }
+}
+
+
+#dataList {
+  width: 98.2%;
+	position: relative;
+  margin-left: 10px;
+  td {
+    padding: 10px;  
+  }
+}
+
+.dataListHeader {
+	background: #31353E;
+	color: #FFFFFF;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+  td {
+    text-transform: uppercase !important;
+    white-space: nowrap;
+    font-size: 10px;
+    padding: 10px;
+    border-bottom: solid 1px @border-color;
+    padding: 25px 5px !important;
+  }
+
+  a {
+    color: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  & a[href*='ASC']:after,
+  & a[href*='DESC']:after {
+    font-family: 'FontAwesome';
+    content: "\f0d8";
+    padding-left: 3px;
+    font-size: 12px;
+  }
+
+  & a[href*='ASC']:after {
+    content: "\f0d8";
+  }
+
+  & a[href*='DESC']:after {
+    content: "\f0d7";
+  }
+  
+}
+
+#mainForm {
+  & > table {
+    border-top: solid 1px #eee;
+  }
+  & td {
+    padding: 10px 15px;
+  }
+}  
+.alterCell,
+.alterCell2 {
+  background-color: #fff !important;
+  border-color: @border-color;
+
+  &:hover{
+    background-color: #fbfbfb !important;
+    transition: all 1 ease-in-out;
+
+  }
+
+  &.highlighted {
+    background: lighten(@color-2,40%) !important;
+    background-color: lighten(@color-3,40%);
+    color: @color-1 !important;
+  }
+}
+
+@media (min-width: 768px) {
+	.alterCell,
+	.alterCell2 {
+		font-size: 13px;
+	}
+	.alterCell td,
+	.alterCell2 td {
+		padding: 5px 2px;
+	}
+}
+.title {
+	font-family: Abel, sans-serif;
+  color: #333;
+  font-size: 1.25em;
+}
+.authors {
+	font-style: italic;
+}
+@media (min-width: 10px) {
+	.authors {
+		font-size: 10px;
+		padding-top: 5px;
+	}
+}
+.alterCell,
+.alterCell2 {
+	background-color: #fff;
+	border-bottom: solid 1px #f2f2f2;
+}
+.alterCell b,
+.alterCell2 b {
+	font-weight: normal;
+}
+
+.edit-link-area {
+  text-align: right;
+}

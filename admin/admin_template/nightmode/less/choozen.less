@@ -1,0 +1,49 @@
+//main: style.less
+.chzn-container-single {
+  min-width: 200px;
+  .chzn-search > input {
+    padding: 3px 4px !important;
+    height: 30px !important;
+  }
+  .chzn-single {
+    background-color: lighten(@black,10%) !important;
+    border-color: @border-color !important;
+    color: lighten(@white,100%) !important;  
+    background-image: none;
+    height: auto;
+    padding: 7px 10px;
+    box-shadow: none;
+    border-radius: @border-radius;
+    div {
+      top: 7px;
+    }
+  }
+}
+
+.chzn-disabled a {
+  background-color: @black !important;
+  border-color: @border-color !important;
+  color: darken(@white, 20%) !important;
+}
+
+.chzn-drop {
+  width: 100% !important;
+  top: 36px !important;
+  border-color: #ddd !important;
+  border-radius: 0px !important;
+  background-color: lighten(@black,10%) !important;
+  border-color: @border-color !important;
+  color: lighten(@white,100%) !important;
+}
+
+.chzn-search input {
+  height: auto !important;
+  width: 100% !important;
+  background-color: @black !important;
+  color: darken(@white, 10%) !important;
+}
+
+.chzn-container .chzn-results .no-results {
+  background-color: @black;
+  color: darken(@white, 10%) !important;
+}
