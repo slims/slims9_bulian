@@ -1,3 +1,10 @@
+<?php
+function floatvalue($val){
+  $val = str_replace(",",".",$val);
+  $val = preg_replace('/\.(?=.*\.)/', '', $val);
+  return floatval($val);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +12,6 @@
 <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Document</title>
-<!-- <link rel="stylesheet" href="reset.css"> -->
 <style>
 @font-face {
   font-family: "Quicksand";
@@ -40,11 +46,10 @@ strong {
 
 #front-card,
 #back-card {
-  width: <?php echo ($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']) ?>px;
-  height: <?php echo ($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']) ?>px;
+  width: <?php echo (floatvalue($sysconf['print']['membercard']['box_width'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
+  height: <?php echo (floatvalue($sysconf['print']['membercard']['box_height'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
   border: solid 1px #e4e4e4;
   position: relative;
-  /* border-radius: 5px; */
 }
 
 #front-card {

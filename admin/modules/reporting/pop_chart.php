@@ -37,6 +37,7 @@ foreach ($_SESSION['chart']['xAxis'] as $key => $value) {
 }
 
 $num_color = 1;
+$legend = [];
 foreach ($_SESSION['chart']['data'] as $key => $value) {
 	$color = $array_color[$num_color];
     $legend[$key] = $color;
