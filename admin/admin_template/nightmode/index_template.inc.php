@@ -43,10 +43,6 @@
     <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
     <?php endif; ?>
     <style>
-        .s-user:after,
-        #sidepan {
-            background-color: <?= $sysconf['admin_template']['default_color']; ?> !important;
-        }
         #sidepan .scroll-content {
             padding: 0;
         }
