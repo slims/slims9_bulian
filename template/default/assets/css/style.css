@@ -874,3 +874,8 @@ html {
     padding: 0;
     display: block;
 }
+
+.remember_forgot {
+    display: flex;
+    justify-content: space-between;
+}
