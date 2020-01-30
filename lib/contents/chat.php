@@ -35,13 +35,14 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
     $_SESSION['userchat'] = $_SESSION['m_name'];     
   } else {
     if(isset($_POST['userchat'])) {
-      $_SESSION['userchat'] = $_POST['userchat']; 
+      $name = utility::filterData('userchat', 'post', true, true, true);
+      if ($name) $_SESSION['userchat'] = $name;
    }
  }    
 
   // Remove any user session
   if(isset($_GET['end'])) {
-    session_unset($_SESSION['userchat']);
+    session_unset();
     session_destroy();
   }
 
@@ -79,7 +80,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
     <?php if(isset($_SESSION['m_name'])) : ?>
       <button type="button" onclick="javascript:window.location='index.php?p=member&amp;logout=1'" class="btn btn-block"><?php echo __('Logout') ?></button>  
     <?php else: ?>
-      <button type="button" onclick="javascript:window.location='index.php?p=chat&amp;end=1'" class="btn btn-block"><?php echo __('End Chat') ?></button>  
+      <button type="button" onclick="javascript:window.location='index.php?end=1'" class="btn btn-block"><?php echo __('End Chat') ?></button>
     <?php endif ?>
   </div>
   <footer>
@@ -90,7 +91,7 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
   </footer>
   <?php else: ?>
   <div class="s-chat-content text-center">
-    <form action="" method="post">
+    <form action="index.php" method="post">
       <p><?php echo __('Please type your name before starting in conversations.')?></p>
       <hr>
       <label for="message"><?php echo __('Your Name:') ?></label>

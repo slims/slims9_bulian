@@ -66,7 +66,7 @@
     <link rel="stylesheet" href="<?php echo assets('css/tailwind.min.css'); ?>">
     <!-- Vegas CSS -->
     <link rel="stylesheet" href="<?php echo assets('plugin/vegas/vegas.min.css'); ?>">
-    <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css"/>
     <!-- SLiMS CSS -->
     <link rel="stylesheet" href="<?= JWB; ?>colorbox/colorbox.css">
     <!-- // Flag css -->
@@ -86,11 +86,11 @@
     <script src="<?php echo assets('js/bootstrap.min.js'); ?>"></script>
     <!-- // load vegas javascript -->
     <script src="<?php echo assets('plugin/vegas/vegas.min.js'); ?>"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
+    <script src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
     <!-- // load SLiMS javascript -->
-    <script type="text/javascript" src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
-
+    <script src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
+    <script src="<?php echo JWB; ?>gui.js"></script>
+    <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
 
 </head>
 <body class="bg-grey-lightest">
