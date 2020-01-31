@@ -192,7 +192,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 		<div class="btn-group">
             <a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=clear" class="btn btn-default notAJAX" > <?php echo __('Clear Print Queue'); ?></a>
             <a target="blindSubmit" href="<?php echo MWB; ?>membership/member_card_generator.php?action=print" class="btn btn-default notAJAX"><?php echo __('Print Member Cards for Selected Data'); ?></a>
-            <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=membercard" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Member card print settings'); ?>"><?php echo __('Member card print settings'); ?></a>
+            <a href="<?php echo MWB; ?>system/membercard_theme.php" width="780" height="500" class="btn btn-default" title="<?php echo __('Member card print settings'); ?>"><?php echo __('Member card print settings'); ?></a>
         </div>
 	    <form name="search" action="<?php echo MWB; ?>membership/member_card_generator.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
             <input type="text" name="keywords" class="form-control col-md-3" />
