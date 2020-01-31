@@ -40,7 +40,7 @@ switch ($action) {
         $slims->databaseDriverType() &&
         $slims->isGdOk() &&
         $slims->isGettextOk() &&
-        $slims->chkDir()->status &&
+        ($slims->chkDir())['status'] &&
         $slims->isMbStringOk(),
       'data' => [
         'php' => [
@@ -81,8 +81,8 @@ switch ($action) {
         ],
         'chkdir' => [
           'title' => 'Pre-Installation Step',
-          'status' => $slims->chkDir()->status,
-          'data' => $slims->chkDir()->data,
+          'status' => ($slims->chkDir())['status'],
+          'data' => ($slims->chkDir())['data'],
           'message' => 'Make the following files and directories (and their contents) writeable (i.e., by changing the owner or permissions with chown or chmod)'
         ]        
       ]
@@ -148,6 +148,15 @@ switch ($action) {
         require_once 'install_sample_data.sql.php';
         $error_sample = $slims->query($sample_sql, $query_type);
         $error = array_merge($error, $error_sample);
+        if(empty($error_sample)) {
+          // run indexer
+          $sysconf['index']['type'] = 'index';
+          require_once __DIR__ . '/../simbio2/simbio.inc.php';
+          require_once __DIR__ . '/../simbio2/simbio_DB/simbio_dbop.inc.php';
+          require_once __DIR__ . '/../admin/modules/system/biblio_indexer.inc.php';
+          $indexer = new biblio_indexer($slims->getDb());
+          $indexer->createFullIndex();
+        }
       }
       // update account administrator
       if ($action === 're-install') {

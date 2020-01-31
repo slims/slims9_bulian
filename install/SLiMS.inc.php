@@ -111,26 +111,26 @@ class SLiMS
 
   function chkDir()
   {
-    $result->status = true;
+    $result['status'] = true;
     $html = '';
 
     if(!is_writable(__DIR__ . '/../config/')){
-      $result->status = false;
+      $result['status'] = false;
       $config = 'NO';
     }
 
     if(!is_writable(__DIR__ . '/../files/')){
-      $result->status = false;
+      $result['status'] = false;
       $files = 'NO';
     }
 
     if(!is_writable(__DIR__ . '/../images/')){
-      $result->status = false;
+      $result['status'] = false;
       $images = 'NO';
     }
     
     if(!is_writable(__DIR__ . '/../repository/')){
-      $result->status = false;
+      $result['status'] = false;
       $repository = 'NO';
     }
 
@@ -139,7 +139,7 @@ class SLiMS
     $html .= '/images is writable : '.($images??'Yes').'<br/>';  
     $html .= '/repository is writable : '.($repository??'Yes').'<br/>';  
 
-    $result->data = $html;
+    $result['data'] = $html;
     return $result;
   }
 

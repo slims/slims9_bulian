@@ -30,25 +30,8 @@ if (!defined('INDEX_AUTH')) {
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
-// be sure that magic quote is off
-@ini_set('magic_quotes_gpc', false);
-@ini_set('magic_quotes_runtime', false);
-@ini_set('magic_quotes_sybase', false);
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
-// force disabling magic quotes
-if (get_magic_quotes_gpc()) {
-  function stripslashes_deep($value)
-  {
-    $value = is_array($value)?array_map('stripslashes_deep', $value):stripslashes($value);
-    return $value;
-  }
-
-  $_POST = array_map('stripslashes_deep', $_POST);
-  $_GET = array_map('stripslashes_deep', $_GET);
-  $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
-  $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
-}
 // turn off all error messages for security reason
 @ini_set('display_errors', true);
 // check if safe mode is on
