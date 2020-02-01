@@ -27,6 +27,7 @@ h5,
 h6 {
   font-family: 'Quicksand', sans-serif;
   font-weight: normal;
+  margin: 0;
 }
 a {
   text-decoration: none !important;
@@ -52,21 +53,13 @@ footer {
   margin-left: 225px;
   margin-bottom: -35px;
   padding: 15px;
-  color: #ffffff;
+  color: #a6a6a6;
   font-size: 10pt;
 }
 iframe {
   border: none;
   width: 100%;
   padding: 0;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
 }
 .col-lg-4 .s-dashboard-legend {
   padding-top: 15px;
@@ -378,11 +371,15 @@ buttton
 }
 .s-labels__group .input-group-text {
   font-weight: 700;
+  background-color: #1c1d23;
   font-size: 9pt;
+  border-color: #212229;
 }
 .s-labels__icon {
-  background-color: #a6a6a6;
   border-right: none;
+}
+.s-labels__icon img {
+  filter: invert(50%);
 }
 .makeHidden {
   display: none;
@@ -1182,6 +1179,7 @@ sidebar
   opacity: 0.15;
 }
 #sidepan .subMenuHeader {
+  font-size: 12pt;
   margin-top: 10px;
   color: #ffffff;
 }
@@ -1233,12 +1231,15 @@ table {
 #dataList td {
   padding: 10px;
 }
+#dataList td a:not(.openPopUp):not(.editLink) {
+  color: #01804b;
+}
 .dataListHeader {
   background: transparent;
 }
 .dataListHeader td {
   text-transform: uppercase !important;
-  background: #1c1d23;
+  background: #212229;
   white-space: nowrap;
   font-size: 10pt;
   padding: 7px 15px;
@@ -1341,6 +1342,11 @@ table {
   line-height: 18pt;
   margin-bottom: 5px;
 }
+#userImage {
+  padding: 0;
+  margin: 0;
+  max-width: 72px;
+}
 .s-widget-value {
   font-size: 30px;
   color: #a6a6a6;
@@ -1375,31 +1381,33 @@ table {
   background: #1c1d23;
 }
 #blocker {
-  background: #1c1d23 !important;
+  background: #606378 !important;
 }
 .s-circulation__loan-list {
   margin-left: 5px;
 }
 .s-circulation__loan,
 .s-circulation__reserve {
-  border-bottom: solid 1px #ffffff;
+  border-bottom: solid 1px #212229;
   padding: 15px;
 }
 #transaction {
   margin-top: 20px;
-  background: #000000;
+  background: #1c1d23;
 }
 #finishForm {
   margin: 20px 0 10px 0;
 }
 .nav-tabs {
   padding: 0 15px;
+  border-color: #2c2d37;
 }
 .nav-tabs .nav-link {
   font-weight: 700;
+  color: #a6a6a6;
 }
 .nav-tabs .nav-link.active {
-  color: #01804b;
+  color: #1c1d23;
 }
 .card {
   background-color: #131317;
@@ -1413,14 +1421,14 @@ table {
   margin-bottom: 15px;
 }
 .dataListHeaderPrinted {
-  background: #ffffff;
+  background: #212229;
   white-space: nowrap;
-  color: #1c1d23;
+  color: #a6a6a6;
 }
 .dataListHeaderPrinted a {
-  color: #1c1d23;
+  color: #a6a6a6;
   display: block;
-  padding: 15px 0;
+  padding: 7px 15px;
   font-weight: 700;
 }
 .dataListHeaderPrinted td {

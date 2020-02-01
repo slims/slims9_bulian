@@ -14,6 +14,7 @@ buttton
   font-weight: bold;
   padding: .505rem .85rem;
   font-size: @font-size;
+
   &-danger {
     background-color: @color-2;
     border-color: @color-2;
@@ -41,7 +42,6 @@ buttton
     font-size: 8pt;
     padding: 5px;    
   }
-
 }
 
 .editLink {
@@ -67,7 +67,7 @@ buttton
   padding: 15px;
   margin-bottom: 20px;
   color: lighten(@black, 50%);
-  border-radius: 3px;
+  border-radius: @border-radius;
   width: 100%;
   display: inline-block;
 }
@@ -86,12 +86,17 @@ buttton
     margin-bottom:5px;
     .input-group-text {
       font-weight: 700;
+      background-color: @black;
       font-size: (@font-size - 1pt);
+      border-color: @border-color;
     }
   }
   &__icon {
-    background-color: @white;
+    // background-color: @white;
     border-right: none;
+    img {
+      filter: invert(50%);
+    }
   }
 }
 

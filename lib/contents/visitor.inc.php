@@ -176,7 +176,7 @@ if (isset($_POST['counter'])) {
 require SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/visitor_template.php';
 
 ?>
-<div style="display: none !important;">
+<div style="xdisplay: none !important;">
 <input type="text" id="text_voice" value=""></input>
 <button type="button" id="speak">Speak</button>
 </div>
