@@ -99,7 +99,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
 
@@ -117,7 +117,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -135,7 +135,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -151,7 +151,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -167,7 +167,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0])."'";
+                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -206,11 +206,14 @@ if($sysconf['chart']['mode'] == 'plot') {
     }
 } else {
     echo '<script src="'.JWB.'chartjs/chart-2.9.3.min.js"></script>
+    <a class="print_btn" onclick="window.print()" href="#">Print</a>
     <div id="canvas-holder" style="text-align:center; width:70%; margin-left:auto; margin-right:auto;">
         <canvas id="chart-area" width="200" height="200" />
     </div>
     <script>
-    var setData = ['.implode(",",$plot_data).'];
+
+        var setTitle = "'.$chart_title.'";
+        var setData = ['.implode(",",$plot_data).'];
         var setLabel = ['.implode(",",$data_label).'];
         var ctx = document.getElementById("chart-area").getContext("2d");
         window.chartColors = {
@@ -257,17 +260,18 @@ if($sysconf['chart']['mode'] == 'plot') {
 			},
 			options: {
 				responsive: true,
-				legend: {
-					position: "left",
-				},
 				title: {
-					display: false,
+                    display: true,
+                    text: setTitle
+				},
+				legend: {
+					position: "bottom",
 				},
 				animation: {
 					animateScale: true,
 					animateRotate: true
 				},
-                bezierCurve : false,
+                tooltips: false,
             }
 		};
 

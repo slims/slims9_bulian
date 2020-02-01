@@ -12,12 +12,21 @@ table {
   th {
     border-color: @border-color;
   }
+  &-warning {
+    th {
+      background-color: darken(@color-7, 10%) !important;
+    }
+  }
 }
+
 #dataList {
 	position: relative;
   
   td {
     padding: 10px;  
+    a:not(.openPopUp):not(.editLink) {
+      color: @color-4;
+    }
   }
 }
 
@@ -29,7 +38,7 @@ table {
   background: transparent;
   td {
     text-transform: uppercase !important;
-    background: @black;
+    background: lighten(@black,2%);
     white-space: nowrap;
     font-size: 10pt;
     padding: 7px 15px;

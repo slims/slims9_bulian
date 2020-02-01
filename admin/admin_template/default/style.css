@@ -720,7 +720,6 @@ form
 --------------------*/
 .form-control {
   font-size: 10pt;
-  padding: 10px;
 }
 .form-control:not(:last-child) {
   margin-right: 4px;
@@ -1283,6 +1282,14 @@ table {
   font-size: 10pt;
   line-height: 18pt;
   margin-bottom: 5px;
+}
+#userImage {
+  padding: 0;
+  margin: 0;
+  max-width: 72px;
+}
+#imageFilename .removeImage {
+  color: #c54545;
 }
 .s-widget-value {
   font-size: 30px;
