@@ -68,7 +68,6 @@
         <?php echo isset($_SESSION['nname']) ? $_SESSION['nname'] : __('Librarian'); ?>
         </a>
     </div>
-
     <?php echo $sub_menu; ?>
 </nav>
 
@@ -82,6 +81,14 @@
 <div id="mainContent">
     <?php echo $main_content; ?>
 </div>
+
+<div id="s-help" class="d-none">
+    <a href="#" name="top" class="s-help"><i class="fa fa-question-circle"></i></a>
+    <div class="s-help-content">
+        <!-- Place to put documentation -->
+    </div>
+</div>
+
 
 <footer>
     <div class="row">
@@ -98,17 +105,48 @@
 <script>
 $('.loader').toggleClass('hidden');
 
-let Scrollbar = window.Scrollbar;
-Scrollbar.use(window.OverscrollPlugin)
-Scrollbar.init(document.querySelector('#sidepan'), {
-    alwaysShowTracks: true,
-    continuousScrolling: false,
-    plugins: {
-      overscroll: {
-        effect: 'glow'
-      },
-    }
-});
+    let Scrollbar = window.Scrollbar;
+    Scrollbar.use(window.OverscrollPlugin)
+    Scrollbar.init(document.querySelector('#sidepan'), {
+        alwaysShowTracks: true,
+        continuousScrolling: false,
+        plugins: {
+        overscroll: {
+            effect: 'glow'
+        },
+        }
+    });
+
+    $('.subMenuItem').click(function(){
+      $('.left, .right, .loader').removeClass('active');
+      $('.s-help > i').removeClass('fa-times').addClass('fa-question-circle');
+      $('.s-help-content').html();
+      $('.s-help').removeClass('active');
+      let get_url       = $(this).attr('href');
+      let path_array    = get_url.split('/');
+      let clean_path    = path_array[path_array.length-1].split('.');
+      let new_pathname  = '<?php echo AWB?>help.php?url='+path_array[path_array.length-2]+'/'+clean_path[0]+'.md';
+      $('.s-help').attr('href', new_pathname);
+    });
+
+    //generate help file
+    $('.s-help').click(function(e){
+      e.preventDefault();
+      if($(this).attr('href') != '#') {
+        // load active style
+        $('.left, .right, .loader').toggleClass('active');
+        $(this).toggleClass('active');
+        $.ajax({
+          type: 'GET',
+          url: $(this).attr('href')
+        }).done(function( data ) {
+          $('.s-help-content').html(data);
+          $('.s-help > i').toggleClass('fa-question-circle fa-times');
+        });
+      }else{
+        alert('Help content will show according to available menu.')
+      }
+    });
 </script>
 <?php include "chat.php" ?>
 </body>

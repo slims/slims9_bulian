@@ -3,8 +3,7 @@
 form
 --------------------*/
 .form-control {
-    // padding: 12px;
-    // font-size: @font-size;
+    font-size: @font-size;
     background-color: lighten(@black,10%);
     border-color: @border-color;
     color: lighten(@white,100%);
@@ -27,9 +26,13 @@ form
     }
 }
 
-*[disabled] {
+*[disabled]:not(.option-disabled) {
     background-color: @black !important;
     border-color: @border-color !important;
     color: darken(@white, 20%) !important;
+  }
+
+  .option-disabled {
+      color: @color-4 !important;
   }
   
