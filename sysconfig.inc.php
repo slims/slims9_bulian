@@ -33,7 +33,7 @@ if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require '
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 // turn off all error messages for security reason
-@ini_set('display_errors', false);
+@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
