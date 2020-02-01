@@ -20,9 +20,8 @@
 		</audio>
     <section id="container">
       <div id="interactive" class="viewport"></div>
-			<div class="controls">
+			<div class="controls d-none">
 				<div class="reader-config-group">
-
 						<div class="form-group">
 						<label>Barcode-Type</label>
 						<select name="decoder_readers" class="form-control">

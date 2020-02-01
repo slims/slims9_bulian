@@ -10,7 +10,7 @@
         </button>
     </div>
     <div class="modal-body m-0">
-        <iframe frameborder="0" height="320" id="iframeBarcodeReader"></iframe>
+        <iframe frameborder="0" height="320" width="460" id="iframeBarcodeReader"></iframe>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo __('Close') ?></button>
