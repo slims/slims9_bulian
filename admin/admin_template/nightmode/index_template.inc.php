@@ -82,13 +82,11 @@
     <?php echo $main_content; ?>
 </div>
 
-<div id="s-help" class="d-none">
-    <a href="#" name="top" class="s-help"><i class="fa fa-question-circle"></i></a>
-    <div class="s-help-content">
-        <!-- Place to put documentation -->
-    </div>
+<div id="help">
+  <a href="#" name="top" class="s-help d-none"><i class="fa fa-question-circle"></i></a>
+  <a href="#" name="top" class="s-close d-none"><i class="fa fa-times"></i></a>
+  <div class="s-help-content animated fade-in d-none"><!-- Place to put documentation --></div>
 </div>
-
 
 <footer>
     <div class="row">
@@ -103,51 +101,53 @@
 <!-- fake submit iframe -->
 
 <script>
-    $('.loader').toggleClass('hidden');
-
-    let Scrollbar = window.Scrollbar;
-    Scrollbar.use(window.OverscrollPlugin)
-    Scrollbar.init(document.querySelector('#sidepan'), {
-        alwaysShowTracks: true,
-        continuousScrolling: false,
-        plugins: {
-        overscroll: {
-            effect: 'glow'
-        },
-        }
-    });
-
-    $('.subMenuItem').click(function(){
-      $('#s-help').removeClass('d-none');
-      $('.left, .right, .loader').removeClass('active');
-      $('.s-help > i').removeClass('fa-times').addClass('fa-question-circle');
-      $('.s-help-content').html();
-      $('.s-help').removeClass('active');
-      let get_url       = $(this).attr('href');
-      let path_array    = get_url.split('/');
-      let clean_path    = path_array[path_array.length-1].split('.');
-      let new_pathname  = '<?php echo AWB?>help.php?url='+path_array[path_array.length-2]+'/'+clean_path[0]+'.md';
-      $('.s-help').attr('href', new_pathname);
-    });
-
-    //generate help file
-    $('.s-help').click(function(e){
-      e.preventDefault();
-      if($(this).attr('href') != '#') {
-        // load active style
-        $('.left, .right, .loader').toggleClass('active');
-        $(this).toggleClass('active');
-        $.ajax({
-          type: 'GET',
-          url: $(this).attr('href')
-        }).done(function( data ) {
-          $('.s-help-content').html(data);
-          $('.s-help > i').toggleClass('fa-question-circle fa-times');
-        });
-      }else{
-        alert('Help content will show according to available menu.')
+  $('.loader').toggleClass('hidden');
+  let Scrollbar = window.Scrollbar;
+  Scrollbar.use(window.OverscrollPlugin)
+  Scrollbar.init(document.querySelector('#sidepan'), {
+      alwaysShowTracks: true,
+      continuousScrolling: false,
+      plugins: {
+      overscroll: {
+          effect: 'glow'
+      },
       }
-    });
+  });
+
+  $('.s-close').click(function(e){
+    e.preventDefault();
+    $('.s-help').removeClass('d-none');
+    $('.s-close').addClass('d-none');
+    $('.s-help-content').html('').addClass('d-none');
+  });
+
+  $('.s-help').click(function(e){
+    e.preventDefault();
+    if($(this).attr('href') != '#') {
+      // load active style
+      $('.s-help-content').addClass('d-none');
+      $('.left, .right, .loader, #s-help').toggleClass('active');
+      $.ajax({
+        type: 'GET',
+        url: $(this).attr('href')
+      }).done(function( data ) {
+        $('.s-help-content').html(data).removeClass('d-none');
+        $('.s-close').toggleClass('d-none');
+      });
+    }else{
+      alert('Help content will show according to available menu.')
+    }
+  });
+
+  $('.subMenuItem').click(function(){
+    $('.s-help').removeClass('d-none');
+    $('.s-close, .s-help-content').addClass('d-none');
+    let get_url       = $(this).attr('href');
+    let path_array    = get_url.split('/');
+    let clean_path    = path_array[path_array.length-1].split('.');
+    let new_pathname  = '<?php echo AWB?>help.php?url='+path_array[path_array.length-2]+'/'+clean_path[0]+'.md';
+    $('.s-help').attr('href', new_pathname);
+  });
 </script>
 <?php include "chat.php" ?>
 </body>
