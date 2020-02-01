@@ -103,7 +103,7 @@
 <!-- fake submit iframe -->
 
 <script>
-$('.loader').toggleClass('hidden');
+    $('.loader').toggleClass('hidden');
 
     let Scrollbar = window.Scrollbar;
     Scrollbar.use(window.OverscrollPlugin)
@@ -118,6 +118,7 @@ $('.loader').toggleClass('hidden');
     });
 
     $('.subMenuItem').click(function(){
+      $('#s-help').removeClass('d-none');
       $('.left, .right, .loader').removeClass('active');
       $('.s-help > i').removeClass('fa-times').addClass('fa-question-circle');
       $('.s-help-content').html();

@@ -720,7 +720,6 @@ form
 --------------------*/
 .form-control {
   font-size: 10pt;
-  padding: 10px;
 }
 .form-control:not(:last-child) {
   margin-right: 4px;
