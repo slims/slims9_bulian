@@ -231,6 +231,8 @@ function _setlocale($category, $locale) {
         if (array_key_exists($default_domain, $text_domains)) {
             unset($text_domains[$default_domain]->l10n);
         }
+       // Fix comma number format in id_ID locale
+        setlocale(LC_NUMERIC, 'C');
         return $CURRENTLOCALE;
     }
 }
