@@ -52,7 +52,7 @@ if ($unauthorized) {
 // check for session timeout
 $curr_timestamp = time();
 $timeout = ($curr_timestamp-$_SESSION['logintime']) >= $sysconf['session_timeout'];
-if ($timeout) {
+if ($timeout && !isset($_SESSION['remember_me'])) {
     $msg = '<div style="padding: 5px; border: 1px dotted #FF0000; color: #FF0000;">';
     $msg .= __('Your Login Session has already timeout!').' <a target="_top" href="'.SWB.'index.php?p=login">Re-Login</a>';
     $msg .= '</div>'."\n";

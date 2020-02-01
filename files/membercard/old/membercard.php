@@ -389,10 +389,10 @@ function floatvalue($val){
             <hr>
           </div>
           <div id="rules_div">
-            <?php echo $sysconf['print']['membercard']['rules'] ?>
+            <?php echo html_entity_decode($sysconf['print']['membercard']['rules']) ?>
           </div>
           <div id="address_div">
-            <?php echo $sysconf['print']['membercard']['address'] ?>
+            <?php echo html_entity_decode($sysconf['print']['membercard']['address']) ?>
           </div>
         </div>
       </td>
