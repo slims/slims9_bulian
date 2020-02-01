@@ -388,12 +388,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // edit mode messagge
     if ($form->edit_mode) {
         echo '<div class="per_title"><h2>'.__('Change User Profiles').'</h2></div>';
-        echo '<div class="infoBox"><div style="float: left; width: 80%;">'.__('You are going to edit user profile'),' : <b>'.$rec_d['realname'].'</b> <br />'.__('Last Update').'&nbsp;'.$rec_d['last_update'].'
-          <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
+        echo '<div class="infoBox row"><div class="col-6">'.__('You are going to edit user profile'),' : <b>'.$rec_d['realname'].'</b> <br />'.__('Last Update').'&nbsp;'.$rec_d['last_update'].'
+        <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
         if ($rec_d['user_image']) {
-          if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
-            echo '<div id="userImage" style="float: right;"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['user_image']).'&amp;width=180&amp;timestamp='.date('his').'" style="border: 1px solid #999999" /></div>';
-          }
+            if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
+            echo '<div class="col-6"><div id="userImage" class="float-right"><img src="../images/persons/'.urlencode($rec_d['user_image']).'?'.date('this').'" class="w-100"/></div></div>';
+            }
         }
         echo '</div>';
     }

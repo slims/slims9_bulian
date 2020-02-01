@@ -979,11 +979,11 @@ form
 --------------------*/
 .form-control {
   font-size: 10pt;
-  padding: 10px;
   border-radius: 0;
 }
 .form-control:not(:last-child) {
   margin-right: 4px;
+  margin-left: 4px;
 }
 .custom-file-label {
   padding: 9px;
