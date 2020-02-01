@@ -1,3 +1,10 @@
+<?php
+function floatvalue($val){
+  $val = str_replace(",",".",$val);
+  $val = preg_replace('/\.(?=.*\.)/', '', $val);
+  return floatval($val);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +12,6 @@
 <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Document</title>
-<!-- <link rel="stylesheet" href="reset.css"> -->
 <style>
 @font-face {
   font-family: "Quicksand";
@@ -22,6 +28,7 @@
 
 body {
   font: 7pt/1.4 'Quicksand', sans-serif;
+  color:<?php echo $sysconf['print']['membercard']['f_color']??'#000';  ?>;  ;
 }
 
 p,
@@ -40,21 +47,21 @@ strong {
 
 #front-card,
 #back-card {
-  width: <?php echo ($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']) ?>px;
-  height: <?php echo ($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']) ?>px;
+  width: <?php echo (floatvalue($sysconf['print']['membercard']['box_width'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
+  height: <?php echo (floatvalue($sysconf['print']['membercard']['box_height'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
   border: solid 1px #e4e4e4;
   position: relative;
-  /* border-radius: 5px; */
 }
 
 #front-card {
-  background-color: #E5E5E5;      
+  background-color: <?php echo $sysconf['print']['membercard']['b_color']??'#E5E5E5';  ?>;    
 }
 
 #front-card header {
   padding: 15px 10px;
   background-color: #fff;
   text-transform: uppercase;
+  color: <?php echo $sysconf['print']['membercard']['header_font_color']??'#000'; ?> !important;  
 }
 
 #front-card header .brand {
@@ -159,7 +166,7 @@ strong {
 }
 
 #back-card {
-  background: #ffffff url('<?php echo $card_path.IMG ?>/bg-back.svg') center center no-repeat;
+  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.IMG.DS.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
   background-size: cover;
 }
 
@@ -285,7 +292,7 @@ strong {
     <section id="back-card">
         <div class="rules">
           <strong><?php echo __('Library Rules') ?></strong>
-          <?php echo $sysconf['print']['membercard']['rules'] ?>
+          <?php echo html_entity_decode($sysconf['print']['membercard']['rules']) ?>
         </div>
 
         <div class="sign">

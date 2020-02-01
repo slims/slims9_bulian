@@ -142,7 +142,7 @@ if (isset($_POST['saveData']) AND $can_write) {
 
 // create table object
 $table = new simbio_table();
-$table->table_attr = 'align="center" class="border fullWidth" cellpadding="5" cellspacing="0"';
+$table->table_attr = 'align="center" class="table" cellpadding="5" cellspacing="0"';
 
 // initial row count
 $row = 1;

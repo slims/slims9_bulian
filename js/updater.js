@@ -92,8 +92,10 @@ jQuery.fn.simbioAJAX = async function(strURL, params)
             data : options.addData, async: false })
 
         // clear error message
-        if (loader.html().indexOf('Error') > -1) {
-            loader.html('&nbsp;')
+        if(loader.html()) {
+            if (loader.html().indexOf('Error') > -1) {
+                loader.html('&nbsp;')
+            }
         }
         loader.removeAttr('style')
     } catch (err) {

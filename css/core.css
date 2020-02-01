@@ -262,3 +262,7 @@ form.clock {
 .s-member-account td::before {
     display: none;
 }
+
+.rounded-none {
+    border-radius: 0;
+}

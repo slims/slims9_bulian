@@ -90,6 +90,9 @@ if (isset($_POST['logMeIn'])) {
             }
             # <!-- Captcha form processing - end -->
 
+            // remember me
+            if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
+
             // set cookie admin flag
             setcookie('admin_logged_in', true, time()+14400, SWB);
             // write log
@@ -232,6 +235,14 @@ if (isset($_POST['updatePassword'])) {
         <!-- Captcha in form - end -->
 
         <div class="marginTop">
+        <div class="remember_forgot">
+            <div class="remember">
+                <?php if ($sysconf['always_user_login']) : ?>
+                <input type="checkbox" id="remember_me" name="remember" value="1">
+                <label for="remember_me">Remember me</label>
+                <?php endif; ?>
+            </div>
+        </div>
         <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
         </div>

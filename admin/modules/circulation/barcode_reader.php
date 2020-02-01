@@ -67,15 +67,14 @@ switch($_GET['mode']) {
 
 	break;
 
-	case 'stockopname' :
+	case 'quickreturn' :
 		$script = '
 					Quagga.onDetected(function (result) {
 						var code = result.codeResult.code;
 						$("#barcodeAudio")[0].play();
-						parent.$("#itemCode").focus().val(code);
-						parent.$("#checkItem").click();
+						parent.$("#quickReturnID").focus().val(code);
+						parent.$("#quickReturnProcess").click();
 					});';
-
 	break;
 
 }

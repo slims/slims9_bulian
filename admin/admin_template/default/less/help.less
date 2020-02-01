@@ -1,0 +1,68 @@
+//main: style.less
+.s-close {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: @color-2;
+  background-color: @white;
+  font-size: 2em;
+}
+.s-help {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: @black;
+  font-size: 2em;
+  &.active {
+    background-color: @color-2;
+    color: #fff;
+    z-index: 1;
+    right: 0;
+    .s-help-content {
+      display: block;
+    }
+  }
+  &.active:hover {
+    color: #ff0;
+  }
+  &-header {
+    padding: 15px 20px;
+  }
+  &-content {
+    max-width: 360px;
+    min-width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: @white;
+    height: 100% !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    line-height: 24px;
+    color: @black;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-weight: bold;
+      padding-bottom: 20px;
+      line-height: 30px;
+      font-size: 1.25em;
+      color: @color-1;
+    }
+  }
+}

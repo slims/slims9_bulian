@@ -114,21 +114,37 @@ if (!$reportView) {
         $selected_month = $_GET['month'];
     }
 
+    // for each day in the month
+    for($i = 1; $i <=  date('t',strtotime($selected_year.'-'.$selected_month)); $i++){
+       $date = str_pad($i, 2, '0', STR_PAD_LEFT);
+       $xAxis[$date] = $date;
+       $data['visitor'][$date] = 0;
+    }
+
     // query visitor data to database
-    $_visitor_q = $dbs->query("SELECT SUBSTRING(`checkin_date`, 9, 2) AS `mdate`, COUNT(visitor_id) AS `vtotal` FROM `visitor_count` WHERE `checkin_date` LIKE '$selected_year-$selected_month%' GROUP BY DATE(`checkin_date`)");
+    $_visitor_q = $dbs->query("SELECT MAX(SUBSTRING(`checkin_date`, 9, 2)) AS `mdate`, COUNT(visitor_id) AS `vtotal` FROM `visitor_count` WHERE `checkin_date` LIKE '$selected_year-$selected_month%' GROUP BY DATE(`checkin_date`)");
     while ($_visitor_d = $_visitor_q->fetch_row()) {
         $date = (integer)preg_replace('@^0+@i', '',$_visitor_d[0]);
         $visitor_data[$date] = '<div class="data">'.($_visitor_d[1]?$_visitor_d[1]:'0').'</div>';
+        $data['visitor'][$_visitor_d[0]] = $_visitor_d[1];
     }
+
+    unset($_SESSION['chart']);
+    $chart['xAxis'] = $xAxis;
+    $chart['data'] = $data;
+    $chart['title'] =  str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>'));
+    $_SESSION['chart'] = $chart;
 
     // generate calendar
     $output = simbio_date::generateCalendar($selected_year, $selected_month, $visitor_data);
 
     // print out
-    echo '<div class="mb-2">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>')) . ' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="mb-2">'. str_replace(array('{selectedYear}', '{selectedMonth}'), array($selected_year, $months[$selected_month]),__('Visitor Report for <strong>{selectedMonth}, {selectedYear}</strong>'));
+    echo '<div class="btn-group"><a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>
+          <a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530">'.__('Show in chart/plot').'</a></div></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
+    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/pop_iframe_tpl.php';
 }

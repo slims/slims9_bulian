@@ -1,0 +1,85 @@
+// main: style.less
+.dateField {
+  width: 200px;
+  height: 38px;
+  color: @font-size;
+  font-size: 14px;
+  margin-bottom: 5px;
+  padding: 2px 2px 1px;
+  background-image: none;
+  line-height: 1.42857143;
+}
+
+.dateInput {
+  width: 160px;
+  float: left;
+  background: #000;
+}
+
+#calendarPop {
+  box-shadow: 0 0 30px #000;
+  background-color: #000;
+  color: @white;
+  th,td {
+    background-color: #000;
+  }  
+
+  .calendarClose {
+    a {
+      color: @color-2;
+    }
+  }
+}
+
+.calendarLink {
+  width: 22px;
+  height: 22px;
+  float: right;
+  margin: -35px;
+  color: @color-3;
+  cursor: pointer;
+    &:hover {
+      color: @color-5;
+    }
+    &:before {
+      font-family: 'FontAwesome';
+      content: "\f073";
+      font-size: 16pt;
+    }
+}
+
+.calendar {
+  th {
+    padding: 20px 0;
+    width:10%;
+    text-align: center;
+  }
+  th,
+  td {
+    border: solid 1px @border-color;
+  }
+  td {
+    height: 50px;
+    padding-top: 0px;
+    text-align: right;
+    padding-right: 10px;
+    position: relative;
+    .day_number {
+      height: 20px;
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      width: 100%;
+    }
+    .data {
+      font-size: 12pt;
+      font-weight: 700;
+      width: 100%;
+      text-align: center;
+      margin-top: -12px;
+    }
+  }
+  .dayname {
+    background: @black;
+  }
+}

@@ -34,11 +34,11 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 
 ?>
 <div style="padding-left: 10px;">
-<h2>SLiMS Version 8 codename Akasia</h2>
+<h2>SLiMS Version 9 codename Bulian</h2>
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2013 Senayan Developer Community<br />
+Copyright (c) 2007-2020 Senayan Developer Community<br />
 Simbio Engine v2.0, Copyright (c) 2007-2013 Arie Nugraha
 </p>
 

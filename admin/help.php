@@ -40,7 +40,7 @@ $parsedown = new Parsedown();
 if(isset($_GET['url']) && !empty($_GET['url'])) {		
 	$file_path = HELP.'/'.$sysconf['default_lang'].'/'.$_GET['url'];
 	if(!file_exists($file_path)|| !preg_match("/^.*\.(md)$/i", $file_path)) {
-		echo __('File Not Found');
+		echo '<p>'.__('Sorry, help content is not available yet.').'</p>';
 	} else {
 		//Convert Markdown to HTML
 		$markdown_text = file_get_contents($file_path); //bibliography/add-new-bibliography.md		

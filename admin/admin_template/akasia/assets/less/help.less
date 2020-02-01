@@ -1,0 +1,48 @@
+// main: style.less
+.s-help {
+	border-left: solid 1px #f2f2f2;
+	border-bottom: solid 1px #f2f2f2;
+	padding: 17px 20px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #fff;
+	color:#ccc;
+	z-index: 999;
+	&.active {
+		background-color: #31353E;
+		color:#fff;
+		&:hover {
+			color:#ff0;
+		}
+	}
+}
+.s-help-header {
+	padding:17px;
+	border-left: solid 1px #f2f2f2;
+	border-bottom: solid 1px #f2f2f2;
+}
+.s-help-content {
+	border-left: solid 1px #f2f2f2;
+	background-color: #fff;
+	width: auto;
+	height: 100% !important;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px 20px;
+	position: relative;
+	line-height: 24px;
+	color: #000;
+	font-size: 12px;
+	
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		font-weight: bold;
+		padding-bottom: 20px;
+		line-height: 30px;
+	}
+}

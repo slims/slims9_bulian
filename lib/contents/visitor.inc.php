@@ -31,7 +31,7 @@ if (!defined('INDEX_AUTH')) {
 // load settings from database
 utility::loadSettings($dbs);
 
-$allowed_counter_ip = array('127.0.0.1');
+$allowed_counter_ip = $sysconf['allowed_counter_ip'];
 $remote_addr = $_SERVER['REMOTE_ADDR'];
 $confirmation = 0;
 $limit_time_visit = $sysconf['time_visitor_limitation'];
@@ -44,7 +44,7 @@ foreach ($allowed_counter_ip as $ip) {
     }
 }
 
-if (!$confirmation) {
+if ($sysconf['enable_counter_by_ip'] && !$confirmation) {
     header ("location: index.php");
 }
 

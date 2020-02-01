@@ -1,0 +1,20 @@
+//main: style.less
+/*------------------
+form
+--------------------*/
+.form-control {
+    font-size: @font-size;
+    &:not(:last-child) {
+        margin-right: 4px;
+    }
+}
+
+.custom-file-label {
+    padding: 9px;
+    &::after {
+        color: @white;
+        background: lighten(@black, 50%);
+        font-weight: 700;
+        padding: 9px;
+    }
+}

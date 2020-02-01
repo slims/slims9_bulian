@@ -1,0 +1,51 @@
+//main: style.less
+/*------------------
+form
+--------------------*/
+.form-control {
+    font-size: 10pt;
+    // padding: 10px;
+    border-radius: @border-radius;
+    &:not(:last-child) {
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+}
+
+.custom-file-label {
+    padding: 9px;
+    &::after {
+        color: @white;
+        background: lighten(@black, 50%);
+        font-weight: 700;
+        padding: 9px;
+    }
+}
+
+.chzn-container-single .chzn-single {
+	background-image: none;
+	height: 36px;
+	padding: 6px 0 0 8px;
+	box-shadow: none;
+	border-radius: 0px;
+	border-color: #ddd;
+}
+.chzn-drop {
+	width: 100% !important;
+	top: 36px !important;
+	border-color: #ddd !important;
+	border-radius: 0px !important;
+}
+.chzn-container-single {
+    min-width: 200px;
+    .chzn-single div {
+        top: 7px;
+    }
+}
+.chzn-search input {
+	height: auto !important;
+	width: 100% !important;
+}
+.action_button {
+	margin-bottom: 15px;
+}
