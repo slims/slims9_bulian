@@ -273,7 +273,7 @@ $post_max_size = intval(ini_get('post_max_size'))*1024;
 if ($sysconf['max_upload'] > $post_max_size) {
     $sysconf['max_upload'] = $post_max_size-1024;
 }
-$sysconf['max_image_upload'] = 500;
+$sysconf['max_image_upload'] = 5000;
 // allowed image file to upload
 $sysconf['allowed_images'] = array('.jpeg', '.jpg', '.gif', '.png', '.JPEG', '.JPG', '.GIF', '.PNG');
 // allowed file attachment to upload

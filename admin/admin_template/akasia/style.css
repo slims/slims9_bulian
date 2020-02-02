@@ -1689,6 +1689,43 @@ table.datagrid-action-bar > tbody > tr:first-child > td {
 #blocker {
   background: #4d4d4d !important;
 }
+#memberImage {
+  padding: 10px 15px;
+  float: right;
+}
+#memberImage img {
+  height: 72px;
+  width: 55px;
+  border-radius: 0;
+}
+#startCirc {
+  position: relative;
+}
+.ajaxDDlist {
+  top: 36px !important;
+  left: 70px !important;
+  width: 296px !important;
+  border-color: #cfd4d9;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.s-member__account td {
+  padding: 10px 15px;
+}
+.s-member__account .s-transaction {
+  padding: 15px;
+}
+.s-member__photo {
+  right: 15px;
+  margin-top: 15px;
+  position: absolute;
+  background: #ffffff;
+}
+.s-member__photo img {
+  border-radius: 0;
+  padding: 7px;
+  box-shadow: 0 0 10px #e6e6e6;
+}
 .s-print__page-info {
   font-size: 12pt;
   background-color: #cceeff;
