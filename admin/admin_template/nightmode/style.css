@@ -1243,7 +1243,7 @@ table {
 #dataList td {
   padding: 10px;
 }
-#dataList td a:not(.openPopUp):not(.editLink) {
+#dataList td a:not(.openPopUp):not(.editLink):not(.btn) {
   color: #01804b;
 }
 .dataListHeader {
