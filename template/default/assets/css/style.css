@@ -879,3 +879,7 @@ html {
     display: flex;
     justify-content: space-between;
 }
+
+.expand {
+    margin: 0 -1.25rem -1.25rem -1.25rem;
+}
