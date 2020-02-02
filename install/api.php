@@ -19,7 +19,7 @@ $slims = new SLiMS();
 
 // switch request
 $_POST = json_decode(file_get_contents('php://input'), true);
-$action = $_POST['action'] ?? '';
+$action = isset($_POST['action']) ? $_POST['action'] : '';
 if ($action === 're-install' || $action === 're-upgrade') {
   if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
     require_once __DIR__ . '/../config/sysconfig.local.inc.php';
@@ -34,13 +34,14 @@ if ($action === 're-install' || $action === 're-upgrade') {
 
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '7.3';
+    $php_minimum_version = '7.0';
+    $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
         $slims->databaseDriverType() &&
         $slims->isGdOk() &&
         $slims->isGettextOk() &&
-        ($slims->chkDir())['status'] &&
+        $check_dir['status'] &&
         $slims->isMbStringOk(),
       'data' => [
         'php' => [
@@ -81,8 +82,8 @@ switch ($action) {
         ],
         'chkdir' => [
           'title' => 'Pre-Installation Step',
-          'status' => ($slims->chkDir())['status'],
-          'data' => ($slims->chkDir())['data'],
+          'status' => $check_dir['status'],
+          'data' => $check_dir['data'],
           'message' => 'Make the following files and directories (and their contents) writeable (i.e., by changing the owner or permissions with chown or chmod)'
         ]        
       ]
@@ -94,10 +95,10 @@ switch ($action) {
   case 'test-connection':
   case 'test-connection-upgrade':
 
-    $_SESSION['db_host'] = $_POST['host'] ?? 'localhost';
-    $_SESSION['db_name'] = $_POST['name'] ?? '';
-    $_SESSION['db_user'] = $_POST['user'] ?? '';
-    $_SESSION['db_pass'] = $_POST['pass'] ?? '';
+    $_SESSION['db_host'] = isset($_POST['host']) ? $_POST['host'] : 'localhost';
+    $_SESSION['db_name'] = isset($_POST['name']) ? $_POST['name'] : '';
+    $_SESSION['db_user'] = isset($_POST['user']) ? $_POST['user'] : '';
+    $_SESSION['db_pass'] = isset($_POST['pass']) ? $_POST['pass'] : '';
 
     if (empty($_SESSION['db_name'])) die(json_encode(array('status' => false, 'field' => 'name', 'message' => 'Database name is required.')));
     if (empty($_SESSION['db_user'])) die(json_encode(array('status' => false, 'field' => 'user', 'message' => 'Database username is required.')));
