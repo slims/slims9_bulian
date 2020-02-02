@@ -799,23 +799,36 @@ header
   font-weight: 700;
   color: #a6a6a6;
 }
-#s-help {
-  position: absolute;
-  z-index: 1090;
+.s-close {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: fixed;
   top: 0;
   right: 0;
+  z-index: 2;
+  color: #970000;
+  background-color: #1c1d23;
+  font-size: 2em;
 }
 .s-help {
-  padding: 16px 20px;
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #fff;
-  color: #ccc;
+  z-index: 2;
+  color: #fff;
+  font-size: 2em;
 }
 .s-help.active {
-  background-color: #276897;
+  background-color: #970000;
   color: #fff;
+  z-index: 1;
+  right: 0;
 }
 .s-help.active .s-help-content {
   display: block;
@@ -825,20 +838,22 @@ header
 }
 .s-help-header {
   padding: 15px 20px;
-  font-size: 16px;
 }
 .s-help-content {
-  border-left: solid 1px #f2f2f2;
-  background-color: #fff;
-  width: 360px;
+  max-width: 360px;
+  min-width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: #1c1d23;
   height: 100% !important;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 20px;
-  position: relative;
+  padding: 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
   line-height: 24px;
-  color: #000;
-  font-size: 12px;
+  color: #a6a6a6;
 }
 .s-help-content h1,
 .s-help-content h2,
@@ -848,6 +863,8 @@ header
   font-weight: bold;
   padding-bottom: 20px;
   line-height: 30px;
+  font-size: 1.25em;
+  color: #a6a6a6;
 }
 .datagrid-action-bar td {
   padding: 10px 15px;
@@ -1226,7 +1243,7 @@ table {
 #dataList td {
   padding: 10px;
 }
-#dataList td a:not(.openPopUp):not(.editLink) {
+#dataList td a:not(.openPopUp):not(.editLink):not(.btn) {
   color: #01804b;
 }
 .dataListHeader {

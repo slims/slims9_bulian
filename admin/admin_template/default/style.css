@@ -741,67 +741,72 @@ header
   position: relative;
   box-shadow: 0 6px 19px 0 rgba(0, 0, 0, 0.04);
 }
+.s-close {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: #c54545;
+  background-color: #ffffff;
+  font-size: 2em;
+}
 .s-help {
-  border-left: solid 1px #f2f2f2;
-  border-bottom: solid 1px #f2f2f2;
-  padding: 16px 20px;
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #fff;
-  color: #ccc;
+  z-index: 2;
+  color: #000000;
+  font-size: 2em;
 }
 .s-help.active {
-  background-color: #276897;
+  background-color: #c54545;
   color: #fff;
+  z-index: 1;
+  right: 0;
+}
+.s-help.active .s-help-content {
+  display: block;
 }
 .s-help.active:hover {
   color: #ff0;
 }
 .s-help-header {
   padding: 15px 20px;
-  font-size: 16px;
-  border-left: solid 1px #f2f2f2;
-  border-bottom: solid 1px #f2f2f2;
 }
 .s-help-content {
-  border-left: solid 1px #f2f2f2;
-  background-color: #fff;
-  width: auto;
+  max-width: 360px;
+  min-width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: #ffffff;
   height: 100% !important;
-  display: block;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 20px;
-  position: relative;
+  padding: 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
   line-height: 24px;
-  color: #000;
-  font-size: 12px;
+  color: #000000;
 }
-.s-help-content h1 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h2 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h3 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h4 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
+.s-help-content h1,
+.s-help-content h2,
+.s-help-content h3,
+.s-help-content h4,
 .s-help-content h5 {
   font-weight: bold;
   padding-bottom: 20px;
   line-height: 30px;
+  font-size: 1.25em;
+  color: #000000;
 }
 .datagrid-action-bar td {
   padding: 10px 15px;
@@ -1128,6 +1133,7 @@ sidebar
   opacity: 0.15;
 }
 #sidepan .subMenuHeader {
+  font-size: 12pt;
   margin-top: 10px;
 }
 #sidepan div,

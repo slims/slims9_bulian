@@ -1,20 +1,33 @@
 //main: style.less
-#s-help {
-  position: absolute;
-  z-index: 1090;
-  top:0;
+.s-close {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: fixed;
+  top: 0;
   right: 0;
+  z-index: 2;
+  color: @color-2;
+  background-color: @black;
+  font-size: 2em;
 }
 .s-help {
-  padding: 16px 20px;
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #fff;
-  color: #ccc;
+  z-index: 2;
+  color: #fff;
+  font-size: 2em;
   &.active {
-    background-color: #276897;
+    background-color: @color-2;
     color: #fff;
+    z-index: 1;
+    right: 0;
     .s-help-content {
       display: block;
     }
@@ -24,20 +37,22 @@
   }
   &-header {
     padding: 15px 20px;
-    font-size: 16px;
   }
   &-content {
-    border-left: solid 1px #f2f2f2;
-    background-color: #fff;
-    width: 360px;
+    max-width: 360px;
+    min-width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: @black;
     height: 100% !important;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 10px 20px;
-    position: relative;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
     line-height: 24px;
-    color: #000;
-    font-size: 12px;
+    color: @white;
     h1,
     h2,
     h3,
@@ -46,6 +61,8 @@
       font-weight: bold;
       padding-bottom: 20px;
       line-height: 30px;
+      font-size: 1.25em;
+      color: @color-5;
     }
   }
 }

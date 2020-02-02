@@ -1,63 +1,68 @@
 //main: style.less
+.s-close {
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: @color-2;
+  background-color: @white;
+  font-size: 2em;
+}
 .s-help {
-  border-left: solid 1px #f2f2f2;
-  border-bottom: solid 1px #f2f2f2;
-  padding: 16px 20px;
+  text-align: center;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #fff;
-  color: #ccc;
-}
-.s-help.active {
-  background-color: #276897;
-  color: #fff;
-}
-.s-help.active:hover {
-  color: #ff0;
-}
-.s-help-header {
-  padding: 15px 20px;
-  font-size: 16px;
-  border-left: solid 1px #f2f2f2;
-  border-bottom: solid 1px #f2f2f2;
-}
-.s-help-content {
-  border-left: solid 1px #f2f2f2;
-  background-color: #fff;
-  width: auto;
-  height: 100% !important;
-  display: block;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 10px 20px;
-  position: relative;
-  line-height: 24px;
-  color: #000;
-  font-size: 12px;
-}
-.s-help-content h1 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h2 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h3 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h4 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
-}
-.s-help-content h5 {
-  font-weight: bold;
-  padding-bottom: 20px;
-  line-height: 30px;
+  z-index: 2;
+  color: @black;
+  font-size: 2em;
+  &.active {
+    background-color: @color-2;
+    color: #fff;
+    z-index: 1;
+    right: 0;
+    .s-help-content {
+      display: block;
+    }
+  }
+  &.active:hover {
+    color: #ff0;
+  }
+  &-header {
+    padding: 15px 20px;
+  }
+  &-content {
+    max-width: 360px;
+    min-width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: @white;
+    height: 100% !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    line-height: 24px;
+    color: @black;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-weight: bold;
+      padding-bottom: 20px;
+      line-height: 30px;
+      font-size: 1.25em;
+      color: @color-1;
+    }
+  }
 }
