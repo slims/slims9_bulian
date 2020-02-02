@@ -137,12 +137,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
   }
   
   // concat all ID together
-  $item_ids = '';
-  foreach ($_SESSION['marcexport'] as $id) {
-    $item_ids .= '\''.$id.'\',';
-  }
-  // strip the last comma
-  $item_ids = substr_replace($item_ids, '', -1);
+  $item_ids = implode(',', $_SESSION['marcexport']);
   // unset the session
   unset($_SESSION['marcexport']);
   $biblio = new Biblio($dbs, null);
