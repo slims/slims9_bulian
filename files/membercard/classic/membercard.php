@@ -166,7 +166,7 @@ strong {
 }
 
 #back-card {
-  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.IMG.DS.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
+  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.'images/'.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
   background-size: cover;
 }
 
