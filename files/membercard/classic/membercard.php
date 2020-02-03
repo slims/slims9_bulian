@@ -13,15 +13,18 @@ function floatvalue($val){
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Document</title>
 <style>
+<?php
+$card_path = str_replace("\\", "/", $card_path);
+?>
 @font-face {
   font-family: "Quicksand";
-  src: url('<?php echo $card_path ?>/fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('<?php echo $card_path ?>fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('<?php echo $card_path ?>/fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('<?php echo $card_path ?>fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
