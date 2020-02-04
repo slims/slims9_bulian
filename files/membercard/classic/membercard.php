@@ -54,7 +54,7 @@ strong {
 }
 
 #front-card {
-  background-color: <?php echo $sysconf['print']['membercard']['b_color']??'#E5E5E5';  ?>;    
+  background-color: <?php echo $sysconf['print']['membercard']['fr_color']??'#E5E5E5';  ?>;    
 }
 
 #front-card header {
@@ -100,12 +100,13 @@ strong {
   width: 55px;
   height: 55px;
   overflow: hidden;
-  border-radius: 50px;
-  border: solid 5px #fff;
+  border-radius: 5px;
+  border: solid 3px #fff;
 }
 
 .photo img {
   width: 55px;
+  border-radius: 3px;
 }
 
 .personality {      
@@ -251,7 +252,7 @@ strong {
       <main>
         <div class="identity">
           <h1><?php echo $card['member_name'] ?></h1>
-          <?php if(($card['member_image'] != '') && (file_exists(SWB.IMG.'/persons/'.$card['member_image']))) : ?>
+          <?php if(($card['member_image'] != '') || (file_exists(SWB.IMG.'/persons/'.$card['member_image']))) : ?>
           <div class="photo">
             <img src="<?php echo SWB.IMG ?>/persons/<?php echo $card['member_image'] ?>" alt="">
           </div>

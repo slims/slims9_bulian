@@ -90,7 +90,15 @@ $sysconf['print'][$theme_key] = [
     'default' => $sysconf['print'][$theme_key]['f_color']??'#000000',
     'class' => 'colorpicker'
   ],
-    'b_color' => [
+  'fr_color' => [
+    'dbfield' => 'data[fr_color]',
+    'label' => __('Frontend Color'),
+    'type' => 'text',
+    'width' => '10',
+    'default' => $sysconf['print'][$theme_key]['b_color']??'#E5E5E5',
+    'class' => 'colorpicker'
+  ],
+  'b_color' => [
     'dbfield' => 'data[b_color]',
     'label' => __('Background Color'),
     'type' => 'text',
