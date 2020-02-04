@@ -46,7 +46,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $biblio_id  = $biblio_detail['biblio_id'];
   $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
   $cite_url   = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];
-  $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
+  // $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
 
   // image thumbnail
   $images_loc = '../../images/docs/'.$biblio_detail['image'];
@@ -54,9 +54,22 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
 
   // notes
   $notes = getNotes($dbs, $biblio_id);
+  $custom_field = '';
+  $i = 0;
+  $expand = true;
+  if ($settings['enable_custom_frontpage'] AND $settings['custom_fields']) {
+    $custom_field = '<dl class="row text-sm">';
+    foreach ($settings['custom_fields'] as $field => $field_opts) {
+      if ($field_opts[0] == 1) {
+        $custom_field .= '<dt class="col-sm-3">'.$field_opts[1].'</dt><dd class="col-sm-9">'.(trim($biblio_detail[$field]) !== '' ? $biblio_detail[$field] : '-').'</dd>';
+        $i++;
+      }
+    }
+    $custom_field .= '</dl>';
+  }
   if (empty($notes)) {
-    $notes .= '<span class="text-label">ISBN/ISSN:</span>&nbsp;' . $biblio_detail['isbn_issn'] . '<br>';
-    $notes .= '<span class="text-label">Publish Year:</span>&nbsp;' . $biblio_detail['publish_year'] . '<br>';
+    $notes = $custom_field;
+    $expand = false;
   }
 
   // availability
@@ -88,6 +101,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= $_authors_string;
   $output .= '</div>'; // -- close d-flex authors flex-wrap
   $output .= '<p>'.$notes.'</p>';
+  $output .= '<div id="expand-'.$biblio_id.'" class="collapse py-2 collapse-detail">'.$custom_field.'</div>';
   $output .= '</div>'; // -- close col-8
   $output .= '<div class="col-2">';
   $output .= '<div class="card availability cursor-pointer">';
@@ -103,8 +117,12 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '</div>'; // -- close card-body pt-3 pb-2 px-1
   $output .= '</div>'; // -- close card availability
   $output .= '<a class="btn btn-outline-primary btn-block mt-2 btn-sm" href="'.$detail_url.'">View Detail</a>';
+  $output .= '<a class="btn btn-outline-secondary btn-block mt-2 btn-sm openPopUp citationLink" href="'.$cite_url.'" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">Cite</a>';
   $output .= '</div>'; // -- close col-2
   $output .= '</div>'; // -- close row
+  if ($i > 0 && $expand) {
+    $output .= '<div class="expand"><a id="btn-expand-'.$biblio_id.'" class="flex justify-center text-decoration-none py-2" data-toggle="collapse" href="#expand-'.$biblio_id.'" role="button" aria-expanded="false" aria-controls="expand-'.$biblio_id.'"><i class="fas fa-angle-double-down"></i></a></div>';
+  }
   $output .= '</div>';
   $output .= '</div>';
 

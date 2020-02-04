@@ -30,7 +30,7 @@ Arabic: Rasyid Ridho (rasyidridho@gmail.com), Bounama Kouider (for full Arabic s
 Malay: Jerry Mohd. Arif 
 Brazilian Portuguese: Eduardo Koiti Kataoka (edukataoka@yahoo.com.br)
 Spain: Jhon Urrego Felipe Mejia (ingenierofelipeurrego@gmail.com)
-Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com)
+Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com), Aijaz Akhter Ahmadani (ritelibrarian@gmail.com)
 Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)
 Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationforsenayan/)
 

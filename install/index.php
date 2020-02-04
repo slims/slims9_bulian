@@ -11,7 +11,8 @@ if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
 }
 
 session_start();
-$_SESSION['csrf_token'] = bin2hex(random_bytes(24));
+$length = 24;
+$_SESSION['csrf_token'] = bin2hex(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length));
 
 ?>
 <!doctype html>
