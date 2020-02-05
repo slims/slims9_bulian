@@ -194,12 +194,8 @@ class SLiMS
 
   function isDatabaseExist($database_name)
   {
-    $stmt = $this->db->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?");
-    $stmt->bind_param('s', $database_name);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-    return $result->num_rows > 0;
+    $query = $this->db->query(sprintf("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s'", $database_name));
+    return $query->num_rows > 0;
   }
 
   function createDatabase($database_name)
