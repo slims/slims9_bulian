@@ -26,7 +26,7 @@
 
 <section class="mt-5 container">
     <h4 class="text-secondary text-center text-thin mt-5 mb-4">Select the topic you are interested in</h4>
-    <ul class="topic d-flex flex-wrap justify-content-center">
+    <ul class="topic d-flex flex-wrap justify-content-center px-0">
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="index.php?callnumber=8&search=search" class="d-flex flex-column">
                 <img src="<?php echo assets('images/8-books.png'); ?>" width="80" class="mb-3 mx-auto"/>
@@ -180,7 +180,7 @@
           $members = getActiveMembers($dbs, date('Y'));
           foreach ($members as $member) {
             $member_image = $member['image'] ?? 'person.png';
-            $m = '<div class="w-1/3 px-3">';
+            $m = '<div class="w-full md:w-1/3 px-3 mb-2">';
             $m .= '<div class="card hover:shadow-md">';
             $m .= '<div class="card-body">';
             $m .= '<div class="card-image-rounded mx-auto">';
@@ -212,10 +212,10 @@
                     src="<?= $sysconf['template']['classic_map_link']; ?>"
                     height="420" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 pt-8 md:pt-0">
             <h4><?= $sysconf['library_name']; ?></h4>
             <p><?= $sysconf['template']['classic_map_desc']; ?></p>
-            <p class="d-flex flex-row">
+            <p class="d-flex flex-row pt-2">
                 <a target="_blank" href="<?= $sysconf['template']['classic_fb_link'] ?>" class="btn btn-primary mr-2" name="button"><i class="fab fa-facebook-square text-white"></i></a>
                 <a target="_blank" href="<?= $sysconf['template']['classic_twitter_link'] ?>" class="btn btn-info mr-2" name="button"><i class="fab fa-twitter-square text-white"></i></a>
                 <a target="_blank" href="<?= $sysconf['template']['classic_youtube_link'] ?>" class="btn btn-danger mr-2" name="button"><i class="fab fa-youtube text-white"></i></a>

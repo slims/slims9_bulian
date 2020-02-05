@@ -92,7 +92,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '<div class="card item border-0 elevation-1 mb-6">';
   $output .= '<div class="card-body">';
   $output .= '<div class="row">';
-  $output .= '<div class="col-2">';
+  $output .= '<div class="col-12 col-md-2">';
   $output .= '<img src="'.$thumb_url.'" alt="cover" class="img-fluid rounded" />';
   $output .= '</div>'; // -- close col-2
   $output .= '<div class="col-8">';
@@ -103,7 +103,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '<p>'.$notes.'</p>';
   $output .= '<div id="expand-'.$biblio_id.'" class="collapse py-2 collapse-detail">'.$custom_field.'</div>';
   $output .= '</div>'; // -- close col-8
-  $output .= '<div class="col-2">';
+  $output .= '<div class="col-2 hidden md:block">';
   $output .= '<div class="card availability cursor-pointer">';
   $output .= '<div class="card-body pt-3 pb-2 px-1">';
   $output .= '<div class="d-flex availability-content flex-column">';

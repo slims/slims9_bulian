@@ -33,7 +33,7 @@
                     <li><a class="text-light" href="index.php?p=member">Member Area</a></li>
                 </ul>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 pt-8 md:pt-0">
                 <h4 class="mb-4">About Us</h4>
                 <p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features
                     that will help libraries and librarians to do their job easily and quickly. Follow <a
@@ -41,7 +41,7 @@
                     features
                     provided by SLiMS.</p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 pt-8 md:pt-0">
                 <h4 class="mb-4">Search</h4>
                 <div class="mb-2">start it by typing one or more keywords for title, author or subject</div>
                 <form action="index.php">

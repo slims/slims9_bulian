@@ -8,15 +8,15 @@
 ?>
 
 <div class="container">
-    <div class="flex">
-        <div class="w-64">
+    <div class="flex flex-wrap">
+        <div class="w-64 mb-2">
             <div class="bg-grey-light p-12 rounded">
                 <div class="shadow">
                   <?= $image; ?>
                 </div>
             </div>
         </div>
-        <div class="flex-1 px-4">
+        <div class="flex-1 p-0 px-md-4">
             <p class="lead"><i class="fas fa-bookmark text-green"></i> <?= $gmd_name; ?></p>
             <blockquote class="blockquote">
                 <h4 class="mb-2"><?= $title; ?></h4>
