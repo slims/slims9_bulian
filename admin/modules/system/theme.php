@@ -136,12 +136,12 @@ if (isset($_GET['customize'])) {
         $cf_default = $cfield['default'];
         $cf_class = $cfield['class']??'';
         $cf_data = (isset($cfield['data']) && $cfield['data']) ? $cfield['data'] : array();
+        $cf_width = isset($cfield['width']) ? $cfield['width'] : '50';
         $form->addHidden('themeDir', $_GET['theme']);
         $form->addHidden('themeType', $_GET['customize']);
         // custom field processing
         if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
           $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
-          $cf_width = isset($cfield['width']) ? $cfield['width'] : '50';
           $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
           $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');

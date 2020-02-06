@@ -109,10 +109,10 @@ if (isset($_GET['customize'])) {
         $cf_default = $cfield['default']??null;
         $cf_class = $cfield['class']??null;
         $cf_data = (isset($cfield['data']) && $cfield['data']) ? $cfield['data'] : array();
+        $cf_width = $cfield['width'] ?? '50';
          // custom field processing
         if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
           $cf_max = $cfield['max'] ?? '200';
-          $cf_width = $cfield['width'] ?? '50';
           $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, $sysconf[$theme_key][$cf_dbfield] ?? $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
           $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $sysconf[$theme_key][$cf_dbfield] ?? $cf_default, 'class="form-control"  style="width: ' . $cf_width . '%;"');
