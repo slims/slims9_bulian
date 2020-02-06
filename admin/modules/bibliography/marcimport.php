@@ -114,7 +114,6 @@ if (isset($_POST['doImport'])) {
       $sor_cache = array();
       $author_cache = array();
       $subject_cache = array();
-      $updated_row = '';
 
       while ($record = $marc_data->next()) {
         $data = array();
