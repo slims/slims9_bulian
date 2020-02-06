@@ -187,14 +187,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // record ID for delete process
         $form->record_id = $itemID;
         // form record title
-        $form->record_title = str_ireplace('label-', '', $rec_d['label_name']);
+        $form->record_title = str_ireplace('label-', '', $rec_d['label_name']??'');
         // submit button attribute
         $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
     }
 
     /* Form Element(s) */
     // label name
-    $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name'], 'style="width: 60%;" maxlength="20" class="form-control"');
+    $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name']??'', 'style="width: 60%;" maxlength="20" class="form-control"');
     // label image
     if (empty($rec_d['label_image'])) {
         $str_input = simbio_form_element::textField('file', 'labelImage');
@@ -207,7 +207,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->addAnything(__('File Attachment'), $str_input);
     }
     // label desc
-    $form->addTextField('text', 'labelDesc', __('Label Description'), $rec_d['label_desc'], 'style="width: 100%;" maxlength="50" class="form-control"');
+    $form->addTextField('text', 'labelDesc', __('Label Description'), $rec_d['label_desc']??'', 'style="width: 100%;" maxlength="50" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

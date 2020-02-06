@@ -176,9 +176,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // gmd code
-    $form->addTextField('text', 'gmdCode', __('GMD Code').'*', $rec_d['gmd_code'], 'style="width: 20%;" maxlength="3" class="form-control col-1"');
+    $form->addTextField('text', 'gmdCode', __('GMD Code').'*', $rec_d['gmd_code']??'', 'style="width: 20%;" maxlength="3" class="form-control col-1"');
     // gmd name
-    $form->addTextField('text', 'gmdName', __('GMD Name').'*', $rec_d['gmd_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'gmdName', __('GMD Name').'*', $rec_d['gmd_name']??'', 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

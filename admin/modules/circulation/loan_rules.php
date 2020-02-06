@@ -190,7 +190,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($mtype_data = $mtype_query->fetch_row()) {
             $mtype_options[] = array($mtype_data[0], $mtype_data[1]);
         }
-    $form->addSelectList('memberTypeID', __('Member Type'), $mtype_options, $rec_d['member_type_id'], 'class="form-control col-5"');
+    $form->addSelectList('memberTypeID', __('Member Type'), $mtype_options, $rec_d['member_type_id']??'', 'class="form-control col-5"');
     // collection type
         // get collection type data related to this record from database
         $ctype_query = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
@@ -199,7 +199,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $ctype_options[] = array($ctype_data[0], $ctype_data[1]);
         }
         $ctype_options[] = array('0', __('ALL'));
-    $form->addSelectList('collTypeID', __('Collection Type'), $ctype_options, $rec_d['coll_type_id'], 'class="form-control col-5"');
+    $form->addSelectList('collTypeID', __('Collection Type'), $ctype_options, $rec_d['coll_type_id']??'', 'class="form-control col-5"');
     // gmd
         // get gmd data related to this record from database
         $gmd_query = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
@@ -207,17 +207,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($gmd_data = $gmd_query->fetch_row()) {
             $gmd_options[] = array($gmd_data[0], $gmd_data[1]);
         }
-    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="form-control col-5"');
+    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id']??'', 'class="form-control col-5"');
     // loan limit
-    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'class="form-control col-2"');
+    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit']??'', 'class="form-control col-2"');
     // loan periode
-    $form->addTextField('text', 'loanPeriode', __('Loan Period'), $rec_d['loan_periode'], 'class="form-control col-2"');
+    $form->addTextField('text', 'loanPeriode', __('Loan Period'), $rec_d['loan_periode']??'', 'class="form-control col-2"');
     // reborrow limit
-    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']?$rec_d['reborrow_limit']:'0', 'class="form-control col-2"');
+    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']??'0', 'class="form-control col-2"');
     // fine each day
-    $form->addTextField('text', 'fineEachDay', __('Fines Each Day'), $rec_d['fine_each_day']?$rec_d['fine_each_day']:'0','class="form-control col-2"');
+    $form->addTextField('text', 'fineEachDay', __('Fines Each Day'), $rec_d['fine_each_day']??'0','class="form-control col-2"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']?$rec_d['grace_periode']:'0','class="form-control col-2"');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']??'0','class="form-control col-2"');
 
     // edit mode messagge
     if ($form->edit_mode) {

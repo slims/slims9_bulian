@@ -177,16 +177,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // author name
-    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name']??'', 'class="form-control" style="width: 60%;"');
     // author year
-    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year']??'', 'class="form-control" style="width: 60%;"');
     // authority type
     foreach ($sysconf['authority_type'] as $auth_type_id => $auth_type) {
         $auth_type_options[] = array($auth_type_id, $auth_type);
     }
-    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type'],'class="form-control col-2"');
+    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type']??'','class="form-control col-2"');
     // authority list
-    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list']??'', 'class="form-control" style="width: 30%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

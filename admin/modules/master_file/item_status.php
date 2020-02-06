@@ -199,15 +199,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // item status code
-    $form->addTextField('text', 'itemStatusID', __('Item Status Code').'*', $rec_d['item_status_id'], 'style="width: 20%;" maxlength="3" class="form-control"');
+    $form->addTextField('text', 'itemStatusID', __('Item Status Code').'*', $rec_d['item_status_id']??'', 'style="width: 20%;" maxlength="3" class="form-control"');
     // item status name
-    $form->addTextField('text', 'itemStatus', __('Item Status Name').'*', $rec_d['item_status_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'itemStatus', __('Item Status Name').'*', $rec_d['item_status_name']??'', 'style="width: 60%;" class="form-control"');
     // item status rules
 	$rules = array();
-	if ($rec_d['no_loan']) {
+	if (isset($rec_d['no_loan'])) {
 		$rules[] = NO_LOAN_TRANSACTION;
 	}
-	if ($rec_d['skip_stock_take']) {
+	if (isset($rec_d['skip_stock_take'])) {
 		$rules[] = SKIP_STOCK_TAKE;
 	}
     $form->addCheckbox('rules', __('Rules'), $rules_option, $rules);

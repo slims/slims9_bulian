@@ -173,7 +173,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // frequency name
-    $form->addTextField('text', 'frequencyName', __('Frequency').'*', $rec_d['frequency'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'frequencyName', __('Frequency').'*', $rec_d['frequency']??'', 'style="width: 60%;" class="form-control"');
     // frequency language
         // get language data related to this record from database
         $lang_q = $dbs->query('SELECT language_id, language_name FROM mst_language');
@@ -181,15 +181,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($lang_d = $lang_q->fetch_row()) {
             $lang_options[] = array($lang_d[0], $lang_d[1]);
         }
-    $form->addSelectList('languagePrefix', __('Language'), $lang_options, $rec_d['language_prefix'],'class="form-control col-3"');
+    $form->addSelectList('languagePrefix', __('Language'), $lang_options, $rec_d['language_prefix']??'','class="form-control col-3"');
     // frequency time increment
-    $form->addTextField('text', 'timeIncrement', __('Time Increment').'*', $rec_d['time_increment'], 'style="width: 10%;" class="form-control"');
+    $form->addTextField('text', 'timeIncrement', __('Time Increment').'*', $rec_d['time_increment']??'', 'style="width: 10%;" class="form-control"');
     // frequency time unit
     $unit_options[] = array('day', __('Day'));
     $unit_options[] = array('week', __('Week'));
     $unit_options[] = array('month', __('Month'));
     $unit_options[] = array('year', __('Year'));
-    $form->addSelectList('timeUnit', __('Time Unit'), $unit_options, $rec_d['time_unit'],'class="form-control col-3"');
+    $form->addSelectList('timeUnit', __('Time Unit'), $unit_options, $rec_d['time_unit']??'','class="form-control col-3"');
 
     // edit mode messagge
     if ($form->edit_mode) {

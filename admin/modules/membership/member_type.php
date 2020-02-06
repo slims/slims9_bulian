@@ -195,25 +195,25 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // member type name
-    $form->addTextField('text', 'memberTypeName', __('Member Type Name').'*', $rec_d['member_type_name'], 'class="form-control"');
+    $form->addTextField('text', 'memberTypeName', __('Member Type Name').'*', $rec_d['member_type_name']??'', 'class="form-control"');
     // loan limit
-    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit'], 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit']??'', 'style="width:25%" class="form-control"');
     // loan periode
-    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode'], 'style="width:25%"  class="form-control"');
+    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode']??'', 'style="width:25%"  class="form-control"');
     // enable reserve
     $enable_resv_chbox[0] = array('1', __('Enable'));
     $enable_resv_chbox[1] = array('0', __('Disable'));
     $form->addRadio('enableReserve', __('Reserve'), $enable_resv_chbox, !empty($rec_d['enable_reserve'])?$rec_d['enable_reserve']:'1');
     // reserve limit
-    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit'], 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit']??'', 'style="width:25%" class="form-control"');
     // membership periode
-    $form->addTextField('text', 'memberPeriode', __('Membership Periode (In Days)'), $rec_d['member_periode'], 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'memberPeriode', __('Membership Periode (In Days)'), $rec_d['member_periode']??'', 'style="width:25%" class="form-control"');
     // reborrow limit
-    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit'], 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']??'', 'style="width:25%" class="form-control"');
     // fine each day
-    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day'],'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']??'','style="width:25%" class="form-control"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode'],'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

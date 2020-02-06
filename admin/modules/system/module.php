@@ -184,11 +184,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // module
-    $form->addTextField('text', 'moduleName', __('Module Name').'*', $rec_d['module_name'], 'style="width: 50%;"');
+    $form->addTextField('text', 'moduleName', __('Module Name').'*', $rec_d['module_name']??'', 'style="width: 50%;" class="form-control');
     // module path
-    $form->addTextField('text', 'modulePath', __('Module Path').'*', $rec_d['module_path'], 'style="width: 100%;"');
+    $form->addTextField('text', 'modulePath', __('Module Path').'*', $rec_d['module_path']??'', 'style="width: 100%;" class="form-control');
     // module desc
-    $form->addTextField('text', 'moduleDesc', __('Module Description'), $rec_d['module_desc'], 'style="width: 100%;"');
+    $form->addTextField('text', 'moduleDesc', __('Module Description'), $rec_d['module_desc']??'', 'style="width: 100%;" class="form-control');
 
     // edit mode messagge
     if ($form->edit_mode) {

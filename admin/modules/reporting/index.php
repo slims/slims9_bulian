@@ -110,8 +110,10 @@ $collection_stat[__('Total Items By Collection Type')] = $stat_data;
 $stat_query = $dbs->query('SELECT title,biblio_id AS total_loans FROM `loan_history` WHERE member_id IS NOT NULL AND biblio_id IS NOT NULL
     GROUP BY biblio_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
 $stat_data = '<ol>';
-while ($data = $stat_query->fetch_row()) {
-    $stat_data .= '<li>'.$data[0].'</li>';
+if(!empty($stat_query->num_rows)){
+    while ($data = $stat_query->fetch_row()) {
+        $stat_data .= '<li>'.$data[0].'</li>';
+    }
 }
 $stat_data .= '</ol>';
 $collection_stat[__('10 Most Popular Titles')] = $stat_data;

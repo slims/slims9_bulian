@@ -433,30 +433,30 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // member code
     $str_input  = '<div class="container">';
     $str_input .= '<div class="row">';
-    $str_input .= simbio_form_element::textField('text', 'memberID', $rec_d['member_id'], 'id="memberID" onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'member\', \'member_id\', \'msgBox\', \'memberID\')" class="form-control col-4"');
+    $str_input .= simbio_form_element::textField('text', 'memberID', $rec_d['member_id']??'', 'id="memberID" onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'member\', \'member_id\', \'msgBox\', \'memberID\')" class="form-control col-4"');
     $str_input .= '<div id="msgBox" class="col mt-2"></div>';
     $str_input .= '</div>';
     $str_input .= '</div>';
     $form->addAnything(__('Member ID').'*', $str_input);
     // member name
-    $form->addTextField('text', 'memberName', __('Member Name').'*', $rec_d['member_name'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'memberName', __('Member Name').'*', $rec_d['member_name']??'', 'class="form-control" style="width: 50%;"');
     // member birth date
-    $form->addDateField('birthDate', __('Birth Date').'*', $rec_d['birth_date'],'class="form-control"');
+    $form->addDateField('birthDate', __('Birth Date').'*', $rec_d['birth_date']??'','class="form-control"');
     // member since date
-    $form->addDateField('sinceDate', __('Member Since').'*', $form->edit_mode?$rec_d['member_since_date']:date('Y-m-d'),'class="form-control"');
+    $form->addDateField('sinceDate', __('Member Since').'*', $rec_d['member_since_date']??date('Y-m-d'),'class="form-control"');
     // member register date
-    $form->addDateField('regDate', __('Register Date').'*', $form->edit_mode?$rec_d['register_date']:date('Y-m-d'),'class="form-control"');
+    $form->addDateField('regDate', __('Register Date').'*', $rec_d['register_date']??date('Y-m-d'),'class="form-control"');
     // member expire date
     if ($form->edit_mode) {
-        $form->addDateField('expDate', __('Expiry Date').'*', $rec_d['expire_date'],'class="form-control"');
+        $form->addDateField('expDate', __('Expiry Date').'*', $rec_d['expire_date']??'','class="form-control"');
     } else {
         $chbox_array[] = array('1', __('Auto Set'));
         $str_input = '<div>'.simbio_form_element::checkBox('extend', $chbox_array, '1').'</div>';
-        $str_input .= '<div>'.simbio_form_element::dateField('expDate', $rec_d['expire_date'], 'class="form-control"').'</div>';
+        $str_input .= '<div>'.simbio_form_element::dateField('expDate', $rec_d['expire_date']??'', 'class="form-control"').'</div>';
         $form->addAnything(__('Expiry Date').'*', $str_input);
     }
     // member institution
-    $form->addTextField('text', 'instName', __('Institution'), $rec_d['inst_name'], 'class="form-control" style="width: 100%;"');
+    $form->addTextField('text', 'instName', __('Institution'), $rec_d['inst_name']??'', 'class="form-control" style="width: 100%;"');
     // member type
         // get mtype data related to this record from database
         $mtype_query = $dbs->query("SELECT member_type_id, member_type_name FROM mst_member_type");
@@ -464,25 +464,25 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($mtype_data = $mtype_query->fetch_row()) {
             $mtype_options[] = array($mtype_data[0], $mtype_data[1]);
         }
-    $form->addSelectList('memberTypeID', __('Membership Type').'*', $mtype_options, $rec_d['member_type_id'],'class="form-control col-4"');
+    $form->addSelectList('memberTypeID', __('Membership Type').'*', $mtype_options, $rec_d['member_type_id']??'','class="form-control col-4"');
     // member gender
     $gender_chbox[0] = array('1', __('Male'));
     $gender_chbox[1] = array('0', __('Female'));
     $form->addRadio('gender', __('Sex'), $gender_chbox, !empty($rec_d['gender'])?$rec_d['gender']:'0');
     // member address
-    $form->addTextField('textarea', 'memberAddress', __('Address'), $rec_d['member_address'], 'rows="2" class="form-control" style="width: 100%;"');
+    $form->addTextField('textarea', 'memberAddress', __('Address'), $rec_d['member_address']??'', 'rows="2" class="form-control" style="width: 100%;"');
     // member postal
-    $form->addTextField('text', 'memberPostal', __('Postal Code'), $rec_d['postal_code'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'memberPostal', __('Postal Code'), $rec_d['postal_code']??'', 'class="form-control" style="width: 50%;"');
     // member mail address
-    $form->addTextField('textarea', 'memberMailAddress', __('Mail Address'), $rec_d['member_mail_address'], 'rows="2" class="form-control" style="width: 100%;"');
+    $form->addTextField('textarea', 'memberMailAddress', __('Mail Address'), $rec_d['member_mail_address']??'', 'rows="2" class="form-control" style="width: 100%;"');
     // member phone
-    $form->addTextField('text', 'memberPhone', __('Phone Number'), $rec_d['member_phone'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'memberPhone', __('Phone Number'), $rec_d['member_phone']??'', 'class="form-control" style="width: 50%;"');
     // member fax
-    $form->addTextField('text', 'memberFax', __('Fax Number'), $rec_d['member_fax'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'memberFax', __('Fax Number'), $rec_d['member_fax']??'', 'class="form-control" style="width: 50%;"');
     // member pin
-    $form->addTextField('text', 'memberPIN', __('Personal ID Number'), $rec_d['pin'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'memberPIN', __('Personal ID Number'), $rec_d['pin']??'', 'class="form-control" style="width: 50%;"');
     // member notes
-    $form->addTextField('textarea', 'memberNotes', __('Notes'), $rec_d['member_notes'], 'rows="2" class="form-control" style="width: 100%;"');
+    $form->addTextField('textarea', 'memberNotes', __('Notes'), $rec_d['member_notes']??'', 'rows="2" class="form-control" style="width: 100%;"');
 
     /**
      * Custom fields
@@ -501,34 +501,34 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                 if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
                   $cf_max = isset($cfield['max'])?$cfield['max']:'200';
                   $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-                  $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default, 'class="form-control" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+                  $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label,$rec_cust_d[$cf_dbfield]??$cf_default, 'class="form-control" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
                 } else if ($cfield['type'] == 'dropdown') {
-                  $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
+                  $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
                 } else if ($cfield['type'] == 'checklist') {
-                  $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
+                  $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
                 } else if ($cfield['type'] == 'choice') {
-                  $form->addRadio($cf_dbfield, $cf_label, $cf_data, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
+                  $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
                 } else if ($cfield['type'] == 'date') {
-                  $form->addDateField($cf_dbfield, $cf_label, isset($rec_cust_d[$cf_dbfield])?$rec_cust_d[$cf_dbfield]:$cf_default);
+                  $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default);
                 }
             }
         }
     }
 
     // member is_pending
-    $form->addCheckBox('isPending', __('Pending Membership'), array( array('1', __('Yes')) ), $rec_d['is_pending']);
+    $form->addCheckBox('isPending', __('Pending Membership'), array( array('1', __('Yes')) ), $rec_d['is_pending']??'');
     // member photo
     $upper_dir  = '';
     $str_input  = '<div class="row">';
     $str_input .= '<div class="col-2">';
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
-    if ($rec_d['member_image']) {
-        $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['member_image']).'&width=130" class="img-fluid" alt="Image cover">';
+    if (isset($rec_d['member_image'])) {
+        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
+        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
         $str_input .= '</a>';
-        $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.$rec_d['member_image'].'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+        $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
     } else {
-        $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
+        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
         $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid" alt="Image cover">';
         $str_input .= '</a>';
     }
@@ -575,7 +575,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     echo '<style type="text/css">#simbioFormRowdummyPasswdField, #simbioFormRowdummyUserField {display: none}</style>';
 
     // member email
-    $form->addTextField('text', 'memberEmail', __('E-mail'), $rec_d['member_email'], 'class="form-control" style="width: 40%;" class="form-control"');
+    $form->addTextField('text', 'memberEmail', __('E-mail'), $rec_d['member_email']??'', 'class="form-control" style="width: 40%;" class="form-control"');
     // member password
     $form->addTextField('password', 'memberPasswd', __('New Password'), null, 'class="form-control" style="width: 40%;" class="form-control" autocomplete="new-password"');
     // member password confirmation
@@ -583,7 +583,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // edit mode messagge
     if ($form->edit_mode) {
-        if ($rec_d['member_image']) {
+        if (isset($rec_d['member_image'])) {
             if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
                 echo '<div id="memberImage"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['member_image']).'&amp;width=125&amp;timestamp='.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
             }
