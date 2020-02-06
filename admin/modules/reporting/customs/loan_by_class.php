@@ -199,6 +199,7 @@ if (!$reportView) {
         //main class
         for ($main_class=0; $main_class < 10; $main_class++) { 
         $query = "SELECT $coll_query FROM loan_history WHERE TRIM(classification) LIKE '".$main_class."%' ".$criteria;
+        echo $query;
 
         $q_main = $dbs->query($query);
         $q_d = $q_main->fetch_row();
