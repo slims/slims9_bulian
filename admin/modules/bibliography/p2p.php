@@ -80,6 +80,12 @@ function downloadFile($url, $path)
   }
 }
 
+function cleanUrl($url) {
+  $_url = parse_url(trim($url));
+  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path']));
+  return $_url['scheme'].'://'.$_url['host'].$_path.'/';
+}
+
 // get servers
 $server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
@@ -90,7 +96,7 @@ while ($server = $server_q->fetch_assoc()) {
 if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['p2pserver_save'])) {
   require MDLBS . 'bibliography/biblio_utils.inc.php';
 
-  $p2pserver = trim($_POST['p2pserver_save']);
+  $p2pserver = cleanUrl($_POST['p2pserver_save']);
   $gmd_cache = array();
   $publ_cache = array();
   $place_cache = array();
@@ -268,7 +274,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $max_fetch = 20;
   # get server information
   $serverid = (integer)$_GET['p2pserver'];
-  $p2pserver = $sysconf['p2pserver'][$serverid]['uri'];
+  $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
   # get keywords
   $keywords = urlencode($_GET['keywords']);
