@@ -855,11 +855,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   // biblio hide from opac
   $hide_options[] = array('0', __('Show'));
   $hide_options[] = array('1', __('Hide'));
-  $form->addRadio('opacHide', __('Hide in OPAC'), $hide_options, isset($rec_d['opac_hide'])?'1':'0');
+  $form->addRadio('opacHide', __('Hide in OPAC'), $hide_options, isset($rec_d['opac_hide']) && $rec_d['opac_hide'] ?'1':'0');
   // biblio promote to front page
   $promote_options[] = array('0', __('Don\'t Promote'));
   $promote_options[] = array('1', __('Promote'));
-  $form->addRadio('promote', __('Promote To Homepage'), $promote_options, isset($rec_d['promoted'])?'1':'0');
+  $form->addRadio('promote', __('Promote To Homepage'), $promote_options, isset($rec_d['promoted']) && $rec_d['promoted'] ?'1':'0');
   // biblio labels
   $arr_labels = !empty($rec_d['labels'])?unserialize($rec_d['labels']):array();
   if ($arr_labels) {
