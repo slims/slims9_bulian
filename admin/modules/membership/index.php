@@ -72,8 +72,8 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
   $member_id = utility::filterData('mimg', 'post', true, true, true);
   $image_name = utility::filterData('img', 'post', true, true, true);
 
-  $query_image = $dbs->query("SELECT mameber_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
-  if ($query_image > 0) {
+  $query_image = $dbs->query("SELECT member_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
+  if (!empty($query_image->num_rows)) {
     $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $member_id));
     if ($_delete) {
       $postImage = stripslashes($_POST['img']);
