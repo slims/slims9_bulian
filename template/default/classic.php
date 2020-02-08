@@ -136,7 +136,7 @@ function getLatestBiblio($dbs, $limit = 5)
 // ----------------------------------------------------------------------------
 function getRandomBiblio($dbs, $limit = 5)
 {
-  $sql = "SELECT biblio.biblio_id, biblio.title, biblio.image, GROUP_CONCAT(mst_author.author_name SEPARATOR ' - ') AS author
+  $sql = "SELECT max(biblio.biblio_id) AS biblio_id, max(biblio.title) AS title, max(biblio.image) As image, GROUP_CONCAT(mst_author.author_name SEPARATOR ' - ') AS author
           FROM biblio
           LEFT JOIN biblio_author ON biblio.biblio_id=biblio_author.biblio_id
           LEFT JOIN mst_author ON biblio_author.author_id=mst_author.author_id
@@ -163,7 +163,7 @@ function getLatestTopic($dbs, $limit = 5)
           LEFT JOIN biblio AS b ON bt.biblio_id=b.biblio_id
           LEFT JOIN mst_topic AS mt ON mt.topic_id=bt.topic_id
           GROUP BY bt.topic_id
-          ORDER BY b.last_update DESC
+          ORDER BY max(b.last_update) DESC
           LIMIT {$limit}";
 
   $query = $dbs->query($sql);
