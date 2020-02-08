@@ -526,7 +526,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
         $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
         $str_input .= '</a>';
-        $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+        $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
     } else {
         $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
         $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid" alt="Image cover">';
