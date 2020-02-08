@@ -296,13 +296,5 @@ $sysconf['print'][$theme_key] = [
     'default' => $sysconf['print'][$theme_key]['logo'],
     'width' => '40',
     'data' => json_decode(json_encode($img),true)
-  ],  
-  'signature_file' => [
-    'dbfield' => 'data[signature_file]',
-    'label' => __('Signature_File'),
-    'type' => 'dropdown',
-    'default' => $sysconf['print'][$theme_key]['signature_file'],
-    'width' => '40',
-    'data' => json_decode(json_encode($img),true)
   ]
 ];
