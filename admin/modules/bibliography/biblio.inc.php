@@ -466,4 +466,14 @@ class Biblio
 
     return $marc_records;
   }
+
+  /**
+   * @return mixed
+   */
+  public function getError()
+  {
+    return $this->error;
+  }
+
+
 }

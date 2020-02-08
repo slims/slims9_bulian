@@ -66,9 +66,14 @@ class detail
         $this->detail_id = $int_detail_id;
         $this->biblio = new Biblio($this->db, $int_detail_id);
         $this->record_detail = $this->biblio->detail();
-        $this->record_title = $this->record_detail['title'];
-        $this->notes = $this->record_detail['notes'];
-        $this->subjects = $this->record_detail['subjects'];
+        $this->error = $this->biblio->getError();
+        if (isset($this->record_detail['title'])) {
+          $this->record_title = $this->record_detail['title'];
+          $this->notes = $this->record_detail['notes'];
+          $this->subjects = $this->record_detail['subjects'];
+        } else if (!$this->error) {
+          $this->error = 'Data not found!';
+        }
     }
 
 
