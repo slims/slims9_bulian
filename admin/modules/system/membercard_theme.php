@@ -181,7 +181,8 @@ foreach ($dir_tree as $dir) {
   $output .= '<div class="card border-0 mb-4">';
   $output .= '<div class="card-body">';
   $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
-  $output .= '<img class="card-img-top rounded" src="../files/membercard/'. $dir . '/preview.png" height="150" />';
+  $preview = file_exists(UPLOAD.'membercard/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
+  $output .= '<img class="card-img-top rounded" src="../files/membercard/'. $dir . '/'.$preview.'" height="150" />';
   $output .= '</div>';
   $output .= '<div class="card-footer border-0">' . $_btn . '</div>';
   $output .= '</div>';
