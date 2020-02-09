@@ -763,15 +763,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   if ($in_pop_up) {
     $upper_dir = '../../';
   }
-  if (isset($rec_d['image'])) {
+  if (isset($rec_d['image']) && file_exists('../../../images/docs/'.$rec_d['image'])) {
     $str_input .= '<a href="'.SWB.'images/docs/'.($rec_d['image']??'').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
     $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']??'').'&width=130" class="img-fluid" alt="Image cover">';
     $str_input .= '</a>';
     $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['image']??'').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
   } else {
-    $str_input .= '<a href="'.SWB.'images/docs/'.($rec_d['image']??'').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
     $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid" alt="Image cover">';
-    $str_input .= '</a>';
   }
   $str_input .= '</div>';
   $str_input .= '</div>';
