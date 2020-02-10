@@ -158,17 +158,33 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
       $data['notes'] = ($i->getSubfield('a')) ? $i->getSubfield('a') : '';
     }
     // set frequency
-	$j= $record->getField(310);
-	if ($j) {
-		$frequency_id = $j->getSubfield('a');
-		$data['frequency_id'] = utility::getID($dbs, 'mst_frequency', 'frequency_id', 'frequency', $frequency_id, $frequency_cache);
-	}
+  	$j= $record->getField(310);
+  	if ($j) {
+  		$frequency_id = $j->getSubfield('a');
+  		$data['frequency_id'] = utility::getID($dbs, 'mst_frequency', 'frequency_id', 'frequency', $frequency_id, $frequency_cache);
+  	}
+   // set cover
+    $data['image'] = null;
+    $k =  $record->getField('856');
+    if ($k) {
+      $url_image = $k->getSubfield('x');
+      $data_image = pathinfo($url_image);
+      $image_arr = explode('?', $data_image['basename']);
+      $data['image'] = date("YmdHis").$image_arr[0];
+      $image_path = IMGBS . 'docs' . DS . $data['image'];
+      $arrContextOptions = array(
+          "ssl" => array(
+            "verify_peer" => false,
+            "verify_peer_name" => false,
+          ),
+        );
+      file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+    }
 
     $data['opac_hide'] = 0;
     $data['promoted'] = 0;
     $data['labels'] = '';
     $data['spec_detail_info'] = '';
-    $data['image'] = null;
     $data['input_date'] = date('Y-m-d H:i:s');
     $data['last_update'] = date('Y-m-d H:i:s');
 
