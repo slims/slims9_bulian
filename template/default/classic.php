@@ -44,6 +44,7 @@ function getPopularBiblio($dbs, $limit = 5)
           FROM loan AS l
           LEFT JOIN item AS i ON l.item_code=i.item_code
           LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
+          WHERE b.title IS NOT NULL
           GROUP BY b.biblio_id
           ORDER BY total DESC
           LIMIT {$limit}";
@@ -99,6 +100,7 @@ function getPopularTopic($dbs, $limit = 5)
     $sql = "SELECT mt.topic, COUNT(*) AS total
             FROM biblio_topic AS bt
             LEFT JOIN mst_topic AS mt ON bt.topic_id=mt.topic_id
+            WHERE mt.topic IS NOT NULL
             GROUP BY bt.topic_id
             ORDER BY total DESC
             LIMIT {$need}";
@@ -162,6 +164,7 @@ function getLatestTopic($dbs, $limit = 5)
           FROM biblio_topic AS bt
           LEFT JOIN biblio AS b ON bt.biblio_id=b.biblio_id
           LEFT JOIN mst_topic AS mt ON mt.topic_id=bt.topic_id
+          WHERE mt.topic IS NOT NULL
           GROUP BY bt.topic_id
           ORDER BY max(b.last_update) DESC
           LIMIT {$limit}";
@@ -240,7 +243,12 @@ function getImagePath($sysconf, $image, $path = 'docs')
   $thumb_url = '';
   $image = urlencode($image);
   $images_loc = '../../images/' . $path . '/' . $image;
-  $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
+  $img_status = pathinfo('images/' . $path . '/' . $image);
+  if(isset($img_status['extension'])){
+    $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
+  }else{
+    $thumb_url = './lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=120';   
+  }
 
   return $thumb_url;
 }
