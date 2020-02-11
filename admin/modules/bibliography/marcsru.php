@@ -94,7 +94,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     $a = $record->getField(245);
     if ($a) {
       // set title
-      $data['title'] = $a->getSubfield('a') . $a->getSubfield('b') . $a->getSubfield('l');
+      $data['title'] = addslashes($a->getSubfield('a') . $a->getSubfield('b') . $a->getSubfield('l'));
       // set SOR
       $data['sor']   = ($a->getSubfield('c')) ? $a->getSubfield('c') : '';
       // set GMD
@@ -168,17 +168,20 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     $k =  $record->getField('856');
     if ($k) {
       $url_image = $k->getSubfield('x');
+      $url_image = str_replace(' ', '%20', $url_image);
       $data_image = pathinfo($url_image);
-      $image_arr = explode('?', $data_image['basename']);
-      $data['image'] = date("YmdHis").$image_arr[0];
-      $image_path = IMGBS . 'docs' . DS . $data['image'];
+      $image_name = explode('?', $data_image['basename'])[0];
+      $image_path = IMGBS . 'docs' . DS . $image_name;
       $arrContextOptions = array(
           "ssl" => array(
             "verify_peer" => false,
             "verify_peer_name" => false,
           ),
         );
-      file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+      $img = file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+      if($img){
+        $data['image'] = $image_name;    
+      }
     }
 
     $data['opac_hide'] = 0;
@@ -265,7 +268,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$p2pserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$zserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
         $r++;
     }
   }
