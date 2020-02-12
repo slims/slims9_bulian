@@ -50,8 +50,8 @@ strong {
 
 #front-card,
 #back-card {
-  width: <?php echo (floatvalue($sysconf['print']['membercard']['box_width'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
-  height: <?php echo (floatvalue($sysconf['print']['membercard']['box_height'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
+  width: <?= round($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']); ?>px;
+  height: <?= round($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']); ?>px;
   border: solid 1px #e4e4e4;
   position: relative;
 }
