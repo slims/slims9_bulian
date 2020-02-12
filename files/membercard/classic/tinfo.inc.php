@@ -64,7 +64,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Factor'),
     'type' => 'text',
     'default' => $sysconf['print'][$theme_key]['factor'],
-    'width' => '20'
+    'width' => '50'
   ],
     'barcode_scale' => [
     'dbfield' => 'data[barcode_scale]',
@@ -86,7 +86,7 @@ $sysconf['print'][$theme_key] = [
     'dbfield' => 'data[f_color]',
     'label' => __('Font Color'),
     'type' => 'text',
-    'width' => '10',
+    'width' => '20',
     'default' => $sysconf['print'][$theme_key]['f_color']??'#000000',
     'class' => 'colorpicker'
   ],
@@ -94,7 +94,7 @@ $sysconf['print'][$theme_key] = [
     'dbfield' => 'data[fr_color]',
     'label' => __('Frontend Color'),
     'type' => 'text',
-    'width' => '10',
+    'width' => '20',
     'default' => $sysconf['print'][$theme_key]['b_color']??'#E5E5E5',
     'class' => 'colorpicker'
   ],
@@ -102,7 +102,7 @@ $sysconf['print'][$theme_key] = [
     'dbfield' => 'data[b_color]',
     'label' => __('Background Color'),
     'type' => 'text',
-    'width' => '10',
+    'width' => '20',
     'default' => $sysconf['print'][$theme_key]['b_color']??'#ffffff',
     'class' => 'colorpicker'
   ],
