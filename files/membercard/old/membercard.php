@@ -127,8 +127,8 @@ function floatvalue($val){
     font-size: 7px;
     text-align: center;
     border: #cccccc solid 1px;
-    width: <?php echo floatvalue($sysconf['print']['membercard']['photo_width']) * floatvalue($sysconf['print']['membercard']['factor']) ?>px;
-    height: <?php echo floatvalue($sysconf['print']['membercard']['photo_height']) * floatvalue($sysconf['print']['membercard']['factor']) ?>px;
+    width: <?= round($sysconf['print']['membercard']['photo_width']*$sysconf['print']['membercard']['factor']); ?>px;
+    height: <?= round($sysconf['print']['membercard']['photo_height']*$sysconf['print']['membercard']['factor']) ?>px;
   }
 
   #photo_div {
@@ -137,8 +137,8 @@ function floatvalue($val){
     left: 10px;
     top: 130px;
     border: #cccccc solid 1px;
-    width: <?php echo floatvalue($sysconf['print']['membercard']['photo_width'])*floatvalue($sysconf['print']['membercard']['factor']) ?>px;
-    height: <?php echo floatvalue($sysconf['print']['membercard']['photo_height'])*floatvalue($sysconf['print']['membercard']['factor']) ?>px;
+    width: <?= round($sysconf['print']['membercard']['photo_width']*$sysconf['print']['membercard']['factor']) ?>px;
+    height: <?= round($sysconf['print']['membercard']['photo_height']*$sysconf['print']['membercard']['factor']) ?>px;
   }
 
   #front_side {
@@ -152,9 +152,9 @@ function floatvalue($val){
   .container_div {
     z-index: 1;
     position: relative;
-    width: <?php echo floatvalue($sysconf['print']['membercard']['box_width'])*floatvalue($sysconf['print']['membercard']['factor']) ?>px;
-    height: <?php echo floatvalue($sysconf['print']['membercard']['box_height'])*floatvalue($sysconf['print']['membercard']['factor']) ?>px;
-    margin-bottom: <?php echo floatvalue($sysconf['print']['membercard']['items_margin'])*floatvalue($sysconf['print']['membercard']['factor']) ?>px;
+    width: <?= round($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']) ?>px;
+    height: <?= round($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']) ?>px;
+    margin-bottom: <?= round($sysconf['print']['membercard']['items_margin']*$sysconf['print']['membercard']['factor']) ?>px;
     ;
     border: #CCCCCC solid 1px;
     -moz-border-radius: 8px;
