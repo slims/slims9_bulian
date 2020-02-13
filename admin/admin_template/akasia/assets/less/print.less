@@ -1,0 +1,54 @@
+//main: style.less
+.s-print{
+    &__page {
+        &-info {
+            font-size: @font-size;
+            background-color: lighten(@color-3, 40%);
+            color: @black;
+            border-radius: @border-radius;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+    }
+}
+
+.dataListHeaderPrinted {
+    background: lighten(@black,95%);
+    white-space: nowrap;
+    color: @black;
+    a {
+        color: @black;
+        display: block;
+        padding: 15px 0;
+        font-weight: 700;
+    }
+    td {
+        vertical-align: baseline;        
+    }
+}
+
+.dataListPrinted {
+  width: 100%;
+  padding: 5px;
+  background: transparent;
+  td {
+    padding: 5px;
+  }
+}
+
+.notprinted {
+  background-color: #f2f2f2 !important;
+  td {
+    display: block;
+    margin: 20px 10px 15px 10px;
+  }
+}
+
+.alterCellPrinted,
+.alterCellPrinted2 {
+    border-bottom: solid 1px @border-color;
+}
+
+.alterCellPrinted {
+    background: transparent;
+}

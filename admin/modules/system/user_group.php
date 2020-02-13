@@ -210,7 +210,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // group
-    $form->addTextField('text', 'groupName', __('Group Name').'*', $rec_d['group_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'groupName', __('Group Name').'*', $rec_d['group_name']??'', 'style="width: 60%;" class="form-control"');
     // privileges
         // get group access data
         $priv_data = array();

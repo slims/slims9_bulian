@@ -1,0 +1,45 @@
+//main: style.less
+#memberImage {
+  padding: 10px 15px;
+  float: right;
+  img {
+    height: 72px;
+    width: 55px;
+    border-radius: @border-radius;
+  }
+}
+
+#startCirc {
+  position: relative;
+}
+
+.ajaxDDlist {
+  top: 36px !important;
+  left: 70px !important;
+  width: 296px !important;
+  border-color: #cfd4d9;
+  border-bottom-left-radius: @border-radius;
+  border-bottom-right-radius: @border-radius;
+}
+
+.s-member {
+  &__account {
+    td {
+      padding: 10px 15px;  
+    }
+    .s-transaction  {
+      padding: 15px;  
+    }
+  }
+  &__photo {
+    right: 15px;
+    margin-top: 15px;
+    position: absolute;
+    background: @white;
+    img {
+      border-radius: @border-radius;
+      padding: 7px;
+      box-shadow: 0 0 10px lighten(@black, 90%);
+    }
+  }
+}

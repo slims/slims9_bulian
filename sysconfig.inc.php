@@ -27,30 +27,33 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+/*
+ * Set to development or production
+ *
+ * In production mode, the system error message will be disabled
+ */
+define('ENVIRONMENT', 'development');
+
+switch (ENVIRONMENT) {
+  case 'development':
+    @error_reporting(-1);
+    @ini_set('display_errors', true);
+    break;
+  case 'production':
+    @ini_set('display_errors', false);
+    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+    break;
+  default:
+    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+    echo 'The application environment is not set correctly.';
+    exit(1); // EXIT_ERROR
+}
+
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
-// be sure that magic quote is off
-@ini_set('magic_quotes_gpc', false);
-@ini_set('magic_quotes_runtime', false);
-@ini_set('magic_quotes_sybase', false);
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
-// force disabling magic quotes
-if (get_magic_quotes_gpc()) {
-  function stripslashes_deep($value)
-  {
-    $value = is_array($value)?array_map('stripslashes_deep', $value):stripslashes($value);
-    return $value;
-  }
-
-  $_POST = array_map('stripslashes_deep', $_POST);
-  $_GET = array_map('stripslashes_deep', $_GET);
-  $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
-  $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
-}
-// turn off all error messages for security reason
-@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -61,7 +64,8 @@ if ((bool) ini_get('safe_mode')) {
 @date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 8.5 (Akasia)');
+define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
+define('SENAYAN_VERSION_TAG', 'v9.1.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -178,9 +182,6 @@ header('Content-type: text/html; charset=UTF-8');
 $sysconf['template']['dir'] = 'template';
 $sysconf['template']['theme'] = 'default';
 $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
-ob_start();
-include $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-ob_end_clean();
 
 /* ADMIN SECTION GUI Template config */
 $sysconf['admin_template']['dir'] = 'admin_template';
@@ -238,7 +239,7 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = 'flex'; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
+$sysconf['webcam'] = false; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;
@@ -292,7 +293,7 @@ $post_max_size = intval(ini_get('post_max_size'))*1024;
 if ($sysconf['max_upload'] > $post_max_size) {
     $sysconf['max_upload'] = $post_max_size-1024;
 }
-$sysconf['max_image_upload'] = 500;
+$sysconf['max_image_upload'] = 5000;
 // allowed image file to upload
 $sysconf['allowed_images'] = array('.jpeg', '.jpg', '.gif', '.png', '.JPEG', '.JPG', '.GIF', '.PNG');
 // allowed file attachment to upload
@@ -360,13 +361,6 @@ $sysconf['https_port'] = 443;
 $sysconf['date_format'] = 'Y-m-d'; /* Produce 2009-12-31 */
 // $sysconf['date_format'] = 'd-M-Y'; /* Produce 31-Dec-2009 */
 
-// template info config
-if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
-  $sysconf['template']['base'] = 'php'; /* html OR php */
-} else {
-  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-}
-
 $sysconf['pdf']['viewer'] = 'pdfjs'; # 'pdfjs'
 
 /**
@@ -404,7 +398,7 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 /**
  * Peer to peer server config
  */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims8_akasia', 'name' => 'SLiMS Library');
+$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims9_bulian', 'name' => 'SLiMS Library');
 
 /**
  * User and member login method
@@ -627,6 +621,21 @@ $dbs->query('SET NAMES \'utf8\'');
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
 
+// template info config
+if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
+  $sysconf['template']['base'] = 'php'; /* html OR php */
+} else {
+  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
+}
+
+// admin template info config
+if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php')) {
+  require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
+}
+
+// load global settings again for override tinfo setting
+utility::loadSettings($dbs);
+
 // check for user language selection if we are not in admin areas
 if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
     if (isset($_GET['select_lang'])) {
@@ -681,7 +690,7 @@ $sysconf['system_user_type'][2] = __('Senior Librarian');
 $sysconf['system_user_type'][3] = __('Library Staff');
 
 // redirect to mobile template on mobile mode
-if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
+if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && $sysconf['template']['responsive'] === false) {
   $sysconf['template']['theme'] = 'lightweight';
   $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
   $sysconf['enable_xml_detail'] = false;
@@ -689,6 +698,8 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysco
 }
 
 // visitor limitation
+$sysconf['enable_counter_by_ip'] = true;
+$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
 $sysconf['enable_visitor_limitation']     = false; // "true" or "false"
 $sysconf['time_visitor_limitation']       = 60; // in minute
 
@@ -699,3 +710,5 @@ $sysconf['log']['biblio'] = TRUE;
 $sysconf['api']['version'] = 1;
 
 $sysconf['visitor_lang'] = 'hi-IN'; // Please visit this URL for voice mode - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices
+
+$sysconf['always_user_login'] = true;

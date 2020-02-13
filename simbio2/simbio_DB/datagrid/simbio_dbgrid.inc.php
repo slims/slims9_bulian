@@ -168,7 +168,7 @@ class simbio_datagrid extends simbio_table
         $_end = function_exists('microtime')?microtime(true):time();
         $this->query_time = round($_end-$_start, 5);
         // if the query error
-        if (!$this->grid_real_q OR $obj_db->error) {
+        if (ENVIRONMENT === 'development' AND (!$this->grid_real_q OR $obj_db->error)) {
             $_error = '<div style="padding: 5px; margin: 3px; border: 1px dotted #FF0000; color: #FF0000;">';
             $_error .= 'ERROR<br />';
             $_error .= 'MySQL Server said : '.$obj_db->error.'';

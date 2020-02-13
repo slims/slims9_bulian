@@ -114,7 +114,6 @@ if (isset($_POST['doImport'])) {
       $sor_cache = array();
       $author_cache = array();
       $subject_cache = array();
-      $updated_row = '';
 
       while ($record = $marc_data->next()) {
         $data = array();
@@ -412,8 +411,8 @@ $form->table_content_attr = 'class="alterCell2"';
 $str_input  = '<div class="container">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'importFile','class="custom-file-input"');
-$str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+$str_input .= simbio_form_element::textField('file', 'importFile','', 'class="custom-file-input"');
+$str_input .= '<label class="custom-file-label" for="importFile">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col">';
 $str_input .= '<div class="mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';

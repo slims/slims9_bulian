@@ -192,7 +192,7 @@ $file_attach_q = $dbs->query("SELECT fl.*, batt.* FROM files AS fl
 $file_attach_d = $file_attach_q->fetch_assoc();
 
 // edit mode
-if ($file_attach_d['biblio_id'] AND $file_attach_d['file_id']) {
+if (isset($file_attach_d['biblio_id']) AND isset($file_attach_d['file_id'])) {
   $form->addHidden('updateBiblioID', $file_attach_d['biblio_id']);
   $form->addHidden('updateFileID', $file_attach_d['file_id']);
 } else if ($biblioID) {
@@ -200,9 +200,9 @@ if ($file_attach_d['biblio_id'] AND $file_attach_d['file_id']) {
 }
 
 // file title
-$form->addTextField('text', 'fileTitle', __('Title').'*', $file_attach_d['file_title'], 'class="form-control"');
+$form->addTextField('text', 'fileTitle', __('Title').'*', $file_attach_d['file_title']??'', 'class="form-control"');
 // file attachment
-if ($file_attach_d['file_name']) {
+if (isset($file_attach_d['file_name'])) {
   $form->addAnything('Attachment', $file_attach_d['file_dir'].'/'.$file_attach_d['file_name']);
 } else {
   // file upload dir
@@ -233,13 +233,13 @@ if ($file_attach_d['file_name']) {
   $form->addAnything(__('File To Attach'), $str_input);
 }
 // file url
-$form->addTextField('textarea', 'fileURL', __('URL'), $file_attach_d['file_url'], 'rows="1" class="form-control"');
+$form->addTextField('textarea', 'fileURL', __('URL'), $file_attach_d['file_url']??'', 'rows="1" class="form-control"');
 // file description
-$form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc'], 'rows="2" class="form-control"');
+$form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc']??'', 'rows="2" class="form-control"');
 // file access
 $acctype_options[] = array('public', __('Public'));
 $acctype_options[] = array('private', __('Private'));
-$form->addSelectList('accessType', __('Access'), $acctype_options, $file_attach_d['access_type'],'class="form-control col-4"');
+$form->addSelectList('accessType', __('Access'), $acctype_options, $file_attach_d['access_type']??'Public','class="form-control col-4"');
 // file access limit if set to public
 $group_query = $dbs->query('SELECT member_type_id, member_type_name FROM mst_member_type');
 $group_options = array();

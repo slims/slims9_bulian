@@ -53,7 +53,7 @@ function visitOnLoan($member_id)
         // get data
         $mquery = $dbs->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
         $mdata = $mquery->fetch_row();
-        $member_name = $mdata[0];
+        $member_name = $dbs->escape_string($mdata[0]);
         $institution = $mdata[1];
         // insert visit
         $checkin_date  = date('Y-m-d H:i:s');
@@ -538,9 +538,21 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
             $fines_alert = TRUE;
         }
 
+        $count_q = $dbs->query("SELECT COUNT(loan_id) FROM loan WHERE is_return = 0 AND is_lent = 1 AND member_id = '".$dbs->escape_string($_SESSION['memberID'])."'");
+        $count_d = $count_q->fetch_row();
+        if ($count_d[0] > 0) {
+          $active_loan = '';
+          $active_loan_list = 'active';
+          $iframe_src = 'modules/circulation/loan_list.php';
+        } else {
+          $active_loan = 'active';
+          $active_loan_list = '';
+          $iframe_src = 'modules/circulation/loan.php';
+        }
+
 		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
-        echo '<a class="nav-item nav-link notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
-        echo '<a class="nav-item nav-link active notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
+        echo '<a class="nav-item nav-link '.$active_loan.' notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
+        echo '<a class="nav-item nav-link '.$active_loan_list.' notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {
           echo '<a class="nav-item nav-link notAJAX" id="circReserve" href="'.MWB.'circulation/reserve_list.php" target="listsFrame">'.__('Reserve').' (F4)</a>';
         }
@@ -551,7 +563,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         }
         echo '<a class="nav-item nav-link notAJAX" id="circHistory" href="'.MWB.'circulation/member_loan_hist.php" target="listsFrame">'.__('Loan History').' (F10)</a>'."\n";
         echo '</div>';
-        echo '<iframe src="modules/circulation/loan_list.php" id="listsFrame" name="listsFrame" class="s-iframe expandable"></iframe>'."\n";
+        echo '<iframe src="'.$iframe_src.'" id="listsFrame" name="listsFrame" class="s-iframe expandable"></iframe>'."\n";
     }
 
     // Include Barcode Scanner

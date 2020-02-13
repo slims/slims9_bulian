@@ -173,7 +173,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // publisher name
-    $form->addTextField('text', 'publisherName', __('Publisher Name').'*', $rec_d['publisher_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'publisherName', __('Publisher Name').'*', $rec_d['publisher_name']??'', 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

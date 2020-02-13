@@ -1,0 +1,61 @@
+// main: style.less
+/*------------------
+sidebar
+--------------------*/
+#sidepan {
+  top:0;
+  bottom: 0;
+  z-index: 0;
+  z-index: 1090;
+  overflow: auto;
+  position: fixed;
+  width: @sidebar-width;
+  background-color: @sidebar;
+
+  &:before {
+    top: 0;
+    left: 0;
+    z-index: 0;
+    content: '';
+    height: 940px;
+    position: absolute;
+    width: @sidebar-width;
+    // background: url(media/bg.jpg);
+    background-size: cover;
+    opacity: 0.15;
+  }
+
+  .subMenuHeader {
+    font-size: 12pt;
+    margin-top: 10px;
+    color: lighten(@white,100%);
+  }
+
+  div,
+  a {
+    margin: 0;
+    color: @white;
+    display: block;
+    padding: 3px 15px;
+    position: relative;
+    font-size: @font-size;
+    font-family: @font-family;
+  }
+  
+  div {
+    font-weight: bold;
+    color: @white;
+  }
+
+  a:hover,
+  .curModuleLink,
+  .subMenuItem:first-child {
+    background-color: @black !important;
+    color: @color-2 ;
+  }
+  a:hover,
+  .curModuleLink {
+    color: @color-3;
+  }
+
+}

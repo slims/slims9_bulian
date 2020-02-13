@@ -66,6 +66,7 @@ if (!$reportView) {
             <div class="form-group divRow">
                 <label><?php echo __('Classification'); ?></label>
                 <?php
+                $class_options[] = array('ALL', __('ALL'));
                 $class_options[] = array('0', __('0 Classes'));
                 $class_options[] = array('1', __('1 Classes'));
                 $class_options[] = array('2', __('2 Classes'));
@@ -97,11 +98,11 @@ if (!$reportView) {
                 <label><?php echo __('Year'); ?></label>
                 <?php
                 $current_year = date('Y');
-                $year_options = array();
+                $year_options[] = array('',__('ALL'));
                 for ($y = $current_year; $y > 1999; $y--) {
                     $year_options[] = array($y, $y);
                 }
-                echo simbio_form_element::selectList('year', $year_options, $current_year-1,'class="form-control col-1"');
+                echo simbio_form_element::selectList('year', $year_options, __('ALL'),'class="form-control col-1"');
                 ?>
             </div>
             <div class="form-group divRow">
@@ -109,7 +110,7 @@ if (!$reportView) {
                 <select name="membershipType" class="form-control col-1">
                 <?php 
                 foreach ($membershipTypes as $key => $membershipType) {
-                    echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+                    echo '<option value="'.$membershipType['member_type_name'].'">'.$membershipType['member_type_name'].'</option>';
                 }
                 ?>
                 </select>
@@ -155,115 +156,123 @@ if (!$reportView) {
     }
     $output .= '</tr>';
 
+    $criteria = '';
     // class
-    $class_num = isset($_GET['class'])?trim($_GET['class']):'0';
+    $class_num = isset($_GET['class'])?trim($_GET['class']):'ALL';
     // year
-    $selected_year = date('Y')-1;
-    if (isset($_GET['year']) AND !empty($_GET['year'])) {
+    $selected_year = '%';
+    if (isset($_GET['year']) AND !empty($_GET['year']) AND $_GET['year']!='0') {
         $selected_year = (integer)$_GET['year'];
+        $criteria .= ' AND loan_date LIKE \''.$selected_year.'%\'';
+    }else{
+        $criteria .= ' AND loan_date LIKE \'%%\'';
     }
 
-    if (isset($_GET['membershipType']) AND !empty($_GET['membershipType'])) {
-        $membershipType = (integer)$_GET['membershipType'];
+    if (isset($_GET['membershipType']) AND !empty($_GET['membershipType']) AND $_GET['membershipType']!='All') {
+        $membershipType = (string)$_GET['membershipType'];
+        $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
+    }else{
+        $criteria .= ' AND member_type_name LIKE \'%%\'';
     }
 
-    // collection type
-    $coll_type = null;
-    if (isset($_GET['collType'])) {
-        $coll_type = (integer)$_GET['collType'];
-        $coll_type_q = $dbs->query('SELECT coll_type_name FROM mst_coll_type
-            WHERE coll_type_id='.$coll_type);
-        $coll_type_d = $coll_type_q->fetch_row();
-        $coll_type_name = $coll_type_d[0];
+    if (isset($_GET['collType']) AND !empty($_GET['collType']) AND $_GET['collType']!='0') {
+        $collType = (string)$_GET['collType'];
+        $criteria .= ' AND collection_type_name LIKE \''.$collType.'\'';
+    }else{
+        $criteria .= ' AND collection_type_name LIKE \'%%\'';
     }
 
-    if ($class_num == 'NONDECIMAL') {
-        $output .= '<tr class="table-warning"><td><strong>NON DECIMAL Classification</strong></td>';
-		$xlsrows[$xls_rc][$xls_cc] = 'NON DECIMAL Classification';
-		$xls_cc++;
-        // count loan each month
-        foreach ($months as $month_num => $month) {
-            $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
-                LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
-                LEFT JOIN loan AS l ON l.item_code=i.item_code
-                LEFT JOIN member AS m ON l.member_id=m.member_id
-                WHERE classification REGEXP '^[^0-9]' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
-            $loan_d = $loan_q->fetch_row();
-            if ($loan_d[0] > 0) {
-                $output .= '<td>'.$loan_d[0].'</td>';
-            } else {
-                $output .= '<td>'.$loan_d[0].'</td>';
+    $coll_query = "SUM(IF(loan_date LIKE '".$selected_year."-01%',1,0)), 
+        SUM(IF(loan_date LIKE '".$selected_year."-02%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-03%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-04%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-05%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-06%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-07%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-08%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-09%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-10%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-11%',1,0)),
+        SUM(IF(loan_date LIKE '".$selected_year."-12%',1,0))";
+
+    if ($class_num == 'ALL') {
+        //main class
+        for ($main_class=0; $main_class < 10; $main_class++) { 
+        $query = "SELECT $coll_query FROM loan_history WHERE TRIM(classification) LIKE '".$main_class."%' ".$criteria;
+        $q_main = $dbs->query($query);
+        $q_d = $q_main->fetch_row();
+        $output .= '<tr><td>'.$main_class.'00</td>';
+        $data[$main_class.'00'] = $q_d;
+        $xlsrows[$xls_rc][$xls_cc] = $main_class.'00';
+        $xls_cc++;
+            for ($i=0; $i < 12; $i++) { 
+              $output .= '<td>'.(($q_d[$i]??'0')>0?'<strong>'.$q_d[$i].'</strong>':'0').'</td>';
+              $xlsrows[$xls_rc][$xls_cc] = $q_d[$i]??'0';
+              $xls_cc++;
             }
-			$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
-			$xls_cc++;
+        $xls_rc++;
+        $xls_cc =0;  
+        }
+    }
+
+    elseif ($class_num == 'NONDECIMAL') {
+        //main class
+        $query = "SELECT $coll_query FROM loan_history WHERE classification REGEXP '^[^0-9]' ".$criteria;
+        $q_main = $dbs->query($query);
+        $q_d = $q_main->fetch_row();
+        $output .= '<tr><td>'.$class_num.'</td>';
+        $xlsrows[$xls_rc][$xls_cc] = $class_num;
+        $xls_cc++;
+        $data[$class_num] = $q_d;
+        for ($i=0; $i < 12; $i++) { 
+            $output .= '<td>'.(($q_d[$i]??'0')>0?'<strong>'.$q_d[$i].'</strong>':'0').'</td>';
+            $xlsrows[$xls_rc][$xls_cc] = $q_d[$i]??'0';
+            $xls_cc++;
+        }
+        $xls_rc++;
+        $xls_cc =0;
+    }
+    else{
+        //main classes
+        $query = "SELECT $coll_query FROM loan_history WHERE TRIM(classification) LIKE '".$class_num."%' ".$criteria;
+        $q_main = $dbs->query($query);
+        $q_d = $q_main->fetch_row();
+        $output .= '<tr><td><strong>'.$class_num.'00</strong></td>';
+        for ($i=0; $i < 12; $i++) { 
+            $output .= '<td>'.(($q_d[$i]??'0')>0?'<strong>'.$q_d[$i].'</strong>':'0').'</td>';
         }
 
-		$xls_rc++;
-		$xls_cc =0;
-        $output .= '</tr>';
-    } else {
-        $output .= '<tr class="table-warning"><td>'.$class_num.'00</td>';
-		$xlsrows[$xls_rc][$xls_cc] = $class_num;
-		$xls_cc++;
-
-        // count loan each month
-        foreach ($months as $month_num => $month) {
-            $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
-                LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
-                LEFT JOIN loan AS l ON l.item_code=i.item_code
-                LEFT JOIN member AS m ON l.member_id=m.member_id
-                WHERE TRIM(classification) LIKE '$class_num%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
-            $loan_d = $loan_q->fetch_row();
-            if ($loan_d[0] > 0) {
-                $output .= '<td><strong>'.$loan_d[0].'</strong></td>';
-            } else {
-                $output .= '<td>'.$loan_d[0].'</td>';
-            }
-			$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
-			$xls_cc++;
-        }
-
-		$xls_rc++;
-		$xls_cc =0;
-        $output .= '</tr>';
-
-        $class_num2 = 0;
         // 2nd subclasses
-        while ($class_num2 < 10) {
-
+        for ($class_num2=0; $class_num2 < 10; $class_num2++) { 
+            $query = "SELECT $coll_query FROM loan_history WHERE TRIM(classification) LIKE '".$class_num.$class_num2."%' ".$criteria;
+            $q_main = $dbs->query($query);
+            $q_d = $q_main->fetch_row();
             $output .= '<tr><td>'.$class_num.$class_num2.'0</td>';
-			$xlsrows[$xls_rc][$xls_cc] = '   '.$class_num;
-			$xls_cc++;
-
-            // count loan each month
-            foreach ($months as $month_num => $month) {
-                $loan_q = $dbs->query("SELECT COUNT(*) FROM biblio AS b
-                    LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
-                    LEFT JOIN loan AS l ON l.item_code=i.item_code
-                    LEFT JOIN member AS m ON l.member_id=m.member_id
-                    WHERE TRIM(classification) LIKE '$class_num"."$class_num2%' AND l.loan_date LIKE '$selected_year-$month_num-%'".( !empty($coll_type)?" AND i.coll_type_id=$coll_type":'' ).( !empty($membershipType)?" AND m.member_type_id=$membershipType":'' ));
-                $loan_d = $loan_q->fetch_row();
-                if ($loan_d[0] > 0) {
-                    $output .= '<td><strong>'.$loan_d[0].'</strong></td>';
-                } else {
-                    $output .= '<td>'.$loan_d[0].'</td>';
+            $data[$class_num.$class_num2.'0'] = $q_d;
+            $xlsrows[$xls_rc][$xls_cc] = $class_num.$class_num2.'0';
+            $xls_cc++;
+                for ($i=0; $i < 12; $i++) { 
+                  $output .= '<td>'.(($q_d[$i]??'0')>0?'<strong>'.$q_d[$i].'</strong>':'0').'</td>';
+                  $xlsrows[$xls_rc][$xls_cc] = $q_d[$i]??'0';
+                  $xls_cc++;
                 }
-				$xlsrows[$xls_rc][$xls_cc] = $loan_d[0];
-				$xls_cc++;
-	        }
-
-			$xls_rc++;
-			$xls_cc =0;
-            $output .= '</tr>';
-            $class_num2++;
-        }
+                $xls_rc++;
+                $xls_cc =0;      
+            }
     }
     $output .= '</table>';
 
+    unset($_SESSION['chart']);
+    $chart['xAxis'] = $months;
+    $chart['data'] = $data;
+    $chart['title'] =  __('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('ALL')).'</strong>';
+    $_SESSION['chart'] = $chart;
     // print out
-    echo '<div class="mb-2">'.__('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.$selected_year.'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
-	echo '<a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>'."\n";
+    echo '<div class="mb-2">'.__('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('ALL')).'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
+    echo '<a href="../xlsoutput.php" class="s-btn btn btn-default" target="_BLANK">'.__('Export to spreadsheet format').'</a>
+    <a class="s-btn btn btn-info notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530" title="'.__('Loan Recap By Class'). '">'.__('Show in chart/plot').'</a></div>'."\n";
     echo $output;
+
 
 	unset($_SESSION['xlsquery']); 
 	$_SESSION['xlsdata'] = $xlsrows;
@@ -271,5 +280,5 @@ if (!$reportView) {
 	// echo '<p><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></p>';
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
+    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/pop_iframe_tpl.php';
 }

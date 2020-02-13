@@ -1,0 +1,130 @@
+//main: style.less
+.error {
+  color: @bg-error;
+  font-weight: bold;
+}
+
+.errorBox {
+  color: #fff;
+  padding: 15px;
+  margin: 15px;
+  position: relative;
+  background-color: @color-2;
+}
+
+// .infoBox {
+//   background: lighten(@color-3,45%);
+//   padding: 10px 15px;
+//   color:@black;
+// }
+
+.infoBox {
+	line-height: 24px;
+	background-color: #06B1CD;
+	padding: 10px 15px;
+	margin: 10px;
+	color: #fff;
+	position: relative;
+}
+
+.message {
+  background: #ffabab;
+  margin-bottom: 10px;
+  position: relative;
+  color: #fff;
+  padding: 15px;
+  margin: 0;
+  border-radius: @border-radius;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style: none;
+    }
+  }
+
+  & + form {
+    margin: 0 0 10px 0 !important;
+  }
+}
+
+#cbox {
+  &LoadedContent {
+    padding: 10px;
+  }
+
+  &Overlay {
+    background: lighten(@black,25%);
+  }
+
+  &Title {
+    font: @font-size/@font-line-height @font-family;
+    font-weight: bold;
+    padding: 15px 0;
+    background: @color-1;
+    bottom: 0;
+    color: @white;
+  }
+
+  &TopLeft,
+  &TopRight,
+  &BottomLeft,
+  &BottomRight {
+    width: 0;
+    height: 0;
+  }
+
+  &MiddleLeft,
+  &MiddleRight {
+    width: 0;
+  }
+
+  &BottomCenter,
+  &TopCenter {
+    height: 0;
+  }
+}
+
+.important {
+  background-color: #5cb85c;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #fff;
+  border-radius: 3px;
+  width: 100%;
+  display: inline-block;
+}
+
+#colorbox {
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  font-weight: normal;
+}
+
+.card {
+  border-radius: @border-radius; 
+}
+
+.alert {
+  border-radius: @border-radius;
+}
+
+.formElementInfo {
+	display: none;
+}
+.tooltipsy {
+  border-radius: @border-radius;
+	font-size: 12px;
+	padding: 15px;
+	max-width: 200px;
+	color: #fff;
+	background-color: #31353E;
+	text-shadow: none;
+}

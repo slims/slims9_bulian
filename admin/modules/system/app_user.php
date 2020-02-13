@@ -318,21 +318,21 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // user name
-    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
     // user real name
-    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname']??'', 'style="width: 50%;" class="form-control"');
     // user type
     $utype_options = array();
     foreach ($sysconf['system_user_type'] as $id => $name) {
       $utype_options[] = array($id, $name);
     }
-    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type'],'class="form-control col-3"');
+    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type']??'','class="form-control col-3"');
     // user e-mail
-    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email']??'', 'style="width: 50%;" class="form-control"');
     // social media link
     $str_input = '';
     $social_media = array();
-    if ($rec_d['social_media']) {
+    if (isset($rec_d['social_media'])) {
       $social_media = @unserialize($rec_d['social_media']);
     }
     $str_input = '<div class="row">';
@@ -343,7 +343,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addAnything(__('Social Media'), $str_input);
     // user photo
     $str_input = '';
-    if ($rec_d['user_image']) {
+    if (isset($rec_d['user_image'])) {
       $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['user_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['user_image'].'</strong></a> <a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.$rec_d['user_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
     }
     $str_input .= simbio_form_element::textField('file', 'image');
@@ -378,7 +378,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($group_data = $group_query->fetch_row()) {
             $group_options[] = array($group_data[0], $group_data[1]);
         }
-        $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']));
+        $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']??''));
     }
     // user password
     $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;" class="form-control"');
@@ -388,12 +388,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // edit mode messagge
     if ($form->edit_mode) {
         echo '<div class="per_title"><h2>'.__('Change User Profiles').'</h2></div>';
-        echo '<div class="infoBox"><div style="float: left; width: 80%;">'.__('You are going to edit user profile'),' : <b>'.$rec_d['realname'].'</b> <br />'.__('Last Update').'&nbsp;'.$rec_d['last_update'].'
-          <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
+        echo '<div class="infoBox row"><div class="col-6">'.__('You are going to edit user profile'),' : <b>'.$rec_d['realname'].'</b> <br />'.__('Last Update').'&nbsp;'.$rec_d['last_update'].'
+        <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
         if ($rec_d['user_image']) {
-          if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
-            echo '<div id="userImage" style="float: right;"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['user_image']).'&amp;width=180&amp;timestamp='.date('his').'" style="border: 1px solid #999999" /></div>';
-          }
+            if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
+            echo '<div class="col-6"><div id="userImage" class="float-right"><img src="../images/persons/'.urlencode($rec_d['user_image']).'?'.date('this').'" class="w-100"/></div></div>';
+            }
         }
         echo '</div>';
     }

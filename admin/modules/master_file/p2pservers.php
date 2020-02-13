@@ -117,7 +117,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
   <div class="per_title">
-      <h2><?php echo __('P2P Servers'); ?></h2>
+      <h2><?php echo __('Copy Cataloging Server Configuration'); ?></h2>
   </div>
   <div class="sub_section">
     <div class="btn-group">
@@ -164,11 +164,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
   /* Form Element(s) */
   // Server name
-  $form->addTextField('text', 'serverName', __('Server Name').'*', $rec_d['name'], 'style="width: 50%;" class="form-control"');
+  $form->addTextField('text', 'serverName', __('Server Name').'*', $rec_d['name']??'', 'style="width: 50%;" class="form-control"');
   // Server URI
-  $form->addTextField('text', 'serverUri', __('URI').'*', $rec_d['uri'], 'class="form-control"');
+  $form->addTextField('text', 'serverUri', __('URI').'*', $rec_d['uri']??'', 'class="form-control"');
   // Server type
-  $form->addSelectList('serverType', __('Server Type'), $serverType, $rec_d['server_type'],'class="form-control col-3"');
+  $form->addSelectList('serverType', __('Server Type'), $serverType, $rec_d['server_type']??'','class="form-control col-3"');
 
   // edit mode messagge
   if ($form->edit_mode) {

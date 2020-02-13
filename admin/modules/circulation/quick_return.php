@@ -52,8 +52,30 @@ if (!($can_read AND $can_write)) {
 if (!$sysconf['quick_return']) {
     die('<div class="errorBox">'.__('Quick Return is disabled').'</div');
 }
+if($sysconf['barcode_reader']) {
+ob_start();
+require SB.'admin/'.$sysconf['admin_template']['dir'].'/barcodescannermodal.tpl.php';
+$barcode = ob_get_clean();
+echo $barcode;
 ?>
+  <script type="text/javascript">
+//   eddy xxx
+    $('#barcodeReader').click(function(e){
+      e.preventDefault();
+      var url = $(this).attr('href');
+      $('#iframeBarcodeReader').attr('src', url);
+      $('#barcodeModal').modal('show');
+    });
 
+    $(document.body).bind('keyup', this, function(e){
+      // F8
+      if(e.keyCode == 119) {
+        $('#barcodeReader').click();
+      }
+    });
+    parent.$(".modal-backdrop").remove();
+  </script>
+  <?php } ?>
 <div class="menuBox">
 <div class="menuBoxInner quickReturnIcon">
     <div class="per_title">
@@ -64,10 +86,13 @@ if (!$sysconf['quick_return']) {
     </div>
     <div class="sub_section">
       <form action="<?php echo MWB; ?>circulation/ajax_action.php" target="circAction" method="post" class="form-inline notAJAX">
-      <?php echo __('Item ID'); ?>
-      <input type="text" name="quickReturnID" id="quickReturnID" size="30" class="form-control col-3" />
-      <input type="submit" value="<?php echo __('Return'); ?>" class="s-btn btn btn-default" />
-      </form>
+        <?php echo __('Item ID'); ?>
+        <input type="text" name="quickReturnID" id="quickReturnID" size="30" class="form-control col-3" />
+        <input type="submit" value="<?php echo __('Return'); ?>" id="quickReturnProcess" class="s-btn btn btn-default" />
+        <?php if($sysconf['barcode_reader']) : ?>
+        <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=quickreturn' ?>">Open Barcode Reader - Experimental (F8)</a>
+        <?php endif ?>
+    </form>
       <iframe name="circAction" id="circAction" style="display: inline; width: 5px; height: 5px; visibility: hidden;"></iframe>
     </div>
 </div>

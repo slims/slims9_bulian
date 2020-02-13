@@ -66,9 +66,14 @@ class detail
         $this->detail_id = $int_detail_id;
         $this->biblio = new Biblio($this->db, $int_detail_id);
         $this->record_detail = $this->biblio->detail();
-        $this->record_title = $this->record_detail['title'];
-        $this->notes = $this->record_detail['notes'];
-        $this->subjects = $this->record_detail['subjects'];
+        $this->error = $this->biblio->getError();
+        if (isset($this->record_detail['title'])) {
+          $this->record_title = $this->record_detail['title'];
+          $this->notes = $this->record_detail['notes'];
+          $this->subjects = $this->record_detail['subjects'];
+        } else if (!$this->error) {
+          $this->error = 'Data not found!';
+        }
     }
 
 
@@ -518,11 +523,11 @@ class detail
         $_xml_output .= '</originInfo>'."\n";
         */
         $xml->startElement('originInfo');
-        $xml->startElement('place');
-            $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['publish_place']); $xml->endElement();
+            $xml->startElement('place');
+              $xml->startElement('placeTerm'); $xml->writeAttribute('type', 'text'); $this->xmlWrite($xml, $this->record_detail['publish_place']);$xml->endElement();
+            $xml->endElement();
             $xml->startElement('publisher'); $this->xmlWrite($xml, $this->record_detail['publisher_name']); $xml->endElement();
             $xml->startElement('dateIssued'); $this->xmlWrite($xml, $this->record_detail['publish_year']); $xml->endElement();
-        $xml->endElement();
         $xml->endElement();
 
         // language

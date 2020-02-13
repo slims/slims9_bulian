@@ -1,75 +1,109 @@
 <?php
 /**
- * Slims Installer files
- *
- * Copyright © 2006 - 2012 Advanced Power of PHP
- * Some modifications & patches by Eddy Subratha (eddy.subratha@gmail.com)
- * Some modification by Waris Agung Widodo (ido.alit@gmail.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
+ * @Date                : 2020-01-10 08:01
+ * @File name           : index.php
  */
 
-include "settings.php";    
-if (file_exists($config_file_path)) {        
-    header("location: ".$application_start_file);
-    exit;
+if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
+    header('Location: ' . '../index.php');
+    exit();
 }
 
-ob_start();
-phpinfo();
-$phpinfo = array('phpinfo' => array());
-if(preg_match_all('#(?:<h2>(?:<a name=".*?">)?(.*?)(?:</a>)?</h2>)|(?:<tr(?: class=".*?")?><t[hd](?: class=".*?")?>(.*?)\s*</t[hd]>(?:<t[hd](?: class=".*?")?>(.*?)\s*</t[hd]>(?:<t[hd](?: class=".*?")?>(.*?)\s*</t[hd]>)?)?</tr>)#s', ob_get_clean(), $matches, PREG_SET_ORDER))
-foreach($matches as $match)
-{
-    if(strlen($match[1]))
-        $phpinfo[$match[1]] = array();
-    elseif(isset($match[3]))
-		@$phpinfo[end(array_keys($phpinfo))][$match[2]] = isset($match[4]) ? array($match[3], $match[4]) : $match[3];
-    else
-        @$phpinfo[end(array_keys($phpinfo))][] = $match[2];
-}
+session_start();
+$length = 24;
+$_SESSION['csrf_token'] = bin2hex(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length));
+
 ?>
-
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>Start | Slims Installer</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	<link rel="shortcut icon" href="img/webicon.ico" type="image/x-icon"/>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="../webicon.ico" type="image/x-icon"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/tailwind.min.css">
+
+    <title>SLiMS Installer</title>
+    <style>
+        .slims-version {
+            transform: rotate(-90deg);
+            transform-origin: top left;
+            text-align: left;
+            height: 24px;
+            line-height: 24px;
+            width: 400px;
+            position: absolute;
+            left: 1.5rem;
+            bottom: 0;
+            color: white;
+            letter-spacing: 0.5em;
+            font-size: 10px;
+            padding-left: 60px;
+        }
+
+        .slims-version:before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            height: 1px;
+            width: 50px;
+            background-color: white;
+        }
+
+        .slims-version .slims-dash {
+            height: 1px;
+            width: 15px;
+            background-color: white;
+            display: inline-block;
+        }
+
+        .lds-dual-ring {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .lds-dual-ring:after {
+            content: " ";
+            display: block;
+            width: 17px;
+            height: 17px;
+            margin: 1px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-dual-ring 1s linear infinite;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="wrapper" id="welcome-wrap">
-    	<div id="welcome" class="content">
-    		<div class="content-body">
-	    		<div id="welcome-title">
-	    			<div id="logo"><img src="img/logo.png"></div>
-		    		<h2>Welcome to SLiMS 8 Akasia <small>update 3</small></h2>
-		    	</div>
-		    	<div class="content-footer">
-		    		<div class="toright">
-				    	<input type="button" class="s-btn btn btn-default" value="Let's Start The Installation" name="submit" title="Click to start installation" onclick="document.location.href='check_system.php'">	    
-				    </div>
-		    	</div>
-    		</div>
-    	</div>
-
-	    <?php include_once("footer.php"); ?>
-
-    </div>
+<div id="app" class="bg-gray-800 font-light">
+    <welcome v-if="section === 'welcome'" @click="section = 'system'"></welcome>
+    <system v-if="section === 'system'" @click="section = 'select-task'"></system>
+    <tasks v-if="section === 'select-task'" @click="selectTask"></tasks>
+    <install v-if="section === 'install'" @next="section = 'create-admin'"></install>
+    <upgrade v-if="section === 'upgrade'" @next="section = 'select-version'"></upgrade>
+    <select-version v-if="section === 'select-version'" @success="section = 'success'"></select-version>
+    <account v-if="section === 'create-admin'" @notwrite="setSection('show-config', 'create-admin')"
+             @success="section = 'success'"></account>
+    <show-config v-if="section === 'show-config'" :section="lastSection"></show-config>
+    <success v-if="section === 'success'"></success>
+</div>
+<!-- Required JavaScript -->
+<script src="js/vue.min.js"></script>
+<script src="js/main.js?v=<? date('YmdHis'); ?>" type="module" csrf="<?= $_SESSION['csrf_token'] ?>"></script>
 </body>
 </html>
-

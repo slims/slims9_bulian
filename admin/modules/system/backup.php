@@ -54,6 +54,11 @@ if (!($can_read AND $can_write)) {
 	<div class="per_title">
 	    <h2><?php echo __('Database Backup'); ?></h2>
   </div>
+  <?php
+  if (!file_exists($sysconf['mysqldump'])) {
+      echo '<div class="alert alert-danger rounded-none">'.__('The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won\'t be able to do any database backups.').'</div>';
+  }
+  ?>
 	<div class="sub_section">
 	  <div class="btn-group">
       <button onclick="$('#createBackup').submit()" class="notAJAX btn btn-success"><?php echo __('Start New Backup'); ?></button>

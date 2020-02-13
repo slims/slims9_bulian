@@ -173,9 +173,9 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 
     /* Form Element(s) */
     // fines dates
-    $form->addDateField('finesDate', __('Fines Date'), $rec_d['fines_date'],'class="form-control"');
+    $form->addDateField('finesDate', __('Fines Date'), $rec_d['fines_date']??'','class="form-control"');
     // fines description
-    $form->addTextField('text', 'finesDesc', __('Description/Name').'*', $rec_d['description'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'finesDesc', __('Description/Name').'*', $rec_d['description']??'', 'style="width: 60%;" class="form-control"');
     // fines debet
     $form->addTextField('text', 'debet', __('Debit').'*', !empty($rec_d['debet'])?$rec_d['debet']:'0', 'style="width: 20%;" class="form-control"');
     // fines credit

@@ -70,8 +70,7 @@ $stat_data = $stat_query->num_rows;
 $collection_stat[__('Total Items/Copies')] = $stat_data;
 
 // total number of checkout items
-$stat_query = $dbs->query('SELECT COUNT(item_id) FROM item AS i
-    LEFT JOIN loan AS l ON i.item_code=l.item_code
+$stat_query = $dbs->query('SELECT COUNT(item_code) FROM loan_history
     WHERE is_lent=1 AND is_return=0');
 $stat_data = $stat_query->fetch_row();
 $collection_stat[__('Total Checkout Items')] = $stat_data[0];
@@ -108,13 +107,13 @@ $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;
 
 // popular titles
-$stat_query = $dbs->query('SELECT b.title,b.biblio_id AS total_loans FROM `loan` AS l
-    LEFT JOIN item AS i ON l.item_code=i.item_code
-    LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
-    GROUP BY b.biblio_id ORDER BY COUNT(l.loan_id) DESC LIMIT 10');
+$stat_query = $dbs->query('SELECT title,biblio_id AS total_loans FROM `loan_history` WHERE member_id IS NOT NULL AND biblio_id IS NOT NULL
+    GROUP BY biblio_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
 $stat_data = '<ol>';
-while ($data = $stat_query->fetch_row()) {
-    $stat_data .= '<li>'.$data[0].'</li>';
+if(!empty($stat_query->num_rows)){
+    while ($data = $stat_query->fetch_row()) {
+        $stat_data .= '<li>'.$data[0].'</li>';
+    }
 }
 $stat_data .= '</ol>';
 $collection_stat[__('10 Most Popular Titles')] = $stat_data;

@@ -254,14 +254,12 @@ if (!$reportView) {
     }
     function showStatus($obj_db, $array_data)
     {
-
+        $output = __('Available');
         $q = $obj_db->query('SELECT item_status_name FROM mst_item_status WHERE item_status_id=\''.$array_data[3].'\'');
-        $d = $q->fetch_row();
-        $s = $d[0];
-        $output = $s;
-
-        if (!$s) {
-            $output = __('Available');
+        if(!empty($q->num_rows)){
+            $d = $q->fetch_row();
+            $s = $d[0];
+            $output = $s;
         }
 
         return $output;

@@ -102,6 +102,7 @@ if (!$reportView) {
     foreach ($months as $month_num => $month) {
         $total_month[$month_num] = 0;
         $output .= '<td>'.$month.'</td>';
+        $xAxis[$month_num] = $month;
     }
     $output .= '</tr>';
 
@@ -121,6 +122,7 @@ if (!$reportView) {
     foreach ($member_types as $id => $member_type) {
         $output .= '<tr>';
         $output .= '<td>'.$member_type.'</td>'."\n";
+        $data[$member_type] = $months;
         foreach ($months as $month_num => $month) {
             $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
                 INNER JOIN (member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id) ON m.member_id=vc.member_id
@@ -128,8 +130,10 @@ if (!$reportView) {
             $visitor_q = $dbs->query($sql_str);
             $visitor_d = $visitor_q->fetch_row();
             if ($visitor_d[0] > 0) {
+              $data[$member_type][$month_num] = $visitor_d[0];
               $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
             } else {
+              $data[$member_type][$month_num] = 0; 
               $output .= '<td>'.$visitor_d[0].'</td>';
             }
             $total_month[$month_num] += $visitor_d[0];
@@ -141,14 +145,17 @@ if (!$reportView) {
     // non member visitor count
     $output .= '<tr>';
     $output .= '<td>'.__('NON-Member Visitor').'</td>'."\n";
+    $data['non_member'] = $months;
     foreach ($months as $month_num => $month) {
         $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
             WHERE (vc.member_id IS NULL OR vc.member_id='') AND vc.checkin_date LIKE '$selected_year-$month_num-%'";
         $visitor_q = $dbs->query($sql_str);
         $visitor_d = $visitor_q->fetch_row();
         if ($visitor_d[0] > 0) {
+            $data['non_member'][$month_num] = $visitor_d[0];
             $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
         } else {
+            $data['non_member'][$month_num] = 0;
             $output .= '<td>'.$visitor_d[0].'</td>';
         }
         $total_month[$month_num] += $visitor_d[0];
@@ -165,11 +172,21 @@ if (!$reportView) {
 
     $output .= '</table>';
 
+
+    unset($_SESSION['chart']);
+    $chart['xAxis'] = $xAxis;
+    $chart['data'] = $data;
+    $chart['title'] =  str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>'));
+    $_SESSION['chart'] = $chart;
+
     // print out
-    echo '<div class="mb-2">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>')).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+
+    echo '<div class="mb-2">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>'));
+    echo '<div class="btn-group"> <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>
+    <a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530">'.__('Show in chart/plot').'</a></div></div>'."\n";
     echo $output;
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
+    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/pop_iframe_tpl.php';
 }

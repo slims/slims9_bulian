@@ -1,0 +1,34 @@
+//main: style.less
+.s-circulation {
+    &__loan {
+        &-list {
+            margin-left: 5px;
+        }
+    }
+    &__loan,
+    &__reserve {
+        border-bottom: solid 1px @border-color;
+        padding: 15px;
+    }
+}
+
+#transaction {
+    margin-top: 20px;
+    background: @black;
+}
+
+#finishForm {
+    margin: 20px 0 10px 0;
+}
+
+.nav-tabs {
+    padding: 0 15px;
+    border-color: lighten(@border-color,5%);
+	.nav-link {
+        font-weight: 700;
+        color: @white;
+        &.active {
+            color: @color-1;
+        }
+	}
+}

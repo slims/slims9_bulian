@@ -175,12 +175,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // language ID
-    $form->addTextField('text', 'langID', __('Language Code').'*', $rec_d['language_id'], 'style="width: 20%;" maxlength="5" class="form-control"');
+    $form->addTextField('text', 'langID', __('Language Code').'*', $rec_d['language_id']??'', 'style="width: 20%;" maxlength="5" class="form-control"');
     // language_name
-    $form->addTextField('text', 'langName', __('Language').'*', $rec_d['language_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'langName', __('Language').'*', $rec_d['language_name']??'', 'style="width: 60%;" class="form-control"');
 
-    // print out the form object
+     // edit mode messagge
+    if ($form->edit_mode) {    
     echo '<div class="infoBox">'.__('You are going to edit language data').' : <b>'.$rec_d['language_name'].'</b>  <br />'.__('Last Update').' '.$rec_d['last_update'].'</div>'; //mfc
+    }
+    // print out the form object
     echo $form->printOut();
 } else {
     /* DOCUMENT LANGUAGE LIST */

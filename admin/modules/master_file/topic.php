@@ -187,16 +187,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // subject
-    $form->addTextField('text', 'topic', __('Subject').'*', $rec_d['topic'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'topic', __('Subject').'*', $rec_d['topic']??'', 'class="form-control" style="width: 60%;"');
 	// classification
-    $form->addTextField('text', 'class', __('Classification Code'), $rec_d['classification'], 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'class', __('Classification Code'), $rec_d['classification']??'', 'class="form-control" style="width: 30%;"');
     // subject type
     foreach ($sysconf['subject_type'] as $subj_type_id => $subj_type) {
         $subj_type_options[] = array($subj_type_id, $subj_type);
     }
-    $form->addSelectList('subjectType', __('Subject Type'), $subj_type_options, $rec_d['topic_type'],'class="form-control col-3"');
+    $form->addSelectList('subjectType', __('Subject Type'), $subj_type_options, $rec_d['topic_type']??'','class="form-control col-3"');
     // authority list
-    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list']??'', 'class="form-control" style="width: 30%;"');
     //  vocabolary control
     if (!$in_pop_up AND $form->edit_mode) {
     $str_input  = '<div class="makeHidden">';

@@ -262,3 +262,11 @@ form.clock {
 .s-member-account td::before {
     display: none;
 }
+
+.rounded-none {
+    border-radius: 0;
+}
+
+[name="keywords"],[name="quickReturnID"]{
+    margin-left: 8px;
+}

@@ -1,6 +1,12 @@
+<?php
+function floatvalue($val){
+  $val = str_replace(",",".",$val);
+  $val = preg_replace('/\.(?=.*\.)/', '', $val);
+  return floatval($val);
+}
+?>
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Member Card</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -121,8 +127,8 @@
     font-size: 7px;
     text-align: center;
     border: #cccccc solid 1px;
-    width: <?php echo $sysconf['print']['membercard']['photo_width'] * $sysconf['print']['membercard']['factor'] ?>px;
-    height: <?php echo $sysconf['print']['membercard']['photo_height'] * $sysconf['print']['membercard']['factor'] ?>px;
+    width: <?= round($sysconf['print']['membercard']['photo_width']*$sysconf['print']['membercard']['factor']); ?>px;
+    height: <?= round($sysconf['print']['membercard']['photo_height']*$sysconf['print']['membercard']['factor']) ?>px;
   }
 
   #photo_div {
@@ -131,8 +137,8 @@
     left: 10px;
     top: 130px;
     border: #cccccc solid 1px;
-    width: <?php echo $sysconf['print']['membercard']['photo_width']*$sysconf['print']['membercard']['factor'] ?>px;
-    height: <?php echo $sysconf['print']['membercard']['photo_height']*$sysconf['print']['membercard']['factor'] ?>px;
+    width: <?= round($sysconf['print']['membercard']['photo_width']*$sysconf['print']['membercard']['factor']) ?>px;
+    height: <?= round($sysconf['print']['membercard']['photo_height']*$sysconf['print']['membercard']['factor']) ?>px;
   }
 
   #front_side {
@@ -146,9 +152,9 @@
   .container_div {
     z-index: 1;
     position: relative;
-    width: <?php echo $sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor'] ?>px;
-    height: <?php echo $sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor'] ?>px;
-    margin-bottom: <?php echo $sysconf['print']['membercard']['items_margin']*$sysconf['print']['membercard']['factor'] ?>px;
+    width: <?= round($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']) ?>px;
+    height: <?= round($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']) ?>px;
+    margin-bottom: <?= round($sysconf['print']['membercard']['items_margin']*$sysconf['print']['membercard']['factor']) ?>px;
     ;
     border: #CCCCCC solid 1px;
     -moz-border-radius: 8px;
@@ -383,10 +389,10 @@
             <hr>
           </div>
           <div id="rules_div">
-            <?php echo $sysconf['print']['membercard']['rules'] ?>
+            <?php echo html_entity_decode($sysconf['print']['membercard']['rules']) ?>
           </div>
           <div id="address_div">
-            <?php echo $sysconf['print']['membercard']['address'] ?>
+            <?php echo html_entity_decode($sysconf['print']['membercard']['address']) ?>
           </div>
         </div>
       </td>

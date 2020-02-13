@@ -1,0 +1,93 @@
+//main: style.less
+table {
+  width: 100%;
+  background: @black;
+  margin-bottom: 0 !important;  
+
+}
+
+.table {
+  color: @white;
+  td, 
+  th {
+    border-color: @border-color;
+  }
+  &-warning {
+    th {
+      background-color: darken(@color-7, 10%) !important;
+    }
+  }
+}
+
+#dataList {
+	position: relative;
+  
+  td {
+    padding: 10px;  
+    a:not(.openPopUp):not(.editLink):not(.btn) {
+      color: @color-4;
+    }
+  }
+}
+
+// .s-table__no-data {
+
+// }
+
+.dataListHeader {
+  background: transparent;
+  td {
+    text-transform: uppercase !important;
+    background: lighten(@black,2%);
+    white-space: nowrap;
+    font-size: 10pt;
+    padding: 7px 15px;
+    border-bottom: solid 1px @border-color;
+  }
+
+  a {
+    white-space: nowrap;
+    color: @color-3;
+  }
+
+  & a[href*='ASC']:after,
+  & a[href*='DESC']:after {
+    font-family: 'FontAwesome';
+    content: "\f0d8";
+    padding-left: 3px;
+    font-size: 12px;
+  }
+
+  & a[href*='ASC']:after {
+    content: "\f0d8";
+  }
+
+  & a[href*='DESC']:after {
+    content: "\f0d7";
+  }
+  
+}
+
+#mainForm {
+  & > table {
+    border-top: solid 1px @border-color;
+  }
+  & td {
+    padding: 10px 15px;
+  }
+}  
+.alterCell,
+.alterCell2 {
+  background-color: @black !important;
+  border-color: @border-color;
+
+  &:hover{
+    background-color: lighten(@black,1%) !important;
+    transition: all 1 ease-in-out;
+
+  }
+
+  &.highlighted {
+    background: darken(@black,3%) !important;
+  }
+}

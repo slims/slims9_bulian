@@ -1,0 +1,98 @@
+// main: style.less
+#calendarPop {
+  background-color: #31353E;
+  margin-left: -1px;
+  margin-top: -1px;
+  padding: 0;
+  color: #666;
+  border: none;
+  border-radius: @border-radius;
+  font-size: 12 px;
+
+  td.selected a {
+    background-color: #ff0;
+    color: #555555;
+  }
+}
+.dateField {
+  padding: 2px 2px 1px;
+  width: 200px;
+  height: 38px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  margin-bottom: 5px;
+  background-image: none;
+}
+.dateInput {
+  width: 160px;
+  float: left;
+  background: #fff;
+}
+.calendarLink {
+  width: 22px;
+  height: 22px;
+  float: right;
+  margin: -35px;
+  color: @color-3;
+  cursor: pointer;
+    &:hover {
+      color: @color-5;
+    }
+    &:before {
+      font-family: 'FontAwesome';
+      content: "\f073";
+      font-size: 16pt;
+    }
+}
+
+.calendar {
+  background-color: #f2f2f2;
+  th {
+    background-color: #f2f2f2 !important;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 2px;
+  }
+  th,
+  td {
+    border: solid 1px @border-color;
+  }
+  td {
+    text-align: right;
+    height: 50px;
+    padding-top: 0px;
+    padding-right: 10px;
+    position: relative;
+    .day_number {
+      height: 20px;
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      width: 100%;
+    }
+    a {
+      color: #555555;
+      display: block;      
+    }
+    .data {
+      font-size: 12pt;
+      font-weight: 700;
+      width: 100%;
+      text-align: center;
+      margin-top: -12px;
+    }
+  }
+  a {
+    padding: 5px 0px;    
+  }
+  .dayname {
+    background: #dee2e6;
+  }
+}
+
+.monthyearselect th {
+  background-color: #ddd !important;
+  border-top: solid 1px #ddd;
+}

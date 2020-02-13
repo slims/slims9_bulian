@@ -196,9 +196,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // location code
-    $form->addTextField('text', 'locationID', __('Location Code').'*', $rec_d['location_id'], 'style="width: 20%;" maxlength="3" class="form-control"');
+    $form->addTextField('text', 'locationID', __('Location Code').'*', $rec_d['location_id']??'', 'style="width: 20%;" maxlength="3" class="form-control"');
     // location name
-    $form->addTextField('text', 'locationName', __('Location Name').'*', $rec_d['location_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'locationName', __('Location Name').'*', $rec_d['location_name']??'', 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
