@@ -192,7 +192,7 @@ if (isset($_POST['clear_biblio'])) {
 
 if ($is_member_login) :
 
-  $member_image = file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
+  $member_image = $_SESSION['m_image'] && file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
 
   // require file
   require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
