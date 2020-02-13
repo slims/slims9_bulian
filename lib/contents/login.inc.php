@@ -211,9 +211,9 @@ if (isset($_POST['updatePassword'])) {
         <?php } ?>
     <?php } else { ?>
         <div class="heading1"><?php echo __('Username'); ?></div>
-        <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" /></div>
+        <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
-        <div class="login_input"><input type="password" name="passWord" class="login_input" /></div>
+        <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
         <!-- Captcha in form - start -->
         <?php if ($sysconf['captcha']['smc']['enable']) { ?>
           <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>

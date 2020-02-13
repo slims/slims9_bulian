@@ -270,5 +270,5 @@ function truncate($text, $length)
 // ----------------------------------------------------------------------------
 function getQuery($key, $optional = '')
 {
-  return isset($_GET[$key]) ? trim($_GET[$key]) : $optional;
+  return isset($_GET[$key]) ? utility::filterData($key, 'get', true, true, true) : $optional;
 }

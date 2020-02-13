@@ -1,3 +1,7 @@
+<?php
+// clean request uri from xss
+$request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
+?>
 <!-- Page Title
 ============================================= -->
 <title><?php echo $page_title; ?></title>
@@ -32,7 +36,7 @@
 <?php else: ?>
 <meta property="og:description" content="<?php echo $sysconf['library_subname']; ?>"/>
 <?php endif; ?>
-<meta property="og:url" content="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>"/>
+<meta property="og:url" content="//<?php echo $_SERVER["SERVER_NAME"].$request_uri; ?>"/>
 <meta property="og:site_name" content="<?php echo $sysconf['library_name']; ?>"/>
 <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
 <meta property="og:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$image_src ?>"/>
@@ -43,7 +47,7 @@
 <!-- Twitter
 ============================================= -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:url" content="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>"/>
+<meta name="twitter:url" content="//<?php echo $_SERVER["SERVER_NAME"].$request_uri; ?>"/>
 <meta name="twitter:title" content="<?php echo $page_title; ?>"/>
 <?php if(isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
 <meta property="twitter:image" content="//<?php echo $_SERVER["SERVER_NAME"].SWB.$image_src ?>"/>
@@ -57,7 +61,7 @@
 <link rel="stylesheet" href="<?php echo $sysconf['template']['dir']; ?>/core.style.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo JWB; ?>colorbox/colorbox.css" type="text/css" />
 <link rel="profile" href="http://www.slims.web.id/">
-<link rel="canonical" href="//<?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?>" />
+<link rel="canonical" href="//<?php echo $_SERVER["SERVER_NAME"].$request_uri; ?>" />
 <?php echo $metadata; ?>
 
 <!-- Script

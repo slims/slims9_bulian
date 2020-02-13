@@ -8,6 +8,10 @@
 # @Last modified by:   Waris Agung Widodo
 # @Last modified time: 2019-01-03T11:25:57+07:00
 -->
+<?php
+// clean request uri from xss
+$request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +44,7 @@
   <?php else: ?>
       <meta property="og:description" content="<?php echo $sysconf['library_subname']; ?>"/>
   <?php endif; ?>
-    <meta property="og:url" content="//<?php echo $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; ?>"/>
+    <meta property="og:url" content="//<?php echo $_SERVER["SERVER_NAME"] . $request_uri; ?>"/>
     <meta property="og:site_name" content="<?php echo $sysconf['library_name']; ?>"/>
   <?php if (isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
       <meta property="og:image" content="//<?php echo $_SERVER["SERVER_NAME"] . SWB . $image_src ?>"/>
@@ -50,7 +54,7 @@
   <?php endif; ?>
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="//<?php echo $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; ?>"/>
+    <meta name="twitter:url" content="//<?php echo $_SERVER["SERVER_NAME"] . $request_uri; ?>"/>
     <meta name="twitter:title" content="<?php echo $page_title; ?>"/>
   <?php if (isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
       <meta property="twitter:image" content="//<?php echo $_SERVER["SERVER_NAME"] . SWB . $image_src ?>"/>

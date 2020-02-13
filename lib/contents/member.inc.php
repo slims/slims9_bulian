@@ -192,7 +192,7 @@ if (isset($_POST['clear_biblio'])) {
 
 if ($is_member_login) :
 
-  $member_image = file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
+  $member_image = $_SESSION['m_image'] && file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
 
   // require file
   require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
@@ -726,7 +726,7 @@ if ($is_member_login) :
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID" placeholder="Enter member ID" required/></div>
                 <div class="fieldLabel marginTop"><?php echo __('Password'); ?></div>
-                <div class="login_input"><input class="form-control" type="password" name="memberPassWord" placeholder="Enter password" required/></div>
+                <div class="login_input"><input class="form-control" type="password" name="memberPassWord" placeholder="Enter password" required autocomplete="off"/></div>
                 <!-- Captcha in form - start -->
                 <div>
                   <?php if ($sysconf['captcha']['member']['enable']) { ?>
