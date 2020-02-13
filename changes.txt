@@ -39,6 +39,16 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.1.0 (Bulian)
+========================================================================
+Added : Option to activate mobile view in default theme customization
+Added : Improve compatibility with PHP7.4 and MySQL5.7
+Fixed : Membercard print view when default language is Bahasa Indonesia
+Added : Ability to download book cover, when available, with MARC SRU copy cataloguing
+Added : Updated translation for Urdu Language
+Added : Environment mode for development and or production
+Added : Other minor changes
+
 SLiMS 9 (Bulian)
 ========================================================================
 Added : New localisation for Urdu (Pakistan) language
