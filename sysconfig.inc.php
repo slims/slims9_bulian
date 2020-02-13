@@ -27,13 +27,33 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+/*
+ * Set to development or production
+ *
+ * In production mode, the system error message will be disabled
+ */
+define('ENVIRONMENT', 'development');
+
+switch (ENVIRONMENT) {
+  case 'development':
+    @error_reporting(-1);
+    @ini_set('display_errors', true);
+    break;
+  case 'production':
+    @ini_set('display_errors', false);
+    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+    break;
+  default:
+    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+    echo 'The application environment is not set correctly.';
+    exit(1); // EXIT_ERROR
+}
+
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
-// turn off all error messages for security reason
-@ini_set('display_errors', true);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
