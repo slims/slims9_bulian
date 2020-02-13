@@ -53,6 +53,16 @@ $(document).ready(() => {
                 })
             })
     })
+
+    $('.collapse-detail')
+        .on('shown.bs.collapse', e => {
+            let id = e.target.getAttribute('id')
+            $(`#btn-${id} i`).removeClass('fa-angle-double-down').addClass('fa-angle-double-up')
+        })
+        .on('hidden.bs.collapse', e => {
+            let id = e.target.getAttribute('id')
+            $(`#btn-${id} i`).removeClass('fa-angle-double-up').addClass('fa-angle-double-down')
+        })
 });
 
 // remove &nbsp in pagging

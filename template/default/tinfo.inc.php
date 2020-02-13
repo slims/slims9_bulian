@@ -26,6 +26,16 @@ $sysconf['template']['classic_twitter_link'] = 'https://twitter.com/slims_offici
 $sysconf['template']['classic_youtube_link'] = 'https://youtube.com';
 
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
+  'responsive' => [
+    'dbfield' => 'responsive',
+    'label' => 'Enable this theme for mobile?',
+    'type' => 'dropdown',
+    'default' => 0,
+    'data' => [
+      [1, 'Yes, please!'],
+      [0, 'No, I want use lighweight theme']
+    ]
+  ],
   'subtitle' => [
     'dbfield' => 'classic_library_subname',
     'label' => 'Library Sub Name',

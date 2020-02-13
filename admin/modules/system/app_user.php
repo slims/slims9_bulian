@@ -318,21 +318,21 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // user name
-    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
     // user real name
-    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname']??'', 'style="width: 50%;" class="form-control"');
     // user type
     $utype_options = array();
     foreach ($sysconf['system_user_type'] as $id => $name) {
       $utype_options[] = array($id, $name);
     }
-    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type'],'class="form-control col-3"');
+    $form->addSelectList('userType', __('User Type').'*', $utype_options, $rec_d['user_type']??'','class="form-control col-3"');
     // user e-mail
-    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email'], 'style="width: 50%;" class="form-control"');
+    $form->addTextField('text', 'eMail', __('E-Mail'), $rec_d['email']??'', 'style="width: 50%;" class="form-control"');
     // social media link
     $str_input = '';
     $social_media = array();
-    if ($rec_d['social_media']) {
+    if (isset($rec_d['social_media'])) {
       $social_media = @unserialize($rec_d['social_media']);
     }
     $str_input = '<div class="row">';
@@ -343,7 +343,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addAnything(__('Social Media'), $str_input);
     // user photo
     $str_input = '';
-    if ($rec_d['user_image']) {
+    if (isset($rec_d['user_image'])) {
       $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['user_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['user_image'].'</strong></a> <a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.$rec_d['user_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
     }
     $str_input .= simbio_form_element::textField('file', 'image');
@@ -378,7 +378,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($group_data = $group_query->fetch_row()) {
             $group_options[] = array($group_data[0], $group_data[1]);
         }
-        $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']));
+        $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']??''));
     }
     // user password
     $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;" class="form-control"');

@@ -32,7 +32,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Front Header1 Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['front_header1_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'front_header2_text' => [
@@ -47,7 +47,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Front Header2 Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['front_header2_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'back_header1_text' => [
@@ -62,7 +62,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Back Header1 Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['back_header1_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'back_header2_text' => [
@@ -77,7 +77,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Back Header2 Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['back_header2_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'header_color' => [
@@ -85,7 +85,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Header Color'),
     'type' => 'text',
     'default' => $sysconf['print'][$theme_key]['header_color'],
-    'width' => '10',
+    'width' => '20',
     'class' => 'colorpicker'
   ],
     'rules' => [
@@ -102,7 +102,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Rules Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['rules_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'address' => [
@@ -118,7 +118,7 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Address Font Size'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['address_font_size'],
-    'width' => '10',
+    'width' => '20',
     'data' => json_decode(json_encode($font_size),true)
   ],
     'box_width' => [
@@ -294,14 +294,6 @@ $sysconf['print'][$theme_key] = [
     'label' => __('Logo'),
     'type' => 'dropdown',
     'default' => $sysconf['print'][$theme_key]['logo'],
-    'width' => '40',
-    'data' => json_decode(json_encode($img),true)
-  ],  
-  'signature_file' => [
-    'dbfield' => 'data[signature_file]',
-    'label' => __('Signature_File'),
-    'type' => 'dropdown',
-    'default' => $sysconf['print'][$theme_key]['signature_file'],
     'width' => '40',
     'data' => json_decode(json_encode($img),true)
   ]

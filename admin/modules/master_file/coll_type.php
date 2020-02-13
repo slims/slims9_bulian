@@ -191,7 +191,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // coll_type_name
-    $form->addTextField('text', 'collTypeName', __('Collection Type').'*', $rec_d['coll_type_name'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'collTypeName', __('Collection Type').'*', $rec_d['coll_type_name']??'', 'style="width: 60%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

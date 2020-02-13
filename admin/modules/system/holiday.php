@@ -206,13 +206,13 @@ if (isset($_GET['mode'])) {
 
         /* Form Element(s) */
         // holiday date start
-        $form->addDateField('holDate', __('Holiday Date Start'), $rec_d['holiday_date'],'class="form-control"');
+        $form->addDateField('holDate', __('Holiday Date Start'), $rec_d['holiday_date']??'','class="form-control"');
         // holiday date end
         if (!$form->edit_mode) {
-            $form->addDateField('holDateEnd', __('Holiday Date End'), $rec_d['holiday_date'],'class="form-control"');
+            $form->addDateField('holDateEnd', __('Holiday Date End'), $rec_d['holiday_date']??'','class="form-control"');
         }
         // holiday description
-        $form->addTextField('text', 'holDesc', __('Holiday Description').'*', $rec_d['description'], 'style="width: 100%;" class="form-control"');
+        $form->addTextField('text', 'holDesc', __('Holiday Description').'*', $rec_d['description']??'', 'style="width: 100%;" class="form-control"');
 
         // edit mode messagge
         if ($form->edit_mode) {

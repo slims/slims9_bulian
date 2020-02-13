@@ -27,13 +27,33 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+/*
+ * Set to development or production
+ *
+ * In production mode, the system error message will be disabled
+ */
+define('ENVIRONMENT', 'development');
+
+switch (ENVIRONMENT) {
+  case 'development':
+    @error_reporting(-1);
+    @ini_set('display_errors', true);
+    break;
+  case 'production':
+    @ini_set('display_errors', false);
+    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+    break;
+  default:
+    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+    echo 'The application environment is not set correctly.';
+    exit(1); // EXIT_ERROR
+}
+
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
-// turn off all error messages for security reason
-@ini_set('display_errors', false);
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
@@ -45,7 +65,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.0.0');
+define('SENAYAN_VERSION_TAG', 'v9.1.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -273,7 +293,7 @@ $post_max_size = intval(ini_get('post_max_size'))*1024;
 if ($sysconf['max_upload'] > $post_max_size) {
     $sysconf['max_upload'] = $post_max_size-1024;
 }
-$sysconf['max_image_upload'] = 500;
+$sysconf['max_image_upload'] = 5000;
 // allowed image file to upload
 $sysconf['allowed_images'] = array('.jpeg', '.jpg', '.gif', '.png', '.JPEG', '.JPG', '.GIF', '.PNG');
 // allowed file attachment to upload
@@ -670,7 +690,7 @@ $sysconf['system_user_type'][2] = __('Senior Librarian');
 $sysconf['system_user_type'][3] = __('Library Staff');
 
 // redirect to mobile template on mobile mode
-if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND $sysconf['template']['responsive'] === false) {
+if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && $sysconf['template']['responsive'] === false) {
   $sysconf['template']['theme'] = 'lightweight';
   $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
   $sysconf['enable_xml_detail'] = false;

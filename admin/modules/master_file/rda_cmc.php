@@ -184,11 +184,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // cmc code
-    $form->addTextField('text', 'code', __('Code').'*', $rec_d['code'], 'style="width: 20%;" maxlength="3" class="form-control col-1"');
+    $form->addTextField('text', 'code', __('Code').'*', $rec_d['code']??'', 'style="width: 20%;" maxlength="3" class="form-control col-1"');
     // cmc name
-    $form->addTextField('text', 'name', __('Name').'*', $rec_d[$type.'_type'], 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'name', __('Name').'*', $rec_d[$type.'_type']??'', 'style="width: 60%;" class="form-control"');
     // marc leader code
-    $form->addTextField('text', 'code2', __('MARC Leader Code').'*', $rec_d['code2'], 'style="width: 20%;" class="form-control"');
+    $form->addTextField('text', 'code2', __('MARC Leader Code').'*', $rec_d['code2']??'', 'style="width: 20%;" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

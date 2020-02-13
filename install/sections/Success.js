@@ -29,7 +29,8 @@ export default {
         <p class="mb-4 mt-1 text-grey-700 leading-normal">
             Support <slims-text></slims-text> development and become part of its history. We appreciate every donation to
             support us in any way. If you willing to make donation, please follow this link:
-            <a class="text-blue-500 whitespace-no-wrap" href="https://slims.web.id/web/pages/support-us/" target="_blank">https://slims.web.id/web/pages/support-us/</a>
+            <a class="text-blue-500 whitespace-no-wrap" href="https://slims.web.id/web/pages/support-us/" target="_blank">https://slims.web.id/web/pages/support-us/</a>.
+            List of individuals and or institutions who have made donations provided at supports.txt.
         </p>
         <p>Your donation means a lot for SLiMS development ahead</p>
 
@@ -41,3 +42,4 @@ export default {
 </div>
 </div>`
 }
+	

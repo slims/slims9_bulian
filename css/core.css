@@ -266,3 +266,7 @@ form.clock {
 .rounded-none {
     border-radius: 0;
 }
+
+[name="keywords"],[name="quickReturnID"]{
+    margin-left: 8px;
+}

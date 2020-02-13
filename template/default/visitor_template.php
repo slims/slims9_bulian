@@ -7,6 +7,20 @@
 
 $main_template_path = __DIR__ . '/login_template.inc.php';
 
+// set default language
+if (isset($_GET['select_lang'])) {
+    $select_lang = trim(strip_tags($_GET['select_lang']));
+    // delete previous language cookie
+    if (isset($_COOKIE['select_lang'])) {
+        @setcookie('select_lang', $select_lang, time()-14400, SWB);
+    }
+    // create language cookie
+    @setcookie('select_lang', $select_lang, time()+14400, SWB);
+    $sysconf['default_lang'] = $select_lang;
+} else if (isset($_COOKIE['select_lang'])) {
+    $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
+}
+
 ?>
 <div class="vegas-slide" style="position: fixed; z-index: -1"></div>
 <div class="flex h-screen w-full" id="visitor-counter" style="background: rgba(0,0,0,0.3)">
@@ -119,6 +133,7 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
                     .then(res => {
                         this.textInfo = res.data
                         this.image = `./images/persons/member_${this.memberId}.jpg`
+                        this.textToSpeech(this.textInfo)
                     })
                     .catch(err => {
                         console.log(err);
@@ -135,6 +150,18 @@ $main_template_path = __DIR__ . '/login_template.inc.php';
                 this.memberId = ''
                 this.institution = ''
                 this.$refs.memberId.focus()
+            },
+            textToSpeech: function(message) {
+                var message = new SpeechSynthesisUtterance(message);
+                var voices = speechSynthesis.getVoices();
+                // console.log(message);
+                message['volume'] = 1;
+                message['rate'] = 1;
+                message['pitch'] = 1;
+                message['lang'] = '<?php echo str_replace('_', '-', $sysconf['default_lang']); ?>';
+                message['voice'] = null;
+                speechSynthesis.cancel();
+                speechSynthesis.speak(message);
             }
         }
     })

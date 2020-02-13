@@ -54,7 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $authorName = trim(strip_tags($_POST['authorName']));
     // check form validity
     if (empty($authorName)) {
-        utility::jsAlert(__('Author name can\'t be empty'));
+        utility::jsToastr(__('Author'),__('Author name can\'t be empty'),'warning');
         exit();
     } else {
         $data['author_name'] = $dbs->escape_string($authorName);
@@ -76,18 +76,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_author', $data, 'author_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Author Data Successfully Updated'));
+                utility::jsToastr(__('Author'),__('Author Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Author Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Author'),__('Author Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_author', $data);
             if ($insert) {
-                utility::jsAlert(__('New Author Data Successfully Saved'));
+                utility::jsToastr(__('Author'),__('New Author Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Author'),__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -100,6 +100,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_used_biblio = array();
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -107,17 +108,42 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_author', 'author_id='.$itemID)) {
+        
+        // check if this author data still used biblio
+        $_sql_biblio_author_q = sprintf('SELECT  ma.author_name, COUNT(ma.author_id),b.title FROM biblio AS b
+        LEFT JOIN biblio_author ba ON ba.biblio_id=b.biblio_id
+        LEFT JOIN mst_author ma ON ma.author_id=ba.author_id
+        WHERE ma.author_id=%d GROUP BY b.title', $itemID);
+        $biblio_author_q = $dbs->query($_sql_biblio_author_q);
+        $biblio_author_d = $biblio_author_q->fetch_row();
+
+        if ($biblio_author_d[1] < 1) {
+            if (!$sql_op->delete('mst_author', 'author_id='.$itemID)) {
+                $error_num++;
+            }
+        }
+         else {
+            $still_used_biblio[] = substr($biblio_author_d[0], 0, 6).'... still used biblio '.substr($biblio_author_d[2], 0, 6).' ..'."\n";
             $error_num++;
         }
     }
 
+    if ($still_used_biblio) {
+        $titles = '';
+        foreach ($still_used_biblio as $title) {
+          $titles .= $title."\n";
+        }
+        utility::jsToastr(__('Author'),__('Below data can not be deleted:')."\n".$titles, 'warning');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', {addData: \''.$_POST['lastQueryStr'].'\'});</script>';
+        exit();
+    }
+
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+       utility::jsToastr(__('Author'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Author'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
@@ -177,16 +203,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // author name
-    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name']??'', 'class="form-control" style="width: 60%;"');
     // author year
-    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year']??'', 'class="form-control" style="width: 60%;"');
     // authority type
     foreach ($sysconf['authority_type'] as $auth_type_id => $auth_type) {
         $auth_type_options[] = array($auth_type_id, $auth_type);
     }
-    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type'],'class="form-control col-2"');
+    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type']??'','class="form-control col-2"');
     // authority list
-    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list'], 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list']??'', 'class="form-control" style="width: 30%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -197,7 +223,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 } else {
     /* AUTHOR LIST */
     // table spec
-    $sql_criteria = 'a.author_id > 1';
+    $sql_criteria = 'a.author_id > 0';
     if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
         $table_spec = 'mst_author AS a LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id';
         $sql_criteria = 'ba.biblio_id IS NULL OR ba.author_id IS NULL';

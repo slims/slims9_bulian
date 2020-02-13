@@ -8,15 +8,15 @@
 ?>
 
 <div class="container">
-    <div class="flex">
-        <div class="w-64">
+    <div class="flex flex-wrap">
+        <div class="w-64 mb-2">
             <div class="bg-grey-light p-12 rounded">
                 <div class="shadow">
                   <?= $image; ?>
                 </div>
             </div>
         </div>
-        <div class="flex-1 px-4">
+        <div class="flex-1 p-0 px-md-4">
             <p class="lead"><i class="fas fa-bookmark text-green"></i> <?= $gmd_name; ?></p>
             <blockquote class="blockquote">
                 <h4 class="mb-2"><?= $title; ?></h4>
@@ -46,8 +46,8 @@
                 <dt class="col-sm-3"><?= __('Publisher'); ?></dt>
                 <dd class="col-sm-9">
                     <span itemprop="publisher" property="publisher" itemtype="http://schema.org/Organization"
-                          itemscope><?php echo $publisher_name ?></span> :
-                    <span itemprop="publisher" property="publisher"><?php echo $publish_place ?></span>.,
+                          itemscope><?php echo $publish_place ?></span> :
+                    <span itemprop="publisher" property="publisher"><?php echo $publisher_name ?></span>.,
                     <span itemprop="datePublished" property="datePublished"><?php echo $publish_year ?></span>
                 </dd>
                 <dt class="col-sm-3"><?= __('Collation'); ?></dt>

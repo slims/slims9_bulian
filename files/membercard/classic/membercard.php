@@ -13,15 +13,18 @@ function floatvalue($val){
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Document</title>
 <style>
+<?php
+$card_path = str_replace("\\", "/", $card_path);
+?>
 @font-face {
   font-family: "Quicksand";
-  src: url('<?php echo $card_path ?>/fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('<?php echo $card_path ?>fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('<?php echo $card_path ?>/fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('<?php echo $card_path ?>fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
@@ -47,14 +50,14 @@ strong {
 
 #front-card,
 #back-card {
-  width: <?php echo (floatvalue($sysconf['print']['membercard']['box_width'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
-  height: <?php echo (floatvalue($sysconf['print']['membercard']['box_height'])*floatvalue($sysconf['print']['membercard']['factor'])) ?>px;
+  width: <?= round($sysconf['print']['membercard']['box_width']*$sysconf['print']['membercard']['factor']); ?>px;
+  height: <?= round($sysconf['print']['membercard']['box_height']*$sysconf['print']['membercard']['factor']); ?>px;
   border: solid 1px #e4e4e4;
   position: relative;
 }
 
 #front-card {
-  background-color: <?php echo $sysconf['print']['membercard']['b_color']??'#E5E5E5';  ?>;    
+  background-color: <?php echo $sysconf['print']['membercard']['fr_color']??'#E5E5E5';  ?>;    
 }
 
 #front-card header {
@@ -100,12 +103,13 @@ strong {
   width: 55px;
   height: 55px;
   overflow: hidden;
-  border-radius: 50px;
-  border: solid 5px #fff;
+  border-radius: 5px;
+  border: solid 3px #fff;
 }
 
 .photo img {
   width: 55px;
+  border-radius: 3px;
 }
 
 .personality {      
@@ -166,7 +170,7 @@ strong {
 }
 
 #back-card {
-  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.IMG.DS.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
+  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.'images/'.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
   background-size: cover;
 }
 
@@ -251,7 +255,7 @@ strong {
       <main>
         <div class="identity">
           <h1><?php echo $card['member_name'] ?></h1>
-          <?php if(($card['member_image'] != '') && (file_exists(SWB.IMG.'/persons/'.$card['member_image']))) : ?>
+          <?php if(($card['member_image'] != '') || (file_exists(SWB.IMG.'/persons/'.$card['member_image']))) : ?>
           <div class="photo">
             <img src="<?php echo SWB.IMG ?>/persons/<?php echo $card['member_image'] ?>" alt="">
           </div>

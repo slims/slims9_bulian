@@ -101,7 +101,7 @@ if ($biblioID) {
   // database list
   $biblio_topic_q = $dbs->query("SELECT bt.*, t.topic, t.topic_type FROM biblio_topic AS bt
     LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
-    WHERE bt.biblio_id=$biblioID ORDER BY level ASC");
+    WHERE bt.biblio_id=$biblioID AND t.topic IS NOT NULL ORDER BY level ASC");
   if($biblio_topic_q->num_rows > 0){
   $row = 1;
   while ($biblio_topic_d = $biblio_topic_q->fetch_assoc()) {

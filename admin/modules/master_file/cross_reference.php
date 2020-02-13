@@ -173,9 +173,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // code
-    $form->addTextField('text', 'rt-code', __('Cross Reference Code').'*', $rec_d['rt_id'], 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'rt-code', __('Cross Reference Code').'*', $rec_d['rt_id']??'', 'class="form-control" style="width: 30%;"');
 	// description
-    $form->addTextField('text', 'rt-desc', __('Cross Reference Description').'*', $rec_d['rt_desc'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'rt-desc', __('Cross Reference Description').'*', $rec_d['rt_desc']??'', 'class="form-control" style="width: 60%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

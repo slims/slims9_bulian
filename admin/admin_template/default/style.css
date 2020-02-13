@@ -1295,7 +1295,8 @@ table {
   max-width: 72px;
 }
 #imageFilename .removeImage {
-  color: #c54545;
+  margin-top: 5px;
+  border-radius: 5px !important;
 }
 .s-widget-value {
   font-size: 30px;

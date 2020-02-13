@@ -180,17 +180,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // supplier name
-    $form->addTextField('text', 'supplierName', __('Supplier Name').'*', $rec_d['supplier_name'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'supplierName', __('Supplier Name').'*', $rec_d['supplier_name']??'', 'class="form-control" style="width: 60%;"');
     // supplier address
-    $form->addTextField('textarea', 'supplierPlace', __('Address'), $rec_d['address'], 'class="form-control" style="width: 100%;" rows="2"');
+    $form->addTextField('textarea', 'supplierPlace', __('Address'), $rec_d['address']??'', 'class="form-control" style="width: 100%;" rows="2"');
     // supplier contact
-    $form->addTextField('text', 'supplierContact', __('Contact'), $rec_d['contact'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'supplierContact', __('Contact'), $rec_d['contact']??'', 'class="form-control" style="width: 60%;"');
     // supplier phone
-    $form->addTextField('text', 'supplierPhone', __('Phone Number'), $rec_d['phone'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'supplierPhone', __('Phone Number'), $rec_d['phone']??'', 'class="form-control" style="width: 60%;"');
     // supplier fax
-    $form->addTextField('text', 'supplierFax', __('Fax Number'), $rec_d['fax'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'supplierFax', __('Fax Number'), $rec_d['fax']??'', 'class="form-control" style="width: 60%;"');
     // supplier account number
-    $form->addTextField('text', 'supplierAccount', __('Account Number'), $rec_d['account'], 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'supplierAccount', __('Account Number'), $rec_d['account']??'', 'class="form-control" style="width: 60%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

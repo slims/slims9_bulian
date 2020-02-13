@@ -79,6 +79,9 @@ a:hover {
 .nav {
   display: inline;
 }
+#transaction {
+  display: flex;
+}
 .s-sidebar {
   top: 0;
   left: 0;
@@ -1667,6 +1670,61 @@ table.datagrid-action-bar > tbody > tr:first-child > td {
 .monthyearselect th {
   background-color: #ddd !important;
   border-top: solid 1px #ddd;
+}
+.opac {
+  display: none;
+}
+.menuBox {
+  position: relative;
+}
+#pageContent {
+  padding: 15px;
+}
+.s-iframe {
+  min-height: 500px;
+  background: #000000;
+  width: 100%;
+  border: none;
+}
+#blocker {
+  background: #4d4d4d !important;
+}
+#memberImage {
+  padding: 10px 15px;
+  float: right;
+}
+#memberImage img {
+  height: 72px;
+  width: 55px;
+  border-radius: 0;
+}
+#startCirc {
+  position: relative;
+}
+.ajaxDDlist {
+  top: 36px !important;
+  left: 70px !important;
+  width: 296px !important;
+  border-color: #cfd4d9;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.s-member__account td {
+  padding: 10px 15px;
+}
+.s-member__account .s-transaction {
+  padding: 15px;
+}
+.s-member__photo {
+  right: 15px;
+  margin-top: 15px;
+  position: absolute;
+  background: #ffffff;
+}
+.s-member__photo img {
+  border-radius: 0;
+  padding: 7px;
+  box-shadow: 0 0 10px #e6e6e6;
 }
 .s-print__page-info {
   font-size: 12pt;

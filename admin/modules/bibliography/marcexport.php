@@ -131,18 +131,15 @@ if (isset($_GET['action']) AND $_GET['action'] == 'export') {
   // check if label session array is available
   if (!isset($_SESSION['marcexport'])) {
     utility::jsToastr('MARC Export', __('There is no data to export!*'), 'error');
+    exit();
   }
   if (count($_SESSION['marcexport']) < 1) {
     utility::jsToastr('MARC Export', __('There is no data to export!'), 'error');
+    exit();
   }
   
   // concat all ID together
-  $item_ids = '';
-  foreach ($_SESSION['marcexport'] as $id) {
-    $item_ids .= '\''.$id.'\',';
-  }
-  // strip the last comma
-  $item_ids = substr_replace($item_ids, '', -1);
+  $item_ids = implode(',', $_SESSION['marcexport']);
   // unset the session
   unset($_SESSION['marcexport']);
   $biblio = new Biblio($dbs, null);

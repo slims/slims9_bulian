@@ -53,7 +53,7 @@ function visitOnLoan($member_id)
         // get data
         $mquery = $dbs->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
         $mdata = $mquery->fetch_row();
-        $member_name = $mdata[0];
+        $member_name = $dbs->escape_string($mdata[0]);
         $institution = $mdata[1];
         // insert visit
         $checkin_date  = date('Y-m-d H:i:s');
