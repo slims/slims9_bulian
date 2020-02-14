@@ -11,8 +11,17 @@ namespace Install;
 class Upgrade
 {
   public $slims;
+  /**
+   * Latest version
+   *
+   * @var int
+   */
   private $version = 22;
 
+  /**
+   * @param SLiMS $slims
+   * @return Upgrade
+   */
   static function init(SLiMS $slims)
   {
     $upgrade = new Upgrade();
@@ -20,10 +29,16 @@ class Upgrade
     return $upgrade;
   }
 
+  /**
+   * Function to execute upgrade role from specific version
+   *
+   * @param $version
+   * @return array
+   */
   function from($version)
   {
     $raw_err = [];
-    for ($i = ($version+1); $i <= $this->version; $i++) {
+    for ($i = ($version + 1); $i <= $this->version; $i++) {
       $method = 'upgrade_role_' . $i;
       if (method_exists($this, $method)) {
         $raw_err[] = $this->$method();
@@ -40,38 +55,67 @@ class Upgrade
     return $err;
   }
 
+  /**
+   * Upgrade role to v3.3.0
+   */
   function upgrade_role_1()
   {
   }
 
+  /**
+   * Upgrade role to v3.4.0
+   */
   function upgrade_role_2()
   {
   }
 
+  /**
+   * Upgrade role to v3.5.0
+   */
   function upgrade_role_3()
   {
   }
 
+  /**
+   * Upgrade role to v3.6.0
+   */
   function upgrade_role_4()
   {
   }
 
+  /**
+   * Upgrade role to v3.7.0
+   */
   function upgrade_role_5()
   {
   }
 
+  /**
+   * Upgrade role to v3.8.0
+   */
   function upgrade_role_6()
   {
   }
 
+  /**
+   * Upgrade role to v3.9.0
+   */
   function upgrade_role_7()
   {
   }
 
+  /**
+   * Upgrade role to v3.10.0
+   */
   function upgrade_role_8()
   {
   }
 
+  /**
+   * Upgrade role to v3.11.0
+   *
+   * @return mixed
+   */
   function upgrade_role_9()
   {
     $sql['truncate'][] = "TRUNCATE TABLE `setting`;";
@@ -102,10 +146,18 @@ UPDATE `mst_item_status` SET `skip_stock_take`=1 WHERE `rules` LIKE '%s:1:\"2\";
     return $this->slims->query($sql, ['truncate', 'alter', 'insert']);
   }
 
+  /**
+   * Upgrade role to v3.12.0
+   */
   function upgrade_role_10()
   {
   }
 
+  /**
+   * Upgrade role to v3.13.0
+   *
+   * @return mixed
+   */
   function upgrade_role_11()
   {
     $sql['insert'][] = "INSERT INTO `setting` (`setting_id`, `setting_name`, `setting_value`) VALUES (NULL, 'circulation_receipt', 'b:1;'),
@@ -114,10 +166,18 @@ UPDATE `mst_item_status` SET `skip_stock_take`=1 WHERE `rules` LIKE '%s:1:\"2\";
     return $this->slims->query($sql, ['insert']);
   }
 
+  /**
+   * Upgrade role to v3.14.0
+   */
   function upgrade_role_12()
   {
   }
 
+  /**
+   * Upgrade role to v3.15.0
+   *
+   * @return mixed
+   */
   function upgrade_role_13()
   {
     $sql['drop'][] = "DROP TABLE IF EXISTS `search_biblio`;";
@@ -200,6 +260,11 @@ PRIMARY KEY ( `member_id` )
     return $this->slims->query($sql, ['drop', 'create', 'alter', 'insert']);
   }
 
+  /**
+   * Upgrade role to v5.0.0
+   *
+   * @return mixed
+   */
   function upgrade_role_14()
   {
     $sql['alter'][] = "ALTER TABLE  `mst_topic` ADD  `classification` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT  'Classification Code' AFTER  `auth_list` ;";
@@ -209,6 +274,11 @@ PRIMARY KEY ( `member_id` )
     return $this->slims->query($sql, ['alter', 'insert']);
   }
 
+  /**
+   * Upgrade role to v7.0.0
+   *
+   * @return mixed
+   */
   function upgrade_role_15()
   {
     $sql['create'][] = "CREATE TABLE IF NOT EXISTS `comment` (
@@ -243,6 +313,11 @@ ADD `social_media` TEXT NULL AFTER `user_image`;";
     return $this->slims->query($sql, ['create', 'alter', 'insert', 'update']);
   }
 
+  /**
+   * Upgrade role to v8.0.0
+   *
+   * @return mixed
+   */
   function upgrade_role_16()
   {
     $sql['delete'][] = "DELETE FROM `setting` WHERE `setting`.`setting_name` = 'barcode_encoding';";
@@ -507,6 +582,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;";
     return $this->slims->query($sql, ['create', 'alter', 'delete', 'insert', 'update']);
   }
 
+  /**
+   * Upgrade role to v8.2.0
+   *
+   * @return mixed
+   */
   function upgrade_role_17()
   {
 
@@ -519,6 +599,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;";
     return $this->slims->query($sql, ['alter', 'insert']);
   }
 
+  /**
+   * Upgrade role to v8.3.0
+   *
+   * @return mixed
+   */
   function upgrade_role_18()
   {
     $sql['alter'][] = "ALTER TABLE  `biblio` ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
@@ -545,6 +630,11 @@ ADD INDEX (  `uid` ) ;";
     return $this->slims->query($sql, ['create', 'alter']);
   }
 
+  /**
+   * Upgrade role to v8.3.1
+   *
+   * @return mixed
+   */
   function upgrade_role_19()
   {
     $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_log` (
@@ -580,8 +670,13 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     return $this->slims->query($sql, ['create', 'alter']);
   }
 
-
-  function upgrade_role_20() {
+  /**
+   * Upgrade role to v9.0.0
+   *
+   * @return array
+   */
+  function upgrade_role_20()
+  {
     $sql['create'][] = "CREATE TABLE IF NOT EXISTS `loan_history` (
   `loan_id` int(11) NOT NULL,
   `item_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -662,10 +757,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     LEFT JOIN mst_coll_type mct ON mct.coll_type_id=i.coll_type_id
     LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL);";
 
-    return $this->slims->query($sql, ['create', 'insert']);
-  }
+    $error = $this->slims->query($sql, ['create', 'insert']);
 
-  function upgrade_role_21() {
     // create trigger
     $query_trigger[] = "
     DROP TRIGGER IF EXISTS `delete_loan_history`;";
@@ -712,15 +805,9 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
      member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
 
-    return $this->slims->queryTrigger($query_trigger);
-  }
+    $error_trigger = $this->slims->queryTrigger($query_trigger);
+    $error = array_merge($error, $error_trigger);
 
-
-  function upgrade_role_22() {
-    // make sure use default template
-    $this->slims->updateTheme('default');
-
-    $error = [];
     // cek if table not exist
     $tables = require 'tables.php';
     foreach ($tables as $table) {
@@ -752,6 +839,22 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     if ($fix_classification) $error[] = $fix_classification;
 
     return $error;
+  }
+
+  /**
+   * Upgrade role to v9.1.0
+   */
+  function upgrade_role_21()
+  {
+  }
+
+  /**
+   * Upgrade role to v9.1.1
+   */
+  function upgrade_role_22()
+  {
+    // make sure use default template
+    $this->slims->updateTheme('default');
   }
 
 }

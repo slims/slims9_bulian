@@ -41,6 +41,8 @@ export default {
                 {value: 17, text: 'SLiMS 8.2 | Akasia'},
                 {value: 18, text: 'SLiMS 8.3 | Akasia'},
                 {value: 19, text: 'SLiMS 8.3.1 | Akasia'},
+                {value: 20, text: 'SLiMS 9.0.0 | Bulian'},
+                {value: 21, text: 'SLiMS 9.1.0 | Bulian'},
             ]
         }
     },
