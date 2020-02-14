@@ -39,6 +39,10 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.1.1 (Bulian)
+========================================================================
+Added : Upgrade version tag
+
 SLiMS 9.1.0 (Bulian)
 ========================================================================
 Added : Option to activate mobile view in default theme customization
