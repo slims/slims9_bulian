@@ -39,6 +39,10 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 <div class="contentDesc">
   <div class="container-fluid">
 
+  <div id="alert-new-version" class="alert alert-info border-0 mt-3 hidden">
+      <strong>News!</strong> New version of SLiMS (<code id="new_version"></code>) available to <a href="https://github.com/slims/slims9_bulian/releases/latest">download</a>.
+  </div>
+
 <?php
 
 // generate warning messages
@@ -486,7 +490,19 @@ $(function(){
     respondCanvasRadar();
 
 
-});    
+});
+
+    <?php if ($_SESSION['uid'] === '1') : ?>
+    // get lastest release
+    fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
+        .then(res => res.json())
+        .then(res => {
+            if (res.tag_name !== '<?= SENAYAN_VERSION_TAG; ?>') {
+                $('#alert-new-version').removeClass('hidden');
+                $('#new_version').text(res.tag_name);
+            }
+        })
+    <?php endif; ?>
 
 </script>
 <?php } ?>
