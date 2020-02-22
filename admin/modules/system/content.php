@@ -190,19 +190,19 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // content title
-    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title'], 'class="form-control" style="width: 100%;"');
+    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title']??'', 'class="form-control" style="width: 100%;"');
     // content news flag
     $news_chbox[0] = array('0', __('No'));
     $news_chbox[1] = array('1', __('Yes'));
-    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']);
+    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']??'1');
     // content path
-    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path']??'', 'class="form-control" style="width: 50%;"');
     // content description
-    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
+    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc']??'', ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title'].'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title']??''.'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();
