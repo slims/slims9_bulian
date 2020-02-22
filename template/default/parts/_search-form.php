@@ -18,7 +18,7 @@
                             <input ref="keywords" value="<?php echo getQuery('keywords'); ?>" v-model.trim="keywords"
                                    @focus="searchOnFocus" @blur="searchOnBlur" type="text" id="search-input"
                                    name="keywords" class="input-transparent w-100"
-                                   placeholder="Enter keyword to search collection..."/>
+                                   placeholder="<?= __('Enter keyword to search collection...');?>"/>
                         </form>
                     </div>
                 </div>
@@ -26,23 +26,23 @@
                     <div v-if="show" class="advanced-wraper shadow mt-4" id="advanced-wraper"
                          v-click-outside="hideSearch">
                         <p class="label mb-2">
-                            Search by:
+                            <?= __('Search by :');?>
                             <i @click="hideSearch"
                                class="far fa-times-circle float-right text-danger cursor-pointer"></i>
                         </p>
                         <div class="d-flex flex-wrap">
                             <a v-bind:class="{'btn-primary text-white': searchBy === 'keywords', 'btn-outline-secondary': searchBy !== 'keywords' }"
-                               @click="searchOnClick('keywords')" class="btn mr-2 mb-2">All</a>
+                               @click="searchOnClick('keywords')" class="btn mr-2 mb-2"><?= __('ALL')?></a>
                             <a v-bind:class="{'btn-primary text-white': searchBy === 'author', 'btn-outline-secondary': searchBy !== 'author' }"
-                               @click="searchOnClick('author')" class="btn mr-2 mb-2">Author</a>
+                               @click="searchOnClick('author')" class="btn mr-2 mb-2"><?= __('Author');?></a>
                             <a v-bind:class="{'btn-primary text-white': searchBy === 'subject', 'btn-outline-secondary': searchBy !== 'subject' }"
-                               @click="searchOnClick('subject')" class="btn mr-2 mb-2">Subject</a>
+                               @click="searchOnClick('subject')" class="btn mr-2 mb-2"><?= __('Subject');?></a>
                             <a v-bind:class="{'btn-primary text-white': searchBy === 'isbn', 'btn-outline-secondary': searchBy !== 'isbn' }"
-                               @click="searchOnClick('isbn')" class="btn mr-2 mb-2">ISBN/ISSN</a>
-                            <button class="btn btn-light mr-2 mb-2" disabled>OR TRY</button>
-                            <a class="btn btn-outline-primary mr-2 mb-2" data-toggle="modal" data-target="#adv-modal">Advanced Search</a>
+                               @click="searchOnClick('isbn')" class="btn mr-2 mb-2"><?= __('ISBN/ISSN');?></a>
+                            <button class="btn btn-light mr-2 mb-2" disabled><?= __('OR TRY'); ?></button>
+                            <a class="btn btn-outline-primary mr-2 mb-2" data-toggle="modal" data-target="#adv-modal"><?= __('Advanced Search');?></a>
                         </div>
-                        <p v-if="lastKeywords.length > 0" class="label mt-4">Last search:</p>
+                        <p v-if="lastKeywords.length > 0" class="label mt-4"><?= __('Last search:');?></p>
                         <a :href="`index.php?${tmpObj[k].searchBy}=${tmpObj[k].text}&search=search`"
                            class="flex items-center justify-between py-1 text-decoration-none text-grey-darkest hover:text-blue"
                            v-for="k in lastKeywords" :key="k"><span><i

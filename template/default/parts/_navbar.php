@@ -103,7 +103,7 @@ HTML;
                     <?php echo $_SESSION['m_name']; ?>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> Profile</a>
+                      <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> <?= __('Profile');?></a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="index.php?p=member&logout=1"><i
                                   class="fas fa-sign-out-alt mr-3"></i> <?= __('Logout'); ?></a>

@@ -25,37 +25,37 @@
 </section>
 
 <section class="mt-5 container">
-    <h4 class="text-secondary text-center text-thin mt-5 mb-4">Select the topic you are interested in</h4>
+    <h4 class="text-secondary text-center text-thin mt-5 mb-4"><?php echo __('Select the topic you are interested in'); ?></h4>
     <ul class="topic d-flex flex-wrap justify-content-center px-0">
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="index.php?callnumber=8&search=search" class="d-flex flex-column">
                 <img src="<?php echo assets('images/8-books.png'); ?>" width="80" class="mb-3 mx-auto"/>
-                literature
+                <?php echo __('Literature'); ?>
             </a>
         </li>
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="index.php?callnumber=3&search=search" class="d-flex flex-column">
                 <img src="<?php echo assets('images/3-diploma.png'); ?>" width="80" class="mb-3 mx-auto"/>
-                social sciences
+                <?php echo __('Social Sciences'); ?>
             </a>
         </li>
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="index.php?callnumber=6&search=search" class="d-flex flex-column">
                 <img src="<?php echo assets('images/6-blackboard.png'); ?>" width="80" class="mb-3 mx-auto"/>
-                applied sciences
+                <?php echo __('Applied Sciences'); ?>
             </a>
         </li>
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="index.php?callnumber=7&search=search" class="d-flex flex-column">
                 <img src="<?php echo assets('images/7-quill.png'); ?>" width="80" class="mb-3 mx-auto"/>
-                art and recreation
+                <?php echo __('Art & Recreation'); ?>
             </a>
         </li>
         <li class="d-flex justify-content-center align-items-center m-2">
             <a href="javascript:void(0)" class="d-flex flex-column" data-toggle="modal" data-target="#exampleModal">
                 <img src="<?php echo assets('images/icon/grid_icon.png'); ?>" width="80"
                      class="mb-3 mx-auto"/>
-                see more.
+                <?php echo __('see more..'); ?>
             </a>
         </li>
     </ul>
@@ -64,9 +64,9 @@
 <?php if ($sysconf['template']['classic_popular_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
-        Popular among our collections.
+        <?php echo __('Popular among our collections'); ?>
         <br>
-        <small class="subtitle-section">Our library's line of collection that have been favoured by our users were shown here. Look for them. Borrow them. Hope you also like them.</small>
+        <small class="subtitle-section"><?php echo __('Our library\'s line of collection that have been favoured by our users were shown here. Look for them. Borrow them. Hope you also like them');?></small>
     </h4>
     <div class="d-flex flex-wrap">
       <?php
@@ -117,9 +117,9 @@
 <?php if ($sysconf['template']['classic_new_collection']) : ?>
 <section class="mt-5 container">
     <h4 class=" mb-4">
-        New collections + updated.
+        <?php echo __('New collections + updated');?>
         <br>
-        <small class="subtitle-section">These are new collections list. Hope you like them. Maybe not all of them are new. But in term of time, we make sure that these are fresh from our processing oven.</small>
+        <small class="subtitle-section"><?php echo __('These are new collections list. Hope you like them. Maybe not all of them are new. But in term of time, we make sure that these are fresh from our processing oven');?></small>
     </h4>
     <div class="d-flex flex-wrap">
       <?php
@@ -171,9 +171,9 @@
 <section class="mt-5 bg-white">
     <div class="container py-5">
         <h4 class="mb-4">
-            Top reader of the year.
+            <?php echo __('Top reader of the year');?>
             <br>
-            <small class="subtitle-section">Our best users, readers, so far. Continue to read if you want your name being mentioned here.</small>
+            <small class="subtitle-section"><?php echo __('Our best users, readers, so far. Continue to read if you want your name being mentioned here');?></small>
         </h4>
         <div class="flex flex-wrap">
           <?php
@@ -187,7 +187,7 @@
             $m .= '<img src="'.getImagePath($sysconf, $member_image, 'persons').'" class="img-fluid h-auto" alt="photo">';
             $m .= '</div>';
             $m .= '<h5 class="card-title text-center mt-3">' . $member['name'] . '<br><small class="text-grey-darker">' . $member['type'] . '</small></h5>';
-            $m .= '<p class="card-text text-center"><b>'.$member['total'].'</b> <span class="text-grey-darker">Loans</span><span style="width: 1px" class="inline-block h-4 mx-3 relative bg-grey align-middle"></span><b>'.$member['total_title'].'</b> <span class="text-grey-darker">Title</span></p>';
+            $m .= '<p class="card-text text-center"><b>'.$member['total'].'</b> <span class="text-grey-darker">'.__('Loans').'</span><span style="width: 1px" class="inline-block h-4 mx-3 relative bg-grey align-middle"></span><b>'.$member['total_title'].'</b> <span class="text-grey-darker">'.__('Title').'</span></p>';
             $m .= '</div>';
             $m .= '</div>';
             $m .= '</div>';
@@ -196,7 +196,7 @@
           }
 
           if (count($members) < 1) {
-            echo '<span class="ml-3">Not Available.</span>';
+            echo '<span class="ml-3">'.__('Not Available').'</span>';
           }
           ?>
         </div>

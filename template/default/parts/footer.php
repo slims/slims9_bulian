@@ -27,14 +27,14 @@
                 </svg>
                 <div class="mb-4"><?php echo $sysconf['library_name']; ?></div>
                 <ul class="list-reset">
-                    <li><a class="text-light" href="index.php?p=libinfo">Information</a></li>
-                    <li><a class="text-light" href="index.php?p=services">Services</a></li>
-                    <li><a class="text-light" href="index.php?p=librarian">Librarian</a></li>
-                    <li><a class="text-light" href="index.php?p=member">Member Area</a></li>
+                    <li><a class="text-light" href="index.php?p=libinfo"><?= __('Information');?></a></li>
+                    <li><a class="text-light" href="index.php?p=services"><?= __('Services');?></a></li>
+                    <li><a class="text-light" href="index.php?p=librarian"><?= __('Librarian');?></a></li>
+                    <li><a class="text-light" href="index.php?p=member"><?= __('Member Area');?></a></li>
                 </ul>
             </div>
             <div class="col-md-5 pt-8 md:pt-0">
-                <h4 class="mb-4">About Us</h4>
+                <h4 class="mb-4"><?= __('About Us');?></h4>
                 <p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features
                     that will help libraries and librarians to do their job easily and quickly. Follow <a
                             target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some
@@ -42,16 +42,16 @@
                     provided by SLiMS.</p>
             </div>
             <div class="col-md-4 pt-8 md:pt-0">
-                <h4 class="mb-4">Search</h4>
-                <div class="mb-2">start it by typing one or more keywords for title, author or subject</div>
+                <h4 class="mb-4"><?= __('Search');?></h4>
+                <div class="mb-2"><?= __('start it by typing one or more keywords for title, author or subject');?></div>
                 <form action="index.php">
                     <div class="input-group mb-3">
-                        <input name="keywords" type="text" class="form-control" placeholder="Enter keywords"
+                        <input name="keywords" type="text" class="form-control" placeholder="<?= __('Enter keywords');?>"
                                aria-label="Enter keywords"
                                aria-describedby="button-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" value="search" name="search"
-                                    id="button-addon2">Find Collection
+                                    id="button-addon2"><?= __('Find Collection');?>
                             </button>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
         <hr>
         <div class="flex font-thin text-sm">
             <p class="flex-1">&copy; <?php echo date('Y'); ?> &mdash; Senayan Developer Community</p>
-            <div class="flex-1 text-right text-grey">Powered by <code>SLiMS</code></div>
+            <div class="flex-1 text-right text-grey"><?= __('Powered by ');?><code>SLiMS</code></div>
         </div>
     </div>
 </footer>

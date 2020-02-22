@@ -92,7 +92,7 @@ $sysconf['print'][$theme_key] = [
   ],
   'fr_color' => [
     'dbfield' => 'data[fr_color]',
-    'label' => __('Frontend Color'),
+    'label' => __('Card Front Color'),
     'type' => 'text',
     'width' => '20',
     'default' => $sysconf['print'][$theme_key]['b_color']??'#E5E5E5',
@@ -100,7 +100,7 @@ $sysconf['print'][$theme_key] = [
   ],
   'b_color' => [
     'dbfield' => 'data[b_color]',
-    'label' => __('Background Color'),
+    'label' => __('Card Back Color'),
     'type' => 'text',
     'width' => '20',
     'default' => $sysconf['print'][$theme_key]['b_color']??'#ffffff',
