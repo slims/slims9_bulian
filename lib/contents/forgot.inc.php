@@ -58,8 +58,10 @@ if (isset($_POST['resetPass'])) {
             $file_d = $_q->fetch_assoc();
             $name = $file_d['realname'];
             /// Generate a token for forgot password
-            $salt = base64_encode(password_hash($email, PASSWORD_DEFAULT));
+            $salt = password_hash($email, PASSWORD_DEFAULT);
             $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
+            // write log
+            utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.');
             $_update_q = $dbs->query($_sql_update_salt);
             // error check
             if ($dbs->error) {

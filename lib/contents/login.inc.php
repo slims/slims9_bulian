@@ -245,6 +245,7 @@ if (isset($_POST['updatePassword'])) {
         </div>
         <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
+        <a class="forgotButton" href="index.php?p=forgot"><?php echo __('Forgot my password') ?></a>
         </div>
     <?php } ?>
     </form>

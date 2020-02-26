@@ -71,12 +71,12 @@ if (isset($_POST['updatePassword'])) {
       setcookie('token', '', time()-3600, SWB);
       setcookie('uname', '', time()-3600, SWB);
       echo '<script type="text/javascript">';
-      echo 'alert('.__("Password has been updated successfully.").';';
+      echo 'alert("'.__("Password has been updated successfully.").'");';
       echo 'location.href = "index.php?p=login";';
       echo '</script>';
     } else {
       echo '<script type="text/javascript">';
-      echo 'alert('.__("Salt key has been expired.").';';
+      echo 'alert("'.__("Salt key has been expired.").'");';
       echo '</script>';
     }
   }
