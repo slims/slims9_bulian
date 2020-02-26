@@ -39,6 +39,11 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.x.x (Bulian)
+========================================================================
+Fixed : Bahasa Indonesia translation
+Added : Forgot your password recovery mode
+
 SLiMS 9.1.1 (Bulian)
 ========================================================================
 Added : Upgrade version tag
