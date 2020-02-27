@@ -26,31 +26,30 @@ if (isset($_GET['select_lang'])) {
 <div class="flex h-screen w-full" id="visitor-counter" style="background: rgba(0,0,0,0.3)">
     <div class="bg-white w-full md:w-1/3 px-8 pt-8 pb-3 flex flex-col justify-between">
         <div>
-            <h3 class="font-light mb-2">Welcome to <?= $sysconf['library_name']; ?></h3>
+            <h3 class="font-light mb-2"><?= __('Welcome to ').$sysconf['library_name']; ?></h3>
             <p class="lead">
-                Please, fill your data into our visitor log.
+                <?= __('Please fill your member ID or name.')?>
             </p>
 
             <div v-if="textInfo !== ''" class="rounded p-2 mt-4 bg-blue-lighter text-blue-darker md:hidden">{{textInfo}}</div>
 
             <form class="mt-4" @submit.prevent="onSubmit">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Member ID</label>
+                    <label for="exampleInputEmail1"><?= __('Member ID')?></label>
                     <input v-model="memberId" ref="memberId" autofocus type="text" class="form-control" id="exampleInputEmail1"
-                           aria-describedby="emailHelp" placeholder="Enter your member ID">
+                           aria-describedby="emailHelp" placeholder="<?= __('Enter your member ID')?>">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Institution</label>
+                    <label for="exampleInputPassword1"><?= __('Institution')?></label>
                     <input v-model="institution" type="text" class="form-control" id="exampleInputPassword1"
-                           placeholder="Enter your institution">
-                    <small id="emailHelp" class="form-text text-muted">Enough fill your member ID if you are member
-                        of <?= $sysconf['library_name']; ?></small>
+                           placeholder="<?= __('Enter your institution')?>">
+                    <small id="emailHelp" class="form-text text-muted"><?= __('Enough fill your member ID if you are member of ').$sysconf['library_name']; ?></small>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Check In</button>
+                <button type="submit" class="btn btn-primary btn-block"><?= __('Check In')?></button>
             </form>
         </div>
         <div class="text-right">
-            <small class="text-grey-dark">Powered by <code>SLiMS</code></small>
+            <small class="text-grey-dark"><?= __('Powered by ')?> <code>SLiMS</code></small>
         </div>
     </div>
     <div class="flex-1 hidden md:block">

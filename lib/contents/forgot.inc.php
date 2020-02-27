@@ -65,7 +65,7 @@ if (isset($_POST['resetPass'])) {
             $_update_q = $dbs->query($_sql_update_salt);
             // error check
             if ($dbs->error) {
-                $message = __('Failed to query user data from database with error: '.$dbs->error);
+                $message = __('Failed to query user data from database with error: ').$dbs->error;
             } else {
                 $path = 'https://slims.web.id/mailer/forgot.php';
                 $fields = array(

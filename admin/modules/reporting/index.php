@@ -57,12 +57,12 @@ $table->table_attr = 'class="s-table table table-bordered mb-0"';
 // total number of titles
 $stat_query = $dbs->query('SELECT COUNT(biblio_id) FROM biblio');
 $stat_data = $stat_query->fetch_row();
-$collection_stat[__('Total Titles')] = $stat_data[0].' (including titles that still don\'t have items yet)';
+$collection_stat[__('Total Titles')] = $stat_data[0].' '.__(' (including titles that still don\'t have items yet)');
 
 // total number of titles
 $stat_query = $dbs->query('SELECT DISTINCT biblio.biblio_id FROM biblio INNER JOIN item ON biblio.biblio_id = item.biblio_id');
 $stat_data = $stat_query->num_rows;
-$collection_stat[__('Total Titles with items')] = $stat_data.' (only titles that have items)';
+$collection_stat[__('Total Titles with items')] = $stat_data.__(' (only titles that have items)');
 
 // total number of items
 $stat_query = $dbs->query('SELECT item.item_code FROM item,biblio WHERE item.biblio_id=biblio.biblio_id');

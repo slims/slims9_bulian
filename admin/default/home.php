@@ -108,7 +108,7 @@ if ($_SESSION['uid'] === '1') {
     while ($rowcheck = $query_of_check->fetch_assoc()) {
       if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
         if ($row[0] != $prevtable) {
-          $repair .= '<li>Table '.$row[0].' might need to be repaired.</li>';
+          $repair .= '<li>'.__('Table').' '.$row[0].' '.__('might need to be repaired.').'</li>';
         }
         $prevtable = $row[0];
         $is_repaired = true;

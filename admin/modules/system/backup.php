@@ -81,7 +81,7 @@ $table_spec = 'backup_log AS bl LEFT JOIN user AS u ON bl.user_id=u.user_id';
 
 // create datagrid
 $datagrid = new simbio_datagrid();
-$datagrid->setSQLColumn('u.realname AS \'Backup Executor\'', 'bl.backup_time AS \'Backup Time\'', 'bl.backup_file AS \'Backup File Location\'');
+$datagrid->setSQLColumn('u.realname AS  \''.__('Backup Executor').'\'', 'bl.backup_time AS \''.__('Backup Time').'\'', 'bl.backup_file AS \''.__('Backup File Location').'\'');
 $datagrid->setSQLorder('backup_time DESC');
 
 // is there any search

@@ -387,7 +387,7 @@ class detail
         // authors for metadata
         $this->metadata .= '<meta name="DC.creator" content="';
         foreach ($this->record_detail['authors'] as $data) {
-          $authors .= '<a href="?author='.urlencode('"'.$data['author_name'].'"').'&search=Search" title="'.__('Click to view others documents with this author').'">'.$data['author_name']."</a> - ".$data['authority_type']."<br />";
+          $authors .= '<a href="?author='.urlencode('"'.$data['author_name'].'"').'&search=Search" title="'.__('Click to view others documents with this author').'">'.$data['author_name']."</a> - ".__($data['authority_type'])."<br />";
           $this->metadata .= $data['author_name'].'; ';
         }
         $this->metadata .= '" />';
