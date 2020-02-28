@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-28 12:05+0700\n"
-"PO-Revision-Date: 2020-02-28 12:05+0700\n"
+"POT-Creation-Date: 2020-02-28 17:10+0700\n"
+"PO-Revision-Date: 2020-02-28 17:10+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -236,6 +236,14 @@ msgid ""
 msgstr ""
 "<strong><i>Anda masuk sebagai Super Admin. Otoritas besar, menuntut tanggung "
 "jawab yang besar pula.</i></strong>"
+
+#: admin/default/home.php:111
+msgid "Table"
+msgstr "Tabel"
+
+#: admin/default/home.php:111
+msgid "might need to be repaired."
+msgstr "perlu untuk diperbaiki."
 
 #: admin/default/home.php:126
 msgid "Click Here To Repair The Tables"
@@ -540,7 +548,7 @@ msgstr "Kode Eksemplar"
 #: admin/modules/reporting/customs/visitor_list.php:125
 #: admin/modules/reporting/customs/visitor_list.php:170
 #: files/membercard/old/membercard.php:293 lib/contents/member.inc.php:227
-#: lib/contents/member.inc.php:726
+#: lib/contents/member.inc.php:726 template/default/visitor_template.php:38
 msgid "Member ID"
 msgstr "ID Anggota"
 
@@ -587,7 +595,7 @@ msgstr "ID Anggota"
 #: admin/modules/stock_take/finish.php:103
 #: admin/modules/stock_take/lost_item_list.php:148
 #: files/membercard/classic/tinfo.inc.php:117
-#: files/membercard/old/tinfo.inc.php:156
+#: files/membercard/old/tinfo.inc.php:156 lib/contents/default.inc.php:162
 #: lib/contents/download_current_loan.inc.php:62
 #: lib/contents/download_loan_history.inc.php:62
 #: lib/contents/member.inc.php:343 lib/contents/member.inc.php:389
@@ -778,6 +786,7 @@ msgstr "dalam antrian menunggu untuk dicetak."
 #: admin/modules/reporting/customs/titles_list.php:283
 #: admin/modules/stock_take/current.php:150
 #: admin/modules/stock_take/lost_item_list.php:152
+#: lib/contents/default.inc.php:170
 #: template/akasia-dz/custom_frontpage_record.inc.php:10
 #: template/akasia-dz/detail_template.php:57
 #: template/akasia/custom_frontpage_record.inc.php:10
@@ -1247,7 +1256,7 @@ msgstr "Pengarang"
 #: admin/modules/bibliography/z3950sru.php:263
 #: admin/modules/reporting/customs/titles_list.php:155
 #: admin/modules/reporting/customs/titles_list.php:283
-#: admin/modules/serial_control/index.php:70
+#: admin/modules/serial_control/index.php:70 lib/contents/default.inc.php:165
 #: template/akasia-dz/custom_frontpage_record.inc.php:7
 #: template/akasia-dz/detail_template.php:87
 #: template/akasia/custom_frontpage_record.inc.php:7
@@ -1272,7 +1281,7 @@ msgstr "ISBN/ISSN"
 #: admin/modules/master_file/submenu.php:31
 #: admin/modules/reporting/customs/titles_list.php:154
 #: admin/modules/reporting/customs/titles_list.php:282
-#: template/akasia-dz/detail_template.php:64
+#: lib/contents/default.inc.php:169 template/akasia-dz/detail_template.php:64
 #: template/akasia/detail_template.php:64
 #: template/default/detail_template.php:46
 #: template/lightweight/detail_template.php:64
@@ -1462,7 +1471,8 @@ msgstr "Total item"
 #: admin/modules/stock_take/lost_item_list.php:101
 #: admin/modules/stock_take/lost_item_list.php:151
 #: admin/modules/stock_take/st_report.php:170
-#: lib/contents/clustering.inc.php:79 template/akasia/partials/advsearch.php:56
+#: lib/contents/clustering.inc.php:79 lib/contents/default.inc.php:167
+#: template/akasia/partials/advsearch.php:56
 #: template/default/parts/_modal_advanced.php:56
 #: template/lightweight/partials/advsearch.php:56
 msgid "Collection Type"
@@ -1481,7 +1491,7 @@ msgstr "Tipe Koleksi"
 #: admin/modules/reporting/customs/titles_list.php:118
 #: admin/modules/stock_take/init.php:209
 #: admin/modules/stock_take/lost_item_list.php:115
-#: admin/modules/system/sys_log.php:109
+#: admin/modules/system/sys_log.php:109 lib/contents/default.inc.php:168
 #: template/akasia/partials/advsearch.php:65
 #: template/default/parts/_modal_advanced.php:63
 #: template/lightweight/partials/advsearch.php:65
@@ -1514,7 +1524,8 @@ msgstr "Data Koleksi"
 #: admin/modules/stock_take/init.php:193
 #: admin/modules/stock_take/lost_item_list.php:87
 #: admin/modules/stock_take/lost_item_list.php:149
-#: lib/contents/clustering.inc.php:60 template/akasia/partials/advsearch.php:76
+#: lib/contents/clustering.inc.php:60 lib/contents/default.inc.php:166
+#: template/akasia/partials/advsearch.php:76
 #: template/default/parts/_modal_advanced.php:72
 #: template/lightweight/partials/advsearch.php:76
 msgid "GMD"
@@ -2068,7 +2079,7 @@ msgstr "Anda akan memperbaharui data eksemplar"
 #: admin/modules/master_file/author.php:158
 #: admin/modules/master_file/submenu.php:33
 #: admin/modules/reporting/customs/titles_list.php:75
-#: template/default/parts/_search-form.php:37
+#: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
 msgid "Author"
 msgstr "Pengarang"
 
@@ -3249,6 +3260,10 @@ msgstr ""
 msgid "Start Transaction"
 msgstr "Mulai Transaksi"
 
+#: admin/modules/circulation/index.php:76
+msgid "Open Barcode Reader - Experimental (F8)"
+msgstr "Buka Pembaca Barkod - Eksperimental (F8)"
+
 #: admin/modules/circulation/index.php:107
 msgid "Transaction with member {member_id} is completed"
 msgstr "Transaksi dengan anggota {member_id} selesai"
@@ -4282,7 +4297,7 @@ msgstr "Pengarang Dokumen"
 #: admin/modules/master_file/topic.php:141
 #: admin/modules/master_file/topic.php:190
 #: admin/modules/master_file/topic.php:233
-#: admin/modules/master_file/topic.php:239
+#: admin/modules/master_file/topic.php:239 lib/contents/default.inc.php:164
 #: template/default/parts/_search-form.php:39
 msgid "Subject"
 msgstr "Subyek"
@@ -4569,6 +4584,7 @@ msgstr "Set Otomatis"
 #: files/membercard/old/membercard.php:314 lib/contents/member.inc.php:238
 #: template/akasia-dz/visitor_template.php:53
 #: template/akasia/visitor_template.php:53
+#: template/default/visitor_template.php:43
 #: template/lightweight/visitor_template.php:53
 msgid "Institution"
 msgstr "Institusi"
@@ -5437,9 +5453,17 @@ msgstr ""
 msgid "Total Titles"
 msgstr "Judul Keseluruhan"
 
+#: admin/modules/reporting/index.php:60
+msgid " (including titles that still don't have items yet)"
+msgstr "(termasuk judul yang belum memiliki data eksemplar)"
+
 #: admin/modules/reporting/index.php:65
 msgid "Total Titles with items"
 msgstr "Judul Keseluruhan dengan eksemplar"
+
+#: admin/modules/reporting/index.php:65
+msgid " (only titles that have items)"
+msgstr " (hanya judul yang memiliki eksemplar)"
 
 #: admin/modules/reporting/index.php:70 admin/modules/reporting/index.php:79
 msgid "Total Items/Copies"
@@ -6168,6 +6192,18 @@ msgstr "Salinan Pangkalan Data"
 msgid "Start New Backup"
 msgstr "Mulai Salinan Baru"
 
+#: admin/modules/system/backup.php:84
+msgid "Backup Executor"
+msgstr "Pelaksana Pencadangan"
+
+#: admin/modules/system/backup.php:84
+msgid "Backup Time"
+msgstr "Waktu Pencadangan"
+
+#: admin/modules/system/backup.php:84
+msgid "Backup File Location"
+msgstr "Lokasi Berkas Cadangan"
+
 #: admin/modules/system/barcode_generator.php:102
 #: admin/modules/system/barcode_generator.php:134
 #: admin/modules/system/submenu.php:50
@@ -6214,6 +6250,10 @@ msgstr "Besar"
 #: admin/modules/system/barcode_generator.php:168
 msgid "Generate Barcodes"
 msgstr "Cetak Barkod"
+
+#: admin/modules/system/biblio_indexes.php:50
+msgid "PHP Mongodb extension library is not installed yet!"
+msgstr "Pustaka ekstensi PHP Mongodb belum terpasang!"
 
 #: admin/modules/system/biblio_indexes.php:69
 msgid "Index table truncated!"
@@ -6278,6 +6318,24 @@ msgid "Bibliographic indexing will speed up on cataloging search"
 msgstr ""
 "Pencarian pada katalog akan semakin cepat ketika dilakukan indeksasi data "
 "bibliografi"
+
+#: admin/modules/system/biblio_indexes.php:152
+msgid "Total data on biblio: "
+msgstr "Data biblio keseluruhan: "
+
+#: admin/modules/system/biblio_indexes.php:152
+#: admin/modules/system/biblio_indexes.php:153
+#: admin/modules/system/biblio_indexes.php:154
+msgid " records."
+msgstr " cantuman."
+
+#: admin/modules/system/biblio_indexes.php:153
+msgid "Total indexed data: "
+msgstr "Keseluruhan data terindeks: "
+
+#: admin/modules/system/biblio_indexes.php:154
+msgid "Unidexed data: "
+msgstr "Data belum terindeks: "
 
 #: admin/modules/system/biblio_indexes_es.php:137
 msgid "Biblio from "
@@ -7243,6 +7301,10 @@ msgstr "Lokasi"
 msgid "Social"
 msgstr "Media Sosial"
 
+#: lib/contents/librarian.inc.php:67
+msgid "No librarian data yet"
+msgstr "Belum ada data Pustakawan"
+
 #: lib/contents/login.inc.php:102
 msgid "Welcome to Library Automation, "
 msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
@@ -7523,13 +7585,19 @@ msgstr ""
 msgid "Welcome to our library."
 msgstr "Selamat datang di perpustakaan kami."
 
-#: lib/contents/visitor.inc.php:187
+#: lib/contents/visitor.inc.php:187 template/default/visitor_template.php:31
 msgid "Please fill your member ID or name."
 msgstr "Harap isi ID anggota atau nama Anda."
 
 #: lib/contents/visitor.inc.php:188
 msgid "Error while inserting counter data to database."
 msgstr "Galat saat memasukkan data pengunjung ke dalam pangkalan data."
+
+#: lib/contents/visitor.inc.php:266 template/akasia-dz/visitor_template.php:32
+#: template/akasia/visitor_template.php:32
+#: template/lightweight/visitor_template.php:32
+msgid "Visitor Counter"
+msgstr "Penghitung Jumlah Pengunjung"
 
 #: lib/detail.inc.php:208
 msgid "Currently On Loan (Due on"
@@ -7960,6 +8028,7 @@ msgstr "Mohon dicoba kembali"
 
 #: template/akasia-dz/index_template.inc.php:131
 #: template/akasia/index_template.inc.php:148
+#: template/default/parts/_result-search.php:43
 #: template/lightweight/index_template.inc.php:130
 msgid "Search Result"
 msgstr "Hasil Pencarian"
@@ -8043,12 +8112,6 @@ msgstr "Tentang SLiMS"
 #: template/lightweight/partials/nav.php:20
 msgid "Select Language"
 msgstr "Pilih Bahasa"
-
-#: template/akasia-dz/visitor_template.php:32
-#: template/akasia/visitor_template.php:32
-#: template/lightweight/visitor_template.php:32
-msgid "Visitor Counter"
-msgstr "Penghitung Jumlah Pengunjung"
 
 #: template/akasia-dz/visitor_template.php:33
 #: template/akasia/visitor_template.php:33
@@ -8209,6 +8272,10 @@ msgstr "Berita"
 msgid "Profile"
 msgstr "Profil"
 
+#: template/default/parts/_result-search.php:50
+msgid "Suggestion"
+msgstr "Saran"
+
 #: template/default/parts/_search-form.php:21
 msgid "Enter keyword to search collection..."
 msgstr "Masukkan kata kunci untuk mencari koleksi..."
@@ -8246,12 +8313,33 @@ msgid "Want to Contribute?"
 msgstr "Kontribusi untuk SLiMS?"
 
 #: template/default/parts/footer.php:71
+#: template/default/visitor_template.php:52
 msgid "Powered by "
 msgstr "Ditenagai oleh "
 
 #: template/default/parts/footer.php:78
 msgid "Chat"
 msgstr "Memulai obrolan"
+
+#: template/default/visitor_template.php:29
+msgid "Welcome to "
+msgstr "Selamat datang di "
+
+#: template/default/visitor_template.php:40
+msgid "Enter your member ID"
+msgstr "Masukkan ID anggota Anda"
+
+#: template/default/visitor_template.php:45
+msgid "Enter your institution"
+msgstr "Masukkan nama lembaga"
+
+#: template/default/visitor_template.php:46
+msgid "Enough fill your member ID if you are member of "
+msgstr "Cukup masukkan ID Anda jika Anda anggota dari "
+
+#: template/default/visitor_template.php:48
+msgid "Check In"
+msgstr "Masuk"
 
 #: template/lightweight/index_template.inc.php:93
 #: template/lightweight/index_template.inc.php:204
