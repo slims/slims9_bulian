@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-23 14:38+0700\n"
-"PO-Revision-Date: 2020-02-23 14:39+0700\n"
+"POT-Creation-Date: 2020-02-28 12:05+0700\n"
+"PO-Revision-Date: 2020-02-28 12:05+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1341,6 +1341,7 @@ msgstr "Simpan"
 #: admin/modules/system/app_user.php:316 admin/modules/system/content.php:188
 #: admin/modules/system/holiday.php:204 admin/modules/system/module.php:182
 #: admin/modules/system/user_group.php:208 lib/contents/login.inc.php:205
+#: lib/contents/newpass.inc.php:103
 msgid "Update"
 msgstr "Perbaharui"
 
@@ -4489,7 +4490,7 @@ msgid "Member ID, Name and Birthday cannot be empty"
 msgstr "ID dan Nama Anggota dan Tanggal Lahit tidak boleh kosong"
 
 #: admin/modules/membership/index.php:99 admin/modules/system/app_user.php:99
-#: lib/contents/login.inc.php:143
+#: lib/contents/login.inc.php:143 lib/contents/newpass.inc.php:57
 msgid "Password confirmation does not match. See if your Caps Lock key is on!"
 msgstr ""
 "Password dan Konfirmasinya tidak cocok. Pastikan penggunaan huruf besar dan "
@@ -4659,11 +4660,12 @@ msgstr "Surel"
 
 #: admin/modules/membership/index.php:580 admin/modules/system/app_user.php:384
 #: lib/contents/login.inc.php:180 lib/contents/member.inc.php:262
+#: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
 #: admin/modules/membership/index.php:582 admin/modules/system/app_user.php:386
-#: lib/contents/login.inc.php:182
+#: lib/contents/login.inc.php:182 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata sandi Baru"
 
@@ -7178,6 +7180,57 @@ msgstr "sejarah peminjaman eksemplar"
 msgid "Your Loan History"
 msgstr "Sejarah Peminjaman Anda"
 
+#: lib/contents/forgot.inc.php:48
+msgid ""
+"If you need help resetting your password, we can help by sending you a link "
+"to reset it."
+msgstr ""
+"Jika Anda membutuhkan bantuan untuk mengganti kata sandi, kami akan kirimkan "
+"tautan untuk menggantinya."
+
+#: lib/contents/forgot.inc.php:52 lib/contents/login.inc.php:58
+msgid "Please supply valid username and password"
+msgstr "Masukkan nama pengguna dan kata sandi dengan benar"
+
+#: lib/contents/forgot.inc.php:68 lib/contents/newpass.inc.php:65
+msgid "Failed to query user data from database with error: "
+msgstr ""
+"Gagal mengambil data permintaan pengguna dari pangkalan data dengan pesan: "
+
+#: lib/contents/forgot.inc.php:97
+msgid "Cannot send the email. Please try again."
+msgstr "Tidak bisa mengirimkan surel. Harap coba kembali."
+
+#: lib/contents/forgot.inc.php:99
+msgid "An instruction has been sent to your email. Please check your inbox."
+msgstr ""
+"Instruksi sudah dikirimkan melalui surel. Harap periksa kotak surat Anda."
+
+#: lib/contents/forgot.inc.php:103
+msgid "Current email not found. Please try again."
+msgstr "Alamat surel tidak ditemukan. Harap coba kembali."
+
+#: lib/contents/forgot.inc.php:110 lib/contents/login.inc.php:170
+#: lib/contents/newpass.inc.php:92
+msgid ""
+"Your browser does not support Javascript or Javascript is disabled. "
+"Application won't run without Javascript!"
+msgstr ""
+"Peramban Anda tidak mendukung <i>Javascript</i> atau <i>Javascript</i> tidak "
+"diaktifkan. Aplikasi tidak dapat dijalankan tanpa <i>Javascript</i>!"
+
+#: lib/contents/forgot.inc.php:114
+msgid "Your email address"
+msgstr "Alamat surel Anda"
+
+#: lib/contents/forgot.inc.php:117
+msgid "Reset my password"
+msgstr "Ganti kata sandi saya"
+
+#: lib/contents/forgot.inc.php:128
+msgid "Forgot My Password"
+msgstr "Lupa kata kunci"
+
 #: lib/contents/librarian.inc.php:32
 msgid "Profile of our Librarian"
 msgstr "Profil Pustakawan"
@@ -7190,10 +7243,6 @@ msgstr "Lokasi"
 msgid "Social"
 msgstr "Media Sosial"
 
-#: lib/contents/login.inc.php:58
-msgid "Please supply valid username and password"
-msgstr "Masukkan nama pengguna dan kata sandi dengan benar"
-
 #: lib/contents/login.inc.php:102
 msgid "Welcome to Library Automation, "
 msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
@@ -7202,17 +7251,9 @@ msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
 msgid "Wrong Username or Password. ACCESS DENIED"
 msgstr "Nama Pengguna atau Kata Sandi Salah. AKSES DITOLAK"
 
-#: lib/contents/login.inc.php:141
+#: lib/contents/login.inc.php:141 lib/contents/newpass.inc.php:55
 msgid "Current password can not be empty!"
 msgstr "Password bawaan tidak boleh kosong!"
-
-#: lib/contents/login.inc.php:170
-msgid ""
-"Your browser does not support Javascript or Javascript is disabled. "
-"Application won't run without Javascript!"
-msgstr ""
-"Peramban Anda tidak mendukung <i>Javascript</i> atau <i>Javascript</i> tidak "
-"diaktifkan. Aplikasi tidak dapat dijalankan tanpa <i>Javascript</i>!"
 
 #: lib/contents/login.inc.php:177
 msgid "Hi {username}, please update your password!"
@@ -7234,7 +7275,11 @@ msgstr "Kata Sandi"
 msgid "Login"
 msgstr "Masuk"
 
-#: lib/contents/login.inc.php:259
+#: lib/contents/login.inc.php:248
+msgid "Forgot my password"
+msgstr "Lupa kata sandi"
+
+#: lib/contents/login.inc.php:260
 msgid "Library Automation Login"
 msgstr "Masuk Otomasi Perpustakaan"
 
@@ -7374,6 +7419,22 @@ msgstr ""
 "Masukan ID anggota serta kata sandi yang diberikan oleh administrator sistem "
 "perpustakaan. Jika Anda anggota perpustakaan namun belum memiliki kata "
 "sandi, hubungi staf perpustakaan."
+
+#: lib/contents/newpass.inc.php:74
+msgid "Password has been updated successfully."
+msgstr "Kata Sandi Anda sudah berhasil dirubah."
+
+#: lib/contents/newpass.inc.php:79
+msgid "Salt key has been expired."
+msgstr "Kunci <i>Salt</i> telah daluwarsa."
+
+#: lib/contents/newpass.inc.php:95
+msgid "Current email not found or salt key has been expired"
+msgstr "Surel saat ini tidak ditemukan atau kunci <i>Salt</i> telah daluwarsa"
+
+#: lib/contents/newpass.inc.php:116
+msgid "Create new password"
+msgstr "Buat kata sandi baru"
 
 #: lib/contents/news.inc.php:25 template/akasia-dz/partials/nav.php:6
 #: template/akasia/partials/nav.php:6 template/lightweight/partials/nav.php:6
@@ -8205,9 +8266,6 @@ msgstr "Masukkan kata kunci..."
 #~ msgid "File Not Found"
 #~ msgstr "Berkas tidak ditemukan"
 
-#~ msgid "Create new pattern"
-#~ msgstr "Buat pola baru"
-
 #~ msgid "(0=No or 1=Yes)"
 #~ msgstr "(0=Tidak atau 1=Ya)"
 
@@ -8222,9 +8280,6 @@ msgstr "Masukkan kata kunci..."
 
 #~ msgid "CLOSE"
 #~ msgstr "TUTUP"
-
-#~ msgid "Please update your password!"
-#~ msgstr "Perbarui kata kunci Anda!"
 
 #~ msgid "Reservation e-mail sent successfully!"
 #~ msgstr "Surel untuk reservasi berhasil dikirim!"
