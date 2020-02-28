@@ -24,6 +24,7 @@ $sysconf['template']['classic_map_desc'] = 'Lorem ipsum dolor sit amet, consecte
 $sysconf['template']['classic_fb_link'] = 'https://www.facebook.com/groups/senayan.slims';
 $sysconf['template']['classic_twitter_link'] = 'https://twitter.com/slims_official';
 $sysconf['template']['classic_youtube_link'] = 'https://youtube.com';
+$sysconf['template']['classic_instagram_link'] = 'https://instagram.com/slims.sdc';
 
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
   'responsive' => [
@@ -186,6 +187,14 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
     'label' => 'Youtube URL',
     'type' => 'longtext',
     'default' => 'https://youtube.com',
+    'width' => '100',
+    'max' => 1000
+  ],
+  'instagram-link' => [
+    'dbfield' => 'classic_instagram_link',
+    'label' => 'Instagram URL',
+    'type' => 'longtext',
+    'default' => 'https://www.instagram.com/slims.sdc',
     'width' => '100',
     'max' => 1000
   ],
