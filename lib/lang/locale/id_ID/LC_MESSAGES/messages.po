@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-28 17:10+0700\n"
-"PO-Revision-Date: 2020-02-28 17:10+0700\n"
+"POT-Creation-Date: 2020-03-03 16:15+0700\n"
+"PO-Revision-Date: 2020-03-03 16:15+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -85,7 +85,7 @@ msgstr "Tutup"
 #: admin/admin_template/nightmode/index_template.inc.php:68 admin/chat.php:15
 #: lib/contents/chat.php:89 sysconfig.inc.php:688
 #: template/akasia-dz/partials/nav.php:10 template/akasia/partials/nav.php:10
-#: template/default/parts/_navbar.php:27 template/default/parts/footer.php:32
+#: template/default/parts/_navbar.php:27 template/default/parts/footer.php:38
 #: template/lightweight/partials/nav.php:10
 msgid "Librarian"
 msgstr "Pustakawan"
@@ -416,8 +416,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/marcexport.php:167
 #: admin/modules/bibliography/marcsru.php:373
 #: admin/modules/bibliography/marcsru.php:385
-#: admin/modules/bibliography/p2p.php:380
-#: admin/modules/bibliography/p2p.php:393
+#: admin/modules/bibliography/p2p.php:383
+#: admin/modules/bibliography/p2p.php:396
 #: admin/modules/bibliography/printed_card.php:296
 #: admin/modules/bibliography/printed_card.php:298
 #: admin/modules/bibliography/z3950.php:291
@@ -480,7 +480,7 @@ msgstr "Daftar Eksemplar Keluar"
 #: template/akasia/index_template.inc.php:111
 #: template/akasia/index_template.inc.php:226
 #: template/akasia/partials/advsearch.php:89
-#: template/default/parts/footer.php:45
+#: template/default/parts/footer.php:51
 #: template/lightweight/index_template.inc.php:94
 #: template/lightweight/index_template.inc.php:205
 #: template/lightweight/partials/advsearch.php:89
@@ -569,7 +569,7 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/item_barcode_generator.php:262
 #: admin/modules/bibliography/marcexport.php:221
 #: admin/modules/bibliography/marcexport.php:228
-#: admin/modules/bibliography/p2p.php:385
+#: admin/modules/bibliography/p2p.php:388
 #: admin/modules/bibliography/pop_attach.php:203
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
@@ -2066,7 +2066,7 @@ msgstr "Anda akan memperbaharui data eksemplar"
 #: admin/modules/bibliography/item.php:459
 #: admin/modules/bibliography/marcexport.php:222
 #: admin/modules/bibliography/marcexport.php:229
-#: admin/modules/bibliography/p2p.php:387
+#: admin/modules/bibliography/p2p.php:390
 #: admin/modules/bibliography/printed_card.php:331
 #: admin/modules/master_file/author.php:57
 #: admin/modules/master_file/author.php:79
@@ -2323,33 +2323,33 @@ msgid "SRU Server"
 msgstr "Peladen SRU"
 
 #: admin/modules/bibliography/marcsru.php:388
-#: admin/modules/bibliography/p2p.php:396
+#: admin/modules/bibliography/p2p.php:399
 #: admin/modules/bibliography/z3950.php:298
 #: admin/modules/bibliography/z3950sru.php:268
 msgid "* Please make sure you have a working Internet connection."
 msgstr "* Pastikan Anda memiliki koneksi internet."
 
-#: admin/modules/bibliography/p2p.php:264
+#: admin/modules/bibliography/p2p.php:267
 msgid "{recordCount} records inserted to database."
 msgstr "{recordCount} data berhasil disimpan ke dalam basisdata."
 
-#: admin/modules/bibliography/p2p.php:364
+#: admin/modules/bibliography/p2p.php:367
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
 "Maaf, dari %s tidak ada hasil ATAU kemungkinan hasil dan detil XML "
 "dinonaktifkan."
 
-#: admin/modules/bibliography/p2p.php:375
+#: admin/modules/bibliography/p2p.php:378
 #: admin/modules/bibliography/submenu.php:37
 msgid "P2P Service"
 msgstr "Layanan P2P"
 
-#: admin/modules/bibliography/p2p.php:382
+#: admin/modules/bibliography/p2p.php:385
 msgid "Fields"
 msgstr "Ruas"
 
-#: admin/modules/bibliography/p2p.php:384
+#: admin/modules/bibliography/p2p.php:387
 #: admin/modules/circulation/loan_rules.php:201
 #: admin/modules/circulation/loan_rules.php:206
 #: admin/modules/reporting/customs/item_titles_list.php:85
@@ -2381,11 +2381,11 @@ msgstr "Ruas"
 msgid "ALL"
 msgstr "SEMUA"
 
-#: admin/modules/bibliography/p2p.php:386
+#: admin/modules/bibliography/p2p.php:389
 msgid "ISBN"
 msgstr "ISBN"
 
-#: admin/modules/bibliography/p2p.php:389
+#: admin/modules/bibliography/p2p.php:392
 #: admin/modules/bibliography/z3950.php:294
 msgid "Server"
 msgstr "Peladen"
@@ -5455,7 +5455,7 @@ msgstr "Judul Keseluruhan"
 
 #: admin/modules/reporting/index.php:60
 msgid " (including titles that still don't have items yet)"
-msgstr "(termasuk judul yang belum memiliki data eksemplar)"
+msgstr " (termasuk judul yang belum memiliki data eksemplar)"
 
 #: admin/modules/reporting/index.php:65
 msgid "Total Titles with items"
@@ -7295,7 +7295,7 @@ msgstr "Profil Pustakawan"
 
 #: lib/contents/librarian.inc.php:48
 msgid "Position"
-msgstr "Lokasi"
+msgstr "Jabatan"
 
 #: lib/contents/librarian.inc.php:50
 msgid "Social"
@@ -7821,7 +7821,7 @@ msgstr "Kontributor"
 
 #: sysconfig.inc.php:689
 msgid "Senior Librarian"
-msgstr "Pustakawan"
+msgstr "Pustakawan Senior"
 
 #: sysconfig.inc.php:690
 msgid "Library Staff"
@@ -8005,7 +8005,7 @@ msgstr "Koleksi"
 #: template/akasia-dz/partials/nav.php:9
 #: template/akasia/index_template.inc.php:93
 #: template/akasia/index_template.inc.php:96 template/akasia/partials/nav.php:9
-#: template/default/parts/_navbar.php:114 template/default/parts/footer.php:33
+#: template/default/parts/_navbar.php:114 template/default/parts/footer.php:39
 #: template/lightweight/index_template.inc.php:84
 #: template/lightweight/index_template.inc.php:85
 #: template/lightweight/partials/nav.php:9
@@ -8035,7 +8035,7 @@ msgstr "Hasil Pencarian"
 
 #: template/akasia-dz/index_template.inc.php:140
 #: template/akasia/index_template.inc.php:157
-#: template/default/parts/_navbar.php:15 template/default/parts/footer.php:30
+#: template/default/parts/_navbar.php:15 template/default/parts/footer.php:36
 #: template/lightweight/index_template.inc.php:139
 msgid "Information"
 msgstr "Informasi"
@@ -8060,7 +8060,7 @@ msgstr "CARI"
 
 #: template/akasia-dz/index_template.inc.php:200
 #: template/akasia/index_template.inc.php:220
-#: template/default/parts/footer.php:46
+#: template/default/parts/footer.php:52
 #: template/lightweight/index_template.inc.php:197
 msgid "start it by typing one or more keywords for title, author or subject"
 msgstr "masukkan satu atau lebih kata kunci dari judul, pengarang, atau subyek"
@@ -8240,7 +8240,7 @@ msgid "Enter ISBN/ISSN"
 msgstr "Masukkan ISBN/ISSN"
 
 #: template/default/parts/_modal_advanced.php:80
-#: template/default/parts/footer.php:54
+#: template/default/parts/footer.php:61
 msgid "Find Collection"
 msgstr "Cari Koleksi"
 
@@ -8292,32 +8292,32 @@ msgstr "ATAU COBA"
 msgid "Last search:"
 msgstr "Pencarian terakhir:"
 
-#: template/default/parts/footer.php:31
+#: template/default/parts/footer.php:37
 msgid "Services"
 msgstr "Layanan"
 
-#: template/default/parts/footer.php:37
+#: template/default/parts/footer.php:43
 msgid "About Us"
 msgstr "Tentang Kami"
 
-#: template/default/parts/footer.php:49
+#: template/default/parts/footer.php:56
 msgid "Enter keywords"
 msgstr "Masukkan kata kunci"
 
-#: template/default/parts/footer.php:62
+#: template/default/parts/footer.php:69
 msgid "Keep SLiMS Alive"
 msgstr "Donasi untuk SLiMS"
 
-#: template/default/parts/footer.php:65
+#: template/default/parts/footer.php:72
 msgid "Want to Contribute?"
 msgstr "Kontribusi untuk SLiMS?"
 
-#: template/default/parts/footer.php:71
+#: template/default/parts/footer.php:78
 #: template/default/visitor_template.php:52
 msgid "Powered by "
 msgstr "Ditenagai oleh "
 
-#: template/default/parts/footer.php:78
+#: template/default/parts/footer.php:85
 msgid "Chat"
 msgstr "Memulai obrolan"
 
