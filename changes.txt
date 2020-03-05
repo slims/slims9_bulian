@@ -41,8 +41,9 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
-Fixed : Bahasa Indonesia translation
+Updated : Bahasa Indonesia translation
 Added : Forgot your password recovery mode
+Added : Option to show or hide first column when export or import
 
 SLiMS 9.1.1 (Bulian)
 ========================================================================
