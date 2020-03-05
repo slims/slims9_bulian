@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-05 13:23+0700\n"
-"PO-Revision-Date: 2020-03-05 13:23+0700\n"
+"POT-Creation-Date: 2020-03-05 16:23+0700\n"
+"PO-Revision-Date: 2020-03-05 16:24+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -857,66 +857,84 @@ msgstr "Ruas penting (*) harus diisi dengan benar!"
 msgid "Error on query to database, Export FAILED!"
 msgstr "Galat dalam melakukan <i>query</i> ke basisdata. Ekspor GAGAL!"
 
-#: admin/modules/bibliography/export.php:147
+#: admin/modules/bibliography/export.php:169
 msgid "There is no record in bibliographic database yet, Export FAILED!"
 msgstr "Tidak ada cantuman dalam basisdata bibliografi. Ekspor GAGAL!"
 
-#: admin/modules/bibliography/export.php:157
+#: admin/modules/bibliography/export.php:179
 msgid "Export Tool"
 msgstr "Peralatan Ekspor"
 
-#: admin/modules/bibliography/export.php:160
+#: admin/modules/bibliography/export.php:182
 msgid "Export bibliographics data to CSV file"
 msgstr "Ekspor data bibliografi data ke format CSV"
 
-#: admin/modules/bibliography/export.php:168
-#: admin/modules/bibliography/item_export.php:151
+#: admin/modules/bibliography/export.php:190
+#: admin/modules/bibliography/item_export.php:167
 #: admin/modules/bibliography/marcexport.php:185
-#: admin/modules/membership/export.php:131
+#: admin/modules/membership/export.php:147
 msgid "Export Now"
 msgstr "Ekspor Sekarang"
 
-#: admin/modules/bibliography/export.php:177
-#: admin/modules/bibliography/import.php:273
-#: admin/modules/bibliography/item_export.php:160
-#: admin/modules/bibliography/item_import.php:223
-#: admin/modules/membership/export.php:140
-#: admin/modules/membership/import.php:213
+#: admin/modules/bibliography/export.php:199
+#: admin/modules/bibliography/import.php:280
+#: admin/modules/bibliography/item_export.php:176
+#: admin/modules/bibliography/item_import.php:229
+#: admin/modules/membership/export.php:156
+#: admin/modules/membership/import.php:221
 msgid "Field Separator"
 msgstr "Pemisah Ruas"
 
-#: admin/modules/bibliography/export.php:179
-#: admin/modules/bibliography/import.php:275
-#: admin/modules/bibliography/item_export.php:162
-#: admin/modules/bibliography/item_import.php:225
-#: admin/modules/membership/export.php:142
-#: admin/modules/membership/import.php:215
+#: admin/modules/bibliography/export.php:201
+#: admin/modules/bibliography/import.php:282
+#: admin/modules/bibliography/item_export.php:178
+#: admin/modules/bibliography/item_import.php:231
+#: admin/modules/membership/export.php:158
+#: admin/modules/membership/import.php:223
 msgid "Field Enclosed With"
 msgstr "Batas Awal-Akhir Ruas"
 
-#: admin/modules/bibliography/export.php:183
-#: admin/modules/bibliography/item_export.php:166
-#: admin/modules/membership/export.php:146
+#: admin/modules/bibliography/export.php:205
+#: admin/modules/bibliography/item_export.php:182
+#: admin/modules/membership/export.php:162
 msgid "Record Separator"
 msgstr "Batas Pemisah Cantuman"
 
-#: admin/modules/bibliography/export.php:185
-#: admin/modules/bibliography/item_export.php:168
+#: admin/modules/bibliography/export.php:207
+#: admin/modules/bibliography/item_export.php:184
 #: admin/modules/bibliography/marcexport.php:199
-#: admin/modules/membership/export.php:148
-#: admin/modules/membership/import.php:217
+#: admin/modules/membership/export.php:164
+#: admin/modules/membership/import.php:225
 msgid "Number of Records To Export (0 for all records)"
 msgstr "Jumlah Cantuman untuk diekspor (0 untuk semua rekod)"
 
-#: admin/modules/bibliography/export.php:187
-#: admin/modules/bibliography/import.php:279
-#: admin/modules/bibliography/item_export.php:170
-#: admin/modules/bibliography/item_import.php:229
+#: admin/modules/bibliography/export.php:209
+#: admin/modules/bibliography/import.php:286
+#: admin/modules/bibliography/item_export.php:186
+#: admin/modules/bibliography/item_import.php:235
 #: admin/modules/bibliography/marcexport.php:201
-#: admin/modules/membership/export.php:150
-#: admin/modules/membership/import.php:219
+#: admin/modules/membership/export.php:166
+#: admin/modules/membership/import.php:227
 msgid "Start From Record"
 msgstr "Mulai dari cantuman ke"
+
+#: admin/modules/bibliography/export.php:211
+#: admin/modules/bibliography/item_export.php:188
+#: admin/modules/membership/export.php:168
+msgid "Put columns names in the first row"
+msgstr "Tambahkan nama kolom di baris pertama"
+
+#: admin/modules/bibliography/export.php:211
+#: admin/modules/bibliography/import.php:288
+#: admin/modules/bibliography/item_export.php:188
+#: admin/modules/bibliography/item_import.php:237
+#: admin/modules/membership/export.php:168
+#: admin/modules/membership/import.php:229
+#: admin/modules/membership/index.php:519
+#: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
+#: admin/modules/system/index.php:256
+msgid "Yes"
+msgstr "Ya"
 
 #: admin/modules/bibliography/iframe_attach.php:61
 msgid "Are you sure to remove the file attachment data?"
@@ -1045,7 +1063,7 @@ msgstr "Topic berhasil dihapus!"
 #: admin/modules/bibliography/import.php:61
 #: admin/modules/bibliography/import.php:64
 #: admin/modules/bibliography/import.php:85
-#: admin/modules/bibliography/import.php:239
+#: admin/modules/bibliography/import.php:246
 msgid "Import Tool"
 msgstr "Peralatan Impor"
 
@@ -1062,7 +1080,7 @@ msgstr "Pilih berkas yang akan diimpor!"
 msgid "Upload failed! File type not allowed or the size is more than"
 msgstr "GAGAL mengunggah! Jenis data tidak sesuai atau ukuran lebih dari"
 
-#: admin/modules/bibliography/import.php:228
+#: admin/modules/bibliography/import.php:235
 msgid ""
 "<strong>{numberOfInsertedRecords}</strong> records inserted successfully to "
 "bibliographic database, from record <strong>{recordOffset} in "
@@ -1072,7 +1090,7 @@ msgstr ""
 "dalam daftar bibliografi, cantuman dari <strong>{recordOffset} dalam "
 "{timeInSeconds} detik</strong>"
 
-#: admin/modules/bibliography/import.php:242
+#: admin/modules/bibliography/import.php:249
 msgid ""
 "Import for bibliographics data from CSV file. For guide on CVS fields order "
 "and format please refer to documentation or visit <a href=\"http://slims.web."
@@ -1082,24 +1100,30 @@ msgstr ""
 "penulisan dan urutan ruas dalam berkas CSV atau kunjungi <a href=\"http://"
 "slims.web.id\" target=\"_blank\">Situs Resmi SLiMS</a>"
 
-#: admin/modules/bibliography/import.php:251
-#: admin/modules/bibliography/item_import.php:202
+#: admin/modules/bibliography/import.php:258
+#: admin/modules/bibliography/item_import.php:208
 #: admin/modules/bibliography/marcimport.php:403
-#: admin/modules/membership/import.php:191
+#: admin/modules/membership/import.php:199
 msgid "Import Now"
 msgstr "Impor Sekarang"
 
-#: admin/modules/bibliography/import.php:271
-#: admin/modules/bibliography/item_import.php:221
+#: admin/modules/bibliography/import.php:278
+#: admin/modules/bibliography/item_import.php:227
 #: admin/modules/bibliography/marcimport.php:422
-#: admin/modules/membership/import.php:211
+#: admin/modules/membership/import.php:219
 msgid "File To Import"
 msgstr "Berkas untuk di impor"
 
-#: admin/modules/bibliography/import.php:277
-#: admin/modules/bibliography/item_import.php:227
+#: admin/modules/bibliography/import.php:284
+#: admin/modules/bibliography/item_import.php:233
 msgid "Number of Records To Import (0 for all records)"
 msgstr "Jumlah cantuman untuk di impor (0 untuk semua rekod)"
+
+#: admin/modules/bibliography/import.php:288
+#: admin/modules/bibliography/item_import.php:237
+#: admin/modules/membership/import.php:229
+msgid "The first row are columns names"
+msgstr "Baris pertama berisi nama kolom"
 
 #: admin/modules/bibliography/index.php:93
 #: admin/modules/membership/index.php:82 admin/modules/system/app_user.php:80
@@ -2104,15 +2128,15 @@ msgstr "Cetak Barkod untuk Data Terpilih"
 msgid "Change print barcode settings"
 msgstr "Ubah setelan cetak barkod"
 
-#: admin/modules/bibliography/item_export.php:130
+#: admin/modules/bibliography/item_export.php:146
 msgid "There is no record in item database yet, Export FAILED!"
 msgstr "Tidak ada cantuman dalam basisdata eksemplar, Ekspor GAGAL!"
 
-#: admin/modules/bibliography/item_export.php:140
+#: admin/modules/bibliography/item_export.php:156
 msgid "Item Export Tool"
 msgstr "Perangkat Ekspor Eksemplar"
 
-#: admin/modules/bibliography/item_export.php:143
+#: admin/modules/bibliography/item_export.php:159
 msgid "Export item data to CSV file"
 msgstr "Ekspor data eksemplar ke dalam berkas CSV"
 
@@ -2120,11 +2144,11 @@ msgstr "Ekspor data eksemplar ke dalam berkas CSV"
 msgid "File type not allowed or the size is more than"
 msgstr "Tipe berkas tidak diizinkan atau ukurannya melebih ketentuan"
 
-#: admin/modules/bibliography/item_import.php:191
+#: admin/modules/bibliography/item_import.php:197
 msgid "Item Import tool"
 msgstr "Perangkat Impor Eksemplar"
 
-#: admin/modules/bibliography/item_import.php:194
+#: admin/modules/bibliography/item_import.php:200
 msgid "Import for item data from CSV file"
 msgstr "Impor data eksemplar dari data CSV"
 
@@ -4476,30 +4500,30 @@ msgstr "Catatan Cakupan"
 msgid "Class. Code"
 msgstr "Kode Klasifikasi"
 
-#: admin/modules/membership/export.php:109
+#: admin/modules/membership/export.php:125
 msgid "There is no record in membership database yet, Export FAILED!"
 msgstr ""
 "Tabel keanggotaan dalam pangkalan data belum memiliki cantuman. Ekspor GAGAL!"
 
-#: admin/modules/membership/export.php:120
+#: admin/modules/membership/export.php:136
 #: admin/modules/membership/submenu.php:32
 msgid "Export Data"
 msgstr "Ekspor Data"
 
-#: admin/modules/membership/export.php:123
+#: admin/modules/membership/export.php:139
 msgid "Export member(s) data to CSV file"
 msgstr "Ekspor data anggota dalam berkas CSV"
 
-#: admin/modules/membership/import.php:168
+#: admin/modules/membership/import.php:176
 msgid "records inserted successfully to members database, from record"
 msgstr "rekod berhasil disisipkan dalam data anggota dari cantuman"
 
-#: admin/modules/membership/import.php:179
+#: admin/modules/membership/import.php:187
 #: admin/modules/membership/submenu.php:33
 msgid "Import Data"
 msgstr "Impor Data"
 
-#: admin/modules/membership/import.php:182
+#: admin/modules/membership/import.php:190
 msgid "Import for members data from CSV file"
 msgstr "Impor data anggota dari berkas CSV"
 
@@ -4644,12 +4668,6 @@ msgstr "Nomor Identitas"
 #: admin/modules/membership/index.php:519
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
-
-#: admin/modules/membership/index.php:519
-#: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
-#: admin/modules/system/index.php:256
-msgid "Yes"
-msgstr "Ya"
 
 #: admin/modules/membership/index.php:547 admin/modules/system/app_user.php:352
 msgid "or take a photo"
