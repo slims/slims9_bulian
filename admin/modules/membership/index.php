@@ -524,12 +524,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
     if (isset($rec_d['member_image'])) {
         $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
+        // $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
+        $str_input .= '<img src="'.$upper_dir.'../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
     } else {
         $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid" alt="Image cover">';
+        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
     }
     $str_input .= '</div>';
@@ -544,7 +545,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // $str_input .= simbio_form_element::textField('file', 'image');
     // $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
-      $str_input .= '<p>'.__('or take a photo').'</p>';
       $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
       if ($sysconf['webcam'] == 'flex') {
@@ -554,17 +554,31 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<button id="btn_load" class="button btn" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
-        $str_input .= __('Ratio:').' <select onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select> | ';
-        $str_input .= __('Format:').' <select id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select> | ';
-        $str_input .= '<button id="btn_pause" class="button btn" onclick="snapshot(this)" disabled>'.__('Capture').'</button> | ';
-        $str_input .= '<button id="btn_reset" class="button btn" onclick="$(\'textarea#base64picstring\').val(\'\');">'.__('Reset').'</button>';
-        $str_input .= '<div id="my_container" style="width: 400px; height: 300px; border: 1px solid #333; position: relative;">';
-        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10;"></video>';
-        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
-        $str_input .= '<div id="my_frame" style="  border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
-        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #444; display: none;"></canvas>';
-      }
+        $str_input .= '<div class="makeHidden">';
+        $str_input .= '<p>'.__('or take a photo').'</p>';
+        $str_input .= '<div class="form-inline">';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button id="btn_pause" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '</div>';
+        $str_input .= '<div id="my_container" class="makeHidden mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
+        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
+        $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
+        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #f4f4f4; display: none;"></canvas>';
+        }
     }
 
     $form->addAnything(__('Photo'), $str_input);
@@ -585,7 +599,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($form->edit_mode) {
         if (isset($rec_d['member_image'])) {
             if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
-                echo '<div id="memberImage"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['member_image']).'&amp;width=125&amp;timestamp='.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
+                echo '<div id="memberImage"><img src="'.SWB.'images/persons/'.urlencode($rec_d['member_image']).'?'.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
             }
         }
         echo '<div class="infoBox">
