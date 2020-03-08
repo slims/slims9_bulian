@@ -61,7 +61,7 @@ if (isset($_GET['select_lang'])) {
                     </div>
                 </div>
                 <div class="px-8">
-                    <h3 class="font-light text-white mb-2">{{textInfo}}</h3>
+                    <h3 class="font-light text-white mb-2" v-html="textInfo"></h3>
                     </p>
                 </div>
             </div>
@@ -132,7 +132,9 @@ if (isset($_GET['select_lang'])) {
                     .then(res => {
                         this.textInfo = res.data
                         this.image = `./images/persons/member_${this.memberId}.jpg`
-                        this.textToSpeech(this.textInfo)
+                        <?php if ($sysconf['visitor_log_voice']) : ?>
+                            this.textToSpeech(this.textInfo.replace(/(<([^>]+)>)/ig, ''))
+                        <?php endif; ?>
                     })
                     .catch(err => {
                         console.log(err);

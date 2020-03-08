@@ -93,6 +93,7 @@ if (isset($_POST['doImport'])) {
         // read file line by line
         $inserted_row = 0;
         $file = fopen($uploaded_file, 'r');
+        $n = 0;
         while (!feof($file)) {
             // record count
             if ($record_num > 0 AND $row_count == $record_num) {
@@ -107,6 +108,7 @@ if (isset($_POST['doImport'])) {
             } else {
                 // get an array of field
                 $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
+                var_dump($field);
                 if ($field) {
                     // strip escape chars from all fields
                     foreach ($field as $idx => $value) {
@@ -149,13 +151,19 @@ if (isset($_POST['doImport'])) {
                             $member_fax, $member_since_date, $register_date,
                             $expire_date, $birth_date, $member_notes,
                             $curr_datetime, $curr_datetime)";
-                    // send query
-                    @$dbs->query($sql_str);
-                    if (!$dbs->error) {
-                        $inserted_row++;
+
+                    // first field is header
+                    if (isset($_POST['header']) && $n < 1) {
+                      $n++;
                     } else {
+                      // send query
+                      @$dbs->query($sql_str);
+                      if (!$dbs->error) {
+                        $inserted_row++;
+                      } else {
                         echo $sql_str.'<br />';
                         echo $dbs->error.'<hr />';
+                      }
                     }
                 }
                 $row_count++;
@@ -217,6 +225,8 @@ $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlen
 $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
+// header (column name)
+$form->addCheckBox('header', __('The first row are columns names'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
 ?>
