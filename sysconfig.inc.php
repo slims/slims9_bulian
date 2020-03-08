@@ -239,7 +239,7 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = false; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
+$sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;
