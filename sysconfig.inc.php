@@ -712,4 +712,3 @@ $sysconf['api']['version'] = 1;
 $sysconf['visitor_lang'] = 'hi-IN'; // Please visit this URL for voice mode - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices
 
 $sysconf['always_user_login'] = true;
-$sysconf['visitor_log_voice'] = true;
