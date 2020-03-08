@@ -774,8 +774,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $str_input .= '</div>';
   $str_input .= '</div>';
   $str_input .= '<div class="custom-file col-4">';
-  $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input"');
-  $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+  $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+  $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
   $str_input .= '</div>';
   $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
   $str_input .= '</div>';
@@ -786,8 +786,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
     if ($sysconf['scanner'] == 'html5') {
-        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn openPopUp" onclick="toggle_dialog();" />';
-        $str_input .= '<input type="button" value="'.__('Reset').'" class="button btn openPopUp" onclick="scan_reset();" />';
+        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn btn-default openPopUp" onclick="toggle_dialog();" />';
+        $str_input .= '<input type="button" value="'.__('Reset').'" class="button btn btn-danger openPopUp ml-1" onclick="scan_reset();" />';
         $str_input .= '<div id="scan_overlay" style="display: none; position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(192, 194, 201, 0.5);">';
         $str_input .= '<div id="scan_dialog" title="'.__('Scan a cover').'">';
         $str_input .= '<div id="scan_options_std" style="margin: 5px;"><label>'.__('Format:').' <select id="scan_type" onchange="scan_type();">';

@@ -277,3 +277,27 @@ function toggle_dialog() {
     },
   });
 }
+
+function toggle_search() {
+  var $scanDialog = $('#scan_dialog');
+  top.$.colorbox({
+    inline: true,
+    href: $scanDialog,
+    title: $scanDialog.attr('title'),
+    onOpen: function() {
+      $('#scan_options').addClass('makeHidden');
+      $('#scan_container').removeClass('makeHidden');
+    },
+    onComplete: function() {
+      sdata = document.querySelector('#my_imgdata');
+      scanvas = document.querySelector('#my_selected');
+      scontext = scanvas.getContext('2d');
+      scanvas.width = 0;
+      scanvas.height = 0;
+      $('img#my_imgdata').imgAreaSelect({
+        handles: true,
+        onSelectEnd: preview,
+      });
+    }
+  });
+}

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-06 17:06+0700\n"
-"PO-Revision-Date: 2020-03-06 17:06+0700\n"
+"POT-Creation-Date: 2020-03-08 19:39+0700\n"
+"PO-Revision-Date: 2020-03-08 19:39+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -526,8 +526,8 @@ msgstr "Kode Eksemplar"
 #: admin/modules/circulation/circulation_action.php:495
 #: admin/modules/circulation/index.php:65
 #: admin/modules/membership/index.php:440
-#: admin/modules/membership/index.php:626
-#: admin/modules/membership/index.php:632
+#: admin/modules/membership/index.php:640
+#: admin/modules/membership/index.php:646
 #: admin/modules/membership/member_card_generator.php:222
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/due_date_warning.php:99
@@ -1717,12 +1717,12 @@ msgstr "Masukkan catatan atau abstrak publikasi, di sini."
 
 #: admin/modules/bibliography/index.php:767
 #: admin/modules/membership/index.php:526
-#: admin/modules/membership/index.php:531
+#: admin/modules/membership/index.php:532
 msgid "Click to enlarge preview"
 msgstr "Klik untuk memperbesar"
 
 #: admin/modules/bibliography/index.php:770
-#: admin/modules/membership/index.php:529
+#: admin/modules/membership/index.php:530
 msgid "Remove Image"
 msgstr "Hapus Gambar"
 
@@ -1735,7 +1735,7 @@ msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
 #: admin/modules/bibliography/index.php:790
-#: admin/modules/membership/index.php:561 admin/modules/system/app_user.php:358
+#: admin/modules/membership/index.php:573 admin/modules/system/app_user.php:358
 msgid "Reset"
 msgstr "Setel ulang"
 
@@ -1744,7 +1744,7 @@ msgid "Scan a cover"
 msgstr "Pindai sampul"
 
 #: admin/modules/bibliography/index.php:793
-#: admin/modules/membership/index.php:559 admin/modules/system/app_user.php:356
+#: admin/modules/system/app_user.php:356
 msgid "Format:"
 msgstr "Format:"
 
@@ -1793,7 +1793,7 @@ msgid "Vertical:"
 msgstr "Vertikal:"
 
 #: admin/modules/bibliography/index.php:802
-#: admin/modules/membership/index.php:560 admin/modules/system/app_user.php:357
+#: admin/modules/membership/index.php:570 admin/modules/system/app_user.php:357
 msgid "Capture"
 msgstr "Ambil Gambar"
 
@@ -1901,9 +1901,9 @@ msgstr "Anda akan mengubah data biblio"
 #: admin/modules/bibliography/item.php:419
 #: admin/modules/bibliography/item.php:452
 #: admin/modules/bibliography/item.php:464
-#: admin/modules/membership/index.php:593
-#: admin/modules/membership/index.php:630
-#: admin/modules/membership/index.php:636
+#: admin/modules/membership/index.php:607
+#: admin/modules/membership/index.php:644
+#: admin/modules/membership/index.php:650
 #: admin/modules/membership/member_type.php:220
 #: admin/modules/membership/member_type.php:237
 #: admin/modules/membership/member_type.php:243
@@ -3027,8 +3027,8 @@ msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
 #: admin/modules/membership/index.php:442
-#: admin/modules/membership/index.php:627
-#: admin/modules/membership/index.php:633
+#: admin/modules/membership/index.php:641
+#: admin/modules/membership/index.php:647
 #: admin/modules/membership/member_card_generator.php:223
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/loan_history.php:71
@@ -4617,8 +4617,8 @@ msgid "Institution"
 msgstr "Institusi"
 
 #: admin/modules/membership/index.php:467
-#: admin/modules/membership/index.php:628
-#: admin/modules/membership/index.php:634
+#: admin/modules/membership/index.php:642
+#: admin/modules/membership/index.php:648
 #: admin/modules/membership/member_card_generator.php:224
 #: admin/modules/membership/member_type.php:233
 #: admin/modules/membership/member_type.php:239
@@ -4669,25 +4669,21 @@ msgstr "Nomor Identitas"
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
-#: admin/modules/membership/index.php:547 admin/modules/system/app_user.php:352
+#: admin/modules/membership/index.php:558 admin/modules/system/app_user.php:352
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:557 admin/modules/system/app_user.php:354
+#: admin/modules/membership/index.php:561 admin/modules/system/app_user.php:354
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
-#: admin/modules/membership/index.php:558 admin/modules/system/app_user.php:355
-msgid "Ratio:"
-msgstr "Rasio:"
-
-#: admin/modules/membership/index.php:570
+#: admin/modules/membership/index.php:584
 msgid "Photo"
 msgstr "Foto"
 
-#: admin/modules/membership/index.php:578
-#: admin/modules/membership/index.php:629
-#: admin/modules/membership/index.php:635
+#: admin/modules/membership/index.php:592
+#: admin/modules/membership/index.php:643
+#: admin/modules/membership/index.php:649
 #: admin/modules/reporting/customs/due_date_warning.php:152
 #: admin/modules/reporting/customs/member_loan_list.php:185
 #: admin/modules/reporting/customs/overdued_list.php:190
@@ -4695,44 +4691,44 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:580 admin/modules/system/app_user.php:384
+#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:384
 #: lib/contents/login.inc.php:180 lib/contents/member.inc.php:262
 #: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:582 admin/modules/system/app_user.php:386
+#: admin/modules/membership/index.php:596 admin/modules/system/app_user.php:386
 #: lib/contents/login.inc.php:182 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata sandi Baru"
 
-#: admin/modules/membership/index.php:592
+#: admin/modules/membership/index.php:606
 #: admin/modules/membership/member_type.php:220
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:392
+#: admin/modules/membership/index.php:608 admin/modules/system/app_user.php:392
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan kotak Kata sandi kosong jika tidak ingin mengubahnya"
 
-#: admin/modules/membership/index.php:664
+#: admin/modules/membership/index.php:678
 msgid "Extend Selected Member(s)"
 msgstr "Perpanjang Anggota terpilih"
 
-#: admin/modules/membership/index.php:664
+#: admin/modules/membership/index.php:678
 msgid "Are you sure to EXTEND membership for selected members?"
 msgstr "Anda yakin ingin memperpanjang keanggotaan untuk anggota terpilih?"
 
-#: admin/modules/membership/index.php:668
+#: admin/modules/membership/index.php:682
 msgid "members extended!"
 msgstr "keanggotaan berhasil diperpanjang!"
 
-#: admin/modules/membership/index.php:673
+#: admin/modules/membership/index.php:687
 #: admin/modules/membership/member_card_generator.php:257
 msgid "Found"
 msgstr "Ditemukan"
 
-#: admin/modules/membership/index.php:673
+#: admin/modules/membership/index.php:687
 #: admin/modules/membership/member_card_generator.php:257
 msgid "from your search with keyword"
 msgstr "dari kata kunci"
@@ -6189,6 +6185,10 @@ msgstr "Media Sosial"
 msgid "REMOVE IMAGE"
 msgstr "HILANGKAN GAMBAR"
 
+#: admin/modules/system/app_user.php:355
+msgid "Ratio:"
+msgstr "Rasio:"
+
 #: admin/modules/system/app_user.php:366
 msgid "User Photo"
 msgstr "Foto Pengguna"
@@ -6805,7 +6805,7 @@ msgstr "Setelan Pemintas disimpan"
 
 #: admin/modules/system/shortcut.php:110
 msgid "Move back"
-msgstr "Mundur"
+msgstr "Kembalikan"
 
 #: admin/modules/system/submenu.php:28
 msgid "System"
