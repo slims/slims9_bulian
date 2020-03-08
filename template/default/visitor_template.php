@@ -132,7 +132,7 @@ if (isset($_GET['select_lang'])) {
                     .then(res => {
                         this.textInfo = res.data
                         this.image = `./images/persons/member_${this.memberId}.jpg`
-                        <?php if ($sysconf['visitor_log_voice']) : ?>
+                        <?php if ($sysconf['template']['visitor_log_voice']) : ?>
                             this.textToSpeech(this.textInfo.replace(/(<([^>]+)>)/ig, ''))
                         <?php endif; ?>
                     })
