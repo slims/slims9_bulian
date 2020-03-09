@@ -39,7 +39,7 @@ require LIB . 'marc/SubField.inc.php';
 
 // config
 $start_record = 1;
-$max_record = 10;
+$max_record = 20;
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
@@ -304,7 +304,7 @@ if (isset($_GET['keywords'])) {
         $index = 'title';
         break;
     }
-    $request = $zserver . '?operation=searchRetrieve&'.$index.'='.$keywords.'&startRecord=1&maximumRecords=10';
+    $request = $zserver . '?operation=searchRetrieve&'.$index.'='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record;
   } else {
     if ($_GET['index'] != 0) {
       $index = trim($_GET['index']).' any ';
@@ -312,7 +312,7 @@ if (isset($_GET['keywords'])) {
     } else {
       $keywords = urlencode('"'.trim($_GET['keywords']).'"');
     }
-    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords=20&recordSchema=marc';
+    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record.'&recordSchema=marc';
   }
 
   $marc = new \Marc\XMLParser($request);
