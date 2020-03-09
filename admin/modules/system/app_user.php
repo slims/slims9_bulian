@@ -349,7 +349,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= simbio_form_element::textField('file', 'image');
     $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
-        $str_input .= '<textarea id="base64picstring" name="base64picstring" style="xxdisplay: none;"></textarea>';
+        $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
