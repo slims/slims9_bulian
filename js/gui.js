@@ -465,4 +465,7 @@ $('document').ready(function() {
   $('#keyword').bind('webkitspeechchange', function() {
     $(this).closest('form').submit();
   });
+
+  // loader
+  $(this).registerLoader()
 });
