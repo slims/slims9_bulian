@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 15:04+0700\n"
-"PO-Revision-Date: 2020-03-09 15:04+0700\n"
+"POT-Creation-Date: 2020-03-09 15:06+0700\n"
+"PO-Revision-Date: 2020-03-09 15:07+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -4041,7 +4041,7 @@ msgstr "Daftar Peladen"
 
 #: admin/modules/master_file/p2pservers.php:125
 msgid "Add New Server"
-msgstr "Tambah Server Baru"
+msgstr "Tambah Peladen Baru"
 
 #: admin/modules/master_file/p2pservers.php:167
 #: admin/modules/master_file/p2pservers.php:188
