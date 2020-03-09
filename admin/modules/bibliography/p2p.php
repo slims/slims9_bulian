@@ -83,7 +83,7 @@ function downloadFile($url, $path)
 function cleanUrl($url)
 {
   $_url = parse_url(trim($url));
-  var_dump($_url);
+  // var_dump($_url);
   $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path']));
   $_port = isset($_url['port']) ? ':' . $_url['port'] : '';
   return $_url['scheme'] . '://' . $_url['host'] . $_port . $_path . '/';
