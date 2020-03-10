@@ -54,6 +54,27 @@ jQuery.fn.simbioAJAX = async function (strURL, params) {
     jQuery.extend(options, params);
 
     const ajaxContainer = $(this);
+    const doc =$(document)
+    doc.unbind('ajaxSuccess')
+    doc.ajaxSuccess(function(){
+        // no history on post AJAX request
+        if (options.method !== 'post' && options.method !== 'POST') {
+            let historyURL = strURL;
+            if (options.addData.length > 0) {
+                let addParam = options.addData;
+                if (Array.prototype.isPrototypeOf(options.addData)) {
+                    addParam = jQuery.param(options.addData);
+                }
+                if (historyURL.indexOf('?', 0) > -1) {
+                    historyURL += '&' + addParam;
+                } else {
+                    historyURL += '?' + addParam;
+                }
+            }
+            jQuery.addAjaxHistory(historyURL, ajaxContainer[0]);
+        }
+        console.log(ajaxContainer[0])
+    });
 
     let ajaxResponse;
     try {
