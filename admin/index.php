@@ -77,5 +77,14 @@ if ($current_module AND $can_read) {
 // page content
 $main_content = ob_get_clean();
 
+// load personalized user template
+$_q = $dbs->query("SELECT admin_template FROM user WHERE user_id=".$_SESSION['uid']." AND (admin_template IS NOT NULL OR admin_template !='')");
+if($_q->num_rows>0){
+	$template_settings = unserialize($_q->fetch_row()[0]);
+	foreach ($template_settings as $setting_name => $setting_value) {
+		$sysconf['admin_template'][$setting_name] = $setting_value;
+	}
+}
+
 // print out the template
 require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';
