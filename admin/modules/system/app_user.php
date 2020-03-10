@@ -133,9 +133,9 @@ if (isset($_POST['saveData'])) {
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
+        // create upload object
+        $upload = new simbio_file_upload();
         if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-          // create upload object
-          $upload = new simbio_file_upload();
           $upload->setAllowableFormat($sysconf['allowed_images']);
           $upload->setMaxSize($sysconf['max_image_upload']*1024); // approx. 100 kb
           $upload->setUploadDir(IMGBS.'persons');
@@ -146,7 +146,7 @@ if (isset($_POST['saveData'])) {
             $data['user_image'] = $dbs->escape_string($upload->new_filename);
           }
         } else if (!empty($_POST['base64picstring'])) {
-			    list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
+            list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
           $filedata = base64_decode($filedata);
           $fileinfo = getimagesizefromstring($filedata);
           $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
@@ -186,7 +186,8 @@ if (isset($_POST['saveData'])) {
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
-                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+                // echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         } else {
