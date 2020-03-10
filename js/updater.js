@@ -73,7 +73,6 @@ jQuery.fn.simbioAJAX = async function (strURL, params) {
             }
             jQuery.addAjaxHistory(historyURL, ajaxContainer[0]);
         }
-        console.log(ajaxContainer[0])
     });
 
     let ajaxResponse;
