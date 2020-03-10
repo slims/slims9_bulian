@@ -691,6 +691,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_login` datetime DEFAULT NULL,
   `last_login_ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `groups` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `admin_template` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `forgot` VARCHAR(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `input_date` date DEFAULT NULL,
   `last_update` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
