@@ -30,6 +30,7 @@ require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
+
 if (!function_exists('addOrUpdateSetting')) {
   function addOrUpdateSetting($name, $value)
   {
@@ -37,22 +38,24 @@ if (!function_exists('addOrUpdateSetting')) {
     $sql_op = new simbio_dbop($dbs);
     $data['setting_value'] = serialize($value);
 
-    // save personal admin template
+    // save personalized user template
     if($name == 'admin_template'){
       $_d['admin_template'] = serialize($value);
-      @$sql_op->update('user', $_d, "user_id=".$_SESSION['uid']);
-    }
-
-    $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
-    if ($query->num_rows > 0) {
-      // update
-      $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
+      $update = $sql_op->update('user', $_d, "user_id=".$_SESSION['uid']);
       if (!$update) return $dbs->error;
-    } else {
-      // insert
-      $data['setting_name'] = $name;
-      $insert = $sql_op->insert('setting', $data);
-      if (!$insert) return $dbs->error;
+    }
+    else{
+      $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+      if ($query->num_rows > 0) {
+        // update
+        $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
+        if (!$update) return $dbs->error;
+      } else {
+        // insert
+        $data['setting_name'] = $name;
+        $insert = $sql_op->insert('setting', $data);
+        if (!$insert) return $dbs->error;
+      }
     }
 
     return true;
@@ -227,6 +230,15 @@ if($_SESSION['uid'] == '1'){
 }
 
 // admin template
+// load personalized user template
+$query = "SELECT admin_template FROM user WHERE user_id=".$_SESSION['uid']." AND (admin_template !=NULL OR admin_template !='')";
+$_q = $dbs->query($query);
+if($_q->num_rows>0){
+  $template_settings = unserialize($_q->fetch_row()[0]);
+  foreach ($template_settings as $setting_name => $setting_value) {
+    $sysconf['admin_template'][$setting_name] = $setting_value;
+  }
+}
 // scan admin template directory
 $admin_template_dir = SB . 'admin' . DS . $sysconf['admin_template']['dir'];
 $dir = new simbio_directory($admin_template_dir);
