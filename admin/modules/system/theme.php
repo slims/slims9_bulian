@@ -30,6 +30,7 @@ require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
+
 if (!function_exists('addOrUpdateSetting')) {
   function addOrUpdateSetting($name, $value)
   {
@@ -37,16 +38,24 @@ if (!function_exists('addOrUpdateSetting')) {
     $sql_op = new simbio_dbop($dbs);
     $data['setting_value'] = serialize($value);
 
-    $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
-    if ($query->num_rows > 0) {
-      // update
-      $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
+    // save personalized user template
+    if($name == 'admin_template'){
+      $_d['admin_template'] = serialize($value);
+      $update = $sql_op->update('user', $_d, "user_id=".$_SESSION['uid']);
       if (!$update) return $dbs->error;
-    } else {
-      // insert
-      $data['setting_name'] = $name;
-      $insert = $sql_op->insert('setting', $data);
-      if (!$insert) return $dbs->error;
+    }
+    else{
+      $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+      if ($query->num_rows > 0) {
+        // update
+        $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
+        if (!$update) return $dbs->error;
+      } else {
+        // insert
+        $data['setting_name'] = $name;
+        $insert = $sql_op->insert('setting', $data);
+        if (!$insert) return $dbs->error;
+      }
     }
 
     return true;
@@ -183,40 +192,53 @@ if (isset($_GET['customize'])) {
     </div>
 </div>
 <?php
+
+echo '<div class="container-fluid">';
+
 // public template
 // scan template directory
-$template_dir = SB . $sysconf['template']['dir'];
-$dir = new simbio_directory($template_dir);
-$dir_tree = $dir->getDirectoryTree(1);
-// sort array by index
-ksort($dir_tree);
-echo '<div class="container-fluid">';
-echo '<div class="row">';
-echo '<div class="col-12 my-3">
-        <h5 class="font-weight-bold">' . __('Public Template') . '</h5>
-      </div>';
+if($_SESSION['uid'] == '1'){
+  $template_dir = SB . $sysconf['template']['dir'];
+  $dir = new simbio_directory($template_dir);
+  $dir_tree = $dir->getDirectoryTree(1);
+  // sort array by index
+  ksort($dir_tree);
+  echo '<div class="row">';
+  echo '<div class="col-12 my-3">
+          <h5 class="font-weight-bold">' . __('Public Template') . '</h5>
+        </div>';
 
-foreach ($dir_tree as $dir) {
-  $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
-  if ($dir == $sysconf['template']['theme']) {
-    $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp">' . __('Customize') . '</a>';
+  foreach ($dir_tree as $dir) {
+    $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
+    if ($dir == $sysconf['template']['theme']) {
+      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp">' . __('Customize') . '</a>';
+    }
+
+    $output = '<div class="col-3">';
+    $output .= '<div class="card border-0 mb-4">';
+    $output .= '<div class="card-body">';
+    $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
+    $preview = file_exists(SB.'template/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
+    $output .= '<img class="card-img-top rounded" src="'.SWB.'template/'. $dir . '/'.$preview.'" height="150" />';
+    $output .= '</div>';
+    $output .= '<div class="card-footer border-0">' . $_btn . '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    echo $output;
   }
-
-  $output = '<div class="col-3">';
-  $output .= '<div class="card border-0 mb-4">';
-  $output .= '<div class="card-body">';
-  $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
-  $preview = file_exists(SB.'template/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
-  $output .= '<img class="card-img-top rounded" src="'.SWB.'template/'. $dir . '/'.$preview.'" height="150" />';
-  $output .= '</div>';
-  $output .= '<div class="card-footer border-0">' . $_btn . '</div>';
-  $output .= '</div>';
-  $output .= '</div>';
-  echo $output;
+  echo '</div>';
 }
-echo '</div>';
 
 // admin template
+// load personalized user template
+$query = "SELECT admin_template FROM user WHERE user_id=".$_SESSION['uid']." AND (admin_template !=NULL OR admin_template !='')";
+$_q = $dbs->query($query);
+if($_q->num_rows>0){
+  $template_settings = unserialize($_q->fetch_row()[0]);
+  foreach ($template_settings as $setting_name => $setting_value) {
+    $sysconf['admin_template'][$setting_name] = $setting_value;
+  }
+}
 // scan admin template directory
 $admin_template_dir = SB . 'admin' . DS . $sysconf['admin_template']['dir'];
 $dir = new simbio_directory($admin_template_dir);

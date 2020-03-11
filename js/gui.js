@@ -467,5 +467,5 @@ $('document').ready(function() {
   });
 
   // loader
-  $(this).registerLoader()
+  if ($(this).registerLoader !== undefined) $(this).registerLoader();
 });

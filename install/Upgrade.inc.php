@@ -16,7 +16,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 22;
+  private $version = 23;
 
   /**
    * @param SLiMS $slims
@@ -808,26 +808,6 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     $error_trigger = $this->slims->queryTrigger($query_trigger);
     $error = array_merge($error, $error_trigger);
 
-    // cek if table not exist
-    $tables = require 'tables.php';
-    foreach ($tables as $table) {
-      $mtables = $this->slims->getTables();
-      if (!in_array($table['table'], $mtables)) {
-        // create table
-        $msg = $this->slims->createTable($table);
-        if ($msg) $error[] = $msg;
-      } else {
-        // check column
-        foreach ($table['column'] as $column) {
-          $mColumn = $this->slims->getColumn($table['table']);
-          if (!in_array($column['field'], $mColumn)) {
-            $msg = $this->slims->addColumn($table['table'], $column);
-            if ($msg) $error[] = $msg;
-          }
-        }
-      }
-    }
-
     // fix mst_topic:classification
     $fix_classification = $this->slims->changeColumn('mst_topic', [
       'field' => 'classification',
@@ -853,8 +833,53 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
    */
   function upgrade_role_22()
   {
+  }
+
+  /**
+   * Upgrade role to v9.2.0
+   */
+  function upgrade_role_23()
+  {
+    $sql['alter'][] = "ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;";
+
+    $sql['alter'][] = "ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;";
+
+    $error = $this->slims->query($sql, ['alter']);
+
+    /**
+     * Please, move this block in last upgrade role version if available
+     * This code will fix missing table or column
+     * and making sure SLiMS use default theme
+     *
+     * =================== BLOCK START ===================
+     */
+    // cek if table not exist
+    $tables = require 'tables.php';
+    foreach ($tables as $table) {
+      $mtables = $this->slims->getTables();
+      if (!in_array($table['table'], $mtables)) {
+        // create table
+        $msg = $this->slims->createTable($table);
+        if ($msg) $error[] = $msg;
+      } else {
+        // check column
+        foreach ($table['column'] as $column) {
+          $mColumn = $this->slims->getColumn($table['table']);
+          if (!in_array($column['field'], $mColumn)) {
+            $msg = $this->slims->addColumn($table['table'], $column);
+            if ($msg) $error[] = $msg;
+          }
+        }
+      }
+    }
+
     // make sure use default template
     $this->slims->updateTheme('default');
+    /**
+     * =================== BLOCK END ===================
+     */
+
+    return $error;
   }
 
 }
