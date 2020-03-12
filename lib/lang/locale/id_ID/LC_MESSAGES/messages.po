@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 15:04+0700\n"
-"PO-Revision-Date: 2020-03-09 15:04+0700\n"
+"POT-Creation-Date: 2020-03-11 23:13+0700\n"
+"PO-Revision-Date: 2020-03-11 23:13+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -354,10 +354,14 @@ msgid "You are not authorized to view this section"
 msgstr "Anda tidak memiliki wewenang untuk masuk ke bagian ini"
 
 #: admin/default/session_check.inc.php:57
-msgid "Your Login Session has already timeout!"
-msgstr "Sesi Anda telah habis!"
+msgid "Your Login session has timed out."
+msgstr "Sesi Masuk Anda telah habis."
 
-#: admin/default/submenu.php:22 admin/modules/system/app_user.php:403
+#: admin/default/session_check.inc.php:57
+msgid "Click here to Login again"
+msgstr "Klik di sini untuk Masuk kembali"
+
+#: admin/default/submenu.php:22 admin/modules/system/app_user.php:404
 msgid "Change User Profiles"
 msgstr "Ubah Profil Pengguna"
 
@@ -368,6 +372,14 @@ msgstr "Ubah Profil dan Kata Sandi Pengguna Saat Ini"
 #: admin/default/submenu.php:23 admin/modules/system/submenu.php:48
 msgid "Shortcut Setting"
 msgstr "Pengaturan Pemintas"
+
+#: admin/default/submenu.php:24 admin/modules/system/submenu.php:34
+msgid "Theme"
+msgstr "Tema"
+
+#: admin/default/submenu.php:24 admin/modules/system/submenu.php:34
+msgid "Configure theme Preferences"
+msgstr "Konfigurasi Tema"
 
 #: admin/help.php:43
 msgid "Sorry, help content is not available yet."
@@ -468,8 +480,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/stock_take/current.php:130
 #: admin/modules/stock_take/index.php:58 admin/modules/stock_take/index.php:60
 #: admin/modules/stock_take/st_log.php:59
-#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:268
-#: admin/modules/system/app_user.php:270 admin/modules/system/backup.php:66
+#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:269
+#: admin/modules/system/app_user.php:271 admin/modules/system/backup.php:66
 #: admin/modules/system/backup.php:68 admin/modules/system/content.php:151
 #: admin/modules/system/content.php:153 admin/modules/system/module.php:149
 #: admin/modules/system/module.php:151 admin/modules/system/sys_log.php:86
@@ -669,7 +681,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/stock_take/current.php:194
 #: admin/modules/stock_take/index.php:154
 #: admin/modules/stock_take/st_log.php:111
-#: admin/modules/system/app_user.php:463 admin/modules/system/backup.php:103
+#: admin/modules/system/app_user.php:464 admin/modules/system/backup.php:103
 #: admin/modules/system/content.php:269 admin/modules/system/holiday.php:260
 #: admin/modules/system/module.php:226 admin/modules/system/sys_log.php:142
 #: admin/modules/system/user_group.php:261
@@ -754,7 +766,7 @@ msgstr "Ubah setelan cetak label"
 #: admin/modules/bibliography/item_barcode_generator.php:226
 #: admin/modules/bibliography/printed_card.php:303
 #: admin/modules/membership/member_card_generator.php:204
-#: admin/modules/system/app_user.php:350
+#: admin/modules/system/app_user.php:351
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -1143,7 +1155,7 @@ msgstr "Judul tidak boleh kosong"
 #: admin/modules/bibliography/index.php:216
 #: admin/modules/membership/index.php:228
 #: admin/modules/membership/index.php:263 admin/modules/system/app_user.php:182
-#: admin/modules/system/app_user.php:204
+#: admin/modules/system/app_user.php:205
 msgid "Image Uploaded Successfully"
 msgstr "Gambar Berhasil Diunggah"
 
@@ -1194,7 +1206,7 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/master_file/topic.php:126
 #: admin/modules/membership/index.php:341
 #: admin/modules/membership/member_type.php:130
-#: admin/modules/system/app_user.php:245 admin/modules/system/content.php:129
+#: admin/modules/system/app_user.php:246 admin/modules/system/content.php:129
 #: admin/modules/system/holiday.php:153 admin/modules/system/module.php:127
 #: admin/modules/system/user_group.php:153
 msgid "All Data Successfully Deleted"
@@ -1219,7 +1231,7 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/master_file/topic.php:129
 #: admin/modules/membership/index.php:344
 #: admin/modules/membership/member_type.php:138
-#: admin/modules/system/app_user.php:248 admin/modules/system/content.php:132
+#: admin/modules/system/app_user.php:249 admin/modules/system/content.php:132
 #: admin/modules/system/holiday.php:156 admin/modules/system/module.php:130
 #: admin/modules/system/user_group.php:156
 msgid ""
@@ -1339,7 +1351,7 @@ msgstr "Unggah Data Bibliografi Terpilih ke Peladen Katalog Induk"
 #: admin/modules/membership/member_type.php:178
 #: admin/modules/serial_control/serial_base_lib.inc.php:202
 #: admin/modules/serial_control/subscription.php:163
-#: admin/modules/system/app_user.php:295 admin/modules/system/content.php:172
+#: admin/modules/system/app_user.php:296 admin/modules/system/content.php:172
 #: admin/modules/system/holiday.php:189 admin/modules/system/module.php:167
 #: admin/modules/system/shortcut.php:129
 #: admin/modules/system/user_group.php:193
@@ -1369,7 +1381,7 @@ msgstr "Simpan"
 #: admin/modules/membership/index.php:404
 #: admin/modules/membership/member_type.php:193
 #: admin/modules/serial_control/subscription.php:178
-#: admin/modules/system/app_user.php:316 admin/modules/system/content.php:188
+#: admin/modules/system/app_user.php:317 admin/modules/system/content.php:188
 #: admin/modules/system/holiday.php:204 admin/modules/system/module.php:182
 #: admin/modules/system/user_group.php:208 lib/contents/login.inc.php:205
 #: lib/contents/newpass.inc.php:103
@@ -1739,7 +1751,7 @@ msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
 #: admin/modules/bibliography/index.php:790
-#: admin/modules/membership/index.php:573 admin/modules/system/app_user.php:368
+#: admin/modules/membership/index.php:573 admin/modules/system/app_user.php:369
 msgid "Reset"
 msgstr "Setel ulang"
 
@@ -1796,7 +1808,7 @@ msgid "Vertical:"
 msgstr "Vertikal:"
 
 #: admin/modules/bibliography/index.php:802
-#: admin/modules/membership/index.php:570 admin/modules/system/app_user.php:365
+#: admin/modules/membership/index.php:570 admin/modules/system/app_user.php:366
 msgid "Capture"
 msgstr "Ambil Gambar"
 
@@ -1983,8 +1995,8 @@ msgstr "Salin"
 #: admin/modules/master_file/topic.php:212
 #: admin/modules/master_file/topic.php:237
 #: admin/modules/master_file/topic.php:243
-#: admin/modules/system/app_user.php:404 admin/modules/system/app_user.php:433
-#: admin/modules/system/app_user.php:440
+#: admin/modules/system/app_user.php:405 admin/modules/system/app_user.php:434
+#: admin/modules/system/app_user.php:441
 #: admin/modules/system/user_group.php:229
 #: admin/modules/system/user_group.php:241
 msgid "Last Update"
@@ -2601,7 +2613,7 @@ msgstr "Setelan tersimpan"
 #: admin/modules/bibliography/print_settings.php:78
 #: admin/modules/system/holiday.php:326 admin/modules/system/index.php:197
 #: admin/modules/system/membercard_theme.php:99
-#: admin/modules/system/theme.php:126 admin/modules/system/ucsetting.php:76
+#: admin/modules/system/theme.php:135 admin/modules/system/ucsetting.php:76
 msgid "Save Settings"
 msgstr "Simpan Pengaturan"
 
@@ -3263,8 +3275,8 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/master_file/rda_cmc.php:158
 #: admin/modules/membership/index.php:380
 #: admin/modules/membership/member_type.php:169
-#: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:282
-#: admin/modules/system/app_user.php:418 admin/modules/system/backup.php:48
+#: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:283
+#: admin/modules/system/app_user.php:419 admin/modules/system/backup.php:48
 #: admin/modules/system/backup_proc.php:45
 #: admin/modules/system/barcode_generator.php:43
 #: admin/modules/system/biblio_indexes.php:45
@@ -4041,7 +4053,7 @@ msgstr "Daftar Peladen"
 
 #: admin/modules/master_file/p2pservers.php:125
 msgid "Add New Server"
-msgstr "Tambah Server Baru"
+msgstr "Tambah Peladen Baru"
 
 #: admin/modules/master_file/p2pservers.php:167
 #: admin/modules/master_file/p2pservers.php:188
@@ -4547,7 +4559,7 @@ msgstr "Data Anggota Berhasil diperbarui"
 
 #: admin/modules/membership/index.php:232
 #: admin/modules/membership/index.php:267 admin/modules/system/app_user.php:186
-#: admin/modules/system/app_user.php:208
+#: admin/modules/system/app_user.php:209
 msgid "Image FAILED to upload"
 msgstr "Citra/Berkas Gambar GAGAL Diunggah"
 
@@ -4672,11 +4684,11 @@ msgstr "Nomor Identitas"
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
-#: admin/modules/membership/index.php:558 admin/modules/system/app_user.php:353
+#: admin/modules/membership/index.php:558 admin/modules/system/app_user.php:354
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:561 admin/modules/system/app_user.php:356
+#: admin/modules/membership/index.php:561 admin/modules/system/app_user.php:357
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
@@ -4694,13 +4706,13 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:397
+#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:398
 #: lib/contents/login.inc.php:180 lib/contents/member.inc.php:262
 #: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:596 admin/modules/system/app_user.php:399
+#: admin/modules/membership/index.php:596 admin/modules/system/app_user.php:400
 #: lib/contents/login.inc.php:182 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata sandi Baru"
@@ -4710,7 +4722,7 @@ msgstr "Konfirmasi Kata sandi Baru"
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:608 admin/modules/system/app_user.php:405
+#: admin/modules/membership/index.php:608 admin/modules/system/app_user.php:406
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan kotak Kata sandi kosong jika tidak ingin mengubahnya"
 
@@ -5384,13 +5396,13 @@ msgid "Activity Date Until"
 msgstr "Aktifitas Hingga"
 
 #: admin/modules/reporting/customs/staff_act.php:93
-#: admin/modules/system/app_user.php:323 admin/modules/system/app_user.php:429
-#: admin/modules/system/app_user.php:436 admin/modules/system/app_user.php:437
+#: admin/modules/system/app_user.php:324 admin/modules/system/app_user.php:430
+#: admin/modules/system/app_user.php:437 admin/modules/system/app_user.php:438
 msgid "Real Name"
 msgstr "Nama Asli"
 
 #: admin/modules/reporting/customs/staff_act.php:94
-#: admin/modules/system/app_user.php:321 admin/modules/system/app_user.php:430
+#: admin/modules/system/app_user.php:322 admin/modules/system/app_user.php:431
 msgid "Login Username"
 msgstr "Nama masuk Pengguna"
 
@@ -6147,60 +6159,60 @@ msgstr "Nama masuk pengguna atau Nama Lengkap tidak bisa digunakan!"
 msgid "User Data Successfully Updated"
 msgstr "Data Pengguna Berhasil Diperbaharui"
 
-#: admin/modules/system/app_user.php:190
+#: admin/modules/system/app_user.php:191
 msgid "User Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Pengguna GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:198
+#: admin/modules/system/app_user.php:199
 msgid "New User Data Successfully Saved"
 msgstr "Data Pengguna Baru Berhasil Disimpan"
 
-#: admin/modules/system/app_user.php:212
+#: admin/modules/system/app_user.php:213
 msgid "User Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Pengguna Baru GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:261 admin/modules/system/submenu.php:45
+#: admin/modules/system/app_user.php:262 admin/modules/system/submenu.php:45
 msgid "Librarian & System Users"
 msgstr "Pustakawan & Pengguna Sistem"
 
-#: admin/modules/system/app_user.php:265
+#: admin/modules/system/app_user.php:266
 msgid "User List"
 msgstr "Daftar Pengguna"
 
-#: admin/modules/system/app_user.php:266
+#: admin/modules/system/app_user.php:267
 msgid "Add New User"
 msgstr "Tambah Pengguna"
 
-#: admin/modules/system/app_user.php:329 admin/modules/system/app_user.php:431
-#: admin/modules/system/app_user.php:438
+#: admin/modules/system/app_user.php:330 admin/modules/system/app_user.php:432
+#: admin/modules/system/app_user.php:439
 msgid "User Type"
 msgstr "Tipe Keanggotaan"
 
-#: admin/modules/system/app_user.php:331 lib/contents/librarian.inc.php:49
+#: admin/modules/system/app_user.php:332 lib/contents/librarian.inc.php:49
 msgid "E-Mail"
 msgstr "Surel"
 
-#: admin/modules/system/app_user.php:343
+#: admin/modules/system/app_user.php:344
 msgid "Social Media"
 msgstr "Media Sosial"
 
-#: admin/modules/system/app_user.php:347
+#: admin/modules/system/app_user.php:348
 msgid "REMOVE IMAGE"
 msgstr "HILANGKAN GAMBAR"
 
-#: admin/modules/system/app_user.php:379
+#: admin/modules/system/app_user.php:380
 msgid "User Photo"
 msgstr "Foto Pengguna"
 
-#: admin/modules/system/app_user.php:394
+#: admin/modules/system/app_user.php:395
 msgid "Group(s)"
 msgstr "Kelompok"
 
-#: admin/modules/system/app_user.php:404
+#: admin/modules/system/app_user.php:405
 msgid "You are going to edit user profile"
 msgstr "Anda akan menyunting data pengguna"
 
-#: admin/modules/system/app_user.php:432 admin/modules/system/app_user.php:439
+#: admin/modules/system/app_user.php:433 admin/modules/system/app_user.php:440
 msgid "Last Login"
 msgstr "Terakhir kali Masuk"
 
@@ -6688,7 +6700,7 @@ msgid "Time visitor limitation (in minute)"
 msgstr "Maksimal waktu kunjungan (dalam menit)"
 
 #: admin/modules/system/membercard_theme.php:77
-#: admin/modules/system/theme.php:94
+#: admin/modules/system/theme.php:103
 msgid "Error saving custom data!"
 msgstr "Galat saat menyimpan data kustom!"
 
@@ -6698,7 +6710,7 @@ msgstr "Data kustom tersimpan!"
 
 #: admin/modules/system/membercard_theme.php:132
 #: admin/modules/system/membercard_theme.php:135
-#: admin/modules/system/theme.php:160 admin/modules/system/theme.php:163
+#: admin/modules/system/theme.php:169 admin/modules/system/theme.php:172
 msgid "This theme not customizable"
 msgstr "Tema tidak dapat diubah"
 
@@ -6708,21 +6720,21 @@ msgid "Membercard Configuration"
 msgstr "Konfigurasi Kartu Anggota"
 
 #: admin/modules/system/membercard_theme.php:156
-#: admin/modules/system/theme.php:181
+#: admin/modules/system/theme.php:190
 msgid "Customize theme preferences"
 msgstr "Penyesuaian pada tema pilihan"
 
 #: admin/modules/system/membercard_theme.php:175
 #: admin/modules/system/membercard_theme.php:209
-#: admin/modules/system/theme.php:200 admin/modules/system/theme.php:231
-#: admin/modules/system/theme.php:263 admin/modules/system/theme.php:277
+#: admin/modules/system/theme.php:212 admin/modules/system/theme.php:253
+#: admin/modules/system/theme.php:285 admin/modules/system/theme.php:299
 msgid "Activate"
 msgstr "Aktivasi"
 
 #: admin/modules/system/membercard_theme.php:177
 #: admin/modules/system/membercard_theme.php:210
-#: admin/modules/system/theme.php:202 admin/modules/system/theme.php:233
-#: admin/modules/system/theme.php:264 admin/modules/system/theme.php:278
+#: admin/modules/system/theme.php:214 admin/modules/system/theme.php:255
+#: admin/modules/system/theme.php:286 admin/modules/system/theme.php:300
 msgid "Customize"
 msgstr "Kustomisasi"
 
@@ -6826,14 +6838,6 @@ msgstr "Pengaturan UCS"
 msgid "Configure UCS Preferences"
 msgstr "Konfigurasi UCS"
 
-#: admin/modules/system/submenu.php:34
-msgid "Theme"
-msgstr "Tema"
-
-#: admin/modules/system/submenu.php:34
-msgid "Configure theme Preferences"
-msgstr "Konfigurasi Tema"
-
 #: admin/modules/system/submenu.php:40 admin/modules/system/submenu.php:42
 msgid "Biblio Indexes"
 msgstr "Indeks Biblio"
@@ -6897,27 +6901,27 @@ msgstr "Simpan cantuman catatan ke dalam berkas?"
 msgid "Save Logs To File"
 msgstr "Simpan Catatan ke Dalam Berkas"
 
-#: admin/modules/system/theme.php:96
+#: admin/modules/system/theme.php:105
 msgid "Custom data saved! Reload the page to see changes."
 msgstr "Data kustom tersimpan! Mula-ulang laman untuk melihat perubahan."
 
-#: admin/modules/system/theme.php:100
+#: admin/modules/system/theme.php:109
 msgid "This theme not customizable. "
 msgstr "Tema tidak dapat diubah. "
 
-#: admin/modules/system/theme.php:178 admin/modules/system/theme.php:202
+#: admin/modules/system/theme.php:187 admin/modules/system/theme.php:214
 msgid "Theme Configuration"
 msgstr "Pengaturan Tema"
 
-#: admin/modules/system/theme.php:196
+#: admin/modules/system/theme.php:208
 msgid "Public Template"
 msgstr "Templat Publik"
 
-#: admin/modules/system/theme.php:228
+#: admin/modules/system/theme.php:250
 msgid "Admin Template"
 msgstr "Templat Admin"
 
-#: admin/modules/system/theme.php:233
+#: admin/modules/system/theme.php:255
 msgid "Admin Theme Configuration"
 msgstr "Konfigurasi Tema Admin"
 
