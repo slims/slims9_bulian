@@ -612,4 +612,25 @@ class utility
       // Entity not found? Destroy it.
       return isset($_ent_table[$str_xml_data[1]]) ? $_ent_table[$str_xml_data[1]] : '';
     }
+
+    /**
+     * Static Method to load admin template
+     *
+     * @param   object  $obj_db
+     * @return  void
+     */
+    public static function loadUserTemplate($obj_db,$uid)
+    {
+      global $sysconf;
+      // load user template settings for override setting
+      $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
+      $s = $sysconf['admin_template'];
+      if($_q->num_rows>0){
+        $template_settings = unserialize($_q->fetch_row()[0]);
+        foreach ($template_settings as $setting_name => $setting_value) {
+          $sysconf['admin_template'][$setting_name] = $setting_value;
+        }
+      }
+    }
+
 }

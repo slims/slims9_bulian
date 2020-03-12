@@ -230,15 +230,7 @@ if($_SESSION['uid'] == '1'){
 }
 
 // admin template
-// load personalized user template
-$query = "SELECT admin_template FROM user WHERE user_id=".$_SESSION['uid']." AND (admin_template !=NULL OR admin_template !='')";
-$_q = $dbs->query($query);
-if($_q->num_rows>0){
-  $template_settings = unserialize($_q->fetch_row()[0]);
-  foreach ($template_settings as $setting_name => $setting_value) {
-    $sysconf['admin_template'][$setting_name] = $setting_value;
-  }
-}
+utility::loadUserTemplate($dbs,$_SESSION['uid']);
 // scan admin template directory
 $admin_template_dir = SB . 'admin' . DS . $sysconf['admin_template']['dir'];
 $dir = new simbio_directory($admin_template_dir);

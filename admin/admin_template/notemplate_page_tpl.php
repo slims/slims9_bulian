@@ -1,3 +1,4 @@
+<?php utility::loadUserTemplate($dbs,$_SESSION['uid']); ?>
 <!doctype html>
 <html>
 <head><title><?php echo $page_title; ?></title>
