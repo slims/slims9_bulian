@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-11 23:13+0700\n"
-"PO-Revision-Date: 2020-03-11 23:13+0700\n"
+"POT-Creation-Date: 2020-03-12 16:12+0700\n"
+"PO-Revision-Date: 2020-03-12 16:12+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -6726,15 +6726,15 @@ msgstr "Penyesuaian pada tema pilihan"
 
 #: admin/modules/system/membercard_theme.php:175
 #: admin/modules/system/membercard_theme.php:209
-#: admin/modules/system/theme.php:212 admin/modules/system/theme.php:253
-#: admin/modules/system/theme.php:285 admin/modules/system/theme.php:299
+#: admin/modules/system/theme.php:212 admin/modules/system/theme.php:245
+#: admin/modules/system/theme.php:277 admin/modules/system/theme.php:291
 msgid "Activate"
 msgstr "Aktivasi"
 
 #: admin/modules/system/membercard_theme.php:177
 #: admin/modules/system/membercard_theme.php:210
-#: admin/modules/system/theme.php:214 admin/modules/system/theme.php:255
-#: admin/modules/system/theme.php:286 admin/modules/system/theme.php:300
+#: admin/modules/system/theme.php:214 admin/modules/system/theme.php:247
+#: admin/modules/system/theme.php:278 admin/modules/system/theme.php:292
 msgid "Customize"
 msgstr "Kustomisasi"
 
@@ -6917,11 +6917,11 @@ msgstr "Pengaturan Tema"
 msgid "Public Template"
 msgstr "Templat Publik"
 
-#: admin/modules/system/theme.php:250
+#: admin/modules/system/theme.php:242
 msgid "Admin Template"
 msgstr "Templat Admin"
 
-#: admin/modules/system/theme.php:255
+#: admin/modules/system/theme.php:247
 msgid "Admin Theme Configuration"
 msgstr "Konfigurasi Tema Admin"
 
