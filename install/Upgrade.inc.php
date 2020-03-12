@@ -844,7 +844,9 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['alter'][] = "ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;";
 
-    $error = $this->slims->query($sql, ['alter']);
+    $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
+
+    $error = $this->slims->query($sql, ['alter','insert']);
 
     /**
      * Please, move this block in last upgrade role version if available

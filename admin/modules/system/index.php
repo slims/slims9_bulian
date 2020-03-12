@@ -51,6 +51,7 @@ require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
 
 if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
@@ -86,7 +87,34 @@ if (!function_exists('addOrUpdateSetting')) {
 /* Config Vars EDIT FORM */
 /* Config Vars update process */
 
+/* remove logo */
+if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
+      $logo_image = '';
+      $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo');
+      utility::jsAlert(__('Logo Image removed. Refreshing page'));
+      echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+      exit();
+}
+
 if (isset($_POST['updateData'])) {
+
+    if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
+      // remove previous image
+      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+      // create upload object
+      $image_upload = new simbio_file_upload();
+      $image_upload->setAllowableFormat($sysconf['allowed_images']);
+      $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
+      $image_upload->setUploadDir(IMGBS.'default');
+      $img_upload_status = $image_upload->doUpload('image','logo');
+      if ($img_upload_status == UPLOAD_SUCCESS) {
+        $logo_image = $dbs->escape_string($image_upload->new_filename);
+        $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+      }
+    }
+
     // reset/truncate setting table content
     // library name
     $library_name = $dbs->escape_string(strip_tags(trim($_POST['library_name'])));
@@ -190,6 +218,7 @@ if (isset($_POST['updateData'])) {
     echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
     exit();
 }
+
 /* Config Vars update process end */
 
 // create new instance
@@ -212,6 +241,20 @@ $form->addTextField('text', 'library_name', __('Library Name'), $sysconf['librar
 
 // library subname
 $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['library_subname'], 'class="form-control"');
+
+//logo
+$str_input = '';
+if(file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
+    $str_input .= '<div style="padding:10px;">';
+    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
+    $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
+}
+$str_input .= '<div class="custom-file col-3">';
+$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+$str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+$str_input .= '</div>';
+$str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$form->addAnything(__('Logo Image'), $str_input);
 
 /* Form Element(s) */
 // public template
