@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-13 20:45+0700\n"
-"PO-Revision-Date: 2020-03-13 20:45+0700\n"
+"POT-Creation-Date: 2020-03-13 22:08+0700\n"
+"PO-Revision-Date: 2020-03-13 22:08+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -85,7 +85,7 @@ msgstr "Tutup"
 #: admin/admin_template/nightmode/index_template.inc.php:68 admin/chat.php:15
 #: lib/contents/chat.php:89 sysconfig.inc.php:688
 #: template/akasia-dz/partials/nav.php:10 template/akasia/partials/nav.php:10
-#: template/default/parts/_navbar.php:27 template/default/parts/footer.php:38
+#: template/default/parts/_navbar.php:27 template/default/parts/footer.php:41
 #: template/lightweight/partials/nav.php:10
 msgid "Librarian"
 msgstr "Pustakawan"
@@ -492,7 +492,7 @@ msgstr "Daftar Eksemplar Keluar"
 #: template/akasia/index_template.inc.php:111
 #: template/akasia/index_template.inc.php:226
 #: template/akasia/partials/advsearch.php:89
-#: template/default/parts/footer.php:51
+#: template/default/parts/footer.php:54
 #: template/lightweight/index_template.inc.php:94
 #: template/lightweight/index_template.inc.php:205
 #: template/lightweight/partials/advsearch.php:89
@@ -8037,7 +8037,7 @@ msgstr "Koleksi"
 #: template/akasia-dz/partials/nav.php:9
 #: template/akasia/index_template.inc.php:93
 #: template/akasia/index_template.inc.php:96 template/akasia/partials/nav.php:9
-#: template/default/parts/_navbar.php:117 template/default/parts/footer.php:39
+#: template/default/parts/_navbar.php:117 template/default/parts/footer.php:42
 #: template/lightweight/index_template.inc.php:84
 #: template/lightweight/index_template.inc.php:85
 #: template/lightweight/partials/nav.php:9
@@ -8067,7 +8067,7 @@ msgstr "Hasil Pencarian"
 
 #: template/akasia-dz/index_template.inc.php:140
 #: template/akasia/index_template.inc.php:157
-#: template/default/parts/_navbar.php:15 template/default/parts/footer.php:36
+#: template/default/parts/_navbar.php:15 template/default/parts/footer.php:39
 #: template/lightweight/index_template.inc.php:139
 msgid "Information"
 msgstr "Informasi"
@@ -8092,7 +8092,7 @@ msgstr "CARI"
 
 #: template/akasia-dz/index_template.inc.php:200
 #: template/akasia/index_template.inc.php:220
-#: template/default/parts/footer.php:52
+#: template/default/parts/footer.php:55
 #: template/lightweight/index_template.inc.php:197
 msgid "start it by typing one or more keywords for title, author or subject"
 msgstr "masukkan satu atau lebih kata kunci dari judul, pengarang, atau subyek"
@@ -8272,7 +8272,7 @@ msgid "Enter ISBN/ISSN"
 msgstr "Masukkan ISBN/ISSN"
 
 #: template/default/parts/_modal_advanced.php:80
-#: template/default/parts/footer.php:61
+#: template/default/parts/footer.php:64
 msgid "Find Collection"
 msgstr "Cari Koleksi"
 
@@ -8324,32 +8324,32 @@ msgstr "ATAU COBA"
 msgid "Last search:"
 msgstr "Pencarian terakhir:"
 
-#: template/default/parts/footer.php:37
+#: template/default/parts/footer.php:40
 msgid "Services"
 msgstr "Layanan"
 
-#: template/default/parts/footer.php:43
+#: template/default/parts/footer.php:46
 msgid "About Us"
 msgstr "Tentang Kami"
 
-#: template/default/parts/footer.php:56
+#: template/default/parts/footer.php:59
 msgid "Enter keywords"
 msgstr "Masukkan kata kunci"
 
-#: template/default/parts/footer.php:69
+#: template/default/parts/footer.php:72
 msgid "Keep SLiMS Alive"
 msgstr "Donasi untuk SLiMS"
 
-#: template/default/parts/footer.php:72
+#: template/default/parts/footer.php:75
 msgid "Want to Contribute?"
 msgstr "Kontribusi untuk SLiMS?"
 
-#: template/default/parts/footer.php:78
+#: template/default/parts/footer.php:81
 #: template/default/visitor_template.php:52
 msgid "Powered by "
 msgstr "Ditenagai oleh "
 
-#: template/default/parts/footer.php:85
+#: template/default/parts/footer.php:88
 msgid "Chat"
 msgstr "Memulai obrolan"
 
