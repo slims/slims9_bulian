@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-12 16:12+0700\n"
-"PO-Revision-Date: 2020-03-12 16:12+0700\n"
+"POT-Creation-Date: 2020-03-13 20:45+0700\n"
+"PO-Revision-Date: 2020-03-13 20:45+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -54,7 +54,7 @@ msgstr "OPAC"
 
 #: admin/admin_template/akasia-dz/function.php:77
 #: admin/admin_template/akasia/function.php:82 lib/contents/chat.php:81
-#: lib/module.inc.php:42 template/default/parts/_navbar.php:109
+#: lib/module.inc.php:42 template/default/parts/_navbar.php:112
 msgid "Logout"
 msgstr "Keluar"
 
@@ -944,7 +944,7 @@ msgstr "Tambahkan nama kolom di baris pertama"
 #: admin/modules/membership/import.php:229
 #: admin/modules/membership/index.php:519
 #: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
-#: admin/modules/system/index.php:256
+#: admin/modules/system/index.php:299
 msgid "Yes"
 msgstr "Ya"
 
@@ -1734,11 +1734,11 @@ msgid "Click to enlarge preview"
 msgstr "Klik untuk memperbesar"
 
 #: admin/modules/bibliography/index.php:770
-#: admin/modules/membership/index.php:530
+#: admin/modules/membership/index.php:530 admin/modules/system/index.php:250
 msgid "Remove Image"
 msgstr "Hapus Gambar"
 
-#: admin/modules/bibliography/index.php:778
+#: admin/modules/bibliography/index.php:778 admin/modules/system/index.php:254
 msgid "Choose file"
 msgstr "Pilih berkas"
 
@@ -2611,7 +2611,7 @@ msgid "Settings saved"
 msgstr "Setelan tersimpan"
 
 #: admin/modules/bibliography/print_settings.php:78
-#: admin/modules/system/holiday.php:326 admin/modules/system/index.php:197
+#: admin/modules/system/holiday.php:326 admin/modules/system/index.php:226
 #: admin/modules/system/membercard_theme.php:99
 #: admin/modules/system/theme.php:135 admin/modules/system/ucsetting.php:76
 msgid "Save Settings"
@@ -3453,7 +3453,7 @@ msgid "Quick Return is disabled"
 msgstr "Pengembalian cepat tidak tersedia"
 
 #: admin/modules/circulation/quick_return.php:82
-#: admin/modules/circulation/submenu.php:28 admin/modules/system/index.php:263
+#: admin/modules/circulation/submenu.php:28 admin/modules/system/index.php:306
 msgid "Quick Return"
 msgstr "Pengembalian Kilat"
 
@@ -4819,19 +4819,19 @@ msgid "Loan Periode (In Days)"
 msgstr "Lama Peminjaman (Dalam Hari)"
 
 #: admin/modules/membership/member_type.php:204
-#: admin/modules/system/index.php:262 admin/modules/system/index.php:274
-#: admin/modules/system/index.php:280 admin/modules/system/index.php:287
-#: admin/modules/system/index.php:293 admin/modules/system/index.php:299
-#: admin/modules/system/index.php:305 admin/modules/system/index.php:323
+#: admin/modules/system/index.php:305 admin/modules/system/index.php:317
+#: admin/modules/system/index.php:323 admin/modules/system/index.php:330
+#: admin/modules/system/index.php:336 admin/modules/system/index.php:342
+#: admin/modules/system/index.php:348 admin/modules/system/index.php:366
 #: admin/modules/system/ucsetting.php:89
 msgid "Enable"
 msgstr "Dimungkinkan"
 
 #: admin/modules/membership/member_type.php:205
-#: admin/modules/system/index.php:261 admin/modules/system/index.php:273
-#: admin/modules/system/index.php:279 admin/modules/system/index.php:286
-#: admin/modules/system/index.php:292 admin/modules/system/index.php:298
-#: admin/modules/system/index.php:304 admin/modules/system/index.php:322
+#: admin/modules/system/index.php:304 admin/modules/system/index.php:316
+#: admin/modules/system/index.php:322 admin/modules/system/index.php:329
+#: admin/modules/system/index.php:335 admin/modules/system/index.php:341
+#: admin/modules/system/index.php:347 admin/modules/system/index.php:365
 #: admin/modules/system/ucsetting.php:88
 msgid "Disable"
 msgstr "Tidak mungkin"
@@ -6595,107 +6595,115 @@ msgstr "Sabtu"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: admin/modules/system/index.php:77 admin/modules/system/submenu.php:31
+#: admin/modules/system/index.php:78 admin/modules/system/submenu.php:31
 msgid "System Configuration"
 msgstr "Pengaturan Sistem"
 
-#: admin/modules/system/index.php:80
+#: admin/modules/system/index.php:81
 msgid "Modify global application preferences"
 msgstr "Merubah preferensi aplikasi global"
 
-#: admin/modules/system/index.php:189
+#: admin/modules/system/index.php:96
+msgid "Logo Image removed. Refreshing page"
+msgstr "Logo dihapus. Segarkan laman"
+
+#: admin/modules/system/index.php:217
 msgid "Settings saved. Refreshing page"
 msgstr "Pengaturan disimpan. Penyegaran laman"
 
-#: admin/modules/system/index.php:211
+#: admin/modules/system/index.php:240
 msgid "Library Name"
 msgstr "Nama Perpustakaan"
 
-#: admin/modules/system/index.php:214
+#: admin/modules/system/index.php:243
 msgid "Library Subname"
 msgstr "Nama Tambahan Perpustakaan"
 
-#: admin/modules/system/index.php:245
+#: admin/modules/system/index.php:257
+msgid "Logo Image"
+msgstr "Gambar Logo"
+
+#: admin/modules/system/index.php:288
 msgid "Default App. Language"
 msgstr "Bahasa Aplikasi Baku"
 
-#: admin/modules/system/index.php:253
+#: admin/modules/system/index.php:296
 msgid "Number Of Collections To Show In OPAC Result List"
 msgstr "Jumlah koleksi yang ditampilkan hasil pencarian OPAC"
 
-#: admin/modules/system/index.php:257
+#: admin/modules/system/index.php:300
 msgid "Show Promoted Titles at Homepage"
 msgstr "Tampilkan Judul Terpilih di laman OPAC"
 
-#: admin/modules/system/index.php:267
+#: admin/modules/system/index.php:310
 msgid "Don't Print"
 msgstr "Jangan Cetak"
 
-#: admin/modules/system/index.php:268
+#: admin/modules/system/index.php:311
 msgid "Print"
 msgstr "Cetak"
 
-#: admin/modules/system/index.php:269
+#: admin/modules/system/index.php:312
 msgid "Print Circulation Receipt"
 msgstr "Cetak Bukti Sirkulasi"
 
-#: admin/modules/system/index.php:275
+#: admin/modules/system/index.php:318
 msgid "Loan and Due Date Manual Change"
 msgstr "Perubahan Manual Tanggal Peminjaman dan Jatuh Tempo"
 
-#: admin/modules/system/index.php:281
+#: admin/modules/system/index.php:324
 msgid "Loan Limit Override"
 msgstr "Mengabaikan Batas Pinjam"
 
-#: admin/modules/system/index.php:288
+#: admin/modules/system/index.php:331
 msgid "Ignore Holidays Fine Calculation"
 msgstr "Abaikan Perhitungan Denda Kala Libur"
 
-#: admin/modules/system/index.php:294
+#: admin/modules/system/index.php:337
 msgid "OPAC XML Detail"
 msgstr "Detil XML OPAC"
 
-#: admin/modules/system/index.php:300
+#: admin/modules/system/index.php:343
 msgid "OPAC XML Result"
 msgstr "Hasil XML OPAC"
 
-#: admin/modules/system/index.php:306
+#: admin/modules/system/index.php:349
 msgid "Enable Search Spellchecker"
 msgstr "Aktifkan Pemeriksa Ejaan"
 
-#: admin/modules/system/index.php:310
+#: admin/modules/system/index.php:353
 msgid "Forbid"
 msgstr "Dilarang"
 
-#: admin/modules/system/index.php:311
+#: admin/modules/system/index.php:354
 msgid "Allow"
 msgstr "Diijinkan"
 
-#: admin/modules/system/index.php:312
+#: admin/modules/system/index.php:355
 msgid "Allow OPAC File Download"
 msgstr "Izinkan Pengunduhan Berkas OPAC"
 
-#: admin/modules/system/index.php:315
+#: admin/modules/system/index.php:358
 msgid "Session Login Timeout"
 msgstr "Sesi Masuk Berakhir"
 
-#: admin/modules/system/index.php:318
+#: admin/modules/system/index.php:361
 msgid "Barcode Encoding"
 msgstr "Penyandian Barkod"
 
-#: admin/modules/system/index.php:324
+#: admin/modules/system/index.php:367
 msgid "Visitor Counter by IP"
 msgstr "Konfigurasi Penghitung Pengunjung dengan IP"
 
-#: admin/modules/system/index.php:325
+#: admin/modules/system/index.php:368
 msgid "Allowed Counter IP"
 msgstr "IP yang Diizinkan"
 
-#: admin/modules/system/index.php:327
+#: admin/modules/system/index.php:370
 msgid "Visitor Limitation by Time"
 msgstr "Pembatasan Akses Penghitung Pengunjung berdasarkan Waktu"
 
-#: admin/modules/system/index.php:330
+#: admin/modules/system/index.php:373
 msgid "Time visitor limitation (in minute)"
 msgstr "Maksimal waktu kunjungan (dalam menit)"
 
@@ -8029,7 +8037,7 @@ msgstr "Koleksi"
 #: template/akasia-dz/partials/nav.php:9
 #: template/akasia/index_template.inc.php:93
 #: template/akasia/index_template.inc.php:96 template/akasia/partials/nav.php:9
-#: template/default/parts/_navbar.php:114 template/default/parts/footer.php:39
+#: template/default/parts/_navbar.php:117 template/default/parts/footer.php:39
 #: template/lightweight/index_template.inc.php:84
 #: template/lightweight/index_template.inc.php:85
 #: template/lightweight/partials/nav.php:9
@@ -8132,7 +8140,7 @@ msgid "About SLiMS"
 msgstr "Tentang SLiMS"
 
 #: template/akasia-dz/partials/nav.php:20 template/akasia/partials/nav.php:20
-#: template/default/parts/_navbar.php:146
+#: template/default/parts/_navbar.php:149
 #: template/lightweight/partials/nav.php:20
 msgid "Select Language"
 msgstr "Pilih Bahasa"
@@ -8292,7 +8300,7 @@ msgstr "Geografi dan Sejarah"
 msgid "News"
 msgstr "Berita"
 
-#: template/default/parts/_navbar.php:106
+#: template/default/parts/_navbar.php:109
 msgid "Profile"
 msgstr "Profil"
 
