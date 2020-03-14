@@ -632,6 +632,10 @@ if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
         // create language cookie
         @setcookie('select_lang', $select_lang, time()+14400, SWB);
         $sysconf['default_lang'] = $select_lang;
+
+        //reload page on change language
+        header("location:index.php");
+        
     } else if (isset($_COOKIE['select_lang'])) {
         $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
     }
