@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-14 19:06+0700\n"
-"PO-Revision-Date: 2020-03-14 19:06+0700\n"
+"POT-Creation-Date: 2020-03-14 19:12+0700\n"
+"PO-Revision-Date: 2020-03-14 19:12+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -104,6 +104,10 @@ msgstr "nilai"
 #: admin/admin_template/nightmode/js/smooth-scrollbar.js:1
 msgid "keys"
 msgstr "kunci"
+
+#: admin/admin_template/default/tinfo.inc.php:8
+msgid "Color Theme.<br><small>( Default : #004db6 )</small>"
+msgstr "Warna Tema.<br><small>( Baku : #004db6 )</small>"
 
 #: admin/admin_template/overdue-mail-tpl.php:2
 msgid ""
