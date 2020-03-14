@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-14 15:16+0700\n"
-"PO-Revision-Date: 2020-03-14 15:16+0700\n"
+"POT-Creation-Date: 2020-03-14 19:06+0700\n"
+"PO-Revision-Date: 2020-03-14 19:06+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1901,11 +1901,17 @@ msgstr "Data biblio terkait"
 
 #: admin/modules/bibliography/index.php:854
 #: admin/modules/bibliography/print_settings.php:92
+#: template/default/tinfo.inc.php:47 template/default/tinfo.inc.php:98
+#: template/default/tinfo.inc.php:114 template/default/tinfo.inc.php:130
+#: template/default/tinfo.inc.php:140 template/default/tinfo.inc.php:150
 msgid "Show"
 msgstr "Tunjukan"
 
 #: admin/modules/bibliography/index.php:855
 #: admin/modules/bibliography/print_settings.php:91
+#: template/default/tinfo.inc.php:48 template/default/tinfo.inc.php:99
+#: template/default/tinfo.inc.php:115 template/default/tinfo.inc.php:131
+#: template/default/tinfo.inc.php:141 template/default/tinfo.inc.php:151
 msgid "Hide"
 msgstr "Sembunyikan"
 
@@ -1951,7 +1957,7 @@ msgstr "Terakhir diubah"
 #: admin/modules/bibliography/index.php:985
 #: admin/modules/bibliography/index.php:991
 #: admin/modules/stock_take/st_report.php:84
-#: admin/modules/stock_take/st_report.php:88
+#: admin/modules/stock_take/st_report.php:88 template/default/tinfo.inc.php:73
 msgid "None"
 msgstr "Tidak Ada"
 
@@ -4858,7 +4864,7 @@ msgstr "Lama Peminjaman (Dalam Hari)"
 #: admin/modules/system/index.php:323 admin/modules/system/index.php:330
 #: admin/modules/system/index.php:336 admin/modules/system/index.php:342
 #: admin/modules/system/index.php:348 admin/modules/system/index.php:366
-#: admin/modules/system/ucsetting.php:89
+#: admin/modules/system/ucsetting.php:89 template/default/tinfo.inc.php:208
 msgid "Enable"
 msgstr "Dimungkinkan"
 
@@ -4867,7 +4873,7 @@ msgstr "Dimungkinkan"
 #: admin/modules/system/index.php:322 admin/modules/system/index.php:329
 #: admin/modules/system/index.php:335 admin/modules/system/index.php:341
 #: admin/modules/system/index.php:347 admin/modules/system/index.php:365
-#: admin/modules/system/ucsetting.php:88
+#: admin/modules/system/ucsetting.php:88 template/default/tinfo.inc.php:209
 msgid "Disable"
 msgstr "Tidak mungkin"
 
@@ -5452,6 +5458,14 @@ msgstr "Tahun Diterima"
 #: admin/modules/reporting/customs/procurement_report.php:66
 msgid "Options"
 msgstr "Pilihan"
+
+#: admin/modules/reporting/customs/procurement_report.php:117
+msgid "Procurement List"
+msgstr "Daftar Perolehan"
+
+#: admin/modules/reporting/customs/procurement_report.php:118
+msgid "Procurement Bar Chart"
+msgstr "Grafik Batang Perolehan"
 
 #: admin/modules/reporting/customs/procurement_report.php:127
 msgid "Procurement Report Year : "
@@ -8387,6 +8401,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: template/default/parts/_result-search.php:50
+#: template/default/tinfo.inc.php:136
 msgid "Suggestion"
 msgstr "Saran"
 
@@ -8435,6 +8450,118 @@ msgstr "Ditenagai oleh "
 msgid "Chat"
 msgstr "Memulai obrolan"
 
+#: template/default/tinfo.inc.php:33
+msgid "Enable this theme for mobile?"
+msgstr "Aktifkan tema ini untuk perangkat bergerak?"
+
+#: template/default/tinfo.inc.php:37
+msgid "Yes, please!"
+msgstr "Ya, silahkan!"
+
+#: template/default/tinfo.inc.php:38
+msgid "No, I want use lighweight theme"
+msgstr "Tidak, saya mau menggunakan tema lightweight"
+
+#: template/default/tinfo.inc.php:43
+msgid "Library Sub Name"
+msgstr "Nama Tambahan Perpustakaan"
+
+#: template/default/tinfo.inc.php:53
+msgid "Slide Transition"
+msgstr "Transisi Antar Gambar"
+
+#: template/default/tinfo.inc.php:57
+msgid "Fade"
+msgstr "Memudar"
+
+#: template/default/tinfo.inc.php:58
+msgid "Slide Left"
+msgstr "Geser Kiri"
+
+#: template/default/tinfo.inc.php:59
+msgid "Slide Right"
+msgstr "Geser Kanan"
+
+#: template/default/tinfo.inc.php:60
+msgid "Slide Up"
+msgstr "Geser Atas"
+
+#: template/default/tinfo.inc.php:61
+msgid "Slide Down"
+msgstr "Geser Bawah"
+
+#: template/default/tinfo.inc.php:62
+msgid "Zoom In"
+msgstr "Perbesar"
+
+#: template/default/tinfo.inc.php:63
+msgid "Burn"
+msgstr "Terbakar"
+
+#: template/default/tinfo.inc.php:64
+msgid "Flash"
+msgstr "Kilat"
+
+#: template/default/tinfo.inc.php:69
+msgid "Slide Animation"
+msgstr "Animasi Gambar"
+
+#: template/default/tinfo.inc.php:88
+msgid "Delay"
+msgstr "Kelambatan"
+
+#: template/default/tinfo.inc.php:94
+msgid "Popular Collection"
+msgstr "Koleksi Populer"
+
+#: template/default/tinfo.inc.php:104
+msgid "Popular Items"
+msgstr "Eksemplar Populer"
+
+#: template/default/tinfo.inc.php:110
+msgid "New Collection"
+msgstr "Koleksi Baru"
+
+#: template/default/tinfo.inc.php:120
+msgid "New Items"
+msgstr "Eksemplar Baru"
+
+#: template/default/tinfo.inc.php:126
+msgid "Top Reader"
+msgstr "Pembaca Terbanyak"
+
+#: template/default/tinfo.inc.php:146
+msgid "Map"
+msgstr "Peta"
+
+#: template/default/tinfo.inc.php:156
+msgid "Map URL"
+msgstr "URL Peta"
+
+#: template/default/tinfo.inc.php:164
+msgid "Map Description"
+msgstr "Deskripsi Peta"
+
+#: template/default/tinfo.inc.php:172
+msgid "Facebook URL"
+msgstr "URL Facebook"
+
+#: template/default/tinfo.inc.php:180
+msgid "Twitter URL"
+msgstr "URL Twitter"
+
+#: template/default/tinfo.inc.php:188
+msgid "Youtube URL"
+msgstr "URL Youtube"
+
+#: template/default/tinfo.inc.php:196
+msgid "Instagram URL"
+msgstr "URL Instagram"
+
+#: template/default/tinfo.inc.php:204
+msgid "Visitor log voice"
+msgstr "Suara penghitung pengunjung"
+
 #: template/default/visitor_template.php:29
 msgid "Welcome to "
 msgstr "Selamat datang di "
@@ -8459,66 +8586,6 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
-
-#~ msgid "Enable this theme for mobile?"
-#~ msgstr "Aktifkan tema ini untuk perangkat bergerak?"
-
-#~ msgid "Yes, please!"
-#~ msgstr "Ya, silahkan!"
-
-#~ msgid "No, I want use lighweight theme"
-#~ msgstr "Tidak, saya mau menggunakan tema lightweight"
-
-#~ msgid "Library Sub Name"
-#~ msgstr "Nama Tambahan Perpustakaan"
-
-#~ msgid "Slide Transition"
-#~ msgstr "Transisi Antar Gambar"
-
-#~ msgid "Slide Animation"
-#~ msgstr "Animasi Gambar"
-
-#~ msgid "Delay"
-#~ msgstr "Kelambatan"
-
-#~ msgid "Popular Collection"
-#~ msgstr "Koleksi Populer"
-
-#~ msgid "Popular Items"
-#~ msgstr "Eksemplar Populer"
-
-#~ msgid "New Collection"
-#~ msgstr "Koleksi Baru"
-
-#~ msgid "New Items"
-#~ msgstr "Eksemplar Baru"
-
-#~ msgid "Top Reader"
-#~ msgstr "Pembaca Terbanyak"
-
-#~ msgid "Map"
-#~ msgstr "Peta"
-
-#~ msgid "Map URL"
-#~ msgstr "URL Peta"
-
-#~ msgid "Map Description"
-#~ msgstr "Deskripsi Peta"
-
-#~ msgid "Facebook URL"
-#~ msgstr "URL Facebook"
-
-#~ msgid "Twitter URL"
-#~ msgstr "URL Twitter"
-
-#~ msgid "Youtube URL"
-#~ msgstr "URL Youtube"
-
-#~ msgid "Instagram URL"
-#~ msgstr "URL Instagram"
-
-#~ msgid "Visitor log voice"
-#~ msgstr "Suara penghitung pengunjung"
 
 #~ msgid "Ratio:"
 #~ msgstr "Rasio:"
