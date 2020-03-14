@@ -621,21 +621,6 @@ $dbs->query('SET NAMES \'utf8\'');
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
 
-// template info config
-if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
-  $sysconf['template']['base'] = 'php'; /* html OR php */
-} else {
-  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
-}
-
-// admin template info config
-if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php')) {
-  require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
-}
-
-// load global settings again for override tinfo setting
-utility::loadSettings($dbs);
-
 // check for user language selection if we are not in admin areas
 if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
     if (isset($_GET['select_lang'])) {
@@ -658,6 +643,21 @@ if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
 
 // Apply language settings
 require LANG.'localisation.php';
+
+// template info config
+if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
+  $sysconf['template']['base'] = 'php'; /* html OR php */
+} else {
+  require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php';
+}
+
+// admin template info config
+if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php')) {
+  require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
+}
+
+// load global settings again for override tinfo setting
+utility::loadSettings($dbs);
 
 /* AUTHORITY TYPE */
 $sysconf['authority_type']['p'] = __('Personal Name');

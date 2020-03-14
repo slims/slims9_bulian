@@ -114,8 +114,8 @@ if (!$reportView) {
             }
             $output .= '<td  class="text-right text-center">'.$total_y_title.'</td><td class="text-right text-center"><strong>'.$total_y_item.'</strong></td>';
             $output .= '<td><div class="btn-group">';
-            $output .= '<a class="btn-sm btn btn-info notAJAX openPopUp" href="'.MWB.'reporting/customs/pop_procurement_list.php?filter='.$year_num.'" width="900" height="630" title="Procurement List"><i class="fa fa-list" aria-hidden="true"></i></a>';
-            $output .= '<a class="btn-sm btn btn-primary notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php?filter='.$year.'" width="700" height="530" title="Procurement Bar Chart"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>';           
+            $output .= '<a class="btn-sm btn btn-info notAJAX openPopUp" href="'.MWB.'reporting/customs/pop_procurement_list.php?filter='.$year_num.'" width="900" height="630" title="'.__('Procurement List').'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+            $output .= '<a class="btn-sm btn btn-primary notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php?filter='.$year.'" width="700" height="530" title="'.__('Procurement Bar Chart').'"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>';           
             $output .= '</div></td></tr>';
         }
     }   
