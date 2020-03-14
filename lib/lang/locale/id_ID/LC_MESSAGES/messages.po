@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-13 22:08+0700\n"
-"PO-Revision-Date: 2020-03-13 22:08+0700\n"
+"POT-Creation-Date: 2020-03-14 12:26+0700\n"
+"PO-Revision-Date: 2020-03-14 12:26+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -474,6 +474,7 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/membership/member_card_generator.php:199
 #: admin/modules/membership/member_type.php:157
 #: admin/modules/membership/member_type.php:159
+#: admin/modules/reporting/customs/pop_procurement_list.php:97
 #: admin/modules/serial_control/index.php:63
 #: admin/modules/serial_control/index.php:72
 #: admin/modules/stock_take/current.php:127
@@ -519,6 +520,8 @@ msgstr "Cari"
 #: admin/modules/reporting/customs/loan_history.php:91
 #: admin/modules/reporting/customs/loan_history.php:151
 #: admin/modules/reporting/customs/loan_history.php:236
+#: admin/modules/reporting/customs/pop_procurement_list.php:118
+#: admin/modules/reporting/customs/pop_procurement_list.php:157
 #: admin/modules/reporting/customs/reserve_list.php:77
 #: admin/modules/reporting/customs/reserve_list.php:112
 #: admin/modules/stock_take/current.php:90
@@ -599,6 +602,8 @@ msgstr "ID Anggota"
 #: admin/modules/reporting/customs/loan_history.php:85
 #: admin/modules/reporting/customs/loan_history.php:152
 #: admin/modules/reporting/customs/loan_history.php:237
+#: admin/modules/reporting/customs/pop_procurement_list.php:119
+#: admin/modules/reporting/customs/pop_procurement_list.php:159
 #: admin/modules/reporting/customs/reserve_list.php:113
 #: admin/modules/reporting/customs/titles_list.php:152
 #: admin/modules/reporting/customs/titles_list.php:279
@@ -676,6 +681,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/master_file/supplier.php:241
 #: admin/modules/master_file/topic.php:283
 #: admin/modules/membership/member_type.php:263
+#: admin/modules/reporting/customs/pop_procurement_list.php:152
 #: admin/modules/serial_control/index.php:174
 #: admin/modules/serial_control/subscription.php:256
 #: admin/modules/stock_take/current.php:194
@@ -1313,6 +1319,7 @@ msgstr "ISBN/ISSN"
 #: admin/modules/bibliography/pop_p2p.php:58
 #: admin/modules/master_file/publisher.php:128
 #: admin/modules/master_file/submenu.php:31
+#: admin/modules/reporting/customs/pop_procurement_list.php:160
 #: admin/modules/reporting/customs/titles_list.php:154
 #: admin/modules/reporting/customs/titles_list.php:282
 #: lib/contents/default.inc.php:169 template/akasia-dz/detail_template.php:64
@@ -1499,6 +1506,9 @@ msgstr "Total item"
 #: admin/modules/reporting/customs/item_titles_list.php:93
 #: admin/modules/reporting/customs/item_titles_list.php:159
 #: admin/modules/reporting/customs/loan_by_class.php:86
+#: admin/modules/reporting/customs/pop_procurement_list.php:69
+#: admin/modules/reporting/customs/pop_procurement_list.php:121
+#: admin/modules/reporting/customs/pop_procurement_list.php:165
 #: admin/modules/reporting/customs/titles_list.php:94
 #: admin/modules/stock_take/current.php:151
 #: admin/modules/stock_take/init.php:201
@@ -1522,6 +1532,8 @@ msgstr "Tipe Koleksi"
 #: admin/modules/master_file/submenu.php:35
 #: admin/modules/reporting/customs/item_titles_list.php:117
 #: admin/modules/reporting/customs/loan_history.php:113
+#: admin/modules/reporting/customs/pop_procurement_list.php:83
+#: admin/modules/reporting/customs/pop_procurement_list.php:167
 #: admin/modules/reporting/customs/titles_list.php:118
 #: admin/modules/stock_take/init.php:209
 #: admin/modules/stock_take/lost_item_list.php:115
@@ -1602,6 +1614,7 @@ msgid "Unique publishing number for each title of publication."
 msgstr "Nomor publikasi yang unik dari setiap judul cetakan."
 
 #: admin/modules/bibliography/index.php:721
+#: admin/modules/reporting/customs/pop_procurement_list.php:161
 msgid "Publishing Year"
 msgstr "Tahun Terbit"
 
@@ -1610,6 +1623,7 @@ msgid "Year of publication"
 msgstr "Tahun Terbit"
 
 #: admin/modules/bibliography/index.php:730
+#: admin/modules/reporting/customs/pop_procurement_list.php:162
 #: admin/modules/reporting/customs/titles_list.php:153
 #: admin/modules/reporting/customs/titles_list.php:281
 msgid "Publishing Place"
@@ -1658,6 +1672,10 @@ msgstr "Judul Seri"
 #: admin/modules/reporting/customs/loan_by_class.php:67
 #: admin/modules/reporting/customs/loan_by_class.php:151
 #: admin/modules/reporting/customs/loan_by_class.php:152
+#: admin/modules/reporting/customs/pop_procurement_list.php:56
+#: admin/modules/reporting/customs/pop_procurement_list.php:120
+#: admin/modules/reporting/customs/pop_procurement_list.php:164
+#: admin/modules/reporting/customs/procurement_report.php:59
 #: admin/modules/reporting/customs/titles_list.php:79
 #: admin/modules/stock_take/current.php:152
 #: admin/modules/stock_take/finish.php:104
@@ -1706,6 +1724,7 @@ msgstr "Subyek"
 #: admin/modules/master_file/frequency.php:217
 #: admin/modules/reporting/customs/class_recap.php:73
 #: admin/modules/reporting/customs/class_recap.php:124
+#: admin/modules/reporting/customs/pop_procurement_list.php:163
 #: admin/modules/reporting/customs/titles_list.php:106 lib/detail.inc.php:233
 #: template/akasia-dz/detail_template.php:80
 #: template/akasia/detail_template.php:80
@@ -2027,6 +2046,10 @@ msgid "Items"
 msgstr "Eksemplar"
 
 #: admin/modules/bibliography/item.php:214
+#: admin/modules/reporting/customs/pop_procurement_list.php:63
+#: admin/modules/reporting/customs/pop_procurement_list.php:77
+#: admin/modules/reporting/customs/pop_procurement_list.php:91
+#: admin/modules/reporting/customs/procurement_report.php:51
 msgid "Others"
 msgstr "Lainnya"
 
@@ -2035,6 +2058,7 @@ msgid "Edit Biblographic data"
 msgstr "Sunting Data Bibliografi"
 
 #: admin/modules/bibliography/item.php:301
+#: admin/modules/reporting/customs/pop_procurement_list.php:158
 msgid "Inventory Code"
 msgstr "Kode Inventaris"
 
@@ -2092,6 +2116,7 @@ msgstr "Tanggal Faktur"
 
 #: admin/modules/bibliography/item.php:357
 #: admin/modules/reporting/customs/overdued_list.php:195
+#: admin/modules/reporting/customs/pop_procurement_list.php:168
 msgid "Price"
 msgstr "Harga"
 
@@ -2203,6 +2228,7 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/reporting/customs/member_list.php:42
 #: admin/modules/reporting/customs/member_loan_list.php:41
 #: admin/modules/reporting/customs/overdued_list.php:45
+#: admin/modules/reporting/customs/procurement_report.php:27
 #: admin/modules/reporting/customs/reserve_list.php:41
 #: admin/modules/reporting/customs/staff_act.php:41
 #: admin/modules/reporting/customs/titles_list.php:42
@@ -2408,6 +2434,13 @@ msgstr "Ruas"
 #: admin/modules/reporting/customs/loan_history.php:117
 #: admin/modules/reporting/customs/member_list.php:76
 #: admin/modules/reporting/customs/member_list.php:90
+#: admin/modules/reporting/customs/pop_procurement_list.php:59
+#: admin/modules/reporting/customs/pop_procurement_list.php:73
+#: admin/modules/reporting/customs/pop_procurement_list.php:87
+#: admin/modules/reporting/customs/pop_procurement_list.php:114
+#: admin/modules/reporting/customs/procurement_report.php:66
+#: admin/modules/reporting/customs/procurement_report.php:76
+#: admin/modules/reporting/customs/procurement_report.php:92
 #: admin/modules/reporting/customs/titles_list.php:86
 #: admin/modules/reporting/customs/titles_list.php:98
 #: admin/modules/reporting/customs/titles_list.php:110
@@ -2589,6 +2622,7 @@ msgid "Add Subject"
 msgstr "Tambahkan Subjek"
 
 #: admin/modules/bibliography/pop_topic.php:148
+#: admin/modules/reporting/customs/pop_procurement_list.php:50
 msgid "Keyword"
 msgstr "Kata kunci"
 
@@ -3275,6 +3309,7 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/master_file/rda_cmc.php:158
 #: admin/modules/membership/index.php:380
 #: admin/modules/membership/member_type.php:169
+#: admin/modules/reporting/customs/pop_procurement_list.php:31
 #: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:283
 #: admin/modules/system/app_user.php:419 admin/modules/system/backup.php:48
 #: admin/modules/system/backup_proc.php:45
@@ -4972,6 +5007,7 @@ msgstr "Cetak Halaman ini"
 
 #: admin/modules/reporting/customs/class_recap.php:272
 #: admin/modules/reporting/customs/loan_by_class.php:272
+#: admin/modules/reporting/customs/pop_procurement_list.php:98
 msgid "Export to spreadsheet format"
 msgstr "Ekspor ke format <i>spreadsheet</i>"
 
@@ -5067,6 +5103,11 @@ msgstr "Laporan Denda"
 #: admin/modules/reporting/customs/customs_report_list.inc.php:43
 msgid "Member Fines List"
 msgstr "Daftar Denda Anggota"
+
+#: admin/modules/reporting/customs/customs_report_list.inc.php:44
+#: admin/modules/reporting/customs/procurement_report.php:39
+msgid "Procurement Report"
+msgstr "Laporan Perolehan"
 
 #: admin/modules/reporting/customs/due_date_warning.php:65
 msgid "This report loan items which will due in 3 to 0 days"
@@ -5378,6 +5419,43 @@ msgstr "Kirim surel Pemberitahuan"
 #: admin/modules/reporting/customs/overdued_list.php:196
 msgid "day(s)"
 msgstr "hari"
+
+#: admin/modules/reporting/customs/pop_procurement_list.php:43
+msgid "Procurement List in Year : "
+msgstr "Daftar Perolehan dalam Tahun: "
+
+#: admin/modules/reporting/customs/pop_procurement_list.php:122
+#: admin/modules/reporting/customs/pop_procurement_list.php:169
+msgid "Input Date"
+msgstr "Tanggal Masuk"
+
+#: admin/modules/reporting/customs/pop_procurement_list.php:166
+msgid "Self Location"
+msgstr "Lokasi Rak"
+
+#: admin/modules/reporting/customs/procurement_report.php:41
+msgid "Displays a collection procurement report"
+msgstr "Menampilkan laporan perolehan koleksi"
+
+#: admin/modules/reporting/customs/procurement_report.php:56
+msgid "t"
+msgstr "j"
+
+#: admin/modules/reporting/customs/procurement_report.php:56
+msgid "i"
+msgstr "e"
+
+#: admin/modules/reporting/customs/procurement_report.php:59
+msgid "Receiving Year"
+msgstr "Tahun Diterima"
+
+#: admin/modules/reporting/customs/procurement_report.php:66
+msgid "Options"
+msgstr "Pilihan"
+
+#: admin/modules/reporting/customs/procurement_report.php:127
+msgid "Procurement Report Year : "
+msgstr "Tahun Laporan Perolehan : "
 
 #: admin/modules/reporting/customs/reserve_list.php:81
 msgid "Reserve Date From"
