@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-14 12:26+0700\n"
-"PO-Revision-Date: 2020-03-14 12:26+0700\n"
+"POT-Creation-Date: 2020-03-14 13:50+0700\n"
+"PO-Revision-Date: 2020-03-14 13:50+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1901,11 +1901,17 @@ msgstr "Data biblio terkait"
 
 #: admin/modules/bibliography/index.php:854
 #: admin/modules/bibliography/print_settings.php:92
+#: template/default/tinfo.inc.php:47 template/default/tinfo.inc.php:98
+#: template/default/tinfo.inc.php:114 template/default/tinfo.inc.php:130
+#: template/default/tinfo.inc.php:140 template/default/tinfo.inc.php:150
 msgid "Show"
 msgstr "Tunjukan"
 
 #: admin/modules/bibliography/index.php:855
 #: admin/modules/bibliography/print_settings.php:91
+#: template/default/tinfo.inc.php:48 template/default/tinfo.inc.php:99
+#: template/default/tinfo.inc.php:115 template/default/tinfo.inc.php:131
+#: template/default/tinfo.inc.php:141 template/default/tinfo.inc.php:151
 msgid "Hide"
 msgstr "Sembunyikan"
 
@@ -4858,7 +4864,7 @@ msgstr "Lama Peminjaman (Dalam Hari)"
 #: admin/modules/system/index.php:323 admin/modules/system/index.php:330
 #: admin/modules/system/index.php:336 admin/modules/system/index.php:342
 #: admin/modules/system/index.php:348 admin/modules/system/index.php:366
-#: admin/modules/system/ucsetting.php:89
+#: admin/modules/system/ucsetting.php:89 template/default/tinfo.inc.php:208
 msgid "Enable"
 msgstr "Dimungkinkan"
 
@@ -4867,7 +4873,7 @@ msgstr "Dimungkinkan"
 #: admin/modules/system/index.php:322 admin/modules/system/index.php:329
 #: admin/modules/system/index.php:335 admin/modules/system/index.php:341
 #: admin/modules/system/index.php:347 admin/modules/system/index.php:365
-#: admin/modules/system/ucsetting.php:88
+#: admin/modules/system/ucsetting.php:88 template/default/tinfo.inc.php:209
 msgid "Disable"
 msgstr "Tidak mungkin"
 
@@ -7443,6 +7449,10 @@ msgstr "Nama Akun"
 msgid "Password"
 msgstr "Kata Sandi"
 
+#: lib/contents/login.inc.php:242
+msgid "Remember me"
+msgstr "Ingat saya"
+
 #: lib/contents/login.inc.php:246 lib/contents/member.inc.php:751
 msgid "Login"
 msgstr "Masuk"
@@ -8383,6 +8393,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: template/default/parts/_result-search.php:50
+#: template/default/tinfo.inc.php:136
 msgid "Suggestion"
 msgstr "Saran"
 
@@ -8430,6 +8441,86 @@ msgstr "Ditenagai oleh "
 #: template/default/parts/footer.php:88
 msgid "Chat"
 msgstr "Memulai obrolan"
+
+#: template/default/tinfo.inc.php:33
+msgid "Enable this theme for mobile?"
+msgstr "Aktifkan tema ini untuk perangkat bergerak?"
+
+#: template/default/tinfo.inc.php:37
+msgid "Yes, please!"
+msgstr "Ya, silahkan!"
+
+#: template/default/tinfo.inc.php:38
+msgid "No, I want use lighweight theme"
+msgstr "Tidak, saya mau menggunakan tema lightweight"
+
+#: template/default/tinfo.inc.php:43
+msgid "Library Sub Name"
+msgstr "Nama Tambahan Perpustakaan"
+
+#: template/default/tinfo.inc.php:53
+msgid "Slide Transition"
+msgstr "Transisi Antar Gambar"
+
+#: template/default/tinfo.inc.php:69
+msgid "Slide Animation"
+msgstr "Animasi Gambar"
+
+#: template/default/tinfo.inc.php:88
+msgid "Delay"
+msgstr "Kelambatan"
+
+#: template/default/tinfo.inc.php:94
+msgid "Popular Collection"
+msgstr "Koleksi Populer"
+
+#: template/default/tinfo.inc.php:104
+msgid "Popular Items"
+msgstr "Eksemplar Populer"
+
+#: template/default/tinfo.inc.php:110
+msgid "New Collection"
+msgstr "Koleksi Baru"
+
+#: template/default/tinfo.inc.php:120
+msgid "New Items"
+msgstr "Eksemplar Baru"
+
+#: template/default/tinfo.inc.php:126
+msgid "Top Reader"
+msgstr "Pembaca Terbanyak"
+
+#: template/default/tinfo.inc.php:146
+msgid "Map"
+msgstr "Peta"
+
+#: template/default/tinfo.inc.php:156
+msgid "Map URL"
+msgstr "URL Peta"
+
+#: template/default/tinfo.inc.php:164
+msgid "Map Description"
+msgstr "Deskripsi Peta"
+
+#: template/default/tinfo.inc.php:172
+msgid "Facebook URL"
+msgstr "URL Facebook"
+
+#: template/default/tinfo.inc.php:180
+msgid "Twitter URL"
+msgstr "URL Twitter"
+
+#: template/default/tinfo.inc.php:188
+msgid "Youtube URL"
+msgstr "URL Youtube"
+
+#: template/default/tinfo.inc.php:196
+msgid "Instagram URL"
+msgstr "URL Instagram"
+
+#: template/default/tinfo.inc.php:204
+msgid "Visitor log voice"
+msgstr "Suara penghitung pengunjung"
 
 #: template/default/visitor_template.php:29
 msgid "Welcome to "
