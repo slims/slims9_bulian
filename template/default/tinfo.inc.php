@@ -30,27 +30,27 @@ $sysconf['template']['visitor_log_voice'] = 1;
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
   'responsive' => [
     'dbfield' => 'responsive',
-    'label' => __('Enable this theme for mobile?'),
+    'label' => 'Enable this theme for mobile?',
     'type' => 'dropdown',
     'default' => 0,
     'data' => [
-      [1, __('Yes, please!')],
-      [0, __('No, I want use lighweight theme')]
+      [1, 'Yes, please!'],
+      [0, 'No, I want use lighweight theme']
     ]
   ],
   'subtitle' => [
     'dbfield' => 'classic_library_subname',
-    'label' => __('Library Sub Name'),
+    'label' => 'Library Sub Name',
     'type' => 'dropdown',
     'default' => 0,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'transition' => [
     'dbfield' => 'classic_slide_transition',
-    'label' => __('Slide Transition'),
+    'label' => 'Slide Transition',
     'type' => 'dropdown',
     'default' => 'fade',
     'data' => [
@@ -66,7 +66,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'animation' => [
     'dbfield' => 'classic_slide_animation',
-    'label' => __('Slide Animation'),
+    'label' => 'Slide Animation',
     'type' => 'dropdown',
     'default' => 'none',
     'data' => [
@@ -85,75 +85,75 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'delay' => [
     'dbfield' => 'classic_slide_delay',
-    'label' => __('Delay'),
+    'label' => 'Delay',
     'type' => 'text',
     'default' => 5000
   ],
   'popular-collection' => [
     'dbfield' => 'classic_popular_collection',
-    'label' => __('Popular Collection'),
+    'label' => 'Popular Collection',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'popular-collection-item' => [
     'dbfield' => 'classic_popular_collection_item',
-    'label' => __('Popular Items'),
+    'label' => 'Popular Items',
     'type' => 'text',
     'default' => 6
   ],
   'new-collection' => [
     'dbfield' => 'classic_new_collection',
-    'label' => __('New Collection'),
+    'label' => 'New Collection',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'new-collection-item' => [
     'dbfield' => 'classic_new_collection_item',
-    'label' => __('New Items'),
+    'label' => 'New Items',
     'type' => 'text',
     'default' => 6
   ],
   'top-reader' => [
     'dbfield' => 'classic_top_reader',
-    'label' => __('Top Reader'),
+    'label' => 'Top Reader',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'suggestion' => [
     'dbfield' => 'classic_suggestion',
-    'label' => __('Suggestion'),
+    'label' => 'Suggestion',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'map' => [
     'dbfield' => 'classic_map',
-    'label' => __('Map'),
+    'label' => 'Map',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Show')],
-      [0, __('Hide')]
+      [1, 'Show'],
+      [0, 'Hide']
     ]
   ],
   'map-link' => [
     'dbfield' => 'classic_map_link',
-    'label' => __('Map URL'),
+    'label' => 'Map URL',
     'type' => 'longtext',
     'default' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.288723306273!2d106.80038831428296!3d-6.225610995493402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14efd9abf05%3A0x1659580cc6981749!2sPerpustakaan+Kemendikbud!5e0!3m2!1sid!2sid!4v1516601731218',
     'width' => '100',
@@ -161,7 +161,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'map-desc' => [
     'dbfield' => 'classic_map_desc',
-    'label' => __('Map Description'),
+    'label' => 'Map Description',
     'type' => 'longtext',
     'default' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc mi. Donec vehicula turpis a quam venenatis posuere. Aliquam nibh lectus, gravida et leo sit amet, dignissim dapibus mauris.<br>Telp. (021) 9172638<br>Fax. (021) 9172638<br>',
     'width' => '100',
@@ -169,7 +169,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'fb-link' => [
     'dbfield' => 'classic_fb_link',
-    'label' => __('Facebook URL'),
+    'label' => 'Facebook URL',
     'type' => 'longtext',
     'default' => 'https://www.facebook.com/groups/senayan.slims',
     'width' => '100',
@@ -177,7 +177,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'twitter-link' => [
     'dbfield' => 'classic_twitter_link',
-    'label' => __('Twitter URL'),
+    'label' => 'Twitter URL',
     'type' => 'longtext',
     'default' => 'https://twitter.com/slims_official',
     'width' => '100',
@@ -185,7 +185,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'youtube-link' => [
     'dbfield' => 'classic_youtube_link',
-    'label' => __('Youtube URL'),
+    'label' => 'Youtube URL',
     'type' => 'longtext',
     'default' => 'https://youtube.com',
     'width' => '100',
@@ -193,7 +193,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'instagram-link' => [
     'dbfield' => 'classic_instagram_link',
-    'label' => __('Instagram URL'),
+    'label' => 'Instagram URL',
     'type' => 'longtext',
     'default' => 'https://www.instagram.com/slims.sdc',
     'width' => '100',
@@ -201,12 +201,12 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
   ],
   'visitor_voice' => [
     'dbfield' => 'visitor_log_voice',
-    'label' => __('Visitor log voice'),
+    'label' => 'Visitor log voice',
     'type' => 'dropdown',
     'default' => 1,
     'data' => [
-      [1, __('Enable')],
-      [0, __('Disable')]
+      [1, 'Enable'],
+      [0, 'Disable']
     ]
   ],
 ];
