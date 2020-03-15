@@ -484,6 +484,13 @@ if ($sysconf['captcha']['member']['enable']) {
     include_once LIB.$sysconf['captcha']['member']['type'].DS.'member_settings.inc.php';
 }
 
+// Captcha settings for Forgot Password
+$sysconf['captcha']['forgot']['enable'] = true; // value can be 'true' or 'false'
+$sysconf['captcha']['forgot']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
+if ($sysconf['captcha']['forgot']['enable']) {
+    include_once LIB.$sysconf['captcha']['forgot']['type'].DS.'forgot_settings.inc.php';
+}
+
 /**
  * Mailing Settings
  */
