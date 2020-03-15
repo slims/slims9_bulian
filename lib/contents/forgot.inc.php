@@ -51,56 +51,71 @@ if (isset($_POST['resetPass'])) {
     if (!$email) {
         echo '<script type="text/javascript">alert(\''.__('Please supply valid username and password').'\');</script>';
     } else {
-        // Validate current email
-        $_q = $dbs->query("SELECT user_id, realname FROM user WHERE email='{$email}'");
-        if ($_q->num_rows > 0) {
-            /// Name
-            $file_d = $_q->fetch_assoc();
-            $name = $file_d['realname'];
-            /// Generate a token for forgot password
-            $salt = password_hash($email, PASSWORD_DEFAULT);
-            $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
-            // write log
-            utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.');
-            $_update_q = $dbs->query($_sql_update_salt);
-            // error check
-            if ($dbs->error) {
-                $message = __('Failed to query user data from database with error: ').$dbs->error;
-            } else {
-                $path = 'https://slims.web.id/mailer/forgot.php';
-                $fields = array(
-                    'url' => sprintf("%s://%s%s", isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http', $_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']),
-                    'salt' => $salt,
-                    'email' => $email,
-                    'name' => $name
-                );
-                
-                $header = array(
-                    "X-API-KEY: ".$salt
-                );
-        
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => $path,
-                    CURLOPT_POST => true,
-                    CURLOPT_HTTPHEADER => $header,
-                    CURLOPT_POSTFIELDS => $fields,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_USERAGENT => "Slims"
-                ));
-        
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-                curl_close($curl);
-        
-                if ($response == 'false') {
-                    $message = __('Cannot send the email. Please try again.');
+        # <!-- Captcha form processing - start -->
+        if ($sysconf['captcha']['forgot']['enable']) {
+            if ($sysconf['captcha']['forgot']['type'] == 'recaptcha') {
+                require_once LIB.$sysconf['captcha']['forgot']['folder'].'/'.$sysconf['captcha']['forgot']['incfile'];
+                $privatekey = $sysconf['captcha']['forgot']['privatekey'];
+                $resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["g-recaptcha-response"]);
+
+                if (!$resp->is_valid) {
+                    // What happens when the CAPTCHA was entered incorrectly
+                    $message = __('Captcha incorrect.');
                 } else {
-                    $message = __('An instruction has been sent to your email. Please check your inbox.');
-                }        
+                    // Validate current email
+                    $_q = $dbs->query("SELECT user_id, realname FROM user WHERE email='{$email}'");
+                    if ($_q->num_rows > 0) {
+                        /// Name
+                        $file_d = $_q->fetch_assoc();
+                        $name = $file_d['realname'];
+                        /// Generate a token for forgot password
+                        $salt = password_hash($email, PASSWORD_DEFAULT);
+                        $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
+                        // write log
+                        utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.');
+                        $_update_q = $dbs->query($_sql_update_salt);
+                        // error check
+                        if ($dbs->error) {
+                            $message = __('Failed to query user data from database with error: ').$dbs->error;
+                        } else {
+                            $path = 'https://slims.web.id/mailer/forgot.php';
+                            $fields = array(
+                                'url' => sprintf("%s://%s%s", isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http', $_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']),
+                                'salt' => $salt,
+                                'email' => $email,
+                                'name' => $name
+                            );
+                            
+                            $header = array(
+                                "X-API-KEY: ".$salt
+                            );
+
+                            $curl = curl_init();
+                            curl_setopt_array($curl, array(
+                                CURLOPT_URL => $path,
+                                CURLOPT_POST => true,
+                                CURLOPT_HTTPHEADER => $header,
+                                CURLOPT_POSTFIELDS => $fields,
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_USERAGENT => "Slims"
+                            ));
+
+                            $response = curl_exec($curl);
+                            $err = curl_error($curl);
+                            curl_close($curl);
+
+                            if ($response == 'false') {
+                                $message = __('Cannot send the email. Please try again.');
+                            } else {
+                                $message = __('<strong>Congratulations! </strong>An instruction has been sent to your email. Please check your inbox.');
+                            }        
+                        }
+                    } else {
+                        $message = __('Current email not found. Please try again.');
+                    }
+
+                }
             }
-        } else {
-            $message = __('Current email not found. Please try again.');
         }
     }
 }
@@ -113,8 +128,16 @@ if (isset($_POST['resetPass'])) {
     <form action="index.php?p=forgot" method="post" novalidation>
         <div class="heading1"><?php echo __('Your email address'); ?></div>
         <div class="login_input"><input type="email" name="currentmail" id="currentmail" class="login_input" required /></div>
+        <div class="captchaAdmin">
+        <?php
+        require_once LIB.$sysconf['captcha']['forgot']['folder'].'/'.$sysconf['captcha']['forgot']['incfile'];
+        $publickey = $sysconf['captcha']['forgot']['publickey'];
+        echo recaptcha_get_html($publickey);
+        ?>
+        </div>
         <div class="marginTop">
         <input type="submit" name="resetPass" value="<?php echo __('Reset my password'); ?>" class="loginButton" />
+        <a class="forgotButton" href="index.php?p=login"><?php echo __('Cancel') ?></a>
         </div>
     </form>
 </div>
