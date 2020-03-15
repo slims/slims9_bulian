@@ -121,6 +121,7 @@ HTML;
               <?php
               $langstr = '';
               $current_lang = '';
+              $select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
               require_once(LANG . 'localisation.php');
               foreach ($available_languages AS $lang_index) {
                 $selected = null;
@@ -128,7 +129,7 @@ HTML;
                 $lang_name = $lang_index[1];
                 $code_arr = explode('_', $lang_code);
                 $code_flag = strtolower($code_arr[1]);
-                if ($lang_code == $_COOKIE['select_lang']) {
+                if ($lang_code == $select_lang) {
                   $current_lang = [
                     'name' => $lang_name,
                     'code' => $code_flag
