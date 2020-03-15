@@ -628,6 +628,33 @@ $dbs->query('SET NAMES \'utf8\'');
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
 
+// check for user language selection if we are not in admin areas
+if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
+    if (isset($_GET['select_lang'])) {
+        $select_lang = trim(strip_tags($_GET['select_lang']));
+        // delete previous language cookie
+        if (isset($_COOKIE['select_lang'])) {
+            @setcookie('select_lang', $select_lang, time()-14400, SWB);
+        }
+        // create language cookie
+        @setcookie('select_lang', $select_lang, time()+14400, SWB);
+        $sysconf['default_lang'] = $select_lang;
+
+        //reload page on change language
+        header("location:index.php");
+        
+    } else if (isset($_COOKIE['select_lang'])) {
+        $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
+    }
+    // set back to en_US on XML
+    if (isset($_GET['resultXML']) OR isset($_GET['inXML'])) {
+        $sysconf['default_lang'] = 'en_US';
+    }
+}
+
+// Apply language settings
+require LANG.'localisation.php';
+
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
   $sysconf['template']['base'] = 'php'; /* html OR php */
@@ -642,29 +669,6 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
-
-// check for user language selection if we are not in admin areas
-if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
-    if (isset($_GET['select_lang'])) {
-        $select_lang = trim(strip_tags($_GET['select_lang']));
-        // delete previous language cookie
-        if (isset($_COOKIE['select_lang'])) {
-            @setcookie('select_lang', $select_lang, time()-14400, SWB);
-        }
-        // create language cookie
-        @setcookie('select_lang', $select_lang, time()+14400, SWB);
-        $sysconf['default_lang'] = $select_lang;
-    } else if (isset($_COOKIE['select_lang'])) {
-        $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
-    }
-    // set back to en_US on XML
-    if (isset($_GET['resultXML']) OR isset($_GET['inXML'])) {
-        $sysconf['default_lang'] = 'en_US';
-    }
-}
-
-// Apply language settings
-require LANG.'localisation.php';
 
 /* AUTHORITY TYPE */
 $sysconf['authority_type']['p'] = __('Personal Name');

@@ -128,7 +128,7 @@ HTML;
                 $lang_name = $lang_index[1];
                 $code_arr = explode('_', $lang_code);
                 $code_flag = strtolower($code_arr[1]);
-                if ($lang_code == $sysconf['default_lang']) {
+                if ($lang_code == $_COOKIE['select_lang']) {
                   $current_lang = [
                     'name' => $lang_name,
                     'code' => $code_flag

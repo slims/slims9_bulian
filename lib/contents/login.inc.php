@@ -239,7 +239,7 @@ if (isset($_POST['updatePassword'])) {
             <div class="remember">
                 <?php if ($sysconf['always_user_login']) : ?>
                 <input type="checkbox" id="remember_me" name="remember" value="1">
-                <label for="remember_me">Remember me</label>
+                <label for="remember_me"><?= __('Remember me') ?></label>
                 <?php endif; ?>
             </div>
         </div>

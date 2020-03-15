@@ -41,6 +41,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Change logo configuration in System Module
 Updated : Webcam access in HTML5
 Added : Personalized (admin) user template
 Added : Option for disabling voice in visitor log
