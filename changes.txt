@@ -41,7 +41,10 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Captcha feature to forgot your password recovery mode
+Added : Procurement report in Reporting Modules
 Added : Change logo configuration in System Module
+Fixed : Flag icon when change translation
 Updated : Webcam access in HTML5
 Added : Personalized (admin) user template
 Added : Option for disabling voice in visitor log
