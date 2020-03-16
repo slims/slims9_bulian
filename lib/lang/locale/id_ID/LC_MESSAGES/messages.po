@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-14 19:12+0700\n"
-"PO-Revision-Date: 2020-03-14 19:12+0700\n"
+"POT-Creation-Date: 2020-03-16 17:01+0700\n"
+"PO-Revision-Date: 2020-03-16 17:01+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -83,7 +83,7 @@ msgstr "Tutup"
 
 #: admin/admin_template/default/index_template.inc.php:72
 #: admin/admin_template/nightmode/index_template.inc.php:68 admin/chat.php:15
-#: lib/contents/chat.php:89 sysconfig.inc.php:688
+#: lib/contents/chat.php:89 sysconfig.inc.php:699
 #: template/akasia-dz/partials/nav.php:10 template/akasia/partials/nav.php:10
 #: template/default/parts/_navbar.php:27 template/default/parts/footer.php:41
 #: template/lightweight/partials/nav.php:10
@@ -4224,6 +4224,7 @@ msgid "Vocabulary"
 msgstr "Kosakata"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:238
+#: lib/contents/forgot.inc.php:140
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:106
 #: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:103
 msgid "Cancel"
@@ -4316,7 +4317,7 @@ msgstr "Kode"
 #: admin/modules/master_file/rda_cmc.php:189
 #: admin/modules/master_file/rda_cmc.php:209
 #: admin/modules/master_file/rda_cmc.php:213 lib/contents/librarian.inc.php:47
-#: sysconfig.inc.php:670
+#: sysconfig.inc.php:681
 msgid "Name"
 msgstr "Nama"
 
@@ -7378,25 +7379,32 @@ msgstr ""
 msgid "Please supply valid username and password"
 msgstr "Masukkan nama pengguna dan kata sandi dengan benar"
 
-#: lib/contents/forgot.inc.php:68 lib/contents/newpass.inc.php:65
+#: lib/contents/forgot.inc.php:63
+msgid "Captcha incorrect."
+msgstr "Captcha salah."
+
+#: lib/contents/forgot.inc.php:79 lib/contents/newpass.inc.php:65
 msgid "Failed to query user data from database with error: "
 msgstr ""
 "Gagal mengambil data permintaan pengguna dari pangkalan data dengan pesan: "
 
-#: lib/contents/forgot.inc.php:97
+#: lib/contents/forgot.inc.php:108
 msgid "Cannot send the email. Please try again."
 msgstr "Tidak bisa mengirimkan surel. Harap coba kembali."
 
-#: lib/contents/forgot.inc.php:99
-msgid "An instruction has been sent to your email. Please check your inbox."
+#: lib/contents/forgot.inc.php:110
+msgid ""
+"<strong>Congratulations! </strong>An instruction has been sent to your "
+"email. Please check your inbox."
 msgstr ""
-"Instruksi sudah dikirimkan melalui surel. Harap periksa kotak surat Anda."
+"<strong>Selamat!</strong>Instruksi sudah dikirimkan melalui surel. Harap "
+"periksa kotak surat Anda."
 
-#: lib/contents/forgot.inc.php:103
+#: lib/contents/forgot.inc.php:114
 msgid "Current email not found. Please try again."
 msgstr "Alamat surel tidak ditemukan. Harap coba kembali."
 
-#: lib/contents/forgot.inc.php:110 lib/contents/login.inc.php:170
+#: lib/contents/forgot.inc.php:125 lib/contents/login.inc.php:170
 #: lib/contents/newpass.inc.php:92
 msgid ""
 "Your browser does not support Javascript or Javascript is disabled. "
@@ -7405,15 +7413,15 @@ msgstr ""
 "Peramban Anda tidak mendukung <i>Javascript</i> atau <i>Javascript</i> tidak "
 "diaktifkan. Aplikasi tidak dapat dijalankan tanpa <i>Javascript</i>!"
 
-#: lib/contents/forgot.inc.php:114
+#: lib/contents/forgot.inc.php:129
 msgid "Your email address"
 msgstr "Alamat surel Anda"
 
-#: lib/contents/forgot.inc.php:117
+#: lib/contents/forgot.inc.php:139
 msgid "Reset my password"
 msgstr "Ganti kata sandi saya"
 
-#: lib/contents/forgot.inc.php:128
+#: lib/contents/forgot.inc.php:151
 msgid "Forgot My Password"
 msgstr "Lupa kata kunci"
 
@@ -7879,83 +7887,83 @@ msgstr "Hal. Akhir"
 msgid "No Data"
 msgstr "Tidak Ada Data"
 
-#: sysconfig.inc.php:663
+#: sysconfig.inc.php:674
 msgid "Personal Name"
 msgstr "Nama Orang"
 
-#: sysconfig.inc.php:664
+#: sysconfig.inc.php:675
 msgid "Organizational Body"
 msgstr "Badan Organisasi"
 
-#: sysconfig.inc.php:665
+#: sysconfig.inc.php:676
 msgid "Conference"
 msgstr "Konferensi"
 
-#: sysconfig.inc.php:668
+#: sysconfig.inc.php:679
 msgid "Topic"
 msgstr "Topik"
 
-#: sysconfig.inc.php:669
+#: sysconfig.inc.php:680
 msgid "Geographic"
 msgstr "Geografis"
 
-#: sysconfig.inc.php:671
+#: sysconfig.inc.php:682
 msgid "Temporal"
 msgstr "Masa"
 
-#: sysconfig.inc.php:672
+#: sysconfig.inc.php:683
 msgid "Genre"
 msgstr "Aliran"
 
-#: sysconfig.inc.php:673
+#: sysconfig.inc.php:684
 msgid "Occupation"
 msgstr "Pekerjaan"
 
-#: sysconfig.inc.php:676
+#: sysconfig.inc.php:687
 msgid "Primary Author"
 msgstr "Pengarang Utama"
 
-#: sysconfig.inc.php:677
+#: sysconfig.inc.php:688
 msgid "Additional Author"
 msgstr "Pengarang Tambahan"
 
-#: sysconfig.inc.php:678
+#: sysconfig.inc.php:689
 msgid "Editor"
 msgstr "Penyunting"
 
-#: sysconfig.inc.php:679
+#: sysconfig.inc.php:690
 msgid "Translator"
 msgstr "Penerjemah"
 
-#: sysconfig.inc.php:680
+#: sysconfig.inc.php:691
 msgid "Director"
 msgstr "Direktur"
 
-#: sysconfig.inc.php:681
+#: sysconfig.inc.php:692
 msgid "Producer"
 msgstr "Produser"
 
-#: sysconfig.inc.php:682
+#: sysconfig.inc.php:693
 msgid "Composer"
 msgstr "Penggubah"
 
-#: sysconfig.inc.php:683
+#: sysconfig.inc.php:694
 msgid "Illustrator"
 msgstr "Ilustrator"
 
-#: sysconfig.inc.php:684
+#: sysconfig.inc.php:695
 msgid "Creator"
 msgstr "Pencipta"
 
-#: sysconfig.inc.php:685
+#: sysconfig.inc.php:696
 msgid "Contributor"
 msgstr "Kontributor"
 
-#: sysconfig.inc.php:689
+#: sysconfig.inc.php:700
 msgid "Senior Librarian"
 msgstr "Pustakawan Senior"
 
-#: sysconfig.inc.php:690
+#: sysconfig.inc.php:701
 msgid "Library Staff"
 msgstr "Staf Perpustakaan"
 
@@ -8240,7 +8248,7 @@ msgid "About SLiMS"
 msgstr "Tentang SLiMS"
 
 #: template/akasia-dz/partials/nav.php:20 template/akasia/partials/nav.php:20
-#: template/default/parts/_navbar.php:149
+#: template/default/parts/_navbar.php:150
 #: template/lightweight/partials/nav.php:20
 msgid "Select Language"
 msgstr "Pilih Bahasa"
