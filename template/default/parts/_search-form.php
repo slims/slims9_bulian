@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <form class="" action="index.php" method="get" @submit.prevent="searchSubmit">
                             <input type="hidden" name="search" value="search">
-                            <input ref="keywords" value="<?php echo getQuery('keywords'); ?>" v-model.trim="keywords"
+                            <input ref="keywords" value="<?= htmlentities(getQuery('keywords')) ?>" v-model.trim="keywords"
                                    @focus="searchOnFocus" @blur="searchOnBlur" type="text" id="search-input"
                                    name="keywords" class="input-transparent w-100"
                                    placeholder="<?= __('Enter keyword to search collection...');?>"/>
