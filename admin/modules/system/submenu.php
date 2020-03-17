@@ -42,8 +42,9 @@ if ($_SESSION['uid'] == 1) {
       $menu[] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes.php', __('Bibliographic Indexes management'));
     }
     $menu[] = array(__('Modules'), MWB.'system/module.php', __('Configure Application Modules'));
-    $menu[] = array(__('Librarian & System Users'), MWB.'system/app_user.php', __('Manage Application User or Library Staff'));
     $menu[] = array(__('User Group'), MWB.'system/user_group.php', __('Manage Group of Application User'));
+    $menu[] = array(__('Librarian & System Users'), MWB.'system/app_user.php', __('Manage Application User or Library Staff'));
+    
 }
 $menu[] = array(__('Shortcut Setting'), MWB.'system/shortcut.php', __('Shortcut Setting'));
 $menu[] = array(__('Holiday Setting'), MWB.'system/holiday.php', __('Configure Holiday Setting'));
