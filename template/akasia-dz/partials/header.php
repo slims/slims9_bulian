@@ -3,7 +3,7 @@
     <div class="col-lg-6">
       <a href="index.php" class="s-brand">
         <?php
-          if($sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
+          if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
             echo '<img class="s-logo animated flipInY delay7" src="../lib/minigalnano/createthumb.php?filename=../../images/default/'.$sysconf['logo_image'].'&width=100" alt="'.$sysconf['library_name'].'">';
           }else{
             echo '<img class="s-logo animated flipInY delay7" src="'.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/img/logo.png" alt="'.$sysconf['library_name'].'" />';

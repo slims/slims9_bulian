@@ -13,7 +13,7 @@
         <div class="row py-4">
             <div class="col-md-3">
               <?php
-              if($sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
+              if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
                 echo '<img class="h-16 mb-2" src="images/default/'.$sysconf['logo_image'].'">';
                 }
               elseif (file_exists(__DIR__ . '/../assets/images/logo.png')) {
