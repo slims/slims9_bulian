@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-17 18:07+0700\n"
-"PO-Revision-Date: 2020-03-17 18:07+0700\n"
+"POT-Creation-Date: 2020-03-17 19:46+0700\n"
+"PO-Revision-Date: 2020-03-17 19:46+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -70,7 +70,7 @@ msgstr "Bibliografi"
 
 #: admin/admin_template/akasia/function.php:57
 msgid "Master File"
-msgstr "Berkas Master"
+msgstr "Daftar Terkendali"
 
 #: admin/admin_template/barcodescannermodal.tpl.php:7
 msgid "Barcode Reader"
@@ -373,7 +373,7 @@ msgstr "Ubah Profil Pengguna"
 msgid "Change Current User Profiles and Password"
 msgstr "Ubah Profil dan Kata Sandi Pengguna Saat Ini"
 
-#: admin/default/submenu.php:23 admin/modules/system/submenu.php:48
+#: admin/default/submenu.php:23 admin/modules/system/submenu.php:49
 msgid "Shortcut Setting"
 msgstr "Pengaturan Pemintas"
 
@@ -1700,11 +1700,11 @@ msgstr "Kumpulan identitas yang ditempel pada punggung buku."
 
 #: admin/modules/bibliography/index.php:745
 msgid "Subjects/Topics"
-msgstr "Subyek/Topik"
+msgstr "Subjek/Topik"
 
 #: admin/modules/bibliography/index.php:745
 msgid "Add Subject(s)"
-msgstr "Tambah Data Subyek"
+msgstr "Tambah Subjek"
 
 #: admin/modules/bibliography/index.php:747
 #: admin/modules/serial_control/index.php:68 lib/contents/clustering.inc.php:98
@@ -1716,7 +1716,7 @@ msgstr "Tambah Data Subyek"
 #: template/lightweight/detail_template.php:136
 #: template/lightweight/partials/advsearch.php:36
 msgid "Subject(s)"
-msgstr "Subyek"
+msgstr "Subjek"
 
 #: admin/modules/bibliography/index.php:755
 #: admin/modules/bibliography/pop_p2p.php:60
@@ -3700,7 +3700,7 @@ msgstr "Tambah Istilah Baru"
 #: admin/modules/master_file/cross_reference.php:132
 #: admin/modules/master_file/topic.php:145
 msgid "Subject List"
-msgstr "Daftar Subyek"
+msgstr "Daftar Subjek"
 
 #: admin/modules/master_file/cross_reference.php:176
 #: admin/modules/master_file/cross_reference.php:194
@@ -3716,7 +3716,7 @@ msgstr "Penjelasan Rujukan Silang"
 #: admin/modules/master_file/cross_reference.php:182
 #: admin/modules/master_file/topic.php:212
 msgid "You are going to edit Subject data"
-msgstr "Anda akan menyunting data Subyek"
+msgstr "Anda akan menyunting data Subjek"
 
 #: admin/modules/master_file/doc_language.php:56
 msgid "Language ID or Name can't be empty"
@@ -4388,7 +4388,7 @@ msgstr "Pengarang Dokumen"
 #: admin/modules/master_file/topic.php:239 lib/contents/default.inc.php:164
 #: template/default/parts/_search-form.php:39
 msgid "Subject"
-msgstr "Subyek"
+msgstr "Subjek"
 
 #: admin/modules/master_file/submenu.php:35
 msgid "Item Location"
@@ -4420,57 +4420,57 @@ msgstr "Pengaturan pola kode pada Item"
 
 #: admin/modules/master_file/submenu.php:46
 msgid "Orphaned Author"
-msgstr "Data Pengarang Mubazir"
+msgstr "Data Pengarang tak Terpakai"
 
 #: admin/modules/master_file/submenu.php:46
 msgid "Orphaned Authors"
-msgstr "Data Pengarang Mubazir"
+msgstr "Data Banyak Pengarang tak Terpakai"
 
 #: admin/modules/master_file/submenu.php:47
 msgid "Orphaned Subject"
-msgstr "Data Subyek Mubazir"
+msgstr "Data Subjek tak Terpakai"
 
 #: admin/modules/master_file/submenu.php:48
 msgid "Orphaned Publisher"
-msgstr "Data Penerbit Mubazir"
+msgstr "Data Penerbit tak Terpakai"
 
 #: admin/modules/master_file/submenu.php:49
 msgid "Orphaned Place"
-msgstr "Data Tempat Terbit Mubazir"
+msgstr "Data Tempat Terbit tak Terpakai"
 
 #: admin/modules/master_file/supplier.php:56
 msgid "Supplier Name can't be empty"
-msgstr "Nama penyuplai tidak boleh kosong"
+msgstr "Nama Agen tidak boleh kosong"
 
 #: admin/modules/master_file/supplier.php:80
 msgid "Supplier Data Successfully Updated"
-msgstr "Data Penyuplai Berhasil Diperbaharui"
+msgstr "Data Agen Berhasil Diperbaharui"
 
 #: admin/modules/master_file/supplier.php:82
 msgid "Supplier Data FAILED to Updated. Please Contact System Administrator"
-msgstr "Data Suplaiyer GAGAL Diperbaharui. Hubungi Administrator Sistem"
+msgstr "Data Agen GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/supplier.php:89
 msgid "New Supplier Data Successfully Saved"
-msgstr "Data Penyuplai Baru Berhasil Disimpan"
+msgstr "Data Agen Baru Berhasil Disimpan"
 
 #: admin/modules/master_file/supplier.php:92
 msgid "Supplier Data FAILED to Save. Please Contact System Administrator"
-msgstr "Data Penyuplai GAGAL Disimpan. Hubungi Administrator Sistem"
+msgstr "Data Agen GAGAL Disimpan. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/supplier.php:139
 msgid "Supplier List"
-msgstr "Daftar Penyuplai"
+msgstr "Daftar Agen"
 
 #: admin/modules/master_file/supplier.php:140
 msgid "Add New Supplier"
-msgstr "Tambah Penyuplai"
+msgstr "Tambah Agen"
 
 #: admin/modules/master_file/supplier.php:183
 #: admin/modules/master_file/supplier.php:210
 #: admin/modules/master_file/supplier.php:216
 msgid "Supplier Name"
-msgstr "Nama Penyuplai"
+msgstr "Nama Agen"
 
 #: admin/modules/master_file/supplier.php:185
 #: admin/modules/membership/index.php:473
@@ -4512,31 +4512,31 @@ msgstr "Nomor Akun"
 
 #: admin/modules/master_file/supplier.php:197
 msgid "You are going to edit Supplier data"
-msgstr "Anda akan menyunting data Penyuplai"
+msgstr "Anda akan menyunting data Agen"
 
 #: admin/modules/master_file/topic.php:62
 msgid "Subject can't be empty"
-msgstr "Subyek tidak boleh kosong"
+msgstr "Subjek tidak boleh kosong"
 
 #: admin/modules/master_file/topic.php:83
 msgid "Subject Data Successfully Updated"
-msgstr "Data Subyek Berhasil Diperbaharui"
+msgstr "Data Subjek Berhasil Diperbaharui"
 
 #: admin/modules/master_file/topic.php:85
 msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
-msgstr "Subyek GAGAL Diperbaharui. Hubungi Administrator Sistem"
+msgstr "Subjek GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/topic.php:93
 msgid "New Subject Data Successfully Saved"
-msgstr "Subyek Baru Berhasil Disimpan"
+msgstr "Subjek Baru Berhasil Disimpan"
 
 #: admin/modules/master_file/topic.php:95
 msgid "Subject Data FAILED to Save. Please Contact System Administrator"
-msgstr "Subyek GAGAL Disimpan. Hubungi Administrator Sistem"
+msgstr "Subjek GAGAL Disimpan. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/topic.php:146
 msgid "Add New Subject"
-msgstr "Tambah Subyek Baru"
+msgstr "Tambah Subjek Baru"
 
 #: admin/modules/master_file/topic.php:192
 msgid "Classification Code"
@@ -4546,7 +4546,7 @@ msgstr "Kode Klasifikasi"
 #: admin/modules/master_file/topic.php:235
 #: admin/modules/master_file/topic.php:241
 msgid "Subject Type"
-msgstr "Tipe Subyek"
+msgstr "Tipe Subjek"
 
 #: admin/modules/master_file/topic.php:203
 msgid "Add New Vocabulary"
@@ -6268,7 +6268,7 @@ msgstr "Data Pengguna Baru Berhasil Disimpan"
 msgid "User Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Pengguna Baru GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:262 admin/modules/system/submenu.php:45
+#: admin/modules/system/app_user.php:262 admin/modules/system/submenu.php:46
 msgid "Librarian & System Users"
 msgstr "Pustakawan & Pengguna Sistem"
 
@@ -6313,7 +6313,7 @@ msgstr "Anda akan menyunting data pengguna"
 msgid "Last Login"
 msgstr "Terakhir kali Masuk"
 
-#: admin/modules/system/backup.php:55 admin/modules/system/submenu.php:52
+#: admin/modules/system/backup.php:55 admin/modules/system/submenu.php:53
 msgid "Database Backup"
 msgstr "Salinan Pangkalan Data"
 
@@ -6335,7 +6335,7 @@ msgstr "Lokasi Berkas Cadangan"
 
 #: admin/modules/system/barcode_generator.php:102
 #: admin/modules/system/barcode_generator.php:134
-#: admin/modules/system/submenu.php:50
+#: admin/modules/system/submenu.php:51
 msgid "Barcode Generator"
 msgstr "Pembuat Barkod"
 
@@ -6615,7 +6615,7 @@ msgstr "Hari Libur GAGAL Disimpan. Hubungi administrator Sistem"
 msgid "Holiday Settings"
 msgstr "Setelan Hari Libur"
 
-#: admin/modules/system/holiday.php:172 admin/modules/system/submenu.php:49
+#: admin/modules/system/holiday.php:172 admin/modules/system/submenu.php:50
 msgid "Holiday Setting"
 msgstr "Setelan Hari Libur"
 
@@ -6955,31 +6955,31 @@ msgstr "Pengaturan Indeks Bibliografi"
 msgid "Configure Application Modules"
 msgstr "Konfigurasi Modul Aplikasi"
 
-#: admin/modules/system/submenu.php:45
-msgid "Manage Application User or Library Staff"
-msgstr "Kelola Pengguna Aplikasi atau Staf Perpustakaan"
-
-#: admin/modules/system/submenu.php:46 admin/modules/system/user_group.php:168
+#: admin/modules/system/submenu.php:45 admin/modules/system/user_group.php:168
 msgid "User Group"
 msgstr "Kelompok Pengguna"
 
-#: admin/modules/system/submenu.php:46
+#: admin/modules/system/submenu.php:45
 msgid "Manage Group of Application User"
 msgstr "Kelola Kelompok Pengguna Aplikasi"
 
-#: admin/modules/system/submenu.php:49
+#: admin/modules/system/submenu.php:46
+msgid "Manage Application User or Library Staff"
+msgstr "Kelola Pengguna Aplikasi atau Staf Perpustakaan"
+
+#: admin/modules/system/submenu.php:50
 msgid "Configure Holiday Setting"
 msgstr "Konfigurasi Hari Libur"
 
-#: admin/modules/system/submenu.php:51 admin/modules/system/sys_log.php:77
+#: admin/modules/system/submenu.php:52 admin/modules/system/sys_log.php:77
 msgid "System Log"
 msgstr "Catatan Sistem"
 
-#: admin/modules/system/submenu.php:51
+#: admin/modules/system/submenu.php:52
 msgid "View Application System Log"
 msgstr "Lihat Catatan Aplikasi Sistem"
 
-#: admin/modules/system/submenu.php:52
+#: admin/modules/system/submenu.php:53
 msgid "Backup Application Database"
 msgstr "Buat Salinan Pangkalan Data Aplikasi"
 
@@ -8203,7 +8203,7 @@ msgstr "CARI"
 #: template/default/parts/footer.php:55
 #: template/lightweight/index_template.inc.php:197
 msgid "start it by typing one or more keywords for title, author or subject"
-msgstr "masukkan satu atau lebih kata kunci dari judul, pengarang, atau subyek"
+msgstr "masukkan satu atau lebih kata kunci dari judul, pengarang, atau subjek"
 
 #: template/akasia-dz/index_template.inc.php:202
 #: template/lightweight/index_template.inc.php:199
