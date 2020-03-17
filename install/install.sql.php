@@ -970,7 +970,8 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 $sql['insert'][] = "
 INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
 ('enable_visitor_limitation', 's:1:\"0\";'),
-('time_visitor_limitation', 's:2:\"60\";');";
+('time_visitor_limitation', 's:2:\"60\";'),
+('logo_image', NULL);";
 
 $sql['create'][] = "
 CREATE TABLE `mst_servers` (
