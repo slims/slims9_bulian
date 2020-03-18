@@ -1,4 +1,4 @@
-<?php
+	<?php
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 2020-01-11 21:41
@@ -22,10 +22,10 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   `title` text collate utf8_unicode_ci NOT NULL,
   `sor` varchar(200) collate utf8_unicode_ci default NULL,
   `edition` varchar(50) collate utf8_unicode_ci default NULL,
-  `isbn_issn` varchar(20) collate utf8_unicode_ci default NULL,
+  `isbn_issn` varchar(32) collate utf8_unicode_ci default NULL,
   `publisher_id` int(11) default NULL,
   `publish_year` varchar(20) default NULL,
-  `collation` varchar(50) collate utf8_unicode_ci default NULL,
+  `collation` varchar(100) collate utf8_unicode_ci default NULL,
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `language_id` char(5) collate utf8_unicode_ci default \'en\',
@@ -739,7 +739,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   `biblio_id` int(11) NOT NULL,
   `title` text COLLATE utf8_unicode_ci,
   `edition` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `isbn_issn` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `isbn_issn` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `author` text COLLATE utf8_unicode_ci,
   `topic` text COLLATE utf8_unicode_ci,
   `gmd` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
