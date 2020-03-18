@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-17 19:46+0700\n"
-"PO-Revision-Date: 2020-03-17 19:46+0700\n"
+"POT-Creation-Date: 2020-03-18 21:40+0700\n"
+"PO-Revision-Date: 2020-03-18 21:40+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -2877,7 +2877,7 @@ msgstr "Salin Katalog"
 
 #: admin/modules/bibliography/submenu.php:34
 msgid "MARC SRU"
-msgstr "MARC SRU"
+msgstr "Layanan MARC SRU"
 
 #: admin/modules/bibliography/submenu.php:34
 msgid "Grab Bibliographic Data from Other MARC Services"
