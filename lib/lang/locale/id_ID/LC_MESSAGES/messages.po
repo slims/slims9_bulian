@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-20 18:39+0700\n"
-"PO-Revision-Date: 2020-03-20 18:39+0700\n"
+"POT-Creation-Date: 2020-03-20 20:12+0700\n"
+"PO-Revision-Date: 2020-03-20 20:12+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -2294,7 +2294,7 @@ msgstr "Ekspor sekarang"
 
 #: admin/modules/bibliography/marcexport.php:163
 msgid "Batch Export"
-msgstr "Ekspor tumpak"
+msgstr "Ekspor Sekaligus"
 
 #: admin/modules/bibliography/marcexport.php:172
 msgid "Currently there is"
@@ -2934,7 +2934,7 @@ msgstr "Cetak Kartu Katalog"
 
 #: admin/modules/bibliography/submenu.php:44
 msgid "Data Export"
-msgstr "Ekspor Data"
+msgstr "Ekspor Bibliografi"
 
 #: admin/modules/bibliography/submenu.php:44
 msgid "Export Bibliographic Data To CSV format"
@@ -2942,7 +2942,7 @@ msgstr "Ekspor Data Bibliografi ke Format CSV"
 
 #: admin/modules/bibliography/submenu.php:45
 msgid "Data Import"
-msgstr "Impor Data"
+msgstr "Impor Bibliografi"
 
 #: admin/modules/bibliography/submenu.php:45
 msgid "Import Data to Bibliographic Database from CSV file"
