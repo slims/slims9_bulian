@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-20 17:05+0700\n"
-"PO-Revision-Date: 2020-03-20 18:29+0700\n"
+"POT-Creation-Date: 2020-03-20 18:39+0700\n"
+"PO-Revision-Date: 2020-03-20 18:39+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -2174,7 +2174,6 @@ msgid "Print Barcodes for Selected Data"
 msgstr "Cetak Barkod untuk Data Terpilih"
 
 #: admin/modules/bibliography/item_barcode_generator.php:217
-#: admin/modules/bibliography/print_settings.php:253
 msgid "Change print barcode settings"
 msgstr "Ubah setelan cetak barkod"
 
@@ -2820,6 +2819,10 @@ msgstr "(aturan terdaftar)"
 #: admin/modules/bibliography/print_settings.php:238
 msgid "Print setting for"
 msgstr "Aturan pencetakan untuk"
+
+#: admin/modules/bibliography/print_settings.php:253
+msgid "Change print label and or barcode settings"
+msgstr "Ubah setelan cetak label dan barkod"
 
 #: admin/modules/bibliography/printed_card.php:92
 #: admin/modules/bibliography/printed_card.php:96
