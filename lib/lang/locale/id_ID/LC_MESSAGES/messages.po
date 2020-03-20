@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-18 21:40+0700\n"
-"PO-Revision-Date: 2020-03-18 21:40+0700\n"
+"POT-Creation-Date: 2020-03-20 17:05+0700\n"
+"PO-Revision-Date: 2020-03-20 18:29+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1463,7 +1463,7 @@ msgstr "Versi publikasi yang memiliki perubahan atau penambahan vital."
 #: template/default/detail_template.php:96
 #: template/lightweight/detail_template.php:143
 msgid "Specific Detail Info"
-msgstr "Info Detil Spesifik"
+msgstr "Info Detail Spesifik"
 
 #: admin/modules/bibliography/index.php:620
 msgid ""
@@ -1550,7 +1550,7 @@ msgstr "Lokasi"
 
 #: admin/modules/bibliography/index.php:663
 msgid "Item(s) code batch generator"
-msgstr "Pemroses nomor eksemplar"
+msgstr "Pembuat nomor eksemplar"
 
 #: admin/modules/bibliography/index.php:667
 msgid "Add New Items"
@@ -2415,7 +2415,7 @@ msgstr "{recordCount} data berhasil disimpan ke dalam basisdata."
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
-"Maaf, dari %s tidak ada hasil ATAU kemungkinan hasil dan detil XML "
+"Maaf, dari %s tidak ada hasil ATAU kemungkinan hasil dan detail XML "
 "dinonaktifkan."
 
 #: admin/modules/bibliography/p2p.php:378
@@ -4006,7 +4006,7 @@ msgstr "Daftar Label"
 
 #: admin/modules/master_file/label.php:154
 msgid "Add New Label"
-msgstr "Tambah Label"
+msgstr "Tambah Label Baru"
 
 #: admin/modules/master_file/label.php:197
 #: admin/modules/master_file/label.php:228
@@ -5810,7 +5810,7 @@ msgstr "Sampah"
 
 #: admin/modules/serial_control/serial_base_lib.inc.php:205
 msgid "Kardex Detail for subscription"
-msgstr "Detil kardeks untuk langganan"
+msgstr "Detail kardeks untuk langganan"
 
 #: admin/modules/serial_control/submenu.php:28
 msgid "Subscription"
@@ -5874,7 +5874,7 @@ msgstr "Anda akan Mengubah data Berlangganan"
 
 #: admin/modules/serial_control/subscription.php:215
 msgid "View/Edit Kardex Detail"
-msgstr "Lihat/Ubah Detil Kardeks"
+msgstr "Lihat/Ubah Detail Kardeks"
 
 #: admin/modules/stock_take/current.php:56
 #: admin/modules/stock_take/st_report.php:53
@@ -6758,7 +6758,7 @@ msgstr "Abaikan Perhitungan Denda Kala Libur"
 
 #: admin/modules/system/index.php:337
 msgid "OPAC XML Detail"
-msgstr "Detil XML OPAC"
+msgstr "Detail XML OPAC"
 
 #: admin/modules/system/index.php:343
 msgid "OPAC XML Result"
@@ -7676,7 +7676,7 @@ msgstr "Kembali ke sebelumnya"
 
 #: lib/contents/show_detail.inc.php:111
 msgid "Show detail in XML format"
-msgstr "Tunjukkan detail dalam bentuk XML"
+msgstr "Tampilkan detail dalam bentuk XML"
 
 #: lib/contents/show_detail.inc.php:111
 #: template/akasia-dz/biblio_list_template.php:81
@@ -8108,7 +8108,7 @@ msgstr "Tidak ada salinan data"
 #: template/default/detail_template.php:34
 #: template/lightweight/detail_template.php:43
 msgid "Detail Information"
-msgstr "Informasi Detil"
+msgstr "Informasi Detail"
 
 #: template/akasia-dz/detail_template.php:163
 #: template/akasia/detail_template.php:187
@@ -8287,7 +8287,7 @@ msgstr "Tambahkan ke dalam keranjang"
 
 #: template/default/biblio_list_template.php:119
 msgid "View Detail"
-msgstr "Munculkan Detail"
+msgstr "Tampilkan Detail"
 
 #: template/default/detail_template.php:134
 msgid "You must be logged in to post a comment"
