@@ -234,7 +234,7 @@ $form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for 
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
 // header (column name)
-$form->addCheckBox('header', __('The first row are columns names'), array( array('1', __('Yes')) ), '');
+$form->addCheckBox('header', __('The first row is the columns names'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
 ?>
