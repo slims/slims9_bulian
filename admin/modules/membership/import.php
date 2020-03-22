@@ -226,7 +226,7 @@ $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for 
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
 // header (column name)
-$form->addCheckBox('header', __('The first row are columns names'), array( array('1', __('Yes')) ), '');
+$form->addCheckBox('header', __('The first row is columns names'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
 ?>

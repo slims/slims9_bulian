@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-20 20:12+0700\n"
-"PO-Revision-Date: 2020-03-20 20:12+0700\n"
+"POT-Creation-Date: 2020-03-22 19:27+0700\n"
+"PO-Revision-Date: 2020-03-22 19:27+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1143,9 +1143,8 @@ msgstr "Jumlah cantuman untuk di impor (0 untuk semua rekod)"
 
 #: admin/modules/bibliography/import.php:288
 #: admin/modules/bibliography/item_import.php:237
-#: admin/modules/membership/import.php:229
-msgid "The first row are columns names"
-msgstr "Baris pertama berisi nama kolom"
+msgid "The first row is the columns names"
+msgstr "Baris pertama adalah nama kolom"
 
 #: admin/modules/bibliography/index.php:93
 #: admin/modules/membership/index.php:82 admin/modules/system/app_user.php:80
@@ -3480,7 +3479,6 @@ msgid "Fines Each Day"
 msgstr "Denda Harian"
 
 #: admin/modules/circulation/loan_rules.php:220
-#: admin/modules/membership/member_type.php:216
 msgid "Overdue Grace Periode"
 msgstr "Toleransi Keterlambatan"
 
@@ -4572,7 +4570,7 @@ msgstr ""
 #: admin/modules/membership/export.php:136
 #: admin/modules/membership/submenu.php:32
 msgid "Export Data"
-msgstr "Ekspor Data"
+msgstr "Ekspor Data Anggota"
 
 #: admin/modules/membership/export.php:139
 msgid "Export member(s) data to CSV file"
@@ -4585,11 +4583,15 @@ msgstr "rekod berhasil disisipkan dalam data anggota dari cantuman"
 #: admin/modules/membership/import.php:187
 #: admin/modules/membership/submenu.php:33
 msgid "Import Data"
-msgstr "Impor Data"
+msgstr "Impor Data Anggota"
 
 #: admin/modules/membership/import.php:190
 msgid "Import for members data from CSV file"
 msgstr "Impor data anggota dari berkas CSV"
+
+#: admin/modules/membership/import.php:229
+msgid "The first row are columns names"
+msgstr "Baris pertama berisi nama kolom"
 
 #: admin/modules/membership/index.php:96
 msgid "Member ID, Name and Birthday cannot be empty"
@@ -4892,12 +4894,16 @@ msgstr "Jumlah Reservasi"
 #: admin/modules/membership/member_type.php:210
 #: admin/modules/membership/member_type.php:235
 #: admin/modules/membership/member_type.php:241
-msgid "Membership Periode (In Days)"
+msgid "Membership Period (In Days)"
 msgstr "Masa Keanggotaan (Dalam Hari)"
 
 #: admin/modules/membership/member_type.php:214
 msgid "Fine Each Day"
 msgstr "Denda Per Hari"
+
+#: admin/modules/membership/member_type.php:216
+msgid "Overdue Grace Period"
+msgstr "Toleransi Keterlambatan"
 
 #: admin/modules/membership/submenu.php:27
 msgid "View Member List"
