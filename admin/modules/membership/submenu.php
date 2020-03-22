@@ -29,5 +29,5 @@ $menu[] = array(__('Add New Member'), MWB.'membership/index.php?action=detail', 
 $menu[] = array(__('Member Type'), MWB.'membership/member_type.php', __('View and modify member type'));
 $menu[] = array('Header', __('Tools'));
 $menu[] = array(__('Member Card Printing'), MWB.'membership/member_card_generator.php', __('Print Member Card'));
-$menu[] = array(__('Export Data'), MWB.'membership/export.php', __('Export Members Data To CSV File'));
-$menu[] = array(__('Import Data'), MWB.'membership/import.php', __('Import Members Data From CSV File'));
+$menu[] = array(__('Data Export'), MWB.'membership/export.php', __('Export Members Data To CSV File'));
+$menu[] = array(__('Data Import'), MWB.'membership/import.php', __('Import Members Data From CSV File'));
