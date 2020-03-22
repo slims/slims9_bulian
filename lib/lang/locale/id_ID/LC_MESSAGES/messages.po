@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-20 20:12+0700\n"
-"PO-Revision-Date: 2020-03-20 20:12+0700\n"
+"POT-Creation-Date: 2020-03-22 18:40+0700\n"
+"PO-Revision-Date: 2020-03-22 18:41+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1143,9 +1143,8 @@ msgstr "Jumlah cantuman untuk di impor (0 untuk semua rekod)"
 
 #: admin/modules/bibliography/import.php:288
 #: admin/modules/bibliography/item_import.php:237
-#: admin/modules/membership/import.php:229
-msgid "The first row are columns names"
-msgstr "Baris pertama berisi nama kolom"
+msgid "The first row is the columns names"
+msgstr "Baris pertama adalah nama kolom"
 
 #: admin/modules/bibliography/index.php:93
 #: admin/modules/membership/index.php:82 admin/modules/system/app_user.php:80
@@ -4591,6 +4590,10 @@ msgstr "Impor Data"
 msgid "Import for members data from CSV file"
 msgstr "Impor data anggota dari berkas CSV"
 
+#: admin/modules/membership/import.php:229
+msgid "The first row are columns names"
+msgstr "Baris pertama berisi nama kolom"
+
 #: admin/modules/membership/index.php:96
 msgid "Member ID, Name and Birthday cannot be empty"
 msgstr "ID dan Nama Anggota dan Tanggal Lahit tidak boleh kosong"
@@ -4892,7 +4895,7 @@ msgstr "Jumlah Reservasi"
 #: admin/modules/membership/member_type.php:210
 #: admin/modules/membership/member_type.php:235
 #: admin/modules/membership/member_type.php:241
-msgid "Membership Periode (In Days)"
+msgid "Membership Period (In Days)"
 msgstr "Masa Keanggotaan (Dalam Hari)"
 
 #: admin/modules/membership/member_type.php:214
