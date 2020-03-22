@@ -213,7 +213,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // fine each day
     $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']??'','style="width:25%" class="form-control"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Period'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
