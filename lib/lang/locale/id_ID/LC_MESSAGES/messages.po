@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-22 18:40+0700\n"
-"PO-Revision-Date: 2020-03-22 18:41+0700\n"
+"POT-Creation-Date: 2020-03-22 19:27+0700\n"
+"PO-Revision-Date: 2020-03-22 19:27+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -3479,7 +3479,6 @@ msgid "Fines Each Day"
 msgstr "Denda Harian"
 
 #: admin/modules/circulation/loan_rules.php:220
-#: admin/modules/membership/member_type.php:216
 msgid "Overdue Grace Periode"
 msgstr "Toleransi Keterlambatan"
 
@@ -4571,7 +4570,7 @@ msgstr ""
 #: admin/modules/membership/export.php:136
 #: admin/modules/membership/submenu.php:32
 msgid "Export Data"
-msgstr "Ekspor Data"
+msgstr "Ekspor Data Anggota"
 
 #: admin/modules/membership/export.php:139
 msgid "Export member(s) data to CSV file"
@@ -4584,7 +4583,7 @@ msgstr "rekod berhasil disisipkan dalam data anggota dari cantuman"
 #: admin/modules/membership/import.php:187
 #: admin/modules/membership/submenu.php:33
 msgid "Import Data"
-msgstr "Impor Data"
+msgstr "Impor Data Anggota"
 
 #: admin/modules/membership/import.php:190
 msgid "Import for members data from CSV file"
@@ -4901,6 +4900,10 @@ msgstr "Masa Keanggotaan (Dalam Hari)"
 #: admin/modules/membership/member_type.php:214
 msgid "Fine Each Day"
 msgstr "Denda Per Hari"
+
+#: admin/modules/membership/member_type.php:216
+msgid "Overdue Grace Period"
+msgstr "Toleransi Keterlambatan"
 
 #: admin/modules/membership/submenu.php:27
 msgid "View Member List"
