@@ -398,8 +398,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else { $itemcode .= $b; }
         $itemcode .= $chars[1];
 
-        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, location_id, item_status_id, input_date, last_update, uid)
-        VALUES (%d, '%s', '%s', %d, '%s', 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, received_date, supplier_id, order_no, order_date, item_status_id, site, source, invoice, price, price_currency, invoice_date, call_number, coll_type_id, location_id, input_date, last_update, uid)
+        VALUES ( %d, '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)", 
+        isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $dbs->escape_string($_POST['recvDate']), intval($_POST['supplierID']), $dbs->escape_string($_POST['ordNo']), $dbs->escape_string($_POST['orDate']), $dbs->escape_string($_POST['itemStatusID']), $dbs->escape_string($_POST['itemSite']), intval($_POST['source']), $dbs->escape_string($_POST['invoice']), intval($_POST['price']), $dbs->escape_string($_POST['priceCurrency']), $dbs->escape_string($_POST['invcDate']), $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
         @$dbs->query($item_insert_sql);
       }
     }
@@ -636,30 +637,90 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<div class="'.$visibility.'">';
-  $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a>&nbsp;';
+
   // Modified by Eddy Subratha
   // To avoid a miss processing after a pattern created, I think we should hide the Item Code Manager below  
-  // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
-  $str_input .= '</div>';
-  $str_input .= '<div class="form-inline">';
+  // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>'; 
+  $str_input = '<div class="form-inline">';
   $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"').'&nbsp;';
-  $str_input .= '<input type="text" class="form-control col-2" name="totalItems" placeholder="'.__('Total item(s)').'" />&nbsp;';;
-  // get collection type data related to this record from database
-  $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
-  $coll_type_options = array(array('','--'.__('Collection Type').'--'));
-  while ($coll_type_d = $coll_type_q->fetch_row()) {
-      $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-  }
-  $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-3"').'&nbsp;';
-  // get location data related to this record from database
-  $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
-  $location_options = array(array('','-- '.__('Location').' --'));
-  while ($location_d = $location_q->fetch_row()) {
-    $location_options[] = array($location_d[0], $location_d[1]);
-  }
-  $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-3"').'&nbsp;';
-  $str_input .= '</div>';
+  $str_input .= '<input type="text" class="form-control col-4" name="totalItems" placeholder="'.__('Total item(s)').'" />&nbsp;'; 
+  $str_input .= '<div class="'.$visibility.'">
+  <div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">'.__('Options').'</div>';
+  $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a></div></div>';
+  $str_input .= '<div class="collapse" id="batchItemDetail" style="padding:10px;width:100%; text-align:left !important;">';
+
+    // location
+    $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
+    $location_options = array(array('','-- '.__('Location').' --'));
+    while ($location_d = $location_q->fetch_row()) {
+      $location_options[] = array($location_d[0], $location_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Location').'</div>';
+    $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-4"').'</div>';
+
+    // item site
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Shelf Location').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'itemSite','','class="form-control col-4"').'</div>';
+ 
+    // collection type
+    $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
+    $coll_type_options = array(array('','--'.__('Collection Type').'--'));
+    while ($coll_type_d = $coll_type_q->fetch_row()) {
+        $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Collection Type').'</div>';
+    $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-4"').'</div> ';
+
+    // item status
+    $item_status_q = $dbs->query("SELECT item_status_id, item_status_name FROM mst_item_status");
+    $item_status_options[] = array('0', __('Available'));
+    while ($item_status_d = $item_status_q->fetch_row()) {
+        $item_status_options[] = array($item_status_d[0], $item_status_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Item Status').'</div>';
+    $str_input .= simbio_form_element::selectList('itemStatusID', $item_status_options, '', 'class="form-control col-4"').'</div> ';
+
+    // item source
+    $source_options[] = array('1', __('Buy'));
+    $source_options[] = array('2', __('Prize/Grant'));
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Source').'</div>';
+    $str_input .= simbio_form_element::selectList('source', $source_options, '', 'class="form-control col-4"').'</div> ';
+
+    //order date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Order Date').'</div>';
+    $str_input .= simbio_form_element::dateField('orDate', date('Y-m-d'),'class="form-control"').'</div>';
+
+    //receiving date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Receiving Date').'</div>';
+    $str_input .= simbio_form_element::dateField('recvDate', date('Y-m-d'),' class="form-control col-12"').'</div>';
+
+    // order number
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Order Number').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'ordNo','','class="form-control"').'</div>';
+
+    // invoice
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Invoice').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'invoice','','class="form-control col-4"').'</div>';
+
+    // invoice date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Invoice Date').'</div>';
+    $str_input .= simbio_form_element::dateField('invcDate', date('Y-m-d'),' class="form-control col-12"').'</div>'; 
+
+    // supplier
+    $supplier_q = $dbs->query("SELECT supplier_id, supplier_name FROM mst_supplier");
+    $supplier_options[] = array('0', __('Not Applicable'));
+    while ($supplier_d = $supplier_q->fetch_row()) {
+        $supplier_options[] = array($supplier_d[0], $supplier_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Supplier').'</div>';
+    $str_input .= simbio_form_element::selectList('supplierID', $supplier_options,'','class="form-control col-4"').'</div> ';
+
+    //price
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Price').'</div>';    
+    $str_input .=  simbio_form_element::textField('text', 'price', '0', 'class="form-control col-3"');
+    $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'],'','class="form-control col-2"').'</div> ';
+
+    $str_input .= '</div>';
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
@@ -953,20 +1014,20 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $table_spec = 'search_biblio AS `index` LEFT JOIN item ON `index`.biblio_id=item.biblio_id';
 
   if ($can_read AND $can_write) {
-    $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \''.__('Title').'\'', 'index.labels',
+    $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \''.__('Title').'\'', 'index.labels','index.image',
     'index.author',
     'index.isbn_issn AS \''.__('ISBN/ISSN').'\'',
     'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">'.__('None').'</strong>\') AS \''.__('Copies').'\'',
     'index.last_update AS \''.__('Last Update').'\'');
     $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
   } else {
-    $datagrid->setSQLColumn('index.title AS \''.__('Title').'\'', 'index.author', 'index.labels',
+    $datagrid->setSQLColumn('index.title AS \''.__('Title').'\'', 'index.author', 'index.labels','index.image',
     'index.isbn_issn AS \''.__('ISBN/ISSN').'\'',
     'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">'.__('None').'</strong>\') AS \''.__('Copies').'\'',
     'index.last_update AS \''.__('Last Update').'\'');
     $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
   }
-  $datagrid->invisible_fields = array(1,2);
+  $datagrid->invisible_fields = array(1,2,3);
   $datagrid->setSQLorder('index.last_update DESC');
 
   // set group by
