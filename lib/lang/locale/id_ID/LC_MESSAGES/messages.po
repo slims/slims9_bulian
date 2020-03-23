@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-22 19:27+0700\n"
-"PO-Revision-Date: 2020-03-22 19:27+0700\n"
+"POT-Creation-Date: 2020-03-23 14:22+0700\n"
+"PO-Revision-Date: 2020-03-23 14:22+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -954,7 +954,7 @@ msgstr "Tambahkan nama kolom di baris pertama"
 #: admin/modules/membership/import.php:229
 #: admin/modules/membership/index.php:519
 #: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
-#: admin/modules/system/index.php:299
+#: admin/modules/system/index.php:301
 msgid "Yes"
 msgstr "Ya"
 
@@ -1756,11 +1756,11 @@ msgid "Click to enlarge preview"
 msgstr "Klik untuk memperbesar"
 
 #: admin/modules/bibliography/index.php:770
-#: admin/modules/membership/index.php:530 admin/modules/system/index.php:250
+#: admin/modules/membership/index.php:530 admin/modules/system/index.php:252
 msgid "Remove Image"
 msgstr "Hapus Gambar"
 
-#: admin/modules/bibliography/index.php:778 admin/modules/system/index.php:254
+#: admin/modules/bibliography/index.php:778 admin/modules/system/index.php:256
 msgid "Choose file"
 msgstr "Pilih berkas"
 
@@ -2653,7 +2653,7 @@ msgid "Settings saved"
 msgstr "Setelan tersimpan"
 
 #: admin/modules/bibliography/print_settings.php:78
-#: admin/modules/system/holiday.php:326 admin/modules/system/index.php:226
+#: admin/modules/system/holiday.php:326 admin/modules/system/index.php:228
 #: admin/modules/system/membercard_theme.php:99
 #: admin/modules/system/theme.php:135 admin/modules/system/ucsetting.php:76
 msgid "Save Settings"
@@ -2932,6 +2932,7 @@ msgid "Print Catalog Card"
 msgstr "Cetak Kartu Katalog"
 
 #: admin/modules/bibliography/submenu.php:44
+#: admin/modules/membership/submenu.php:32
 msgid "Data Export"
 msgstr "Ekspor Bibliografi"
 
@@ -2940,6 +2941,7 @@ msgid "Export Bibliographic Data To CSV format"
 msgstr "Ekspor Data Bibliografi ke Format CSV"
 
 #: admin/modules/bibliography/submenu.php:45
+#: admin/modules/membership/submenu.php:33
 msgid "Data Import"
 msgstr "Impor Bibliografi"
 
@@ -3499,7 +3501,7 @@ msgid "Quick Return is disabled"
 msgstr "Pengembalian cepat tidak tersedia"
 
 #: admin/modules/circulation/quick_return.php:82
-#: admin/modules/circulation/submenu.php:28 admin/modules/system/index.php:306
+#: admin/modules/circulation/submenu.php:28 admin/modules/system/index.php:308
 msgid "Quick Return"
 msgstr "Pengembalian Kilat"
 
@@ -4568,7 +4570,6 @@ msgstr ""
 "Tabel keanggotaan dalam pangkalan data belum memiliki cantuman. Ekspor GAGAL!"
 
 #: admin/modules/membership/export.php:136
-#: admin/modules/membership/submenu.php:32
 msgid "Export Data"
 msgstr "Ekspor Data Anggota"
 
@@ -4581,7 +4582,6 @@ msgid "records inserted successfully to members database, from record"
 msgstr "rekod berhasil disisipkan dalam data anggota dari cantuman"
 
 #: admin/modules/membership/import.php:187
-#: admin/modules/membership/submenu.php:33
 msgid "Import Data"
 msgstr "Impor Data Anggota"
 
@@ -4590,8 +4590,10 @@ msgid "Import for members data from CSV file"
 msgstr "Impor data anggota dari berkas CSV"
 
 #: admin/modules/membership/import.php:229
-msgid "The first row are columns names"
-msgstr "Baris pertama berisi nama kolom"
+#, fuzzy
+#| msgid "The first row is the columns names"
+msgid "The first row is columns names"
+msgstr "Baris pertama adalah nama kolom"
 
 #: admin/modules/membership/index.php:96
 msgid "Member ID, Name and Birthday cannot be empty"
@@ -4601,8 +4603,8 @@ msgstr "ID dan Nama Anggota dan Tanggal Lahit tidak boleh kosong"
 #: lib/contents/login.inc.php:143 lib/contents/newpass.inc.php:57
 msgid "Password confirmation does not match. See if your Caps Lock key is on!"
 msgstr ""
-"Password dan Konfirmasinya tidak cocok. Pastikan penggunaan huruf besar dan "
-"kecil yang sesuai!"
+"Kata sandi dan konfirmasinya tidak cocok. Pastikan penggunaan huruf besar "
+"dan kecil yang sesuai!"
 
 #: admin/modules/membership/index.php:222
 msgid "Member Data Successfully Updated"
@@ -4766,7 +4768,7 @@ msgstr "Kata sandi Baru"
 #: admin/modules/membership/index.php:596 admin/modules/system/app_user.php:400
 #: lib/contents/login.inc.php:182 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
-msgstr "Konfirmasi Kata sandi Baru"
+msgstr "Konfirmasi Kata Sandi Baru"
 
 #: admin/modules/membership/index.php:606
 #: admin/modules/membership/member_type.php:220
@@ -4775,7 +4777,7 @@ msgstr "Anda akan menyunting data anggota"
 
 #: admin/modules/membership/index.php:608 admin/modules/system/app_user.php:406
 msgid "Leave Password field blank if you don't want to change the password"
-msgstr "Biarkan kotak Kata sandi kosong jika tidak ingin mengubahnya"
+msgstr "Biarkan ruas Kata Sandi kosong jika tidak ingin mengubahnya"
 
 #: admin/modules/membership/index.php:678
 msgid "Extend Selected Member(s)"
@@ -4870,19 +4872,19 @@ msgid "Loan Periode (In Days)"
 msgstr "Lama Peminjaman (Dalam Hari)"
 
 #: admin/modules/membership/member_type.php:204
-#: admin/modules/system/index.php:305 admin/modules/system/index.php:317
-#: admin/modules/system/index.php:323 admin/modules/system/index.php:330
-#: admin/modules/system/index.php:336 admin/modules/system/index.php:342
-#: admin/modules/system/index.php:348 admin/modules/system/index.php:366
+#: admin/modules/system/index.php:307 admin/modules/system/index.php:319
+#: admin/modules/system/index.php:325 admin/modules/system/index.php:332
+#: admin/modules/system/index.php:338 admin/modules/system/index.php:344
+#: admin/modules/system/index.php:350 admin/modules/system/index.php:368
 #: admin/modules/system/ucsetting.php:89 template/default/tinfo.inc.php:208
 msgid "Enable"
 msgstr "Dimungkinkan"
 
 #: admin/modules/membership/member_type.php:205
-#: admin/modules/system/index.php:304 admin/modules/system/index.php:316
-#: admin/modules/system/index.php:322 admin/modules/system/index.php:329
-#: admin/modules/system/index.php:335 admin/modules/system/index.php:341
-#: admin/modules/system/index.php:347 admin/modules/system/index.php:365
+#: admin/modules/system/index.php:306 admin/modules/system/index.php:318
+#: admin/modules/system/index.php:324 admin/modules/system/index.php:331
+#: admin/modules/system/index.php:337 admin/modules/system/index.php:343
+#: admin/modules/system/index.php:349 admin/modules/system/index.php:367
 #: admin/modules/system/ucsetting.php:88 template/default/tinfo.inc.php:209
 msgid "Disable"
 msgstr "Tidak mungkin"
@@ -6713,103 +6715,103 @@ msgstr "Merubah preferensi aplikasi global"
 msgid "Logo Image removed. Refreshing page"
 msgstr "Logo dihapus. Segarkan laman"
 
-#: admin/modules/system/index.php:217
+#: admin/modules/system/index.php:219
 msgid "Settings saved. Refreshing page"
 msgstr "Pengaturan disimpan. Penyegaran laman"
 
-#: admin/modules/system/index.php:240
+#: admin/modules/system/index.php:242
 msgid "Library Name"
 msgstr "Nama Perpustakaan"
 
-#: admin/modules/system/index.php:243
+#: admin/modules/system/index.php:245
 msgid "Library Subname"
 msgstr "Nama Tambahan Perpustakaan"
 
-#: admin/modules/system/index.php:257
+#: admin/modules/system/index.php:259
 msgid "Logo Image"
 msgstr "Gambar Logo"
 
-#: admin/modules/system/index.php:288
+#: admin/modules/system/index.php:290
 msgid "Default App. Language"
 msgstr "Bahasa Aplikasi Baku"
 
-#: admin/modules/system/index.php:296
+#: admin/modules/system/index.php:298
 msgid "Number Of Collections To Show In OPAC Result List"
 msgstr "Jumlah koleksi yang ditampilkan hasil pencarian OPAC"
 
-#: admin/modules/system/index.php:300
+#: admin/modules/system/index.php:302
 msgid "Show Promoted Titles at Homepage"
 msgstr "Tampilkan Judul Terpilih di laman OPAC"
 
-#: admin/modules/system/index.php:310
+#: admin/modules/system/index.php:312
 msgid "Don't Print"
 msgstr "Jangan Cetak"
 
-#: admin/modules/system/index.php:311
+#: admin/modules/system/index.php:313
 msgid "Print"
 msgstr "Cetak"
 
-#: admin/modules/system/index.php:312
+#: admin/modules/system/index.php:314
 msgid "Print Circulation Receipt"
 msgstr "Cetak Bukti Sirkulasi"
 
-#: admin/modules/system/index.php:318
+#: admin/modules/system/index.php:320
 msgid "Loan and Due Date Manual Change"
 msgstr "Perubahan Manual Tanggal Peminjaman dan Jatuh Tempo"
 
-#: admin/modules/system/index.php:324
+#: admin/modules/system/index.php:326
 msgid "Loan Limit Override"
 msgstr "Mengabaikan Batas Pinjam"
 
-#: admin/modules/system/index.php:331
+#: admin/modules/system/index.php:333
 msgid "Ignore Holidays Fine Calculation"
 msgstr "Abaikan Perhitungan Denda Kala Libur"
 
-#: admin/modules/system/index.php:337
+#: admin/modules/system/index.php:339
 msgid "OPAC XML Detail"
 msgstr "Detail XML OPAC"
 
-#: admin/modules/system/index.php:343
+#: admin/modules/system/index.php:345
 msgid "OPAC XML Result"
 msgstr "Hasil XML OPAC"
 
-#: admin/modules/system/index.php:349
+#: admin/modules/system/index.php:351
 msgid "Enable Search Spellchecker"
 msgstr "Aktifkan Pemeriksa Ejaan"
 
-#: admin/modules/system/index.php:353
+#: admin/modules/system/index.php:355
 msgid "Forbid"
 msgstr "Dilarang"
 
-#: admin/modules/system/index.php:354
+#: admin/modules/system/index.php:356
 msgid "Allow"
 msgstr "Diijinkan"
 
-#: admin/modules/system/index.php:355
+#: admin/modules/system/index.php:357
 msgid "Allow OPAC File Download"
 msgstr "Izinkan Pengunduhan Berkas OPAC"
 
-#: admin/modules/system/index.php:358
+#: admin/modules/system/index.php:360
 msgid "Session Login Timeout"
 msgstr "Sesi Masuk Berakhir"
 
-#: admin/modules/system/index.php:361
+#: admin/modules/system/index.php:363
 msgid "Barcode Encoding"
 msgstr "Penyandian Barkod"
 
-#: admin/modules/system/index.php:367
+#: admin/modules/system/index.php:369
 msgid "Visitor Counter by IP"
 msgstr "Konfigurasi Penghitung Pengunjung dengan IP"
 
-#: admin/modules/system/index.php:368
+#: admin/modules/system/index.php:370
 msgid "Allowed Counter IP"
 msgstr "IP yang Diizinkan"
 
-#: admin/modules/system/index.php:370
+#: admin/modules/system/index.php:372
 msgid "Visitor Limitation by Time"
 msgstr "Pembatasan Akses Penghitung Pengunjung berdasarkan Waktu"
 
-#: admin/modules/system/index.php:373
+#: admin/modules/system/index.php:375
 msgid "Time visitor limitation (in minute)"
 msgstr "Maksimal waktu kunjungan (dalam menit)"
 
@@ -7081,7 +7083,7 @@ msgstr "ID peladen"
 
 #: admin/modules/system/ucsetting.php:105
 msgid "Server Password"
-msgstr "Kata sandi Peladen"
+msgstr "Kata Sandi Peladen"
 
 #: admin/modules/system/user_group.php:55
 msgid "Group name can't be empty"
@@ -7386,7 +7388,7 @@ msgstr ""
 
 #: lib/contents/forgot.inc.php:52 lib/contents/login.inc.php:58
 msgid "Please supply valid username and password"
-msgstr "Masukkan nama pengguna dan kata sandi dengan benar"
+msgstr "Masukkan nama pengguna dan kata sandi yang benar"
 
 #: lib/contents/forgot.inc.php:63
 msgid "Captcha incorrect."
@@ -7432,7 +7434,7 @@ msgstr "Ganti kata sandi saya"
 
 #: lib/contents/forgot.inc.php:151
 msgid "Forgot My Password"
-msgstr "Lupa kata kunci"
+msgstr "Lupa Kata Sandi"
 
 #: lib/contents/librarian.inc.php:32
 msgid "Profile of our Librarian"
@@ -7460,11 +7462,11 @@ msgstr "Nama Pengguna atau Kata Sandi Salah. AKSES DITOLAK"
 
 #: lib/contents/login.inc.php:141 lib/contents/newpass.inc.php:55
 msgid "Current password can not be empty!"
-msgstr "Password bawaan tidak boleh kosong!"
+msgstr "Kata Sandi saat ini tidak boleh kosong!"
 
 #: lib/contents/login.inc.php:177
 msgid "Hi {username}, please update your password!"
-msgstr "Hai {username}, mohon perbararui password anda!"
+msgstr "Hai {username}, mohon perbarui kata sandi Anda!"
 
 #: lib/contents/login.inc.php:178 lib/contents/member.inc.php:258
 msgid "Current Password"
@@ -8607,6 +8609,9 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "The first row are columns names"
+#~ msgstr "Baris pertama berisi nama kolom"
 
 #~ msgid "Ratio:"
 #~ msgstr "Rasio:"
