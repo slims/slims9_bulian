@@ -41,9 +41,11 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Cover image thumbnail in Bibliographic List
+Updated : Item batch detail in Item Code Batch Generator (Options Button)
 Added : Captcha feature to forgot your password recovery mode
 Added : Procurement report in Reporting Modules
-Added : Change logo configuration in System Module
+Added : Change logo personification in System Module
 Fixed : Flag icon when change translation
 Updated : Webcam access in HTML5
 Added : Personalized (admin) user template
