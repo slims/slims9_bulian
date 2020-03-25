@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "elasticsearch/elasticsearch": "~6.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "volnix/csrf": "~1.0"
     },
     "license": "GNU GPL v3"
 }

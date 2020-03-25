@@ -27,6 +27,9 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+$_host = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+header("Access-Control-Allow-Origin: $_host", FALSE);
+
 /*
 if (defined('LIGHTWEIGHT_MODE')) {
     header('Location: index.php');
@@ -52,6 +55,14 @@ ob_start();
 
 // if there is login action
 if (isset($_POST['logMeIn'])) {
+    if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+        session_unset();
+        echo '<script type="text/javascript">';
+        echo 'alert("Invalid login form!");';
+        echo 'location.href = \'index.php?p=login\';';
+        echo '</script>';
+	exit();
+    }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
     if (!$username OR !$password) {
@@ -214,7 +225,8 @@ if (isset($_POST['updatePassword'])) {
         <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
         <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
-        <!-- Captcha in form - start -->
+        <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+	<!-- Captcha in form - start -->
         <?php if ($sysconf['captcha']['smc']['enable']) { ?>
           <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
           <div class="captchaAdmin">
@@ -239,13 +251,12 @@ if (isset($_POST['updatePassword'])) {
             <div class="remember">
                 <?php if ($sysconf['always_user_login']) : ?>
                 <input type="checkbox" id="remember_me" name="remember" value="1">
-                <label for="remember_me"><?= __('Remember me') ?></label>
+                <label for="remember_me">Remember me</label>
                 <?php endif; ?>
             </div>
         </div>
         <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
-        <a class="forgotButton" href="index.php?p=forgot"><?php echo __('Forgot my password') ?></a>
         </div>
     <?php } ?>
     </form>
