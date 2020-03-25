@@ -41,6 +41,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Security enhancement for CRSF (Cross-Site Request Forgery)
 Added : Cover image thumbnail in Bibliographic List
 Updated : Item batch detail in Item Code Batch Generator (Options Button)
 Added : Captcha feature to forgot your password recovery mode
