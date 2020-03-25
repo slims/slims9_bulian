@@ -29,6 +29,9 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 }
 
+$_host = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+header("Access-Control-Allow-Origin: $_host", FALSE);
+
 // IP based access limitation
 do_checkIP('opac');
 do_checkIP('opac-member');
@@ -62,6 +65,14 @@ if (isset($_GET['logout']) && $_GET['logout'] == '1') {
 
 // if there is member login action
 if (isset($_POST['logMeIn']) && !$is_member_login) {
+  if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+    session_unset();
+    echo '<script type="text/javascript">';
+    echo 'alert("Invalid login form!");';
+    echo 'location.href = \'index.php?p=login\';';
+    echo '</script>';
+    exit();
+  }
   $username = trim(strip_tags($_POST['memberID']));
   $password = trim(strip_tags($_POST['memberPassWord']));
   // check if username or password is empty
@@ -727,7 +738,8 @@ if ($is_member_login) :
                 <div class="login_input"><input class="form-control" type="text" name="memberID" placeholder="Enter member ID" required/></div>
                 <div class="fieldLabel marginTop"><?php echo __('Password'); ?></div>
                 <div class="login_input"><input class="form-control" type="password" name="memberPassWord" placeholder="Enter password" required autocomplete="off"/></div>
-                <!-- Captcha in form - start -->
+                <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+		<!-- Captcha in form - start -->
                 <div>
                   <?php if ($sysconf['captcha']['member']['enable']) { ?>
                     <?php if ($sysconf['captcha']['member']['type'] == "recaptcha") { ?>
