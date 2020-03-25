@@ -86,7 +86,7 @@ $stat_query = $dbs->query('SELECT gmd_name, COUNT(biblio_id) AS total_titles
 
 $stat_data = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_title_gmd" width="700" height="470" title="'.__('Total Titles By Medium/GMD').'">'.__('Show in chart/plot').'</a></div>';
 while ($data = $stat_query->fetch_row()) {
-    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>) ,';
+    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>), ';
 }
 $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Titles By Medium/GMD')] = $stat_data;
@@ -101,7 +101,7 @@ $stat_query = $dbs->query('SELECT coll_type_name, COUNT(item_id) AS total_items
 
 $stat_data = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_title_colltype" width="700" height="470" title="'.__('Total Items By Collection Type').'">'.__('Show in chart/plot').'</a></div>';
 while ($data = $stat_query->fetch_row()) {
-    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>) ,';
+    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>), ';
 }
 $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;

@@ -75,7 +75,7 @@ $report_q = $dbs->query('SELECT member_type_name, COUNT(member_id) FROM mst_memb
 $report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="' . MWB . 'reporting/charts_report.php?chart=total_member_by_type" width="700" height="470" title="' . __('Total Members By Membership Type') . '">' . __('Show in chart/plot') . '</a></div>';;
 $stat_data = '';
 while ($data = $report_q->fetch_row()) {
-  $stat_data .= $data[0] . ' (<strong>' . $data[1] . '</strong>),';
+  $stat_data .= $data[0] . ' (<strong>' . $data[1] . '</strong>), ';
 }
 $report_d = substr($stat_data, 0, -1);
 $loan_report[__('Total Members By Membership Type')] = $report_d;
