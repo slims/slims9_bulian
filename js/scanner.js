@@ -278,26 +278,18 @@ function toggle_dialog() {
   });
 }
 
-function toggle_search() {
-  var $scanDialog = $('#scan_dialog');
-  top.$.colorbox({
-    inline: true,
-    href: $scanDialog,
-    title: $scanDialog.attr('title'),
-    onOpen: function() {
-      $('#scan_options').addClass('makeHidden');
-      $('#scan_container').removeClass('makeHidden');
-    },
-    onComplete: function() {
-      sdata = document.querySelector('#my_imgdata');
-      scanvas = document.querySelector('#my_selected');
-      scontext = scanvas.getContext('2d');
-      scanvas.width = 0;
-      scanvas.height = 0;
-      $('img#my_imgdata').imgAreaSelect({
-        handles: true,
-        onSelectEnd: preview,
-      });
-    }
-  });
+function toggle_search(query) {
+  let win = window;
+  let h = 640;
+  let w = 800;
+  const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
+  const x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
+  let url = 'https://duckduckgo.com/?q='+query+'+book&t=h_&ia=images&iax=images';
+  let title = 'DuckduckGo Search Result';
+  if(query !== '') {
+    win.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+y+', left='+x);
+    win.focus();
+  } else {
+    parent.toastr.error("No title available", "Bibliography", {"closeButton":true,"debug":false,"newestOnTop":false,"progressBar":false,"positionClass":"toast-top-right","preventDuplicates":false,"onclick":null,"showDuration":300,"hideDuration":1000,"timeOut":5000,"extendedTimeOut":1000,"showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"})
+  }
 }

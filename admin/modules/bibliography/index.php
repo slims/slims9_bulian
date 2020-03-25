@@ -91,7 +91,8 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
       $postImage = str_replace('/', '', $postImage);
       @unlink(sprintf(IMGBS.'docs/%s',$postImage));
       utility::jsToastr('Bibliography', str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')), 'success');
-      exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+      // exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+      exit('<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="">');
     }
   }
   exit();
@@ -765,25 +766,37 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   if (isset($rec_d['image']) && file_exists('../../../images/docs/'.$rec_d['image'])) {
     $str_input .= '<a href="'.SWB.'images/docs/'.($rec_d['image']??'').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']??'').'&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '<img src="'.$upper_dir.'../images/docs/'.urlencode($rec_d['image']??'').'" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '</a>';
-    $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['image']??'').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+    $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['image']??'').'" loadcontainer="imageFilename" class="s-margin__bottom-1 mt-1 s-btn btn btn-danger btn-block makeHidden removeImage">'.__('Remove Image').'</a>';
   } else {
-    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="Image cover">';
   }
   $str_input .= '</div>';
   $str_input .= '</div>';
-  $str_input .= '<div class="custom-file col-4">';
+  $str_input .= '<div class="custom-file col-7">';
   $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
   $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+  $str_input .= '<div style="padding: 10px;margin-left: -25px;">';
+  $str_input .= '<div>'.__('Or download from url').'</div>';
+  $str_input .= '<div class="form-inline">
+                  <input type="text" id="getUrl" class="form-control" style="width:190px" placeholder="Paste url address here">
+                  <div class="input-group-append">
+                  <button class="btn btn-default" type="button" id="getImage">'.__('Download').' <i class="fa fa-spin fa-cog hidden" id="imgLoader"></i></button>
+                  <button class="btn btn-default openPopUp notAJAX ml-2" type="button" id="showEngine" onclick="toggle_search($(\'#title\').val());">'.__('Trying search in DuckduckGo').'</button>
+                  </div>
+                  </div>';
+  $str_input .= '</div>';
   $str_input .= '</div>';
   $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
   $str_input .= '</div>';
-  
+  $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
+  $str_input .= '</div></div></div>';
+
   //for scanner
   if ($sysconf['scanner'] !== false) {
     $str_input .= '<p>'.__('or scan a cover').'</p>';
-    $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
+    // $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
     if ($sysconf['scanner'] == 'html5') {
         $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn btn-default openPopUp" onclick="toggle_dialog();" />';
@@ -897,7 +910,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
       // Modified by Eddy Subratha
       // We removed image near the upload form 
-      // echo '<div id="biblioImage" class="s-biblio__cover"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=53" /></div>';
+      // echo '<div id="biblioImage" class="s-biblio__cover"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?`filename`=../../images/docs/'.urlencode($rec_d['image']).'&width=53" /></div>';
     }
     }
   echo '</div>'."\n";
@@ -922,10 +935,30 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     });
 
     $(document).on('change', '.custom-file-input', function () {
+        // $('#imageFilename img').attr('src',document.getElementById("image").files[0].name);
+        var input = document.querySelector("#image");
+        var fReader = new FileReader();
+        fReader.readAsDataURL(input.files[0]);
+        fReader.onloadend = function(event){
+            var img = document.querySelector("#imageFilename img");
+            img.src = event.target.result;
+        }
         let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
     });
 
+    $('#getImage').click(function(){
+      $.post("<?php echo MWB ?>bibliography/scrape_image.php", {imageURL: $('#getUrl').val()})
+      .done(function(data) {
+        if(data.status == 'VALID') {
+          $('#base64picstring').val(data.image);
+          $('#imageFilename img').attr('src',data.message);
+        } else {
+          $('#base64picstring, #getUrl').val('');
+          parent.toastr.error("<?php echo __('Current url is not valid or your internet is down.') ?>", "Bibliography Image", {"closeButton":true,"debug":false,"newestOnTop":false,"progressBar":false,"positionClass":"toast-top-right","preventDuplicates":false,"onclick":null,"showDuration":300,"hideDuration":1000,"timeOut":5000,"extendedTimeOut":1000,"showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"})
+        }
+      });
+    });
 });
   </script>
   <?php

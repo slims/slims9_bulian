@@ -244,6 +244,9 @@ $sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'f
 /* SCANNER feature */
 $sysconf['scanner'] = false;
 
+/* Search Book Cover */
+$sysconf['book_cover'] = true;
+
 /* Barcode Reader */
 $sysconf['barcode_reader'] = true;
 
