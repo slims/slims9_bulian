@@ -112,6 +112,8 @@ if (isset($_POST['updateData'])) {
       if ($img_upload_status == UPLOAD_SUCCESS) {
         $logo_image = $dbs->escape_string($image_upload->new_filename);
         $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+      }else{
+        utility::jsAlert($img_upload_status->error);
       }
     }
 

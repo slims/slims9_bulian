@@ -250,7 +250,7 @@ foreach ($sysconf['print'][$type] as $setting_name => $val) {
 }
 $form->addHidden('settingType', $type);
 ?>
-<strong><?php echo __('Change print barcode settings'); ?></strong>
+<strong><?php echo __('Change print label and or barcode settings'); ?></strong>
 <?php
 // print out the object
 echo $form->printOut();
