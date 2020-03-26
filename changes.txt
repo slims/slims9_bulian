@@ -42,6 +42,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 SLiMS 9.x.x (Bulian)
 ========================================================================
 Added : Security enhancement for CRSF (Cross-Site Request Forgery)
+Added : Download book cover directly using url or search through Duckduckgo Service
 Added : Cover image thumbnail in Bibliographic List
 Updated : Item batch detail in Item Code Batch Generator (Options Button)
 Added : Captcha feature to forgot your password recovery mode
@@ -49,7 +50,7 @@ Added : Procurement report in Reporting Modules
 Added : Change logo personification in System Module
 Fixed : Flag icon when change translation
 Updated : Webcam access in HTML5
-Added : Personalized (admin) user template
+Added : Personalized backend user template
 Added : Option for disabling voice in visitor log
 Added : First row information when exporting and importing bibliography and item data
 Updated : Bahasa Indonesia translation
