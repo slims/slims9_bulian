@@ -8,7 +8,8 @@
  */
 
 $namespaces = [
-  "SLiMS\\" => "/"
+  "SLiMS\\" => "/",
+  "Volnix\\CSRF\\" => "/csrf/src/"
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {

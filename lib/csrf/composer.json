@@ -1,0 +1,25 @@
+{
+	"name": "volnix/csrf",
+	"description": "CSRF protection library that compares provided token to session token to ensure request validity.",
+	"license": "MIT",
+	"homepage": "https://github.com/volnix/csrf",
+	"authors": [
+		{
+			"name": "Nick Volgas",
+			"email": "nvolgas@ark.org"
+		}
+	],
+	"autoload": {
+        "psr-4": {
+            "Volnix\\CSRF\\": "src/"
+        }
+    },
+    "require": {
+	  "php": ">= 5.3"
+	},
+
+  	"require-dev":{
+      "phpunit/phpunit": "~3.7"
+    },
+    "minimum-stability": "dev"
+}
