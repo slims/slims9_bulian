@@ -51,6 +51,7 @@ switch (ENVIRONMENT) {
 
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
+require 'lib/autoload.php';
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
