@@ -27,8 +27,13 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-$_host = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
-header("Access-Control-Allow-Origin: $_host", FALSE);
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+if ($sysconf['baseurl'] != '') {
+  $_host = $sysconf['baseurl'];      
+  header("Access-Control-Allow-Origin: $_host", FALSE);
+}
 
 /*
 if (defined('LIGHTWEIGHT_MODE')) {
@@ -108,7 +113,16 @@ if (isset($_POST['logMeIn'])) {
             setcookie('admin_logged_in', true, time()+14400, SWB);
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            echo '<script type="text/javascript">';
+	    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+	    if ($sysconf['log']['adv']['enabled']) {
+              if ($sysconf['log']['adv']['handler'] == 'fs') {
+	        $log = new Logger('name');
+	        $log->pushHandler(new StreamHandler($sysconf['log']['adv']['path'].'/system.log', Logger::DEBUG));
+	        $log->warning('Login success for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
+	      }
+	    }
+
+	    echo '<script type="text/javascript">';
             if ($sysconf['login_message']) {
                 echo 'alert(\''.__('Welcome to Library Automation, ').$logon->real_name.'\');';
             }

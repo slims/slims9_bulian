@@ -29,8 +29,10 @@ if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 }
 
-$_host = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
-header("Access-Control-Allow-Origin: $_host", FALSE);
+if ($sysconf['baseurl'] != '') {
+  $_host = $sysconf['baseurl'];
+  header("Access-Control-Allow-Origin: $_host", FALSE);
+}
 
 // IP based access limitation
 do_checkIP('opac');

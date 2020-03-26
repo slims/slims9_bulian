@@ -726,3 +726,10 @@ $sysconf['api']['version'] = 1;
 $sysconf['visitor_lang'] = 'hi-IN'; // Please visit this URL for voice mode - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices
 
 $sysconf['always_user_login'] = true;
+
+/* new advanced system log - still experimental */
+$sysconf['log']['adv']['enabled'] = FALSE;
+$sysconf['log']['adv']['handler'] = 'fs'; # 'fs' for filesystem, 'es' for elasticsearch
+# for filesystem
+$sysconf['log']['adv']['path'] = '/var/www/logs/';
+
