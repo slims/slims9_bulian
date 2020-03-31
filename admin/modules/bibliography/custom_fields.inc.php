@@ -33,7 +33,6 @@ if (INDEX_AUTH != 1) {
  */
 
 /*
-
 $biblio_custom_fields = array(
 	'customfield1' => array(
 		'dbfield' => 'customfield1', // name of field in 'biblio_custom' table in database, make sure you already define it!
@@ -43,8 +42,7 @@ $biblio_custom_fields = array(
 		'max' => '50', // maximum character to enter in 'text' field type
 		'data' => false, // an array of data for 'dropdown', 'checklist' or 'choice'
 		'indexed' => true, // NOT APPLICABLE YET, FOR FUTURE RELEASE USE
-		'class' => 'col-3', // custom style
-        'is_public' => true, // if true show this data in OPAC detail. If not defined default value is false.
+    'is_public' => true, // if true show this data in OPAC detail. If not defined default value is false.
 		'width' => 50), // width of field in form for 'text' field type, maximum is 100
 
 	'customfield2' => array(
@@ -52,12 +50,11 @@ $biblio_custom_fields = array(
 		'label' => __('Custom Field 2'),
 		'type' => 'dropdown',
 		'default' => 'value2',
-		'class' => 'col-2',
 		'data' => array(
 			array('value1', 'Value #1'),
 			array('value2', 'Value #2')
 			),
-        'is_public' => true,
+    'is_public' => true,
 		'indexed' => true),
 
 	'customfield3' => array(
@@ -70,7 +67,7 @@ $biblio_custom_fields = array(
 			array('value2', 'Value 2'),
 			array('value3', 'Value 3')
 			),
-	    'is_public' => false,
+    'is_public' => false,
 		'indexed' => true),
 
 	'customfield4' => array(
@@ -82,7 +79,7 @@ $biblio_custom_fields = array(
 			array('value1', 'Value 1'),
 			array('value2', 'Value 2')
 			),
-    	'is_public' => false,
+    'is_public' => false,
 		'indexed' => true),
 
 	'customfield5' => array(
