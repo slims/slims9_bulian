@@ -732,5 +732,7 @@ $sysconf['always_user_login'] = true;
 $sysconf['log']['adv']['enabled'] = FALSE;
 $sysconf['log']['adv']['handler'] = 'fs'; # 'fs' for filesystem, 'es' for elasticsearch
 # for filesystem
-$sysconf['log']['adv']['path'] = '/var/www/logs/';
-
+$sysconf['log']['adv']['path'] = '/var/www/logs';
+# for elasticsearch
+$sysconf['log']['adv']['host'] = 'localhost:9200';
+$sysconf['log']['adv']['index'] = 'slims_logs';
