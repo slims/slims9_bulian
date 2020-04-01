@@ -24,6 +24,8 @@
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -544,7 +546,15 @@ if (!$in_pop_up) {
 }
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+  if ( (isset($_GET['action'])) AND ($_GET['action'] == 'detail') ) {
+    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+    $log = new AlLibrarian('1153', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+  } elseif ( (isset($_GET['itemID'])) AND (isset($_GET['detail'])) AND ($_GET['detail'] == true) ) {
+    $log = new AlLibrarian('1155', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "biblio_id" => $_GET['itemID']));
+  }
+
   if (!($can_read AND $can_write)) {
+
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
   }
   /* RECORD FORM */
@@ -1024,6 +1034,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   </script>
   <?php
 } else {
+  # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+  $log = new AlLibrarian('1151', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+
   require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
   require MDLBS.'bibliography/biblio_utils.inc.php';
   require LIB.'biblio_list_model.inc.php';

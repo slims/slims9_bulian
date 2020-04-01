@@ -22,6 +22,8 @@
 
 // key to authenticate
 define('INDEX_AUTH', '1');
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
 
 // required file
 require '../sysconfig.inc.php';
@@ -52,6 +54,7 @@ $current_module = '';
 if (isset($_GET['mod']) AND !empty($_GET['mod'])) {
   $current_module = trim($_GET['mod']);
 }
+
 // read privileges
 $can_read = utility::havePrivilege($current_module, 'r');
 
@@ -64,6 +67,8 @@ ob_start();
 $info = __('You are currently logged in as').' <strong>'.$_SESSION['realname'].'</strong>'; //mfc
 
 if ($current_module AND $can_read) {
+    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+    $log = new AlLibrarian('1101', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "module" => $current_module));
     // get content of module default content with AJAX
     $sysconf['page_footer'] .= "\n"
         .'<script type="text/javascript">'
