@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-26 21:17+0700\n"
-"PO-Revision-Date: 2020-03-26 21:17+0700\n"
+"POT-Creation-Date: 2020-04-08 17:54+0700\n"
+"PO-Revision-Date: 2020-04-08 17:54+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -65,6 +65,8 @@ msgid "Help"
 msgstr "Bantuan"
 
 #: admin/admin_template/akasia/function.php:56
+#: admin/modules/bibliography/index.php:141
+#: admin/modules/system/custom_field.php:211
 msgid "Bibliography"
 msgstr "Bibliografi"
 
@@ -265,7 +267,7 @@ msgstr "Total Eksemplar"
 msgid "Lent"
 msgstr "Dipinjamkan"
 
-#: admin/default/home.php:357 admin/modules/bibliography/index.php:677
+#: admin/default/home.php:357 admin/modules/bibliography/index.php:698
 #: admin/modules/bibliography/item.php:323
 #: admin/modules/circulation/reserve_list.php:110
 #: admin/modules/reporting/customs/item_titles_list.php:257
@@ -294,7 +296,7 @@ msgstr "Kembali"
 #: admin/default/home.php:372 admin/default/home.php:467
 #: admin/modules/circulation/loan_list.php:98
 #: admin/modules/circulation/loan_list.php:124
-#: admin/modules/membership/index.php:422
+#: admin/modules/membership/index.php:442
 msgid "Extend"
 msgstr "Perpanjang"
 
@@ -332,8 +334,8 @@ msgstr "Keterlambatan"
 #: admin/modules/bibliography/iframe_item_list.php:44
 #: admin/modules/bibliography/iframe_topic.php:43
 #: admin/modules/bibliography/import.php:46
-#: admin/modules/bibliography/index.php:56
-#: admin/modules/bibliography/index.php:548
+#: admin/modules/bibliography/index.php:58
+#: admin/modules/bibliography/index.php:569
 #: admin/modules/bibliography/item.php:54
 #: admin/modules/bibliography/item.php:226
 #: admin/modules/bibliography/item_barcode_generator.php:44
@@ -374,7 +376,7 @@ msgstr "Ubah Profil Pengguna"
 msgid "Change Current User Profiles and Password"
 msgstr "Ubah Profil dan Kata Sandi Pengguna Saat Ini"
 
-#: admin/default/submenu.php:23 admin/modules/system/submenu.php:49
+#: admin/default/submenu.php:23 admin/modules/system/submenu.php:51
 msgid "Shortcut Setting"
 msgstr "Pengaturan Pemintas"
 
@@ -394,15 +396,15 @@ msgstr "Maaf, bantuan belum tersedia."
 msgid "Cannot Access This File Directly"
 msgstr "Tidak bisa akses berkas secara langsung"
 
-#: admin/index.php:44
+#: admin/index.php:46
 msgid "Senayan Library Management System"
 msgstr "Sistem Manajemen Perpustakaan Senayan"
 
-#: admin/index.php:64
+#: admin/index.php:67
 msgid "You are currently logged in as"
 msgstr "Anda masuk sebagai"
 
-#: admin/logout.php:36
+#: admin/logout.php:41
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Anda telah keluar dari Sistem Otomatisasi Perpustakaan"
 
@@ -423,8 +425,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/checkout_item.php:56
 #: admin/modules/bibliography/dl_print.php:228
 #: admin/modules/bibliography/dl_print.php:230
-#: admin/modules/bibliography/index.php:526
-#: admin/modules/bibliography/index.php:529
+#: admin/modules/bibliography/index.php:539
+#: admin/modules/bibliography/index.php:542
 #: admin/modules/bibliography/item.php:212
 #: admin/modules/bibliography/item.php:215
 #: admin/modules/bibliography/item_barcode_generator.php:219
@@ -473,8 +475,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/master_file/supplier.php:144
 #: admin/modules/master_file/topic.php:149
 #: admin/modules/master_file/topic.php:151
-#: admin/modules/membership/index.php:368
-#: admin/modules/membership/index.php:370
+#: admin/modules/membership/index.php:388
+#: admin/modules/membership/index.php:390
 #: admin/modules/membership/member_card_generator.php:197
 #: admin/modules/membership/member_card_generator.php:199
 #: admin/modules/membership/member_type.php:157
@@ -489,9 +491,12 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:269
 #: admin/modules/system/app_user.php:271 admin/modules/system/backup.php:66
 #: admin/modules/system/backup.php:68 admin/modules/system/content.php:151
-#: admin/modules/system/content.php:153 admin/modules/system/module.php:149
-#: admin/modules/system/module.php:151 admin/modules/system/sys_log.php:86
-#: admin/modules/system/sys_log.php:88 admin/modules/system/user_group.php:175
+#: admin/modules/system/content.php:153
+#: admin/modules/system/custom_field.php:168
+#: admin/modules/system/custom_field.php:170
+#: admin/modules/system/module.php:149 admin/modules/system/module.php:151
+#: admin/modules/system/sys_log.php:86 admin/modules/system/sys_log.php:88
+#: admin/modules/system/user_group.php:175
 #: admin/modules/system/user_group.php:177
 #: template/akasia-dz/index_template.inc.php:96
 #: template/akasia-dz/index_template.inc.php:208
@@ -545,9 +550,9 @@ msgstr "Kode Eksemplar"
 #: admin/modules/circulation/circulation_action.php:457
 #: admin/modules/circulation/circulation_action.php:495
 #: admin/modules/circulation/index.php:65
-#: admin/modules/membership/index.php:440
-#: admin/modules/membership/index.php:640
-#: admin/modules/membership/index.php:646
+#: admin/modules/membership/index.php:460
+#: admin/modules/membership/index.php:676
+#: admin/modules/membership/index.php:682
 #: admin/modules/membership/member_card_generator.php:222
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/due_date_warning.php:99
@@ -575,11 +580,11 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/checkout_item.php:73
 #: admin/modules/bibliography/dl_print.php:263
 #: admin/modules/bibliography/dl_print.php:271
-#: admin/modules/bibliography/index.php:605
-#: admin/modules/bibliography/index.php:1050
-#: admin/modules/bibliography/index.php:1057
-#: admin/modules/bibliography/index.php:1077
-#: admin/modules/bibliography/index.php:1083
+#: admin/modules/bibliography/index.php:626
+#: admin/modules/bibliography/index.php:1089
+#: admin/modules/bibliography/index.php:1096
+#: admin/modules/bibliography/index.php:1116
+#: admin/modules/bibliography/index.php:1122
 #: admin/modules/bibliography/item.php:287
 #: admin/modules/bibliography/item.php:406
 #: admin/modules/bibliography/item.php:415
@@ -663,7 +668,7 @@ msgstr "Tanggal Kembali"
 
 #: admin/modules/bibliography/checkout_item.php:116
 #: admin/modules/bibliography/dl_print.php:309
-#: admin/modules/bibliography/index.php:1133
+#: admin/modules/bibliography/index.php:1172
 #: admin/modules/bibliography/item.php:502
 #: admin/modules/bibliography/item_barcode_generator.php:298
 #: admin/modules/bibliography/marcexport.php:265
@@ -693,9 +698,10 @@ msgstr "Tanggal Kembali"
 #: admin/modules/stock_take/index.php:154
 #: admin/modules/stock_take/st_log.php:111
 #: admin/modules/system/app_user.php:464 admin/modules/system/backup.php:103
-#: admin/modules/system/content.php:269 admin/modules/system/holiday.php:260
-#: admin/modules/system/module.php:226 admin/modules/system/sys_log.php:142
-#: admin/modules/system/user_group.php:261
+#: admin/modules/system/content.php:269
+#: admin/modules/system/custom_field.php:286
+#: admin/modules/system/holiday.php:260 admin/modules/system/module.php:226
+#: admin/modules/system/sys_log.php:142 admin/modules/system/user_group.php:261
 msgid "Found <strong>{result->num_rows}</strong> from your keywords"
 msgstr ""
 "Ditemukan <strong>{result->num_rows}</strong> dari kata kunci yang Anda "
@@ -797,7 +803,7 @@ msgstr "dalam antrian menunggu untuk dicetak."
 
 #: admin/modules/bibliography/dl_print.php:264
 #: admin/modules/bibliography/dl_print.php:272
-#: admin/modules/bibliography/index.php:804
+#: admin/modules/bibliography/index.php:825
 #: admin/modules/bibliography/item.php:299
 #: admin/modules/bibliography/item.php:451
 #: admin/modules/bibliography/item.php:463
@@ -845,7 +851,7 @@ msgid "Add to print queue?"
 msgstr "Tambahkan dalam antrian cetak?"
 
 #: admin/modules/bibliography/dl_print.php:310
-#: admin/modules/bibliography/index.php:1134
+#: admin/modules/bibliography/index.php:1173
 #: admin/modules/bibliography/item.php:503
 #: admin/modules/bibliography/item_barcode_generator.php:299
 #: admin/modules/bibliography/marcexport.php:266
@@ -855,7 +861,7 @@ msgid "Query took"
 msgstr "Permintaan membutuhkan"
 
 #: admin/modules/bibliography/dl_print.php:310
-#: admin/modules/bibliography/index.php:1134
+#: admin/modules/bibliography/index.php:1173
 #: admin/modules/bibliography/item.php:503
 #: admin/modules/bibliography/item_barcode_generator.php:299
 #: admin/modules/bibliography/marcexport.php:266
@@ -953,7 +959,7 @@ msgstr "Tambahkan nama kolom di baris pertama"
 #: admin/modules/bibliography/item_import.php:237
 #: admin/modules/membership/export.php:168
 #: admin/modules/membership/import.php:229
-#: admin/modules/membership/index.php:519
+#: admin/modules/membership/index.php:555
 #: admin/modules/stock_take/finish.php:183 admin/modules/system/content.php:196
 #: admin/modules/system/index.php:301
 msgid "Yes"
@@ -984,7 +990,7 @@ msgid "Delete"
 msgstr "Hapus"
 
 #: admin/modules/bibliography/iframe_attach.php:127
-#: admin/modules/bibliography/index.php:887
+#: admin/modules/bibliography/index.php:908
 msgid "File Attachments"
 msgstr "Lampiran Berkas"
 
@@ -1006,7 +1012,8 @@ msgstr "Sunting"
 #: admin/modules/circulation/reserve_list.php:96
 #: admin/modules/circulation/reserve_list.php:105
 #: admin/modules/master_file/iframe_vocabolary_control.php:73
-#: lib/contents/member.inc.php:437
+#: admin/modules/system/custom_field.php:238
+#: admin/modules/system/custom_field.php:307 lib/contents/member.inc.php:437
 msgid "Remove"
 msgstr "Hapus"
 
@@ -1065,7 +1072,7 @@ msgid "Item FAILED to removed!"
 msgstr "Eksemplar GAGAL hapus!"
 
 #: admin/modules/bibliography/iframe_item_list.php:123
-#: admin/modules/bibliography/index.php:729
+#: admin/modules/bibliography/index.php:750
 msgid "Items/Copies"
 msgstr "Eksemplar/Kopi"
 
@@ -1147,57 +1154,63 @@ msgstr "Jumlah cantuman untuk di impor (0 untuk semua rekod)"
 msgid "The first row is the columns names"
 msgstr "Baris pertama adalah nama kolom"
 
-#: admin/modules/bibliography/index.php:93
+#: admin/modules/bibliography/index.php:95
 #: admin/modules/membership/index.php:82 admin/modules/system/app_user.php:80
 msgid "{imageFilename} successfully removed!"
 msgstr "{imageFilename} berhasil hapus!"
 
-#: admin/modules/bibliography/index.php:103
-#: admin/modules/bibliography/index.php:418
+#: admin/modules/bibliography/index.php:105
+#: admin/modules/bibliography/index.php:431
 #: admin/modules/system/app_user.php:102
 msgid "Invalid form submission token!"
 msgstr "Invalid form submission token!"
 
-#: admin/modules/bibliography/index.php:110
+#: admin/modules/bibliography/index.php:112
 msgid "Title can not be empty"
 msgstr "Judul tidak boleh kosong"
 
-#: admin/modules/bibliography/index.php:217
-#: admin/modules/membership/index.php:228
-#: admin/modules/membership/index.php:263 admin/modules/system/app_user.php:182
+#: admin/modules/bibliography/index.php:141
+#: admin/modules/membership/index.php:126
+#, php-format
+msgid "Field %s only number for allowed"
+msgstr "Ruas %s hanya menggunakan angka"
+
+#: admin/modules/bibliography/index.php:230
+#: admin/modules/membership/index.php:248
+#: admin/modules/membership/index.php:283 admin/modules/system/app_user.php:182
 #: admin/modules/system/app_user.php:205
 msgid "Image Uploaded Successfully"
 msgstr "Gambar Berhasil Diunggah"
 
-#: admin/modules/bibliography/index.php:221
+#: admin/modules/bibliography/index.php:234
 msgid "Image Uploaded Failed"
 msgstr "Unggah Gambar Gagal"
 
-#: admin/modules/bibliography/index.php:269
+#: admin/modules/bibliography/index.php:282
 msgid "Bibliography Data Successfully Updated"
 msgstr "Data bibliografi berhasil diperbaharui"
 
-#: admin/modules/bibliography/index.php:299
+#: admin/modules/bibliography/index.php:312
 msgid ""
 "Bibliography Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data bibliografi GAGAL diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/bibliography/index.php:339
+#: admin/modules/bibliography/index.php:352
 msgid "New Bibliography Data Successfully Saved"
 msgstr "Data baru bibliografi berhasil disimpan"
 
-#: admin/modules/bibliography/index.php:362
+#: admin/modules/bibliography/index.php:375
 msgid "Bibliography Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data bibliografi GAGAL disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/bibliography/index.php:493
+#: admin/modules/bibliography/index.php:506
 #: admin/modules/master_file/author.php:136
 #: admin/modules/master_file/coll_type.php:127
 #: admin/modules/master_file/location.php:131
 msgid "Below data can not be deleted:"
 msgstr "Data berikut tidak bisa dihapus :"
 
-#: admin/modules/bibliography/index.php:503
+#: admin/modules/bibliography/index.php:516
 #: admin/modules/circulation/loan_rules.php:117
 #: admin/modules/master_file/author.php:143
 #: admin/modules/master_file/coll_type.php:132
@@ -1214,15 +1227,16 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/master_file/rda_cmc.php:124
 #: admin/modules/master_file/supplier.php:120
 #: admin/modules/master_file/topic.php:126
-#: admin/modules/membership/index.php:341
+#: admin/modules/membership/index.php:361
 #: admin/modules/membership/member_type.php:130
 #: admin/modules/system/app_user.php:246 admin/modules/system/content.php:129
+#: admin/modules/system/custom_field.php:146
 #: admin/modules/system/holiday.php:153 admin/modules/system/module.php:127
 #: admin/modules/system/user_group.php:153
 msgid "All Data Successfully Deleted"
 msgstr "Semua Data Berhasil Dihapus"
 
-#: admin/modules/bibliography/index.php:506
+#: admin/modules/bibliography/index.php:519
 #: admin/modules/circulation/loan_rules.php:124
 #: admin/modules/master_file/author.php:146
 #: admin/modules/master_file/coll_type.php:135
@@ -1239,9 +1253,10 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/master_file/rda_cmc.php:127
 #: admin/modules/master_file/supplier.php:123
 #: admin/modules/master_file/topic.php:129
-#: admin/modules/membership/index.php:344
+#: admin/modules/membership/index.php:364
 #: admin/modules/membership/member_type.php:138
 #: admin/modules/system/app_user.php:249 admin/modules/system/content.php:132
+#: admin/modules/system/custom_field.php:149
 #: admin/modules/system/holiday.php:156 admin/modules/system/module.php:130
 #: admin/modules/system/user_group.php:156
 msgid ""
@@ -1249,38 +1264,38 @@ msgid ""
 "administrator"
 msgstr "Sebagian atau semua data GAGAL dihapus!\\nHubungi administrator sistem"
 
-#: admin/modules/bibliography/index.php:519
+#: admin/modules/bibliography/index.php:532
 #: admin/modules/bibliography/submenu.php:27
 msgid "Bibliographic"
 msgstr "Bibliografi"
 
-#: admin/modules/bibliography/index.php:523
+#: admin/modules/bibliography/index.php:536
 #: admin/modules/bibliography/submenu.php:28
 msgid "Bibliographic List"
 msgstr "Daftar Bibliografi"
 
-#: admin/modules/bibliography/index.php:524
+#: admin/modules/bibliography/index.php:537
 #: admin/modules/bibliography/submenu.php:29
 msgid "Add New Bibliography"
 msgstr "Tambah Bibliografi Baru"
 
-#: admin/modules/bibliography/index.php:528
+#: admin/modules/bibliography/index.php:541
 msgid "All Fields"
 msgstr "Semua Ruas"
 
-#: admin/modules/bibliography/index.php:528
+#: admin/modules/bibliography/index.php:541
 #: admin/modules/bibliography/marcsru.php:378
 #: admin/modules/bibliography/z3950.php:293
 #: admin/modules/bibliography/z3950sru.php:263
 msgid "Title/Series Title"
 msgstr "Judul/Judul Seri"
 
-#: admin/modules/bibliography/index.php:528
+#: admin/modules/bibliography/index.php:541
 #: admin/modules/bibliography/pop_p2p.php:70
 msgid "Topics"
 msgstr "Topik"
 
-#: admin/modules/bibliography/index.php:528
+#: admin/modules/bibliography/index.php:541
 #: admin/modules/bibliography/marcsru.php:379
 #: admin/modules/bibliography/pop_p2p.php:54
 #: admin/modules/bibliography/z3950.php:293
@@ -1288,12 +1303,12 @@ msgstr "Topik"
 msgid "Authors"
 msgstr "Pengarang"
 
-#: admin/modules/bibliography/index.php:528
-#: admin/modules/bibliography/index.php:772
-#: admin/modules/bibliography/index.php:1052
-#: admin/modules/bibliography/index.php:1058
-#: admin/modules/bibliography/index.php:1078
-#: admin/modules/bibliography/index.php:1084
+#: admin/modules/bibliography/index.php:541
+#: admin/modules/bibliography/index.php:793
+#: admin/modules/bibliography/index.php:1091
+#: admin/modules/bibliography/index.php:1097
+#: admin/modules/bibliography/index.php:1117
+#: admin/modules/bibliography/index.php:1123
 #: admin/modules/bibliography/marcsru.php:377
 #: admin/modules/bibliography/pop_p2p.php:57
 #: admin/modules/bibliography/z3950.php:293
@@ -1318,8 +1333,8 @@ msgstr "Pengarang"
 msgid "ISBN/ISSN"
 msgstr "ISBN/ISSN"
 
-#: admin/modules/bibliography/index.php:528
-#: admin/modules/bibliography/index.php:781
+#: admin/modules/bibliography/index.php:541
+#: admin/modules/bibliography/index.php:802
 #: admin/modules/bibliography/pop_p2p.php:58
 #: admin/modules/master_file/publisher.php:128
 #: admin/modules/master_file/submenu.php:31
@@ -1333,11 +1348,11 @@ msgstr "ISBN/ISSN"
 msgid "Publisher"
 msgstr "Penerbit"
 
-#: admin/modules/bibliography/index.php:534
+#: admin/modules/bibliography/index.php:547
 msgid "Upload Selected Bibliographic data to Union Catalog Server*"
 msgstr "Unggah Data Bibliografi Terpilih ke Peladen Katalog Induk"
 
-#: admin/modules/bibliography/index.php:562
+#: admin/modules/bibliography/index.php:583
 #: admin/modules/bibliography/item.php:240
 #: admin/modules/bibliography/pop_pattern.php:102
 #: admin/modules/circulation/fines_list.php:152
@@ -1358,18 +1373,19 @@ msgstr "Unggah Data Bibliografi Terpilih ke Peladen Katalog Induk"
 #: admin/modules/master_file/rda_cmc.php:167
 #: admin/modules/master_file/supplier.php:163
 #: admin/modules/master_file/topic.php:170
-#: admin/modules/membership/index.php:389
+#: admin/modules/membership/index.php:409
 #: admin/modules/membership/member_type.php:178
 #: admin/modules/serial_control/serial_base_lib.inc.php:202
 #: admin/modules/serial_control/subscription.php:163
 #: admin/modules/system/app_user.php:296 admin/modules/system/content.php:172
+#: admin/modules/system/custom_field.php:189
 #: admin/modules/system/holiday.php:189 admin/modules/system/module.php:167
 #: admin/modules/system/shortcut.php:129
 #: admin/modules/system/user_group.php:193
 msgid "Save"
 msgstr "Simpan"
 
-#: admin/modules/bibliography/index.php:586
+#: admin/modules/bibliography/index.php:607
 #: admin/modules/bibliography/item.php:259
 #: admin/modules/circulation/fines_list.php:171
 #: admin/modules/circulation/loan_rules.php:182
@@ -1389,17 +1405,18 @@ msgstr "Simpan"
 #: admin/modules/master_file/rda_cmc.php:182
 #: admin/modules/master_file/supplier.php:178
 #: admin/modules/master_file/topic.php:185
-#: admin/modules/membership/index.php:404
+#: admin/modules/membership/index.php:424
 #: admin/modules/membership/member_type.php:193
 #: admin/modules/serial_control/subscription.php:178
 #: admin/modules/system/app_user.php:317 admin/modules/system/content.php:188
+#: admin/modules/system/custom_field.php:205
 #: admin/modules/system/holiday.php:204 admin/modules/system/module.php:182
-#: admin/modules/system/user_group.php:208 lib/contents/login.inc.php:230
+#: admin/modules/system/user_group.php:208 lib/contents/login.inc.php:225
 #: lib/contents/newpass.inc.php:103
 msgid "Update"
 msgstr "Perbaharui"
 
-#: admin/modules/bibliography/index.php:606
+#: admin/modules/bibliography/index.php:627
 msgid ""
 "Main title of collection. Separate child title with colon and pararel title "
 "with equal (=) sign."
@@ -1407,15 +1424,15 @@ msgstr ""
 "Judul utama koleksi. Pisahkan anak judul dengan titik dua (:) dan judul "
 "paralel dengan tanda sama dengan (=)."
 
-#: admin/modules/bibliography/index.php:610
+#: admin/modules/bibliography/index.php:631
 msgid "Authors/Roles"
 msgstr "Pengarang/Peran"
 
-#: admin/modules/bibliography/index.php:610
+#: admin/modules/bibliography/index.php:631
 msgid "Add Author(s)"
 msgstr "Tambah Data Pengarang"
 
-#: admin/modules/bibliography/index.php:612
+#: admin/modules/bibliography/index.php:633
 #: admin/modules/serial_control/index.php:69
 #: lib/contents/clustering.inc.php:120
 #: template/akasia/partials/advsearch.php:25
@@ -1424,7 +1441,7 @@ msgstr "Tambah Data Pengarang"
 msgid "Author(s)"
 msgstr "Pengarang"
 
-#: admin/modules/bibliography/index.php:616
+#: admin/modules/bibliography/index.php:637
 #: template/akasia-dz/detail_template.php:150
 #: template/akasia/detail_template.php:150
 #: template/default/detail_template.php:100
@@ -1432,7 +1449,7 @@ msgstr "Pengarang"
 msgid "Statement of Responsibility"
 msgstr "Pernyataan Tanggungjawab"
 
-#: admin/modules/bibliography/index.php:616
+#: admin/modules/bibliography/index.php:637
 msgid ""
 "Main source of information to show who has written, composed, illustrated, "
 "or in other ways contributed to the existence of the item."
@@ -1440,7 +1457,7 @@ msgstr ""
 "Sumber utama informasi untuk memperlihatkan siapa yang menulis, menyusun, "
 "membuat ilustrasi, atau berkontribusi dengan cara apapun."
 
-#: admin/modules/bibliography/index.php:620
+#: admin/modules/bibliography/index.php:641
 #: admin/modules/bibliography/pop_p2p.php:56 lib/detail.inc.php:232
 #: template/akasia-dz/custom_frontpage_record.inc.php:6
 #: template/akasia-dz/detail_template.php:129
@@ -1453,11 +1470,11 @@ msgstr ""
 msgid "Edition"
 msgstr "Edisi"
 
-#: admin/modules/bibliography/index.php:620
+#: admin/modules/bibliography/index.php:641
 msgid "A version of publication having substantial changes or additions."
 msgstr "Versi publikasi yang memiliki perubahan atau penambahan vital."
 
-#: admin/modules/bibliography/index.php:622
+#: admin/modules/bibliography/index.php:643
 #: template/akasia-dz/detail_template.php:143
 #: template/akasia/detail_template.php:143
 #: template/default/detail_template.php:96
@@ -1465,7 +1482,7 @@ msgstr "Versi publikasi yang memiliki perubahan atau penambahan vital."
 msgid "Specific Detail Info"
 msgstr "Info Detail Spesifik"
 
-#: admin/modules/bibliography/index.php:622
+#: admin/modules/bibliography/index.php:643
 msgid ""
 "explain more details about an item e.g. scale within a map, running time in "
 "a movie dvd."
@@ -1473,31 +1490,31 @@ msgstr ""
 "menjelaskan detail lebih mendalam tentang suatu eksemplar, misal skala peta, "
 "waktu putar DVD."
 
-#: admin/modules/bibliography/index.php:632
+#: admin/modules/bibliography/index.php:653
 msgid "Choose pattern"
 msgstr "Pilih pola"
 
-#: admin/modules/bibliography/index.php:647
+#: admin/modules/bibliography/index.php:668
 msgid "Total item(s)"
 msgstr "Total item"
 
-#: admin/modules/bibliography/index.php:649
+#: admin/modules/bibliography/index.php:670
 #: admin/modules/reporting/customs/procurement_report.php:66
 msgid "Options"
 msgstr "Pilihan"
 
-#: admin/modules/bibliography/index.php:650
+#: admin/modules/bibliography/index.php:671
 #: admin/modules/master_file/item_code_pattern.php:87
 msgid "Add new pattern"
 msgstr "Tambah pola baru"
 
-#: admin/modules/bibliography/index.php:650
+#: admin/modules/bibliography/index.php:671
 #: admin/modules/bibliography/pop_pattern.php:125
 msgid "Add New Pattern"
 msgstr "Tambah Pola Baru"
 
-#: admin/modules/bibliography/index.php:655
-#: admin/modules/bibliography/index.php:659
+#: admin/modules/bibliography/index.php:676
+#: admin/modules/bibliography/index.php:680
 #: admin/modules/bibliography/item.php:309
 #: admin/modules/bibliography/item.php:408
 #: admin/modules/bibliography/item.php:417
@@ -1519,14 +1536,14 @@ msgstr "Tambah Pola Baru"
 msgid "Location"
 msgstr "Lokasi"
 
-#: admin/modules/bibliography/index.php:663
+#: admin/modules/bibliography/index.php:684
 #: admin/modules/bibliography/item.php:311
 #: admin/modules/stock_take/init.php:211
 msgid "Shelf Location"
 msgstr "Lokasi Rak"
 
-#: admin/modules/bibliography/index.php:668
-#: admin/modules/bibliography/index.php:672
+#: admin/modules/bibliography/index.php:689
+#: admin/modules/bibliography/index.php:693
 #: admin/modules/bibliography/item.php:319
 #: admin/modules/bibliography/item.php:407
 #: admin/modules/bibliography/item.php:416
@@ -1561,7 +1578,7 @@ msgstr "Lokasi Rak"
 msgid "Collection Type"
 msgstr "Tipe Koleksi"
 
-#: admin/modules/bibliography/index.php:681
+#: admin/modules/bibliography/index.php:702
 #: admin/modules/bibliography/item.php:327
 #: admin/modules/master_file/item_status.php:154
 #: admin/modules/master_file/item_status.php:158
@@ -1571,78 +1588,78 @@ msgstr "Tipe Koleksi"
 msgid "Item Status"
 msgstr "Status Eksemplar"
 
-#: admin/modules/bibliography/index.php:685
+#: admin/modules/bibliography/index.php:706
 #: admin/modules/bibliography/item.php:343
 msgid "Buy"
 msgstr "Beli"
 
-#: admin/modules/bibliography/index.php:686
+#: admin/modules/bibliography/index.php:707
 #: admin/modules/bibliography/item.php:344
 msgid "Prize/Grant"
 msgstr "Hadiah/Hibah"
 
-#: admin/modules/bibliography/index.php:687
+#: admin/modules/bibliography/index.php:708
 #: admin/modules/bibliography/item.php:345
 msgid "Source"
 msgstr "Sumber Perolehan"
 
-#: admin/modules/bibliography/index.php:691
+#: admin/modules/bibliography/index.php:712
 #: admin/modules/bibliography/item.php:331
 msgid "Order Date"
 msgstr "Tanggal Pemesanan"
 
-#: admin/modules/bibliography/index.php:695
+#: admin/modules/bibliography/index.php:716
 #: admin/modules/bibliography/item.php:333
 msgid "Receiving Date"
 msgstr "Tanggal Penerimaan"
 
-#: admin/modules/bibliography/index.php:699
+#: admin/modules/bibliography/index.php:720
 #: admin/modules/bibliography/item.php:329
 msgid "Order Number"
 msgstr "No. Pemesanan"
 
-#: admin/modules/bibliography/index.php:703
+#: admin/modules/bibliography/index.php:724
 #: admin/modules/bibliography/item.php:347
 msgid "Invoice"
 msgstr "Faktur"
 
-#: admin/modules/bibliography/index.php:707
+#: admin/modules/bibliography/index.php:728
 #: admin/modules/bibliography/item.php:349
 msgid "Invoice Date"
 msgstr "Tanggal Faktur"
 
-#: admin/modules/bibliography/index.php:712
-#: admin/modules/bibliography/index.php:762
+#: admin/modules/bibliography/index.php:733
+#: admin/modules/bibliography/index.php:783
 #: admin/modules/bibliography/item.php:337
 msgid "Not Applicable"
 msgstr "Tidak Digunakan"
 
-#: admin/modules/bibliography/index.php:716
+#: admin/modules/bibliography/index.php:737
 #: admin/modules/bibliography/item.php:341
 #: admin/modules/master_file/submenu.php:32
 #: admin/modules/master_file/supplier.php:135
 msgid "Supplier"
 msgstr "Agen"
 
-#: admin/modules/bibliography/index.php:720
+#: admin/modules/bibliography/index.php:741
 #: admin/modules/bibliography/item.php:357
 #: admin/modules/reporting/customs/pop_procurement_list.php:168
 msgid "Price"
 msgstr "Harga"
 
-#: admin/modules/bibliography/index.php:725
+#: admin/modules/bibliography/index.php:746
 msgid "Item(s) code batch generator"
 msgstr "Pembuat nomor eksemplar"
 
-#: admin/modules/bibliography/index.php:729
+#: admin/modules/bibliography/index.php:750
 msgid "Add New Items"
 msgstr "Tambah Eksemplar Baru"
 
-#: admin/modules/bibliography/index.php:731
+#: admin/modules/bibliography/index.php:752
 msgid "Item(s) Data"
 msgstr "Data Koleksi"
 
-#: admin/modules/bibliography/index.php:740
+#: admin/modules/bibliography/index.php:761
 #: admin/modules/bibliography/pop_p2p.php:61
 #: admin/modules/circulation/loan_rules.php:210
 #: admin/modules/circulation/loan_rules.php:242
@@ -1663,25 +1680,25 @@ msgstr "Data Koleksi"
 msgid "GMD"
 msgstr "GMD"
 
-#: admin/modules/bibliography/index.php:740
+#: admin/modules/bibliography/index.php:761
 msgid "General material designation. The physical form of publication."
 msgstr "Tujuan utama bentuk. Bentuk fisik suatu publikasi."
 
-#: admin/modules/bibliography/index.php:747
+#: admin/modules/bibliography/index.php:768
 msgid "Not set"
 msgstr "Belum ditentukan"
 
-#: admin/modules/bibliography/index.php:752
-#: admin/modules/bibliography/index.php:754
+#: admin/modules/bibliography/index.php:773
+#: admin/modules/bibliography/index.php:775
 #: admin/modules/master_file/rda_cmc.php:139
 msgid "RDA "
 msgstr "RDA "
 
-#: admin/modules/bibliography/index.php:768
+#: admin/modules/bibliography/index.php:789
 msgid "Use this for Serial publication"
 msgstr "Gunakan untuk koleksi terbitan berseri"
 
-#: admin/modules/bibliography/index.php:770
+#: admin/modules/bibliography/index.php:791
 #: admin/modules/master_file/frequency.php:128
 #: admin/modules/master_file/frequency.php:176
 #: admin/modules/master_file/frequency.php:210
@@ -1690,27 +1707,27 @@ msgstr "Gunakan untuk koleksi terbitan berseri"
 msgid "Frequency"
 msgstr "Kala Terbit"
 
-#: admin/modules/bibliography/index.php:772
+#: admin/modules/bibliography/index.php:793
 msgid "Unique publishing number for each title of publication."
 msgstr "Nomor publikasi yang unik dari setiap judul cetakan."
 
-#: admin/modules/bibliography/index.php:783
+#: admin/modules/bibliography/index.php:804
 #: admin/modules/reporting/customs/pop_procurement_list.php:161
 msgid "Publishing Year"
 msgstr "Tahun Terbit"
 
-#: admin/modules/bibliography/index.php:783
+#: admin/modules/bibliography/index.php:804
 msgid "Year of publication"
 msgstr "Tahun Terbit"
 
-#: admin/modules/bibliography/index.php:792
+#: admin/modules/bibliography/index.php:813
 #: admin/modules/reporting/customs/pop_procurement_list.php:162
 #: admin/modules/reporting/customs/titles_list.php:153
 #: admin/modules/reporting/customs/titles_list.php:281
 msgid "Publishing Place"
 msgstr "Tempat Terbit"
 
-#: admin/modules/bibliography/index.php:794
+#: admin/modules/bibliography/index.php:815
 #: admin/modules/bibliography/pop_p2p.php:59
 #: template/akasia-dz/custom_frontpage_record.inc.php:8
 #: template/akasia-dz/detail_template.php:73
@@ -1723,13 +1740,13 @@ msgstr "Tempat Terbit"
 msgid "Collation"
 msgstr "Deskripsi Fisik"
 
-#: admin/modules/bibliography/index.php:794
+#: admin/modules/bibliography/index.php:815
 msgid ""
 "Physical description of a publication e.g. publication length, width, page "
 "numbers, etc."
 msgstr "Deskripsi fisik publikasi, seperti lebar, tinggi, jumlah halaman, dll."
 
-#: admin/modules/bibliography/index.php:796
+#: admin/modules/bibliography/index.php:817
 #: template/akasia-dz/custom_frontpage_record.inc.php:9
 #: template/akasia-dz/detail_template.php:50
 #: template/akasia/custom_frontpage_record.inc.php:9
@@ -1741,7 +1758,7 @@ msgstr "Deskripsi fisik publikasi, seperti lebar, tinggi, jumlah halaman, dll."
 msgid "Series Title"
 msgstr "Judul Seri"
 
-#: admin/modules/bibliography/index.php:802
+#: admin/modules/bibliography/index.php:823
 #: admin/modules/bibliography/item.php:409
 #: admin/modules/bibliography/item.php:418
 #: admin/modules/bibliography/pop_p2p.php:62
@@ -1771,19 +1788,19 @@ msgstr "Judul Seri"
 msgid "Classification"
 msgstr "Klasifikasi"
 
-#: admin/modules/bibliography/index.php:804
+#: admin/modules/bibliography/index.php:825
 msgid "Sets of ID that put in the book spine."
 msgstr "Kumpulan identitas yang ditempel pada punggung buku."
 
-#: admin/modules/bibliography/index.php:807
+#: admin/modules/bibliography/index.php:828
 msgid "Subjects/Topics"
 msgstr "Subjek/Topik"
 
-#: admin/modules/bibliography/index.php:807
+#: admin/modules/bibliography/index.php:828
 msgid "Add Subject(s)"
 msgstr "Tambah Subjek"
 
-#: admin/modules/bibliography/index.php:809
+#: admin/modules/bibliography/index.php:830
 #: admin/modules/serial_control/index.php:68 lib/contents/clustering.inc.php:98
 #: template/akasia-dz/detail_template.php:136
 #: template/akasia/detail_template.php:136
@@ -1795,7 +1812,7 @@ msgstr "Tambah Subjek"
 msgid "Subject(s)"
 msgstr "Subjek"
 
-#: admin/modules/bibliography/index.php:817
+#: admin/modules/bibliography/index.php:838
 #: admin/modules/bibliography/pop_p2p.php:60
 #: admin/modules/master_file/doc_language.php:180
 #: admin/modules/master_file/doc_language.php:196
@@ -1815,161 +1832,161 @@ msgstr "Subjek"
 msgid "Language"
 msgstr "Bahasa"
 
-#: admin/modules/bibliography/index.php:817
+#: admin/modules/bibliography/index.php:838
 msgid "Language use by publication."
 msgstr "Bahasa publikasi."
 
-#: admin/modules/bibliography/index.php:819
+#: admin/modules/bibliography/index.php:840
 msgid "Abstract/Notes"
 msgstr "Abstrak/Catatan"
 
-#: admin/modules/bibliography/index.php:819
+#: admin/modules/bibliography/index.php:840
 msgid "Insert here any abstract or notes from the publication."
 msgstr "Masukkan catatan atau abstrak publikasi, di sini."
 
-#: admin/modules/bibliography/index.php:829
-#: admin/modules/membership/index.php:526
-#: admin/modules/membership/index.php:532
+#: admin/modules/bibliography/index.php:850
+#: admin/modules/membership/index.php:562
+#: admin/modules/membership/index.php:568
 msgid "Click to enlarge preview"
 msgstr "Klik untuk memperbesar"
 
-#: admin/modules/bibliography/index.php:832
-#: admin/modules/membership/index.php:530 admin/modules/system/index.php:252
+#: admin/modules/bibliography/index.php:853
+#: admin/modules/membership/index.php:566 admin/modules/system/index.php:252
 msgid "Remove Image"
 msgstr "Hapus Gambar"
 
-#: admin/modules/bibliography/index.php:840 admin/modules/system/index.php:256
+#: admin/modules/bibliography/index.php:861 admin/modules/system/index.php:256
 msgid "Choose file"
 msgstr "Pilih berkas"
 
-#: admin/modules/bibliography/index.php:842
+#: admin/modules/bibliography/index.php:863
 msgid "Or download from url"
 msgstr "Atau unduh dari url"
 
-#: admin/modules/bibliography/index.php:846
+#: admin/modules/bibliography/index.php:867
 msgid "Download"
 msgstr "Unduh"
 
-#: admin/modules/bibliography/index.php:847
+#: admin/modules/bibliography/index.php:868
 msgid "Trying search in DuckduckGo"
 msgstr "Gunakan Layanan DuckduckGo"
 
-#: admin/modules/bibliography/index.php:859
+#: admin/modules/bibliography/index.php:880
 msgid "or scan a cover"
 msgstr "atau pindai sampul"
 
-#: admin/modules/bibliography/index.php:863
+#: admin/modules/bibliography/index.php:884
 msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
-#: admin/modules/bibliography/index.php:864
-#: admin/modules/membership/index.php:573 admin/modules/system/app_user.php:369
+#: admin/modules/bibliography/index.php:885
+#: admin/modules/membership/index.php:609 admin/modules/system/app_user.php:369
 msgid "Reset"
 msgstr "Setel ulang"
 
-#: admin/modules/bibliography/index.php:866
+#: admin/modules/bibliography/index.php:887
 msgid "Scan a cover"
 msgstr "Pindai sampul"
 
-#: admin/modules/bibliography/index.php:867
+#: admin/modules/bibliography/index.php:888
 msgid "Format:"
 msgstr "Format:"
 
-#: admin/modules/bibliography/index.php:869
+#: admin/modules/bibliography/index.php:890
 msgid "Scan"
 msgstr "Pindai"
 
-#: admin/modules/bibliography/index.php:870
+#: admin/modules/bibliography/index.php:891
 msgid "Click to show or hide options"
 msgstr "Klik untuk muncul atau sembunyi pilihan"
 
-#: admin/modules/bibliography/index.php:872
+#: admin/modules/bibliography/index.php:893
 msgid "History index:"
 msgstr "Indeks Sejarah:"
 
-#: admin/modules/bibliography/index.php:872
+#: admin/modules/bibliography/index.php:893
 msgid "Recall"
 msgstr "Memanggil kembali"
 
-#: admin/modules/bibliography/index.php:873
+#: admin/modules/bibliography/index.php:894
 msgid "Host:"
 msgstr "Host:"
 
-#: admin/modules/bibliography/index.php:873
+#: admin/modules/bibliography/index.php:894
 msgid "Get machine"
 msgstr "Panggil mesin"
 
-#: admin/modules/bibliography/index.php:874
+#: admin/modules/bibliography/index.php:895
 msgid "Scanner:"
 msgstr "Pemindai:"
 
-#: admin/modules/bibliography/index.php:874
+#: admin/modules/bibliography/index.php:895
 msgid "Default"
 msgstr "Baku"
 
-#: admin/modules/bibliography/index.php:875
+#: admin/modules/bibliography/index.php:896
 msgid "Resolution"
 msgstr "Resolusi"
 
-#: admin/modules/bibliography/index.php:875
+#: admin/modules/bibliography/index.php:896
 msgid "Horizontal:"
 msgstr "Horisontal:"
 
-#: admin/modules/bibliography/index.php:875
+#: admin/modules/bibliography/index.php:896
 msgid "Vertical:"
 msgstr "Vertikal:"
 
-#: admin/modules/bibliography/index.php:876
-#: admin/modules/membership/index.php:570 admin/modules/system/app_user.php:366
+#: admin/modules/bibliography/index.php:897
+#: admin/modules/membership/index.php:606 admin/modules/system/app_user.php:366
 msgid "Capture"
 msgstr "Ambil Gambar"
 
-#: admin/modules/bibliography/index.php:876
+#: admin/modules/bibliography/index.php:897
 msgid "Width:"
 msgstr "Lebar:"
 
-#: admin/modules/bibliography/index.php:876
+#: admin/modules/bibliography/index.php:897
 msgid "Height:"
 msgstr "Tinggi:"
 
-#: admin/modules/bibliography/index.php:877
+#: admin/modules/bibliography/index.php:898
 msgid "Result"
 msgstr "Hasil"
 
-#: admin/modules/bibliography/index.php:877
+#: admin/modules/bibliography/index.php:898
 msgid "Max Width:"
 msgstr "Lebar Maksimal:"
 
-#: admin/modules/bibliography/index.php:877
+#: admin/modules/bibliography/index.php:898
 msgid "Max Height:"
 msgstr "Tinggi Maksimal:"
 
-#: admin/modules/bibliography/index.php:878
+#: admin/modules/bibliography/index.php:899
 msgid "Scan result"
 msgstr "Hasil pindai"
 
-#: admin/modules/bibliography/index.php:879
+#: admin/modules/bibliography/index.php:900
 #: admin/modules/bibliography/pop_pattern.php:128
 msgid "Preview"
 msgstr "Pra-tinjau"
 
-#: admin/modules/bibliography/index.php:879
+#: admin/modules/bibliography/index.php:900
 msgid "Rotate Left"
 msgstr "Putar ke kiri"
 
-#: admin/modules/bibliography/index.php:879
+#: admin/modules/bibliography/index.php:900
 msgid "Rotate Right"
 msgstr "Putar ke kanan"
 
-#: admin/modules/bibliography/index.php:883
+#: admin/modules/bibliography/index.php:904
 msgid "Image"
 msgstr "Gambar Sampul"
 
-#: admin/modules/bibliography/index.php:887
+#: admin/modules/bibliography/index.php:908
 msgid "Add Attachment"
 msgstr "Tambah Lampiran"
 
-#: admin/modules/bibliography/index.php:889
+#: admin/modules/bibliography/index.php:910
 #: admin/modules/bibliography/pop_attach.php:251
 #: admin/modules/master_file/label.php:202
 #: admin/modules/master_file/label.php:207
@@ -1980,63 +1997,65 @@ msgstr "Tambah Lampiran"
 msgid "File Attachment"
 msgstr "Lampiran Berkas"
 
-#: admin/modules/bibliography/index.php:892
+#: admin/modules/bibliography/index.php:913
 msgid "Biblio Relation"
 msgstr "Relasi biblio"
 
-#: admin/modules/bibliography/index.php:892
+#: admin/modules/bibliography/index.php:913
 msgid "Add Relation"
 msgstr "Tambah Relasi"
 
-#: admin/modules/bibliography/index.php:894
+#: admin/modules/bibliography/index.php:915
 msgid "Related Biblio Data"
 msgstr "Data biblio terkait"
 
-#: admin/modules/bibliography/index.php:928
+#: admin/modules/bibliography/index.php:964
 #: admin/modules/bibliography/print_settings.php:92
-#: template/default/tinfo.inc.php:47 template/default/tinfo.inc.php:98
-#: template/default/tinfo.inc.php:114 template/default/tinfo.inc.php:130
-#: template/default/tinfo.inc.php:140 template/default/tinfo.inc.php:150
+#: admin/modules/system/custom_field.php:227 template/default/tinfo.inc.php:47
+#: template/default/tinfo.inc.php:98 template/default/tinfo.inc.php:114
+#: template/default/tinfo.inc.php:130 template/default/tinfo.inc.php:140
+#: template/default/tinfo.inc.php:150
 msgid "Show"
 msgstr "Tunjukan"
 
-#: admin/modules/bibliography/index.php:929
+#: admin/modules/bibliography/index.php:965
 #: admin/modules/bibliography/print_settings.php:91
-#: template/default/tinfo.inc.php:48 template/default/tinfo.inc.php:99
-#: template/default/tinfo.inc.php:115 template/default/tinfo.inc.php:131
-#: template/default/tinfo.inc.php:141 template/default/tinfo.inc.php:151
+#: admin/modules/system/custom_field.php:226 template/default/tinfo.inc.php:48
+#: template/default/tinfo.inc.php:99 template/default/tinfo.inc.php:115
+#: template/default/tinfo.inc.php:131 template/default/tinfo.inc.php:141
+#: template/default/tinfo.inc.php:151
 msgid "Hide"
 msgstr "Sembunyikan"
 
-#: admin/modules/bibliography/index.php:930
+#: admin/modules/bibliography/index.php:966
 msgid "Hide in OPAC"
 msgstr "Sembunyikan di OPAC"
 
-#: admin/modules/bibliography/index.php:932
+#: admin/modules/bibliography/index.php:968
 msgid "Don't Promote"
 msgstr "Jangan Promosikan"
 
-#: admin/modules/bibliography/index.php:933
+#: admin/modules/bibliography/index.php:969
 msgid "Promote"
 msgstr "Promosikan"
 
-#: admin/modules/bibliography/index.php:934
+#: admin/modules/bibliography/index.php:970
 msgid "Promote To Homepage"
 msgstr "Promosikan Ke Beranda"
 
-#: admin/modules/bibliography/index.php:965
+#: admin/modules/bibliography/index.php:1001
 msgid "You are going to edit biblio data"
 msgstr "Anda akan mengubah data biblio"
 
-#: admin/modules/bibliography/index.php:965
+#: admin/modules/bibliography/index.php:1001
 #: admin/modules/bibliography/item.php:362
 #: admin/modules/bibliography/item.php:410
 #: admin/modules/bibliography/item.php:419
 #: admin/modules/bibliography/item.php:452
 #: admin/modules/bibliography/item.php:464
-#: admin/modules/membership/index.php:607
-#: admin/modules/membership/index.php:644
-#: admin/modules/membership/index.php:650
+#: admin/modules/membership/index.php:643
+#: admin/modules/membership/index.php:680
+#: admin/modules/membership/index.php:686
 #: admin/modules/membership/member_type.php:220
 #: admin/modules/membership/member_type.php:237
 #: admin/modules/membership/member_type.php:243
@@ -2045,33 +2064,33 @@ msgstr "Anda akan mengubah data biblio"
 msgid "Last Updated"
 msgstr "Terakhir diubah"
 
-#: admin/modules/bibliography/index.php:1019
+#: admin/modules/bibliography/index.php:1055
 msgid "Current url is not valid or your internet is down."
 msgstr "URL ini tidak tersedia atau koneksi internet Anda terputus."
 
-#: admin/modules/bibliography/index.php:1053
-#: admin/modules/bibliography/index.php:1059
-#: admin/modules/bibliography/index.php:1079
-#: admin/modules/bibliography/index.php:1085
+#: admin/modules/bibliography/index.php:1092
+#: admin/modules/bibliography/index.php:1098
+#: admin/modules/bibliography/index.php:1118
+#: admin/modules/bibliography/index.php:1124
 #: admin/modules/stock_take/st_report.php:84
 #: admin/modules/stock_take/st_report.php:88 template/default/tinfo.inc.php:73
 msgid "None"
 msgstr "Tidak Ada"
 
-#: admin/modules/bibliography/index.php:1053
-#: admin/modules/bibliography/index.php:1059
-#: admin/modules/bibliography/index.php:1079
-#: admin/modules/bibliography/index.php:1085
+#: admin/modules/bibliography/index.php:1092
+#: admin/modules/bibliography/index.php:1098
+#: admin/modules/bibliography/index.php:1118
+#: admin/modules/bibliography/index.php:1124
 #: admin/modules/bibliography/printed_card.php:196
 #: admin/modules/reporting/customs/titles_list.php:152
 #: admin/modules/reporting/customs/titles_list.php:280
 msgid "Copies"
 msgstr "Salin"
 
-#: admin/modules/bibliography/index.php:1054
-#: admin/modules/bibliography/index.php:1060
-#: admin/modules/bibliography/index.php:1080
-#: admin/modules/bibliography/index.php:1086
+#: admin/modules/bibliography/index.php:1093
+#: admin/modules/bibliography/index.php:1099
+#: admin/modules/bibliography/index.php:1119
+#: admin/modules/bibliography/index.php:1125
 #: admin/modules/circulation/loan_rules.php:224
 #: admin/modules/circulation/loan_rules.php:245
 #: admin/modules/circulation/loan_rules.php:252
@@ -2290,6 +2309,8 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/stock_take/st_report.php:46
 #: admin/modules/stock_take/st_upload.php:43
 #: admin/modules/stock_take/stock_take_action.php:42
+#: admin/modules/system/custom_field.php:48
+#: admin/modules/system/custom_field.php:180
 msgid "You don't have enough privileges to access this area!"
 msgstr "Anda tidak punya hak akses ke bagian ini!"
 
@@ -2626,7 +2647,7 @@ msgstr "Ketik untuk mencari data biblio yang ada"
 
 #: admin/modules/bibliography/pop_p2p.php:55
 #: admin/modules/circulation/circulation_action.php:521
-#: admin/modules/membership/index.php:485
+#: admin/modules/membership/index.php:505
 msgid "Notes"
 msgstr "Catatan"
 
@@ -3129,9 +3150,9 @@ msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 
 #: admin/modules/circulation/circulation_action.php:320
 #: admin/modules/circulation/circulation_action.php:494
-#: admin/modules/membership/index.php:442
-#: admin/modules/membership/index.php:641
-#: admin/modules/membership/index.php:647
+#: admin/modules/membership/index.php:462
+#: admin/modules/membership/index.php:677
+#: admin/modules/membership/index.php:683
 #: admin/modules/membership/member_card_generator.php:223
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/loan_history.php:71
@@ -3217,18 +3238,18 @@ msgid "Member Type"
 msgstr "Tipe Keanggotaan"
 
 #: admin/modules/circulation/circulation_action.php:510
-#: admin/modules/membership/index.php:448 lib/contents/member.inc.php:247
+#: admin/modules/membership/index.php:468 lib/contents/member.inc.php:247
 msgid "Register Date"
 msgstr "Tanggal Registrasi"
 
 #: admin/modules/circulation/circulation_action.php:514
-#: admin/modules/membership/index.php:424
+#: admin/modules/membership/index.php:444
 msgid "Membership Already Expired"
 msgstr "Masa Keanggotaan sudah habis"
 
 #: admin/modules/circulation/circulation_action.php:516
-#: admin/modules/membership/index.php:451
-#: admin/modules/membership/index.php:456
+#: admin/modules/membership/index.php:471
+#: admin/modules/membership/index.php:476
 #: files/membercard/old/membercard.php:353 lib/contents/member.inc.php:248
 msgid "Expiry Date"
 msgstr "Berlaku Hingga"
@@ -3362,7 +3383,7 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/master_file/p2pservers.php:138
 #: admin/modules/master_file/rda_cmc.php:51
 #: admin/modules/master_file/rda_cmc.php:158
-#: admin/modules/membership/index.php:380
+#: admin/modules/membership/index.php:400
 #: admin/modules/membership/member_type.php:169
 #: admin/modules/reporting/customs/pop_procurement_list.php:31
 #: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:283
@@ -4041,6 +4062,8 @@ msgstr "Label GAGAL Disimpan. Hubungi Administrator Sistem"
 
 #: admin/modules/master_file/label.php:149
 #: admin/modules/master_file/submenu.php:41
+#: admin/modules/system/custom_field.php:215
+#: admin/modules/system/custom_field.php:265
 msgid "Label"
 msgstr "Label"
 
@@ -4517,7 +4540,7 @@ msgid "Supplier Name"
 msgstr "Nama Agen"
 
 #: admin/modules/master_file/supplier.php:185
-#: admin/modules/membership/index.php:473
+#: admin/modules/membership/index.php:493
 #: admin/modules/reporting/customs/member_list.php:97
 #: files/membercard/classic/membercard.php:265
 #: files/membercard/old/membercard.php:330
@@ -4534,7 +4557,7 @@ msgstr "Kontak"
 #: admin/modules/master_file/supplier.php:189
 #: admin/modules/master_file/supplier.php:212
 #: admin/modules/master_file/supplier.php:218
-#: admin/modules/membership/index.php:479
+#: admin/modules/membership/index.php:499
 #: admin/modules/reporting/customs/due_date_warning.php:152
 #: admin/modules/reporting/customs/member_loan_list.php:185
 #: admin/modules/reporting/customs/overdued_list.php:190
@@ -4546,7 +4569,7 @@ msgstr "Nomor Telepon"
 #: admin/modules/master_file/supplier.php:191
 #: admin/modules/master_file/supplier.php:213
 #: admin/modules/master_file/supplier.php:219
-#: admin/modules/membership/index.php:481
+#: admin/modules/membership/index.php:501
 msgid "Fax Number"
 msgstr "Nomor Faks"
 
@@ -4639,79 +4662,87 @@ msgid "Member ID, Name and Birthday cannot be empty"
 msgstr "ID dan Nama Anggota dan Tanggal Lahit tidak boleh kosong"
 
 #: admin/modules/membership/index.php:99 admin/modules/system/app_user.php:99
-#: lib/contents/login.inc.php:168 lib/contents/newpass.inc.php:57
+#: lib/contents/login.inc.php:163 lib/contents/newpass.inc.php:57
 msgid "Password confirmation does not match. See if your Caps Lock key is on!"
 msgstr ""
 "Kata sandi dan konfirmasinya tidak cocok. Pastikan penggunaan huruf besar "
 "dan kecil yang sesuai!"
 
-#: admin/modules/membership/index.php:222
+#: admin/modules/membership/index.php:126
+#: admin/modules/membership/index.php:130
+#: admin/modules/membership/index.php:372
+#: admin/modules/membership/submenu.php:26
+#: admin/modules/system/custom_field.php:212
+msgid "Membership"
+msgstr "Keanggotaan"
+
+#: admin/modules/membership/index.php:130
+#, php-format
+msgid "Field %s is date format, empty not allowed"
+msgstr "Ruas %s adalah tanggal, tidak boleh kosong"
+
+#: admin/modules/membership/index.php:242
 msgid "Member Data Successfully Updated"
 msgstr "Data Anggota Berhasil diperbarui"
 
-#: admin/modules/membership/index.php:232
-#: admin/modules/membership/index.php:267 admin/modules/system/app_user.php:186
+#: admin/modules/membership/index.php:252
+#: admin/modules/membership/index.php:287 admin/modules/system/app_user.php:186
 #: admin/modules/system/app_user.php:209
 msgid "Image FAILED to upload"
 msgstr "Citra/Berkas Gambar GAGAL Diunggah"
 
-#: admin/modules/membership/index.php:242
-#: admin/modules/membership/index.php:273
+#: admin/modules/membership/index.php:262
+#: admin/modules/membership/index.php:293
 msgid "Member Data FAILED to Save/Update. Please Contact System Administrator"
 msgstr "Data anggota gagal disimpan/Diperbarui. Hubungi Administrator Sistem"
 
-#: admin/modules/membership/index.php:257
+#: admin/modules/membership/index.php:277
 msgid "New Member Data Successfully Saved"
 msgstr "Data Anggota Baru Berhasil Disimpan"
 
-#: admin/modules/membership/index.php:336
+#: admin/modules/membership/index.php:356
 msgid ""
 "Below member data can't be deleted because still have unreturned item(s)"
 msgstr ""
 "Data anggota di bawah tidak bisa dihapus karena masih memiliki koleksi yang "
 "belum dikembalikan"
 
-#: admin/modules/membership/index.php:352
-#: admin/modules/membership/submenu.php:26
-msgid "Membership"
-msgstr "Keanggotaan"
-
-#: admin/modules/membership/index.php:354
+#: admin/modules/membership/index.php:374
 msgid "Expired Member List"
 msgstr "Daftar Anggota yang Kedaluwarsa"
 
-#: admin/modules/membership/index.php:364
+#: admin/modules/membership/index.php:384
 #: admin/modules/reporting/customs/customs_report_list.inc.php:33
 #: admin/modules/reporting/customs/member_list.php:63
 msgid "Member List"
 msgstr "Daftar Anggota"
 
-#: admin/modules/membership/index.php:365
+#: admin/modules/membership/index.php:385
 #: admin/modules/membership/submenu.php:28
 msgid "Add New Member"
 msgstr "Tambah Anggota"
 
-#: admin/modules/membership/index.php:366
+#: admin/modules/membership/index.php:386
 msgid "View Expired Member"
 msgstr "Lihat Anggota yang Kedaluwarsa"
 
-#: admin/modules/membership/index.php:423
+#: admin/modules/membership/index.php:443
 msgid "Extend Membership"
 msgstr "Perpanjang Keanggotaan"
 
-#: admin/modules/membership/index.php:444
+#: admin/modules/membership/index.php:464
 msgid "Birth Date"
 msgstr "Tanggal Lahir"
 
-#: admin/modules/membership/index.php:446
+#: admin/modules/membership/index.php:466
 msgid "Member Since"
 msgstr "Anggota Sejak"
 
-#: admin/modules/membership/index.php:453
+#: admin/modules/membership/index.php:473
 msgid "Auto Set"
 msgstr "Set Otomatis"
 
-#: admin/modules/membership/index.php:459
+#: admin/modules/membership/index.php:479
 #: admin/modules/reporting/customs/visitor_list.php:89
 #: admin/modules/reporting/customs/visitor_list.php:128
 #: admin/modules/reporting/customs/visitor_list.php:173
@@ -4723,9 +4754,9 @@ msgstr "Set Otomatis"
 msgid "Institution"
 msgstr "Institusi"
 
-#: admin/modules/membership/index.php:467
-#: admin/modules/membership/index.php:642
-#: admin/modules/membership/index.php:648
+#: admin/modules/membership/index.php:487
+#: admin/modules/membership/index.php:678
+#: admin/modules/membership/index.php:684
 #: admin/modules/membership/member_card_generator.php:224
 #: admin/modules/membership/member_type.php:233
 #: admin/modules/membership/member_type.php:239
@@ -4743,54 +4774,54 @@ msgstr "Institusi"
 msgid "Membership Type"
 msgstr "Tipe Keanggotaan"
 
-#: admin/modules/membership/index.php:469
+#: admin/modules/membership/index.php:489
 #: admin/modules/reporting/customs/member_list.php:91
 msgid "Male"
 msgstr "Laki-laki"
 
-#: admin/modules/membership/index.php:470
+#: admin/modules/membership/index.php:490
 #: admin/modules/reporting/customs/member_list.php:92
 msgid "Female"
 msgstr "Perempuan"
 
-#: admin/modules/membership/index.php:471
+#: admin/modules/membership/index.php:491
 #: admin/modules/reporting/customs/member_list.php:88
 msgid "Sex"
 msgstr "Jenis Kelamin"
 
-#: admin/modules/membership/index.php:475
+#: admin/modules/membership/index.php:495
 msgid "Postal Code"
 msgstr "Kode Pos"
 
-#: admin/modules/membership/index.php:477
+#: admin/modules/membership/index.php:497
 msgid "Mail Address"
 msgstr "Alamat Surat"
 
-#: admin/modules/membership/index.php:483
+#: admin/modules/membership/index.php:503
 #: files/membercard/classic/membercard.php:272
 #: files/membercard/old/membercard.php:307
 msgid "Personal ID Number"
 msgstr "Nomor Identitas"
 
-#: admin/modules/membership/index.php:519
+#: admin/modules/membership/index.php:555
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
-#: admin/modules/membership/index.php:558 admin/modules/system/app_user.php:354
+#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:354
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:561 admin/modules/system/app_user.php:357
+#: admin/modules/membership/index.php:597 admin/modules/system/app_user.php:357
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
-#: admin/modules/membership/index.php:584
+#: admin/modules/membership/index.php:620
 msgid "Photo"
 msgstr "Foto"
 
-#: admin/modules/membership/index.php:592
-#: admin/modules/membership/index.php:643
-#: admin/modules/membership/index.php:649
+#: admin/modules/membership/index.php:628
+#: admin/modules/membership/index.php:679
+#: admin/modules/membership/index.php:685
 #: admin/modules/reporting/customs/due_date_warning.php:152
 #: admin/modules/reporting/customs/member_loan_list.php:185
 #: admin/modules/reporting/customs/overdued_list.php:190
@@ -4798,44 +4829,44 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:398
-#: lib/contents/login.inc.php:205 lib/contents/member.inc.php:275
+#: admin/modules/membership/index.php:630 admin/modules/system/app_user.php:398
+#: lib/contents/login.inc.php:200 lib/contents/member.inc.php:275
 #: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:596 admin/modules/system/app_user.php:400
-#: lib/contents/login.inc.php:207 lib/contents/newpass.inc.php:100
+#: admin/modules/membership/index.php:632 admin/modules/system/app_user.php:400
+#: lib/contents/login.inc.php:202 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata Sandi Baru"
 
-#: admin/modules/membership/index.php:606
+#: admin/modules/membership/index.php:642
 #: admin/modules/membership/member_type.php:220
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:608 admin/modules/system/app_user.php:406
+#: admin/modules/membership/index.php:644 admin/modules/system/app_user.php:406
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan ruas Kata Sandi kosong jika tidak ingin mengubahnya"
 
-#: admin/modules/membership/index.php:678
+#: admin/modules/membership/index.php:714
 msgid "Extend Selected Member(s)"
 msgstr "Perpanjang Anggota terpilih"
 
-#: admin/modules/membership/index.php:678
+#: admin/modules/membership/index.php:714
 msgid "Are you sure to EXTEND membership for selected members?"
 msgstr "Anda yakin ingin memperpanjang keanggotaan untuk anggota terpilih?"
 
-#: admin/modules/membership/index.php:682
+#: admin/modules/membership/index.php:718
 msgid "members extended!"
 msgstr "keanggotaan berhasil diperpanjang!"
 
-#: admin/modules/membership/index.php:687
+#: admin/modules/membership/index.php:723
 #: admin/modules/membership/member_card_generator.php:257
 msgid "Found"
 msgstr "Ditemukan"
 
-#: admin/modules/membership/index.php:687
+#: admin/modules/membership/index.php:723
 #: admin/modules/membership/member_card_generator.php:257
 msgid "from your search with keyword"
 msgstr "dari kata kunci"
@@ -5843,6 +5874,8 @@ msgid "Seq. Number"
 msgstr "Nomor Urut"
 
 #: admin/modules/serial_control/serial_base_lib.inc.php:156
+#: admin/modules/system/custom_field.php:246
+#: admin/modules/system/custom_field.php:267
 msgid "Note"
 msgstr "Catatan"
 
@@ -6314,7 +6347,7 @@ msgstr "Data Pengguna Baru Berhasil Disimpan"
 msgid "User Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Pengguna Baru GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:262 admin/modules/system/submenu.php:46
+#: admin/modules/system/app_user.php:262 admin/modules/system/submenu.php:48
 msgid "Librarian & System Users"
 msgstr "Pustakawan & Pengguna Sistem"
 
@@ -6359,7 +6392,7 @@ msgstr "Anda akan menyunting data pengguna"
 msgid "Last Login"
 msgstr "Terakhir kali Masuk"
 
-#: admin/modules/system/backup.php:55 admin/modules/system/submenu.php:53
+#: admin/modules/system/backup.php:55 admin/modules/system/submenu.php:55
 msgid "Database Backup"
 msgstr "Salinan Pangkalan Data"
 
@@ -6381,7 +6414,7 @@ msgstr "Lokasi Berkas Cadangan"
 
 #: admin/modules/system/barcode_generator.php:102
 #: admin/modules/system/barcode_generator.php:134
-#: admin/modules/system/submenu.php:51
+#: admin/modules/system/submenu.php:53
 msgid "Barcode Generator"
 msgstr "Pembuat Barkod"
 
@@ -6540,7 +6573,7 @@ msgstr "Data Konten berhasil disimpan"
 msgid "Content data FAILED to save!"
 msgstr "Data Konten GAGAL disimpan!"
 
-#: admin/modules/system/content.php:144 admin/modules/system/submenu.php:36
+#: admin/modules/system/content.php:144 admin/modules/system/submenu.php:38
 msgid "Content"
 msgstr "Konten"
 
@@ -6577,6 +6610,132 @@ msgstr "Deskripsi Konten"
 #: admin/modules/system/content.php:205
 msgid "You are going to update Content data"
 msgstr "Anda akan mengubah data Konten"
+
+#: admin/modules/system/custom_field.php:56
+#: admin/modules/system/custom_field.php:72
+#: admin/modules/system/custom_field.php:79
+#: admin/modules/system/custom_field.php:101
+#: admin/modules/system/custom_field.php:104
+#: admin/modules/system/custom_field.php:112
+#: admin/modules/system/custom_field.php:115
+#: admin/modules/system/custom_field.php:146
+#: admin/modules/system/custom_field.php:149
+#: admin/modules/system/submenu.php:35
+msgid "Custom Field"
+msgstr "Ruas Tambahan"
+
+#: admin/modules/system/custom_field.php:56
+msgid "Field or Label can't be empty"
+msgstr "Ruas atau Label tidak boleh kosong"
+
+#: admin/modules/system/custom_field.php:72
+#: admin/modules/system/custom_field.php:79
+msgid "Data List can't be empty"
+msgstr "Daftar Data tidak boleh kosong"
+
+#: admin/modules/system/custom_field.php:101
+msgid "New Custom Field Successfully Updated"
+msgstr "Ruas Tambahan Baru Berhasil Diperbarui"
+
+#: admin/modules/system/custom_field.php:104
+msgid ""
+"Custom Field Data FAILED to Updated. Please Contact System Administrator"
+msgstr ""
+"Dara Ruas Tambahan GAGAL diperbarui. Harap Hubungi Administrator Sistem"
+
+#: admin/modules/system/custom_field.php:112
+msgid "New Custom Field Successfully Saved"
+msgstr "Ruas Tambahan Baru Berhasil Disimpan"
+
+#: admin/modules/system/custom_field.php:115
+msgid ""
+"Custom Field Data Data FAILED to Save. Please Contact System Administrator"
+msgstr ""
+"Data Ruas Tambahan pada Data GAGAL disimpan. Harap Hubungi Administrator "
+"Sistem"
+
+#: admin/modules/system/custom_field.php:161
+msgid "Custom Field Editor"
+msgstr "Penyunting Ruas Tambahan"
+
+#: admin/modules/system/custom_field.php:165
+msgid "Field List"
+msgstr "Daftar Ruas"
+
+#: admin/modules/system/custom_field.php:166
+msgid "Add New Field"
+msgstr "Tambah Ruas Baru"
+
+#: admin/modules/system/custom_field.php:213
+#: admin/modules/system/custom_field.php:264
+msgid "Primary Menu"
+msgstr "Menu Utama"
+
+#: admin/modules/system/custom_field.php:217
+msgid "Text"
+msgstr "Text"
+
+#: admin/modules/system/custom_field.php:218
+msgid "Text Area"
+msgstr "Text Area"
+
+#: admin/modules/system/custom_field.php:219
+msgid "Numeric"
+msgstr "Numeric"
+
+#: admin/modules/system/custom_field.php:220
+msgid "Drop Down"
+msgstr "Drop Down"
+
+#: admin/modules/system/custom_field.php:221
+msgid "Check List"
+msgstr "Check List"
+
+#: admin/modules/system/custom_field.php:222
+msgid "Choice"
+msgstr "Choice"
+
+#: admin/modules/system/custom_field.php:223
+#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:288
+msgid "Date"
+msgstr "Date"
+
+#: admin/modules/system/custom_field.php:224
+msgid "Input Type"
+msgstr "Jenis Masukan"
+
+#: admin/modules/system/custom_field.php:228
+msgid "Is Public"
+msgstr "Status Publik"
+
+#: admin/modules/system/custom_field.php:230
+msgid "Custom Style"
+msgstr "Gaya Tambahan"
+
+#: admin/modules/system/custom_field.php:232
+msgid "Add Item"
+msgstr "Tambah Eksemplar"
+
+#: admin/modules/system/custom_field.php:244
+msgid "Data List"
+msgstr "Daftar Data"
+
+#: admin/modules/system/custom_field.php:250
+#, php-format
+msgid "You are going to edit %s custom field"
+msgstr "Anda akan menyunting ruas tambahan %s"
+
+#: admin/modules/system/custom_field.php:251
+msgid ""
+"<strong>Warning</strong> : Update data list or primary table will be delete "
+"this table content"
+msgstr ""
+"<strong>Peringatan</strong> : Memperbarui daftar data atau tabel utama akan "
+"menghapus konten dalam tabel ini"
+
+#: admin/modules/system/custom_field.php:266
+msgid "Type"
+msgstr "Jenis"
 
 #: admin/modules/system/envinfo.php:50
 msgid "Operating System"
@@ -6661,7 +6820,7 @@ msgstr "Hari Libur GAGAL Disimpan. Hubungi administrator Sistem"
 msgid "Holiday Settings"
 msgstr "Setelan Hari Libur"
 
-#: admin/modules/system/holiday.php:172 admin/modules/system/submenu.php:50
+#: admin/modules/system/holiday.php:172 admin/modules/system/submenu.php:52
 msgid "Holiday Setting"
 msgstr "Setelan Hari Libur"
 
@@ -6916,7 +7075,7 @@ msgstr "Data Modul Baru Berhasil Disimpan"
 msgid "Module Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Modul GAGAL Disimpan. Hubungi administrator Sistem"
 
-#: admin/modules/system/module.php:142 admin/modules/system/submenu.php:44
+#: admin/modules/system/module.php:142 admin/modules/system/submenu.php:46
 msgid "Modules"
 msgstr "Modul"
 
@@ -6989,43 +7148,47 @@ msgstr "Pengaturan UCS"
 msgid "Configure UCS Preferences"
 msgstr "Konfigurasi UCS"
 
-#: admin/modules/system/submenu.php:40 admin/modules/system/submenu.php:42
+#: admin/modules/system/submenu.php:35
+msgid "Configure custom field"
+msgstr "Konfigurasi ruas tambahan"
+
+#: admin/modules/system/submenu.php:42 admin/modules/system/submenu.php:44
 msgid "Biblio Indexes"
 msgstr "Indeks Biblio"
 
-#: admin/modules/system/submenu.php:40 admin/modules/system/submenu.php:42
+#: admin/modules/system/submenu.php:42 admin/modules/system/submenu.php:44
 msgid "Bibliographic Indexes management"
 msgstr "Pengaturan Indeks Bibliografi"
 
-#: admin/modules/system/submenu.php:44
+#: admin/modules/system/submenu.php:46
 msgid "Configure Application Modules"
 msgstr "Konfigurasi Modul Aplikasi"
 
-#: admin/modules/system/submenu.php:45 admin/modules/system/user_group.php:168
+#: admin/modules/system/submenu.php:47 admin/modules/system/user_group.php:168
 msgid "User Group"
 msgstr "Kelompok Pengguna"
 
-#: admin/modules/system/submenu.php:45
+#: admin/modules/system/submenu.php:47
 msgid "Manage Group of Application User"
 msgstr "Kelola Kelompok Pengguna Aplikasi"
 
-#: admin/modules/system/submenu.php:46
+#: admin/modules/system/submenu.php:48
 msgid "Manage Application User or Library Staff"
 msgstr "Kelola Pengguna Aplikasi atau Staf Perpustakaan"
 
-#: admin/modules/system/submenu.php:50
+#: admin/modules/system/submenu.php:52
 msgid "Configure Holiday Setting"
 msgstr "Konfigurasi Hari Libur"
 
-#: admin/modules/system/submenu.php:52 admin/modules/system/sys_log.php:77
+#: admin/modules/system/submenu.php:54 admin/modules/system/sys_log.php:77
 msgid "System Log"
 msgstr "Catatan Sistem"
 
-#: admin/modules/system/submenu.php:52
+#: admin/modules/system/submenu.php:54
 msgid "View Application System Log"
 msgstr "Lihat Catatan Aplikasi Sistem"
 
-#: admin/modules/system/submenu.php:53
+#: admin/modules/system/submenu.php:55
 msgid "Backup Application Database"
 msgstr "Buat Salinan Pangkalan Data Aplikasi"
 
@@ -7450,7 +7613,7 @@ msgstr ""
 msgid "Current email not found. Please try again."
 msgstr "Alamat surel tidak ditemukan. Harap coba kembali."
 
-#: lib/contents/forgot.inc.php:125 lib/contents/login.inc.php:195
+#: lib/contents/forgot.inc.php:125 lib/contents/login.inc.php:190
 #: lib/contents/newpass.inc.php:92
 msgid ""
 "Your browser does not support Javascript or Javascript is disabled. "
@@ -7487,39 +7650,43 @@ msgstr "Media Sosial"
 msgid "No librarian data yet"
 msgstr "Belum ada data Pustakawan"
 
-#: lib/contents/login.inc.php:127
+#: lib/contents/login.inc.php:122
 msgid "Welcome to Library Automation, "
 msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
 
-#: lib/contents/login.inc.php:147
+#: lib/contents/login.inc.php:142
 msgid "Wrong Username or Password. ACCESS DENIED"
 msgstr "Nama Pengguna atau Kata Sandi Salah. AKSES DITOLAK"
 
-#: lib/contents/login.inc.php:166 lib/contents/newpass.inc.php:55
+#: lib/contents/login.inc.php:161 lib/contents/newpass.inc.php:55
 msgid "Current password can not be empty!"
 msgstr "Kata Sandi saat ini tidak boleh kosong!"
 
-#: lib/contents/login.inc.php:202
+#: lib/contents/login.inc.php:197
 msgid "Hi {username}, please update your password!"
 msgstr "Hai {username}, mohon perbarui kata sandi Anda!"
 
-#: lib/contents/login.inc.php:203 lib/contents/member.inc.php:271
+#: lib/contents/login.inc.php:198 lib/contents/member.inc.php:271
 msgid "Current Password"
 msgstr "Kata Sandi Terkini"
 
-#: lib/contents/login.inc.php:238
+#: lib/contents/login.inc.php:233
 msgid "Username"
 msgstr "Nama Akun"
 
-#: lib/contents/login.inc.php:240 lib/contents/member.inc.php:741
+#: lib/contents/login.inc.php:235 lib/contents/member.inc.php:741
 msgid "Password"
 msgstr "Kata Sandi"
 
-#: lib/contents/login.inc.php:272 lib/contents/member.inc.php:765
+#: lib/contents/login.inc.php:267 lib/contents/member.inc.php:765
 msgid "Login"
 msgstr "Masuk"
 
-#: lib/contents/login.inc.php:285
+#: lib/contents/login.inc.php:269
+msgid "Forgot my password"
+msgstr "Lupa kata sandi"
+
+#: lib/contents/login.inc.php:281
 msgid "Library Automation Login"
 msgstr "Masuk Otomasi Perpustakaan"
 
@@ -7785,15 +7952,15 @@ msgstr "Sedang Dipinjam (Jatuh tempo pada"
 msgid "Available but not for loan"
 msgstr "Tersedia namun tidak untuk dipinjamkan"
 
-#: lib/detail.inc.php:390
+#: lib/detail.inc.php:392
 msgid "Click to view others documents with this author"
 msgstr "Klik disini untuk mencari dokumen lain dari pengarang ini"
 
-#: lib/detail.inc.php:401
+#: lib/detail.inc.php:403
 msgid "Click to view others documents with this subject"
 msgstr "Klik di sini untuk mencari dokumen lain dengan subjek ini"
 
-#: lib/detail.inc.php:416 template/akasia-dz/biblio_list_template.php:166
+#: lib/detail.inc.php:418 template/akasia-dz/biblio_list_template.php:166
 #: template/akasia/biblio_list_template.php:167
 #: template/lightweight/biblio_list_template.php:166
 msgid "Share to"
@@ -7890,10 +8057,6 @@ msgstr "urutkan dari bawah"
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:214
 msgid "Order list by"
 msgstr "Urut daftar berdasar"
-
-#: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:288
-msgid "Date"
-msgstr "Tanggal"
 
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:105
 #: simbio2/simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php:102
@@ -8648,9 +8811,6 @@ msgstr "Masukkan kata kunci..."
 
 #~ msgid "Remember me"
 #~ msgstr "Ingat saya"
-
-#~ msgid "Forgot my password"
-#~ msgstr "Lupa kata sandi"
 
 #~ msgid "The first row are columns names"
 #~ msgstr "Baris pertama berisi nama kolom"
