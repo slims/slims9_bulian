@@ -128,8 +128,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         foreach ($biblio_custom_fields as $fid => $cfield) {
           // custom field data
           $cf_dbfield = $cfield['dbfield'];
-          if (isset($_POST[$cf_dbfield])) {
+          if(is_array($_POST[$cf_dbfield])){
+            $arr = array();
+            foreach ($_POST[$cf_dbfield] as $key => $value) {
+              $arr[$value] = $value;
+            }
+            $custom_data[$cf_dbfield] = implode('; ',$arr);
+          }
+          elseif (isset($_POST[$cf_dbfield])) {
             $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
+            if($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val!='')){
+              utility::jsToastr(__('Bibliography'), sprintf(__('Field %s only number for allowed'),$cfield['label']), 'error');      
+              exit();        
+            }
             if ($cf_val) {
               $custom_data[$cf_dbfield] = $cf_val;
             } else {
@@ -914,22 +925,37 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $cf_dbfield = $cfield['dbfield'];
     $cf_label = $cfield['label'];
     $cf_default = $cfield['default'];
-    $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
+    $cf_class = $cfield['class']??'';
+    $cf_note = $cfield['note']??'';
+    $data = (isset($cfield['data']) && $cfield['data'] )?unserialize($cfield['data']):array();
 
+    foreach ($data as $key => $value) {
+      if(isset($key)){
+      $cf_data[] = array($key,$value);}
+    }
+
+    if(isset($data) && is_array($data) && isset($rec_cust_d[$cf_dbfield])){
+      $selected = array();
+      $select = explode('; ', $rec_cust_d[$cf_dbfield]);
+      foreach ($select as $key => $value) {
+        $selected[] = $value;
+      }
+    }
     // custom field processing
     if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
       $cf_max = isset($cfield['max'])?$cfield['max']:'200';
       $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, ' class="form-control '.$cf_class.'" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"',$cf_note);
     } else if ($cfield['type'] == 'dropdown') {
-      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $selected??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'checklist') {
-      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $selected??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'choice') {
-      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $selected??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'date') {
-      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??NULL,' class="form-control '.$cf_class.'"');
     }
+    unset($cf_data);
     }
   }
   }

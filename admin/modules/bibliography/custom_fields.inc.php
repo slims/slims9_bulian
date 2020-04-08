@@ -32,6 +32,24 @@ if (INDEX_AUTH != 1) {
  *
  */
 
+global $dbs;
+
+$_q = $dbs->query("SELECT * FROM mst_custom_field WHERE `primary_table`='biblio'");
+if(isset($_q->num_rows)){
+	while($_d = $_q->fetch_assoc()){
+		$dbfield[] = $_d;
+		// check biblio_custom field
+		$chkcol = $dbs->query("SELECT * FROM `biblio_custom` LIMIT 1");
+		$field = $chkcol->fetch_array();
+		// add field if not exist
+		if(!isset($field[$_d['dbfield']])){
+			$type = $_d['type']=='date'?'date':($_d['type']=='numeric'?'INT(11)':'text');
+	  		@$dbs->query("ALTER TABLE `biblio_custom` ADD ".$_d['dbfield']." ".$type." DEFAULT NULL comment 'field for ".$_d['label']."'");
+	  	}  	
+	  	$biblio_custom_fields = $dbfield;
+	}
+}
+
 /*
 $biblio_custom_fields = array(
 	'customfield1' => array(
@@ -42,7 +60,7 @@ $biblio_custom_fields = array(
 		'max' => '50', // maximum character to enter in 'text' field type
 		'data' => false, // an array of data for 'dropdown', 'checklist' or 'choice'
 		'indexed' => true, // NOT APPLICABLE YET, FOR FUTURE RELEASE USE
-    'is_public' => true, // if true show this data in OPAC detail. If not defined default value is false.
+    	'is_public' => true, // if true show this data in OPAC detail. If not defined default value is false.
 		'width' => 50), // width of field in form for 'text' field type, maximum is 100
 
 	'customfield2' => array(
@@ -54,7 +72,7 @@ $biblio_custom_fields = array(
 			array('value1', 'Value #1'),
 			array('value2', 'Value #2')
 			),
-    'is_public' => true,
+    	'is_public' => true,
 		'indexed' => true),
 
 	'customfield3' => array(
@@ -67,7 +85,7 @@ $biblio_custom_fields = array(
 			array('value2', 'Value 2'),
 			array('value3', 'Value 3')
 			),
-    'is_public' => false,
+    	'is_public' => false,
 		'indexed' => true),
 
 	'customfield4' => array(
@@ -79,7 +97,7 @@ $biblio_custom_fields = array(
 			array('value1', 'Value 1'),
 			array('value2', 'Value 2')
 			),
-    'is_public' => false,
+    	'is_public' => false,
 		'indexed' => true),
 
 	'customfield5' => array(

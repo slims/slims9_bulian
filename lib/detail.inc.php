@@ -283,7 +283,7 @@ class detail
       $columns = '';
       if (isset($biblio_custom_fields)) {
         foreach ($biblio_custom_fields as $custom_field) {
-          if (isset($custom_field['is_public']) && $custom_field['is_public'] === true)
+          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1')
             $columns .= $custom_field['dbfield'] . ', ';
         }
         if ($columns !== '') {
@@ -297,18 +297,20 @@ class detail
         $data = $query->fetch_assoc();
         if (isset($biblio_custom_fields)) {
           foreach ($biblio_custom_fields as $custom_field) {
-            if (isset($custom_field['is_public']) && $custom_field['is_public'] === true) {
+            if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
               $value = $data[$custom_field['dbfield']];
               switch ($custom_field['type']) {
                 case 'dropdown':
                 case 'choice':
                   $n = 0;
-                  foreach ($custom_field['data'] as $datum) {
-                    if ($datum[0] == $value) {
-                      $value = $datum[1];
-                      $n++;
+                  if(is_array($custom_field['data'])){
+                    foreach ($custom_field['data'] as $datum) {
+                      if ($datum[0] == $value) {
+                        $value = $datum[1];
+                        $n++;
+                      }
+                      if ($n > 0) break;
                     }
-                    if ($n > 0) break;
                   }
                   break;
               }
