@@ -24,6 +24,8 @@
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -124,16 +126,30 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (isset($biblio_custom_fields)) {
       if (is_array($biblio_custom_fields) && $biblio_custom_fields) {
         foreach ($biblio_custom_fields as $fid => $cfield) {
-          // custom field data
-          $cf_dbfield = $cfield['dbfield'];
-          if (isset($_POST[$cf_dbfield])) {
-            $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
-            if ($cf_val) {
-              $custom_data[$cf_dbfield] = $cf_val;
-            } else {
-              $custom_data[$cf_dbfield] = 'literal{\'\'}';
-            }
-          }
+              // custom field data
+              $cf_dbfield = $cfield['dbfield'];
+              if (isset($_POST[$cf_dbfield])) {
+                if(is_array($_POST[$cf_dbfield])){ 
+                  foreach ($_POST[$cf_dbfield] as $value) {
+                    $arr[$value] = $value;
+                  }
+                  $custom_data[$cf_dbfield] = serialize($arr);
+                }
+                else{
+                  $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
+                  if($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val!='')){
+                    utility::jsToastr(__('Bibliography'), sprintf(__('Field %s only number for allowed'),$cfield['label']), 'error');      
+                    exit();        
+                  }
+                  elseif ($cfield['type'] == 'date' && $cf_val == '') {
+                    utility::jsToastr(__('Bibliography'), sprintf(__('Field %s is date format, empty not allowed'),$cfield['label']), 'error');      
+                    exit();
+                  }
+                  $custom_data[$cf_dbfield] = $cf_val;
+                }
+              }else{
+                $custom_data[$cf_dbfield] = serialize(array());
+              }
         }
       }
     }
@@ -544,7 +560,15 @@ if (!$in_pop_up) {
 }
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+  if ( (isset($_GET['action'])) AND ($_GET['action'] == 'detail') ) {
+    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+    $log = new AlLibrarian('1153', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+  } elseif ( (isset($_GET['itemID'])) AND (isset($_GET['detail'])) AND ($_GET['detail'] == true) ) {
+    $log = new AlLibrarian('1155', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "biblio_id" => $_GET['itemID']));
+  }
+
   if (!($can_read AND $can_write)) {
+
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
   }
   /* RECORD FORM */
@@ -904,22 +928,30 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $cf_dbfield = $cfield['dbfield'];
     $cf_label = $cfield['label'];
     $cf_default = $cfield['default'];
-    $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
+    $cf_class = $cfield['class']??'';
+    $cf_note = $cfield['note']??'';
+    $cf_data = (isset($cfield['data']) && $cfield['data'] )?unserialize($cfield['data']):array();
+
+    // get data field record
+    if(isset($rec_cust_d[$cf_dbfield]) && @unserialize($rec_cust_d[$cf_dbfield]) !== false){
+      $rec_cust_d[$cf_dbfield] = unserialize($rec_cust_d[$cf_dbfield]);
+    }
 
     // custom field processing
     if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
       $cf_max = isset($cfield['max'])?$cfield['max']:'200';
       $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, ' class="form-control '.$cf_class.'" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"',$cf_note);
     } else if ($cfield['type'] == 'dropdown') {
-      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'checklist') {
-      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'choice') {
-      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'date') {
-      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??NULL,' class="form-control '.$cf_class.'"');
     }
+    unset($cf_data);
     }
   }
   }
@@ -1024,6 +1056,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   </script>
   <?php
 } else {
+  # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+  $log = new AlLibrarian('1151', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+
   require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
   require MDLBS.'bibliography/biblio_utils.inc.php';
   require LIB.'biblio_list_model.inc.php';

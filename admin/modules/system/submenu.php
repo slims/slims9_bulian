@@ -32,6 +32,8 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('System Environment'), MWB.'system/envinfo.php', __('Information about System Environment'));
     $menu[] = array(__('UCS Setting'), MWB.'system/ucsetting.php', __('Configure UCS Preferences'));
     $menu[] = array(__('Theme'), MWB.'system/theme.php', __('Configure theme Preferences'));
+    $menu[] = array(__('Custom Field'), MWB.'system/custom_field.php', __('Configure custom field'));
+
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus

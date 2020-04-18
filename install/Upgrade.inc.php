@@ -846,7 +846,26 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
 
-    $error = $this->slims->query($sql, ['alter','insert']);
+    $sql['create'][] = "
+    CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+      `field_id` int(11) NOT NULL AUTO_INCREMENT,
+      `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+      `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+      `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+      `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `max` int(11) DEFAULT NULL,
+      `data` text COLLATE utf8_unicode_ci,
+      `indexed` tinyint(1) DEFAULT NULL,
+      `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `is_public` tinyint(1) DEFAULT NULL,
+      `width` int(5) DEFAULT '100',
+      `note` text COLLATE utf8_unicode_ci,
+      PRIMARY KEY (`dbfield`),
+      UNIQUE KEY `field_id` (`field_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+    $error = $this->slims->query($sql, ['alter','insert','create']);
 
     /**
      * Please, move this block in last upgrade role version if available

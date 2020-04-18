@@ -58,7 +58,7 @@ if (isset($_POST['doExport'])) {
     {
       // make query from database
       $_value_q = $obj_db->query($str_query);
-      if (isset($_value_q->num_rows)) {
+      if ($_value_q->num_rows > 0) {
           $_value_buffer = '';
           while ($_value_d = $_value_q->fetch_row()) {
               if ($_value_d[0]) {
@@ -88,13 +88,12 @@ if (isset($_POST['doExport'])) {
         b.isbn_issn, publ.publisher_name, b.publish_year,
         b.collation, b.series_title, b.call_number,
         lang.language_name, pl.place_name, b.classification,
-        b.notes, b.image, b.sor, bc.*
+        b.notes, b.image, b.sor
         FROM biblio AS b
         LEFT JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
         LEFT JOIN mst_publisher AS publ ON b.publisher_id=publ.publisher_id
         LEFT JOIN mst_language AS lang ON b.language_id=lang.language_id
-        LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id 
-        LEFT JOIN biblio_custom bc ON b.biblio_id=bc.biblio_id ORDER BY b.last_update DESC";
+        LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id ORDER BY b.last_update DESC";
     if ($limit > 0) { $sql .= ' LIMIT '.$limit; }
     if ($offset > 1) {
       if ($limit > 0) {
