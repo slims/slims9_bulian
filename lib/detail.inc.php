@@ -292,26 +292,34 @@ class detail
       } else {
         $columns = '*';
       }
+
       $query = $this->db->query(sprintf("SELECT %s FROM biblio_custom WHERE biblio_id=%d", $columns, $this->detail_id));
       if ($query) {
         $data = $query->fetch_assoc();
         if (isset($biblio_custom_fields)) {
           foreach ($biblio_custom_fields as $custom_field) {
             if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
-              $value = $data[$custom_field['dbfield']];
+
+              $data_field = unserialize($custom_field['data']);
+              $data_record  = $data[$custom_field['dbfield']];
+
               switch ($custom_field['type']) {
                 case 'dropdown':
                 case 'choice':
-                  $n = 0;
-                  if(is_array($custom_field['data'])){
-                    foreach ($custom_field['data'] as $datum) {
-                      if ($datum[0] == $value) {
-                        $value = $datum[1];
-                        $n++;
-                      }
-                      if ($n > 0) break;
+                  $value = end($data_field[$data_record]);
+                  break;
+                case 'checklist':
+                  $data_record = unserialize($data_record);
+                  foreach ($data_record as $key => $val) {
+                    if(isset($data_field[$val])){
+                    $arr[] = end($data_field[$val]);
                     }
                   }
+                  // convert array to string
+                  $value = implode(' -- ',$arr);
+                  break;
+                default:
+                  $value = $data[$custom_field['dbfield']];
                   break;
               }
 

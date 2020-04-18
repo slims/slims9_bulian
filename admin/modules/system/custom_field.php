@@ -66,15 +66,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['data'] = NULL;
         if($data['type'] == 'choice' || $data['type'] == 'checklist' || $data['type'] == 'dropdown'){
             if(isset($_POST['data'])){
-                $arr = array();
                 foreach ($_POST['data'] as $key => $value) {
                     if($value==''){
                         utility::jsToastr(__('Custom Field'), __('Data List can\'t be empty'), 'error');
                 exit();
                     }
-                    $arr[$value] = $value;
+                    $arr[$key] = array($key,$value);
                 }
-            $data['data'] = serialize($arr);
+            $data['data'] = $dbs->escape_string(serialize($arr));
             }else{
                 utility::jsToastr(__('Custom Field'), __('Data List can\'t be empty'), 'error');
                 exit();
@@ -235,7 +234,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         if(is_array($data)){
             $x = 1;
             foreach ($data as $key => $value) {
-                $str_input .= '<div class="item" style="display:flex;"><input type="text" class="itemCode form-control col-6 mb-2" id="data-'.$x.'" name="data[]" value="'.$value.'"/><button class="remove_field btn btn-danger btn btn-sm '.$visibility.'">'.__('Remove').'</button></div>';
+                $str_input .= '<div class="item" style="display:flex;"><input type="text" class="itemCode form-control col-6 mb-2" id="data-'.$x.'" name="data[]" value="'.$value[1].'"/><button class="remove_field btn btn-danger btn btn-sm '.$visibility.'">'.__('Remove').'</button></div>';
                 $x++;
             }
         }
