@@ -36,7 +36,11 @@ if (!function_exists('addOrUpdateSetting')) {
   {
     global $dbs;
     $sql_op = new simbio_dbop($dbs);
-    $data['setting_value'] = serialize($value);
+    
+    foreach ($value as $key => $val) {
+      $settings[$key] = str_replace('\r\n','', $val);
+    }
+    $data['setting_value'] = serialize($settings);
 
     // save personalized user template
     if($name == 'admin_template'){
@@ -174,7 +178,9 @@ if (isset($_GET['customize'])) {
   $content = ob_get_clean();
   $css = '<link rel="stylesheet" href="'.SWB.'css/bootstrap-colorpicker.min.css"/>';
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
+  $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
+  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }

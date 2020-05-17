@@ -165,6 +165,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
     'type' => 'longtext',
     'default' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc mi. Donec vehicula turpis a quam venenatis posuere. Aliquam nibh lectus, gravida et leo sit amet, dignissim dapibus mauris.<br>Telp. (021) 9172638<br>Fax. (021) 9172638<br>',
     'width' => '100',
+    'class' => 'ckeditor',
     'max' => 1000
   ],
   'fb-link' => [
