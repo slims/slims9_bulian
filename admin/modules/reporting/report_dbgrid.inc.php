@@ -31,7 +31,7 @@ class report_datagrid extends simbio_datagrid
     public $paging_set = null;
     public $using_AJAX = false;
     public $show_spreadsheet_export = false;
-    public $spreadsheet_export_btn = '<a href="../xlsoutput.php" class="s-btn btn btn-default">Export to spreadsheet format</a>';
+    public $spreadsheet_export_btn = '<a href="../spreadsheet.php" class="s-btn btn btn-default">Export to spreadsheet format</a>';
 
     public function __construct()
     {
