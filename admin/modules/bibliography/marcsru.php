@@ -121,7 +121,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     // Set inputer uid
     $data['uid'] = $_SESSION['uid'];
     // Set publishing
-    $e = $record->getField(260);
+    $e = $record->getField(260) ? $e : $record->getField(264);
     if ($e) {
       $place = $e->getSubfield('a');
       if ($place) {
