@@ -1,13 +1,13 @@
 @import "css/font-awesome.min.css";
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
@@ -374,6 +374,7 @@ buttton
   color: #555;
   margin-bottom: 5px;
   background-image: none;
+  display: flex;
 }
 .dateInput {
   width: 160px;
@@ -384,7 +385,7 @@ buttton
   width: 22px;
   height: 22px;
   float: right;
-  margin: -35px;
+  margin: 0px;
   color: #00a9ff;
   cursor: pointer;
 }
