@@ -393,6 +393,7 @@ buttton
   padding: 2px 2px 1px;
   background-image: none;
   line-height: 1.42857143;
+  display: flex;
 }
 .dateInput {
   width: 160px;
@@ -415,7 +416,7 @@ buttton
   width: 22px;
   height: 22px;
   float: right;
-  margin: -35px;
+  margin: 0;
   color: #0051A5;
   cursor: pointer;
 }

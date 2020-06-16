@@ -62,9 +62,7 @@ function downloadFile($url, $path)
     CURLOPT_CUSTOMREQUEST => "GET",
     CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_HTTPHEADER => array(
-      "key: your-api-key"
-    ),
+    CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT']
   ));
 
   $response = curl_exec($curl);
