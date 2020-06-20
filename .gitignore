@@ -1,6 +1,6 @@
 images/barcodes/*
 images/persons/*
-images/docs/*
+#images/docs/*
 images/labels/*
 images/cache/*
 files/*
