@@ -41,20 +41,22 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Easily change About Us information in OPAC (provided as footer). Available in theme customization
+Added : GUI acccess to generate new field for Bibliography and Membership. Available in System menu
 Added : Security enhancement for CRSF (Cross-Site Request Forgery)
 Added : Download book cover directly using url or search through Duckduckgo Service
 Added : Cover image thumbnail in Bibliographic List
 Updated : Item batch detail in Item Code Batch Generator (Options Button)
-Added : Captcha feature to forgot your password recovery mode
+Added : Captcha feature to forgot your password recovery mode (admin login)
 Added : Procurement report in Reporting Modules
-Added : Change logo personification in System Module
-Fixed : Flag icon when change translation
+Added : Change logo personification in System Module. Available in System menu
+Fixed : Flag icon when change translation. Available in System menu
 Updated : Webcam access in HTML5
-Added : Personalized backend user template
-Added : Option for disabling voice in visitor log
+Added : Personalized backend user template. Available in theme customization
+Added : Option for disabling voice in visitor log. Available in System menu
 Added : First row information when exporting and importing bibliography and item data
 Updated : Bahasa Indonesia translation
-Added : Forgot your password recovery mode
+Added : Forgot your password recovery mode (admin login)
 Added : Option to show or hide first column when export or import
 
 SLiMS 9.1.1 (Bulian)
