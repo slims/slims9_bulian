@@ -111,7 +111,10 @@ if (isset($_POST['updateData'])) {
       $img_upload_status = $image_upload->doUpload('image','logo');
       if ($img_upload_status == UPLOAD_SUCCESS) {
         $logo_image = $dbs->escape_string($image_upload->new_filename);
-        $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+        if($update) {
+          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
+        }
       }else{
         utility::jsAlert($img_upload_status->error);
       }
@@ -256,6 +259,16 @@ $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$str_input .= <<<HTML
+<script>
+$('.custom-file input').on('change',function(){
+    //get the file name
+    const fileName = $(this).val();
+    //replace the "Choose a file" label
+    $(this).next('.custom-file-label').html(fileName);
+});
+</script>
+HTML;
 $form->addAnything(__('Logo Image'), $str_input);
 
 /* Form Element(s) */
