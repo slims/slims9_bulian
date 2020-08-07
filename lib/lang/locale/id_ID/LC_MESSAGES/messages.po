@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-07 11:34+0700\n"
-"PO-Revision-Date: 2020-08-07 11:35+0700\n"
+"POT-Creation-Date: 2020-08-07 11:50+0700\n"
+"PO-Revision-Date: 2020-08-07 11:50+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -3000,34 +3000,32 @@ msgid "Print Catalog Card"
 msgstr "Cetak Kartu Katalog"
 
 #: admin/modules/bibliography/submenu.php:44
-#: admin/modules/membership/submenu.php:32
-msgid "Data Export"
-msgstr "Ekspor Bibliografi"
+msgid "Biblio Data Export"
+msgstr "Ekspor Data Biblio"
 
 #: admin/modules/bibliography/submenu.php:44
 msgid "Export Bibliographic Data To CSV format"
 msgstr "Ekspor Data Bibliografi ke Format CSV"
 
 #: admin/modules/bibliography/submenu.php:45
-#: admin/modules/membership/submenu.php:33
-msgid "Data Import"
-msgstr "Impor Bibliografi"
+msgid "Biblio Data Import"
+msgstr "Impor Data Biblio"
 
 #: admin/modules/bibliography/submenu.php:45
 msgid "Import Data to Bibliographic Database from CSV file"
 msgstr "Impor Data ke Bibliografi dari berkas CSV"
 
 #: admin/modules/bibliography/submenu.php:46
-msgid "Item Export"
-msgstr "Ekspor Eksemplar"
+msgid "Biblio Item Export"
+msgstr "Ekspor Data Eksemplar"
 
 #: admin/modules/bibliography/submenu.php:46
 msgid "Export Item/Copies data To CSV format"
 msgstr "Ekspor Item/Salin data ke dalam Format CSV"
 
 #: admin/modules/bibliography/submenu.php:47
-msgid "Item Import"
-msgstr "Impor Eksemplar"
+msgid "Biblio Item Import"
+msgstr "Impor Data Eksemplar"
 
 #: admin/modules/bibliography/submenu.php:47
 msgid "Import Data to Item/Copies database from CSV file"
@@ -5000,8 +4998,16 @@ msgid "Print Member Card"
 msgstr "Cetak Kartu Anggota"
 
 #: admin/modules/membership/submenu.php:32
+msgid "Member Data Export"
+msgstr "Ekspor Data Anggota"
+
+#: admin/modules/membership/submenu.php:32
 msgid "Export Members Data To CSV File"
 msgstr "Ekspor Data Anggota ke berkas CSV"
+
+#: admin/modules/membership/submenu.php:33
+msgid "Member Data Import"
+msgstr "Impor Data Anggota"
 
 #: admin/modules/membership/submenu.php:33
 msgid "Import Members Data From CSV File"
