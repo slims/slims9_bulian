@@ -36,9 +36,8 @@ if (!function_exists('addOrUpdateSetting')) {
   {
     global $dbs;
     $sql_op = new simbio_dbop($dbs);
-    
     foreach ($value as $key => $val) {
-      $settings[$key] = str_replace('\r\n','', $val);
+      $settings[$key] = trim(str_replace(array('\n', '\r','\t', '\\'), '', $val));
     }
     $data['setting_value'] = serialize($settings);
 
@@ -61,7 +60,6 @@ if (!function_exists('addOrUpdateSetting')) {
         if (!$insert) return $dbs->error;
       }
     }
-
     return true;
   }
 }
@@ -180,7 +178,7 @@ if (isset($_GET['customize'])) {
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
   $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
-  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough']] ;</script>";
+  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Source','Bold','Italic','Underline','StrikeThrough','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','-','NumberedList', 'BulletedList','-','Link','Unlink', 'Anchor']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }
@@ -217,7 +215,7 @@ if($_SESSION['uid'] == '1'){
   foreach ($dir_tree as $dir) {
     $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
     if ($dir == $sysconf['template']['theme']) {
-      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp">' . __('Customize') . '</a>';
+      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp" width="600" height="500">' . __('Customize') . '</a>';
     }
 
     $output = '<div class="col-3">';

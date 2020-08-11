@@ -209,10 +209,7 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
         'dbfield' => 'classic_footer_about_us',
         'label' => __('Footer About Us'),
         'type' => 'longtext',
-        'default' => <<<HTML
-<p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features that will help libraries and librarians to do their job easily 
-and quickly. Follow <a target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some features provided by SLiMS.</p>
-HTML,
+        'default' => '<p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features that will help libraries and librarians to do their job easily and quickly. Follow <a target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some features provided by SLiMS.</p>',
         'width' => '100',
         'class' => 'ckeditor',
         'max' => 1000
