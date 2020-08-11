@@ -178,7 +178,7 @@ if (isset($_GET['customize'])) {
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
   $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
-  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Source','Bold','Italic','Underline','StrikeThrough','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','-','NumberedList', 'BulletedList','-','Link','Unlink', 'Anchor']] ;</script>";
+  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Source','Bold','Italic','Underline','-','Link','Unlink', 'Anchor']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }
