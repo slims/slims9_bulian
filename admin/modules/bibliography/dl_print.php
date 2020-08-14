@@ -187,7 +187,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
             $html_str .= '<div class="labelStyle" valign="top">';
             if ($sysconf['print']['label']['include_header_text']) { $html_str .= '<div class="labelHeaderStyle">'.($sysconf['print']['label']['header_text']?$sysconf['print']['label']['header_text']:$sysconf['library_name']).'</div>'; }
             // explode label data by space except callnumber
-            $sliced_label = preg_split("/(?<=\w)\s+(?=[A-Za-z])/m",$label);
+            $sliced_label = preg_split("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m",$label);
             foreach ($sliced_label as $slice_label_item) {
                 $html_str .= $slice_label_item.'<br />';
             }
