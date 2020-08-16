@@ -1415,6 +1415,47 @@ CREATE TABLE `loan_history` (
    KEY `member_name` (`member_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+--
+-- Table structure for table `mst_custom_field`
+--
+
+
+CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+  `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `max` int(11) DEFAULT NULL,
+  `data` text COLLATE utf8_unicode_ci,
+  `indexed` tinyint(1) DEFAULT NULL,
+  `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
+  `width` int(5) DEFAULT '100',
+  `note` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`dbfield`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+--
+-- Table structure for table `files_read`
+--
+
+DROP TABLE IF EXISTS `files_read`;
+CREATE TABLE `files_read` (
+  `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`filelog_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 --
 -- create trigger `delete_loan_history`
 --

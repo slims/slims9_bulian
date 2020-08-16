@@ -1038,6 +1038,7 @@ CREATE TABLE IF NOT EXISTS `loan_history` (
    KEY `member_name` (`member_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
+
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `mst_custom_field` (
   `field_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1056,6 +1057,18 @@ CREATE TABLE IF NOT EXISTS `mst_custom_field` (
   PRIMARY KEY (`dbfield`),
   UNIQUE KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE `files_read` (
+  `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`filelog_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
 
 $query_trigger[] = "
     CREATE TRIGGER `delete_loan_history` AFTER DELETE ON `loan`

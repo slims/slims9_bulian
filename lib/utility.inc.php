@@ -632,4 +632,20 @@ class utility
       }
     }
 
+    public static function dlCount($obj_db, $str_file_id, $str_member_id, $str_user_id)
+    {
+        if (!$obj_db->error) {
+            // log table
+            $_log_date = date('Y-m-d H:i:s');
+            $_log_table = 'files_read';
+            // filter input
+            $str_log_type = $obj_db->escape_string(trim($str_file_id));
+            $str_value_id = $obj_db->escape_string(trim($str_member_id));
+            $str_user_id = $obj_db->escape_string(trim($str_user_id));
+            // insert log data to database
+            @$obj_db->query('INSERT INTO '.$_log_table.'
+            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.$_SERVER[
+			'REMOTE_ADDR'].'\')');
+        }
+    }
 }

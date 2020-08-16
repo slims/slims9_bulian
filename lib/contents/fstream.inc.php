@@ -31,6 +31,8 @@ if (!defined('INDEX_AUTH')) {
 $fileID = isset($_GET['fid']) ? (integer)$_GET['fid'] : 0;
 // get biblioID
 $biblioID = isset($_GET['bid']) ? (integer)$_GET['bid'] : 0;
+$memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
+$userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 
 // query file to database
 $sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
@@ -64,9 +66,11 @@ if ($file_q->num_rows > 0) {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
         require './js/pdfjs/web/viewer.php';
+		utility::dlCount($dbs, $fileID, $memberID, $userID);
         exit();
       }
     } else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
+	  utility::dlCount($dbs, $fileID, $memberID, $userID);
       header('Content-Disposition: inline; filename="' . basename($file_loc) . '"');
       header('Content-Type: ' . $file_d['mime_type']);
       readfile($file_loc);
