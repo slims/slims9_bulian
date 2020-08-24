@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-07 11:50+0700\n"
-"PO-Revision-Date: 2020-08-07 11:50+0700\n"
+"POT-Creation-Date: 2020-08-24 11:43+0700\n"
+"PO-Revision-Date: 2020-08-24 11:43+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
 "X-Poedit-Basepath: ../../../../..\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:21
@@ -2211,6 +2211,7 @@ msgstr "Anda akan memperbaharui data eksemplar"
 #: admin/modules/master_file/author.php:146
 #: admin/modules/master_file/author.php:158
 #: admin/modules/master_file/submenu.php:33
+#: admin/modules/reporting/customs/dl_counter.php:75
 #: admin/modules/reporting/customs/titles_list.php:75
 #: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
 msgid "Author"
@@ -2288,6 +2289,7 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/membership/import.php:46
 #: admin/modules/membership/member_type.php:49
 #: admin/modules/reporting/customs/class_recap.php:42
+#: admin/modules/reporting/customs/dl_counter.php:42
 #: admin/modules/reporting/customs/due_date_warning.php:41
 #: admin/modules/reporting/customs/fines_report.php:41
 #: admin/modules/reporting/customs/item_titles_list.php:41
@@ -2719,7 +2721,7 @@ msgstr "Setelan tersimpan"
 #: admin/modules/bibliography/print_settings.php:78
 #: admin/modules/system/holiday.php:326 admin/modules/system/index.php:231
 #: admin/modules/system/membercard_theme.php:99
-#: admin/modules/system/theme.php:139 admin/modules/system/ucsetting.php:76
+#: admin/modules/system/theme.php:137 admin/modules/system/ucsetting.php:76
 msgid "Save Settings"
 msgstr "Simpan Pengaturan"
 
@@ -4946,7 +4948,7 @@ msgstr "Lama Peminjaman (Dalam Hari)"
 #: admin/modules/system/index.php:338 admin/modules/system/index.php:345
 #: admin/modules/system/index.php:351 admin/modules/system/index.php:357
 #: admin/modules/system/index.php:363 admin/modules/system/index.php:381
-#: admin/modules/system/ucsetting.php:89
+#: admin/modules/system/ucsetting.php:89 template/default/tinfo.inc.php:223
 msgid "Enable"
 msgstr "Dimungkinkan"
 
@@ -4955,7 +4957,7 @@ msgstr "Dimungkinkan"
 #: admin/modules/system/index.php:337 admin/modules/system/index.php:344
 #: admin/modules/system/index.php:350 admin/modules/system/index.php:356
 #: admin/modules/system/index.php:362 admin/modules/system/index.php:380
-#: admin/modules/system/ucsetting.php:88
+#: admin/modules/system/ucsetting.php:88 template/default/tinfo.inc.php:224
 msgid "Disable"
 msgstr "Tidak mungkin"
 
@@ -5047,6 +5049,7 @@ msgid "Custom Recapitulations"
 msgstr "Rekapitulasi"
 
 #: admin/modules/reporting/customs/class_recap.php:64
+#: admin/modules/reporting/customs/dl_counter.php:65
 #: admin/modules/reporting/customs/due_date_warning.php:64
 #: admin/modules/reporting/customs/fines_report.php:74
 #: admin/modules/reporting/customs/item_titles_list.php:64
@@ -5072,6 +5075,7 @@ msgid "Recap By"
 msgstr "Rekap berdasar"
 
 #: admin/modules/reporting/customs/class_recap.php:76
+#: admin/modules/reporting/customs/dl_counter.php:88
 #: admin/modules/reporting/customs/due_date_warning.php:83
 #: admin/modules/reporting/customs/fines_report.php:103
 #: admin/modules/reporting/customs/item_titles_list.php:139
@@ -5209,11 +5213,34 @@ msgstr "Daftar Denda Anggota"
 msgid "Procurement Report"
 msgstr "Laporan Perolehan"
 
-#: admin/modules/reporting/customs/due_date_warning.php:65
-msgid "This report loan items which will due in 3 to 0 days"
-msgstr ""
-"Melaporkan peminjaman eksemplar yang akan terlambat dalam 3 sampai 0 hari"
+#: admin/modules/reporting/customs/customs_report_list.inc.php:45
+msgid "Download Counter"
+msgstr "Penghitung Unduhan"
 
+#: admin/modules/reporting/customs/customs_report_list.inc.php:45
+msgid "Downloaded Attachment Report"
+msgstr "Laporan Lampiran Terunduh"
+
+#: admin/modules/reporting/customs/dl_counter.php:62
+msgid "Attachment Report"
+msgstr "Laporan Lampiran"
+
+#: admin/modules/reporting/customs/dl_counter.php:71
+#: admin/modules/reporting/customs/item_titles_list.php:70
+#: admin/modules/reporting/customs/item_usage.php:69
+#: admin/modules/reporting/customs/reserve_list.php:73
+#: admin/modules/reporting/customs/titles_list.php:71
+#: admin/modules/stock_take/lost_item_list.php:63
+msgid "Title/ISBN"
+msgstr "Judul/ISBN"
+
+#: admin/modules/reporting/customs/dl_counter.php:79
+#: admin/modules/reporting/customs/item_titles_list.php:129
+#: admin/modules/reporting/customs/titles_list.php:130
+msgid "Publish year"
+msgstr "Tahun terbit"
+
+#: admin/modules/reporting/customs/dl_counter.php:83
 #: admin/modules/reporting/customs/due_date_warning.php:77
 #: admin/modules/reporting/customs/item_titles_list.php:133
 #: admin/modules/reporting/customs/loan_history.php:125
@@ -5226,6 +5253,7 @@ msgstr ""
 msgid "Record each page"
 msgstr "Cantuman per halaman"
 
+#: admin/modules/reporting/customs/dl_counter.php:84
 #: admin/modules/reporting/customs/due_date_warning.php:79
 #: admin/modules/reporting/customs/item_titles_list.php:135
 #: admin/modules/reporting/customs/loan_history.php:127
@@ -5238,6 +5266,7 @@ msgstr "Cantuman per halaman"
 msgid "Set between 20 and 200"
 msgstr "Buat antara 20 dan 200"
 
+#: admin/modules/reporting/customs/dl_counter.php:87
 #: admin/modules/reporting/customs/due_date_warning.php:82
 #: admin/modules/reporting/customs/fines_report.php:102
 #: admin/modules/reporting/customs/item_titles_list.php:138
@@ -5255,6 +5284,11 @@ msgstr "Buat antara 20 dan 200"
 #: admin/modules/stock_take/lost_item_list.php:130
 msgid "Show More Filter Options"
 msgstr "Tunjukan Opsi Filter Lebih Banyak"
+
+#: admin/modules/reporting/customs/due_date_warning.php:65
+msgid "This report loan items which will due in 3 to 0 days"
+msgstr ""
+"Melaporkan peminjaman eksemplar yang akan terlambat dalam 3 sampai 0 hari"
 
 #: admin/modules/reporting/customs/fines_report.php:48
 #: admin/modules/reporting/customs/item_usage.php:109
@@ -5380,23 +5414,10 @@ msgstr "Des"
 msgid "Fines count report for"
 msgstr "Laporan perhitungan dengan untuk"
 
-#: admin/modules/reporting/customs/item_titles_list.php:70
-#: admin/modules/reporting/customs/item_usage.php:69
-#: admin/modules/reporting/customs/reserve_list.php:73
-#: admin/modules/reporting/customs/titles_list.php:71
-#: admin/modules/stock_take/lost_item_list.php:63
-msgid "Title/ISBN"
-msgstr "Judul/ISBN"
-
 #: admin/modules/reporting/customs/item_titles_list.php:90
 #: admin/modules/reporting/customs/titles_list.php:91
 msgid "Press Ctrl and click to select multiple entries"
 msgstr "Tekan Ctrl dan klik untuk memilih lebih dari satu"
-
-#: admin/modules/reporting/customs/item_titles_list.php:129
-#: admin/modules/reporting/customs/titles_list.php:130
-msgid "Publish year"
-msgstr "Tahun terbit"
 
 #: admin/modules/reporting/customs/loan_by_class.php:70
 msgid "0 Classes"
@@ -7018,7 +7039,7 @@ msgid "Time visitor limitation (in minute)"
 msgstr "Maksimal waktu kunjungan (dalam menit)"
 
 #: admin/modules/system/membercard_theme.php:77
-#: admin/modules/system/theme.php:107
+#: admin/modules/system/theme.php:105
 msgid "Error saving custom data!"
 msgstr "Galat saat menyimpan data kustom!"
 
@@ -7028,7 +7049,7 @@ msgstr "Data kustom tersimpan!"
 
 #: admin/modules/system/membercard_theme.php:132
 #: admin/modules/system/membercard_theme.php:135
-#: admin/modules/system/theme.php:173 admin/modules/system/theme.php:176
+#: admin/modules/system/theme.php:171 admin/modules/system/theme.php:174
 msgid "This theme not customizable"
 msgstr "Tema tidak dapat diubah"
 
@@ -7038,21 +7059,21 @@ msgid "Membercard Configuration"
 msgstr "Konfigurasi Kartu Anggota"
 
 #: admin/modules/system/membercard_theme.php:156
-#: admin/modules/system/theme.php:196
+#: admin/modules/system/theme.php:194
 msgid "Customize theme preferences"
 msgstr "Penyesuaian pada tema pilihan"
 
 #: admin/modules/system/membercard_theme.php:175
 #: admin/modules/system/membercard_theme.php:209
-#: admin/modules/system/theme.php:218 admin/modules/system/theme.php:251
-#: admin/modules/system/theme.php:283 admin/modules/system/theme.php:297
+#: admin/modules/system/theme.php:216 admin/modules/system/theme.php:249
+#: admin/modules/system/theme.php:281 admin/modules/system/theme.php:295
 msgid "Activate"
 msgstr "Aktivasi"
 
 #: admin/modules/system/membercard_theme.php:177
 #: admin/modules/system/membercard_theme.php:210
-#: admin/modules/system/theme.php:220 admin/modules/system/theme.php:253
-#: admin/modules/system/theme.php:284 admin/modules/system/theme.php:298
+#: admin/modules/system/theme.php:218 admin/modules/system/theme.php:251
+#: admin/modules/system/theme.php:282 admin/modules/system/theme.php:296
 msgid "Customize"
 msgstr "Kustomisasi"
 
@@ -7223,27 +7244,27 @@ msgstr "Simpan cantuman catatan ke dalam berkas?"
 msgid "Save Logs To File"
 msgstr "Simpan Catatan ke Dalam Berkas"
 
-#: admin/modules/system/theme.php:109
+#: admin/modules/system/theme.php:107
 msgid "Custom data saved! Reload the page to see changes."
 msgstr "Data kustom tersimpan! Mula-ulang laman untuk melihat perubahan."
 
-#: admin/modules/system/theme.php:113
+#: admin/modules/system/theme.php:111
 msgid "This theme not customizable. "
 msgstr "Tema tidak dapat diubah. "
 
-#: admin/modules/system/theme.php:193 admin/modules/system/theme.php:220
+#: admin/modules/system/theme.php:191 admin/modules/system/theme.php:218
 msgid "Theme Configuration"
 msgstr "Pengaturan Tema"
 
-#: admin/modules/system/theme.php:214
+#: admin/modules/system/theme.php:212
 msgid "Public Template"
 msgstr "Templat Publik"
 
-#: admin/modules/system/theme.php:248
+#: admin/modules/system/theme.php:246
 msgid "Admin Template"
 msgstr "Templat Admin"
 
-#: admin/modules/system/theme.php:253
+#: admin/modules/system/theme.php:251
 msgid "Admin Theme Configuration"
 msgstr "Konfigurasi Tema Admin"
 
@@ -7756,7 +7777,7 @@ msgstr "Unduh Semua Sejarah Pinjaman"
 
 #: lib/contents/member.inc.php:465
 msgid "Reserve title(s) on Basket"
-msgstr "Reservasi ditambahkan ke dalam Keranjang"
+msgstr "Kirim pesanan dalam Keranjang"
 
 #: lib/contents/member.inc.php:466
 msgid "Clear Basket"
@@ -8505,7 +8526,7 @@ msgstr "Anda harus <i>login</i> sebelum memberikan komentar"
 #: template/default/parts/_home.php:28
 #: template/default/parts/_modal_topic.php:15
 msgid "Select the topic you are interested in"
-msgstr "PIlih subjek yang menarik bagi Anda"
+msgstr "Pilih subjek yang menarik bagi Anda"
 
 #: template/default/parts/_home.php:33
 #: template/default/parts/_modal_topic.php:73
@@ -8783,6 +8804,10 @@ msgstr "URL Instagram"
 msgid "Footer About Us"
 msgstr "Tulisan Tentang Kami"
 
+#: template/default/tinfo.inc.php:219
+msgid "Visitor log voice"
+msgstr "Suara penghitung pengunjung"
+
 #: template/default/visitor_template.php:29
 msgid "Welcome to "
 msgstr "Selamat datang di "
@@ -8807,9 +8832,6 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
-
-#~ msgid "Visitor log voice"
-#~ msgstr "Suara penghitung pengunjung"
 
 #~ msgid "Debet"
 #~ msgstr "Debit"
