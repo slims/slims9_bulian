@@ -95,6 +95,14 @@ include LIB . "contents/chat.php"; ?>
 <?php include "_modal_topic.php"; ?>
 <?php include "_modal_advanced.php"; ?>
 
+<!-- // Load highlight -->
+<script src="<?= JWB; ?>highlight.js"></script>
+<?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != ''))   : ?>
+<script>
+  $('.card-link, p, dl > dd').highlight(<?= $searched_words_js_array; ?>);
+</script>
+<?php endif; ?>
+
 <!-- // load our vue app.js -->
 <script src="<?php echo assets('js/app.js?v=' . date('Ymd-his')); ?>"></script>
 <script src="<?php echo assets('js/app_jquery.js?v=' . date('Ymd-his')); ?>"></script>
