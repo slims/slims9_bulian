@@ -305,7 +305,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             WHERE m.member_id=\''.$memberID.'\'');
         $mtype_d = $mtype_q->fetch_row();
         $expire_date = simbio_date::getNextDate($mtype_d[0], $curr_date);
-        @$dbs->query('UPDATE member SET expire_date=\''.$expire_date.'\' WHERE member_id=\''.$memberID.'\'');
+        @$dbs->query('UPDATE member SET register_date=\''.date("Y-m-d").'\',  expire_date=\''.$expire_date.'\', last_update=\''.date("y-m-d").'\' WHERE member_id=\''.$memberID.'\'');
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')');
         $num_extended++;
