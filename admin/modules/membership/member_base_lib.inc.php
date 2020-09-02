@@ -144,9 +144,10 @@ class member
 
     # get an array of member's overdue data
     public static function getOverduedLoan($obj_db, $str_member_id)
-    {
+    {   //      
+
         $_overdues = array();
-        $_ovd_title_q = $obj_db->query(sprintf('SELECT l.item_code, i.price, i.price_currency,
+        $_ovd_title_q = $obj_db->query(sprintf('SELECT l.loan_id, l.item_code, i.price, i.price_currency,
             b.title, l.loan_date,
             l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\'
             FROM loan AS l
@@ -175,6 +176,13 @@ class member
         // get message template
         ob_start();
         include SB.'admin/admin_template/overdue-mail-tpl.php';
+        require MDLBS . 'circulation/circulation_base_lib.inc.php';
+
+        $circulation = new circulation($this->obj_db, $this->member_id);
+        $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
+        $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+        $circulation->holiday_date = $_SESSION['holiday_date'];
+
         $_msg_tpl = ob_get_clean();
 
         // date
@@ -186,7 +194,7 @@ class member
         $_arr_overdued = self::getOverduedLoan($this->obj_db, $this->member_id);
         foreach ($_arr_overdued as $_overdue) {
             $_overdue_data .= '<tr>';
-            $_overdue_data .= '<td>'.$_overdue['title'].'</td><td>'.$_overdue['item_code'].'</td><td>'.$_overdue['loan_date'].'</td><td>'.$_overdue['due_date'].'</td><td>'.$_overdue['Overdue Days'].' ' . __('days') . '</td>'."\n";
+            $_overdue_data .= '<td>'.$_overdue['title'].'</td><td>'.$_overdue['item_code'].'</td><td>'.$_overdue['loan_date'].'</td><td>'.$_overdue['due_date'].'</td><td>'.$circulation->countOverdueValue($_overdue['loan_id'], date('Y-m-d'))['days'].' ' . __('days') . '</td>'."\n";
             $_overdue_data .= '</tr>';
         }
         $_overdue_data .= '</table>';
@@ -198,6 +206,7 @@ class member
 
         // e-mail setting
         // $_mail->SMTPDebug = 2;
+        $_mail->SMTPSecure = $sysconf['mail']['SMTPSecure']; 
         $_mail->SMTPAuth = $sysconf['mail']['auth_enable'];
         $_mail->Host = $sysconf['mail']['server'];
         $_mail->Port = $sysconf['mail']['server_port'];

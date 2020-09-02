@@ -498,6 +498,7 @@ if ($sysconf['captcha']['forgot']['enable']) {
 /**
  * Mailing Settings
  */
+$sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
 $sysconf['mail']['enable'] = true;
 $sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
 $sysconf['mail']['server_port'] = 465; // the SMTP port
