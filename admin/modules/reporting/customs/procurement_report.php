@@ -53,6 +53,7 @@ if (!$reportView) {
     // table start
     $first_header = '';
     $second_header = '';
+    $dataset = array();
     $detail_class_coll = '<th class="text-center small">'.__('t').'</th><th class="text-center small">'.__('i').'</th>';
     // table header
     $output = '<table class="s-table table table-sm table-bordered mb-0">';
@@ -67,7 +68,7 @@ if (!$reportView) {
     $output .= '<tr>'.$second_header.$detail_class_coll.'</tr>';
 
     // get year data from databse
-    $_q = $dbs->query("SELECT DISTINCT YEAR(input_date) AS YEAR FROM item ORDER BY input_date DESC");
+    $_q = $dbs->query("SELECT YEAR(input_date) AS YEAR FROM item GROUP BY YEAR(input_date)");
 
     if($_q->num_rows >0){
         while ($_d = $_q->fetch_row()) {
