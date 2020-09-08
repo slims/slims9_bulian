@@ -46,6 +46,11 @@ require LIB . 'member_logon.inc.php';
 $is_member_login = utility::isMemberLogin();
 
 $info = __('Welcome to Member\'s Area where you can view your current loan information and view your membership status.');
+if(isset($_SESSION['info'])){
+    $info .= PHP_EOL.'<div class="alert alert-'.$_SESSION['info']['status'].'">'.$_SESSION['info']['data'].'</div>';
+    unset($_SESSION['info']);
+    $_SESSION['m_mark_biblio'] = array();
+}
 
 // member's password changing flags
 define('CURR_PASSWD_WRONG', -1);
@@ -113,12 +118,12 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
 
         if ($logon->valid($dbs)) {
             // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', 'Login success for member ' . $username . ' from address ' . $_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
             header('Location: index.php?p=member');
             exit();
         } else {
             // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', 'Login FAILED for member ' . $username . ' from address ' . $_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
             // message
             $msg = '<div class="errorBox">' . __('Login FAILED! Wrong username or password!') . '</div>';
             simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
@@ -196,6 +201,19 @@ if (isset($_POST['basketRemove']) && isset($_POST['basket']) && count($_POST['ba
 // biblio basket clear process
 if (isset($_POST['clear_biblio'])) {
     $_SESSION['m_mark_biblio'] = array();
+}
+
+// send reserve e-mail
+if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
+    $mail = sendReserveMail();
+        // die();
+    if ($mail['status'] != 'ERROR') {
+        $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
+        $_SESSION['info']['status'] = 'success';
+    } else {
+        $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
+        $_SESSION['info']['status'] = 'danger';
+    }
 }
 
 ?>
@@ -522,6 +540,7 @@ if ($is_member_login) :
 
         // e-mail setting
         // $_mail->SMTPDebug = 2;
+        $_mail->SMTPSecure = $sysconf['mail']['SMTPSecure'];
         $_mail->SMTPAuth = $sysconf['mail']['auth_enable'];
         $_mail->Host = $sysconf['mail']['server'];
         $_mail->Port = $sysconf['mail']['server_port'];
