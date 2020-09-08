@@ -559,7 +559,50 @@ if (!$in_pop_up) {
 /* search form end */
 }
 /* main content */
-if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+if(isset($_GET['action']) && $_GET['action'] == 'history'){
+
+    $biblioID = utility::filterData('biblioID', 'get', true, true, true);
+    $table_spec = 'biblio_log AS bl';
+    $criteria = 'bl.biblio_id='.$biblioID;
+    // create datagrid
+    $datagrid = new simbio_datagrid();
+    $datagrid->setSQLColumn('bl.date AS \''.__('Date').'\'',
+      'bl.realname AS \''.__('User Name').'\'',
+      'bl.additional_information AS \''.__('Additional Information').'\'');
+    $datagrid->modifyColumnContent(2, 'callback{affectedDetail}');       
+    $datagrid->setSQLorder('bl.biblio_log_id DESC');
+    $datagrid->sql_group_by = 'bl.date';
+    $datagrid->setSQLCriteria($criteria);
+    // set table and table header attributes
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
+    $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+
+    function affectedDetail($obj_db,$array_data){
+      $_q = $obj_db->query("SELECT action,affectedrow,title,additional_information FROM biblio_log WHERE `date` LIKE '".$array_data[0]."'");
+      $str = '';
+      $title  = '';
+      if($_q->num_rows > 0){
+        while ($_data = $_q->fetch_assoc()) {
+          $title = $_data['title'];
+          $str .= ' - '.$_data['action'].' '.$_data['affectedrow'].' : <i>'.$_data['additional_information'].'</i><br/>';
+        }
+      }
+      return $title.'</br>'.$str;
+    }
+
+    // put the result into variables
+    $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20,false);
+
+    $_q = $dbs->query("SELECT title FROM biblio WHERE biblio_id=".$biblioID);
+    if($_q->num_rows > 0){
+      $_d = $_q->fetch_row();
+      echo '<div class="infoBox">'.__('Biblio Log').' : <strong>'.$_d[0].'</strong></div>';   
+    }
+
+    echo $datagrid_result;
+}
+
+elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
   if ( (isset($_GET['action'])) AND ($_GET['action'] == 'detail') ) {
     # ADV LOG SYSTEM - STIIL EXPERIMENTAL
     $log = new AlLibrarian('1153', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
@@ -588,6 +631,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
   $form->table_header_attr = 'class="alterCell"';
   $form->table_content_attr = 'class="alterCell2"';
+
+   //custom button
+  if(isset($itemID)){
+    $form->addCustomBtn('history',__('Log'),$_SERVER['PHP_SELF'].'?action=history&ajaxLoad=true&biblioID='.$itemID,' class="s-btn btn btn-success"');
+  }
 
   $visibility = 'makeVisible s-margin__bottom-1';
   // edit mode flag set
