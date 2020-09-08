@@ -17,7 +17,7 @@
                             <input type="hidden" name="search" value="search">
                             <input ref="keywords" value="<?= htmlentities(getQuery('keywords')) ?>" v-model.trim="keywords"
                                    @focus="searchOnFocus" @blur="searchOnBlur" type="text" id="search-input"
-                                   name="keywords" class="input-transparent w-100"
+                                   name="keywords" class="input-transparent w-100" autocomplete="off"
                                    placeholder="<?= __('Enter keyword to search collection...');?>"/>
                         </form>
                     </div>
