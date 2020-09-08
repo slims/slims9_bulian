@@ -71,6 +71,10 @@
                     <?php
                   }
                   }
+                  } elseif ($sysconf['enable_search_clustering']) {
+                      if ($sysconf['index']['engine']['enable']) {
+                          echo '<div class="cluster">'.$biblio_list->getClustering().'</div>';
+                      }
                   }
                   ?>
                 </div>
