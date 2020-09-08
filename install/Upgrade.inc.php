@@ -869,6 +869,17 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
       UNIQUE KEY `field_id` (`field_id`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
+    $sql['create'][] = "
+    CREATE TABLE IF NOT EXISTS `files_read` (
+      `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+      `file_id` int(11) NOT NULL,
+      `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+      `member_id` int(11) DEFAULT NULL,
+      `user_id` int(11) DEFAULT NULL,
+      `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+      PRIMARY KEY (`filelog_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
     $error = $this->slims->query($sql, ['alter','insert','create']);
 
     /**
