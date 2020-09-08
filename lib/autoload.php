@@ -9,7 +9,10 @@
 
 $namespaces = [
   "SLiMS\\" => "/",
-  "Volnix\\CSRF\\" => "/csrf/src/"
+  "Volnix\\CSRF\\" => "/csrf/src/",
+  "Ramsey\\Uuid\\" => "/uuid/src/",
+  "Ramsey\\Collection\\" => "/collection/src/",
+  "Brick\\Math\\" => "/math/src/",
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {
