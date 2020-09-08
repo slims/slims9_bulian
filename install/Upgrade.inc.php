@@ -844,6 +844,10 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['alter'][] = "ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;";
 
+    $sql['alter'][] = "ALTER TABLE `backup_log` CHANGE `backup_time` `backup_time` datetime NULL AFTER `user_id`;";
+
+    $sql['alter'][] = "ALTER TABLE `user` CHANGE `input_date` `input_date` date NULL AFTER `groups`;";
+
     $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
 
     $sql['create'][] = "
