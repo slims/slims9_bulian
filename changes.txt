@@ -39,8 +39,14 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.x.x (Bulian)
+SLiMS 9.9.0 (Bulian)
 ========================================================================
+Fixed : Invalid date on upgrade, especially upgrade from SLiMS 5 Cendana version and under 
+Added : File attachment download counter report
+Added : Biblio log preview
+Added : Upload picture to and from local server in ckeditor
+Updated : ckeditor to version 4
+Added : Search cluster (on default template) for ElasticSearch indexing tool
 Added : Easily change About Us information in OPAC (provided as footer). Available in theme customization
 Added : GUI acccess to generate new field for Bibliography and Membership. Available in System menu
 Added : Security enhancement for CRSF (Cross-Site Request Forgery)
