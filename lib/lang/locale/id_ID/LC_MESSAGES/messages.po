@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-09 14:16+0700\n"
-"PO-Revision-Date: 2020-09-09 14:16+0700\n"
+"POT-Creation-Date: 2020-09-09 14:35+0700\n"
+"PO-Revision-Date: 2020-09-09 14:37+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -611,6 +611,7 @@ msgstr "ID Anggota"
 #: admin/modules/membership/member_base_lib.inc.php:193
 #: admin/modules/reporting/customs/class_recap.php:94
 #: admin/modules/reporting/customs/class_recap.php:96
+#: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_counter.php:184
 #: admin/modules/reporting/customs/item_titles_list.php:158
 #: admin/modules/reporting/customs/item_usage.php:108
@@ -2673,6 +2674,7 @@ msgid "Private"
 msgstr "Tertutup"
 
 #: admin/modules/bibliography/pop_attach.php:242
+#: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_counter.php:184
 msgid "Access"
 msgstr "Akses"
@@ -5183,13 +5185,14 @@ msgstr "Rekap judul dan koleksi berdasar"
 #: admin/modules/reporting/customs/loan_by_class.php:271
 #: admin/modules/reporting/customs/visitor_report.php:185
 #: admin/modules/reporting/customs/visitor_report_day.php:143
-#: admin/modules/reporting/report_dbgrid.inc.php:90
+#: admin/modules/reporting/report_dbgrid.inc.php:92
 msgid "Print Current Page"
 msgstr "Cetak Halaman ini"
 
 #: admin/modules/reporting/customs/class_recap.php:272
 #: admin/modules/reporting/customs/loan_by_class.php:272
 #: admin/modules/reporting/customs/pop_procurement_list.php:98
+#: admin/modules/reporting/report_dbgrid.inc.php:42
 msgid "Export to spreadsheet format"
 msgstr "Ekspor ke format <i>spreadsheet</i>"
 
@@ -5363,10 +5366,12 @@ msgstr "Buat antara 20 dan 200"
 msgid "Show More Filter Options"
 msgstr "Tunjukan Opsi Filter Lebih Banyak"
 
+#: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_counter.php:184
 msgid "File title"
 msgstr "Judul berkas"
 
+#: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_counter.php:184
 #: admin/modules/system/custom_field.php:265
 msgid "Type"
@@ -5916,11 +5921,11 @@ msgstr ""
 "GALAT! Laporan Keanggotaan gagal untuk dibuat, mungkin karena direktori "
 "{direktori} tidak bisa ditulisi"
 
-#: admin/modules/reporting/report_dbgrid.inc.php:90
+#: admin/modules/reporting/report_dbgrid.inc.php:92
 msgid "record(s) found. Currently displaying page"
 msgstr "cantuman ditemukan. Menampilkan halaman"
 
-#: admin/modules/reporting/report_dbgrid.inc.php:90
+#: admin/modules/reporting/report_dbgrid.inc.php:92
 msgid "record each page"
 msgstr "cantuman setiap halamannya"
 
