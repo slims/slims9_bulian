@@ -98,7 +98,7 @@ if (!$reportView) {
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
-    $reportgrid->setSQLColumn('b.title Title', 'f.file_title `File title`', 'f.mime_type Type', 'count(fr.filelog_id) Access');
+    $reportgrid->setSQLColumn('b.title `'.__('Title').'`', 'f.file_title `'.__('File title').'`', 'f.mime_type `'.__('Type').'`', 'count(fr.filelog_id) `'.__('Access').'`');
     $reportgrid->setSQLorder('b.title ASC');
 //    $reportgrid->invisible_fields = array(0);
 
