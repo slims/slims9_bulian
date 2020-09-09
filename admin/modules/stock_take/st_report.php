@@ -21,7 +21,7 @@
 /* Stock Take */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+defined('INDEX_AUTH') OR define('INDEX_AUTH', '1');
 
 // check if this file included directly
 if (!defined('REPECT_INCLUDE')) {
