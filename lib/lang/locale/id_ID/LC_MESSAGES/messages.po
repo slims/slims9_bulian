@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-09 12:51+0700\n"
-"PO-Revision-Date: 2020-09-09 12:51+0700\n"
+"POT-Creation-Date: 2020-09-09 14:16+0700\n"
+"PO-Revision-Date: 2020-09-09 14:16+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -611,6 +611,7 @@ msgstr "ID Anggota"
 #: admin/modules/membership/member_base_lib.inc.php:193
 #: admin/modules/reporting/customs/class_recap.php:94
 #: admin/modules/reporting/customs/class_recap.php:96
+#: admin/modules/reporting/customs/dl_counter.php:184
 #: admin/modules/reporting/customs/item_titles_list.php:158
 #: admin/modules/reporting/customs/item_usage.php:108
 #: admin/modules/reporting/customs/loan_history.php:85
@@ -2672,6 +2673,7 @@ msgid "Private"
 msgstr "Tertutup"
 
 #: admin/modules/bibliography/pop_attach.php:242
+#: admin/modules/reporting/customs/dl_counter.php:184
 msgid "Access"
 msgstr "Akses"
 
@@ -5361,6 +5363,15 @@ msgstr "Buat antara 20 dan 200"
 msgid "Show More Filter Options"
 msgstr "Tunjukan Opsi Filter Lebih Banyak"
 
+#: admin/modules/reporting/customs/dl_counter.php:184
+msgid "File title"
+msgstr "Judul berkas"
+
+#: admin/modules/reporting/customs/dl_counter.php:184
+#: admin/modules/system/custom_field.php:265
+msgid "Type"
+msgstr "Jenis"
+
 #: admin/modules/reporting/customs/due_date_warning.php:65
 msgid "This report loan items which will due in 3 to 0 days"
 msgstr ""
@@ -5488,7 +5499,7 @@ msgstr "Des"
 
 #: admin/modules/reporting/customs/fines_report.php:136
 msgid "Fines count report for"
-msgstr "Laporan perhitungan dengan untuk"
+msgstr "Laporan perhitungan denda untuk"
 
 #: admin/modules/reporting/customs/item_titles_list.php:90
 #: admin/modules/reporting/customs/titles_list.php:91
@@ -6832,10 +6843,6 @@ msgid ""
 msgstr ""
 "<strong>Peringatan</strong> : Memperbarui daftar data atau tabel utama akan "
 "menghapus konten dalam tabel ini"
-
-#: admin/modules/system/custom_field.php:265
-msgid "Type"
-msgstr "Jenis"
 
 #: admin/modules/system/envinfo.php:50
 msgid "Operating System"
