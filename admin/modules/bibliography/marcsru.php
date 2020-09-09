@@ -58,7 +58,7 @@ while ($server = $server_q->fetch_assoc()) {
 if (isset($_GET['marc_SRU_source'])) {
     $zserver = trim(urldecode($_GET['marc_SRU_source']));
 } else {
-    $zserver = 'http://opac.pnri.go.id/sru.aspx';
+    $zserver = 'https://opac.perpusnas.go.id/sru.aspx';
 }
 
 function getAcronym($sentence)
