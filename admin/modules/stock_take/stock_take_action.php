@@ -63,15 +63,15 @@ if (isset($_POST['itemCode'])) {
     if ($item_check->num_rows > 0) {
         if ($item_check_d['status'] == 'l') {
             // record to log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', sprintf('Stock Take ERROR : Item %s (%s) is currently ON LOAN',$item_check_d['title'],$item_check_d['item_code']));
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : '.sprintf(__('Item %s (%s) is currently ON LOAN'),$item_check_d['title'],$item_check_d['item_code']));
             echo '<script type="text/javascript">'."\n";
-            echo 'parent.$(\'#stError\').html(\''.sprintf('Item %s is currently ON LOAN', $item_code).'\')';
+            echo 'parent.$(\'#stError\').html(\''.sprintf(__('Item %s is currently ON LOAN'), $item_code).'\')';
             echo '.css( {\'display\': \'block\'} );'."\n";
             echo 'parent.$(\'#itemCode\').val(\'\').focus();'."\n";
             echo '</script>';
         } else if ($item_check_d['status'] == 'e') {
             echo '<script type="text/javascript">'."\n";
-            echo 'parent.$(\'#stError\').html(\''.sprintf('Item %s is already SCANNED!', $item_code).'\')';
+            echo 'parent.$(\'#stError\').html(\''.sprintf(__('Item %s is already SCANNED!'), $item_code).'\')';
             echo '.css( {\'display\': \'block\'} );'."\n";
             echo 'parent.$(\'#itemCode\').val(\'\').focus();'."\n";
             echo '</script>';
@@ -90,9 +90,9 @@ if (isset($_POST['itemCode'])) {
         }
     } else {
         // record to log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', sprintf('Stock Take ERROR : Item Code (%s) doesnt exists in stock take data. Invalid Item Code OR Maybe out of Stock Take range',$item_code));
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take','Stock Take ERROR : '.sprintf(__('Item Code (%s) doesnt exists in stock take data. Invalid Item Code OR Maybe out of Stock Take range'),$item_code));
         echo '<script type="text/javascript">'."\n";
-        echo 'parent.$(\'#stError\').html(\''.sprinf('Item Code %s doesnt exists in stock take data.\\nInvalid Item Code OR Maybe out of Stock Take range',$item_code).'\')';
+        echo 'parent.$(\'#stError\').html(\''.sprintf(__('Item Code %s doesnt exists in stock take data.\\nInvalid Item Code OR Maybe out of Stock Take range'),$item_code).'\')';
         echo '.css( {\'display\': \'block\'} );'."\n";
         echo 'parent.$(\'#itemCode\').val(\'\').focus();'."\n";
         echo '</script>';
