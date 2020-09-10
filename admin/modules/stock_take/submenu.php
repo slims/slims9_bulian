@@ -36,8 +36,8 @@ if ($stk_query->num_rows) {
     $menu[] = array(__('Current Lost Item'), MWB.'stock_take/lost_item_list.php', __('View Lost Item in Current Stock Take Proccess'));
     $menu[] = array(__('Stock Take Log'), MWB.'stock_take/st_log.php', __('View Log of Current Stock Take Proccess'));
     $menu[] = array(__('Upload List'), MWB.'stock_take/st_upload.php', __('Upload List in text file'));
-	if($_SESSION['uid'] == '1') { 
-    $menu[] = array(__('Resynchronize'), MWB.'stock_take/resync.php', __('Resynchronize bibliographic data with current stock take'));	  
+    $menu[] = array(__('Resynchronize'), MWB.'stock_take/resync.php', __('Resynchronize bibliographic data with current stock take'));	 
+	if($_SESSION['uid'] == '1') {
     $menu[] = array(__('Finish Stock Take'), MWB.'stock_take/finish.php', __('Finish Current Stock Take Proccess'));
 	}
 } else {

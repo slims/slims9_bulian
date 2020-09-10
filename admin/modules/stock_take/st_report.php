@@ -94,6 +94,8 @@ if ($stk_query->num_rows < 1) {
     $checked_procent = floor(($checked_count/$stk_data['total_item_stock_taked'])*100);
     $progress_bar = '<div style="height: 15px; background-color: red;"><div style="height: 15px; width: '.$checked_procent.'%; background-color: #3161ff;">&nbsp;</div></div>';
     $report_row[__('Total Checked/Scanned Items')] = $checked_count.' ('.$checked_procent.'%) '.$progress_bar;
+    $report_row[ __('Initializer')] = $stk_data['init_user'];
+    
     // stock take participants data
     $report_row[__('Stock Take Participants')] = '<ul>';
         // get other stock take users

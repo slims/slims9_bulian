@@ -88,7 +88,7 @@ if (isset($_POST['itemCode'])) {
             //update stocktake participants
             //get user participants
             $user = array();
-            $user[] = $_SESSION['realname'];
+            $user[$_SESSION['realname']] = $_SESSION['realname'];
             $stock_take_users = serialize($user);
             $_q = $dbs->query("SELECT stock_take_users FROM stock_take WHERE is_active=1");
             if($_q->num_rows > 0){
@@ -97,7 +97,7 @@ if (isset($_POST['itemCode'])) {
                     $update = $dbs->query("UPDATE stock_take SET stock_take_users='".$stock_take_users."' WHERE is_active=1");
                 }else{
                     $user = unserialize($_d);
-                    $user[] = $_SESSION['realname'];
+                    $user[$_SESSION['realname']] = $_SESSION['realname'];
                     $stock_take_users = serialize($user);
                     $update = $dbs->query("UPDATE stock_take SET stock_take_users='".$stock_take_users."' WHERE is_active=1");
                 }
