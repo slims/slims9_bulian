@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-09 14:35+0700\n"
-"PO-Revision-Date: 2020-09-09 14:37+0700\n"
+"POT-Creation-Date: 2020-09-10 12:33+0700\n"
+"PO-Revision-Date: 2020-09-10 12:34+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -538,8 +538,8 @@ msgstr "Cari"
 #: admin/modules/stock_take/current.php:90
 #: admin/modules/stock_take/current.php:148
 #: admin/modules/stock_take/finish.php:102
-#: admin/modules/stock_take/lost_item_list.php:71
-#: admin/modules/stock_take/lost_item_list.php:147
+#: admin/modules/stock_take/lost_item_list.php:70
+#: admin/modules/stock_take/lost_item_list.php:139
 #: lib/contents/download_current_loan.inc.php:61
 #: lib/contents/download_loan_history.inc.php:61
 #: lib/contents/member.inc.php:373 lib/contents/member.inc.php:419
@@ -626,7 +626,7 @@ msgstr "ID Anggota"
 #: admin/modules/serial_control/index.php:67
 #: admin/modules/stock_take/current.php:149
 #: admin/modules/stock_take/finish.php:103
-#: admin/modules/stock_take/lost_item_list.php:148
+#: admin/modules/stock_take/lost_item_list.php:140
 #: files/membercard/classic/tinfo.inc.php:117
 #: files/membercard/old/tinfo.inc.php:156 lib/contents/default.inc.php:162
 #: lib/contents/download_current_loan.inc.php:62
@@ -818,7 +818,7 @@ msgstr "dalam antrian menunggu untuk dicetak."
 #: admin/modules/reporting/customs/titles_list.php:132
 #: admin/modules/reporting/customs/titles_list.php:259
 #: admin/modules/stock_take/current.php:150
-#: admin/modules/stock_take/lost_item_list.php:152
+#: admin/modules/stock_take/lost_item_list.php:144
 #: lib/contents/default.inc.php:170
 #: template/akasia-dz/custom_frontpage_record.inc.php:10
 #: template/akasia-dz/detail_template.php:57
@@ -1564,7 +1564,7 @@ msgstr "Tambah Pola Baru"
 #: admin/modules/reporting/customs/pop_procurement_list.php:83
 #: admin/modules/reporting/customs/pop_procurement_list.php:167
 #: admin/modules/stock_take/init.php:209
-#: admin/modules/stock_take/lost_item_list.php:115
+#: admin/modules/stock_take/lost_item_list.php:110
 #: admin/modules/system/sys_log.php:109 lib/contents/default.inc.php:168
 #: template/akasia/partials/advsearch.php:65
 #: template/default/parts/_modal_advanced.php:63
@@ -1603,8 +1603,8 @@ msgstr "Lokasi Rak"
 #: admin/modules/reporting/customs/pop_procurement_list.php:165
 #: admin/modules/stock_take/current.php:151
 #: admin/modules/stock_take/init.php:201
-#: admin/modules/stock_take/lost_item_list.php:101
-#: admin/modules/stock_take/lost_item_list.php:151
+#: admin/modules/stock_take/lost_item_list.php:98
+#: admin/modules/stock_take/lost_item_list.php:143
 #: admin/modules/stock_take/st_report.php:170
 #: lib/contents/clustering.inc.php:79 lib/contents/default.inc.php:167
 #: template/akasia/partials/advsearch.php:56
@@ -1708,8 +1708,8 @@ msgstr "Data Koleksi"
 #: admin/modules/reporting/customs/titles_list.php:83
 #: admin/modules/serial_control/subscription.php:199
 #: admin/modules/stock_take/init.php:193
-#: admin/modules/stock_take/lost_item_list.php:87
-#: admin/modules/stock_take/lost_item_list.php:149
+#: admin/modules/stock_take/lost_item_list.php:86
+#: admin/modules/stock_take/lost_item_list.php:141
 #: lib/contents/clustering.inc.php:60 lib/contents/default.inc.php:166
 #: template/akasia/partials/advsearch.php:76
 #: template/default/parts/_modal_advanced.php:72
@@ -1817,8 +1817,8 @@ msgstr "Judul Seri"
 #: admin/modules/stock_take/current.php:152
 #: admin/modules/stock_take/finish.php:104
 #: admin/modules/stock_take/init.php:215
-#: admin/modules/stock_take/lost_item_list.php:79
-#: admin/modules/stock_take/lost_item_list.php:150
+#: admin/modules/stock_take/lost_item_list.php:78
+#: admin/modules/stock_take/lost_item_list.php:142
 #: admin/modules/stock_take/st_report.php:132
 #: template/akasia-dz/detail_template.php:94
 #: template/akasia/detail_template.php:94
@@ -1894,7 +1894,9 @@ msgstr "Klik untuk memperbesar"
 msgid "Remove Image"
 msgstr "Hapus Gambar"
 
-#: admin/modules/bibliography/index.php:912 admin/modules/system/index.php:259
+#: admin/modules/bibliography/index.php:912
+#: admin/modules/stock_take/st_upload.php:137
+#: admin/modules/system/index.php:259
 msgid "Choose file"
 msgstr "Pilih berkas"
 
@@ -2348,7 +2350,7 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/stock_take/finish.php:46 admin/modules/stock_take/index.php:49
 #: admin/modules/stock_take/init.php:46 admin/modules/stock_take/st_log.php:48
 #: admin/modules/stock_take/st_report.php:46
-#: admin/modules/stock_take/st_upload.php:43
+#: admin/modules/stock_take/st_upload.php:45
 #: admin/modules/stock_take/stock_take_action.php:42
 #: admin/modules/system/custom_field.php:48
 #: admin/modules/system/custom_field.php:179
@@ -2603,9 +2605,9 @@ msgstr "Ruas"
 #: admin/modules/serial_control/index.php:66
 #: admin/modules/stock_take/init.php:189 admin/modules/stock_take/init.php:197
 #: admin/modules/stock_take/init.php:205
-#: admin/modules/stock_take/lost_item_list.php:92
-#: admin/modules/stock_take/lost_item_list.php:106
-#: admin/modules/stock_take/lost_item_list.php:120
+#: admin/modules/stock_take/lost_item_list.php:90
+#: admin/modules/stock_take/lost_item_list.php:102
+#: admin/modules/stock_take/lost_item_list.php:114
 #: template/default/parts/_search-form.php:35
 msgid "ALL"
 msgstr "SEMUA"
@@ -5146,7 +5148,7 @@ msgstr "Rekapitulasi"
 #: admin/modules/reporting/customs/visitor_list.php:66
 #: admin/modules/reporting/customs/visitor_report.php:59
 #: admin/modules/reporting/customs/visitor_report_day.php:74
-#: admin/modules/stock_take/lost_item_list.php:57
+#: admin/modules/stock_take/lost_item_list.php:56
 msgid "Report Filter"
 msgstr "Filter Laporan"
 
@@ -5172,7 +5174,7 @@ msgstr "Rekap berdasar"
 #: admin/modules/reporting/customs/visitor_list.php:107
 #: admin/modules/reporting/customs/visitor_report.php:72
 #: admin/modules/reporting/customs/visitor_report_day.php:96
-#: admin/modules/stock_take/lost_item_list.php:129
+#: admin/modules/stock_take/lost_item_list.php:122
 msgid "Apply Filter"
 msgstr "Terapkan Filter"
 
@@ -5311,7 +5313,7 @@ msgstr "Laporan Lampiran"
 #: admin/modules/reporting/customs/item_usage.php:69
 #: admin/modules/reporting/customs/reserve_list.php:73
 #: admin/modules/reporting/customs/titles_list.php:71
-#: admin/modules/stock_take/lost_item_list.php:63
+#: admin/modules/stock_take/lost_item_list.php:62
 msgid "Title/ISBN"
 msgstr "Judul/ISBN"
 
@@ -5362,7 +5364,7 @@ msgstr "Buat antara 20 dan 200"
 #: admin/modules/reporting/customs/staff_act.php:77
 #: admin/modules/reporting/customs/titles_list.php:114
 #: admin/modules/reporting/customs/visitor_list.php:106
-#: admin/modules/stock_take/lost_item_list.php:130
+#: admin/modules/stock_take/lost_item_list.php:123
 msgid "Show More Filter Options"
 msgstr "Tunjukan Opsi Filter Lebih Banyak"
 
@@ -6078,7 +6080,7 @@ msgstr "Lihat/Ubah Detail Kardeks"
 
 #: admin/modules/stock_take/current.php:56
 #: admin/modules/stock_take/st_report.php:53
-#: admin/modules/stock_take/st_upload.php:49
+#: admin/modules/stock_take/st_upload.php:51
 msgid "NO stock taking proccess initialized yet!"
 msgstr "BELUM ADA inisialisasi inventarisasi koleksi!"
 
@@ -6295,7 +6297,7 @@ msgid "Separate each class comma sign. Use * for wildcard"
 msgstr ""
 "Pisahkan setiap kelas dengan tanda koma. Gunakan * sebagai <i>wildcard</i>"
 
-#: admin/modules/stock_take/lost_item_list.php:54
+#: admin/modules/stock_take/lost_item_list.php:53
 #: admin/modules/stock_take/submenu.php:33
 msgid "Current Lost Item"
 msgstr "Eksemplar Hilang Saat Ini"
@@ -6360,19 +6362,19 @@ msgstr ""
 "GALAT! Laporan Stokopname Saat Ini gagal untuk dibuat, mungkin karena "
 "direktori {direktori} tidak bisa ditulisi"
 
-#: admin/modules/stock_take/st_upload.php:108
+#: admin/modules/stock_take/st_upload.php:110
 msgid "Succesfully upload stock take file"
 msgstr "Unggahan berkas inventarisasi berhasil"
 
-#: admin/modules/stock_take/st_upload.php:108
+#: admin/modules/stock_take/st_upload.php:110
 msgid " item codes scanned!"
 msgstr " kode eksemplar terpindai!"
 
-#: admin/modules/stock_take/st_upload.php:126
+#: admin/modules/stock_take/st_upload.php:128
 msgid "Stock Take Upload"
 msgstr "Unggah Inventarisasi"
 
-#: admin/modules/stock_take/st_upload.php:128
+#: admin/modules/stock_take/st_upload.php:130
 msgid ""
 "Upload a plain text file (.txt) containing list of Item Code to stock take. "
 "Each Item Code separated by line."
@@ -6380,13 +6382,13 @@ msgstr ""
 "Unggah berkas teks (.txt) yang berisi daftar No. Eksemplar untuk "
 "inventarisasi. Pisahkan Kode Eksemplar dengan baris baru."
 
-#: admin/modules/stock_take/st_upload.php:131
-msgid "File"
-msgstr "Berkas"
-
-#: admin/modules/stock_take/st_upload.php:132
+#: admin/modules/stock_take/st_upload.php:141
 msgid "Upload File"
 msgstr "Unggah Berkas"
+
+#: admin/modules/stock_take/stock_take_action.php:53
+msgid "Please enter a valid item code/barcode. You enter a BLANK code!"
+msgstr "Masukkan kode eksemplar/barcode. TIDAK ADA kode yang dimasukkan!"
 
 #: admin/modules/stock_take/submenu.php:27
 msgid "Stock Take History"
@@ -8929,6 +8931,9 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "File"
+#~ msgstr "Berkas"
 
 #~ msgid "{recordCount} records inserted to database."
 #~ msgstr "{recordCount} data berhasil disimpan ke dalam basisdata."
