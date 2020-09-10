@@ -657,7 +657,7 @@ CREATE TABLE IF NOT EXISTS `stock_take_item` (
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `location` varchar(100) collate utf8_unicode_ci default NULL,
   `status` enum('e','m','u','l') collate utf8_unicode_ci NOT NULL default 'm',
-  `checked_by` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `checked_by` varchar(50) collate utf8_unicode_ci default NULL,
   `last_update` datetime default NULL,
   PRIMARY KEY  (`stock_take_id`,`item_id`),
   UNIQUE KEY `item_code` (`item_code`),
@@ -1062,7 +1062,7 @@ $sql['create'][] = "
 CREATE TABLE `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
-  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `member_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

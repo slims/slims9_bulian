@@ -100,7 +100,9 @@ if ($stk_query->num_rows < 1) {
         $st_other_users_q = $dbs->query('SELECT DISTINCT checked_by, COUNT(item_id) AS num_count FROM stock_take_item GROUP BY checked_by ORDER BY `num_count` DESC');
         while ($st_other_users_d = $st_other_users_q->fetch_row()) {
             if ($st_other_users_d[0] != $stk_data['stock_take_users']) {
-                $report_row[__('Stock Take Participants')] .= '<li>'.$st_other_users_d[0].' ('.$st_other_users_d[1].' '.__('items already checked').')</li>'; //mfc
+                if($st_other_users_d[0]!=''){
+                    $report_row[__('Stock Take Participants')] .= '<li>'.$st_other_users_d[0].' ('.$st_other_users_d[1].' '.__('items already checked').')</li>'; 
+                }
             }
         }
         // destroy query object

@@ -78,7 +78,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
         $i = 0;
         while (!feof($stfile)) {
             $curr_time = date('Y-m-d H:i:s');
-            $item_code = fgetss($stfile, 512);
+            $item_code = fgets($stfile, 512);
             $item_code = trim($item_code);
             if (!$item_code) {
                 continue;

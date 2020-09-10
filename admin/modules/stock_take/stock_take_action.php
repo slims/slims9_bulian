@@ -84,6 +84,24 @@ if (isset($_POST['itemCode'])) {
             $curr_time = date('Y-m-d H:i:s');
             $update = $dbs->query("UPDATE stock_take_item SET status='e', checked_by='".$_SESSION['realname']."', last_update='".$curr_time."' WHERE item_code='$item_code'");
             $update = $dbs->query("UPDATE stock_take SET total_item_lost=total_item_lost-1 WHERE is_active=1");
+
+            //update stocktake participants
+            //get user participants
+            $user = array();
+            $user[] = $_SESSION['realname'];
+            $stock_take_users = serialize($user);
+            $_q = $dbs->query("SELECT stock_take_users FROM stock_take WHERE is_active=1");
+            if($_q->num_rows > 0){
+                $_d = $_q->fetch_row()[0];
+                if($_d == NULL){
+                    $update = $dbs->query("UPDATE stock_take SET stock_take_users='".$stock_take_users."' WHERE is_active=1");
+                }else{
+                    $user = unserialize($_d);
+                    $user[] = $_SESSION['realname'];
+                    $stock_take_users = serialize($user);
+                    $update = $dbs->query("UPDATE stock_take SET stock_take_users='".$stock_take_users."' WHERE is_active=1");
+                }
+            }
             echo '<script type="text/javascript">'."\n";
             echo 'parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'stock_take/current.php?listShow='.$listShow.'\');'."\n";
             echo '</script>';

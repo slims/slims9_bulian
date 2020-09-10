@@ -895,6 +895,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['alter'][] = "ALTER TABLE `user` CHANGE `input_date` `input_date` date NULL AFTER `groups`;";
 
+    $sql['alter'][] = "ALTER TABLE `stock_take_item` CHANGE `checked_by` `checked_by` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `status`;";
+
     $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
 
     $sql['create'][] = "
@@ -920,7 +922,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     CREATE TABLE IF NOT EXISTS `files_read` (
       `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
       `file_id` int(11) NOT NULL,
-      `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+      `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       `member_id` int(11) DEFAULT NULL,
       `user_id` int(11) DEFAULT NULL,
       `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
