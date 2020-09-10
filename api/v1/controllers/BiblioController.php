@@ -10,10 +10,18 @@
  */
 
 require_once 'Controller.php';
+require_once __DIR__ . '/../helpers/Image.php';
 
 class BiblioController extends Controller
 {
+
+    use Image;
+
     protected $sysconf;
+
+    /**
+     * @var mysqli
+     */
     protected $db;
 
     function __construct($sysconf, $obj_db)
@@ -22,10 +30,57 @@ class BiblioController extends Controller
         $this->db = $obj_db;
     }
 
-    public function detail($id, $token)
+    public function getPopular()
     {
-        require_once __DIR__ . './../../../lib/api.inc.php';
-        $biblio = api::biblio_load($this->db, $id);
-        parent::withJson($biblio[0]);
+        $limit = 6;
+
+        $sql = "SELECT b.biblio_id, b.title, b.image, COUNT(*) AS total
+          FROM loan AS l
+          LEFT JOIN item AS i ON l.item_code=i.item_code
+          LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
+          WHERE b.title IS NOT NULL
+          GROUP BY b.biblio_id
+          ORDER BY total DESC
+          LIMIT {$limit}";
+
+        $query = $this->db->query($sql);
+        $return = array();
+        while ($data = $query->fetch_assoc()) {
+            $data['image'] = $this->getImagePath($data['image']);
+            $return[] = $data;
+        }
+        if ($query->num_rows < $limit) {
+            $need = $limit - $query->num_rows;
+            if ($need < 0) {
+                $need = $limit;
+            }
+
+            $sql = "SELECT biblio_id, title, image FROM biblio ORDER BY last_update DESC LIMIT {$need}";
+            $query = $this->db->query($sql);
+            while ($data = $query->fetch_assoc()) {
+                $data['image'] = $this->getImagePath($data['image']);
+                $return[] = $data;
+            }
+        }
+
+        parent::withJson($return);
+    }
+
+    public function getLatest() {
+        $limit = 6;
+
+        $sql = "SELECT biblio_id, title, image
+          FROM biblio
+          ORDER BY last_update DESC
+          LIMIT {$limit}";
+
+        $query = $this->db->query($sql);
+        $return = array();
+        while ($data = $query->fetch_assoc()) {
+            $data['image'] = $this->getImagePath($data['image']);
+            $return[] = $data;
+        }
+
+        parent::withJson($return);
     }
 }

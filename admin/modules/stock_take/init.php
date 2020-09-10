@@ -63,7 +63,7 @@ $d_item = $q_item->fetch_row();
 $q_backup = $dbs->query("SELECT backup_log_id FROM backup_log WHERE backup_time >= '{$d_item[0]}'");
 if ($q_backup->num_rows < 1 && !isset($_GET['skip_backup']) && !isset($_POST['saveData'])) {
   ?>
-    <div class="container">
+    <div class="container-fluid">
         <hr>
         <p class="lead"><?= __('Before stock taking, it is recommended to backup your database first.') ?>
            <br/><?= __('Looks like you have not backed up before.'); ?></p>
