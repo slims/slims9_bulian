@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-10 12:33+0700\n"
-"PO-Revision-Date: 2020-09-10 12:34+0700\n"
+"POT-Creation-Date: 2020-09-10 17:04+0700\n"
+"PO-Revision-Date: 2020-09-10 17:04+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -702,7 +702,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/serial_control/subscription.php:256
 #: admin/modules/stock_take/current.php:194
 #: admin/modules/stock_take/index.php:154
-#: admin/modules/stock_take/st_log.php:111
+#: admin/modules/stock_take/st_log.php:112
 #: admin/modules/system/app_user.php:464 admin/modules/system/backup.php:103
 #: admin/modules/system/content.php:298
 #: admin/modules/system/custom_field.php:285
@@ -6134,11 +6134,13 @@ msgstr "Daftar Item Hilang"
 msgid "Stock Take Error Logs"
 msgstr "Catatan Inventarisasi"
 
-#: admin/modules/stock_take/finish.php:124 admin/modules/system/sys_log.php:108
+#: admin/modules/stock_take/finish.php:124
+#: admin/modules/stock_take/st_log.php:75 admin/modules/system/sys_log.php:108
 msgid "Time"
 msgstr "Waktu"
 
-#: admin/modules/stock_take/finish.php:125 admin/modules/system/sys_log.php:110
+#: admin/modules/stock_take/finish.php:125
+#: admin/modules/stock_take/st_log.php:77 admin/modules/system/sys_log.php:110
 msgid "Message"
 msgstr "Pesan"
 
@@ -6321,6 +6323,10 @@ msgstr "Resinkronisasi Sekarang"
 msgid "Stock Take Log"
 msgstr "Catatan Inventarisasi"
 
+#: admin/modules/stock_take/st_log.php:76 lib/contents/login.inc.php:233
+msgid "Username"
+msgstr "Nama Akun"
+
 #: admin/modules/stock_take/st_report.php:63
 #: admin/modules/stock_take/st_report.php:200
 #: admin/modules/stock_take/st_report.php:211
@@ -6389,6 +6395,39 @@ msgstr "Unggah Berkas"
 #: admin/modules/stock_take/stock_take_action.php:53
 msgid "Please enter a valid item code/barcode. You enter a BLANK code!"
 msgstr "Masukkan kode eksemplar/barcode. TIDAK ADA kode yang dimasukkan!"
+
+#: admin/modules/stock_take/stock_take_action.php:66
+#, php-format
+msgid "Item %s (%s) is currently ON LOAN"
+msgstr "Eksemplar %s (%s) MASIH DIPINJAM"
+
+#: admin/modules/stock_take/stock_take_action.php:68
+#, php-format
+msgid "Item %s is currently ON LOAN"
+msgstr "Eksemplar %s MASIH DIPINJAM"
+
+#: admin/modules/stock_take/stock_take_action.php:74
+#, php-format
+msgid "Item %s is already SCANNED!"
+msgstr "Eksemplar %s TELAH DIPINDAI!"
+
+#: admin/modules/stock_take/stock_take_action.php:93
+#, php-format
+msgid ""
+"Item Code (%s) doesnt exists in stock take data. Invalid Item Code OR Maybe "
+"out of Stock Take range"
+msgstr ""
+"Stock take tidak menemukan data Kode Eksemplar (%s). Mungkin salah Kode "
+"Eksemplar atau di luar ketentuan Stock Take "
+
+#: admin/modules/stock_take/stock_take_action.php:95
+#, php-format
+msgid ""
+"Item Code %s doesnt exists in stock take data.\\nInvalid Item Code OR Maybe "
+"out of Stock Take range"
+msgstr ""
+"Stock take tidak menemukan data Kode Eksemplar %s.\\nMungkin salah Kode "
+"Eksemplar atau di luar ketentuan Stock Take"
 
 #: admin/modules/stock_take/submenu.php:27
 msgid "Stock Take History"
@@ -7783,10 +7822,6 @@ msgstr "Hai {username}, mohon perbarui kata sandi Anda!"
 #: lib/contents/login.inc.php:198 lib/contents/member.inc.php:289
 msgid "Current Password"
 msgstr "Kata Sandi Terkini"
-
-#: lib/contents/login.inc.php:233
-msgid "Username"
-msgstr "Nama Akun"
 
 #: lib/contents/login.inc.php:235 lib/contents/member.inc.php:767
 msgid "Password"
