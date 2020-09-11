@@ -25,6 +25,8 @@ class SubjectController extends Controller {
     function getPopular() {
         $limit = 5;
         $year = date('Y');
+        $cache_name = 'subject_popular';
+        if ($json = Cache::get($cache_name)) return parent::withJson($json);
 
         $sql = "SELECT mt.topic, COUNT(*) AS total
           FROM loan AS l
@@ -49,6 +51,7 @@ class SubjectController extends Controller {
             }
         }
 
+        Cache::set($cache_name, json_encode($return));
         parent::withJson($return);
     }
 

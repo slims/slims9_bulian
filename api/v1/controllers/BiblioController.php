@@ -11,6 +11,7 @@
 
 require_once 'Controller.php';
 require_once __DIR__ . '/../helpers/Image.php';
+require_once __DIR__ . '/../helpers/Cache.php';
 
 class BiblioController extends Controller
 {
@@ -32,8 +33,10 @@ class BiblioController extends Controller
 
     public function getPopular()
     {
-        $limit = 6;
+        $cache_name = 'biblio_popular';
+        if ($json = Cache::get($cache_name)) return parent::withJson($json);
 
+        $limit = 6;
         $sql = "SELECT b.biblio_id, b.title, b.image, COUNT(*) AS total
           FROM loan AS l
           LEFT JOIN item AS i ON l.item_code=i.item_code
@@ -63,6 +66,7 @@ class BiblioController extends Controller
             }
         }
 
+        Cache::set($cache_name, json_encode($return));
         parent::withJson($return);
     }
 
