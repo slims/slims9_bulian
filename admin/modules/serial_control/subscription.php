@@ -180,15 +180,15 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
 
     /* Form Element(s) */
     // serial date start
-    $form->addDateField('dateStart', __('Subscription Start').'*', $rec_d['date_start'],'class="form-control"');
+    $form->addDateField('dateStart', __('Subscription Start').'*', $rec_d['date_start']??'','class="form-control"');
     if (!$form->edit_mode) {
         // serial exemplar
         $form->addTextField('text', 'exemplar', __('Total Exemplar Expected').'*', '1', 'class="form-control col-2"');
     }
     // serial periode name
-    $form->addTextField('text', 'period', __('Period Name').'*', $rec_d['period'], 'class="form-control');
+    $form->addTextField('text', 'period', __('Period Name').'*', $rec_d['period']??'', 'class="form-control');
     // serial notes
-    $form->addTextField('textarea', 'notes', __('Subscription Notes'), $rec_d['notes'], 'class="form-control" rows="3"');
+    $form->addTextField('textarea', 'notes', __('Subscription Notes'), $rec_d['notes']??'', 'class="form-control" rows="3"');
     // serial gmd
         // get gmd data related to this record from database
         $gmd_q = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
@@ -196,7 +196,7 @@ if ($can_write AND ( isset($_POST['detail']) OR (isset($_GET['detail']) AND $_GE
         while ($gmd_d = $gmd_q->fetch_row()) {
             $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
         }
-    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id'], 'class="form-control col-3"');
+    $form->addSelectList('gmdID', __('GMD'), $gmd_options, $rec_d['gmd_id']??'', 'class="form-control col-3"');
     // serial biblio ID
     $form->addHidden('biblioID', $biblioID);
 
