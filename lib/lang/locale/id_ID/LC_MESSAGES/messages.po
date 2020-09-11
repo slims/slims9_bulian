@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-10 17:04+0700\n"
-"PO-Revision-Date: 2020-09-10 17:04+0700\n"
+"POT-Creation-Date: 2020-09-10 22:35+0700\n"
+"PO-Revision-Date: 2020-09-10 22:35+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -634,7 +634,6 @@ msgstr "ID Anggota"
 #: lib/contents/member.inc.php:374 lib/contents/member.inc.php:420
 #: lib/contents/member.inc.php:455 lib/detail.inc.php:231
 #: template/akasia/partials/advsearch.php:16
-#: template/default/parts/_home.php:190
 #: template/default/parts/_modal_advanced.php:24
 #: template/lightweight/partials/advsearch.php:16
 msgid "Title"
@@ -3365,7 +3364,6 @@ msgstr ""
 
 #: admin/modules/circulation/circulation_action.php:554
 #: admin/modules/reporting/customs/staff_act.php:98
-#: template/default/parts/_home.php:190
 msgid "Loans"
 msgstr "Peminjaman"
 
@@ -6418,7 +6416,7 @@ msgid ""
 "out of Stock Take range"
 msgstr ""
 "Stock take tidak menemukan data Kode Eksemplar (%s). Mungkin salah Kode "
-"Eksemplar atau di luar ketentuan Stock Take "
+"Eksemplar atau di luar ketentuan Stock Take"
 
 #: admin/modules/stock_take/stock_take_action.php:95
 #, php-format
@@ -8657,40 +8655,40 @@ msgstr "Tampilkan Detail"
 msgid "You must be logged in to post a comment"
 msgstr "Anda harus <i>login</i> sebelum memberikan komentar"
 
-#: template/default/parts/_home.php:28
+#: template/default/parts/_home.php:29
 #: template/default/parts/_modal_topic.php:15
 msgid "Select the topic you are interested in"
 msgstr "Pilih subjek yang menarik bagi Anda"
 
-#: template/default/parts/_home.php:33
+#: template/default/parts/_home.php:34
 #: template/default/parts/_modal_topic.php:73
 msgid "Literature"
 msgstr "Kesusastraan"
 
-#: template/default/parts/_home.php:39
+#: template/default/parts/_home.php:40
 #: template/default/parts/_modal_topic.php:43
 msgid "Social Sciences"
 msgstr "Ilmu-ilmu Sosial"
 
-#: template/default/parts/_home.php:45
+#: template/default/parts/_home.php:46
 #: template/default/parts/_modal_topic.php:61
 msgid "Applied Sciences"
 msgstr "Ilmu-ilmu Terapan"
 
-#: template/default/parts/_home.php:51
+#: template/default/parts/_home.php:52
 #: template/default/parts/_modal_topic.php:67
 msgid "Art & Recreation"
 msgstr "Kesenian, Hiburan, dan Olahraga"
 
-#: template/default/parts/_home.php:58
+#: template/default/parts/_home.php:59
 msgid "see more.."
 msgstr "lihat lainnya.."
 
-#: template/default/parts/_home.php:67
+#: template/default/parts/_home.php:68
 msgid "Popular among our collections"
 msgstr "Yang populer di antara koleksi kami"
 
-#: template/default/parts/_home.php:69
+#: template/default/parts/_home.php:70
 msgid ""
 "Our library's line of collection that have been favoured by our users were "
 "shown here. Look for them. Borrow them. Hope you also like them"
@@ -8698,11 +8696,11 @@ msgstr ""
 "Koleksi-koleksi kami yang dibaca oleh banyak pengunjung perpustakaan. Cari. "
 "Pinjam. Kami harap Anda menyukainya"
 
-#: template/default/parts/_home.php:120
+#: template/default/parts/_home.php:82
 msgid "New collections + updated"
 msgstr "Koleksi baru dan diperbarui"
 
-#: template/default/parts/_home.php:122
+#: template/default/parts/_home.php:84
 msgid ""
 "These are new collections list. Hope you like them. Maybe not all of them "
 "are new. But in term of time, we make sure that these are fresh from our "
@@ -8711,21 +8709,17 @@ msgstr ""
 "Merupakan daftar koleksi-koleksi terbaru kami. Tidak semuanya baru, adapula "
 "koleksi yang data-datanya sudah diperbaiki. Selamat menikmati"
 
-#: template/default/parts/_home.php:174
+#: template/default/parts/_home.php:97
 msgid "Top reader of the year"
 msgstr "Penikmat Koleksi tahun ini"
 
-#: template/default/parts/_home.php:176
+#: template/default/parts/_home.php:99
 msgid ""
 "Our best users, readers, so far. Continue to read if you want your name "
 "being mentioned here"
 msgstr ""
 "Pengunjung terbaik kami, ada di sini. Nama dan foto Anda juga bisa muncul di "
 "sini. Rajin-rajinlah berkunjung dan membaca"
-
-#: template/default/parts/_home.php:199
-msgid "Not Available"
-msgstr "Tidak Tersedia"
 
 #: template/default/parts/_modal_advanced.php:26
 msgid "Enter title"
@@ -8966,6 +8960,9 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "Not Available"
+#~ msgstr "Tidak Tersedia"
 
 #~ msgid "File"
 #~ msgstr "Berkas"

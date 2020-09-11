@@ -96,7 +96,19 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
             } else {
                 $stk_data = 'Finished';
             }
+        } elseif($headings == __('Stock Take Participants')){
+            $stk_data = unserialize($stk_data);
+            $str = '';
+            if(is_array($stk_data)){
+                $str .= '<ol>';
+                foreach ($stk_data as $key => $value) {
+                   $str .= '<li>'.$value.'</li>';
+                }
+                $str .= '</ol>';
+            }
+            $stk_data = $str;
         }
+
         $table->appendTableRow(array($headings, ':', $stk_data));
         // set cell attribute
         $table->setCellAttr($row, 0, 'class="alterCell" valign="top" style="width: 170px;"');
@@ -114,7 +126,8 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
 
     // create datagrid
     $datagrid = new simbio_datagrid();
-    $datagrid->setSQLColumn('st.stock_take_id',
+    $datagrid->setSQLColumn(
+        'st.stock_take_id AS \''.__('View').'\'',
         'st.stock_take_name AS \''.__('Stock Take Name').'\'',
         'st.start_date AS \''.__('Start Date').'\'',
         'st.end_date AS \''.__('End Date').'\'',
@@ -139,17 +152,20 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
             $datagrid->setSQLCriteria("stock_take_name LIKE '%$keyword%' OR init_user LIKE '%$keyword%'");
         }
     }
-
+    $datagrid->modifyColumnContent(0, 'callback{stockTakeDetail}'); 
     // set table and table header attributes
     $datagrid->icon_edit = $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     $datagrid->chbox_property = false;
     // set delete proccess URL
-    $datagrid->delete_URL = $_SERVER['PHP_SELF'];
-
+    //$datagrid->delete_URL = $_SERVER['PHP_SELF'];
+    function stockTakeDetail($obj_db,$array_data){
+        $str = '<a class="fa fa-search" href="'.$_SERVER['PHP_SELF'].'?itemID=5&amp;detail=true&amp;ajaxload=1" postdata="itemID='.$array_data[0].'&amp;detail=true">&nbsp;</a>';
+        return $str;
+    }
     // put the result into variables
-    $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, true);
+    $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, false);
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
         $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
         echo '<div class="infoBox">'.$msg.' : "'.htmlentities($_GET['keywords']).'"</div>';
