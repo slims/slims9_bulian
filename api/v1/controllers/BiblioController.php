@@ -34,7 +34,7 @@ class BiblioController extends Controller
     public function getPopular()
     {
         $cache_name = 'biblio_popular';
-        if ($json = Cache::get($cache_name)) return parent::withJson($json);
+        if (!is_null($json = Cache::get($cache_name))) return parent::withJson($json);
 
         $limit = 6;
         $sql = "SELECT b.biblio_id, b.title, b.image, COUNT(*) AS total
