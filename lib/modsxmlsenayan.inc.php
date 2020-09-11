@@ -184,7 +184,7 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
         $_term_type = 'occupation';
         $_term = (string)$_subj->occupation;
       }
-      $data['subjects'][] = array('term' => $_term, 'term_type' => $_term_type, 'authority' => $_authority);
+      $data['subjects'][] = array('term' => $_term ?? '', 'term_type' => $_term_type ?? '', 'authority' => $_authority);
     }
 
     # mods->classification
