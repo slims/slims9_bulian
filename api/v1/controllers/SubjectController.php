@@ -24,6 +24,7 @@ class SubjectController extends Controller {
 
     function getPopular() {
         $limit = 5;
+        $year = date('Y');
 
         $sql = "SELECT mt.topic, COUNT(*) AS total
           FROM loan AS l
@@ -31,51 +32,33 @@ class SubjectController extends Controller {
           LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
           LEFT JOIN biblio_topic AS bt ON i.biblio_id=bt.biblio_id
           LEFT JOIN mst_topic AS mt ON bt.topic_id=mt.topic_id
-          WHERE mt.topic IS NOT NULL
+          WHERE mt.topic IS NOT NULL AND YEAR(l.loan_date) = '%s'
           GROUP BY bt.topic_id
           ORDER BY total DESC
-          LIMIT {$limit}";
+          LIMIT %d";
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query(sprintf($sql, $year, $limit));
         $return = array();
         while ($data = $query->fetch_row()) {
             $return[] = $data[0];
         }
         if ($query->num_rows < $limit) {
             $need = $limit - $query->num_rows;
-            if ($need < 0) {
-                $need = $limit;
-            }
-
-            $sql = "SELECT mt.topic, COUNT(*) AS total
-            FROM biblio_topic AS bt
-            LEFT JOIN mst_topic AS mt ON bt.topic_id=mt.topic_id
-            WHERE mt.topic IS NOT NULL
-            GROUP BY bt.topic_id
-            ORDER BY total DESC
-            LIMIT {$need}";
-
-            $query = $this->db->query($sql);
-            while ($data = $query->fetch_row()) {
-                $return[] = $data[0];
+            if ($need > 0) {
+                $return = array_merge($return, $this->getLatest($need));
             }
         }
 
         parent::withJson($return);
     }
 
-    function getLatest() {
+    function getLatest($limit = 5) {
 
-        $limit = 5;
-
-        $sql = "SELECT mt.topic
-          FROM biblio_topic AS bt
-          LEFT JOIN biblio AS b ON bt.biblio_id=b.biblio_id
-          LEFT JOIN mst_topic AS mt ON mt.topic_id=bt.topic_id
-          WHERE mt.topic IS NOT NULL
-          GROUP BY bt.topic_id
-          ORDER BY max(b.last_update) DESC
-          LIMIT {$limit}";
+        $sql = "SELECT topic FROM mst_topic mt
+                INNER JOIN (SELECT topic_id FROM biblio_topic bt 
+                INNER JOIN (SELECT biblio_id FROM biblio ORDER BY last_update DESC LIMIT 10) b ON bt.biblio_id=b.biblio_id 
+                GROUP BY topic_id) tt ON tt.topic_id=mt.topic_id 
+                LIMIT {$limit};";
 
         $query = $this->db->query($sql);
         $return = array();
