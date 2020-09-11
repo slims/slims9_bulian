@@ -82,7 +82,7 @@ function cleanUrl($url)
 {
   $_url = parse_url(trim($url));
   // var_dump($_url);
-  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path']));
+  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path'] ?? ''));
   $_port = isset($_url['port']) ? ':' . $_url['port'] : '';
   return $_url['scheme'] . '://' . $_url['host'] . $_port . $_path . '/';
 }
@@ -166,7 +166,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
         unset($biblio['subjects']);
       }
 
-      $biblio['input_date'] = $biblio['create_date'];
+      $biblio['input_date'] = date('Y-m-d H:i:s');
       $biblio['last_update'] = date('Y-m-d H:i:s');
 
       // remove unneeded elements
@@ -330,7 +330,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
 
     $row = 1;
     foreach ($data['records'] as $record) {
-      $cb = '<input type="checkbox" name="p2precord['.$record['id'].']" value="'.$record['id'].'">';
+      $cb = '<input class="p2precord" type="checkbox" name="p2precord['.$record['id'].']" value="'.$record['id'].'">';
       if ($row > $max_fetch) {
         break;
       }
@@ -345,11 +345,25 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
         $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
         foreach ($record['digitals'] as $digital) {
           $file_name = str_replace('/', '', $digital['path']);
-          $digital_str .= '<li class="d-flex"><span class="pr-2"><input name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+          $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
         }
         $digital_str .= '<ul>';
       } else {
-        $digital_str .= '-';
+        // try get from detail xml
+        // construct full XML URI
+        $detail_uri = $p2pserver . "/index.php?p=show_detail&inXML=true&id=" . $record['id'];
+        // parse XML
+        $detail = (modsXMLsenayan($detail_uri, 'uri'))['records'][0];
+        if (isset($detail['digitals'])) {
+            $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
+            foreach ($detail['digitals'] as $digital) {
+                $file_name = str_replace('/', '', $digital['path']);
+                $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+            }
+            $digital_str .= '<ul>';
+        } else {
+            $digital_str .= '-';
+        }
       }
 
       $image_path = isset($record['image'])?$p2pserver . 'images/docs/' . $record['image']:'../images/default/image.png';
@@ -382,23 +396,34 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   ?>
 <script>
     $('.save').on('click', function (e) {
-    var p2precord = {};
-    var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
-    $("input[type=checkbox]:checked").each(function() {
+    let p2precord = {}, p2pdigital = {};
+    let uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $(".p2precord:checked").each(function() {
        p2precord[$(this).val()] = $(this).val();
     });
+    $(".p2pdigital:checked").each(function() {
+        if (p2precord[$(this).data('biblio')] !== undefined) {
+            if (p2pdigital[$(this).data('biblio')] === undefined) p2pdigital[$(this).data('biblio')] = {};
+            p2pdigital[$(this).data('biblio')][$(this).val()] = $(this).val();
+        }
+    });
 
-    $.ajax({
+    if (Object.keys(p2precord).length > 0) {
+        $.ajax({
             url: uri,
             type: 'post',
-            data: {saveResults: true, p2precord }
+            data: {saveResults: true, p2precord, p2pdigital }
         })
-          .done(function (msg) {
-            //console.log(p2precord);
-            parent.toastr.success(Object.keys(p2precord).length+" records inserted into the database", "P2P Service");
-            parent.jQuery('#mainContent').simbioAJAX(uri)
-        })
-    })
+            .done(function (msg) {
+                //console.log(p2precord);
+                parent.toastr.success(Object.keys(p2precord).length+" records inserted into the database", "P2P Service");
+                parent.jQuery('#mainContent').simbioAJAX(uri)
+            })
+    } else {
+        alert('<?= __('No data selected!') ?>');
+    }
+
+    });
     $(".uncheck-all").on('click',function (e){
         e.preventDefault()
         $('[type=checkbox]').prop('checked', false);
