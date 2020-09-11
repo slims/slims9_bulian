@@ -12,10 +12,16 @@
 class Controller
 {
  
-    public function withJson($array)
+    public function withJson($data)
     {
         header('Content-type: application/json');
-        echo json_encode($array);
+        if (is_array($data)) {
+            echo json_encode($data);
+        } else {
+            echo $data;
+        }
+
+        return true;
     }
     
 }

@@ -353,14 +353,19 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
         // construct full XML URI
         $detail_uri = $p2pserver . "/index.php?p=show_detail&inXML=true&id=" . $record['id'];
         // parse XML
-        $detail = (modsXMLsenayan($detail_uri, 'uri'))['records'][0];
-        if (isset($detail['digitals'])) {
-            $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
-            foreach ($detail['digitals'] as $digital) {
-                $file_name = str_replace('/', '', $digital['path']);
-                $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+        $result = modsXMLsenayan($detail_uri, 'uri');
+        if (isset($result['records']) && isset($result['records'][0])) {
+            $detail = $result['records'][0];
+            if ( isset($detail['digitals'])) {
+                $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
+                foreach ($detail['digitals'] as $digital) {
+                    $file_name = str_replace('/', '', $digital['path']);
+                    $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+                }
+                $digital_str .= '<ul>';
+            } else {
+                $digital_str .= '-';
             }
-            $digital_str .= '<ul>';
         } else {
             $digital_str .= '-';
         }
