@@ -365,6 +365,11 @@ buttton
 .makeHidden {
   display: none;
 }
+.editFormLink {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
 .dateField {
   padding: 2px 2px 1px;
   width: 200px;

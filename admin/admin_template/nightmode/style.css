@@ -384,6 +384,11 @@ buttton
 .makeHidden {
   display: none;
 }
+.cancelButton {
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
 .dateField {
   width: 200px;
   height: 38px;
