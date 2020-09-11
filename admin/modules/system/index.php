@@ -93,7 +93,7 @@ if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
       $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
       @unlink(IMGBS.'default/'.$sysconf['logo_image']);
       utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo');
-      utility::jsAlert(__('Logo Image removed. Refreshing page'));
+      utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
       echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
       exit();
 }
@@ -116,7 +116,7 @@ if (isset($_POST['updateData'])) {
           $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
         }
       }else{
-        utility::jsAlert($img_upload_status->error);
+        utility::jsToastr(__('System Configuration'), $img_upload_status->error, 'error'); 
       }
     }
 
@@ -219,7 +219,7 @@ if (isset($_POST['updateData'])) {
 
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
-    utility::jsAlert(__('Settings saved. Refreshing page'));
+    utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
     echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
     exit();
 }
