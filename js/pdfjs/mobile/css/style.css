@@ -70,6 +70,12 @@ body {
     color: #ff0000;
 }
 
+.btn-secondary:not(:disabled):not(.disabled).active:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus, .show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow:none;
+    border: none;
+    outline: none;
+}
+
 .button-inactive{
     color: #000;
 }
@@ -227,4 +233,18 @@ canvas {
 
 .material-icons {
     font-size: 24px;
+}
+
+.smart-scroll{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.scrolled-down{
+    transform:translateY(-100%); transition: all 0.3s ease-in-out;
+}
+.scrolled-up{
+    transform:translateY(0); transition: all 0.3s ease-in-out;
 }
