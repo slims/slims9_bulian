@@ -579,7 +579,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<div class="makeHidden">';
+        $str_input .= '<div class="makeHidden_">';
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
@@ -598,7 +598,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
         $str_input .= '</div>';
         $str_input .= '</div>';
-        $str_input .= '<div id="my_container" class="makeHidden mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+        $str_input .= '<div id="my_container" class="makeHidden_ mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
         $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
         $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
         $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
