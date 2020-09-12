@@ -24,8 +24,8 @@
 
     <script src="<?= JWB ?>pdfjs/mobile/js/pdf.js"></script>
     <script>
-        var workerUrl = '<?php echo JWB ?>pdfjs/mobile/js/pdf.worker.js';
-        var DEFAULT_URL = '<?php echo $file_loc_url; ?>';
+        let workerUrl = '<?php echo JWB ?>pdfjs/mobile/js/pdf.worker.js';
+        let DEFAULT_URL = '<?php echo $file_loc_url; ?>';
     </script>
     <script src="<?= JWB ?>pdfjs/mobile/js/pdf_viewer.js"></script>
 </head>
@@ -56,44 +56,24 @@
         <div class="glimmer d-none"></div>
     </div>
 
-    <div id="errorWrapper" hidden="true">
-        <div id="errorMessageLeft">
-            <span id="errorMessage"></span>
-            <button id="errorShowMore">
-                More Information
-            </button>
-            <button id="errorShowLess">
-                Less Information
-            </button>
+    <div id="errorWrapper" hidden="true" class="px-2">
+
+        <div class="text-center p-4">
+            <img width="180px" src="<?= JWB ?>pdfjs/mobile/images/undraw_warning_cyit.svg" alt="error">
         </div>
-        <div id="errorMessageRight">
-            <button id="errorClose">
-                Close
-            </button>
+
+        <div class="text-center">
+            <div id="errorMessage" class="lead"></div>
+            <textarea id="errorMoreInfo" class="bg-white border-0 text-center"></textarea>
         </div>
-        <div class="clearBoth"></div>
-        <textarea id="errorMoreInfo" hidden="true" readonly="readonly"></textarea>
+
+        <div class="d-none">
+            <a id="errorShowMore">More Information</a>
+            <a id="errorShowLess">Less Information</a>
+            <a id="errorClose">close</a>
+        </div>
     </div>
 
-</div>
-
-<div id="errorWrapper" hidden="true">
-    <div id="errorMessageLeft">
-        <span id="errorMessage"></span>
-        <button id="errorShowMore">
-            More Information
-        </button>
-        <button id="errorShowLess">
-            Less Information
-        </button>
-    </div>
-    <div id="errorMessageRight">
-        <button id="errorClose">
-            Close
-        </button>
-    </div>
-    <div class="clearBoth"></div>
-    <textarea id="errorMoreInfo" hidden="true" readonly="readonly"></textarea>
 </div>
 
 <!-- Bottom Nav Bar -->

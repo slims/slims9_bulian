@@ -463,7 +463,7 @@ if (document.getElementsByClassName('smart-scroll').length > 0) {
         if (scrollTop < lastScrollTop) {
             navbar.classList.remove('scrolled-down');
             navbar.classList.add('scrolled-up');
-            e.target.style.top = navbar.offsetHeight+'px';
+            if (scrollTop <= navbar.offsetHeight ) e.target.style.top = navbar.offsetHeight+'px';
         } else {
             navbar.classList.remove('scrolled-up');
             navbar.classList.add('scrolled-down');
