@@ -579,7 +579,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<div class="makeHidden">';
+        $str_input .= '<div class="makeVisible">';
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
