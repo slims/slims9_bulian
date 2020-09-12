@@ -32,13 +32,15 @@
 <body>
 <div class="d-none" id="title"></div>
 <!-- As a heading -->
-<nav class="navbar fixed-top navbar-light bg-light">
-    <h2 class="navbar-brand mb-0 mr-auto">SLiMS Reader</h2>
-    <button type="button" class="btn btn-link text-muted" id="close" onclick="window.close()">
-        <div class="selector-holder">
-            <i class="material-icons">close</i>
-        </div>
-    </button>
+<nav class="navbar smart-scroll navbar-light bg-light" id="top-navbar">
+    <div class="d-flex justify-content-between w-100">
+        <h1 class="navbar-brand mb-0 text-truncate flex-grow-1"><?= $file_d['title'] ?></h1>
+        <button type="button" class="btn btn-link text-muted flex-shrink-0 py-0" id="close" onclick="window.close()">
+            <div class="selector-holder">
+                <i class="material-icons">close</i>
+            </div>
+        </button>
+    </div>
 </nav>
 <!-- Begin page content -->
 <div class="container-fluid">

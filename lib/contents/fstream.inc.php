@@ -35,8 +35,9 @@ $memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
 $userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 
 // query file to database
-$sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
+$sql_q = 'SELECT att.*, f.*, b.title FROM biblio_attachment AS att
   LEFT JOIN files AS f ON att.file_id=f.file_id
+  LEFT JOIN biblio b on att.biblio_id = b.biblio_id
   WHERE att.file_id=' . $fileID . ' AND att.biblio_id=' . $biblioID . ' AND att.access_type=\'public\'';
 $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();

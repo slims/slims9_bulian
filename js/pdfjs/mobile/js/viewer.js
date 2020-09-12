@@ -448,3 +448,27 @@ PDFViewerApplication.animationStartedPromise.then(function () {
         url: DEFAULT_URL,
     });
 });
+
+// =======================================
+// Smart scroll
+// =======================================
+let navbar = document.getElementById('top-navbar');
+let viewerContainer = document.getElementById('viewerContainer');
+
+if (document.getElementsByClassName('smart-scroll').length > 0) {
+    let lastScrollTop = 0;
+    viewerContainer.onscroll = (e) => {
+        let scrollTop = e.target.scrollTop
+
+        if (scrollTop < lastScrollTop) {
+            navbar.classList.remove('scrolled-down');
+            navbar.classList.add('scrolled-up');
+            e.target.style.top = navbar.offsetHeight+'px';
+        } else {
+            navbar.classList.remove('scrolled-up');
+            navbar.classList.add('scrolled-down');
+            e.target.style.top = 0;
+        }
+        lastScrollTop = scrollTop
+    }
+}
