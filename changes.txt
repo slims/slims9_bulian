@@ -39,7 +39,7 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.9.0 (Bulian)
+SLiMS 9.2.0 (Bulian)
 ========================================================================
 Fixed : Invalid date on upgrade, especially upgrade from SLiMS 5 Cendana version and under 
 Added : File attachment download counter report
