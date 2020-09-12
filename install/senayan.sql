@@ -1351,7 +1351,7 @@ CREATE TABLE `mst_servers` (
   `input_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Struktur dari tabel `biblio_log`
@@ -1415,6 +1415,47 @@ CREATE TABLE `loan_history` (
    KEY `member_name` (`member_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+--
+-- Table structure for table `mst_custom_field`
+--
+
+
+CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+  `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `max` int(11) DEFAULT NULL,
+  `data` text COLLATE utf8_unicode_ci,
+  `indexed` tinyint(1) DEFAULT NULL,
+  `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
+  `width` int(5) DEFAULT '100',
+  `note` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`dbfield`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+--
+-- Table structure for table `files_read`
+--
+
+DROP TABLE IF EXISTS `files_read`;
+CREATE TABLE `files_read` (
+  `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`filelog_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 --
 -- create trigger `delete_loan_history`
 --
@@ -1464,3 +1505,10 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
      collection_type_name=(SELECT mct.coll_type_name FROM mst_coll_type mct LEFT JOIN item i ON i.coll_type_id=mct.coll_type_id WHERE i.item_code=NEW.item_code),
      member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
      member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);;
+
+--
+-- Version v9.2.0
+--
+
+ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
+ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;

@@ -19,7 +19,7 @@
 
   <?php if($sysconf['template']['background_mode'] == 'video') : ?>
     <video loop autoplay muted>
-      <source src='<?php echo $sysconf['template']['dir']; ?>/default/video/bg.mp4' type='video/mp4' />
+      <source src='<?php echo $sysconf['template']['dir']; ?>/akasia/video/bg.mp4' type='video/mp4' />
       Your browser does not support the video tag.
     </video>
   <?php elseif($sysconf['template']['background_mode'] == 'image') : ?>

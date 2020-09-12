@@ -67,7 +67,7 @@ class utility
         'debug' => false,
         'newestOnTop' => false,
         'progressBar' => false,
-        'positionClass' => 'toast-bottom-right',
+        'positionClass' => 'toast-top-right',
         'preventDuplicates' => false,
         'onclick' => null,
         'showDuration' => 300,
@@ -611,5 +611,41 @@ class utility
 
       // Entity not found? Destroy it.
       return isset($_ent_table[$str_xml_data[1]]) ? $_ent_table[$str_xml_data[1]] : '';
+    }
+
+    /**
+     * Static Method to load admin template
+     *
+     * @param   object  $obj_db
+     * @return  void
+     */
+    public static function loadUserTemplate($obj_db,$uid)
+    {
+      global $sysconf;
+      // load user template settings for override setting
+      $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
+      if($_q->num_rows>0){
+        $template_settings = unserialize($_q->fetch_row()[0]);
+        foreach ($template_settings as $setting_name => $setting_value) {
+          $sysconf['admin_template'][$setting_name] = $setting_value;
+        }
+      }
+    }
+
+    public static function dlCount($obj_db, $str_file_id, $str_member_id, $str_user_id)
+    {
+        if (!$obj_db->error) {
+            // log table
+            $_log_date = date('Y-m-d H:i:s');
+            $_log_table = 'files_read';
+            // filter input
+            $str_log_type = $obj_db->escape_string(trim($str_file_id));
+            $str_value_id = $obj_db->escape_string(trim($str_member_id));
+            $str_user_id = $obj_db->escape_string(trim($str_user_id));
+            // insert log data to database
+            @$obj_db->query('INSERT INTO '.$_log_table.'
+            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.$_SERVER[
+			'REMOTE_ADDR'].'\')');
+        }
     }
 }

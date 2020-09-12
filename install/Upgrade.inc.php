@@ -10,13 +10,18 @@ namespace Install;
 
 class Upgrade
 {
+
+  /**
+   * @var SLiMS
+   */
   public $slims;
+
   /**
    * Latest version
    *
    * @var int
    */
-  private $version = 22;
+  private $version = 23;
 
   /**
    * @param SLiMS $slims
@@ -29,6 +34,42 @@ class Upgrade
     return $upgrade;
   }
 
+  function hookBeforeUpgrade() {
+      // store old sql mode
+      $old_sql_mode = $this->slims->storeOldSqlMode();
+      // update sql_mode to modify database
+      $new_sql_mode = str_replace(['NO_ZERO_DATE', 'NO_ZERO_IN_DATE'], '', $old_sql_mode);
+      $this->slims->updateSqlMode($new_sql_mode);
+  }
+
+  function hookAfterUpgrade() {
+      // cek if table not exist
+      $tables = require 'tables.php';
+      foreach ($tables as $table) {
+          $mtables = $this->slims->getTables();
+          if (!in_array($table['table'], $mtables)) {
+              // create table
+              $msg = $this->slims->createTable($table);
+              if ($msg) $error[] = $msg;
+          } else {
+              // check column
+              foreach ($table['column'] as $column) {
+                  $mColumn = $this->slims->getColumn($table['table']);
+                  if (!in_array($column['field'], $mColumn)) {
+                      $msg = $this->slims->addColumn($table['table'], $column);
+                      if ($msg) $error[] = $msg;
+                  }
+              }
+          }
+      }
+
+      // make sure use default template
+      $this->slims->updateTheme('default');
+
+      // rollback sql_mode
+      $this->slims->rollbackSqlMode();
+  }
+
   /**
    * Function to execute upgrade role from specific version
    *
@@ -37,6 +78,9 @@ class Upgrade
    */
   function from($version)
   {
+    // run before script
+    $this->hookBeforeUpgrade();
+
     $raw_err = [];
     for ($i = ($version + 1); $i <= $this->version; $i++) {
       $method = 'upgrade_role_' . $i;
@@ -52,6 +96,9 @@ class Upgrade
         }
       }
     }
+
+    // run after script
+    $this->hookAfterUpgrade();
     return $err;
   }
 
@@ -808,26 +855,6 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     $error_trigger = $this->slims->queryTrigger($query_trigger);
     $error = array_merge($error, $error_trigger);
 
-    // cek if table not exist
-    $tables = require 'tables.php';
-    foreach ($tables as $table) {
-      $mtables = $this->slims->getTables();
-      if (!in_array($table['table'], $mtables)) {
-        // create table
-        $msg = $this->slims->createTable($table);
-        if ($msg) $error[] = $msg;
-      } else {
-        // check column
-        foreach ($table['column'] as $column) {
-          $mColumn = $this->slims->getColumn($table['table']);
-          if (!in_array($column['field'], $mColumn)) {
-            $msg = $this->slims->addColumn($table['table'], $column);
-            if ($msg) $error[] = $msg;
-          }
-        }
-      }
-    }
-
     // fix mst_topic:classification
     $fix_classification = $this->slims->changeColumn('mst_topic', [
       'field' => 'classification',
@@ -853,8 +880,62 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
    */
   function upgrade_role_22()
   {
-    // make sure use default template
-    $this->slims->updateTheme('default');
+  }
+
+  /**
+   * Upgrade role to v9.2.0
+   */
+  function upgrade_role_23()
+  {
+    $sql['alter'][] = "ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;";
+
+    $sql['alter'][] = "ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;";
+
+    $sql['alter'][] = "ALTER TABLE `backup_log` CHANGE `backup_time` `backup_time` datetime NULL AFTER `user_id`;";
+
+    $sql['alter'][] = "ALTER TABLE `user` CHANGE `input_date` `input_date` date NULL AFTER `groups`;";
+
+    $sql['alter'][] = "ALTER TABLE `stock_take_item` CHANGE `checked_by` `checked_by` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `status`;";
+
+    $sql['alter'][] = "ALTER TABLE `biblio_author` ADD INDEX `biblio_id` (`biblio_id`), ADD INDEX `author_id` (`author_id`);";
+
+    $sql['alter'][] = "ALTER TABLE `biblio_topic` ADD INDEX `biblio_id` (`biblio_id`), ADD INDEX `topic_id` (`topic_id`);";
+
+    $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
+
+    $sql['create'][] = "
+    CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+      `field_id` int(11) NOT NULL AUTO_INCREMENT,
+      `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+      `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+      `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+      `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `max` int(11) DEFAULT NULL,
+      `data` text COLLATE utf8_unicode_ci,
+      `indexed` tinyint(1) DEFAULT NULL,
+      `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `is_public` tinyint(1) DEFAULT NULL,
+      `width` int(5) DEFAULT '100',
+      `note` text COLLATE utf8_unicode_ci,
+      PRIMARY KEY (`dbfield`),
+      UNIQUE KEY `field_id` (`field_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+    $sql['create'][] = "
+    CREATE TABLE IF NOT EXISTS `files_read` (
+      `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+      `file_id` int(11) NOT NULL,
+      `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `member_id` int(11) DEFAULT NULL,
+      `user_id` int(11) DEFAULT NULL,
+      `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+      PRIMARY KEY (`filelog_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+    $error = $this->slims->query($sql, ['alter','insert','create']);
+
+    return $error;
   }
 
 }

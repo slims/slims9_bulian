@@ -9,24 +9,27 @@
 }
 
 .loader {
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: center;
 	position: absolute;
-	top: 100px;
-	left: 125px;
-	width: 300px;
-	text-align: center;
+	top: 70px;
+	left: 225px;
+	width: calc(100% - 225px);
+	text-align: left;
 	z-index: 999;
 	> div {
-		width: 18px;
-		height: 18px;
-		background-color: @color-1;
-		border-radius: 100%;
+		width: 100%;
+		height: 1px;
+		background-color: @color-5;
 		display: inline-block;
 		-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 		animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 		&:nth-child(1) {
-			background-color: @color-5;
+			background-color: @color-1;
 		}
-		&:nth-child(2) {
+		&:nth-child(3) {
 			background-color: @color-3;
 		}
 	}

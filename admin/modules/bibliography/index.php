@@ -24,6 +24,8 @@
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -91,7 +93,8 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
       $postImage = str_replace('/', '', $postImage);
       @unlink(sprintf(IMGBS.'docs/%s',$postImage));
       utility::jsToastr('Bibliography', str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')), 'success');
-      exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+      // exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
+      exit('<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="">');
     }
   }
   exit();
@@ -123,16 +126,30 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (isset($biblio_custom_fields)) {
       if (is_array($biblio_custom_fields) && $biblio_custom_fields) {
         foreach ($biblio_custom_fields as $fid => $cfield) {
-          // custom field data
-          $cf_dbfield = $cfield['dbfield'];
-          if (isset($_POST[$cf_dbfield])) {
-            $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
-            if ($cf_val) {
-              $custom_data[$cf_dbfield] = $cf_val;
-            } else {
-              $custom_data[$cf_dbfield] = 'literal{\'\'}';
-            }
-          }
+              // custom field data
+              $cf_dbfield = $cfield['dbfield'];
+              if (isset($_POST[$cf_dbfield])) {
+                if(is_array($_POST[$cf_dbfield])){ 
+                  foreach ($_POST[$cf_dbfield] as $value) {
+                    $arr[$value] = $value;
+                  }
+                  $custom_data[$cf_dbfield] = serialize($arr);
+                }
+                else{
+                  $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
+                  if($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val!='')){
+                    utility::jsToastr(__('Bibliography'), sprintf(__('Field %s only number for allowed'),$cfield['label']), 'error');      
+                    exit();        
+                  }
+                  elseif ($cfield['type'] == 'date' && $cf_val == '') {
+                    utility::jsToastr(__('Bibliography'), sprintf(__('Field %s is date format, empty not allowed'),$cfield['label']), 'error');      
+                    exit();
+                  }
+                  $custom_data[$cf_dbfield] = $cf_val;
+                }
+              }else{
+                $custom_data[$cf_dbfield] = serialize(array());
+              }
         }
       }
     }
@@ -398,8 +415,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else { $itemcode .= $b; }
         $itemcode .= $chars[1];
 
-        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id, location_id, item_status_id, input_date, last_update, uid)
-        VALUES (%d, '%s', '%s', %d, '%s', 0, '%s', '%s', %d)", isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
+        $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, received_date, supplier_id, order_no, order_date, item_status_id, site, source, invoice, price, price_currency, invoice_date, call_number, coll_type_id, location_id, input_date, last_update, uid)
+        VALUES ( %d, '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)", 
+        isset($updateRecordID)?$updateRecordID:$last_biblio_id, $itemcode, $dbs->escape_string($_POST['recvDate']), intval($_POST['supplierID']), $dbs->escape_string($_POST['ordNo']), $dbs->escape_string($_POST['orDate']), $dbs->escape_string($_POST['itemStatusID']), $dbs->escape_string($_POST['itemSite']), intval($_POST['source']), $dbs->escape_string($_POST['invoice']), intval($_POST['price']), $dbs->escape_string($_POST['priceCurrency']), $dbs->escape_string($_POST['invcDate']), $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
         @$dbs->query($item_insert_sql);
       }
     }
@@ -541,8 +559,59 @@ if (!$in_pop_up) {
 /* search form end */
 }
 /* main content */
-if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+if(isset($_GET['action']) && $_GET['action'] == 'history'){
+
+    $biblioID = utility::filterData('biblioID', 'get', true, true, true);
+    $table_spec = 'biblio_log AS bl';
+    $criteria = 'bl.biblio_id='.$biblioID;
+    // create datagrid
+    $datagrid = new simbio_datagrid();
+    $datagrid->setSQLColumn('bl.date AS \''.__('Date').'\'',
+      'bl.realname AS \''.__('User Name').'\'',
+      'bl.additional_information AS \''.__('Additional Information').'\'');
+    $datagrid->modifyColumnContent(2, 'callback{affectedDetail}');       
+    $datagrid->setSQLorder('bl.biblio_log_id DESC');
+    $datagrid->sql_group_by = 'bl.date';
+    $datagrid->setSQLCriteria($criteria);
+    // set table and table header attributes
+    $datagrid->table_attr = 'id="dataList" class="s-table table"';
+    $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+
+    function affectedDetail($obj_db,$array_data){
+      $_q = $obj_db->query("SELECT action,affectedrow,title,additional_information FROM biblio_log WHERE `date` LIKE '".$array_data[0]."'");
+      $str = '';
+      $title  = '';
+      if($_q->num_rows > 0){
+        while ($_data = $_q->fetch_assoc()) {
+          $title = $_data['title'];
+          $str .= ' - '.$_data['action'].' '.$_data['affectedrow'].' : <i>'.$_data['additional_information'].'</i><br/>';
+        }
+      }
+      return $title.'</br>'.$str;
+    }
+
+    // put the result into variables
+    $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20,false);
+
+    $_q = $dbs->query("SELECT title FROM biblio WHERE biblio_id=".$biblioID);
+    if($_q->num_rows > 0){
+      $_d = $_q->fetch_row();
+      echo '<div class="infoBox">'.__('Biblio Log').' : <strong>'.$_d[0].'</strong></div>';   
+    }
+
+    echo $datagrid_result;
+}
+
+elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+  if ( (isset($_GET['action'])) AND ($_GET['action'] == 'detail') ) {
+    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+    $log = new AlLibrarian('1153', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+  } elseif ( (isset($_GET['itemID'])) AND (isset($_GET['detail'])) AND ($_GET['detail'] == true) ) {
+    $log = new AlLibrarian('1155', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "biblio_id" => $_GET['itemID']));
+  }
+
   if (!($can_read AND $can_write)) {
+
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
   }
   /* RECORD FORM */
@@ -562,6 +631,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
   $form->table_header_attr = 'class="alterCell"';
   $form->table_content_attr = 'class="alterCell2"';
+
+   //custom button
+  if(isset($itemID)){
+    $form->addCustomBtn('history',__('Log'),$_SERVER['PHP_SELF'].'?action=history&ajaxLoad=true&biblioID='.$itemID,' class="s-btn btn btn-success"');
+  }
 
   $visibility = 'makeVisible s-margin__bottom-1';
   // edit mode flag set
@@ -636,30 +710,90 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
     }
   }
-  $str_input  = '<div class="'.$visibility.'">';
-  $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a>&nbsp;';
+
   // Modified by Eddy Subratha
   // To avoid a miss processing after a pattern created, I think we should hide the Item Code Manager below  
-  // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
-  $str_input .= '</div>';
-  $str_input .= '<div class="form-inline">';
+  // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>'; 
+  $str_input = '<div class="form-inline">';
   $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"').'&nbsp;';
-  $str_input .= '<input type="text" class="form-control col-2" name="totalItems" placeholder="'.__('Total item(s)').'" />&nbsp;';;
-  // get collection type data related to this record from database
-  $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
-  $coll_type_options = array(array('','--'.__('Collection Type').'--'));
-  while ($coll_type_d = $coll_type_q->fetch_row()) {
-      $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-  }
-  $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-3"').'&nbsp;';
-  // get location data related to this record from database
-  $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
-  $location_options = array(array('','-- '.__('Location').' --'));
-  while ($location_d = $location_q->fetch_row()) {
-    $location_options[] = array($location_d[0], $location_d[1]);
-  }
-  $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-3"').'&nbsp;';
-  $str_input .= '</div>';
+  $str_input .= '<input type="text" class="form-control col-4" name="totalItems" placeholder="'.__('Total item(s)').'" />&nbsp;'; 
+  $str_input .= '<div class="'.$visibility.'">
+  <div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">'.__('Options').'</div>';
+  $str_input .= '<a href="'.MWB.'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="'.__('Add new pattern').'">'.__('Add New Pattern').'</a></div></div>';
+  $str_input .= '<div class="collapse" id="batchItemDetail" style="padding:10px;width:100%; text-align:left !important;">';
+
+    // location
+    $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
+    $location_options = array(array('','-- '.__('Location').' --'));
+    while ($location_d = $location_q->fetch_row()) {
+      $location_options[] = array($location_d[0], $location_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Location').'</div>';
+    $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-4"').'</div>';
+
+    // item site
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Shelf Location').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'itemSite','','class="form-control col-4"').'</div>';
+ 
+    // collection type
+    $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
+    $coll_type_options = array(array('','--'.__('Collection Type').'--'));
+    while ($coll_type_d = $coll_type_q->fetch_row()) {
+        $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Collection Type').'</div>';
+    $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-4"').'</div> ';
+
+    // item status
+    $item_status_q = $dbs->query("SELECT item_status_id, item_status_name FROM mst_item_status");
+    $item_status_options[] = array('0', __('Available'));
+    while ($item_status_d = $item_status_q->fetch_row()) {
+        $item_status_options[] = array($item_status_d[0], $item_status_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Item Status').'</div>';
+    $str_input .= simbio_form_element::selectList('itemStatusID', $item_status_options, '', 'class="form-control col-4"').'</div> ';
+
+    // item source
+    $source_options[] = array('1', __('Buy'));
+    $source_options[] = array('2', __('Prize/Grant'));
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Source').'</div>';
+    $str_input .= simbio_form_element::selectList('source', $source_options, '', 'class="form-control col-4"').'</div> ';
+
+    //order date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Order Date').'</div>';
+    $str_input .= simbio_form_element::dateField('orDate', date('Y-m-d'),'class="form-control"').'</div>';
+
+    //receiving date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Receiving Date').'</div>';
+    $str_input .= simbio_form_element::dateField('recvDate', date('Y-m-d'),' class="form-control col-12"').'</div>';
+
+    // order number
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Order Number').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'ordNo','','class="form-control"').'</div>';
+
+    // invoice
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Invoice').'</div>';
+    $str_input .= simbio_form_element::textField('text', 'invoice','','class="form-control col-4"').'</div>';
+
+    // invoice date
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Invoice Date').'</div>';
+    $str_input .= simbio_form_element::dateField('invcDate', date('Y-m-d'),' class="form-control col-12"').'</div>'; 
+
+    // supplier
+    $supplier_q = $dbs->query("SELECT supplier_id, supplier_name FROM mst_supplier");
+    $supplier_options[] = array('0', __('Not Applicable'));
+    while ($supplier_d = $supplier_q->fetch_row()) {
+        $supplier_options[] = array($supplier_d[0], $supplier_d[1]);
+    }
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Supplier').'</div>';
+    $str_input .= simbio_form_element::selectList('supplierID', $supplier_options,'','class="form-control col-4"').'</div> ';
+
+    //price
+    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">'.__('Price').'</div>';    
+    $str_input .=  simbio_form_element::textField('text', 'price', '0', 'class="form-control col-3"');
+    $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'],'','class="form-control col-2"').'</div> ';
+
+    $str_input .= '</div>';
   $form->addAnything(__('Item(s) code batch generator'), $str_input);
   // biblio item add
   if (!$in_pop_up AND $form->edit_mode) {
@@ -765,29 +899,41 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
   if (isset($rec_d['image']) && file_exists('../../../images/docs/'.$rec_d['image'])) {
     $str_input .= '<a href="'.SWB.'images/docs/'.($rec_d['image']??'').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']??'').'&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '<img src="'.$upper_dir.'../images/docs/'.urlencode($rec_d['image']??'').'" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '</a>';
-    $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['image']??'').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+    $str_input .= '<a href="'.MWB.'bibliography/index.php" postdata="removeImage=true&bimg='.$itemID.'&img='.($rec_d['image']??'').'" loadcontainer="imageFilename" class="s-margin__bottom-1 mt-1 s-btn btn btn-danger btn-block makeHidden removeImage">'.__('Remove Image').'</a>';
   } else {
-    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid" alt="Image cover">';
+    $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="Image cover">';
   }
   $str_input .= '</div>';
   $str_input .= '</div>';
-  $str_input .= '<div class="custom-file col-4">';
-  $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input"');
-  $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+  $str_input .= '<div class="custom-file col-7">';
+  $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+  $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+  $str_input .= '<div style="padding: 10px;margin-left: -25px;">';
+  $str_input .= '<div>'.__('Or download from url').'</div>';
+  $str_input .= '<div class="form-inline">
+                  <input type="text" id="getUrl" class="form-control" style="width:190px" placeholder="Paste url address here">
+                  <div class="input-group-append">
+                  <button class="btn btn-default" type="button" id="getImage">'.__('Download').' <i class="fa fa-spin fa-cog hidden" id="imgLoader"></i></button>
+                  <button class="btn btn-default openPopUp notAJAX ml-2" type="button" id="showEngine" onclick="toggle_search($(\'#title\').val());">'.__('Trying search in DuckduckGo').'</button>
+                  </div>
+                  </div>';
+  $str_input .= '</div>';
   $str_input .= '</div>';
   $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
   $str_input .= '</div>';
-  
+  $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
+  $str_input .= '</div></div></div>';
+
   //for scanner
   if ($sysconf['scanner'] !== false) {
     $str_input .= '<p>'.__('or scan a cover').'</p>';
-    $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
+    // $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
     if ($sysconf['scanner'] == 'html5') {
-        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn openPopUp" onclick="toggle_dialog();" />';
-        $str_input .= '<input type="button" value="'.__('Reset').'" class="button btn openPopUp" onclick="scan_reset();" />';
+        $str_input .= '<input type="button" value="'.__('Show scan dialog').'" class="button btn btn-default openPopUp" onclick="toggle_dialog();" />';
+        $str_input .= '<input type="button" value="'.__('Reset').'" class="button btn btn-danger openPopUp ml-1" onclick="scan_reset();" />';
         $str_input .= '<div id="scan_overlay" style="display: none; position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(192, 194, 201, 0.5);">';
         $str_input .= '<div id="scan_dialog" title="'.__('Scan a cover').'">';
         $str_input .= '<div id="scan_options_std" style="margin: 5px;"><label>'.__('Format:').' <select id="scan_type" onchange="scan_type();">';
@@ -830,22 +976,30 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $cf_dbfield = $cfield['dbfield'];
     $cf_label = $cfield['label'];
     $cf_default = $cfield['default'];
-    $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
+    $cf_class = $cfield['class']??'';
+    $cf_note = $cfield['note']??'';
+    $cf_data = (isset($cfield['data']) && $cfield['data'] )?unserialize($cfield['data']):array();
+
+    // get data field record
+    if(isset($rec_cust_d[$cf_dbfield]) && @unserialize($rec_cust_d[$cf_dbfield]) !== false){
+      $rec_cust_d[$cf_dbfield] = unserialize($rec_cust_d[$cf_dbfield]);
+    }
 
     // custom field processing
     if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
       $cf_max = isset($cfield['max'])?$cfield['max']:'200';
       $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, 'style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+      $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, ' class="form-control '.$cf_class.'" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"',$cf_note);
     } else if ($cfield['type'] == 'dropdown') {
-      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'checklist') {
-      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'choice') {
-      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
     } else if ($cfield['type'] == 'date') {
-      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default);
+      $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??NULL,' class="form-control '.$cf_class.'"');
     }
+    unset($cf_data);
     }
   }
   }
@@ -897,7 +1051,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       }
       // Modified by Eddy Subratha
       // We removed image near the upload form 
-      // echo '<div id="biblioImage" class="s-biblio__cover"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/docs/'.urlencode($rec_d['image']).'&width=53" /></div>';
+      // echo '<div id="biblioImage" class="s-biblio__cover"><img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?`filename`=../../images/docs/'.urlencode($rec_d['image']).'&width=53" /></div>';
     }
     }
   echo '</div>'."\n";
@@ -922,14 +1076,37 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     });
 
     $(document).on('change', '.custom-file-input', function () {
+        // $('#imageFilename img').attr('src',document.getElementById("image").files[0].name);
+        var input = document.querySelector("#image");
+        var fReader = new FileReader();
+        fReader.readAsDataURL(input.files[0]);
+        fReader.onloadend = function(event){
+            var img = document.querySelector("#imageFilename img");
+            img.src = event.target.result;
+        }
         let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
     });
 
+    $('#getImage').click(function(){
+      $.post("<?php echo MWB ?>bibliography/scrape_image.php", {imageURL: $('#getUrl').val()})
+      .done(function(data) {
+        if(data.status == 'VALID') {
+          $('#base64picstring').val(data.image);
+          $('#imageFilename img').attr('src',data.message);
+        } else {
+          $('#base64picstring, #getUrl').val('');
+          parent.toastr.error("<?php echo __('Current url is not valid or your internet is down.') ?>", "Bibliography Image", {"closeButton":true,"debug":false,"newestOnTop":false,"progressBar":false,"positionClass":"toast-top-right","preventDuplicates":false,"onclick":null,"showDuration":300,"hideDuration":1000,"timeOut":5000,"extendedTimeOut":1000,"showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"})
+        }
+      });
+    });
 });
   </script>
   <?php
 } else {
+  # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+  $log = new AlLibrarian('1151', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
+
   require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
   require MDLBS.'bibliography/biblio_utils.inc.php';
   require LIB.'biblio_list_model.inc.php';
@@ -953,20 +1130,20 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   $table_spec = 'search_biblio AS `index` LEFT JOIN item ON `index`.biblio_id=item.biblio_id';
 
   if ($can_read AND $can_write) {
-    $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \''.__('Title').'\'', 'index.labels',
+    $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \''.__('Title').'\'', 'index.labels','index.image',
     'index.author',
     'index.isbn_issn AS \''.__('ISBN/ISSN').'\'',
     'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">'.__('None').'</strong>\') AS \''.__('Copies').'\'',
     'index.last_update AS \''.__('Last Update').'\'');
     $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
   } else {
-    $datagrid->setSQLColumn('index.title AS \''.__('Title').'\'', 'index.author', 'index.labels',
+    $datagrid->setSQLColumn('index.title AS \''.__('Title').'\'', 'index.author', 'index.labels','index.image',
     'index.isbn_issn AS \''.__('ISBN/ISSN').'\'',
     'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">'.__('None').'</strong>\') AS \''.__('Copies').'\'',
     'index.last_update AS \''.__('Last Update').'\'');
     $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
   }
-  $datagrid->invisible_fields = array(1,2);
+  $datagrid->invisible_fields = array(1,2,3);
   $datagrid->setSQLorder('index.last_update DESC');
 
   // set group by

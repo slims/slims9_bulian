@@ -119,7 +119,7 @@ class Content
         $_content_q = $obj_db->query($_sql_content);
         // get content data
         $_content_d = $_content_q->fetch_assoc();
-        if (!$_content_d['content_title'] OR !$_content_d['content_path']) {
+        if (!isset($_content_d['content_title']) OR !isset($_content_d['content_path'])) {
             return false;
         } else {
             $_content['Title'] = $_content_d['content_title'];

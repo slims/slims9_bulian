@@ -73,7 +73,7 @@ if (isset($_SESSION['memberID']) AND !empty($_SESSION['memberID'])) {
       ?>
       <input type="submit" value="<?php echo __('Start Transaction'); ?>" name="start" id="start" class="s-btn btn btn-default" />
       <?php if($sysconf['barcode_reader']) : ?>
-      <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=membership' ?>">Open Barcode Reader - Experimental (F8)</a>
+      <a class="s-btn btn btn-default notAJAX" id="barcodeReader" href="<?php echo MWB.'circulation/barcode_reader.php?mode=membership' ?>"><?= __('Open Barcode Reader - Experimental (F8)')?></a>
       <?php endif ?>
       </form>
     </div>

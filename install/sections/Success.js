@@ -35,7 +35,7 @@ export default {
         <p>Your donation means a lot for SLiMS development ahead</p>
 
         <div class="flex">
-            <a href="../index.php" class="text-white bg-green-500 py-3 px-8 rounded-full font-bold mt-4 no-underline">Go to my SLiMS</a>
+            <a href="../index.php" class="text-white bg-green-500 py-3 px-8 rounded-full font-bold mt-4 no-underline">Go to My SLiMS</a>
         </div>
     </div>
 

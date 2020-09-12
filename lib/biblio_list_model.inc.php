@@ -338,11 +338,30 @@ abstract class biblio_list_model
       $xml->endElement();
       $xml->endElement();
 
+      // digital files
+      $attachment_q = $this->obj_db->query('SELECT att.*, f.* FROM biblio_attachment AS att
+          LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$_biblio_d['biblio_id'].' AND att.access_type=\'public\' LIMIT 20');
+      if ($attachment_q->num_rows > 0) {
+          $xml->startElementNS('slims','digitals', null);
+          while ($attachment_d = $attachment_q->fetch_assoc()) {
+              // check member type privileges
+              if ($attachment_d['access_limit']) { continue; }
+              $xml->startElementNS('slims','digital_item', null);
+              $xml->writeAttribute('id', $attachment_d['file_id']);
+              $xml->writeAttribute('url', trim($attachment_d['file_url']));
+              $xml->writeAttribute('path', $attachment_d['file_dir'].'/'.$attachment_d['file_name']);
+              $xml->writeAttribute('mimetype', $attachment_d['mime_type']);
+              $xml->writeCData($attachment_d['file_title']);
+              $xml->endElement();
+          }
+          $xml->endElement();
+      }
+
       // images
       $_image = '';
       if (!empty($_biblio_d['image'])) {
         $_image = urlencode($_biblio_d['image']);
-	$xml->startElementNS('slims', 'image', null); $this->xmlWrite($xml, $_image); $xml->endElement();
+	    $xml->startElementNS('slims', 'image', null); $this->xmlWrite($xml, $_image); $xml->endElement();
       }
 
       $xml->endElement(); // MODS

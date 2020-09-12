@@ -157,6 +157,10 @@ class ANDS_XML {
    */
   function __construct($par_array) {
   	$this->doc = new DOMDocument("1.0","UTF-8");
+    //creating an xslt adding processing line
+    $xslt = $this->doc->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="./oai2.xsl"');
+    //adding it to the xml
+    $this->doc->appendChild($xslt);
   	// oai_node equals to $this->doc->documentElement;
     $oai_node = $this->doc->createElement("OAI-PMH");
 		$oai_node->setAttribute("xmlns","http://www.openarchives.org/OAI/2.0/");

@@ -67,16 +67,17 @@ if (!$can_read) {
 /* search form end */
 /* STOCK TAKE LOGS LIST */
 // table spec
-$table_spec = 'system_log AS sl';
+$table_spec = 'system_log AS sl LEFT JOIN user u ON u.user_id=sl.id';
 
 // create datagrid
 $datagrid = new simbio_datagrid();
 $datagrid->setSQLColumn(
-    'sl.log_date AS \'Time\'',
-    'sl.log_msg AS \'Message\'');
+    'sl.log_date AS \''.__('Time').'\'',
+    'u.realname AS \''.__('Username').'\'',
+    'sl.log_msg AS \''.__('Message').'\'');
 $datagrid->setSQLorder("sl.log_date DESC");
 
-$criteria = 'sl.log_location=\'stock_take\' AND sl.log_msg LIKE \'Stock Take ERROR%\' ';
+$criteria = 'sl.log_location=\'stock_take\' AND sl.log_msg !=\'\'';
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
     $keyword = $dbs->escape_string(trim($_GET['keywords']));
@@ -102,7 +103,7 @@ $datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->delete_URL = $_SERVER['PHP_SELF'];
-$datagrid->column_width = array('18%', '82%');
+$datagrid->column_width = array('15%','15%', '70%');
 $datagrid->disableSort('Message');
 
 // put the result into variables

@@ -113,18 +113,34 @@ if (isset($_POST['doExport'])) {
             if ($all_data_q->num_rows > 0) {
                 header('Content-type: text/plain');
                 header('Content-Disposition: attachment; filename="senayan_item_export.csv"');
-                while ($item_d = $all_data_q->fetch_row()) {
+                $headers = [];
+                $itemData = [];
+                while ($item_d = $all_data_q->fetch_assoc()) {
                     $buffer = null;
-                    foreach ($item_d as $idx => $fld_d) {
+                    foreach ($item_d as $key => $fld_d) {
+                        $headers[$key] = $key;
                         $fld_d = $dbs->escape_string($fld_d);
                         // data
                         $buffer .=  stripslashes($encloser.$fld_d.$encloser);
                         // field separator
                         $buffer .= $sep;
                     }
-                    echo substr_replace($buffer, '', -1);
-                    echo $rec_sep;
+                    $itemData[] = substr_replace($buffer, '', -1);
                 }
+
+                $header_buffer = '';
+                foreach ($headers as $header) {
+                  $header_buffer .= $encloser.$header.$encloser.$sep;
+                }
+                $header_buffer .= $rec_sep;
+
+                $item_buffer = '';
+                foreach ($itemData as $item) {
+                  $item_buffer .= $item.$rec_sep;
+                }
+
+                if (isset($_POST['header'])) echo $header_buffer;
+                echo $item_buffer;
                 exit();
             } else {
                 utility::jsToastr('Item Export', __('There is no record in item database yet, Export FAILED!'), 'error');
@@ -157,7 +173,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(';').'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
 $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // record separator
@@ -168,5 +184,7 @@ $form->addSelectList('recordSep', __('Record Separator'), $rec_sep_options,'','c
 $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
+// header (column name)
+$form->addCheckBox('header', __('Put columns names in the first row'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();

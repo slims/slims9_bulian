@@ -191,8 +191,21 @@ class member_logon
         // verify password hash
         $verified = password_verify($this->password, $this->user_info['mpasswd']);
         if (!$verified) {
+            //check if md5
+            if($this->user_info['mpasswd'] == md5($this->password)){
+                $_sql_update_password = sprintf("UPDATE member SET mpasswd = '%s', last_update = CURDATE() WHERE member_id = '%s'",
+                password_hash($this->password, PASSWORD_BCRYPT), $this->username);
+                $_update_q = $this->obj_db->query($_sql_update_password);
+                // error check
+                if ($this->obj_db->error) {
+                    $this->errors = 'Failed to query user data from database with error: '.$this->obj_db->error;
+                    return false;
+                }
+                return true;
+            }else{        	
             $this->errors = 'Username or Password not exists in database!';
             return false;
+        	}
         }
         
         return true;

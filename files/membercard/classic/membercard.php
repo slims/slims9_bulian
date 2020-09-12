@@ -119,7 +119,7 @@ strong {
 }
 
 .personality > div {
-  width: 33%;      
+  width: 35%;      
 }
 
 #front-card .address {
@@ -133,12 +133,20 @@ strong {
 .personality .noid:after {
   position: absolute;
   content: '';
-  border-right: solid 2px #000;
+  border-right: solid 1px #000;
   height: 25px;
   top: 0;
-  right: 15px;
+  right: 0;
 }
 
+.personality .nophone {
+  padding-left: 5px;
+}
+
+.personality .noid strong,
+.personality .nophone strong {
+  white-space: nowrap; 
+}
 .personality .expired {
   margin-top: -10px;
 }
@@ -274,7 +282,7 @@ strong {
             </div>
             <?php endif ?>
             <?php if($card['member_phone'] != '') : ?>
-            <div>
+            <div class="nophone">
               <strong><?php echo __('Phone Number') ?></strong>
               <p><?php echo $card['member_phone'] ?></p>
             </div>

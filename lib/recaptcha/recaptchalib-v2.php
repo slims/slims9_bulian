@@ -31,7 +31,7 @@ function recaptcha_check_answer($secretKey, $remoteip, $response) {
     );
 
     $context  = stream_context_create($options);
-    $verify = file_get_contents($url, false, $context);
+    $verify = @file_get_contents($url, false, $context);
     $captcha = json_decode($verify);
 
     $recaptcha_response = new ReCaptchaResponse();

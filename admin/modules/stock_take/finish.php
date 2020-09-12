@@ -45,7 +45,9 @@ $can_write = utility::havePrivilege('stock_take', 'w');
 if (!($can_read AND $can_write)) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
-
+if ($_SESSION['uid'] != '1') {
+  die('<div class="errorBox">' . __('You must be an admin to run the completion process!') . '</div>');
+}
 // check if there is any active stock take proccess
 $stk_query = $dbs->query("SELECT * FROM stock_take WHERE is_active=1");
 if (!$stk_query->num_rows) {

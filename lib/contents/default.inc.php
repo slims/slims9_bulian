@@ -159,15 +159,15 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
   $search_result_info .= '<div class="search-found-info">';
   if ($is_adv) {
     $search_result_info .= __('Found <strong>{biblio_list->num_rows}</strong> from your keywords').': <strong class="search-found-info-keywords">'.$keywords_info.'</strong>  ';
-    if ($title) { $search_result_info .= 'Title : <strong><cite>'.$title.'</cite></strong>, '; }
-    if ($author) { $search_result_info .= 'Author : <strong><cite>'.$author.'</cite></strong>, '; }
-    if ($subject) { $search_result_info .= 'Subject : <strong><cite>'.$subject.'</cite></strong>, '; }
-    if ($isbn) { $search_result_info .= 'ISBN/ISSN : <strong><cite>'.$isbn.'</cite></strong>, '; }
-    if ($gmd) { $search_result_info .= 'GMD : <strong><cite>'.$gmd.'</cite></strong>, '; }
-    if ($colltype) { $search_result_info .= 'Collection Type : <strong><cite>'.$colltype.'</cite></strong>, '; }
-    if ($location) { $search_result_info .= 'Location : <strong><cite>'.$location.'</cite></strong>, '; }
-    if ($publisher) { $search_result_info .= 'Publisher : <strong><cite>'.$publisher.'</cite></strong>, '; }
-    if ($callnumber !== '') { $search_result_info .= 'Call Number : <strong><cite>'.$callnumber.'</cite></strong>, '; }
+    if ($title) { $search_result_info .= __('Title').' : <strong><cite>'.$title.'</cite></strong>, '; }
+    if ($author) { $search_result_info .= __('Author').' : <strong><cite>'.$author.'</cite></strong>, '; }
+    if ($subject) { $search_result_info .= __('Subject').' : <strong><cite>'.$subject.'</cite></strong>, '; }
+    if ($isbn) { $search_result_info .= __('ISBN/ISSN').' : <strong><cite>'.$isbn.'</cite></strong>, '; }
+    if ($gmd) { $search_result_info .= __('GMD').' : <strong><cite>'.$gmd.'</cite></strong>, '; }
+    if ($colltype) { $search_result_info .= __('Collection Type').' : <strong><cite>'.$colltype.'</cite></strong>, '; }
+    if ($location) { $search_result_info .= __('Location').' : <strong><cite>'.$location.'</cite></strong>, '; }
+    if ($publisher) { $search_result_info .= __('Publisher').' : <strong><cite>'.$publisher.'</cite></strong>, '; }
+    if ($callnumber !== '') { $search_result_info .= __('Call Number').' : <strong><cite>'.$callnumber.'</cite></strong>, '; }
     // strip last comma
     $search_result_info = substr_replace($search_result_info, '', -2);
   } else {

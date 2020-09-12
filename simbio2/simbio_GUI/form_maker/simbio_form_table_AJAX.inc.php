@@ -40,6 +40,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
     public $edit_mode = false;
     public $record_id = false;
     public $record_title = 'RECORD';
+    public $customBtn = false;
     // back button
     public $back_button = true;
     public $delete_button = true;
@@ -98,6 +99,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // link and buttons
       $_edit_link = '';
       $_delete_button = '';
+      $_custom_link = '';
       $_back_button = '';
       $_del_value = __('Delete Record');
       $_cancel_value = __('Cancel');
@@ -105,6 +107,9 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // check if we are on edit form mode
       if ($this->edit_mode) {
           $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-default">' . __('Edit') . '</a>';
+          if($this->customBtn){
+            $_custom_link .= '<a href="'.$this->url.'" '.$this->style.'">' . $this->str . '</a>';
+          }
           // back button
           if ($this->back_button) {
               $_back_button = '<input type="button" class="s-btn btn btn-default cancelButton " value="'.$_cancel_value.'" />';
@@ -120,7 +125,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // check if form tag is included
       if ($this->with_form_tag) {
           $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%;">'
-              .'<tr><td><input type="submit" class="s-btn btn btn-primary" '.$this->submit_button_attr.' />&nbsp;'.$_delete_button.'</td><td class="edit-link-area">'.$_back_button.'&nbsp;'.$_edit_link.'</td>'
+              .'<tr><td><input type="submit" class="s-btn btn btn-primary" '.$this->submit_button_attr.' />&nbsp;'.$_delete_button.'</td><td class="edit-link-area">'.$_back_button.'&nbsp;'.$_edit_link.'&nbsp;'.$_custom_link.'</td>'
               .'</tr></table>'."\n";
       }
       // get the table result
@@ -171,5 +176,15 @@ class simbio_form_table_AJAX extends simbio_form_maker
       }
 
       return $form;
+    }
+
+
+    public function addCustomBtn($name,$str,$url,$style){
+      $this->customBtn = true;
+      $this->name = $name;
+      $this->str = $str;
+      $this->url = $url;
+      $this->style = $style;
+
     }
 }

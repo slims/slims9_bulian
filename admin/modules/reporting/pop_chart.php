@@ -30,7 +30,8 @@ ob_start();
 $label = array();
 $data = array();
 
-//echo '<pre>'.json_encode($_SESSION['chart']).'</pre>';
+$page_title = $_SESSION['chart']['title'].($_GET['filter']??'');
+$chart_type = $_SESSION['chart']['chart_type']??'Line';
 
 foreach ($_SESSION['chart']['xAxis'] as $key => $value) {
 	array_push($label,$value);
@@ -38,12 +39,14 @@ foreach ($_SESSION['chart']['xAxis'] as $key => $value) {
 
 $num_color = 1;
 $legend = [];
-foreach ($_SESSION['chart']['data'] as $key => $value) {
+
+$dataset = isset($_GET['filter'])?$_SESSION['chart']['data'][$_GET['filter']]:$_SESSION['chart']['data'];
+
+foreach ($dataset as $key => $value) {
 	$color = $array_color[$num_color];
     $legend[$key] = $color;
 	$data[] = array(
-		'label'=>$key,
-		'fillColor'=> 'rgba(220,220,220,0)',
+		'fillColor'=> (!isset($_SESSION['chart']['chart_type'])?'rgba(220,220,220,0)':$color),
 		'strokeColor'=> $color,
 		'pointColor' => $color,
 		'data' => array_values($value));
@@ -52,7 +55,7 @@ foreach ($_SESSION['chart']['data'] as $key => $value) {
 
 ?>
 <script src="<?php echo JWB?>chartjs/Chart.min.js"></script>
-<h5 style="text-align: center;"><?php echo $_SESSION['chart']['title']; ?></h5>
+<h5 style="text-align: center;"><?= $page_title; ?></h5>
 <hr/><br/>
 <div class="s-chart">                        
     <canvas id="chartjs"></canvas>   
@@ -74,7 +77,7 @@ $(function(){
     }
     $(window).resize( respondCanvas );
     function respondCanvas(){ 
-        var myChart = new Chart(ct).Line(lineChartData,{
+        var myChart = new Chart(ct).<?= $chart_type?>(lineChartData,{
         responsive:true,
         maintainAspectRatio: true,
         bezierCurve : false,

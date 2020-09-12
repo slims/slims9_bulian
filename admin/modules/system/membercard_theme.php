@@ -63,7 +63,6 @@ if (isset($_POST['template'])) {
     }
   }else{
     //restore default settings
-    $dbs->query("DELETE FROM `setting` WHERE setting_name = 'membercard_print_settings'");
     $data = $sysconf['print']['membercard'];
   }
   //load custom css

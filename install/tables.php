@@ -2537,6 +2537,18 @@ return [
         'default' => null
       ],
       [
+        'field' => 'forgot',
+        'type' => 'varchar(80)',
+        'null' => true,
+        'default' => null
+      ],
+      [
+        'field' => 'admin_template',
+        'type' => 'text',
+        'null' => true,
+        'default' => ''
+      ],
+      [
         'field' => 'input_date',
         'type' => 'date',
         'null' => true,

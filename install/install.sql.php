@@ -1,4 +1,4 @@
-<?php
+	<?php
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 2020-01-11 21:41
@@ -22,10 +22,10 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   `title` text collate utf8_unicode_ci NOT NULL,
   `sor` varchar(200) collate utf8_unicode_ci default NULL,
   `edition` varchar(50) collate utf8_unicode_ci default NULL,
-  `isbn_issn` varchar(20) collate utf8_unicode_ci default NULL,
+  `isbn_issn` varchar(32) collate utf8_unicode_ci default NULL,
   `publisher_id` int(11) default NULL,
   `publish_year` varchar(20) default NULL,
-  `collation` varchar(50) collate utf8_unicode_ci default NULL,
+  `collation` varchar(100) collate utf8_unicode_ci default NULL,
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `language_id` char(5) collate utf8_unicode_ci default \'en\',
@@ -71,6 +71,8 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_author` (
   `biblio_id` int(11) NOT NULL default \'0\',
   `author_id` int(11) NOT NULL default \'0\',
   `level` int(1) NOT NULL default \'1\',
+  KEY `biblio_id` (`biblio_id`),
+  KEY `author_id` (`author_id`),
   PRIMARY KEY  (`biblio_id`,`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 
@@ -78,6 +80,8 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_topic` (
   `biblio_id` int(11) NOT NULL default \'0\',
   `topic_id` int(11) NOT NULL default \'0\',
   `level` int(1) NOT NULL default \'1\',
+  KEY `biblio_id` (`biblio_id`),
+  KEY `topic_id` (`topic_id`),
   PRIMARY KEY  (`biblio_id`,`topic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 
@@ -657,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `stock_take_item` (
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `location` varchar(100) collate utf8_unicode_ci default NULL,
   `status` enum('e','m','u','l') collate utf8_unicode_ci NOT NULL default 'm',
-  `checked_by` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `checked_by` varchar(50) collate utf8_unicode_ci default NULL,
   `last_update` datetime default NULL,
   PRIMARY KEY  (`stock_take_id`,`item_id`),
   UNIQUE KEY `item_code` (`item_code`),
@@ -691,6 +695,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_login` datetime DEFAULT NULL,
   `last_login_ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `groups` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `admin_template` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `forgot` VARCHAR(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `input_date` date DEFAULT NULL,
   `last_update` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
@@ -737,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   `biblio_id` int(11) NOT NULL,
   `title` text COLLATE utf8_unicode_ci,
   `edition` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `isbn_issn` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `isbn_issn` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `author` text COLLATE utf8_unicode_ci,
   `topic` text COLLATE utf8_unicode_ci,
   `gmd` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -968,7 +974,8 @@ INSERT INTO `mst_relation_term` (`ID`, `rt_id`, `rt_desc`) VALUES
 $sql['insert'][] = "
 INSERT IGNORE INTO `setting` (`setting_name`, `setting_value`) VALUES
 ('enable_visitor_limitation', 's:1:\"0\";'),
-('time_visitor_limitation', 's:2:\"60\";');";
+('time_visitor_limitation', 's:2:\"60\";'),
+('logo_image', NULL);";
 
 $sql['create'][] = "
 CREATE TABLE `mst_servers` (
@@ -979,7 +986,7 @@ CREATE TABLE `mst_servers` (
   `input_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `biblio_log` (
@@ -1033,6 +1040,37 @@ CREATE TABLE IF NOT EXISTS `loan_history` (
   `last_update` datetime DEFAULT NULL,
    PRIMARY KEY (`loan_id`),
    KEY `member_name` (`member_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+
+$sql['create'][] = "
+CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+  `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `max` int(11) DEFAULT NULL,
+  `data` text COLLATE utf8_unicode_ci,
+  `indexed` tinyint(1) DEFAULT NULL,
+  `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
+  `width` int(5) DEFAULT '100',
+  `note` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`dbfield`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE `files_read` (
+  `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`filelog_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 

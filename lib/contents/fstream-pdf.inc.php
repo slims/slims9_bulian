@@ -25,7 +25,7 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-if ($sysconf['allow_pdf_download']) {
+if (isset($sysconf['allow_pdf_download'])) {
   // do nothing
 }
 /* File Viewer */

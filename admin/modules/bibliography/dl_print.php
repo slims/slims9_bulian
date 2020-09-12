@@ -186,8 +186,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
             $html_str .= '<td valign="top">';
             $html_str .= '<div class="labelStyle" valign="top">';
             if ($sysconf['print']['label']['include_header_text']) { $html_str .= '<div class="labelHeaderStyle">'.($sysconf['print']['label']['header_text']?$sysconf['print']['label']['header_text']:$sysconf['library_name']).'</div>'; }
-            // explode label data by space
-            $sliced_label = explode(' ', $label, 5);
+            // explode label data by space except callnumber
+            $sliced_label = preg_split("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m",$label);
             foreach ($sliced_label as $slice_label_item) {
                 $html_str .= $slice_label_item.'<br />';
             }
@@ -223,7 +223,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     <div class="btn-group">
         <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/dl_print.php?action=clear" class="btn btn-default notAJAX "><?php echo __('Clear Print Queue'); ?></a>
         <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/dl_print.php?action=print" class="btn btn-default notAJAX "><?php echo __('Print Labels for Selected Data'); ?></a>
-        <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=label" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Change print barcode settings'); ?>"><?php echo __('Change print barcode settings'); ?></a>
+        <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=label" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Change print label settings'); ?>"><?php echo __('Change print label settings'); ?></a>
 	</div>
     <form name="search" action="<?php echo MWB; ?>bibliography/dl_print.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
     <input type="text" name="keywords" class="form-control col-md-3" />

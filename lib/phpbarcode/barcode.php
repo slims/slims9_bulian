@@ -119,8 +119,8 @@ if ( ! isset($get->scale) OR (isset($get->scale) AND ! in_array($get->scale, $al
 
 // http vars
 $code = isset($get->code) ? urlencode(trim($get->code)) : '1234567890';
-if (get_magic_quotes_gpc())
-  $code=stripslashes($code);
+
+$code=stripslashes($code);
 
 $encoding = isset($get->encoding) ? trim($get->encoding) : 'code128';
 $scale = isset($get->scale) ? trim($get->scale) : '2';

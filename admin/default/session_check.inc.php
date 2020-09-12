@@ -53,8 +53,8 @@ if ($unauthorized) {
 $curr_timestamp = time();
 $timeout = ($curr_timestamp-$_SESSION['logintime']) >= $sysconf['session_timeout'];
 if ($timeout && !isset($_SESSION['remember_me'])) {
-    $msg = '<div style="padding: 5px; border: 1px dotted #FF0000; color: #FF0000;">';
-    $msg .= __('Your Login Session has already timeout!').' <a target="_top" href="'.SWB.'index.php?p=login">Re-Login</a>';
+    $msg = '<div style="font-family: Arial, sans-serif; text-align:center; padding: 20px; margin: 20px; border: 2px solid #F00; color: #F00;">';
+    $msg .= __('Your Login session has timed out.').' <a target="_top" href="'.SWB.'index.php?p=login" style="text-decoration: underline; color: #000;">'.__('Click here to Login again').'</a>';
     $msg .= '</div>'."\n";
     // unset cookie admin flag
     setcookie('admin_logged_in', true, time()-86400, SWB);

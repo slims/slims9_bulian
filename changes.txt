@@ -39,6 +39,36 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.9.0 (Bulian)
+========================================================================
+Fixed : Invalid date on upgrade, especially upgrade from SLiMS 5 Cendana version and under 
+Added : File attachment download counter report
+Added : Biblio log preview
+Added : Upload picture to and from local server in ckeditor
+Updated : ckeditor to version 4
+Added : Search cluster (on default template) for ElasticSearch indexing tool
+Added : Easily change About Us information in OPAC (provided as footer). Available in theme customization
+Added : GUI acccess to generate new field for Bibliography and Membership. Available in System menu
+Added : Security enhancement for CRSF (Cross-Site Request Forgery)
+Added : Download book cover directly using url or search through Duckduckgo Service
+Added : Cover image thumbnail in Bibliographic List
+Updated : Item batch detail in Item Code Batch Generator (Options Button)
+Added : Captcha feature to forgot your password recovery mode (admin login)
+Added : Procurement report in Reporting Modules
+Added : Change logo personification in System Module. Available in System menu
+Fixed : Flag icon when change translation. Available in System menu
+Updated : Webcam access in HTML5
+Added : Personalized backend user template. Available in theme customization
+Added : Option for disabling voice in visitor log. Available in System menu
+Added : First row information when exporting and importing bibliography and item data
+Updated : Bahasa Indonesia translation
+Added : Forgot your password recovery mode (admin login)
+Added : Option to show or hide first column when export or import
+
+SLiMS 9.1.1 (Bulian)
+========================================================================
+Added : Upgrade version tag
+
 SLiMS 9.1.0 (Bulian)
 ========================================================================
 Added : Option to activate mobile view in default theme customization

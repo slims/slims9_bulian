@@ -57,12 +57,12 @@ $table->table_attr = 'class="s-table table table-bordered mb-0"';
 // total number of titles
 $stat_query = $dbs->query('SELECT COUNT(biblio_id) FROM biblio');
 $stat_data = $stat_query->fetch_row();
-$collection_stat[__('Total Titles')] = $stat_data[0].' (including titles that still don\'t have items yet)';
+$collection_stat[__('Total Titles')] = $stat_data[0].' '.__(' (including titles that still don\'t have items yet)');
 
 // total number of titles
 $stat_query = $dbs->query('SELECT DISTINCT biblio.biblio_id FROM biblio INNER JOIN item ON biblio.biblio_id = item.biblio_id');
 $stat_data = $stat_query->num_rows;
-$collection_stat[__('Total Titles with items')] = $stat_data.' (only titles that have items)';
+$collection_stat[__('Total Titles with items')] = $stat_data.__(' (only titles that have items)');
 
 // total number of items
 $stat_query = $dbs->query('SELECT item.item_code FROM item,biblio WHERE item.biblio_id=biblio.biblio_id');
@@ -86,7 +86,7 @@ $stat_query = $dbs->query('SELECT gmd_name, COUNT(biblio_id) AS total_titles
 
 $stat_data = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_title_gmd" width="700" height="470" title="'.__('Total Titles By Medium/GMD').'">'.__('Show in chart/plot').'</a></div>';
 while ($data = $stat_query->fetch_row()) {
-    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>) ,';
+    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>), ';
 }
 $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Titles By Medium/GMD')] = $stat_data;
@@ -101,7 +101,7 @@ $stat_query = $dbs->query('SELECT coll_type_name, COUNT(item_id) AS total_items
 
 $stat_data = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_title_colltype" width="700" height="470" title="'.__('Total Items By Collection Type').'">'.__('Show in chart/plot').'</a></div>';
 while ($data = $stat_query->fetch_row()) {
-    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>) ,';
+    $stat_data .= $data[0].' (<strong>'.$data[1].'</strong>), ';
 }
 $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;

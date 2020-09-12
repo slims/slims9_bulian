@@ -52,7 +52,7 @@ if (isset($_POST['saveData'])) {
     $groupName = trim(strip_tags($_POST['groupName']));
     // check form validity
     if (empty($groupName)) {
-        utility::jsAlert(__('Group name can\'t be empty')); //mfc
+        utility::jsToastr(__('User Group'), __('Group name can\'t be empty'), 'error');
     } else {
         $data['group_name'] = $dbs->escape_string($groupName);
         $data['input_date'] = date('Y-m-d');
@@ -87,9 +87,10 @@ if (isset($_POST['saveData'])) {
                 }
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update group data ('.$groupName.')');
-                utility::jsAlert(__('Group Data Successfully Updated'));
+                utility::jsToastr(__('User Group'), __('Group Data Successfully Updated'), 'success');
+
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Group Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('User Group'), __('Group Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -115,9 +116,9 @@ if (isset($_POST['saveData'])) {
 
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new group ('.$groupName.')');
-                utility::jsAlert(__('New Group Data Successfully Saved'));
+                utility::jsToastr(__('User Group'), __('New Group Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Group Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { utility::jsToastr(__('User Group'), __('Group Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error');}
             exit();
         }
     }
@@ -150,10 +151,10 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('User Group'), __('All Data Successfully Deleted'), 'success');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('User Group'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'error');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

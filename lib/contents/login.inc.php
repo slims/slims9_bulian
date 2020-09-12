@@ -27,6 +27,14 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
+
+if ($sysconf['baseurl'] != '') {
+  $_host = $sysconf['baseurl'];      
+  header("Access-Control-Allow-Origin: $_host", FALSE);
+}
+
 /*
 if (defined('LIGHTWEIGHT_MODE')) {
     header('Location: index.php');
@@ -52,6 +60,14 @@ ob_start();
 
 // if there is login action
 if (isset($_POST['logMeIn'])) {
+    if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+        session_unset();
+        echo '<script type="text/javascript">';
+        echo 'alert("Invalid login form!");';
+        echo 'location.href = \'index.php?p=login\';';
+        echo '</script>';
+	exit();
+    }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
     if (!$username OR !$password) {
@@ -97,7 +113,11 @@ if (isset($_POST['logMeIn'])) {
             setcookie('admin_logged_in', true, time()+14400, SWB);
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
-            echo '<script type="text/javascript">';
+
+            # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+            $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
+
+	    echo '<script type="text/javascript">';
             if ($sysconf['login_message']) {
                 echo 'alert(\''.__('Welcome to Library Automation, ').$logon->real_name.'\');';
             }
@@ -214,7 +234,8 @@ if (isset($_POST['updatePassword'])) {
         <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
         <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
-        <!-- Captcha in form - start -->
+        <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+	<!-- Captcha in form - start -->
         <?php if ($sysconf['captcha']['smc']['enable']) { ?>
           <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
           <div class="captchaAdmin">
@@ -245,6 +266,7 @@ if (isset($_POST['updatePassword'])) {
         </div>
         <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
+        <a class="forgotButton" href="index.php?p=forgot"><?php echo __('Forgot my password') ?></a>
         </div>
     <?php } ?>
     </form>

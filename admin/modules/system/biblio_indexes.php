@@ -47,7 +47,7 @@ if (!$can_read) {
 
 if ($sysconf['index']['type'] == 'mongodb') {
   if (!class_exists('MongoClient')) {
-    throw new Exception('PHP Mongodb extension library is not installed yet!');
+    throw new Exception(__('PHP Mongodb extension library is not installed yet!'));
   } else {
 	  $Mongo = new MongoClient();
 		// select index
@@ -149,8 +149,8 @@ if (isset($_SESSION['message'])) {
   echo '<div class="alert alert-info">'.$_SESSION['message'].'</div>';
   unset($_SESSION['message']);
 }
-echo '<div>Total data on biblio: ' . $bib_total . ' records.</div>';
-echo '<div>Total indexed data: ' . $idx_total . ' records.</div>';
-echo '<div>Unidexed data: ' . $unidx_total . ' records.</div>';
+echo '<div>'.__('Total data on biblio: ') . $bib_total . __(' records.').'</div>';
+echo '<div>'.__('Total indexed data: ') . $idx_total . __(' records.').'</div>';
+echo '<div>'.__('Unidexed data: ') . $unidx_total . __(' records.').'</div>';
 echo '</div>';
 }

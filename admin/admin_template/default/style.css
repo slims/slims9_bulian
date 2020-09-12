@@ -1,13 +1,13 @@
 @import "css/font-awesome.min.css";
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
@@ -365,6 +365,11 @@ buttton
 .makeHidden {
   display: none;
 }
+.editFormLink {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
 .dateField {
   padding: 2px 2px 1px;
   width: 200px;
@@ -374,6 +379,7 @@ buttton
   color: #555;
   margin-bottom: 5px;
   background-image: none;
+  display: flex;
 }
 .dateInput {
   width: 160px;
@@ -384,7 +390,7 @@ buttton
   width: 22px;
   height: 22px;
   float: right;
-  margin: -35px;
+  margin: 0px;
   color: #00a9ff;
   cursor: pointer;
 }
@@ -662,18 +668,21 @@ buttton
   min-height: 550px;
 }
 .loader {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
   position: absolute;
-  top: 100px;
-  left: 125px;
-  width: 300px;
-  text-align: center;
+  top: 70px;
+  left: 225px;
+  width: calc(100% - 225px);
+  text-align: left;
   z-index: 999;
 }
 .loader > div {
-  width: 18px;
-  height: 18px;
+  width: 100%;
+  height: 1px;
   background-color: #000000;
-  border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -681,7 +690,7 @@ buttton
 .loader > div:nth-child(1) {
   background-color: #ffffff;
 }
-.loader > div:nth-child(2) {
+.loader > div:nth-child(3) {
   background-color: #00a9ff;
 }
 .loader .bounce1 {
@@ -1295,8 +1304,7 @@ table {
   max-width: 72px;
 }
 #imageFilename .removeImage {
-  margin-top: 5px;
-  border-radius: 5px !important;
+  color: #ffffff;
 }
 .s-widget-value {
   font-size: 30px;

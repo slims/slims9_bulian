@@ -13,14 +13,20 @@
 require 'lib/router.inc.php';
 require __DIR__ . '/controllers/HomeController.php';
 require __DIR__ . '/controllers/BiblioController.php';
+require __DIR__ . '/controllers/MemberController.php';
+require __DIR__ . '/controllers/SubjectController.php';
 
 /*----------  Create router object  ----------*/
 $router = new Router($sysconf, $dbs);
 $router->setBasePath('api');
 
 /*----------  Create routes  ----------*/
-$router->map('GET', '/', 'HomeController:index');
-$router->map('GET', '/biblio/[i:id]/[a:token]', 'BiblioController:detail');
+$router->map('GET', '/', 'HomeController@index');
+$router->map('GET', '/biblio/popular', 'BiblioController@getPopular');
+$router->map('GET', '/biblio/latest', 'BiblioController@getLatest');
+$router->map('GET', '/subject/popular', 'SubjectController@getPopular');
+$router->map('GET', '/subject/latest', 'SubjectController@getLatest');
+$router->map('GET', '/member/top', 'MemberController@getTopMember');
 
 /*----------  Run matching route  ----------*/
 $router->run();
