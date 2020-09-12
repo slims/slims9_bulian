@@ -71,6 +71,8 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_author` (
   `biblio_id` int(11) NOT NULL default \'0\',
   `author_id` int(11) NOT NULL default \'0\',
   `level` int(1) NOT NULL default \'1\',
+  KEY `biblio_id` (`biblio_id`),
+  KEY `author_id` (`author_id`),
   PRIMARY KEY  (`biblio_id`,`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 
@@ -78,6 +80,8 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_topic` (
   `biblio_id` int(11) NOT NULL default \'0\',
   `topic_id` int(11) NOT NULL default \'0\',
   `level` int(1) NOT NULL default \'1\',
+  KEY `biblio_id` (`biblio_id`),
+  KEY `topic_id` (`topic_id`),
   PRIMARY KEY  (`biblio_id`,`topic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 

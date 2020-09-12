@@ -897,6 +897,10 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['alter'][] = "ALTER TABLE `stock_take_item` CHANGE `checked_by` `checked_by` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `status`;";
 
+    $sql['alter'][] = "ALTER TABLE `biblio_author` ADD INDEX `biblio_id` (`biblio_id`), ADD INDEX `author_id` (`author_id`);";
+
+    $sql['alter'][] = "ALTER TABLE `biblio_topic` ADD INDEX `biblio_id` (`biblio_id`), ADD INDEX `topic_id` (`topic_id`);";
+
     $sql['insert'][] = "INSERT INTO `setting` (`setting_name`, `setting_value`) VALUES ('logo_image', NULL);";
 
     $sql['create'][] = "

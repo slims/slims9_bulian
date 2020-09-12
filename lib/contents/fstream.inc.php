@@ -65,7 +65,13 @@ if ($file_q->num_rows > 0) {
     if ($file_d['mime_type'] == 'application/pdf') {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
-        require './js/pdfjs/web/viewer.php';
+
+        if (utility::isMobileBrowser()) {
+            require './js/pdfjs/mobile/index.php';
+        } else {
+            require './js/pdfjs/web/viewer.php';
+        }
+
 		utility::dlCount($dbs, $fileID, $memberID, $userID);
         exit();
       }

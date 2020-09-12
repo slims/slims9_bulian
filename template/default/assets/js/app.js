@@ -127,7 +127,7 @@ Vue.component('slims-subject', {
                 innerHTML: this.topic
             },
             attrs: {
-                href: `index.php?subject=${this.topic}&search=search`,
+                href: `index.php?subject="${encodeURIComponent(this.topic).replace(/%20/g, "+")}"&search=search`,
                 class: 'btn btn-outline-secondary btn-rounded btn-sm mr-2 mb-2'
             }
         })
