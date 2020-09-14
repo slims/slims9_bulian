@@ -32,7 +32,7 @@ if (!defined('INDEX_AUTH')) {
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', 'production');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -66,7 +66,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.1.1');
+define('SENAYAN_VERSION_TAG', 'v9.2.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
