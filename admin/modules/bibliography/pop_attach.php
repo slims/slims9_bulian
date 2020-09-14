@@ -98,7 +98,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
     } else {
       utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
       echo '<script type="text/javascript">';
-      echo 'self.close();';
+      echo 'self.location.href = "'.$_SERVER['PHP_SELF'].'";';
       echo '</script>';
       die();
     }
