@@ -7,7 +7,8 @@
         "ext-json": "*",
         "volnix/csrf": "~1.0",
         "monolog/monolog": "^2.0",
-        "ramsey/uuid": "^4.0"
+        "ramsey/uuid": "^4.0",
+        "ifsnop/mysqldump-php": "^2.9"
     },
     "license": "GNU GPL v3"
 }
