@@ -737,3 +737,6 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 # for elasticsearch
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;

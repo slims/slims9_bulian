@@ -385,6 +385,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $total = (integer)$_POST['totalItems'];
       $regex = '/0{3,}/';
 
+      if($total > $sysconf['max_insert_batch']){
+          utility::jsToastr('Bibliography', sprintf(__('Item Data FAILED to Save. Insert batch item maximum %s copies'),$sysconf['max_insert_batch']), 'warning');
+          die();
+      }
+
       // get zeros
       preg_match($regex, $pattern, $result);
       $zeros = strlen($result[0]);
