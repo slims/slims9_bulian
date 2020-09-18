@@ -59,7 +59,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
         'no-data' => false,
         'add-drop-table' => true,
         'single-transaction' => true,
-        'lock-tables' => false,
+        'lock-tables' => true,
         'add-locks' => false,
         'extended-insert' => false,
         'disable-keys' => true,
@@ -85,6 +85,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                 $data['backup_time'] = date('Y-m-d H:i"s');
                 $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql');
                 $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),$sysconf['backup_dir']);
+
                 if (!preg_match('@^WIN.*@i', PHP_OS)) {
                     // get current directory path
                     $curr_dir = getcwd();
