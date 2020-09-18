@@ -41,6 +41,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.2.1 (Bulian)
 ========================================================================
+Added : Thumbnail and picture preview in Member List
 Added : Using mysqldump-php for backup. Less dependency when installing SLiMS to shared hosting
 Added : Hide and Promote to homepage filter in Bibliographic List
 Fixed : Version tag for latest bulian's release
