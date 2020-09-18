@@ -32,7 +32,7 @@ if (!defined('INDEX_AUTH')) {
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', 'production');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -66,7 +66,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.2.0');
+define('SENAYAN_VERSION_TAG', 'v9.2.1');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -737,3 +737,6 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 # for elasticsearch
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;

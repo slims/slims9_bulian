@@ -50,6 +50,9 @@ if (!$can_read) {
 
 function downloadFile($url, $path)
 {
+
+  $fp = fopen($path, 'w+');
+
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
@@ -62,18 +65,20 @@ function downloadFile($url, $path)
     CURLOPT_CUSTOMREQUEST => "GET",
     CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT']
+    CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
+    CURLOPT_FILE => $fp
   ));
 
   $response = curl_exec($curl);
   $err = curl_error($curl);
 
   curl_close($curl);
+  fclose($fp);
 
   if ($err) {
     return $err;
   } else {
-    file_put_contents($path, $response);
+    // file_put_contents($path, $response);
     return true;
   }
 }

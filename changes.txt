@@ -39,6 +39,16 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.2.1 (Bulian)
+========================================================================
+Added : Thumbnail and picture preview in Member List
+Added : Using mysqldump-php for backup. Less dependency when installing SLiMS to shared hosting
+Added : Hide and Promote to homepage filter in Bibliographic List
+Fixed : Version tag for latest bulian's release
+Fixed : Identifier for production within sysconfig
+Fixed : Update information for minimum PHP version
+Fixed : Blank page after upload file is failed
+
 SLiMS 9.2.0 (Bulian)
 ========================================================================
 Fixed : Invalid date on upgrade, especially upgrade from SLiMS 5 Cendana version and under 

@@ -13,6 +13,7 @@ $namespaces = [
   "Ramsey\\Uuid\\" => "/uuid/src/",
   "Ramsey\\Collection\\" => "/collection/src/",
   "Brick\\Math\\" => "/math/src/",
+  "ifsnop\\mysqldump-php\\" => "/mysqldump-php/src",
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {

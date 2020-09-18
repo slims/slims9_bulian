@@ -44,7 +44,6 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
   </div>
 
 <?php
-
 // generate warning messages
 $warnings = array();
 // check GD extension
@@ -76,9 +75,9 @@ if (!is_writable(UPLOAD)) {
     $warnings[] = __('<strong>File upload</strong> directory is not writable. Make sure it is writable (and all directories under it) by changing its permission or you won\'t be able to upload any file, create report files and create database backups.');
 }
 // check mysqldump
-if (!file_exists($sysconf['mysqldump'])) {
-    $warnings[] = __('The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won\'t be able to do any database backups.');
-}
+//if (!file_exists($sysconf['mysqldump'])) {
+//    $warnings[] = __('The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won\'t be able to do any database backups.');
+//}
 // check installer directory
 if (is_dir('../install/')) {
     $warnings[] = __('Installer folder is still exist inside your server. Please remove it or rename to another name for security reason.');
