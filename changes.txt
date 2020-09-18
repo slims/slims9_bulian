@@ -41,6 +41,8 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.2.1 (Bulian)
 ========================================================================
+Added : Using mysqldump-php for backup. Less dependency when installing SLiMS to shared hosting
+Added : Hide and Promote to homepage filter in Bibliographic List
 Fixed : Version tag for latest bulian's release
 Fixed : Identifier for production within sysconfig
 Fixed : Update information for minimum PHP version
