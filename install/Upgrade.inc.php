@@ -938,4 +938,11 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     return $error;
   }
 
+  /**
+   * Upgrade role to v9.2.1
+   */
+  function upgrade_role_24()
+  {
+  }
+
 }
