@@ -547,7 +547,22 @@ if (!$in_pop_up) {
 	  <form name="search" action="<?php echo MWB; ?>bibliography/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
 		  <input type="text" name="keywords" id="keywords" class="form-control col-md-3" />
 		  <select name="field" class="form-control col-md-2"><option value="0"><?php echo __('All Fields'); ?></option><option value="title"><?php echo __('Title/Series Title'); ?> </option><option value="subject"><?php echo __('Topics'); ?></option><option value="author"><?php echo __('Authors'); ?></option><option value="isbn"><?php echo __('ISBN/ISSN'); ?></option><option value="publisher"><?php echo __('Publisher'); ?></option></select>
-		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+        <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+        <div class="btn btn-info" data-toggle="collapse" data-target="#advancedFilter" aria-expanded="false"><?php echo __('Advanced Filter'); ?></div>   
+        <div class="collapse" id="advancedFilter" style="padding-top:10px;width:100%; text-align:left !important;">
+        <?php echo __('Hide in OPAC'); ?>&nbsp;
+          <select name="opac_hide" class="form-control col-md-2">
+            <option value=""><?php echo __('ALL'); ?></option>
+            <option value="0"><?php echo __('Show'); ?> </option>
+            <option value="1"><?php echo __('Hide'); ?></option>
+          </select>
+        <?php echo __('Promote To Homepage'); ?>&nbsp;
+          <select name="promoted" class="form-control col-md-2">
+            <option value=""><?php echo __('ALL'); ?></option>
+            <option value="0"><?php echo __('Don\'t Promote'); ?> </option>
+            <option value="1"><?php echo __('Promote'); ?></option>
+          </select>       
+        </div>  
 		  <?php
 		  // enable UCS?
 			if ($sysconf['ucs']['enable']) {
@@ -1133,7 +1148,7 @@ elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] =
 
   // table spec
   $table_spec = 'search_biblio AS `index` LEFT JOIN item ON `index`.biblio_id=item.biblio_id';
-
+  $str_criteria = 'index.biblio_id IS NOT NULL';
   if ($can_read AND $can_write) {
     $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \''.__('Title').'\'', 'index.labels','index.image',
     'index.author',
@@ -1159,7 +1174,7 @@ elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] =
 
   // table spec
   $table_spec = 'biblio LEFT JOIN item ON biblio.biblio_id=item.biblio_id';
-
+  $str_criteria = 'biblio.biblio_id IS NOT NULL';
   if ($can_read AND $can_write) {
     $datagrid->setSQLColumn('biblio.biblio_id', 'biblio.biblio_id AS bid',
     'biblio.title AS \''.__('Title').'\'',
@@ -1183,30 +1198,40 @@ elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] =
   }
 
 	$stopwords= "@\sAnd\s|\sOr\s|\sNot\s|\sThe\s|\sDan\s|\sAtau\s|\sAn\s|\sA\s@i";
-
+  
   // is there any search
   if (isset($_GET['keywords']) AND $_GET['keywords']) {
-  $keywords = $dbs->escape_string(trim($_GET['keywords']));
+    $keywords = $dbs->escape_string(trim($_GET['keywords']));
 		$keywords = preg_replace($stopwords,' ',$keywords);
-  $searchable_fields = array('title', 'author', 'subject', 'isbn', 'publisher');
-  if ($_GET['field'] != '0' AND in_array($_GET['field'], $searchable_fields)) {
-    $field = $_GET['field'];
-    $search_str = $field.'='.$keywords;
-  } else {
-    $search_str = '';
-    foreach ($searchable_fields as $search_field) {
-    $search_str .= $search_field.'='.$keywords.' OR ';
+    $searchable_fields = array('title', 'author', 'subject', 'isbn', 'publisher');
+    if ($_GET['field'] != '0' AND in_array($_GET['field'], $searchable_fields)) {
+      $field = $_GET['field'];
+      $search_str = $field.'='.$keywords;
+    } else {
+      $search_str = '';
+      foreach ($searchable_fields as $search_field) {
+      $search_str .= $search_field.'='.$keywords.' OR ';
+      }
+      $search_str = substr_replace($search_str, '', -4);
     }
-    $search_str = substr_replace($search_str, '', -4);
+    $biblio_list = new biblio_list($dbs, $biblio_result_num);
+    $criteria = $biblio_list->setSQLcriteria($search_str);
+    $str_criteria .= ' AND ('.$criteria['sql_criteria'].')';
   }
 
-  $biblio_list = new biblio_list($dbs, $biblio_result_num);
-  $criteria = $biblio_list->setSQLcriteria($search_str);
+  if(isset($_GET['opac_hide']) && $_GET['opac_hide'] !=''){
+    $opac_hide = $dbs->escape_string($_GET['opac_hide']);
+    $str_criteria .= ' AND opac_hide ='.$opac_hide;
   }
 
-  if (isset($criteria)) {
-  $datagrid->setSQLcriteria('('.$criteria['sql_criteria'].')');
+  if(isset($_GET['promoted']) && $_GET['promoted'] !=''){
+    $promoted = $dbs->escape_string($_GET['promoted']);
+    $str_criteria .= ' AND promoted ='.$promoted;
   }
+  //debug
+  //echo $str_criteria;
+
+  $datagrid->setSQLcriteria($str_criteria);
 
   // set table and table header attributes
   $datagrid->table_attr = 'id="dataList" class="s-table table"';
