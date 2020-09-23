@@ -57,7 +57,7 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
-        $data['setting_value'] = serialize($value);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
         if ($query->num_rows > 0) {

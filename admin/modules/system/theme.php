@@ -39,7 +39,7 @@ if (!function_exists('addOrUpdateSetting')) {
     foreach ($value as $key => $val) {
       $settings[$key] = trim(str_replace(array('\n', '\r','\t', '\\'), '', $val));
     }
-    $data['setting_value'] = serialize($settings);
+    $data['setting_value'] = $dbs->escape_string(serialize($settings));
 
     // save personalized user template
     if($name == 'admin_template'){
