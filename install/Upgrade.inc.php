@@ -802,7 +802,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     LEFT JOIN mst_location mlc ON mlc.location_id=i.location_id
     LEFT JOIN member m ON m.member_id=l.member_id
     LEFT JOIN mst_coll_type mct ON mct.coll_type_id=i.coll_type_id
-    LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL);";
+    LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL AND b.biblio_id IS NOT NULL);";
 
     $error = $this->slims->query($sql, ['create', 'insert']);
 
