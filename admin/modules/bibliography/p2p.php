@@ -96,6 +96,8 @@ function remoteFileExists($url)
 {
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_NOBODY, true);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,  false);
   $result = curl_exec($curl);
   $status = null;
   if ($result !== false) {
