@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 23;
+  private $version = 26;
 
   /**
    * @param SLiMS $slims
@@ -943,6 +943,23 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
    */
   function upgrade_role_24()
   {
+  }
+
+  /**
+   * Upgrade role to v9.2.2
+   */
+  function upgrade_role_25()
+  {
+  }
+
+  /**
+   * Upgrade role to v9.3.0
+   */
+  function upgrade_role_26()
+  {
+      $sql['alter'][] = "ALTER TABLE `group_access` ADD `menus` json NULL AFTER `module_id`;";
+
+      return $this->slims->query($sql, ['alter']);
   }
 
 }

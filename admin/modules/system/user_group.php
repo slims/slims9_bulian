@@ -82,7 +82,13 @@ if (isset($_POST['saveData'])) {
                                 }
                             }
                         }
-                        $dbs->query("INSERT INTO group_access VALUES ($updateRecordID, $module, 1, $is_write)");
+
+                        // menus
+                        $menus = null;
+                        if (isset($_POST['menus']))
+                            if (isset($_POST['menus'][(int)$module])) $menus = json_encode($_POST['menus'][(int)$module]);
+
+                        $dbs->query(sprintf("INSERT INTO group_access VALUES ($updateRecordID, $module, '%s', 1, $is_write)", $dbs->escape_string($menus)));
                     }
                 }
                 // write log
@@ -101,6 +107,7 @@ if (isset($_POST['saveData'])) {
                 // set group privileges
                 if (isset($_POST['read'])) {
                     foreach ($_POST['read'] as $module) {
+
                         // check write privileges
                         $is_write = 0;
                         if (isset($_POST['write'])) {
@@ -110,7 +117,13 @@ if (isset($_POST['saveData'])) {
                                 }
                             }
                         }
-                        $dbs->query("INSERT INTO group_access VALUES ($group_id, $module, 1, $is_write)");
+
+                        // menus
+                        $menus = null;
+                        if (isset($_POST['menus']))
+                            if (isset($_POST['menus'][(int)$module])) $menus = json_encode($_POST['menus'][(int)$module]);
+
+                        $dbs->query(sprintf("INSERT INTO group_access VALUES ($group_id, $module, '%s', 1, $is_write)", $dbs->escape_string($menus)));
                     }
                 }
 
@@ -173,7 +186,7 @@ if (isset($_POST['saveData'])) {
       <a href="<?php echo MWB; ?>system/user_group.php" class="btn btn-default"><?php echo __('Group List'); ?></a>
       <a href="<?php echo MWB; ?>system/user_group.php?action=detail" class="btn btn-default"><?php echo __('Add New Group'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/user_group.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <form name="search" action="<?php echo MWB; ?>system/user_group.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
@@ -219,9 +232,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($access_data = $rec_q->fetch_assoc()) {
             $priv_data[$access_data['module_id']]['r'] = $access_data['r'];
             $priv_data[$access_data['module_id']]['w'] = $access_data['w'];
+            $priv_data[$access_data['module_id']]['menus'] = json_decode($access_data['menus']);
         }
     $priv_table = '';
-    include 'module_priv_form.inc.php';
+    include 'module_priv_form_adv.inc.php';
     $form->addAnything(__('Privileges'), $priv_table);
 
     // edit mode messagge

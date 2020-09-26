@@ -156,6 +156,17 @@ class module extends simbio
 
       if (file_exists($_submenu_file)) {
         include $_submenu_file;
+
+        if ($_SESSION['uid'] > 1) {
+            $tmp_menu = [];
+            if (isset($menu) && count($menu) > 0) {
+                foreach ($menu as $item) {
+                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
+                }
+            }
+            $menu = $tmp_menu;
+        }
+
       } else {
         include 'default/submenu.php';
         foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {

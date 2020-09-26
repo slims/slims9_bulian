@@ -103,6 +103,14 @@ class admin_logon
                     if ($_priv_d['w']) {
                         $_SESSION['priv'][$_priv_d['module_path']]['w'] = true;
                     }
+                    if ($_priv_d['menus']) {
+                        $submenus = json_decode($_priv_d['menus'], true);
+                        if (isset($_SESSION['priv'][$_priv_d['module_path']]['menus'])) {
+                            $_SESSION['priv'][$_priv_d['module_path']]['menus'] = array_unique(array_merge($submenus, $_SESSION['priv'][$_priv_d['module_path']]['menus']));
+                        } else {
+                            $_SESSION['priv'][$_priv_d['module_path']]['menus'] = $submenus;
+                        }
+                    }
                 }
             }
         } else {
