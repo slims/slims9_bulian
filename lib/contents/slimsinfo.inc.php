@@ -53,7 +53,7 @@ Documentation: Purwoko, Arif Syamsudin, Hendro Wicaksono, Rasyid Ridho, Sulfan Z
 <div style="font-weight:bold;">Translator:</div>
 Germany: Tobias Zeumer<br />
 Arabic: Rasyid Ridho<br />
-Thai: Prasitichai 2Õ22Ò32Ó82Ò32Ó72Î92Õ52Ñ32Ó12Ò52Ò72Ï5<br />
+Thai: Prasitichai เรารักในหลวง<br />
 Persian: Mohammad Javad Mansourzadeh<br />
 Malay: Jerry Mohd. Arif<br />
 Brazilian Portuguese: <br />
