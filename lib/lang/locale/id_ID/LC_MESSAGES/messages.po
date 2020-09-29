@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-18 23:20+0700\n"
-"PO-Revision-Date: 2020-09-18 23:25+0700\n"
+"POT-Creation-Date: 2020-09-29 16:51+0700\n"
+"PO-Revision-Date: 2020-09-29 16:51+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -401,11 +401,11 @@ msgstr "Anda masuk sebagai"
 msgid "You Have Been Logged Out From Library Automation System"
 msgstr "Anda telah keluar dari Sistem Otomatisasi Perpustakaan"
 
-#: admin/modules/bibliography/biblio_utils.inc.php:150
+#: admin/modules/bibliography/biblio_utils.inc.php:156
 msgid "Hidden in OPAC"
 msgstr "Tersembunyi pada OPAC"
 
-#: admin/modules/bibliography/biblio_utils.inc.php:154
+#: admin/modules/bibliography/biblio_utils.inc.php:160
 msgid "Promoted To Homepage"
 msgstr "Telah dipromosikan ke Beranda"
 
@@ -428,8 +428,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/marcexport.php:167
 #: admin/modules/bibliography/marcsru.php:438
 #: admin/modules/bibliography/marcsru.php:450
-#: admin/modules/bibliography/p2p.php:461
-#: admin/modules/bibliography/p2p.php:474
+#: admin/modules/bibliography/p2p.php:463
+#: admin/modules/bibliography/p2p.php:476
 #: admin/modules/bibliography/printed_card.php:296
 #: admin/modules/bibliography/printed_card.php:298
 #: admin/modules/bibliography/z3950.php:291
@@ -489,8 +489,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/system/custom_field.php:169
 #: admin/modules/system/module.php:149 admin/modules/system/module.php:151
 #: admin/modules/system/sys_log.php:86 admin/modules/system/sys_log.php:88
-#: admin/modules/system/user_group.php:176
-#: admin/modules/system/user_group.php:178
+#: admin/modules/system/user_group.php:189
+#: admin/modules/system/user_group.php:191
 #: template/akasia-dz/index_template.inc.php:96
 #: template/akasia-dz/index_template.inc.php:208
 #: template/akasia/index_template.inc.php:111
@@ -588,8 +588,8 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/marcexport.php:221
 #: admin/modules/bibliography/marcexport.php:228
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:332
-#: admin/modules/bibliography/p2p.php:466
+#: admin/modules/bibliography/p2p.php:334
+#: admin/modules/bibliography/p2p.php:468
 #: admin/modules/bibliography/pop_attach.php:203
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
@@ -698,7 +698,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/system/content.php:298
 #: admin/modules/system/custom_field.php:285
 #: admin/modules/system/holiday.php:260 admin/modules/system/module.php:226
-#: admin/modules/system/sys_log.php:142 admin/modules/system/user_group.php:262
+#: admin/modules/system/sys_log.php:142 admin/modules/system/user_group.php:276
 msgid "Found <strong>{result->num_rows}</strong> from your keywords"
 msgstr ""
 "Ditemukan <strong>{result->num_rows}</strong> dari kata kunci yang Anda "
@@ -1242,7 +1242,7 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/system/content.php:154
 #: admin/modules/system/custom_field.php:145
 #: admin/modules/system/holiday.php:153 admin/modules/system/module.php:127
-#: admin/modules/system/user_group.php:154
+#: admin/modules/system/user_group.php:167
 msgid "All Data Successfully Deleted"
 msgstr "Semua Data Berhasil Dihapus"
 
@@ -1269,7 +1269,7 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/system/content.php:157
 #: admin/modules/system/custom_field.php:148
 #: admin/modules/system/holiday.php:156 admin/modules/system/module.php:130
-#: admin/modules/system/user_group.php:157
+#: admin/modules/system/user_group.php:170
 msgid ""
 "Some or All Data NOT deleted successfully!\\nPlease contact system "
 "administrator"
@@ -1373,7 +1373,7 @@ msgstr "Sembunyikan di OPAC"
 
 #: admin/modules/bibliography/index.php:555
 #: admin/modules/bibliography/index.php:561
-#: admin/modules/bibliography/p2p.php:465
+#: admin/modules/bibliography/p2p.php:467
 #: admin/modules/circulation/loan_rules.php:201
 #: admin/modules/circulation/loan_rules.php:206
 #: admin/modules/reporting/customs/item_titles_list.php:85
@@ -1496,7 +1496,7 @@ msgstr "Catatan Biblio"
 #: admin/modules/system/custom_field.php:188
 #: admin/modules/system/holiday.php:189 admin/modules/system/module.php:167
 #: admin/modules/system/shortcut.php:129
-#: admin/modules/system/user_group.php:194
+#: admin/modules/system/user_group.php:207
 msgid "Save"
 msgstr "Simpan"
 
@@ -1530,7 +1530,7 @@ msgstr "Catatan"
 #: admin/modules/system/app_user.php:317 admin/modules/system/content.php:213
 #: admin/modules/system/custom_field.php:204
 #: admin/modules/system/holiday.php:204 admin/modules/system/module.php:182
-#: admin/modules/system/user_group.php:209 lib/contents/login.inc.php:225
+#: admin/modules/system/user_group.php:222 lib/contents/login.inc.php:225
 #: lib/contents/newpass.inc.php:103
 msgid "Update"
 msgstr "Perbaharui"
@@ -2226,8 +2226,8 @@ msgstr "Salin"
 #: admin/modules/master_file/topic.php:243
 #: admin/modules/system/app_user.php:405 admin/modules/system/app_user.php:434
 #: admin/modules/system/app_user.php:441
-#: admin/modules/system/user_group.php:230
-#: admin/modules/system/user_group.php:242
+#: admin/modules/system/user_group.php:244
+#: admin/modules/system/user_group.php:256
 msgid "Last Update"
 msgstr "Perubahan Terakhir"
 
@@ -2280,7 +2280,7 @@ msgstr "Anda akan memperbaharui data eksemplar"
 #: admin/modules/bibliography/item.php:459
 #: admin/modules/bibliography/marcexport.php:222
 #: admin/modules/bibliography/marcexport.php:229
-#: admin/modules/bibliography/p2p.php:468
+#: admin/modules/bibliography/p2p.php:470
 #: admin/modules/bibliography/printed_card.php:331
 #: admin/modules/master_file/author.php:57
 #: admin/modules/master_file/author.php:79
@@ -2525,7 +2525,7 @@ msgid "Found {hits} records from Marc SRU Server."
 msgstr "Ditemukan {hits} cantuman dari peladen Marc SRU."
 
 #: admin/modules/bibliography/marcsru.php:339
-#: admin/modules/bibliography/p2p.php:328
+#: admin/modules/bibliography/p2p.php:330
 #: admin/modules/bibliography/z3950sru.php:210
 #: admin/modules/master_file/item_code_pattern.php:115
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:379
@@ -2533,7 +2533,7 @@ msgid "Check All"
 msgstr "Tandai Semua"
 
 #: admin/modules/bibliography/marcsru.php:340
-#: admin/modules/bibliography/p2p.php:329
+#: admin/modules/bibliography/p2p.php:331
 #: admin/modules/bibliography/z3950sru.php:211
 #: admin/modules/master_file/item_code_pattern.php:116
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:380
@@ -2545,7 +2545,7 @@ msgid "Save Marc Records to Database"
 msgstr "Simpan Cantuman MARC"
 
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:332
+#: admin/modules/bibliography/p2p.php:334
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/master_file/item_code_pattern.php:118
 #: admin/modules/system/shortcut.php:109
@@ -2573,18 +2573,18 @@ msgid "SRU Server"
 msgstr "Peladen SRU"
 
 #: admin/modules/bibliography/marcsru.php:453
-#: admin/modules/bibliography/p2p.php:477
+#: admin/modules/bibliography/p2p.php:479
 #: admin/modules/bibliography/z3950.php:298
 #: admin/modules/bibliography/z3950sru.php:321
 msgid "* Please make sure you have a working Internet connection."
 msgstr "* Pastikan Anda memiliki koneksi internet."
 
-#: admin/modules/bibliography/p2p.php:273
+#: admin/modules/bibliography/p2p.php:275
 #, php-format
 msgid "%s download file ( %s ) from  ( %s )"
 msgstr "%s unduh berkas ( %s ) dari ( %s )"
 
-#: admin/modules/bibliography/p2p.php:286
+#: admin/modules/bibliography/p2p.php:288
 #, php-format
 msgid ""
 "%s insert bibliographic data from P2P service (server : %s) with title (%s) "
@@ -2593,44 +2593,44 @@ msgstr ""
 "%s masukkan data bibliografi dari layanan P2P (peladen: %s) dengan judul "
 "(%s) dan biblio_id (%s)"
 
-#: admin/modules/bibliography/p2p.php:330
+#: admin/modules/bibliography/p2p.php:332
 msgid "Save P2P Records to Database"
 msgstr "Simpan Cantuman P2P ke Pangkalan Data"
 
-#: admin/modules/bibliography/p2p.php:332
+#: admin/modules/bibliography/p2p.php:334
 msgid "Digital Files"
 msgstr "Berkas Digital"
 
-#: admin/modules/bibliography/p2p.php:332
-#: admin/modules/bibliography/p2p.php:385
+#: admin/modules/bibliography/p2p.php:334
+#: admin/modules/bibliography/p2p.php:387
 msgid "Detail"
 msgstr "Detail"
 
-#: admin/modules/bibliography/p2p.php:404
+#: admin/modules/bibliography/p2p.php:406
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
 "Maaf, dari %s tidak ada hasil ATAU kemungkinan hasil dan detail XML "
 "dinonaktifkan."
 
-#: admin/modules/bibliography/p2p.php:433
+#: admin/modules/bibliography/p2p.php:435
 msgid "No data selected!"
 msgstr "Tidak ada yang dipilih!"
 
-#: admin/modules/bibliography/p2p.php:456
+#: admin/modules/bibliography/p2p.php:458
 #: admin/modules/bibliography/submenu.php:37
 msgid "P2P Service"
 msgstr "Layanan P2P"
 
-#: admin/modules/bibliography/p2p.php:463
+#: admin/modules/bibliography/p2p.php:465
 msgid "Fields"
 msgstr "Ruas"
 
-#: admin/modules/bibliography/p2p.php:467
+#: admin/modules/bibliography/p2p.php:469
 msgid "ISBN"
 msgstr "ISBN"
 
-#: admin/modules/bibliography/p2p.php:470
+#: admin/modules/bibliography/p2p.php:472
 #: admin/modules/bibliography/z3950.php:294
 msgid "Server"
 msgstr "Peladen"
@@ -6945,50 +6945,54 @@ msgstr ""
 "menghapus konten dalam tabel ini"
 
 #: admin/modules/system/envinfo.php:50
+msgid "SLiMS Version"
+msgstr "Versi SLiMS"
+
+#: admin/modules/system/envinfo.php:51
 msgid "Operating System"
 msgstr "Sistem Operasi"
 
-#: admin/modules/system/envinfo.php:51
+#: admin/modules/system/envinfo.php:52
 msgid "OS Architecture"
 msgstr "Arsitektur OS"
 
-#: admin/modules/system/envinfo.php:52
+#: admin/modules/system/envinfo.php:53
 msgid "Web Server"
 msgstr "Peladen Web"
 
-#: admin/modules/system/envinfo.php:53
+#: admin/modules/system/envinfo.php:54
 msgid "PHP version"
 msgstr "Versi PHP"
 
-#: admin/modules/system/envinfo.php:54
+#: admin/modules/system/envinfo.php:55
 msgid "MySQL Database version"
 msgstr "Versi Pangkalan data MySQL"
 
-#: admin/modules/system/envinfo.php:55
+#: admin/modules/system/envinfo.php:56
 msgid "MySQL Client version"
 msgstr "Versi Klien MySQL"
 
-#: admin/modules/system/envinfo.php:56
+#: admin/modules/system/envinfo.php:57
 msgid "Browser/User Agent"
 msgstr "Peramban/Agen Pengguna"
 
-#: admin/modules/system/envinfo.php:57
+#: admin/modules/system/envinfo.php:58
 msgid "Hostname"
 msgstr "<i>Hostname</i>"
 
-#: admin/modules/system/envinfo.php:58
+#: admin/modules/system/envinfo.php:59
 msgid "jQuery version"
 msgstr "versi JQuery"
 
-#: admin/modules/system/envinfo.php:59
+#: admin/modules/system/envinfo.php:60
 msgid "HTML5 Support?"
 msgstr "Mendukung HTML5?"
 
-#: admin/modules/system/envinfo.php:65 admin/modules/system/submenu.php:32
+#: admin/modules/system/envinfo.php:66 admin/modules/system/submenu.php:32
 msgid "System Environment"
 msgstr "Lingkungan Sistem"
 
-#: admin/modules/system/envinfo.php:68
+#: admin/modules/system/envinfo.php:69
 msgid ""
 "Information on SLiMS System Environment. Use this to support troubleshotting "
 "problem."
@@ -7314,10 +7318,12 @@ msgid "You are going to edit data"
 msgstr "Anda akan menyunting data modul"
 
 #: admin/modules/system/module_priv_form.inc.php:31
+#: admin/modules/system/module_priv_form_adv.inc.php:44
 msgid "Read"
 msgstr "Baca"
 
 #: admin/modules/system/module_priv_form.inc.php:31
+#: admin/modules/system/module_priv_form_adv.inc.php:48
 msgid "Write"
 msgstr "Ubah"
 
@@ -7374,13 +7380,13 @@ msgid "Configure Application Modules"
 msgstr "Konfigurasi Modul Aplikasi"
 
 #: admin/modules/system/submenu.php:47 admin/modules/system/user_group.php:55
-#: admin/modules/system/user_group.php:90
-#: admin/modules/system/user_group.php:93
-#: admin/modules/system/user_group.php:119
-#: admin/modules/system/user_group.php:121
-#: admin/modules/system/user_group.php:154
-#: admin/modules/system/user_group.php:157
-#: admin/modules/system/user_group.php:169
+#: admin/modules/system/user_group.php:96
+#: admin/modules/system/user_group.php:99
+#: admin/modules/system/user_group.php:132
+#: admin/modules/system/user_group.php:134
+#: admin/modules/system/user_group.php:167
+#: admin/modules/system/user_group.php:170
+#: admin/modules/system/user_group.php:182
 msgid "User Group"
 msgstr "Kelompok Pengguna"
 
@@ -7505,40 +7511,40 @@ msgstr "Kata Sandi Peladen"
 msgid "Group name can't be empty"
 msgstr "Nama kelompok tidak boleh kosong"
 
-#: admin/modules/system/user_group.php:90
+#: admin/modules/system/user_group.php:96
 msgid "Group Data Successfully Updated"
 msgstr "Data Kelompok Berhasil Diperbaharui"
 
-#: admin/modules/system/user_group.php:93
+#: admin/modules/system/user_group.php:99
 msgid "Group Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Kelompok GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/system/user_group.php:119
+#: admin/modules/system/user_group.php:132
 msgid "New Group Data Successfully Saved"
 msgstr "Data Kelompok Baru Berhasil Disimpan"
 
-#: admin/modules/system/user_group.php:121
+#: admin/modules/system/user_group.php:134
 msgid "Group Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Kelompok GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/system/user_group.php:173
+#: admin/modules/system/user_group.php:186
 msgid "Group List"
 msgstr "Daftar Kelompok"
 
-#: admin/modules/system/user_group.php:174
+#: admin/modules/system/user_group.php:187
 msgid "Add New Group"
 msgstr "Tambah Kelompok Baru"
 
-#: admin/modules/system/user_group.php:214
-#: admin/modules/system/user_group.php:241
+#: admin/modules/system/user_group.php:227
+#: admin/modules/system/user_group.php:255
 msgid "Group Name"
 msgstr "Nama Kelompok"
 
-#: admin/modules/system/user_group.php:225
+#: admin/modules/system/user_group.php:239
 msgid "Privileges"
 msgstr "Hak Istimewa"
 
-#: admin/modules/system/user_group.php:230
+#: admin/modules/system/user_group.php:244
 msgid "You are going to edit Group data"
 msgstr "Anda akan menyunting data kelompok"
 
