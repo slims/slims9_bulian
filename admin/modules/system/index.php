@@ -116,7 +116,7 @@ if (isset($_POST['updateData'])) {
           $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
         }
       }else{
-        utility::jsToastr(__('System Configuration'), $img_upload_status->error, 'error'); 
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
     }
 
@@ -220,7 +220,7 @@ if (isset($_POST['updateData'])) {
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
-    echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+    echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();
 }
 
