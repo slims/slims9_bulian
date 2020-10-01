@@ -56,6 +56,7 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
                     $submenu_path = MDLBS . $module_data['module_path'] . '/submenu.php';
                     if (file_exists($submenu_path)) include $submenu_path;
                     $submenu = '<ul class="list-group list-group-flush">';
+                    $submenu .= '<li class="list-group-item text-bold">'.__('Enable or disable submenu').'</li>';
                     foreach ($menu as $item) {
                         if ($item[0] == 'Header') continue;
                         $id = md5($item[1]);
