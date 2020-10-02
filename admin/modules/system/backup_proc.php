@@ -77,6 +77,9 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
         if (file_exists($sysconf['backup_dir']) AND is_writable($sysconf['backup_dir'])) {
             // execute the backup process
             try {
+                // set for unlimited time
+                ini_set('max_execution_time', 0);
+
                 // time string to append to filename
                 $time2append = (date('Ymd_His'));
                 $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
