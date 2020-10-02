@@ -95,7 +95,7 @@ if (!$reportView) {
                 $dataset[$year]['title'][$class_name] = 0;
                 $dataset[$year]['item'][$class_name] = 0;
 
-                if ($_q->num_rows>0) {
+                if ($_q && $_q->num_rows>0) {
                     while ($_d = $_q->fetch_row()) {
                       $data['item'][$class_name][$_d[0]] = $_d[0];
                       $data['title'][$class_name][$_d[1]] = $_d[1];
