@@ -58,7 +58,7 @@ if(isset($_FILES['upload']['name'])) {
  $extension = end($file_name_array);
  $new_image_name = rand() . '.' . $extension;
  //chmod('upload', 0777);
- $allowed_extension = array("jpg", "gif", "png");
+ $allowed_extension = array("jpg", "gif", "png", "jpeg");
  if(in_array($extension, $allowed_extension))
  {
     //check dir
