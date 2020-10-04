@@ -358,12 +358,12 @@ class simbio_form_element
    *
    * @param   string  $str_elmnt_name
    * @param   array   $array_option
-   * @param   string  $str_default_selected
+   * @param   string  $default_checked
    * @return  string
    */
   public static function radioButton($str_elmnt_name, $array_option, $default_checked = '')
   {
-    $_radio = new simbio_fe_select();
+    $_radio = new simbio_fe_radio();
     $_radio->element_name = $str_elmnt_name;
     $_radio->element_value = $default_checked;
     $_radio->element_options = $array_option;

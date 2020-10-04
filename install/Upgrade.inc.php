@@ -959,6 +959,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
   {
       $sql['alter'][] = "ALTER TABLE `group_access` ADD `menus` json NULL AFTER `module_id`;";
 
+      $sql['alter'][] = "ALTER TABLE `biblio_attachment` ADD `placement` enum('link','popup','embed') COLLATE 'utf8_unicode_ci' NULL AFTER `file_id`;";
+
       return $this->slims->query($sql, ['alter']);
   }
 
