@@ -181,7 +181,7 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-    $xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\', from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
+    $xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
         // echo $xlsquery;
         unset($_SESSION['xlsdata']);
         $_SESSION['xlsquery'] = $xlsquery;
