@@ -1,3 +1,4 @@
+
 SENAYAN 3 Stable Branch
 SLiMS 5
 SLiMS 7
@@ -41,7 +42,8 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.3.0 (Bulian)
 ========================================================================
-
+Added : Show hide sub-menu by user group privileges
+Added : Placement options for embedded link and video attachments
 
 SLiMS 9.2.2 (Bulian)
 ========================================================================
