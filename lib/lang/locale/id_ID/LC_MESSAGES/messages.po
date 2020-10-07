@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 16:51+0700\n"
-"PO-Revision-Date: 2020-09-29 16:51+0700\n"
+"POT-Creation-Date: 2020-10-05 21:08+0700\n"
+"PO-Revision-Date: 2020-10-05 21:08+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -264,7 +264,7 @@ msgstr "Dipinjamkan"
 #: admin/modules/bibliography/item.php:323
 #: admin/modules/circulation/reserve_list.php:110
 #: admin/modules/reporting/customs/item_titles_list.php:257
-#: lib/detail.inc.php:212
+#: lib/detail.inc.php:242
 msgid "Available"
 msgstr "Tersedia"
 
@@ -590,7 +590,7 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/marcsru.php:343
 #: admin/modules/bibliography/p2p.php:334
 #: admin/modules/bibliography/p2p.php:468
-#: admin/modules/bibliography/pop_attach.php:203
+#: admin/modules/bibliography/pop_attach.php:204
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
 #: admin/modules/bibliography/printed_card.php:331
@@ -624,7 +624,7 @@ msgstr "ID Anggota"
 #: lib/contents/download_current_loan.inc.php:62
 #: lib/contents/download_loan_history.inc.php:62
 #: lib/contents/member.inc.php:374 lib/contents/member.inc.php:420
-#: lib/contents/member.inc.php:455 lib/detail.inc.php:231
+#: lib/contents/member.inc.php:455 lib/detail.inc.php:261
 #: template/akasia/partials/advsearch.php:16
 #: template/default/parts/_modal_advanced.php:24
 #: template/lightweight/partials/advsearch.php:16
@@ -1577,7 +1577,7 @@ msgstr ""
 "membuat ilustrasi, atau berkontribusi dengan cara apapun."
 
 #: admin/modules/bibliography/index.php:712
-#: admin/modules/bibliography/pop_p2p.php:56 lib/detail.inc.php:232
+#: admin/modules/bibliography/pop_p2p.php:56 lib/detail.inc.php:262
 #: template/akasia-dz/custom_frontpage_record.inc.php:6
 #: template/akasia-dz/detail_template.php:129
 #: template/akasia/custom_frontpage_record.inc.php:6
@@ -1944,7 +1944,7 @@ msgstr "Subjek"
 #: admin/modules/reporting/customs/class_recap.php:73
 #: admin/modules/reporting/customs/class_recap.php:124
 #: admin/modules/reporting/customs/pop_procurement_list.php:163
-#: admin/modules/reporting/customs/titles_list.php:94 lib/detail.inc.php:233
+#: admin/modules/reporting/customs/titles_list.php:94 lib/detail.inc.php:263
 #: template/akasia-dz/detail_template.php:80
 #: template/akasia/detail_template.php:80
 #: template/default/detail_template.php:58
@@ -2109,7 +2109,7 @@ msgid "Add Attachment"
 msgstr "Tambah Lampiran"
 
 #: admin/modules/bibliography/index.php:981
-#: admin/modules/bibliography/pop_attach.php:251
+#: admin/modules/bibliography/pop_attach.php:258
 #: admin/modules/master_file/label.php:202
 #: admin/modules/master_file/label.php:207
 #: template/akasia-dz/detail_template.php:170
@@ -2639,63 +2639,83 @@ msgstr "Peladen"
 msgid "Upload FAILED! Forbidden file type or file size too big!"
 msgstr "Unggah GAGAL! Jenis berkas terlarang atau ukuran terlalu besar!"
 
-#: admin/modules/bibliography/pop_attach.php:148
+#: admin/modules/bibliography/pop_attach.php:149
 msgid "File Attachment data updated!"
 msgstr "Data berkas lampiran berhasil diperbarui!"
 
-#: admin/modules/bibliography/pop_attach.php:153
+#: admin/modules/bibliography/pop_attach.php:154
 msgid "File Attachment data FAILED to update!"
 msgstr "Data berkas lampiran GAGAL diperbarui!"
 
-#: admin/modules/bibliography/pop_attach.php:157
-#: admin/modules/bibliography/pop_attach.php:172
+#: admin/modules/bibliography/pop_attach.php:158
+#: admin/modules/bibliography/pop_attach.php:173
 msgid "File Attachment uploaded succesfully!"
 msgstr "Berkas Lampiran berhasil diunggah!"
 
-#: admin/modules/bibliography/pop_attach.php:162
+#: admin/modules/bibliography/pop_attach.php:163
 msgid "File Attachment data FAILED to save!"
 msgstr "Berkas Lampiran GAGAL disimpan!"
 
-#: admin/modules/bibliography/pop_attach.php:182
+#: admin/modules/bibliography/pop_attach.php:183
 msgid "Upload Now"
 msgstr "Unggah Sekarang"
 
-#: admin/modules/bibliography/pop_attach.php:212
+#: admin/modules/bibliography/pop_attach.php:213
 msgid "Repository ROOT"
 msgstr "Repositori ROOT"
 
-#: admin/modules/bibliography/pop_attach.php:222
+#: admin/modules/bibliography/pop_attach.php:223
 msgid "Repo. Directory"
 msgstr "Direktori Repositori"
 
-#: admin/modules/bibliography/pop_attach.php:233
+#: admin/modules/bibliography/pop_attach.php:234
 msgid "File To Attach"
 msgstr "Berkas untuk dilampirkan"
 
-#: admin/modules/bibliography/pop_attach.php:236
+#: admin/modules/bibliography/pop_attach.php:237
 msgid "URL"
 msgstr "URL"
 
-#: admin/modules/bibliography/pop_attach.php:238
+#: admin/modules/bibliography/pop_attach.php:240
+msgid "Work for embedded link or video attachment"
+msgstr "Digunakan bersama tempelan pranala atau lampiran video"
+
+#: admin/modules/bibliography/pop_attach.php:241
+msgid "Link"
+msgstr "Pranala"
+
+#: admin/modules/bibliography/pop_attach.php:241
+msgid "Popup"
+msgstr "Pop-up"
+
+#: admin/modules/bibliography/pop_attach.php:241
+msgid "Embed"
+msgstr "Tempel"
+
+#: admin/modules/bibliography/pop_attach.php:242
+msgid "Placement"
+msgstr "Penempatan"
+
+#: admin/modules/bibliography/pop_attach.php:245
 #: admin/modules/reporting/customs/member_fines_list.php:188
 msgid "Description"
 msgstr "Deskripsi"
 
-#: admin/modules/bibliography/pop_attach.php:240
+#: admin/modules/bibliography/pop_attach.php:247
 msgid "Public"
 msgstr "Publik"
 
-#: admin/modules/bibliography/pop_attach.php:241
+#: admin/modules/bibliography/pop_attach.php:248
 msgid "Private"
 msgstr "Tertutup"
 
-#: admin/modules/bibliography/pop_attach.php:242
+#: admin/modules/bibliography/pop_attach.php:249
 #: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_counter.php:184
 msgid "Access"
 msgstr "Akses"
 
-#: admin/modules/bibliography/pop_attach.php:249
+#: admin/modules/bibliography/pop_attach.php:256
 msgid "Access Limit by Member Type"
 msgstr "Pembatasan Akses berdasarkan Tipe Keanggotaan"
 
@@ -6605,26 +6625,26 @@ msgstr "Ukuran Berkas"
 msgid "File not found"
 msgstr "Berkas tidak ada"
 
-#: admin/modules/system/backup_proc.php:87
+#: admin/modules/system/backup_proc.php:90
 #, php-format
 msgid "Backup SUCCESSFUL, backup files saved to %s !"
 msgstr "BERHASIL membuat cadangan, berkas pencadangan ada di %s !"
 
-#: admin/modules/system/backup_proc.php:99
+#: admin/modules/system/backup_proc.php:102
 msgid "File is compressed using tar gz archive format"
 msgstr "Bentukan tar gz digunakan untuk mengkompresi berkas"
 
-#: admin/modules/system/backup_proc.php:109
+#: admin/modules/system/backup_proc.php:112
 #, php-format
 msgid "Backup FAILED!,\\n%s"
 msgstr "GAGAL membuat cadangan!,\\n%s"
 
-#: admin/modules/system/backup_proc.php:112
+#: admin/modules/system/backup_proc.php:115
 msgid "Backup FAILED! The Backup directory is not exists or not writeable"
 msgstr ""
 "GAGAL membuat cadangan! Direktori backup tidak ada atau tidak dapat ditulis"
 
-#: admin/modules/system/backup_proc.php:113
+#: admin/modules/system/backup_proc.php:116
 msgid "Contact System Administrator for the right path of backup directory"
 msgstr "Hubungi Admin Sistem untuk mengarahkan direktori backup"
 
@@ -7326,6 +7346,10 @@ msgstr "Baca"
 #: admin/modules/system/module_priv_form_adv.inc.php:48
 msgid "Write"
 msgstr "Ubah"
+
+#: admin/modules/system/module_priv_form_adv.inc.php:59
+msgid "Enable or disable submenu"
+msgstr "Aktifkan atau nonaktifkan submenu"
 
 #: admin/modules/system/shortcut.php:60
 msgid "Shortcut Settings"
@@ -8178,23 +8202,23 @@ msgstr "Galat saat memasukkan data pengunjung ke dalam pangkalan data."
 msgid "Visitor Counter"
 msgstr "Penghitung Jumlah Pengunjung"
 
-#: lib/detail.inc.php:208
+#: lib/detail.inc.php:238
 msgid "Currently On Loan (Due on"
 msgstr "Sedang Dipinjam (Jatuh tempo pada"
 
-#: lib/detail.inc.php:210
+#: lib/detail.inc.php:240
 msgid "Available but not for loan"
 msgstr "Tersedia namun tidak untuk dipinjamkan"
 
-#: lib/detail.inc.php:400
+#: lib/detail.inc.php:430
 msgid "Click to view others documents with this author"
 msgstr "Klik disini untuk mencari dokumen lain dari pengarang ini"
 
-#: lib/detail.inc.php:411
+#: lib/detail.inc.php:441
 msgid "Click to view others documents with this subject"
 msgstr "Klik di sini untuk mencari dokumen lain dengan subjek ini"
 
-#: lib/detail.inc.php:426 template/akasia-dz/biblio_list_template.php:166
+#: lib/detail.inc.php:456 template/akasia-dz/biblio_list_template.php:166
 #: template/akasia/biblio_list_template.php:167
 #: template/lightweight/biblio_list_template.php:166
 msgid "Share to"
