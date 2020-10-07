@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 21:08+0700\n"
-"PO-Revision-Date: 2020-10-05 21:08+0700\n"
+"POT-Creation-Date: 2020-10-07 22:11+0700\n"
+"PO-Revision-Date: 2020-10-07 22:12+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -108,9 +108,31 @@ msgstr "nilai"
 msgid "keys"
 msgstr "kunci"
 
-#: admin/admin_template/default/tinfo.inc.php:8
+#: admin/admin_template/default/tinfo.inc.php:9
 msgid "Color Theme.<br><small>( Default : #004db6 )</small>"
 msgstr "Warna Tema.<br><small>( Baku : #004db6 )</small>"
+
+#: admin/admin_template/default/tinfo.inc.php:16
+msgid "Always Show Tracks"
+msgstr "Selalu Tunjukkan Jalur Gulung"
+
+#: admin/admin_template/default/tinfo.inc.php:20
+#: admin/modules/bibliography/export.php:211
+#: admin/modules/bibliography/import.php:288
+#: admin/modules/bibliography/item_export.php:188
+#: admin/modules/bibliography/item_import.php:237
+#: admin/modules/membership/export.php:168
+#: admin/modules/membership/import.php:229
+#: admin/modules/membership/index.php:544
+#: admin/modules/stock_take/finish.php:185 admin/modules/system/content.php:221
+#: admin/modules/system/index.php:314
+msgid "Yes"
+msgstr "Ya"
+
+#: admin/admin_template/default/tinfo.inc.php:21
+#: admin/modules/system/content.php:220
+msgid "No"
+msgstr "Tidak"
 
 #: admin/admin_template/overdue-mail-tpl.php:2
 msgid ""
@@ -949,18 +971,6 @@ msgstr "Mulai dari cantuman ke"
 #: admin/modules/membership/export.php:168
 msgid "Put columns names in the first row"
 msgstr "Tambahkan nama kolom di baris pertama"
-
-#: admin/modules/bibliography/export.php:211
-#: admin/modules/bibliography/import.php:288
-#: admin/modules/bibliography/item_export.php:188
-#: admin/modules/bibliography/item_import.php:237
-#: admin/modules/membership/export.php:168
-#: admin/modules/membership/import.php:229
-#: admin/modules/membership/index.php:544
-#: admin/modules/stock_take/finish.php:185 admin/modules/system/content.php:221
-#: admin/modules/system/index.php:314
-msgid "Yes"
-msgstr "Ya"
 
 #: admin/modules/bibliography/iframe_attach.php:61
 msgid "Are you sure to remove the file attachment data?"
@@ -6159,7 +6169,7 @@ msgstr "TIDAK ADA inventarisasi yang sedang berjalan!"
 
 #: admin/modules/stock_take/finish.php:77
 #: admin/modules/stock_take/finish.php:92
-#: admin/modules/stock_take/submenu.php:35
+#: admin/modules/stock_take/submenu.php:39
 msgid "Stock Take Report"
 msgstr "Laporan Inventarisasi"
 
@@ -6195,7 +6205,7 @@ msgstr "Proses Inventarisasi Selesai!"
 
 #: admin/modules/stock_take/finish.php:166
 #: admin/modules/stock_take/finish.php:176
-#: admin/modules/stock_take/submenu.php:41
+#: admin/modules/stock_take/submenu.php:45
 msgid "Finish Stock Take"
 msgstr "Selesaikan Inventarisasi"
 
@@ -6342,7 +6352,7 @@ msgstr ""
 "Pisahkan setiap kelas dengan tanda koma. Gunakan * sebagai <i>wildcard</i>"
 
 #: admin/modules/stock_take/lost_item_list.php:53
-#: admin/modules/stock_take/submenu.php:36
+#: admin/modules/stock_take/submenu.php:40
 msgid "Current Lost Item"
 msgstr "Eksemplar Hilang Saat Ini"
 
@@ -6361,7 +6371,7 @@ msgid "Resynchronize Now"
 msgstr "Resinkronisasi Sekarang"
 
 #: admin/modules/stock_take/st_log.php:56
-#: admin/modules/stock_take/submenu.php:37
+#: admin/modules/stock_take/submenu.php:41
 msgid "Stock Take Log"
 msgstr "Catatan Inventarisasi"
 
@@ -6479,53 +6489,55 @@ msgstr "Rekaman Inventarisasi"
 msgid "View Stock Take History"
 msgstr "Rekaman Inventarisasi Koleksi"
 
-#: admin/modules/stock_take/submenu.php:34
-msgid "Current Stock Take"
-msgstr "Inventarisasi Aktif"
-
-#: admin/modules/stock_take/submenu.php:34
-msgid "View Current Stock Take Process"
-msgstr "Tampilkan Proses Inventarisasi Terkini"
-
-#: admin/modules/stock_take/submenu.php:35
-msgid "View Current Stock Take Report"
-msgstr "Tampilkan Laporan Inventarisasi Terkini"
-
-#: admin/modules/stock_take/submenu.php:36
-msgid "View Lost Item in Current Stock Take Proccess"
-msgstr "Tampilkan Eksemplar Hilang pada Inventarisasi Terkini"
-
-#: admin/modules/stock_take/submenu.php:37
-msgid "View Log of Current Stock Take Proccess"
-msgstr "Tampilkan Catatan dari Inventarisasi Terkini"
-
-#: admin/modules/stock_take/submenu.php:38
-msgid "Upload List"
-msgstr "Unggah Daftar"
-
-#: admin/modules/stock_take/submenu.php:38
-msgid "Upload List in text file"
-msgstr "Unggah Daftar dalam bentuk berkas teks"
-
-#: admin/modules/stock_take/submenu.php:39
-msgid "Resynchronize"
-msgstr "Resinkronisasi"
-
-#: admin/modules/stock_take/submenu.php:39
-msgid "Resynchronize bibliographic data with current stock take"
-msgstr "Resinkronisasi data bibliografi dengan inventarisasi terkini"
-
-#: admin/modules/stock_take/submenu.php:41
-msgid "Finish Current Stock Take Proccess"
-msgstr "Selesaikan Proses Inventarisasi Terkini"
-
-#: admin/modules/stock_take/submenu.php:44
+#: admin/modules/stock_take/submenu.php:32
+#: admin/modules/stock_take/submenu.php:48
 msgid "Initialize"
 msgstr "Inisialisasi"
 
-#: admin/modules/stock_take/submenu.php:44
+#: admin/modules/stock_take/submenu.php:32
+#: admin/modules/stock_take/submenu.php:48
 msgid "Initialize New Stock Take Proccess"
 msgstr "Memulai Inventarisasi Baru"
+
+#: admin/modules/stock_take/submenu.php:38
+msgid "Current Stock Take"
+msgstr "Inventarisasi Aktif"
+
+#: admin/modules/stock_take/submenu.php:38
+msgid "View Current Stock Take Process"
+msgstr "Tampilkan Proses Inventarisasi Terkini"
+
+#: admin/modules/stock_take/submenu.php:39
+msgid "View Current Stock Take Report"
+msgstr "Tampilkan Laporan Inventarisasi Terkini"
+
+#: admin/modules/stock_take/submenu.php:40
+msgid "View Lost Item in Current Stock Take Proccess"
+msgstr "Tampilkan Eksemplar Hilang pada Inventarisasi Terkini"
+
+#: admin/modules/stock_take/submenu.php:41
+msgid "View Log of Current Stock Take Proccess"
+msgstr "Tampilkan Catatan dari Inventarisasi Terkini"
+
+#: admin/modules/stock_take/submenu.php:42
+msgid "Upload List"
+msgstr "Unggah Daftar"
+
+#: admin/modules/stock_take/submenu.php:42
+msgid "Upload List in text file"
+msgstr "Unggah Daftar dalam bentuk berkas teks"
+
+#: admin/modules/stock_take/submenu.php:43
+msgid "Resynchronize"
+msgstr "Resinkronisasi"
+
+#: admin/modules/stock_take/submenu.php:43
+msgid "Resynchronize bibliographic data with current stock take"
+msgstr "Resinkronisasi data bibliografi dengan inventarisasi terkini"
+
+#: admin/modules/stock_take/submenu.php:45
+msgid "Finish Current Stock Take Proccess"
+msgstr "Selesaikan Proses Inventarisasi Terkini"
 
 #: admin/modules/system/app_user.php:93
 msgid "User Name or Real Name can't be empty"
@@ -6825,10 +6837,6 @@ msgstr "Tambahkan Data Baru"
 #: admin/modules/system/content.php:275
 msgid "Content Title"
 msgstr "Judul Konten"
-
-#: admin/modules/system/content.php:220
-msgid "No"
-msgstr "Tidak"
 
 #: admin/modules/system/content.php:222
 msgid "This is News"
@@ -7347,7 +7355,7 @@ msgstr "Baca"
 msgid "Write"
 msgstr "Ubah"
 
-#: admin/modules/system/module_priv_form_adv.inc.php:59
+#: admin/modules/system/module_priv_form_adv.inc.php:60
 msgid "Enable or disable submenu"
 msgstr "Aktifkan atau nonaktifkan submenu"
 
