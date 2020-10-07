@@ -54,6 +54,7 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
                     <?php
                     $menu = [];
                     $submenu_path = MDLBS . $module_data['module_path'] . '/submenu.php';
+                    $for_select_privileges = true;
                     if (file_exists($submenu_path)) include $submenu_path;
                     $submenu = '<ul class="list-group list-group-flush">';
                     $submenu .= '<li class="list-group-item text-bold">'.__('Enable or disable submenu').'</li>';
