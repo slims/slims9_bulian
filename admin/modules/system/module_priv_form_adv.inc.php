@@ -65,8 +65,8 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
 <li class="list-group-item px-4">
     <div class="px-2">
         <div class="custom-control custom-switch">
-          <input name="menus[{$module_data['module_id']}][]" value="{$id}" {$menu_checked} type="checkbox" class="custom-control-input" id="menu-{$id}">
-          <label class="custom-control-label" for="menu-{$id}">{$item[0]}</label>
+          <input name="menus[{$module_data['module_id']}][]" value="{$id}" {$menu_checked} type="checkbox" class="custom-control-input" id="menu-{$module_data['module_id']}-{$id}">
+          <label class="custom-control-label" for="menu-{$module_data['module_id']}-{$id}">{$item[0]}</label>
         </div>
     </div>
 </li>
