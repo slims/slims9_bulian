@@ -60,6 +60,7 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
 $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_attachment` (
   `biblio_id` int(11) NOT NULL,
   `file_id` int(11) NOT NULL,
+  `placement` enum(\'link\',\'popup\',\'embed\') COLLATE utf8_unicode_ci NULL,
   `access_type` enum(\'public\',\'private\') collate utf8_unicode_ci NOT NULL,
   `access_limit` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   KEY `biblio_id` (`biblio_id`),
@@ -147,6 +148,7 @@ $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `group_access` (
   `group_id` int(11) NOT NULL,
   `module_id` int(11) NOT NULL,
+  `menus` json NULL,
   `r` int(1) NOT NULL default '0',
   `w` int(1) NOT NULL default '0',
   PRIMARY KEY  (`group_id`,`module_id`)
