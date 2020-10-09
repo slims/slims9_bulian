@@ -57,7 +57,7 @@ $filter = isset($_GET['filter'])?$dbs->escape_string($_GET['filter']):'%%';
           <div class="col-sm-10">
           <?php
           $class_options[] = array('',__('ALL'));
-          for ($c = 1; $c < 10; $c++) {
+          for ($c = 0; $c < 10; $c++) {
               $class_options[] = array($c, $c.'00');
           } 
           $class_options[] = array('other', __('Others'));   
