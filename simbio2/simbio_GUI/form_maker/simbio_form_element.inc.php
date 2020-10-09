@@ -131,7 +131,7 @@ class simbio_fe_select extends abs_simbio_form_element
           $_buffer .= '<option value="'.$option[0].'" '.(in_array($option[0], $this->element_value)?'selected':'').'>';
           $_buffer .= $option[1].'</option>'."\n";
         } else {
-          $_buffer .= '<option value="'.$option[0].'" '.(($option[0] == $this->element_value)?'selected':'').'>';
+          $_buffer .= '<option value="'.$option[0].'" '.(($option[0] === $this->element_value)?'selected':'').'>';
           $_buffer .= $option[1].'</option>'."\n";
         }
       }

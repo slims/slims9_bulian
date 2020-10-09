@@ -127,7 +127,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
    $keywords = $dbs->escape_string($_GET['keywords']);
    $criteria .= " AND (b.title LIKE '%$keywords%' OR i.item_code LIKE '%$keywords%') ";
 }
-if (isset($_GET['classification']) AND $_GET['classification']) {
+if (isset($_GET['classification']) AND $_GET['classification'] !== '') {
    $classification = $dbs->escape_string($_GET['classification']);
    $criteria .= ($classification!='other')?" AND b.classification LIKE '$classification%'":" AND (trim(b.classification) REGEXP '^[^0-9]' OR trim(b.classification)='' OR trim(b.classification) IS NULL)";
 }
