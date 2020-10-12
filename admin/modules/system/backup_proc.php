@@ -84,10 +84,11 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                 $time2append = (date('Ymd_His'));
                 $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
                 $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
+
                 $data['user_id'] = $_SESSION['uid'];
                 $data['backup_time'] = date('Y-m-d H:i"s');
                 $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql');
-                $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),$sysconf['backup_dir']);
+                $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),str_replace('\'', '/',$sysconf['backup_dir']));
 
                 if (!preg_match('@^WIN.*@i', PHP_OS)) {
                     // get current directory path
@@ -95,12 +96,14 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                     // change current PHP working dir
                     @chdir($sysconf['backup_dir']);
                     // compress the backup using tar gz
-                    exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
-                    if ($status == COMMAND_SUCCESS) {
-                        // delete the original file
-                        @unlink($data['backup_file']);
-                        $output .= __("File is compressed using tar gz archive format");
-                        $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                    if(function_exists('exec')){
+                        exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
+                        if ($status == COMMAND_SUCCESS) {
+                            // delete the original file
+                            @unlink($data['backup_file']);
+                            $output .= __("File is compressed using tar gz archive format");
+                            $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                        }
                     }
                     // return to previous PHP working dir
                     @chdir($curr_dir);

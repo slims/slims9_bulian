@@ -1172,6 +1172,9 @@ sidebar
 #sidepan .curModuleLink {
   color: #00a9ff;
 }
+#sidepan > div.scroll-content > div.subMenuHeader {
+  font-size: 16px;
+}
 .envinfo {
   background: #fff;
 }
