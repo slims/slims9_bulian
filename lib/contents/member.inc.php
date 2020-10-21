@@ -203,19 +203,6 @@ if (isset($_POST['clear_biblio'])) {
     $_SESSION['m_mark_biblio'] = array();
 }
 
-// send reserve e-mail
-if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
-    $mail = sendReserveMail();
-        // die();
-    if ($mail['status'] != 'ERROR') {
-        $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
-        $_SESSION['info']['status'] = 'success';
-    } else {
-        $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
-        $_SESSION['info']['status'] = 'danger';
-    }
-}
-
 ?>
 
 
@@ -590,6 +577,23 @@ if ($is_member_login) :
     }
 
     ?>
+
+    <?php
+    // send reserve e-mail
+    if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
+        $mail = sendReserveMail();
+            // die();
+        if ($mail['status'] != 'ERROR') {
+            $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
+            $_SESSION['info']['status'] = 'success';
+        } else {
+            $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
+            $_SESSION['info']['status'] = 'danger';
+        }
+    }
+
+    ?>
+
     <div class="d-flex">
         <div style="width: 16rem;" class="bg-grey-light p-4" id="member_sidebar">
             <div class="p-4">
