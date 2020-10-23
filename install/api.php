@@ -34,7 +34,7 @@ if ($action === 're-install' || $action === 're-upgrade') {
 
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '7.1';
+    $php_minimum_version = '7.2';
     $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
