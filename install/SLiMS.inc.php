@@ -181,13 +181,13 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $user, $pass = '', $name = null)
+  function createConnection($host, $port = '3306', $user, $pass = '', $name = null)
   {
     if (is_null($this->db)) {
       if (is_null($name)) {
-        $this->db = @new mysqli($host, $user, $pass);
+        $this->db = @new mysqli($host.':'.$port, $user, $pass);
       } else {
-        $this->db = @new mysqli($host, $user, $pass, $name);
+        $this->db = @new mysqli($host.':'.$port, $user, $pass, $name);
       }
     }
     if (mysqli_connect_error()) {
