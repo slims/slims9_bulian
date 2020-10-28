@@ -64,7 +64,7 @@ if (!empty($errors)) {
 }
 
 if (empty($errors)) {
-	$query = selectallQuery($metadataPrefix) . $extquery . " ORDER BY " . $SQL['identifier'] . " ASC ";
+	$query = selectallQuery($metadataPrefix, '', ['opac_hide']) . $extquery . " ORDER BY " . $SQL['identifier'] . " ASC ";
 
 	// workaround for mysql
 	if (isset($deliveredrecords)){
@@ -150,8 +150,9 @@ while ($countrec++ < $maxrec) {
 	$identifier = $record[$SQL['identifier']];
 	$datestamp = formatDatestamp($record[$SQL['datestamp']]);
 	$setspec = $record[$SQL['set']];
-	
+
 	// debug_var_dump('record', $record);
+	if (!isset($record[$SQL['deleted']]) && $record['opac_hide'] > 0) $record[$SQL['deleted']] = true;
 	if (isset($record[$SQL['deleted']]) && ($record[$SQL['deleted']] === true) &&
 		($deletedRecord == 'transient' || $deletedRecord == 'persistent')) {
 		$status_deleted = TRUE;
