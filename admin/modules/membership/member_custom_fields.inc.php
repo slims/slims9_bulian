@@ -32,7 +32,7 @@ if(isset($_q->num_rows)){
 	while($_d = $_q->fetch_assoc()){
 		$dbfield[] = $_d;
 		// check biblio_custom field
-		$chkcol = $dbs->query("SELECT * FROM `member_custom` LIMIT 1");
+		$chkcol = $dbs->query("DESCRIBE `member_custom`");
 		$field = $chkcol->fetch_array();
 		// add field if not exist
 		if(!isset($field[$_d['dbfield']])){
