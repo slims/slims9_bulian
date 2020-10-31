@@ -54,7 +54,7 @@ if (!$reportView) {
     $first_header = '';
     $second_header = '';
     $dataset = array();
-    $detail_class_coll = '<th class="text-center small">'.__('t').'</th><th class="text-center small">'.__('i').'</th>';
+    $detail_class_coll = '<th class="text-center small" title="'.__('Title').'">'.__('t').'</th><th class="text-center small" title="'.__('Item').'">'.__('i').'</th>';
     // table header
     $output = '<table class="s-table table table-sm table-bordered mb-0">';
     $output .= '<tr><th rowspan="2">'.__('Receiving Year').' / '.__('Classification').'</th>';
@@ -121,6 +121,8 @@ if (!$reportView) {
         }
     }   
     $output .= '</table>';
+    // set abbreviation details about "t" and "i" below year column
+    $output .= '<div class="d-block mt-2"><strong>'.__('Description').'</strong><br><b class="text-bold">'.__('t').'</b> : <label>'.__('Title').'</label><br><b class="text-bold">'.__('i').'</b> : <label>'.__('Item').'</label></div>';
 
     $chart['xAxis'] = $xAxis;
     $chart['data'] = $dataset;
