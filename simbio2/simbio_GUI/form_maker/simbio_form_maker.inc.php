@@ -158,8 +158,8 @@ class simbio_form_maker
       $this->css_classes .= ' disabled';
     }
     $start_form = '<form name="'.$this->form_name.'" id="'.$this->form_name.'" class="'.$this->css_classes.'" '
-      .'method="'.$this->form_method.'" '
-      .'action="'.$this->form_action.'" target="'.$this->submit_target.'"'.($this->enable_upload?' enctype="multipart/form-data"':' ').$this->add_form_attributes.'>';
+      .'method="'.htmlentities($this->form_method).'" '
+      .'action="'.htmlentities($this->form_action).'" target="'.htmlentities($this->submit_target).'"'.($this->enable_upload?' enctype="multipart/form-data"':' ').$this->add_form_attributes.'>';
     if ($this->enable_token) {
       $this->submit_token = self::genRandomToken();
       $start_form .= '<input type="hidden" name="csrf_token" value="'.$this->submit_token.'" />';
