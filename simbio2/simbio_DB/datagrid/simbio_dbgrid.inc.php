@@ -211,7 +211,7 @@ class simbio_datagrid extends simbio_table
             // check if the column is not listed in no_sort_column array properties
             if (!in_array($_fld->name, $this->no_sort_column) AND isset($this->sort_column[$_fld->name])) {
                 $_order_by = $this->table_ID.'fld='.urlencode($this->sort_column[$_fld->name]).'&dir='.$_next_dir;
-                $this->grid_result_fields[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$_url_query_str.$_order_by.'" title="'.__('Order list by').' '.$_fld->name.' '.$_sort_dir_info.'">'.$_fld->name.'</a>';
+                $this->grid_result_fields[] = '<a href="'.htmlentities($_SERVER['PHP_SELF']).'?'.$_url_query_str.$_order_by.'" title="'.__('Order list by').' '.$_fld->name.' '.$_sort_dir_info.'">'.$_fld->name.'</a>';
             } else {
                 $this->grid_result_fields[] = $_fld->name;
             }
@@ -286,7 +286,7 @@ class simbio_datagrid extends simbio_table
                 if ($this->edit_property) {
                     $_edit_data = $this->edit_property[0].'='.$this->grid_result_rows[$_row][0].'&detail=true';
                     $_edit_link = '<a class="editLink'.( !$this->using_AJAX?' notAJAX':'' ).'" '
-                        .'href="'.$_SERVER['PHP_SELF'].'?'.$_edit_data.'&'.$_url_query_str.'" postdata="'.$_edit_data.'" title="Edit">'.( $this->edit_link_text?$this->edit_link_text:'&nbsp;' ).'</a>';
+                        .'href="'.htmlentities($_SERVER['PHP_SELF']).'?'.$_edit_data.'&'.$_url_query_str.'" postdata="'.$_edit_data.'" title="Edit">'.( $this->edit_link_text?$this->edit_link_text:'&nbsp;' ).'</a>';
                     $_edit_fields[] = $_edit_link;
                 }
                 // unset the first element (ID field)
