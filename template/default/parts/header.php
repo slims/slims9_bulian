@@ -24,7 +24,7 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0"/>
     <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT"/>
-
+    <?php echo $metadata;?>
   <?php if (isset($_GET['p']) && ($_GET['p'] == 'show_detail')): ?>
       <meta name="description" content="<?php echo substr($notes, 0, 152) . '...'; ?>">
       <meta name="keywords" content="<?php echo $subject; ?>">
