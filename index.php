@@ -66,10 +66,10 @@ if (isset($_GET['p'])) {
     $path = preg_replace('@\/@i','',$path);
     // check if the file exists
     if (file_exists(LIB.'contents/'.$path.'.inc.php')) {
-        include LIB.'contents/'.$path.'.inc.php';
         if ($path != 'show_detail') {
           $metadata = '<meta name="robots" content="noindex, follow">';
         }
+        include LIB.'contents/'.$path.'.inc.php';
     } else {
         // get content data from database
         $metadata = '<meta name="robots" content="index, follow">';
