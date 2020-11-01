@@ -211,7 +211,7 @@ class simbio_form_maker
     // set form element object properties
     $_form_element->element_type = $str_elmnt_type;
     $_form_element->element_name = $str_elmnt_name;
-    $_form_element->element_value = $str_elmnt_value;
+    $_form_element->element_value = htmlentities($str_elmnt_value);
     $_form_element->element_attr = $str_elmnt_attr;
     $_form_element->element_helptext = $str_elmnt_info;
     $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => $str_elmnt_info);
