@@ -250,10 +250,12 @@ function readResumToken($resumptionToken) {
  * the useless condition id_column = id_column is just there to ease
  * further extensions to the query, please leave it as it is.
  */
-function selectallQuery ($metadPrefix = "oai_dc", $id = '')
+function selectallQuery ($metadPrefix = "oai_dc", $id = '', $extselect = [])
 {
 	global $SQL;
-	$query = "SELECT " . $SQL['identifier'] . "," . $SQL['datestamp'] . "," . $SQL['set'] .
+
+	$str_extselect = !empty($extselect) ? ', ' . implode(', ', $extselect) : '';
+	$query = "SELECT " . $SQL['identifier'] . "," . $SQL['datestamp'] . "," . $SQL['set'] . $str_extselect .
 		" FROM ".$SQL['table'] . " WHERE 1 ";
 	if ($id != '') {
 		$query .= " AND ".$SQL['identifier']." ='$id'";
