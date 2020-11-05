@@ -384,7 +384,7 @@ SQL;
 			realname = '" . ucfirst($username) . "',
 			last_login = NULL,
 			last_login_ip = '127.0.0.1',
-			groups = 'a:1:{i:0;s:1:\"1\";}',
+			`groups` = 'a:1:{i:0;s:1:\"1\";}',
 			input_date = DATE(NOW()),
 			last_update = DATE(NOW())
 			WHERE user_id = 1";
