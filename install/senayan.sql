@@ -1457,6 +1457,17 @@ CREATE TABLE `files_read` (
   PRIMARY KEY (`filelog_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Table structure for table `plugins`
+--
+DROP TABLE IF EXISTS `plugins`;
+CREATE TABLE `plugins` (
+   `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+   `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+   `created_at` datetime NOT NULL,
+   `uid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 --
 -- create trigger `delete_loan_history`

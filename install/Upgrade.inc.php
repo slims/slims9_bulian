@@ -957,11 +957,19 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
    */
   function upgrade_role_26()
   {
+      $sql['create'][] = "
+        CREATE TABLE `plugins` (
+          `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+          `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+          `created_at` datetime NOT NULL,
+          `uid` int(11) NOT NULL
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
       $sql['alter'][] = "ALTER TABLE `group_access` ADD `menus` json NULL AFTER `module_id`;";
 
       $sql['alter'][] = "ALTER TABLE `biblio_attachment` ADD `placement` enum('link','popup','embed') COLLATE 'utf8_unicode_ci' NULL AFTER `file_id`;";
 
-      return $this->slims->query($sql, ['alter']);
+      return $this->slims->query($sql, ['create', 'alter']);
   }
 
 }
