@@ -23,6 +23,7 @@ class Plugins
      */
     protected $plugins = [];
     protected $hooks = [];
+    protected $menus = [];
     private $deep = 0;
 
     /**
@@ -57,7 +58,8 @@ class Plugins
         return $this;
     }
 
-    private function getPluginInfo($path) {
+    private function getPluginInfo($path)
+    {
         $file_open = fopen($path, 'r');
         $raw_data = fread($file_open, 8192);
         fclose($file_open);
@@ -82,7 +84,8 @@ class Plugins
         return $plugin;
     }
 
-    private function getPluginsInfo($location) {
+    private function getPluginsInfo($location)
+    {
         // open location
         if ($dir = opendir($location)) {
             while ($file = readdir($dir)) {
@@ -94,7 +97,7 @@ class Plugins
                         $plugin = $this->getPluginInfo($path);
                         $this->plugins[$plugin->id] = $plugin;
                     }
-                } elseif(is_dir($path) && (substr($file,0,1) != '.')) {
+                } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
                     $this->deep++;
                     // get plugins from sub folder location
                     // deep level directory that will be scanned
@@ -113,33 +116,53 @@ class Plugins
         foreach ($this->locations as $location) {
             $this->getPluginsInfo($location);
         }
-        return  $this->plugins;
+        return $this->plugins;
     }
 
     /**
      * Get active plugins from database
      */
-    public function getActive() {
+    public function getActive()
+    {
         $query = DB::getInstance()->query("SELECT * FROM plugins");
         $result = [];
         while ($data = $query->fetchObject()) $result[$data->id] = $data;
         return $result;
     }
 
-    public function loadPlugins() {
+    public function loadPlugins()
+    {
         foreach ($this->getActive() as $item) {
             if (file_exists($item->path)) require_once $item->path;
         }
     }
 
-    public function register($hook, $callback) {
+    public function register($hook, $callback)
+    {
         $this->hooks[$hook][] = $callback;
     }
 
-    public function execute($hook) {
+    public function registerMenu($module_name, $label, $path, $description = null)
+    {
+        $hash = md5(realpath($path));
+        $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
+    }
+
+    public function execute($hook)
+    {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
             if (is_callable($hook)) call_user_func($hook);
         }
+    }
+
+    /**
+     * @param null $module
+     * @return array
+     */
+    public function getMenus($module = null): array
+    {
+        if (is_null($module)) return $this->menus;
+        return $this->menus[$module] ?? [];
     }
 
 }
