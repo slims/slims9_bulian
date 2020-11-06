@@ -19,8 +19,8 @@ require SIMBIO . 'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
 // privileges checking
-$can_read = utility::havePrivilege('plugins', 'r');
-$can_write = utility::havePrivilege('plugins', 'w');
+$can_read = utility::havePrivilege('system', 'r');
+$can_write = utility::havePrivilege('system', 'w');
 
 if (!$can_read) die('<div class="errorBox">' . __('You don\'t have enough privileges to view this section') . '</div>');
 
