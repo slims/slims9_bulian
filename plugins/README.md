@@ -50,9 +50,11 @@ $plugin->register('bibliography_on_delete', function () {});
 ```
 Berikut ini `tag hook` yang tersedia:
 
-- bibliography_init
-- bibliography_on_save
-- bibliography_on_update
-- bibliography_on_delete
+- **bibliography_init**: run on bibliography ready to go
+- **bibliography_before_save**: run before bibliography data tobe saved. The data will be save available in params
+- **bibliography_after_save**: run after bibliography data saved successfully. The data saved available in params
+- **bibliography_before_update**: run before bibliography data tobe updated. The data will be update available in params
+- **bibliography_after_update**: run after bibliography data updated successfully. The data updated available in params
+- **bibliography_on_delete**: run after data has been deleted. Bibliography ID available in param
 
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
