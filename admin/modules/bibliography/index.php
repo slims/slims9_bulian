@@ -274,6 +274,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       if ($update) {
 
           // execute registered hook
+          $data['biblio_id'] = $updateRecordID;
           \SLiMS\Plugins::getInstance()->execute('bibliography_on_update', ['data' => $data]);
 
         // update custom data
@@ -326,12 +327,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       // insert the data
       $insert = $sql_op->insert('biblio', $data);
       if ($insert) {
+          // get auto id of this record
+          $last_biblio_id = $sql_op->insert_id;
 
           // execute registered hook
+          $data['biblio_id'] = $last_biblio_id;
           \SLiMS\Plugins::getInstance()->execute('bibliography_on_save', ['data' => $data]);
 
-        // get auto id of this record
-        $last_biblio_id = $sql_op->insert_id;
         // add authors
         if ($_SESSION['biblioAuthor']) {
           foreach ($_SESSION['biblioAuthor'] as $author) {
