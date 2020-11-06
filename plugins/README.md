@@ -1,4 +1,4 @@
-#Plugin System
+# Plugin System
 
 ### Bagaimana membuat sebuah plugin?
 Untuk membuat sebuah plugin, mohon ikuti beberapa aturan berikut ini agar plugin anda bisa berjalan dengan baik.
