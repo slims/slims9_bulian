@@ -251,7 +251,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     <body>
         <a href="#" class="no-print btn btn-success mb-4" onclick="window.print()">{$__('Print Again')}</a>
         {$html_str}
-<!--        <script type="text/javascript">self.print();</script>-->
+        <script type="text/javascript">self.print();</script>
     </body>
 </html>
 HTML;
