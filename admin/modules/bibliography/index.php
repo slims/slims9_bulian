@@ -58,6 +58,9 @@ if (!$can_read) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+// execute registered hook
+\SLiMS\Plugins::getInstance()->execute('bibliography_init');
+
 // load settings
 utility::loadSettings($dbs);
 
@@ -269,6 +272,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       $update = $sql_op->update('biblio', $data, 'biblio_id='.$updateRecordID);
       // send an alert
       if ($update) {
+
+          // execute registered hook
+          \SLiMS\Plugins::getInstance()->execute('bibliography_on_update', ['data' => $data]);
+
         // update custom data
         if (isset($custom_data)) {
           // check if custom data for this record exists
@@ -319,6 +326,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       // insert the data
       $insert = $sql_op->insert('biblio', $data);
       if ($insert) {
+
+          // execute registered hook
+          \SLiMS\Plugins::getInstance()->execute('bibliography_on_save', ['data' => $data]);
+
         // get auto id of this record
         $last_biblio_id = $sql_op->insert_id;
         // add authors
@@ -346,7 +357,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           }
         }
         // insert custom data
-        if ($custom_data) {
+        if (isset($custom_data)) {
           $custom_data['biblio_id'] = $last_biblio_id;
           @$sql_op->insert('biblio_custom', $custom_data);
         }
@@ -471,6 +482,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
         $error_num++;
       } else {
+
+        // execute registered hook
+        \SLiMS\Plugins::getInstance()->execute('bibliography_on_delete', [$itemID]);
+
         // write log
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE bibliographic data ('.$biblio_item_d[0].') with biblio_id ('.$itemID.')');
         // delete related data

@@ -50,10 +50,9 @@ $plugin->register('bibliography_on_delete', function () {});
 ```
 Berikut ini `tag hook` yang tersedia:
 
-- ~~bibliography_init~~
-- ~~bibliography_on_save~~
-- ~~bibliography_on_save~~
-- ~~bibliography_on_update~~
-- ~~bibliography_on_delete~~
+- bibliography_init
+- bibliography_on_save
+- bibliography_on_update
+- bibliography_on_delete
 
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
