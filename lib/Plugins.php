@@ -148,10 +148,10 @@ class Plugins
         $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
     }
 
-    public function execute($hook)
+    public function execute($hook, $params = [])
     {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
-            if (is_callable($hook)) call_user_func($hook);
+            if (is_callable($hook)) call_user_func_array($hook, $params);
         }
     }
 
