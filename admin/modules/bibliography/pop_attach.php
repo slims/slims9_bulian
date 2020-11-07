@@ -94,7 +94,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         // insert file data to database
         @$sql_op->insert('files', $fdata);
         $uploaded_file_id = $sql_op->insert_id;
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')', 'Attachment', 'Add');
     } else {
       utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
       echo '<script type="text/javascript">';
@@ -163,7 +163,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         utility::jsToastr('File Attachment',''.__('File Attachment data FAILED to save!').''."\n".$sql_op->error, 'error');
       }
     }
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' updating file attachment data');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' updating file attachment data', 'Attachment', 'Update');
   } else {
     if ($uploaded_file_id) {
       // add to session array

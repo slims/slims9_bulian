@@ -88,7 +88,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('serial', $data, 'serial_id='.$updateRecordID);
             if ($update) {
                 utility::jsAlert(__('Subscription Data Successfully Updated'));
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'serial_control', $_SESSION['realname'].' update subcription('.$updateRecordID.') '.$period);
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'serial_control', $_SESSION['realname'].' update subcription('.$updateRecordID.') '.$period, 'Subcription', 'Update');
             } else { utility::jsAlert(__('Subscription Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             echo '<script type="text/javascript">self.location.href = \''.MWB.'serial_control/subscription.php?biblioID='.$biblioID.'\';</script>';
             exit();
@@ -104,7 +104,7 @@ if (isset($_POST['saveData'])) {
                 $serial->generateKardexes($exemplar, true);
                 // alert
                 utility::jsAlert(__('New Subscription Data Successfully Saved'));
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'serial_control', $_SESSION['realname'].' add new subcription('.$sql_op->insert_id.') '.$period);
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'serial_control', $_SESSION['realname'].' add new subcription('.$sql_op->insert_id.') '.$period, 'Subscription', 'Add');
             } else { utility::jsAlert(__('Subscription Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
             echo '<script type="text/javascript">self.location.href = \''.MWB.'serial_control/subscription.php?biblioID='.$biblioID.'\';</script>';
             exit();

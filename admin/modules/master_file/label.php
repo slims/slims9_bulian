@@ -72,11 +72,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($img_upload_status == UPLOAD_SUCCESS) {
               $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
               // write log
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename);
+              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename, 'Master Label Image', 'Upload');
               utility::jsAlert(__('Label image file successfully uploaded'));
             } else {
               // write log
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')');
+              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')', 'Master Label Image', 'Fail');
               utility::jsAlert(__('FAILED to upload label image! Please see System Log for more detailed information'));
             }
         }

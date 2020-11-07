@@ -150,7 +150,7 @@ if (isset($_POST['confirmFinish'])) {
     // clean all current stock take error log
     $error_log_q = $dbs->query('DELETE FROM system_log WHERE log_location=\'stock_take\' AND log_msg LIKE \'Stock Take ERROR%\'');
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' finish stock take ('.$stk_take_d[0].') from address '.$_SERVER['REMOTE_ADDR']);
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' finish stock take ('.$stk_take_d[0].') from address '.$_SERVER['REMOTE_ADDR'], 'Finished', 'OK');
     // send an alert
     echo '<script type="text/javascript">';
     echo 'alert(\''.__('Stock Take Proccess Finished!').'\');';
