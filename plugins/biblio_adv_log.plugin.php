@@ -58,7 +58,7 @@ $plugin->register('bibliography_after_update', function ($data) use (&$old_data)
         // Ignored list, this data is not valid for comparison or has been handled in other methods
         if (in_array($key, ['last_update', 'input_date', 'hash', 'subjects', 'image', 'authors', 'uid', 'classification', 'id', '_id', 'biblio_id'])) continue;
 
-        // for now we will ignore array data to
+        // for now we will ignore array data too
         if (is_array($datum) || is_array($new_data[$key])) continue;
 
         // hashing data
