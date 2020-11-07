@@ -743,3 +743,10 @@ $sysconf['max_insert_batch'] = 100;
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
+
+// SLiMS 9 GitHub Api
+$sysconf['slims_github_api'] = [];
+$sysconf['slims_github_api']['url'] = 'https://api.github.com/repos/slims/slims9_bulian/';
+$sysconf['slims_github_api']['per_page'] = 20;
+$sysconf['slims_github_api']['cache_dir'] = UPLOAD.'cache/';
+$sysconf['slims_github_api']['cache_format'] = 'Cache'.date('Ymd').'.json';

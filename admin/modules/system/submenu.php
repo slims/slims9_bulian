@@ -33,6 +33,8 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('UCS Setting'), MWB.'system/ucsetting.php', __('Configure UCS Preferences'));
     $menu[] = array(__('Theme'), MWB.'system/theme.php', __('Configure theme Preferences'));
     $menu[] = array(__('Plugins'), MWB . 'system/plugins.php');
+    $menu[] = array(__('Release Information'), MWB.'system/releases_info.php', __('List of SLiMS release information'));
+    $menu[] = array(__('Development Progress'), MWB.'system/development_progress.php', __('SLiMS next release progess'));
     $menu[] = array(__('Custom Field'), MWB.'system/custom_field.php', __('Configure custom field'));
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
