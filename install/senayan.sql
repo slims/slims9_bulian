@@ -971,6 +971,8 @@ CREATE TABLE IF NOT EXISTS `system_log` (
   `log_type` enum('staff','member','system') collate utf8_unicode_ci NOT NULL default 'staff',
   `id` varchar(50) collate utf8_unicode_ci default NULL,
   `log_location` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `log_submod` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `log_action` text COLLATE utf8_unicode_ci NOT NULL,
   `log_msg` text collate utf8_unicode_ci NOT NULL,
   `log_date` datetime NOT NULL,
   PRIMARY KEY  (`log_id`),
