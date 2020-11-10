@@ -1126,4 +1126,7 @@ $query_trigger[] = "
 ALTER TABLE `system_log`
 ADD `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `log_location`,
 ADD `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `sub_module`;
+
+ALTER TABLE `files_read`
+CHANGE `member_id` `member_id` char(20) COLLATE 'utf8mb4_unicode_ci' NULL AFTER `date_read`;
 **/

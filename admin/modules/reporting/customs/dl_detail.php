@@ -50,16 +50,18 @@ require MDLBS.'reporting/report_dbgrid.inc.php';
 
 $page_title = 'Download Counter Report';
 $reportView = false;
+$_repDetail = true;
 $num_recs_show = 20;
-if (isset($_GET['reportView'])) {
+if (isset($_GET['reportView']) or isset($_GET['fileID'])) {
     $reportView = true;
+    $_repDetail = false;
 }
 
 if (!$reportView) {
 ?>
 <!-- filter -->
 <div class="per_title">
-    <h2><?php echo __('Attachment Report'); ?></h2>
+    <h2><?php echo __('Attachment Report (Detail)'); ?></h2>
 </div>
 <div class="infoBox">
     <?php echo __('Report Filter'); ?>
@@ -98,12 +100,12 @@ if (!$reportView) {
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
-    $reportgrid->setSQLColumn('b.title `'.__('Title').'`', 'f.file_title `'.__('File title').'`', 'f.mime_type `'.__('Type').'`', 'count(fr.filelog_id) `'.__('Access').'`', 'f.file_id `&nbsp`');
-    $reportgrid->setSQLorder('b.title ASC');
+    $reportgrid->setSQLColumn('b.title `'.__('Title').'`', 'f.file_title `'.__('File title').'`', 'f.mime_type `'.__('Type').'`', 'COALESCE(m.member_name, u.realname, \''.__('UnKnown').'\') `Contact`', 'fr.client_ip `'.__('Address').'`', 'fr.date_read `'.__('Date').'`');
+    $reportgrid->setSQLorder('fr.date_read DESC');
 //    $reportgrid->invisible_fields = array(0);
 
     // is there any search
-    $criteria = 'fr.filelog_id is not null ';
+    $criteria = 'fr.file_id ='. $_GET['fileID'];
 //    $outer_criteria = 'b.biblio_id > 0 ';
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
         $keyword = $dbs->escape_string(trim($_GET['title']));
@@ -134,7 +136,7 @@ if (!$reportView) {
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
 
-    // subquery/view string
+    /* subquery/view string
     $subquery_str = '(SELECT DISTINCT bsub.biblio_id, bsub.gmd_id, bsub.title, bsub.isbn_issn, bsub.call_number, bsub.classification, bsub.language_id,
 		bsub.publish_place_id, bsub.publisher_id
         FROM biblio AS bsub
@@ -142,43 +144,26 @@ if (!$reportView) {
         LEFT JOIN mst_author AS ma ON ba.author_id = ma.author_id
         LEFT JOIN biblio_topic AS bt ON bsub.biblio_id = bt.biblio_id
         LEFT JOIN mst_topic AS mt ON bt.topic_id = mt.topic_id WHERE '.$criteria.')';
+        */
 
     // table spec
-    $table_spec = 'search_biblio b 
-	left join biblio_attachment ba on b.biblio_id = ba.biblio_id 
-	left join files f on f.file_id = ba.file_id 
-	left join files_read fr on fr.file_id = f.file_id';
+    $table_spec = 'files_read fr
+    left join files f on f.file_id = fr.file_id
+    left join biblio_attachment ba on f.file_id = ba.file_id
+    left join search_biblio b  on b.biblio_id = ba.biblio_id
+    left join member m on m.member_id = fr.member_id
+    left join user u on u.user_id = fr.user_id';
 
     // set group by
-    $reportgrid->sql_group_by = 'f.file_id';
+    // $reportgrid->sql_group_by = 'f.file_id';
     $reportgrid->setSQLCriteria($criteria);
-
-    // callback function to show title and authors
-    function showTitleAuthors($obj_db, $array_data)
-    {
-        // author name query
-        $_biblio_q = $obj_db->query('SELECT b.title, a.author_name FROM biblio AS b
-            LEFT JOIN biblio_author AS ba ON b.biblio_id=ba.biblio_id
-            LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
-            WHERE b.biblio_id='.$array_data[0]);
-        $_authors = '';
-        while ($_biblio_d = $_biblio_q->fetch_row()) {
-            $_title = $_biblio_d[0];
-            $_authors .= $_biblio_d[1].' - ';
-        }
-        $_authors = substr_replace($_authors, '', -3);
-        $_output = $_title.'<br /><i>'.$_authors.'</i>'."\n";
-        return $_output;
-    }
 
     // callback function to change value of authority type
     function callbackLinkDetail($obj_db, $rec_d)
     {
         //global $sysconf, $auth_type_fld;
-        return '<a href="'.MWB.'reporting/customs/dl_detail.php?fileID='.$rec_d[4].'"" title="'.__('Detail').'"><i class="fa fa-search" aria-hidden="true"></i>';
+        return '<a href="'.MWB.'reporting/customs/dl_detail.php?id='.$rec_d[4].'"" title="'.__('Detail').'"><i class="fa fa-search" aria-hidden="true"></i>';
     }
-    // modify column content
-    $reportgrid->modifyColumnContent(4, 'callback{callbackLinkDetail}');
 
     // show spreadsheet export button
     $reportgrid->show_spreadsheet_export = true;
@@ -190,7 +175,15 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-    $xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
+    //$xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
+    $xlsquery = 'select b.title \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', fr.date_read AS \''. __('Date').'\', COALESCE(m.member_name, u.realname, \'UnKnown\') \''. __('Contact').'\', fr.client_ip \''. __('Address') .'\'
+        from files_read fr
+        left join files f on f.file_id = fr.file_id 
+        left join biblio_attachment ba on f.file_id = ba.file_id 
+        left join search_biblio b  on b.biblio_id = ba.biblio_id
+        left join member m on m.member_id = fr.member_id
+        left join user u on u.user_id = fr.user_id
+        WHERE '. $criteria ;
         // echo $xlsquery;
         unset($_SESSION['xlsdata']);
         $_SESSION['xlsquery'] = $xlsquery;
@@ -199,3 +192,13 @@ if (!$reportView) {
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
 }
+
+/* select b.title AS 'Title', f.file_title AS 'File title', f.mime_type AS 'Type', fr.date_read AS 'Date', 
+COALESCE(m.member_name, u.realname, 'UnKnown') Contact, fr.client_ip 'Address'
+from files_read fr
+left join files f on f.file_id = fr.file_id 
+left join biblio_attachment ba on f.file_id = ba.file_id 
+left join search_biblio b  on b.biblio_id = ba.biblio_id
+left join member m on m.member_id = fr.member_id
+left join user u on u.user_id = fr.user_id
+*/

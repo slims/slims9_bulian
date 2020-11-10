@@ -1526,7 +1526,11 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
 ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
 ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
 
-/** ALTER TABLE `system_log`
+/** 
+ALTER TABLE `system_log`
 ADD `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `log_location`,
 ADD `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `sub_module`;
+
+ALTER TABLE `files_read`
+CHANGE `member_id` `member_id` char(20) COLLATE 'utf8mb4_unicode_ci' NULL AFTER `date_read`;
 **/
