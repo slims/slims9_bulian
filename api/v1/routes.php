@@ -15,6 +15,8 @@ require __DIR__ . '/controllers/HomeController.php';
 require __DIR__ . '/controllers/BiblioController.php';
 require __DIR__ . '/controllers/MemberController.php';
 require __DIR__ . '/controllers/SubjectController.php';
+require __DIR__ . '/controllers/ItemController.php';
+require __DIR__ . '/controllers/LoanController.php';
 
 /*----------  Create router object  ----------*/
 $router = new Router($sysconf, $dbs);
@@ -27,6 +29,15 @@ $router->map('GET', '/biblio/latest', 'BiblioController@getLatest');
 $router->map('GET', '/subject/popular', 'SubjectController@getPopular');
 $router->map('GET', '/subject/latest', 'SubjectController@getLatest');
 $router->map('GET', '/member/top', 'MemberController@getTopMember');
+
+/*----------  Admin  ----------*/
+$router->map('GET', '/biblio/total/all', 'BiblioController@getTotalAll');
+$router->map('GET', '/item/total/all', 'ItemController@getTotalAll');
+$router->map('GET', '/item/total/lent', 'ItemController@getTotalLent');
+$router->map('GET', '/item/total/available', 'ItemController@getTotalAvailable');
+$router->map('GET', '/loan/summary', 'LoanController@getSummary');
+$router->map('GET', '/loan/getdate/[*:date]', 'LoanController@getDate');
+$router->map('GET', '/loan/summary/[*:date]', 'LoanController@getSummaryDate');
 
 /*----------  Run matching route  ----------*/
 $router->run();

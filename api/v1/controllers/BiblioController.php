@@ -87,4 +87,12 @@ class BiblioController extends Controller
 
         parent::withJson($return);
     }
+
+    public function getTotalAll()
+    {
+        $query = $this->db->query("SELECT COUNT(biblio_id) FROM biblio");
+        parent::withJson([
+            'data' => ($query->fetch_row())[0]
+        ]);
+    }
 }
