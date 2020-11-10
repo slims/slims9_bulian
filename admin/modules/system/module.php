@@ -86,7 +86,7 @@ if (isset($_POST['saveData'])) {
             if ($sql_op->insert('mst_module', $data)) {
                 // insert module privileges for administrator
                 $module_id = $sql_op->insert_id;
-                $dbs->query('INSERT INTO group_access VALUES (1, '.$module_id.', 1, 1)');
+                $dbs->query('INSERT INTO group_access (group_id, module_id, r,w) VALUES (1, '.$module_id.', 1, 1)');
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Add' );
                 utility::jsAlert(__('New Module Data Successfully Saved'));

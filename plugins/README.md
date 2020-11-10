@@ -59,6 +59,8 @@ Berikut ini `tag hook` yang tersedia:
 
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
 
+-----------
+
 # Plugin System - English version
 
 ### How to build a plugin?
@@ -66,19 +68,19 @@ To build a plugin, follow these rules in order to have a plugin to run without p
 
 - Place your plugin to `<slims root>/plugins` folder
 - Place your plugin within the folder or a folder within it
-- Make sure your plugin has `.plugin.php` for file name extention. For instance `example.plugin.php`
+- Make sure your plugin has `.plugin.php` for file name extension. For instance `example.plugin.php`
 - Also make sure to have additional information about your plugin, as follow and place it with comment at the top of the file.
 ```
 /**
  * Plugin Name: Plugin name example
  * Plugin URI: <place here you plugin repository address>
  * Description: Your plugin description
- * VErsion: 0.0.1
+ * Version: 0.0.1
  * Author: Your Name
  * Author URI: <place here url of your profile>
  */
 ```
-- Currentyly, there are 2 (two) types of plugin:
+- Currently, there are 2 (two) types of plugin:
 1. An independent plugin as part of a submenu
 2. Plugin called _hooking_ to an existed feature
 

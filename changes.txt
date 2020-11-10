@@ -42,6 +42,10 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.3.0 (Bulian)
 ========================================================================
+Added : New plugin system to make ease of pain when adding additional plugin
+Added : MySQL port information in installer
+Update : PHPMailer with new version and configuration
+Fixed : Auto update and delete for UCS
 Added : Show hide sub-menu by user group privileges
 Added : Placement options for embedded link and video attachments
 
