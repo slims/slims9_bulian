@@ -148,7 +148,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
                 unset($content_data);
             }
         } else {
-        $start_date = date('Y-m-d', strtotime('2020-03-07'));
+        $start_date = date('Y-m-d');
         ?>
         <div class="row">
             <div class="col-xs-6 col-md-3 col-lg-3">
