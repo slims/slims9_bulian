@@ -121,7 +121,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
     
     // remove token
     unset($_SESSION['token']);
-    echo '<script type="text/javascript">top.alert(\''.$output.'\');</script>';
+    echo '<script type="text/javascript">top.alert(\''.$dbs->escape_string($output).'\');</script>';
     echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/backup.php\');</script>';
     exit();
 }

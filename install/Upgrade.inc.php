@@ -973,6 +973,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
       $sql['alter'][] = "ALTER TABLE `files_read` CHANGE `member_id` `member_id` varchar(20) NULL AFTER `date_read`;";
 
+      $sql['alter'][] = "ALTER TABLE `backup_log` CHANGE `backup_file` `backup_file` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;"
+
       return $this->slims->query($sql, ['create', 'alter']);
   }
 

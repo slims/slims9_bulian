@@ -61,7 +61,7 @@ if (isset($_GET['type'])) {
   $type = trim($_GET['type']);
 }
 
-if (!in_array($type, array('barcode', 'label', 'membercard'))) {
+if (!in_array($type, array('barcode', 'label', 'membercard','catalog'))) {
   $type = 'barcode';
 }
 
@@ -235,6 +235,12 @@ $measure['print']['membercard']['address_font_size']        = __('(pt)');
 $measure['print']['membercard']['address_left']             = __('(px)');
 $measure['print']['membercard']['address_top']              = __('(px)');
 
+// catalog card
+$measure['print']['catalog']['self_list_card']               = $visibility_options;
+$measure['print']['catalog']['title_card']                   = $visibility_options;
+$measure['print']['catalog']['author_card']                  = $visibility_options;
+$measure['print']['catalog']['subject_card']                 = $visibility_options;
+
 $form->addAnything(__('Print setting for'), ucwords($type));
 foreach ($sysconf['print'][$type] as $setting_name => $val) {
   $setting_name_label = ucwords(str_ireplace('_', ' ', $setting_name));
@@ -250,7 +256,7 @@ foreach ($sysconf['print'][$type] as $setting_name => $val) {
 }
 $form->addHidden('settingType', $type);
 ?>
-<strong><?php echo __('Change print label and or barcode settings'); ?></strong>
+<strong><?php echo sprintf(__('Change print %s settings'),$type); ?></strong>
 <?php
 // print out the object
 echo $form->printOut();
