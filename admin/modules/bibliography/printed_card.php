@@ -114,6 +114,17 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         die();
     }
 
+    // include printed settings configuration file
+    include SB.'admin'.DS.'admin_template'.DS.'printed_settings.inc.php';
+    // check for custom template settings
+    $custom_settings = SB.'admin'.DS.$sysconf['admin_template']['dir'].DS.$sysconf['template']['theme'].DS.'printed_settings.inc.php';
+    if (file_exists($custom_settings)) {
+      include $custom_settings;
+    }
+
+    // load catalog settings from database to override 
+    loadPrintSettings($dbs, 'catalog');
+
     // concat item ID
     $item_ids = '';
     if (isset($_SESSION['cards']['item'])) {
@@ -141,9 +152,12 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 	$katalog = "";
 	$item = 0;
     while ($biblio_d = $biblio_q->fetch_array()) {
-
-		$tajuk[] = "&nbsp;";
-		$tajuk[] = $biblio_d['title'];
+        if($sysconf['print']['catalog']['self_list_card'] == '1'){
+		  $tajuk[] = "&nbsp;";
+        }
+        if($sysconf['print']['catalog']['title_card'] == '1'){
+		  $tajuk[] = $biblio_d['title'];
+        }
 		// author
 		$author_q = $dbs->query('SELECT a.author_name
 		   FROM biblio_author as ba
@@ -155,7 +169,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 			$biblio_d['author'] .= reverseAuthor($author_d[0]) . ', ';
 			$i += 1;
 			if ($i == 1) { $mainauthor = $author_d[0]; }
-			if ($i > 1) { $tajuk[] = $author_d[0]; }
+			if ($i > 1 && $sysconf['print']['catalog']['author_card'] == '1') { $tajuk[] = $author_d[0]; }
 			if ($i >= 3) { break; }
 		}
 		// strip the last comma
@@ -174,7 +188,9 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
 		$i = 0;
 		while ($subject_d = $subject_q->fetch_row()) {
 			$biblio_d['subject'] .= $subject_d[0]. '; ';
-			$tajuk[] = $subject_d[0];
+            if($sysconf['print']['catalog']['subject_card'] == '1'){
+			  $tajuk[] = $subject_d[0];
+            }
 			$i += 1;
 			if ($i >= 3) { break; }
 		}
@@ -291,6 +307,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     <div class="btn-group">
         <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=clear" class="notAJAX btn btn-default"><?php echo __('Clear Print Queue'); ?></a>
         <a target="blindSubmit" href="<?php echo MWB; ?>bibliography/printed_card.php?action=print" class="notAJAX btn btn-default"><?php echo __('Print Catalog for Selected Data'); ?></a>
+        <a href="<?php echo MWB; ?>bibliography/pop_print_settings.php?type=catalog" width="780" height="500" class="btn btn-default notAJAX openPopUp" title="<?php echo __('Change print catalog settings'); ?>"><?php echo __('Change Print Catalog settings'); ?></a>  
 	</div>
     <form name="search" action="<?php echo MWB; ?>bibliography/printed_card.php" id="search" method="get" class="form-inline">
     <?php echo __('Search'); ?>
