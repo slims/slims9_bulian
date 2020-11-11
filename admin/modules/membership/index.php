@@ -53,6 +53,9 @@ if (!$can_read) {
     die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
+// execute registered hook
+\SLiMS\Plugins::getInstance()->execute('membership_init');
+
 /* Just In Case for PHP < 5.4 */
 /* Taken From imageman (http://www.php.net/manual/en/function.getimagesizefromstring.php#113976) */
 /* Make sure to set allow_url_fopen = on inside your php.ini */
@@ -222,6 +225,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('member', $data, "member_id='$updateRecordID'");
             if ($update) {
+
+                // execute registered hook
+                \SLiMS\Plugins::getInstance()->execute('membership_after_update', ['data' => api::member_load($dbs, $updateRecordID)]);
+
                 // update custom data
                 if (isset($custom_data)) {
                   // check if custom data for this record exists
@@ -430,6 +437,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     if ($form->edit_mode) {
+
+        // execute registered hook
+        \SLiMS\Plugins::getInstance()->execute('membership_before_update', ['data' => api::member_load($dbs, $itemID)]);
+
         // check if member expired
         $curr_date = date('Y-m-d');
         $compared_date = simbio_date::compareDates($rec_d['expire_date'], $curr_date);
