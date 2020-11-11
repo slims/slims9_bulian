@@ -57,7 +57,7 @@ $filter = isset($_GET['filter'])?$dbs->escape_string($_GET['filter']):'%%';
           <div class="col-sm-10">
           <?php
           $class_options[] = array('',__('ALL'));
-          for ($c = 1; $c < 10; $c++) {
+          for ($c = 0; $c < 10; $c++) {
               $class_options[] = array($c, $c.'00');
           } 
           $class_options[] = array('other', __('Others'));   
@@ -127,7 +127,7 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
    $keywords = $dbs->escape_string($_GET['keywords']);
    $criteria .= " AND (b.title LIKE '%$keywords%' OR i.item_code LIKE '%$keywords%') ";
 }
-if (isset($_GET['classification']) AND $_GET['classification']) {
+if (isset($_GET['classification']) AND $_GET['classification'] !== '') {
    $classification = $dbs->escape_string($_GET['classification']);
    $criteria .= ($classification!='other')?" AND b.classification LIKE '$classification%'":" AND (trim(b.classification) REGEXP '^[^0-9]' OR trim(b.classification)='' OR trim(b.classification) IS NULL)";
 }

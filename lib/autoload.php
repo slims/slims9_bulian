@@ -14,6 +14,7 @@ $namespaces = [
   "Ramsey\\Collection\\" => "/collection/src/",
   "Brick\\Math\\" => "/math/src/",
   "Ifsnop\\Mysqldump\\" => "/mysqldump-php/src/Ifsnop/Mysqldump/",
+  "PHPMailer\\PHPMailer\\" => "/PHPMailer/src/",
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {

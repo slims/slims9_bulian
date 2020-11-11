@@ -53,6 +53,26 @@ if($_SESSION['uid'] != 1){
   $can_write = false;
 }
 
+/* DOWNLOAD OPERATION */
+if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'){
+  $id = utility::filterData('id', 'get', true, true, true);
+  $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$id);
+  $path = $_q->fetch_row()[0];
+  if(file_exists($path)){
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Cache-Control: public");
+    header("Content-Description: File Transfer");
+    header("Content-Type: " . mime_content_type($path));
+    header("Content-Length: " .(string)(filesize($path)) );
+    header('Content-Disposition: attachment; filename="'.basename($path).'"');
+    header("Content-Transfer-Encoding: binary\n");
+    readfile($path);
+    exit();
+  }
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
     if (!$can_read) { 
@@ -160,10 +180,12 @@ function showFilesize($obj_db,$array_data) {
       $factor = floor((strlen($file) - 1) / 3);
       if ($factor > 0) 
         $sz = 'KMGT';
-        $str = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
+        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
+        $str .= '&nbsp;<a class="btn btn-sm btn-info pull-right" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.__('Download').'</a>';
     }
   return $str;
 }
+
 // put the result into variables
 $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20,($can_read AND $can_write));
 

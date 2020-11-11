@@ -57,7 +57,7 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
-        $data['setting_value'] = serialize($value);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
         if ($query->num_rows > 0) {
@@ -92,7 +92,7 @@ if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
       $logo_image = '';
       $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
       @unlink(IMGBS.'default/'.$sysconf['logo_image']);
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo');
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
       utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
       echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
       exit();
@@ -116,7 +116,7 @@ if (isset($_POST['updateData'])) {
           $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
         }
       }else{
-        utility::jsToastr(__('System Configuration'), $img_upload_status->error, 'error'); 
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
     }
 
@@ -218,9 +218,9 @@ if (isset($_POST['updateData'])) {
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
-    echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+    echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();
 }
 

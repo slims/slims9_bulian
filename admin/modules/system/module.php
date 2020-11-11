@@ -75,7 +75,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('mst_module', $data, 'module_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update module data ('.$moduleName.') with path ('.$modulePath.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update module data ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Update');
                 utility::jsAlert(__('Module Data Successfully Updated'));
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             } else { utility::jsAlert(__('Module Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
@@ -86,9 +86,9 @@ if (isset($_POST['saveData'])) {
             if ($sql_op->insert('mst_module', $data)) {
                 // insert module privileges for administrator
                 $module_id = $sql_op->insert_id;
-                $dbs->query('INSERT INTO group_access VALUES (1, '.$module_id.', 1, 1)');
+                $dbs->query('INSERT INTO group_access (group_id, module_id, r,w) VALUES (1, '.$module_id.', 1, 1)');
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Add' );
                 utility::jsAlert(__('New Module Data Successfully Saved'));
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('Module Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
@@ -118,7 +118,7 @@ if (isset($_POST['saveData'])) {
             // delete group privileges
             $dbs->query('DELETE FROM group_access WHERE module_id='.$itemID);
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE module ('.$module_d[0].') with path ('.$module_d[1].')');
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE module ('.$module_d[0].') with path ('.$module_d[1].')', 'Module', 'Delete');
         }
     }
 

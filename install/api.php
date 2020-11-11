@@ -27,6 +27,7 @@ if ($action === 're-install' || $action === 're-upgrade') {
     $_SESSION['db_name'] = DB_NAME;
     $_SESSION['db_user'] = DB_USERNAME;
     $_SESSION['db_pass'] = DB_PASSWORD;
+    $_SESSION['db_port'] = DB_PORT;
   } else {
     die(json_encode(['status' => false, 'message' => ['Config file not exist. Please, create it first!']]));
   }
@@ -34,7 +35,7 @@ if ($action === 're-install' || $action === 're-upgrade') {
 
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '7.1';
+    $php_minimum_version = '7.2';
     $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
@@ -96,6 +97,7 @@ switch ($action) {
   case 'test-connection-upgrade':
 
     $_SESSION['db_host'] = isset($_POST['host']) ? $_POST['host'] : 'localhost';
+    $_SESSION['db_port'] = isset($_POST['port']) ? $_POST['port'] : '3306';
     $_SESSION['db_name'] = isset($_POST['name']) ? $_POST['name'] : '';
     $_SESSION['db_user'] = isset($_POST['user']) ? $_POST['user'] : '';
     $_SESSION['db_pass'] = isset($_POST['pass']) ? $_POST['pass'] : '';
@@ -105,9 +107,9 @@ switch ($action) {
 
     try {
       if ($action === 'test-connection-upgrade') {
-        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
       } else {
-        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass']);
+        $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass']);
       }
 
       if (mysqli_connect_error()) {
@@ -122,7 +124,7 @@ switch ($action) {
   case 'do-install':
   case 're-install':
     try {
-      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass']);
+      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass']);
       // create if not exist
       if (!$slims->isDatabaseExist($_SESSION['db_name'])) $slims->createDatabase($_SESSION['db_name']);
       // use database
@@ -182,7 +184,7 @@ switch ($action) {
   case 're-upgrade':
     sleep(1);
     try {
-      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+      $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
       // write configuration file
       $slims->createConfigFile($_SESSION);
 

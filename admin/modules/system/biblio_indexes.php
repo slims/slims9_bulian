@@ -66,6 +66,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $indexer = new biblio_indexer($dbs);
     $empty = $indexer->emptyingIndex();
     if ($empty) {
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' emptied index table', 'Index', 'Delete');
       $message = __('Index table truncated!');
     } else {
       $message = __('Index table FAILED to truncated, probably because of database query error!');
@@ -82,9 +83,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $finish_sec = $indexer->indexing_time%60;
     // message
     $message = sprintf(__('<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d minutes %d second(s)'), $indexer->indexed, $indexer->total_records, $finish_minutes, $finish_sec);
+    $_log = sprintf('%d of %d records re-indexed', $indexer->indexed,$indexer->total_records);
     if ($indexer->failed) {
       $message = '<div class="font-danger">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
+      $_log .=  sprintf(' with $d failed', count($indexer->failed));
     }
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update index table ('.$_log.')', 'Index', 'Update');
     $_SESSION['message'] = $message;
   }
 
@@ -107,6 +111,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     	if ($indexer->failed) {
     	  $message = '<div class="text-danger">'.sprintf(__('<strong>%d</strong> index records failed to indexed. The IDs are: %s'), count($indexer->failed), implode(', ', $indexer->failed)).'</div>';
     	}
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' execute re-index table' , 'Index', 'Re-create');
     	$_SESSION['message'] = $message;
     }
   }

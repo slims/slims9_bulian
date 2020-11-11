@@ -1145,7 +1145,7 @@ sidebar
   font-size: 12pt;
   margin-top: 10px;
 }
-#sidepan div,
+#sidepan div:not(.scrollbar-track-y),
 #sidepan a {
   margin: 0;
   color: #ffffff;
@@ -1154,6 +1154,9 @@ sidebar
   position: relative;
   font-size: 10pt;
   font-family: 'Quicksand', sans-serif;
+}
+#sidepan .scrollbar-track.scrollbar-track-x.show {
+  display: none !important;
 }
 #sidepan div {
   font-weight: bold;
@@ -1168,6 +1171,9 @@ sidebar
 #sidepan a:hover,
 #sidepan .curModuleLink {
   color: #00a9ff;
+}
+#sidepan > div.scroll-content > div.subMenuHeader {
+  font-size: 16px;
 }
 .envinfo {
   background: #fff;

@@ -12,7 +12,7 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `backup_log` (
   `backup_log_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL default \'0\',
   `backup_time` datetime NOT NULL,
-  `backup_file` varchar(100) collate utf8_unicode_ci default NULL,
+  `backup_file` text collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`backup_log_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;';
 
@@ -60,6 +60,7 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
 $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio_attachment` (
   `biblio_id` int(11) NOT NULL,
   `file_id` int(11) NOT NULL,
+  `placement` enum(\'link\',\'popup\',\'embed\') COLLATE utf8_unicode_ci NULL,
   `access_type` enum(\'public\',\'private\') collate utf8_unicode_ci NOT NULL,
   `access_limit` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   KEY `biblio_id` (`biblio_id`),
@@ -147,6 +148,7 @@ $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `group_access` (
   `group_id` int(11) NOT NULL,
   `module_id` int(11) NOT NULL,
+  `menus` json NULL,
   `r` int(1) NOT NULL default '0',
   `w` int(1) NOT NULL default '0',
   PRIMARY KEY  (`group_id`,`module_id`)
@@ -675,6 +677,8 @@ CREATE TABLE IF NOT EXISTS `system_log` (
   `log_type` enum('staff','member','system') collate utf8_unicode_ci NOT NULL default 'staff',
   `id` varchar(50) collate utf8_unicode_ci default NULL,
   `log_location` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
+  `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
   `log_msg` text collate utf8_unicode_ci NOT NULL,
   `log_date` datetime NOT NULL,
   PRIMARY KEY  (`log_id`),
@@ -1067,11 +1071,19 @@ CREATE TABLE `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
   `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `member_id` int(11) DEFAULT NULL,
+  `member_id` varchar(20) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`filelog_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+$sql['create'][] = "
+CREATE TABLE `plugins` (
+  `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `uid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
 
 $query_trigger[] = "
@@ -1111,3 +1123,4 @@ $query_trigger[] = "
      collection_type_name=(SELECT mct.coll_type_name FROM mst_coll_type mct LEFT JOIN item i ON i.coll_type_id=mct.coll_type_id WHERE i.item_code=NEW.item_code),
      member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
      member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
+

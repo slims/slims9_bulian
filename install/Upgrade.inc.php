@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 23;
+  private $version = 26;
 
   /**
    * @param SLiMS $slims
@@ -802,7 +802,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     LEFT JOIN mst_location mlc ON mlc.location_id=i.location_id
     LEFT JOIN member m ON m.member_id=l.member_id
     LEFT JOIN mst_coll_type mct ON mct.coll_type_id=i.coll_type_id
-    LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL);";
+    LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL AND b.biblio_id IS NOT NULL);";
 
     $error = $this->slims->query($sql, ['create', 'insert']);
 
@@ -943,6 +943,39 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
    */
   function upgrade_role_24()
   {
+  }
+
+  /**
+   * Upgrade role to v9.2.2
+   */
+  function upgrade_role_25()
+  {
+  }
+
+  /**
+   * Upgrade role to v9.3.0
+   */
+  function upgrade_role_26()
+  {
+      $sql['create'][] = "
+        CREATE TABLE `plugins` (
+          `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+          `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+          `created_at` datetime NOT NULL,
+          `uid` int(11) NOT NULL
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+      $sql['alter'][] = "ALTER TABLE `group_access` ADD `menus` json NULL AFTER `module_id`;";
+
+      $sql['alter'][] = "ALTER TABLE `biblio_attachment` ADD `placement` enum('link','popup','embed') COLLATE 'utf8_unicode_ci' NULL AFTER `file_id`;";
+
+      $sql['alter'][] = "ALTER TABLE `system_log` ADD `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `log_location`, ADD `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `sub_module`;";
+
+      $sql['alter'][] = "ALTER TABLE `files_read` CHANGE `member_id` `member_id` varchar(20) NULL AFTER `date_read`;";
+
+      $sql['alter'][] = "ALTER TABLE `backup_log` CHANGE `backup_file` `backup_file` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;"
+
+      return $this->slims->query($sql, ['create', 'alter']);
   }
 
 }

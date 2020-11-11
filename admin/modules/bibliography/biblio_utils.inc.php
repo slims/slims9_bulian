@@ -134,6 +134,12 @@ function showTitleAuthors($obj_db, $array_data)
                     </div>
                   </div>';
   } else {
+  	    $_q = $obj_db->query("SELECT opac_hide,promoted FROM biblio WHERE biblio_id=".$array_data[0]);
+	    while ($_biblio_d = $_q->fetch_row()) {
+	      $_opac_hide = (integer)$_biblio_d[0];
+	      $_promoted  = (integer)$_biblio_d[1];
+	    }
+
       if($array_data[3]!='' AND file_exists('../../../images/docs/'.$array_data[3])){
         $img = '../../images/docs/'.urlencode($array_data[3]);  
       }
@@ -147,11 +153,11 @@ function showTitleAuthors($obj_db, $array_data)
   }
   // check for opac hide flag
   if ($_opac_hide) {
-      $_output .= '<div class="badge badge-light" title="' . __('Hidden in OPAC') . '">'.__('Hidden in OPAC').'</div>&nbsp;';
+      $_output .= '<div class="badge badge-dark" title="' . __('Hidden in OPAC') . '">'.__('Hidden in OPAC').'</div>&nbsp;';
   }
   // check for promoted flag
   if ($_promoted) {
-      $_output .= '<div class="badge badge-light" title="' . __('Promoted To Homepage') . '">'.__('Promoted To Homepage').'</div>&nbsp;';
+      $_output .= '<div class="badge badge-info" title="' . __('Promoted To Homepage') . '">'.__('Promoted To Homepage').'</div>&nbsp;';
   }
   // labels
   // Edit by Eddy Subratha

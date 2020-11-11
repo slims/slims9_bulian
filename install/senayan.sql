@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
 CREATE TABLE IF NOT EXISTS `biblio_attachment` (
   `biblio_id` int(11) NOT NULL,
   `file_id` int(11) NOT NULL,
+  `placement` enum('link','popup','embed') COLLATE utf8_unicode_ci NULL,
   `access_type` enum('public','private') collate utf8_unicode_ci NOT NULL,
   `access_limit` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   KEY `biblio_id` (`biblio_id`),
@@ -228,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `fines` (
 CREATE TABLE IF NOT EXISTS `group_access` (
   `group_id` int(11) NOT NULL,
   `module_id` int(11) NOT NULL,
+  `menus` json NULL,
   `r` int(1) NOT NULL default '0',
   `w` int(1) NOT NULL default '0',
   PRIMARY KEY  (`group_id`,`module_id`)
@@ -969,6 +971,8 @@ CREATE TABLE IF NOT EXISTS `system_log` (
   `log_type` enum('staff','member','system') collate utf8_unicode_ci NOT NULL default 'staff',
   `id` varchar(50) collate utf8_unicode_ci default NULL,
   `log_location` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
+  `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
   `log_msg` text collate utf8_unicode_ci NOT NULL,
   `log_date` datetime NOT NULL,
   PRIMARY KEY  (`log_id`),
@@ -1449,11 +1453,22 @@ CREATE TABLE `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
   `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `member_id` int(11) DEFAULT NULL,
+  `member_id` varchar(20)  NULL,
   `user_id` int(11) DEFAULT NULL,
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`filelog_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Table structure for table `plugins`
+--
+DROP TABLE IF EXISTS `plugins`;
+CREATE TABLE `plugins` (
+   `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+   `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+   `created_at` datetime NOT NULL,
+   `uid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 --
@@ -1512,3 +1527,4 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
 
 ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
 ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
+

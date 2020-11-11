@@ -102,7 +102,7 @@ jQuery.fn.simbioAJAX = async function (strURL, params) {
 };
 
 /* invoke UCS upload catalog */
-let ucsUpload = function (strUploadHandler, strData) {
+function ucsUpload(strUploadHandler, strData) {
     let confUpload = false;
     strData = jQuery.trim(strData);
     if (strData) {
@@ -130,7 +130,7 @@ let ucsUpload = function (strUploadHandler, strData) {
 };
 
 /* invoke UCS record update */
-let ucsUpdate = function (strURLHandler, strData) {
+function ucsUpdate(strURLHandler, strData) {
     strData = jQuery.trim(strData);
     jQuery.ajax({
         url: strURLHandler,

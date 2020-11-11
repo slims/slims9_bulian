@@ -47,8 +47,9 @@ do_checkIP('smc-system');
 // require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 $environment = array(
+  array('title' => __('SLiMS Version'), 'desc' => SENAYAN_VERSION_TAG),
   array('title' => __('Operating System'), 'desc' => php_uname('a')),
-  array('title' => __('OS Architecture'), 'desc' => php_uname('m').' '.(8 * PHP_INT_SIZE).' bit'),  
+  array('title' => __('OS Architecture'), 'desc' => php_uname('m').' '.(8 * PHP_INT_SIZE).' bit'),
   array('title' => __('Web Server'), 'desc' => $_SERVER['SERVER_SOFTWARE']),  
   array('title' => __('PHP version'), 'desc' => phpversion()),  
   array('title' => __('MySQL Database version'), 'desc' => $dbs->server_info),  

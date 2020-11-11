@@ -141,7 +141,8 @@ class simbio_dbop extends simbio
         }
 
         // update query
-        $_update = $this->obj_db->query("UPDATE $str_table SET $_set WHERE $str_criteria");
+        $this->sql_string = "UPDATE $str_table SET $_set WHERE $str_criteria";
+        $_update = $this->obj_db->query($this->sql_string);
         // if an error occur
         if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
         // number of affected rows
@@ -161,7 +162,8 @@ class simbio_dbop extends simbio
     public function delete($str_table, $str_criteria)
     {
         // the delete query
-        $_delete = $this->obj_db->query("DELETE FROM $str_table WHERE $str_criteria");
+        $this->sql_string = "DELETE FROM $str_table WHERE $str_criteria";
+        $_delete = $this->obj_db->query($this->sql_string);
         // if an error occur
         if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
         // affected rows
@@ -170,5 +172,14 @@ class simbio_dbop extends simbio
         return true;
     }
 
+    /**
+     * Method to get last sql string
+     *
+     * @return string
+     */
+    public function getSQL() {
+        return $this->sql_string;
+    }
+
 }
-?>
+

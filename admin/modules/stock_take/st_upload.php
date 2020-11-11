@@ -64,7 +64,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
     $upload_status = $upload->doUpload('stFile');
     if ($upload_status == UPLOAD_SUCCESS) {
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' upload stock take file '.$upload->new_filename);
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' upload stock take file '.$upload->new_filename, 'Upload data', 'OK');
         // open file
         $stfile = @fopen(UPLOAD.$upload->new_filename, 'r');
         if (!$stfile) {
@@ -90,7 +90,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
             if ($item_check->num_rows > 0) {
                 if ($item_check_d['status'] == 'l') {
                     // record to log
-                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : Item '.$item_check_d['title'].' ('.$item_check_d['item_code'].') is currently ON LOAN (from uploaded file '.$upload->new_filename.')');
+                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : Item '.$item_check_d['title'].' ('.$item_check_d['item_code'].') is currently ON LOAN (from uploaded file '.$upload->new_filename.')', 'Item', 'Error');
                     continue;
                 } else if ($item_check_d['status'] == 'e') {
                     continue;
@@ -112,7 +112,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
         echo '</script>';
     } else {
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload stock take file '.$upload->new_filename.', with error ('.$upload->error.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload stock take file '.$upload->new_filename.', with error ('.$upload->error.')', 'Upload data', 'Fail');
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#stUploadMsg\').html(\'Failed to upload stock take file! <div>Error : '.$upload->error.'</div>\')';
         echo '.toggleClass(\'errorBox\').css( {\'display\': \'block\'} );'."\n";

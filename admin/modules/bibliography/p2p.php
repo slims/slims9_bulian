@@ -96,6 +96,8 @@ function remoteFileExists($url)
 {
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_NOBODY, true);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,  false);
   $result = curl_exec($curl);
   $status = null;
   if ($result !== false) {
@@ -270,7 +272,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
               $sql_op->insert('biblio_attachment', $ba);
 
         	  // write to logs
-        	  utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file));  
+        	  utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
 
             }
           }
@@ -283,7 +285,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from P2P service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$p2pserver,$biblio['title'],$biblio_id));  
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from P2P service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$p2pserver,$biblio['title'],$biblio_id), 'P2P', 'Add');  
         $r++;
       }
       unset($biblio);

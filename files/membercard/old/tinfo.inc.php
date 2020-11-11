@@ -153,7 +153,7 @@ $sysconf['print'][$theme_key] = [
   ],
     'title' => [
     'dbfield' => 'data[title]',
-    'label' => __('Title'),
+    'label' => __('Job Title'),
     'type' => 'text',
     'default' => $sysconf['print'][$theme_key]['title']
   ],

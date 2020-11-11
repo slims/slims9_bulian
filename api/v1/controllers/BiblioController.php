@@ -36,7 +36,7 @@ class BiblioController extends Controller
         $cache_name = 'biblio_popular';
         if (!is_null($json = Cache::get($cache_name))) return parent::withJson($json);
 
-        $limit = 6;
+        $limit = $this->sysconf['template']['classic_popular_collection_item'];
         $sql = "SELECT b.biblio_id, b.title, b.image, COUNT(*) AS total
           FROM loan AS l
           LEFT JOIN item AS i ON l.item_code=i.item_code
@@ -86,5 +86,13 @@ class BiblioController extends Controller
         }
 
         parent::withJson($return);
+    }
+
+    public function getTotalAll()
+    {
+        $query = $this->db->query("SELECT COUNT(biblio_id) FROM biblio");
+        parent::withJson([
+            'data' => ($query->fetch_row())[0]
+        ]);
     }
 }

@@ -171,7 +171,7 @@ if (isset($_POST['doImport'])) {
         }
         // close file handle
         fclose($file);
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'Importing '.$inserted_row.' members data from file : '.$_FILES['importFile']['name']);
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'Importing '.$inserted_row.' members data from file : '.$_FILES['importFile']['name'], 'Import', 'Add');
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#importInfo\').html(\'<strong>'.$inserted_row.'</strong> '.__('records inserted successfully to members database, from record').' <strong>'.$_POST['recordOffset'].'</strong>\');'."\n"; //mfc
         echo 'parent.$(\'#importInfo\').css( {\'display\': \'block\'} );'."\n";

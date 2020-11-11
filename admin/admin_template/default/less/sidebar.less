@@ -29,7 +29,7 @@ sidebar
     margin-top: 10px;
   }
 
-  div,
+  div:not(.scrollbar-track-y),
   a {
     margin: 0;
     color: @white;
@@ -38,6 +38,10 @@ sidebar
     position: relative;
     font-size: @font-size;
     font-family: @font-family;
+  }
+
+  .scrollbar-track.scrollbar-track-x.show {
+    display: none !important;
   }
   
   div {
@@ -54,6 +58,9 @@ sidebar
   a:hover,
   .curModuleLink {
     color: @color-3;
-  }
-
+  }  
 }
+
+#sidepan > div.scroll-content > div.subMenuHeader {
+  font-size: 16px;
+  }

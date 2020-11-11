@@ -203,19 +203,6 @@ if (isset($_POST['clear_biblio'])) {
     $_SESSION['m_mark_biblio'] = array();
 }
 
-// send reserve e-mail
-if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
-    $mail = sendReserveMail();
-        // die();
-    if ($mail['status'] != 'ERROR') {
-        $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
-        $_SESSION['info']['status'] = 'success';
-    } else {
-        $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
-        $_SESSION['info']['status'] = 'danger';
-    }
-}
-
 ?>
 
 
@@ -497,6 +484,8 @@ if ($is_member_login) :
        */
     function sendReserveMail()
     {
+        global $dbs, $sysconf;
+
         if (count($_SESSION['m_mark_biblio']) > 0) {
             $_ids = '(';
             foreach ($_SESSION['m_mark_biblio'] as $_biblio) {
@@ -508,67 +497,70 @@ if ($is_member_login) :
             return array('status' => 'ERROR', 'message' => 'No Titles to reserve');
         }
 
-        global $dbs, $sysconf;
-        require LIB . 'phpmailer/class.phpmailer.php';
-
-        $_mail = new PHPMailer(false);
-        $_mail->IsSMTP();
-
-        // get message template
-        $_msg_tpl = @file_get_contents(SB . 'template/reserve-mail-tpl.html');
-
-        // date
-        $_curr_date = date('Y-m-d H:i:s');
-
-        // query
-        $_biblio_q = $dbs->query("SELECT biblio_id, title FROM biblio WHERE biblio_id IN $_ids");
-
-        // compile reservation data
-        $_data = '<table width="100%" border="1">' . "\n";
-        $_data .= '<tr><th>Titles to reserve</th></tr>' . "\n";
-        while ($_title_d = $_biblio_q->fetch_assoc()) {
-            $_data .= '<tr>';
-            $_data .= '<td>' . $_title_d['title'] . '</td>' . "\n";
-            $_data .= '</tr>';
-        }
-        $_data .= '</table>';
-
-
-        // message
-        $_message = str_ireplace(array('<!--MEMBER_ID-->', '<!--MEMBER_NAME-->', '<!--DATA-->', '<!--DATE-->'),
-            array($_SESSION['mid'], $_SESSION['m_name'], $_data, $_curr_date), $_msg_tpl);
-
-        // e-mail setting
-        // $_mail->SMTPDebug = 2;
-        $_mail->SMTPSecure = $sysconf['mail']['SMTPSecure'];
-        $_mail->SMTPAuth = $sysconf['mail']['auth_enable'];
-        $_mail->Host = $sysconf['mail']['server'];
-        $_mail->Port = $sysconf['mail']['server_port'];
-        $_mail->Username = $sysconf['mail']['auth_username'];
-        $_mail->Password = $sysconf['mail']['auth_password'];
-        $_mail->SetFrom($sysconf['mail']['from'], $sysconf['mail']['from_name']);
-        $_mail->AddReplyTo($sysconf['mail']['reply_to'], $sysconf['mail']['reply_to_name']);
-        // send carbon copy off reserve e-mail to member/requester
-        $_mail->AddCC($_SESSION['m_email'], $_SESSION['m_name']);
-        // send reservation e-mail to librarian
-        $_mail->AddAddress($sysconf['mail']['from'], $sysconf['mail']['from_name']);
-        // additional recipient
-        if (isset($sysconf['mail']['add_recipients'])) {
-            foreach ($sysconf['mail']['add_recipients'] as $_recps) {
-                $_mail->AddAddress($_recps['from'], $_recps['from_name']);
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            $mail->isSMTP();                                                                // Send using SMTP
+            $mail->Host = $sysconf['mail']['server'];                                       // Set the SMTP server to send through
+            $mail->SMTPAuth = $sysconf['mail']['auth_enable'];                              // Enable SMTP authentication
+            $mail->Username = $sysconf['mail']['auth_username'];                            // SMTP username
+            $mail->Password = $sysconf['mail']['auth_password'];                            // SMTP password
+            if ($sysconf['mail']['SMTPSecure'] === 'tls') {                                 // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            } else if ($sysconf['mail']['SMTPSecure'] === 'ssl') {
+                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
             }
-        }
-        $_mail->Subject = 'Reservation request from Member ' . $_SESSION['m_name'] . ' (' . $_SESSION['m_email'] . ')';
-        $_mail->AltBody = strip_tags($_message);
-        $_mail->MsgHTML($_message);
+            $mail->Port = $sysconf['mail']['server_port'];                                  // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
-        $_sent = $_mail->Send();
-        if (!$_sent) {
-            return array('status' => 'ERROR', 'message' => $_mail->ErrorInfo);
-            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'FAILED to send reservation e-mail to ' . $_SESSION['m_email'] . ' (' . $_mail->ErrorInfo . ')');
-        } else {
-            return array('status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to ' . $_SESSION['m_email']);
-            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'Reservation notification e-mail sent to ' . $_SESSION['m_email']);
+            //Recipients
+            $mail->setFrom($sysconf['mail']['from'], $sysconf['mail']['from_name']);
+            $mail->addReplyTo($sysconf['mail']['reply_to'], $sysconf['mail']['reply_to_name']);
+            $mail->addAddress($sysconf['mail']['from'], $sysconf['mail']['from_name']);
+            // additional recipient
+            if (isset($sysconf['mail']['add_recipients'])) {
+                foreach ($sysconf['mail']['add_recipients'] as $_recps) {
+                    $mail->AddAddress($_recps['from'], $_recps['from_name']);
+                }
+            }
+            $mail->addCC($_SESSION['m_email'], $_SESSION['m_name']);
+
+            // Content
+            // get message template
+            $_msg_tpl = @file_get_contents(SB . 'template/reserve-mail-tpl.html');
+
+            // date
+            $_curr_date = date('Y-m-d H:i:s');
+
+            // query
+            $_biblio_q = $dbs->query("SELECT biblio_id, title FROM biblio WHERE biblio_id IN $_ids");
+
+            // compile reservation data
+            $_data = '<table width="100%" border="1">' . "\n";
+            $_data .= '<tr><th>Titles to reserve</th></tr>' . "\n";
+            while ($_title_d = $_biblio_q->fetch_assoc()) {
+                $_data .= '<tr>';
+                $_data .= '<td>' . $_title_d['title'] . '</td>' . "\n";
+                $_data .= '</tr>';
+            }
+            $_data .= '</table>';
+
+            // message
+            $_message = str_ireplace(array('<!--MEMBER_ID-->', '<!--MEMBER_NAME-->', '<!--DATA-->', '<!--DATE-->'),
+                array($_SESSION['mid'], $_SESSION['m_name'], $_data, $_curr_date), $_msg_tpl);
+
+            // Set email format to HTML
+            $mail->Subject = 'Reservation request from Member ' . $_SESSION['m_name'] . ' (' . $_SESSION['m_email'] . ')';
+            $mail->msgHTML($_message);
+            $mail->AltBody = strip_tags($_message);
+
+            $mail->send();
+
+            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'Reservation notification e-mail sent to ' . $_SESSION['m_email'], 'Reservation', 'Add');
+            return array('status' => 'SENT', 'message' => 'Reservation notification e-mail sent to ' . $_SESSION['m_email']);
+        } catch (Exception $exception) {
+            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'FAILED to send reservation e-mail to ' . $_SESSION['m_email'] . ' (' . $mail->ErrorInfo . ')');
+            return array('status' => 'ERROR', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
     }
 
@@ -590,6 +582,23 @@ if ($is_member_login) :
     }
 
     ?>
+
+    <?php
+    // send reserve e-mail
+    if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
+        $mail = sendReserveMail();
+            // die();
+        if ($mail['status'] != 'ERROR') {
+            $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
+            $_SESSION['info']['status'] = 'success';
+        } else {
+            $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
+            $_SESSION['info']['status'] = 'danger';
+        }
+    }
+
+    ?>
+
     <div class="d-flex">
         <div style="width: 16rem;" class="bg-grey-light p-4" id="member_sidebar">
             <div class="p-4">

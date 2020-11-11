@@ -28,9 +28,13 @@ do_checkIP('smc-stocktake');
 $menu[] = array('Header', __('Stock Take'));
 $menu[] = array(__('Stock Take History'), MWB.'stock_take/index.php', __('View Stock Take History'));
 
+if(isset($for_select_privileges) && $for_select_privileges) {
+    $menu[] = array(__('Initialize'), MWB.'stock_take/init.php', __('Initialize New Stock Take Proccess'));
+}
+
 // check if there is any active stock take proccess
 $stk_query = $dbs->query('SELECT * FROM stock_take WHERE is_active=1');
-if ($stk_query->num_rows) {
+if ($stk_query->num_rows || (isset($for_select_privileges) && $for_select_privileges)) {
     $menu[] = array(__('Current Stock Take'), MWB.'stock_take/current.php', __('View Current Stock Take Process'));
     $menu[] = array(__('Stock Take Report'), MWB.'stock_take/st_report.php', __('View Current Stock Take Report'));
     $menu[] = array(__('Current Lost Item'), MWB.'stock_take/lost_item_list.php', __('View Lost Item in Current Stock Take Proccess'));
@@ -38,7 +42,7 @@ if ($stk_query->num_rows) {
     $menu[] = array(__('Upload List'), MWB.'stock_take/st_upload.php', __('Upload List in text file'));
     $menu[] = array(__('Resynchronize'), MWB.'stock_take/resync.php', __('Resynchronize bibliographic data with current stock take'));	 
 	if($_SESSION['uid'] == '1') {
-    $menu[] = array(__('Finish Stock Take'), MWB.'stock_take/finish.php', __('Finish Current Stock Take Proccess'));
+        $menu[] = array(__('Finish Stock Take'), MWB.'stock_take/finish.php', __('Finish Current Stock Take Proccess'));
 	}
 } else {
     $menu[] = array(__('Initialize'), MWB.'stock_take/init.php', __('Initialize New Stock Take Proccess'));

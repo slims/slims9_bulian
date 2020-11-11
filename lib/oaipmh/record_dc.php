@@ -80,7 +80,7 @@ function get_record ($identifier, $db){
             LEFT JOIN mst_publisher AS p ON b.publisher_id=p.publisher_id
             LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id
             LEFT JOIN mst_frequency AS fr ON b.frequency_id=fr.frequency_id
-            WHERE biblio_id=' . $identifier.' AND b.opac_hide=0';
+            WHERE biblio_id=' . $identifier;
 
 	$res = $db->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 	$r = $res->execute();
