@@ -82,7 +82,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
 
                 // time string to append to filename
                 $time2append = (date('Ymd_His'));
-                $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
+                $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";port=".DB_PORT.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
                 $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
 
                 $data['user_id'] = $_SESSION['uid'];
