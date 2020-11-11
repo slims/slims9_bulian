@@ -50,11 +50,15 @@ require MDLBS.'reporting/report_dbgrid.inc.php';
 
 $page_title = 'Download Counter Report';
 $reportView = false;
-$_repDetail = true;
 $num_recs_show = 20;
-if (isset($_GET['reportView']) or isset($_GET['fileID'])) {
+$_IDFile = "";
+
+if (isset($_GET['reportView'])) {
     $reportView = true;
-    $_repDetail = false;
+}
+
+if (isset($_GET['fileID'])) {
+    $_IDFile = $dbs->escape_string(strip_tags($_GET['fileID']));
 }
 
 if (!$reportView) {
@@ -74,12 +78,24 @@ if (!$reportView) {
                 <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-4"'); ?>
             </div>
             <div class="form-group divRow">
-                <label><?php echo __('Author'); ?></label>
+                <label><?php echo __('Author(s)'); ?></label>
                 <?php echo simbio_form_element::textField('text', 'author', '', 'class="form-control col-4"'); ?>
             </div>
             <div class="form-group divRow">
                 <label><?php echo __('Publish year'); ?></label>
                 <?php echo simbio_form_element::textField('text', 'publishYear', '', 'class="form-control col-4"'); ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Access Date after'); ?></label>
+                <?php
+                echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Access Date before'); ?></label>
+                <?php
+                echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
+                ?>
             </div>
             <div class="form-group divRow">
                 <label><?php echo __('Record each page'); ?></label>
@@ -89,11 +105,12 @@ if (!$reportView) {
         <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
         <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
         <input type="hidden" name="reportView" value="true" />
+        <input type="hidden" name="fileID" value="<?= $_IDFile;?>" />
     </form>
 </div>
 <!-- filter end -->
 <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
-<iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+<iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true&fileID='.$_IDFile; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -105,7 +122,7 @@ if (!$reportView) {
 //    $reportgrid->invisible_fields = array(0);
 
     // is there any search
-    $criteria = 'fr.file_id ='. $_GET['fileID'];
+    $criteria = 'fr.file_id ='. $_IDFile. ' ';
 //    $outer_criteria = 'b.biblio_id > 0 ';
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
         $keyword = $dbs->escape_string(trim($_GET['title']));
@@ -131,20 +148,14 @@ if (!$reportView) {
         $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
         $criteria .= ' AND b.publish_year LIKE \'%'.$publish_year.'%\'';
     }
+    if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
+        $criteria .= ' AND (TO_DAYS(fr.date_read) BETWEEN TO_DAYS(\''.utility::filterData('startDate', 'get', true, true, true).'\') AND
+            TO_DAYS(\''.utility::filterData('untilDate', 'get', true, true, true).'\'))';
+    }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
-
-    /* subquery/view string
-    $subquery_str = '(SELECT DISTINCT bsub.biblio_id, bsub.gmd_id, bsub.title, bsub.isbn_issn, bsub.call_number, bsub.classification, bsub.language_id,
-		bsub.publish_place_id, bsub.publisher_id
-        FROM biblio AS bsub
-        LEFT JOIN biblio_author AS ba ON bsub.biblio_id = ba.biblio_id
-        LEFT JOIN mst_author AS ma ON ba.author_id = ma.author_id
-        LEFT JOIN biblio_topic AS bt ON bsub.biblio_id = bt.biblio_id
-        LEFT JOIN mst_topic AS mt ON bt.topic_id = mt.topic_id WHERE '.$criteria.')';
-        */
 
     // table spec
     $table_spec = 'files_read fr
@@ -154,16 +165,9 @@ if (!$reportView) {
     left join member m on m.member_id = fr.member_id
     left join user u on u.user_id = fr.user_id';
 
-    // set group by
-    // $reportgrid->sql_group_by = 'f.file_id';
     $reportgrid->setSQLCriteria($criteria);
 
-    // callback function to change value of authority type
-    function callbackLinkDetail($obj_db, $rec_d)
-    {
-        //global $sysconf, $auth_type_fld;
-        return '<a href="'.MWB.'reporting/customs/dl_detail.php?id='.$rec_d[4].'"" title="'.__('Detail').'"><i class="fa fa-search" aria-hidden="true"></i>';
-    }
+    $reportgrid->debug = true;
 
     // show spreadsheet export button
     $reportgrid->show_spreadsheet_export = true;
@@ -175,7 +179,6 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-    //$xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
     $xlsquery = 'select b.title \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', fr.date_read AS \''. __('Date').'\', COALESCE(m.member_name, u.realname, \'UnKnown\') \''. __('Contact').'\', fr.client_ip \''. __('Address') .'\'
         from files_read fr
         left join files f on f.file_id = fr.file_id 
@@ -192,13 +195,3 @@ if (!$reportView) {
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
 }
-
-/* select b.title AS 'Title', f.file_title AS 'File title', f.mime_type AS 'Type', fr.date_read AS 'Date', 
-COALESCE(m.member_name, u.realname, 'UnKnown') Contact, fr.client_ip 'Address'
-from files_read fr
-left join files f on f.file_id = fr.file_id 
-left join biblio_attachment ba on f.file_id = ba.file_id 
-left join search_biblio b  on b.biblio_id = ba.biblio_id
-left join member m on m.member_id = fr.member_id
-left join user u on u.user_id = fr.user_id
-*/

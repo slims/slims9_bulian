@@ -80,6 +80,18 @@ if (!$reportView) {
                 <?php echo simbio_form_element::textField('text', 'publishYear', '', 'class="form-control col-4"'); ?>
             </div>
             <div class="form-group divRow">
+                <label><?php echo __('Access Date after'); ?></label>
+                <?php
+                echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
+                ?>
+            </div>
+            <div class="form-group divRow">
+                <label><?php echo __('Access Date before'); ?></label>
+                <?php
+                echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
+                ?>
+            </div>
+            <div class="form-group divRow">
                 <label><?php echo __('Record each page'); ?></label>
                 <input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" /><small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
             </div>
@@ -98,8 +110,8 @@ if (!$reportView) {
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
-    $reportgrid->setSQLColumn('b.title `'.__('Title').'`', 'f.file_title `'.__('File title').'`', 'f.mime_type `'.__('Type').'`', 'count(fr.filelog_id) `'.__('Access').'`', 'f.file_id `&nbsp`');
-    $reportgrid->setSQLorder('b.title ASC');
+    $reportgrid->setSQLColumn('min(b.title) `'.__('Title').'`', 'f.file_title `'.__('File title').'`', 'f.mime_type `'.__('Type').'`', 'count(fr.filelog_id) `'.__('Access').'`', 'f.file_id `&nbsp`');
+    $reportgrid->setSQLorder('min(b.title) ASC');
 //    $reportgrid->invisible_fields = array(0);
 
     // is there any search
@@ -129,28 +141,23 @@ if (!$reportView) {
         $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
         $criteria .= ' AND b.publish_year LIKE \'%'.$publish_year.'%\'';
     }
+    if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
+        $criteria .= ' AND (TO_DAYS(fr.date_read) BETWEEN TO_DAYS(\''.utility::filterData('startDate', 'get', true, true, true).'\') AND
+            TO_DAYS(\''.utility::filterData('untilDate', 'get', true, true, true).'\'))';
+    }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
 
-    // subquery/view string
-    $subquery_str = '(SELECT DISTINCT bsub.biblio_id, bsub.gmd_id, bsub.title, bsub.isbn_issn, bsub.call_number, bsub.classification, bsub.language_id,
-		bsub.publish_place_id, bsub.publisher_id
-        FROM biblio AS bsub
-        LEFT JOIN biblio_author AS ba ON bsub.biblio_id = ba.biblio_id
-        LEFT JOIN mst_author AS ma ON ba.author_id = ma.author_id
-        LEFT JOIN biblio_topic AS bt ON bsub.biblio_id = bt.biblio_id
-        LEFT JOIN mst_topic AS mt ON bt.topic_id = mt.topic_id WHERE '.$criteria.')';
-
     // table spec
-    $table_spec = 'search_biblio b 
-	left join biblio_attachment ba on b.biblio_id = ba.biblio_id 
-	left join files f on f.file_id = ba.file_id 
-	left join files_read fr on fr.file_id = f.file_id';
+    $table_spec = 'files_read fr 
+        left join files f on f.file_id = fr.file_id 
+        left join biblio_attachment ba on fr.file_id = ba.file_id 
+        left join search_biblio b on ba.biblio_id = b.biblio_id';
 
     // set group by
-    $reportgrid->sql_group_by = 'f.file_id';
+    $reportgrid->sql_group_by = 'fr.file_id';
     $reportgrid->setSQLCriteria($criteria);
 
     // callback function to show title and authors
@@ -175,7 +182,7 @@ if (!$reportView) {
     function callbackLinkDetail($obj_db, $rec_d)
     {
         //global $sysconf, $auth_type_fld;
-        return '<a href="'.MWB.'reporting/customs/dl_detail.php?fileID='.$rec_d[4].'"" title="'.__('Detail').'"><i class="fa fa-search" aria-hidden="true"></i>';
+        return '<a onclick="top.$(\'#mainContent\').simbioAJAX(\''.MWB.'reporting/customs/dl_detail.php?fileID='.$rec_d[4].'\')" title="'.__('Detail').'"><i class="fa fa-search" aria-hidden="true"></i>';
     }
     // modify column content
     $reportgrid->modifyColumnContent(4, 'callback{callbackLinkDetail}');
@@ -190,7 +197,7 @@ if (!$reportView) {
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
 
-    $xlsquery = 'select b.title AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from search_biblio b left join biblio_attachment ba on b.biblio_id = ba.biblio_id left join files f on f.file_id = ba.file_id left join files_read fr on fr.file_id = f.file_id WHERE '. $criteria . ' group by f.file_id';
+    $xlsquery = 'select min(b.title) AS \''. __('Title').'\', f.file_title AS \''. __('File title').'\', f.mime_type AS \''. __('Type').'\', count(fr.filelog_id) AS \''. __('Access').'\' from files_read fr left join files f on f.file_id = fr.file_id left join biblio_attachment ba on fr.file_id = ba.file_id left join search_biblio b on ba.biblio_id = b.biblio_id WHERE '. $criteria . ' group by fr.file_id';
         // echo $xlsquery;
         unset($_SESSION['xlsdata']);
         $_SESSION['xlsquery'] = $xlsquery;
@@ -199,3 +206,4 @@ if (!$reportView) {
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
 }
+
