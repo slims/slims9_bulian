@@ -42,6 +42,11 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.3.0 (Bulian)
 ========================================================================
+Added : Print catalog option
+Added : Bypass php limit on uploading file for shared hosting
+Added : Button to download backup file
+Added : Download counter detail and filter
+Update : Dashboard data view improvement using AJAX
 Added : New plugin system to make ease of pain when adding additional plugin
 Added : MySQL port information in installer
 Update : PHPMailer with new version and configuration
