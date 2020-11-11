@@ -969,7 +969,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $str_input .= '<div style="padding: 10px;margin-left: -25px;">';
     $str_input .= '<div>' . __('Or download from url') . '</div>';
     $str_input .= '<div class="form-inline">
-                  <input type="text" id="getUrl" class="form-control" style="width:190px" placeholder="Paste url address here">
+                  <input type="text" id="getUrl" class="form-control" style="width:450px" placeholder="Paste url address here">
                   <div class="input-group-append">
                   <button class="btn btn-default" type="button" id="getImage">' . __('Download') . ' <i class="fa fa-spin fa-cog hidden" id="imgLoader"></i></button>
                   <button class="btn btn-default openPopUp notAJAX ml-2" type="button" id="showEngine" onclick="toggle_search($(\'#title\').val());">' . __('Trying search in DuckduckGo') . '</button>
