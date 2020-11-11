@@ -971,6 +971,8 @@ CREATE TABLE IF NOT EXISTS `system_log` (
   `log_type` enum('staff','member','system') collate utf8_unicode_ci NOT NULL default 'staff',
   `id` varchar(50) collate utf8_unicode_ci default NULL,
   `log_location` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
+  `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
   `log_msg` text collate utf8_unicode_ci NOT NULL,
   `log_date` datetime NOT NULL,
   PRIMARY KEY  (`log_id`),
@@ -1451,9 +1453,9 @@ CREATE TABLE `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
   `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `member_id` int(20) DEFAULT NULL,
+  `member_id` varchar(20)  NULL,
   `user_id` int(11) DEFAULT NULL,
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`filelog_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1526,11 +1528,3 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
 ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
 ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
 
-/** 
-ALTER TABLE `system_log`
-ADD `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `log_location`,
-ADD `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `sub_module`;
-
-ALTER TABLE `files_read`
-CHANGE `member_id` `member_id` char(20) COLLATE 'utf8mb4_unicode_ci' NULL AFTER `date_read`;
-**/

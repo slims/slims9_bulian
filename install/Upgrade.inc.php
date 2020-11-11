@@ -969,6 +969,10 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
       $sql['alter'][] = "ALTER TABLE `biblio_attachment` ADD `placement` enum('link','popup','embed') COLLATE 'utf8_unicode_ci' NULL AFTER `file_id`;";
 
+      $sql['alter'][] = "ALTER TABLE `system_log` ADD `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `log_location`, ADD `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL AFTER `sub_module`;";
+
+      $sql['alter'][] = "ALTER TABLE `files_read` CHANGE `member_id` `member_id` varchar(20) NULL AFTER `date_read`;";
+
       return $this->slims->query($sql, ['create', 'alter']);
   }
 
