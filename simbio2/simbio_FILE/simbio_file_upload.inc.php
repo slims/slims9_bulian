@@ -131,7 +131,7 @@ class simbio_file_upload extends simbio
     }
 
     // uploading file
-    if (move_uploaded_file($_FILES[$file_input_name]['tmp_name'], $this->upload_dir.'/'.$this->new_filename)) {
+    if (self::chunkUpload($_FILES[$file_input_name]['tmp_name'], $this->upload_dir.'/'.$this->new_filename)) {
       return UPLOAD_SUCCESS;
     } else {
       $upload_error = error_get_last();
@@ -143,4 +143,30 @@ class simbio_file_upload extends simbio
       return UPLOAD_FAILED;
     }
   }
+
+  public function chunkUpload($tmpfile,$target_file){
+    set_time_limit(0);
+    $orig_file_size = filesize($tmpfile);
+    $chunk_size     = 256; // chunk in bytes
+    $upload_start   = 0;
+    $handle         = fopen($tmpfile, "rb");
+    $fp             = fopen($target_file, 'w');
+    while($upload_start < $orig_file_size) {
+        $contents = fread($handle, $chunk_size);
+        fwrite($fp, $contents);
+        if($upload_start % 10000 == 0){
+            $count = array('data'=>array('upload_progress' => ceil(($upload_start/$orig_file_size)*100).'%'));
+        }
+        echo '<script type="text/javascript">';
+        echo 'console.log(\''.json_encode($count).'\')';
+        echo '</script>';
+        $upload_start += strlen($contents);
+        fseek($handle, $upload_start);
+    }
+    fclose($handle);
+    fclose($fp);
+    unlink($tmpfile);
+    return true;
+  }
+
 }
