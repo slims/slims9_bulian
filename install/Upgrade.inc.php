@@ -978,4 +978,11 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
       return $this->slims->query($sql, ['create', 'alter']);
   }
 
+    /**
+     * Upgrade role to v9.3.1
+     */
+    function upgrade_role_27()
+    {
+    }
+
 }

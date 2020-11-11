@@ -40,6 +40,10 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.3.1 (Bulian)
+========================================================================
+Fix : upgrade error.
+
 SLiMS 9.3.0 (Bulian)
 ========================================================================
 Added : Print catalog option
