@@ -24,7 +24,8 @@ class Plugins
     protected $plugins = [];
     protected $hooks = [];
     protected $menus = [];
-    private $deep = 0;
+    private $deep = 2;
+    private $current_location = '';
 
     /**
      * Plugins constructor.
@@ -98,14 +99,19 @@ class Plugins
                         $this->plugins[$plugin->id] = $plugin;
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
-                    $this->deep++;
                     // get plugins from sub folder location
                     // deep level directory that will be scanned
-                    if ($this->deep < 3) $this->getPluginsInfo($path);
+                    if ($this->isDeep($location)) $this->getPluginsInfo($path);
                 }
             }
             closedir($dir);
         }
+    }
+
+    function isDeep($location) {
+        $sub_dir = str_replace($this->current_location, '', $location);
+        $arr_sub_dir = explode(DIRECTORY_SEPARATOR, $sub_dir);
+        return count($arr_sub_dir) <= $this->deep;
     }
 
     /**
@@ -114,6 +120,7 @@ class Plugins
     public function getPlugins(): array
     {
         foreach ($this->locations as $location) {
+            $this->current_location = $location;
             $this->getPluginsInfo($location);
         }
         return $this->plugins;
