@@ -741,5 +741,8 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
 
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
