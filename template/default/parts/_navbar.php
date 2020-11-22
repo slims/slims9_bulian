@@ -55,9 +55,9 @@ $main_menus = [
          </svg>
         <?php } ?>
         <div class="inline-flex flex-col leading-tight ml-2">
-            <h1 class="text-lg m-0 p-0"><?php echo $sysconf['library_name']; ?></h1>
+            <h1 class="text-lg m-0 p-0"><?php echo stripslashes(stripslashes($sysconf['library_name'])); ?></h1>
             <?php if ($sysconf['template']['classic_library_subname']) : ?>
-            <h2 class="text-sm lead m-0 p-0"><?php echo $sysconf['library_subname']; ?></h2>
+            <h2 class="text-sm lead m-0 p-0"><?php echo stripslashes(stripslashes($sysconf['library_subname'])); ?></h2>
             <?php endif; ?>
         </div>
     </a>
