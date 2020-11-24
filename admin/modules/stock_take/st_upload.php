@@ -34,6 +34,8 @@ do_checkIP('smc-stocktake');
 // start the session
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
+require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
+require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('stock_take', 'r');
@@ -62,7 +64,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
     $upload_status = $upload->doUpload('stFile');
     if ($upload_status == UPLOAD_SUCCESS) {
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' upload stock take file '.$upload->new_filename);
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' upload stock take file '.$upload->new_filename, 'Upload data', 'OK');
         // open file
         $stfile = @fopen(UPLOAD.$upload->new_filename, 'r');
         if (!$stfile) {
@@ -76,7 +78,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
         $i = 0;
         while (!feof($stfile)) {
             $curr_time = date('Y-m-d H:i:s');
-            $item_code = fgetss($stfile, 512);
+            $item_code = fgets($stfile, 512);
             $item_code = trim($item_code);
             if (!$item_code) {
                 continue;
@@ -88,7 +90,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
             if ($item_check->num_rows > 0) {
                 if ($item_check_d['status'] == 'l') {
                     // record to log
-                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : Item '.$item_check_d['title'].' ('.$item_check_d['item_code'].') is currently ON LOAN (from uploaded file '.$upload->new_filename.')');
+                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : Item '.$item_check_d['title'].' ('.$item_check_d['item_code'].') is currently ON LOAN (from uploaded file '.$upload->new_filename.')', 'Item', 'Error');
                     continue;
                 } else if ($item_check_d['status'] == 'e') {
                     continue;
@@ -110,7 +112,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
         echo '</script>';
     } else {
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload stock take file '.$upload->new_filename.', with error ('.$upload->error.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload stock take file '.$upload->new_filename.', with error ('.$upload->error.')', 'Upload data', 'Fail');
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#stUploadMsg\').html(\'Failed to upload stock take file! <div>Error : '.$upload->error.'</div>\')';
         echo '.toggleClass(\'errorBox\').css( {\'display\': \'block\'} );'."\n";
@@ -128,7 +130,14 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
   <div class="infoBox"><?php echo __('Upload a plain text file (.txt) containing list of Item Code to stock take. Each Item Code separated by line.'); ?></div>
   <div class="sub_section">
     <form name="uploadForm" class="notAJAX" method="post" enctype="multipart/form-data" action="<?php echo MWB.'stock_take/st_upload.php'; ?>" target="uploadAction" class="form-inline">
-    <?php echo __('File'); ?>: <input type="file" name="stFile" id="stFile" /> Maximum <?php echo $sysconf['max_upload']; ?> KB
+    <div class="container">
+        <div class="row">
+            <div class="custom-file col-6">
+                <input type="file" name="stFile" id="stFile" value="" class="custom-file-input">
+                <label class="custom-file-label" for="customFile"><?= __('Choose file')?></label></div>
+                <div class="col"><div class="mt-2"><?= __(sprintf('Maximum %s KB',$sysconf['max_upload']))?></div></div>
+            </div>
+        </div>
     <div style="margin: 3px;"><input type="submit" name="stUpload" id="stUpload" value="<?php echo __('Upload File'); ?>" class="btn btn-default" />
     <iframe name="uploadAction" style="width: 0; height: 0; visibility: hidden;"></iframe>
     </div>

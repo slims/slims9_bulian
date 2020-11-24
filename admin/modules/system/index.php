@@ -57,7 +57,7 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
-        $data['setting_value'] = serialize($value);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
         if ($query->num_rows > 0) {
@@ -92,8 +92,8 @@ if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
       $logo_image = '';
       $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
       @unlink(IMGBS.'default/'.$sysconf['logo_image']);
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo');
-      utility::jsAlert(__('Logo Image removed. Refreshing page'));
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
+      utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
       echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
       exit();
 }
@@ -111,9 +111,12 @@ if (isset($_POST['updateData'])) {
       $img_upload_status = $image_upload->doUpload('image','logo');
       if ($img_upload_status == UPLOAD_SUCCESS) {
         $logo_image = $dbs->escape_string($image_upload->new_filename);
-        $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+        if($update) {
+          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
+        }
       }else{
-        utility::jsAlert($img_upload_status->error);
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
     }
 
@@ -215,9 +218,9 @@ if (isset($_POST['updateData'])) {
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
-    utility::jsAlert(__('Settings saved. Refreshing page'));
-    echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
+    utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
+    echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();
 }
 
@@ -256,6 +259,16 @@ $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$str_input .= <<<HTML
+<script>
+$('.custom-file input').on('change',function(){
+    //get the file name
+    const fileName = $(this).val();
+    //replace the "Choose a file" label
+    $(this).next('.custom-file-label').html(fileName);
+});
+</script>
+HTML;
 $form->addAnything(__('Logo Image'), $str_input);
 
 /* Form Element(s) */

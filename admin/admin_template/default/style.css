@@ -1,13 +1,13 @@
 @import "css/font-awesome.min.css";
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
@@ -365,6 +365,11 @@ buttton
 .makeHidden {
   display: none;
 }
+.editFormLink {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
 .dateField {
   padding: 2px 2px 1px;
   width: 200px;
@@ -374,6 +379,7 @@ buttton
   color: #555;
   margin-bottom: 5px;
   background-image: none;
+  display: flex;
 }
 .dateInput {
   width: 160px;
@@ -384,7 +390,7 @@ buttton
   width: 22px;
   height: 22px;
   float: right;
-  margin: -35px;
+  margin: 0px;
   color: #00a9ff;
   cursor: pointer;
 }
@@ -1139,7 +1145,7 @@ sidebar
   font-size: 12pt;
   margin-top: 10px;
 }
-#sidepan div,
+#sidepan div:not(.scrollbar-track-y),
 #sidepan a {
   margin: 0;
   color: #ffffff;
@@ -1148,6 +1154,9 @@ sidebar
   position: relative;
   font-size: 10pt;
   font-family: 'Quicksand', sans-serif;
+}
+#sidepan .scrollbar-track.scrollbar-track-x.show {
+  display: none !important;
 }
 #sidepan div {
   font-weight: bold;
@@ -1162,6 +1171,9 @@ sidebar
 #sidepan a:hover,
 #sidepan .curModuleLink {
   color: #00a9ff;
+}
+#sidepan > div.scroll-content > div.subMenuHeader {
+  font-size: 16px;
 }
 .envinfo {
   background: #fff;

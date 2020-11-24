@@ -76,7 +76,7 @@ if (isset($_POST['finish'])) {
     $flush = $circulation->finishLoanSession();
     if ($flush == TRANS_FLUSH_ERROR) {
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')', 'Transaction', 'Failed');
         echo '<script type="text/javascript">';
         echo 'alert(\''.__('ERROR! Loan data can\'t be saved to database').'\');';
         echo '</script>';
@@ -84,7 +84,7 @@ if (isset($_POST['finish'])) {
         // insert visitor log
         visitOnLoan($memberID);
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')', 'Transaction', 'finished');
         // send message
         echo '<script type="text/javascript">';
         if ($sysconf['transaction_finished_notification']) {
@@ -116,7 +116,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     if ($_POST['process'] == 'return') {
         $return_status = $circulation->returnItem($loanID);
         // write log
-        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Return');
         echo '<script type="text/javascript">';
         if ($circulation->loan_have_overdue) {
             echo "\n".'alert(\''.__('Overdue fines inserted to fines database').'\');'."\n";
@@ -137,7 +137,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
             echo '</script>';
         } else {
             // write log
-            utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
+            utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Extended');
             echo '<script type="text/javascript">';
             echo 'alert(\''.__('Loan Extended').'\');';
             if ($circulation->loan_have_overdue) {
@@ -222,7 +222,7 @@ if (isset($_POST['tempLoanID'])) {
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else {
-        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' insert new loan ('.$_POST['tempLoanID'].') for member ('.$dbs->escape_string($_SESSION['memberID']).')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' insert new loan ('.$_POST['tempLoanID'].') for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Add');
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
@@ -308,7 +308,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
             $loan_d['title'] .= '<div>'.$reserve_msg.'</div>';
         }
         // write log
-        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $dbs->escape_string($_SESSION['realname']).' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method');
+        utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $dbs->escape_string($_SESSION['realname']).' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method', 'Quick Loan', 'Returned');
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object
@@ -387,7 +387,7 @@ if (isset($_POST['reserveItemID'])) {
     $avail_d = $avail_q->fetch_row();
     if ($avail_d[0] > 0) {
         // write log
-        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' reserve item '.$item_id.' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
+        utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' reserve item '.$item_id.' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Reservation', 'Add');
         // add reservation to database
         $reserve_date = date('Y-m-d H:i:s');
         $dbs->query('INSERT INTO reserve(member_id, biblio_id, item_code, reserve_date) VALUES (\''.$dbs->escape_string($_SESSION['memberID']).'\', \''.$biblio_d[0].'\', \''.$item_id.'\', \''.$reserve_date.'\')');
@@ -414,7 +414,7 @@ if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
     // delete reservation record from database
     $dbs->query('DELETE FROM reserve WHERE reserve_id='.$reserveID);
     // write log
-    utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' remove reservation for item '.$reserve_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')');
+    utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' remove reservation for item '.$reserve_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Reservation', 'Delete');
     echo '<script type="text/javascript">';
     echo 'alert(\''.__('Reservation removed').'\');';
     echo 'location.href = \'reserve_list.php\';';
@@ -450,7 +450,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         $_SESSION['temp_loan'] = array();
         $memberID = trim(preg_replace('@\s*(<.+)$@i', '', $_POST['memberID']));
         // write log
-        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' start transaction with member ('.$memberID.')');
+        utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' start transaction with member ('.$memberID.')', 'Loan', 'Started');
     }
     $member = new member($dbs, $memberID);
     if (!$member->valid()) {

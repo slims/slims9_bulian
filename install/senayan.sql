@@ -1,5 +1,5 @@
 -- SENAYAN Library Automation
--- Version 8 (Akasia)
+-- Version 9 (Bulian)
 -- Core database structure
 
 
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `backup_log` (
   `backup_log_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL default '0',
   `backup_time` datetime not NULL,
-  `backup_file` varchar(100) collate utf8_unicode_ci default NULL,
+  `backup_file` text collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`backup_log_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
 CREATE TABLE IF NOT EXISTS `biblio_attachment` (
   `biblio_id` int(11) NOT NULL,
   `file_id` int(11) NOT NULL,
+  `placement` enum('link','popup','embed') COLLATE utf8_unicode_ci NULL,
   `access_type` enum('public','private') collate utf8_unicode_ci NOT NULL,
   `access_limit` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   KEY `biblio_id` (`biblio_id`),
@@ -228,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `fines` (
 CREATE TABLE IF NOT EXISTS `group_access` (
   `group_id` int(11) NOT NULL,
   `module_id` int(11) NOT NULL,
+  `menus` json NULL,
   `r` int(1) NOT NULL default '0',
   `w` int(1) NOT NULL default '0',
   PRIMARY KEY  (`group_id`,`module_id`)
@@ -969,6 +971,8 @@ CREATE TABLE IF NOT EXISTS `system_log` (
   `log_type` enum('staff','member','system') collate utf8_unicode_ci NOT NULL default 'staff',
   `id` varchar(50) collate utf8_unicode_ci default NULL,
   `log_location` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `sub_module` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
+  `action` varchar(50) COLLATE 'utf8_unicode_ci' NULL,
   `log_msg` text collate utf8_unicode_ci NOT NULL,
   `log_date` datetime NOT NULL,
   PRIMARY KEY  (`log_id`),
@@ -1351,7 +1355,7 @@ CREATE TABLE `mst_servers` (
   `input_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Struktur dari tabel `biblio_log`
@@ -1415,6 +1419,58 @@ CREATE TABLE `loan_history` (
    KEY `member_name` (`member_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+--
+-- Table structure for table `mst_custom_field`
+--
+
+
+CREATE TABLE IF NOT EXISTS `mst_custom_field` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `primary_table` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dbfield` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('text','checklist','numeric','dropdown','longtext','choice','date') COLLATE utf8_unicode_ci NOT NULL,
+  `default` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `max` int(11) DEFAULT NULL,
+  `data` text COLLATE utf8_unicode_ci,
+  `indexed` tinyint(1) DEFAULT NULL,
+  `class` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
+  `width` int(5) DEFAULT '100',
+  `note` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`dbfield`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+--
+-- Table structure for table `files_read`
+--
+
+DROP TABLE IF EXISTS `files_read`;
+CREATE TABLE `files_read` (
+  `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` varchar(20)  NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`filelog_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Table structure for table `plugins`
+--
+DROP TABLE IF EXISTS `plugins`;
+CREATE TABLE `plugins` (
+   `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+   `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+   `created_at` datetime NOT NULL,
+   `uid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 --
 -- create trigger `delete_loan_history`
 --
@@ -1471,3 +1527,4 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
 
 ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
 ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
+

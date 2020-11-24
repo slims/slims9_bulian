@@ -39,7 +39,7 @@ if (!function_exists('addOrUpdateSetting')) {
   {
     global $dbs;
     $sql_op = new simbio_dbop($dbs);
-    $data['setting_value'] = serialize($value);
+    $data['setting_value'] = $dbs->escape_string(serialize($value));
     $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
     if ($query->num_rows > 0) {
       // update
@@ -63,7 +63,6 @@ if (isset($_POST['template'])) {
     }
   }else{
     //restore default settings
-    $dbs->query("DELETE FROM `setting` WHERE setting_name = 'membercard_print_settings'");
     $data = $sysconf['print']['membercard'];
   }
   //load custom css

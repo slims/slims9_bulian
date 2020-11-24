@@ -13,7 +13,11 @@ use mysqli;
 
 class SLiMS
 {
-  private $db = null;
+    /**
+     * @var mysqli
+     */
+    private $db = null;
+    private $sql_mode = '';
 
   function getAuthorizationHeader()
   {
@@ -177,13 +181,13 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $user, $pass = '', $name = null)
+  function createConnection($host, $port = '3306', $user, $pass = '', $name = null)
   {
     if (is_null($this->db)) {
       if (is_null($name)) {
-        $this->db = @new mysqli($host, $user, $pass);
+        $this->db = @new mysqli($host.':'.$port, $user, $pass);
       } else {
-        $this->db = @new mysqli($host, $user, $pass, $name);
+        $this->db = @new mysqli($host.':'.$port, $user, $pass, $name);
       }
     }
     if (mysqli_connect_error()) {
@@ -380,7 +384,7 @@ SQL;
 			realname = '" . ucfirst($username) . "',
 			last_login = NULL,
 			last_login_ip = '127.0.0.1',
-			groups = 'a:1:{i:0;s:1:\"1\";}',
+			`groups` = 'a:1:{i:0;s:1:\"1\";}',
 			input_date = DATE(NOW()),
 			last_update = DATE(NOW())
 			WHERE user_id = 1";
@@ -412,6 +416,23 @@ SQL;
       // save again
       $this->db->query('UPDATE setting SET setting_value=\''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\' WHERE setting_name=\''.$data['setting_name'].'\'');
     }
+  }
+
+  function storeOldSqlMode() {
+      $query = $this->db->query("SELECT @@sql_mode");
+      if ($query->num_rows > 0) {
+          $row = $query->fetch_row();
+          $this->sql_mode = $row[0];
+      }
+      return $this->sql_mode;
+  }
+
+  function updateSqlMode($sql_mode = '') {
+      return $this->db->query(sprintf("SET @@sql_mode := '%s' ;", $sql_mode));
+  }
+
+  function rollbackSqlMode() {
+      return $this->db->query(sprintf("SET @@sql_mode := '%s' ;", $this->sql_mode));
   }
 
 }

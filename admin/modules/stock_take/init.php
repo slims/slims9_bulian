@@ -63,7 +63,7 @@ $d_item = $q_item->fetch_row();
 $q_backup = $dbs->query("SELECT backup_log_id FROM backup_log WHERE backup_time >= '{$d_item[0]}'");
 if ($q_backup->num_rows < 1 && !isset($_GET['skip_backup']) && !isset($_POST['saveData'])) {
   ?>
-    <div class="container">
+    <div class="container-fluid">
         <hr>
         <p class="lead"><?= __('Before stock taking, it is recommended to backup your database first.') ?>
            <br/><?= __('Looks like you have not backed up before.'); ?></p>
@@ -136,7 +136,7 @@ if ($stk_q->num_rows) {
       $clean_q = $dbs->query('TRUNCATE TABLE stock_take_item');
       // copy all item data to stock take detail table
       $insert_q = $dbs->query("INSERT INTO stock_take_item (stock_take_id, item_id, item_code, title, gmd_name, classification, coll_type_name, call_number, location, status, checked_by, last_update)
-                SELECT $stock_take_id, i.item_id, i.item_code, b.title, g.gmd_name, b.classification, ct.coll_type_name, i.call_number, loc.location_name, 'm', '" . $_SESSION['realname'] . "', NULL FROM
+                SELECT $stock_take_id, i.item_id, i.item_code, b.title, g.gmd_name, b.classification, ct.coll_type_name, i.call_number, loc.location_name, 'm', NULL, NULL FROM
                 item AS i
                 LEFT JOIN mst_item_status AS ist ON i.item_status_id=ist.item_status_id
                 LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
@@ -157,9 +157,9 @@ if ($stk_q->num_rows) {
       $total_rows_d = $total_rows_q->fetch_row();
       if ($total_rows_d[0] > 0) {
         // update total_lost_item field value in stock_take table
-        $update_total_q = $dbs->query('UPDATE stock_take SET total_item_stock_taked=' . $total_rows_d[0] . ', total_item_loan=' . $item_loan_d[0] . ', total_item_lost=' . $total_rows_d[0] . ", stock_take_users='" . $_SESSION['realname'] . "\n' WHERE stock_take_id=$stock_take_id");
+        $update_total_q = $dbs->query('UPDATE stock_take SET total_item_stock_taked=' . $total_rows_d[0] . ', total_item_loan=' . $item_loan_d[0] . ', total_item_lost=' . $total_rows_d[0] . " WHERE stock_take_id=$stock_take_id");
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR']);
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR'], 'Initialize', 'OK');
         utility::jsAlert(__('Stock Taking Initialized'));
         echo '<script type="text/javascript">parent.location.href = \'' . SWB . 'admin/index.php?mod=stock_take\';</script>';
       } else {

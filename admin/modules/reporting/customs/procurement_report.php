@@ -53,7 +53,8 @@ if (!$reportView) {
     // table start
     $first_header = '';
     $second_header = '';
-    $detail_class_coll = '<th class="text-center small">'.__('t').'</th><th class="text-center small">'.__('i').'</th>';
+    $dataset = array();
+    $detail_class_coll = '<th class="text-center small" title="'.__('Title').'">'.__('t').'</th><th class="text-center small" title="'.__('Item').'">'.__('i').'</th>';
     // table header
     $output = '<table class="s-table table table-sm table-bordered mb-0">';
     $output .= '<tr><th rowspan="2">'.__('Receiving Year').' / '.__('Classification').'</th>';
@@ -67,7 +68,7 @@ if (!$reportView) {
     $output .= '<tr>'.$second_header.$detail_class_coll.'</tr>';
 
     // get year data from databse
-    $_q = $dbs->query("SELECT DISTINCT YEAR(input_date) AS YEAR FROM item ORDER BY input_date DESC");
+    $_q = $dbs->query("SELECT YEAR(input_date) AS YEAR FROM item GROUP BY YEAR(input_date)");
 
     if($_q->num_rows >0){
         while ($_d = $_q->fetch_row()) {
@@ -94,7 +95,7 @@ if (!$reportView) {
                 $dataset[$year]['title'][$class_name] = 0;
                 $dataset[$year]['item'][$class_name] = 0;
 
-                if ($_q->num_rows>0) {
+                if ($_q && $_q->num_rows>0) {
                     while ($_d = $_q->fetch_row()) {
                       $data['item'][$class_name][$_d[0]] = $_d[0];
                       $data['title'][$class_name][$_d[1]] = $_d[1];
@@ -120,6 +121,8 @@ if (!$reportView) {
         }
     }   
     $output .= '</table>';
+    // set abbreviation details about "t" and "i" below year column
+    $output .= '<div class="d-block mt-2"><strong>'.__('Description').'</strong><br><b class="text-bold">'.__('t').'</b> : <label>'.__('Title').'</label><br><b class="text-bold">'.__('i').'</b> : <label>'.__('Item').'</label></div>';
 
     $chart['xAxis'] = $xAxis;
     $chart['data'] = $dataset;

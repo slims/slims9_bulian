@@ -27,13 +27,20 @@ define('MODS_XML_PARSE_ERROR', 199);
 /**
  * MODS XML parser for SENAYAN 3
  * @param string $str_modsxml : can be string, file or uri
- * @return  array
+ * @return  mixed
  **/
 function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
 {
   // initiate records array
   $_records = array();
   libxml_use_internal_errors(true);
+
+  libxml_set_streams_context(stream_context_create([
+      'ssl' => [
+          'verify_peer' => false,
+          'verify_peer_name' => false
+      ]
+  ]));
 
   // load XML
   if ($str_xml_type == 'file') {
@@ -177,7 +184,7 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
         $_term_type = 'occupation';
         $_term = (string)$_subj->occupation;
       }
-      $data['subjects'][] = array('term' => $_term, 'term_type' => $_term_type, 'authority' => $_authority);
+      $data['subjects'][] = array('term' => $_term ?? '', 'term_type' => $_term_type ?? '', 'authority' => $_authority);
     }
 
     # mods->classification

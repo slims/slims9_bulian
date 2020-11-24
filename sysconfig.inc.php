@@ -66,7 +66,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.1.1');
+define('SENAYAN_VERSION_TAG', 'v9.3.1');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -498,6 +498,7 @@ if ($sysconf['captcha']['forgot']['enable']) {
 /**
  * Mailing Settings
  */
+$sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
 $sysconf['mail']['enable'] = true;
 $sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
 $sysconf['mail']['server_port'] = 465; // the SMTP port
@@ -736,3 +737,9 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 # for elasticsearch
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;
+
+// load all Plugins
+\SLiMS\Plugins::getInstance()->loadPlugins();

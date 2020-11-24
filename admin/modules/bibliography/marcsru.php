@@ -3,7 +3,7 @@
 # @Date:   2017-09-15T15:19:37+07:00
 # @Email:  ido.alit@gmail.com
 # @Filename: perpusnassru.php
-# @Last modified by:   user
+# @Last modified by:   heru subekti (heroe.soebekti@gmail.com)
 # @Last modified time: 2017-09-22T11:01:48+07:00
 
 /* Perpustakaan Nasional SRU Web Services section */
@@ -58,7 +58,7 @@ while ($server = $server_q->fetch_assoc()) {
 if (isset($_GET['marc_SRU_source'])) {
     $zserver = trim(urldecode($_GET['marc_SRU_source']));
 } else {
-    $zserver = 'http://opac.pnri.go.id/sru.aspx';
+    $zserver = 'http://opac.perpusnas.go.id/sru.aspx';
 }
 
 function getAcronym($sentence)
@@ -86,7 +86,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
   $sql_op = new simbio_dbop($dbs);
   $r = 0;
 
-  foreach ($_POST['zrecord'] as $id) {
+    foreach ($_POST['zrecord'] as $id) {
     // get record detail
     $record = unserialize($_SESSION['marcresult'][$id]);
 
@@ -94,13 +94,14 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     $a = $record->getField(245);
     if ($a) {
       // set title
-      $data['title'] = addslashes($a->getSubfield('a') . $a->getSubfield('b') . $a->getSubfield('l'));
+      $title = addslashes($a->getSubfield('a') . ' ' . $a->getSubfield('b') . ' ' . $a->getSubfield('l'));
+      $data['title'] = preg_replace("/(?<=)+(\/)$/m", "", trim($dbs->escape_string(strip_tags($title))));
       // set SOR
-      $data['sor']   = ($a->getSubfield('c')) ? $a->getSubfield('c') : '';
+      $data['sor']   = $a->getSubfield('c')?trim($dbs->escape_string(strip_tags($a->getSubfield('c')))) : '';
       // set GMD
       $data['gmd_id'] = 1;
       if ($a->getSubfield('h')) {
-        $data['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $a->getSubfield('h'), $gmd_cache);
+        $data['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', preg_replace("/^w+ /m", "", ucfirst($a->getSubfield('h'))), $gmd_cache);
       }
     }
     // set edition
@@ -120,25 +121,28 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     }
     // Set inputer uid
     $data['uid'] = $_SESSION['uid'];
+
     // Set publishing
-    $e = $record->getField(260);
-    if ($e) {
+    $e = $record->getField(260) ? $record->getField(260)  : $record->getField(264);
+    if (isset($e)) {
       $place = $e->getSubfield('a');
+      $place = preg_replace("~[^a-zA-Z0-9\s]~", "", $place);
       if ($place) {
         $data['publish_place_id'] = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $place, $place_cache);
       }
       $publisher = $e->getSubfield('b');
+      $publisher = preg_replace("~[^a-zA-Z0-9\s\.]~", "", $publisher);
       if ($publisher) {
         $data['publisher_id'] = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $publisher, $publ_cache);
       }
-      $data['publish_year'] = ($e->getSubfield('c')) ? $e->getSubfield('c') : '';
+      $data['publish_year'] = ($e->getSubfield('c') && is_integer($e->getSubfield('c'))) ? $e->getSubfield('c') : '';
     }
     // set collation
     $f = $record->getField(300);
     if ($f) {
       $data['collation']  = ($f->getSubfield('a')) ? $f->getSubfield('a') : '';
-      $data['collation'] .= ($f->getSubfield('b')) ? $f->getSubfield('b') : '';
-      $data['collation'] .= ($f->getSubfield('c')) ? $f->getSubfield('c') : '';
+      $data['collation'] .= ($f->getSubfield('b')) ? ' '.$f->getSubfield('b') : '';
+      $data['collation'] .= ($f->getSubfield('c')) ? ' '.$f->getSubfield('c') : '';
     }
     // set series title
     $data['series_title'] = '';
@@ -153,10 +157,16 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
       $data['language_id'] = ($h->getSubfield('a')) ? $h->getSubfield('a') : '';
     }
     // set notes
-    $i = $record->getField(500);
+    $notes = '';
+    $i = $record->getField(520)?$record->getField(520):$record->getField(500);
     if ($i) {
-      $data['notes'] = ($i->getSubfield('a')) ? $i->getSubfield('a') : '';
+      $notes .= ($i->getSubfield('a')) ? $i->getSubfield('a') : '';
     }
+    $ii = $record->getField(505);
+    if ($ii) {
+      $notes .= '<br/>'.($ii->getSubfield('a')) ? $ii->getSubfield('a') : '';
+    }    
+    $data['notes'] = trim($dbs->escape_string(strip_tags($notes)));
     // set frequency
   	$j= $record->getField(310);
   	if ($j) {
@@ -167,20 +177,22 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
     $data['image'] = null;
     $k =  $record->getField('856');
     if ($k) {
-      $url_image = $k->getSubfield('x');
-      $url_image = str_replace(' ', '%20', $url_image);
-      $data_image = pathinfo($url_image);
-      $image_name = explode('?', $data_image['basename'])[0];
-      $image_path = IMGBS . 'docs' . DS . $image_name;
-      $arrContextOptions = array(
-          "ssl" => array(
-            "verify_peer" => false,
-            "verify_peer_name" => false,
-          ),
-        );
-      $img = file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
-      if($img){
-        $data['image'] = $image_name;    
+      if($k->getSubfield('x')){
+        $url_image = $k->getSubfield('x');
+        $url_image = str_replace('http','https',str_replace(' ', '%20', $url_image));
+        $data_image = pathinfo($url_image);
+        $image_name = explode('?', $data_image['basename'])[0];
+        $image_path = IMGBS . 'docs' . DS . $image_name;
+        $arrContextOptions = array(
+            "ssl" => array(
+              "verify_peer" => false,
+              "verify_peer_name" => false,
+            ),
+          );
+        $img = file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+        if($img){
+          $data['image'] = $image_name;    
+        }
       }
     }
 
@@ -268,16 +280,13 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$zserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from MARC SRU service (server: %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$data['title'],$biblio_id), 'MARC SRU', 'Add');         
         $r++;
     }
   }
 
   // destroy result Z3950 session
   unset($_SESSION['marcresult']);
-  utility::jsToastr('MARC SRU', str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')), 'success');
-  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-  //exit();
 }
 
 // Search
@@ -316,6 +325,7 @@ if (isset($_GET['keywords'])) {
   }
 
   $marc = new \Marc\XMLParser($request);
+
   if ($marc->isError()) {
     echo '<div class="errorBox">' . __($marc->getMessage()) . '</div>';
     die();
@@ -323,12 +333,21 @@ if (isset($_GET['keywords'])) {
 
   if ($marc->count() > 0) {
     echo '<div class="infoBox">' . str_replace('{hits}', $marc->count(),__('Found {hits} records from Marc SRU Server.')) . '</div>';
-    echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/marcsru.php" target="blindSubmit">';
-    echo '<table id="dataList" class="s-table table">';
-    echo '<tr>';
-    echo '<td colspan="3"><input type="submit" name="saveZ" class="s-btn btn btn-primary" value="' . __('Save Marc Records to Database') . '" /></td>';
-    echo '</tr>';
+    $table = new simbio_table();
+    $table->table_attr = 'align="center" class="s-table table" cellpadding="5" cellspacing="0"';
+    echo  '<div class="p-3">
+            <input value="'.__('Check All').'" class="check-all button btn btn-default" type="button"> 
+            <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button">
+            <input type="submit" name="saveZ" class="s-btn btn btn-success save" value="' . __('Save Marc Records to Database') . '" /></div>';
+    // table header
+    $table->setHeader(array(__('Select'),__('Title'),__('ISBN/ISSN'),__('GMD')));
+    $table->table_header_attr = 'class="dataListHeader alterCell font-weight-bold"';
+    $table->setCellAttr(0, 0, '');
+
     for ($i=1; $i <= $marc->count(); $i++) {
+
+      $cb = '<input type="checkbox" name="zrecord['.$i.']" value="'.$i.'">';
+
       $record = $marc->get($i);
       // store temporary
       $_SESSION['marcresult'][$i] = serialize($record);
@@ -336,29 +355,75 @@ if (isset($_GET['keywords'])) {
       // title
       $rTitle = $record->getField(245);
       $title  = $rTitle->getSubfield('a');
-      $title .= $rTitle->getSubfield('b');
+      $title .= ' '.$rTitle->getSubfield('b');
+      $title = preg_replace("/(?<=)+(\/)$/m", "", trim($title));
       // authors
-      $authors = $rTitle->getSubfield('c');
+      $authors = $rTitle->getSubfield('c');      
       // isbn_issn
       $rISBN = $record->getField('020');
+      $isbn = $rISBN?$rISBN->getSubfield('a'):'-';
 
-      $row_class = ($i%2 == 0)?'alterCell':'alterCell2';
-      echo '<tr>';
-      echo '<td width="1%" class="'.$row_class.'"><input type="checkbox" name="zrecord['.$i.']" value="'.$i.'" /></td>';
-      echo '<td width="80%" class="'.$row_class.'"><strong>'.$title.'</strong><div><i>'.$authors.'</i></div></td>';
-      if ($rISBN) {
-          echo '<td width="19%" class="'.$row_class.'">'.$rISBN->getSubfield('a').'</td>';
-      } else {
-          echo '<td width="19%" class="'.$row_class.'">&nbsp;</td>';
+      $gmd =  ucwords(preg_replace("/[\[\]\/]/m", "", $rTitle->getSubfield('h')));
+
+      $url_image = '../images/default/image.png';
+
+      $k =  $record->getField('856');
+      if ($k) {
+        if($k->getSubfield('x')){
+          $url_image = $k->getSubfield('x');
+        }
       }
-      echo '</tr>';
+
+      $title_content = '<div class="media">
+                    <img class="mr-3 rounded" src="'.$url_image.'" alt="cover image" style="height:70px;">
+                    <div class="media-body">
+                      <div class="title">'.stripslashes($title).'</div><div class="authors">'.$authors.'</div>
+                    </div>
+                  </div>';
+      
+      $table->appendTableRow(array($cb,$title_content,$isbn,$gmd));
+      // set cell attribute
+      $row_class = ($i%2 == 0)?'alterCell':'alterCell2';
+      $table->setCellAttr($i, 0, 'class="'.$row_class.'" valign="top" style="width: 5px;"');
+      $table->setCellAttr($i, 1, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+      $table->setCellAttr($i, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+      $table->setCellAttr($i, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+      
     }
-    echo '</table>';
-    echo '</form>';
+    echo $table->printTable();  
   } else {
     echo '<div class="errorBox">' . __('No Results Found!') . '</div>';
   }
+?>
+<script>
+    $('.save').on('click', function (e) {
+    var zrecord = {};
+    var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $("input[type=checkbox]:checked").each(function() {
+       zrecord[$(this).val()] = $(this).val();
+    });
 
+    $.ajax({
+            url: uri,
+            type: 'post',
+            data: {saveZ: true,zrecord }
+        })
+          .done(function (msg) {
+            console.log(zrecord);
+            parent.toastr.success(Object.keys(zrecord).length+" records inserted into the database", "MARC SRU");
+            parent.jQuery('#mainContent').simbioAJAX(uri)
+        })
+    })
+    $(".uncheck-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', false);
+    });
+    $(".check-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', true);
+    });
+</script>
+<?php
   exit();
 }
 

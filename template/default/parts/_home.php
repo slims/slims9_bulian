@@ -24,6 +24,7 @@
   include '_search-form.php'; ?>
 </section>
 
+<div id="slims-home">
 <section class="mt-5 container">
     <h4 class="text-secondary text-center text-thin mt-5 mb-4"><?php echo __('Select the topic you are interested in'); ?></h4>
     <ul class="topic d-flex flex-wrap justify-content-center px-0">
@@ -68,48 +69,9 @@
         <br>
         <small class="subtitle-section"><?php echo __('Our library\'s line of collection that have been favoured by our users were shown here. Look for them. Borrow them. Hope you also like them');?></small>
     </h4>
-    <div class="d-flex flex-wrap">
-      <?php
-      // ------------------------------------------------------------------------
-      // get popular topic
-      // ------------------------------------------------------------------------
-      $topics = getPopularTopic($dbs);
-      foreach ($topics as $topic) {
-        echo '<a href="index.php?subject='.$topic.'&search=search" class="btn btn-outline-secondary btn-rounded btn-sm mr-2 mb-2">' . $topic . '</a>';
-      }
-      ?>
-    </div>
 
-    <div class="flex flex-wrap mt-4 collection">
-      <?php
-      // ------------------------------------------------------------------------
-      // get popular title by loan
-      // ------------------------------------------------------------------------
-      $populars = getPopularBiblio($dbs, $sysconf['template']['classic_popular_collection_item']);
-      foreach ($populars as $p) {
-        $o = '<div class="w-48 pr-4 pb-4">';
-        $o .= '<a href="index.php?p=show_detail&id='.$p['biblio_id'].'" class="card border-0 hover:shadow cursor-pointer text-decoration-none h-full">';
-        $o .= '<div class="card-body">';
-        $o .= '<div class="card-image fit-height">';
-        $o .= '<img src="' . getImagePath($sysconf, $p['image']) . '" class="img-fluid" alt="">';
-        $o .= '</div>';
-        $o .= '<div class="card-text mt-2 text-grey-darker">';
-        $o .= truncate($p['title'], 30);
-        $o .= '</div>';
-        $o .= '</div>';
-        $o .= '</a></div>';
-        echo $o;
-      }
-      ?>
-<!--        <div class="card border-0 bg-transparent">-->
-<!--            <div class="card-body">-->
-<!--                <a href="#" class="d-flex flex-column justify-content-center link-see-more">-->
-<!--                    <img src="--><?php //echo assets('images/icon/ios7-arrow-thin-right.png'); ?><!--" width="60%" class="mb-3"/>-->
-<!--                    <span>see more.</span>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-    </div>
+    <slims-group-subject url="index.php?p=api/subject/popular"></slims-group-subject>
+    <slims-collection url="index.php?p=api/biblio/popular"></slims-collection>
 
 </section>
 <?php endif; ?>
@@ -121,48 +83,9 @@
         <br>
         <small class="subtitle-section"><?php echo __('These are new collections list. Hope you like them. Maybe not all of them are new. But in term of time, we make sure that these are fresh from our processing oven');?></small>
     </h4>
-    <div class="d-flex flex-wrap">
-      <?php
-      // ------------------------------------------------------------------------
-      // get latest topic
-      // ------------------------------------------------------------------------
-      $topics = getLatestTopic($dbs);
-      foreach ($topics as $topic) {
-        echo '<a href="index.php?subject='.$topic.'&search=search" class="btn btn-outline-secondary btn-rounded btn-sm mr-2 mb-2">' . $topic . '</a>';
-      }
-      ?>
-    </div>
 
-    <div class="flex flex-wrap mt-4 collection">
-      <?php
-      // ------------------------------------------------------------------------
-      // get popular title by loan
-      // ------------------------------------------------------------------------
-      $latest = getLatestBiblio($dbs, $sysconf['template']['classic_new_collection_item']);
-      foreach ($latest as $l) {
-        $o = '<div class="w-48 pr-4 pb-4">';
-        $o .= '<a href="index.php?p=show_detail&id='.$l['biblio_id'].'"  class="card border-0 hover:shadow cursor-pointer text-decoration-none h-full">';
-        $o .= '<div class="card-body">';
-        $o .= '<div class="card-image fit-height">';
-        $o .= '<img src="' . getImagePath($sysconf, $l['image']) . '" class="img-fluid" alt="">';
-        $o .= '</div>';
-        $o .= '<div class="card-text mt-2 text-grey-darker">';
-        $o .= truncate($l['title'], 30);
-        $o .= '</div>';
-        $o .= '</div>';
-        $o .= '</a></div>';
-        echo $o;
-      }
-      ?>
-<!--        <div class="card border-0 bg-transparent">-->
-<!--            <div class="card-body">-->
-<!--                <a href="#" class="d-flex flex-column justify-content-center link-see-more">-->
-<!--                    <img src="--><?php //echo assets('images/icon/ios7-arrow-thin-right.png'); ?><!--" width="60%" class="mb-3"/>-->
-<!--                    <span>see more.</span>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-    </div>
+    <slims-group-subject url="index.php?p=api/subject/latest"></slims-group-subject>
+    <slims-collection url="index.php?p=api/biblio/latest"></slims-collection>
 
 </section>
 <?php endif; ?>
@@ -175,31 +98,7 @@
             <br>
             <small class="subtitle-section"><?php echo __('Our best users, readers, so far. Continue to read if you want your name being mentioned here');?></small>
         </h4>
-        <div class="flex flex-wrap">
-          <?php
-          $members = getActiveMembers($dbs, date('Y'));
-          foreach ($members as $member) {
-            $member_image = $member['image'] ?? 'person.png';
-            $m = '<div class="w-full md:w-1/3 px-3 mb-2">';
-            $m .= '<div class="card hover:shadow-md">';
-            $m .= '<div class="card-body">';
-            $m .= '<div class="card-image-rounded mx-auto">';
-            $m .= '<img src="'.getImagePath($sysconf, $member_image, 'persons').'" class="img-fluid h-auto" alt="photo">';
-            $m .= '</div>';
-            $m .= '<h5 class="card-title text-center mt-3">' . $member['name'] . '<br><small class="text-grey-darker">' . $member['type'] . '</small></h5>';
-            $m .= '<p class="card-text text-center"><b>'.$member['total'].'</b> <span class="text-grey-darker">'.__('Loans').'</span><span style="width: 1px" class="inline-block h-4 mx-3 relative bg-grey align-middle"></span><b>'.$member['total_title'].'</b> <span class="text-grey-darker">'.__('Title').'</span></p>';
-            $m .= '</div>';
-            $m .= '</div>';
-            $m .= '</div>';
-
-            echo $m;
-          }
-
-          if (count($members) < 1) {
-            echo '<span class="ml-3">'.__('Not Available').'</span>';
-          }
-          ?>
-        </div>
+        <slims-group-member url="index.php?p=api/member/top"></slims-group-member>
     </div>
 </section>
 <?php endif; ?>
@@ -225,3 +124,4 @@
     </div>
 </section>
 <?php endif; ?>
+</div>

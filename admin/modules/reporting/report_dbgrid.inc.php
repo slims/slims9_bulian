@@ -31,13 +31,15 @@ class report_datagrid extends simbio_datagrid
     public $paging_set = null;
     public $using_AJAX = false;
     public $show_spreadsheet_export = false;
-    public $spreadsheet_export_btn = '<a href="../spreadsheet.php" class="s-btn btn btn-default">Export to spreadsheet format</a>';
+    public $spreadsheet_export_btn = '';
 
     public function __construct()
     {
         // set default table and table header attributes
         $this->table_attr = 'align="center" class="dataListPrinted" cellpadding="3" cellspacing="1"';
         $this->table_header_attr = 'class="dataListHeaderPrinted"';
+
+        $this->spreadsheet_export_btn = '<a href="../spreadsheet.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
     }
 
     /**

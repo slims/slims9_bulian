@@ -229,7 +229,7 @@ if (isset($_POST['doImport'])) {
     fclose($file);
     $end_time = time();
     $import_time_sec = $end_time-$start_time;
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name']);
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name'], 'Import' );
     echo '<script type="text/javascript">'."\n";
     echo 'parent.$(\'#importInfo\').html(\''
     . str_replace(array('{numberOfInsertedRecords}', '{recordOffset}', '{timeInSeconds}'),array($inserted_row,intval($_POST['recordOffset']), $import_time_sec), __( '<strong>{numberOfInsertedRecords}</strong> records inserted successfully to bibliographic database, from record <strong>{recordOffset} in {timeInSeconds} second(s)</strong>'))

@@ -35,8 +35,10 @@ if (!defined('INDEX_AUTH')) {
 
 // get file ID
 $fileID = isset($_GET['fid'])?(integer)$_GET['fid']:0;
-// get biblioID
+// get biblioID, and memberID/userID if available, 
 $biblioID = isset($_GET['bid'])?(integer)$_GET['bid']:0;
+$memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
+$userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 // get file data
 // query file to database
 $sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
@@ -57,6 +59,7 @@ if (!file_exists($file_loc)) {
 // multimedia URL
 $multimedia_url = SWB.'index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
 // $multimedia_url = urlencode($multimedia_url);
+utility::dlCount($dbs, $fileID, $memberID, $userID);
 
 // flowplayer settings
 $cover = SWB.IMG.'/slims-splash.png';

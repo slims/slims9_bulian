@@ -3,6 +3,8 @@ images/persons/*
 images/docs/*
 images/labels/*
 images/cache/*
+images/content/*
+images/default/logo.png
 files/*
 !files/membercard/*
 repository/*

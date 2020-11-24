@@ -63,7 +63,8 @@ if (isset($_GET['z3950_SRU_source'])) {
 }
 
 /* RECORD OPERATION */
-if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
+if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
+
   require MDLBS.'bibliography/biblio_utils.inc.php';
 
   $gmd_cache = array();
@@ -169,16 +170,13 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['z3950result'])) {
               // update index
               $indexer->makeIndex($biblio_id);
               // write to logs
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert bibliographic data from P2P service (server:'.$p2pserver.') with ('.$biblio['title'].') and biblio_id ('.$biblio_id.')');
+              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from Z3950 service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$biblio['title'],$biblio_id), 'Z3950 SRU', 'Add');  
               $r++;
           }
       }
   }
 
-  // destroy result Z3950 session
   unset($_SESSION['z3950result']);
-  utility::jsToastr('Z3950', str_replace('{recordCount}', $r, __('{recordCount} records inserted into the database.')), 'success');
-  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }
 /* RECORD OPERATION END */
@@ -206,34 +204,59 @@ if (isset($_GET['keywords']) AND $can_read) {
 
     if ($hits > 0) {
       echo '<div class="infoBox">' . str_replace('{hits}', $hits,__('Found {hits} records from Z3950 SRU Server.')) . '</div>';
-      echo '<form method="post" class="notAJAX" action="'.MWB.'bibliography/z3950sru.php" target="blindSubmit">';
-      echo '<table id="dataList" class="s-table table">';
-      echo '<tr>';
-      echo '<td colspan="3"><input type="submit" name="saveZ" class="s-btn btn btn-primary" value="' . __('Save Z3950 Records to Database') . '" /></td>';
-      echo '</tr>';
+      $table = new simbio_table();
+      $table->table_attr = 'align="center" class="s-table table" cellpadding="5" cellspacing="0"';
+      echo  '<div class="p-3">
+              <input value="'.__('Check All').'" class="check-all button btn btn-default" type="button"> 
+              <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button">
+              <input type="submit" name="saveResult" class="s-btn btn btn-success save" value="' . __('Save Z3950 Records to Database') . '" /></div>';
+      // table header
+      $table->setHeader(array(__('Select'),__('Title'),__('ISBN/ISSN'),__('GMD'),__('Collation'),__('Publisher'),__('Publishing Year')));
+      $table->table_header_attr = 'class="dataListHeader alterCell font-weight-bold"';
+      $table->setCellAttr(0, 0, '');
+
       $row = 1;
       foreach ($zs_xml->records->record as $rec) {
         // echo '<pre>'; var_dump($rec->recordData->children()); echo '</pre>';
         $mods = modsXMLslims($rec->recordData->children()->mods);
         // save it to session vars for retrieving later
         $_SESSION['z3950result'][$row] = $mods;
+
         // authors
         $authors = array(); foreach ($mods['authors'] as $auth) { $authors[] = $auth['name']; }
 
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
-        echo '<tr>';
-        echo '<td width="1%" class="'.$row_class.'"><input type="checkbox" name="zrecord['.$row.']" value="'.$row.'" /></td>';
-        echo '<td width="80%" class="'.$row_class.'"><strong>'.$mods['title'].'</strong><div><i>'.implode(' - ', $authors).'</i></div></td>';
-        if (isset ($mods['isbn_issn'])) {
-            echo '<td width="19%" class="'.$row_class.'">'.$mods['isbn_issn'].'</td>';
-        } else {
-            echo '<td width="19%" class="'.$row_class.'">&nbsp;</td>';
-        }
-        echo '</tr>';
+
+        $cb = '<input type="checkbox" name="zrecord['.$row.']" value="'.$row.'">';
+
+        $title_content = '<div class="media">
+                      <div class="media-body">
+                        <div class="title">'.stripslashes($mods['title']).'</div><div class="authors">'.implode(' - ', $authors).'</div>
+                      </div>
+                    </div>';
+
+        $table->appendTableRow(array($cb,
+          $title_content,
+          ($mods['isbn_issn']??'-'),
+          ($mods['gmd']??'-'),
+          ($mods['collation']??'-'),
+          ($mods['publisher']??'-'),
+          ($mods['publish_year']??'-'),
+        ));
+        // set cell attribute
+        $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
+        $table->setCellAttr($row, 0, 'class="'.$row_class.'" valign="top" style="width: 5px;"');
+        $table->setCellAttr($row, 1, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+        $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+        $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+        $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+        $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+        $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');      
         $row++;
       }
-      echo '</table>';
-      echo '</form>';
+
+      echo $table->printTable(); 
+
     } else if ($errors) {
       echo '<div class="errorBox"><ul>';
       foreach ($errors as $errmsg) {
@@ -246,6 +269,36 @@ if (isset($_GET['keywords']) AND $can_read) {
   } else {
     echo '<div class="errorBox">' . __('No Keywords Supplied!') . '</div>';
   }
+  ?>
+  <script>
+    $('.save').on('click', function (e) {
+    var zrecord = {};
+    var uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $("input[type=checkbox]:checked").each(function() {
+       zrecord[$(this).val()] = $(this).val();
+    });
+
+    $.ajax({
+            url: uri,
+            type: 'post',
+            data: {saveResults: true, zrecord }
+        })
+          .done(function (msg) {
+            console.log(zrecord);
+            parent.toastr.success(Object.keys(zrecord).length+" records inserted into the database", "Z3950 Service");
+            parent.jQuery('#mainContent').simbioAJAX(uri)
+        })
+    })
+    $(".uncheck-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', false);
+    });
+    $(".check-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', true);
+    });
+</script>
+<?php
   exit();
 }
 /* SEARCH OPERATION END */

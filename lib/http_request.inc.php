@@ -186,6 +186,16 @@ class http_request {
         $result = explode("\r\n\r\n", $result, 2);
 
         $this->headers = isset($result[0]) ? $result[0] : '';
-        $this->body = isset($result[1]) ? $result[1] : '';
+        $this->body = $this->decode_chunked(isset($result[1]) ? $result[1] : '');
+    }
+
+    function decode_chunked($str) {
+        for ($res = ''; !empty($str); $str = trim($str)) {
+            $pos = strpos($str, "\r\n");
+            $len = hexdec(substr($str, 0, $pos));
+            $res.= substr($str, $pos + 2, $len);
+            $str = substr($str, $pos + 2 + $len);
+        }
+        return $res;
     }
 }

@@ -30,6 +30,13 @@ class XMLParser
 
     $this->counter = 0;
 
+    libxml_set_streams_context(stream_context_create([
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false
+        ]
+    ]));
+
     switch ($type) {
       case 'string':
         $this->source = \simplexml_load_string($source, 'SimpleXMLElement', 0, $namespace, $isPrefix);

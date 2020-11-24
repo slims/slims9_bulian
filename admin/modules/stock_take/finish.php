@@ -45,7 +45,9 @@ $can_write = utility::havePrivilege('stock_take', 'w');
 if (!($can_read AND $can_write)) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
-
+if ($_SESSION['uid'] != '1') {
+  die('<div class="errorBox">' . __('You must be an admin to run the completion process!') . '</div>');
+}
 // check if there is any active stock take proccess
 $stk_query = $dbs->query("SELECT * FROM stock_take WHERE is_active=1");
 if (!$stk_query->num_rows) {
@@ -148,7 +150,7 @@ if (isset($_POST['confirmFinish'])) {
     // clean all current stock take error log
     $error_log_q = $dbs->query('DELETE FROM system_log WHERE log_location=\'stock_take\' AND log_msg LIKE \'Stock Take ERROR%\'');
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' finish stock take ('.$stk_take_d[0].') from address '.$_SERVER['REMOTE_ADDR']);
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'].' finish stock take ('.$stk_take_d[0].') from address '.$_SERVER['REMOTE_ADDR'], 'Finished', 'OK');
     // send an alert
     echo '<script type="text/javascript">';
     echo 'alert(\''.__('Stock Take Proccess Finished!').'\');';

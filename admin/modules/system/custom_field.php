@@ -87,7 +87,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // filter update record ID
             $updateRecordID = $dbs->escape_string(trim($_POST['updateRecordID']));
             //get last field table
-            $_q = $dbs->query("SELECT primary_table,dbfield FROM mst_custom_field WHERE field_id=".$updateRecordID);
+            $_q = $dbs->query("SELECT primary_table,dbfield,label FROM mst_custom_field WHERE field_id=".$updateRecordID);
             if($_q->num_rows){
                 $_d = $_q->fetch_row();
                 if($_d[0]!=$data['primary_table']){
@@ -97,9 +97,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_custom_field', $data, 'field_id=\''.$updateRecordID.'\'');
             if ($update) {
+                utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update custom field ('.$_d[2].'->'.$data['label'].') on '.$_d[0], $_d[0].' custom', 'Update');
                 utility::jsToastr(__('Custom Field'), __('New Custom Field Successfully Updated'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
             } else { 
+                utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' can not update custom field ('.$_d[2].') '. $sql_op->error, $_d[0].' custom', 'Fail');
                 utility::jsToastr(__('Custom Field'),__('Custom Field Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         } else {
@@ -108,9 +110,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $data['dbfield'] = 'cf_'.substr(md5(microtime()),rand(0,26),5);
             $insert = $sql_op->insert('mst_custom_field', $data);
             if ($insert) {
+                utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' create custom field ('.$data['label'].') on '. $data['primary_table'], $data['primary_table'] .' custom', 'Add');
                 utility::jsToastr(__('Custom Field'), __('New Custom Field Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { 
+                utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' can not create custom field ('.$data['label'].'): '. $sql_op->error , $data['primary_table'] .' custom', 'Fail');
                 utility::jsToastr(__('Custom Field'),__('Custom Field Data Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         }
@@ -132,7 +136,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = $dbs->escape_string(trim($itemID));
         //get dbfield name
-        $dbfield_q = $dbs->query("SELECT dbfield,primary_table FROM mst_custom_field WHERE field_id=".$itemID);
+        $dbfield_q = $dbs->query("SELECT dbfield,primary_table,label FROM mst_custom_field WHERE field_id=".$itemID);
         $field = $dbfield_q->fetch_row();
         //drop field
         @$dbs->query("ALTER TABLE ".$field[1]."_custom DROP ".$field[0]."");   
@@ -142,9 +146,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
     // error alerting
     if ($error_num == 0) {
+        utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' remove custom field '.$field[2].' with id '.$itemID, $field[1]. ' custom', 'Delete');
         utility::jsToastr(__('Custom Field'), __('All Data Successfully Deleted'), 'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
+        utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' can not remove custom field '.$field[2].' with id '.$itemID, $field[1]. ' custom', 'Fail');
         utility::jsToastr(__('Custom Field'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }

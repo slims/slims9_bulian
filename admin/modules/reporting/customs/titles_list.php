@@ -91,18 +91,6 @@ if (!$reportView) {
                 ?><small class="text-muted"><?php echo __('Press Ctrl and click to select multiple entries'); ?></small>
             </div>
             <div class="form-group divRow">
-                <label><?php echo __('Collection Type'); ?></label>
-                <?php
-                $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
-                $coll_type_options = array();
-                $coll_type_options[] = array('0', __('ALL'));
-                while ($coll_type_d = $coll_type_q->fetch_row()) {
-                    $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-                }
-                echo simbio_form_element::selectList('collType[]', $coll_type_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
-                ?>
-            </div>
-            <div class="form-group divRow">
                 <label><?php echo __('Language'); ?></label>
                 <?php
                 $lang_q = $dbs->query('SELECT language_id, language_name FROM mst_language');
@@ -112,18 +100,6 @@ if (!$reportView) {
                     $lang_options[] = array($lang_d[0], $lang_d[1]);
                 }
                 echo simbio_form_element::selectList('language', $lang_options,'','class="form-control col-3"');
-                ?>
-            </div>
-            <div class="form-group divRow">
-                <label><?php echo __('Location'); ?></label>
-                <?php
-                $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
-                $loc_options = array();
-                $loc_options[] = array('0', __('ALL'));
-                while ($loc_d = $loc_q->fetch_row()) {
-                    $loc_options[] = array($loc_d[0], $loc_d[1]);
-                }
-                echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
                 ?>
             </div>
             <div class="form-group divRow">

@@ -111,7 +111,7 @@ $('.loader').toggleClass('hidden').hide();
 let Scrollbar = window.Scrollbar;
 Scrollbar.use(window.OverscrollPlugin)
 Scrollbar.init(document.querySelector('#sidepan'), {
-    alwaysShowTracks: true,
+    alwaysShowTracks: <?= $sysconf['admin_template']['always_show_tracks'] ? 'true' : 'false' ?>,
     continuousScrolling: false,
     plugins: {
       overscroll: {

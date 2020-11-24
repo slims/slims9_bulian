@@ -168,7 +168,7 @@ class utility
      * @param   string  $str_log_msg
      * @return  void
      */
-    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg)
+    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod=NULL, $str_log_action=NULL)
     {
         if (!$obj_db->error) {
             // log table
@@ -179,9 +179,14 @@ class utility
             $str_value_id = $obj_db->escape_string(trim($str_value_id));
             $str_location = $obj_db->escape_string(trim($str_location));
             $str_log_msg = $obj_db->escape_string(trim($str_log_msg));
+            $str_log_submod = $obj_db->escape_string(trim($str_log_submod));
+            $str_log_action = $obj_db->escape_string(trim($str_log_action));
             // insert log data to database
             @$obj_db->query('INSERT INTO '.$_log_table.'
-            VALUES (NULL, \''.$str_log_type.'\', \''.$str_value_id.'\', \''.$str_location.'\', \''.$str_log_msg.'\', \''.$_log_date.'\')');
+            VALUES (NULL, \''.$str_log_type.'\', \''.$str_value_id.'\', \''.$str_location.'\','.
+             ' \''.$str_log_submod.'\''.
+             ', \''.$str_log_action.'\''.
+             ', \''.$str_log_msg.'\', \''.$_log_date.'\')');
         }
     }
 
@@ -632,4 +637,20 @@ class utility
       }
     }
 
+    public static function dlCount($obj_db, $str_file_id, $str_member_id, $str_user_id)
+    {
+        if (!$obj_db->error) {
+            // log table
+            $_log_date = date('Y-m-d H:i:s');
+            $_log_table = 'files_read';
+            // filter input
+            $str_log_type = $obj_db->escape_string(trim($str_file_id));
+            $str_value_id = $obj_db->escape_string(trim($str_member_id));
+            $str_user_id = $obj_db->escape_string(trim($str_user_id));
+            // insert log data to database
+            @$obj_db->query('INSERT INTO '.$_log_table.'
+            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.$_SERVER[
+			'REMOTE_ADDR'].'\')');
+        }
+    }
 }

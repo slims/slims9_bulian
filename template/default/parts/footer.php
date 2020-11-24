@@ -44,11 +44,9 @@
             </div>
             <div class="col-md-5 pt-8 md:pt-0">
                 <h4 class="mb-4"><?= __('About Us'); ?></h4>
-                <p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features
-                    that will help libraries and librarians to do their job easily and quickly. Follow <a
-                            target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some
-                    features
-                    provided by SLiMS.</p>
+                <p>
+                    <?= $sysconf['template']['classic_footer_about_us']; ?>
+                </p>
             </div>
             <div class="col-md-4 pt-8 md:pt-0">
                 <h4 class="mb-4"><?= __('Search'); ?></h4>
@@ -96,6 +94,14 @@ include LIB . "contents/chat.php"; ?>
 <!-- // Load modal -->
 <?php include "_modal_topic.php"; ?>
 <?php include "_modal_advanced.php"; ?>
+
+<!-- // Load highlight -->
+<script src="<?= JWB; ?>highlight.js"></script>
+<?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != ''))   : ?>
+<script>
+  $('.card-link, p, dl > dd').highlight(<?= $searched_words_js_array; ?>);
+</script>
+<?php endif; ?>
 
 <!-- // load our vue app.js -->
 <script src="<?php echo assets('js/app.js?v=' . date('Ymd-his')); ?>"></script>

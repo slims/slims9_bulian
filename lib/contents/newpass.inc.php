@@ -65,7 +65,7 @@ if (isset($_POST['updatePassword'])) {
         echo __('Failed to query user data from database with error: '.$dbs->error);
       }
       // write log
-      utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR']);
+      utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR'], 'Password', 'Update');
 
       // clear cookie
       setcookie('token', '', time()-3600, SWB);

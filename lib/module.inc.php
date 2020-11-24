@@ -153,9 +153,24 @@ class module extends simbio
       global $dbs;
       $_submenu_file = $this->modules_dir.$str_module.DIRECTORY_SEPARATOR.'submenu.php';
 
+      // get menus from plugins
+      $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($str_module);
 
       if (file_exists($_submenu_file)) {
         include $_submenu_file;
+
+        $menu = array_merge($menu ?? [], $plugin_menus);
+
+        if ($_SESSION['uid'] > 1) {
+            $tmp_menu = [];
+            if (isset($menu) && count($menu) > 0) {
+                foreach ($menu as $item) {
+                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
+                }
+            }
+            $menu = $tmp_menu;
+        }
+
       } else {
         include 'default/submenu.php';
         foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {

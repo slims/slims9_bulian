@@ -53,6 +53,9 @@ if (!$can_read) {
     die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
+// execute registered hook
+\SLiMS\Plugins::getInstance()->execute('membership_init');
+
 /* Just In Case for PHP < 5.4 */
 /* Taken From imageman (http://www.php.net/manual/en/function.getimagesizefromstring.php#113976) */
 /* Make sure to set allow_url_fopen = on inside your php.ini */
@@ -222,6 +225,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('member', $data, "member_id='$updateRecordID'");
             if ($update) {
+
+                // execute registered hook
+                \SLiMS\Plugins::getInstance()->execute('membership_after_update', ['data' => api::member_load($dbs, $updateRecordID)]);
+
                 // update custom data
                 if (isset($custom_data)) {
                   // check if custom data for this record exists
@@ -242,16 +249,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Update');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Update', 'OK');
                 if ($sysconf['webcam'] == 'html5') {
                   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 } else {
@@ -277,16 +284,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
@@ -305,9 +312,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             WHERE m.member_id=\''.$memberID.'\'');
         $mtype_d = $mtype_q->fetch_row();
         $expire_date = simbio_date::getNextDate($mtype_d[0], $curr_date);
-        @$dbs->query('UPDATE member SET expire_date=\''.$expire_date.'\' WHERE member_id=\''.$memberID.'\'');
+        @$dbs->query('UPDATE member SET register_date=\''.date("Y-m-d").'\',  expire_date=\''.$expire_date.'\', last_update=\''.date("y-m-d").'\' WHERE member_id=\''.$memberID.'\'');
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Extend', 'OK');
         $num_extended++;
     }
     header('Location: '.MWB.'membership/index.php?expire=true&numExtended='.$num_extended);
@@ -338,7 +345,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $error_num++;
             } else {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
             }
         } else {
             $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -430,6 +437,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     if ($form->edit_mode) {
+
+        // execute registered hook
+        \SLiMS\Plugins::getInstance()->execute('membership_before_update', ['data' => api::member_load($dbs, $itemID)]);
+
         // check if member expired
         $curr_date = date('Y-m-d');
         $compared_date = simbio_date::compareDates($rec_d['expire_date'], $curr_date);
@@ -547,16 +558,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input  = '<div class="row">';
     $str_input .= '<div class="col-2">';
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
-    if (isset($rec_d['member_image'])) {
-        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
+    if (isset($rec_d['member_image']) && file_exists(IMGBS.'/persons/'.$rec_d['member_image'])) {
+        $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400">';
         // $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
         $str_input .= '<img src="'.$upper_dir.'../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
-    } else {
-        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid rounded" alt="Image cover">';
-        $str_input .= '</a>';
+    }else{
+        $str_input .= '<img src="'.SWB.'images/persons/person.png'.'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
     }
     $str_input .= '</div>';
     $str_input .= '</div>';
@@ -579,7 +588,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<div class="makeHidden">';
+        $str_input .= '<div class="makeHidden_">';
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
@@ -598,7 +607,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
         $str_input .= '</div>';
         $str_input .= '</div>';
-        $str_input .= '<div id="my_container" class="makeHidden mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+        $str_input .= '<div id="my_container" class="makeHidden_ mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
         $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
         $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
         $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
@@ -654,6 +663,31 @@ $(document).ready(function() {
 <?php
 } else {
     /* MEMBERSHIP LIST */
+    function showMemberImage($obj_db, $array_data){
+      global $sysconf;
+      $image = '../images/persons/photo.png';
+      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$array_data[0].'"');
+      if(isset($_q->num_rows)){
+        $_d = $_q->fetch_row();
+        if($_d[0] != NULL){      
+          $image = file_exists(IMGBS.'/persons/'.$_d[0])?'../images/persons/'.$_d[0]:'../images/persons/photo.png';
+        }
+        $addr  = $_d[2]!=''?'<i class="fa fa-map-marker" aria-hidden="true"></i></i>&nbsp;'.$_d[2]:'';
+        $phone = $_d[3]!=''?'<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;'.$_d[3]:'';
+      }
+
+       $_output = '<div class="media"> 
+                    <a href="'.$image.'" class="openPopUp notAJAX" title="'.$_d[1].'" width="300" height="400" >
+                    <img class="mr-3 rounded" src="'.$image.'" alt="cover image" width="60"></a>
+                    <div class="media-body">
+                      <div class="title">'.$array_data[2].'</div>
+                      <div class="sub">'.$phone.'</div>
+                      <div class="sub">'.$addr.'</div>
+                    </div>
+                  </div>';
+       return $_output;
+    }
+
     // table spec
     $table_spec = 'member AS m
         LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id';
@@ -667,12 +701,14 @@ $(document).ready(function() {
             'mt.member_type_name AS \''.__('Membership Type').'\'',
             'm.member_email AS \''.__('E-mail').'\'',
             'm.last_update AS \''.__('Last Updated').'\'');
+            $datagrid->modifyColumnContent(2, 'callback{showMemberImage}');
     } else {
         $datagrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
             'm.member_name AS \''.__('Member Name').'\'',
             'mt.member_type_name AS \''.__('Membership Type').'\'',
             'm.member_email AS \''.__('E-mail').'\'',
             'm.last_update AS \''.__('Last Updated').'\'');
+            $datagrid->modifyColumnContent(1, 'callback{showMemberImage}');
     }
     $datagrid->setSQLorder('member_name ASC');
 

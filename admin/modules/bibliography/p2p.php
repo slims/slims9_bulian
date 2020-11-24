@@ -50,6 +50,9 @@ if (!$can_read) {
 
 function downloadFile($url, $path)
 {
+
+  $fp = fopen($path, 'w+');
+
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
@@ -62,20 +65,20 @@ function downloadFile($url, $path)
     CURLOPT_CUSTOMREQUEST => "GET",
     CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_HTTPHEADER => array(
-      "key: your-api-key"
-    ),
+    CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
+    CURLOPT_FILE => $fp
   ));
 
   $response = curl_exec($curl);
   $err = curl_error($curl);
 
   curl_close($curl);
+  fclose($fp);
 
   if ($err) {
     return $err;
   } else {
-    file_put_contents($path, $response);
+    // file_put_contents($path, $response);
     return true;
   }
 }
@@ -84,10 +87,28 @@ function cleanUrl($url)
 {
   $_url = parse_url(trim($url));
   // var_dump($_url);
-  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path']));
+  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path'] ?? ''));
   $_port = isset($_url['port']) ? ':' . $_url['port'] : '';
   return $_url['scheme'] . '://' . $_url['host'] . $_port . $_path . '/';
 }
+
+function remoteFileExists($url) 
+{
+  $curl = curl_init($url);
+  curl_setopt($curl, CURLOPT_NOBODY, true);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,  false);
+  $result = curl_exec($curl);
+  $status = null;
+  if ($result !== false) {
+    $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);  
+    if ($statusCode == 200) {
+        $status = $url;   
+    }
+  }
+  curl_close($curl);
+  return $status;
+}    
 
 // get servers
 $server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
@@ -96,10 +117,10 @@ while ($server = $server_q->fetch_assoc()) {
 }
 
 /* RECORD OPERATION */
-if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['p2pserver_save'])) {
+if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
   require MDLBS . 'bibliography/biblio_utils.inc.php';
 
-  $p2pserver = cleanUrl($_POST['p2pserver_save']);
+  $p2pserver = cleanUrl($_SESSION['p2pserver']);
   $gmd_cache = array();
   $publ_cache = array();
   $place_cache = array();
@@ -152,8 +173,8 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
         unset($biblio['subjects']);
       }
 
-      $biblio['input_date'] = $biblio['create_date'];
-      $biblio['last_update'] = $biblio['modified_date'];
+      $biblio['input_date'] = date('Y-m-d H:i:s');
+      $biblio['last_update'] = date('Y-m-d H:i:s');
 
       // remove unneeded elements
       unset($biblio['manuscript']);
@@ -168,10 +189,11 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
       unset($biblio['modified_date']);
       unset($biblio['origin']);
 
-      // download image
-      if (isset($biblio['image']) && $biblio['image'] !== '') {
+      // download image 
+
+      if (isset($biblio['image']) && remoteFileExists($p2pserver . 'images/docs/' . $biblio['image'])) {
+        $url_image  = $p2pserver . 'images/docs/' . $biblio['image']; 
         $image_path = IMGBS . 'docs' . DS . $biblio['image'];
-        $url_image = $p2pserver . 'images/docs/' . $biblio['image'];
         $arrContextOptions = array(
           "ssl" => array(
             "verify_peer" => false,
@@ -179,9 +201,11 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
           ),
         );
         file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+      }else{
+        $biblio['image'] = NULL; 
       }
 
-      // fot debugging purpose
+      // for debugging purpose
       // var_dump($biblio);
       // die();
 
@@ -196,7 +220,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
       if ($authors) {
         $author_id = 0;
         foreach ($authors as $author) {
-          $author_id = getAuthorID($author['name'], strtolower(substr($author['author_type'], 0, 1)), $author_cache);
+          $author_id = getAuthorID(trim($author['name']), strtolower(substr($author['author_type'], 0, 1)), $author_cache);
           @$dbs->query("INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ($biblio_id, $author_id, " . $author['level'] . ")");
         }
       }
@@ -212,7 +236,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
           } else {
             $subject_type = strtolower(substr($subject['term_type'], 0, 1));
           }
-          $subject_id = getSubjectID($subject['term'], $subject_type, $subject_cache);
+          $subject_id = getSubjectID(trim($subject['term']), $subject_type, $subject_cache);
           @$dbs->query("INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES ($biblio_id, $subject_id, 1)");
         }
       }
@@ -247,7 +271,9 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
               $ba['access_limit'] = 'literal{NULL}';
               $sql_op->insert('biblio_attachment', $ba);
 
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' download file (' . $fdata['file_title'] . ') from (' . $stream_file . ')');
+        	  // write to logs
+        	  utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
+
             }
           }
         }
@@ -259,18 +285,16 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord']) && isset($_POST['
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' insert bibliographic data from P2P service (server:' . $p2pserver . ') with (' . $biblio['title'] . ') and biblio_id (' . $biblio_id . ')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from P2P service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$p2pserver,$biblio['title'],$biblio_id), 'P2P', 'Add');  
         $r++;
       }
+      unset($biblio);
     }
   }
-  utility::jsToastr('P2P', str_replace('{recordCount}', $r, __('{recordCount} records inserted to database.')), 'success');
-  echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\');</script>';
   exit();
 }
 
 /* RECORD OPERATION END */
-
 
 /* SEARCH OPERATION */
 if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
@@ -279,6 +303,8 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $serverid = (integer)$_GET['p2pserver'];
   $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
+
+  $_SESSION['p2pserver'] = $p2pserver;
   # get keywords
   $keywords = urlencode($_GET['keywords']);
   # $p2pquery = $p2pserver.'index.php?resultXML=true&keywords='.$_GET['keywords'];
@@ -295,29 +321,26 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   # echo $p2pserver."/index.php?resultXML=true&keywords=".$keywords;
   # echo '<br />';
   if (isset($data['records'])) {
+
     echo '<div class="infoBox">Found ' . $data['result_num'] . ' records from <strong>' . $p2pserver_name . '</strong> Server</div>';
-    echo '<form method="post" class="notAJAX" action="' . MWB . 'bibliography/p2p.php" target="blindSubmit">';
-    echo '<table id="dataLists" class="s-table table">';
-    echo '<tr><td colspan="3"><input type="submit" name="saveResults" class="s-btn btn btn-primary" value="Save P2P Records to Database" /></td></tr>';
-    $header = <<<HTML
-<tr>
-  <th scope="col">#</th>
-  <th scope="col">&nbsp;</th>
-  <th scope="col">Title</th>
-  <th scope="col">Digital Files</th>
-    <th scope="col">Detail</th>
-</tr>
-HTML;
-    echo $header;
+
+    $table = new simbio_table();
+    $table->table_attr = 'align="center" class="s-table table" cellpadding="5" cellspacing="0"';
+    echo  '<div class="p-3">
+            <input value="'.__('Check All').'" class="check-all button btn btn-default" type="button"> 
+            <input value="'.__('Uncheck All').'" class="uncheck-all button btn btn-default" type="button">
+            <input type="submit" name="saveZ" class="s-btn btn btn-success save" value="' . __('Save P2P Records to Database') . '" /></div>';
+    // table header
+    $table->setHeader(array(__('Select'),__('Title'),__('Digital Files'),__('Detail')));
+    $table->table_header_attr = 'class="dataListHeader alterCell font-weight-bold"';
+    $table->setCellAttr(0, 0, '');
 
     $row = 1;
     foreach ($data['records'] as $record) {
+      $cb = '<input class="p2precord" type="checkbox" name="p2precord['.$record['id'].']" value="'.$record['id'].'">';
       if ($row > $max_fetch) {
         break;
       }
-
-      $row_class = ($row % 2 == 0) ? 'alterCell' : 'alterCell2';
-
       $authors = '';
       foreach ($record['authors'] as $author) {
         $authors .= $author['name'] . ' - ';
@@ -329,43 +352,100 @@ HTML;
         $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
         foreach ($record['digitals'] as $digital) {
           $file_name = str_replace('/', '', $digital['path']);
-          $digital_str .= '<li class="d-flex"><span class="pr-2"><input name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+          $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
         }
         $digital_str .= '<ul>';
       } else {
-        $digital_str .= '-';
+        // try get from detail xml
+        // construct full XML URI
+        $detail_uri = $p2pserver . "/index.php?p=show_detail&inXML=true&id=" . $record['id'];
+        // parse XML
+        $result = modsXMLsenayan($detail_uri, 'uri');
+        if (isset($result['records']) && isset($result['records'][0])) {
+            $detail = $result['records'][0];
+            if ( isset($detail['digitals'])) {
+                $digital_str .= '<ul style="padding: 0; margin: 0; list-style: none">';
+                foreach ($detail['digitals'] as $digital) {
+                    $file_name = str_replace('/', '', $digital['path']);
+                    $digital_str .= '<li class="d-flex"><span class="pr-2"><input class="p2pdigital" data-biblio="'.$record['id'].'" name="p2pdigital[' . $record['id'] . '][]" value="' . $digital['id'] . '" type="checkbox"></span><span>' . $file_name . '</span></li>';
+                }
+                $digital_str .= '<ul>';
+            } else {
+                $digital_str .= '-';
+            }
+        } else {
+            $digital_str .= '-';
+        }
       }
 
-      $image_uri = isset($record['image'])?$p2pserver . 'images/docs/' . $record['image']:'';
-      $image_str = isset($record['image'])?$record['image']:'';
+      $image_path = isset($record['image'])?$p2pserver . 'images/docs/' . $record['image']:'../images/default/image.png';
+
+      $image_uri = remoteFileExists($image_path)??'../images/default/image.png';
+
       $server = urlencode($p2pserver);
 
-      $row_str = <<<HTML
-<tr class="{$row_class}">
-    <th scope="row">
-        <input type="checkbox" name="p2precord[]" value="{$record['id']}" />
-    </th>
-    <td>
-        <img width="80" src="{$image_uri}" alt="{$image_str}">
-    </td>
-    <td>
-        <div>{$record['title']}</div>
-        <div><i>{$authors}</i></div>
-    </td>
-    <td>{$digital_str}</td>
-    <td><a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri={$server}&biblioID={$record['id']}" title="detail">detail</a></td>
-</tr>
-HTML;
-      echo $row_str;
-
+      $detail = '<a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri='.$server.'&biblioID='.$record['id'].'" title="detail">'.__('Detail').'</a>';
+      $title_content = '<div class="media">
+                    <img class="mr-3 rounded" src="'.$image_uri.'" alt="'.$image_uri.'" style="height:70px;">
+                    <div class="media-body">
+                      <div class="title">'.stripslashes($record['title']).'</div><div class="authors">'.$authors.'</div>
+                    </div>
+                  </div>';
+      
+      $table->appendTableRow(array($cb,$title_content,$digital_str,$detail));
+      // set cell attribute
+      $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
+      $table->setCellAttr($row, 0, 'class="'.$row_class.'" valign="top" style="width: 5px;"');
+      $table->setCellAttr($row, 1, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+      $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
+      $table->setCellAttr($row, 2, 'class="'.$row_class.'" valign="top" style="width: auto;"');
       $row++;
     }
-    echo '</table>' . "\n";
-    echo '<input type="hidden" name="p2pserver_save" value="' . $p2pserver . '" />';
-    echo '</form>';
+    echo $table->printTable();  
   } else {
     echo '<div class="errorBox">' . sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . '</div>';
   }
+  ?>
+<script>
+    $('.save').on('click', function (e) {
+    let p2precord = {}, p2pdigital = {};
+    let uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+    $(".p2precord:checked").each(function() {
+       p2precord[$(this).val()] = $(this).val();
+    });
+    $(".p2pdigital:checked").each(function() {
+        if (p2precord[$(this).data('biblio')] !== undefined) {
+            if (p2pdigital[$(this).data('biblio')] === undefined) p2pdigital[$(this).data('biblio')] = {};
+            p2pdigital[$(this).data('biblio')][$(this).val()] = $(this).val();
+        }
+    });
+
+    if (Object.keys(p2precord).length > 0) {
+        $.ajax({
+            url: uri,
+            type: 'post',
+            data: {saveResults: true, p2precord, p2pdigital }
+        })
+            .done(function (msg) {
+                //console.log(p2precord);
+                parent.toastr.success(Object.keys(p2precord).length+" records inserted into the database", "P2P Service");
+                parent.jQuery('#mainContent').simbioAJAX(uri)
+            })
+    } else {
+        alert('<?= __('No data selected!') ?>');
+    }
+
+    });
+    $(".uncheck-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', false);
+    });
+    $(".check-all").on('click',function (e){
+        e.preventDefault()
+        $('[type=checkbox]').prop('checked', true);
+    });
+</script>
+<?php
   exit();
 }
 /* SEARCH OPERATION END */

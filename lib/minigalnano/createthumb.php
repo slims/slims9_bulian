@@ -42,21 +42,21 @@ function genContentType($imagefilename)
 # Only accept JPG, PNG, GIF
 if (!((preg_match("/.jpg$|.jpeg$/i", $imagefilename)) OR (preg_match("/.gif$/i", $imagefilename)) OR (preg_match("/.png$/i", $imagefilename)))) {
   header('Content-type: image/png');
-  readfile('wrongcontenttype.png');
+  echo file_get_contents('wrongcontenttype.png');
   exit;
 }
 
 // Display error image if file isn't found
 if (!is_file($imagefilename)) {
   header('Content-type: image/png');
-  readfile('filenotfound.png');
+  echo file_get_contents('filenotfound.png');
   exit;
 }
 
 // Display error image if file exists, but can't be opened
 if (!is_readable($imagefilename)) {
   header('Content-type: image/png');
-  readfile('filecantbeopened.png');
+  echo file_get_contents('filecantbeopened.png');
   exit;
 }
 
@@ -82,7 +82,7 @@ $cache['file'] = $cache['folder'].$cache['prefix'].basename($imagefilename);
 if (file_exists($cache['file'])) {
   $cache['exist'] = true;
   genContentType($imagefilename);
-  readfile($cache['file']);
+  echo file_get_contents($cache['file']);
   exit;
 } else {
   $cache['exist'] = false;

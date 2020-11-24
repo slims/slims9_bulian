@@ -50,7 +50,7 @@ if (isset($_POST['resync'])) {
     if (!$dbs->error) {
         $aff_rows = $dbs->affected_rows;
         // record to log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take Re-Synchronization');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take Re-Synchronization', 'Re-Sync', 'OK');
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#resyncInfo\').html(\''.$aff_rows.' Stock Take\\\'s Item Data Successfully Synchronized!\');'."\n";
         echo 'parent.$(\'#resyncInfo\').css( {\'display\': \'block\'} );'."\n";

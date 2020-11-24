@@ -25,7 +25,7 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-if ($sysconf['allow_pdf_download']) {
+if (isset($sysconf['allow_pdf_download'])) {
   // do nothing
 }
 /* File Viewer */
@@ -60,7 +60,7 @@ if ($file_q->num_rows > 0) {
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="'.basename($file_loc).'"');
         header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
+        echo file_get_contents($file_loc);
         exit();
     } else {
       die('<div class="errorBox">File Not Found!</div>');

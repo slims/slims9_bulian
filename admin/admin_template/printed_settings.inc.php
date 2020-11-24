@@ -185,3 +185,10 @@ $sysconf['print']['membercard']['address'] = 'My Library<br />website: http://sl
 $sysconf['print']['membercard']['address_font_size'] = "7";
 $sysconf['print']['membercard']['address_left'] = "";
 $sysconf['print']['membercard']['address_top'] = "";
+
+// catalog card settings
+$sysconf['print']['catalog']['self_list_card'] = '1';
+$sysconf['print']['catalog']['title_card'] = '1';
+$sysconf['print']['catalog']['author_card'] = '1';
+$sysconf['print']['catalog']['subject_card'] = '1';
+

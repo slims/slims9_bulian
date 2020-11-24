@@ -36,11 +36,10 @@ if (!function_exists('addOrUpdateSetting')) {
   {
     global $dbs;
     $sql_op = new simbio_dbop($dbs);
-    
     foreach ($value as $key => $val) {
-      $settings[$key] = str_replace('\r\n','', $val);
+      $settings[$key] = trim(str_replace(array('\n', '\r','\t', '\\'), '', $val));
     }
-    $data['setting_value'] = serialize($settings);
+    $data['setting_value'] = $dbs->escape_string(serialize($settings));
 
     // save personalized user template
     if($name == 'admin_template'){
@@ -61,7 +60,6 @@ if (!function_exists('addOrUpdateSetting')) {
         if (!$insert) return $dbs->error;
       }
     }
-
     return true;
   }
 }
@@ -157,7 +155,12 @@ if (isset($_GET['customize'])) {
           $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
           $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
-          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
+          $value = $cf_default;
+          if (isset($sysconf[$theme_key][$cf_dbfield])) {
+              $value = $sysconf[$theme_key][$cf_dbfield];
+              if (gettype($cf_default) == 'integer') $value = intval($sysconf[$theme_key][$cf_dbfield]);
+          }
+          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $value, 'class="form-control"');
         } else if ($cfield['type'] == 'checklist') {
           $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
         } else if ($cfield['type'] == 'choice') {
@@ -180,7 +183,7 @@ if (isset($_GET['customize'])) {
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
   $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
-  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough']] ;</script>";
+  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Source','Bold','Italic','Underline','-','Link','Unlink', 'Anchor']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }
@@ -217,7 +220,7 @@ if($_SESSION['uid'] == '1'){
   foreach ($dir_tree as $dir) {
     $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
     if ($dir == $sysconf['template']['theme']) {
-      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp">' . __('Customize') . '</a>';
+      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp" width="600" height="500">' . __('Customize') . '</a>';
     }
 
     $output = '<div class="col-3">';

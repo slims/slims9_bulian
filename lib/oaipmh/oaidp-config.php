@@ -115,7 +115,7 @@ $identifyResponse["earliestDatestamp"] = '2011-01-01';
 // Currently if $record['deleted'] is set to 'true', $status_deleted is set.
 // Some lines in listidentifiers.php, listrecords.php, getrecords.php  
 // must be changed to fit the condition for your database.
-$identifyResponse["deletedRecord"] = 'no'; 
+$identifyResponse["deletedRecord"] = 'transient';
 $deletedRecord = $identifyResponse["deletedRecord"]; // a shorthand for checking the configuration of Deleted Records
 
 // MAY (only one)

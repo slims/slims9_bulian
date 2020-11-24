@@ -11,7 +11,12 @@ $namespaces = [
     "SLiMS\\" => "/",
     "Volnix\\CSRF\\" => "/csrf/src/",
     "Psr\\SimpleCache\\" => "/psr/simple-cache/src/",
-    "PhpOffice\\PhpSpreadsheet\\" => "/phpoffice/phpspreadsheet/src/PhpSpreadsheet/"
+    "PhpOffice\\PhpSpreadsheet\\" => "/phpoffice/phpspreadsheet/src/PhpSpreadsheet/",
+    "Ramsey\\Uuid\\" => "/uuid/src/",
+    "Ramsey\\Collection\\" => "/collection/src/",
+    "Brick\\Math\\" => "/math/src/",
+    "Ifsnop\\Mysqldump\\" => "/mysqldump-php/src/Ifsnop/Mysqldump/",
+    "PHPMailer\\PHPMailer\\" => "/PHPMailer/src/",
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {
