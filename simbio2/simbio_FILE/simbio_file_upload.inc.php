@@ -157,9 +157,11 @@ class simbio_file_upload extends simbio
         if($upload_start % 10000 == 0){
             $count = array('data'=>array('upload_progress' => ceil(($upload_start/$orig_file_size)*100).'%'));
         }
-        echo '<script type="text/javascript">';
-        echo 'console.log(\''.json_encode($count).'\')';
-        echo '</script>';
+        if (ENVIRONMENT === 'development') {
+            echo '<script type="text/javascript">';
+            echo 'console.log(\''.json_encode($count).'\')';
+            echo '</script>';
+        }
         $upload_start += strlen($contents);
         fseek($handle, $upload_start);
     }
