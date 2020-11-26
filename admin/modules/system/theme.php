@@ -155,7 +155,12 @@ if (isset($_GET['customize'])) {
           $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
           $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
-          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
+          $value = $cf_default;
+          if (isset($sysconf[$theme_key][$cf_dbfield])) {
+              $value = $sysconf[$theme_key][$cf_dbfield];
+              if (gettype($cf_default) == 'integer') $value = intval($sysconf[$theme_key][$cf_dbfield]);
+          }
+          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $value, 'class="form-control"');
         } else if ($cfield['type'] == 'checklist') {
           $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
         } else if ($cfield['type'] == 'choice') {

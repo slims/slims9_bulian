@@ -47,7 +47,7 @@ if ($file_q->num_rows > 0) {
 		utility::dlCount($dbs, $fileID, $memberID, $userID);
         header('Content-Disposition: inline; filename="'.basename($file_loc).'"');
         header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
+        echo file_get_contents($file_loc);
         exit();
     } else {
         if ($file_d['mime_type'] == 'text/uri-list') {
