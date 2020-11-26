@@ -7,7 +7,6 @@
 
 define('INDEX_AUTH', 1);
 require_once __DIR__ . '/../sysconfig.inc.php';
-require SB . 'admin/default/session.inc.php';
 
 if (!isset($_GET['mod']) && !isset($_GET['id'])) die('Plugin id not defined!');
 
