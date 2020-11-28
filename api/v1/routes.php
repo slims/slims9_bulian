@@ -38,7 +38,7 @@ $router->map('GET', '/item/total/all', 'ItemController@getTotalAll');
 $router->map('GET', '/item/total/lent', 'ItemController@getTotalLent');
 $router->map('GET', '/item/total/available', 'ItemController@getTotalAvailable');
 $router->map('GET', '/loan/summary', 'LoanController@getSummary');
-$router->map('GET', '/loan/getdate/[*:date]', 'LoanController@getDate');
+$router->map('GET', '/loan/getdate/[*:start_date]', 'LoanController@getDate');
 $router->map('GET', '/loan/summary/[*:date]', 'LoanController@getSummaryDate');
 
 /*----------  Run matching route  ----------*/
