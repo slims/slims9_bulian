@@ -132,6 +132,7 @@ if (isset($_GET['customize'])) {
     include_once $path;
     if (isset($sysconf[$theme_key]['option'][$theme_dir])) {
       utility::loadSettings($dbs);
+      utility::loadUserTemplate($dbs,$_SESSION['uid']);
       // create new instance
       $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
       $form->submit_button_attr = 'name="updateData" value="' . __('Save Settings') . '" class="btn btn-default"';
