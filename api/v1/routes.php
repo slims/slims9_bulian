@@ -29,6 +29,8 @@ $router->map('GET', '/biblio/latest', 'BiblioController@getLatest');
 $router->map('GET', '/subject/popular', 'SubjectController@getPopular');
 $router->map('GET', '/subject/latest', 'SubjectController@getLatest');
 $router->map('GET', '/member/top', 'MemberController@getTopMember');
+$router->map('GET', '/biblio/gmd/[*:gmd]', 'BiblioController@getByGmd');
+$router->map('GET', '/biblio/coll_type/[*:coll_type]', 'BiblioController@getByCollType');
 
 /*----------  Admin  ----------*/
 $router->map('GET', '/biblio/total/all', 'BiblioController@getTotalAll');
