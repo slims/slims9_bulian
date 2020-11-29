@@ -744,5 +744,8 @@ $sysconf['max_insert_batch'] = 100;
 /* Load balancing environment */
 $sysconf['load_balanced_env'] = false;
 
+// load helper
+require_once "lib/helper.inc.php";
+
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
