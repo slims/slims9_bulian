@@ -31,6 +31,12 @@ class Config
     private static $instance = null;
     private $configs = [];
 
+    public function __construct()
+    {
+        // load default config folder
+        $this->load(__DIR__ . '/../config');
+    }
+
     /**
      * Get instance of this class
      *
