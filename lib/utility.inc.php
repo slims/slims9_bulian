@@ -122,12 +122,10 @@ class utility
                 $_value = @unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
                     foreach ($_value as $_idx=>$_curr_value) {
-                      if($_idx){
-                        $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
-                      }
+                        $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = $_value;
+                    $sysconf[$_setting_data['setting_name']] = stripslashes($_value);
                 }
             }
         }
@@ -143,13 +141,8 @@ class utility
      */
     public static function havePrivilege($str_module_name, $str_privilege_type = 'r')
     {
-        global $sysconf;
         // checking checksum
-        if ($sysconf['load_balanced_env']) {
-            $server_addr = $_SERVER['REMOTE_ADDR'];
-        } else {
-            $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-        }
+        $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         $_checksum = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
         if ($_SESSION['checksum'] != $_checksum) {
             return false;
