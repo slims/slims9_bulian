@@ -32,7 +32,7 @@ if (!defined('INDEX_AUTH')) {
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', 'production');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -202,7 +202,7 @@ $sysconf['promote_first_emphasized'] = true;
 
 /* Dynamic Content */
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
-    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
+    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param><ul><ol><li>';
 
 /* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
 $sysconf['enable_mark'] = true;
@@ -740,6 +740,12 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
+
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+
+// load helper
+require_once "lib/helper.inc.php";
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();

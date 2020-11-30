@@ -50,7 +50,7 @@ $table->table_attr = 'class="s-table table table-bordered mb-0"';
 // total number of loan transaction
 $report_q = $dbs->query('SELECT COUNT(loan_id) FROM loan');
 $report_d = $report_q->fetch_row();
-$loan_report[__('Total Loan')] = $report_d[0];
+$loan_report[__('Total Loan')] = $report_d[0]??0;
 
 // total number of loan transaction by GMD/medium
 $report_q = $dbs->query('SELECT gmd_name, COUNT(loan_id) FROM loan AS l
@@ -93,15 +93,15 @@ $peak_transaction_data = $report_q->fetch_row();
 // transaction average per day
 $total_loan_days_query = $dbs->query('SELECT DISTINCT loan_date FROM loan');
 $total_loan_days = $total_loan_days_query->num_rows;
-$loan_report[__('Transaction Average (Per Day)')] = @ceil($loan_report[__('Total Loan Transactions')]/$total_loan_days);
+$loan_report[__('Transaction Average (Per Day)')] = $total_loan_days>0?@ceil($loan_report[__('Total Loan Transactions')]/$total_loan_days):0;
 
 // peak transaction
-$loan_report[__('Total Peak Transaction')] = $peak_transaction_data[0];
+$loan_report[__('Total Peak Transaction')] = $peak_transaction_data[0]??0;
 
 // total members having loans
 $report_q = $dbs->query('SELECT DISTINCT member_id FROM loan');
 $report_d = $report_q->num_rows;
-$loan_report[__('Members Already Had Loans')] = $report_d;
+$loan_report[__('Members Already Had Loans')] = $report_d??0;
 
 // total members having loans
 // get total member that already not expired
@@ -114,7 +114,7 @@ $loan_report[__('Members Never Have Loans Yet')] = $total_members_data[0]-$loan_
 $report_q = $dbs->query('SELECT COUNT(loan_id) FROM loan WHERE
     is_lent=1 AND is_return=0 AND TO_DAYS(due_date)<TO_DAYS(\''.date('Y-m-d').'\')');
 $report_d = $report_q->fetch_row();
-$loan_report[__('Total Overdued Loans')] = $report_d[0];
+$loan_report[__('Total Overdued Loans')] = $report_d[0]??0;
 
 // table header
 $table->setHeader(array(__('Loan Data Summary')));
