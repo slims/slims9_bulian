@@ -176,9 +176,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
       if ($sysconf['print']['barcode']['barcode_include_header_text']) { $html_str .= '<div class="labelHeaderStyle">'.($sysconf['print']['barcode']['barcode_header_text']?$sysconf['print']['barcode']['barcode_header_text']:$sysconf['library_name']).'</div>'; }
       // document title
       $html_str .= '<div style="font-size: 7pt;">';
-      if ($sysconf['print']['barcode']['barcode_cut_title'] && strlen($barcode[0]) > $sysconf['print']['barcode']['barcode_cut_title']) {
-        $html_str .= substr($barcode[0], 0, $sysconf['print']['barcode']['barcode_cut_title']).'...';
-      } else { $html_str .= $barcode[0]; }
+      if ($sysconf['print']['barcode']['barcode_cut_title']){
+        if (strlen($barcode[0]) > $sysconf['print']['barcode']['barcode_cut_title']) {
+          $html_str .= substr($barcode[0], 0, $sysconf['print']['barcode']['barcode_cut_title']).'...';
+        } else { $html_str .= $barcode[0]; }
+      }
       $html_str .= '</div>';
       //~ $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.str_replace(array(' '), '_', $barcode[1]).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
       $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.urlencode(urlencode($barcode[1])).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
