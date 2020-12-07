@@ -32,6 +32,9 @@ require_once '../sysconfig.inc.php';
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
 
+// receive json data if $_POST data empty
+if(empty($_POST)) $_POST = json_decode(file_get_contents('php://input'), true);
+
 // list limit
 $limit = 20;
 
@@ -67,6 +70,9 @@ $data = array();
 
 if (isset($_GET['format'])) {
   if ($_GET['format'] == 'json') {
+
+      header('Contenty-Type: application/json');
+
 	  if ($error) { echo json_encode(array('id' => 0, 'text' => $error)); }
 	  if ($query->num_rows > 0) {
 	    while ($row = $query->fetch_row()) {
