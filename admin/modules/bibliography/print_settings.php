@@ -114,7 +114,7 @@ $measure['print']['barcode']['barcode_box_height']          = __('(cm)');
 $measure['print']['barcode']['barcode_include_header_text'] = $visibility_options;
 
 
-$measure['print']['barcode']['barcode_cut_title']           = __('(0 if you want to not use title)');
+$measure['print']['barcode']['barcode_cut_title']           = __('(0 if you prefer without title)');
 $measure['print']['barcode']['barcode_header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['barcode']['barcode_fonts']               = __('(name of the font used)');
 $measure['print']['barcode']['barcode_font_size']           = __('(pt)');

@@ -57,6 +57,10 @@ Berikut ini `tag hook` yang tersedia:
 - **bibliography_after_update**: run after bibliography data updated successfully. The data updated available in params
 - **bibliography_on_delete**: run after data has been deleted. Bibliography ID available in param
 
+- **membership_init**: run on membership ready to go
+- **membership_before_update**: run after member data before updated
+- **membership_after_update**: run after member data after updated
+
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
 
 -----------
@@ -119,5 +123,9 @@ Available `tag hook` are:
 - **bibliography_before_update**: run before bibliography data tobe updated. The data will be update available in params
 - **bibliography_after_update**: run after bibliography data updated successfully. The data updated available in params
 - **bibliography_on_delete**: run after data has been deleted. Bibliography ID available in params
+
+- **membership_init**: run on membership ready to go
+- **membership_before_update**: run after member data before updated
+- **membership_after_update**: run after member data after updated
 
 By default, this plugin is inactive. You need to activate it in `System -> Plugins` menu

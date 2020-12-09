@@ -408,7 +408,7 @@ $('document').ready(function() {
           url: ajaxHandler,
           // data: 'tableName='+dataSourceTable+'&tableFields='+dataSourceCols,
           data: {tableName:dataSourceTable, tableFields:dataSourceCols},
-          dataType: 'json' },
+          dataType: 'json', contentType: 'application/json' },
           function (data) {
             var results = [];
             $.each(data, function (i, val) {
