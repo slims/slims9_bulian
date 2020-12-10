@@ -43,6 +43,11 @@
                 if (!(options.data != null)) {
                     options.data = {};
                 }
+
+                if (typeof options.data !== "object") {
+                    options.data = JSON.parse(options.data)
+                }
+
                 options.data[options.jsonTermKey] = val;
                 if (options.dataCallback != null) {
                     options.data = options.dataCallback(options.data);
