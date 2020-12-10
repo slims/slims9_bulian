@@ -65,18 +65,24 @@ if (isset($_POST['template'])) {
     //restore default settings
     $data = $sysconf['print']['membercard'];
   }
+
   //load custom css
   if(file_exists(UPLOAD.'membercard/' . $sysconf['print']['membercard']['template'] . '/style.css')){
     $data['css'] = file_get_contents(UPLOAD.'membercard/' . $sysconf['print']['membercard']['template']. '/style.css');
   }
 
   $data['template'] = utility::filterData('template', 'post', true, true, true);
+  
+  // execute registered hook
+  \SLiMS\Plugins::getInstance()->execute('membercard_theme_update', [$data]); 
+
   $update = addOrUpdateSetting('membercard_print_settings', $data);
   if ($update !== true) {
     utility::jsAlert(__('Error saving custom data!') . ' ' . $update);
   } else {
     utility::jsAlert(__('Custom data saved!'));
  }
+  
   exit();
 }
 
@@ -85,7 +91,10 @@ if (isset($_GET['customize'])) {
   ob_start();
   $theme_type = utility::filterData('customize', 'get', true, true, true);
   $theme_dir = utility::filterData('theme', 'get', true, true, true);
-  
+
+  // execute registered hook
+  \SLiMS\Plugins::getInstance()->execute('membercard_theme_customize', [$theme_dir]);  
+
   // include tinfo.inc.php
   $path = UPLOAD.'membercard/' . $theme_dir . '/tinfo.inc.php';
   $theme_key = 'membercard';
@@ -123,6 +132,8 @@ if (isset($_GET['customize'])) {
           $form->addDateField($cf_dbfield, $cf_label, $sysconf[$theme_key][$cf_dbfield] ?? $cf_default, 'class="form-control"');
         } else if ($cfield['type'] == 'hidden') {
           $form->addHidden($cf_dbfield, $sysconf[$theme_key][$cf_dbfield] ?? $cf_default);
+        } else if ($cfield['type'] == 'anything') {
+          $form->addAnything($cf_label,$cf_default);
         }
       }
       // print out the form object
@@ -162,12 +173,17 @@ if (isset($_GET['customize'])) {
 $template_dir = UPLOAD.'membercard';
 $dir = new simbio_directory($template_dir);
 $dir_tree = $dir->getDirectoryTree(1);
+
 // sort array by index
 ksort($dir_tree);
+
 echo '<div class="container-fluid">';
 echo '<div class="row">';
 echo '<div class="col-12 my-3">
       </div>';
+
+// execute registered hook
+ \SLiMS\Plugins::getInstance()->execute('membercard_theme_init', []);
 
 $default_template = $sysconf['membercard_print_settings']['template']??'classic';
 foreach ($dir_tree as $dir) {
@@ -179,7 +195,7 @@ foreach ($dir_tree as $dir) {
   $output = '<div class="col-3">';
   $output .= '<div class="card border-0 mb-4">';
   $output .= '<div class="card-body">';
-  $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
+  $output .= '<div class="mb-2 font-weight-bold">' . ucwords(str_replace('_', ' ', $dir)) . '</div>';
   $preview = file_exists(UPLOAD.'membercard/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
   $output .= '<img class="card-img-top rounded" src="../files/membercard/'. $dir . '/'.$preview.'" height="150" />';
   $output .= '</div>';
@@ -206,7 +222,7 @@ echo '</div>';
                     data: {theme: 'membercard', template: theme}
                 }).done(function (msg) {
                     $('a.btn-success.customeMembercardTheme').removeClass('btn-success customeMembercardTheme openPopUp').addClass('btn-default setMembercardTheme').text('<?php echo __('Activate') ?>');
-                    current.removeClass('btn-default setMembercardTheme').addClass('btn-success customeMembercardTheme openPopUp').text('<?php echo __('Customize') ?>');
+                    current.removeClass('btn-default setMembercardTheme').addClass('btn-success customeMembercardTheme openPopUp').attr({'title': '<?= __('Membercard Configuration') ?>', 'width': '800','height':'500'}).text('<?php echo __('Customize') ?>');
                 });
             });
 
