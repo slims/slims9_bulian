@@ -44,6 +44,12 @@ $can_read = utility::havePrivilege('stock_take', 'r');
 $can_write = utility::havePrivilege('stock_take', 'w');
 if (!$can_read) die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 
+// make sure stock_take_item table not reinitialize yet
+$id = (int)utility::filterData('id');
+$stock_q = $dbs->query("SELECT stock_take_id FROM stock_take ORDER BY stock_take_id DESC LIMIT 1");
+$stock_d = $stock_q->fetch_row();
+if ($stock_d[0] != $id) die('<div class="errorBox">'.__('Sorry, data not available!').'</div>');
+
 // required other library
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
