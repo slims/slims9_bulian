@@ -71,7 +71,8 @@ $spreadsheet->getActiveSheet()
                    //    we want to set these values (default is A1)
   );
 $writer = new Xlsx($spreadsheet);
+$tblout = $_SESSION['tblout'] ?? 'spreadsheet';
 header("Content-Type: application/xlsx");
-header("Content-Disposition: attachment; filename=spreadsheet.xlsx");
+header("Content-Disposition: attachment; filename=$tblout.xlsx");
 header("Pragma: no-cache");
 $writer->save('php://output');
