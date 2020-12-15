@@ -40,6 +40,15 @@ Drajat Hasan (drajathasan20@gmail.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.x.x (Bulian)
+========================================================================
+Added : Stock take report detail per user
+Fixed : Unknown host while install in paid hosting environment
+Fixed : Barcode cut title
+Fixed : Problem with mod_security when add some data in Bibliography Module
+Fixed : Function to downlad attachment in paid hosting environment
+Added : Support for load balanced environment
+
 SLiMS 9.3.1 (Bulian)
 ========================================================================
 Fix : upgrade error.
