@@ -34,6 +34,7 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('Theme'), MWB.'system/theme.php', __('Configure theme Preferences'));
     $menu[] = array(__('Plugins'), MWB . 'system/plugins.php');
     $menu[] = array(__('Custom Field'), MWB.'system/custom_field.php', __('Configure custom field'));
+    $menu[] = array(__('Session Handler'), MWB.'system/session_handler.php', __('Configure session storage'));
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus

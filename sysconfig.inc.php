@@ -577,6 +577,19 @@ $sysconf['chat_system']['librarian']  	= false;
 $sysconf['chat_system']['server']  		= '127.0.0.1';
 $sysconf['chat_system']['server_port']  = 9300;
 
+/* Session Handler */
+$sysconf['session']['handler'] = 'files'; // other handler : redis
+/* Native Handler */
+$sysconf['session']['files']['path'] = ''; // custom storage path, leave it blank for default path
+/* 3rd party handler */
+/* Redis */
+if (class_exists('Redis'))
+{
+  $sysconf['session']['redis']['host'] = 'localhost';
+  $sysconf['session']['redis']['port'] = 6379; 
+  $sysconf['session']['redis']['options'] = ['auth' => 'pass', 'database' => 0, 'prefix' => 'SLiMS_Session:']; 
+}
+
 /* NEWS */
 $sysconf['news']['num_each_page'] = 10;
 

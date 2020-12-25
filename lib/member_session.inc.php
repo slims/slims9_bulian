@@ -33,6 +33,8 @@ if (!defined('INDEX_AUTH')) {
 @ini_set('session.use_cookies', true);
 // use more secure session ids
 @ini_set('session.hash_function', 1);
+// set session handler
+\SLiMS\SessionHandler::set($sysconf['session']['handler']);
 // no cache
 @session_cache_limiter('nocache');
 // set session name and start the session

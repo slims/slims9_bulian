@@ -369,9 +369,6 @@ $options[] = array('0', __('Forbid'));
 $options[] = array('1', __('Allow'));
 $form->addSelectList('allow_file_download', __('Allow OPAC File Download'), $options, $sysconf['allow_file_download']?'1':'0','class="form-control col-3"');
 
-// session timeout
-$form->addTextField('text', 'session_timeout', __('Session Login Timeout'), $sysconf['session_timeout'], 'style="width: 10%;" class="form-control"');
-
 // barcode encoding
 $form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encoding, $sysconf['barcode_encoding'],'class="form-control col-3"');
 
