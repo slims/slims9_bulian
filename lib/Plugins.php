@@ -98,10 +98,28 @@ class Plugins
                         $this->plugins[$plugin->id] = $plugin;
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
-                    $this->deep++;
-                    // get plugins from sub folder location
-                    // deep level directory that will be scanned
-                    if ($this->deep < 3) $this->getPluginsInfo($path);
+                    // first directory without sub
+                    $havePlugin = preg_grep('/.plugin.php/i', scandir($path));
+                    // check plugin
+                    if (count($havePlugin))
+                    {
+                        // reset index of array
+                        array_multisort($havePlugin, SORT_DESC);
+                        // set file path
+                        $file   = $path . DS . $havePlugin[0];
+                        // get plugin info
+                        $plugin = $this->getPluginInfo($file);
+                        // set up plugin
+                        $this->plugins[$plugin->id] = $plugin;
+                    }
+                    else
+                    {
+                        $this->deep++;
+                        // echo $path.' deep at '.$this->deep.'<br>'; // for debugging
+                        // get plugins from sub folder location
+                        // deep level directory that will be scanned
+                        if ($this->deep < 3) $this->getPluginsInfo($path);
+                    }
                 }
             }
             closedir($dir);
