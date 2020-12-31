@@ -80,7 +80,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $keywords = trim(strip_tags(urldecode($_GET['keywords'])));
   }
   if ($keywords && !preg_match('@[a-z0-9_.]+=[^=]+\s+@i', $keywords.' ')) {
-    $criteria = 'title='.$keywords.' OR author='.$keywords.' OR subject='.$keywords;
+    $criteria = 'title='.$keywords.' OR author='.$keywords.' OR subject='.$keywords.' OR notes='.$keywords;
     $biblio_list->setSQLcriteria($criteria);
   } else {
     $biblio_list->setSQLcriteria($keywords);
@@ -106,6 +106,10 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     if (isset($_GET['isbn'])) {
       $isbn = trim(strip_tags(urldecode($_GET['isbn'])));
     }
+    $notes = '';
+    if (isset($_GET['notes'])) {
+      $notes = trim(strip_tags(urldecode($_GET['notes'])));
+    }
     $gmd = '';
     if (isset($_GET['gmd'])) {
       $gmd = trim(strip_tags(urldecode($_GET['gmd'])));
@@ -127,7 +131,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
       $callnumber = trim(strip_tags(urldecode($_GET['callnumber'])));
     }
     // don't do search if all search field is empty
-    if ($title || $author || $subject || $isbn || $gmd || $colltype || $location || $publisher || $callnumber !== '') {
+    if ($title || $author || $subject || $isbn || $gmd || $colltype || $location || $publisher || $callnumber || $notes !== '') {
       $criteria = '';
       if ($title) { $criteria .= ' title='.$title; }
       if ($author) { $criteria .= ' author='.$author; }
@@ -138,6 +142,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
       if ($location) { $criteria .= ' location="'.$location.'"'; }
       if ($publisher) { $criteria .= ' publisher="'.$publisher.'"'; }
       if ($callnumber !== '') { $criteria .= ' callnumber="'.$callnumber.'"'; }
+      if ($notes !== '') { $criteria .= ' notes="'.$notes.'"'; }
       $criteria = trim($criteria);
       $biblio_list->setSQLcriteria($criteria);
     }
@@ -163,6 +168,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     if ($author) { $search_result_info .= __('Author').' : <strong><cite>'.$author.'</cite></strong>, '; }
     if ($subject) { $search_result_info .= __('Subject').' : <strong><cite>'.$subject.'</cite></strong>, '; }
     if ($isbn) { $search_result_info .= __('ISBN/ISSN').' : <strong><cite>'.$isbn.'</cite></strong>, '; }
+    if ($notes) { $search_result_info .= __('Abstract/Notes').' : <strong><cite>'.$notes.'</cite></strong>, '; }
     if ($gmd) { $search_result_info .= __('GMD').' : <strong><cite>'.$gmd.'</cite></strong>, '; }
     if ($colltype) { $search_result_info .= __('Collection Type').' : <strong><cite>'.$colltype.'</cite></strong>, '; }
     if ($location) { $search_result_info .= __('Location').' : <strong><cite>'.$location.'</cite></strong>, '; }
