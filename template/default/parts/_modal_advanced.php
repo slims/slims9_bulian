@@ -53,6 +53,16 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
+                            <label for="adv-subject"><?=__('Abstract/Notes');?></label>
+                            <input type="text" name="notes" class="form-control" id="adv-notes"
+                                   placeholder="<?=__('Enter search word'); ?>">
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
                             <label for="adv-coll-type"><?=__('Collection Type');?></label>
                             <select name="colltype" class="form-control"
                                     id="adv-coll-type"><?=$colltype_list; ?></select>
