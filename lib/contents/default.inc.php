@@ -80,7 +80,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $keywords = trim(strip_tags(urldecode($_GET['keywords'])));
   }
   if ($keywords && !preg_match('@[a-z0-9_.]+=[^=]+\s+@i', $keywords.' ')) {
-    $criteria = 'title='.$keywords.' OR author='.$keywords.' OR subject='.$keywords.' OR notes='.$keywords;
+    $criteria = 'title='.$keywords.' OR author='.$keywords.' OR subject='.$keywords.' OR notes='.$keywords.' OR publisher='.$keywords;
     $biblio_list->setSQLcriteria($criteria);
   } else {
     $biblio_list->setSQLcriteria($keywords);

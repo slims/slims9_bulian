@@ -58,7 +58,13 @@
                                    placeholder="<?=__('Enter search word'); ?>">
                         </div>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="adv-subject"><?=__('Publisher');?></label>
+                            <input type="text" name="publisher" class="form-control" id="adv-publisher"
+                                   placeholder="<?=__('Enter publisher'); ?>">
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col">
