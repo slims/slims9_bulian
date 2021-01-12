@@ -249,7 +249,7 @@ $sysconf['scanner'] = false;
 $sysconf['book_cover'] = true;
 
 /* Barcode Reader */
-$sysconf['barcode_reader'] = true;
+$sysconf['barcode_reader'] = false;
 
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
