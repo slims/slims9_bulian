@@ -32,7 +32,7 @@ if (!defined('INDEX_AUTH')) {
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'production');
+define('ENVIRONMENT', 'development');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -351,6 +351,14 @@ $sysconf['currencies'] = array( array('0', 'NONE'), 'Rupiah', 'USD', 'Euro', 'DM
 
 /* RESERVE PERIODE (In Days) */
 $sysconf['reserve_expire_periode'] = 7;
+
+// false = send reserve via email
+// true  = reservation will saved directly into reserve table
+$sysconf['reserve_direct_database'] = true;
+
+// false = reserve all item, ignoring loan status
+// true  = only item on loan can be reserved
+$sysconf['reserve_on_loan_only'] = false;
 
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
