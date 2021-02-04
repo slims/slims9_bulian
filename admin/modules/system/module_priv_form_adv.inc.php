@@ -58,6 +58,11 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
                     if (file_exists($submenu_path)) include $submenu_path;
                     $submenu = '<ul class="list-group list-group-flush">';
                     $submenu .= '<li class="list-group-item text-bold">'.__('Enable or disable submenu').'</li>';
+
+                    // load submenu from plugins
+                    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($module_data['module_path']);
+                    $menu = array_merge($menu, $plugin_menus);
+
                     foreach ($menu as $item) {
                         if ($item[0] == 'Header') continue;
                         $id = md5($item[1]);
