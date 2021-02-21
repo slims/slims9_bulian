@@ -279,6 +279,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                   @$sql_op->insert('member_custom', $custom_data);
                 }
 
+                \SLiMS\Plugins::getInstance()->execute('membership_after_save', ['data' => api::member_load($dbs, $data['member_id'])]);
+
                 utility::jsAlert(__('New Member Data Successfully Saved'));
                 // upload status alert
                 if (isset($upload_status)) {
