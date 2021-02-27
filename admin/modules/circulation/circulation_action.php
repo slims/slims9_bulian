@@ -85,7 +85,7 @@ if (isset($_POST['finish'])) {
         visitOnLoan($memberID);
         // hook method on after successful transaction
         if (isset($_SESSION['receipt_record'])) {
-            \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => $_SESSION['receipt_record']));
+            \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
         }
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')', 'Transaction', 'finished');
