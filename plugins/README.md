@@ -60,6 +60,9 @@ Berikut ini `tag hook` yang tersedia:
 - **membership_init**: run on membership ready to go
 - **membership_before_update**: run after member data before updated
 - **membership_after_update**: run after member data after updated
+- **membership_after_save**: run after new member data is created/saved
+
+- **circulation_after_successful_transaction**: run after circulation transaction is done
 
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
 
