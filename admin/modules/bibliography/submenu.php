@@ -24,18 +24,18 @@
 do_checkIP('smc');
 do_checkIP('smc-bibliography');
 
-$menu[] = array('Header', __('Bibliographic'));
+$menu[] = array('Header', __('BIBLIOGRAPHIC'));
 $menu[] = array(__('Bibliographic List'), MWB.'bibliography/index.php', __('Show Existing Bibliographic Data'));
 $menu[] = array(__('Add New Bibliography'), MWB.'bibliography/index.php?action=detail', __('Add New Bibliographic Data/Catalog'));
-$menu[] = array('Header', __('Items'));
+$menu[] = array('Header', __('ITEMS'));
 $menu[] = array(__('Item List'), MWB.'bibliography/item.php', __('Show List of Library Items'));
 $menu[] = array(__('Checkout Items'), MWB.'bibliography/checkout_item.php', __('Show List of Checkout Items'));
-$menu[] = array('Header', __('Copy Cataloguing'));
+$menu[] = array('Header', __('COPY CATALOGUING'));
 $menu[] = array(__('MARC SRU'), MWB.'bibliography/marcsru.php', __('Grab Bibliographic Data from Other MARC Services'));
 $menu[] = array(__('Z3950 SRU'), MWB.'bibliography/z3950sru.php', __('Grab Bibliographic Data from Z3950 SRU Web Services'));
 //$menu[] = array(__('Z3950 Service'), MWB.'bibliography/z3950.php', __('Grab Bibliographic Data from Z3950 Web Services'));
 $menu[] = array(__('P2P Service'), MWB.'bibliography/p2p.php', __('Grab Bibliographic Data from Other SLiMS Web Services'));
-$menu[] = array('Header', __('Tools'));
+$menu[] = array('Header', __('TOOLS'));
 $menu[] = array(__('Labels Printing'), MWB.'bibliography/dl_print.php', __('Print Document Labels'));
 $menu[] = array(__('Item Barcodes Printing'), MWB.'bibliography/item_barcode_generator.php', __('Print Item Barcodes'));
 $menu[] = array(__('MARC Export'), MWB.'bibliography/marcexport.php', __('Export Bibliographic Data to MARC file'));
