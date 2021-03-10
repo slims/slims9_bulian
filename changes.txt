@@ -37,11 +37,13 @@ Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationfors
 
 Code enhancement contributors:
 Drajat Hasan (drajathasan20@gmail.com)
+John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Option for reservation from member area to appear in Reservation sub-menu in Circulation module
 Added : Stock take report detail per user
 Fixed : Unknown host while install in paid hosting environment
 Fixed : Barcode cut title
