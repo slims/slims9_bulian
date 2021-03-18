@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 26;
+  private $version = 27;
 
   /**
    * @param SLiMS $slims
