@@ -57,6 +57,18 @@ define('CURR_PASSWD_WRONG', -1);
 define('PASSWD_NOT_MATCH', -2);
 define('CANT_UPDATE_PASSWD', -3);
 
+if (isset($_GET['destination'])) {
+    $destination = $_GET['destination'];
+    if (isset($_GET['fid'])) {
+        $destination .= '&fid='.$_GET['fid'];
+    }
+    if (isset($_GET['bid'])) {
+        $destination .= '&bid='.$_GET['bid'];
+    }
+} else {
+    $destination = FALSE;
+}
+
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
@@ -119,7 +131,11 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
-            header('Location: index.php?p=member');
+            if ($destination) {
+                header("location:$destination");
+            } else {
+                header('Location: index.php?p=member');
+            }
             exit();
         } else {
             // write log
@@ -898,7 +914,7 @@ if ($is_member_login) :
         ?>
         <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member" method="post">
+            <form action="index.php?p=member&destination=<?php echo $destination; ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>
