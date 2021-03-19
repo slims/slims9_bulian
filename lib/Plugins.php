@@ -207,7 +207,12 @@ class Plugins
     public function registerMenu($module_name, $label, $path, $description = null)
     {
         $hash = md5(realpath($path));
-        $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
+        if ($module_name === 'opac') {
+            $name = strtolower(implode('_', explode(' ', $label)));
+            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $module_name, $description, realpath($path)];
+        } else {
+            $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
+        }
     }
 
     public function execute($hook, $params = [])
