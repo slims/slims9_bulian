@@ -469,3 +469,23 @@ $('document').ready(function() {
   // loader
   if ($(this).registerLoader !== undefined) $(this).registerLoader();
 });
+
+// hidden feature :-D
+let n = 0;
+$(document).keydown(function(event){
+  if(event.which === 17) {
+    $('.menu.home').click( e => {
+      e.preventDefault()
+      if (n < 1) {
+        let urls = window.location.href.split('/admin')
+        window.open(urls[0])
+        n++;
+      }
+    })
+  }
+})
+
+$(document).keyup(() => {
+  n = 0;
+  $('.menu.home').unbind('click').click()
+})
