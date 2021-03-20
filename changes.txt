@@ -43,6 +43,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Option to not using email for reservation from Member Area
 Added : Flexibility to add page content using plugin system
 Added : More configuration for system migration
 Added : Ctrl + Home (module) to access OPAC instantly from Administration page
