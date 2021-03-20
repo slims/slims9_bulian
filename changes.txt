@@ -43,6 +43,10 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.x.x (Bulian)
 ========================================================================
+Added : Flexibility to add page content using plugin system
+Added : More configuration for system migration
+Added : Ctrl + Home (module) to access OPAC instantly from Administration page
+Fixed : Member login when accessing protected attachments
 Added : Option for reservation from member area to appear in Reservation sub-menu in Circulation module
 Added : Stock take report detail per user
 Fixed : Unknown host while install in paid hosting environment
