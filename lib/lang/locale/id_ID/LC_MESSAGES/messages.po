@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-20 22:35+0700\n"
-"PO-Revision-Date: 2021-03-20 22:35+0700\n"
+"POT-Creation-Date: 2021-03-21 15:18+0700\n"
+"PO-Revision-Date: 2021-03-21 15:18+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -126,15 +126,11 @@ msgstr "Selalu Tunjukkan Jalur Gulung"
 #: admin/modules/membership/index.php:557
 #: admin/modules/stock_take/finish.php:185 admin/modules/system/content.php:221
 #: admin/modules/system/index.php:320
-#: plugins/label_barcode_classic/tinfo.inc.php:136
-#: plugins/label_barcode_classic/tinfo.inc.php:236
 msgid "Yes"
 msgstr "Ya"
 
 #: admin/admin_template/default/tinfo.inc.php:18
 #: admin/modules/system/content.php:220
-#: plugins/label_barcode_classic/tinfo.inc.php:137
-#: plugins/label_barcode_classic/tinfo.inc.php:237
 msgid "No"
 msgstr "Tidak"
 
@@ -376,9 +372,7 @@ msgstr "Keterlambatan"
 #: admin/modules/serial_control/index.php:52
 #: admin/modules/serial_control/kardex.php:47
 #: admin/modules/serial_control/subscription.php:49
-#: plugins/inlislite_copy_cataloging/index.php:35
-#: plugins/label_barcode/index.php:30
-#: plugins/label_barcode_classic/index.php:30 plugins/read_counter/index.php:40
+#: plugins/label_barcode/index.php:30 plugins/read_counter/index.php:40
 msgid "You are not authorized to view this section"
 msgstr "Anda tidak memiliki wewenang untuk masuk ke bagian ini"
 
@@ -523,12 +517,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/system/module.php:149 admin/modules/system/module.php:151
 #: admin/modules/system/sys_log.php:86 admin/modules/system/sys_log.php:88
 #: admin/modules/system/user_group.php:189
-#: admin/modules/system/user_group.php:191
-#: plugins/inlislite_copy_cataloging/index.php:126
-#: plugins/inlislite_copy_cataloging/index.php:146
-#: plugins/label_barcode/index.php:293 plugins/label_barcode/index.php:295
-#: plugins/label_barcode_classic/index.php:354
-#: plugins/label_barcode_classic/index.php:356
+#: admin/modules/system/user_group.php:191 plugins/label_barcode/index.php:293
+#: plugins/label_barcode/index.php:295
 #: template/akasia-dz/index_template.inc.php:96
 #: template/akasia-dz/index_template.inc.php:208
 #: template/akasia/index_template.inc.php:111
@@ -576,8 +566,6 @@ msgstr "Cari"
 #: lib/contents/download_loan_history.inc.php:61
 #: lib/contents/member.inc.php:371 lib/contents/member.inc.php:417
 #: plugins/label_barcode/index.php:332 plugins/label_barcode/index.php:340
-#: plugins/label_barcode_classic/index.php:389
-#: plugins/label_barcode_classic/index.php:397
 #: plugins/read_counter/index.php:82
 msgid "Item Code"
 msgstr "Kode Eksemplar"
@@ -674,10 +662,7 @@ msgstr "ID Anggota"
 #: lib/contents/download_loan_history.inc.php:62
 #: lib/contents/member.inc.php:372 lib/contents/member.inc.php:418
 #: lib/contents/member.inc.php:453 lib/detail.inc.php:261
-#: plugins/inlislite_copy_cataloging/index.php:171
 #: plugins/label_barcode/index.php:331 plugins/label_barcode/index.php:339
-#: plugins/label_barcode_classic/index.php:391
-#: plugins/label_barcode_classic/index.php:399
 #: plugins/read_counter/index.php:82 template/akasia/partials/advsearch.php:16
 #: template/default/parts/_modal_advanced.php:24
 #: template/lightweight/partials/advsearch.php:16
@@ -753,7 +738,6 @@ msgstr "Tanggal Kembali"
 #: admin/modules/system/holiday.php:267 admin/modules/system/module.php:226
 #: admin/modules/system/sys_log.php:142 admin/modules/system/user_group.php:276
 #: plugins/label_barcode/index.php:379
-#: plugins/label_barcode_classic/index.php:435
 msgid "Found <strong>{result->num_rows}</strong> from your keywords"
 msgstr ""
 "Ditemukan <strong>{result->num_rows}</strong> dari kata kunci yang Anda "
@@ -764,7 +748,6 @@ msgstr ""
 #: admin/modules/bibliography/printed_card.php:91
 #: admin/modules/membership/member_card_generator.php:98
 #: plugins/label_barcode/index.php:99
-#: plugins/label_barcode_classic/index.php:117
 msgid ""
 "Selected items NOT ADDED to print queue. Only {max_print} can be printed at "
 "once"
@@ -778,7 +761,6 @@ msgstr ""
 #: admin/modules/bibliography/printed_card.php:96
 #: admin/modules/membership/member_card_generator.php:103
 #: plugins/label_barcode/index.php:103
-#: plugins/label_barcode_classic/index.php:120
 msgid "Selected items added to print queue"
 msgstr "Berkas terpilih ditambahkan pada antrian cetak"
 
@@ -787,7 +769,6 @@ msgstr "Berkas terpilih ditambahkan pada antrian cetak"
 #: admin/modules/bibliography/printed_card.php:103
 #: admin/modules/membership/member_card_generator.php:55
 #: plugins/label_barcode/index.php:110
-#: plugins/label_barcode_classic/index.php:129
 msgid "Print queue cleared!"
 msgstr "Antrian cetak dihapus!"
 
@@ -798,7 +779,6 @@ msgstr "Antrian cetak dihapus!"
 #: admin/modules/membership/member_card_generator.php:112
 #: admin/modules/membership/member_card_generator.php:116
 #: plugins/label_barcode/index.php:120
-#: plugins/label_barcode_classic/index.php:196
 msgid "There is no data to print!"
 msgstr "Tidak ada data untuk dicetak!"
 
@@ -831,7 +811,6 @@ msgstr ""
 #: admin/modules/bibliography/printed_card.php:308
 #: admin/modules/membership/member_card_generator.php:196
 #: plugins/label_barcode/index.php:284
-#: plugins/label_barcode_classic/index.php:350
 msgid "Clear Print Queue"
 msgstr "Batalkan Antrian Cetak"
 
@@ -849,7 +828,6 @@ msgstr "Ubah setelan cetak label"
 #: admin/modules/bibliography/printed_card.php:320
 #: admin/modules/membership/member_card_generator.php:207
 #: admin/modules/system/app_user.php:351 plugins/label_barcode/index.php:301
-#: plugins/label_barcode_classic/index.php:361
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -858,7 +836,6 @@ msgstr "Maksimum"
 #: admin/modules/bibliography/printed_card.php:320
 #: admin/modules/membership/member_card_generator.php:207
 #: plugins/label_barcode/index.php:301
-#: plugins/label_barcode_classic/index.php:361
 msgid "records can be printed at once. Currently there is"
 msgstr "cantuman bisa dicetak pada saat bersamaan. Saat ini terdapat"
 
@@ -867,7 +844,6 @@ msgstr "cantuman bisa dicetak pada saat bersamaan. Saat ini terdapat"
 #: admin/modules/bibliography/printed_card.php:324
 #: admin/modules/membership/member_card_generator.php:211
 #: plugins/label_barcode/index.php:307
-#: plugins/label_barcode_classic/index.php:365
 msgid "in queue waiting to be printed."
 msgstr "dalam antrian menunggu untuk dicetak."
 
@@ -885,8 +861,6 @@ msgstr "dalam antrian menunggu untuk dicetak."
 #: admin/modules/stock_take/lost_item_list.php:144
 #: lib/contents/default.inc.php:170 plugins/label_barcode/index.php:332
 #: plugins/label_barcode/index.php:340
-#: plugins/label_barcode_classic/index.php:390
-#: plugins/label_barcode_classic/index.php:398
 #: template/akasia-dz/custom_frontpage_record.inc.php:10
 #: template/akasia-dz/detail_template.php:57
 #: template/akasia/custom_frontpage_record.inc.php:10
@@ -903,9 +877,8 @@ msgstr "No. Panggil"
 #: admin/modules/bibliography/marcexport.php:256
 #: admin/modules/bibliography/printed_card.php:393
 #: admin/modules/membership/member_card_generator.php:251
-#: plugins/label_barcode/index.php:370
-#: plugins/label_barcode_classic/index.php:426
-#: plugins/read_counter/index.php:73 template/akasia-dz/visitor_template.php:60
+#: plugins/label_barcode/index.php:370 plugins/read_counter/index.php:73
+#: template/akasia-dz/visitor_template.php:60
 #: template/akasia/visitor_template.php:60
 #: template/lightweight/visitor_template.php:60
 msgid "Add"
@@ -924,7 +897,6 @@ msgstr "Tambahkan Dalam Antrian"
 #: admin/modules/bibliography/printed_card.php:395
 #: admin/modules/membership/member_card_generator.php:253
 #: plugins/label_barcode/index.php:372
-#: plugins/label_barcode_classic/index.php:428
 msgid "Add to print queue?"
 msgstr "Tambahkan dalam antrian cetak?"
 
@@ -935,7 +907,6 @@ msgstr "Tambahkan dalam antrian cetak?"
 #: admin/modules/bibliography/marcexport.php:266
 #: admin/modules/bibliography/printed_card.php:403
 #: lib/contents/default.inc.php:209 plugins/label_barcode/index.php:380
-#: plugins/label_barcode_classic/index.php:436
 msgid "Query took"
 msgstr "Permintaan membutuhkan"
 
@@ -946,7 +917,6 @@ msgstr "Permintaan membutuhkan"
 #: admin/modules/bibliography/marcexport.php:266
 #: admin/modules/bibliography/printed_card.php:403
 #: lib/contents/default.inc.php:209 plugins/label_barcode/index.php:380
-#: plugins/label_barcode_classic/index.php:436
 msgid "second(s) to complete"
 msgstr "detik untuk selesai"
 
@@ -1368,7 +1338,6 @@ msgstr "Semua Ruas"
 #: admin/modules/bibliography/marcsru.php:443
 #: admin/modules/bibliography/z3950.php:293
 #: admin/modules/bibliography/z3950sru.php:316
-#: plugins/inlislite_copy_cataloging/index.php:133
 msgid "Title/Series Title"
 msgstr "Judul/Judul Seri"
 
@@ -1382,7 +1351,6 @@ msgstr "Topik"
 #: admin/modules/bibliography/pop_p2p.php:54
 #: admin/modules/bibliography/z3950.php:293
 #: admin/modules/bibliography/z3950sru.php:316
-#: plugins/inlislite_copy_cataloging/index.php:134
 msgid "Authors"
 msgstr "Pengarang"
 
@@ -1401,7 +1369,6 @@ msgstr "Pengarang"
 #: admin/modules/reporting/customs/titles_list.php:131
 #: admin/modules/reporting/customs/titles_list.php:259
 #: admin/modules/serial_control/index.php:70 lib/contents/default.inc.php:165
-#: plugins/inlislite_copy_cataloging/index.php:132
 #: template/akasia-dz/custom_frontpage_record.inc.php:7
 #: template/akasia-dz/detail_template.php:87
 #: template/akasia/custom_frontpage_record.inc.php:7
@@ -1428,9 +1395,7 @@ msgstr "ISBN/ISSN"
 #: admin/modules/reporting/customs/pop_procurement_list.php:160
 #: admin/modules/reporting/customs/titles_list.php:130
 #: admin/modules/reporting/customs/titles_list.php:258
-#: lib/contents/default.inc.php:169
-#: plugins/inlislite_copy_cataloging/index.php:171
-#: template/akasia-dz/detail_template.php:64
+#: lib/contents/default.inc.php:169 template/akasia-dz/detail_template.php:64
 #: template/akasia/detail_template.php:64
 #: template/default/detail_template.php:46
 #: template/lightweight/detail_template.php:64
@@ -1608,7 +1573,7 @@ msgstr "Catatan"
 #: admin/modules/system/custom_field.php:210
 #: admin/modules/system/holiday.php:211 admin/modules/system/module.php:182
 #: admin/modules/system/user_group.php:222 lib/contents/login.inc.php:224
-#: lib/contents/newpass.inc.php:103 plugins/label_barcode_classic/index.php:156
+#: lib/contents/newpass.inc.php:103
 msgid "Update"
 msgstr "Perbaharui"
 
@@ -1911,7 +1876,6 @@ msgstr "Nomor publikasi yang unik dari setiap judul cetakan."
 #: admin/modules/bibliography/index.php:911
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/reporting/customs/pop_procurement_list.php:161
-#: plugins/inlislite_copy_cataloging/index.php:171
 msgid "Publishing Year"
 msgstr "Tahun Terbit"
 
@@ -1923,7 +1887,6 @@ msgstr "Tahun Terbit"
 #: admin/modules/reporting/customs/pop_procurement_list.php:162
 #: admin/modules/reporting/customs/titles_list.php:129
 #: admin/modules/reporting/customs/titles_list.php:257
-#: plugins/inlislite_copy_cataloging/index.php:171
 msgid "Publishing Place"
 msgstr "Tempat Terbit"
 
@@ -2610,7 +2573,6 @@ msgstr "Ditemukan {hits} cantuman dari peladen Marc SRU."
 #: admin/modules/bibliography/p2p.php:330
 #: admin/modules/bibliography/z3950sru.php:210
 #: admin/modules/master_file/item_code_pattern.php:115
-#: plugins/inlislite_copy_cataloging/index.php:167
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:379
 msgid "Check All"
 msgstr "Tandai Semua"
@@ -2619,13 +2581,11 @@ msgstr "Tandai Semua"
 #: admin/modules/bibliography/p2p.php:331
 #: admin/modules/bibliography/z3950sru.php:211
 #: admin/modules/master_file/item_code_pattern.php:116
-#: plugins/inlislite_copy_cataloging/index.php:168
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:380
 msgid "Uncheck All"
 msgstr "Hilangkan Semua Tanda"
 
 #: admin/modules/bibliography/marcsru.php:341
-#: plugins/inlislite_copy_cataloging/index.php:169
 msgid "Save Marc Records to Database"
 msgstr "Simpan Cantuman MARC"
 
@@ -2634,14 +2594,12 @@ msgstr "Simpan Cantuman MARC"
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/master_file/item_code_pattern.php:118
 #: admin/modules/system/shortcut.php:109
-#: plugins/inlislite_copy_cataloging/index.php:171
 msgid "Select"
 msgstr "PIlih"
 
 #: admin/modules/bibliography/marcsru.php:395
 #: admin/modules/bibliography/z3950.php:274
 #: admin/modules/bibliography/z3950sru.php:267
-#: plugins/inlislite_copy_cataloging/index.php:247
 msgid "No Results Found!"
 msgstr "Tidak Ada Hasil!"
 
@@ -2651,7 +2609,6 @@ msgstr "Pencarian/Pengambilan MARC lewat URL (SRU)"
 
 #: admin/modules/bibliography/marcsru.php:441
 #: admin/modules/bibliography/z3950sru.php:316
-#: plugins/inlislite_copy_cataloging/index.php:131
 msgid "All fields"
 msgstr "Semua Ruas"
 
@@ -2664,7 +2621,6 @@ msgstr "Peladen SRU"
 #: admin/modules/bibliography/p2p.php:479
 #: admin/modules/bibliography/z3950.php:298
 #: admin/modules/bibliography/z3950sru.php:321
-#: plugins/inlislite_copy_cataloging/index.php:149
 msgid "* Please make sure you have a working Internet connection."
 msgstr "* Pastikan Anda memiliki koneksi internet."
 
@@ -2931,7 +2887,6 @@ msgstr "Setelan tersimpan"
 #: admin/modules/system/holiday.php:334 admin/modules/system/index.php:237
 #: admin/modules/system/membercard_theme.php:107
 #: admin/modules/system/theme.php:138 admin/modules/system/ucsetting.php:76
-#: plugins/label_barcode_classic/index.php:151
 msgid "Save Settings"
 msgstr "Simpan Pengaturan"
 
@@ -6545,10 +6500,9 @@ msgid "Total Checked/Scanned Items"
 msgstr "Total Eksemplar Diperiksa/Terpindai"
 
 #: admin/modules/stock_take/st_report.php:106
-#, fuzzy, php-format
-#| msgid "Stock Take Report"
+#, php-format
 msgid "Stock take report detail for %s"
-msgstr "Laporan Inventarisasi"
+msgstr "Detail laporan inventarisasi untuk %s"
 
 #: admin/modules/stock_take/st_report.php:106
 msgid "items already checked"
@@ -6582,17 +6536,13 @@ msgstr ""
 "direktori {direktori} tidak bisa ditulisi"
 
 #: admin/modules/stock_take/st_report_detail.php:51
-#, fuzzy
-#| msgid "Sorry, help content is not available yet."
 msgid "Sorry, data not available!"
-msgstr "Maaf, bantuan belum tersedia."
+msgstr "Maaf, data tidak tersedia!"
 
 #: admin/modules/stock_take/st_report_detail.php:89
 #: admin/modules/stock_take/st_report_detail.php:106
-#, fuzzy
-#| msgid "items already checked"
 msgid "Time Checked"
-msgstr "eksemplar yang telah diperiksa"
+msgstr "Waktu Pemeriksaan"
 
 #: admin/modules/stock_take/st_upload.php:110
 msgid "Succesfully upload stock take file"
@@ -7439,22 +7389,16 @@ msgid "Time visitor limitation (in minute)"
 msgstr "Maksimal waktu kunjungan (dalam menit)"
 
 #: admin/modules/system/index.php:397
-#, fuzzy
-#| msgid "E-mail"
 msgid "Email"
 msgstr "Surel"
 
 #: admin/modules/system/index.php:398
-#, fuzzy
-#| msgid "Database Backup"
 msgid "Database"
-msgstr "Salinan Pangkalan Data"
+msgstr "Pangkalan data"
 
 #: admin/modules/system/index.php:399
-#, fuzzy
-#| msgid "Reserve Date"
 msgid "Reserve methode"
-msgstr "Tanggal Reservasi"
+msgstr "Metode pemesanan"
 
 #: admin/modules/system/index.php:404
 msgid "Reserve for item on loan only"
@@ -7876,13 +7820,11 @@ msgstr "Teks Belakang Header2"
 
 #: files/membercard/classic/tinfo.inc.php:50
 #: files/membercard/old/tinfo.inc.php:126
-#: plugins/label_barcode_classic/tinfo.inc.php:73
 msgid "Box Width"
 msgstr "Lebar Kotak"
 
 #: files/membercard/classic/tinfo.inc.php:57
 #: files/membercard/old/tinfo.inc.php:132
-#: plugins/label_barcode_classic/tinfo.inc.php:66
 msgid "Box Height"
 msgstr "Tinggi Kotak"
 
@@ -7893,7 +7835,6 @@ msgstr "Faktor"
 
 #: files/membercard/classic/tinfo.inc.php:71
 #: files/membercard/old/tinfo.inc.php:144
-#: plugins/label_barcode_classic/tinfo.inc.php:202
 msgid "Barcode Scale"
 msgstr "Skala Barkod"
 
@@ -8282,28 +8223,24 @@ msgid "title(s) on basket"
 msgstr "judul dalam keranjang"
 
 #: lib/contents/member.inc.php:596
-#, fuzzy, php-format
-#| msgid "items already checked"
+#, php-format
 msgid "%s already reseved"
-msgstr "eksemplar yang telah diperiksa"
+msgstr "%s sudah dipesan"
 
 #: lib/contents/member.inc.php:613
-#, fuzzy, php-format
-#| msgid "{numberAvailable} copies available for loan"
+#, php-format
 msgid "Item for %s is available for loan"
-msgstr "{numberAvailable} koleksi tersedia untuk dipinjam"
+msgstr "Eksemplar %s tersedia untuk dipinjam"
 
 #: lib/contents/member.inc.php:619
-#, fuzzy, php-format
-#| msgid "Reservation e-mail sent successfully!"
+#, php-format
 msgid "%s reserved successfully"
-msgstr "Surel untuk reservasi berhasil dikirim!"
+msgstr "%s berhasil dipesan"
 
 #: lib/contents/member.inc.php:623
-#, fuzzy, php-format
-#| msgid "Reserve Date"
+#, php-format
 msgid "Reserve %s failed. "
-msgstr "Tanggal Reservasi"
+msgstr "Gagal memesan %s. "
 
 #: lib/contents/member.inc.php:629
 #, php-format
@@ -8311,22 +8248,16 @@ msgid "No item available to be reserved for %s"
 msgstr "Data eksemplar %s tidak tersedia untuk dipesan"
 
 #: lib/contents/member.inc.php:636
-#, fuzzy
-#| msgid "NO DATA Selected to reserve!"
 msgid "No Titles to reserve"
-msgstr "TIDAK ADA DATA yang dipilih untuk dipesan!"
+msgstr "Tidak ada judul untuk dipesan"
 
 #: lib/contents/member.inc.php:643
-#, fuzzy
-#| msgid "Reservation added"
 msgid "Reservation not allowed"
-msgstr "Reservasi ditambahkan"
+msgstr "Tidak bisa dipesan"
 
 #: lib/contents/member.inc.php:651
-#, fuzzy
-#| msgid "Reserve Limit"
 msgid "Reserve limit reached"
-msgstr "Jumlah Reservasi"
+msgstr "Tidak bisa memesan"
 
 #: lib/contents/member.inc.php:652
 #, php-format
@@ -8609,390 +8540,22 @@ msgstr "Beranda"
 msgid "View OPAC in New Window"
 msgstr "Tampilkan OPAC dalam Jendela Baru"
 
-#: plugins/inlislite_copy_cataloging/index.php:112
-#, fuzzy, php-format
-#| msgid ""
-#| "%s insert bibliographic data from MARC SRU service (server: %s) with "
-#| "title (%s) and biblio_id (%s)"
-msgid ""
-"%s insert bibliographic data from Inlislite MARC-XML service (server: %s) "
-"with title (%s) and biblio_id (%s)"
-msgstr ""
-"%s masukkan data bibliografi dari layanan MARC SRU (peladen: %s) dengan "
-"judul (%s) dan biblio_id (%s)"
-
-#: plugins/inlislite_copy_cataloging/index.php:123
-msgid "Search/Retrieve from Inlislite via MARC-XML"
-msgstr "Cari/Ambil menggunakan MARC-XML Inlislite"
-
-#: plugins/inlislite_copy_cataloging/index.php:136
-#, fuzzy
-#| msgid "Web Server"
-msgid "Inlislite Server"
-msgstr "Peladen Web"
-
-#: plugins/inlislite_copy_cataloging/index.php:161
-#, fuzzy, php-format
-#| msgid ""
-#| "<strong>%d</strong> records (from total of <strong>%d</strong>) re-"
-#| "indexed. Finished in %d second(s)"
-msgid ""
-"Have found <strong>%s</strong> records from searched keywords <strong>%s</"
-"strong> from <i>%s</i>"
-msgstr ""
-"<strong>%d</strong> cantuman (dari total <strong>%d</strong> berhasil di "
-"indeks ulang. Diselesaikan dalam %d detik"
-
 #: plugins/label_barcode/index.php:279
 msgid "Labels & Barcode Printing"
 msgstr "Cetak Label & Barkod"
 
-#: plugins/label_barcode_classic/index.php:337
-#, fuzzy
-#| msgid "Labels & Barcode Printing"
-msgid "Classic Label & Barcodes"
-msgstr "Cetak Label & Barkod"
-
-#: plugins/label_barcode_classic/index.php:346
-#, fuzzy
-#| msgid "Labels & Barcode Printing"
-msgid "Classic Label & Barcode Printing"
-msgstr "Cetak Label & Barkod"
-
-#: plugins/label_barcode_classic/index.php:351
-#, fuzzy
-#| msgid "Print Labels for Selected Data"
-msgid "Print for Selected Data"
-msgstr "Cetak Label dari Data Terpilih"
-
-#: plugins/label_barcode_classic/index.php:352
-#, fuzzy
-#| msgid "Change print label and or barcode settings"
-msgid "Change classic label & barcode settings"
-msgstr "Ubah setelan cetak label dan barkod"
-
-#: plugins/label_barcode_classic/index.php:427
-#, fuzzy
-#| msgid "Add to print queue?"
-msgid "Add to print queue"
-msgstr "Tambahkan dalam antrian cetak?"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:11
-#, fuzzy
-#| msgid "UCS Configuration"
-msgid "Global Configuration"
-msgstr "Pengaturan UCS"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:17
-msgid "Fonts"
-msgstr "Fonta"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:21
-msgid "Georgia"
-msgstr "Georgia"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:22
-msgid "Palatino Linotype"
-msgstr "Palatino Linotype"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:23
-msgid "Times New Roman"
-msgstr "Times New Roman"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:24
-msgid "Arial"
-msgstr "Arial"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:25
-msgid "Arial Black"
-msgstr "Arial Black"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:26
-msgid "Comic Sans MS"
-msgstr "Comic Sans MS"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:27
-msgid "Impact"
-msgstr "Impact"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:28
-msgid "Lucida Sans Unicode"
-msgstr "Lucida Sans Unicode"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:29
-msgid "Verdana"
-msgstr "Verdana"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:30
-msgid "Trebuchet MS"
-msgstr "Trebuchet MS"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:31
-msgid "Tahoma"
-msgstr "Tahoma"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:32
-#, fuzzy
-#| msgid "Carrier Type"
-msgid "Courier New"
-msgstr "Tipe Pembawa"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:33
-msgid "Lucida Console"
-msgstr "Lucida Console"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:38
-#, fuzzy
-#| msgid "Rules Font Size"
-msgid "Font Size"
-msgstr "Ukurang Fonta Aturan"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:45
-msgid "Page Margin"
-msgstr "Marjin Halaman"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:52
-msgid "Items Per Row"
-msgstr "Item per Baris"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:59
-#, fuzzy
-#| msgid "Item Location"
-msgid "Items Margin"
-msgstr "Lokasi Eksemplar"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:80
-#, fuzzy
-#| msgid "Barcode Size"
-msgid "Border Size"
-msgstr "Ukuran Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:87
-msgid "Border Color<br><small>hex color</small>"
-msgstr "Warna Garis Batas<br><small>Kode Hex Warna</small>"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:95
-#, fuzzy
-#| msgid "Call Number"
-msgid "Callnumber Section"
-msgstr "No. Panggil"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:101
-msgid "Callnumber Text Align"
-msgstr "Rerata Teks Nomo Panggil"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:105
-msgid "Center"
-msgstr "Tengah"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:106
-#: plugins/label_barcode_classic/tinfo.inc.php:179
-#: plugins/label_barcode_classic/tinfo.inc.php:221
-#, fuzzy
-#| msgid "Height:"
-msgid "Right"
-msgstr "Tinggi:"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:107
-#: plugins/label_barcode_classic/tinfo.inc.php:178
-#: plugins/label_barcode_classic/tinfo.inc.php:220
-msgid "Left"
-msgstr "Kiri"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:112
-msgid "Callnumber Padding Size"
-msgstr "Ukuran <i>Padding</i> Nomor Panggil"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:119
-#, fuzzy
-#| msgid "Rules Font Size"
-msgid "Callnumber Fonts Size"
-msgstr "Ukurang Fonta Aturan"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:126
-#, fuzzy
-#| msgid "Search Collection"
-msgid "Header Section"
-msgstr "Cari Koleksi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:132
-#, fuzzy
-#| msgid "Back Header1 Text"
-msgid "Include Header Text"
-msgstr "Teks Belakang Header1"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:142
-#, fuzzy
-#| msgid "Back Header1 Text"
-msgid "Header Text"
-msgstr "Teks Belakang Header1"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:151
-#, fuzzy
-#| msgid "Back Header1 Font Size"
-msgid "Header Fonts Size"
-msgstr "Ukuran Fonta Belakang Header2"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:158
-#, fuzzy
-#| msgid "Barcode Size"
-msgid "Barcode Section"
-msgstr "Ukuran Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:164
-#, fuzzy
-#| msgid "Col. Type"
-msgid "Code Type"
-msgstr "Tipe Koleksi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:168
-#: plugins/read_counter/index.php:71
-#, fuzzy
-#| msgid "Barcode Size"
-msgid "Barcode"
-msgstr "Ukuran Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:169
-#, fuzzy
-#| msgid "Code"
-msgid "QRCode"
-msgstr "Kode"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:174
-#: plugins/label_barcode_classic/tinfo.inc.php:216
-#, fuzzy
-#| msgid "Barcode Encoding"
-msgid "Barcode Position"
-msgstr "Penyandian Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:184
-#, fuzzy
-#| msgid "Barcode Encoding"
-msgid "Barcode Rotation"
-msgstr "Penyandian Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:188
-msgid "Clockwise"
-msgstr "Searah Jarum Jam"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:189
-msgid "Counter Clockwise"
-msgstr "Berlawanan Jarum Jam"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:190
-msgid "Landscape"
-msgstr "Lanskap"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:195
-#, fuzzy
-#| msgid "Barcode Size"
-msgid "Barcode Column Size"
-msgstr "Ukuran Barkod"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:209
-#, fuzzy
-#| msgid "Content Title"
-msgid "Cut Title"
-msgstr "Judul Konten"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:226
-#, fuzzy
-#| msgid "Header Color"
-msgid "Custom Header Color"
-msgstr "Warna <i>Header</i>"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:232
-#, fuzzy
-#| msgid "Top Reader"
-msgid "Color Header"
-msgstr "Pembaca Terbanyak"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:242
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 000"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:250
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 100"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:258
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 200"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:266
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 2X0"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:274
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 300"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:282
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 400"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:290
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 500"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:298
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 600"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:306
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 700"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:314
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 800"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:322
-#, fuzzy
-#| msgid "Class. Code"
-msgid "Class 900"
-msgstr "Kode Klasifikasi"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:330
-#, fuzzy
-#| msgid "Others"
-msgid "Other Class"
-msgstr "Lainnya"
-
-#: plugins/label_barcode_classic/tinfo.inc.php:338
-msgid "Restore"
-msgstr "Pulihkan"
-
 #: plugins/read_counter/index.php:64
 #: plugins/read_counter/read_counter_plugin.php:15
-#, fuzzy
-#| msgid "Download Counter"
 msgid "Read Counter"
-msgstr "Penghitung Unduhan"
+msgstr "Penghitung Koleksi Dibaca"
 
 #: plugins/read_counter/index.php:67
 msgid "Enter item code / barcode value into input form below!"
 msgstr "Ketik nilai kode eksemplar / barcode ke dalam isian berikut!"
+
+#: plugins/read_counter/index.php:71
+msgid "Barcode"
+msgstr "Barkod"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:89
 msgid "DELETE"
@@ -9759,6 +9322,298 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#, fuzzy, php-format
+#~| msgid ""
+#~| "%s insert bibliographic data from MARC SRU service (server: %s) with "
+#~| "title (%s) and biblio_id (%s)"
+#~ msgid ""
+#~ "%s insert bibliographic data from Inlislite MARC-XML service (server: %s) "
+#~ "with title (%s) and biblio_id (%s)"
+#~ msgstr ""
+#~ "%s masukkan data bibliografi dari layanan MARC SRU (peladen: %s) dengan "
+#~ "judul (%s) dan biblio_id (%s)"
+
+#~ msgid "Search/Retrieve from Inlislite via MARC-XML"
+#~ msgstr "Cari/Ambil menggunakan MARC-XML Inlislite"
+
+#, fuzzy
+#~| msgid "Web Server"
+#~ msgid "Inlislite Server"
+#~ msgstr "Peladen Web"
+
+#, fuzzy, php-format
+#~| msgid ""
+#~| "<strong>%d</strong> records (from total of <strong>%d</strong>) re-"
+#~| "indexed. Finished in %d second(s)"
+#~ msgid ""
+#~ "Have found <strong>%s</strong> records from searched keywords <strong>%s</"
+#~ "strong> from <i>%s</i>"
+#~ msgstr ""
+#~ "<strong>%d</strong> cantuman (dari total <strong>%d</strong> berhasil di "
+#~ "indeks ulang. Diselesaikan dalam %d detik"
+
+#, fuzzy
+#~| msgid "Labels & Barcode Printing"
+#~ msgid "Classic Label & Barcodes"
+#~ msgstr "Cetak Label & Barkod"
+
+#, fuzzy
+#~| msgid "Labels & Barcode Printing"
+#~ msgid "Classic Label & Barcode Printing"
+#~ msgstr "Cetak Label & Barkod"
+
+#, fuzzy
+#~| msgid "Print Labels for Selected Data"
+#~ msgid "Print for Selected Data"
+#~ msgstr "Cetak Label dari Data Terpilih"
+
+#, fuzzy
+#~| msgid "Change print label and or barcode settings"
+#~ msgid "Change classic label & barcode settings"
+#~ msgstr "Ubah setelan cetak label dan barkod"
+
+#, fuzzy
+#~| msgid "Add to print queue?"
+#~ msgid "Add to print queue"
+#~ msgstr "Tambahkan dalam antrian cetak?"
+
+#, fuzzy
+#~| msgid "UCS Configuration"
+#~ msgid "Global Configuration"
+#~ msgstr "Pengaturan UCS"
+
+#~ msgid "Fonts"
+#~ msgstr "Fonta"
+
+#~ msgid "Georgia"
+#~ msgstr "Georgia"
+
+#~ msgid "Palatino Linotype"
+#~ msgstr "Palatino Linotype"
+
+#~ msgid "Times New Roman"
+#~ msgstr "Times New Roman"
+
+#~ msgid "Arial"
+#~ msgstr "Arial"
+
+#~ msgid "Arial Black"
+#~ msgstr "Arial Black"
+
+#~ msgid "Comic Sans MS"
+#~ msgstr "Comic Sans MS"
+
+#~ msgid "Impact"
+#~ msgstr "Impact"
+
+#~ msgid "Lucida Sans Unicode"
+#~ msgstr "Lucida Sans Unicode"
+
+#~ msgid "Verdana"
+#~ msgstr "Verdana"
+
+#~ msgid "Trebuchet MS"
+#~ msgstr "Trebuchet MS"
+
+#~ msgid "Tahoma"
+#~ msgstr "Tahoma"
+
+#, fuzzy
+#~| msgid "Carrier Type"
+#~ msgid "Courier New"
+#~ msgstr "Tipe Pembawa"
+
+#~ msgid "Lucida Console"
+#~ msgstr "Lucida Console"
+
+#, fuzzy
+#~| msgid "Rules Font Size"
+#~ msgid "Font Size"
+#~ msgstr "Ukurang Fonta Aturan"
+
+#~ msgid "Page Margin"
+#~ msgstr "Marjin Halaman"
+
+#~ msgid "Items Per Row"
+#~ msgstr "Item per Baris"
+
+#, fuzzy
+#~| msgid "Item Location"
+#~ msgid "Items Margin"
+#~ msgstr "Lokasi Eksemplar"
+
+#, fuzzy
+#~| msgid "Barcode Size"
+#~ msgid "Border Size"
+#~ msgstr "Ukuran Barkod"
+
+#~ msgid "Border Color<br><small>hex color</small>"
+#~ msgstr "Warna Garis Batas<br><small>Kode Hex Warna</small>"
+
+#, fuzzy
+#~| msgid "Call Number"
+#~ msgid "Callnumber Section"
+#~ msgstr "No. Panggil"
+
+#~ msgid "Callnumber Text Align"
+#~ msgstr "Rerata Teks Nomo Panggil"
+
+#~ msgid "Center"
+#~ msgstr "Tengah"
+
+#, fuzzy
+#~| msgid "Height:"
+#~ msgid "Right"
+#~ msgstr "Tinggi:"
+
+#~ msgid "Left"
+#~ msgstr "Kiri"
+
+#~ msgid "Callnumber Padding Size"
+#~ msgstr "Ukuran <i>Padding</i> Nomor Panggil"
+
+#, fuzzy
+#~| msgid "Rules Font Size"
+#~ msgid "Callnumber Fonts Size"
+#~ msgstr "Ukurang Fonta Aturan"
+
+#, fuzzy
+#~| msgid "Search Collection"
+#~ msgid "Header Section"
+#~ msgstr "Cari Koleksi"
+
+#, fuzzy
+#~| msgid "Back Header1 Text"
+#~ msgid "Include Header Text"
+#~ msgstr "Teks Belakang Header1"
+
+#, fuzzy
+#~| msgid "Back Header1 Text"
+#~ msgid "Header Text"
+#~ msgstr "Teks Belakang Header1"
+
+#, fuzzy
+#~| msgid "Back Header1 Font Size"
+#~ msgid "Header Fonts Size"
+#~ msgstr "Ukuran Fonta Belakang Header2"
+
+#, fuzzy
+#~| msgid "Barcode Size"
+#~ msgid "Barcode Section"
+#~ msgstr "Ukuran Barkod"
+
+#, fuzzy
+#~| msgid "Col. Type"
+#~ msgid "Code Type"
+#~ msgstr "Tipe Koleksi"
+
+#, fuzzy
+#~| msgid "Code"
+#~ msgid "QRCode"
+#~ msgstr "Kode"
+
+#, fuzzy
+#~| msgid "Barcode Encoding"
+#~ msgid "Barcode Position"
+#~ msgstr "Penyandian Barkod"
+
+#, fuzzy
+#~| msgid "Barcode Encoding"
+#~ msgid "Barcode Rotation"
+#~ msgstr "Penyandian Barkod"
+
+#~ msgid "Clockwise"
+#~ msgstr "Searah Jarum Jam"
+
+#~ msgid "Counter Clockwise"
+#~ msgstr "Berlawanan Jarum Jam"
+
+#~ msgid "Landscape"
+#~ msgstr "Lanskap"
+
+#, fuzzy
+#~| msgid "Barcode Size"
+#~ msgid "Barcode Column Size"
+#~ msgstr "Ukuran Barkod"
+
+#, fuzzy
+#~| msgid "Content Title"
+#~ msgid "Cut Title"
+#~ msgstr "Judul Konten"
+
+#, fuzzy
+#~| msgid "Header Color"
+#~ msgid "Custom Header Color"
+#~ msgstr "Warna <i>Header</i>"
+
+#, fuzzy
+#~| msgid "Top Reader"
+#~ msgid "Color Header"
+#~ msgstr "Pembaca Terbanyak"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 000"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 100"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 200"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 2X0"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 300"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 400"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 500"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 600"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 700"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 800"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Class. Code"
+#~ msgid "Class 900"
+#~ msgstr "Kode Klasifikasi"
+
+#, fuzzy
+#~| msgid "Others"
+#~ msgid "Other Class"
+#~ msgstr "Lainnya"
+
+#~ msgid "Restore"
+#~ msgstr "Pulihkan"
 
 #~ msgid "Copy Cataloguing"
 #~ msgstr "Salin Katalog"
