@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-21 15:18+0700\n"
-"PO-Revision-Date: 2021-03-21 15:18+0700\n"
+"POT-Creation-Date: 2021-03-21 15:30+0700\n"
+"PO-Revision-Date: 2021-03-21 15:30+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -5449,12 +5449,12 @@ msgstr "Tahun terbit"
 #: admin/modules/reporting/customs/dl_counter.php:83
 #: admin/modules/reporting/customs/dl_detail.php:89
 msgid "Access Date after"
-msgstr "Tanggal Akses setelah"
+msgstr "Tanggal Akses dari"
 
 #: admin/modules/reporting/customs/dl_counter.php:89
 #: admin/modules/reporting/customs/dl_detail.php:95
 msgid "Access Date before"
-msgstr "Tanggal Akses sebelum"
+msgstr "Tanggal Akses hingga"
 
 #: admin/modules/reporting/customs/dl_counter.php:95
 #: admin/modules/reporting/customs/dl_detail.php:101
@@ -5890,7 +5890,7 @@ msgstr "Nama Pengunjung"
 
 #: admin/modules/reporting/customs/visitor_list.php:93
 msgid "Visit Date From"
-msgstr "Tanggal Kunjungan Sejak"
+msgstr "Tanggal Kunjungan Dari"
 
 #: admin/modules/reporting/customs/visitor_list.php:97
 msgid "Visit Date Until"
