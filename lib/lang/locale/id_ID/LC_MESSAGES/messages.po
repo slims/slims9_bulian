@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-22 20:47+0700\n"
-"PO-Revision-Date: 2021-03-22 20:47+0700\n"
+"POT-Creation-Date: 2021-03-22 22:41+0700\n"
+"PO-Revision-Date: 2021-03-22 22:44+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -9323,6 +9323,12 @@ msgstr "Masuk"
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
 
+msgid "Reporting"
+msgstr "Pelaporan"
+
+msgid "System"
+msgstr "Sistem"
+
 #, fuzzy, php-format
 #~| msgid ""
 #~| "%s insert bibliographic data from MARC SRU service (server: %s) with "
@@ -9624,14 +9630,8 @@ msgstr "Masukkan kata kunci..."
 #~ msgid "Lookup Files"
 #~ msgstr "Daftar Referensi"
 
-#~ msgid "Reporting"
-#~ msgstr "Pelaporan"
-
 #~ msgid "Other Reports"
 #~ msgstr "Laporan Lain"
-
-#~ msgid "System"
-#~ msgstr "Sistem"
 
 #~ msgid ""
 #~ "The PATH for <strong>mysqldump</strong> program is not right! Please "
