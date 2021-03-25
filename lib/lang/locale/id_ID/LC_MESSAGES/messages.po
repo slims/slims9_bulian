@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-22 22:41+0700\n"
-"PO-Revision-Date: 2021-03-22 22:44+0700\n"
+"PO-Revision-Date: 2021-03-25 14:55+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -9329,6 +9329,9 @@ msgstr "Pelaporan"
 msgid "System"
 msgstr "Sistem"
 
+msgid "Remember me"
+msgstr "Ingat saya"
+
 #, fuzzy, php-format
 #~| msgid ""
 #~| "%s insert bibliographic data from MARC SRU service (server: %s) with "
@@ -9657,9 +9660,6 @@ msgstr "Sistem"
 
 #~ msgid "Skip backup"
 #~ msgstr "Lewatkan pencadangan"
-
-#~ msgid "Remember me"
-#~ msgstr "Ingat saya"
 
 #~ msgid "The first row are columns names"
 #~ msgstr "Baris pertama berisi nama kolom"
