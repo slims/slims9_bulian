@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-29 14:08+0700\n"
-"PO-Revision-Date: 2021-03-29 14:09+0700\n"
+"POT-Creation-Date: 2021-03-29 14:21+0700\n"
+"PO-Revision-Date: 2021-03-29 14:23+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -6088,8 +6088,8 @@ msgid "record each page"
 msgstr "cantuman setiap halamannya"
 
 #: admin/modules/reporting/submenu.php:27
-msgid "REPORTING"
-msgstr "PELAPORAN"
+msgid "REPORTING FORM"
+msgstr "LEMBAR PELAPORAN"
 
 #: admin/modules/reporting/submenu.php:28
 msgid "View Library Collection Statistic"
@@ -7571,8 +7571,8 @@ msgid "Move back"
 msgstr "Kembalikan"
 
 #: admin/modules/system/submenu.php:28
-msgid "SYSTEM"
-msgstr "SISTEM"
+msgid "CONFIGURATION"
+msgstr "PENGATURAN SISTEM"
 
 #: admin/modules/system/submenu.php:31
 msgid "Configure Global System Preferences"
@@ -9340,11 +9340,14 @@ msgstr "Masuk"
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
 
-#~ msgid "Reporting"
-#~ msgstr "Pelaporan"
+msgid "Reporting"
+msgstr "Pelaporan"
 
-#~ msgid "System"
-#~ msgstr "Sistem"
+msgid "System"
+msgstr "Sistem"
+
+#~ msgid "SYSTEM CONFIG"
+#~ msgstr "KONFIGURASI SISTEM"
 
 #, fuzzy, php-format
 #~| msgid ""

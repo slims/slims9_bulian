@@ -24,7 +24,7 @@
 do_checkIP('smc');
 do_checkIP('smc-reporting');
 
-$menu[] = array('Header', __('REPORTING'));
+$menu[] = array('Header', __('REPORTING FORM'));
 $menu[] = array(__('Collection Statistic'), MWB.'reporting/index.php', __('View Library Collection Statistic'));
 $menu[] = array(__('Loan Report'), MWB.'reporting/loan_report.php', __('View Library Loan Report'));
 $menu[] = array(__('Membership Report'), MWB.'reporting/member_report.php', __('View Membership Report'));
