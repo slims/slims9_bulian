@@ -225,8 +225,8 @@ if (isset($_POST['updatePassword'])) {
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
         </div>
         <?php } else { ?>
-            <div class="alert alert-danger">Not valid token!</div>
-            <a class="homeButton" href="index.php">Go Home</a>
+            <div class="alert alert-danger"><?= __('Not valid token!') ?></div>
+            <a class="homeButton" href="index.php"><?= __('Go Home') ?></a>
         <?php } ?>
     <?php } else { ?>
         <div class="heading1"><?php echo __('Username'); ?></div>
@@ -259,7 +259,7 @@ if (isset($_POST['updatePassword'])) {
             <div class="remember">
                 <?php if ($sysconf['always_user_login']) : ?>
                 <input type="checkbox" id="remember_me" name="remember" value="1">
-                <label for="remember_me">Remember me</label>
+                <label for="remember_me"><?= __('Remember me') ?></label>
                 <?php endif; ?>
             </div>
         </div>
