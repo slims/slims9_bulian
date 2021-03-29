@@ -245,7 +245,7 @@ $form->table_content_attr = 'class="alterCell2"';
 utility::loadSettings($dbs);
 
 // version status
-$form->addAnything('Senayan Version', '<strong>'.SENAYAN_VERSION.'</strong>');
+$form->addAnything(__('SLiMS Version'), '<strong>'.SENAYAN_VERSION.'</strong>');
 
 // library name
 $form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'class="form-control"');
