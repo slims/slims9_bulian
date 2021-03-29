@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-22 22:41+0700\n"
-"PO-Revision-Date: 2021-03-25 14:55+0700\n"
+"POT-Creation-Date: 2021-03-29 13:57+0700\n"
+"PO-Revision-Date: 2021-03-29 13:58+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -455,8 +455,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/marcexport.php:167
 #: admin/modules/bibliography/marcsru.php:438
 #: admin/modules/bibliography/marcsru.php:450
-#: admin/modules/bibliography/p2p.php:463
-#: admin/modules/bibliography/p2p.php:476
+#: admin/modules/bibliography/p2p.php:307
+#: admin/modules/bibliography/p2p.php:320
 #: admin/modules/bibliography/printed_card.php:313
 #: admin/modules/bibliography/printed_card.php:315
 #: admin/modules/bibliography/z3950.php:291
@@ -620,8 +620,8 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/marcexport.php:221
 #: admin/modules/bibliography/marcexport.php:228
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:334
-#: admin/modules/bibliography/p2p.php:468
+#: admin/modules/bibliography/p2p.php:312
+#: admin/modules/bibliography/p2p.php:366
 #: admin/modules/bibliography/pop_attach.php:204
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
@@ -1413,7 +1413,7 @@ msgstr "Sembunyikan di OPAC"
 
 #: admin/modules/bibliography/index.php:590
 #: admin/modules/bibliography/index.php:596
-#: admin/modules/bibliography/p2p.php:467
+#: admin/modules/bibliography/p2p.php:311
 #: admin/modules/circulation/loan_rules.php:201
 #: admin/modules/circulation/loan_rules.php:206
 #: admin/modules/reporting/customs/item_titles_list.php:85
@@ -2322,7 +2322,7 @@ msgstr "Anda akan memperbaharui data eksemplar"
 #: admin/modules/bibliography/item.php:459
 #: admin/modules/bibliography/marcexport.php:222
 #: admin/modules/bibliography/marcexport.php:229
-#: admin/modules/bibliography/p2p.php:470
+#: admin/modules/bibliography/p2p.php:314
 #: admin/modules/bibliography/printed_card.php:348
 #: admin/modules/master_file/author.php:57
 #: admin/modules/master_file/author.php:80
@@ -2570,7 +2570,7 @@ msgid "Found {hits} records from Marc SRU Server."
 msgstr "Ditemukan {hits} cantuman dari peladen Marc SRU."
 
 #: admin/modules/bibliography/marcsru.php:339
-#: admin/modules/bibliography/p2p.php:330
+#: admin/modules/bibliography/p2p.php:362
 #: admin/modules/bibliography/z3950sru.php:210
 #: admin/modules/master_file/item_code_pattern.php:115
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:379
@@ -2578,7 +2578,7 @@ msgid "Check All"
 msgstr "Tandai Semua"
 
 #: admin/modules/bibliography/marcsru.php:340
-#: admin/modules/bibliography/p2p.php:331
+#: admin/modules/bibliography/p2p.php:363
 #: admin/modules/bibliography/z3950sru.php:211
 #: admin/modules/master_file/item_code_pattern.php:116
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:380
@@ -2590,7 +2590,7 @@ msgid "Save Marc Records to Database"
 msgstr "Simpan Cantuman MARC"
 
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:334
+#: admin/modules/bibliography/p2p.php:366
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/master_file/item_code_pattern.php:118
 #: admin/modules/system/shortcut.php:109
@@ -2618,7 +2618,7 @@ msgid "SRU Server"
 msgstr "Peladen SRU"
 
 #: admin/modules/bibliography/marcsru.php:453
-#: admin/modules/bibliography/p2p.php:479
+#: admin/modules/bibliography/p2p.php:323
 #: admin/modules/bibliography/z3950.php:298
 #: admin/modules/bibliography/z3950sru.php:321
 msgid "* Please make sure you have a working Internet connection."
@@ -2638,48 +2638,53 @@ msgstr ""
 "%s masukkan data bibliografi dari layanan P2P (peladen: %s) dengan judul "
 "(%s) dan biblio_id (%s)"
 
-#: admin/modules/bibliography/p2p.php:332
+#: admin/modules/bibliography/p2p.php:303
+#: admin/modules/bibliography/submenu.php:37
+msgid "P2P Service"
+msgstr "Layanan P2P"
+
+#: admin/modules/bibliography/p2p.php:309
+msgid "Fields"
+msgstr "Ruas"
+
+#: admin/modules/bibliography/p2p.php:313
+msgid "ISBN"
+msgstr "ISBN"
+
+#: admin/modules/bibliography/p2p.php:316
+#: admin/modules/bibliography/z3950.php:294
+msgid "Server"
+msgstr "Peladen"
+
+#: admin/modules/bibliography/p2p.php:357
+#, php-format
+msgid "Found %s records from <strong>%s</strong> Server"
+msgstr "Ditemukan %s cantuman dari Peladen <strong>%s</strong>"
+
+#: admin/modules/bibliography/p2p.php:364
 msgid "Save P2P Records to Database"
 msgstr "Simpan Cantuman P2P ke Pangkalan Data"
 
-#: admin/modules/bibliography/p2p.php:334
+#: admin/modules/bibliography/p2p.php:366
 msgid "Digital Files"
 msgstr "Berkas Digital"
 
-#: admin/modules/bibliography/p2p.php:334
-#: admin/modules/bibliography/p2p.php:387
+#: admin/modules/bibliography/p2p.php:366
+#: admin/modules/bibliography/p2p.php:419
 #: admin/modules/reporting/customs/dl_counter.php:185
 msgid "Detail"
 msgstr "Detail"
 
-#: admin/modules/bibliography/p2p.php:406
+#: admin/modules/bibliography/p2p.php:468
+msgid "No data selected!"
+msgstr "Tidak ada yang dipilih!"
+
+#: admin/modules/bibliography/p2p.php:484
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
 "Maaf, dari %s tidak ada hasil ATAU kemungkinan hasil dan detail XML "
 "dinonaktifkan."
-
-#: admin/modules/bibliography/p2p.php:435
-msgid "No data selected!"
-msgstr "Tidak ada yang dipilih!"
-
-#: admin/modules/bibliography/p2p.php:458
-#: admin/modules/bibliography/submenu.php:37
-msgid "P2P Service"
-msgstr "Layanan P2P"
-
-#: admin/modules/bibliography/p2p.php:465
-msgid "Fields"
-msgstr "Ruas"
-
-#: admin/modules/bibliography/p2p.php:469
-msgid "ISBN"
-msgstr "ISBN"
-
-#: admin/modules/bibliography/p2p.php:472
-#: admin/modules/bibliography/z3950.php:294
-msgid "Server"
-msgstr "Peladen"
 
 #: admin/modules/bibliography/pop_attach.php:99
 msgid "Upload FAILED! Forbidden file type or file size too big!"
@@ -9323,14 +9328,14 @@ msgstr "Masuk"
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
 
-msgid "Reporting"
-msgstr "Pelaporan"
+#~ msgid "Reporting"
+#~ msgstr "Pelaporan"
 
-msgid "System"
-msgstr "Sistem"
+#~ msgid "System"
+#~ msgstr "Sistem"
 
-msgid "Remember me"
-msgstr "Ingat saya"
+#~ msgid "Remember me"
+#~ msgstr "Ingat saya"
 
 #, fuzzy, php-format
 #~| msgid ""
