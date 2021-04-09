@@ -57,6 +57,18 @@ define('CURR_PASSWD_WRONG', -1);
 define('PASSWD_NOT_MATCH', -2);
 define('CANT_UPDATE_PASSWD', -3);
 
+if (isset($_GET['destination'])) {
+    $destination = $_GET['destination'];
+    if (isset($_GET['fid'])) {
+        $destination .= '&fid='.$_GET['fid'];
+    }
+    if (isset($_GET['bid'])) {
+        $destination .= '&bid='.$_GET['bid'];
+    }
+} else {
+    $destination = FALSE;
+}
+
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
@@ -119,7 +131,11 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
-            header('Location: index.php?p=member');
+            if ($destination) {
+                header("location:$destination");
+            } else {
+                header('Location: index.php?p=member');
+            }
             exit();
         } else {
             // write log
@@ -202,11 +218,6 @@ if (isset($_POST['basketRemove']) && isset($_POST['basket']) && count($_POST['ba
 if (isset($_POST['clear_biblio'])) {
     $_SESSION['m_mark_biblio'] = array();
 }
-
-?>
-
-
-<?php
 
 if ($is_member_login) :
 
@@ -564,6 +575,106 @@ if ($is_member_login) :
         }
     }
 
+    function saveReserve($dbs, $sysconf)
+    {
+
+        if (count($_SESSION['m_mark_biblio']) > 0) {
+            
+            // cek dahulu, batas reservasi apakah sudah tercapai?
+            if (($check = _isReserveAlowed($dbs)) !== true) return $check;
+
+            $result = [];
+            $sql_op = new simbio_dbop($dbs);
+            $reserve['member_id'] = $_SESSION['mid'];
+
+            foreach ($_SESSION['m_mark_biblio'] as $_index => $_biblio) {
+                $id = (integer)$_biblio;
+                $biblio = api::biblio_load($dbs, $id);
+
+                // skip if already reseve this collection
+                if(_isAlreadyReserved($dbs, $id)) {
+                    $result[] = ['status' => 'SUCCESS', 'message' => sprintf(__('%s already reseved'), $biblio['title'])];
+                    unset($_SESSION['m_mark_biblio'][$_index]);
+                    continue;
+                }
+
+                // cek ketersediaan item,
+                if(count($biblio['items'] ?? []) > 0) {
+                    
+                    if($sysconf['reserve_on_loan_only']) {
+                        // ambil secara random dari koleksi yang dipinjam
+                        $item_code = _getItemReserveFromLoan($dbs);
+                    } else {
+                        // Semua item bisa direservasi
+                        $item_code = _getItemReserve($dbs, $id);
+                    }
+
+                    if(is_null($item_code)) {
+                        $result[] = ['status' => 'ERROR', 'message' => sprintf(__('Item for %s is available for loan'), $biblio['title'])];
+                    } else {
+                        $reserve['biblio_id'] = $id;
+                        $reserve['item_code'] = $item_code;
+                        $reserve['reserve_date'] = date('Y-m-d H:i:s');
+                        if($sql_op->insert('reserve', $reserve)) {
+                            $result[] = ['status' => 'SUCCESS', 'message' => sprintf(__('%s reserved successfully'), $biblio['title'])];
+                            unset($_SESSION['m_mark_biblio'][$_index]);
+                        } else {
+                            $debug_message = ENVIRONMENT == 'development' ? $sql_op->error : '';
+                            $result[] = ['status' => 'ERROR', 'message' => sprintf(__('Reserve %s failed. '), $biblio['title']) . $debug_message ];
+                        }
+                    }
+
+                } else {
+                    // jika tidak memiliki item, maka tidak dapat direservasi.
+                    $result[] = ['status' => 'ERROR', 'message' => sprintf(__('No item available to be reserved for %s'), $biblio['title'])];
+                }
+                
+            }
+
+            return $result;
+        } else {
+            return array('status' => 'ERROR', 'message' => __('No Titles to reserve'));
+        }
+    }
+
+    function _isReserveAlowed($dbs) {
+
+        // cek apakah di keanggotaan diijikan untuk reservasi
+        if ($_SESSION['m_can_reserve'] == '0') return ['status' => 'ERROR', 'message' => __('Reservation not allowed')];;
+
+        // hitung yang sedang direservasi
+        $sql = "SELECT COUNT(reserve_id) FROM reserve WHERE member_id='%s'";
+        $query = $dbs->query(sprintf($sql, $_SESSION['mid']));
+        $data = $query->fetch_row();
+        
+        // hitung tinggal berapa kesempatan untuk reservasinya
+        return ($data[0]+count($_SESSION['m_mark_biblio'])) > (int)$_SESSION['m_reserve_limit'] ? ['status' => 'ERROR', 'message' => __('Reserve limit reached')] : 
+            (count($_SESSION['m_mark_biblio']) > (int)$_SESSION['m_reserve_limit'] ? ['status' => 'ERROR', 'message' => sprintf(__('Maximum reserve limit is %d collection'), (int)$_SESSION['m_reserve_limit'])] : true);
+    }
+
+    function _getItemReserve($dbs, $biblio_id)
+    {
+        $sql = "SELECT item_code FROM item WHERE biblio_id='%s' ORDER BY RAND() ASC LIMIT 1";
+        $query = $dbs->query(sprintf($sql, $biblio_id));
+        $data = $query->fetch_row();
+        return $data[0] ?? null;
+    }
+
+    function _getItemReserveFromLoan($dbs)
+    {
+        $sql = "SELECT item_code, due_date FROM loan WHERE is_lent=1 AND is_return=0 ORDER BY RAND() ASC LIMIT 1";
+        $query = $dbs->query($sql);
+        $data = $query->fetch_row();
+        return $data[0] ?? null;
+    }
+
+    function _isAlreadyReserved($dbs, $biblio_id)
+    {
+        $sql = "SELECT member_id FROM reserve WHERE biblio_id='%s' AND member_id='%s'";
+        $query = $dbs->query(sprintf($sql, $biblio_id, $_SESSION['mid']));
+        return $query->num_rows > 0;
+    }
+
     // if there is change password request
     if (isset($_POST['changePass']) && $sysconf['auth']['member']['method'] == 'native') {
         $change_pass = procChangePassword($_POST['currPass'], $_POST['newPass'], $_POST['newPass2']);
@@ -581,20 +692,25 @@ if ($is_member_login) :
         }
     }
 
-    ?>
-
-    <?php
     // send reserve e-mail
     if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
-        $mail = sendReserveMail();
-            // die();
-        if ($mail['status'] != 'ERROR') {
-            $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
-            $_SESSION['info']['status'] = 'success';
+
+        if ($sysconf['reserve_direct_database'] ?? false) {
+            header('content-type: application/json');
+            echo json_encode(saveReserve($dbs, $sysconf));
+            exit;
         } else {
-            $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
-            $_SESSION['info']['status'] = 'danger';
+            $mail = sendReserveMail();
+            if ($mail['status'] != 'ERROR') {
+                $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
+                $_SESSION['info']['status'] = 'success';
+            } else {
+                $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
+                $_SESSION['info']['status'] = 'danger';
+            }
+            exit;
         }
+
     }
 
     ?>
@@ -750,8 +866,37 @@ if ($is_member_login) :
                         type: 'POST',
                         url: aHREF, cache: false, data: 'sendReserve=1', async: false,
                         success: function (ajaxRespond) {
-                            alert('Reservation e-mail sent');
-                            window.location.href = aHREF;
+                            console.log(ajaxRespond)
+
+                            <?php if ($sysconf['reserve_direct_database'] ?? false): ?>
+
+                                if(Array.isArray(ajaxRespond)) {
+
+                                    for (let i = 0; i < ajaxRespond.length; i++) {
+                                        const element = ajaxRespond[i];
+                                        let message = element.message ?? 'Reservation request sent';
+                                        if(element.status == 'ERROR') {
+                                            toastr.error(message)
+                                        } else {
+                                            toastr.success(message)
+                                        }
+                                    }
+
+                                } else {
+                                    let message = ajaxRespond.message ?? 'Reservation request sent';
+                                    if(ajaxRespond.status == 'ERROR') {
+                                        toastr.error(message)
+                                    } else {
+                                        toastr.success(message)
+                                    }
+                                }
+
+                            <?php else: ?>
+
+                                alert('Reservation e-mail sent');
+                                window.location.href = aHREF;
+                                
+                            <?php endif ?>
                         }
                     });
                 });
@@ -769,7 +914,7 @@ if ($is_member_login) :
         ?>
         <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member" method="post">
+            <form action="index.php?p=member&destination=<?php echo $destination; ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>

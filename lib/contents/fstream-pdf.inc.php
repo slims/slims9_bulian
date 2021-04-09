@@ -60,7 +60,7 @@ if ($file_q->num_rows > 0) {
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="'.basename($file_loc).'"');
         header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
+        echo file_get_contents($file_loc);
         exit();
     } else {
       die('<div class="errorBox">File Not Found!</div>');

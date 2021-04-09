@@ -37,8 +37,24 @@ Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationfors
 
 Code enhancement contributors:
 Drajat Hasan (drajathasan20@gmail.com)
+John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 9.4.0 (Bulian)
+========================================================================
+Added : Option to not using email for reservation from Member Area
+Added : Flexibility to add page content using plugin system
+Added : More configuration for system migration
+Added : Ctrl + Home (module) to access OPAC instantly from Administration page
+Fixed : Member login when accessing protected attachments
+Added : Option for reservation from Member Area without sending email (recorded in Reservation sub-menu)
+Added : Stock take report detail per user
+Fixed : Unknown host while install in paid hosting environment
+Fixed : Barcode cut title
+Fixed : Problem with mod_security when add some data in Bibliography Module in paid hosting environment
+Fixed : Function to downlad attachment in paid hosting environment
+Added : Support for load balanced environment
 
 SLiMS 9.3.1 (Bulian)
 ========================================================================

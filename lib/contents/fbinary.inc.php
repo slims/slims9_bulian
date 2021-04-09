@@ -43,7 +43,7 @@ $file_d = $file_q->fetch_assoc();
 if ($file_q->num_rows > 0) {
     $path = REPOBS.DS.( $file_d['file_dir'] ? $file_d['file_dir'].DS:'' ).$file_d['file_name'];
     header("Content-Type: ".$file_d['mime_type']);
-    readfile($path);
+    echo file_get_contents($path);
     exit;
 } else {
     header("location:index.php");

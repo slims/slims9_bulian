@@ -25,7 +25,7 @@ do_checkIP('smc-system');
 
 global $sysconf;
 
-$menu[] = array('Header', __('System'));
+$menu[] = array('Header', __('CONFIGURATION'));
 // only administrator have privileges for below menus
 if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('System Configuration'), MWB.'system/index.php', __('Configure Global System Preferences'));

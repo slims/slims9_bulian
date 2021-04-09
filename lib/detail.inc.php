@@ -607,7 +607,6 @@ HTML;
             $xml->startElement('titleInfo'); $xml->endElement();
             $xml->startElement('title'); $this->xmlWrite($xml, $this->record_detail['series_title']); $xml->endElement();
             $xml->endElement();
-            $xml->endElement();
         }
 
         // Note
