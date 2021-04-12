@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-29 14:21+0700\n"
-"PO-Revision-Date: 2021-03-29 14:23+0700\n"
+"POT-Creation-Date: 2021-04-12 13:28+0700\n"
+"PO-Revision-Date: 2021-04-12 13:32+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -48,13 +48,13 @@ msgid "Dashboard"
 msgstr "Dasbor"
 
 #: admin/admin_template/akasia-dz/function.php:65
-#: admin/admin_template/akasia/function.php:69 lib/module.inc.php:41
+#: admin/admin_template/akasia/function.php:69 lib/module.inc.php:42
 msgid "OPAC"
 msgstr "OPAC"
 
 #: admin/admin_template/akasia-dz/function.php:77
 #: admin/admin_template/akasia/function.php:82 lib/contents/chat.php:81
-#: lib/module.inc.php:42 template/default/parts/_navbar.php:112
+#: lib/module.inc.php:43 template/default/parts/_navbar.php:112
 msgid "Logout"
 msgstr "Keluar"
 
@@ -7115,7 +7115,7 @@ msgstr ""
 "<strong>Peringatan</strong> : Memperbarui daftar data atau tabel utama akan "
 "menghapus konten dalam tabel ini"
 
-#: admin/modules/system/envinfo.php:50
+#: admin/modules/system/envinfo.php:50 admin/modules/system/index.php:248
 msgid "SLiMS Version"
 msgstr "Versi SLiMS"
 
@@ -7548,11 +7548,11 @@ msgstr "Nonaktif"
 
 #: admin/modules/system/plugins.php:164
 msgid ""
-"Run Migration? This may will drop this plugin's table and the data can not "
-"be restored!"
+"Plugin has been disabled.\\nRun Migration too? This may will drop this "
+"plugin's table and the data can not be restored!"
 msgstr ""
-"Mulai Migrasi? Tabel yang digunakan oleh plugin akan dihapus dan data tidak "
-"bisa dipulihkan!"
+"Plugin telah dimatikan.\\nJalankan Migrasi? Ini akan menghapus pangkalan "
+"data yang digunakan oleh plugin dan data tidak dapat dipulihkan!"
 
 #: admin/modules/system/shortcut.php:60
 msgid "Shortcut Settings"
@@ -8545,7 +8545,7 @@ msgstr "Bahasa Turki"
 msgid "Urdu"
 msgstr "Bahasa Urdu"
 
-#: lib/module.inc.php:41 template/akasia-dz/partials/footer.php:51
+#: lib/module.inc.php:42 template/akasia-dz/partials/footer.php:51
 #: template/akasia-dz/partials/nav.php:5 template/akasia/partials/footer.php:51
 #: template/akasia/partials/nav.php:5 template/default/parts/_navbar.php:11
 #: template/lightweight/partials/footer.php:51
@@ -8553,7 +8553,7 @@ msgstr "Bahasa Urdu"
 msgid "Home"
 msgstr "Beranda"
 
-#: lib/module.inc.php:41
+#: lib/module.inc.php:42
 msgid "View OPAC in New Window"
 msgstr "Tampilkan OPAC dalam Jendela Baru"
 
@@ -9340,11 +9340,11 @@ msgstr "Masuk"
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
 
-msgid "Reporting"
-msgstr "Pelaporan"
+#~ msgid "Reporting"
+#~ msgstr "Pelaporan"
 
-msgid "System"
-msgstr "Sistem"
+#~ msgid "System"
+#~ msgstr "Sistem"
 
 #~ msgid "SYSTEM CONFIG"
 #~ msgstr "KONFIGURASI SISTEM"
