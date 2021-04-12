@@ -84,7 +84,7 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
-    $userName = trim(strip_tags($_POST['userName']));
+    $userName = $_SESSION['uid'] > 1 ? $_SESSION['uname'] : trim(strip_tags($_POST['userName']));
     $realName = trim(strip_tags($_POST['realName']));
     $passwd1 = trim($_POST['passwd1']);
     $passwd2 = trim($_POST['passwd2']);
@@ -101,7 +101,7 @@ if (isset($_POST['saveData'])) {
     } else if (!simbio_form_maker::isTokenValid()) {
         utility::jsAlert(__('Invalid form submission token!'));
         exit();
-    }else {
+    } else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
         $data['user_type'] = (integer)$_POST['userType'];
