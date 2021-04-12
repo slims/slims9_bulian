@@ -222,7 +222,7 @@ if (isset($file_attach_d['file_name'])) {
   // add repo directory options to select list
   $form->addSelectList('fileDir', __('Repo. Directory'), $repodir_options,'','class="form-control"');
   // file upload
-  $str_input  = '<div class="container">';
+  $str_input  = '<div class="container-fluid">';
   $str_input .= '<div class="row">';
   $str_input .= '<div class="custom-file col">';
   $str_input .= simbio_form_element::textField('file', 'file2attach','','class="custom-file-input"');

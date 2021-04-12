@@ -443,7 +443,7 @@ if (isset($_GET['keywords'])) {
       <option value="dc.title"><?php echo __('Title/Series Title'); ?></option>
       <option value="bath.name"><?php echo __('Authors'); ?></option>
     </select>
-    <?php echo __('SRU Server'); ?>
+    <span class="mx-2"><?php echo __('SRU Server: '); ?></span>
     <select name="marc_SRU_source" class="form-control">
       <?php foreach ($sysconf['marc_SRU_source'] as $serverid => $sru_source) { echo '<option value="'.$sru_source['uri'].'">'.$sru_source['name'].'</option>';  } ?>
     </select>

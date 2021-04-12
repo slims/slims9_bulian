@@ -161,7 +161,7 @@ HTML;
     function enablePlugin(e, m = false) {
 
         let runDown = false
-        if (!e.target.checked && m) runDown = confirm("<?= __('Run Migration? This may will drop this plugin\'s table and the data can not be restored!') ?>")
+        if (!e.target.checked && m) runDown = confirm("<?= __('Plugin has been disabled.\nRun Migration too? This may will drop this plugin\'s table and the data can not be restored!') ?>")
 
         fetch('<?= $_SERVER['PHP_SELF'] ?>', {
             method: 'POST',

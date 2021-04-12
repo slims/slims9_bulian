@@ -485,7 +485,4 @@ $(document).keydown(function(event){
   }
 })
 
-$(document).keyup(() => {
-  n = 0;
-  $('.menu.home').unbind('click').click()
-})
+$(document).keyup(() => { n = 0; })

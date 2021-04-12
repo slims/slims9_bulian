@@ -297,32 +297,35 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
 /* RECORD OPERATION END */
 ?>
 
-<div class="menuBox">
-    <div class="menuBoxInner biblioIcon">
-        <div class="per_title">
-            <h2><?php echo __('P2P Service'); ?></h2>
+    <div class="menuBox">
+        <div class="menuBoxInner biblioIcon">
+            <div class="per_title">
+                <h2><?php echo __('P2P Service'); ?></h2>
+            </div>
+            <div class="sub_section">
+                <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" id="search" method="get"
+                      class="form-inline">
+                    <span class="mr-2"><?php echo __('Search'); ?></span>
+                    <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
+                    <span class="mx-2"><?php echo __('Fields'); ?> :</span>
+                    <select name="fields" style="width: 20%;" class="form-control">
+                        <option value=""><?php echo __('ALL'); ?></option>
+                        <option value="title"><?php echo __('Title'); ?></option>
+                        <option value="isbn"><?php echo __('ISBN'); ?></option>
+                        <option value="author"><?php echo __('Author'); ?></option>
+                    </select>
+                    <span class="mx-2"><?php echo __('Server'); ?>:</span>
+                    <select name="p2pserver" style="width: 20%;"
+                            class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
+                            echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
+                        } ?></select>
+                    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>"
+                           class="s-btn btn btn-default"/>
+                </form>
+            </div>
+            <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
         </div>
-        <div class="sub_section">
-            <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" id="search" method="get" class="form-inline">
-              <?php echo __('Search'); ?>
-                <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
-              <?php echo __('Fields'); ?> :  
-              <select name="fields" style="width: 20%;"  class="form-control">
-                <option value=""><?php echo __('ALL'); ?></option>
-                <option value="title"><?php echo __('Title'); ?></option>
-                <option value="isbn"><?php echo __('ISBN'); ?></option>
-                <option value="author"><?php echo __('Author'); ?></option>
-              </select>
-              <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"
-                                                   class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
-                  echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
-                } ?></select>
-                <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default"/>
-            </form>
-        </div>
-        <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
     </div>
-</div>
 
 <?php
 /* SEARCH OPERATION */
