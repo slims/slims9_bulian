@@ -462,7 +462,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     // member code
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'memberID', $rec_d['member_id']??'', 'id="memberID" onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'member\', \'member_id\', \'msgBox\', \'memberID\')" class="form-control col-4"');
     $str_input .= '<div id="msgBox" class="col mt-2"></div>';

@@ -130,7 +130,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
   <div class="infoBox"><?php echo __('Upload a plain text file (.txt) containing list of Item Code to stock take. Each Item Code separated by line.'); ?></div>
   <div class="sub_section">
     <form name="uploadForm" class="notAJAX" method="post" enctype="multipart/form-data" action="<?php echo MWB.'stock_take/st_upload.php'; ?>" target="uploadAction" class="form-inline">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="custom-file col-6">
                 <input type="file" name="stFile" id="stFile" value="" class="custom-file-input">

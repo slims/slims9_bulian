@@ -288,7 +288,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addHidden('biblioTitle', $b_title);
     $form->addHidden('biblioID', $b_id);
     // item code
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'itemCode', $rec_d['item_code']??'', 'onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'item\', \'item_code\', \'msgBox\', \'itemCode\')" style="width: 50%;" class="form-control col-5"');
     $str_input .= '<span id="msgBox" class="col p-2"></span>';
@@ -348,7 +348,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // invoice date
     $form->addDateField('invcDate', __('Invoice Date'), $rec_d['invoice_date']??date('Y-m-d'),'class="form-control"');
     // price
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'price', !empty($rec_d['price'])?$rec_d['price']:'0', 'style="width: 40%;" class="form-control col-4"');
     $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], $rec_d['price_currency']??'','style="width: 10%;" class="form-control col-2"');
