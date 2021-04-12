@@ -46,6 +46,8 @@ SLiMS 9.4.1 (Bulian)
 Fixed : Hidden ajax list
 Fixed : Hidden menu header for user not administrator
 Update : Sub-menus view for dark mode admin template
+Added : User other than (super) admin unable to change username
+Fixed : Error when user try to save profile change
 
 SLiMS 9.4.0 (Bulian)
 ========================================================================
