@@ -45,6 +45,7 @@ SLiMS 9.4.1 (Bulian)
 ========================================================================
 Fixed : Hidden ajax list
 Fixed : Hidden menu header for user not administrator
+Update : Sub-menus view for dark mode admin template
 
 SLiMS 9.4.0 (Bulian)
 ========================================================================
