@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-12 13:28+0700\n"
-"PO-Revision-Date: 2021-04-12 13:32+0700\n"
+"POT-Creation-Date: 2021-04-12 14:44+0700\n"
+"PO-Revision-Date: 2021-04-12 14:46+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -388,7 +388,7 @@ msgstr "Klik di sini untuk Masuk kembali"
 msgid "SHORTCUT"
 msgstr "PEMINTAS"
 
-#: admin/default/submenu.php:22 admin/modules/system/app_user.php:404
+#: admin/default/submenu.php:22 admin/modules/system/app_user.php:409
 msgid "Change User Profiles"
 msgstr "Ubah Profil Pengguna"
 
@@ -732,7 +732,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/stock_take/current.php:194
 #: admin/modules/stock_take/index.php:170
 #: admin/modules/stock_take/st_log.php:112
-#: admin/modules/system/app_user.php:464 admin/modules/system/backup.php:193
+#: admin/modules/system/app_user.php:469 admin/modules/system/backup.php:193
 #: admin/modules/system/content.php:298
 #: admin/modules/system/custom_field.php:291
 #: admin/modules/system/holiday.php:267 admin/modules/system/module.php:226
@@ -827,7 +827,7 @@ msgstr "Ubah setelan cetak label"
 #: admin/modules/bibliography/item_barcode_generator.php:228
 #: admin/modules/bibliography/printed_card.php:320
 #: admin/modules/membership/member_card_generator.php:207
-#: admin/modules/system/app_user.php:351 plugins/label_barcode/index.php:301
+#: admin/modules/system/app_user.php:356 plugins/label_barcode/index.php:301
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -2045,7 +2045,7 @@ msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
 #: admin/modules/bibliography/index.php:992
-#: admin/modules/membership/index.php:609 admin/modules/system/app_user.php:369
+#: admin/modules/membership/index.php:609 admin/modules/system/app_user.php:374
 msgid "Reset"
 msgstr "Setel ulang"
 
@@ -2102,7 +2102,7 @@ msgid "Vertical:"
 msgstr "Vertikal:"
 
 #: admin/modules/bibliography/index.php:1004
-#: admin/modules/membership/index.php:606 admin/modules/system/app_user.php:366
+#: admin/modules/membership/index.php:606 admin/modules/system/app_user.php:371
 msgid "Capture"
 msgstr "Ambil Gambar"
 
@@ -2267,8 +2267,8 @@ msgstr "Salin"
 #: admin/modules/master_file/topic.php:212
 #: admin/modules/master_file/topic.php:237
 #: admin/modules/master_file/topic.php:243
-#: admin/modules/system/app_user.php:405 admin/modules/system/app_user.php:434
-#: admin/modules/system/app_user.php:441
+#: admin/modules/system/app_user.php:410 admin/modules/system/app_user.php:439
+#: admin/modules/system/app_user.php:446
 #: admin/modules/system/user_group.php:244
 #: admin/modules/system/user_group.php:256
 msgid "Last Update"
@@ -3598,7 +3598,7 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/membership/member_type.php:169
 #: admin/modules/reporting/customs/pop_procurement_list.php:31
 #: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:283
-#: admin/modules/system/app_user.php:419 admin/modules/system/backup.php:49
+#: admin/modules/system/app_user.php:424 admin/modules/system/backup.php:49
 #: admin/modules/system/backup_proc.php:47
 #: admin/modules/system/barcode_generator.php:43
 #: admin/modules/system/biblio_indexes.php:45
@@ -5008,11 +5008,11 @@ msgstr "Nomor Identitas"
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
-#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:354
+#: admin/modules/membership/index.php:594 admin/modules/system/app_user.php:359
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:597 admin/modules/system/app_user.php:357
+#: admin/modules/membership/index.php:597 admin/modules/system/app_user.php:362
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
@@ -5030,13 +5030,13 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:630 admin/modules/system/app_user.php:398
+#: admin/modules/membership/index.php:630 admin/modules/system/app_user.php:403
 #: lib/contents/login.inc.php:199 lib/contents/member.inc.php:291
 #: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:632 admin/modules/system/app_user.php:400
+#: admin/modules/membership/index.php:632 admin/modules/system/app_user.php:405
 #: lib/contents/login.inc.php:201 lib/contents/newpass.inc.php:100
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata Sandi Baru"
@@ -5046,7 +5046,7 @@ msgstr "Konfirmasi Kata Sandi Baru"
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:644 admin/modules/system/app_user.php:406
+#: admin/modules/membership/index.php:644 admin/modules/system/app_user.php:411
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan ruas Kata Sandi kosong jika tidak ingin mengubahnya"
 
@@ -5849,13 +5849,14 @@ msgid "Activity Date Until"
 msgstr "Aktifitas Hingga"
 
 #: admin/modules/reporting/customs/staff_act.php:93
-#: admin/modules/system/app_user.php:324 admin/modules/system/app_user.php:430
-#: admin/modules/system/app_user.php:437 admin/modules/system/app_user.php:438
+#: admin/modules/system/app_user.php:329 admin/modules/system/app_user.php:435
+#: admin/modules/system/app_user.php:442 admin/modules/system/app_user.php:443
 msgid "Real Name"
 msgstr "Nama Asli"
 
 #: admin/modules/reporting/customs/staff_act.php:94
-#: admin/modules/system/app_user.php:322 admin/modules/system/app_user.php:431
+#: admin/modules/system/app_user.php:323 admin/modules/system/app_user.php:325
+#: admin/modules/system/app_user.php:436
 msgid "Login Username"
 msgstr "Nama masuk Pengguna"
 
@@ -6718,36 +6719,36 @@ msgstr "Daftar Pengguna"
 msgid "Add New User"
 msgstr "Tambah Pengguna"
 
-#: admin/modules/system/app_user.php:330 admin/modules/system/app_user.php:432
-#: admin/modules/system/app_user.php:439
+#: admin/modules/system/app_user.php:335 admin/modules/system/app_user.php:437
+#: admin/modules/system/app_user.php:444
 msgid "User Type"
 msgstr "Tipe Keanggotaan"
 
-#: admin/modules/system/app_user.php:332 lib/contents/librarian.inc.php:49
+#: admin/modules/system/app_user.php:337 lib/contents/librarian.inc.php:49
 msgid "E-Mail"
 msgstr "Surel"
 
-#: admin/modules/system/app_user.php:344
+#: admin/modules/system/app_user.php:349
 msgid "Social Media"
 msgstr "Media Sosial"
 
-#: admin/modules/system/app_user.php:348
+#: admin/modules/system/app_user.php:353
 msgid "REMOVE IMAGE"
 msgstr "HILANGKAN GAMBAR"
 
-#: admin/modules/system/app_user.php:380
+#: admin/modules/system/app_user.php:385
 msgid "User Photo"
 msgstr "Foto Pengguna"
 
-#: admin/modules/system/app_user.php:395
+#: admin/modules/system/app_user.php:400
 msgid "Group(s)"
 msgstr "Kelompok"
 
-#: admin/modules/system/app_user.php:405
+#: admin/modules/system/app_user.php:410
 msgid "You are going to edit user profile"
 msgstr "Anda akan menyunting data pengguna"
 
-#: admin/modules/system/app_user.php:433 admin/modules/system/app_user.php:440
+#: admin/modules/system/app_user.php:438 admin/modules/system/app_user.php:445
 msgid "Last Login"
 msgstr "Terakhir kali Masuk"
 
@@ -8545,6 +8546,14 @@ msgstr "Bahasa Turki"
 msgid "Urdu"
 msgstr "Bahasa Urdu"
 
+#: lib/lang/string.php:26
+msgid "System"
+msgstr "Sistem"
+
+#: lib/lang/string.php:27
+msgid "Reporting"
+msgstr "Pelaporan"
+
 #: lib/module.inc.php:42 template/akasia-dz/partials/footer.php:51
 #: template/akasia-dz/partials/nav.php:5 template/akasia/partials/footer.php:51
 #: template/akasia/partials/nav.php:5 template/default/parts/_navbar.php:11
@@ -9339,12 +9348,6 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
-
-#~ msgid "Reporting"
-#~ msgstr "Pelaporan"
-
-#~ msgid "System"
-#~ msgstr "Sistem"
 
 #~ msgid "SYSTEM CONFIG"
 #~ msgstr "KONFIGURASI SISTEM"
