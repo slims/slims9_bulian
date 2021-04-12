@@ -15,6 +15,7 @@ export default {
     data() {
         return {
             host: 'localhost',
+            port: '3306',
             name: '',
             user: '',
             pass: '',
@@ -35,6 +36,7 @@ export default {
                 body: JSON.stringify({
                     action: 'test-connection',
                     host: this.host,
+                    port: this.port,
                     name: this.name,
                     user: this.user,
                     pass: this.pass
@@ -78,6 +80,12 @@ export default {
           </label>
           <input required v-model="host" id="db_host" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Enter host">
       </div>
+      <div class="w-full mt-3">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1" for="grid-last-name">
+            Database port
+          </label>
+          <input required v-model="port" id="db_port" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Enter port">
+      </div> 
       <div class="w-full mt-3">
           <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1" for="grid-last-name">
             Database name

@@ -49,7 +49,6 @@ if (isset($_GET['reportView'])) {
 if (!$reportView) {
 ?>
     <!-- filter -->
-    <div>
 	  <div class="per_title">
 	    <h2><?php echo __('Current Lost Item'); ?></h2>
     </div>
@@ -59,33 +58,32 @@ if (!$reportView) {
     <div class="sub_section">
     <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
     <div id="filterForm">
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('Title/ISBN'); ?></div>
+    <div class="form-group divRow">
+        <label><?php echo __('Title/ISBN'); ?></label>
         <div class="divRowContent">
         <?php
-        echo simbio_form_element::textField('text', 'title', '', 'style="width: 50%"');
+        echo simbio_form_element::textField('text', 'title', '', ' class="form-control col-5"');
         ?>
         </div>
     </div>
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('Item Code'); ?></div>
+    <div class="form-group divRow">
+        <label><?php echo __('Item Code'); ?></label>
         <div class="divRowContent">
         <?php
-        echo simbio_form_element::textField('text', 'itemCode', '', 'style="width: 50%"');
+        echo simbio_form_element::textField('text', 'itemCode', '', ' class="form-control col-5"');
         ?>
         </div>
     </div>
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('Classification'); ?></div>
+    <div class="form-group divRow">
+        <label><?php echo __('Classification'); ?></label>
         <div class="divRowContent">
         <?php
-        echo simbio_form_element::textField('text', 'class', '', 'style="width: 50%"');
+        echo simbio_form_element::textField('text', 'class', '', ' class="form-control col-5"');
         ?>
         </div>
     </div>
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('GMD'); ?></div>
-        <div class="divRowContent">
+    <div class="form-group divRow">
+        <label><?php echo __('GMD'); ?></label>
         <?php
         $ct_q = $dbs->query('SELECT gmd_name FROM mst_gmd');
         $ct_options = array();
@@ -93,13 +91,11 @@ if (!$reportView) {
         while ($ct_d = $ct_q->fetch_row()) {
             $ct_options[] = array($ct_d[0], $ct_d[0]);
         }
-        echo simbio_form_element::selectList('gmd', $ct_options);
+        echo simbio_form_element::selectList('gmd', $ct_options,'','class="form-control col-3"');
         ?>
-        </div>
     </div>
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('Collection Type'); ?></div>
-        <div class="divRowContent">
+    <div class="form-group divRow">
+        <label><?php echo __('Collection Type'); ?></label>
         <?php
         $ct_q = $dbs->query('SELECT coll_type_name FROM mst_coll_type');
         $ct_options = array();
@@ -107,13 +103,11 @@ if (!$reportView) {
         while ($ct_d = $ct_q->fetch_row()) {
             $ct_options[] = array($ct_d[0], $ct_d[0]);
         }
-        echo simbio_form_element::selectList('collType', $ct_options);
+        echo simbio_form_element::selectList('collType', $ct_options,'','class="form-control col-3"');
         ?>
-        </div>
     </div>
-    <div class="divRow">
-        <div class="divRowLabel"><?php echo __('Location'); ?></div>
-        <div class="divRowContent">
+    <div class="form-group divRow">
+        <label><?php echo __('Location'); ?></label>
         <?php
         $loc_q = $dbs->query('SELECT location_name FROM mst_location');
         $loc_options = array();
@@ -121,21 +115,19 @@ if (!$reportView) {
         while ($loc_d = $loc_q->fetch_row()) {
             $loc_options[] = array($loc_d[0], $loc_d[0]);
         }
-        echo simbio_form_element::selectList('location', $loc_options);
+        echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
         ?>
-        </div>
     </div>
-    <div class="btn-group">
+</div>
       <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
       <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
       <input type="hidden" name="reportView" value="true" />
-    </div>
     </form>
     </div>
-    </div>
+
     <!-- filter end -->
-    <div class="dataListHeader reportHeader"><span id="pagingBox"></span></div>
-    <iframe name="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+    <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
+    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>   
 <?php
 } else {
     ob_start();

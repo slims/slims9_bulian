@@ -71,6 +71,7 @@ function showComment($_detail_id)
 			$_forms  = '<form method="post" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
 			$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input form-control"'). '<br />';
 			$_forms .= '<input type="submit" name="SaveComment" value="Save comment" class="s-btn btn btn-primary">';
+			$_forms .= \Volnix\CSRF\CSRF::getHiddenInputString();
 			$_forms .= '</form>';
 			return $_list_comment.$_forms;
 		} else  {

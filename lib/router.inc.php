@@ -99,7 +99,7 @@ class Router extends AltoRouter
 
     public function makeCallable($string)
     {
-        $method = explode(':', $string);
+        $method = explode('@', $string);
         if (isset($method[1]) && class_exists($method[0])) {
             $instance = new $method[0]($this->sysconf, $this->db);
             if (method_exists($instance, $method[1])) {

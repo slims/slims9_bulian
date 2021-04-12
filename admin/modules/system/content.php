@@ -50,6 +50,30 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
+
+if(isset($_FILES['upload']['name'])) {
+ $file = $_FILES['upload']['tmp_name'];
+ $file_name = $_FILES['upload']['name'];
+ $file_name_array = explode(".", $file_name);
+ $extension = end($file_name_array);
+ $new_image_name = rand() . '.' . $extension;
+ //chmod('upload', 0777);
+ $allowed_extension = array("jpg", "gif", "png", "jpeg");
+ if(in_array($extension, $allowed_extension))
+ {
+    //check dir
+    if(!is_dir(IMGBS.'content')){
+        mkdir(IMGBS.'content');
+    }
+  move_uploaded_file($file, IMGBS.'content/' . $new_image_name);
+  $function_number = 1;
+  $url = SWB.'images/content/' . $new_image_name;
+  $message = '';
+  echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($function_number, '$url', '$message');</script>";
+  exit();
+ }
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
     $contentTitle = trim(strip_tags($_POST['contentTitle']));
@@ -61,8 +85,9 @@ if (isset($_POST['saveData'])) {
     } else {
         $data['content_title'] = $dbs->escape_string(strip_tags(trim($contentTitle)));
         $data['content_path'] = strtolower($dbs->escape_string(strip_tags(trim($contentPath))));
+        $data['is_news'] = '0';
         if ($_POST['isNews'] && $_POST['isNews'] == '1') {
-            $data['is_news'] = 1;
+            $data['is_news'] = '1';
         }
         $data['content_desc'] = $dbs->escape_string(trim($_POST['contentDesc']));
         $data['input_date'] = date('Y-m-d H:i:s');
@@ -80,7 +105,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('content', $data, 'content_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['content_title'].' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['content_title'].' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')', 'Content', 'Update');
                 utility::jsAlert(__('Content data updated'));
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             } else { utility::jsAlert(__('Content data FAILED to update!')."\nDEBUG : ".$sql_op->error); }
@@ -91,7 +116,7 @@ if (isset($_POST['saveData'])) {
             if ($sql_op->insert('content', $data)) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new content ('.$data['content_title'].') with contentname ('.$data['contentname'].')');
-                utility::jsAlert(__('Content data saved'));
+                utility::jsAlert(__('Content data saved'), 'Content', 'Add');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('Content data FAILED to save!')."\n".$sql_op->error); }
             exit();
@@ -120,7 +145,7 @@ if (isset($_POST['saveData'])) {
             $error_num++;
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_d[0].')');
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_d[0].')','Content', 'Delete');
         }
     }
 
@@ -190,19 +215,19 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // content title
-    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title'], 'class="form-control" style="width: 100%;"');
+    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title']??'', 'class="form-control" style="width: 100%;"');
     // content news flag
     $news_chbox[0] = array('0', __('No'));
     $news_chbox[1] = array('1', __('Yes'));
-    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']);
+    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']??'1');
     // content path
-    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path'], 'class="form-control" style="width: 50%;"');
+    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path']??'', 'class="form-control" style="width: 50%;"');
     // content description
-    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc'], ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
+    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc']??'', ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
 
     // edit mode messagge
     if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title'].'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
+        echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title']??''.'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
     }
     // print out the form object
     echo $form->printOut();
@@ -222,7 +247,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             height : 300
             });
             */
-            CKEDITOR.replace( 'contentDesc' );
+            CKEDITOR.replace( 'contentDesc', {
+    filebrowserUploadUrl: '<?= $_SERVER['PHP_SELF']?>',
+    
+    filebrowserUploadMethod: "form"
+});
             $(document).bind('formEnabled', function() {
                 CKEDITOR.instances.contentDesc.setReadOnly(false);
             });

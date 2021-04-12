@@ -57,11 +57,12 @@ $gmd_list = ob_get_clean();
 /* Language selection list */
 ob_start();
 require_once(LANG.'localisation.php');
+$select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
 foreach ($available_languages AS $lang_index) {
     $selected = null;
     $lang_code = $lang_index[0];
     $lang_name = $lang_index[1];
-    if ($lang_code == $sysconf['default_lang']) {
+    if ($lang_code == $select_lang) {
         $selected = 'selected';
     }
     echo '<option value="'.$lang_code.'" '.$selected.'>'.$lang_name.'</option>';

@@ -101,7 +101,7 @@
 <!-- fake submit iframe -->
 
 <script>
-  $('.loader').toggleClass('hidden');
+  $('.loader').toggleClass('hidden').hide();
   let Scrollbar = window.Scrollbar;
   Scrollbar.use(window.OverscrollPlugin)
   Scrollbar.init(document.querySelector('#sidepan'), {

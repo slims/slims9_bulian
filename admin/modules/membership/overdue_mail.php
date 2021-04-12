@@ -34,7 +34,6 @@ if (!$can_read) { die(); }
 
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 require MDLBS.'membership/member_base_lib.inc.php';
-require LIB.'phpmailer/class.phpmailer.php';
 
 // get data
 $memberID = $dbs->escape_string(trim($_POST['memberID']));

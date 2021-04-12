@@ -1,13 +1,13 @@
 @import "css/font-awesome.min.css";
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Quicksand";
-  src: url('fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
+  src: url('./fonts/Quicksand/Quicksand-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: bold;
 }
@@ -365,6 +365,11 @@ buttton
 .makeHidden {
   display: none;
 }
+.editFormLink {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
 .dateField {
   padding: 2px 2px 1px;
   width: 200px;
@@ -374,6 +379,7 @@ buttton
   color: #555;
   margin-bottom: 5px;
   background-image: none;
+  display: flex;
 }
 .dateInput {
   width: 160px;
@@ -384,7 +390,7 @@ buttton
   width: 22px;
   height: 22px;
   float: right;
-  margin: -35px;
+  margin: 0px;
   color: #00a9ff;
   cursor: pointer;
 }
@@ -662,18 +668,21 @@ buttton
   min-height: 550px;
 }
 .loader {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
   position: absolute;
-  top: 100px;
-  left: 125px;
-  width: 300px;
-  text-align: center;
+  top: 70px;
+  left: 225px;
+  width: calc(100% - 225px);
+  text-align: left;
   z-index: 999;
 }
 .loader > div {
-  width: 18px;
-  height: 18px;
+  width: 100%;
+  height: 1px;
   background-color: #000000;
-  border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -681,7 +690,7 @@ buttton
 .loader > div:nth-child(1) {
   background-color: #ffffff;
 }
-.loader > div:nth-child(2) {
+.loader > div:nth-child(3) {
   background-color: #00a9ff;
 }
 .loader .bounce1 {
@@ -1132,33 +1141,61 @@ sidebar
   background-size: cover;
   opacity: 0.15;
 }
-#sidepan .subMenuHeader {
-  font-size: 12pt;
-  margin-top: 10px;
-}
-#sidepan div,
-#sidepan a {
-  margin: 0;
+#sidepan .subMenuHeader,
+#sidepan .subMenuItem {
   color: #ffffff;
   display: block;
-  padding: 3px 15px;
+  padding: 3px 10px;
   position: relative;
   font-size: 10pt;
   font-family: 'Quicksand', sans-serif;
+}
+#sidepan .subMenuHeader {
+  padding-left: 16px;
+}
+#sidepan .subMenuItem {
+  margin: 4px 0 0 4px;
+  transition: ease-in all 0.1s;
+}
+#sidepan .scrollbar-track.scrollbar-track-x.show {
+  display: none !important;
 }
 #sidepan div {
   font-weight: bold;
   color: #ffffff;
 }
-#sidepan a:hover,
-#sidepan .curModuleLink,
-#sidepan .subMenuItem:first-child {
-  background-color: #fff !important;
-  color: #c54545;
-}
-#sidepan a:hover,
+#sidepan .subMenuItem:first-child,
 #sidepan .curModuleLink {
+  background-color: #fafafa !important;
   color: #00a9ff;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
+}
+#sidepan .subMenuItem:first-child {
+  color: #c54545;
+  border-radius: 50%;
+}
+#sidepan .subMenuItem:not(.curModuleLink):hover {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
+}
+#sidepan .subMenuItem:not(.curModuleLink):focus {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
+}
+#sidepan .scroll-content .subMenuHeader {
+  font-size: 10px;
+  margin-top: 16px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: normal;
+}
+#sidepan .scroll-content .subMenuHeader-0 {
+  border: none;
+  margin-top: 0;
 }
 .envinfo {
   background: #fff;
@@ -1227,14 +1264,14 @@ table {
   color: #000000 !important;
 }
 .s-user {
-  margin: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
   z-index: 0;
   height: 70px;
-  color: #ffffff;
-  display: block;
   overflow: hidden;
-  position: relative;
-  width: 225px;
+  padding: 16px;
 }
 .s-user:before {
   top: 0;
@@ -1262,32 +1299,28 @@ table {
 .s-user-frame {
   padding: 0 !important;
   line-height: 0;
-  left: -10px;
 }
 .s-user-photo {
   z-index: 99;
   position: relative;
-  top: 7px;
   float: left;
   border: solid 5px #ffffff;
   border-radius: 50px;
   overflow: hidden;
   width: 50px;
   padding: 0 !important;
+  margin: 0 !important;
 }
 .s-user-photo img {
   width: 100%;
 }
 .s-user a {
-  padding: 0;
-  left: 10px;
+  padding-left: 16px;
+  color: #ffffff;
 }
 .s-user-name {
-  position: relative;
-  top: 10px;
+  line-height: 1;
   font-size: 10pt;
-  line-height: 18pt;
-  margin-bottom: 5px;
 }
 #userImage {
   padding: 0;
@@ -1295,8 +1328,7 @@ table {
   max-width: 72px;
 }
 #imageFilename .removeImage {
-  margin-top: 5px;
-  border-radius: 5px !important;
+  color: #ffffff;
 }
 .s-widget-value {
   font-size: 30px;

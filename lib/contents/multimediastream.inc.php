@@ -32,11 +32,14 @@ if (!defined('INDEX_AUTH')) {
 } elseif (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
+\SLiMS\Plugins::getInstance()->execute('fstream_vid_before_download');
 
 // get file ID
 $fileID = isset($_GET['fid'])?(integer)$_GET['fid']:0;
-// get biblioID
+// get biblioID, and memberID/userID if available, 
 $biblioID = isset($_GET['bid'])?(integer)$_GET['bid']:0;
+$memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
+$userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 // get file data
 // query file to database
 $sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
@@ -57,6 +60,8 @@ if (!file_exists($file_loc)) {
 // multimedia URL
 $multimedia_url = SWB.'index.php?p=fstream&fid='.$fileID.'&bid='.$biblioID;
 // $multimedia_url = urlencode($multimedia_url);
+utility::dlCount($dbs, $fileID, $memberID, $userID);
+\SLiMS\Plugins::getInstance()->execute('fstream_vid_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'biblioID' => $biblioID, 'userID' => $userID, 'file_d' => $file_d)]);
 
 // flowplayer settings
 $cover = SWB.IMG.'/slims-splash.png';

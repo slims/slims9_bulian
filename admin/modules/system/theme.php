@@ -30,25 +30,36 @@ require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
+
 if (!function_exists('addOrUpdateSetting')) {
   function addOrUpdateSetting($name, $value)
   {
     global $dbs;
     $sql_op = new simbio_dbop($dbs);
-    $data['setting_value'] = serialize($value);
-
-    $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
-    if ($query->num_rows > 0) {
-      // update
-      $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
-      if (!$update) return $dbs->error;
-    } else {
-      // insert
-      $data['setting_name'] = $name;
-      $insert = $sql_op->insert('setting', $data);
-      if (!$insert) return $dbs->error;
+    foreach ($value as $key => $val) {
+      $settings[$key] = trim(str_replace(array('\n', '\r','\t', '\\'), '', $val));
     }
+    $data['setting_value'] = $dbs->escape_string(serialize($settings));
 
+    // save personalized user template
+    if($name == 'admin_template'){
+      $_d['admin_template'] = serialize($value);
+      $update = $sql_op->update('user', $_d, "user_id=".$_SESSION['uid']);
+      if (!$update) return $dbs->error;
+    }
+    else{
+      $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+      if ($query->num_rows > 0) {
+        // update
+        $update = $sql_op->update('setting', $data, "setting_name='{$name}'");
+        if (!$update) return $dbs->error;
+      } else {
+        // insert
+        $data['setting_name'] = $name;
+        $insert = $sql_op->insert('setting', $data);
+        if (!$insert) return $dbs->error;
+      }
+    }
     return true;
   }
 }
@@ -121,6 +132,7 @@ if (isset($_GET['customize'])) {
     include_once $path;
     if (isset($sysconf[$theme_key]['option'][$theme_dir])) {
       utility::loadSettings($dbs);
+      utility::loadUserTemplate($dbs,$_SESSION['uid']);
       // create new instance
       $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
       $form->submit_button_attr = 'name="updateData" value="' . __('Save Settings') . '" class="btn btn-default"';
@@ -144,7 +156,12 @@ if (isset($_GET['customize'])) {
           $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
           $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control '.$cf_class.'" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"');
         } else if ($cfield['type'] == 'dropdown') {
-          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
+          $value = $cf_default;
+          if (isset($sysconf[$theme_key][$cf_dbfield])) {
+              $value = $sysconf[$theme_key][$cf_dbfield];
+              if (gettype($cf_default) == 'integer') $value = intval($sysconf[$theme_key][$cf_dbfield]);
+          }
+          $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $value, 'class="form-control"');
         } else if ($cfield['type'] == 'checklist') {
           $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, isset($sysconf[$theme_key][$cf_dbfield]) ? $sysconf[$theme_key][$cf_dbfield] : $cf_default, 'class="form-control"');
         } else if ($cfield['type'] == 'choice') {
@@ -165,7 +182,9 @@ if (isset($_GET['customize'])) {
   $content = ob_get_clean();
   $css = '<link rel="stylesheet" href="'.SWB.'css/bootstrap-colorpicker.min.css"/>';
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
+  $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
+  $js .= "<script type=\"text/javascript\">CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;CKEDITOR.config.toolbar = [['Source','Bold','Italic','Underline','-','Link','Unlink', 'Anchor']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }
@@ -183,40 +202,45 @@ if (isset($_GET['customize'])) {
     </div>
 </div>
 <?php
+
+echo '<div class="container-fluid">';
+
 // public template
 // scan template directory
-$template_dir = SB . $sysconf['template']['dir'];
-$dir = new simbio_directory($template_dir);
-$dir_tree = $dir->getDirectoryTree(1);
-// sort array by index
-ksort($dir_tree);
-echo '<div class="container-fluid">';
-echo '<div class="row">';
-echo '<div class="col-12 my-3">
-        <h5 class="font-weight-bold">' . __('Public Template') . '</h5>
-      </div>';
+if($_SESSION['uid'] == '1'){
+  $template_dir = SB . $sysconf['template']['dir'];
+  $dir = new simbio_directory($template_dir);
+  $dir_tree = $dir->getDirectoryTree(1);
+  // sort array by index
+  ksort($dir_tree);
+  echo '<div class="row">';
+  echo '<div class="col-12 my-3">
+          <h5 class="font-weight-bold">' . __('Public Template') . '</h5>
+        </div>';
 
-foreach ($dir_tree as $dir) {
-  $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
-  if ($dir == $sysconf['template']['theme']) {
-    $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp">' . __('Customize') . '</a>';
+  foreach ($dir_tree as $dir) {
+    $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" class="btn btn-default notAJAX setPublicTheme">' . __('Activate') . '</a>';
+    if ($dir == $sysconf['template']['theme']) {
+      $_btn = '<a href="' . MWB . 'system/theme.php?customize=public&theme=' . $dir . '" data-value="' . $dir . '" title="' . __('Theme Configuration') . '" class="btn btn-success customePublicTheme notAJAX openPopUp" width="600" height="500">' . __('Customize') . '</a>';
+    }
+
+    $output = '<div class="col-3">';
+    $output .= '<div class="card border-0 mb-4">';
+    $output .= '<div class="card-body">';
+    $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
+    $preview = file_exists(SB.'template/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
+    $output .= '<img class="card-img-top rounded" src="'.SWB.'template/'. $dir . '/'.$preview.'" height="150" />';
+    $output .= '</div>';
+    $output .= '<div class="card-footer border-0">' . $_btn . '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    echo $output;
   }
-
-  $output = '<div class="col-3">';
-  $output .= '<div class="card border-0 mb-4">';
-  $output .= '<div class="card-body">';
-  $output .= '<div class="mb-2 font-weight-bold">' . ucwords($dir) . '</div>';
-  $preview = file_exists(SB.'template/'.$dir.'/preview.jpg') ? 'preview.jpg' : 'preview.png';
-  $output .= '<img class="card-img-top rounded" src="'.SWB.'template/'. $dir . '/'.$preview.'" height="150" />';
-  $output .= '</div>';
-  $output .= '<div class="card-footer border-0">' . $_btn . '</div>';
-  $output .= '</div>';
-  $output .= '</div>';
-  echo $output;
+  echo '</div>';
 }
-echo '</div>';
 
 // admin template
+utility::loadUserTemplate($dbs,$_SESSION['uid']);
 // scan admin template directory
 $admin_template_dir = SB . 'admin' . DS . $sysconf['admin_template']['dir'];
 $dir = new simbio_directory($admin_template_dir);

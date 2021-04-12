@@ -45,7 +45,7 @@
     <style>
         .s-user:after,
         #sidepan {
-            background-color: <?= $sysconf['admin_template']['default_color']; ?> !important;
+            background-color: <?= $sysconf['admin_template']['default_color']??'#004db6'; ?> !important;
         }
         #sidepan .scroll-content {
             padding: 0;
@@ -106,12 +106,12 @@
 <!-- fake submit iframe -->
 
 <script>
-$('.loader').toggleClass('hidden');
+$('.loader').toggleClass('hidden').hide();
 
 let Scrollbar = window.Scrollbar;
 Scrollbar.use(window.OverscrollPlugin)
 Scrollbar.init(document.querySelector('#sidepan'), {
-    alwaysShowTracks: true,
+    alwaysShowTracks: <?= $sysconf['admin_template']['always_show_tracks']??'false' ?>,
     continuousScrolling: false,
     plugins: {
       overscroll: {

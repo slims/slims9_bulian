@@ -150,8 +150,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         include $custom_settings;
     }
 
-	  // load print settings from database to override value from printed_settings file
+	// load print settings from database to override value from printed_settings file
     loadPrintSettings($dbs, 'membercard');
+
+    // execute registered hook
+    \SLiMS\Plugins::getInstance()->execute('membercard_theme_print', [$member_datas]);
 
     // chunk cards array
     $chunked_card_arrays = array_chunk($member_datas, $card_ = $sysconf['print']['membercard']['items_per_row']);

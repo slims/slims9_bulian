@@ -1,0 +1,242 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 80px;
+    margin-top: 60px;
+}
+
+.footer {
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #f5f5f5;
+
+    border-top: 1px solid transparent;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.navbar{
+    border-top: 1px solid transparent;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.group-container{
+    padding:0;
+    height:100%;
+}
+
+.selectors, .block{
+    height:100%;
+    width:100%;
+}
+
+.selectors button{
+    border: 0;
+    border-radius: 0;
+    background-color: #f8f9fa !important;
+    width:25%;
+    margin-left: 0;
+}
+
+.selectors button:active{
+    border:0;
+}
+
+.selectors button:focus{
+    border:0;
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
+
+.active, .selector-holder{
+    display: flex;
+    flex-direction: column;
+}
+
+.inactive{
+    display: none;
+}
+
+.selector-holder span{
+    font-size: 0.8rem;
+}
+
+/* Colors of the buttons*/
+.button-active, .selectors button:hover, .selectors button:active, .selectors button:focus{
+    color: #ff0000;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus, .show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow:none;
+    border: none;
+    outline: none;
+}
+
+.button-inactive{
+    color: #000;
+}
+
+#close:focus {
+    text-decoration: none;
+}
+
+/* Copyright 2016 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.toolbarButton {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#pageNumber {
+    border: none;
+    background: transparent;
+    text-align: center;
+}
+
+.toolbarButton[disabled] {
+    opacity: 0.3;
+}
+
+.hidden {
+    display: none;
+}
+[hidden] {
+    display: none !important;
+}
+
+#viewerContainer {
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+    top: 57px;
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+}
+
+canvas {
+    margin: auto;
+    display: block;
+}
+
+@keyframes moveDefault {
+    from {
+        background-position: 0 top;
+    }
+
+    to {
+        background-position: -39rem top;
+    }
+}
+
+#loadingBar {
+    position: relative;
+    height: 2px;
+    background-color: transparent;
+    margin-top: 5rem;
+    text-align: center;
+}
+
+#loadingBar .progress {
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(221, 221, 221, 1);
+    overflow: hidden;
+    transition: width 200ms;
+}
+
+@keyframes progressIndeterminate {
+    0% {
+        left: 0;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+#loadingBar .progress.indeterminate {
+    background-color: rgba(153, 153, 153, 1);
+    transition: none;
+}
+
+#loadingBar .indeterminate .glimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5rem;
+    background-image: linear-gradient(
+            to right,
+            rgba(153, 153, 153, 1) 0%,
+            rgba(255, 255, 255, 1) 50%,
+            rgba(153, 153, 153, 1) 100%
+    );
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    animation: progressIndeterminate 2s linear infinite;
+}
+
+#errorWrapper {
+    /*background: none repeat scroll 0 0 rgba(255, 85, 85, 1);*/
+    /*color: rgba(255, 255, 255, 1);*/
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 57px;
+    z-index: 1000;
+    padding: 0.3rem;
+    font-size: 0.8em;
+}
+
+#errorMoreInfo {
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 1);
+    padding: 0.3rem;
+    margin: 0.3rem;
+    width: 98%;
+}
+
+.material-icons {
+    font-size: 24px;
+}
+
+.smart-scroll{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.scrolled-down{
+    transform:translateY(-100%); transition: all 0.3s ease-in-out;
+}
+.scrolled-up{
+    transform:translateY(0); transition: all 0.3s ease-in-out;
+}

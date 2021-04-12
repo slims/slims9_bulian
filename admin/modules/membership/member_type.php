@@ -203,17 +203,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // enable reserve
     $enable_resv_chbox[0] = array('1', __('Enable'));
     $enable_resv_chbox[1] = array('0', __('Disable'));
-    $form->addRadio('enableReserve', __('Reserve'), $enable_resv_chbox, !empty($rec_d['enable_reserve'])?$rec_d['enable_reserve']:'1');
+    $form->addRadio('enableReserve', __('Reserve'), $enable_resv_chbox, isset($rec_d['enable_reserve'])?$rec_d['enable_reserve']:'1');
     // reserve limit
     $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit']??'', 'style="width:25%" class="form-control"');
-    // membership periode
-    $form->addTextField('text', 'memberPeriode', __('Membership Periode (In Days)'), $rec_d['member_periode']??'', 'style="width:25%" class="form-control"');
+    // membership period
+    $form->addTextField('text', 'memberPeriode', __('Membership Period (In Days)'), $rec_d['member_periode']??'', 'style="width:25%" class="form-control"');
     // reborrow limit
     $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']??'', 'style="width:25%" class="form-control"');
     // fine each day
     $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']??'','style="width:25%" class="form-control"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Periode'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Period'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -232,13 +232,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $datagrid->setSQLColumn('mt.member_type_id',
             'mt.member_type_name AS \''.__('Membership Type').'\'',
             'mt.loan_limit AS \''.__('Loan Limit').'\'',
-            'mt.member_periode AS \''.__('Membership Periode (In Days)').'\'',
+            'mt.member_periode AS \''.__('Membership Period (In Days)').'\'',
             'mt.reborrow_limit AS \''.__('Reborrow Limit').'\'',
             'mt.last_update AS \''.__('Last Updated').'\'');
     } else {
         $datagrid->setSQLColumn('mt.member_type_name AS \''.__('Membership Type').'\'',
             'mt.loan_limit AS \''.__('Loan Limit').'\'',
-            'mt.member_periode AS \''.__('Membership Periode (In Days)').'\'',
+            'mt.member_periode AS \''.__('Membership Period (In Days)').'\'',
             'mt.reborrow_limit AS \''.__('Reborrow Limit').'\'',
             'mt.last_update AS \''.__('Last Updated').'\'');
     }

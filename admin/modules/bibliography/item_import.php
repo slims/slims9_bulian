@@ -98,6 +98,7 @@ if (isset($_POST['doImport'])) {
         // read file line by line
         $updated_row = 0;
         $file = fopen($uploaded_file, 'r');
+        $n = 0;
         while (!feof($file)) {
             // record count
             if ($record_num > 0 AND $row_count == $record_num) {
@@ -152,11 +153,15 @@ if (isset($_POST['doImport'])) {
                             $source, $invoice, $price, $price_currency, $invoice_date,
                             $input_date, $last_update)";
 
-                    // send query
-                    // die($sql_str);
-                    $dbs->query($sql_str);
-                    // case duplicate do update
-                    if ($dbs->errno && $dbs->errno == 1062) {
+                    // first field is header
+                    if (isset($_POST['header']) && $n < 1) {
+                      $n++;
+                    } else {
+                      // send query
+                      // die($sql_str);
+                      $dbs->query($sql_str);
+                      // case duplicate do update
+                      if ($dbs->errno && $dbs->errno == 1062) {
                         $sql_str = "UPDATE item SET call_number=$call_number, coll_type_id=$coll_type,
                                 inventory_code=$inventory_code, received_date=$received_date, supplier_id=$supplier,
                                 order_no=$order_no, location_id=$location, order_date=$order_date, item_status_id=$item_status, site=$site,
@@ -165,8 +170,9 @@ if (isset($_POST['doImport'])) {
                         // update data
                         $dbs->query($sql_str);
                         if ($dbs->affected_rows > 0) { $updated_row++; }
-                    } else {
-                            if ($dbs->affected_rows > 0) { $updated_row++; }
+                      } else {
+                        if ($dbs->affected_rows > 0) { $updated_row++; }
+                      }
                     }
                 }
                 $row_count++;
@@ -207,7 +213,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // csv files
-$str_input  = '<div class="container">';
+$str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
 $str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');
@@ -227,6 +233,8 @@ $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlen
 $form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
+// header (column name)
+$form->addCheckBox('header', __('The first row is the columns names'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
 ?>

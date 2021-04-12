@@ -69,6 +69,13 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 		include LIB.'comment.inc.php';
     }
 	if (isset($_POST['comment']) && $_POST['comment']<>"" && ISSET($_SESSION['mid'])) {
+          if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+            echo '<script type="text/javascript">';
+            echo 'alert("Invalid comment form!");';
+            echo 'location.href = \'index.php?p=show_detail&id='.$detail_id.'\';';
+            echo '</script>';
+	    exit();
+          }
 		require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 		$data['comment'] = trim(strip_tags($_POST['comment']));
 		$data['biblio_id'] = $detail_id;

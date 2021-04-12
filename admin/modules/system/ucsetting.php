@@ -41,15 +41,15 @@ if (isset($_POST['updateData'])) {
     $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'ucs\'');
     if ($update) {
       // write log
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
-      utility::jsAlert(__('Settings updated.'));
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings', 'UCS config', 'Update');
+      utility::jsToastr(__('UCS Configuration'), __('Settings updated.'), 'success');
     } else {
       // write log
       utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
-      utility::jsAlert(__('Failed save settings!'));
+      utility::jsToastr(__('UCS Configuration'), __('Failed save settings!'), 'success');      
     }
   } else {
-    utility::jsAlert(__('Settings inserted.'));
+    utility::jsToastr(__('UCS Configuration'), __('Settings inserted.'), 'success');
   }
   echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();

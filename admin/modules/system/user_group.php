@@ -52,7 +52,7 @@ if (isset($_POST['saveData'])) {
     $groupName = trim(strip_tags($_POST['groupName']));
     // check form validity
     if (empty($groupName)) {
-        utility::jsAlert(__('Group name can\'t be empty')); //mfc
+        utility::jsToastr(__('User Group'), __('Group name can\'t be empty'), 'error');
     } else {
         $data['group_name'] = $dbs->escape_string($groupName);
         $data['input_date'] = date('Y-m-d');
@@ -82,14 +82,21 @@ if (isset($_POST['saveData'])) {
                                 }
                             }
                         }
-                        $dbs->query("INSERT INTO group_access VALUES ($updateRecordID, $module, 1, $is_write)");
+
+                        // menus
+                        $menus = null;
+                        if (isset($_POST['menus']))
+                            if (isset($_POST['menus'][(int)$module])) $menus = json_encode($_POST['menus'][(int)$module]);
+
+                        $dbs->query(sprintf("INSERT INTO group_access VALUES ($updateRecordID, $module, '%s', 1, $is_write)", $dbs->escape_string($menus)));
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update group data ('.$groupName.')');
-                utility::jsAlert(__('Group Data Successfully Updated'));
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update group data ('.$groupName.')', 'User group', 'Update');
+                utility::jsToastr(__('User Group'), __('Group Data Successfully Updated'), 'success');
+
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Group Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('User Group'), __('Group Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -100,6 +107,7 @@ if (isset($_POST['saveData'])) {
                 // set group privileges
                 if (isset($_POST['read'])) {
                     foreach ($_POST['read'] as $module) {
+
                         // check write privileges
                         $is_write = 0;
                         if (isset($_POST['write'])) {
@@ -109,15 +117,21 @@ if (isset($_POST['saveData'])) {
                                 }
                             }
                         }
-                        $dbs->query("INSERT INTO group_access VALUES ($group_id, $module, 1, $is_write)");
+
+                        // menus
+                        $menus = null;
+                        if (isset($_POST['menus']))
+                            if (isset($_POST['menus'][(int)$module])) $menus = json_encode($_POST['menus'][(int)$module]);
+
+                        $dbs->query(sprintf("INSERT INTO group_access VALUES ($group_id, $module, '%s', 1, $is_write)", $dbs->escape_string($menus)));
                     }
                 }
 
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new group ('.$groupName.')');
-                utility::jsAlert(__('New Group Data Successfully Saved'));
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new group ('.$groupName.')', 'User group', 'Add');
+                utility::jsToastr(__('User Group'), __('New Group Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Group Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { utility::jsToastr(__('User Group'), __('Group Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error');}
             exit();
         }
     }
@@ -144,16 +158,16 @@ if (isset($_POST['saveData'])) {
             // delete group privileges
             $dbs->query('DELETE FROM group_access WHERE group_id='.$itemID);
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE group ('.$group_d[0].')');
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE group ('.$group_d[0].')', 'User group', 'Delete');
         }
     }
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('User Group'), __('All Data Successfully Deleted'), 'success');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('User Group'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'error');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
@@ -172,7 +186,7 @@ if (isset($_POST['saveData'])) {
       <a href="<?php echo MWB; ?>system/user_group.php" class="btn btn-default"><?php echo __('Group List'); ?></a>
       <a href="<?php echo MWB; ?>system/user_group.php?action=detail" class="btn btn-default"><?php echo __('Add New Group'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/user_group.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <form name="search" action="<?php echo MWB; ?>system/user_group.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
@@ -218,9 +232,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($access_data = $rec_q->fetch_assoc()) {
             $priv_data[$access_data['module_id']]['r'] = $access_data['r'];
             $priv_data[$access_data['module_id']]['w'] = $access_data['w'];
+            $priv_data[$access_data['module_id']]['menus'] = json_decode($access_data['menus']);
         }
     $priv_table = '';
-    include 'module_priv_form.inc.php';
+    include 'module_priv_form_adv.inc.php';
     $form->addAnything(__('Privileges'), $priv_table);
 
     // edit mode messagge

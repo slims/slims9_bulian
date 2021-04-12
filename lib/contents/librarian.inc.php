@@ -64,5 +64,5 @@ if ($librarian_q->num_rows > 0) {
     echo '</div>';
   }
 } else {
-  echo '<p>No librarian data yet</p>';
+  echo '<p>'.__('No librarian data yet').'</p>';
 }

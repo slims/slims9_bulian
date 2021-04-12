@@ -132,14 +132,25 @@ class detail
         }
         foreach ($this->record_detail['attachments'] as $attachment_d) {
           if ($attachment_d['mime_type'] == 'application/pdf') {
-            $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
+            $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" '.(utility::isMobileBrowser() ? 'target="_blank"' : 'class="openPopUp"').' title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
             $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
             if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource related to this book" target="_blank">Other Resource Link</a></div>'; }
             $_output .= '</li>';
           } else if (preg_match('@(video)/.+@i', $attachment_d['mime_type'])) {
-            $_output .= '<li class="attachment-audio-video" itemprop="video" property="video" itemscope itemtype="http://schema.org/VideoObject" style="list-style-image: url(images/labels/auvi.png)">'
-              .'<a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="640" height="480">'.$attachment_d['file_title'].'</a>';
-            $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+              switch ($attachment_d['placement']) {
+                  case 'embed':
+                      $_output .= '<li style="list-style: none">'.$this->embed('./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id']).'</li>';
+                      break;
+                  case 'popup':
+                      $_output .= '<li class="attachment-audio-video" itemprop="video" property="video" itemscope itemtype="http://schema.org/VideoObject" style="list-style-image: url(images/labels/auvi.png)">'
+                          .'<a itemprop="name" property="name" class="openPopUp" title="'.$attachment_d['file_title'].'" href="./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="640" height="480">'.$attachment_d['file_title'].'</a>';
+                      $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+                      break;
+                  default:
+                      $_output .= '<li class="attachment-audio-video" itemprop="video" property="video" itemscope itemtype="http://schema.org/VideoObject" style="list-style-image: url(images/labels/auvi.png)">'
+                          .'<a itemprop="name" property="name" title="'.$attachment_d['file_title'].'" href="./index.php?p=multimediastream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" target="_blank">'.$attachment_d['file_title'].'</a>';
+                      $_output .= '<div class="attachment-desc" itemprop="description" property="description">'.$attachment_d['file_desc'].'</div>';
+              }
             if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource Link" target="_blank">Other Resource Link</a></div>'; }
             $_output .= '</li>';
           } else if (preg_match('@(audio)/.+@i', $attachment_d['mime_type'])) {
@@ -149,7 +160,16 @@ class detail
             if (trim($attachment_d['file_url']) != '') { $_output .= '<div><a href="'.trim($attachment_d['file_url']).'" itemprop="url" property="url" title="Other Resource Link" target="_blank">Other Resource Link</a></div>'; }
             $_output .= '</li>';
           } else if ($attachment_d['mime_type'] == 'text/uri-list') {
-            $_output .= '<li class="attachment-url-list" style="list-style-image: url(images/labels/url.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name"  href="'.trim($attachment_d['file_url']).'" title="Click to open link" target="_blank">'.$attachment_d['file_title'].'</a><div class="attachment-desc">'.$attachment_d['file_desc'].'</div></li>';
+              switch ($attachment_d['placement']) {
+                  case 'embed':
+                      $_output .= '<li style="list-style: none">'.$this->embed($attachment_d['file_url']).'</li>';
+                      break;
+                  case 'popup':
+                      $_output .= '<li class="attachment-url-list" style="list-style-image: url(images/labels/url.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name"  href="'.trim($attachment_d['file_url']).'" title="Click to open link" class="openPopUp" width="560" height="315">'.$attachment_d['file_title'].'</a><div class="attachment-desc">'.$attachment_d['file_desc'].'</div></li>';
+                      break;
+                  default:
+                      $_output .= '<li class="attachment-url-list" style="list-style-image: url(images/labels/url.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name"  href="'.trim($attachment_d['file_url']).'" title="Click to open link" target="_blank">'.$attachment_d['file_title'].'</a><div class="attachment-desc">'.$attachment_d['file_desc'].'</div></li>';
+              }
           } else if (preg_match('@(image)/.+@i', $attachment_d['mime_type'])) {
             $file_loc = REPOBS.'/'.$attachment_d['file_dir'].'/'.$attachment_d['file_name'];
             $imgsize = GetImageSize($file_loc);
@@ -172,6 +192,16 @@ class detail
         }
         $_output .= '</ul>';
         return $_output;
+    }
+
+
+    function embed($url) {
+        return <<<HTML
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" width="560" height="315" src="{$url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+HTML;
+
     }
 
 
@@ -283,7 +313,7 @@ class detail
       $columns = '';
       if (isset($biblio_custom_fields)) {
         foreach ($biblio_custom_fields as $custom_field) {
-          if (isset($custom_field['is_public']) && $custom_field['is_public'] === true)
+          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1')
             $columns .= $custom_field['dbfield'] . ', ';
         }
         if ($columns !== '') {
@@ -292,24 +322,34 @@ class detail
       } else {
         $columns = '*';
       }
+
       $query = $this->db->query(sprintf("SELECT %s FROM biblio_custom WHERE biblio_id=%d", $columns, $this->detail_id));
       if ($query) {
         $data = $query->fetch_assoc();
         if (isset($biblio_custom_fields)) {
           foreach ($biblio_custom_fields as $custom_field) {
-            if (isset($custom_field['is_public']) && $custom_field['is_public'] === true) {
-              $value = $data[$custom_field['dbfield']];
+            if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
+
+              $data_field = unserialize($custom_field['data']);
+              $data_record  = $data[$custom_field['dbfield']];
+
               switch ($custom_field['type']) {
                 case 'dropdown':
                 case 'choice':
-                  $n = 0;
-                  foreach ($custom_field['data'] as $datum) {
-                    if ($datum[0] == $value) {
-                      $value = $datum[1];
-                      $n++;
+                  $value = end($data_field[$data_record]);
+                  break;
+                case 'checklist':
+                  $data_record = unserialize($data_record);
+                  foreach ($data_record as $key => $val) {
+                    if(isset($data_field[$val])){
+                    $arr[] = end($data_field[$val]);
                     }
-                    if ($n > 0) break;
                   }
+                  // convert array to string
+                  $value = implode(' -- ',$arr);
+                  break;
+                default:
+                  $value = $data[$custom_field['dbfield']];
                   break;
               }
 
@@ -387,7 +427,7 @@ class detail
         // authors for metadata
         $this->metadata .= '<meta name="DC.creator" content="';
         foreach ($this->record_detail['authors'] as $data) {
-          $authors .= '<a href="?author='.urlencode('"'.$data['author_name'].'"').'&search=Search" title="'.__('Click to view others documents with this author').'">'.$data['author_name']."</a> - ".$data['authority_type']."<br />";
+          $authors .= '<a href="?author='.urlencode('"'.$data['author_name'].'"').'&search=Search" title="'.__('Click to view others documents with this author').'">'.$data['author_name']."</a> - ".__($data['authority_type'])."<br />";
           $this->metadata .= $data['author_name'].'; ';
         }
         $this->metadata .= '" />';
@@ -566,7 +606,6 @@ class detail
             $xml->startElement('relatedItem'); $xml->writeAttribute('type', 'series');
             $xml->startElement('titleInfo'); $xml->endElement();
             $xml->startElement('title'); $this->xmlWrite($xml, $this->record_detail['series_title']); $xml->endElement();
-            $xml->endElement();
             $xml->endElement();
         }
 

@@ -408,7 +408,7 @@ $('document').ready(function() {
           url: ajaxHandler,
           // data: 'tableName='+dataSourceTable+'&tableFields='+dataSourceCols,
           data: {tableName:dataSourceTable, tableFields:dataSourceCols},
-          dataType: 'json' },
+          dataType: 'json', contentType: 'application/json' },
           function (data) {
             var results = [];
             $.each(data, function (i, val) {
@@ -465,4 +465,24 @@ $('document').ready(function() {
   $('#keyword').bind('webkitspeechchange', function() {
     $(this).closest('form').submit();
   });
+
+  // loader
+  if ($(this).registerLoader !== undefined) $(this).registerLoader();
 });
+
+// hidden feature :-D
+let n = 0;
+$(document).keydown(function(event){
+  if(event.which === 17) {
+    $('.menu.home').click( e => {
+      e.preventDefault()
+      if (n < 1) {
+        let urls = window.location.href.split('/admin')
+        window.open(urls[0])
+        n++;
+      }
+    })
+  }
+})
+
+$(document).keyup(() => { n = 0; })

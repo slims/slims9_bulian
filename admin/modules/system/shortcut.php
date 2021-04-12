@@ -70,7 +70,7 @@ require LIB.'module.inc.php';
         (\'shortcuts_'.$_SESSION['uid'].'\', \''.$shortcuts.'\')');
             utility::jsToastr('Setting', __('Shortcut setting saved'), 'success');
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application shortcuts');
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application shortcuts', 'Shortcut', 'Update');
           }
           ?>
         </div>

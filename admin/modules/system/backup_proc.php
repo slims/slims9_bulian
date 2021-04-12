@@ -33,6 +33,8 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-system');
 
+use Ifsnop\Mysqldump as IMysqldump;
+
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
@@ -47,26 +49,46 @@ if (!($can_read AND $can_write)) {
 
 // if backup process is invoked
 if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSION['token']) {
-	sleep(2);
+    sleep(2);
     $output = '';
     // turn on implicit flush
     ob_implicit_flush();
-    // checking if the binary can be executed
-    exec($sysconf['mysqldump'], $outputs, $status);
-    if ($status == BINARY_NOT_FOUND) {
-        $output = 'The PATH for mysqldump program is NOT RIGHT! Please check your configuration file again for mysqldump path vars';
-    } else {
+
+    $dumpSettings = array(
+        'compress' => IMysqldump\Mysqldump::NONE,
+        'no-data' => false,
+        'add-drop-table' => true,
+        'single-transaction' => true,
+        'lock-tables' => true,
+        'add-locks' => false,
+        'extended-insert' => false,
+        'disable-keys' => true,
+        'skip-triggers' => false,
+        'add-drop-trigger' => true,
+        'routines' => true,
+        'databases' => false,
+        'add-drop-database' => false,
+        'hex-blob' => true,
+        'no-create-info' => false,
+        'where' => ''
+        );    
+
         // checking are the backup directory is exists and writable
         if (file_exists($sysconf['backup_dir']) AND is_writable($sysconf['backup_dir'])) {
-            // time string to append to filename
-            $time2append = (date('Ymd_His'));
             // execute the backup process
-            exec($sysconf['mysqldump'].' -B '.DB_NAME.' --no-create-db --quick --user='.DB_USERNAME.' --password='.DB_PASSWORD.' --host='.DB_HOST.' > '.$sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql', $outputs, $status);
-			if ($status == COMMAND_SUCCESS || $status == 1) {
+            try {
+                // set for unlimited time
+                ini_set('max_execution_time', 0);
+
+                // time string to append to filename
+                $time2append = (date('Ymd_His'));
+                $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";port=".DB_PORT.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
+                $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
+
                 $data['user_id'] = $_SESSION['uid'];
                 $data['backup_time'] = date('Y-m-d H:i"s');
                 $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql');
-                $output = 'Backup SUCCESSFUL, backup files saved to '.$sysconf['backup_dir'].'!';
+                $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),str_replace('\'', '/',$sysconf['backup_dir']));
 
                 if (!preg_match('@^WIN.*@i', PHP_OS)) {
                     // get current directory path
@@ -74,33 +96,33 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                     // change current PHP working dir
                     @chdir($sysconf['backup_dir']);
                     // compress the backup using tar gz
-                    exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
-                    if ($status == COMMAND_SUCCESS) {
-                        // delete the original file
-                        @unlink($data['backup_file']);
-                        $output .= "File is compressed using tar gz archive format";
-                        $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                    if(function_exists('exec')){
+                        exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
+                        if ($status == COMMAND_SUCCESS) {
+                            // delete the original file
+                            @unlink($data['backup_file']);
+                            $output .= __("File is compressed using tar gz archive format");
+                            $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                        }
                     }
                     // return to previous PHP working dir
                     @chdir($curr_dir);
                 }
-
                 // input log to database
                 $sql_op = new simbio_dbop($dbs);
                 $sql_op->insert('backup_log', $data);
-            } else if ($status == COMMAND_FAILED) {
-                $output = 'Backup FAILED! Wrong user or password to connect to database server!';
+            } catch (\Exception $e) {
+                $output = sprintf(__('Backup FAILED!,\n%s'),$e->getMessage());
             }
         } else {
-            $output = "Backup FAILED! The Backup directory is not exists or not writeable";
-            $output .= "Contact System Administrator for the right path of backup directory";
+            $output = __("Backup FAILED! The Backup directory is not exists or not writeable");
+            $output .= __("Contact System Administrator for the right path of backup directory");
         }
-    }
-
+    
     // remove token
     unset($_SESSION['token']);
-    echo '<script type="text/javascript">top.alert(\''.$output.'\');</script>';
+    echo '<script type="text/javascript">top.alert(\''.$dbs->escape_string($output).'\');</script>';
     echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/backup.php\');</script>';
     exit();
 }
-?>
+

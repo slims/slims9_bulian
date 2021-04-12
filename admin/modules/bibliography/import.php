@@ -107,6 +107,7 @@ if (isset($_POST['doImport'])) {
     // read file line by line
     $inserted_row = 0;
     $file = fopen($uploaded_file, 'r');
+    $n = 0;
     while (!feof($file)) {
       // record count
       if ($record_num > 0 AND $row_count == $record_num) {
@@ -160,54 +161,60 @@ if (isset($_POST['doImport'])) {
                       $collation, $series_title, $call_number,
                       $language_id, $publish_place_id, $classification,
                       $notes, $image, $sor, $curr_datetime, $curr_datetime)";
-              // send query
-              $dbs->query($sql_str);
-              $biblio_id = $dbs->insert_id;
-              if (!$dbs->error) {
+
+              // first field is header
+              if (isset($_POST['header']) && $n < 1) {
+                  $n++;
+              } else {
+                // send query
+                $dbs->query($sql_str);
+                $biblio_id = $dbs->insert_id;
+                if (!$dbs->error) {
                   $inserted_row++;
                   // set authors
                   if (!empty($authors)) {
-                      $biblio_author_sql = 'INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ';
-                      $authors = explode('><', $authors);
-                      foreach ($authors as $author) {
-                          $author = trim(str_replace(array('>', '<'), '', $author));
-                          $author_id = utility::getID($dbs, 'mst_author', 'author_id', 'author_name', $author, $author_id_cache);
-                          $biblio_author_sql .= " ($biblio_id, $author_id, 2),";
-                      }
-                      // remove last comma
-                      $biblio_author_sql = substr_replace($biblio_author_sql, '', -1);
-                      // execute query
-                      $dbs->query($biblio_author_sql);
-                      // echo $dbs->error;
+                    $biblio_author_sql = 'INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES ';
+                    $authors = explode('><', $authors);
+                    foreach ($authors as $author) {
+                      $author = trim(str_replace(array('>', '<'), '', $author));
+                      $author_id = utility::getID($dbs, 'mst_author', 'author_id', 'author_name', $author, $author_id_cache);
+                      $biblio_author_sql .= " ($biblio_id, $author_id, 2),";
+                    }
+                    // remove last comma
+                    $biblio_author_sql = substr_replace($biblio_author_sql, '', -1);
+                    // execute query
+                    $dbs->query($biblio_author_sql);
+                    // echo $dbs->error;
                   }
                   // set topic
                   if (!empty($subjects)) {
-                      $biblio_subject_sql = 'INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES ';
-                      $subjects = explode('><', $subjects);
-                      foreach ($subjects as $subject) {
-                          $subject = trim(str_replace(array('>', '<'), '', $subject));
-                          $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject, $subject_id_cache);
-                          $biblio_subject_sql .= " ($biblio_id, $subject_id, 2),";
-                      }
-                      // remove last comma
-                      $biblio_subject_sql = substr_replace($biblio_subject_sql, '', -1);
-                      // execute query
-                      $dbs->query($biblio_subject_sql);
-                      // echo $dbs->error;
+                    $biblio_subject_sql = 'INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES ';
+                    $subjects = explode('><', $subjects);
+                    foreach ($subjects as $subject) {
+                      $subject = trim(str_replace(array('>', '<'), '', $subject));
+                      $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject, $subject_id_cache);
+                      $biblio_subject_sql .= " ($biblio_id, $subject_id, 2),";
+                    }
+                    // remove last comma
+                    $biblio_subject_sql = substr_replace($biblio_subject_sql, '', -1);
+                    // execute query
+                    $dbs->query($biblio_subject_sql);
+                    // echo $dbs->error;
                   }
                   // items
                   if (!empty($items)) {
-                      $item_sql = 'INSERT IGNORE INTO item (biblio_id, item_code) VALUES ';
-                      $item_array = explode('><', $items);
-                      foreach ($item_array as $item) {
-                          $item = trim(str_replace(array('>', '<'), '', $item));
-                          $item_sql .= " ($biblio_id, '$item'),";
-                      }
-                      // remove last comma
-                      $item_sql = substr_replace($item_sql, '', -1);
-                      // execute query
-                      $dbs->query($item_sql);
+                    $item_sql = 'INSERT IGNORE INTO item (biblio_id, item_code) VALUES ';
+                    $item_array = explode('><', $items);
+                    foreach ($item_array as $item) {
+                      $item = trim(str_replace(array('>', '<'), '', $item));
+                      $item_sql .= " ($biblio_id, '$item'),";
+                    }
+                    // remove last comma
+                    $item_sql = substr_replace($item_sql, '', -1);
+                    // execute query
+                    $dbs->query($item_sql);
                   }
+                }
               }
 
               // create biblio index
@@ -222,7 +229,7 @@ if (isset($_POST['doImport'])) {
     fclose($file);
     $end_time = time();
     $import_time_sec = $end_time-$start_time;
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name']);
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$_FILES['importFile']['name'], 'Import' );
     echo '<script type="text/javascript">'."\n";
     echo 'parent.$(\'#importInfo\').html(\''
     . str_replace(array('{numberOfInsertedRecords}', '{recordOffset}', '{timeInSeconds}'),array($inserted_row,intval($_POST['recordOffset']), $import_time_sec), __( '<strong>{numberOfInsertedRecords}</strong> records inserted successfully to bibliographic database, from record <strong>{recordOffset} in {timeInSeconds} second(s)</strong>'))
@@ -257,7 +264,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // csv files
-$str_input  = '<div class="container">';
+$str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
 $str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');
@@ -277,6 +284,8 @@ $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlen
 $form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
+// header (column name)
+$form->addCheckBox('header', __('The first row is the columns names'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
 ?>

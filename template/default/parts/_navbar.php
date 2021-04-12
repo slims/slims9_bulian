@@ -33,7 +33,10 @@ $main_menus = [
 <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
     <a class="navbar-brand inline-flex items-center" href="index.php">
         <?php
-        if (file_exists(__DIR__ . '/../assets/images/logo.png')) {
+        if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
+            echo '<img class="h-10 w-15" src="images/default/'.$sysconf['logo_image'].'">';
+        }
+        elseif (file_exists(__DIR__ . '/../assets/images/logo.png')) {
             echo '<img class="h-8 w-8" src="'.assets('images/logo.png').'">';
         } else {
         ?>
@@ -103,7 +106,7 @@ HTML;
                     <?php echo $_SESSION['m_name']; ?>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> Profile</a>
+                      <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> <?= __('Profile');?></a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="index.php?p=member&logout=1"><i
                                   class="fas fa-sign-out-alt mr-3"></i> <?= __('Logout'); ?></a>
@@ -118,6 +121,7 @@ HTML;
               <?php
               $langstr = '';
               $current_lang = '';
+              $select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
               require_once(LANG . 'localisation.php');
               foreach ($available_languages AS $lang_index) {
                 $selected = null;
@@ -125,7 +129,7 @@ HTML;
                 $lang_name = $lang_index[1];
                 $code_arr = explode('_', $lang_code);
                 $code_flag = strtolower($code_arr[1]);
-                if ($lang_code == $sysconf['default_lang']) {
+                if ($lang_code == $select_lang) {
                   $current_lang = [
                     'name' => $lang_name,
                     'code' => $code_flag

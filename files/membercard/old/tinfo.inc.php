@@ -107,7 +107,7 @@ $sysconf['print'][$theme_key] = [
   ],
     'address' => [
     'dbfield' => 'data[address]',
-    'label' => __('Adsress'),
+    'label' => __('Address'),
     'type' => 'longtext',
     'default' => $sysconf['print'][$theme_key]['address'],
     'width' => '100',
@@ -153,7 +153,7 @@ $sysconf['print'][$theme_key] = [
   ],
     'title' => [
     'dbfield' => 'data[title]',
-    'label' => __('Title'),
+    'label' => __('Job Title'),
     'type' => 'text',
     'default' => $sysconf['print'][$theme_key]['title']
   ],

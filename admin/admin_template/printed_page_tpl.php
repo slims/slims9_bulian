@@ -1,3 +1,4 @@
+<?php utility::loadUserTemplate($dbs,$_SESSION['uid']); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

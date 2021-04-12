@@ -40,14 +40,14 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h4 class="mb-2">Search Result</h4>
+                <h4 class="mb-2"><?= __('Search Result')?></h4>
               <?php
               echo '<div class=" mb-4 text-sm">' . $search_result_info . '</div><hr>';
               if ($sysconf['template']['classic_suggestion']) {
               $randome = getRandomBiblio($dbs);
               if (count($randome) > 0) {
               ?>
-                <h6 class="mb-2">Suggestion</h6>
+                <h6 class="mb-2"><?= __('Suggestion')?></h6>
                 <div class="card-list d-flex flex-column mb-4">
                   <?php
                   foreach ($randome as $biblio) {
@@ -71,6 +71,10 @@
                     <?php
                   }
                   }
+                  } elseif ($sysconf['enable_search_clustering']) {
+                      if ($sysconf['index']['engine']['enable']) {
+                          echo '<div class="cluster">'.$biblio_list->getClustering().'</div>';
+                      }
                   }
                   ?>
                 </div>

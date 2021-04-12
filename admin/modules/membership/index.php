@@ -53,6 +53,9 @@ if (!$can_read) {
     die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
+// execute registered hook
+\SLiMS\Plugins::getInstance()->execute('membership_init');
+
 /* Just In Case for PHP < 5.4 */
 /* Taken From imageman (http://www.php.net/manual/en/function.getimagesizefromstring.php#113976) */
 /* Make sure to set allow_url_fopen = on inside your php.ini */
@@ -64,7 +67,6 @@ if (version_compare(phpversion(), '5.4', '<'))
         return getimagesize($uri);
     }
 }
-
 
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img'])) {
@@ -109,15 +111,34 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
          * Custom fields
          */
         if (isset($member_custom_fields)) {
-            if (is_array($member_custom_fields) && $member_custom_fields) {
-                foreach ($member_custom_fields as $fid => $cfield) {
-                    // custom field
-                    $cf_dbfield = $cfield['dbfield'];
-                    if (isset($_POST[$cf_dbfield]) AND trim($_POST[$cf_dbfield]) != '') {
-                        $custom_data[$cf_dbfield] = trim($dbs->escape_string(strip_tags($_POST[$cf_dbfield], $sysconf['content']['allowable_tags'])));
-                    }
+          if (is_array($member_custom_fields) && $member_custom_fields) {
+            foreach ($member_custom_fields as $fid => $cfield) {
+              // custom field data
+              $cf_dbfield = $cfield['dbfield'];
+              if (isset($_POST[$cf_dbfield])) {
+                if(is_array($_POST[$cf_dbfield])){ 
+                  foreach ($_POST[$cf_dbfield] as $value) {
+                    $arr[$value] = $value;
+                  }
+                  $custom_data[$cf_dbfield] = serialize($arr);
                 }
+                else{
+                  $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
+                  if($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val!='')){
+                    utility::jsToastr(__('Membership'), sprintf(__('Field %s only number for allowed'),$cfield['label']), 'error');      
+                    exit();        
+                  }
+                  elseif ($cfield['type'] == 'date' && $cf_val == '') {
+                    utility::jsToastr(__('Membership'), sprintf(__('Field %s is date format, empty not allowed'),$cfield['label']), 'error');      
+                    exit();
+                  }
+                  $custom_data[$cf_dbfield] = $cf_val;
+                }
+              }else{
+                $custom_data[$cf_dbfield] = serialize(array());
+              }
             }
+          }
         }
 
         $data['member_id'] = $dbs->escape_string($memberID);
@@ -204,6 +225,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('member', $data, "member_id='$updateRecordID'");
             if ($update) {
+
+                // execute registered hook
+                \SLiMS\Plugins::getInstance()->execute('membership_after_update', ['data' => api::member_load($dbs, $updateRecordID)]);
+
                 // update custom data
                 if (isset($custom_data)) {
                   // check if custom data for this record exists
@@ -224,16 +249,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Update');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Update', 'OK');
                 if ($sysconf['webcam'] == 'html5') {
                   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 } else {
@@ -254,21 +279,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                   @$sql_op->insert('member_custom', $custom_data);
                 }
 
+                \SLiMS\Plugins::getInstance()->execute('membership_after_save', ['data' => api::member_load($dbs, $data['member_id'])]);
+
                 utility::jsAlert(__('New Member Data Successfully Saved'));
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsAlert(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
@@ -287,9 +314,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             WHERE m.member_id=\''.$memberID.'\'');
         $mtype_d = $mtype_q->fetch_row();
         $expire_date = simbio_date::getNextDate($mtype_d[0], $curr_date);
-        @$dbs->query('UPDATE member SET expire_date=\''.$expire_date.'\' WHERE member_id=\''.$memberID.'\'');
+        @$dbs->query('UPDATE member SET register_date=\''.date("Y-m-d").'\',  expire_date=\''.$expire_date.'\', last_update=\''.date("y-m-d").'\' WHERE member_id=\''.$memberID.'\'');
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Extend', 'OK');
         $num_extended++;
     }
     header('Location: '.MWB.'membership/index.php?expire=true&numExtended='.$num_extended);
@@ -320,7 +347,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $error_num++;
             } else {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
             }
         } else {
             $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -412,6 +439,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     if ($form->edit_mode) {
+
+        // execute registered hook
+        \SLiMS\Plugins::getInstance()->execute('membership_before_update', ['data' => api::member_load($dbs, $itemID)]);
+
         // check if member expired
         $curr_date = date('Y-m-d');
         $compared_date = simbio_date::compareDates($rec_d['expire_date'], $curr_date);
@@ -431,7 +462,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     // member code
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'memberID', $rec_d['member_id']??'', 'id="memberID" onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'member\', \'member_id\', \'msgBox\', \'memberID\')" class="form-control col-4"');
     $str_input .= '<div id="msgBox" class="col mt-2"></div>';
@@ -495,22 +526,29 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $cf_dbfield = $cfield['dbfield'];
             $cf_label = $cfield['label'];
             $cf_default = $cfield['default'];
-            $cf_data = (isset($cfield['data']) && $cfield['data'])?$cfield['data']:array();
+            $cf_class = $cfield['class']??'';
+            $cf_data = (isset($cfield['data']) && $cfield['data'] )?unserialize($cfield['data']):array();
 
-                // custom field processing
-                if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
-                  $cf_max = isset($cfield['max'])?$cfield['max']:'200';
-                  $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-                  $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label,$rec_cust_d[$cf_dbfield]??$cf_default, 'class="form-control" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
-                } else if ($cfield['type'] == 'dropdown') {
-                  $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
-                } else if ($cfield['type'] == 'checklist') {
-                  $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
-                } else if ($cfield['type'] == 'choice') {
-                  $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default);
-                } else if ($cfield['type'] == 'date') {
-                  $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default);
-                }
+            // get data field record
+            if(isset($rec_cust_d[$cf_dbfield]) && @unserialize($rec_cust_d[$cf_dbfield]) !== false){
+              $rec_cust_d[$cf_dbfield] = unserialize($rec_cust_d[$cf_dbfield]);
+            }
+
+            // custom field processing
+            if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
+              $cf_max = isset($cfield['max'])?$cfield['max']:'200';
+              $cf_width = isset($cfield['width'])?$cfield['width']:'50';
+              $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, ' class="form-control '.$cf_class.'" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
+            } else if ($cfield['type'] == 'dropdown') {
+              $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
+            } else if ($cfield['type'] == 'checklist') {
+              $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
+            } else if ($cfield['type'] == 'choice') {
+              $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
+            } else if ($cfield['type'] == 'date') {
+              $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
+            }
+            unset($cf_data);
             }
         }
     }
@@ -522,15 +560,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input  = '<div class="row">';
     $str_input .= '<div class="col-2">';
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
-    if (isset($rec_d['member_image'])) {
-        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
+    if (isset($rec_d['member_image']) && file_exists(IMGBS.'/persons/'.$rec_d['member_image'])) {
+        $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400">';
+        // $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
+        $str_input .= '<img src="'.$upper_dir.'../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
-    } else {
-        $str_input .= '<a href="'.SWB.'images/persons/'.($rec_d['member_image']??'photo.png').'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'">';
-        $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=../../images/persons/photo.png&width=130" class="img-fluid" alt="Image cover">';
-        $str_input .= '</a>';
+    }else{
+        $str_input .= '<img src="'.SWB.'images/persons/person.png'.'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
     }
     $str_input .= '</div>';
     $str_input .= '</div>';
@@ -544,7 +581,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // $str_input .= simbio_form_element::textField('file', 'image');
     // $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
-      $str_input .= '<p>'.__('or take a photo').'</p>';
       $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
 
       if ($sysconf['webcam'] == 'flex') {
@@ -554,17 +590,31 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '</object>';
       }
       elseif ($sysconf['webcam'] == 'html5') {
-        $str_input .= '<button id="btn_load" class="button btn" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
-        $str_input .= __('Ratio:').' <select onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select> | ';
-        $str_input .= __('Format:').' <select id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select> | ';
-        $str_input .= '<button id="btn_pause" class="button btn" onclick="snapshot(this)" disabled>'.__('Capture').'</button> | ';
-        $str_input .= '<button id="btn_reset" class="button btn" onclick="$(\'textarea#base64picstring\').val(\'\');">'.__('Reset').'</button>';
-        $str_input .= '<div id="my_container" style="width: 400px; height: 300px; border: 1px solid #333; position: relative;">';
-        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10;"></video>';
-        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
-        $str_input .= '<div id="my_frame" style="  border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
-        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #444; display: none;"></canvas>';
-      }
+        $str_input .= '<div class="makeHidden_">';
+        $str_input .= '<p>'.__('or take a photo').'</p>';
+        $str_input .= '<div class="form-inline">';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button id="btn_pause" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '</div>';
+        $str_input .= '<div id="my_container" class="makeHidden_ mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
+        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
+        $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
+        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #f4f4f4; display: none;"></canvas>';
+        }
     }
 
     $form->addAnything(__('Photo'), $str_input);
@@ -585,7 +635,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($form->edit_mode) {
         if (isset($rec_d['member_image'])) {
             if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
-                echo '<div id="memberImage"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($rec_d['member_image']).'&amp;width=125&amp;timestamp='.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
+                echo '<div id="memberImage"><img src="'.SWB.'images/persons/'.urlencode($rec_d['member_image']).'?'.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
             }
         }
         echo '<div class="infoBox">
@@ -615,6 +665,31 @@ $(document).ready(function() {
 <?php
 } else {
     /* MEMBERSHIP LIST */
+    function showMemberImage($obj_db, $array_data){
+      global $sysconf;
+      $image = '../images/persons/photo.png';
+      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$array_data[0].'"');
+      if(isset($_q->num_rows)){
+        $_d = $_q->fetch_row();
+        if($_d[0] != NULL){      
+          $image = file_exists(IMGBS.'/persons/'.$_d[0])?'../images/persons/'.$_d[0]:'../images/persons/photo.png';
+        }
+        $addr  = $_d[2]!=''?'<i class="fa fa-map-marker" aria-hidden="true"></i></i>&nbsp;'.$_d[2]:'';
+        $phone = $_d[3]!=''?'<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;'.$_d[3]:'';
+      }
+
+       $_output = '<div class="media"> 
+                    <a href="'.$image.'" class="openPopUp notAJAX" title="'.$_d[1].'" width="300" height="400" >
+                    <img class="mr-3 rounded" src="'.$image.'" alt="cover image" width="60"></a>
+                    <div class="media-body">
+                      <div class="title">'.$array_data[2].'</div>
+                      <div class="sub">'.$phone.'</div>
+                      <div class="sub">'.$addr.'</div>
+                    </div>
+                  </div>';
+       return $_output;
+    }
+
     // table spec
     $table_spec = 'member AS m
         LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id';
@@ -628,12 +703,14 @@ $(document).ready(function() {
             'mt.member_type_name AS \''.__('Membership Type').'\'',
             'm.member_email AS \''.__('E-mail').'\'',
             'm.last_update AS \''.__('Last Updated').'\'');
+            $datagrid->modifyColumnContent(2, 'callback{showMemberImage}');
     } else {
         $datagrid->setSQLColumn('m.member_id AS \''.__('Member ID').'\'',
             'm.member_name AS \''.__('Member Name').'\'',
             'mt.member_type_name AS \''.__('Membership Type').'\'',
             'm.member_email AS \''.__('E-mail').'\'',
             'm.last_update AS \''.__('Last Updated').'\'');
+            $datagrid->modifyColumnContent(1, 'callback{showMemberImage}');
     }
     $datagrid->setSQLorder('member_name ASC');
 

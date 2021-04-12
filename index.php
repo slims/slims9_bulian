@@ -66,9 +66,19 @@ if (isset($_GET['p'])) {
     $path = preg_replace('@\/@i','',$path);
     // check if the file exists
     if (file_exists(LIB.'contents/'.$path.'.inc.php')) {
-        include LIB.'contents/'.$path.'.inc.php';
         if ($path != 'show_detail') {
           $metadata = '<meta name="robots" content="noindex, follow">';
+        }
+        include LIB.'contents/'.$path.'.inc.php';
+    }
+    // check path from plugins
+    elseif (isset(($menu = \SLiMS\Plugins::getInstance()->getMenus('opac'))[$path])) {
+        if (file_exists($menu[$path][3])) {
+            $page_title = $menu[$path][0];
+            include $menu[$path][3];
+        } else {
+            // not found
+            http_response_code(404);
         }
     } else {
         // get content data from database

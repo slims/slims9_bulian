@@ -23,7 +23,7 @@
 do_checkIP('smc');
 do_checkIP('smc-circulation');
 
-$menu[] = array('Header', __('Circulation'));
+$menu[] = array('Header', __('CIRCULATION'));
 $menu[] = array(__('Start Transaction'), MWB.'circulation/index.php?action=start', __('Start Circulation Transaction Proccess'));
 $menu[] = array(__('Quick Return'), MWB.'circulation/quick_return.php', __('Quick Return Collection'));
 $menu[] = array(__('Loan Rules'), MWB.'circulation/loan_rules.php', __('View and Modify Circulation Loan Rules'));

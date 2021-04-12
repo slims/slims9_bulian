@@ -31,15 +31,19 @@ if (!defined('INDEX_AUTH')) {
 $fileID = isset($_GET['fid']) ? (integer)$_GET['fid'] : 0;
 // get biblioID
 $biblioID = isset($_GET['bid']) ? (integer)$_GET['bid'] : 0;
+$memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
+$userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 
 // query file to database
-$sql_q = 'SELECT att.*, f.* FROM biblio_attachment AS att
+$sql_q = 'SELECT att.*, f.*, b.title FROM biblio_attachment AS att
   LEFT JOIN files AS f ON att.file_id=f.file_id
+  LEFT JOIN biblio b on att.biblio_id = b.biblio_id
   WHERE att.file_id=' . $fileID . ' AND att.biblio_id=' . $biblioID . ' AND att.access_type=\'public\'';
 $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
+  \SLiMS\Plugins::getInstance()->execute('fstream_all_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
   $file_loc_url = SWB . 'index.php?p=fstream&fid=' . $fileID . '&bid=' . $biblioID;
   $file_loc = REPOBS . ($file_d['file_dir'] ? $file_d['file_dir'] . '/' : '') . $file_d['file_name'];
   if (file_exists($file_loc)) {
@@ -59,17 +63,28 @@ if ($file_q->num_rows > 0) {
         exit();
       }
     }
-
     if ($file_d['mime_type'] == 'application/pdf') {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
-        require './js/pdfjs/web/viewer.php';
+        \SLiMS\Plugins::getInstance()->execute('fstream_pdf_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+
+        if (utility::isMobileBrowser()) {
+            require './js/pdfjs/mobile/index.php';
+        } else {
+            require './js/pdfjs/web/viewer.php';
+        }
+
+        \SLiMS\Plugins::getInstance()->execute('fstream_pdf_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+    		utility::dlCount($dbs, $fileID, $memberID, $userID);
         exit();
       }
     } else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
+      \SLiMS\Plugins::getInstance()->execute('fstream_img_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+	    utility::dlCount($dbs, $fileID, $memberID, $userID);
       header('Content-Disposition: inline; filename="' . basename($file_loc) . '"');
       header('Content-Type: ' . $file_d['mime_type']);
-      readfile($file_loc);
+      echo file_get_contents($file_loc);
+      \SLiMS\Plugins::getInstance()->execute('fstream_img_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
       exit();
     } else {
       if (strpos($file_d['mime_type'], 'video') !== false) {
@@ -77,14 +92,16 @@ if ($file_q->num_rows > 0) {
         $stream = new VideoStream($file_loc, $file_d['mime_type']);
         $stream->start();
       } else {
+        \SLiMS\Plugins::getInstance()->execute('fstream_oth_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
         header('Content-Disposition: Attachment; filename="' . basename($file_loc) . '"');
         header('Content-Type: ' . $file_d['mime_type']);
-        readfile($file_loc);
+        echo file_get_contents($file_loc);
+        \SLiMS\Plugins::getInstance()->execute('fstream_oth_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
       }
       exit();
     }
   }
-  exit();
+  #exit();
 } else {
   die('<div class="errorBox">File Not Found!</div>');
 }

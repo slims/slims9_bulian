@@ -51,6 +51,7 @@ switch (ENVIRONMENT) {
 
 // require composer library
 if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
+require 'lib/autoload.php';
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
@@ -65,7 +66,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.1.1');
+define('SENAYAN_VERSION_TAG', 'v9.4.1');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -201,7 +202,7 @@ $sysconf['promote_first_emphasized'] = true;
 
 /* Dynamic Content */
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
-    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
+    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param><ul><ol><li>';
 
 /* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
 $sysconf['enable_mark'] = true;
@@ -239,13 +240,16 @@ $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
 $sysconf['allow_file_download'] = false;
 
 /* WEBCAM feature */
-$sysconf['webcam'] = false; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
+$sysconf['webcam'] = 'html5'; //enabled this feature by changed to 'html5' or 'flex'. FALSE will be defined if none is configured here.
 
 /* SCANNER feature */
 $sysconf['scanner'] = false;
 
+/* Search Book Cover */
+$sysconf['book_cover'] = true;
+
 /* Barcode Reader */
-$sysconf['barcode_reader'] = true;
+$sysconf['barcode_reader'] = false;
 
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
@@ -293,7 +297,7 @@ $post_max_size = intval(ini_get('post_max_size'))*1024;
 if ($sysconf['max_upload'] > $post_max_size) {
     $sysconf['max_upload'] = $post_max_size-1024;
 }
-$sysconf['max_image_upload'] = 5000;
+$sysconf['max_image_upload'] = 500;
 // allowed image file to upload
 $sysconf['allowed_images'] = array('.jpeg', '.jpg', '.gif', '.png', '.JPEG', '.JPG', '.GIF', '.PNG');
 // allowed file attachment to upload
@@ -347,6 +351,14 @@ $sysconf['currencies'] = array( array('0', 'NONE'), 'Rupiah', 'USD', 'Euro', 'DM
 
 /* RESERVE PERIODE (In Days) */
 $sysconf['reserve_expire_periode'] = 7;
+
+// false = send reserve via email
+// true  = reservation will saved directly into reserve table
+$sysconf['reserve_direct_database'] = true;
+
+// false = reserve all item, ignoring loan status
+// true  = only item on loan can be reserved
+$sysconf['reserve_on_loan_only'] = false;
 
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
@@ -484,9 +496,17 @@ if ($sysconf['captcha']['member']['enable']) {
     include_once LIB.$sysconf['captcha']['member']['type'].DS.'member_settings.inc.php';
 }
 
+// Captcha settings for Forgot Password
+$sysconf['captcha']['forgot']['enable'] = true; // value can be 'true' or 'false'
+$sysconf['captcha']['forgot']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
+if ($sysconf['captcha']['forgot']['enable']) {
+    include_once LIB.$sysconf['captcha']['forgot']['type'].DS.'forgot_settings.inc.php';
+}
+
 /**
  * Mailing Settings
  */
+$sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
 $sysconf['mail']['enable'] = true;
 $sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
 $sysconf['mail']['server_port'] = 465; // the SMTP port
@@ -621,6 +641,33 @@ $dbs->query('SET NAMES \'utf8\'');
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
 
+// check for user language selection if we are not in admin areas
+if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
+    if (isset($_GET['select_lang'])) {
+        $select_lang = trim(strip_tags($_GET['select_lang']));
+        // delete previous language cookie
+        if (isset($_COOKIE['select_lang'])) {
+            @setcookie('select_lang', $select_lang, time()-14400, SWB);
+        }
+        // create language cookie
+        @setcookie('select_lang', $select_lang, time()+14400, SWB);
+        $sysconf['default_lang'] = $select_lang;
+
+        //reload page on change language
+        header("location:index.php");
+        
+    } else if (isset($_COOKIE['select_lang'])) {
+        $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
+    }
+    // set back to en_US on XML
+    if (isset($_GET['resultXML']) OR isset($_GET['inXML'])) {
+        $sysconf['default_lang'] = 'en_US';
+    }
+}
+
+// Apply language settings
+require LANG.'localisation.php';
+
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
   $sysconf['template']['base'] = 'php'; /* html OR php */
@@ -635,29 +682,6 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
-
-// check for user language selection if we are not in admin areas
-if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
-    if (isset($_GET['select_lang'])) {
-        $select_lang = trim(strip_tags($_GET['select_lang']));
-        // delete previous language cookie
-        if (isset($_COOKIE['select_lang'])) {
-            @setcookie('select_lang', $select_lang, time()-14400, SWB);
-        }
-        // create language cookie
-        @setcookie('select_lang', $select_lang, time()+14400, SWB);
-        $sysconf['default_lang'] = $select_lang;
-    } else if (isset($_COOKIE['select_lang'])) {
-        $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
-    }
-    // set back to en_US on XML
-    if (isset($_GET['resultXML']) OR isset($_GET['inXML'])) {
-        $sysconf['default_lang'] = 'en_US';
-    }
-}
-
-// Apply language settings
-require LANG.'localisation.php';
 
 /* AUTHORITY TYPE */
 $sysconf['authority_type']['p'] = __('Personal Name');
@@ -712,3 +736,24 @@ $sysconf['api']['version'] = 1;
 $sysconf['visitor_lang'] = 'hi-IN'; // Please visit this URL for voice mode - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices
 
 $sysconf['always_user_login'] = true;
+
+/* new advanced system log - still experimental */
+$sysconf['log']['adv']['enabled'] = FALSE;
+$sysconf['log']['adv']['handler'] = 'fs'; # 'fs' for filesystem, 'es' for elasticsearch
+# for filesystem
+$sysconf['log']['adv']['path'] = '/var/www/logs';
+# for elasticsearch
+$sysconf['log']['adv']['host'] = 'localhost:9200';
+$sysconf['log']['adv']['index'] = 'slims_logs';
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;
+
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+
+// load helper
+require_once "lib/helper.inc.php";
+
+// load all Plugins
+\SLiMS\Plugins::getInstance()->loadPlugins();

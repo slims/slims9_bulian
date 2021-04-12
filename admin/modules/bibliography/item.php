@@ -111,7 +111,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
                 if ($sysconf['bibliography_item_update_notification']) {
                     utility::jsToastr('Item', __('Item Data Successfully Updated'), 'success');
 			    }
@@ -129,7 +129,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
                 utility::jsToastr('Item', __('New Item Data Successfully Saved'), 'success');
                 if ($in_pop_up) {
                     echo '<script type="text/javascript">top.setIframeContent(\'itemIframe\', \''.MWB.'bibliography/iframe_item_list.php?biblioID='.$data['biblio_id'].'\');</script>';
@@ -171,7 +171,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $error_num++;
             } else {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
         } else {
             $still_on_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -288,7 +288,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addHidden('biblioTitle', $b_title);
     $form->addHidden('biblioID', $b_id);
     // item code
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'itemCode', $rec_d['item_code']??'', 'onblur="ajaxCheckID(\''.SWB.'admin/AJAX_check_id.php\', \'item\', \'item_code\', \'msgBox\', \'itemCode\')" style="width: 50%;" class="form-control col-5"');
     $str_input .= '<span id="msgBox" class="col p-2"></span>';
@@ -348,7 +348,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // invoice date
     $form->addDateField('invcDate', __('Invoice Date'), $rec_d['invoice_date']??date('Y-m-d'),'class="form-control"');
     // price
-    $str_input  = '<div class="container">';
+    $str_input  = '<div class="container-fluid">';
     $str_input .= '<div class="row">';
     $str_input .= simbio_form_element::textField('text', 'price', !empty($rec_d['price'])?$rec_d['price']:'0', 'style="width: 40%;" class="form-control col-4"');
     $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], $rec_d['price_currency']??'','style="width: 10%;" class="form-control col-2"');

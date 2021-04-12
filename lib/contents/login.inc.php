@@ -23,8 +23,16 @@
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+} elseif (INDEX_AUTH != 1) {
     die("can not access this file directly");
+}
+
+#use SLiMS\AdvancedLogging;
+use SLiMS\AlLibrarian;
+
+if ($sysconf['baseurl'] != '') {
+  $_host = $sysconf['baseurl'];
+  header("Access-Control-Allow-Origin: $_host", FALSE);
 }
 
 /*
@@ -52,6 +60,14 @@ ob_start();
 
 // if there is login action
 if (isset($_POST['logMeIn'])) {
+    if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+        session_unset();
+        echo '<script type="text/javascript">';
+        echo 'alert("Invalid login form!");';
+        echo 'location.href = \'index.php?p='.$path.'\';';
+        echo '</script>';
+        exit();
+    }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
     if (!$username OR !$password) {
@@ -81,7 +97,7 @@ if (isset($_POST['logMeIn'])) {
                     if (!$resp->is_valid) {
                         // What happens when the CAPTCHA was entered incorrectly
                         session_unset();
-                        header("location:index.php?p=login");
+                        header("location:index.php?p=".$path);
                         die();
                     }
                 } elseif ($sysconf['captcha']['smc']['type'] == 'others') {
@@ -97,6 +113,10 @@ if (isset($_POST['logMeIn'])) {
             setcookie('admin_logged_in', true, time()+14400, SWB);
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
+
+            # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+            $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
+
             echo '<script type="text/javascript">';
             if ($sysconf['login_message']) {
                 echo 'alert(\''.__('Welcome to Library Automation, ').$logon->real_name.'\');';
@@ -115,7 +135,7 @@ if (isset($_POST['logMeIn'])) {
                 setcookie('token', $token, time()+3600, SWB);
                 setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
                 // message
-                header('location: index.php?p=login&update='.$token);
+                header('location: index.php?p='.$path.'&update='.$token);
             } else {
                 // message
                 $msg = '<script type="text/javascript">';
@@ -154,7 +174,7 @@ if (isset($_POST['updatePassword'])) {
             setcookie('uname', '', time()-3600, SWB);
             echo '<script type="text/javascript">';
             echo 'alert("Password Updated. Please log in again!");';
-            echo 'location.href = \'index.php?p=login\';';
+            echo 'location.href = \'index.php?p='.$path.'\';';
             echo '</script>';
             exit();
         } else {
@@ -169,10 +189,9 @@ if (isset($_POST['updatePassword'])) {
     <noscript>
         <div style="font-weight: bold; color: #FF0000;"><?php echo __('Your browser does not support Javascript or Javascript is disabled. Application won\'t run without Javascript!'); ?><div>
     </noscript>
-    <form action="index.php?p=login" method="post">
+    <form action="index.php?p=<?php echo $path; ?>" method="post">
     <?php
     if (isset($_GET['update']) && !empty($_GET['update'])) { ?>
-
         <?php if (isset($_COOKIE['token']) && $_GET['update'] === $_COOKIE['token']) { ?>
         <div class="alert alert-danger"><?php echo str_replace('{username}', $_uname, __('Hi {username}, please update your password!')) ?></div>
         <div class="heading1"><?php echo __('Current Password'); ?></div>
@@ -192,7 +211,7 @@ if (isset($_POST['updatePassword'])) {
           ?>
           </div>
           <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
-        <?php 
+        <?php
           } elseif ($sysconf['captcha']['smc']['type'] == "others") {
 
           }
@@ -206,14 +225,15 @@ if (isset($_POST['updatePassword'])) {
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
         </div>
         <?php } else { ?>
-            <div class="alert alert-danger">Not valid token!</div>
-            <a class="homeButton" href="index.php">Go Home</a>
+            <div class="alert alert-danger"><?= __('Not valid token!') ?></div>
+            <a class="homeButton" href="index.php"><?= __('Go Home') ?></a>
         <?php } ?>
     <?php } else { ?>
         <div class="heading1"><?php echo __('Username'); ?></div>
         <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
         <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
+        <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
         <!-- Captcha in form - start -->
         <?php if ($sysconf['captcha']['smc']['enable']) { ?>
           <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
@@ -225,7 +245,7 @@ if (isset($_POST['updatePassword'])) {
           ?>
           </div>
           <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
-        <?php 
+        <?php
           } elseif ($sysconf['captcha']['smc']['type'] == "others") {
 
           }
@@ -239,12 +259,13 @@ if (isset($_POST['updatePassword'])) {
             <div class="remember">
                 <?php if ($sysconf['always_user_login']) : ?>
                 <input type="checkbox" id="remember_me" name="remember" value="1">
-                <label for="remember_me">Remember me</label>
+                <label for="remember_me"><?= __('Remember me') ?></label>
                 <?php endif; ?>
             </div>
         </div>
         <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="loginButton" />
         <input type="button" value="Home" class="homeButton" onclick="javascript: location.href = 'index.php';" />
+        <a class="forgotButton" href="index.php?p=forgot"><?php echo __('Forgot my password') ?></a>
         </div>
     <?php } ?>
     </form>

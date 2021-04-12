@@ -107,17 +107,17 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '<div class="card availability cursor-pointer">';
   $output .= '<div class="card-body pt-3 pb-2 px-1">';
   $output .= '<div class="d-flex availability-content flex-column">';
-  $output .= '<span class="label">availability</span>';
+  $output .= '<span class="label">'.__('Availability').'</span>';
   $output .= '<span class="value '.$class_avail.'">'.$availability.'</span>';
   $output .= '</div>'; // -- close d-flex flex-column
   $output .= '<div class="add-to-chart align-items-center justify-content-center flex-column" data-biblio="'.$biblio_id.'">';
-  $output .= '<span class="label">Add to basket</span>';
+  $output .= '<span class="label">'.__('Add to basket').'</span>';
   $output .= '<span class="value"><i class="fas fa-plus"></i></span>';
   $output .= '</div>'; // -- close d-flex flex-column
   $output .= '</div>'; // -- close card-body pt-3 pb-2 px-1
   $output .= '</div>'; // -- close card availability
-  $output .= '<a class="btn btn-outline-primary btn-block mt-2 btn-sm" href="'.$detail_url.'">View Detail</a>';
-  $output .= '<a class="btn btn-outline-secondary btn-block mt-2 btn-sm openPopUp citationLink" href="'.$cite_url.'" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">Cite</a>';
+  $output .= '<a class="btn btn-outline-primary btn-block mt-2 btn-sm" href="'.$detail_url.'">'.__('View Detail').'</a>';
+  $output .= '<a class="btn btn-outline-secondary btn-block mt-2 btn-sm openPopUp citationLink" href="'.$cite_url.'" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a>';
   $output .= '</div>'; // -- close col-2
   $output .= '</div>'; // -- close row
   if ($i > 0 && $expand) {

@@ -50,8 +50,8 @@ if (isset($_POST['updateSettings'])) {
     $dbs->query(sprintf("REPLACE INTO setting (setting_name, setting_value) VALUES ('%s', '%s')",
       $setting_name, $dbs->escape_string(serialize($_POST[$setting_type]))));
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings');
-    utility::jsToastr('Print Setting', __('Settings saved'), 'success');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings', 'Print Setting', 'Change');
+    utility::jsAlert(__('Settings saved'));
     echo '<script type="text/javascript"></script>';
 }
 /* Config Vars update process end */
@@ -61,7 +61,7 @@ if (isset($_GET['type'])) {
   $type = trim($_GET['type']);
 }
 
-if (!in_array($type, array('barcode', 'label', 'membercard'))) {
+if (!in_array($type, array('barcode', 'label', 'membercard','catalog'))) {
   $type = 'barcode';
 }
 
@@ -114,7 +114,7 @@ $measure['print']['barcode']['barcode_box_height']          = __('(cm)');
 $measure['print']['barcode']['barcode_include_header_text'] = $visibility_options;
 
 
-$measure['print']['barcode']['barcode_cut_title']           = $visibility_options;
+$measure['print']['barcode']['barcode_cut_title']           = __('(0 if you prefer without title)');
 $measure['print']['barcode']['barcode_header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['barcode']['barcode_fonts']               = __('(name of the font used)');
 $measure['print']['barcode']['barcode_font_size']           = __('(pt)');
@@ -235,6 +235,12 @@ $measure['print']['membercard']['address_font_size']        = __('(pt)');
 $measure['print']['membercard']['address_left']             = __('(px)');
 $measure['print']['membercard']['address_top']              = __('(px)');
 
+// catalog card
+$measure['print']['catalog']['self_list_card']               = $visibility_options;
+$measure['print']['catalog']['title_card']                   = $visibility_options;
+$measure['print']['catalog']['author_card']                  = $visibility_options;
+$measure['print']['catalog']['subject_card']                 = $visibility_options;
+
 $form->addAnything(__('Print setting for'), ucwords($type));
 foreach ($sysconf['print'][$type] as $setting_name => $val) {
   $setting_name_label = ucwords(str_ireplace('_', ' ', $setting_name));
@@ -250,7 +256,7 @@ foreach ($sysconf['print'][$type] as $setting_name => $val) {
 }
 $form->addHidden('settingType', $type);
 ?>
-<strong><?php echo __('Change print barcode settings'); ?></strong>
+<strong><?php echo sprintf(__('Change print %s settings'),$type); ?></strong>
 <?php
 // print out the object
 echo $form->printOut();

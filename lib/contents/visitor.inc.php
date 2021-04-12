@@ -263,6 +263,6 @@ $("#speak").on("click", function () {
 // main content
 $main_content = ob_get_clean();
 // page title
-$page_title = 'Visitor Counter | ' . $sysconf['library_name'];
+$page_title = __('Visitor Counter').' | ' . $sysconf['library_name'];
 require $main_template_path;
 exit();

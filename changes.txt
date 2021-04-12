@@ -1,3 +1,4 @@
+
 SENAYAN 3 Stable Branch
 SLiMS 5
 SLiMS 7
@@ -36,8 +37,94 @@ Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationfors
 
 Code enhancement contributors:
 Drajat Hasan (drajathasan20@gmail.com)
+John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 9.4.1 (Bulian)
+========================================================================
+Fixed : Hidden ajax list
+Fixed : Hidden menu header for user not administrator
+Update : Sub-menus view for dark mode admin template
+Added : User other than (super) admin unable to change username
+Fixed : Error when user try to save profile change
+
+SLiMS 9.4.0 (Bulian)
+========================================================================
+Added : Option to not using email for reservation from Member Area
+Added : Flexibility to add page content using plugin system
+Added : More configuration for system migration
+Added : Ctrl + Home (module) to access OPAC instantly from Administration page
+Fixed : Member login when accessing protected attachments
+Added : Option for reservation from Member Area without sending email (recorded in Reservation sub-menu)
+Added : Stock take report detail per user
+Fixed : Unknown host while install in paid hosting environment
+Fixed : Barcode cut title
+Fixed : Problem with mod_security when add some data in Bibliography Module in paid hosting environment
+Fixed : Function to downlad attachment in paid hosting environment
+Added : Support for load balanced environment
+
+SLiMS 9.3.1 (Bulian)
+========================================================================
+Fix : upgrade error.
+
+SLiMS 9.3.0 (Bulian)
+========================================================================
+Added : Print catalog option
+Added : Bypass php limit on uploading file for shared hosting
+Added : Button to download backup file
+Added : Download counter detail and filter
+Update : Dashboard data view improvement using AJAX
+Added : New plugin system to make ease of pain when adding additional plugin
+Added : MySQL port information in installer
+Update : PHPMailer with new version and configuration
+Fixed : Auto update and delete for UCS
+Added : Show hide sub-menu by user group privileges
+Added : Placement options for embedded link and video attachments
+
+SLiMS 9.2.2 (Bulian)
+========================================================================
+Fixed : Missing mysqldump-php dependencies
+
+SLiMS 9.2.1 (Bulian)
+========================================================================
+Added : Thumbnail and picture preview in Member List
+Added : Using mysqldump-php for backup. Less dependency when installing SLiMS to shared hosting
+Added : Hide and Promote to homepage filter in Bibliographic List
+Fixed : Version tag for latest bulian's release
+Fixed : Identifier for production within sysconfig
+Fixed : Update information for minimum PHP version
+Fixed : Blank page after upload file is failed
+
+SLiMS 9.2.0 (Bulian)
+========================================================================
+Fixed : Invalid date on upgrade, especially upgrade from SLiMS 5 Cendana version and under 
+Added : File attachment download counter report
+Added : Biblio log preview
+Added : Upload picture to and from local server in ckeditor
+Updated : ckeditor to version 4
+Added : Search cluster (on default template) for ElasticSearch indexing tool
+Added : Easily change About Us information in OPAC (provided as footer). Available in theme customization
+Added : GUI acccess to generate new field for Bibliography and Membership. Available in System menu
+Added : Security enhancement for CRSF (Cross-Site Request Forgery)
+Added : Download book cover directly using url or search through Duckduckgo Service
+Added : Cover image thumbnail in Bibliographic List
+Updated : Item batch detail in Item Code Batch Generator (Options Button)
+Added : Captcha feature to forgot your password recovery mode (admin login)
+Added : Procurement report in Reporting Modules
+Added : Change logo personification in System Module. Available in System menu
+Fixed : Flag icon when change translation. Available in System menu
+Updated : Webcam access in HTML5
+Added : Personalized backend user template. Available in theme customization
+Added : Option for disabling voice in visitor log. Available in System menu
+Added : First row information when exporting and importing bibliography and item data
+Updated : Bahasa Indonesia translation
+Added : Forgot your password recovery mode (admin login)
+Added : Option to show or hide first column when export or import
+
+SLiMS 9.1.1 (Bulian)
+========================================================================
+Added : Upgrade version tag
 
 SLiMS 9.1.0 (Bulian)
 ========================================================================

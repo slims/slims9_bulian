@@ -51,12 +51,13 @@ require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
 
 if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
-        $data['setting_value'] = serialize($value);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
         if ($query->num_rows > 0) {
@@ -86,7 +87,39 @@ if (!function_exists('addOrUpdateSetting')) {
 /* Config Vars EDIT FORM */
 /* Config Vars update process */
 
+/* remove logo */
+if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
+      $logo_image = '';
+      $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
+      utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
+      echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+      exit();
+}
+
 if (isset($_POST['updateData'])) {
+
+    if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
+      // remove previous image
+      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+      // create upload object
+      $image_upload = new simbio_file_upload();
+      $image_upload->setAllowableFormat($sysconf['allowed_images']);
+      $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
+      $image_upload->setUploadDir(IMGBS.'default');
+      $img_upload_status = $image_upload->doUpload('image','logo');
+      if ($img_upload_status == UPLOAD_SUCCESS) {
+        $logo_image = $dbs->escape_string($image_upload->new_filename);
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
+        if($update) {
+          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
+        }
+      }else{
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
+      }
+    }
+
     // reset/truncate setting table content
     // library name
     $library_name = $dbs->escape_string(strip_tags(trim($_POST['library_name'])));
@@ -172,6 +205,12 @@ if (isset($_POST['updateData'])) {
     $allowed_counter_ip = array_map(function ($ip) {return trim($ip);}, $allowed_counter_ip);
     addOrUpdateSetting('allowed_counter_ip', $allowed_counter_ip);
 
+    // reserve
+    $reserve_direct_database = utility::filterData('reserve_direct_database', 'post', true, true, true);
+    addOrUpdateSetting('reserve_direct_database', $reserve_direct_database);
+    $reserve_on_loan_only = utility::filterData('reserve_on_loan_only', 'post', true, true, true);
+    addOrUpdateSetting('reserve_on_loan_only', $reserve_on_loan_only);
+
     // visitor limitation
     $visitor_limitation = $_POST['enable_visitor_limitation'];
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($visitor_limitation)).'\' WHERE setting_name=\'enable_visitor_limitation\'');
@@ -185,11 +224,12 @@ if (isset($_POST['updateData'])) {
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration');
-    utility::jsAlert(__('Settings saved. Refreshing page'));
-    echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
+    utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
+    echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();
 }
+
 /* Config Vars update process end */
 
 // create new instance
@@ -205,13 +245,37 @@ $form->table_content_attr = 'class="alterCell2"';
 utility::loadSettings($dbs);
 
 // version status
-$form->addAnything('Senayan Version', '<strong>'.SENAYAN_VERSION.'</strong>');
+$form->addAnything(__('SLiMS Version'), '<strong>'.SENAYAN_VERSION.'</strong>');
 
 // library name
 $form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'class="form-control"');
 
 // library subname
 $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['library_subname'], 'class="form-control"');
+
+//logo
+$str_input = '';
+if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
+    $str_input .= '<div style="padding:10px;">';
+    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
+    $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
+}
+$str_input .= '<div class="custom-file col-3">';
+$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+$str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+$str_input .= '</div>';
+$str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$str_input .= <<<HTML
+<script>
+$('.custom-file input').on('change',function(){
+    //get the file name
+    const fileName = $(this).val();
+    //replace the "Choose a file" label
+    $(this).next('.custom-file-label').html(fileName);
+});
+</script>
+HTML;
+$form->addAnything(__('Logo Image'), $str_input);
 
 /* Form Element(s) */
 // public template
@@ -328,6 +392,16 @@ $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time
 
 // time visitor limitation
 $form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;" class="form-control"');
+
+$options = null;
+$options[] = array('0', __('Email'));
+$options[] = array('1', __('Database'));
+$form->addSelectList('reserve_direct_database', __('Reserve methode'), $options, $sysconf['reserve_direct_database']?'1':'0','class="form-control col-3"');
+
+$options = null;
+$options[] = array('0', __('Disable'));
+$options[] = array('1', __('Enable'));
+$form->addSelectList('reserve_on_loan_only', __('Reserve for item on loan only'), $options, $sysconf['reserve_on_loan_only']?'1':'0','class="form-control col-3"');
 
 // print out the object
 echo $form->printOut();

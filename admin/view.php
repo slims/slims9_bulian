@@ -35,7 +35,8 @@ if (!$can_read) {
 
 // get file ID
 $fileID = isset($_GET['fid'])?(integer)$_GET['fid']:0;
-
+$memberID = isset($_SESSION['mid']) ? $_SESSION['mid'] : 0;
+$userID = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
 // query file to database
 $file_q = $dbs->query('SELECT * FROM files WHERE file_id='.$fileID);
 $file_d = $file_q->fetch_assoc();
@@ -43,9 +44,10 @@ $file_d = $file_q->fetch_assoc();
 if ($file_q->num_rows > 0) {
     $file_loc = REPOBS.str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
     if (file_exists($file_loc)) {
+		utility::dlCount($dbs, $fileID, $memberID, $userID);
         header('Content-Disposition: inline; filename="'.basename($file_loc).'"');
         header('Content-Type: '.$file_d['mime_type']);
-        readfile($file_loc);
+        echo file_get_contents($file_loc);
         exit();
     } else {
         if ($file_d['mime_type'] == 'text/uri-list') {

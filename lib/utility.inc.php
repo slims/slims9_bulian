@@ -67,7 +67,7 @@ class utility
         'debug' => false,
         'newestOnTop' => false,
         'progressBar' => false,
-        'positionClass' => 'toast-bottom-right',
+        'positionClass' => 'toast-top-right',
         'preventDuplicates' => false,
         'onclick' => null,
         'showDuration' => 300,
@@ -122,10 +122,10 @@ class utility
                 $_value = @unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
                     foreach ($_value as $_idx=>$_curr_value) {
-                        $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
+                        $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = $_value;
+                    $sysconf[$_setting_data['setting_name']] = stripslashes($_value);
                 }
             }
         }
@@ -141,8 +141,15 @@ class utility
      */
     public static function havePrivilege($str_module_name, $str_privilege_type = 'r')
     {
+        global $sysconf;
         // checking checksum
-        $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        if ($sysconf['load_balanced_env']) {
+            $server_addr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        }
+
+
         $_checksum = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
         if ($_SESSION['checksum'] != $_checksum) {
             return false;
@@ -168,7 +175,7 @@ class utility
      * @param   string  $str_log_msg
      * @return  void
      */
-    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg)
+    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod=NULL, $str_log_action=NULL)
     {
         if (!$obj_db->error) {
             // log table
@@ -179,9 +186,14 @@ class utility
             $str_value_id = $obj_db->escape_string(trim($str_value_id));
             $str_location = $obj_db->escape_string(trim($str_location));
             $str_log_msg = $obj_db->escape_string(trim($str_log_msg));
+            $str_log_submod = $obj_db->escape_string(trim($str_log_submod));
+            $str_log_action = $obj_db->escape_string(trim($str_log_action));
             // insert log data to database
             @$obj_db->query('INSERT INTO '.$_log_table.'
-            VALUES (NULL, \''.$str_log_type.'\', \''.$str_value_id.'\', \''.$str_location.'\', \''.$str_log_msg.'\', \''.$_log_date.'\')');
+            VALUES (NULL, \''.$str_log_type.'\', \''.$str_value_id.'\', \''.$str_location.'\','.
+             ' \''.$str_log_submod.'\''.
+             ', \''.$str_log_action.'\''.
+             ', \''.$str_log_msg.'\', \''.$_log_date.'\')');
         }
     }
 
@@ -611,5 +623,41 @@ class utility
 
       // Entity not found? Destroy it.
       return isset($_ent_table[$str_xml_data[1]]) ? $_ent_table[$str_xml_data[1]] : '';
+    }
+
+    /**
+     * Static Method to load admin template
+     *
+     * @param   object  $obj_db
+     * @return  void
+     */
+    public static function loadUserTemplate($obj_db,$uid)
+    {
+      global $sysconf;
+      // load user template settings for override setting
+      $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
+      if($_q->num_rows>0){
+        $template_settings = unserialize($_q->fetch_row()[0]);
+        foreach ($template_settings as $setting_name => $setting_value) {
+          $sysconf['admin_template'][$setting_name] = $setting_value;
+        }
+      }
+    }
+
+    public static function dlCount($obj_db, $str_file_id, $str_member_id, $str_user_id)
+    {
+        if (!$obj_db->error) {
+            // log table
+            $_log_date = date('Y-m-d H:i:s');
+            $_log_table = 'files_read';
+            // filter input
+            $str_log_type = $obj_db->escape_string(trim($str_file_id));
+            $str_value_id = $obj_db->escape_string(trim($str_member_id));
+            $str_user_id = $obj_db->escape_string(trim($str_user_id));
+            // insert log data to database
+            @$obj_db->query('INSERT INTO '.$_log_table.'
+            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.$_SERVER[
+			'REMOTE_ADDR'].'\')');
+        }
     }
 }

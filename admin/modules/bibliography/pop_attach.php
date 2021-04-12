@@ -94,11 +94,11 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         // insert file data to database
         @$sql_op->insert('files', $fdata);
         $uploaded_file_id = $sql_op->insert_id;
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')', 'Attachment', 'Add');
     } else {
       utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
       echo '<script type="text/javascript">';
-      echo 'self.close();';
+      echo 'self.location.href = "'.$_SERVER['PHP_SELF'].'";';
       echo '</script>';
       die();
     }
@@ -125,6 +125,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
     $updateBiblioID = (integer)$_POST['updateBiblioID'];
     $data['biblio_id'] = $updateBiblioID;
     $data['file_id'] = $uploaded_file_id;
+    $data['placement'] = utility::filterData('placement', 'post', true, true, true);
     $data['access_type'] = trim($_POST['accessType']);
     $data['access_limit'] = 'literal{NULL}';
     // parsing member type data
@@ -141,7 +142,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
     if (isset($_POST['updateFileID'])) {
       $fileID = (integer)$_POST['updateFileID'];
       // file biblio access update
-      $update1 = $sql_op->update('biblio_attachment', array('access_type' => $data['access_type'], 'access_limit' => $data['access_limit']), 'biblio_id='.$updateBiblioID.' AND file_id='.$fileID);
+      $update1 = $sql_op->update('biblio_attachment', array('access_type' => $data['access_type'], 'access_limit' => $data['access_limit'], 'placement' => $data['placement']), 'biblio_id='.$updateBiblioID.' AND file_id='.$fileID);
       // file description update
       $update2 = $sql_op->update('files', array('file_title' => $title, 'file_url' => $url, 'file_desc' => $dbs->escape_string(trim($_POST['fileDesc']))), 'file_id='.$fileID);
       if ($update1) {
@@ -162,7 +163,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         utility::jsToastr('File Attachment',''.__('File Attachment data FAILED to save!').''."\n".$sql_op->error, 'error');
       }
     }
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' updating file attachment data');
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' updating file attachment data', 'Attachment', 'Update');
   } else {
     if ($uploaded_file_id) {
       // add to session array
@@ -221,7 +222,7 @@ if (isset($file_attach_d['file_name'])) {
   // add repo directory options to select list
   $form->addSelectList('fileDir', __('Repo. Directory'), $repodir_options,'','class="form-control"');
   // file upload
-  $str_input  = '<div class="container">';
+  $str_input  = '<div class="container-fluid">';
   $str_input .= '<div class="row">';
   $str_input .= '<div class="custom-file col">';
   $str_input .= simbio_form_element::textField('file', 'file2attach','','class="custom-file-input"');
@@ -234,6 +235,12 @@ if (isset($file_attach_d['file_name'])) {
 }
 // file url
 $form->addTextField('textarea', 'fileURL', __('URL'), $file_attach_d['file_url']??'', 'rows="1" class="form-control"');
+
+// placement
+$str_input = '<div class="font-italic">*) '.__('Work for embedded link or video attachment').'</div>';
+$str_input .= simbio_form_element::radioButton('placement', [['link', __('Link')], ['popup', __('Popup')], ['embed', __('Embed')]], $file_attach_d['placement']??'link');
+$form->addAnything(__('Placement'), $str_input);
+
 // file description
 $form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc']??'', 'rows="2" class="form-control"');
 // file access

@@ -84,7 +84,7 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
-    $userName = trim(strip_tags($_POST['userName']));
+    $userName = $_SESSION['uid'] > 1 ? $_SESSION['uname'] : trim(strip_tags($_POST['userName']));
     $realName = trim(strip_tags($_POST['realName']));
     $passwd1 = trim($_POST['passwd1']);
     $passwd2 = trim($_POST['passwd2']);
@@ -101,7 +101,7 @@ if (isset($_POST['saveData'])) {
     } else if (!simbio_form_maker::isTokenValid()) {
         utility::jsAlert(__('Invalid form submission token!'));
         exit();
-    }else {
+    } else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
         $data['user_type'] = (integer)$_POST['userType'];
@@ -133,9 +133,9 @@ if (isset($_POST['saveData'])) {
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
+        // create upload object
+        $upload = new simbio_file_upload();
         if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-          // create upload object
-          $upload = new simbio_file_upload();
           $upload->setAllowableFormat($sysconf['allowed_images']);
           $upload->setMaxSize($sysconf['max_image_upload']*1024); // approx. 100 kb
           $upload->setUploadDir(IMGBS.'persons');
@@ -146,7 +146,7 @@ if (isset($_POST['saveData'])) {
             $data['user_image'] = $dbs->escape_string($upload->new_filename);
           }
         } else if (!empty($_POST['base64picstring'])) {
-			    list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
+            list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
           $filedata = base64_decode($filedata);
           $fileinfo = getimagesizefromstring($filedata);
           $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
@@ -172,21 +172,22 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('user', $data, 'user_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
                 utility::jsAlert(__('User Data Successfully Updated'));
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
-                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+                // echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'].'\');</script>';
             } else { utility::jsAlert(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         } else {
@@ -194,17 +195,17 @@ if (isset($_POST['saveData'])) {
             // insert the data
             if ($sql_op->insert('user', $data)) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
                 utility::jsAlert(__('New User Data Successfully Saved'));
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename);
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         utility::jsAlert(__('Image Uploaded Successfully'));
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')');
+                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         utility::jsAlert(__('Image FAILED to upload'));
                     }
                 }
@@ -236,7 +237,7 @@ if (isset($_POST['saveData'])) {
             $error_num++;
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')');
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')', 'User', 'Delete');
         }
     }
 
@@ -318,7 +319,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // user name
-    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
+    if ($_SESSION['uid'] > 1) {
+        $form->addAnything(__('Login Username'), '<strong>'.$rec_d['username'].'</strong>');
+    } else {
+        $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
+    }
+
     // user real name
     $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname']??'', 'style="width: 50%;" class="form-control"');
     // user type
@@ -349,18 +355,31 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= simbio_form_element::textField('file', 'image');
     $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
-      $str_input .= '<p><strong>'.__('or take a photo').'</strong></p>';
-      $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
-      $str_input .= '<button id="btn_load" onclick="loadcam(this)">'.__('Load Camera').'</button> | ';
-      $str_input .= __('Ratio:').' <select onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select> | ';
-      $str_input .= __('Format:').' <select id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select> | ';
-      $str_input .= '<button id="btn_pause" onclick="snapshot(this)" disabled>'.__('Capture').'</button> | ';
-      $str_input .= '<button id="btn_reset" onclick="$(\'textarea#base64picstring\').val(\'\');">'.__('Reset').'</button>';
-      $str_input .= '<div id="my_container" style="width: 400px; height: 300px; border: 1px solid #333; position: relative;">';
-      $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10;"></video>';
-      $str_input .= '<canvas id="my_canvas" width="400" height="300" style="border: 1px solid #333; float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
-      $str_input .= '<div id="my_frame" style="  border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
-      $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #444; display: none;"></canvas>';
+        $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
+        $str_input .= '<p>'.__('or take a photo').'</p>';
+        $str_input .= '<div class="form-inline">';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button type="button" id="btn_pause" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '<div class="form-group pr-2">';
+        $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
+        $str_input .= '</div>';
+        $str_input .= '</div>';
+        $str_input .= '<div id="my_container" class="mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
+        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
+        $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
+        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #f4f4f4; display: none;"></canvas>';
+
     }
 
     $form->addAnything(__('User Photo'), $str_input);

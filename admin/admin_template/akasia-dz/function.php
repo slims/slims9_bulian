@@ -87,6 +87,17 @@ function sub_menu($str_module = '', $_module = array())
     $_submenu_file 	= $modules_dir.DS.$_module['path'].DS.'submenu.php';
     if (file_exists($_submenu_file)) {
         include $_submenu_file;
+
+        if ($_SESSION['uid'] > 1) {
+            $tmp_menu = [];
+            if (isset($menu) && count($menu) > 0) {
+                foreach ($menu as $item) {
+                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
+                }
+            }
+            $menu = $tmp_menu;
+        }
+
     } else {
         include 'default/submenu.php';
 	$shortcuts = get_shortcuts_menu();

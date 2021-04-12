@@ -103,6 +103,14 @@ class admin_logon
                     if ($_priv_d['w']) {
                         $_SESSION['priv'][$_priv_d['module_path']]['w'] = true;
                     }
+                    if ($_priv_d['menus']) {
+                        $submenus = json_decode($_priv_d['menus'], true);
+                        if (isset($_SESSION['priv'][$_priv_d['module_path']]['menus'])) {
+                            $_SESSION['priv'][$_priv_d['module_path']]['menus'] = array_unique(array_merge($submenus, $_SESSION['priv'][$_priv_d['module_path']]['menus']));
+                        } else {
+                            $_SESSION['priv'][$_priv_d['module_path']]['menus'] = $submenus;
+                        }
+                    }
                 }
             }
         } else {
@@ -133,7 +141,11 @@ class admin_logon
         }
 
         // save md5sum of  current application path
-        $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        if ($sysconf['load_balanced_env']) {
+            $server_addr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        }
         $_SESSION['checksum'] = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
 
         // update the last login time

@@ -892,3 +892,18 @@ html {
     border-radius: 4px;
     margin-top: 8px;
 }
+
+.forgotButton {
+    float: right;
+    text-decoration: none;
+    padding-top: 16px;
+    color: #718096;
+}
+
+.forgotButton:hover {
+    text-decoration: none;
+    color: #4299E1;
+}
+.highlight{
+	color:red;
+}

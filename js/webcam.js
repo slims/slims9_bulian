@@ -45,30 +45,49 @@ function loadcam(t) {
       $('#btn_pause').attr('disabled', 'disabled');
   };
 
-  window.URL = window.URL || window.webkitURL ||
-      window.mozURL || window.msURL;
+  window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
   if (navigator.getUserMedia) {
       navigator.getUserMedia(
           { "video": true },
           function(stream) {
-              video.src = stream;
-              video.play();
-              localMediaStream = stream;
-          },
+              // video.src = stream;
+              // video.play();
+							// streamRef = stream;
+							video.setAttribute("autoplay", true);
+							video.setAttribute('muted', true);
+							video.setAttribute('playsinline', true);
+							video.srcObject = stream;
+							video.addEventListener('loadedmetadata', function () {
+								video.play();
+								localMediaStream = stream;
+								// resolve();
+							});
+	
+					},
           onCameraFail
       );
   }
   else {
-      navigator.getUserMedia = navigator.webkitGetUserMedia ||
-          navigator.mozGetUserMedia || navigator.msGetUserMedia;
-      navigator.getUserMedia(
-          { "video": true },
-          function (stream) {
-              video.src = window.URL.createObjectURL(stream);
-              video.play();
-              localMediaStream = stream;
-          },
-          onCameraFail
+      navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+      navigator.getUserMedia({
+				"video": true 
+			},
+				function (stream) {
+						// video.src = window.URL.createObjectURL(stream);
+						// video.play();
+            // streamRef = stream;
+            video.setAttribute("autoplay", true);
+            video.setAttribute('muted', true);
+            video.setAttribute('playsinline', true);
+            video.srcObject = stream;
+            video.addEventListener('loadedmetadata', function () {
+							video.play();
+							localMediaStream = stream;
+                // resolve();
+            });
+
+				},
+				onCameraFail
       );
   }
   t.disabled = true;
@@ -143,8 +162,10 @@ function set() {
   $('textarea#base64picstring').val(dataUrl);
 }
 
-
-
+function resetvalue() {
+	$('textarea#base64picstring').val('');	
+	$('#btn_pause').trigger('click');
+}
 //~ 
 //~ $(function() {}).keypress(function(event) {
 	//~ /*

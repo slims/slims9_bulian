@@ -111,37 +111,59 @@ if (isset($_POST['doExport'])) {
         if ($all_data_q->num_rows > 0) {
           header('Content-type: text/plain');
           header('Content-Disposition: attachment; filename="senayan_biblio_export.csv"');
-          while ($biblio_d = $all_data_q->fetch_row()) {
+          $headers = [];
+          $itemData = [];
+          while ($biblio_d = $all_data_q->fetch_assoc()) {
               $buffer = null;
-              foreach ($biblio_d as $idx => $fld_d) {
+              $n = 0;
+              foreach ($biblio_d as $key => $fld_d) {
                   // skip biblio_id field
-                  if ($idx > 0) {
+                  if ($n > 0) {
+                      $headers[$key] = $key;
                       $fld_d = $dbs->escape_string($fld_d);
                       // data
                       $buffer .=  stripslashes($encloser.$fld_d.$encloser);
                       // field separator
                       $buffer .= $sep;
                   }
+                  $n++;
               }
               // authors
+              $headers['authors'] = 'authors';
               $authors = getValues($dbs, 'SELECT a.author_name FROM biblio_author AS ba
                   LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
-                  WHERE ba.biblio_id='.$biblio_d[0]);
+                  WHERE ba.biblio_id='.$biblio_d['biblio_id']);
               $buffer .= $encloser.$authors.$encloser;
               $buffer .= $sep;
               // topics
+              $headers['topics'] = 'topics';
               $topics = getValues($dbs, 'SELECT t.topic FROM biblio_topic AS bt
                   LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
-                  WHERE bt.biblio_id='.$biblio_d[0]);
+                  WHERE bt.biblio_id='.$biblio_d['biblio_id']);
               $buffer .= $encloser.$topics.$encloser;
               $buffer .= $sep;
               // item code
+              $headers['item_code'] = 'item_code';
               $items = getValues($dbs, 'SELECT item_code FROM item AS i
-                  WHERE i.biblio_id='.$biblio_d[0]);
+                  WHERE i.biblio_id='.$biblio_d['biblio_id']);
               $buffer .= $encloser.$items.$encloser;
-              echo $buffer;
-              echo $rec_sep;
+
+              $itemData[] = $buffer;
           }
+
+          $header_buffer = '';
+          foreach ($headers as $header) {
+            $header_buffer .= $encloser.$header.$encloser.$sep;
+          }
+          $header_buffer .= $rec_sep;
+
+          $item_buffer = '';
+          foreach ($itemData as $item) {
+            $item_buffer .= $item.$rec_sep;
+          }
+
+          if (isset($_POST['header'])) echo $header_buffer;
+          echo $item_buffer;
           exit();
         } else {
           utility::jsToastr('Data Export', __('There is no record in bibliographic database yet, Export FAILED!'), 'error');
@@ -174,7 +196,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(';').'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
 $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // record separator
@@ -185,5 +207,7 @@ $form->addSelectList('recordSep', __('Record Separator'), $rec_sep_options,'','c
 $form->addTextField('text', 'recordNum', __('Number of Records To Export (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;"  class="form-control"');
+// header (column name)
+$form->addCheckBox('header', __('Put columns names in the first row'), array( array('1', __('Yes')) ), '');
 // output the form
 echo $form->printOut();
