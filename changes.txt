@@ -41,9 +41,9 @@ John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.x.x (Bulian)
+SLiMS 9.4.1 (Bulian)
 ========================================================================
-Fixed : Hidden ajax list.
+Fixed : Hidden ajax list
 Fixed : Hidden menu header for user not administrator
 
 SLiMS 9.4.0 (Bulian)
