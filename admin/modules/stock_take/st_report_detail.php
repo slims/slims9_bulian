@@ -59,12 +59,11 @@ require MDLBS.'reporting/report_dbgrid.inc.php';
 
 if (!isset($_GET['reportView'])) {
     ob_start();
-    $_GET['reportView'] = 1;
     $query_string = http_build_query(array_unique($_GET));
     // frame
     echo <<<HTML
     <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
-    <iframe name="reportView" id="reportView" src="{$_SERVER['PHP_SELF']}?{$query_string}" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+    <iframe name="reportView" id="reportView" src="{$_SERVER['PHP_SELF']}?{$query_string}&reportView=1" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 HTML;
     /* main content end */
     $content = ob_get_clean();
