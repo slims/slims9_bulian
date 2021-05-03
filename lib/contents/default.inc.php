@@ -183,7 +183,6 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
   if (!isset($_GET['resultXML']) && !isset($_GET['JSONLD'])) {
     // show the list
     echo $biblio_list->getDocumentList();
-    echo '<br />'."\n";
   }
 
   // set result number info
