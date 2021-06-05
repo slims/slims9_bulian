@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="flex flex-wrap">
-        <div class="w-64 mb-2">
+        <div class="w-64 mb-2 mx-auto block">
             <div class="bg-grey-light p-12 rounded">
                 <div class="shadow">
                   <?= $image; ?>

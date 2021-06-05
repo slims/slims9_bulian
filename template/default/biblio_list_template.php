@@ -93,9 +93,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '<div class="card-body">';
   $output .= '<div class="row">';
   $output .= '<div class="col-12 col-md-2">';
-  $output .= '<img src="'.$thumb_url.'" alt="cover" class="img-fluid rounded" />';
+  $output .= '<img src="'.$thumb_url.'" alt="cover" class="img-fluid rounded mx-auto mb-3 block" />';
   $output .= '</div>'; // -- close col-2
-  $output .= '<div class="col-8">';
+  $output .= '<div class="col-12 col-md-8">';
   $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.addEllipsis($title, 80).'</a></h5>';
   $output .= '<div class="d-flex authors flex-wrap py-2">';
   $output .= $_authors_string;
