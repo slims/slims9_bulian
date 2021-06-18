@@ -54,7 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $placeName = trim(strip_tags($_POST['placeName']));
     // check form validity
     if (empty($placeName)) {
-        utility::jsAlert(__('Place Name can\'t be empty')); //mfc
+        utility::jsToastr(__('Place'), __('Place Name can\'t be empty'), 'error');
         exit();
     } else {
         $data['place_name'] = $dbs->escape_string($placeName);
@@ -71,19 +71,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $updateRecordID = (integer)$_POST['updateRecordID'];
             // update the data
             $update = $sql_op->update('mst_place', $data, 'place_id='.$updateRecordID);
-            if ($update) {
-                utility::jsAlert(__('Place Data Successfully Updated'));
+            if ($update) {                          
+                utility::jsToastr(__('Place'), __('Place Data Successfully Updated'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Place Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { 
+                utility::jsToastr(__('Place'),__('Place Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); 
+            }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_place', $data);
             if ($insert) {
-                utility::jsAlert(__('New Place Data Successfully Saved'));
+                utility::jsToastr(__('Place'), __('New Place Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Place Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { 
+                utility::jsToastr(__('Place'), __('Place Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error');
+            }
             exit();
         }
     }
@@ -96,6 +100,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_have_biblio = array();
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -103,17 +108,37 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_place', 'place_id='.$itemID)) {
-            $error_num++;
+        // check if this place data still in use biblio
+        $_sql_place_biblio_q = sprintf('SELECT mp.place_name, COUNT(mp.place_id) FROM biblio AS b
+        LEFT JOIN mst_place AS mp ON b.publish_place_id=mp.place_id
+        WHERE mp.place_id=%d GROUP BY mp.place_name', $itemID);
+        $place_biblio_q = $dbs->query($_sql_place_biblio_q);
+        $place_biblio_d = $place_biblio_q->fetch_row();
+        if ($place_biblio_d[1] < 1) {
+            if (!$sql_op->delete('mst_place', 'place_id='.$itemID)) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('%s still in use %d biblio <br/>'),substr($place_biblio_d[0], 0, 45),$place_biblio_d[1]);
+            $error_num++;            
         }
     }
 
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('Place'), __('Below data can not be deleted:') . "\n" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
+    }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Place'), __('All Data Successfully Deleted'), 'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Place'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');        
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
