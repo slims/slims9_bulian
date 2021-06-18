@@ -50,7 +50,8 @@ Fixed : Stock take report detail
 Update : Deactive email debugger
 Added : Method to see attachment
 Added : Show detail for fines from Fines Report submenu
-Added : Method to select group functions 
+Added : Method to select group functions
+Fixed : RSS feed 
 
 SLiMS 9.4.1 (Bulian)
 ========================================================================
