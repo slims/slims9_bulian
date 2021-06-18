@@ -201,7 +201,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     // update print queue count object
     echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
     // open result in window
-    echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Item Barcodes Printing').'"})</script>';
+    echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'?v='.date('YmdHis').'", iframe: true, width: 800, height: 500, title: "'.__('Item Barcodes Printing').'"})</script>';
   } else { utility::jsToastr('Item Barcode', str_replace('{directory}', SB.FLS, __('ERROR! Item barcodes failed to generate, possibly because {directory} directory is not writable')), 'error'); }
   exit();
 }
