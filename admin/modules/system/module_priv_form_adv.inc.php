@@ -64,7 +64,7 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
                     $submenu .= <<<HTML
                     <div class="btn-group btn-group-sm" role="group">
                         <button onclick="checkBox('#{$menuID}', 'select')" type="button" class="btn btn-secondary">{$_('Select All')}</button>
-                        <button onclick="checkBox('#{$menuID}', 'unselect')" type="button" class="btn btn-secondary">{$_('Unelect All')}</button>
+                        <button onclick="checkBox('#{$menuID}', 'unselect')" type="button" class="btn btn-secondary">{$_('Unselect All')}</button>
                         <button onclick="checkBox('#{$menuID}', 'invert')" type="button" class="btn btn-secondary">{$_('Select Invert')}</button>
                     </div>
 HTML;

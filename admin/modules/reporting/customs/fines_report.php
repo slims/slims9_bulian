@@ -44,12 +44,6 @@ if (!$can_read) {
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 
-// show detail of fines
-if (isset($_GET['action']) && $_GET['action'] === 'detail') {
-    echo 'ini halam detail denda';
-    die();
-}
-
 // months array
 $months['01'] = __('Jan');
 $months['02'] = __('Feb');
