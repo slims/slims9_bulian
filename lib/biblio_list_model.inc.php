@@ -192,16 +192,14 @@ abstract class biblio_list_model
       $_keywords = urlencode(trim(urldecode($_GET['keywords'])));
     }
 
-    if(!isset($_GET['rss'])){
-      // include biblio list HTML template callback
-      include SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/biblio_list_template.php';
-      $settings = '';
-      $settings = get_object_vars($this);
-      $settings['keywords'] = $_keywords;
-      while ($_biblio_d = $this->resultset->fetch_assoc()) {
-        $_buffer .= biblio_list_format($this->obj_db, $_biblio_d, $_i, $settings, $return_back);
-        $_i++;
-      }
+    // include biblio list HTML template callback
+    include SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/biblio_list_template.php';
+    $settings = '';
+    $settings = get_object_vars($this);
+    $settings['keywords'] = $_keywords;
+    while ($_biblio_d = $this->resultset->fetch_assoc()) {
+      $_buffer .= biblio_list_format($this->obj_db, $_biblio_d, $_i, $settings, $return_back);
+      $_i++;
     }
 
     // free resultset memory

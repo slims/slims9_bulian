@@ -180,9 +180,10 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $biblio_list->only_promoted = true;
   }
 
-  if (!isset($_GET['resultXML']) && !isset($_GET['JSONLD'])) {
+  if (!isset($_GET['resultXML']) && !isset($_GET['JSONLD']) && !isset($_GET['rss'])) {
     // show the list
     echo $biblio_list->getDocumentList();
+    echo '<br />'."\n";
   }
 
   // set result number info
