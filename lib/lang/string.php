@@ -24,5 +24,8 @@
 
 return [
     __('System'),
-    __('Reporting')
+    __('Reporting'),
+    __('Select All'),
+    __('Unselect All'),
+    __('Select Invert')
 ];
