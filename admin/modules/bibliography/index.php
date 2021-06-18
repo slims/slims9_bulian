@@ -324,7 +324,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else {
 
             // execute registered hook
-            \SLiMS\Plugins::getInstance()->execute('bibliography_after_save', ['data' => $data]);
+            \SLiMS\Plugins::getInstance()->execute('bibliography_before_save', ['data' => $data]);
 
             /* INSERT RECORD MODE */
             // insert the data
