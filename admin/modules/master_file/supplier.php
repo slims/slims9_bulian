@@ -53,7 +53,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $supplierName = trim(strip_tags($_POST['supplierName']));
     // check form validity
     if (empty($supplierName)) {
-        utility::jsAlert(__('Supplier Name can\'t be empty'));
+        utility::jsToastr(__('Supplier'),__('Supplier Name can\'t be empty'),'error');
         exit();
     } else {
         $data['supplier_name'] = $dbs->escape_string($supplierName);
@@ -77,19 +77,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_supplier', $data, 'supplier_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Supplier Data Successfully Updated'));
+                utility::jsToastr(__('Supplier'),__('Supplier Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Supplier Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$error); }
+            } else { utility::jsToastr(__('Supplier Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_supplier', $data);
             if ($insert) {
-                utility::jsAlert(__('New Supplier Data Successfully Saved'));
+                utility::jsToastr(__('Supplier'),__('New Supplier Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else {
-                utility::jsAlert(__('Supplier Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error);
+                utility::jsToastr(__('Supplier'),__('Supplier Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error');
             }
             exit();
         }
@@ -103,6 +103,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_have_item = array(); 
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -110,17 +111,36 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_supplier', 'supplier_id='.$itemID)) {
+        // check if this item data still have an item
+        $item_q = $dbs->query('SELECT ms.supplier_name, COUNT(ms.supplier_id) FROM item AS i
+            LEFT JOIN mst_supplier AS ms ON i.supplier_id=ms.supplier_id
+            WHERE i.supplier_id='.$itemID.' GROUP BY ms.supplier_id');
+        $item_d = $item_q->fetch_row();
+        if ($item_d[1] < 1) {
+        	if (!$sql_op->delete('mst_supplier', 'supplier_id='.$itemID)) {
+            	$error_num++;
+        	}
+        }else{
+            $still_have_item[] = sprintf(__('Supplier %s still used by %s item(s)'),$item_d[0],$item_d[1]);
             $error_num++;
         }
     }
 
+    if ($still_have_item) {
+        $titles = '';
+        foreach ($still_have_item as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr(__('Supplier'), __('Below data can not be deleted:') . "\n" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
+    }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Supplier'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Supplier'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

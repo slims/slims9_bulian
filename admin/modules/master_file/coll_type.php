@@ -112,9 +112,7 @@ if (isset($_POST['saveData'])) {
                 $error_num++;
             }
         } else {
-            $msg = str_replace('{item_name}', $item_d[0], __('Location ({item_name}) still used by {number_items} item(s)')); //mfc
-            $msg = str_replace('{number_items}', $item_d[1], $msg);
-            $still_have_item[] = $msg;
+            $still_have_item[] = sprintf(__('Collection type %s still used by %s items'),$item_d[0],$item_d[1]);
             $error_num++;
         }
     }
