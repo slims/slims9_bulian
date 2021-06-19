@@ -21,12 +21,17 @@
 /* Topic Management section */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');
+}
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
 // main system configuration
-require '../../../sysconfig.inc.php';
+if (!defined('SB')) {
+  require '../../../sysconfig.inc.php';
+}
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
@@ -82,6 +87,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($update) {
                 utility::jsAlert(__('Subject Data Successfully Updated'));
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
+                if ($in_pop_up) {
+                    echo '<script type="text/javascript">top.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$_GET['biblio_id'].'\');</script>';
+                    echo '<script type="text/javascript">top.jQuery.colorbox.close();</script>';
+                } else {
+                    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                }
             } else { utility::jsAlert(__('Subject Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         } else {
@@ -92,6 +103,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $last_biblio_id = $sql_op->insert_id;
                 utility::jsAlert(__('New Subject Data Successfully Saved'));
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'master_file/topic.php\', {method: \'post\', addData: \'itemID='.$last_biblio_id.'&detail=true\'});</script>';
+                if ($in_pop_up) {
+                    echo '<script type="text/javascript">top.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$_GET['biblio_id'].'\');</script>';
+                    echo '<script type="text/javascript">top.jQuery.colorbox.close();</script>';
+                } else {
+                    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                }
             } else { utility::jsAlert(__('Subject Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         }
@@ -132,7 +149,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     exit();
 }
 /* RECORD OPERATION END */
-
+if (!$in_pop_up) {
 /* search form */
 ?>
 <div class="menuBox">
@@ -154,6 +171,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 </div>
 </div>
 <?php
+}
 /* search form end */
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
