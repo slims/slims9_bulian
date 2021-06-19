@@ -44,14 +44,15 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.x.x (Bulian)
+SLiMS 9.4.2 (Bulian)
 ========================================================================
 Fixed : Stock take report detail
-Update : Deactive email debugger
-Added : Method to see attachment
+Update : Deactivate email debugger
+Added : More method to see attachment
 Added : Show detail for fines from Fines Report submenu
 Added : Method to select group functions
-Fixed : RSS feed 
+Fixed : RSS feed
+Update : More prevention with delete data if have relations 
 
 SLiMS 9.4.1 (Bulian)
 ========================================================================
