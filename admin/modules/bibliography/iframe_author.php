@@ -118,7 +118,9 @@ if ($biblioID) {
     $author_year = $biblio_author_d['author_year'];
     $authority_type = $sysconf['authority_type'][$biblio_author_d['authority_type']];
 
-    $table->appendTableRow(array($edit_link.$remove_link, $author, $author_year, $authority_type, $sysconf['authority_level'][$biblio_author_d['level']]));
+    $authority_level_link =  '<a href="'.MWB.'bibliography/pop_author_edit.php?authorID=' .$biblio_author_d['author_id']. '&biblio_id='.$biblioID.'&authority_level=true" class="notAJAX openPopUp" title="'.__('Authority Level').'">' .$sysconf['authority_level'][$biblio_author_d['level']]. '</a>';
+
+    $table->appendTableRow(array($edit_link.$remove_link, $author, $author_year, $authority_type,$authority_level_link));
     $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
     $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="width: 30%;"');
     $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="width: 20%;"');
