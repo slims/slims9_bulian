@@ -124,14 +124,7 @@
 
             <h5 class="mt-4 mb-1"><?= __('File Attachment'); ?></h5>
             <div itemprop="associatedMedia">
-              <?php
-              if (utility::isMemberlogin()) {
-                echo $file_att;
-              } else {
-                echo '<a class="btn btn-outline-primary" href="index.php?p=member&destination='.urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']).'">'.__('Please login to see attachment').'</a>';
-              }
-              
-              ?>
+              <?= !$file_att ? '<i>'.__('No Data').'</i>' : $file_att ; ?>
             </div>
 
             <h5 class="mt-4 mb-1"><?= __('Comments'); ?></h5>
