@@ -229,7 +229,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($rec_q->num_rows > 0) {
         $form->edit_mode = true;
         // record ID for delete process
-        $form->record_id = $itemID;
+        if (!$in_pop_up) {
+            $form->record_id = $itemID;
+        } else {
+            $form->addHidden('updateRecordID', $itemID);
+            $form->back_button = false;
+            $form->delete_button = false;
+        }
         // form record title
         $form->record_title = $rec_d['author_name'];
         // submit button attribute
