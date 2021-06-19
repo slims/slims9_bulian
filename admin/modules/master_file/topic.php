@@ -64,7 +64,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $topic = trim(strip_tags($_POST['topic']));
     // check form validity
     if (empty($topic)) {
-        utility::jsAlert(__('Subject can\'t be empty'));
+        utility::jsToastr(__('Subject'), __('Subject can\'t be empty'),'error');
         exit();
     } else {
         $data['topic'] = $dbs->escape_string($topic);
@@ -85,7 +85,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_topic', $data, 'topic_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Subject Data Successfully Updated'));
+                utility::jsToastr(__('Subject'), __('Subject Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
                 if ($in_pop_up) {
                     echo '<script type="text/javascript">top.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$_GET['biblio_id'].'\');</script>';
@@ -93,7 +93,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 } else {
                     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
                 }
-            } else { utility::jsAlert(__('Subject Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Subject'), __('Subject Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -101,7 +101,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $insert = $sql_op->insert('mst_topic', $data);
             if ($insert) {
                 $last_biblio_id = $sql_op->insert_id;
-                utility::jsAlert(__('New Subject Data Successfully Saved'));
+                utility::jsToastr(__('Subject'), __('New Subject Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'master_file/topic.php\', {method: \'post\', addData: \'itemID='.$last_biblio_id.'&detail=true\'});</script>';
                 if ($in_pop_up) {
                     echo '<script type="text/javascript">top.setIframeContent(\'topicIframe\', \''.MWB.'bibliography/iframe_topic.php?biblioID='.$_GET['biblio_id'].'\');</script>';
@@ -109,7 +109,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 } else {
                     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
                 }
-            } else { utility::jsAlert(__('Subject Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Subject'), __('Subject Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -130,20 +130,43 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_topic', 'topic_id='.$itemID)) {
-            $error_num++;
-        } else {
-            // delete related topic
-            $sql_op->delete('mst_voc_ctrl', 'topic_id='.$itemID.' OR related_topic_id='.$itemID);
+        // check if this author data still used biblio
+        $_sql_biblio_topic_q = sprintf('SELECT  mt.topic, COUNT(mt.topic_id),b.title FROM biblio AS b
+        LEFT JOIN biblio_topic bt ON bt.biblio_id=b.biblio_id
+        LEFT JOIN mst_topic mt ON mt.topic_id=bt.topic_id
+        WHERE mt.topic_id=%d GROUP BY b.title', $itemID);
+        $biblio_topic_q = $dbs->query($_sql_biblio_topic_q);
+        $biblio_topic_d = $biblio_topic_q->fetch_row();
+
+        if ($biblio_topic_d[1] < 1) {
+            if (!$sql_op->delete('mst_topic', 'topic_id='.$itemID)) {
+                $error_num++;
+            } else {
+                // delete related topic
+                $sql_op->delete('mst_voc_ctrl', 'topic_id='.$itemID.' OR related_topic_id='.$itemID);
+            }
+        }else{
+            $still_used_biblio[] = sprintf(__('%s ... still used biblio %s').'<br/>',substr($biblio_topic_d[0], 0, 6),substr($biblio_topic_d[2], 0, 6));
+            $error_num++;            
         }
+    }
+
+    if ($still_used_biblio) {
+        $titles = '';
+        foreach ($still_used_biblio as $title) {
+          $titles .= $title."\n";
+        }
+        utility::jsToastr(__('Subject'),__('Below data can not be deleted:')."\n".$titles, 'warning');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\', {addData: \''.$_POST['lastQueryStr'].'\'});</script>';
+        exit();
     }
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Subject'), __('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Subject'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
