@@ -90,10 +90,9 @@ function sub_menu($str_module = '', $_module = array())
 
     if (file_exists($_submenu_file)) {
         include $_submenu_file;
-
+        $menu = array_merge($menu ?? [], $plugin_menus);
         if ($_SESSION['uid'] > 1) {
             $tmp_menu = [];
-            $menu = array_merge($menu ?? [], $plugin_menus);
             if (isset($menu) && count($menu) > 0) {
                 foreach ($menu as $item) {
                     if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
