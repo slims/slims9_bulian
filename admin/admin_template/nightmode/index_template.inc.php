@@ -60,7 +60,7 @@
     <div class="s-user" id="profile">
         <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo subMenuItem">
-                <img src="<?php echo '../lib/minigalnano/createthumb.php?filename=../../'.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
+                <img src="<?php echo '../lib/minigalnano/createthumb.php?filename='.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
         </div>
         <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>">
