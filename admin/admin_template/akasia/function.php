@@ -90,11 +90,15 @@ function sub_menu($str_module = '', $_module = array())
     $modules_dir 	= 'modules';
     $_submenu 		= '<div id="sidepan"><ul class="nav">';
     $_submenu_file 	= $modules_dir.DS.$_module['path'].DS.'submenu.php';
+
+    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($str_module);
+
     if (file_exists($_submenu_file)) {
         include $_submenu_file;
 
         if ($_SESSION['uid'] > 1) {
             $tmp_menu = [];
+            $menu = array_merge($menu ?? [], $plugin_menus);
             if (isset($menu) && count($menu) > 0) {
                 foreach ($menu as $item) {
                     if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
