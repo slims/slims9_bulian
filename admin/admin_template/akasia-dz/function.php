@@ -95,7 +95,7 @@ function sub_menu($str_module = '', $_module = array())
             $tmp_menu = [];
             if (isset($menu) && count($menu) > 0) {
                 foreach ($menu as $item) {
-                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
+                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus']) || $item[0] == 'Header') $tmp_menu[] = $item;
                 }
             }
             $menu = $tmp_menu;
