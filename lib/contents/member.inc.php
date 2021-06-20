@@ -76,7 +76,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         session_unset();
         echo '<script type="text/javascript">';
         echo 'alert("Invalid login form!");';
-        echo 'location.href = \'index.php?p=login\';';
+        echo 'location.href = \'index.php?p=member\';';
         echo '</script>';
         exit();
     }
