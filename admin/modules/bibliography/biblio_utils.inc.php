@@ -125,7 +125,7 @@ function showTitleAuthors($obj_db, $array_data)
       }
       $_authors = substr_replace($_authors, '', -3);
       if($_image!='' AND file_exists('../../../images/docs/'.$_image)){
-        $img = '../../images/docs/'.urlencode($_image);  
+        $img = 'images/docs/'.urlencode($_image);  
       }
       $_output = '<div class="media">
                     <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
@@ -141,7 +141,7 @@ function showTitleAuthors($obj_db, $array_data)
 	    }
 
       if($array_data[3]!='' AND file_exists('../../../images/docs/'.$array_data[3])){
-        $img = '../../images/docs/'.urlencode($array_data[3]);  
+        $img = 'images/docs/'.urlencode($array_data[3]);  
       }
       $_output = '<div class="media">
                     <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
@@ -170,7 +170,7 @@ function showTitleAuthors($obj_db, $array_data)
               $_label_d = $_label_q->fetch_row();
 	          $label_cache[$_label_d[0]] = array('name' => $_label_d[0], 'desc' => $_label_d[1], 'image' => $_label_d[2]);
 	      }
-	    //   $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=16&amp;" title="'.$label_cache[$label[0]]['desc'].'" />';
+	    //   $_output .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename='.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=16&amp;" title="'.$label_cache[$label[0]]['desc'].'" />';
 	      $_output .= '<div class="badge badge-light">'.$label_cache[$label[0]]['desc'].'</div>&nbsp;';
 	  }
 	}

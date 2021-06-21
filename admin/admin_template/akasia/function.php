@@ -94,20 +94,20 @@ function sub_menu($str_module = '', $_module = array())
     $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($str_module);
 
     if (file_exists($_submenu_file)) {
-        include $_submenu_file;            
+        include $_submenu_file;
         $menu = array_merge($menu ?? [], $plugin_menus);
+
         if ($_SESSION['uid'] > 1) {
             $tmp_menu = [];
             if (isset($menu) && count($menu) > 0) {
                 foreach ($menu as $item) {
-                    if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'])) $tmp_menu[] = $item;
+                  if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus']) || $item[0] == 'Header' ) $tmp_menu[] = $item;
                 }
             }
             $menu = $tmp_menu;
         }
-
     } else {
-        include 'default/submenu.php';
+  include 'default/submenu.php';
 	$shortcuts = get_shortcuts_menu();
 	foreach ($shortcuts as $shortcut) {
 	  $path = preg_replace('@^.+?\|/@i', '', $shortcut);

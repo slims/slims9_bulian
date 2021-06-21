@@ -226,7 +226,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
     } else {
-        $str_input = '<div><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($rec_d['label_image']).'&amp;width=24&amp;height=24" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
+        $str_input = '<div><img src="'.SWB.'lib/minigalnano/createthumb.php?filename='.IMG.'/labels/'.urlencode($rec_d['label_image']).'&amp;width=24&amp;height=24" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
         $str_input .= simbio_form_element::textField('file', 'labelImage');
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
