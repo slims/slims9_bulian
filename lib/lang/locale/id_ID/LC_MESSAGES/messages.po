@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-19 14:26+0700\n"
-"PO-Revision-Date: 2021-06-19 14:43+0700\n"
+"POT-Creation-Date: 2021-06-21 11:10+0700\n"
+"PO-Revision-Date: 2021-06-21 11:15+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -465,8 +465,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/z3950sru.php:329
 #: admin/modules/circulation/loan_rules.php:144
 #: admin/modules/circulation/loan_rules.php:146
-#: admin/modules/master_file/author.php:173
-#: admin/modules/master_file/author.php:175
+#: admin/modules/master_file/author.php:198
+#: admin/modules/master_file/author.php:200
 #: admin/modules/master_file/coll_type.php:152
 #: admin/modules/master_file/coll_type.php:154
 #: admin/modules/master_file/cross_reference.php:134
@@ -493,8 +493,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/master_file/rda_cmc.php:148
 #: admin/modules/master_file/supplier.php:162
 #: admin/modules/master_file/supplier.php:164
-#: admin/modules/master_file/topic.php:149
-#: admin/modules/master_file/topic.php:151
+#: admin/modules/master_file/topic.php:189
+#: admin/modules/master_file/topic.php:191
 #: admin/modules/membership/index.php:395
 #: admin/modules/membership/index.php:397
 #: admin/modules/membership/member_card_generator.php:200
@@ -623,6 +623,7 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/p2p.php:313
 #: admin/modules/bibliography/p2p.php:369
 #: admin/modules/bibliography/pop_attach.php:204
+#: admin/modules/bibliography/pop_author_edit.php:89
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
 #: admin/modules/bibliography/printed_card.php:348
@@ -711,7 +712,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/circulation/fines_list.php:249
 #: admin/modules/circulation/loan_rules.php:272
 #: admin/modules/circulation/member_loan_hist.php:88
-#: admin/modules/master_file/author.php:292
+#: admin/modules/master_file/author.php:325
 #: admin/modules/master_file/coll_type.php:234
 #: admin/modules/master_file/doc_language.php:239
 #: admin/modules/master_file/frequency.php:260
@@ -724,7 +725,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/master_file/publisher.php:256
 #: admin/modules/master_file/rda_cmc.php:233
 #: admin/modules/master_file/supplier.php:261
-#: admin/modules/master_file/topic.php:283
+#: admin/modules/master_file/topic.php:332
 #: admin/modules/membership/member_type.php:285
 #: admin/modules/reporting/customs/pop_procurement_list.php:152
 #: admin/modules/serial_control/index.php:174
@@ -1020,10 +1021,10 @@ msgid "Attachment {filename} succesfully removed!"
 msgstr "Lampiran {filename} telah dihapus!"
 
 #: admin/modules/bibliography/iframe_attach.php:124
-#: admin/modules/bibliography/iframe_author.php:114
+#: admin/modules/bibliography/iframe_author.php:116
 #: admin/modules/bibliography/iframe_biblio_rel.php:108
 #: admin/modules/bibliography/iframe_item_list.php:124
-#: admin/modules/bibliography/iframe_topic.php:112
+#: admin/modules/bibliography/iframe_topic.php:113
 msgid "Delete"
 msgstr "Hapus"
 
@@ -1033,7 +1034,9 @@ msgid "File Attachments"
 msgstr "Lampiran Berkas"
 
 #: admin/modules/bibliography/iframe_attach.php:127
+#: admin/modules/bibliography/iframe_author.php:114
 #: admin/modules/bibliography/iframe_item_list.php:123
+#: admin/modules/bibliography/iframe_topic.php:111
 #: admin/modules/master_file/iframe_vocabolary_control.php:72
 #: admin/modules/master_file/item_code_pattern.php:125
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:110
@@ -1042,9 +1045,9 @@ msgid "Edit"
 msgstr "Sunting"
 
 #: admin/modules/bibliography/iframe_attach.php:157
-#: admin/modules/bibliography/iframe_author.php:140
+#: admin/modules/bibliography/iframe_author.php:144
 #: admin/modules/bibliography/iframe_biblio_rel.php:133
-#: admin/modules/bibliography/iframe_topic.php:137
+#: admin/modules/bibliography/iframe_topic.php:138
 #: admin/modules/circulation/loan.php:195
 #: admin/modules/circulation/loan.php:204
 #: admin/modules/circulation/reserve_list.php:96
@@ -1077,6 +1080,34 @@ msgstr "Pengarang berhasil dihapus!"
 #: admin/modules/bibliography/iframe_author.php:92
 msgid "Author removed!"
 msgstr "Pengarang dihapus!"
+
+#: admin/modules/bibliography/iframe_author.php:114
+#: admin/modules/bibliography/item.php:447
+#: admin/modules/bibliography/item.php:459
+#: admin/modules/bibliography/marcexport.php:222
+#: admin/modules/bibliography/marcexport.php:229
+#: admin/modules/bibliography/p2p.php:315
+#: admin/modules/bibliography/printed_card.php:348
+#: admin/modules/master_file/author.php:68
+#: admin/modules/master_file/author.php:91
+#: admin/modules/master_file/author.php:99
+#: admin/modules/master_file/author.php:107
+#: admin/modules/master_file/author.php:118
+#: admin/modules/master_file/author.php:166
+#: admin/modules/master_file/author.php:174
+#: admin/modules/master_file/author.php:178
+#: admin/modules/master_file/author.php:191
+#: admin/modules/master_file/submenu.php:33
+#: admin/modules/reporting/customs/dl_counter.php:75
+#: admin/modules/reporting/customs/titles_list.php:75
+#: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
+msgid "Author"
+msgstr "Pengarang"
+
+#: admin/modules/bibliography/iframe_author.php:121
+#: admin/modules/bibliography/pop_author_edit.php:98
+msgid "Authority Level"
+msgstr "Jenjang Kewenangan"
 
 #: admin/modules/bibliography/iframe_biblio_rel.php:60
 msgid "Are you sure to remove selected title?"
@@ -1127,6 +1158,24 @@ msgstr "Topik telah dihapus!"
 #: admin/modules/master_file/iframe_vocabolary_control.php:44
 msgid "Topic succesfully removed!"
 msgstr "Topic berhasil dihapus!"
+
+#: admin/modules/bibliography/iframe_topic.php:111
+#: admin/modules/master_file/submenu.php:34
+#: admin/modules/master_file/topic.php:67
+#: admin/modules/master_file/topic.php:88
+#: admin/modules/master_file/topic.php:96
+#: admin/modules/master_file/topic.php:104
+#: admin/modules/master_file/topic.php:112
+#: admin/modules/master_file/topic.php:159
+#: admin/modules/master_file/topic.php:166
+#: admin/modules/master_file/topic.php:169
+#: admin/modules/master_file/topic.php:181
+#: admin/modules/master_file/topic.php:238
+#: admin/modules/master_file/topic.php:282
+#: admin/modules/master_file/topic.php:288 lib/contents/default.inc.php:164
+#: template/default/parts/_search-form.php:39
+msgid "Subject"
+msgstr "Subjek"
 
 #: admin/modules/bibliography/import.php:61
 #: admin/modules/bibliography/import.php:64
@@ -1254,7 +1303,7 @@ msgstr ""
 "Data Eksemplar GAGAL disimpan. Jumlah eksemplar massal maksimum %s salinan"
 
 #: admin/modules/bibliography/index.php:536
-#: admin/modules/master_file/author.php:142
+#: admin/modules/master_file/author.php:166
 #: admin/modules/master_file/coll_type.php:125
 #: admin/modules/master_file/doc_language.php:130
 #: admin/modules/master_file/frequency.php:127
@@ -1265,13 +1314,14 @@ msgstr ""
 #: admin/modules/master_file/place.php:132
 #: admin/modules/master_file/publisher.php:128
 #: admin/modules/master_file/supplier.php:134
+#: admin/modules/master_file/topic.php:159
 #: admin/modules/membership/member_type.php:141
 msgid "Below data can not be deleted:"
 msgstr "Data berikut tidak bisa dihapus :"
 
 #: admin/modules/bibliography/index.php:546
 #: admin/modules/circulation/loan_rules.php:117
-#: admin/modules/master_file/author.php:150
+#: admin/modules/master_file/author.php:174
 #: admin/modules/master_file/coll_type.php:130
 #: admin/modules/master_file/cross_reference.php:110
 #: admin/modules/master_file/doc_language.php:137
@@ -1285,7 +1335,7 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/master_file/publisher.php:135
 #: admin/modules/master_file/rda_cmc.php:124
 #: admin/modules/master_file/supplier.php:140
-#: admin/modules/master_file/topic.php:126
+#: admin/modules/master_file/topic.php:166
 #: admin/modules/membership/index.php:368
 #: admin/modules/membership/member_type.php:152
 #: admin/modules/system/app_user.php:246 admin/modules/system/backup.php:103
@@ -1298,7 +1348,7 @@ msgstr "Semua Data Berhasil Dihapus"
 
 #: admin/modules/bibliography/index.php:549
 #: admin/modules/circulation/loan_rules.php:124
-#: admin/modules/master_file/author.php:154
+#: admin/modules/master_file/author.php:178
 #: admin/modules/master_file/coll_type.php:133
 #: admin/modules/master_file/cross_reference.php:113
 #: admin/modules/master_file/doc_language.php:140
@@ -1312,7 +1362,7 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/master_file/publisher.php:138
 #: admin/modules/master_file/rda_cmc.php:127
 #: admin/modules/master_file/supplier.php:143
-#: admin/modules/master_file/topic.php:129
+#: admin/modules/master_file/topic.php:169
 #: admin/modules/membership/index.php:371
 #: admin/modules/membership/member_type.php:160
 #: admin/modules/system/app_user.php:249 admin/modules/system/backup.php:106
@@ -1531,7 +1581,7 @@ msgstr "Catatan Biblio"
 #: admin/modules/bibliography/pop_pattern.php:102
 #: admin/modules/circulation/fines_list.php:152
 #: admin/modules/circulation/loan_rules.php:166
-#: admin/modules/master_file/author.php:194
+#: admin/modules/master_file/author.php:221
 #: admin/modules/master_file/coll_type.php:172
 #: admin/modules/master_file/cross_reference.php:156
 #: admin/modules/master_file/doc_language.php:180
@@ -1546,7 +1596,7 @@ msgstr "Catatan Biblio"
 #: admin/modules/master_file/publisher.php:178
 #: admin/modules/master_file/rda_cmc.php:167
 #: admin/modules/master_file/supplier.php:183
-#: admin/modules/master_file/topic.php:170
+#: admin/modules/master_file/topic.php:211
 #: admin/modules/membership/index.php:416
 #: admin/modules/membership/member_type.php:200
 #: admin/modules/serial_control/serial_base_lib.inc.php:202
@@ -1565,9 +1615,10 @@ msgstr "Catatan"
 
 #: admin/modules/bibliography/index.php:714
 #: admin/modules/bibliography/item.php:259
+#: admin/modules/bibliography/pop_author_edit.php:78
 #: admin/modules/circulation/fines_list.php:171
 #: admin/modules/circulation/loan_rules.php:182
-#: admin/modules/master_file/author.php:209
+#: admin/modules/master_file/author.php:242
 #: admin/modules/master_file/coll_type.php:187
 #: admin/modules/master_file/cross_reference.php:171
 #: admin/modules/master_file/doc_language.php:195
@@ -1582,7 +1633,7 @@ msgstr "Catatan"
 #: admin/modules/master_file/publisher.php:193
 #: admin/modules/master_file/rda_cmc.php:182
 #: admin/modules/master_file/supplier.php:198
-#: admin/modules/master_file/topic.php:185
+#: admin/modules/master_file/topic.php:233
 #: admin/modules/membership/index.php:431
 #: admin/modules/membership/member_type.php:215
 #: admin/modules/serial_control/subscription.php:178
@@ -2281,9 +2332,9 @@ msgstr "Salin"
 #: admin/modules/circulation/loan_rules.php:224
 #: admin/modules/circulation/loan_rules.php:245
 #: admin/modules/circulation/loan_rules.php:252
-#: admin/modules/master_file/author.php:227
-#: admin/modules/master_file/author.php:253
-#: admin/modules/master_file/author.php:259
+#: admin/modules/master_file/author.php:260
+#: admin/modules/master_file/author.php:286
+#: admin/modules/master_file/author.php:292
 #: admin/modules/master_file/coll_type.php:196
 #: admin/modules/master_file/coll_type.php:208
 #: admin/modules/master_file/coll_type.php:210
@@ -2320,9 +2371,9 @@ msgstr "Salin"
 #: admin/modules/master_file/supplier.php:217
 #: admin/modules/master_file/supplier.php:234
 #: admin/modules/master_file/supplier.php:240
-#: admin/modules/master_file/topic.php:212
-#: admin/modules/master_file/topic.php:237
-#: admin/modules/master_file/topic.php:243
+#: admin/modules/master_file/topic.php:260
+#: admin/modules/master_file/topic.php:286
+#: admin/modules/master_file/topic.php:292
 #: admin/modules/system/app_user.php:410 admin/modules/system/app_user.php:439
 #: admin/modules/system/app_user.php:446
 #: admin/modules/system/user_group.php:244
@@ -2374,28 +2425,6 @@ msgstr "Kode Inventaris"
 msgid "You are going to edit Item data"
 msgstr "Anda akan memperbaharui data eksemplar"
 
-#: admin/modules/bibliography/item.php:447
-#: admin/modules/bibliography/item.php:459
-#: admin/modules/bibliography/marcexport.php:222
-#: admin/modules/bibliography/marcexport.php:229
-#: admin/modules/bibliography/p2p.php:315
-#: admin/modules/bibliography/printed_card.php:348
-#: admin/modules/master_file/author.php:57
-#: admin/modules/master_file/author.php:80
-#: admin/modules/master_file/author.php:82
-#: admin/modules/master_file/author.php:90
-#: admin/modules/master_file/author.php:94
-#: admin/modules/master_file/author.php:142
-#: admin/modules/master_file/author.php:150
-#: admin/modules/master_file/author.php:154
-#: admin/modules/master_file/author.php:166
-#: admin/modules/master_file/submenu.php:33
-#: admin/modules/reporting/customs/dl_counter.php:75
-#: admin/modules/reporting/customs/titles_list.php:75
-#: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
-msgid "Author"
-msgstr "Pengarang"
-
 #: admin/modules/bibliography/item_barcode_generator.php:204
 #: admin/modules/bibliography/item_barcode_generator.php:213
 #: admin/modules/bibliography/submenu.php:40
@@ -2443,8 +2472,8 @@ msgid "Import for item data from CSV file"
 msgstr "Impor data eksemplar dari data CSV"
 
 #: admin/modules/bibliography/marcexport.php:43
-#: admin/modules/master_file/author.php:49
-#: admin/modules/master_file/author.php:185
+#: admin/modules/master_file/author.php:54
+#: admin/modules/master_file/author.php:212
 #: admin/modules/master_file/cross_reference.php:49
 #: admin/modules/master_file/cross_reference.php:147
 #: admin/modules/master_file/doc_language.php:47
@@ -2462,8 +2491,8 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/master_file/publisher.php:169
 #: admin/modules/master_file/supplier.php:48
 #: admin/modules/master_file/supplier.php:174
-#: admin/modules/master_file/topic.php:48
-#: admin/modules/master_file/topic.php:161
+#: admin/modules/master_file/topic.php:53
+#: admin/modules/master_file/topic.php:202
 #: admin/modules/membership/export.php:43
 #: admin/modules/membership/import.php:46
 #: admin/modules/membership/member_type.php:49
@@ -2843,9 +2872,10 @@ msgid "Add Author"
 msgstr "Tambah Pengarang"
 
 #: admin/modules/bibliography/pop_author.php:144
-#: admin/modules/master_file/author.php:214
-#: admin/modules/master_file/author.php:249
-#: admin/modules/master_file/author.php:255
+#: admin/modules/bibliography/pop_author_edit.php:91
+#: admin/modules/master_file/author.php:247
+#: admin/modules/master_file/author.php:282
+#: admin/modules/master_file/author.php:288
 msgid "Author Name"
 msgstr "Nama Pengarang"
 
@@ -2858,6 +2888,19 @@ msgstr "Ketik untuk mencari pengarang atau menambah baru"
 #: admin/modules/bibliography/pop_topic.php:166
 msgid "Insert To Bibliography"
 msgstr "Sisipkan Dalam Bibliografi"
+
+#: admin/modules/bibliography/pop_author_edit.php:51
+msgid ""
+"Authority Level Data FAILED to Updated. Please Contact System Administrator"
+msgstr ""
+"GAGAL Memperbarui Data Jenjang Kewenangan. Harap Hubungi Administrator Sistem"
+
+#: admin/modules/bibliography/pop_author_edit.php:93
+#: admin/modules/master_file/author.php:254
+#: admin/modules/master_file/author.php:284
+#: admin/modules/master_file/author.php:290
+msgid "Authority Type"
+msgstr "Jenis Kepengarangan"
 
 #: admin/modules/bibliography/pop_biblio_rel.php:62
 msgid "Biblio relation succesfully updated!"
@@ -3918,60 +3961,54 @@ msgstr "Daftar Anggota yang Memiliki Keterlambatan"
 msgid "Reservation"
 msgstr "Reservasi"
 
-#: admin/modules/master_file/author.php:57
+#: admin/modules/master_file/author.php:68
 msgid "Author name can't be empty"
 msgstr "Nama Pengarang tidak boleh kosong"
 
-#: admin/modules/master_file/author.php:80
+#: admin/modules/master_file/author.php:91
 msgid "Author Data Successfully Updated"
 msgstr "Data Pengarang Berhasil Diperbaharui"
 
-#: admin/modules/master_file/author.php:82
+#: admin/modules/master_file/author.php:99
 msgid "Author Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Pengarang GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/author.php:90
+#: admin/modules/master_file/author.php:107
 msgid "New Author Data Successfully Saved"
 msgstr "Pengarang Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/author.php:94
+#: admin/modules/master_file/author.php:118
 #: admin/modules/master_file/coll_type.php:85
 msgid "Author Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data tipe koleksi GAGAL disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/author.php:170
+#: admin/modules/master_file/author.php:195
 msgid "Author List"
 msgstr "Daftar Pengarang"
 
-#: admin/modules/master_file/author.php:171
+#: admin/modules/master_file/author.php:196
 msgid "Add New Author"
 msgstr "Tambah Pengarang Baru"
 
-#: admin/modules/master_file/author.php:216
+#: admin/modules/master_file/author.php:249
 msgid "Author Birth Year"
 msgstr "Tahun Lahir Pengarang"
 
-#: admin/modules/master_file/author.php:221
-#: admin/modules/master_file/author.php:251
-#: admin/modules/master_file/author.php:257
-msgid "Authority Type"
-msgstr "Jenis Kepengarangan"
-
-#: admin/modules/master_file/author.php:223
-#: admin/modules/master_file/author.php:252
-#: admin/modules/master_file/author.php:258
-#: admin/modules/master_file/topic.php:199
-#: admin/modules/master_file/topic.php:236
-#: admin/modules/master_file/topic.php:242
+#: admin/modules/master_file/author.php:256
+#: admin/modules/master_file/author.php:285
+#: admin/modules/master_file/author.php:291
+#: admin/modules/master_file/topic.php:247
+#: admin/modules/master_file/topic.php:285
+#: admin/modules/master_file/topic.php:291
 msgid "Authority Files"
 msgstr "Daftar Terkendali"
 
-#: admin/modules/master_file/author.php:227
+#: admin/modules/master_file/author.php:260
 msgid "You are going to edit author data"
 msgstr "Anda akan menyunting data pengarang"
 
-#: admin/modules/master_file/author.php:250
-#: admin/modules/master_file/author.php:256
+#: admin/modules/master_file/author.php:283
+#: admin/modules/master_file/author.php:289
 msgid "Author Year"
 msgstr "Tahun Lahir Pengarang"
 
@@ -4033,7 +4070,7 @@ msgstr "Data Rujuk Silang GAGAL disimpan. Silahkan Hubungi Admin Sistem"
 
 #: admin/modules/master_file/cross_reference.php:126
 #: admin/modules/master_file/cross_reference.php:200
-#: admin/modules/master_file/topic.php:147
+#: admin/modules/master_file/topic.php:187
 msgid "Cross Reference"
 msgstr "Rujukan Silang"
 
@@ -4046,7 +4083,7 @@ msgid "Add New Term"
 msgstr "Tambah Istilah Baru"
 
 #: admin/modules/master_file/cross_reference.php:132
-#: admin/modules/master_file/topic.php:145
+#: admin/modules/master_file/topic.php:185
 msgid "Subject List"
 msgstr "Daftar Subjek"
 
@@ -4062,7 +4099,7 @@ msgid "Cross Reference Description"
 msgstr "Penjelasan Rujukan Silang"
 
 #: admin/modules/master_file/cross_reference.php:182
-#: admin/modules/master_file/topic.php:212
+#: admin/modules/master_file/topic.php:260
 msgid "You are going to edit Subject data"
 msgstr "Anda akan menyunting data Subjek"
 
@@ -4586,7 +4623,7 @@ msgid "Failed to save data!"
 msgstr "Data gagal disimpan!"
 
 #: admin/modules/master_file/pop_scope_vocabolary.php:88
-#: admin/modules/master_file/topic.php:204
+#: admin/modules/master_file/topic.php:252
 msgid "Scope Note Vocabulary"
 msgstr "Kosakata Cakupan Catatan"
 
@@ -4599,8 +4636,8 @@ msgid "Delete this scope"
 msgstr "Hapus cakupan ini"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:55
-#: admin/modules/master_file/topic.php:203
-#: admin/modules/master_file/topic.php:207
+#: admin/modules/master_file/topic.php:251
+#: admin/modules/master_file/topic.php:255
 msgid "Vocabulary Control"
 msgstr "Pengendali Kosakata"
 
@@ -4792,15 +4829,6 @@ msgstr "Penyuplai Eksemplar"
 msgid "Document Authors"
 msgstr "Pengarang Dokumen"
 
-#: admin/modules/master_file/submenu.php:34
-#: admin/modules/master_file/topic.php:141
-#: admin/modules/master_file/topic.php:190
-#: admin/modules/master_file/topic.php:233
-#: admin/modules/master_file/topic.php:239 lib/contents/default.inc.php:164
-#: template/default/parts/_search-form.php:39
-msgid "Subject"
-msgstr "Subjek"
-
 #: admin/modules/master_file/submenu.php:35
 msgid "Item Location"
 msgstr "Lokasi Eksemplar"
@@ -4933,50 +4961,55 @@ msgstr "Nomor Akun"
 msgid "You are going to edit Supplier data"
 msgstr "Anda akan menyunting data Agen"
 
-#: admin/modules/master_file/topic.php:62
+#: admin/modules/master_file/topic.php:67
 msgid "Subject can't be empty"
 msgstr "Subjek tidak boleh kosong"
 
-#: admin/modules/master_file/topic.php:83
+#: admin/modules/master_file/topic.php:88
 msgid "Subject Data Successfully Updated"
 msgstr "Data Subjek Berhasil Diperbaharui"
 
-#: admin/modules/master_file/topic.php:85
+#: admin/modules/master_file/topic.php:96
 msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Subjek GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/topic.php:93
+#: admin/modules/master_file/topic.php:104
 msgid "New Subject Data Successfully Saved"
 msgstr "Subjek Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/topic.php:95
+#: admin/modules/master_file/topic.php:112
 msgid "Subject Data FAILED to Save. Please Contact System Administrator"
 msgstr "Subjek GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/topic.php:146
+#: admin/modules/master_file/topic.php:149
+#, php-format
+msgid "%s ... still used biblio %s"
+msgstr "%s ... masih digunakan oleh data biblio %s"
+
+#: admin/modules/master_file/topic.php:186
 msgid "Add New Subject"
 msgstr "Tambah Subjek Baru"
 
-#: admin/modules/master_file/topic.php:192
+#: admin/modules/master_file/topic.php:240
 msgid "Classification Code"
 msgstr "Kode Klasifikasi"
 
-#: admin/modules/master_file/topic.php:197
-#: admin/modules/master_file/topic.php:235
-#: admin/modules/master_file/topic.php:241
+#: admin/modules/master_file/topic.php:245
+#: admin/modules/master_file/topic.php:284
+#: admin/modules/master_file/topic.php:290
 msgid "Subject Type"
 msgstr "Tipe Subjek"
 
-#: admin/modules/master_file/topic.php:203
+#: admin/modules/master_file/topic.php:251
 msgid "Add New Vocabulary"
 msgstr "Tambah Kosakata Baru"
 
-#: admin/modules/master_file/topic.php:204
+#: admin/modules/master_file/topic.php:252
 msgid "Scope Note"
 msgstr "Catatan Cakupan"
 
-#: admin/modules/master_file/topic.php:234
-#: admin/modules/master_file/topic.php:240
+#: admin/modules/master_file/topic.php:283
+#: admin/modules/master_file/topic.php:289
 msgid "Class. Code"
 msgstr "Kode Klasifikasi"
 
@@ -8801,6 +8834,7 @@ msgid "Last Page"
 msgstr "Hal. Akhir"
 
 #: simbio2/simbio_GUI/table/simbio_table.inc.php:223
+#: template/default/detail_template.php:127
 msgid "No Data"
 msgstr "Tidak Ada Data"
 
