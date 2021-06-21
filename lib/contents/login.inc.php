@@ -80,7 +80,7 @@ if (isset($_POST['logMeIn'])) {
         session_regenerate_id(true);
         // create logon class instance
         $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
-        if ($sysconf['auth']['user']['method'] == 'ldap') {
+        if ($sysconf['auth']['user']['method'] == 'LDAP') {
             $ldap_configs = $sysconf['auth']['user'];
         }
         if ($logon->adminValid($dbs)) {
@@ -140,7 +140,7 @@ if (isset($_POST['logMeIn'])) {
                 // message
                 $msg = '<script type="text/javascript">';
                 $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
-                $msg .= 'history.back();';
+                // $msg .= 'history.back();';
                 $msg .= '</script>';
                 simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
             }
