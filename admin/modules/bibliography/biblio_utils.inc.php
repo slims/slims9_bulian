@@ -106,7 +106,7 @@ function showTitleAuthors($obj_db, $array_data)
   $_labels = '';
   $_image = '';
 
-  $img = '../../images/default/image.png';
+  $img = 'images/default/image.png';
   // biblio author detail
   if ($sysconf['index']['type'] == 'default') {
       $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image FROM biblio AS b
