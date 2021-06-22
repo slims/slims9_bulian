@@ -52,7 +52,8 @@ Added : More method to see attachment
 Added : Show detail for fines from Fines Report submenu
 Added : Method to select group functions
 Fixed : RSS feed
-Update : More prevention with delete data if have relations 
+Update : More prevention with delete data if have relations
+Fixed : Forbiden image thumbnail if modsecurity is on 
 
 SLiMS 9.4.1 (Bulian)
 ========================================================================
