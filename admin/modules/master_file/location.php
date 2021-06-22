@@ -54,7 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $locationID = trim(strip_tags($_POST['locationID']));
     // check form validity
     if (empty($locationName) OR empty($locationID)) {
-        utility::jsAlert(__('Location ID and Name can\'t be empty')); //mfc
+        utility::jsToastr(__('Location'),__('Location ID and Name can\'t be empty'),'error'); //mfc
         exit();
     } else {
         $data['location_id'] = $dbs->escape_string($locationID);
@@ -73,20 +73,20 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_location', $data, 'location_id=\''.$updateRecordID.'\'');
             if ($update) {
-                utility::jsAlert(__('Location Data Successfully Updated'));
+                utility::jsToastr(__('Location'),__('Location Data Successfully Updated'),'success');
                 // update location ID in item table to keep data integrity
                 $sql_op->update('item', array('location_id' => $data['location_id']), 'location_id=\''.$updateRecordID.'\'');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Location Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Location'),__('Location Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_location', $data);
             if ($insert) {
-                utility::jsAlert(__('New Location Data Successfully Saved'));
+                utility::jsToastr(__('Location'),__('New Location Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Location Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { utility::jsToastr(__('Location'),__('Location Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error,'warning'); }
             exit();
         }
     }
@@ -107,7 +107,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = $dbs->escape_string(trim($itemID));
         // check if this item data still have an item
-        $item_q = $dbs->query('SELECT loc.location_name, COUNT(item_id) FROM item AS i
+        $item_q = $dbs->query('SELECT loc.location_name, COUNT(i.item_id) FROM item AS i
             LEFT JOIN mst_location AS loc ON i.location_id=loc.location_id
             WHERE i.location_id=\''.$itemID.'\' GROUP BY i.location_id');
         $item_d = $item_q->fetch_row();
@@ -116,9 +116,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $error_num++;
             }
         } else {
-            $msg = str_replace('{item_name}', $item_d[0], __('Location ({item_name}) still used by {number_items} item(s)')); //mfc
-            $msg = str_replace('{number_items}', $item_d[1], $msg);
-            $still_have_item[] = $msg;
+           $still_have_item[] = sprintf(__('Location %s still in use %s item(s)').'<br/>',$item_d[0],$item_d[1]);
             $error_num++;
         }
     }
@@ -128,15 +126,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         foreach ($still_have_item as $location) {
             $undeleted_locations .= $location."\n";
         }
-        utility::jsAlert(__('Below data can not be deleted:')." : \n".$undeleted_locations);
+        utility::jsToastr(__('Location'),__('Below data can not be deleted:')."\n".$undeleted_locations,'error');
         exit();
     }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Location'),__('All Data Successfully Deleted'));
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Location'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

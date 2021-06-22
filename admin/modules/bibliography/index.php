@@ -98,7 +98,7 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
             @unlink(sprintf(IMGBS . 'docs/%s', $postImage));
             utility::jsToastr('Bibliography', str_replace('{imageFilename}', $_POST['img'], __('{imageFilename} successfully removed!')), 'success');
             // exit('<script type="text/javascript">$(\'#biblioImage, #imageFilename\').remove();</script>');
-            exit('<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="">');
+            exit('<img src="../lib/minigalnano/createthumb.php?filename=images/default/image.png&width=130" class="img-fluid rounded" alt="">');
         }
     }
     exit();
@@ -324,7 +324,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else {
 
             // execute registered hook
-            \SLiMS\Plugins::getInstance()->execute('bibliography_after_save', ['data' => $data]);
+            \SLiMS\Plugins::getInstance()->execute('bibliography_before_save', ['data' => $data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -959,7 +959,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         $str_input .= '</a>';
         $str_input .= '<a href="' . MWB . 'bibliography/index.php" postdata="removeImage=true&bimg=' . $itemID . '&img=' . ($rec_d['image'] ?? '') . '" loadcontainer="imageFilename" class="s-margin__bottom-1 mt-1 s-btn btn btn-danger btn-block makeHidden removeImage">' . __('Remove Image') . '</a>';
     } else {
-        $str_input .= '<img src="' . $upper_dir . '../lib/minigalnano/createthumb.php?filename=../../images/default/image.png&width=130" class="img-fluid rounded" alt="Image cover">';
+        $str_input .= '<img src="' . $upper_dir . '../lib/minigalnano/createthumb.php?filename=images/default/image.png&width=130" class="img-fluid rounded" alt="Image cover">';
     }
     $str_input .= '</div>';
     $str_input .= '</div>';
@@ -1089,7 +1089,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             <input type="checkbox" name="labels[]" value="' . $label_d['label_name'] . '"' . $checked . ' aria-label="Labels">&nbsp;' . $label_d['label_desc'] . '
           </span>
           <span class="input-group-text s-labels__icon">
-            <img src="../lib/minigalnano/createthumb.php?filename=../../' . IMG . '/labels/' . urlencode($label_d['label_image']) . '&amp;width=24" class="' . $label_d['label_name'] . '" id="' . $label_d['label_name'] . '" alt="' . $label_d['label_name'] . '"/>
+            <img src="../lib/minigalnano/createthumb.php?filename=' . IMG . '/labels/' . urlencode($label_d['label_image']) . '&amp;width=24" class="' . $label_d['label_name'] . '" id="' . $label_d['label_name'] . '" alt="' . $label_d['label_name'] . '"/>
           </span>
         </div>
         <input type="text" value="' . $url . '" placeholder="Enter a website link/URL to make this label clickable" title="Enter a website link/URL to make this label clickable" name="label_urls[' . $label_d['label_name'] . ']" id="label_urls[' . $label_d['label_name'] . ']" class="form-control" aria-label="Url for current label" style="border-left:none;">

@@ -49,7 +49,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   // $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
 
   // image thumbnail
-  $images_loc = '../../images/docs/'.$biblio_detail['image'];
+  $images_loc = 'images/docs/'.$biblio_detail['image'];
   $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
 
   // notes

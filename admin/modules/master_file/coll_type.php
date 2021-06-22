@@ -53,7 +53,7 @@ if (isset($_POST['saveData'])) {
     $collTypeName = trim(strip_tags($_POST['collTypeName']));
     // check form validity
     if (empty($collTypeName)) {
-        utility::jsAlert(__('Collection type name can\'t be empty'));
+        utility::jsToastr(__('Collection Type'),__('Collection type name can\'t be empty'),'error');
         exit();
     } else {
         $data['coll_type_name'] = $dbs->escape_string($collTypeName);
@@ -71,18 +71,18 @@ if (isset($_POST['saveData'])) {
             // update the data
             $update = $sql_op->update('mst_coll_type', $data, 'coll_type_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Colllection Type Data Successfully Updated'));
+                utility::jsToastr(__('Collection Type'),__('Colllection Type Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Colllection Type Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Collection Type'),__('Colllection Type Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_coll_type', $data);
             if ($insert) {
-                utility::jsAlert(__('New Colllection Type Data Successfully Saved'));
+                utility::jsToastr(__('Collection Type'),__('New Colllection Type Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Collection Type'),__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -112,9 +112,7 @@ if (isset($_POST['saveData'])) {
                 $error_num++;
             }
         } else {
-            $msg = str_replace('{item_name}', $item_d[0], __('Location ({item_name}) still used by {number_items} item(s)')); //mfc
-            $msg = str_replace('{number_items}', $item_d[1], $msg);
-            $still_have_item[] = $msg;
+            $still_have_item[] = sprintf(__('Collection type %s still used by %s items'),$item_d[0],$item_d[1]);
             $error_num++;
         }
     }
@@ -124,15 +122,15 @@ if (isset($_POST['saveData'])) {
         foreach ($still_have_item as $coll_type) {
             $undeleted_coll_types .= $coll_type."\n";
         }
-        utility::jsAlert(__('Below data can not be deleted:').$undeleted_coll_types);
+        utility::jsToastr(__('Collection Type'),__('Below data can not be deleted:').$undeleted_coll_types,'error');
         exit();
     }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Collection Type'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Collection Type'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

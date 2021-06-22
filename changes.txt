@@ -35,11 +35,25 @@ Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com), Aijaz Akhter Ahmadani (rite
 Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)
 Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationforsenayan/)
 
-Code enhancement contributors:
-Drajat Hasan (drajathasan20@gmail.com)
-John Antony (john.antony@iamplus.com)
+Other contributors:
+Gettext support: Tobias Zeumer
+Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)
+English documentation: Jim Richardson
+Code enhancement: Drajat Hasan (drajathasan20@gmail.com)
+Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 9.4.2 (Bulian)
+========================================================================
+Fixed : Stock take report detail
+Update : Deactivate email debugger
+Added : More method to see attachment
+Added : Show detail for fines from Fines Report submenu
+Added : Method to select group functions
+Fixed : RSS feed
+Update : More prevention with delete data if have relations
+Fixed : Forbiden image thumbnail if modsecurity is on 
 
 SLiMS 9.4.1 (Bulian)
 ========================================================================

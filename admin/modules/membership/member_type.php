@@ -54,7 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $memberTypeName = trim(strip_tags($_POST['memberTypeName']));
     if (empty($memberTypeName)) {
-        utility::jsAlert(__('Member Type Name can\'t be empty')); //mfc
+        utility::jsToastr(__('Member Type'),__('Member Type Name can\'t be empty'),'error'); //mfc
         exit();
     } else {
         $data['member_type_name'] = $dbs->escape_string($memberTypeName);
@@ -80,20 +80,20 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_member_type', $data, 'member_type_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Member Type Successfully Updated'));
+                utility::jsToastr(__('Member Type'),__('Member Type Successfully Updated'),'success');
                 // update all member expire date
                 @$dbs->query('UPDATE member AS m SET expire_date=DATE_ADD(register_date,INTERVAL '.$data['member_periode'].'  DAY)
                     WHERE member_type_id='.$updateRecordID);
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Member Type'),__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('mst_member_type', $data)) {
-                utility::jsAlert(__('New Member Type Successfully Saved'));
+                utility::jsToastr(__('Member Type'),__('New Member Type Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { utility::jsToastr(__('Member Type'),__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\n".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -114,28 +114,50 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         $lrStatus = circapi::is_any_active_membershipType($dbs, $itemID);
-        if (!$lrStatus) {
-            if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
-                $error_num++;
+
+        // check if this label data still in use biblio
+        $_sql_type_member_q = 'SELECT mmt.member_type_name, COUNT(mmt.member_type_id) FROM member AS m
+        LEFT JOIN mst_member_type AS mmt ON mmt.member_type_id=m.member_type_id
+        WHERE mmt.member_type_id='.$itemID.' GROUP BY mmt.member_type_name';
+        $type_member_q = $dbs->query($_sql_type_member_q);
+        $type_member_d = $type_member_q->fetch_row();
+        if ($type_member_d[1] < 1) {
+            if (!$lrStatus) {
+                if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
+                    $error_num++;
+                }
             }
+        }else{
+            $still_use_member[] = sprintf(__('Member Type %s still in use %d member(s)')."<br/>",substr($type_member_d[0], 0, 45),$type_member_d[1]);
+            $error_num++;                       
         }
+    }
+
+    if ($still_use_member) {
+        $titles = '';
+        foreach ($still_use_member as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('Member Type'), __('Below data can not be deleted:') . "<br/>" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
     }
 
     // error alerting
     if ($error_num == 0) {
-        #utility::jsAlert(__('All Data Successfully Deleted'));
+        #utility::jsToastr(__('All Data Successfully Deleted'));
         #echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
 
         if (!$lrStatus) {
-            utility::jsAlert(__('All Data Successfully Deleted'));
+            utility::jsToastr(__('Member Type'),__('All Data Successfully Deleted'),'success');
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
         } else {
-            utility::jsAlert(__('Sorry. There is active loan transaction(s) using this membership type.'));
+            utility::jsToastr(__('Member Type'),__('Sorry. There is active loan transaction(s) using this membership type.'),'error');
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
         }
 
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Member Type'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

@@ -66,9 +66,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         }
 
         if (isset($label[1]) && $label[1]) {
-          $title_link .= ' <a itemprop="name" property="name" href="'.$label[1].'" target="_blank"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=48&amp;height=48" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
+          $title_link .= ' <a itemprop="name" property="name" href="'.$label[1].'" target="_blank"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename='.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=48&amp;height=48" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" border="0" /></a>';
         } else {
-          $title_link .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=48&amp;height=48" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
+          $title_link .= ' <img src="'.SWB.'lib/minigalnano/createthumb.php?filename='.IMG.'/labels/'.urlencode($label_cache[$label[0]]['image']).'&amp;width=48&amp;height=48" title="'.$label_cache[$label[0]]['desc'].'" alt="'.$label_cache[$label[0]]['desc'].'" align="middle" class="labels" />';
         }
       }
     }
@@ -89,7 +89,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $image_cover = '';
   if (!empty($biblio_detail['image']) && !defined('LIGHTWEIGHT_MODE')) {
     $biblio_detail['image'] = urlencode($biblio_detail['image']);
-    $images_loc = '../../images/docs/'.$biblio_detail['image'];
+    $images_loc = 'images/docs/'.$biblio_detail['image'];
     if ($sysconf['tg']['type'] == 'minigalnano') {
       $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
       $image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" alt="'.$title.'" />';

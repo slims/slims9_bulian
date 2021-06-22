@@ -30,7 +30,7 @@ $cache['enable'] = false;
 $cache['folder'] = '../../images/cache/'; # try absolutely in case of error about safe mode in PHP
 $cache['exist'] = false;
 $cache['handle'] = '';
-$imagefilename = urldecode(trim($_GET['filename']));
+$imagefilename = '../../' . urldecode(trim($_GET['filename']));
 
 function genContentType($imagefilename)
 {

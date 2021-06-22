@@ -51,7 +51,7 @@
                 <div class="card-list d-flex flex-column mb-4">
                   <?php
                   foreach ($randome as $biblio) {
-                    $images_loc = '../../images/docs/' . $biblio['image'];
+                    $images_loc = 'images/docs/' . $biblio['image'];
                     $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
                     ?>
                       <div class="card sugestion border-0 elevation-1 mb-2">
