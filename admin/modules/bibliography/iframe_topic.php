@@ -158,7 +158,6 @@ if ($biblioID) {
 }
 /* main content end */
 
-print_r($_SESSION);
 $content = ob_get_clean();
 // include the page template
 require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
