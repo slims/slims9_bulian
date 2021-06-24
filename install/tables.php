@@ -534,6 +534,12 @@ return [
         'default' => null
       ],
       [
+        'field' => 'file_key',
+        'type' => 'text',
+        'null' => true,
+        'default' => null
+      ],
+      [
         'field' => 'uploader_id',
         'type' => 'int(11)',
         'null' => false,

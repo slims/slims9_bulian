@@ -185,6 +185,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `file_dir` text collate utf8_unicode_ci,
   `mime_type` varchar(100) collate utf8_unicode_ci default NULL,
   `file_desc` text collate utf8_unicode_ci,
+  `file_key` text collate utf8_unicode_ci,
   `uploader_id` int(11) NOT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
