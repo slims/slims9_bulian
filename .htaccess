@@ -10,7 +10,8 @@
 Options -Indexes
 
 # Follow symbolic links in this directory.
-Options +FollowSymLinks
+# Options +FollowSymLinks
+Options +SymLinksIfOwnerMatch
 
 # Force simple error message for requests for non-existent favicon.ico.
 <Files favicon.ico>
