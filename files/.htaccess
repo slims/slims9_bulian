@@ -1,0 +1,8 @@
+# Mengatasi file HTML yg sering di-cache oleh browser sehingga pencetakan akan menampilkan file yg baru saja digenerasi
+<IfModule mod_headers.c>
+    <FilesMatch "\.(htm|html)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </FilesMatch>
+</IfModule>
