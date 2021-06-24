@@ -119,7 +119,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
-            if (isset($_GET['destination'])) {
+            if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
                 header("location:" . $_GET['destination']);
             } else {
                 header('Location: index.php?p=member');
