@@ -1453,7 +1453,7 @@ DROP TABLE IF EXISTS `files_read`;
 CREATE TABLE `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
-  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `date_read` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT NOW(),
   `member_id` varchar(20)  NULL,
   `user_id` int(11) DEFAULT NULL,
   `client_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
