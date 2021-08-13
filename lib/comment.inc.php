@@ -60,7 +60,7 @@ function showComment($_detail_id)
 			while ($_data = $commlist->fetch_assoc()) {
 				$_list_comment .= '<div class="comments">';
 				$_list_comment .= '<div class="comment-member">'.$_data['member_name']. __(' at ') . $_data['input_date']. __(' write'). '</div>';
-				$_list_comment .= '<div class="comment-content">'. $_data['comment'] . '</div>';
+				$_list_comment .= '<div class="comment-content" style="white-space: pre-wrap;">'. $_data['comment'] . '</div>';
 				$_list_comment .= '</div>';		
 			}
 			$_list_comment .= '<div class="comment-found">'.simbio_paging::paging($_all_recs, $_recs_each_page, $int_pages_each_set = 10, '', '_self').'</div>';
