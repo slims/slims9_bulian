@@ -133,13 +133,13 @@ if (isset($_POST['doImport'])) {
                     $item_status = utility::getID($dbs, 'mst_item_status', 'item_status_id', 'item_status_name', $field[9], $stat_id_cache);
                     $item_status = $item_status?'\''.$item_status.'\'':'NULL';
                     $site = $field[10]?'\''.$field[10].'\'':'NULL';
-                    $source = $field[11]?'\''.$field[11].'\'':'NULL';
+                    $source = $field[11]?'\''.$field[11].'\'':'0';
                     $invoice = $field[12]?'\''.$field[12].'\'':'NULL';
                     $price = $field[13]?'\''.$field[13].'\'':'NULL';
                     $price_currency = $field[14]?'\''.$field[14].'\'':'NULL';
                     $invoice_date = $field[15]?'\''.$field[15].'\'':'NULL';
-                    $input_date = '\''.$field[16].'\'';
-                    $last_update = '\''.$field[17].'\'';
+                    $input_date = $field[16]?'\''.$field[16].'\'':'\''.date('Y-m-d H:i:s').'\'';
+                    $last_update = $field[17]?'\''.$field[17].'\'':'\''.date('Y-m-d H:i:s').'\'';
                     $title = $field[18];
 
                     // first field is header
