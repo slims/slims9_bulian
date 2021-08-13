@@ -44,6 +44,20 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.x.x (Bulian)
+========================================================================
+Added : Popup visitor report by day
+Added : Fines value in overdue list
+Fixed : Image path for Minigalnano
+Updated : Server for quote in Visitor Counter page
+Fixed : Ignore holiday fines calculation
+Fixed : Unable to download backup file result from user not admin
+Fixed : Holiday setting
+Fixed : Query when import biblio data header
+Fixed : Unrelated field after import item data from CSV
+Fixed : MARC export search
+Fixex : Prevent hidden biblio to show in home page
+
 SLiMS 9.4.2 (Bulian)
 ========================================================================
 Fixed : Stock take report detail
