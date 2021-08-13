@@ -140,23 +140,32 @@ if (isset($_POST['doImport'])) {
                     $invoice_date = $field[15]?'\''.$field[15].'\'':'NULL';
                     $input_date = '\''.$field[16].'\'';
                     $last_update = '\''.$field[17].'\'';
-
-                    // sql insert string
-                    $sql_str = "INSERT INTO item (item_code, call_number, coll_type_id,
-                        inventory_code, received_date, supplier_id,
-                        order_no, location_id, order_date, item_status_id, site,
-                        source, invoice, price, price_currency, invoice_date,
-                        input_date, last_update)
-                            VALUES ($item_code, $call_number, $coll_type,
-                            $inventory_code, $received_date, $supplier,
-                            $order_no, $location, $order_date, $item_status, $site,
-                            $source, $invoice, $price, $price_currency, $invoice_date,
-                            $input_date, $last_update)";
+                    $title = $field[18];
 
                     // first field is header
                     if (isset($_POST['header']) && $n < 1) {
                       $n++;
+                      continue;
                     } else {
+
+                      // get biblio_id
+                      $b_q = $dbs->query(sprintf("select biblio_id from biblio where title = '%s'", $title));
+                      if($b_q->num_rows < 1) continue;
+                      $b_d = $b_q->fetch_row();
+                      $biblio_id = $b_d[0];
+  
+                      // sql insert string
+                      $sql_str = "INSERT INTO item (biblio_id, item_code, call_number, coll_type_id,
+                          inventory_code, received_date, supplier_id,
+                          order_no, location_id, order_date, item_status_id, site,
+                          source, invoice, price, price_currency, invoice_date,
+                          input_date, last_update)
+                              VALUES ($biblio_id, $item_code, $call_number, $coll_type,
+                              $inventory_code, $received_date, $supplier,
+                              $order_no, $location, $order_date, $item_status, $site,
+                              $source, $invoice, $price, $price_currency, $invoice_date,
+                              $input_date, $last_update)";
+
                       // send query
                       // die($sql_str);
                       $dbs->query($sql_str);
