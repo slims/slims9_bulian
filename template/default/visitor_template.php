@@ -98,7 +98,8 @@ if (isset($_GET['select_lang'])) {
                 this.image = './images/persons/photo.png'
             },
             getQuotes: function() {
-                axios.get('https://api.quotable.io/random')
+                // Alternative Free Quotes API: https://api.quotable.io/random
+                axios.get('https://kutipan.herokuapp.com/')
                     .then(res => {
                         this.quotes = res.data
                     })

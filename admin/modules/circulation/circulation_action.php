@@ -501,7 +501,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         if ($member->member_image) {
           if (file_exists(IMGBS.'persons/'.$member->member_image)) {
             echo '<div class="s-member__photo">';
-            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($member->member_image).'&amp;width=100" />';
+            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode($member->member_image).'&amp;width=100" />';
             echo '</div>';
           }
         }

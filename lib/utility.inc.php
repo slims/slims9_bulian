@@ -122,7 +122,11 @@ class utility
                 $_value = @unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
                     foreach ($_value as $_idx=>$_curr_value) {
-                        $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
+                        if (is_array($_curr_value)) {
+                            $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
+                        } else {
+                            $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
+                        }
                     }
                 } else {
                     $sysconf[$_setting_data['setting_name']] = stripslashes($_value);

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-12 14:44+0700\n"
-"PO-Revision-Date: 2021-04-12 14:46+0700\n"
+"POT-Creation-Date: 2021-06-21 11:10+0700\n"
+"PO-Revision-Date: 2021-06-21 11:15+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
 "X-Poedit-Basepath: ../../../../..\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:21
@@ -286,7 +286,7 @@ msgstr "Dipinjamkan"
 #: admin/modules/bibliography/item.php:323
 #: admin/modules/circulation/reserve_list.php:110
 #: admin/modules/reporting/customs/item_titles_list.php:257
-#: lib/detail.inc.php:242
+#: lib/detail.inc.php:248
 msgid "Available"
 msgstr "Tersedia"
 
@@ -455,52 +455,52 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/bibliography/marcexport.php:167
 #: admin/modules/bibliography/marcsru.php:438
 #: admin/modules/bibliography/marcsru.php:450
-#: admin/modules/bibliography/p2p.php:307
-#: admin/modules/bibliography/p2p.php:320
+#: admin/modules/bibliography/p2p.php:308
+#: admin/modules/bibliography/p2p.php:322
 #: admin/modules/bibliography/printed_card.php:313
 #: admin/modules/bibliography/printed_card.php:315
 #: admin/modules/bibliography/z3950.php:291
 #: admin/modules/bibliography/z3950.php:295
-#: admin/modules/bibliography/z3950sru.php:314
-#: admin/modules/bibliography/z3950sru.php:318
+#: admin/modules/bibliography/z3950sru.php:316
+#: admin/modules/bibliography/z3950sru.php:329
 #: admin/modules/circulation/loan_rules.php:144
 #: admin/modules/circulation/loan_rules.php:146
-#: admin/modules/master_file/author.php:173
-#: admin/modules/master_file/author.php:175
+#: admin/modules/master_file/author.php:198
+#: admin/modules/master_file/author.php:200
+#: admin/modules/master_file/coll_type.php:152
 #: admin/modules/master_file/coll_type.php:154
-#: admin/modules/master_file/coll_type.php:156
 #: admin/modules/master_file/cross_reference.php:134
 #: admin/modules/master_file/cross_reference.php:136
-#: admin/modules/master_file/doc_language.php:137
-#: admin/modules/master_file/doc_language.php:139
-#: admin/modules/master_file/frequency.php:135
-#: admin/modules/master_file/frequency.php:137
-#: admin/modules/master_file/index.php:138
-#: admin/modules/master_file/index.php:140
-#: admin/modules/master_file/item_status.php:161
-#: admin/modules/master_file/item_status.php:163
-#: admin/modules/master_file/label.php:156
-#: admin/modules/master_file/label.php:158
+#: admin/modules/master_file/doc_language.php:159
+#: admin/modules/master_file/doc_language.php:161
+#: admin/modules/master_file/frequency.php:156
+#: admin/modules/master_file/frequency.php:158
+#: admin/modules/master_file/index.php:161
+#: admin/modules/master_file/index.php:163
+#: admin/modules/master_file/item_status.php:187
+#: admin/modules/master_file/item_status.php:189
+#: admin/modules/master_file/label.php:181
+#: admin/modules/master_file/label.php:183
+#: admin/modules/master_file/location.php:156
 #: admin/modules/master_file/location.php:158
-#: admin/modules/master_file/location.php:160
 #: admin/modules/master_file/p2pservers.php:128
 #: admin/modules/master_file/p2pservers.php:130
-#: admin/modules/master_file/place.php:135
-#: admin/modules/master_file/place.php:137
-#: admin/modules/master_file/publisher.php:135
-#: admin/modules/master_file/publisher.php:137
+#: admin/modules/master_file/place.php:160
+#: admin/modules/master_file/place.php:162
+#: admin/modules/master_file/publisher.php:157
+#: admin/modules/master_file/publisher.php:159
 #: admin/modules/master_file/rda_cmc.php:146
 #: admin/modules/master_file/rda_cmc.php:148
-#: admin/modules/master_file/supplier.php:142
-#: admin/modules/master_file/supplier.php:144
-#: admin/modules/master_file/topic.php:149
-#: admin/modules/master_file/topic.php:151
+#: admin/modules/master_file/supplier.php:162
+#: admin/modules/master_file/supplier.php:164
+#: admin/modules/master_file/topic.php:189
+#: admin/modules/master_file/topic.php:191
 #: admin/modules/membership/index.php:395
 #: admin/modules/membership/index.php:397
 #: admin/modules/membership/member_card_generator.php:200
 #: admin/modules/membership/member_card_generator.php:202
-#: admin/modules/membership/member_type.php:157
-#: admin/modules/membership/member_type.php:159
+#: admin/modules/membership/member_type.php:179
+#: admin/modules/membership/member_type.php:181
 #: admin/modules/reporting/customs/pop_procurement_list.php:97
 #: admin/modules/serial_control/index.php:63
 #: admin/modules/serial_control/index.php:72
@@ -560,11 +560,11 @@ msgstr "Cari"
 #: admin/modules/stock_take/finish.php:104
 #: admin/modules/stock_take/lost_item_list.php:70
 #: admin/modules/stock_take/lost_item_list.php:139
-#: admin/modules/stock_take/st_report_detail.php:87
-#: admin/modules/stock_take/st_report_detail.php:104
+#: admin/modules/stock_take/st_report_detail.php:86
+#: admin/modules/stock_take/st_report_detail.php:103
 #: lib/contents/download_current_loan.inc.php:61
 #: lib/contents/download_loan_history.inc.php:61
-#: lib/contents/member.inc.php:371 lib/contents/member.inc.php:417
+#: lib/contents/member.inc.php:359 lib/contents/member.inc.php:405
 #: plugins/label_barcode/index.php:332 plugins/label_barcode/index.php:340
 #: plugins/read_counter/index.php:82
 msgid "Item Code"
@@ -597,8 +597,8 @@ msgstr "Kode Eksemplar"
 #: admin/modules/reporting/customs/reserve_list.php:115
 #: admin/modules/reporting/customs/visitor_list.php:125
 #: admin/modules/reporting/customs/visitor_list.php:170
-#: files/membercard/old/membercard.php:293 lib/contents/member.inc.php:256
-#: lib/contents/member.inc.php:918 template/default/visitor_template.php:38
+#: files/membercard/old/membercard.php:293 lib/contents/member.inc.php:244
+#: lib/contents/member.inc.php:906 template/default/visitor_template.php:38
 msgid "Member ID"
 msgstr "ID Anggota"
 
@@ -620,9 +620,10 @@ msgstr "ID Anggota"
 #: admin/modules/bibliography/marcexport.php:221
 #: admin/modules/bibliography/marcexport.php:228
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:312
-#: admin/modules/bibliography/p2p.php:366
+#: admin/modules/bibliography/p2p.php:313
+#: admin/modules/bibliography/p2p.php:369
 #: admin/modules/bibliography/pop_attach.php:204
+#: admin/modules/bibliography/pop_author_edit.php:89
 #: admin/modules/bibliography/pop_biblio_rel.php:90
 #: admin/modules/bibliography/pop_biblio_rel.php:92
 #: admin/modules/bibliography/printed_card.php:348
@@ -655,13 +656,13 @@ msgstr "ID Anggota"
 #: admin/modules/stock_take/current.php:149
 #: admin/modules/stock_take/finish.php:105
 #: admin/modules/stock_take/lost_item_list.php:140
-#: admin/modules/stock_take/st_report_detail.php:88
-#: admin/modules/stock_take/st_report_detail.php:105
+#: admin/modules/stock_take/st_report_detail.php:87
+#: admin/modules/stock_take/st_report_detail.php:104
 #: files/membercard/classic/tinfo.inc.php:117 lib/contents/default.inc.php:162
 #: lib/contents/download_current_loan.inc.php:62
 #: lib/contents/download_loan_history.inc.php:62
-#: lib/contents/member.inc.php:372 lib/contents/member.inc.php:418
-#: lib/contents/member.inc.php:453 lib/detail.inc.php:261
+#: lib/contents/member.inc.php:360 lib/contents/member.inc.php:406
+#: lib/contents/member.inc.php:441 lib/detail.inc.php:267
 #: plugins/label_barcode/index.php:331 plugins/label_barcode/index.php:339
 #: plugins/read_counter/index.php:82 template/akasia/partials/advsearch.php:16
 #: template/default/parts/_modal_advanced.php:24
@@ -682,7 +683,7 @@ msgstr "Judul"
 #: admin/modules/reporting/customs/overdued_list.php:197
 #: lib/contents/download_current_loan.inc.php:63
 #: lib/contents/download_loan_history.inc.php:63
-#: lib/contents/member.inc.php:373 lib/contents/member.inc.php:419
+#: lib/contents/member.inc.php:361 lib/contents/member.inc.php:407
 msgid "Loan Date"
 msgstr "Tanggal Pinjam"
 
@@ -697,7 +698,7 @@ msgstr "Tanggal Pinjam"
 #: admin/modules/reporting/customs/member_loan_list.php:191
 #: admin/modules/reporting/customs/overdued_list.php:197
 #: lib/contents/download_current_loan.inc.php:64
-#: lib/contents/member.inc.php:374
+#: lib/contents/member.inc.php:362
 msgid "Due Date"
 msgstr "Tanggal Kembali"
 
@@ -711,21 +712,21 @@ msgstr "Tanggal Kembali"
 #: admin/modules/circulation/fines_list.php:249
 #: admin/modules/circulation/loan_rules.php:272
 #: admin/modules/circulation/member_loan_hist.php:88
-#: admin/modules/master_file/author.php:292
-#: admin/modules/master_file/coll_type.php:236
-#: admin/modules/master_file/doc_language.php:217
-#: admin/modules/master_file/frequency.php:239
-#: admin/modules/master_file/index.php:223
-#: admin/modules/master_file/item_status.php:260
-#: admin/modules/master_file/label.php:254
-#: admin/modules/master_file/location.php:243
+#: admin/modules/master_file/author.php:325
+#: admin/modules/master_file/coll_type.php:234
+#: admin/modules/master_file/doc_language.php:239
+#: admin/modules/master_file/frequency.php:260
+#: admin/modules/master_file/index.php:246
+#: admin/modules/master_file/item_status.php:286
+#: admin/modules/master_file/label.php:279
+#: admin/modules/master_file/location.php:241
 #: admin/modules/master_file/p2pservers.php:224
-#: admin/modules/master_file/place.php:224
-#: admin/modules/master_file/publisher.php:234
+#: admin/modules/master_file/place.php:249
+#: admin/modules/master_file/publisher.php:256
 #: admin/modules/master_file/rda_cmc.php:233
-#: admin/modules/master_file/supplier.php:241
-#: admin/modules/master_file/topic.php:283
-#: admin/modules/membership/member_type.php:263
+#: admin/modules/master_file/supplier.php:261
+#: admin/modules/master_file/topic.php:332
+#: admin/modules/membership/member_type.php:285
 #: admin/modules/reporting/customs/pop_procurement_list.php:152
 #: admin/modules/serial_control/index.php:174
 #: admin/modules/serial_control/subscription.php:256
@@ -1020,10 +1021,10 @@ msgid "Attachment {filename} succesfully removed!"
 msgstr "Lampiran {filename} telah dihapus!"
 
 #: admin/modules/bibliography/iframe_attach.php:124
-#: admin/modules/bibliography/iframe_author.php:114
+#: admin/modules/bibliography/iframe_author.php:116
 #: admin/modules/bibliography/iframe_biblio_rel.php:108
 #: admin/modules/bibliography/iframe_item_list.php:124
-#: admin/modules/bibliography/iframe_topic.php:112
+#: admin/modules/bibliography/iframe_topic.php:113
 msgid "Delete"
 msgstr "Hapus"
 
@@ -1033,7 +1034,9 @@ msgid "File Attachments"
 msgstr "Lampiran Berkas"
 
 #: admin/modules/bibliography/iframe_attach.php:127
+#: admin/modules/bibliography/iframe_author.php:114
 #: admin/modules/bibliography/iframe_item_list.php:123
+#: admin/modules/bibliography/iframe_topic.php:111
 #: admin/modules/master_file/iframe_vocabolary_control.php:72
 #: admin/modules/master_file/item_code_pattern.php:125
 #: simbio2/simbio_GUI/form_maker/simbio_form_table.inc.php:110
@@ -1042,16 +1045,16 @@ msgid "Edit"
 msgstr "Sunting"
 
 #: admin/modules/bibliography/iframe_attach.php:157
-#: admin/modules/bibliography/iframe_author.php:140
+#: admin/modules/bibliography/iframe_author.php:144
 #: admin/modules/bibliography/iframe_biblio_rel.php:133
-#: admin/modules/bibliography/iframe_topic.php:137
+#: admin/modules/bibliography/iframe_topic.php:138
 #: admin/modules/circulation/loan.php:195
 #: admin/modules/circulation/loan.php:204
 #: admin/modules/circulation/reserve_list.php:96
 #: admin/modules/circulation/reserve_list.php:105
 #: admin/modules/master_file/iframe_vocabolary_control.php:73
 #: admin/modules/system/custom_field.php:243
-#: admin/modules/system/custom_field.php:312 lib/contents/member.inc.php:453
+#: admin/modules/system/custom_field.php:312 lib/contents/member.inc.php:441
 msgid "Remove"
 msgstr "Hapus"
 
@@ -1077,6 +1080,34 @@ msgstr "Pengarang berhasil dihapus!"
 #: admin/modules/bibliography/iframe_author.php:92
 msgid "Author removed!"
 msgstr "Pengarang dihapus!"
+
+#: admin/modules/bibliography/iframe_author.php:114
+#: admin/modules/bibliography/item.php:447
+#: admin/modules/bibliography/item.php:459
+#: admin/modules/bibliography/marcexport.php:222
+#: admin/modules/bibliography/marcexport.php:229
+#: admin/modules/bibliography/p2p.php:315
+#: admin/modules/bibliography/printed_card.php:348
+#: admin/modules/master_file/author.php:68
+#: admin/modules/master_file/author.php:91
+#: admin/modules/master_file/author.php:99
+#: admin/modules/master_file/author.php:107
+#: admin/modules/master_file/author.php:118
+#: admin/modules/master_file/author.php:166
+#: admin/modules/master_file/author.php:174
+#: admin/modules/master_file/author.php:178
+#: admin/modules/master_file/author.php:191
+#: admin/modules/master_file/submenu.php:33
+#: admin/modules/reporting/customs/dl_counter.php:75
+#: admin/modules/reporting/customs/titles_list.php:75
+#: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
+msgid "Author"
+msgstr "Pengarang"
+
+#: admin/modules/bibliography/iframe_author.php:121
+#: admin/modules/bibliography/pop_author_edit.php:98
+msgid "Authority Level"
+msgstr "Jenjang Kewenangan"
 
 #: admin/modules/bibliography/iframe_biblio_rel.php:60
 msgid "Are you sure to remove selected title?"
@@ -1127,6 +1158,24 @@ msgstr "Topik telah dihapus!"
 #: admin/modules/master_file/iframe_vocabolary_control.php:44
 msgid "Topic succesfully removed!"
 msgstr "Topic berhasil dihapus!"
+
+#: admin/modules/bibliography/iframe_topic.php:111
+#: admin/modules/master_file/submenu.php:34
+#: admin/modules/master_file/topic.php:67
+#: admin/modules/master_file/topic.php:88
+#: admin/modules/master_file/topic.php:96
+#: admin/modules/master_file/topic.php:104
+#: admin/modules/master_file/topic.php:112
+#: admin/modules/master_file/topic.php:159
+#: admin/modules/master_file/topic.php:166
+#: admin/modules/master_file/topic.php:169
+#: admin/modules/master_file/topic.php:181
+#: admin/modules/master_file/topic.php:238
+#: admin/modules/master_file/topic.php:282
+#: admin/modules/master_file/topic.php:288 lib/contents/default.inc.php:164
+#: template/default/parts/_search-form.php:39
+msgid "Subject"
+msgstr "Subjek"
 
 #: admin/modules/bibliography/import.php:61
 #: admin/modules/bibliography/import.php:64
@@ -1254,31 +1303,41 @@ msgstr ""
 "Data Eksemplar GAGAL disimpan. Jumlah eksemplar massal maksimum %s salinan"
 
 #: admin/modules/bibliography/index.php:536
-#: admin/modules/master_file/author.php:142
-#: admin/modules/master_file/coll_type.php:127
-#: admin/modules/master_file/location.php:131
+#: admin/modules/master_file/author.php:166
+#: admin/modules/master_file/coll_type.php:125
+#: admin/modules/master_file/doc_language.php:130
+#: admin/modules/master_file/frequency.php:127
+#: admin/modules/master_file/index.php:133
+#: admin/modules/master_file/item_status.php:158
+#: admin/modules/master_file/label.php:152
+#: admin/modules/master_file/location.php:129
+#: admin/modules/master_file/place.php:132
+#: admin/modules/master_file/publisher.php:128
+#: admin/modules/master_file/supplier.php:134
+#: admin/modules/master_file/topic.php:159
+#: admin/modules/membership/member_type.php:141
 msgid "Below data can not be deleted:"
 msgstr "Data berikut tidak bisa dihapus :"
 
 #: admin/modules/bibliography/index.php:546
 #: admin/modules/circulation/loan_rules.php:117
-#: admin/modules/master_file/author.php:150
-#: admin/modules/master_file/coll_type.php:132
+#: admin/modules/master_file/author.php:174
+#: admin/modules/master_file/coll_type.php:130
 #: admin/modules/master_file/cross_reference.php:110
-#: admin/modules/master_file/doc_language.php:115
-#: admin/modules/master_file/frequency.php:113
-#: admin/modules/master_file/index.php:116
-#: admin/modules/master_file/item_status.php:139
-#: admin/modules/master_file/label.php:134
-#: admin/modules/master_file/location.php:136
+#: admin/modules/master_file/doc_language.php:137
+#: admin/modules/master_file/frequency.php:134
+#: admin/modules/master_file/index.php:139
+#: admin/modules/master_file/item_status.php:165
+#: admin/modules/master_file/label.php:159
+#: admin/modules/master_file/location.php:134
 #: admin/modules/master_file/p2pservers.php:107
-#: admin/modules/master_file/place.php:113
-#: admin/modules/master_file/publisher.php:113
+#: admin/modules/master_file/place.php:138
+#: admin/modules/master_file/publisher.php:135
 #: admin/modules/master_file/rda_cmc.php:124
-#: admin/modules/master_file/supplier.php:120
-#: admin/modules/master_file/topic.php:126
+#: admin/modules/master_file/supplier.php:140
+#: admin/modules/master_file/topic.php:166
 #: admin/modules/membership/index.php:368
-#: admin/modules/membership/member_type.php:130
+#: admin/modules/membership/member_type.php:152
 #: admin/modules/system/app_user.php:246 admin/modules/system/backup.php:103
 #: admin/modules/system/content.php:154
 #: admin/modules/system/custom_field.php:150
@@ -1289,23 +1348,23 @@ msgstr "Semua Data Berhasil Dihapus"
 
 #: admin/modules/bibliography/index.php:549
 #: admin/modules/circulation/loan_rules.php:124
-#: admin/modules/master_file/author.php:154
-#: admin/modules/master_file/coll_type.php:135
+#: admin/modules/master_file/author.php:178
+#: admin/modules/master_file/coll_type.php:133
 #: admin/modules/master_file/cross_reference.php:113
-#: admin/modules/master_file/doc_language.php:118
-#: admin/modules/master_file/frequency.php:116
-#: admin/modules/master_file/index.php:119
-#: admin/modules/master_file/item_status.php:142
-#: admin/modules/master_file/label.php:137
-#: admin/modules/master_file/location.php:139
+#: admin/modules/master_file/doc_language.php:140
+#: admin/modules/master_file/frequency.php:137
+#: admin/modules/master_file/index.php:142
+#: admin/modules/master_file/item_status.php:168
+#: admin/modules/master_file/label.php:162
+#: admin/modules/master_file/location.php:137
 #: admin/modules/master_file/p2pservers.php:110
-#: admin/modules/master_file/place.php:116
-#: admin/modules/master_file/publisher.php:116
+#: admin/modules/master_file/place.php:141
+#: admin/modules/master_file/publisher.php:138
 #: admin/modules/master_file/rda_cmc.php:127
-#: admin/modules/master_file/supplier.php:123
-#: admin/modules/master_file/topic.php:129
+#: admin/modules/master_file/supplier.php:143
+#: admin/modules/master_file/topic.php:169
 #: admin/modules/membership/index.php:371
-#: admin/modules/membership/member_type.php:138
+#: admin/modules/membership/member_type.php:160
 #: admin/modules/system/app_user.php:249 admin/modules/system/backup.php:106
 #: admin/modules/system/content.php:157
 #: admin/modules/system/custom_field.php:154
@@ -1337,7 +1396,7 @@ msgstr "Semua Ruas"
 #: admin/modules/bibliography/index.php:576
 #: admin/modules/bibliography/marcsru.php:443
 #: admin/modules/bibliography/z3950.php:293
-#: admin/modules/bibliography/z3950sru.php:316
+#: admin/modules/bibliography/z3950sru.php:321
 msgid "Title/Series Title"
 msgstr "Judul/Judul Seri"
 
@@ -1350,7 +1409,7 @@ msgstr "Topik"
 #: admin/modules/bibliography/marcsru.php:444
 #: admin/modules/bibliography/pop_p2p.php:54
 #: admin/modules/bibliography/z3950.php:293
-#: admin/modules/bibliography/z3950sru.php:316
+#: admin/modules/bibliography/z3950sru.php:322
 msgid "Authors"
 msgstr "Pengarang"
 
@@ -1365,7 +1424,7 @@ msgstr "Pengarang"
 #: admin/modules/bibliography/pop_p2p.php:57
 #: admin/modules/bibliography/z3950.php:293
 #: admin/modules/bibliography/z3950sru.php:214
-#: admin/modules/bibliography/z3950sru.php:316
+#: admin/modules/bibliography/z3950sru.php:320
 #: admin/modules/reporting/customs/titles_list.php:131
 #: admin/modules/reporting/customs/titles_list.php:259
 #: admin/modules/serial_control/index.php:70 lib/contents/default.inc.php:165
@@ -1390,7 +1449,15 @@ msgstr "ISBN/ISSN"
 #: admin/modules/bibliography/index.php:909
 #: admin/modules/bibliography/pop_p2p.php:58
 #: admin/modules/bibliography/z3950sru.php:214
+#: admin/modules/master_file/publisher.php:57
+#: admin/modules/master_file/publisher.php:75
+#: admin/modules/master_file/publisher.php:77
+#: admin/modules/master_file/publisher.php:84
+#: admin/modules/master_file/publisher.php:86
 #: admin/modules/master_file/publisher.php:128
+#: admin/modules/master_file/publisher.php:135
+#: admin/modules/master_file/publisher.php:138
+#: admin/modules/master_file/publisher.php:150
 #: admin/modules/master_file/submenu.php:31
 #: admin/modules/reporting/customs/pop_procurement_list.php:160
 #: admin/modules/reporting/customs/titles_list.php:130
@@ -1413,7 +1480,7 @@ msgstr "Sembunyikan di OPAC"
 
 #: admin/modules/bibliography/index.php:590
 #: admin/modules/bibliography/index.php:596
-#: admin/modules/bibliography/p2p.php:311
+#: admin/modules/bibliography/p2p.php:312
 #: admin/modules/circulation/loan_rules.php:201
 #: admin/modules/circulation/loan_rules.php:206
 #: admin/modules/reporting/customs/item_titles_list.php:85
@@ -1514,24 +1581,24 @@ msgstr "Catatan Biblio"
 #: admin/modules/bibliography/pop_pattern.php:102
 #: admin/modules/circulation/fines_list.php:152
 #: admin/modules/circulation/loan_rules.php:166
-#: admin/modules/master_file/author.php:194
-#: admin/modules/master_file/coll_type.php:174
+#: admin/modules/master_file/author.php:221
+#: admin/modules/master_file/coll_type.php:172
 #: admin/modules/master_file/cross_reference.php:156
-#: admin/modules/master_file/doc_language.php:158
-#: admin/modules/master_file/frequency.php:156
-#: admin/modules/master_file/index.php:159
-#: admin/modules/master_file/item_status.php:182
-#: admin/modules/master_file/label.php:177
-#: admin/modules/master_file/location.php:179
+#: admin/modules/master_file/doc_language.php:180
+#: admin/modules/master_file/frequency.php:177
+#: admin/modules/master_file/index.php:182
+#: admin/modules/master_file/item_status.php:208
+#: admin/modules/master_file/label.php:202
+#: admin/modules/master_file/location.php:177
 #: admin/modules/master_file/p2pservers.php:147
-#: admin/modules/master_file/place.php:156
+#: admin/modules/master_file/place.php:181
 #: admin/modules/master_file/pop_scope_vocabolary.php:104
-#: admin/modules/master_file/publisher.php:156
+#: admin/modules/master_file/publisher.php:178
 #: admin/modules/master_file/rda_cmc.php:167
-#: admin/modules/master_file/supplier.php:163
-#: admin/modules/master_file/topic.php:170
+#: admin/modules/master_file/supplier.php:183
+#: admin/modules/master_file/topic.php:211
 #: admin/modules/membership/index.php:416
-#: admin/modules/membership/member_type.php:178
+#: admin/modules/membership/member_type.php:200
 #: admin/modules/serial_control/serial_base_lib.inc.php:202
 #: admin/modules/serial_control/subscription.php:163
 #: admin/modules/system/app_user.php:296 admin/modules/system/content.php:197
@@ -1548,26 +1615,27 @@ msgstr "Catatan"
 
 #: admin/modules/bibliography/index.php:714
 #: admin/modules/bibliography/item.php:259
+#: admin/modules/bibliography/pop_author_edit.php:78
 #: admin/modules/circulation/fines_list.php:171
 #: admin/modules/circulation/loan_rules.php:182
-#: admin/modules/master_file/author.php:209
-#: admin/modules/master_file/coll_type.php:189
+#: admin/modules/master_file/author.php:242
+#: admin/modules/master_file/coll_type.php:187
 #: admin/modules/master_file/cross_reference.php:171
-#: admin/modules/master_file/doc_language.php:173
-#: admin/modules/master_file/frequency.php:171
-#: admin/modules/master_file/index.php:174
-#: admin/modules/master_file/item_status.php:197
-#: admin/modules/master_file/label.php:192
-#: admin/modules/master_file/location.php:194
+#: admin/modules/master_file/doc_language.php:195
+#: admin/modules/master_file/frequency.php:192
+#: admin/modules/master_file/index.php:197
+#: admin/modules/master_file/item_status.php:223
+#: admin/modules/master_file/label.php:217
+#: admin/modules/master_file/location.php:192
 #: admin/modules/master_file/p2pservers.php:162
-#: admin/modules/master_file/place.php:171
+#: admin/modules/master_file/place.php:196
 #: admin/modules/master_file/pop_vocabolary_control.php:237
-#: admin/modules/master_file/publisher.php:171
+#: admin/modules/master_file/publisher.php:193
 #: admin/modules/master_file/rda_cmc.php:182
-#: admin/modules/master_file/supplier.php:178
-#: admin/modules/master_file/topic.php:185
+#: admin/modules/master_file/supplier.php:198
+#: admin/modules/master_file/topic.php:233
 #: admin/modules/membership/index.php:431
-#: admin/modules/membership/member_type.php:193
+#: admin/modules/membership/member_type.php:215
 #: admin/modules/serial_control/subscription.php:178
 #: admin/modules/system/app_user.php:317 admin/modules/system/content.php:213
 #: admin/modules/system/custom_field.php:210
@@ -1620,7 +1688,7 @@ msgstr ""
 "membuat ilustrasi, atau berkontribusi dengan cara apapun."
 
 #: admin/modules/bibliography/index.php:748
-#: admin/modules/bibliography/pop_p2p.php:56 lib/detail.inc.php:262
+#: admin/modules/bibliography/pop_p2p.php:56 lib/detail.inc.php:268
 #: template/akasia-dz/custom_frontpage_record.inc.php:6
 #: template/akasia-dz/detail_template.php:129
 #: template/akasia/custom_frontpage_record.inc.php:6
@@ -1682,7 +1750,15 @@ msgstr "Tambah Pola Baru"
 #: admin/modules/bibliography/item.php:417
 #: admin/modules/bibliography/item.php:449
 #: admin/modules/bibliography/item.php:461
-#: admin/modules/master_file/location.php:151
+#: admin/modules/master_file/location.php:57
+#: admin/modules/master_file/location.php:76
+#: admin/modules/master_file/location.php:80
+#: admin/modules/master_file/location.php:87
+#: admin/modules/master_file/location.php:89
+#: admin/modules/master_file/location.php:129
+#: admin/modules/master_file/location.php:134
+#: admin/modules/master_file/location.php:137
+#: admin/modules/master_file/location.php:149
 #: admin/modules/master_file/submenu.php:35
 #: admin/modules/reporting/customs/item_titles_list.php:117
 #: admin/modules/reporting/customs/loan_history.php:113
@@ -1713,10 +1789,18 @@ msgstr "Lokasi Rak"
 #: admin/modules/circulation/loan_rules.php:202
 #: admin/modules/circulation/loan_rules.php:241
 #: admin/modules/circulation/loan_rules.php:248
-#: admin/modules/master_file/coll_type.php:147
-#: admin/modules/master_file/coll_type.php:194
+#: admin/modules/master_file/coll_type.php:56
+#: admin/modules/master_file/coll_type.php:74
+#: admin/modules/master_file/coll_type.php:76
+#: admin/modules/master_file/coll_type.php:83
+#: admin/modules/master_file/coll_type.php:85
+#: admin/modules/master_file/coll_type.php:125
+#: admin/modules/master_file/coll_type.php:130
+#: admin/modules/master_file/coll_type.php:133
+#: admin/modules/master_file/coll_type.php:145
+#: admin/modules/master_file/coll_type.php:192
+#: admin/modules/master_file/coll_type.php:208
 #: admin/modules/master_file/coll_type.php:210
-#: admin/modules/master_file/coll_type.php:212
 #: admin/modules/master_file/submenu.php:39
 #: admin/modules/reporting/customs/class_recap.php:72
 #: admin/modules/reporting/customs/class_recap.php:149
@@ -1740,8 +1824,16 @@ msgstr "Tipe Koleksi"
 
 #: admin/modules/bibliography/index.php:809
 #: admin/modules/bibliography/item.php:327
-#: admin/modules/master_file/item_status.php:154
+#: admin/modules/master_file/item_status.php:61
+#: admin/modules/master_file/item_status.php:99
+#: admin/modules/master_file/item_status.php:104
+#: admin/modules/master_file/item_status.php:112
+#: admin/modules/master_file/item_status.php:115
 #: admin/modules/master_file/item_status.php:158
+#: admin/modules/master_file/item_status.php:165
+#: admin/modules/master_file/item_status.php:168
+#: admin/modules/master_file/item_status.php:180
+#: admin/modules/master_file/item_status.php:184
 #: admin/modules/master_file/submenu.php:38
 #: admin/modules/reporting/customs/item_titles_list.php:105
 #: admin/modules/reporting/customs/item_titles_list.php:160
@@ -1797,7 +1889,14 @@ msgstr "Tidak Digunakan"
 #: admin/modules/bibliography/index.php:844
 #: admin/modules/bibliography/item.php:341
 #: admin/modules/master_file/submenu.php:32
-#: admin/modules/master_file/supplier.php:135
+#: admin/modules/master_file/supplier.php:56
+#: admin/modules/master_file/supplier.php:80
+#: admin/modules/master_file/supplier.php:89
+#: admin/modules/master_file/supplier.php:92
+#: admin/modules/master_file/supplier.php:134
+#: admin/modules/master_file/supplier.php:140
+#: admin/modules/master_file/supplier.php:143
+#: admin/modules/master_file/supplier.php:155
 msgid "Supplier"
 msgstr "Agen"
 
@@ -1861,10 +1960,18 @@ msgid "Use this for Serial publication"
 msgstr "Gunakan untuk koleksi terbitan berseri"
 
 #: admin/modules/bibliography/index.php:898
-#: admin/modules/master_file/frequency.php:128
-#: admin/modules/master_file/frequency.php:176
-#: admin/modules/master_file/frequency.php:210
-#: admin/modules/master_file/frequency.php:216
+#: admin/modules/master_file/frequency.php:55
+#: admin/modules/master_file/frequency.php:76
+#: admin/modules/master_file/frequency.php:78
+#: admin/modules/master_file/frequency.php:84
+#: admin/modules/master_file/frequency.php:86
+#: admin/modules/master_file/frequency.php:127
+#: admin/modules/master_file/frequency.php:134
+#: admin/modules/master_file/frequency.php:137
+#: admin/modules/master_file/frequency.php:149
+#: admin/modules/master_file/frequency.php:197
+#: admin/modules/master_file/frequency.php:231
+#: admin/modules/master_file/frequency.php:237
 #: admin/modules/master_file/submenu.php:42
 msgid "Frequency"
 msgstr "Kala Terbit"
@@ -1978,16 +2085,16 @@ msgstr "Subjek"
 
 #: admin/modules/bibliography/index.php:945
 #: admin/modules/bibliography/pop_p2p.php:60
-#: admin/modules/master_file/doc_language.php:180
-#: admin/modules/master_file/doc_language.php:196
-#: admin/modules/master_file/doc_language.php:198
-#: admin/modules/master_file/frequency.php:184
-#: admin/modules/master_file/frequency.php:211
-#: admin/modules/master_file/frequency.php:217
+#: admin/modules/master_file/doc_language.php:202
+#: admin/modules/master_file/doc_language.php:218
+#: admin/modules/master_file/doc_language.php:220
+#: admin/modules/master_file/frequency.php:205
+#: admin/modules/master_file/frequency.php:232
+#: admin/modules/master_file/frequency.php:238
 #: admin/modules/reporting/customs/class_recap.php:73
 #: admin/modules/reporting/customs/class_recap.php:124
 #: admin/modules/reporting/customs/pop_procurement_list.php:163
-#: admin/modules/reporting/customs/titles_list.php:94 lib/detail.inc.php:263
+#: admin/modules/reporting/customs/titles_list.php:94 lib/detail.inc.php:269
 #: template/akasia-dz/detail_template.php:80
 #: template/akasia/detail_template.php:80
 #: template/default/detail_template.php:58
@@ -2153,8 +2260,8 @@ msgstr "Tambah Lampiran"
 
 #: admin/modules/bibliography/index.php:1017
 #: admin/modules/bibliography/pop_attach.php:258
-#: admin/modules/master_file/label.php:202
-#: admin/modules/master_file/label.php:207
+#: admin/modules/master_file/label.php:227
+#: admin/modules/master_file/label.php:232
 #: template/akasia-dz/detail_template.php:170
 #: template/akasia/detail_template.php:194
 #: template/default/detail_template.php:125
@@ -2187,9 +2294,9 @@ msgstr "Anda akan mengubah data biblio"
 #: admin/modules/membership/index.php:643
 #: admin/modules/membership/index.php:705
 #: admin/modules/membership/index.php:712
-#: admin/modules/membership/member_type.php:220
-#: admin/modules/membership/member_type.php:237
-#: admin/modules/membership/member_type.php:243
+#: admin/modules/membership/member_type.php:242
+#: admin/modules/membership/member_type.php:259
+#: admin/modules/membership/member_type.php:265
 #: admin/modules/system/content.php:230 admin/modules/system/content.php:273
 #: admin/modules/system/content.php:277
 msgid "Last Updated"
@@ -2225,48 +2332,48 @@ msgstr "Salin"
 #: admin/modules/circulation/loan_rules.php:224
 #: admin/modules/circulation/loan_rules.php:245
 #: admin/modules/circulation/loan_rules.php:252
-#: admin/modules/master_file/author.php:227
-#: admin/modules/master_file/author.php:253
-#: admin/modules/master_file/author.php:259
-#: admin/modules/master_file/coll_type.php:198
+#: admin/modules/master_file/author.php:260
+#: admin/modules/master_file/author.php:286
+#: admin/modules/master_file/author.php:292
+#: admin/modules/master_file/coll_type.php:196
+#: admin/modules/master_file/coll_type.php:208
 #: admin/modules/master_file/coll_type.php:210
-#: admin/modules/master_file/coll_type.php:212
-#: admin/modules/master_file/doc_language.php:184
-#: admin/modules/master_file/doc_language.php:196
-#: admin/modules/master_file/doc_language.php:198
-#: admin/modules/master_file/frequency.php:196
-#: admin/modules/master_file/frequency.php:214
-#: admin/modules/master_file/frequency.php:220
-#: admin/modules/master_file/index.php:185
-#: admin/modules/master_file/index.php:200
-#: admin/modules/master_file/index.php:204
-#: admin/modules/master_file/item_status.php:217
-#: admin/modules/master_file/item_status.php:232
-#: admin/modules/master_file/item_status.php:236
-#: admin/modules/master_file/label.php:214
-#: admin/modules/master_file/label.php:229
-#: admin/modules/master_file/label.php:233
-#: admin/modules/master_file/location.php:205
-#: admin/modules/master_file/location.php:220
-#: admin/modules/master_file/location.php:224
+#: admin/modules/master_file/doc_language.php:206
+#: admin/modules/master_file/doc_language.php:218
+#: admin/modules/master_file/doc_language.php:220
+#: admin/modules/master_file/frequency.php:217
+#: admin/modules/master_file/frequency.php:235
+#: admin/modules/master_file/frequency.php:241
+#: admin/modules/master_file/index.php:208
+#: admin/modules/master_file/index.php:223
+#: admin/modules/master_file/index.php:227
+#: admin/modules/master_file/item_status.php:243
+#: admin/modules/master_file/item_status.php:258
+#: admin/modules/master_file/item_status.php:262
+#: admin/modules/master_file/label.php:239
+#: admin/modules/master_file/label.php:254
+#: admin/modules/master_file/label.php:258
+#: admin/modules/master_file/location.php:203
+#: admin/modules/master_file/location.php:218
+#: admin/modules/master_file/location.php:222
 #: admin/modules/master_file/p2pservers.php:175
 #: admin/modules/master_file/p2pservers.php:191
 #: admin/modules/master_file/p2pservers.php:197
-#: admin/modules/master_file/place.php:180
-#: admin/modules/master_file/place.php:200
-#: admin/modules/master_file/place.php:203
-#: admin/modules/master_file/publisher.php:180
-#: admin/modules/master_file/publisher.php:201
-#: admin/modules/master_file/publisher.php:206
+#: admin/modules/master_file/place.php:205
+#: admin/modules/master_file/place.php:225
+#: admin/modules/master_file/place.php:228
+#: admin/modules/master_file/publisher.php:202
+#: admin/modules/master_file/publisher.php:223
+#: admin/modules/master_file/publisher.php:228
 #: admin/modules/master_file/rda_cmc.php:195
 #: admin/modules/master_file/rda_cmc.php:210
 #: admin/modules/master_file/rda_cmc.php:214
-#: admin/modules/master_file/supplier.php:197
-#: admin/modules/master_file/supplier.php:214
-#: admin/modules/master_file/supplier.php:220
-#: admin/modules/master_file/topic.php:212
-#: admin/modules/master_file/topic.php:237
-#: admin/modules/master_file/topic.php:243
+#: admin/modules/master_file/supplier.php:217
+#: admin/modules/master_file/supplier.php:234
+#: admin/modules/master_file/supplier.php:240
+#: admin/modules/master_file/topic.php:260
+#: admin/modules/master_file/topic.php:286
+#: admin/modules/master_file/topic.php:292
 #: admin/modules/system/app_user.php:410 admin/modules/system/app_user.php:439
 #: admin/modules/system/app_user.php:446
 #: admin/modules/system/user_group.php:244
@@ -2318,28 +2425,6 @@ msgstr "Kode Inventaris"
 msgid "You are going to edit Item data"
 msgstr "Anda akan memperbaharui data eksemplar"
 
-#: admin/modules/bibliography/item.php:447
-#: admin/modules/bibliography/item.php:459
-#: admin/modules/bibliography/marcexport.php:222
-#: admin/modules/bibliography/marcexport.php:229
-#: admin/modules/bibliography/p2p.php:314
-#: admin/modules/bibliography/printed_card.php:348
-#: admin/modules/master_file/author.php:57
-#: admin/modules/master_file/author.php:80
-#: admin/modules/master_file/author.php:82
-#: admin/modules/master_file/author.php:90
-#: admin/modules/master_file/author.php:94
-#: admin/modules/master_file/author.php:142
-#: admin/modules/master_file/author.php:150
-#: admin/modules/master_file/author.php:154
-#: admin/modules/master_file/author.php:166
-#: admin/modules/master_file/submenu.php:33
-#: admin/modules/reporting/customs/dl_counter.php:75
-#: admin/modules/reporting/customs/titles_list.php:75
-#: lib/contents/default.inc.php:163 template/default/parts/_search-form.php:37
-msgid "Author"
-msgstr "Pengarang"
-
 #: admin/modules/bibliography/item_barcode_generator.php:204
 #: admin/modules/bibliography/item_barcode_generator.php:213
 #: admin/modules/bibliography/submenu.php:40
@@ -2387,27 +2472,27 @@ msgid "Import for item data from CSV file"
 msgstr "Impor data eksemplar dari data CSV"
 
 #: admin/modules/bibliography/marcexport.php:43
-#: admin/modules/master_file/author.php:49
-#: admin/modules/master_file/author.php:185
+#: admin/modules/master_file/author.php:54
+#: admin/modules/master_file/author.php:212
 #: admin/modules/master_file/cross_reference.php:49
 #: admin/modules/master_file/cross_reference.php:147
 #: admin/modules/master_file/doc_language.php:47
-#: admin/modules/master_file/doc_language.php:149
+#: admin/modules/master_file/doc_language.php:171
 #: admin/modules/master_file/item_code_pattern.php:46
 #: admin/modules/master_file/item_code_pattern.php:97
 #: admin/modules/master_file/item_status.php:48
-#: admin/modules/master_file/item_status.php:173
+#: admin/modules/master_file/item_status.php:199
 #: admin/modules/master_file/location.php:48
-#: admin/modules/master_file/location.php:170
+#: admin/modules/master_file/location.php:168
 #: admin/modules/master_file/place.php:49
-#: admin/modules/master_file/place.php:147
+#: admin/modules/master_file/place.php:172
 #: admin/modules/master_file/pop_vocabolary_control.php:185
 #: admin/modules/master_file/publisher.php:49
-#: admin/modules/master_file/publisher.php:147
+#: admin/modules/master_file/publisher.php:169
 #: admin/modules/master_file/supplier.php:48
-#: admin/modules/master_file/supplier.php:154
-#: admin/modules/master_file/topic.php:48
-#: admin/modules/master_file/topic.php:161
+#: admin/modules/master_file/supplier.php:174
+#: admin/modules/master_file/topic.php:53
+#: admin/modules/master_file/topic.php:202
 #: admin/modules/membership/export.php:43
 #: admin/modules/membership/import.php:46
 #: admin/modules/membership/member_type.php:49
@@ -2570,7 +2655,7 @@ msgid "Found {hits} records from Marc SRU Server."
 msgstr "Ditemukan {hits} cantuman dari peladen Marc SRU."
 
 #: admin/modules/bibliography/marcsru.php:339
-#: admin/modules/bibliography/p2p.php:362
+#: admin/modules/bibliography/p2p.php:365
 #: admin/modules/bibliography/z3950sru.php:210
 #: admin/modules/master_file/item_code_pattern.php:115
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:379
@@ -2578,7 +2663,7 @@ msgid "Check All"
 msgstr "Tandai Semua"
 
 #: admin/modules/bibliography/marcsru.php:340
-#: admin/modules/bibliography/p2p.php:363
+#: admin/modules/bibliography/p2p.php:366
 #: admin/modules/bibliography/z3950sru.php:211
 #: admin/modules/master_file/item_code_pattern.php:116
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:380
@@ -2590,7 +2675,7 @@ msgid "Save Marc Records to Database"
 msgstr "Simpan Cantuman MARC"
 
 #: admin/modules/bibliography/marcsru.php:343
-#: admin/modules/bibliography/p2p.php:366
+#: admin/modules/bibliography/p2p.php:369
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/master_file/item_code_pattern.php:118
 #: admin/modules/system/shortcut.php:109
@@ -2608,19 +2693,18 @@ msgid "MARC Search/Retrieve via URL (SRU)"
 msgstr "Pencarian/Pengambilan MARC lewat URL (SRU)"
 
 #: admin/modules/bibliography/marcsru.php:441
-#: admin/modules/bibliography/z3950sru.php:316
+#: admin/modules/bibliography/z3950sru.php:319
 msgid "All fields"
 msgstr "Semua Ruas"
 
 #: admin/modules/bibliography/marcsru.php:446
-#: admin/modules/bibliography/z3950sru.php:317
-msgid "SRU Server"
-msgstr "Peladen SRU"
+msgid "SRU Server: "
+msgstr "Peladen SRU: "
 
 #: admin/modules/bibliography/marcsru.php:453
-#: admin/modules/bibliography/p2p.php:323
+#: admin/modules/bibliography/p2p.php:326
 #: admin/modules/bibliography/z3950.php:298
-#: admin/modules/bibliography/z3950sru.php:321
+#: admin/modules/bibliography/z3950sru.php:332
 msgid "* Please make sure you have a working Internet connection."
 msgstr "* Pastikan Anda memiliki koneksi internet."
 
@@ -2643,43 +2727,43 @@ msgstr ""
 msgid "P2P Service"
 msgstr "Layanan P2P"
 
-#: admin/modules/bibliography/p2p.php:309
+#: admin/modules/bibliography/p2p.php:310
 msgid "Fields"
 msgstr "Ruas"
 
-#: admin/modules/bibliography/p2p.php:313
+#: admin/modules/bibliography/p2p.php:314
 msgid "ISBN"
 msgstr "ISBN"
 
-#: admin/modules/bibliography/p2p.php:316
+#: admin/modules/bibliography/p2p.php:317
 #: admin/modules/bibliography/z3950.php:294
 msgid "Server"
 msgstr "Peladen"
 
-#: admin/modules/bibliography/p2p.php:357
+#: admin/modules/bibliography/p2p.php:360
 #, php-format
 msgid "Found %s records from <strong>%s</strong> Server"
 msgstr "Ditemukan %s cantuman dari Peladen <strong>%s</strong>"
 
-#: admin/modules/bibliography/p2p.php:364
+#: admin/modules/bibliography/p2p.php:367
 msgid "Save P2P Records to Database"
 msgstr "Simpan Cantuman P2P ke Pangkalan Data"
 
-#: admin/modules/bibliography/p2p.php:366
+#: admin/modules/bibliography/p2p.php:369
 msgid "Digital Files"
 msgstr "Berkas Digital"
 
-#: admin/modules/bibliography/p2p.php:366
-#: admin/modules/bibliography/p2p.php:419
+#: admin/modules/bibliography/p2p.php:369
+#: admin/modules/bibliography/p2p.php:422
 #: admin/modules/reporting/customs/dl_counter.php:185
 msgid "Detail"
 msgstr "Detail"
 
-#: admin/modules/bibliography/p2p.php:468
+#: admin/modules/bibliography/p2p.php:471
 msgid "No data selected!"
 msgstr "Tidak ada yang dipilih!"
 
-#: admin/modules/bibliography/p2p.php:484
+#: admin/modules/bibliography/p2p.php:487
 #, php-format
 msgid "Sorry, no result found from %s OR maybe XML result and detail disabled."
 msgstr ""
@@ -2788,9 +2872,10 @@ msgid "Add Author"
 msgstr "Tambah Pengarang"
 
 #: admin/modules/bibliography/pop_author.php:144
-#: admin/modules/master_file/author.php:214
-#: admin/modules/master_file/author.php:249
-#: admin/modules/master_file/author.php:255
+#: admin/modules/bibliography/pop_author_edit.php:91
+#: admin/modules/master_file/author.php:247
+#: admin/modules/master_file/author.php:282
+#: admin/modules/master_file/author.php:288
 msgid "Author Name"
 msgstr "Nama Pengarang"
 
@@ -2803,6 +2888,19 @@ msgstr "Ketik untuk mencari pengarang atau menambah baru"
 #: admin/modules/bibliography/pop_topic.php:166
 msgid "Insert To Bibliography"
 msgstr "Sisipkan Dalam Bibliografi"
+
+#: admin/modules/bibliography/pop_author_edit.php:51
+msgid ""
+"Authority Level Data FAILED to Updated. Please Contact System Administrator"
+msgstr ""
+"GAGAL Memperbarui Data Jenjang Kewenangan. Harap Hubungi Administrator Sistem"
+
+#: admin/modules/bibliography/pop_author_edit.php:93
+#: admin/modules/master_file/author.php:254
+#: admin/modules/master_file/author.php:284
+#: admin/modules/master_file/author.php:290
+msgid "Authority Type"
+msgstr "Jenis Kepengarangan"
 
 #: admin/modules/bibliography/pop_biblio_rel.php:62
 msgid "Biblio relation succesfully updated!"
@@ -3277,6 +3375,10 @@ msgstr "Ditemukan {hits} cantuman dari peladen Z3950 SRU."
 msgid "Z3950 Search/Retrieve via URL (SRU)"
 msgstr "Cari/Ambil Z3950 lewat URL (SRU)"
 
+#: admin/modules/bibliography/z3950sru.php:324
+msgid "SRU Server"
+msgstr "Peladen SRU"
+
 #: admin/modules/circulation/circulation_action.php:62
 msgid "ERROR! Can't insert visitor counter data"
 msgstr "GALAT! Data pengunjung tidak masuk"
@@ -3379,7 +3481,7 @@ msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 #: admin/modules/reporting/customs/overdued_list.php:75
 #: admin/modules/reporting/customs/reserve_list.php:69
 #: admin/modules/reporting/customs/reserve_list.php:114
-#: files/membercard/old/membercard.php:300 lib/contents/member.inc.php:255
+#: files/membercard/old/membercard.php:300 lib/contents/member.inc.php:243
 msgid "Member Name"
 msgstr "Nama Anggota"
 
@@ -3434,7 +3536,7 @@ msgid "Are you sure want to finish current transaction?"
 msgstr "Tutup/Selesaikan Transaksi?"
 
 #: admin/modules/circulation/circulation_action.php:510
-#: lib/contents/member.inc.php:259
+#: lib/contents/member.inc.php:247
 msgid "Member Email"
 msgstr "Surel Anggota"
 
@@ -3442,15 +3544,24 @@ msgstr "Surel Anggota"
 #: admin/modules/circulation/loan_rules.php:193
 #: admin/modules/circulation/loan_rules.php:240
 #: admin/modules/circulation/loan_rules.php:247
-#: admin/modules/membership/member_type.php:150
+#: admin/modules/membership/member_type.php:57
+#: admin/modules/membership/member_type.php:83
+#: admin/modules/membership/member_type.php:88
+#: admin/modules/membership/member_type.php:94
+#: admin/modules/membership/member_type.php:96
+#: admin/modules/membership/member_type.php:141
+#: admin/modules/membership/member_type.php:152
+#: admin/modules/membership/member_type.php:155
+#: admin/modules/membership/member_type.php:160
+#: admin/modules/membership/member_type.php:172
 #: admin/modules/membership/submenu.php:29
 #: admin/modules/reporting/customs/visitor_report.php:101
-#: lib/contents/member.inc.php:260
+#: lib/contents/member.inc.php:248
 msgid "Member Type"
 msgstr "Tipe Keanggotaan"
 
 #: admin/modules/circulation/circulation_action.php:514
-#: admin/modules/membership/index.php:479 lib/contents/member.inc.php:263
+#: admin/modules/membership/index.php:479 lib/contents/member.inc.php:251
 msgid "Register Date"
 msgstr "Tanggal Registrasi"
 
@@ -3462,7 +3573,7 @@ msgstr "Masa Keanggotaan sudah habis"
 #: admin/modules/circulation/circulation_action.php:520
 #: admin/modules/membership/index.php:482
 #: admin/modules/membership/index.php:487
-#: files/membercard/old/membercard.php:353 lib/contents/member.inc.php:264
+#: files/membercard/old/membercard.php:353 lib/contents/member.inc.php:252
 msgid "Expiry Date"
 msgstr "Berlaku Hingga"
 
@@ -3481,7 +3592,7 @@ msgid "Current Loans"
 msgstr "Pinjaman Saat Ini"
 
 #: admin/modules/circulation/circulation_action.php:561
-#: admin/modules/membership/member_type.php:206
+#: admin/modules/membership/member_type.php:228
 msgid "Reserve"
 msgstr "Reservasi"
 
@@ -3494,7 +3605,7 @@ msgstr "Denda"
 #: admin/modules/circulation/submenu.php:30
 #: admin/modules/reporting/customs/customs_report_list.inc.php:35
 #: admin/modules/reporting/customs/loan_history.php:62
-#: lib/contents/member.inc.php:760
+#: lib/contents/member.inc.php:748
 msgid "Loan History"
 msgstr "Sejarah Peminjaman"
 
@@ -3583,19 +3694,19 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/circulation/loan_rules.php:156
 #: admin/modules/circulation/quick_return.php:48
 #: admin/modules/master_file/coll_type.php:48
-#: admin/modules/master_file/coll_type.php:166
+#: admin/modules/master_file/coll_type.php:164
 #: admin/modules/master_file/frequency.php:47
-#: admin/modules/master_file/frequency.php:147
+#: admin/modules/master_file/frequency.php:168
 #: admin/modules/master_file/index.php:51
-#: admin/modules/master_file/index.php:150
+#: admin/modules/master_file/index.php:173
 #: admin/modules/master_file/label.php:49
-#: admin/modules/master_file/label.php:168
+#: admin/modules/master_file/label.php:193
 #: admin/modules/master_file/p2pservers.php:41
 #: admin/modules/master_file/p2pservers.php:138
 #: admin/modules/master_file/rda_cmc.php:51
 #: admin/modules/master_file/rda_cmc.php:158
 #: admin/modules/membership/index.php:407
-#: admin/modules/membership/member_type.php:169
+#: admin/modules/membership/member_type.php:191
 #: admin/modules/reporting/customs/pop_procurement_list.php:31
 #: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:283
 #: admin/modules/system/app_user.php:424 admin/modules/system/backup.php:49
@@ -3731,9 +3842,9 @@ msgstr "Tambah Aturan Peminjaman"
 #: admin/modules/circulation/loan_rules.php:212
 #: admin/modules/circulation/loan_rules.php:243
 #: admin/modules/circulation/loan_rules.php:250
-#: admin/modules/membership/member_type.php:200
-#: admin/modules/membership/member_type.php:234
-#: admin/modules/membership/member_type.php:240
+#: admin/modules/membership/member_type.php:222
+#: admin/modules/membership/member_type.php:256
+#: admin/modules/membership/member_type.php:262
 msgid "Loan Limit"
 msgstr "Jumlah Pinjaman"
 
@@ -3744,9 +3855,9 @@ msgid "Loan Period"
 msgstr "Periode Peminjaman"
 
 #: admin/modules/circulation/loan_rules.php:216
-#: admin/modules/membership/member_type.php:212
-#: admin/modules/membership/member_type.php:236
-#: admin/modules/membership/member_type.php:242
+#: admin/modules/membership/member_type.php:234
+#: admin/modules/membership/member_type.php:258
+#: admin/modules/membership/member_type.php:264
 msgid "Reborrow Limit"
 msgstr "Kali Perpanjangan"
 
@@ -3850,60 +3961,54 @@ msgstr "Daftar Anggota yang Memiliki Keterlambatan"
 msgid "Reservation"
 msgstr "Reservasi"
 
-#: admin/modules/master_file/author.php:57
+#: admin/modules/master_file/author.php:68
 msgid "Author name can't be empty"
 msgstr "Nama Pengarang tidak boleh kosong"
 
-#: admin/modules/master_file/author.php:80
+#: admin/modules/master_file/author.php:91
 msgid "Author Data Successfully Updated"
 msgstr "Data Pengarang Berhasil Diperbaharui"
 
-#: admin/modules/master_file/author.php:82
+#: admin/modules/master_file/author.php:99
 msgid "Author Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Pengarang GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/author.php:90
+#: admin/modules/master_file/author.php:107
 msgid "New Author Data Successfully Saved"
 msgstr "Pengarang Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/author.php:94
+#: admin/modules/master_file/author.php:118
 #: admin/modules/master_file/coll_type.php:85
 msgid "Author Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data tipe koleksi GAGAL disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/author.php:170
+#: admin/modules/master_file/author.php:195
 msgid "Author List"
 msgstr "Daftar Pengarang"
 
-#: admin/modules/master_file/author.php:171
+#: admin/modules/master_file/author.php:196
 msgid "Add New Author"
 msgstr "Tambah Pengarang Baru"
 
-#: admin/modules/master_file/author.php:216
+#: admin/modules/master_file/author.php:249
 msgid "Author Birth Year"
 msgstr "Tahun Lahir Pengarang"
 
-#: admin/modules/master_file/author.php:221
-#: admin/modules/master_file/author.php:251
-#: admin/modules/master_file/author.php:257
-msgid "Authority Type"
-msgstr "Jenis Kepengarangan"
-
-#: admin/modules/master_file/author.php:223
-#: admin/modules/master_file/author.php:252
-#: admin/modules/master_file/author.php:258
-#: admin/modules/master_file/topic.php:199
-#: admin/modules/master_file/topic.php:236
-#: admin/modules/master_file/topic.php:242
+#: admin/modules/master_file/author.php:256
+#: admin/modules/master_file/author.php:285
+#: admin/modules/master_file/author.php:291
+#: admin/modules/master_file/topic.php:247
+#: admin/modules/master_file/topic.php:285
+#: admin/modules/master_file/topic.php:291
 msgid "Authority Files"
 msgstr "Daftar Terkendali"
 
-#: admin/modules/master_file/author.php:227
+#: admin/modules/master_file/author.php:260
 msgid "You are going to edit author data"
 msgstr "Anda akan menyunting data pengarang"
 
-#: admin/modules/master_file/author.php:250
-#: admin/modules/master_file/author.php:256
+#: admin/modules/master_file/author.php:283
+#: admin/modules/master_file/author.php:289
 msgid "Author Year"
 msgstr "Tahun Lahir Pengarang"
 
@@ -3925,19 +4030,19 @@ msgid "New Colllection Type Data Successfully Saved"
 msgstr "Data Baru Tipe Koleksi Berhasil Disimpan"
 
 #: admin/modules/master_file/coll_type.php:115
-#: admin/modules/master_file/location.php:119
-msgid "Location ({item_name}) still used by {number_items} item(s)"
-msgstr "Lokasi {item_name} masih digunakan oleh eksemplar {number_items}"
+#, php-format
+msgid "Collection type %s still used by %s items"
+msgstr "Tipe koleksi %s masih digunakan oleh %s eksemplar"
 
-#: admin/modules/master_file/coll_type.php:151
+#: admin/modules/master_file/coll_type.php:149
 msgid "Collection Type List"
 msgstr "Daftar Tipe Koleksi"
 
-#: admin/modules/master_file/coll_type.php:152
+#: admin/modules/master_file/coll_type.php:150
 msgid "Add New Collection Type"
 msgstr "Tambah Tipe Koleksi"
 
-#: admin/modules/master_file/coll_type.php:198
+#: admin/modules/master_file/coll_type.php:196
 msgid "You are going to edit collection type data"
 msgstr "Anda akan meng-edit data tipe koleksi"
 
@@ -3965,7 +4070,7 @@ msgstr "Data Rujuk Silang GAGAL disimpan. Silahkan Hubungi Admin Sistem"
 
 #: admin/modules/master_file/cross_reference.php:126
 #: admin/modules/master_file/cross_reference.php:200
-#: admin/modules/master_file/topic.php:147
+#: admin/modules/master_file/topic.php:187
 msgid "Cross Reference"
 msgstr "Rujukan Silang"
 
@@ -3978,7 +4083,7 @@ msgid "Add New Term"
 msgstr "Tambah Istilah Baru"
 
 #: admin/modules/master_file/cross_reference.php:132
-#: admin/modules/master_file/topic.php:145
+#: admin/modules/master_file/topic.php:185
 msgid "Subject List"
 msgstr "Daftar Subjek"
 
@@ -3994,9 +4099,22 @@ msgid "Cross Reference Description"
 msgstr "Penjelasan Rujukan Silang"
 
 #: admin/modules/master_file/cross_reference.php:182
-#: admin/modules/master_file/topic.php:212
+#: admin/modules/master_file/topic.php:260
 msgid "You are going to edit Subject data"
 msgstr "Anda akan menyunting data Subjek"
+
+#: admin/modules/master_file/doc_language.php:56
+#: admin/modules/master_file/doc_language.php:75
+#: admin/modules/master_file/doc_language.php:79
+#: admin/modules/master_file/doc_language.php:86
+#: admin/modules/master_file/doc_language.php:88
+#: admin/modules/master_file/doc_language.php:130
+#: admin/modules/master_file/doc_language.php:137
+#: admin/modules/master_file/doc_language.php:140
+#: admin/modules/master_file/doc_language.php:152
+#: admin/modules/master_file/submenu.php:40
+msgid "Doc. Language"
+msgstr "Bahasa Dokumen"
 
 #: admin/modules/master_file/doc_language.php:56
 msgid "Language ID or Name can't be empty"
@@ -4018,24 +4136,25 @@ msgstr "Bahasa Baru Berhasil Disimpan"
 msgid "Language Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Bahasa GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/doc_language.php:130
-#: admin/modules/master_file/submenu.php:40
-msgid "Doc. Language"
-msgstr "Bahasa Dokumen"
+#: admin/modules/master_file/doc_language.php:120
+#: admin/modules/master_file/publisher.php:118
+#, php-format
+msgid "%s still in use %d biblio"
+msgstr "%s masih digunakan oleh %d biblio"
 
-#: admin/modules/master_file/doc_language.php:134
+#: admin/modules/master_file/doc_language.php:156
 msgid "Language List"
 msgstr "Daftar Bahasa"
 
-#: admin/modules/master_file/doc_language.php:135
+#: admin/modules/master_file/doc_language.php:157
 msgid "Add New Language"
 msgstr "Tambah Bahasa"
 
-#: admin/modules/master_file/doc_language.php:178
+#: admin/modules/master_file/doc_language.php:200
 msgid "Language Code"
 msgstr "Kode Bahasa"
 
-#: admin/modules/master_file/doc_language.php:184
+#: admin/modules/master_file/doc_language.php:206
 msgid "You are going to edit language data"
 msgstr "Anda akan menyunting data bahasa"
 
@@ -4055,36 +4174,41 @@ msgstr "Kala Terbit Baru Berhasil Disimpan"
 msgid "Frequency Data FAILED to Save. Please Contact System Administrator"
 msgstr "Kala Terbit GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/frequency.php:132
+#: admin/modules/master_file/frequency.php:117
+#, php-format
+msgid "Frequency %s still in use %d biblio(s)"
+msgstr "Kala terbit %s masih digunakan dalam %d data biblio"
+
+#: admin/modules/master_file/frequency.php:153
 msgid "Frequency Available"
 msgstr "Daftar Kala Terbit"
 
-#: admin/modules/master_file/frequency.php:133
+#: admin/modules/master_file/frequency.php:154
 msgid "Add New Frequency"
 msgstr "Tambah Kala Terbit"
 
-#: admin/modules/master_file/frequency.php:186
-#: admin/modules/master_file/frequency.php:212
-#: admin/modules/master_file/frequency.php:218
+#: admin/modules/master_file/frequency.php:207
+#: admin/modules/master_file/frequency.php:233
+#: admin/modules/master_file/frequency.php:239
 msgid "Time Increment"
 msgstr "Selang Waktu"
 
-#: admin/modules/master_file/frequency.php:188
+#: admin/modules/master_file/frequency.php:209
 msgid "Day"
 msgstr "Hari"
 
-#: admin/modules/master_file/frequency.php:189
+#: admin/modules/master_file/frequency.php:210
 msgid "Week"
 msgstr "Minggu"
 
-#: admin/modules/master_file/frequency.php:190
+#: admin/modules/master_file/frequency.php:211
 #: admin/modules/reporting/customs/fines_report.php:91
 #: admin/modules/reporting/customs/visitor_report_day.php:87
 #: simbio2/simbio_GUI/form_maker/simbio_form_element.inc.php:291
 msgid "Month"
 msgstr "Bulan"
 
-#: admin/modules/master_file/frequency.php:191
+#: admin/modules/master_file/frequency.php:212
 #: admin/modules/reporting/customs/fines_report.php:80
 #: admin/modules/reporting/customs/item_usage.php:77
 #: admin/modules/reporting/customs/loan_by_class.php:98
@@ -4093,13 +4217,13 @@ msgstr "Bulan"
 msgid "Year"
 msgstr "Tahun"
 
-#: admin/modules/master_file/frequency.php:192
 #: admin/modules/master_file/frequency.php:213
-#: admin/modules/master_file/frequency.php:219
+#: admin/modules/master_file/frequency.php:234
+#: admin/modules/master_file/frequency.php:240
 msgid "Time Unit"
 msgstr "Satuan Waktu"
 
-#: admin/modules/master_file/frequency.php:196
+#: admin/modules/master_file/frequency.php:217
 msgid "You are going to edit Frequency data"
 msgstr "Anda akan menyunting data Kala Terbit"
 
@@ -4110,6 +4234,17 @@ msgstr "Catatan cakupan"
 #: admin/modules/master_file/iframe_vocabolary_control.php:72
 msgid "Vocabolary Control"
 msgstr "Pengendali Kosakata"
+
+#: admin/modules/master_file/index.php:60
+#: admin/modules/master_file/index.php:79
+#: admin/modules/master_file/index.php:87
+#: admin/modules/master_file/index.php:90
+#: admin/modules/master_file/index.php:133
+#: admin/modules/master_file/index.php:139
+#: admin/modules/master_file/index.php:142
+#: admin/modules/master_file/index.php:154
+msgid "GMD (General Material Designation)"
+msgstr "Format Fisik Dokumen"
 
 #: admin/modules/master_file/index.php:60
 msgid "GMD Code And Name can't be empty"
@@ -4127,35 +4262,36 @@ msgstr "Data GMD GAGAL Diperbaharui. Hubungi Administrator Sistem"
 msgid "New GMD Data Successfully Saved"
 msgstr "GMD Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/index.php:89
+#: admin/modules/master_file/index.php:90
 msgid "GMD Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data GMD GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/index.php:131
-msgid "GMD (General Material Designation)"
-msgstr "Format Fisik Dokumen"
+#: admin/modules/master_file/index.php:123
+#, php-format
+msgid "%s still in use %d biblio "
+msgstr "%s masih digunakan oleh %d biblio "
 
-#: admin/modules/master_file/index.php:135
+#: admin/modules/master_file/index.php:158
 msgid "GMD List"
 msgstr "Daftar GMD"
 
-#: admin/modules/master_file/index.php:136
+#: admin/modules/master_file/index.php:159
 msgid "Add New GMD"
 msgstr "GMD Baru"
 
-#: admin/modules/master_file/index.php:179
-#: admin/modules/master_file/index.php:198
 #: admin/modules/master_file/index.php:202
+#: admin/modules/master_file/index.php:221
+#: admin/modules/master_file/index.php:225
 msgid "GMD Code"
 msgstr "Kode GMD"
 
-#: admin/modules/master_file/index.php:181
-#: admin/modules/master_file/index.php:199
-#: admin/modules/master_file/index.php:203
+#: admin/modules/master_file/index.php:204
+#: admin/modules/master_file/index.php:222
+#: admin/modules/master_file/index.php:226
 msgid "GMD Name"
 msgstr "Nama GMD"
 
-#: admin/modules/master_file/index.php:185
+#: admin/modules/master_file/index.php:208
 msgid "You are going to edit gmd data"
 msgstr "Anda akan menyunting data GMD"
 
@@ -4187,46 +4323,67 @@ msgid "Item Status ID and Name can't be empty"
 msgstr "Kode dan Nama Status Eksemplar tidak boleh kosong"
 
 #: admin/modules/master_file/item_status.php:99
-msgid "Item Status Data Successfully Updated"
-msgstr "Status Eksemplar Berhasil Diperbaharui"
+msgid "New Item Status Data Successfully Updated"
+msgstr "Status Eksemplar Baru Berhasil Diperbaharui"
 
-#: admin/modules/master_file/item_status.php:103
+#: admin/modules/master_file/item_status.php:104
 msgid "Item Status Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Status Eksemplar GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/item_status.php:110
+#: admin/modules/master_file/item_status.php:112
 msgid "New Item Status Data Successfully Saved"
 msgstr "Status Eksemplar Yang Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/item_status.php:112
+#: admin/modules/master_file/item_status.php:115
 msgid "Item Status Data FAILED to Save. Please Contact System Administrator"
 msgstr "Status Eksemplar GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/item_status.php:159
+#: admin/modules/master_file/item_status.php:148
+#, php-format
+msgid "%s still in use %d item "
+msgstr "%s masih digunakan oleh %d eksemplar "
+
+#: admin/modules/master_file/item_status.php:185
 msgid "Add New Item Status"
 msgstr "Tambah Status Eksemplar Baru"
 
-#: admin/modules/master_file/item_status.php:202
-#: admin/modules/master_file/item_status.php:230
-#: admin/modules/master_file/item_status.php:234
+#: admin/modules/master_file/item_status.php:228
+#: admin/modules/master_file/item_status.php:256
+#: admin/modules/master_file/item_status.php:260
 msgid "Item Status Code"
 msgstr "Kode Status Eksemplar"
 
-#: admin/modules/master_file/item_status.php:204
-#: admin/modules/master_file/item_status.php:231
-#: admin/modules/master_file/item_status.php:235
+#: admin/modules/master_file/item_status.php:230
+#: admin/modules/master_file/item_status.php:257
+#: admin/modules/master_file/item_status.php:261
 msgid "Item Status Name"
 msgstr "Nama Status Eksemplar"
 
-#: admin/modules/master_file/item_status.php:213
+#: admin/modules/master_file/item_status.php:239
 #: files/membercard/classic/tinfo.inc.php:78
 #: files/membercard/old/tinfo.inc.php:93
 msgid "Rules"
 msgstr "Peraturan"
 
-#: admin/modules/master_file/item_status.php:217
+#: admin/modules/master_file/item_status.php:243
 msgid "You are going to edit Item Status data"
 msgstr "Anda akan menyunting data status eksemplar"
+
+#: admin/modules/master_file/label.php:58
+#: admin/modules/master_file/label.php:76
+#: admin/modules/master_file/label.php:80
+#: admin/modules/master_file/label.php:83
+#: admin/modules/master_file/label.php:100
+#: admin/modules/master_file/label.php:108
+#: admin/modules/master_file/label.php:152
+#: admin/modules/master_file/label.php:159
+#: admin/modules/master_file/label.php:162
+#: admin/modules/master_file/label.php:174
+#: admin/modules/master_file/submenu.php:41
+#: admin/modules/system/custom_field.php:220
+#: admin/modules/system/custom_field.php:270
+msgid "Label"
+msgstr "Label"
 
 #: admin/modules/master_file/label.php:58
 msgid "Label Name OR Label Description must be filled!"
@@ -4244,50 +4401,52 @@ msgstr ""
 "GAGAL mengunggah gambar label! Lihat Catatan Sistem untuk informasi lebih "
 "lanjut"
 
-#: admin/modules/master_file/label.php:97
+#: admin/modules/master_file/label.php:83
+msgid "Label need image uploaded"
+msgstr "Perlu unggah gambar untuk label"
+
+#: admin/modules/master_file/label.php:100
 msgid "Label Data Successfully Updated"
 msgstr "Data Label Berhasil Diperbaharui"
 
-#: admin/modules/master_file/label.php:99
+#: admin/modules/master_file/label.php:102
 msgid "Label Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Label GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/label.php:105
+#: admin/modules/master_file/label.php:108
 msgid "New Label Data Successfully Saved"
 msgstr "Label Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/label.php:107
+#: admin/modules/master_file/label.php:110
 msgid "Label Data FAILED to Save. Please Contact System Administrator"
 msgstr "Label GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/label.php:149
-#: admin/modules/master_file/submenu.php:41
-#: admin/modules/system/custom_field.php:220
-#: admin/modules/system/custom_field.php:270
-msgid "Label"
-msgstr "Label"
+#: admin/modules/master_file/label.php:142
+#, php-format
+msgid "Label %s still in use %d biblio(s)"
+msgstr "Label %s masih digunakan dalam %d data biblio"
 
-#: admin/modules/master_file/label.php:153
+#: admin/modules/master_file/label.php:178
 msgid "Label List"
 msgstr "Daftar Label"
 
-#: admin/modules/master_file/label.php:154
+#: admin/modules/master_file/label.php:179
 msgid "Add New Label"
 msgstr "Tambah Label Baru"
 
-#: admin/modules/master_file/label.php:197
-#: admin/modules/master_file/label.php:228
-#: admin/modules/master_file/label.php:232
+#: admin/modules/master_file/label.php:222
+#: admin/modules/master_file/label.php:253
+#: admin/modules/master_file/label.php:257
 msgid "Label Name"
 msgstr "Nama Label"
 
-#: admin/modules/master_file/label.php:210
-#: admin/modules/master_file/label.php:227
-#: admin/modules/master_file/label.php:231
+#: admin/modules/master_file/label.php:235
+#: admin/modules/master_file/label.php:252
+#: admin/modules/master_file/label.php:256
 msgid "Label Description"
 msgstr "Deskripsi Label"
 
-#: admin/modules/master_file/label.php:214
+#: admin/modules/master_file/label.php:239
 msgid "You are going to edit Label data"
 msgstr "Anda akan menyunting data Label"
 
@@ -4311,27 +4470,32 @@ msgstr "Data Lokasi Baru Berhasil Disimpan"
 msgid "Location Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Lokasi GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/location.php:155
+#: admin/modules/master_file/location.php:119
+#, php-format
+msgid "Location %s still in use %s item(s)"
+msgstr "Lokasi %s masih digunakan dalam %s data eksemplar"
+
+#: admin/modules/master_file/location.php:153
 msgid "Location List"
 msgstr "Daftar Lokasi"
 
-#: admin/modules/master_file/location.php:156
+#: admin/modules/master_file/location.php:154
 msgid "Add New Location"
 msgstr "Lokasi Koleksi Baru"
 
-#: admin/modules/master_file/location.php:199
-#: admin/modules/master_file/location.php:218
-#: admin/modules/master_file/location.php:222
+#: admin/modules/master_file/location.php:197
+#: admin/modules/master_file/location.php:216
+#: admin/modules/master_file/location.php:220
 msgid "Location Code"
 msgstr "Kode Lokasi"
 
-#: admin/modules/master_file/location.php:201
-#: admin/modules/master_file/location.php:219
-#: admin/modules/master_file/location.php:223
+#: admin/modules/master_file/location.php:199
+#: admin/modules/master_file/location.php:217
+#: admin/modules/master_file/location.php:221
 msgid "Location Name"
 msgstr "Nama Lokasi"
 
-#: admin/modules/master_file/location.php:205
+#: admin/modules/master_file/location.php:203
 msgid "You are going to edit location data"
 msgstr "Anda akan menyunting data lokasi"
 
@@ -4394,6 +4558,19 @@ msgid "SERVER"
 msgstr "PELADEN"
 
 #: admin/modules/master_file/place.php:57
+#: admin/modules/master_file/place.php:75
+#: admin/modules/master_file/place.php:78
+#: admin/modules/master_file/place.php:86
+#: admin/modules/master_file/place.php:89
+#: admin/modules/master_file/place.php:132
+#: admin/modules/master_file/place.php:138
+#: admin/modules/master_file/place.php:141
+#: admin/modules/master_file/place.php:153
+#: admin/modules/master_file/submenu.php:37
+msgid "Place"
+msgstr "Tempat"
+
+#: admin/modules/master_file/place.php:57
 msgid "Place Name can't be empty"
 msgstr "Nama Tempat tidak boleh kosong"
 
@@ -4401,39 +4578,39 @@ msgstr "Nama Tempat tidak boleh kosong"
 msgid "Place Data Successfully Updated"
 msgstr "Data Tempat Berhasil Diperbaharui"
 
-#: admin/modules/master_file/place.php:77
+#: admin/modules/master_file/place.php:78
 msgid "Place Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Tempat Terbit GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/place.php:84
+#: admin/modules/master_file/place.php:86
 msgid "New Place Data Successfully Saved"
 msgstr "Data Tempat Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/place.php:86
+#: admin/modules/master_file/place.php:89
 msgid "Place Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Tempat GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/place.php:128
-#: admin/modules/master_file/submenu.php:37
-msgid "Place"
-msgstr "Tempat"
+#: admin/modules/master_file/place.php:122
+#, php-format
+msgid "%s still in use %d biblio <br/>"
+msgstr "%s masih digunakan oleh %d biblio <br/>"
 
-#: admin/modules/master_file/place.php:132
+#: admin/modules/master_file/place.php:157
 msgid "Place List"
 msgstr "Daftar Tempat"
 
-#: admin/modules/master_file/place.php:133
+#: admin/modules/master_file/place.php:158
 msgid "Add New Place"
 msgstr "Nama Tempat Baru"
 
-#: admin/modules/master_file/place.php:176
-#: admin/modules/master_file/place.php:199
-#: admin/modules/master_file/place.php:202
+#: admin/modules/master_file/place.php:201
+#: admin/modules/master_file/place.php:224
+#: admin/modules/master_file/place.php:227
 #: admin/modules/master_file/submenu.php:37
 msgid "Place Name"
 msgstr "Nama-nama Tempat"
 
-#: admin/modules/master_file/place.php:180
+#: admin/modules/master_file/place.php:205
 msgid "You are going to edit place data"
 msgstr "Anda akan menyunting data tempat"
 
@@ -4446,7 +4623,7 @@ msgid "Failed to save data!"
 msgstr "Data gagal disimpan!"
 
 #: admin/modules/master_file/pop_scope_vocabolary.php:88
-#: admin/modules/master_file/topic.php:204
+#: admin/modules/master_file/topic.php:252
 msgid "Scope Note Vocabulary"
 msgstr "Kosakata Cakupan Catatan"
 
@@ -4459,8 +4636,8 @@ msgid "Delete this scope"
 msgstr "Hapus cakupan ini"
 
 #: admin/modules/master_file/pop_vocabolary_control.php:55
-#: admin/modules/master_file/topic.php:203
-#: admin/modules/master_file/topic.php:207
+#: admin/modules/master_file/topic.php:251
+#: admin/modules/master_file/topic.php:255
 msgid "Vocabulary Control"
 msgstr "Pengendali Kosakata"
 
@@ -4529,21 +4706,21 @@ msgstr "Data Penerbit Baru Berhasil Disimpan"
 msgid "Publisher Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Penerbit GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/publisher.php:132
+#: admin/modules/master_file/publisher.php:154
 msgid "Publisher List"
 msgstr "Daftar Penerbit"
 
-#: admin/modules/master_file/publisher.php:133
+#: admin/modules/master_file/publisher.php:155
 msgid "Add New Publisher"
 msgstr "Tambah Penerbit Baru"
 
-#: admin/modules/master_file/publisher.php:176
-#: admin/modules/master_file/publisher.php:200
-#: admin/modules/master_file/publisher.php:204
+#: admin/modules/master_file/publisher.php:198
+#: admin/modules/master_file/publisher.php:222
+#: admin/modules/master_file/publisher.php:226
 msgid "Publisher Name"
 msgstr "Nama Penerbit"
 
-#: admin/modules/master_file/publisher.php:180
+#: admin/modules/master_file/publisher.php:202
 msgid "You are going to edit publisher data"
 msgstr "Anda akan menyunting data penerbit"
 
@@ -4652,15 +4829,6 @@ msgstr "Penyuplai Eksemplar"
 msgid "Document Authors"
 msgstr "Pengarang Dokumen"
 
-#: admin/modules/master_file/submenu.php:34
-#: admin/modules/master_file/topic.php:141
-#: admin/modules/master_file/topic.php:190
-#: admin/modules/master_file/topic.php:233
-#: admin/modules/master_file/topic.php:239 lib/contents/default.inc.php:164
-#: template/default/parts/_search-form.php:39
-msgid "Subject"
-msgstr "Subjek"
-
 #: admin/modules/master_file/submenu.php:35
 msgid "Item Location"
 msgstr "Lokasi Eksemplar"
@@ -4729,21 +4897,26 @@ msgstr "Data Agen Baru Berhasil Disimpan"
 msgid "Supplier Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Agen GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/supplier.php:139
+#: admin/modules/master_file/supplier.php:124
+#, php-format
+msgid "Supplier %s still used by %s item(s)"
+msgstr "Data agen %s masih digunakan dalam %s data eksemplar"
+
+#: admin/modules/master_file/supplier.php:159
 msgid "Supplier List"
 msgstr "Daftar Agen"
 
-#: admin/modules/master_file/supplier.php:140
+#: admin/modules/master_file/supplier.php:160
 msgid "Add New Supplier"
 msgstr "Tambah Agen"
 
-#: admin/modules/master_file/supplier.php:183
-#: admin/modules/master_file/supplier.php:210
-#: admin/modules/master_file/supplier.php:216
+#: admin/modules/master_file/supplier.php:203
+#: admin/modules/master_file/supplier.php:230
+#: admin/modules/master_file/supplier.php:236
 msgid "Supplier Name"
 msgstr "Nama Agen"
 
-#: admin/modules/master_file/supplier.php:185
+#: admin/modules/master_file/supplier.php:205
 #: admin/modules/membership/index.php:504
 #: admin/modules/reporting/customs/dl_detail.php:120
 #: admin/modules/reporting/customs/dl_detail.php:182
@@ -4754,16 +4927,16 @@ msgstr "Nama Agen"
 msgid "Address"
 msgstr "Alamat"
 
-#: admin/modules/master_file/supplier.php:187
-#: admin/modules/master_file/supplier.php:211
-#: admin/modules/master_file/supplier.php:217
+#: admin/modules/master_file/supplier.php:207
+#: admin/modules/master_file/supplier.php:231
+#: admin/modules/master_file/supplier.php:237
 #: admin/modules/reporting/customs/dl_detail.php:182
 msgid "Contact"
 msgstr "Kontak"
 
-#: admin/modules/master_file/supplier.php:189
-#: admin/modules/master_file/supplier.php:212
-#: admin/modules/master_file/supplier.php:218
+#: admin/modules/master_file/supplier.php:209
+#: admin/modules/master_file/supplier.php:232
+#: admin/modules/master_file/supplier.php:238
 #: admin/modules/membership/index.php:510
 #: admin/modules/reporting/customs/due_date_warning.php:152
 #: admin/modules/reporting/customs/member_loan_list.php:185
@@ -4773,65 +4946,70 @@ msgstr "Kontak"
 msgid "Phone Number"
 msgstr "Nomor Telepon"
 
-#: admin/modules/master_file/supplier.php:191
-#: admin/modules/master_file/supplier.php:213
-#: admin/modules/master_file/supplier.php:219
+#: admin/modules/master_file/supplier.php:211
+#: admin/modules/master_file/supplier.php:233
+#: admin/modules/master_file/supplier.php:239
 #: admin/modules/membership/index.php:512
 msgid "Fax Number"
 msgstr "Nomor Faks"
 
-#: admin/modules/master_file/supplier.php:193
+#: admin/modules/master_file/supplier.php:213
 msgid "Account Number"
 msgstr "Nomor Akun"
 
-#: admin/modules/master_file/supplier.php:197
+#: admin/modules/master_file/supplier.php:217
 msgid "You are going to edit Supplier data"
 msgstr "Anda akan menyunting data Agen"
 
-#: admin/modules/master_file/topic.php:62
+#: admin/modules/master_file/topic.php:67
 msgid "Subject can't be empty"
 msgstr "Subjek tidak boleh kosong"
 
-#: admin/modules/master_file/topic.php:83
+#: admin/modules/master_file/topic.php:88
 msgid "Subject Data Successfully Updated"
 msgstr "Data Subjek Berhasil Diperbaharui"
 
-#: admin/modules/master_file/topic.php:85
+#: admin/modules/master_file/topic.php:96
 msgid "Subject Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Subjek GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/topic.php:93
+#: admin/modules/master_file/topic.php:104
 msgid "New Subject Data Successfully Saved"
 msgstr "Subjek Baru Berhasil Disimpan"
 
-#: admin/modules/master_file/topic.php:95
+#: admin/modules/master_file/topic.php:112
 msgid "Subject Data FAILED to Save. Please Contact System Administrator"
 msgstr "Subjek GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/master_file/topic.php:146
+#: admin/modules/master_file/topic.php:149
+#, php-format
+msgid "%s ... still used biblio %s"
+msgstr "%s ... masih digunakan oleh data biblio %s"
+
+#: admin/modules/master_file/topic.php:186
 msgid "Add New Subject"
 msgstr "Tambah Subjek Baru"
 
-#: admin/modules/master_file/topic.php:192
+#: admin/modules/master_file/topic.php:240
 msgid "Classification Code"
 msgstr "Kode Klasifikasi"
 
-#: admin/modules/master_file/topic.php:197
-#: admin/modules/master_file/topic.php:235
-#: admin/modules/master_file/topic.php:241
+#: admin/modules/master_file/topic.php:245
+#: admin/modules/master_file/topic.php:284
+#: admin/modules/master_file/topic.php:290
 msgid "Subject Type"
 msgstr "Tipe Subjek"
 
-#: admin/modules/master_file/topic.php:203
+#: admin/modules/master_file/topic.php:251
 msgid "Add New Vocabulary"
 msgstr "Tambah Kosakata Baru"
 
-#: admin/modules/master_file/topic.php:204
+#: admin/modules/master_file/topic.php:252
 msgid "Scope Note"
 msgstr "Catatan Cakupan"
 
-#: admin/modules/master_file/topic.php:234
-#: admin/modules/master_file/topic.php:240
+#: admin/modules/master_file/topic.php:283
+#: admin/modules/master_file/topic.php:289
 msgid "Class. Code"
 msgstr "Kode Klasifikasi"
 
@@ -4947,7 +5125,7 @@ msgstr "Set Otomatis"
 #: admin/modules/reporting/customs/visitor_list.php:89
 #: admin/modules/reporting/customs/visitor_list.php:128
 #: admin/modules/reporting/customs/visitor_list.php:173
-#: files/membercard/old/membercard.php:314 lib/contents/member.inc.php:267
+#: files/membercard/old/membercard.php:314 lib/contents/member.inc.php:255
 #: template/akasia-dz/visitor_template.php:53
 #: template/akasia/visitor_template.php:53
 #: template/default/visitor_template.php:43
@@ -4959,8 +5137,8 @@ msgstr "Institusi"
 #: admin/modules/membership/index.php:703
 #: admin/modules/membership/index.php:710
 #: admin/modules/membership/member_card_generator.php:227
-#: admin/modules/membership/member_type.php:233
-#: admin/modules/membership/member_type.php:239
+#: admin/modules/membership/member_type.php:255
+#: admin/modules/membership/member_type.php:261
 #: admin/modules/reporting/customs/loan_by_class.php:109
 #: admin/modules/reporting/customs/loan_history.php:75
 #: admin/modules/reporting/customs/loan_history.php:150
@@ -5031,7 +5209,7 @@ msgid "E-mail"
 msgstr "Surel"
 
 #: admin/modules/membership/index.php:630 admin/modules/system/app_user.php:403
-#: lib/contents/login.inc.php:199 lib/contents/member.inc.php:291
+#: lib/contents/login.inc.php:199 lib/contents/member.inc.php:279
 #: lib/contents/newpass.inc.php:98
 msgid "New Password"
 msgstr "Kata sandi Baru"
@@ -5042,7 +5220,7 @@ msgid "Confirm New Password"
 msgstr "Konfirmasi Kata Sandi Baru"
 
 #: admin/modules/membership/index.php:642
-#: admin/modules/membership/member_type.php:220
+#: admin/modules/membership/member_type.php:242
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
@@ -5122,27 +5300,32 @@ msgstr ""
 msgid "New Member Type Successfully Saved"
 msgstr "Tipe Keanggotaan Baru Berhasil Disimpan"
 
-#: admin/modules/membership/member_type.php:133
+#: admin/modules/membership/member_type.php:131
+#, php-format
+msgid "Member Type %s still in use %d member(s)"
+msgstr "Tipe Keanggotaan %s masih digunakan dalam %d data anggota"
+
+#: admin/modules/membership/member_type.php:155
 msgid "Sorry. There is active loan transaction(s) using this membership type."
 msgstr "Maaf. Terdapat transaksi aktif yang menggunakan tipe keanggotaan ini."
 
-#: admin/modules/membership/member_type.php:154
+#: admin/modules/membership/member_type.php:176
 msgid "Member Type List"
 msgstr "Daftar Tipe Anggota"
 
-#: admin/modules/membership/member_type.php:155
+#: admin/modules/membership/member_type.php:177
 msgid "Add New Member Type"
 msgstr "Tambah Tipe Anggota Baru"
 
-#: admin/modules/membership/member_type.php:198
+#: admin/modules/membership/member_type.php:220
 msgid "Member Type Name"
 msgstr "Tipe Keanggotaan"
 
-#: admin/modules/membership/member_type.php:202
+#: admin/modules/membership/member_type.php:224
 msgid "Loan Periode (In Days)"
 msgstr "Lama Peminjaman (Dalam Hari)"
 
-#: admin/modules/membership/member_type.php:204
+#: admin/modules/membership/member_type.php:226
 #: admin/modules/system/index.php:326 admin/modules/system/index.php:338
 #: admin/modules/system/index.php:344 admin/modules/system/index.php:351
 #: admin/modules/system/index.php:357 admin/modules/system/index.php:363
@@ -5152,7 +5335,7 @@ msgstr "Lama Peminjaman (Dalam Hari)"
 msgid "Enable"
 msgstr "Dimungkinkan"
 
-#: admin/modules/membership/member_type.php:205
+#: admin/modules/membership/member_type.php:227
 #: admin/modules/system/index.php:325 admin/modules/system/index.php:337
 #: admin/modules/system/index.php:343 admin/modules/system/index.php:350
 #: admin/modules/system/index.php:356 admin/modules/system/index.php:362
@@ -5162,21 +5345,21 @@ msgstr "Dimungkinkan"
 msgid "Disable"
 msgstr "Tidak mungkin"
 
-#: admin/modules/membership/member_type.php:208
+#: admin/modules/membership/member_type.php:230
 msgid "Reserve Limit"
 msgstr "Jumlah Reservasi"
 
-#: admin/modules/membership/member_type.php:210
-#: admin/modules/membership/member_type.php:235
-#: admin/modules/membership/member_type.php:241
+#: admin/modules/membership/member_type.php:232
+#: admin/modules/membership/member_type.php:257
+#: admin/modules/membership/member_type.php:263
 msgid "Membership Period (In Days)"
 msgstr "Masa Keanggotaan (Dalam Hari)"
 
-#: admin/modules/membership/member_type.php:214
+#: admin/modules/membership/member_type.php:236
 msgid "Fine Each Day"
 msgstr "Denda Per Hari"
 
-#: admin/modules/membership/member_type.php:216
+#: admin/modules/membership/member_type.php:238
 msgid "Overdue Grace Period"
 msgstr "Toleransi Keterlambatan"
 
@@ -5320,7 +5503,7 @@ msgstr "Cetak Halaman ini"
 #: admin/modules/reporting/customs/loan_by_class.php:272
 #: admin/modules/reporting/customs/pop_procurement_list.php:98
 #: admin/modules/reporting/report_dbgrid.inc.php:42
-#: admin/modules/stock_take/st_report_detail.php:97
+#: admin/modules/stock_take/st_report_detail.php:96
 msgid "Export to spreadsheet format"
 msgstr "Ekspor ke format <i>spreadsheet</i>"
 
@@ -5414,6 +5597,7 @@ msgid "Fines Report"
 msgstr "Laporan Denda"
 
 #: admin/modules/reporting/customs/customs_report_list.inc.php:43
+#: admin/modules/reporting/customs/fines_report.php:129
 msgid "Member Fines List"
 msgstr "Daftar Denda Anggota"
 
@@ -6545,8 +6729,8 @@ msgstr ""
 msgid "Sorry, data not available!"
 msgstr "Maaf, data tidak tersedia!"
 
-#: admin/modules/stock_take/st_report_detail.php:89
-#: admin/modules/stock_take/st_report_detail.php:106
+#: admin/modules/stock_take/st_report_detail.php:88
+#: admin/modules/stock_take/st_report_detail.php:105
 msgid "Time Checked"
 msgstr "Waktu Pemeriksaan"
 
@@ -7516,7 +7700,7 @@ msgstr "Baca"
 msgid "Write"
 msgstr "Ubah"
 
-#: admin/modules/system/module_priv_form_adv.inc.php:60
+#: admin/modules/system/module_priv_form_adv.inc.php:63
 msgid "Enable or disable submenu"
 msgstr "Aktifkan atau nonaktifkan submenu"
 
@@ -7936,11 +8120,11 @@ msgstr ""
 msgid "You are currently Logged on as member"
 msgstr "Anda saat ini masuk sebagai anggota"
 
-#: index.php:56 lib/contents/member.inc.php:724
+#: index.php:56 lib/contents/member.inc.php:712
 msgid "LOGOUT"
 msgstr "KELUAR"
 
-#: lib/biblio_list_elasticsearch.inc.php:279 lib/biblio_list_model.inc.php:220
+#: lib/biblio_list_elasticsearch.inc.php:279 lib/biblio_list_model.inc.php:221
 msgid "Put marked selection into basket"
 msgstr "Taruh pilihan yang ditandai ke dalam keranjang"
 
@@ -8023,12 +8207,12 @@ msgid "Your Current Loan"
 msgstr "Pinjaman Terkini"
 
 #: lib/contents/download_loan_history.inc.php:64
-#: lib/contents/member.inc.php:420
+#: lib/contents/member.inc.php:408
 msgid "Return Date"
 msgstr "Tanggal Kembali"
 
 #: lib/contents/download_loan_history.inc.php:88
-#: lib/contents/member.inc.php:433
+#: lib/contents/member.inc.php:421
 msgid "item(s) loan history"
 msgstr "sejarah peminjaman eksemplar"
 
@@ -8126,7 +8310,7 @@ msgstr "Kata Sandi saat ini tidak boleh kosong!"
 msgid "Hi {username}, please update your password!"
 msgstr "Hai {username}, mohon perbarui kata sandi Anda!"
 
-#: lib/contents/login.inc.php:197 lib/contents/member.inc.php:287
+#: lib/contents/login.inc.php:197 lib/contents/member.inc.php:275
 msgid "Current Password"
 msgstr "Kata Sandi Terkini"
 
@@ -8138,7 +8322,7 @@ msgstr "Token tidak valid!"
 msgid "Go Home"
 msgstr "Kembali ke Beranda"
 
-#: lib/contents/login.inc.php:234 lib/contents/member.inc.php:921
+#: lib/contents/login.inc.php:234 lib/contents/member.inc.php:909
 msgid "Password"
 msgstr "Kata Sandi"
 
@@ -8146,7 +8330,7 @@ msgstr "Kata Sandi"
 msgid "Remember me"
 msgstr "Ingat saya"
 
-#: lib/contents/login.inc.php:266 lib/contents/member.inc.php:946
+#: lib/contents/login.inc.php:266 lib/contents/member.inc.php:934
 msgid "Login"
 msgstr "Masuk"
 
@@ -8166,182 +8350,182 @@ msgstr ""
 "Selamat Datang di Area Anggota, tempat Anda dapat melihat status keanggotaan "
 "dan peminjaman."
 
-#: lib/contents/member.inc.php:99
+#: lib/contents/member.inc.php:87
 msgid "Please fill your Username and Password to Login!"
 msgstr "Mohon isi Nama Pengguna dan Kata Sandi untuk Masuk!"
 
-#: lib/contents/member.inc.php:133
+#: lib/contents/member.inc.php:121
 #, php-format
 msgid "Login success for member %s from address %s"
 msgstr "Anggota %s berhasil masuk dari alamat %s"
 
-#: lib/contents/member.inc.php:142
+#: lib/contents/member.inc.php:130
 #, php-format
 msgid "Login FAILED for member %s from address %s"
 msgstr "Anggota %s GAGAL masuk dari alamat %s"
 
-#: lib/contents/member.inc.php:144
+#: lib/contents/member.inc.php:132
 msgid "Login FAILED! Wrong username or password!"
 msgstr "GAGAL Masuk! Nama Pengguna/Surel atau kata sandi salah!"
 
-#: lib/contents/member.inc.php:169
+#: lib/contents/member.inc.php:157
 msgid "Title has been added in the basket."
 msgstr "Pesanan sudah dimasukkan dalam keranjang."
 
-#: lib/contents/member.inc.php:246
+#: lib/contents/member.inc.php:234
 msgid "Your Membership Already EXPIRED! Please extend your membership."
 msgstr ""
 "Masa Berlaku Keanggotaan Anda sudah KEDALUWARSA! Harap perpanjang "
 "keanggotaan Anda."
 
-#: lib/contents/member.inc.php:249
+#: lib/contents/member.inc.php:237
 msgid ""
 "Membership currently in pending state, no loan transaction can be made yet."
 msgstr ""
 "Keanggotaan dalam status ditunda, tidak bisa melakukan transaksi peminjaman."
 
-#: lib/contents/member.inc.php:295
+#: lib/contents/member.inc.php:283
 msgid "Confirm Password"
 msgstr "Konfirmasi Kata Sandi"
 
-#: lib/contents/member.inc.php:299 lib/contents/member.inc.php:807
+#: lib/contents/member.inc.php:287 lib/contents/member.inc.php:795
 msgid "Change Password"
 msgstr "Ubah Kata Sandi"
 
-#: lib/contents/member.inc.php:387
+#: lib/contents/member.inc.php:375
 msgid "item(s) currently on loan"
 msgstr "eksemplar yang sedang dipinjam"
 
-#: lib/contents/member.inc.php:387
+#: lib/contents/member.inc.php:375
 msgid "Download All Current Loan"
 msgstr "Unduh Semua Pinjaman Terkini"
 
-#: lib/contents/member.inc.php:396
+#: lib/contents/member.inc.php:384
 msgid "OVERDUED"
 msgstr "TERLAMBAT"
 
-#: lib/contents/member.inc.php:433
+#: lib/contents/member.inc.php:421
 msgid "Download All Loan History"
 msgstr "Unduh Semua Sejarah Pinjaman"
 
-#: lib/contents/member.inc.php:481
+#: lib/contents/member.inc.php:469
 msgid "Reserve title(s) on Basket"
 msgstr "Kirim pesanan dalam Keranjang"
 
-#: lib/contents/member.inc.php:482
+#: lib/contents/member.inc.php:470
 msgid "Clear Basket"
 msgstr "Bersihkan Keranjang"
 
-#: lib/contents/member.inc.php:483
+#: lib/contents/member.inc.php:471
 msgid "Remove selected title(s) from Basket"
 msgstr "Hapus judul terpilih dari Keranjang"
 
-#: lib/contents/member.inc.php:485
+#: lib/contents/member.inc.php:473
 msgid "title(s) on basket"
 msgstr "judul dalam keranjang"
 
-#: lib/contents/member.inc.php:596
+#: lib/contents/member.inc.php:584
 #, php-format
 msgid "%s already reseved"
 msgstr "%s sudah dipesan"
 
-#: lib/contents/member.inc.php:613
+#: lib/contents/member.inc.php:601
 #, php-format
 msgid "Item for %s is available for loan"
 msgstr "Eksemplar %s tersedia untuk dipinjam"
 
-#: lib/contents/member.inc.php:619
+#: lib/contents/member.inc.php:607
 #, php-format
 msgid "%s reserved successfully"
 msgstr "%s berhasil dipesan"
 
-#: lib/contents/member.inc.php:623
+#: lib/contents/member.inc.php:611
 #, php-format
 msgid "Reserve %s failed. "
 msgstr "Gagal memesan %s. "
 
-#: lib/contents/member.inc.php:629
+#: lib/contents/member.inc.php:617
 #, php-format
 msgid "No item available to be reserved for %s"
 msgstr "Data eksemplar %s tidak tersedia untuk dipesan"
 
-#: lib/contents/member.inc.php:636
+#: lib/contents/member.inc.php:624
 msgid "No Titles to reserve"
 msgstr "Tidak ada judul untuk dipesan"
 
-#: lib/contents/member.inc.php:643
+#: lib/contents/member.inc.php:631
 msgid "Reservation not allowed"
 msgstr "Tidak bisa dipesan"
 
-#: lib/contents/member.inc.php:651
+#: lib/contents/member.inc.php:639
 msgid "Reserve limit reached"
 msgstr "Tidak bisa memesan"
 
-#: lib/contents/member.inc.php:652
+#: lib/contents/member.inc.php:640
 #, php-format
 msgid "Maximum reserve limit is %d collection"
 msgstr "Batas maksimum pemesanan %d koleksi"
 
-#: lib/contents/member.inc.php:682
+#: lib/contents/member.inc.php:670
 msgid "Your password have been changed successfully."
 msgstr "Kata Sandi Anda sudah berhasil dirubah."
 
-#: lib/contents/member.inc.php:685
+#: lib/contents/member.inc.php:673
 msgid "Current password entered WRONG! Please insert the right password!"
 msgstr ""
 "Kata Sandi yang dimasukkan SALAH! Silahkan masukkan kata sandi yang benar!"
 
-#: lib/contents/member.inc.php:687
+#: lib/contents/member.inc.php:675
 msgid ""
 "Password confirmation FAILED! Make sure to check undercase or uppercase "
 "letters!"
 msgstr "Konfirmasi kata sandi GAGAL! Periksa ukuran huruf yang digunakan!"
 
-#: lib/contents/member.inc.php:689
+#: lib/contents/member.inc.php:677
 msgid "Password update FAILED! ERROR ON DATABASE!"
 msgstr "Perubahan kata sandi GAGAL! GALAT PADA PANGKALAN DATA!"
 
-#: lib/contents/member.inc.php:705
+#: lib/contents/member.inc.php:693
 msgid "Reservation e-mail sent successfully!"
 msgstr "Surel untuk reservasi berhasil dikirim!"
 
-#: lib/contents/member.inc.php:752
+#: lib/contents/member.inc.php:740
 msgid "Current Loan"
 msgstr "Pinjaman Terkini"
 
-#: lib/contents/member.inc.php:756
+#: lib/contents/member.inc.php:744
 msgid "Title Basket"
 msgstr "Keranjang Judul Anda"
 
-#: lib/contents/member.inc.php:764
+#: lib/contents/member.inc.php:752
 msgid "My Account"
 msgstr "Akun Saya"
 
-#: lib/contents/member.inc.php:783
+#: lib/contents/member.inc.php:771
 msgid "My Current Loan"
 msgstr "Pinjaman saya saat ini"
 
-#: lib/contents/member.inc.php:789
+#: lib/contents/member.inc.php:777
 msgid "My Title Basket"
 msgstr "Keranjang Judul saya"
 
-#: lib/contents/member.inc.php:795
+#: lib/contents/member.inc.php:783
 msgid "My Loan History"
 msgstr "Sejarah Peminjaman saya"
 
-#: lib/contents/member.inc.php:801
+#: lib/contents/member.inc.php:789
 msgid "Member Detail"
 msgstr "Detail Keanggotaan"
 
-#: lib/contents/member.inc.php:908
+#: lib/contents/member.inc.php:896
 msgid "Library Member Login"
 msgstr "Masuk Anggota Perpustakaan"
 
-#: lib/contents/member.inc.php:912
+#: lib/contents/member.inc.php:900
 msgid "Wrong Captcha Code entered, Please write the right code!"
 msgstr "Kode Captcha yang dimasukkan SALAH. Silahkan masukkan kode yang benar!"
 
-#: lib/contents/member.inc.php:915
+#: lib/contents/member.inc.php:903
 msgid ""
 "Please insert your member ID and password given by library system "
 "administrator. If you are library's member and don't have a password yet, "
@@ -8468,23 +8652,27 @@ msgstr "Galat saat memasukkan data pengunjung ke dalam pangkalan data."
 msgid "Visitor Counter"
 msgstr "Penghitung Jumlah Pengunjung"
 
-#: lib/detail.inc.php:238
+#: lib/detail.inc.php:136
+msgid "Please login to see this attachment"
+msgstr "Harap masuk untuk melihat lampiran"
+
+#: lib/detail.inc.php:244
 msgid "Currently On Loan (Due on"
 msgstr "Sedang Dipinjam (Jatuh tempo pada"
 
-#: lib/detail.inc.php:240
+#: lib/detail.inc.php:246
 msgid "Available but not for loan"
 msgstr "Tersedia namun tidak untuk dipinjamkan"
 
-#: lib/detail.inc.php:430
+#: lib/detail.inc.php:436
 msgid "Click to view others documents with this author"
 msgstr "Klik disini untuk mencari dokumen lain dari pengarang ini"
 
-#: lib/detail.inc.php:441
+#: lib/detail.inc.php:447
 msgid "Click to view others documents with this subject"
 msgstr "Klik di sini untuk mencari dokumen lain dengan subjek ini"
 
-#: lib/detail.inc.php:456 template/akasia-dz/biblio_list_template.php:166
+#: lib/detail.inc.php:462 template/akasia-dz/biblio_list_template.php:166
 #: template/akasia/biblio_list_template.php:167
 #: template/lightweight/biblio_list_template.php:166
 msgid "Share to"
@@ -8553,6 +8741,18 @@ msgstr "Sistem"
 #: lib/lang/string.php:27
 msgid "Reporting"
 msgstr "Pelaporan"
+
+#: lib/lang/string.php:28
+msgid "Select All"
+msgstr "Pilih Semua"
+
+#: lib/lang/string.php:29
+msgid "Unselect All"
+msgstr "Jangan Pilih Semua"
+
+#: lib/lang/string.php:30
+msgid "Select Invert"
+msgstr "Pilih Kebalikan"
 
 #: lib/module.inc.php:42 template/akasia-dz/partials/footer.php:51
 #: template/akasia-dz/partials/nav.php:5 template/akasia/partials/footer.php:51
@@ -8634,6 +8834,7 @@ msgid "Last Page"
 msgstr "Hal. Akhir"
 
 #: simbio2/simbio_GUI/table/simbio_table.inc.php:223
+#: template/default/detail_template.php:127
 msgid "No Data"
 msgstr "Tidak Ada Data"
 
@@ -9041,7 +9242,7 @@ msgstr "Tampilkan Detail"
 
 #: template/default/detail_template.php:134
 msgid "You must be logged in to post a comment"
-msgstr "Anda harus <i>login</i> sebelum memberikan komentar"
+msgstr "Anda harus masuk sebelum memberikan komentar"
 
 #: template/default/parts/_home.php:29
 #: template/default/parts/_modal_topic.php:15

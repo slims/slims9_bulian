@@ -143,23 +143,15 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 $table_spec = 'backup_log AS bl LEFT JOIN user AS u ON bl.user_id=u.user_id';
 // create datagrid
 $datagrid = new simbio_datagrid();
-if ($can_read AND $can_write) {
-  $datagrid->setSQLColumn('bl.backup_log_id',
-  	'u.realname AS  \''.__('Backup Executor').'\'', 
-  	'bl.backup_time AS \''.__('Backup Time').'\'',
-  	'bl.backup_file AS \''.__('Backup File Location').'\'',
-    'bl.backup_file AS \''.__('File Size').'\'');
-  $datagrid->setSQLorder('backup_time DESC');
-  $datagrid->modifyColumnContent(4, 'callback{showFileSize}'); 
-}else{
-  $datagrid->setSQLColumn(
-    'u.realname AS  \''.__('Backup Executor').'\'', 
+$datagrid->setSQLColumn('bl.backup_log_id',
+    'u.realname AS  \''.__('Backup Executor').'\'',
     'bl.backup_time AS \''.__('Backup Time').'\'',
     'bl.backup_file AS \''.__('Backup File Location').'\'',
-    'bl.backup_file AS \''.__('File Size').'\''); 
-  $datagrid->setSQLorder('backup_time DESC');
-  $datagrid->modifyColumnContent(3, 'callback{showFileSize}'); 
-}
+    'bl.backup_file AS \''.__('File Size').'\'');
+$datagrid->setSQLorder('backup_time DESC');
+$datagrid->modifyColumnContent(4, 'callback{showFileSize}');
+if (!$can_write) $datagrid->invisible_fields = [0];
+
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
    $keywords = $dbs->escape_string($_GET['keywords']);

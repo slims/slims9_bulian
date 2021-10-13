@@ -52,7 +52,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $frequency = trim(strip_tags($_POST['frequencyName']));
     // check form validity
     if (empty($frequency)) {
-        utility::jsAlert(__('Required fields (*)  must be filled correctly!'));
+        utility::jsToastr( __('Frequency'),__('Required fields (*)  must be filled correctly!'),'error');
         exit();
     } else {
         $data['frequency'] = $dbs->escape_string($frequency);
@@ -73,17 +73,17 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_frequency', $data, 'frequency_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Frequency Data Successfully Updated'));
+                utility::jsToastr( __('Frequency'),__('Frequency Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Frequency Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr( __('Frequency'),__('Frequency Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('mst_frequency', $data)) {
-                utility::jsAlert(__('New Frequency Data Successfully Saved'));
+                utility::jsToastr( __('Frequency'),__('New Frequency Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Frequency Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr( __('Frequency'),__('Frequency Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -103,17 +103,38 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_frequency', 'frequency_id='.$itemID)) {
-            $error_num++;
+        // check if this label data still in use biblio
+        $_sql_freq_biblio_q = 'SELECT mf.frequency, COUNT(mf.frequency_id) FROM biblio AS b
+        LEFT JOIN mst_frequency AS mf ON mf.frequency_id=b.frequency_id
+        WHERE mf.frequency_id='.$itemID.' GROUP BY mf.frequency';
+        $freq_biblio_q = $dbs->query($_sql_freq_biblio_q);
+        $freq_biblio_d = $freq_biblio_q->fetch_row();
+        if ($freq_biblio_d[1] < 1) {
+            if (!$sql_op->delete('mst_frequency', 'frequency_id='.$itemID)) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('Frequency %s still in use %d biblio(s)')."<br/>",substr($freq_biblio_d[0], 0, 45),$freq_biblio_d[1]);
+            $error_num++;                       
         }
+    }
+
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('Frequency'), __('Below data can not be deleted:') . "<br/>" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
     }
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr( __('Frequency'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr( __('Frequency'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

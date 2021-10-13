@@ -191,6 +191,7 @@ abstract class biblio_list_model
     if (isset($_GET['keywords'])) {
       $_keywords = urlencode(trim(urldecode($_GET['keywords'])));
     }
+
     // include biblio list HTML template callback
     include SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/biblio_list_template.php';
     $settings = '';

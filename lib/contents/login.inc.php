@@ -80,7 +80,7 @@ if (isset($_POST['logMeIn'])) {
         session_regenerate_id(true);
         // create logon class instance
         $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
-        if ($sysconf['auth']['user']['method'] == 'ldap') {
+        if ($sysconf['auth']['user']['method'] == 'LDAP') {
             $ldap_configs = $sysconf['auth']['user'];
         }
         if ($logon->adminValid($dbs)) {

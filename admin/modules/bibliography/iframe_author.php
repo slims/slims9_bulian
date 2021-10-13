@@ -110,13 +110,17 @@ if ($biblioID) {
     // alternate the row color
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
+    //edit link
+    $edit_link = '<div class="btn btn-group"><a href="'.MWB.'bibliography/pop_author_edit.php?authorID=' .$biblio_author_d['author_id']. '&biblio_id='.$biblioID.'" class="s-btn btn btn-default notAJAX openPopUp" title="'.__('Author').'">' . __('Edit') . '</a>';
     // remove link
-    $remove_link = '<a href="#" class="s-btn btn btn-danger notAJAX" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">' . __('Delete') . '</a>';
+    $remove_link = '<a href="#" class="s-btn btn btn-danger notAJAX" onclick="confirmProcess('.$biblioID.', '.$biblio_author_d['author_id'].')">' . __('Delete') . '</a></div>';
     $author = $biblio_author_d['author_name'];
     $author_year = $biblio_author_d['author_year'];
     $authority_type = $sysconf['authority_type'][$biblio_author_d['authority_type']];
 
-    $table->appendTableRow(array($remove_link, $author, $author_year, $authority_type, $sysconf['authority_level'][$biblio_author_d['level']]));
+    $authority_level_link =  '<a href="'.MWB.'bibliography/pop_author_edit.php?authorID=' .$biblio_author_d['author_id']. '&biblio_id='.$biblioID.'&authority_level=true" class="notAJAX openPopUp" title="'.__('Authority Level').'">' .$sysconf['authority_level'][$biblio_author_d['level']]. '</a>';
+
+    $table->appendTableRow(array($edit_link.$remove_link, $author, $author_year, $authority_type,$authority_level_link));
     $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
     $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="width: 30%;"');
     $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="width: 20%;"');

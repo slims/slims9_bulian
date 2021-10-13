@@ -169,7 +169,7 @@ class member
         $mail = new PHPMailer\PHPMailer\PHPMailer(true);
         try {
             //Server settings
-            $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            //$mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;                      // Enable verbose debug output
             $mail->isSMTP();                                                                // Send using SMTP
             $mail->Host = $sysconf['mail']['server'];                                       // Set the SMTP server to send through
             $mail->SMTPAuth = $sysconf['mail']['auth_enable'];                              // Enable SMTP authentication

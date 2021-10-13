@@ -172,7 +172,10 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
         $circulation->holiday_date = $_SESSION['holiday_date'];
 
         // member name
-        $member_q = $obj_db->query('SELECT member_name, member_email, member_phone, member_mail_address FROM member WHERE member_id=\'' . $array_data[0] . '\'');
+        $member_q = $obj_db->query('SELECT m.member_name, m.member_email, m.member_phone, m.member_mail_address, mmt.fine_each_day 
+                                           FROM member m 
+                                           LEFT JOIN mst_member_type mmt on m.member_type_id = mmt.member_type_id
+                                           WHERE m.member_id=\'' . $array_data[0] . '\'');
         $member_d = $member_q->fetch_row();
         $member_name = $member_d[0];
         $member_mail_address = $member_d[3];
@@ -180,20 +183,30 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
 
         $ovd_title_q = $obj_db->query('SELECT l.loan_id, l.item_code, i.price, i.price_currency,
           b.title, l.loan_date,
-          l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\'
+          l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\', mlr.fine_each_day
           FROM loan AS l
               LEFT JOIN item AS i ON l.item_code=i.item_code
               LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
+              LEFT JOIN mst_loan_rules mlr on l.loan_rules_id = mlr.loan_rules_id
           WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\'' . date('Y-m-d') . '\')) AND l.member_id=\'' . $array_data[0] . '\'' . (!empty($date_criteria) ? $date_criteria : ''));
         $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">' . $member_name . ' (' . $array_data[0] . ')</div>';
         $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">' . $member_mail_address . '</div>';
         $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="' . $array_data[0] . 'emailStatus"></div>' . __('E-mail') . ': <a href="mailto:' . $member_d[1] . '">' . $member_d[1] . '</a> - <a class="usingAJAX" href="' . MWB . 'membership/overdue_mail.php' . '" postdata="memberID=' . $array_data[0] . '" loadcontainer="' . $array_data[0] . 'emailStatus">' . __('Send Notification e-mail') . '</a> - ' . __('Phone Number') . ': ' . $member_d[2] . '</div>';
         $_buffer .= '<table width="100%" cellspacing="0">';
         while ($ovd_title_d = $ovd_title_q->fetch_assoc()) {
+
+            //calculate Fines
+            $overdue_days = $circulation->countOverdueValue($ovd_title_d['loan_id'], date('Y-m-d'))['days'];
+            $fines = $overdue_days * $member_d[4];
+            if (!is_null($ovd_title_d['fine_each_day'])) $fines = $overdue_days * $ovd_title_d['fine_each_day'];
+            // format number
+            $overdue_days = number_format($overdue_days, '0', ',', '.');
+            $fines = number_format($fines, '0', ',', '.');
+
             $_buffer .= '<tr>';
             $_buffer .= '<td valign="top" width="10%">' . $ovd_title_d['item_code'] . '</td>';
             $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . $ovd_title_d['price'] . ' ' . $ovd_title_d['price_currency'] . '</div></td>';
-            $_buffer .= '<td width="20%">' . __('Overdue') . ': ' . $circulation->countOverdueValue($ovd_title_d['loan_id'], date('Y-m-d'))['days'] . ' ' . __('day(s)') . '</td>';
+            $_buffer .= '<td width="20%"><div>' . __('Overdue') . ': ' . $overdue_days . ' ' . __('day(s)') . '</div><div>'.__('Fines').': '.$fines.'</div></td>';
             $_buffer .= '<td width="30%">' . __('Loan Date') . ': ' . $ovd_title_d['loan_date'] . ' &nbsp; ' . __('Due Date') . ': ' . $ovd_title_d['due_date'] . '</td>';
             $_buffer .= '</tr>';
         }

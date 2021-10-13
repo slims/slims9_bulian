@@ -68,6 +68,7 @@ var PDFViewerApplication = {
             maxImageSize: MAX_IMAGE_SIZE,
             cMapUrl: CMAP_URL,
             cMapPacked: CMAP_PACKED,
+            password: params.loaderInit
         });
         this.pdfLoadingTask = loadingTask;
 
@@ -446,6 +447,7 @@ document.addEventListener(
 PDFViewerApplication.animationStartedPromise.then(function () {
     PDFViewerApplication.open({
         url: DEFAULT_URL,
+        loaderInit: LOADER_INIT
     });
 });
 

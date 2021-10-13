@@ -57,7 +57,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $gmdName = trim(strip_tags($_POST['gmdName']));
     // check form validity
     if (empty($gmdCode) OR empty($gmdName)) {
-        utility::jsAlert(__('GMD Code And Name can\'t be empty'));
+        utility::jsToastr( __('GMD (General Material Designation)'), __('GMD Code And Name can\'t be empty'), 'warning');
         exit();
     } else {
         $data['gmd_code'] = $dbs->escape_string($gmdCode);
@@ -76,7 +76,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_gmd', $data, 'gmd_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('GMD Data Successfully Updated'));
+                utility::jsToastr(__('GMD (General Material Designation)'), __('GMD Data Successfully Updated'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
             } else { utility::jsAlert(__('GMD Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
@@ -84,9 +84,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('mst_gmd', $data)) {
-                utility::jsAlert(__('New GMD Data Successfully Saved'));
+                utility::jsToastr(__('GMD (General Material Designation)'), __('New GMD Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('GMD Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { 
+                utility::jsToastr( __('GMD (General Material Designation)'), __('GMD Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error');
+            }
             exit();
         }
     }
@@ -99,6 +101,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_have_biblio = array();
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -106,17 +109,37 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_gmd', 'gmd_id='.$itemID)) {
+        // check if this gmd data still in use biblio
+        $_sql_gmd_biblio_q = sprintf('SELECT mg.gmd_name, COUNT(mg.gmd_id) FROM biblio AS b
+        LEFT JOIN mst_gmd AS mg ON b.gmd_id=mg.gmd_id
+        WHERE mg.gmd_id=%d GROUP BY mg.gmd_name', $itemID);
+        $gmd_biblio_q = $dbs->query($_sql_gmd_biblio_q);
+        $gmd_biblio_d = $gmd_biblio_q->fetch_row();
+        if ($gmd_biblio_d[1] < 1) {
+            if (!$sql_op->delete('mst_gmd', 'gmd_id='.$itemID)) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('%s still in use %d biblio ')."<br/>",substr($gmd_biblio_d[0], 0, 45),$gmd_biblio_d[1]);
             $error_num++;
         }
     }
 
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('GMD (General Material Designation)'), __('Below data can not be deleted:') . "<br/>" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
+    }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('GMD (General Material Designation)'), __('All Data Successfully Deleted'), 'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('GMD (General Material Designation)'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');        
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
