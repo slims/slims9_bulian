@@ -34,7 +34,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config');
+        $this->load(__DIR__ . '/../config', ['sysconfig.local.inc.php', 'sysconfig.local.inc-sample.php']);
     }
 
     /**
@@ -77,7 +77,7 @@ class Config
     {
         $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
         while ($data = $query->fetch(PDO::FETCH_OBJ)) {
-            $value = unserialize($data->setting_value);
+            $value = @unserialize($data->setting_value);
             if (is_array($value)) {
                 foreach ($value as $id => $current_value) {
                     $this->configs[$data->setting_name][$id] = $current_value;

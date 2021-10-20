@@ -164,7 +164,7 @@ if (isset($_POST['doImport'])) {
 
               // first field is header
               if (isset($_POST['header']) && $n < 1) {
-                  $n++;
+                  $n++; continue;
               } else {
                 // send query
                 $dbs->query($sql_str);

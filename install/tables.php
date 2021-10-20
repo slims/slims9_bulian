@@ -201,7 +201,7 @@ return [
         'default' => ''
       ],
       [
-        'field' => 'update_date',
+        'field' => 'last_update',
         'type' => 'datetime',
         'null' => true,
         'default' => ''

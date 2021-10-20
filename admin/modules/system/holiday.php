@@ -55,12 +55,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
     $holDesc = trim($dbs->escape_string(strip_tags($_POST['holDesc'])));
     if (empty($holDesc)) {
-        utility::jsAlert(__('Holiday description can\'t be empty!'));
+        utility::jsToastr(__('Holiday Settings'),__('Holiday description can\'t be empty!'),'warning');
         exit();
     } else {
         $data['holiday_date'] = trim($_POST['holDate']); // remove extra whitespace
         if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $data['holiday_date'])) {
-            utility::jsAlert(__('Holiday Date Start must have the format YYYY-MM-DD!'));
+            utility::jsToastr(__('Holiday Settings'),__('Holiday Date Start must have the format YYYY-MM-DD!'),'warning');
             exit();
         }
         $holiday_start_date = $data['holiday_date'];
@@ -75,28 +75,28 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $updateRecordID = (integer)$_POST['updateRecordID'];
             if ($sql_op->update('holiday', $data, 'holiday_id='.$updateRecordID)) {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday date for '.$data['description'], 'Holiday', 'Update');
-                utility::jsAlert(__('Holiday Data Successfully updated'));
+                utility::jsToastr(__('Holiday Settings'),__('Holiday Data Successfully updated'),'success');
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
                 exit();
             } else {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed update holiday data for '.$data['description'], 'Holiday', 'Fail');
-                utility::jsAlert(__('Holiday FAILED to update. Please Contact System Administrator')."\n".$sql_op->error);
+                utility::jsToastr(__('Holiday Settings'),__('Holiday FAILED to update. Please Contact System Administrator')."\n".$sql_op->error,'error');
             }
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('holiday', $data)) {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' add holiday date for '.$data['description'], 'Holiday', 'Add');
-                utility::jsAlert(__('New Holiday Successfully Saved'));
+                utility::jsToastr(__('Holiday Settings'),__('New Holiday Successfully Saved'),'success');
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
                 // date range insert
                 if (!empty($_POST['holDateEnd'])) {
                     $holiday_end_date = trim($_POST['holDateEnd']); // remove extra whitespace
                     if(!preg_match('@^[0-9]{4}-[0-9]{2}-[0-9]{2}$@', $holiday_end_date)) {
-                        utility::jsAlert(__('Holiday Date End must have the format YYYY-MM-DD if it is not empty!'));
+                        utility::jsToastr(__('Holiday Settings'),__('Holiday Date End must have the format YYYY-MM-DD if it is not empty!'),'warning');
                         exit();
                     }
                     // check if holiday end date is more than holiday start date
@@ -121,7 +121,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 exit();
             } else {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed to add holiday data for '.$data['description'], 'Holiday', 'Fail');
-                utility::jsAlert(__('Holiday FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error);
+                utility::jsToastr(__('Holiday Settings'),__('Holiday FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error,'error');
             }
         }
     }
@@ -157,10 +157,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // error alerting
     if ($error_num == 0) {
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' remove holiday date with id '.$_log, 'Holiday', 'Delete');
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Holiday Settings'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Holiday Settings'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
@@ -272,25 +272,33 @@ if (isset($_GET['mode'])) {
     }
 } else {
     // holiday setting saving proccess
-    if (isset($_POST['dayname'])) {
-        // make sure that not all day selected
-        if (count($_POST['dayname']) > 6) {
-            echo '<div class="errorBox">'.__('Maximum 6 day can be set as holiday!').'</div>';
-        } else {
-            // delete previous holiday dayname settings
-            $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL');
-            if ($_POST['dayname']) {
-                // emptying holiday dayname session first
-                $_SESSION['holiday_dayname'] = array();
-                foreach ($_POST['dayname'] as $dayname) {
-                    $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
-                    // update holiday_dayname session
-                    $_SESSION['holiday_dayname'][] = $dayname;
+    if(isset($_POST['holiday_update'])){  
+        if (isset($_POST['dayname'])) {
+            // make sure that not all day selected
+            if (count($_POST['dayname']) > 6) {
+                echo '<div class="errorBox">'.__('Maximum 6 day can be set as holiday!').'</div>';
+            } else {
+                // delete previous holiday dayname settings
+                $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL');
+                if ($_POST['dayname']) {
+                    // emptying holiday dayname session first
+                    $_SESSION['holiday_dayname'] = array();
+                    foreach ($_POST['dayname'] as $dayname) {
+                        $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
+                        // update holiday_dayname session
+                        $_SESSION['holiday_dayname'][] = $dayname;
+                    }
+                    // information box
+                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
+                    utility::jsToastr(__('Holiday Settings'),__('Holiday settings saved'),'success');
                 }
-                // information box
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
-                echo '<div class="infoBox">'.__('Holiday settings saved').'</div>';
             }
+        }
+        else{
+            $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL');
+            $_SESSION['holiday_dayname'] = [];
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for empty Holidays', 'Set');
+            utility::jsToastr(__('Holiday Settings'),__('Holiday settings saved'),'success');
         }
     }
 
@@ -336,6 +344,7 @@ if (isset($_GET['mode'])) {
     $table->setCellAttr(4, 0, 'colspan="3" class="alterCell"');
 
     echo '<form name="holidayForm" id="holidayForm" class="p-3">';
+    echo '<input type="hidden" name="holiday_update" value="true" />';
     echo $table->printTable();
     echo '</form>';
 }
