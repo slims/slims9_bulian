@@ -219,7 +219,7 @@ if (isset($_POST['doImport'])) {
 
               // create biblio index
               if ($sysconf['index']['type'] == 'index') {
-                $indexer->makeIndex($biblio_id);
+                $indexer->makeIndex($biblio_id ?? 0);
               }
           }
           $row_count++;
