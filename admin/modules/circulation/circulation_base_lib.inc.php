@@ -177,7 +177,7 @@ class circulation extends member
                         WHERE rs.item_code='$str_item_code' ORDER BY reserve_date ASC LIMIT 1");
                     $_resv2_d = $_resv2_q->fetch_assoc();
                     if ($_resv2_d['member_id'] != $_SESSION['memberID']) {
-                        return ITEM_RESERVED;    
+                        return ITEM_RESERVED;
                     }
                 }
             }
@@ -359,15 +359,15 @@ class circulation extends member
         if ($_date == $str_return_date) {
             // how many days the overdue
             $_overdue_days = simbio_date::calcDay($str_return_date, $_loan_d[0]);
-            
+
             /* modified by Indra Sutriadi */
-            if ($this->ignore_holidays_fine_calc === true) {
+            if ($this->ignore_holidays_fine_calc === true || $this->ignore_holidays_fine_calc > 0) {
                 // count holiday and subtract it from overdue days
                 $_holiday_count = simbio_date::countHolidayBetween($_loan_d[0], $str_return_date, $this->holiday_dayname, $this->holiday_date);
-                $_overdue_days = $_overdue_days-$_holiday_count;
+                $_overdue_days_ignore_holiday = $_overdue_days-$_holiday_count;
             }
             /* end of modification */
-            
+
             if ($_overdue_days < 1) {
                 return false;
             }
@@ -398,6 +398,7 @@ class circulation extends member
                 return array('days' => 'On Grace Periode', 'value' => 0, 'item' => $_loan_d[2]);
             } else {
                 $_fines_value = $this->fine_each_day*$_overdue_days;
+                if (isset($_overdue_days_ignore_holiday)) $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;
                 return array('days' => $_overdue_days, 'value' => $_fines_value, 'item' => $_loan_d[2]);
             }
         }

@@ -1050,6 +1050,7 @@
                                         _pdfjsLib.GlobalWorkerOptions[key] = workerParameters[key];
                                     }
                                     parameters = Object.create(null);
+                                    parameters.password = loaderInit;
 
                                     if (typeof file === 'string') {
                                         this.setTitleUsingUrl(file);

@@ -119,7 +119,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
-            if (isset($_GET['destination'])) {
+            if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
                 header("location:" . $_GET['destination']);
             } else {
                 header('Location: index.php?p=member');
@@ -902,7 +902,7 @@ if ($is_member_login) :
         ?>
         <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member&destination=<?= urlencode($_GET['destination']) ?>" method="post">
+            <form action="index.php?p=member&destination=<?= urlencode(($_GET['destination'] ?? '')) ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>

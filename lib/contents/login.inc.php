@@ -140,7 +140,7 @@ if (isset($_POST['logMeIn'])) {
                 // message
                 $msg = '<script type="text/javascript">';
                 $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
-                // $msg .= 'history.back();';
+                $msg .= 'history.back();';
                 $msg .= '</script>';
                 simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
             }

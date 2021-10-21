@@ -38,8 +38,8 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <script>
         var workerUrl = '<?php echo JWB."pdfjs" ?>/build/pdf.worker.js';
-        var defaultPdf = '<?php echo JWB."pdfjs" ?>/web/compressed.tracemonkey-pldi-09.pdf';
-        defaultPdf = '<?php echo $file_loc_url; ?>';
+        var defaultPdf = '<?php echo $file_loc_url; ?>';
+        var loaderInit = '<?= $loader_init ?? '' ?>';
     </script>
     <script src="<?php echo JWB.'pdfjs/web' ?>/viewer.js"></script>
 
