@@ -175,6 +175,15 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
   }
   $search_result_info .= '</div>';
 
+  // check uncommon keyword to prevent sql injection
+  $checked_words = ['information_schema', 'concat', 'unhex'];
+  foreach($checked_words as $cw) {
+    if(strpos(strtolower($search_result_info), $cw) !== false) {
+      header('location: index.php');
+      exit;
+    }
+  }
+
   // show promoted titles
   if (isset($sysconf['enable_promote_titles']) && $sysconf['enable_promote_titles']) {
     $biblio_list->only_promoted = true;
