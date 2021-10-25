@@ -44,10 +44,11 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.x.x (Bulian)
+SLiMS 9.5.0 (Bulian)
 ========================================================================
 Added : Popup visitor report by day
 Added : Fines value in overdue list
+Added : Password field for encrypted attachment
 Fixed : Image path for Minigalnano
 Updated : Server for quote in Visitor Counter page
 Fixed : Ignore holiday fines calculation
