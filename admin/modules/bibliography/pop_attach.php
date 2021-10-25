@@ -149,7 +149,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       $update1 = $sql_op->update('biblio_attachment', array('access_type' => $data['access_type'], 'access_limit' => $data['access_limit'], 'placement' => $data['placement']), 'biblio_id='.$updateBiblioID.' AND file_id='.$fileID);
       // file description update
       $file_desc_update = array('file_title' => $title, 'file_url' => $url, 'file_desc' => $dbs->escape_string(trim($_POST['fileDesc'])));
-      if(isset($_POST['fileKey']) && trim($_POST['fileKey']) !== '')
+      if(isset($_POST['fileKey']))
           $file_desc_update['file_key'] = $dbs->escape_string(trim(strip_tags($_POST['fileKey'])));
       $update2 = $sql_op->update('files', $file_desc_update, 'file_id='.$fileID);
       if ($update1) {
