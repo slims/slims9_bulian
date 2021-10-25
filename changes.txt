@@ -49,6 +49,8 @@ SLiMS 9.5.0 (Bulian)
 Added : Popup visitor report by day
 Added : Fines value in overdue list
 Added : Password field for encrypted attachment
+Updated : Check uncommon keyword to prevent sql injection
+Fixed : Unable to import biblio data on first header
 Fixed : Image path for Minigalnano
 Updated : Server for quote in Visitor Counter page
 Fixed : Ignore holiday fines calculation
@@ -57,7 +59,7 @@ Fixed : Holiday setting
 Fixed : Query when import biblio data header
 Fixed : Unrelated field after import item data from CSV
 Fixed : MARC export search
-Fixex : Prevent hidden biblio to show in home page
+Fixed : Prevent hidden biblio to show in home page
 
 SLiMS 9.4.2 (Bulian)
 ========================================================================
