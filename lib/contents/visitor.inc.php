@@ -116,6 +116,8 @@ if (isset($_POST['counter'])) {
         $_checkin_date  = date('Y-m-d H:i:s');
         $_checkin_sql   = "INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$_institution', '$_checkin_date')";
         
+        SLiMS\Plugins::getInstance()->execute('MEMBER_ON_VISIT', ['data' => $_d]);
+
         // limitation
         if ($sysconf['enable_visitor_limitation']) {
           $already_checkin = checkVisit($member_id, true);
@@ -138,6 +140,9 @@ if (isset($_POST['counter'])) {
             return INSTITUTION_EMPTY;
         } else {
           $_checkin_sql = "INSERT INTO visitor_count (member_name, institution, checkin_date) VALUES ('$member_name', '$_institution', '$_checkin_date')";
+          
+          SLiMS\Plugins::getInstance()->execute('NON_MEMBER_ON_VISIT', ['data' => ['member_name' => $member_name, 'institution' => $_institution]]);
+          
           // limitation
           if ($sysconf['enable_visitor_limitation']) {
             $already_checkin = checkVisit($member_name, false);
