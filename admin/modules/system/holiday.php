@@ -170,16 +170,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner calendarIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Holiday Settings'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Holiday Settings'); ?></h2>
   </div>
-	<div class="sub_section">
+    <div class="sub_section">
     .
-	  <div class="btn-group">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>system/holiday.php" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Holiday Setting'); ?></a>
       <a href="<?php echo MWB; ?>system/holiday.php?mode=special" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Special holiday'); ?></a>
       <a href="<?php echo MWB; ?>system/holiday.php?mode=special&action=detail" class="btn btn-default"><?php echo __('Add Special holiday'); ?></a>
-	  </div>
+      </div>
   </div>
 </div>
 </div>
@@ -254,6 +254,36 @@ if (isset($_GET['mode'])) {
             $datagrid->setSQLCriteria('holiday_date IS NOT NULL');
         }
 
+        $datagrid->modifyColumnContent(1, 'callback{replaceDayname}');
+
+        function replaceDayname($obj_db, $array_data){
+            switch ($array_data[1]) {
+                case 'Sun':
+                    $dayname = __('Sunday');
+                    break;
+                case 'Mon':
+                    $dayname = __('Monday');
+                    break;
+                case 'Tue':
+                    $dayname = __('Tuesday');
+                    break;
+                case 'Wed':
+                    $dayname = __('Wednesday');
+                    break;
+                case 'Thu':
+                    $dayname = __('Thursday');
+                    break;
+                case 'Fri':
+                    $dayname = __('Friday');
+                    break;
+                case 'Sat':
+                    $dayname = __('Saturday');
+                    break;
+                default:
+                    $dayname = $array_data[1];
+                }
+            return $dayname;
+        }
         // set table and table header attributes
         $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
         $datagrid->table_attr = 'id="dataList" class="s-table table"';
@@ -272,33 +302,25 @@ if (isset($_GET['mode'])) {
     }
 } else {
     // holiday setting saving proccess
-    if(isset($_POST['holiday_update'])){  
-        if (isset($_POST['dayname'])) {
-            // make sure that not all day selected
-            if (count($_POST['dayname']) > 6) {
-                echo '<div class="errorBox">'.__('Maximum 6 day can be set as holiday!').'</div>';
-            } else {
-                // delete previous holiday dayname settings
-                $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL');
-                if ($_POST['dayname']) {
-                    // emptying holiday dayname session first
-                    $_SESSION['holiday_dayname'] = array();
-                    foreach ($_POST['dayname'] as $dayname) {
-                        $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
-                        // update holiday_dayname session
-                        $_SESSION['holiday_dayname'][] = $dayname;
-                    }
-                    // information box
-                    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
-                    utility::jsToastr(__('Holiday Settings'),__('Holiday settings saved'),'success');
-                }
-            }
-        }
-        else{
+    if (isset($_POST['dayname'])) {
+        // make sure that not all day selected
+        if (count($_POST['dayname']) > 6) {
+            echo '<div class="errorBox">'.__('Maximum 6 day can be set as holiday!').'</div>';
+        } else {
+            // delete previous holiday dayname settings
             $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL');
-            $_SESSION['holiday_dayname'] = [];
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for empty Holidays', 'Set');
-            utility::jsToastr(__('Holiday Settings'),__('Holiday settings saved'),'success');
+            if ($_POST['dayname']) {
+                // emptying holiday dayname session first
+                $_SESSION['holiday_dayname'] = array();
+                foreach ($_POST['dayname'] as $dayname) {
+                    $dbs->query("INSERT INTO holiday VALUES(NULL, '" . $dbs->escape_string($dayname) . "', NULL, NULL)");
+                    // update holiday_dayname session
+                    $_SESSION['holiday_dayname'][] = $dayname;
+                }
+                // information box
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
+                echo '<div class="infoBox">'.__('Holiday settings saved').'</div>';
+            }
         }
     }
 
@@ -344,7 +366,6 @@ if (isset($_GET['mode'])) {
     $table->setCellAttr(4, 0, 'colspan="3" class="alterCell"');
 
     echo '<form name="holidayForm" id="holidayForm" class="p-3">';
-    echo '<input type="hidden" name="holiday_update" value="true" />';
     echo $table->printTable();
     echo '</form>';
 }
