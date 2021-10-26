@@ -89,7 +89,10 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   if (!empty($biblio_detail['image']) && !defined('LIGHTWEIGHT_MODE')) {
     $biblio_detail['image'] = urlencode($biblio_detail['image']);
     $images_loc = 'images/docs/'.$biblio_detail['image'];
-    if ($sysconf['tg']['type'] == 'minigalnano') {
+    if($biblio_detail['image'] == '' || $biblio_detail['image'] == NULL){
+      $images_loc = 'images/default/image.png'; 
+    }
+      if ($sysconf['tg']['type'] == 'minigalnano') {
       $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
       $image_cover = '<img src="'.$thumb_url.'" class="img-thumbnail" itemprop="image" alt="'.$title.'" />';
     }
