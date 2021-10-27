@@ -27,12 +27,15 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+// Environment config
+require 'config/sysconfig.env.inc.php';
+
 /*
  * Set to development or production
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'production');
+define('ENVIRONMENT', $Environment);
 
 switch (ENVIRONMENT) {
   case 'development':

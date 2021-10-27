@@ -30,6 +30,7 @@ $menu[] = array('Header', __('CONFIGURATION'));
 if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('System Configuration'), MWB.'system/index.php', __('Configure Global System Preferences'));
     $menu[] = array(__('System Environment'), MWB.'system/envinfo.php', __('Information about System Environment'));
+    $menu[] = array(__('System Environment Setting'), MWB.'system/envsetting.php', __('Configure System Environment Mode'));
     $menu[] = array(__('UCS Setting'), MWB.'system/ucsetting.php', __('Configure UCS Preferences'));
     $menu[] = array(__('Theme'), MWB.'system/theme.php', __('Configure theme Preferences'));
     $menu[] = array(__('Plugins'), MWB . 'system/plugins.php');
