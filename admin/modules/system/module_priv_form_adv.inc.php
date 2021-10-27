@@ -53,11 +53,22 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
             <div id="<?= $module_data['module_path'] ?>" class="collapse <?= $n < 1 ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <?php
                     $menu = [];
+                    $_ = '__';
                     $submenu_path = MDLBS . $module_data['module_path'] . '/submenu.php';
                     $for_select_privileges = true;
                     if (file_exists($submenu_path)) include $submenu_path;
-                    $submenu = '<ul class="list-group list-group-flush">';
-                    $submenu .= '<li class="list-group-item text-bold">'.__('Enable or disable submenu').'</li>';
+                    $menuID = 'prev-'.$module_data['module_path'];
+                    $submenu = '<ul class="list-group list-group-flush" id="'.$menuID.'">';
+                    $submenu .= '<li class="list-group-item text-bold d-flex justify-content-between">';
+                    $submenu .= '<span>'.__('Enable or disable submenu').'</span>';
+                    $submenu .= <<<HTML
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button onclick="checkBox('#{$menuID}', 'select')" type="button" class="btn btn-secondary">{$_('Select All')}</button>
+                        <button onclick="checkBox('#{$menuID}', 'unselect')" type="button" class="btn btn-secondary">{$_('Unselect All')}</button>
+                        <button onclick="checkBox('#{$menuID}', 'invert')" type="button" class="btn btn-secondary">{$_('Select Invert')}</button>
+                    </div>
+HTML;
+                    $submenu .= '</li>';
 
                     // load submenu from plugins
                     $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($module_data['module_path']);
@@ -86,5 +97,27 @@ HTML;
         </div>
         <?php $n++; endwhile; ?>
     </div>
+    <script>
+        /**
+         * Check or uncheck input checkbox method.
+         * @param root selector of root
+         * @param method select=select all; unselect=unselect all; default=invert
+         */
+        function checkBox(root, method) {
+            $(root).find('input[type=checkbox]').each(function () {
+                switch (method) {
+                    case 'select':
+                        if(!this.checked) $(this).trigger('click')
+                        break;
+                    case 'unselect':
+                        if(this.checked) $(this).trigger('click')
+                        break;
+                    default:
+                        $(this).trigger('click')
+                        break;
+                }
+            })
+        }
+    </script>
 <?php
 $priv_table = ob_get_clean();

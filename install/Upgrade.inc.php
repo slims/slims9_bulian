@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 29;
+  private $version = 31;
 
   /**
    * @param SLiMS $slims
@@ -1004,6 +1004,23 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      */
     function upgrade_role_29()
     {
+    }
+
+    /**
+     * Upgrade role to v9.4.2
+     */
+    function upgrade_role_30()
+    {
+    }
+
+    /**
+     * Upgrade role to v9.4.3
+     */
+    function upgrade_role_31()
+    {
+        $sql['alter'][] = "ALTER TABLE `files` ADD `file_key` text COLLATE 'utf8_unicode_ci' NULL AFTER `file_desc`;";
+
+        return $this->slims->query($sql, ['alter']);
     }
 
 }

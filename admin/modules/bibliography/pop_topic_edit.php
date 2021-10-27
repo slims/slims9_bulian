@@ -1,10 +1,6 @@
 <?php
 /**
- * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
- * @Date                : 12/04/2021 14:21
- * @File name           : string.php
- *
- * This file contain unused string on source code but used in database.
+ * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +18,27 @@
  *
  */
 
-return [
-    __('System'),
-    __('Reporting'),
-    __('Select All'),
-    __('Unselect All'),
-    __('Select Invert')
-];
+/* Biblio Author */
+
+// key to authenticate
+define('INDEX_AUTH', '1');
+
+// main system configuration
+require '../../../sysconfig.inc.php';
+
+if (isset($_GET['topicID'])) {
+  $_POST['itemID'] = $_GET['topicID'];
+  $_POST['detail'] = true;
+
+}
+$_GET['inPopUp'] = true;
+
+ob_start();
+require MDLBS.'master_file/topic.php';
+$content = ob_get_clean();
+
+// page title
+$page_title = 'Biblio Topic';
+
+// include the page template
+require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';

@@ -66,6 +66,7 @@ if ($file_q->num_rows > 0) {
     if ($file_d['mime_type'] == 'application/pdf') {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
+        $loader_init = $file_d['file_key'];
         \SLiMS\Plugins::getInstance()->execute('fstream_pdf_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
 
         if (utility::isMobileBrowser()) {

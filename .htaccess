@@ -6,11 +6,19 @@
   Order allow,deny
 </FilesMatch>
 
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Protect hidden directory from vulnerability scanner
+    RewriteRule (^|/)\.([^/]+)(/|$) - [L,F]
+    RewriteRule (^|/)([^/]+)~(/|$) - [L,F]
+</IfModule>
+
 # Don't show directory listings for URLs which map to a directory.
 Options -Indexes
 
 # Follow symbolic links in this directory.
-Options +FollowSymLinks
+# Options +FollowSymLinks
+Options +SymLinksIfOwnerMatch
 
 # Force simple error message for requests for non-existent favicon.ico.
 <Files favicon.ico>

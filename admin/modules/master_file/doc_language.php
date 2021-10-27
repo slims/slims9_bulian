@@ -53,7 +53,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $langName = trim(strip_tags($_POST['langName']));
     // check form validity
     if (empty($langName) OR empty($langID)) {
-        utility::jsAlert(__('Language ID or Name can\'t be empty'));
+        utility::jsToastr(__('Doc. Language'),__('Language ID or Name can\'t be empty'),'error');
         exit();
     } else {
         $data['language_id'] = $dbs->escape_string($langID);
@@ -72,20 +72,20 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_language', $data, 'language_id=\''.$updateRecordID.'\'');
             if ($update) {
-                utility::jsAlert(__('Language Data Successfully Updated'));
+                utility::jsToastr(__('Doc. Language'),__('Language Data Successfully Updated'),'success');
                 // update language ID in biblio table to keep data integrity
                 $sql_op->update('biblio', array('language_id' => $data['language_id']), 'language_id=\''.$updateRecordID.'\'');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Language Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Doc. Language'),__('Language Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_language', $data);
             if ($insert) {
-                utility::jsAlert(__('New Language Data Successfully Saved'));
+                utility::jsToastr(__('Doc. Language'),__('New Language Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Language Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Doc. Language'),__('Language Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -98,6 +98,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_have_biblio = array();        
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array($dbs->escape_string(trim($_POST['itemID'])));
@@ -105,17 +106,38 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = $dbs->escape_string(trim($itemID));
-        if (!$sql_op->delete('mst_language', "language_id='$itemID'")) {
-            $error_num++;
+        // check if this place data still in use biblio
+        $_sql_lang_biblio_q = sprintf('SELECT ml.language_name, COUNT(ml.language_id) FROM biblio AS b
+        LEFT JOIN mst_language AS ml ON b.language_id=ml.language_id
+        WHERE ml.language_id LIKE \'%s\' GROUP BY ml.language_name', $itemID);
+        $lang_biblio_q = $dbs->query($_sql_lang_biblio_q);
+        $lang_biblio_d = $lang_biblio_q->fetch_row();
+        if ($lang_biblio_d[1] < 1) {        
+            if (!$sql_op->delete('mst_language', "language_id='$itemID'")) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('%s still in use %d biblio').'<br/>',substr($lang_biblio_d[0], 0, 45),$lang_biblio_d[1]);
+            $error_num++;            
         }
     }
 
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('Doc. Language'), __('Below data can not be deleted:') . "\n" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
+    }  
+
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Doc. Language'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Doc. Language'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

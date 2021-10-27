@@ -107,13 +107,14 @@ if ($biblioID) {
   while ($biblio_topic_d = $biblio_topic_q->fetch_assoc()) {
     // alternate the row color
     $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
-
+    //edit link
+    $edit_link = '<div class="btn btn-group"><a href="'.MWB.'bibliography/pop_topic_edit.php?topicID=' .$biblio_topic_d['topic_id']. '&biblio_id='.$biblioID.'" class="s-btn btn btn-default notAJAX openPopUp" title="'.__('Subject').'">' . __('Edit') . '</a>';
     // remove link
-    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_topic_d['topic_id'].')">' . __('Delete') . '</a>';
+    $remove_link = '<a href="#" class="notAJAX btn button btn-danger btn-delete" onclick="confirmProcess('.$biblioID.', '.$biblio_topic_d['topic_id'].')">' . __('Delete') . '</a></iv>';
     $topic = $biblio_topic_d['topic'];
     $topic_type = $sysconf['subject_type'][$biblio_topic_d['topic_type']];
 
-    $table->appendTableRow(array($remove_link, $topic, $topic_type, $sysconf['subject_level'][$biblio_topic_d['level']]));
+    $table->appendTableRow(array($edit_link.$remove_link, $topic, $topic_type, $sysconf['subject_level'][$biblio_topic_d['level']]));
     $table->setCellAttr($row, 0, 'class="'.$row_class.'" style="font-weight: bold; width: 10%;"');
     $table->setCellAttr($row, 1, 'class="'.$row_class.'" style="font-weight: bold; width: 50%;"');
     $table->setCellAttr($row, 2, 'class="'.$row_class.'" style="font-weight: bold; width: 20%;"');
@@ -156,6 +157,7 @@ if ($biblioID) {
   }
 }
 /* main content end */
+
 $content = ob_get_clean();
 // include the page template
 require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
