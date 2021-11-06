@@ -14,7 +14,7 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-$Environment = 'production';
+$Environment = 'development';
 $ConditionEnvironment = '?';
 $BasedIp = 0;
 $RangeIp = [];
