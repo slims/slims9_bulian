@@ -8,23 +8,29 @@
 namespace SLiMS;
 
 
+use stdClass;
+
 class Plugins
 {
+    const DATABASE_VERSION = 'db_version';
+
     private static $instance;
     /**
      * Store plugins location, so plugins can stored in multiple location
      * @var array
      */
-    protected $locations = [];
+    protected array $locations = [];
 
     /**
      * Plugin scanned will store here
      * @var array
      */
-    protected $plugins = [];
-    protected $hooks = [];
-    protected $menus = [];
-    private $deep = 0;
+    protected array $plugins = [];
+    protected array $active_plugins = [];
+    protected array $hooks = [];
+    protected array $menus = [];
+    private int $deep = 2;
+    private string $current_location = '';
 
     /**
      * Plugins constructor.
@@ -35,7 +41,7 @@ class Plugins
         $this->addLocation($location);
     }
 
-    public static function getInstance()
+    public static function getInstance(): Plugins
     {
         if (is_null(self::$instance)) self::$instance = new static;
         return self::$instance;
@@ -58,14 +64,14 @@ class Plugins
         return $this;
     }
 
-    private function getPluginInfo($path)
+    private function getPluginInfo($path): stdClass
     {
         $file_open = fopen($path, 'r');
         $raw_data = fread($file_open, 8192);
         fclose($file_open);
 
         // store plugin info as object
-        $plugin = new \stdClass;
+        $plugin = new stdClass;
 
         // parsing plugin data
         preg_match('|Plugin Name:(.*)$|mi', $raw_data, $plugin->name);
@@ -95,17 +101,65 @@ class Plugins
                     // just get file with suffix plugin.php
                     if (strpos($path, 'plugin.php')) {
                         $plugin = $this->getPluginInfo($path);
+                        // get migration info
                         $this->plugins[$plugin->id] = $plugin;
+                        $this->plugins[$plugin->id]->migration = $this->getMigrationInfo($plugin);
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
-                    $this->deep++;
                     // get plugins from sub folder location
                     // deep level directory that will be scanned
-                    if ($this->deep < 3) $this->getPluginsInfo($path);
+                    if ($this->isDeep($location)) $this->getPluginsInfo($path);
                 }
             }
             closedir($dir);
         }
+    }
+
+    private function getMigrationInfo($plugin): stdClass
+    {
+        $migration = new stdClass;
+        $migration->is_exist = false;
+
+        $migration_directory = dirname($plugin->path) . DIRECTORY_SEPARATOR . 'migration';
+        if (is_dir($migration_directory)) {
+            $migration->is_exist = true;
+            $migration->{self::DATABASE_VERSION} = $this->getDBVersion($plugin->id);
+        }
+        return $migration;
+    }
+
+    private function getOptions($id): void
+    {
+        if (isset($this->active_plugins[$id])) {
+            try {
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options);
+            } catch (\Exception $exception) {
+                $this->plugins[$id]->options = new stdClass;
+            }
+        } else {
+            $stmt = DB::getInstance()->prepare('SELECT options FROM plugins WHERE id = :id');
+            $stmt->execute(['id' => $id]);
+            if ($stmt->rowCount() < 1) $this->plugins[$id]->options = new stdClass;
+            $plugin = $stmt->fetch(\PDO::FETCH_OBJ);
+            try {
+                $this->plugins[$id]->options = json_decode($plugin->options ?? '{}');
+            } catch (\Exception $exception) {
+                $this->plugins[$id]->options = new stdClass;
+            }
+        }
+    }
+
+    private function getDBVersion($id): int
+    {
+        $this->getOptions($id);
+        return $this->plugins[$id]->options->{self::DATABASE_VERSION} ?? 0;
+    }
+
+    function isDeep($location): bool
+    {
+        $sub_dir = str_replace($this->current_location, '', $location);
+        $arr_sub_dir = explode(DIRECTORY_SEPARATOR, $sub_dir);
+        return count($arr_sub_dir) <= $this->deep;
     }
 
     /**
@@ -114,6 +168,7 @@ class Plugins
     public function getPlugins(): array
     {
         foreach ($this->locations as $location) {
+            $this->current_location = $location;
             $this->getPluginsInfo($location);
         }
         return $this->plugins;
@@ -122,12 +177,19 @@ class Plugins
     /**
      * Get active plugins from database
      */
-    public function getActive()
+    public function getActive(): array
     {
-        $query = DB::getInstance()->query("SELECT * FROM plugins");
-        $result = [];
-        while ($data = $query->fetchObject()) $result[$data->id] = $data;
-        return $result;
+        $query = DB::getInstance()->query("SELECT * FROM plugins WHERE deleted_at IS NULL");
+        while ($data = $query->fetchObject()) $this->active_plugins[$data->id] = $data;
+        return $this->active_plugins;
+    }
+
+    public function isActive($id): bool
+    {
+        $query = DB::getInstance()->prepare("SELECT * FROM plugins WHERE ID = :id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+        return $query->rowCount() > 0;
     }
 
     public function loadPlugins()
@@ -145,7 +207,12 @@ class Plugins
     public function registerMenu($module_name, $label, $path, $description = null)
     {
         $hash = md5(realpath($path));
-        $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
+        if ($module_name === 'opac') {
+            $name = strtolower(implode('_', explode(' ', $label)));
+            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $module_name, $description, realpath($path)];
+        } else {
+            $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
+        }
     }
 
     public function execute($hook, $params = [])

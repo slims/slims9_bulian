@@ -103,7 +103,7 @@ if ($stk_query->num_rows < 1) {
         while ($st_other_users_d = $st_other_users_q->fetch_row()) {
             if ($st_other_users_d[0] != $stk_data['stock_take_users']) {
                 if($st_other_users_d[0]!=''){
-                    $report_row[__('Stock Take Participants')] .= '<li>'.$st_other_users_d[0].' ('.$st_other_users_d[1].' '.__('items already checked').')</li>'; 
+                    $report_row[__('Stock Take Participants')] .= '<li><a href="'.MWB.'stock_take/st_report_detail.php?by='.urlencode($st_other_users_d[0]).'&id='.urlencode($stk_data['stock_take_id']).'" title="'.sprintf(__('Stock take report detail for %s'), $st_other_users_d[0]).'" class="openPopUp notAJAX" width="1024" height="640">'.$st_other_users_d[0].' ('.$st_other_users_d[1].' '.__('items already checked').')</a></li>';
                 }
             }
         }

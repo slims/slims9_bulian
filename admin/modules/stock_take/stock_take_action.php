@@ -107,10 +107,23 @@ if (isset($_POST['itemCode'])) {
             echo '</script>';
         }
     } else {
+
+        // check for item status rules "Skipped By Stock Take"
+        $status_q = $dbs->query(sprintf("SELECT item.item_code FROM item 
+                     LEFT JOIN mst_item_status ON item.item_status_id=mst_item_status.item_status_id
+                     WHERE item.item_code = '%s' AND mst_item_status.skip_stock_take=1", $item_code));
+        if ($status_q->num_rows > 0) {
+            $message = 'Stock Take ERROR : '.sprintf(__('Item Code (%s) have rule to skipped by stock take'),$item_code);
+            $alert = sprintf(__('Item Code %s have rule to skipped by stock take'),$item_code);
+        } else {
+            $message = 'Stock Take ERROR : '.sprintf(__('Item Code (%s) doesnt exists in stock take data. Invalid Item Code OR Maybe out of Stock Take range'),$item_code);
+            $alert = sprintf(__('Item Code %s doesnt exists in stock take data.\\nInvalid Item Code OR Maybe out of Stock Take range'),$item_code);
+        }
+
         // record to log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take','Stock Take ERROR : '.sprintf(__('Item Code (%s) doesnt exists in stock take data. Invalid Item Code OR Maybe out of Stock Take range'),$item_code), 'Error', 'No Item');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take',$message, 'Error', 'No Item');
         echo '<script type="text/javascript">'."\n";
-        echo 'parent.$(\'#stError\').html(\''.sprintf(__('Item Code %s doesnt exists in stock take data.\\nInvalid Item Code OR Maybe out of Stock Take range'),$item_code).'\')';
+        echo 'parent.$(\'#stError\').html(\''.$alert.'\')';
         echo '.css( {\'display\': \'block\'} );'."\n";
         echo 'parent.$(\'#itemCode\').val(\'\').focus();'."\n";
         echo '</script>';

@@ -23,7 +23,7 @@
 do_checkIP('smc');
 do_checkIP('smc-masterfile');
 
-$menu[] = array('Header', __('Authority Files'));
+$menu[] = array('Header', __('AUTHORITY FILES'));
 $menu[] = array(__('GMD'), MWB.'master_file/index.php', __('General Material Designation'));
 $menu[] = array(__('Content Type'), MWB.'master_file/rda_cmc.php?type=content', __('RDA Content Type'));
 $menu[] = array(__('Media Type'), MWB.'master_file/rda_cmc.php?type=media', __('RDA Media Type'));
@@ -33,14 +33,14 @@ $menu[] = array(__('Supplier'), MWB.'master_file/supplier.php', __('Item Supplie
 $menu[] = array(__('Author'), MWB.'master_file/author.php', __('Document Authors'));
 $menu[] = array(__('Subject'), MWB.'master_file/topic.php', __('Subject'));
 $menu[] = array(__('Location'), MWB.'master_file/location.php', __('Item Location'));
-$menu[] = array('Header', __('Lookup Files'));
+$menu[] = array('Header', __('LOOKUP FILES'));
 $menu[] = array(__('Place'), MWB.'master_file/place.php', __('Place Name'));
 $menu[] = array(__('Item Status'), MWB.'master_file/item_status.php', __('Item Status'));
 $menu[] = array(__('Collection Type'), MWB.'master_file/coll_type.php', __('Collection Type'));
 $menu[] = array(__('Doc. Language'), MWB.'master_file/doc_language.php', __('Document Content Language'));
 $menu[] = array(__('Label'), MWB.'master_file/label.php', __('Special Labels for Titles to Show Up On Homepage'));
 $menu[] = array(__('Frequency'), MWB.'master_file/frequency.php', __('Frequency'));
-$menu[] = array('Header', __('Tools'));
+$menu[] = array('Header', __('TOOLS'));
 $menu[] = array(__('Cataloging Servers'), MWB.'master_file/p2pservers.php', __('List of available Copy Cataloging Servers'));
 $menu[] = array(__('Item Code Pattern'), MWB.'master_file/item_code_pattern.php', __('Manage item code pattern'));
 $menu[] = array(__('Orphaned Author'), MWB.'master_file/author.php?type=orphaned', __('Orphaned Authors'));

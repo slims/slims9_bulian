@@ -89,7 +89,7 @@ if (!$reportView) {
                 $coll_type_options = array();
                 $coll_type_options[] = array('0', __('ALL'));
                 while ($coll_type_d = $coll_type_q->fetch_row()) {
-                    $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+                    $coll_type_options[] = array($coll_type_d[1], $coll_type_d[1]);
                 }
                 echo simbio_form_element::selectList('collType', $coll_type_options,'','class="form-control col-2"');
                 ?>

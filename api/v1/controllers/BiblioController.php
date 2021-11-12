@@ -95,4 +95,40 @@ class BiblioController extends Controller
             'data' => ($query->fetch_row())[0]
         ]);
     }
+
+    public function getByGmd($gmd) {
+        $limit = 3;
+        $sql = "SELECT b.biblio_id, b.title, b.image, b.notes
+          FROM biblio AS b, mst_gmd AS g
+          WHERE b.gmd_id=g.gmd_id AND g.gmd_name='$gmd'
+          ORDER BY b.last_update DESC
+          LIMIT {$limit}";
+        $query = $this->db->query($sql);
+        $return = array();
+        while ($data = $query->fetch_assoc()) {
+            $data['image'] = $this->getImagePath($data['image']);
+            $return[] = $data;
+        }
+    
+        parent::withJson($return);
+    }
+
+    public function getByCollType($coll_type) {
+        $limit = 3;
+        $sql = "SELECT b.biblio_id, b.title, b.image, b.notes
+          FROM biblio AS b, item AS i, mst_coll_type AS c
+          WHERE b.biblio_id=i.biblio_id AND i.coll_type_id=c.coll_type_id AND c.coll_type_name='$coll_type'
+          ORDER BY b.last_update DESC
+          LIMIT {$limit}";
+        $query = $this->db->query($sql);
+        $return = array();
+        while ($data = $query->fetch_assoc()) {
+            $data['image'] = $this->getImagePath($data['image']);
+            $return[] = $data;
+        }
+    
+        parent::withJson($return);
+    }
+
+
 }

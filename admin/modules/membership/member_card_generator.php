@@ -150,8 +150,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         include $custom_settings;
     }
 
-	  // load print settings from database to override value from printed_settings file
+	// load print settings from database to override value from printed_settings file
     loadPrintSettings($dbs, 'membercard');
+
+    // execute registered hook
+    \SLiMS\Plugins::getInstance()->execute('membercard_theme_print', [$member_datas]);
 
     // chunk cards array
     $chunked_card_arrays = array_chunk($member_datas, $card_ = $sysconf['print']['membercard']['items_per_row']);
@@ -177,7 +180,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
         // update print queue count object
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in window
-        echo '<script type="text/javascript">top.jQuery.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Member Card Printing').'"})</script>';
+        echo '<script type="text/javascript">top.jQuery.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'?v='.date('YmdHis').'", iframe: true, width: 800, height: 500, title: "'.__('Member Card Printing').'"})</script>';
     } else { utility::jsAlert(str_replace('{directory}', SB.FLS, __('ERROR! Cards failed to generate, possibly because {directory} directory is not writable'))); }
     exit();
 }

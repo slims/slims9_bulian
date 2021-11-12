@@ -219,7 +219,7 @@ if (isset($_POST['doImport'])) {
 
               // create biblio index
               if ($sysconf['index']['type'] == 'index') {
-                $indexer->makeIndex($biblio_id);
+                $indexer->makeIndex($biblio_id ?? 0);
               }
           }
           $row_count++;
@@ -264,7 +264,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // csv files
-$str_input  = '<div class="container">';
+$str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
 $str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');

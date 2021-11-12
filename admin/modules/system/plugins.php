@@ -5,6 +5,10 @@
  * @File name           : plugins.php
  */
 
+use SLiMS\DB;
+use SLiMS\Migration\Runner;
+use SLiMS\Plugins;
+
 define('INDEX_AUTH', 1);
 
 require __DIR__ . '/../../../sysconfig.inc.php';
@@ -24,7 +28,7 @@ $can_write = utility::havePrivilege('system', 'w');
 
 if (!$can_read) die('<div class="errorBox">' . __('You don\'t have enough privileges to view this section') . '</div>');
 
-$plugins = \SLiMS\Plugins::getInstance();
+$plugins = Plugins::getInstance();
 
 $_POST = json_decode(file_get_contents('php://input'), true);
 if (isset($_POST['enable'])) {
@@ -35,14 +39,37 @@ if (isset($_POST['enable'])) {
 
     try {
         if ($_POST['enable']) {
-            $query = \SLiMS\DB::getInstance()->prepare('INSERT INTO plugins (id, path, created_at, uid) VALUES (:id, :path, :created_at, :uid)');
+            $options = ['version' => $plugin->version];
+
+            $query = DB::getInstance()->prepare('INSERT INTO plugins (id, path, options, created_at, deleted_at, uid) VALUES (:id, :path, :options, :created_at, :deleted_at, :uid)');
+            if ($plugins->isActive($plugin->id))
+                $query = DB::getInstance()->prepare('UPDATE `plugins` SET `path` = :path, `options` = :options, `updated_at` = :created_at, `deleted_at` = :deleted_at, `uid` = :uid WHERE `id` = :id');
+
+            // run migration if available
+            if ($plugin->migration->is_exist) {
+                $options[Plugins::DATABASE_VERSION] = Runner::path($plugin->path)->setVersion($plugin->migration->{Plugins::DATABASE_VERSION})->runUp();
+                $query->bindValue(':options', json_encode($options));
+            } else {
+                $query->bindValue(':options', null);
+            }
+
             $query->bindValue(':id', $id);
             $query->bindValue(':path', $plugin->path);
             $query->bindValue(':created_at', date('Y-m-d H:i:s'));
+            $query->bindValue(':deleted_at', null);
             $query->bindValue(':uid', $_SESSION['uid']);
             $message = sprintf(__('Plugin %s enabled'), $plugin->name);
+
         } else {
-            $query = \SLiMS\DB::getInstance()->prepare("DELETE FROM plugins WHERE id = :id");
+            if ($plugin->migration->is_exist && !$_POST['runDown']) {
+                $query = DB::getInstance()->prepare("UPDATE plugins SET deleted_at = :deleted_at WHERE id = :id");
+                $query->bindValue('deleted_at', date('Y-m-d H:i:s'));
+            } elseif ($plugin->migration->is_exist && $_POST['runDown']) {
+                Runner::path($plugin->path)->setVersion($plugin->migration->{Plugins::DATABASE_VERSION})->runDown();
+                $query = DB::getInstance()->prepare("DELETE FROM plugins WHERE id = :id");
+            } else {
+                $query = DB::getInstance()->prepare("DELETE FROM plugins WHERE id = :id");
+            }
             $query->bindValue(':id', $id);
             $message = sprintf(__('Plugin %s disabled'), $plugin->name);
         }
@@ -52,7 +79,7 @@ if (isset($_POST['enable'])) {
         if ($run) {
             echo json_encode(['status' => true, 'message' => $message]);
         } else {
-            echo json_encode(['status' => false, 'message' => \SLiMS\DB::getInstance()->errorInfo()]);
+            echo json_encode(['status' => false, 'message' => DB::getInstance()->errorInfo()]);
         }
     } catch (Exception $exception) {
         echo json_encode(['status' => false, 'message' => $exception->getMessage()]);
@@ -94,10 +121,20 @@ $plugin_actives = $plugins->getActive();
         if (isset($plugin_actives[$hash])) {
             $enable_disable = __('Enabled');
             $is_active = 'checked';
+
+            // if have migration and version is different
+            // disable it.
+            $version = (json_decode($plugin_actives[$hash]->options))->version ?? '';
+            if ($version !== $plugin->version && $plugin->migration->is_exist) {
+                $enable_disable = __('Disabled');
+                $is_active = '';
+            }
+
         } else {
             $enable_disable = __('Disabled');
             $is_active = '';
         }
+
         echo <<<HTML
     <tr>
         <th scope="row">{$n}</th>
@@ -108,7 +145,7 @@ $plugin_actives = $plugins->getActive();
         </td>
         <td>
             <div class="custom-control custom-switch">
-                <input onchange="enablePlugin(event)" type="checkbox" class="custom-control-input" id="{$hash}" {$is_active}>
+                <input onchange="enablePlugin(event, {$plugin->migration->is_exist})" type="checkbox" class="custom-control-input" id="{$hash}" {$is_active}>
                 <label class="custom-control-label" for="{$hash}">{$enable_disable}</label>
             </div>
         </td>
@@ -121,12 +158,17 @@ HTML;
     </tbody>
 </table>
 <script>
-    function enablePlugin(e) {
+    function enablePlugin(e, m = false) {
+
+        let runDown = false
+        if (!e.target.checked && m) runDown = confirm("<?= __('Plugin has been disabled.\nRun Migration too? This may will drop this plugin\'s table and the data can not be restored!') ?>")
+
         fetch('<?= $_SERVER['PHP_SELF'] ?>', {
             method: 'POST',
             body: JSON.stringify({
                 enable: e.target.checked,
-                id: e.target.getAttribute('id')
+                id: e.target.getAttribute('id'),
+                runDown
             })
         })
             .then(res => res.json())

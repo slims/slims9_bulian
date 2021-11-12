@@ -122,11 +122,11 @@ if (!$reportView) {
     }
 
     // query fines data to database
-    // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
+    // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal`, `fines_id` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
     $_fines_q = $dbs->query("SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`");
     while ($_fines_d = $_fines_q->fetch_row()) {
         $date = (integer)preg_replace('@^0+@i', '',$_fines_d[0]);
-        $fines_data[$date] = '<div class="data">'.($_fines_d[1]?$_fines_d[1]:'0').'</div>';
+        $fines_data[$date] = '<div class="data"><a href="'.AWB.'modules/reporting/customs/member_fines_list.php?reportView=true&finesDate='.$selected_year.'-'.$selected_month.'-'.$date.'" class="notAJAX openPopUp" width="800" height="600" title="'.__('Member Fines List').'">'.($_fines_d[1]?$_fines_d[1]:'0').'</a></div>';
     }
 
     // generate calendar
@@ -138,5 +138,5 @@ if (!$reportView) {
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
+    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
 }

@@ -205,6 +205,12 @@ if (isset($_POST['updateData'])) {
     $allowed_counter_ip = array_map(function ($ip) {return trim($ip);}, $allowed_counter_ip);
     addOrUpdateSetting('allowed_counter_ip', $allowed_counter_ip);
 
+    // reserve
+    $reserve_direct_database = utility::filterData('reserve_direct_database', 'post', true, true, true);
+    addOrUpdateSetting('reserve_direct_database', $reserve_direct_database);
+    $reserve_on_loan_only = utility::filterData('reserve_on_loan_only', 'post', true, true, true);
+    addOrUpdateSetting('reserve_on_loan_only', $reserve_on_loan_only);
+
     // visitor limitation
     $visitor_limitation = $_POST['enable_visitor_limitation'];
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($visitor_limitation)).'\' WHERE setting_name=\'enable_visitor_limitation\'');
@@ -239,7 +245,7 @@ $form->table_content_attr = 'class="alterCell2"';
 utility::loadSettings($dbs);
 
 // version status
-$form->addAnything('Senayan Version', '<strong>'.SENAYAN_VERSION.'</strong>');
+$form->addAnything(__('SLiMS Version'), '<strong>'.SENAYAN_VERSION.'</strong>');
 
 // library name
 $form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'class="form-control"');
@@ -251,7 +257,7 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 $str_input = '';
 if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
-    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=../../images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
+    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
 $str_input .= '<div class="custom-file col-3">';
@@ -386,6 +392,16 @@ $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time
 
 // time visitor limitation
 $form->addTextField('text', 'time_visitor_limitation', __('Time visitor limitation (in minute)'), $sysconf['time_visitor_limitation'], 'style="width: 10%;" class="form-control"');
+
+$options = null;
+$options[] = array('0', __('Email'));
+$options[] = array('1', __('Database'));
+$form->addSelectList('reserve_direct_database', __('Reserve methode'), $options, $sysconf['reserve_direct_database']?'1':'0','class="form-control col-3"');
+
+$options = null;
+$options[] = array('0', __('Disable'));
+$options[] = array('1', __('Enable'));
+$form->addSelectList('reserve_on_loan_only', __('Reserve for item on loan only'), $options, $sysconf['reserve_on_loan_only']?'1':'0','class="form-control col-3"');
 
 // print out the object
 echo $form->printOut();

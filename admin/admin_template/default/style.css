@@ -1141,19 +1141,21 @@ sidebar
   background-size: cover;
   opacity: 0.15;
 }
-#sidepan .subMenuHeader {
-  font-size: 12pt;
-  margin-top: 10px;
-}
-#sidepan div:not(.scrollbar-track-y),
-#sidepan a {
-  margin: 0;
+#sidepan .subMenuHeader,
+#sidepan .subMenuItem {
   color: #ffffff;
   display: block;
-  padding: 3px 15px;
+  padding: 3px 10px;
   position: relative;
   font-size: 10pt;
   font-family: 'Quicksand', sans-serif;
+}
+#sidepan .subMenuHeader {
+  padding-left: 16px;
+}
+#sidepan .subMenuItem {
+  margin: 4px 0 0 4px;
+  transition: ease-in all 0.1s;
 }
 #sidepan .scrollbar-track.scrollbar-track-x.show {
   display: none !important;
@@ -1162,18 +1164,38 @@ sidebar
   font-weight: bold;
   color: #ffffff;
 }
-#sidepan a:hover,
-#sidepan .curModuleLink,
-#sidepan .subMenuItem:first-child {
-  background-color: #fff !important;
-  color: #c54545;
-}
-#sidepan a:hover,
+#sidepan .subMenuItem:first-child,
 #sidepan .curModuleLink {
+  background-color: #fafafa !important;
   color: #00a9ff;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
 }
-#sidepan > div.scroll-content > div.subMenuHeader {
-  font-size: 16px;
+#sidepan .subMenuItem:first-child {
+  color: #c54545;
+  border-radius: 50%;
+}
+#sidepan .subMenuItem:not(.curModuleLink):hover {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
+}
+#sidepan .subMenuItem:not(.curModuleLink):focus {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 20px 0 0 20px;
+  padding-left: 16px;
+}
+#sidepan .scroll-content .subMenuHeader {
+  font-size: 10px;
+  margin-top: 16px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: normal;
+}
+#sidepan .scroll-content .subMenuHeader-0 {
+  border: none;
+  margin-top: 0;
 }
 .envinfo {
   background: #fff;
@@ -1242,14 +1264,14 @@ table {
   color: #000000 !important;
 }
 .s-user {
-  margin: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
   z-index: 0;
   height: 70px;
-  color: #ffffff;
-  display: block;
   overflow: hidden;
-  position: relative;
-  width: 225px;
+  padding: 16px;
 }
 .s-user:before {
   top: 0;
@@ -1277,32 +1299,28 @@ table {
 .s-user-frame {
   padding: 0 !important;
   line-height: 0;
-  left: -10px;
 }
 .s-user-photo {
   z-index: 99;
   position: relative;
-  top: 7px;
   float: left;
   border: solid 5px #ffffff;
   border-radius: 50px;
   overflow: hidden;
   width: 50px;
   padding: 0 !important;
+  margin: 0 !important;
 }
 .s-user-photo img {
   width: 100%;
 }
 .s-user a {
-  padding: 0;
-  left: 10px;
+  padding-left: 16px;
+  color: #ffffff;
 }
 .s-user-name {
-  position: relative;
-  top: 10px;
+  line-height: 1;
   font-size: 10pt;
-  line-height: 18pt;
-  margin-bottom: 5px;
 }
 #userImage {
   padding: 0;

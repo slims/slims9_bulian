@@ -21,12 +21,17 @@
 /* Author Management section */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+if (!defined('INDEX_AUTH')) {
+  define('INDEX_AUTH', '1');
+}
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
 // main system configuration
-require '../../../sysconfig.inc.php';
+if (!defined('SB')) {
+  require '../../../sysconfig.inc.php';
+}
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
@@ -47,6 +52,12 @@ $can_write = utility::havePrivilege('master_file', 'w');
 
 if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
+}
+
+$in_pop_up = false;
+// check if we are inside pop-up window
+if (isset($_GET['inPopUp'])) {
+  $in_pop_up = true;
 }
 
 /* RECORD OPERATION */
@@ -79,6 +90,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' update author ('.$data['author_name'].').', 'Author', 'update');
                 utility::jsToastr(__('Author'),__('Author Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
+                if ($in_pop_up) {
+                    echo '<script type="text/javascript">top.setIframeContent(\'authorIframe\', \''.MWB.'bibliography/iframe_author.php?biblioID='.$_GET['biblio_id'].'\');</script>';
+                    echo '<script type="text/javascript">top.jQuery.colorbox.close();</script>';
+                } else {
+                    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                }
             } else { utility::jsToastr(__('Author'),__('Author Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
@@ -89,6 +106,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' add new author ('.$data['author_name'].').', 'Author', 'Add');
                 utility::jsToastr(__('Author'),__('New Author Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                if ($in_pop_up) {
+                    echo '<script type="text/javascript">top.setIframeContent(\'authorIframe\', \''.MWB.'bibliography/iframe_author.php?biblioID='.$_GET['biblio_id'].'\');</script>';
+                    echo '<script type="text/javascript">top.jQuery.colorbox.close();</script>';
+                } else {
+                    echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                }
+
             } else { 
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' can not add new author ('.$data['author_name'].').', 'Author', 'Fail');
                 utility::jsToastr(__('Author'),__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error');
@@ -159,6 +183,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 /* RECORD OPERATION END */
 
 /* search form */
+if (!$in_pop_up) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
@@ -178,6 +203,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 </div>
 </div>
 <?php
+}
+
 /* search form end */
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
@@ -190,7 +217,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_d = $rec_q->fetch_assoc();
 
     // create new instance
-    $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+    $form = new simbio_form_table_AJAX('authorForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
 
     // form table attributes
@@ -202,7 +229,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($rec_q->num_rows > 0) {
         $form->edit_mode = true;
         // record ID for delete process
-        $form->record_id = $itemID;
+        if (!$in_pop_up) {
+            $form->record_id = $itemID;
+        } else {
+            $form->addHidden('updateRecordID', $itemID);
+            $form->back_button = false;
+            $form->delete_button = false;
+        }
         // form record title
         $form->record_title = $rec_d['author_name'];
         // submit button attribute
@@ -211,16 +244,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // author name
-    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name']??'', 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorName', __('Author Name').'*', $rec_d['author_name']??'', ' class="form-control col-6"');
     // author year
-    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year']??'', 'class="form-control" style="width: 60%;"');
+    $form->addTextField('text', 'authorYear', __('Author Birth Year'), $rec_d['author_year']??'', ' class="form-control col-6"');
     // authority type
     foreach ($sysconf['authority_type'] as $auth_type_id => $auth_type) {
         $auth_type_options[] = array($auth_type_id, $auth_type);
     }
-    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type']??'','class="form-control col-2"');
+    $form->addSelectList('authorityType', __('Authority Type'), $auth_type_options, $rec_d['authority_type']??'',' class="form-control col-6"');
     // authority list
-    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list']??'', 'class="form-control" style="width: 30%;"');
+    $form->addTextField('text', 'authList', __('Authority Files'), $rec_d['auth_list']??'', ' class="form-control col-6"');
 
     // edit mode messagge
     if ($form->edit_mode) {

@@ -176,9 +176,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
       if ($sysconf['print']['barcode']['barcode_include_header_text']) { $html_str .= '<div class="labelHeaderStyle">'.($sysconf['print']['barcode']['barcode_header_text']?$sysconf['print']['barcode']['barcode_header_text']:$sysconf['library_name']).'</div>'; }
       // document title
       $html_str .= '<div style="font-size: 7pt;">';
-      if ($sysconf['print']['barcode']['barcode_cut_title'] && strlen($barcode[0]) > $sysconf['print']['barcode']['barcode_cut_title']) {
-        $html_str .= substr($barcode[0], 0, $sysconf['print']['barcode']['barcode_cut_title']).'...';
-      } else { $html_str .= $barcode[0]; }
+      if ($sysconf['print']['barcode']['barcode_cut_title']){
+        if (strlen($barcode[0]) > $sysconf['print']['barcode']['barcode_cut_title']) {
+          $html_str .= substr($barcode[0], 0, $sysconf['print']['barcode']['barcode_cut_title']).'...';
+        } else { $html_str .= $barcode[0]; }
+      }
       $html_str .= '</div>';
       //~ $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.str_replace(array(' '), '_', $barcode[1]).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
       $html_str .= '<img src="'.SWB.IMG.'/barcodes/'.urlencode(urlencode($barcode[1])).'.png" style="width: '.$sysconf['print']['barcode']['barcode_scale'].'%;" border="0" />';
@@ -199,7 +201,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     // update print queue count object
     echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
     // open result in window
-    echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'", iframe: true, width: 800, height: 500, title: "'.__('Item Barcodes Printing').'"})</script>';
+    echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.FLS.'/'.$print_file_name.'?v='.date('YmdHis').'", iframe: true, width: 800, height: 500, title: "'.__('Item Barcodes Printing').'"})</script>';
   } else { utility::jsToastr('Item Barcode', str_replace('{directory}', SB.FLS, __('ERROR! Item barcodes failed to generate, possibly because {directory} directory is not writable')), 'error'); }
   exit();
 }

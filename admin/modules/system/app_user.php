@@ -84,7 +84,7 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
 }
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
-    $userName = trim(strip_tags($_POST['userName']));
+    $userName = $_SESSION['uid'] > 1 ? $_SESSION['uname'] : trim(strip_tags($_POST['userName']));
     $realName = trim(strip_tags($_POST['realName']));
     $passwd1 = trim($_POST['passwd1']);
     $passwd2 = trim($_POST['passwd2']);
@@ -101,7 +101,7 @@ if (isset($_POST['saveData'])) {
     } else if (!simbio_form_maker::isTokenValid()) {
         utility::jsAlert(__('Invalid form submission token!'));
         exit();
-    }else {
+    } else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
         $data['user_type'] = (integer)$_POST['userType'];
@@ -187,7 +187,7 @@ if (isset($_POST['saveData'])) {
                     }
                 }
                 // echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
-                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
+                echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'].'\');</script>';
             } else { utility::jsAlert(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
             exit();
         } else {
@@ -319,7 +319,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     // user name
-    $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
+    if ($_SESSION['uid'] > 1) {
+        $form->addAnything(__('Login Username'), '<strong>'.$rec_d['username'].'</strong>');
+    } else {
+        $form->addTextField('text', 'userName', __('Login Username').'*', $rec_d['username']??'', 'style="width: 50%;" class="form-control"');
+    }
+
     // user real name
     $form->addTextField('text', 'realName', __('Real Name').'*', $rec_d['realname']??'', 'style="width: 50%;" class="form-control"');
     // user type

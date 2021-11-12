@@ -45,7 +45,7 @@
     <style>
         .s-user:after,
         #sidepan {
-            background-color: <?= $sysconf['admin_template']['default_color']; ?> !important;
+            background-color: <?= $sysconf['admin_template']['default_color']??'#004db6'; ?> !important;
         }
         #sidepan .scroll-content {
             padding: 0;
@@ -64,7 +64,7 @@
     <div class="s-user" id="profile">
         <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo subMenuItem">
-                <img src="<?php echo '../lib/minigalnano/createthumb.php?filename=../../'.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
+                <img src="<?php echo '../lib/minigalnano/createthumb.php?filename='.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
             </a>
         </div>
         <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>">
@@ -111,7 +111,7 @@ $('.loader').toggleClass('hidden').hide();
 let Scrollbar = window.Scrollbar;
 Scrollbar.use(window.OverscrollPlugin)
 Scrollbar.init(document.querySelector('#sidepan'), {
-    alwaysShowTracks: <?= $sysconf['admin_template']['always_show_tracks'] ? 'true' : 'false' ?>,
+    alwaysShowTracks: <?= $sysconf['admin_template']['always_show_tracks']??'false' ?>,
     continuousScrolling: false,
     plugins: {
       overscroll: {

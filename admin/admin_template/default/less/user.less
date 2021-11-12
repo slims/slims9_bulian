@@ -1,13 +1,13 @@
 //main: style.less
 .s-user {
-  margin: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
   z-index: 0;
   height: 70px;
-  color: @white;
-  display: block;
   overflow: hidden;
-  position: relative;
-  width: @sidebar-width;
+  padding: 16px;
 
   &:before {
     top: 0;
@@ -18,10 +18,10 @@
     position: absolute;
     width: @sidebar-width;
     background: url(media/bg.jpg);
-    background-size: cover; 
+    background-size: cover;
     filter: blur(5px);
   }
-  
+
   &:after {
     opacity: 0.75;
     top: 0;
@@ -38,19 +38,18 @@
   &-frame {
     padding: 0 !important;
     line-height: 0;
-    left: -10px;
   }
   
   &-photo {
     z-index: 99;
     position: relative;
-    top: 7px;
     float: left;
     border: solid 5px @white;    
     border-radius: 50px;
     overflow: hidden;
     width: 50px;
     padding: 0 !important;
+    margin: 0 !important;
     
     & img {
       width: 100%;
@@ -58,16 +57,13 @@
   }
 
   a {
-    padding: 0;
-    left: 10px;
+    padding-left: 16px;
+    color: @white;
   }
 
   &-name {
-    position: relative;
-    top: 10px;
+    line-height: 1;
     font-size: 10pt;
-    line-height: 18pt;
-    margin-bottom: 5px;
   }
 }
 

@@ -83,6 +83,10 @@ if (isset($_POST['finish'])) {
     } else {
         // insert visitor log
         visitOnLoan($memberID);
+        // hook method on after successful transaction
+        if (isset($_SESSION['receipt_record'])) {
+            \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
+        }
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')', 'Transaction', 'finished');
         // send message
@@ -497,7 +501,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         if ($member->member_image) {
           if (file_exists(IMGBS.'persons/'.$member->member_image)) {
             echo '<div class="s-member__photo">';
-            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../images/persons/'.urlencode($member->member_image).'&amp;width=100" />';
+            echo '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode($member->member_image).'&amp;width=100" />';
             echo '</div>';
           }
         }

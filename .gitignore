@@ -22,6 +22,9 @@ sysconfig.inc.php
 slims8_akasia.sublime-project
 slims8_akasia.sublime-workspace
 
+plugins/*
+!plugins/read_counter/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

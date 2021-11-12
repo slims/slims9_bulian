@@ -51,7 +51,7 @@ if (isset($_POST['updateSettings'])) {
       $setting_name, $dbs->escape_string(serialize($_POST[$setting_type]))));
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings', 'Print Setting', 'Change');
-    utility::jsToastr('Print Setting', __('Settings saved'), 'success');
+    utility::jsAlert(__('Settings saved'));
     echo '<script type="text/javascript"></script>';
 }
 /* Config Vars update process end */
@@ -114,7 +114,7 @@ $measure['print']['barcode']['barcode_box_height']          = __('(cm)');
 $measure['print']['barcode']['barcode_include_header_text'] = $visibility_options;
 
 
-$measure['print']['barcode']['barcode_cut_title']           = $visibility_options;
+$measure['print']['barcode']['barcode_cut_title']           = __('(0 if you prefer without title)');
 $measure['print']['barcode']['barcode_header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['barcode']['barcode_fonts']               = __('(name of the font used)');
 $measure['print']['barcode']['barcode_font_size']           = __('(pt)');

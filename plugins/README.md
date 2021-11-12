@@ -57,7 +57,58 @@ Berikut ini `tag hook` yang tersedia:
 - **bibliography_after_update**: run after bibliography data updated successfully. The data updated available in params
 - **bibliography_on_delete**: run after data has been deleted. Bibliography ID available in param
 
+- **membership_init**: run on membership ready to go
+- **membership_before_update**: run after member data before updated
+- **membership_after_update**: run after member data after updated
+- **membership_after_save**: run after new member data is created/saved
+
+- **circulation_after_successful_transaction**: run after circulation transaction is done
+
 Secara default plugin tidak akan aktif. Anda harus mengaktifkannya di menu `System -> Plugins`
+
+#### Migration
+Sebuah plugin mungkin membutuhkan sebuah table tersendiri atau menambahkan kolom pada table yang sudah ada.
+Untuk memudahkan dalam manajemen database jika ada peningkatan versi, maka tool ini dapat membantu anda.
+
+Untuk melakukannya, anda hanya perlu menambahkan folder `migration` di dalam folder plugin anda.
+Kemudian membuat sebuah file class dengan pola nama `<versi-migration>_<nama-class>.php`. 
+Class ini harus memiliki method `up` dan `down` atau untuk memudahkan anda dapat meng-extend abstract class `\SLiMS\Migration\Migration`.
+
+Contoh `1_CreateReadCounterTable.php` merupakan file class migration dalam plugin `read_counter`
+```
+class CreateReadCounterTable extends \SLiMS\Migration\Migration
+{
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    function up() {...}
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    function down() {...}
+}
+```
+
+Method `up` berisi kode untuk menjalankan migrasi dan method `down` untuk membalikannya. Sebagai contoh, method `up` berisi
+kode untuk membuat table`biblio` maka method `down` berisi kode untuk menghapus table `biblio`.
+
+Berikut contoh struktur folder dari plugin `read_counter`:
+```
+    read_counter
+    │   index.php
+    │   read_counter_plugin.php
+    │
+    └───migration
+            1_CreateReadCounterTable.php
+            2_AddUIDColumn.php
+
+```
 
 -----------
 
@@ -119,5 +170,9 @@ Available `tag hook` are:
 - **bibliography_before_update**: run before bibliography data tobe updated. The data will be update available in params
 - **bibliography_after_update**: run after bibliography data updated successfully. The data updated available in params
 - **bibliography_on_delete**: run after data has been deleted. Bibliography ID available in params
+
+- **membership_init**: run on membership ready to go
+- **membership_before_update**: run after member data before updated
+- **membership_after_update**: run after member data after updated
 
 By default, this plugin is inactive. You need to activate it in `System -> Plugins` menu

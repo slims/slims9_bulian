@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 26;
+  private $version = 29;
 
   /**
    * @param SLiMS $slims
@@ -982,6 +982,27 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      * Upgrade role to v9.3.1
      */
     function upgrade_role_27()
+    {
+    }
+
+    /**
+     * Upgrade role to v9.4.0
+     */
+    function upgrade_role_28()
+    {
+        $sql['alter'][] = "ALTER TABLE `plugins`
+                                ADD `options` json NULL AFTER `path`,
+                                ADD `updated_at` datetime NULL AFTER `created_at`,
+                                ADD `deleted_at` datetime NULL AFTER `updated_at`;";
+        $sql['alter'][] = "ALTER TABLE `plugins` ADD UNIQUE `id` (`id`);";
+
+        return $this->slims->query($sql, ['alter']);
+    }
+
+    /**
+     * Upgrade role to v9.4.1
+     */
+    function upgrade_role_29()
     {
     }
 

@@ -295,7 +295,39 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
 }
 
 /* RECORD OPERATION END */
+?>
 
+    <div class="menuBox">
+        <div class="menuBoxInner biblioIcon">
+            <div class="per_title">
+                <h2><?php echo __('P2P Service'); ?></h2>
+            </div>
+            <div class="sub_section">
+                <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" id="search" method="get"
+                      class="form-inline">
+                    <span class="mr-2"><?php echo __('Search'); ?></span>
+                    <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
+                    <span class="mx-2"><?php echo __('Fields'); ?> :</span>
+                    <select name="fields" style="width: 20%;" class="form-control">
+                        <option value=""><?php echo __('ALL'); ?></option>
+                        <option value="title"><?php echo __('Title'); ?></option>
+                        <option value="isbn"><?php echo __('ISBN'); ?></option>
+                        <option value="author"><?php echo __('Author'); ?></option>
+                    </select>
+                    <span class="mx-2"><?php echo __('Server'); ?>:</span>
+                    <select name="p2pserver" style="width: 20%;"
+                            class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
+                            echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
+                        } ?></select>
+                    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>"
+                           class="s-btn btn btn-default"/>
+                </form>
+            </div>
+            <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
+        </div>
+    </div>
+
+<?php
 /* SEARCH OPERATION */
 if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $max_fetch = 20;
@@ -309,21 +341,24 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $keywords = urlencode($_GET['keywords']);
   # $p2pquery = $p2pserver.'index.php?resultXML=true&keywords='.$_GET['keywords'];
 
+  $page = isset($_GET['page'])?$_GET['page']:1;
+
   if($_GET['fields']!=''){
     $keywords = $_GET['fields'].'='.$keywords;
-    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&".$keywords."&search=Search", 'uri');
+    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&".$keywords."&search=Search&page=".$page, 'uri');
   }
   else{
-    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&search=Search&keywords=" . $keywords, 'uri');
+    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&search=Search&page=".$page."&keywords=" . $keywords, 'uri');
   }
 
   # debugging tools
   # echo $p2pserver."/index.php?resultXML=true&keywords=".$keywords;
   # echo '<br />';
+
   if (isset($data['records'])) {
 
-    echo '<div class="infoBox">Found ' . $data['result_num'] . ' records from <strong>' . $p2pserver_name . '</strong> Server</div>';
-
+    echo '<div class="infoBox">' .sprintf(__('Found %s records from <strong>%s</strong> Server'),$data['result_num'],$p2pserver_name).'</div>';
+    echo '<div class="p-3" style="padding: 1rem 0px 0px 1rem !important;"><span id="pagingBox"></span></div>';
     $table = new simbio_table();
     $table->table_attr = 'align="center" class="s-table table" cellpadding="5" cellspacing="0"';
     echo  '<div class="p-3">
@@ -402,81 +437,55 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
       $row++;
     }
     echo $table->printTable();  
+    $page = new simbio_paging();
+    echo '<script type="text/javascript">'."\n";
+    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $page->paging($data['result_num'],10)).'\');'."\n";
+    echo '</script>';
+    ?>
+    <script>
+        $('.save').on('click', function (e) {
+        let p2precord = {}, p2pdigital = {};
+        let uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
+        $(".p2precord:checked").each(function() {
+           p2precord[$(this).val()] = $(this).val();
+        });
+        $(".p2pdigital:checked").each(function() {
+            if (p2precord[$(this).data('biblio')] !== undefined) {
+                if (p2pdigital[$(this).data('biblio')] === undefined) p2pdigital[$(this).data('biblio')] = {};
+                p2pdigital[$(this).data('biblio')][$(this).val()] = $(this).val();
+            }
+        });
+
+        if (Object.keys(p2precord).length > 0) {
+            $.ajax({
+                url: uri,
+                type: 'post',
+                data: {saveResults: true, p2precord, p2pdigital }
+            })
+                .done(function (msg) {
+                    //console.log(p2precord);
+                    parent.toastr.success(Object.keys(p2precord).length+" records inserted into the database", "P2P Service");
+                    parent.jQuery('#mainContent').simbioAJAX(uri)
+                })
+        } else {
+            alert('<?= __('No data selected!') ?>');
+        }
+
+        });
+        $(".uncheck-all").on('click',function (e){
+            e.preventDefault()
+            $('[type=checkbox]').prop('checked', false);
+        });
+        $(".check-all").on('click',function (e){
+            e.preventDefault()
+            $('[type=checkbox]').prop('checked', true);
+        });
+    </script>
+    <?php
+     exit();
   } else {
     echo '<div class="errorBox">' . sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . '</div>';
+    exit();
   }
-  ?>
-<script>
-    $('.save').on('click', function (e) {
-    let p2precord = {}, p2pdigital = {};
-    let uri = '<?php echo $_SERVER['PHP_SELF']; ?>';
-    $(".p2precord:checked").each(function() {
-       p2precord[$(this).val()] = $(this).val();
-    });
-    $(".p2pdigital:checked").each(function() {
-        if (p2precord[$(this).data('biblio')] !== undefined) {
-            if (p2pdigital[$(this).data('biblio')] === undefined) p2pdigital[$(this).data('biblio')] = {};
-            p2pdigital[$(this).data('biblio')][$(this).val()] = $(this).val();
-        }
-    });
-
-    if (Object.keys(p2precord).length > 0) {
-        $.ajax({
-            url: uri,
-            type: 'post',
-            data: {saveResults: true, p2precord, p2pdigital }
-        })
-            .done(function (msg) {
-                //console.log(p2precord);
-                parent.toastr.success(Object.keys(p2precord).length+" records inserted into the database", "P2P Service");
-                parent.jQuery('#mainContent').simbioAJAX(uri)
-            })
-    } else {
-        alert('<?= __('No data selected!') ?>');
-    }
-
-    });
-    $(".uncheck-all").on('click',function (e){
-        e.preventDefault()
-        $('[type=checkbox]').prop('checked', false);
-    });
-    $(".check-all").on('click',function (e){
-        e.preventDefault()
-        $('[type=checkbox]').prop('checked', true);
-    });
-</script>
-<?php
-  exit();
 }
-/* SEARCH OPERATION END */
 
-/* search form */
-?>
-<div class="menuBox">
-    <div class="menuBoxInner biblioIcon">
-        <div class="per_title">
-            <h2><?php echo __('P2P Service'); ?></h2>
-        </div>
-        <div class="sub_section">
-            <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" loadcontainer="searchResult" id="search"
-                  method="get" class="form-inline">
-              <?php echo __('Search'); ?>
-                <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
-              <?php echo __('Fields'); ?> :  
-              <select name="fields" style="width: 20%;"  class="form-control">
-                <option value=""><?php echo __('ALL'); ?></option>
-                <option value="title"><?php echo __('Title'); ?></option>
-                <option value="isbn"><?php echo __('ISBN'); ?></option>
-                <option value="author"><?php echo __('Author'); ?></option>
-              </select>
-              <?php echo __('Server'); ?>: <select name="p2pserver" style="width: 20%;"
-                                                   class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
-                  echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
-                } ?></select>
-                <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default"/>
-            </form>
-        </div>
-        <div class="infoBox"><?php echo __('* Please make sure you have a working Internet connection.'); ?></div>
-    </div>
-</div>
-<div id="searchResult">&nbsp;</div>

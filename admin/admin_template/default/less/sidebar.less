@@ -7,7 +7,7 @@ sidebar
   z-index: 0;
   overflow: auto;
   position: fixed;
-  top:0;
+  top: 0;
   width: @sidebar-width;
   background-color: @sidebar;
 
@@ -24,43 +24,72 @@ sidebar
     opacity: 0.15;
   }
 
-  .subMenuHeader {
-    font-size: 12pt;
-    margin-top: 10px;
-  }
-
-  div:not(.scrollbar-track-y),
-  a {
-    margin: 0;
+  .subMenuHeader,
+  .subMenuItem {
     color: @white;
     display: block;
-    padding: 3px 15px;
+    padding: 3px 10px;
     position: relative;
     font-size: @font-size;
     font-family: @font-family;
   }
 
+  .subMenuHeader {
+    padding-left: 16px;
+  }
+
+  .subMenuItem {
+    margin: 4px 0 0 4px;
+    transition: ease-in all 0.1s;
+  }
+
   .scrollbar-track.scrollbar-track-x.show {
     display: none !important;
   }
-  
+
   div {
     font-weight: bold;
     color: @white;
   }
 
-  a:hover,
-  .curModuleLink,
-  .subMenuItem:first-child {
-    background-color: #fff !important;
-    color: @color-2 ;
-  }
-  a:hover,
+  .subMenuItem:first-child,
   .curModuleLink {
+    background-color: #fafafa !important;
     color: @color-3;
-  }  
-}
-
-#sidepan > div.scroll-content > div.subMenuHeader {
-  font-size: 16px;
+    border-radius: 20px 0 0 20px;
+    padding-left: 16px;
   }
+
+  .subMenuItem:first-child {
+    color: @color-2;
+    border-radius: 50%;
+  }
+
+  .subMenuItem:not(.curModuleLink):hover {
+    background-color: rgba(255,255,255, 0.4) !important;
+    border-radius: 20px 0 0 20px;
+    padding-left: 16px;
+  }
+
+  .subMenuItem:not(.curModuleLink):focus {
+    background-color: rgba(255,255,255, 0.6) !important;
+    border-radius: 20px 0 0 20px;
+    padding-left: 16px;
+  }
+
+  .scroll-content {
+    .subMenuHeader {
+      font-size: 10px;
+      margin-top: 16px;
+      padding-top: 20px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      font-weight: normal;
+    }
+
+    .subMenuHeader-0 {
+      border: none;
+      margin-top: 0;
+    }
+  }
+}

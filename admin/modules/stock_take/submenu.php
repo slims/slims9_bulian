@@ -25,7 +25,7 @@
 do_checkIP('smc');
 do_checkIP('smc-stocktake');
 
-$menu[] = array('Header', __('Stock Take'));
+$menu[] = array('Header', __('STOCK TAKE'));
 $menu[] = array(__('Stock Take History'), MWB.'stock_take/index.php', __('View Stock Take History'));
 
 if(isset($for_select_privileges) && $for_select_privileges) {

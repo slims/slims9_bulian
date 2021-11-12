@@ -54,7 +54,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $publisherName = trim(strip_tags($_POST['publisherName']));
     // check form validity
     if (empty($publisherName)) {
-        utility::jsAlert(__('Publisher Name can\'t be empty')); //mfc
+        utility::jsToastr(__('Publisher'),__('Publisher Name can\'t be empty'),'error'); //mfc
         exit();
     } else {
         $data['publisher_name'] = $dbs->escape_string($publisherName);
@@ -72,18 +72,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_publisher', $data, 'publisher_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Publisher Data Successfully Updated'));
+                utility::jsToastr(__('Publisher'),__('Publisher Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('PUBLISHER Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Publisher'),__('PUBLISHER Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('mst_publisher', $data);
             if ($insert) {
-                utility::jsAlert(__('New Publisher Data Successfully Saved'));
+                utility::jsToastr(__('Publisher'),__('New Publisher Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Publisher Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Publisher'),__('Publisher Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -103,17 +103,39 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_publisher', 'publisher_id='.$itemID)) {
-            $error_num++;
+        // check if this place data still in use biblio
+        $_sql_publish_biblio_q = sprintf('SELECT mp.publisher_name, COUNT(mp.publisher_id) FROM biblio AS b
+        LEFT JOIN mst_publisher AS mp ON b.publisher_id=mp.publisher_id
+        WHERE mp.publisher_id = \'%d\' GROUP BY mp.publisher_name', $itemID);
+        $publish_biblio_q = $dbs->query($_sql_publish_biblio_q);
+        $publish_biblio_d = $publish_biblio_q->fetch_row();
+        if ($publish_biblio_d[1] < 1) {  
+
+            if (!$sql_op->delete('mst_publisher', 'publisher_id='.$itemID)) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('%s still in use %d biblio').'<br/>',substr($publish_biblio_d[0], 0, 45),$publish_biblio_d[1]);
+            $error_num++;            
         }
     }
 
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr(__('Publisher'),__('Below data can not be deleted:') . "\n" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
+    }  
+
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Publisher'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Publisher'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

@@ -259,9 +259,9 @@ if (!$reportView) {
         ',  b.isbn_issn AS \''.__('ISBN/ISSN').'\', b.call_number AS \''.__('Call Number').'\' FROM '.
         $table_spec . ' WHERE '. $outer_criteria . ' group by b.biblio_id';
         // echo $xlsquery;
-        unset($_SESSION['xlsdata']);
-        $_SESSION['xlsquery'] = $xlsquery;
-        $_SESSION['tblout'] = "title_list";
+    unset($_SESSION['xlsdata']);
+    $_SESSION['xlsquery'] = $xlsquery;
+    $_SESSION['tblout'] = "title_list";
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

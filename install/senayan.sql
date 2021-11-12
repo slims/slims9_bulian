@@ -1,5 +1,5 @@
 -- SENAYAN Library Automation
--- Version 8 (Akasia)
+-- Version 9 (Bulian)
 -- Core database structure
 
 

@@ -66,7 +66,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.3.1');
+define('SENAYAN_VERSION_TAG', 'v9.4.2');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -202,7 +202,7 @@ $sysconf['promote_first_emphasized'] = true;
 
 /* Dynamic Content */
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
-    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param>';
+    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param><ul><ol><li>';
 
 /* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
 $sysconf['enable_mark'] = true;
@@ -249,7 +249,7 @@ $sysconf['scanner'] = false;
 $sysconf['book_cover'] = true;
 
 /* Barcode Reader */
-$sysconf['barcode_reader'] = true;
+$sysconf['barcode_reader'] = false;
 
 // Zend Barcode Engine
 $sysconf['zend_barcode_engine'] = true;
@@ -351,6 +351,14 @@ $sysconf['currencies'] = array( array('0', 'NONE'), 'Rupiah', 'USD', 'Euro', 'DM
 
 /* RESERVE PERIODE (In Days) */
 $sysconf['reserve_expire_periode'] = 7;
+
+// false = send reserve via email
+// true  = reservation will saved directly into reserve table
+$sysconf['reserve_direct_database'] = true;
+
+// false = reserve all item, ignoring loan status
+// true  = only item on loan can be reserved
+$sysconf['reserve_on_loan_only'] = false;
 
 /* CONTENT */
 $sysconf['library_name'] = 'Senayan';
@@ -740,6 +748,12 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
+
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+
+// load helper
+require_once "lib/helper.inc.php";
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();

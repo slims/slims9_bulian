@@ -124,7 +124,7 @@
 
             <h5 class="mt-4 mb-1"><?= __('File Attachment'); ?></h5>
             <div itemprop="associatedMedia">
-              <?php echo $file_att; ?>
+              <?= !$file_att ? '<i>'.__('No Data').'</i>' : $file_att ; ?>
             </div>
 
             <h5 class="mt-4 mb-1"><?= __('Comments'); ?></h5>

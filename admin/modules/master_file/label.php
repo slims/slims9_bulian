@@ -55,7 +55,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $labelDesc = trim(strip_tags($_POST['labelDesc']));
     // check form validity
     if (empty($labelDesc) OR empty($labelName)) {
-        utility::jsAlert(__('Label Name OR Label Description must be filled!'));
+        utility::jsToastr(__('Label'),__('Label Name OR Label Description must be filled!'),'error');
         exit();
     } else {
         $data['label_desc'] = $dbs->escape_string($labelDesc);
@@ -73,12 +73,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
               $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
               // write log
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename, 'Master Label Image', 'Upload');
-              utility::jsAlert(__('Label image file successfully uploaded'));
+              utility::jsToastr(__('Label'),__('Label image file successfully uploaded'),'success');
             } else {
               // write log
               utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')', 'Master Label Image', 'Fail');
-              utility::jsAlert(__('FAILED to upload label image! Please see System Log for more detailed information'));
+              utility::jsToastr(__('Label'),__('FAILED to upload label image! Please see System Log for more detailed information'),'error');
             }
+        }else{
+              utility::jsToastr(__('Label'),__('Label need image uploaded'),'error');
+              exit();
         }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
@@ -94,17 +97,17 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_label', $data, 'label_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Label Data Successfully Updated'));
+                utility::jsToastr(__('Label'),__('Label Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Label Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Label Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('mst_label', $data)) {
-                utility::jsAlert(__('New Label Data Successfully Saved'));
+                utility::jsToastr(__('Label'),__('New Label Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Label Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr(__('Label Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
             exit();
         }
     }
@@ -117,6 +120,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_have_biblio = array();
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -124,17 +128,38 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
-        if (!$sql_op->delete('mst_label', 'label_id='.$itemID)) {
-            $error_num++;
+        // check if this label data still in use biblio
+        $_sql_label_biblio_q = 'SELECT ml.label_name, COUNT(ml.label_id),ml.label_image FROM biblio AS b
+        LEFT JOIN mst_label AS ml ON b.labels LIKE CONCAT("%",ml.label_name,"%")
+        WHERE ml.label_id='.$itemID.' GROUP BY ml.label_name';
+        $label_biblio_q = $dbs->query($_sql_label_biblio_q);
+        $label_biblio_d = $label_biblio_q->fetch_row();
+        if ($label_biblio_d[1] < 1) {
+            if (!$sql_op->delete('mst_label', 'label_id='.$itemID)) {
+                $error_num++;
+            }
+        }else{
+            $still_have_biblio[] = sprintf(__('Label %s still in use %d biblio(s)')."<br/>",substr($label_biblio_d[0], 0, 45),$label_biblio_d[1]);
+            $error_num++;            
         }
+    }
+
+    if ($still_have_biblio) {
+        $titles = '';
+        foreach ($still_have_biblio as $title) {
+            $titles .= $title . "\n";
+        }
+        utility::jsToastr( __('Label'), __('Below data can not be deleted:') . "<br/>" . $titles, 'error');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        exit();
     }
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        utility::jsToastr(__('Label'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        utility::jsToastr(__('Label'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'warning');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
@@ -201,7 +226,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
     } else {
-        $str_input = '<div><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=../../'.IMG.'/labels/'.urlencode($rec_d['label_image']).'&amp;width=24&amp;height=24" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
+        $str_input = '<div><img src="'.SWB.'lib/minigalnano/createthumb.php?filename='.IMG.'/labels/'.urlencode($rec_d['label_image']).'&amp;width=24&amp;height=24" align="middle" /> <strong>'.$rec_d['label_image'].'</strong></div>';
         $str_input .= simbio_form_element::textField('file', 'labelImage');
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
