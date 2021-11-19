@@ -48,6 +48,8 @@ $total_pages = 1;
 $header_info = '';
 // HTML metadata
 $metadata = '';
+// JS
+$js = '';
 // searched words for javascript highlight
 $searched_words_js_array = '';
 
@@ -55,6 +57,9 @@ $searched_words_js_array = '';
 if (utility::isMemberLogin()) {
   $header_info .= '<div class="alert alert-info alert-member-login" id="memberLoginInfo">'.__('You are currently Logged on as member').': <strong>'.$_SESSION['m_name'].' (<em>'.$_SESSION['m_email'].'</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">'.__('LOGOUT').'</a></div>';
 }
+
+// Load hook before content load
+SLiMS\Plugins::getInstance()->execute('before_content_load');
 
 // start the output buffering for main content
 ob_start();
@@ -115,6 +120,9 @@ if (isset($_GET['p'])) {
 }
 // main content grab
 $main_content = ob_get_clean();
+
+// Load hook after content load
+SLiMS\Plugins::getInstance()->execute('after_content_load');
 
 // template output
 require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/index_template.inc.php';

@@ -95,6 +95,11 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     <script src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
     <script src="<?php echo JWB; ?>gui.js"></script>
     <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
+    <?php 
+      if (isset($js)): 
+        echo $js;
+      endif;
+    ?>
 
 </head>
 <body class="bg-grey-lightest">
