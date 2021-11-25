@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-25 12:07+0700\n"
-"PO-Revision-Date: 2021-11-25 14:35+0700\n"
+"POT-Creation-Date: 2021-11-25 14:35+0700\n"
+"PO-Revision-Date: 2021-11-25 14:38+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -60,9 +60,7 @@ msgstr "Keluar"
 
 #: admin/admin_template/akasia-dz/index_template.inc.php:104
 #: admin/admin_template/akasia/index_template.inc.php:103
-#: plugins/bot-telegram/lib/Keyboard.php:42
-#: plugins/bot-telegram/lib/Keyboard.php:80
-#: plugins/bot-telegram/settings.php:62 template/default/parts/_navbar.php:23
+#: template/default/parts/_navbar.php:23
 msgid "Help"
 msgstr "Bantuan"
 
@@ -299,7 +297,6 @@ msgstr "Transaksi Terkini"
 #: admin/default/home.php:199 admin/default/home.php:288
 #: admin/modules/circulation/loan.php:167
 #: admin/modules/circulation/pop_loan_receipt.php:88
-#: plugins/bot-telegram/register.plugin.php:41
 msgid "Loan"
 msgstr "Pinjam"
 
@@ -308,7 +305,6 @@ msgstr "Pinjam"
 #: admin/modules/circulation/loan_list.php:114
 #: admin/modules/circulation/pop_loan_receipt.php:141
 #: admin/modules/circulation/quick_return.php:91
-#: plugins/bot-telegram/register.plugin.php:65
 msgid "Return"
 msgstr "Kembali"
 
@@ -316,8 +312,6 @@ msgstr "Kembali"
 #: admin/modules/circulation/loan_list.php:98
 #: admin/modules/circulation/loan_list.php:124
 #: admin/modules/membership/index.php:453
-#: plugins/bot-telegram/lib/Keyboard.php:56
-#: plugins/bot-telegram/register.plugin.php:54
 msgid "Extend"
 msgstr "Perpanjang"
 
@@ -326,7 +320,6 @@ msgid "Summary"
 msgstr "Ringkasan"
 
 #: admin/default/home.php:216 admin/default/home.php:283
-#: plugins/bot-telegram/lib/BotInterface.php:344
 msgid "Total"
 msgstr "Total"
 
@@ -341,7 +334,6 @@ msgstr "Perpanjang"
 #: admin/default/home.php:240 admin/default/home.php:303
 #: admin/modules/membership/member_base_lib.inc.php:208
 #: admin/modules/reporting/customs/overdued_list.php:209
-#: plugins/bot-telegram/register.plugin.php:76
 msgid "Overdue"
 msgstr "Keterlambatan"
 
@@ -525,9 +517,7 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/system/module.php:149 admin/modules/system/module.php:151
 #: admin/modules/system/sys_log.php:86 admin/modules/system/sys_log.php:88
 #: admin/modules/system/user_group.php:189
-#: admin/modules/system/user_group.php:191 plugins/bot-telegram/account.php:118
-#: plugins/bot-telegram/account.php:120 plugins/bot-telegram/answer.php:133
-#: plugins/bot-telegram/answer.php:135 plugins/label_barcode/index.php:293
+#: admin/modules/system/user_group.php:191 plugins/label_barcode/index.php:293
 #: plugins/label_barcode/index.php:295
 #: template/akasia-dz/index_template.inc.php:96
 #: template/akasia-dz/index_template.inc.php:208
@@ -575,10 +565,6 @@ msgstr "Cari"
 #: lib/contents/download_current_loan.inc.php:61
 #: lib/contents/download_loan_history.inc.php:61
 #: lib/contents/member.inc.php:359 lib/contents/member.inc.php:405
-#: plugins/bot-telegram/lib/BotInterface.php:320
-#: plugins/bot-telegram/register.plugin.php:45
-#: plugins/bot-telegram/register.plugin.php:58
-#: plugins/bot-telegram/register.plugin.php:69
 #: plugins/label_barcode/index.php:332 plugins/label_barcode/index.php:340
 #: plugins/read_counter/index.php:82
 msgid "Item Code"
@@ -612,9 +598,7 @@ msgstr "Kode Eksemplar"
 #: admin/modules/reporting/customs/visitor_list.php:125
 #: admin/modules/reporting/customs/visitor_list.php:170
 #: files/membercard/old/membercard.php:293 lib/contents/member.inc.php:244
-#: lib/contents/member.inc.php:906 plugins/bot-telegram/account.php:137
-#: plugins/bot-telegram/register.plugin.php:37
-#: template/default/visitor_template.php:38
+#: lib/contents/member.inc.php:906 template/default/visitor_template.php:38
 msgid "Member ID"
 msgstr "ID Anggota"
 
@@ -700,8 +684,6 @@ msgstr "Judul"
 #: lib/contents/download_current_loan.inc.php:63
 #: lib/contents/download_loan_history.inc.php:63
 #: lib/contents/member.inc.php:361 lib/contents/member.inc.php:407
-#: plugins/bot-telegram/lib/BotInterface.php:321
-#: plugins/bot-telegram/register.plugin.php:46
 msgid "Loan Date"
 msgstr "Tanggal Pinjam"
 
@@ -756,7 +738,6 @@ msgstr "Tanggal Kembali"
 #: admin/modules/system/custom_field.php:291
 #: admin/modules/system/holiday.php:297 admin/modules/system/module.php:226
 #: admin/modules/system/sys_log.php:142 admin/modules/system/user_group.php:276
-#: plugins/bot-telegram/account.php:168 plugins/bot-telegram/answer.php:214
 #: plugins/label_barcode/index.php:379
 msgid "Found <strong>{result->num_rows}</strong> from your keywords"
 msgstr ""
@@ -1361,8 +1342,7 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/system/content.php:154
 #: admin/modules/system/custom_field.php:150
 #: admin/modules/system/holiday.php:160 admin/modules/system/module.php:127
-#: admin/modules/system/user_group.php:167 plugins/bot-telegram/account.php:100
-#: plugins/bot-telegram/answer.php:110
+#: admin/modules/system/user_group.php:167
 msgid "All Data Successfully Deleted"
 msgstr "Semua Data Berhasil Dihapus"
 
@@ -1389,8 +1369,7 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/system/content.php:157
 #: admin/modules/system/custom_field.php:154
 #: admin/modules/system/holiday.php:163 admin/modules/system/module.php:130
-#: admin/modules/system/user_group.php:170 plugins/bot-telegram/account.php:103
-#: plugins/bot-telegram/answer.php:113
+#: admin/modules/system/user_group.php:170
 msgid ""
 "Some or All Data NOT deleted successfully!\\nPlease contact system "
 "administrator"
@@ -1626,8 +1605,7 @@ msgstr "Catatan Biblio"
 #: admin/modules/system/custom_field.php:194
 #: admin/modules/system/holiday.php:196 admin/modules/system/module.php:167
 #: admin/modules/system/shortcut.php:129
-#: admin/modules/system/user_group.php:207 plugins/bot-telegram/answer.php:155
-#: plugins/bot-telegram/settings.php:97
+#: admin/modules/system/user_group.php:207
 msgid "Save"
 msgstr "Simpan"
 
@@ -1663,7 +1641,7 @@ msgstr "Catatan"
 #: admin/modules/system/custom_field.php:210
 #: admin/modules/system/holiday.php:211 admin/modules/system/module.php:182
 #: admin/modules/system/user_group.php:222 lib/contents/login.inc.php:224
-#: lib/contents/newpass.inc.php:103 plugins/bot-telegram/answer.php:170
+#: lib/contents/newpass.inc.php:103
 msgid "Update"
 msgstr "Perbaharui"
 
@@ -2399,7 +2377,7 @@ msgstr "Salin"
 #: admin/modules/system/app_user.php:410 admin/modules/system/app_user.php:439
 #: admin/modules/system/app_user.php:446
 #: admin/modules/system/user_group.php:244
-#: admin/modules/system/user_group.php:256 plugins/bot-telegram/answer.php:181
+#: admin/modules/system/user_group.php:256
 msgid "Last Update"
 msgstr "Perubahan Terakhir"
 
@@ -2553,8 +2531,6 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/stock_take/stock_take_action.php:42
 #: admin/modules/system/custom_field.php:48
 #: admin/modules/system/custom_field.php:185
-#: plugins/bot-telegram/account.php:46 plugins/bot-telegram/answer.php:42
-#: plugins/bot-telegram/answer.php:146
 msgid "You don't have enough privileges to access this area!"
 msgstr "Anda tidak punya hak akses ke bagian ini!"
 
@@ -3417,7 +3393,6 @@ msgid "ERROR! Loan data can't be saved to database"
 msgstr "GALAT! Data pinjam tidak dapat disimpan ke dalam basisdata"
 
 #: admin/modules/circulation/circulation_action.php:95
-#: plugins/bot-telegram/register.plugin.php:38
 msgid "Transaction finished"
 msgstr "Transaksi Selesai"
 
@@ -3512,8 +3487,6 @@ msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 #: admin/modules/reporting/customs/reserve_list.php:69
 #: admin/modules/reporting/customs/reserve_list.php:114
 #: files/membercard/old/membercard.php:300 lib/contents/member.inc.php:243
-#: plugins/bot-telegram/account.php:138
-#: plugins/bot-telegram/register.plugin.php:36
 msgid "Member Name"
 msgstr "Nama Anggota"
 
@@ -3616,7 +3589,6 @@ msgstr ""
 
 #: admin/modules/circulation/circulation_action.php:558
 #: admin/modules/reporting/customs/staff_act.php:98
-#: plugins/bot-telegram/lib/Keyboard.php:52
 msgid "Loans"
 msgstr "Peminjaman"
 
@@ -3632,7 +3604,6 @@ msgstr "Reservasi"
 #: admin/modules/circulation/circulation_action.php:564
 #: admin/modules/circulation/circulation_action.php:566
 #: admin/modules/reporting/customs/overdued_list.php:209
-#: plugins/bot-telegram/lib/Keyboard.php:60
 msgid "Fines"
 msgstr "Denda"
 
@@ -3713,7 +3684,6 @@ msgstr "Debet"
 #: admin/modules/circulation/fines_list.php:182
 #: admin/modules/circulation/fines_list.php:216
 #: admin/modules/reporting/customs/member_fines_list.php:188
-#: plugins/bot-telegram/lib/BotInterface.php:345
 msgid "Credit"
 msgstr "Kredit"
 
@@ -4161,7 +4131,6 @@ msgid "Language Data Successfully Updated"
 msgstr "Data Bahasa Berhasil Diperbaharui"
 
 #: admin/modules/master_file/doc_language.php:79
-#: plugins/bot-telegram/answer.php:72
 msgid "Language Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Bahasa GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
@@ -4170,7 +4139,6 @@ msgid "New Language Data Successfully Saved"
 msgstr "Bahasa Baru Berhasil Disimpan"
 
 #: admin/modules/master_file/doc_language.php:88
-#: plugins/bot-telegram/answer.php:83
 msgid "Language Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Bahasa GAGAL Disimpan. Hubungi Administrator Sistem"
 
@@ -4349,8 +4317,6 @@ msgid "Delete Selected Data"
 msgstr "Hapus Data Terpilih"
 
 #: admin/modules/master_file/item_status.php:52
-#: plugins/bot-telegram/lib/BotInterface.php:328
-#: plugins/bot-telegram/lib/BotInterface.php:349
 msgid "No Loan Transaction"
 msgstr "Tidak Ada Transaksi Peminjaman"
 
@@ -4768,17 +4734,15 @@ msgstr "Anda akan menyunting data penerbit"
 msgid "Name can't be empty"
 msgstr "Nama tidak boleh kosong"
 
-#: admin/modules/master_file/rda_cmc.php:87 plugins/bot-telegram/answer.php:69
-#: plugins/bot-telegram/settings.php:32
+#: admin/modules/master_file/rda_cmc.php:87
 msgid "Data Successfully Updated"
 msgstr "Data Berhasil Diperbarui"
 
 #: admin/modules/master_file/rda_cmc.php:89
-#: plugins/bot-telegram/settings.php:37
 msgid "Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data GAGAL diperbarui. Silahkan Kontak Admin Sistem"
 
-#: admin/modules/master_file/rda_cmc.php:95 plugins/bot-telegram/answer.php:80
+#: admin/modules/master_file/rda_cmc.php:95
 msgid "New Data Successfully Saved"
 msgstr "Data Baru Berhasil Disimpan"
 
@@ -5099,7 +5063,6 @@ msgstr ""
 #: admin/modules/membership/index.php:132
 #: admin/modules/membership/index.php:379
 #: admin/modules/system/custom_field.php:217
-#: plugins/bot-telegram/lib/Keyboard.php:46
 msgid "Membership"
 msgstr "Keanggotaan"
 
@@ -5374,10 +5337,7 @@ msgstr "Lama Peminjaman (Dalam Hari)"
 #: admin/modules/system/index.php:357 admin/modules/system/index.php:363
 #: admin/modules/system/index.php:369 admin/modules/system/index.php:387
 #: admin/modules/system/index.php:403 admin/modules/system/ucsetting.php:89
-#: plugins/bot-telegram/settings.php:110 plugins/bot-telegram/settings.php:115
-#: plugins/bot-telegram/settings.php:120 plugins/bot-telegram/settings.php:125
-#: plugins/bot-telegram/settings.php:130 plugins/bot-telegram/settings.php:135
-#: plugins/bot-telegram/settings.php:140 template/default/tinfo.inc.php:223
+#: template/default/tinfo.inc.php:223
 msgid "Enable"
 msgstr "Dimungkinkan"
 
@@ -5387,10 +5347,7 @@ msgstr "Dimungkinkan"
 #: admin/modules/system/index.php:356 admin/modules/system/index.php:362
 #: admin/modules/system/index.php:368 admin/modules/system/index.php:386
 #: admin/modules/system/index.php:402 admin/modules/system/ucsetting.php:88
-#: plugins/bot-telegram/settings.php:109 plugins/bot-telegram/settings.php:114
-#: plugins/bot-telegram/settings.php:119 plugins/bot-telegram/settings.php:124
-#: plugins/bot-telegram/settings.php:129 plugins/bot-telegram/settings.php:134
-#: plugins/bot-telegram/settings.php:139 template/default/tinfo.inc.php:224
+#: template/default/tinfo.inc.php:224
 msgid "Disable"
 msgstr "Tidak mungkin"
 
@@ -6389,7 +6346,6 @@ msgstr "Nomor Urut"
 #: admin/modules/serial_control/serial_base_lib.inc.php:156
 #: admin/modules/system/custom_field.php:251
 #: admin/modules/system/custom_field.php:272
-#: plugins/bot-telegram/lib/BotInterface.php:324
 msgid "Note"
 msgstr "Catatan"
 
@@ -6540,7 +6496,6 @@ msgstr "Waktu"
 
 #: admin/modules/stock_take/finish.php:127
 #: admin/modules/stock_take/st_log.php:77 admin/modules/system/sys_log.php:110
-#: plugins/bot-telegram/account.php:67
 msgid "Message"
 msgstr "Pesan"
 
@@ -7509,43 +7464,36 @@ msgid "Day name"
 msgstr "Nama hari"
 
 #: admin/modules/system/holiday.php:262 admin/modules/system/holiday.php:359
-#: plugins/bot-telegram/lib/simbio_date.php:248
 #: simbio2/simbio_UTILS/simbio_date.inc.php:246
 msgid "Sunday"
 msgstr "Minggu"
 
 #: admin/modules/system/holiday.php:265 admin/modules/system/holiday.php:351
-#: plugins/bot-telegram/lib/simbio_date.php:249
 #: simbio2/simbio_UTILS/simbio_date.inc.php:247
 msgid "Monday"
 msgstr "Senin"
 
 #: admin/modules/system/holiday.php:268 admin/modules/system/holiday.php:352
-#: plugins/bot-telegram/lib/simbio_date.php:250
 #: simbio2/simbio_UTILS/simbio_date.inc.php:248
 msgid "Tuesday"
 msgstr "Selasa"
 
 #: admin/modules/system/holiday.php:271 admin/modules/system/holiday.php:353
-#: plugins/bot-telegram/lib/simbio_date.php:251
 #: simbio2/simbio_UTILS/simbio_date.inc.php:249
 msgid "Wednesday"
 msgstr "Rabu"
 
 #: admin/modules/system/holiday.php:274 admin/modules/system/holiday.php:355
-#: plugins/bot-telegram/lib/simbio_date.php:252
 #: simbio2/simbio_UTILS/simbio_date.inc.php:250
 msgid "Thursday"
 msgstr "Kamis"
 
 #: admin/modules/system/holiday.php:277 admin/modules/system/holiday.php:356
-#: plugins/bot-telegram/lib/simbio_date.php:253
 #: simbio2/simbio_UTILS/simbio_date.inc.php:251
 msgid "Friday"
 msgstr "Jumat"
 
 #: admin/modules/system/holiday.php:280 admin/modules/system/holiday.php:357
-#: plugins/bot-telegram/lib/simbio_date.php:254
 #: simbio2/simbio_UTILS/simbio_date.inc.php:252
 msgid "Saturday"
 msgstr "Sabtu"
@@ -7609,7 +7557,6 @@ msgid "Print"
 msgstr "Cetak"
 
 #: admin/modules/system/index.php:333
-#: plugins/bot-telegram/register.plugin.php:34
 msgid "Print Circulation Receipt"
 msgstr "Cetak Bukti Sirkulasi"
 
@@ -7811,7 +7758,6 @@ msgstr "Penyesuaian pada tema pilihan"
 #: admin/modules/system/membercard_theme.php:224
 #: admin/modules/system/theme.php:222 admin/modules/system/theme.php:255
 #: admin/modules/system/theme.php:287 admin/modules/system/theme.php:301
-#: plugins/bot-telegram/lib/Keyboard.php:76
 msgid "Activate"
 msgstr "Aktivasi"
 
@@ -7874,7 +7820,7 @@ msgstr "<i>Path</i> Modul"
 msgid "Module Description"
 msgstr "Deskripsi Modul"
 
-#: admin/modules/system/module.php:195 plugins/bot-telegram/answer.php:181
+#: admin/modules/system/module.php:195
 msgid "You are going to edit data"
 msgstr "Anda akan menyunting data modul"
 
@@ -8408,10 +8354,6 @@ msgstr "Pinjaman Terkini"
 
 #: lib/contents/download_loan_history.inc.php:64
 #: lib/contents/member.inc.php:408
-#: plugins/bot-telegram/lib/BotInterface.php:322
-#: plugins/bot-telegram/register.plugin.php:47
-#: plugins/bot-telegram/register.plugin.php:59
-#: plugins/bot-telegram/register.plugin.php:70
 msgid "Return Date"
 msgstr "Tanggal Kembali"
 
@@ -8694,7 +8636,6 @@ msgid "Reservation e-mail sent successfully!"
 msgstr "Surel untuk reservasi berhasil dikirim!"
 
 #: lib/contents/member.inc.php:740
-#: plugins/bot-telegram/lib/BotInterface.php:316
 msgid "Current Loan"
 msgstr "Pinjaman Terkini"
 
@@ -8970,345 +8911,6 @@ msgstr "Beranda"
 #: lib/module.inc.php:42
 msgid "View OPAC in New Window"
 msgstr "Tampilkan OPAC dalam Jendela Baru"
-
-#: plugins/bot-telegram/account.php:61
-msgid "Send"
-msgstr "Kirim"
-
-#: plugins/bot-telegram/account.php:115
-#: plugins/bot-telegram/register.plugin.php:23
-msgid "Telegram Account"
-msgstr "Akun Telegram"
-
-#: plugins/bot-telegram/account.php:139
-msgid "Telegram Username"
-msgstr "Nama Pengguna Telegram"
-
-#: plugins/bot-telegram/account.php:140 plugins/bot-telegram/account.php:162
-msgid "Direct Message"
-msgstr "Pesan Langsung"
-
-#: plugins/bot-telegram/account.php:162
-msgid "Write Message"
-msgstr "Tulis Pesan"
-
-#: plugins/bot-telegram/answer.php:51
-msgid "Question or Response can't be empty"
-msgstr "Pertanyaan atau Tanggapan tidak boleh dikosongkan"
-
-#: plugins/bot-telegram/answer.php:126
-msgid "Telegram Auto Response"
-msgstr "Tanggapan Automatis Telegram"
-
-#: plugins/bot-telegram/answer.php:130
-msgid "Question List"
-msgstr "Daftar Pertanyaan"
-
-#: plugins/bot-telegram/answer.php:131
-#, fuzzy
-#| msgid "Add New Subscription"
-msgid "Add New Question"
-msgstr "Tambah Data Berlangganan"
-
-#: plugins/bot-telegram/answer.php:175 plugins/bot-telegram/answer.php:194
-#, fuzzy
-#| msgid "Suggestion"
-msgid "Question"
-msgstr "Saran"
-
-#: plugins/bot-telegram/answer.php:177 plugins/bot-telegram/answer.php:195
-msgid "Response"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:145
-#, fuzzy, php-format
-#| msgid "Welcome to our library."
-msgid "Welcome to %s library"
-msgstr "Selamat datang di perpustakaan kami."
-
-#: plugins/bot-telegram/lib/BotInterface.php:149
-msgid "I don't understand"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:167
-msgid "UNREGISTRED member"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:170
-#, fuzzy
-#| msgid "My Account"
-msgid "Your Account :"
-msgstr "Akun Saya"
-
-#: plugins/bot-telegram/lib/BotInterface.php:171
-#, fuzzy, php-format
-#| msgid "Member ID"
-msgid "Member ID : %s"
-msgstr "ID Anggota"
-
-#: plugins/bot-telegram/lib/BotInterface.php:172
-#, fuzzy, php-format
-#| msgid "Member Name"
-msgid "Member Name : <b>%s</b>"
-msgstr "Nama Anggota"
-
-#: plugins/bot-telegram/lib/BotInterface.php:188
-#, fuzzy
-#| msgid "Insert Item Code/Barcode"
-msgid "Insert Item Code"
-msgstr "Masukkan Kode Eksemplar/Barkod"
-
-#: plugins/bot-telegram/lib/BotInterface.php:196
-#, fuzzy
-#| msgid "This Item is not registered in database"
-msgid "Item not registered in database"
-msgstr "Eksemplar ini tidak terdaftar dalam pangkalan data"
-
-#: plugins/bot-telegram/lib/BotInterface.php:202
-msgid ""
-"Membership status is suspended or expired, Transaction cannot be continued"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:206
-msgid "Collection is currently in reserve, Transaction cannot be continued"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:210
-msgid "Collection status is overdue, Transaction cannot be continued"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:219
-msgid "Maximum Reborrow Limit, Transaction cannot be continued"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:223
-msgid "Transaction Success, Check on Loans Menu"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:227
-#, fuzzy
-#| msgid "Transaction finished"
-msgid "Transaction Aborted"
-msgstr "Transaksi Selesai"
-
-#: plugins/bot-telegram/lib/BotInterface.php:232
-#, php-format
-msgid ""
-"Are you sure to extend <b> %s </b>? \n"
-"Press <code>Y</code> if agree or any key to abort!"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:246
-#, fuzzy
-#| msgid "%s already reseved"
-msgid "Account already registered"
-msgstr "%s sudah dipesan"
-
-#: plugins/bot-telegram/lib/BotInterface.php:254
-#, fuzzy
-#| msgid "Enter your member ID"
-msgid "Insert your username"
-msgstr "Masukkan ID anggota Anda"
-
-#: plugins/bot-telegram/lib/BotInterface.php:267
-#: plugins/bot-telegram/lib/BotInterface.php:274
-#: plugins/bot-telegram/lib/BotInterface.php:284
-msgid ""
-"FAILED, Check your username and password or maybe already registered with "
-"another telegram account"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:291
-msgid "Account activation process is successful"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:296
-#, fuzzy
-#| msgid "Status"
-msgid "Status : "
-msgstr "Status"
-
-#: plugins/bot-telegram/lib/BotInterface.php:303
-msgid ""
-"Insert Your Password ! if you dont have one, please contact the library staff"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:312
-#: plugins/bot-telegram/lib/BotInterface.php:337
-msgid "Only for registered account"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:324
-msgid "Collection in overdue status. you are not self extend"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:341
-#, fuzzy
-#| msgid "Current Loans"
-msgid "Current Fines"
-msgstr "Pinjaman Saat Ini"
-
-#: plugins/bot-telegram/lib/BotInterface.php:346
-msgid "Debet"
-msgstr "Debit"
-
-#: plugins/bot-telegram/lib/BotInterface.php:359
-msgid "You use the <b>HELP</b> menu"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:360
-msgid "<b>OPAC</b> is the link to the main page of this System"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:361
-msgid ""
-"<b>Help</b> to provide a brief overview of the menus available in this "
-"service"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:363
-msgid ""
-"<b>Activation</b> is used to link your registered account in library "
-"membership. This registration process will record your Telegram account into "
-"our system"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:366
-msgid "<b>Loan</b> to display a list of your current loans"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:367
-msgid "<b>Overdue</b> to display a list of your current overdues"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:368
-msgid "<b>Fines</b> to display a list of your current fines"
-msgstr ""
-
-#: plugins/bot-telegram/lib/BotInterface.php:369
-msgid "<b>Account</b> to display a detail of your account"
-msgstr ""
-
-#: plugins/bot-telegram/register.plugin.php:25
-msgid "Telegram Bot Settings"
-msgstr ""
-
-#: plugins/bot-telegram/register.plugin.php:27
-msgid "Bot Auto Response"
-msgstr ""
-
-#: plugins/bot-telegram/register.plugin.php:73
-#, php-format
-msgid "Overdue %d days with fines %s. %s"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:20
-#, fuzzy
-#| msgid "Title can not be empty"
-msgid "TOKEN and Bot Name can not be empty"
-msgstr "Judul tidak boleh kosong"
-
-#: plugins/bot-telegram/settings.php:48
-#, fuzzy
-#| msgid "Shortcut Settings"
-msgid "Bot Settings"
-msgstr "Pengaturan Pemintas"
-
-#: plugins/bot-telegram/settings.php:51
-#, fuzzy
-#| msgid "Modify UCS preferences"
-msgid "Modify telegram bot preferences"
-msgstr "Ubah Preferensi UCS"
-
-#: plugins/bot-telegram/settings.php:56
-#, fuzzy
-#| msgid "Item Status"
-msgid "Bot Telegram Status"
-msgstr "Status Eksemplar"
-
-#: plugins/bot-telegram/settings.php:59
-msgid "CONNECT"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:104
-msgid "Token"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:111
-#, fuzzy
-#| msgid "Self Location"
-msgid "Self Activation"
-msgstr "Lokasi Rak"
-
-#: plugins/bot-telegram/settings.php:116
-#, fuzzy
-#| msgid "Self Location"
-msgid "Self Loan Extension"
-msgstr "Lokasi Rak"
-
-#: plugins/bot-telegram/settings.php:121
-#, fuzzy
-#| msgid "Self Location"
-msgid "Self Booking"
-msgstr "Lokasi Rak"
-
-#: plugins/bot-telegram/settings.php:126
-#, fuzzy
-#| msgid "Print Circulation Receipt"
-msgid "Circulation Receipt"
-msgstr "Cetak Bukti Sirkulasi"
-
-#: plugins/bot-telegram/settings.php:131
-#, fuzzy
-#| msgid "Send Notification e-mail"
-msgid "Visiting Notification"
-msgstr "Kirim surel Pemberitahuan"
-
-#: plugins/bot-telegram/settings.php:136
-#, fuzzy
-#| msgid "Due Date Warning"
-msgid "Overdue Warning"
-msgstr "Peringatan Jatuh Tempo"
-
-#: plugins/bot-telegram/settings.php:141
-#, fuzzy
-#| msgid "Overdue"
-msgid "Overdue Notice"
-msgstr "Keterlambatan"
-
-#: plugins/bot-telegram/settings.php:158
-#, fuzzy
-#| msgid "Location Name"
-msgid "Bot Name"
-msgstr "Nama Lokasi"
-
-#: plugins/bot-telegram/settings.php:163
-msgid "webhook not provided for this server"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:168
-msgid "Pending Update Count"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:169
-msgid "Has Custom Certificate"
-msgstr ""
-
-#: plugins/bot-telegram/settings.php:170 plugins/bot-telegram/settings.php:173
-#, fuzzy
-#| msgid "Collections"
-msgid "Max Connections"
-msgstr "Koleksi"
-
-#: plugins/bot-telegram/settings.php:183
-#, fuzzy
-#| msgid "Author added!"
-msgid "Bot Authorized!"
-msgstr "Pengarang berhasil ditambahkan!"
-
-#: plugins/bot-telegram/settings.php:188 plugins/bot-telegram/settings.php:191
-msgid "Bad Request: bad webhook: HTTPS url must be provided for webhook!"
-msgstr ""
 
 #: plugins/label_barcode/index.php:279
 msgid "Labels & Barcode Printing"
@@ -10093,6 +9695,168 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "Send"
+#~ msgstr "Kirim"
+
+#~ msgid "Telegram Account"
+#~ msgstr "Akun Telegram"
+
+#~ msgid "Telegram Username"
+#~ msgstr "Nama Pengguna Telegram"
+
+#~ msgid "Direct Message"
+#~ msgstr "Pesan Langsung"
+
+#~ msgid "Write Message"
+#~ msgstr "Tulis Pesan"
+
+#~ msgid "Question or Response can't be empty"
+#~ msgstr "Pertanyaan atau Tanggapan tidak boleh dikosongkan"
+
+#~ msgid "Telegram Auto Response"
+#~ msgstr "Tanggapan Automatis Telegram"
+
+#~ msgid "Question List"
+#~ msgstr "Daftar Pertanyaan"
+
+#, fuzzy
+#~| msgid "Add New Subscription"
+#~ msgid "Add New Question"
+#~ msgstr "Tambah Data Berlangganan"
+
+#, fuzzy
+#~| msgid "Suggestion"
+#~ msgid "Question"
+#~ msgstr "Saran"
+
+#, fuzzy, php-format
+#~| msgid "Welcome to our library."
+#~ msgid "Welcome to %s library"
+#~ msgstr "Selamat datang di perpustakaan kami."
+
+#, fuzzy
+#~| msgid "My Account"
+#~ msgid "Your Account :"
+#~ msgstr "Akun Saya"
+
+#, fuzzy, php-format
+#~| msgid "Member ID"
+#~ msgid "Member ID : %s"
+#~ msgstr "ID Anggota"
+
+#, fuzzy, php-format
+#~| msgid "Member Name"
+#~ msgid "Member Name : <b>%s</b>"
+#~ msgstr "Nama Anggota"
+
+#, fuzzy
+#~| msgid "Insert Item Code/Barcode"
+#~ msgid "Insert Item Code"
+#~ msgstr "Masukkan Kode Eksemplar/Barkod"
+
+#, fuzzy
+#~| msgid "This Item is not registered in database"
+#~ msgid "Item not registered in database"
+#~ msgstr "Eksemplar ini tidak terdaftar dalam pangkalan data"
+
+#, fuzzy
+#~| msgid "Transaction finished"
+#~ msgid "Transaction Aborted"
+#~ msgstr "Transaksi Selesai"
+
+#, fuzzy
+#~| msgid "%s already reseved"
+#~ msgid "Account already registered"
+#~ msgstr "%s sudah dipesan"
+
+#, fuzzy
+#~| msgid "Enter your member ID"
+#~ msgid "Insert your username"
+#~ msgstr "Masukkan ID anggota Anda"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgid "Status : "
+#~ msgstr "Status"
+
+#, fuzzy
+#~| msgid "Current Loans"
+#~ msgid "Current Fines"
+#~ msgstr "Pinjaman Saat Ini"
+
+#~ msgid "Debet"
+#~ msgstr "Debit"
+
+#, fuzzy
+#~| msgid "Title can not be empty"
+#~ msgid "TOKEN and Bot Name can not be empty"
+#~ msgstr "Judul tidak boleh kosong"
+
+#, fuzzy
+#~| msgid "Shortcut Settings"
+#~ msgid "Bot Settings"
+#~ msgstr "Pengaturan Pemintas"
+
+#, fuzzy
+#~| msgid "Modify UCS preferences"
+#~ msgid "Modify telegram bot preferences"
+#~ msgstr "Ubah Preferensi UCS"
+
+#, fuzzy
+#~| msgid "Item Status"
+#~ msgid "Bot Telegram Status"
+#~ msgstr "Status Eksemplar"
+
+#, fuzzy
+#~| msgid "Self Location"
+#~ msgid "Self Activation"
+#~ msgstr "Lokasi Rak"
+
+#, fuzzy
+#~| msgid "Self Location"
+#~ msgid "Self Loan Extension"
+#~ msgstr "Lokasi Rak"
+
+#, fuzzy
+#~| msgid "Self Location"
+#~ msgid "Self Booking"
+#~ msgstr "Lokasi Rak"
+
+#, fuzzy
+#~| msgid "Print Circulation Receipt"
+#~ msgid "Circulation Receipt"
+#~ msgstr "Cetak Bukti Sirkulasi"
+
+#, fuzzy
+#~| msgid "Send Notification e-mail"
+#~ msgid "Visiting Notification"
+#~ msgstr "Kirim surel Pemberitahuan"
+
+#, fuzzy
+#~| msgid "Due Date Warning"
+#~ msgid "Overdue Warning"
+#~ msgstr "Peringatan Jatuh Tempo"
+
+#, fuzzy
+#~| msgid "Overdue"
+#~ msgid "Overdue Notice"
+#~ msgstr "Keterlambatan"
+
+#, fuzzy
+#~| msgid "Location Name"
+#~ msgid "Bot Name"
+#~ msgstr "Nama Lokasi"
+
+#, fuzzy
+#~| msgid "Collections"
+#~ msgid "Max Connections"
+#~ msgstr "Koleksi"
+
+#, fuzzy
+#~| msgid "Author added!"
+#~ msgid "Bot Authorized!"
+#~ msgstr "Pengarang berhasil ditambahkan!"
 
 #~ msgid "SYSTEM CONFIG"
 #~ msgstr "KONFIGURASI SISTEM"
