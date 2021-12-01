@@ -62,7 +62,6 @@ if (isset($_GET['select_lang'])) {
                 </div>
                 <div class="px-8">
                     <h3 class="font-light text-white mb-2" v-html="textInfo"></h3>
-                    </p>
                 </div>
             </div>
             <div class="flex h-screen items-end p-8">
@@ -131,8 +130,8 @@ if (isset($_GET['select_lang'])) {
                     headers: {'Content-Type': 'multipart/form-data' }
                 })
                     .then(res => {
-                        this.textInfo = res.data
-                        this.image = `./images/persons/member_${this.memberId}.jpg`
+                        this.textInfo = res.data.message
+                        this.image = `./images/persons/${res.data.image}`
                         <?php if ($sysconf['template']['visitor_log_voice']) : ?>
                             this.textToSpeech(this.textInfo.replace(/(<([^>]+)>)/ig, ''))
                         <?php endif; ?>
