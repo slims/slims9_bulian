@@ -2189,6 +2189,7 @@ keyframes coverUp 100% {
 }
 #visitorCounterPhoto {
   margin: 0;
+  width: 100px;
 }
 /* Social Icon
  ================================ */

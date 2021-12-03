@@ -163,17 +163,20 @@ if (isset($_POST['counter'])) {
   $memberID = trim($_POST['memberID']);
   $counter = setCounter($memberID);
   if ($counter === true) {
-    echo $member_name . __(', thank you for inserting your data to our visitor log');
+    $message = $member_name . __(', thank you for inserting your data to our visitor log');
     if ($expire) {
-      echo '<div class="error visitor-error">'.__('Your membership already EXPIRED, please renew/extend your membership immediately').'</div>';
+      $message = '<div class="error visitor-error">'.__('Your membership already EXPIRED, please renew/extend your membership immediately').'</div>';
     }
   } else if ($counter === ALREADY_CHECKIN) {
-    echo __('Welcome back').' '.$member_name.'.';
+    $message = __('Welcome back').' '.$member_name.'.';
   } else if ($counter === INSTITUTION_EMPTY) {
-    echo __('Sorry, Please fill institution field if you are not library member');
+    $message = __('Sorry, Please fill institution field if you are not library member');
   } else {
-    echo __('Error inserting counter data to database!');
+    $message = __('Error inserting counter data to database!');
   }
+  
+  header('Content-Type: application/json');
+  echo json_encode(['message' => $message, 'image' => $photo]);
   exit();
 }
 
@@ -195,6 +198,7 @@ $(document).ready( function() {
   $('#memberID').focus();
   var visitorCounterForm = $('#visitorCounterForm');
   var defaultMsg = $('#counterInfo').html();
+  var defaultImg = 'photo.png';
   // register event
   visitorCounterForm.on('submit', function(e) {
     e.preventDefault();
@@ -217,15 +221,16 @@ $(document).ready( function() {
           data: formData,
           cache: false,
           success: function(respond) {
-            $('#counterInfo').html(respond);
-            $('#text_voice').val(success_text + respond); 
+            $('#counterInfo').html(respond.message);
+            $('#text_voice').val(success_text + respond.message); 
             // reset counter
             setTimeout(function() { 
               $('#speak').trigger('click');
-              $('#visitorCounterPhoto').attr('src', './images/persons/photo.png');
+              $('#visitorCounterPhoto').attr('src', `./images/persons/${respond.image}`);
               $('#counterInfo').html(defaultMsg); 
               visitorCounterForm.enableForm().find('input[type=text]').val('');
               $('#memberID').focus();
+              setTimeout(() => { $('#visitorCounterPhoto').attr('src', `./images/persons/${defaultImg}`); }, 8000);
             }, 1000);
           },
           complete: function() {
@@ -256,8 +261,8 @@ $("#speak").on("click", function () {
     message['volume'] = 1;
     message['rate'] = 1;
     message['pitch'] = 1;
-    message['lang'] = '<?php echo $sysconf['visitor_lang']; ?>';
-    message['voice'] = voices[1];
+    message['lang'] = '<?php echo str_replace('_', '-', $sysconf['default_lang']); ?>';
+    message['voice'] = null;
     speechSynthesis.cancel();
     speechSynthesis.speak(message);
 });
