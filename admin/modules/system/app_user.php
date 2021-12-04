@@ -74,6 +74,8 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
   if ($query_image->num_rows > 0) {
     $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $_POST['uimg']));
     if ($_delete) {
+      // Change upict
+      $_SESSION['upict'] = 'person.png';
       $postImage = stripslashes($_POST['img']);
       $postImage = str_replace('/', '', $postImage);
       @unlink(sprintf(IMGBS.'persons/%s', $postImage));
@@ -177,6 +179,8 @@ if (isset($_POST['saveData'])) {
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
+                        // Change upict
+                        $_SESSION['upict'] = $data['user_image'];
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         utility::jsAlert(__('Image Uploaded Successfully'));
@@ -200,6 +204,8 @@ if (isset($_POST['saveData'])) {
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
+                        // Change upict
+                        $_SESSION['upict'] = $data['user_image'];
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         utility::jsAlert(__('Image Uploaded Successfully'));
