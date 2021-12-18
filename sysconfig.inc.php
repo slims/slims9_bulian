@@ -27,35 +27,6 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-// Environment config
-require 'config/sysconfig.env.inc.php';
-
-/*
- * Set to development or production
- *
- * In production mode, the system error message will be disabled
- */
-define('ENVIRONMENT', $Environment);
-
-switch (ENVIRONMENT) {
-  case 'development':
-    @error_reporting(-1);
-    @ini_set('display_errors', true);
-    break;
-  case 'production':
-    @ini_set('display_errors', false);
-    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-    break;
-  default:
-    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-    echo 'The application environment is not set correctly.';
-    exit(1); // EXIT_ERROR
-}
-
-// require composer library
-if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
-require 'lib/autoload.php';
-
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 // check if safe mode is on
@@ -80,6 +51,35 @@ define('DS', DIRECTORY_SEPARATOR);
 
 // senayan base dir
 define('SB', realpath(dirname(__FILE__)).DS);
+
+// Environment config
+require SB . 'config/sysconfig.env.inc.php';
+
+/*
+ * Set to development or production
+ *
+ * In production mode, the system error message will be disabled
+ */
+define('ENVIRONMENT', $Environment);
+
+switch (ENVIRONMENT) {
+  case 'development':
+    @error_reporting(-1);
+    @ini_set('display_errors', true);
+    break;
+  case 'production':
+    @ini_set('display_errors', false);
+    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+    break;
+  default:
+    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+    echo 'The application environment is not set correctly.';
+    exit(1); // EXIT_ERROR
+}
+
+// require composer library
+if (file_exists(SB . 'vendor/autoload.php')) require SB . 'vendor/autoload.php';
+require SB . 'lib/autoload.php';
 
 // absolute path for simbio platform
 define('SIMBIO', SB.'simbio2'.DS);
@@ -760,7 +760,7 @@ $sysconf['max_insert_batch'] = 100;
 $sysconf['load_balanced_env'] = false;
 
 // load helper
-require_once "lib/helper.inc.php";
+require_once SB . "lib/helper.inc.php";
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
