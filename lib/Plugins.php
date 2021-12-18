@@ -209,10 +209,12 @@ class Plugins
         $hash = md5(realpath($path));
         if ($module_name === 'opac') {
             $name = strtolower(implode('_', explode(' ', $label)));
-            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $module_name, $description, realpath($path)];
+            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $name, $description, realpath($path)];
         } else {
             $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
         }
+
+        return GroupMenu::getInstance()->bind($hash);
     }
 
     public function execute($hook, $params = [])

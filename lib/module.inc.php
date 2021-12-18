@@ -131,7 +131,7 @@ class module extends simbio
         $header_index = 0;
         foreach ($menu as $_list) {
             if ($_list[0] == 'Header') {
-                $_submenu .= '<div class="subMenuHeader subMenuHeader-'.$header_index.'">' . $_list[1] . '</div>';
+                $_submenu .= '<div class="subMenuHeader subMenuHeader-' . $header_index . '">' . $_list[1] . '</div>';
                 $header_index++;
             } else {
                 if ($i > 1) $_submenu_current = '';
@@ -162,23 +162,36 @@ class module extends simbio
         if (file_exists($_submenu_file)) {
             include $_submenu_file;
 
-            $menu = array_merge($menu ?? [], $plugin_menus);
-
-            if ($_SESSION['uid'] > 1) {
-                $tmp_menu = [];
-                if (isset($menu) && count($menu) > 0) {
-                    foreach ($menu as $item) {
-                        if ($item[0] === 'Header' || in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) $tmp_menu[] = $item;
-                    }
+            // grouping menu from sub_menu.php
+            $menu_grouped = [];
+            $header_name = null;
+            foreach ($menu ?? [] as $menu_item) {
+                if (strtolower($menu_item[0]) === 'header') {
+                    $header_name = strtolower($menu_item[1]);
+                    $menu_grouped[$header_name] = $menu_grouped[$header_name] ?? [];
+                    continue;
                 }
-                $menu = $tmp_menu;
+                if ($_SESSION['uid'] > 1 && !in_array(md5($menu_item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                $menu_grouped[$header_name][] = $menu_item;
             }
 
-            // clean header, remove it if not have child
-            foreach ($menu as $index => $item)
-                if ($item[0] === 'Header' && (!isset($menu[$index + 1]) || (isset($menu[$index + 1]) && $menu[$index + 1][0] === 'Header')))
-                    unset($menu[$index]);
+            foreach ($plugin_menus as $key => $plugin_menu) {
+                if ($_SESSION['uid'] > 1 && !in_array(md5($plugin_menu[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                $group_name = \SLiMS\GroupMenu::getInstance()->getGroupName($key);
+                if (!is_null($group_name)) {
+                    $menu_grouped[$group_name][] = $plugin_menu;
+                    continue;
+                }
+                $menu_grouped['plugins'][] = $plugin_menu;
+            }
 
+            // ungroup menus
+            $menu = [];
+            foreach ($menu_grouped as $header => $item) {
+                if (empty($item)) continue;
+                $menu[] = ['Header', strtoupper($header)];
+                $menu = array_merge($menu, $item);
+            }
         } else {
             include 'default/submenu.php';
             foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {
