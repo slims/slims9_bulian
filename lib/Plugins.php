@@ -204,6 +204,10 @@ class Plugins
         $this->hooks[$hook][] = $callback;
     }
 
+    public function registerHook($hook, $callback) {
+        $this->register($hook, $callback);
+    }
+
     public function registerMenu($module_name, $label, $path, $description = null)
     {
         $hash = md5(realpath($path));
