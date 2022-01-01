@@ -8,6 +8,7 @@
 namespace SLiMS;
 
 
+use SLiMS\SearchEngine\Engine;
 use stdClass;
 
 class Plugins
@@ -219,6 +220,10 @@ class Plugins
         }
 
         return GroupMenu::getInstance()->bind($hash);
+    }
+
+    public function registerSearchEngine($class_name) {
+        Engine::init()->set($class_name);
     }
 
     public function execute($hook, $params = [])
