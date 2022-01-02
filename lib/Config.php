@@ -111,6 +111,30 @@ class Config
                 $config = $default;
             }
         }
+
+        // if result is null, try to get global $sysconf
+        $config = $this->getGlobal($key, $default);
+
+        return $config;
+    }
+
+    public function getGlobal($key, $default = null)
+    {
+        global $sysconf;
+        $keys = explode('.', $key);
+        $config = $default;
+        foreach ($keys as $index => $_key) {
+            if ($index < 1) {
+                $config = $sysconf[$_key] ?? $default;
+                continue;
+            }
+            if ($config === $default) break;
+            if (isset($config[$_key])) {
+                $config = $config[$_key];
+            } else {
+                $config = $default;
+            }
+        }
         return $config;
     }
 }
