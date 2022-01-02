@@ -316,7 +316,7 @@ $form->addSelectList('default_lang', __('Default App. Language'), $available_lan
 
 // search engine
 $engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
-$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-3"');
+$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-6"');
 
 // opac result list number
 $result_num_options[] = array('10', '10');
