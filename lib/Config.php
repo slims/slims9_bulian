@@ -113,7 +113,7 @@ class Config
         }
 
         // if result is null, try to get global $sysconf
-        $config = $this->getGlobal($key, $default);
+        if (is_null($config)) $config = $this->getGlobal($key, $default);
 
         return $config;
     }
