@@ -27,10 +27,8 @@ use SLiMS\DB;
 
 class SearchBiblioEngine extends Contract
 {
-    function getDocuments(Criteria $criteria)
+    function getDocuments()
     {
-        $this->criteria = $criteria;
-
         // start time to benchmarking
         $start = microtime(true);
 

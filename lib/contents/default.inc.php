@@ -62,7 +62,8 @@ if (isset($_GET['search'])) {
         }
 
         // get records base on criteria
-        $engine->getDocuments($criteria);
+        $engine->setCriteria($criteria);
+        $engine->getDocuments();
 
         // create output
         // check if we are on json-ld result set mode

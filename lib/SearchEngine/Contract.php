@@ -45,6 +45,14 @@ abstract class Contract
     }
 
     /**
+     * @param Criteria $criteria
+     */
+    public function setCriteria(Criteria $criteria): void
+    {
+        $this->criteria = $criteria;
+    }
+
+    /**
      * @param int $limit
      */
     public function setLimit(int $limit): void
@@ -68,7 +76,7 @@ abstract class Contract
         return $this->num_rows;
     }
 
-    abstract function getDocuments(Criteria $criteria);
+    abstract function getDocuments();
 
     abstract function toArray();
 

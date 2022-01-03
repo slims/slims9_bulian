@@ -34,10 +34,8 @@ class DefaultEngine extends Contract
         'location', 'itemcode', 'callnumber', 'itemcallnumber', 'notes'
     ];
 
-    function getDocuments(Criteria $criteria)
+    function getDocuments()
     {
-        $this->criteria = $criteria;
-
         // start time to benchmarking
         $start = microtime(true);
 
