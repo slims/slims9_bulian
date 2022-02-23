@@ -321,8 +321,9 @@ if (isset($_GET['mode'])) {
                 echo '<div class="infoBox">'.__('Holiday settings saved').'</div>';
             }
         }
-    // remove all the holiday from holiday setting    
+    // remove all the holiday from holiday setting and emptying session    
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $_SESSION['holiday_dayname'] = array();
     $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL'); 
 }
 
