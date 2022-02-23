@@ -174,7 +174,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         <h2><?php echo __('Holiday Settings'); ?></h2>
   </div>
     <div class="sub_section">
-    .
       <div class="btn-group">
       <a href="<?php echo MWB; ?>system/holiday.php" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Holiday Setting'); ?></a>
       <a href="<?php echo MWB; ?>system/holiday.php?mode=special" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Special holiday'); ?></a>
