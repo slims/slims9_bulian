@@ -398,7 +398,10 @@ class circulation extends member
                 return array('days' => 'On Grace Periode', 'value' => 0, 'item' => $_loan_d[2]);
             } else {
                 $_fines_value = $this->fine_each_day*$_overdue_days;
-                if (isset($_overdue_days_ignore_holiday)) $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;
+                if (isset($_overdue_days_ignore_holiday)){
+                    $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;  
+                    $_overdue_days = $_overdue_days_ignore_holiday;
+                }
                 return array('days' => $_overdue_days, 'value' => $_fines_value, 'item' => $_loan_d[2]);
             }
         }
