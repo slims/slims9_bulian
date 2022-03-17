@@ -174,7 +174,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         <h2><?php echo __('Holiday Settings'); ?></h2>
   </div>
     <div class="sub_section">
-    .
       <div class="btn-group">
       <a href="<?php echo MWB; ?>system/holiday.php" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Holiday Setting'); ?></a>
       <a href="<?php echo MWB; ?>system/holiday.php?mode=special" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i>&nbsp;<?php echo __('Special holiday'); ?></a>
@@ -322,7 +321,11 @@ if (isset($_GET['mode'])) {
                 echo '<div class="infoBox">'.__('Holiday settings saved').'</div>';
             }
         }
-    }
+    // remove all the holiday from holiday setting and emptying session    
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $_SESSION['holiday_dayname'] = array();
+    $dbs->query('DELETE FROM holiday WHERE holiday_date IS NULL'); 
+}
 
     // get holiday data from database
     $rec_q = $dbs->query('SELECT DISTINCT holiday_dayname FROM holiday WHERE holiday_date IS NULL');
