@@ -34,7 +34,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config');
+        $this->load(__DIR__ . '/../config', ['sysconfig.local.inc.php', 'sysconfig.local.inc-sample.php']);
     }
 
     /**
@@ -77,7 +77,7 @@ class Config
     {
         $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
         while ($data = $query->fetch(PDO::FETCH_OBJ)) {
-            $value = unserialize($data->setting_value);
+            $value = @unserialize($data->setting_value);
             if (is_array($value)) {
                 foreach ($value as $id => $current_value) {
                     $this->configs[$data->setting_name][$id] = $current_value;
@@ -102,6 +102,30 @@ class Config
         foreach ($keys as $index => $_key) {
             if ($index < 1) {
                 $config = $this->configs[$_key] ?? $default;
+                continue;
+            }
+            if ($config === $default) break;
+            if (isset($config[$_key])) {
+                $config = $config[$_key];
+            } else {
+                $config = $default;
+            }
+        }
+
+        // if result is null, try to get global $sysconf
+        if (is_null($config)) $config = $this->getGlobal($key, $default);
+
+        return $config;
+    }
+
+    public function getGlobal($key, $default = null)
+    {
+        global $sysconf;
+        $keys = explode('.', $key);
+        $config = $default;
+        foreach ($keys as $index => $_key) {
+            if ($index < 1) {
+                $config = $sysconf[$_key] ?? $default;
                 continue;
             }
             if ($config === $default) break;

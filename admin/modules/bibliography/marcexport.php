@@ -216,14 +216,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'batch') {
 	require LIB.'biblio_list_index.inc.php';
       }
       // table spec
-      $table_spec = 'search_biblio';
+      $table_spec = 'search_biblio AS `index`';
       $datagrid->setSQLColumn('biblio_id',
 	'title AS \''.__('Title').'\'',
 	'author AS \''.__('Author').'\'');
     } else {
       require LIB.'biblio_list.inc.php';
       // table spec
-      $table_spec = 'search_biblio';
+      $table_spec = 'search_biblio AS `index`';
       $datagrid->setSQLColumn('biblio_id',
 	'title AS \''.__('Title').'\'',
 	'author AS \''.__('Author').'\'');

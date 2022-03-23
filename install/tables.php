@@ -201,7 +201,7 @@ return [
         'default' => ''
       ],
       [
-        'field' => 'update_date',
+        'field' => 'last_update',
         'type' => 'datetime',
         'null' => true,
         'default' => ''
@@ -529,6 +529,12 @@ return [
       ],
       [
         'field' => 'file_desc',
+        'type' => 'text',
+        'null' => true,
+        'default' => null
+      ],
+      [
+        'field' => 'file_key',
         'type' => 'text',
         'null' => true,
         'default' => null

@@ -178,24 +178,24 @@ if (!$reportView) {
         $member_name = $member_d[0];
         unset($member_q);
 
-        $fines_q = $obj_db->query('SELECT f.debet,f.credit, f.description, f.fines_date
+        $fines_q = $obj_db->query('SELECT f.debit,f.credit, f.description, f.fines_date
             FROM fines AS f WHERE f.member_id=\''.$array_data[0].'\''.( !empty($date_criteria)?$date_criteria:'' ));
         $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px; border-bottom:solid 5px #eaeaea;">'.$member_name.' ('.$array_data[0].')</div>';
 
         $_buffer .= '<table width="100%" cellspacing="0">';
-        $debet  = 0;
+        $debit  = 0;
         $credit = 0;
         $_buffer .= '<tr><td>'.__('Fines Date').'</td><td width="30%"><b>'.__('Description').'</b></td><td>'.__('Debit').'</td><td>'.__('Credit').'</td></tr>';
         while ($fines_d = $fines_q->fetch_assoc()) {
-            $_buffer .= '<tr style = "background-color:#adadad4d;"><td>'.$fines_d['fines_date'].'</td><td valign="top" width="40%">'.$fines_d['description'].'</td><td >Rp '.number_format($fines_d['debet'], 2, ',', '.').' </td><td>Rp '.number_format($fines_d['credit'], 2, ',', '.').'</td></tr>';
-            $debet  = $debet + $fines_d['debet'];
+            $_buffer .= '<tr style = "background-color:#adadad4d;"><td>'.$fines_d['fines_date'].'</td><td valign="top" width="40%">'.$fines_d['description'].'</td><td >Rp '.number_format($fines_d['debit'], 2, ',', '.').' </td><td>Rp '.number_format($fines_d['credit'], 2, ',', '.').'</td></tr>';
+            $debit  = $debit + $fines_d['debit'];
             $credit = $credit + $fines_d['credit'];
         }
         $clr = '#b9d2a5';
-        if($debet > $credit){
+        if($debit > $credit){
             $clr = '#f9b8b8';
         }
-        $_buffer .= '<tr style = "border-top:solid 5px #eaeaea; font-weight:bold;background-color:'.$clr.';"><i><td colspan="2">Total</td><td>Rp '.number_format($debet, 2, ',', '.').'</td><td>Rp '.number_format($credit, 2, ',', '.').'</td></i></tr>';
+        $_buffer .= '<tr style = "border-top:solid 5px #eaeaea; font-weight:bold;background-color:'.$clr.';"><i><td colspan="2">Total</td><td>Rp '.number_format($debit, 2, ',', '.').'</td><td>Rp '.number_format($credit, 2, ',', '.').'</td></i></tr>';
         $_buffer .= '</table>';
         return $_buffer;
     }

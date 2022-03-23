@@ -18,11 +18,18 @@
  *
  */
 
+use Ramsey\Uuid\Uuid;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
   die("can not access this file directly");
 } elseif (INDEX_AUTH != 1) {
   die("can not access this file directly");
+}
+
+if (isset($_POST['init'])) {
+  echo base64_encode($_SESSION[$_POST['init']].$_POST['init']) ?? '';
+  exit;
 }
 
 /* File Viewer */
@@ -66,6 +73,9 @@ if ($file_q->num_rows > 0) {
     if ($file_d['mime_type'] == 'application/pdf') {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
+        $uuid = Uuid::uuid4()->toString();
+        $_SESSION[$uuid] = base64_encode($file_d['file_key']);
+        $loader_init = $uuid;
         \SLiMS\Plugins::getInstance()->execute('fstream_pdf_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
 
         if (utility::isMobileBrowser()) {

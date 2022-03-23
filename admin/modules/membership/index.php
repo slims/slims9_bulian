@@ -76,7 +76,7 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
 
   $query_image = $dbs->query("SELECT member_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
   if (!empty($query_image->num_rows)) {
-    $_delete = $dbs->query(sprintf('UPDATE member SET member_image=NULL WHERE member_id=%d', $member_id));
+    $_delete = $dbs->query(sprintf("UPDATE member SET member_image=NULL WHERE member_id='%s", $member_id));
     if ($_delete) {
       $postImage = stripslashes($_POST['img']);
       $postImage = str_replace('/', '', $postImage);
@@ -232,7 +232,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // update custom data
                 if (isset($custom_data)) {
                   // check if custom data for this record exists
-                  $_sql_check_custom_q = sprintf('SELECT member_id FROM member_custom WHERE member_id=%d', $updateRecordID);
+                  $_sql_check_custom_q = sprintf("SELECT member_id FROM member_custom WHERE member_id='%s'", $updateRecordID);
                   $check_custom_q = $dbs->query($_sql_check_custom_q);
                   if ($check_custom_q->num_rows) {
                     @$sql_op->update('member_custom', $custom_data, 'member_id=\''.$updateRecordID.'\'');
@@ -431,7 +431,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="s-btn btn btn-primary"';
 
         // custom field data query
-        $_sql_rec_cust_q = sprintf('SELECT * FROM member_custom WHERE member_id=%d', $itemID);
+        $_sql_rec_cust_q = sprintf("SELECT * FROM member_custom WHERE member_id='%s'", $itemID);
         $rec_cust_q = $dbs->query($_sql_rec_cust_q);
         $rec_cust_d = $rec_cust_q->fetch_assoc();
 

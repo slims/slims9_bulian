@@ -17,6 +17,12 @@ $namespaces = [
     "Brick\\Math\\" => "/math/src/",
     "Ifsnop\\Mysqldump\\" => "/mysqldump-php/src/Ifsnop/Mysqldump/",
     "PHPMailer\\PHPMailer\\" => "/PHPMailer/src/",
+    "GuzzleHttp" => "/guzzlehttp/guzzle/src",
+    "GuzzleHttp\\Psr7\\" => "/guzzlehttp/psr7/src",
+    "GuzzleHttp\\Exception\\" => "/guzzle/src/",
+    "GuzzleHttp\Promise" => "/guzzlehttp/promises/src",
+    "Psr\\Http\\Message\\" => "/psr/http-message/src",
+    "Psr\\Http\\Client\\" => "/psr/http-client/src"
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {

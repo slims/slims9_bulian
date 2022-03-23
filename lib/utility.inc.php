@@ -121,15 +121,18 @@ class utility
             while ($_setting_data = $_setting_query->fetch_assoc()) {
                 $_value = @unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
-                    foreach ($_value as $_idx=>$_curr_value) {
-                        if (is_array($_curr_value)) {
-                            $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
-                        } else {
-                            $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
-                        }
+                    // make sure setting is available before
+                    if (!isset($sysconf[$_setting_data['setting_name']]))
+                        $sysconf[$_setting_data['setting_name']] = [];
+
+                    foreach ($_value as $_idx => $_curr_value) {
+                        // convert default setting value into array
+                        if (!is_array($sysconf[$_setting_data['setting_name']]))
+                            $sysconf[$_setting_data['setting_name']] = [$sysconf[$_setting_data['setting_name']]];
+                        $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = stripslashes($_value);
+                    $sysconf[$_setting_data['setting_name']] = stripcslashes($_value);
                 }
             }
         }

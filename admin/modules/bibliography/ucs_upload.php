@@ -63,7 +63,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
     $sql = "SELECT
         b.biblio_id, b.title, b.spec_detail_info, gmd.gmd_code, gmd.gmd_name, b.edition,
         b.isbn_issn, publ.publisher_name, b.publish_year,
-        b.collation, b.series_title, b.call_number, lang.language_id,
+        b.collation, b.series_title, b.call_number, b.image, lang.language_id,
         lang.language_name, pl.place_name, b.classification, b.notes, fr.frequency
         FROM biblio AS b
         LEFT JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
@@ -103,26 +103,25 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
         $to_sent['node_info'] = $sysconf['ucs'];
         $to_sent['node_data'] = $data;
         // create HTTP request
-        $http_request = new http_request();
-        // send HTTP POST request
-        $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        $http_request = new \GuzzleHttp\Client();
+        $http_param = ['body' => json_encode($to_sent), 'http_errors' => false];
 
 		if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
-          $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucpoll.php', $server_addr, $to_sent, 'POST', 'text/json');
+          $request = $http_request->request('POST', $sysconf['ucs']['serveraddr'].'/ucpoll.php', $http_param);
 		} else {
-		  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
+          $request = $http_request->request('POST', $sysconf['ucs']['serveraddr'].'/ucs.php', $http_param);
 		}
 
         // below is for debugging purpose only
-	    // die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
+	    // die(json_encode(array('status' => 'RAW', 'message' => $request->getBody())));
 
 	    // check for http request error
-	    if ($req_error = $http_request->error()) {
-		  die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
+	    if ($request->getStatusCode() != '200') {
+		  die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => 'HTTP Request error with code : ' . $request->getStatusCode())));
 	    }
 
         // print out body of request result
-        echo $http_request->body();
+        echo $request->getBody();
         exit();
     } else {
         die(json_encode(array('status' => 'NO_DATA', 'message' => 'No Data to be uploaded to Union Catalog Server')));

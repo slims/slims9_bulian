@@ -81,6 +81,11 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
 <script src="<?php echo $sysconf['template']['dir']; ?>/default/js/less.min.js"></script>
 -->
 <script src="<?php echo JWB;?>jquery.js"></script>
+<?php 
+    if (isset($js)): 
+        echo $js;
+    endif;
+?>
 <style>
     .s-search-advances {
         color: #fff;

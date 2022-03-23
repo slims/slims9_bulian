@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="<?= JWB ?>pdfjs/mobile/css/style.css?v=1">
 
     <script src="<?= JWB ?>pdfjs/mobile/js/pdf.js"></script>
+    <script src="<?= JWB ?>pdfjs/build/ObjectPdf.js"></script>
     <script>
         let workerUrl = '<?php echo JWB ?>pdfjs/mobile/js/pdf.worker.js';
         let DEFAULT_URL = '<?php echo $file_loc_url; ?>';
+        let LOADER_INIT = '<?php echo $loader_init; ?>';
     </script>
     <script src="<?= JWB ?>pdfjs/mobile/js/pdf_viewer.js"></script>
 </head>

@@ -27,12 +27,15 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+// Environment config
+require 'config/sysconfig.env.inc.php';
+
 /*
  * Set to development or production
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'production');
+define('ENVIRONMENT', $Environment);
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -506,6 +509,7 @@ if ($sysconf['captcha']['forgot']['enable']) {
 /**
  * Mailing Settings
  */
+$sysconf['mail']['debug'] = 0;
 $sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
 $sysconf['mail']['enable'] = true;
 $sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
@@ -518,6 +522,9 @@ $sysconf['mail']['from_name'] = 'SLiMS Administrator';
 $sysconf['mail']['reply_to'] = &$sysconf['mail']['from'];
 $sysconf['mail']['reply_to_name'] = &$sysconf['mail']['from_name'];
 
+if (file_exists(SB.'config'.DS.'sysconfig.mail.inc.php')) {
+  include SB.'config'.DS.'sysconfig.mail.inc.php';
+}
 /**
  * Maximum biblio mark for member
  */

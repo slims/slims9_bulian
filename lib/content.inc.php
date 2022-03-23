@@ -46,7 +46,7 @@ class Content
         return $summary;
     }
     
-    public function getContents($obj_db, $max_each_page = 10, &$total, $search_query = '')
+    public function getContents($obj_db, $max_each_page = 10, &$total = 0, $search_query = '')
     {
         global $sysconf;
         $contents = array();

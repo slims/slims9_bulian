@@ -226,8 +226,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $image_upload->setAllowableFormat($sysconf['allowed_images']);
             $image_upload->setMaxSize($sysconf['max_image_upload'] * 1024);
             $image_upload->setUploadDir(IMGBS . 'docs');
+
+            $img_title = $data['title'].'_'.date("YmdHis");
+            if(strlen($data['title']) > 70){
+                $img_title = substr($data['title'], 0, 70).'_'.date("YmdHis");
+            }
+
+            $new_filename = strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title));
             // upload the file and change all space characters to underscore
-            $img_upload_status = $image_upload->doUpload('image', preg_replace('@\s+@i', '_', $_FILES['image']['name']));
+            $img_upload_status = $image_upload->doUpload('image', $new_filename);
             if ($img_upload_status == UPLOAD_SUCCESS) {
                 $data['image'] = $dbs->escape_string($image_upload->new_filename);
                 // write log
@@ -235,8 +242,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::jsToastr('Bibliography', __('Image Uploaded Successfully'), 'success');
             } else {
                 // write log
+                $data['image'] = NULL;
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->new_filename . ', with error (' . $image_upload->error . ')');
-                utility::jsToastr('Bibliography', __('Image Uploaded Failed'), 'error');
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.$image_upload->error, 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);

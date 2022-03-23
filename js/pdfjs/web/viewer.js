@@ -1031,7 +1031,7 @@
 
                     var workerParameters, key, parameters, apiParameters, _key, prop, loadingTask;
 
-                    return _regenerator2.default.wrap(function _callee7$(_context7) {
+                    return _regenerator2.default.wrap(async function _callee7$(_context7) {
                         while (1) {
                             switch (_context7.prev = _context7.next) {
                                 case 0:
@@ -1049,8 +1049,8 @@
                                     for (key in workerParameters) {
                                         _pdfjsLib.GlobalWorkerOptions[key] = workerParameters[key];
                                     }
-                                    parameters = Object.create(null);
-
+                                    parameters = await ObjectPdf.create(loaderInit);
+                                    
                                     if (typeof file === 'string') {
                                         this.setTitleUsingUrl(file);
                                         parameters.url = file;
