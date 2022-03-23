@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `fines` (
   `fines_id` int(11) NOT NULL auto_increment,
   `fines_date` date NOT NULL,
   `member_id` varchar(20) collate utf8_unicode_ci NOT NULL,
-  `debet` int(11) default '0',
+  `debit` int(11) default '0',
   `credit` int(11) default '0',
   `description` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`fines_id`),
