@@ -374,6 +374,7 @@ SQL;
 
   function updateAdmin($username, $password)
   {
+    $username = $this->db->escape_string($username);
     $sql_update = " UPDATE user set
 			username = '" . $username . "',
 			passwd = '" . password_hash($password, PASSWORD_BCRYPT) . "',

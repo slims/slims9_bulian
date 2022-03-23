@@ -47,7 +47,7 @@ var PDFViewerApplication = {
      * @returns {Promise} - Returns the promise, which is resolved when document
      *                      is opened.
      */
-    open: function (params) {
+    open: async function (params) {
         if (this.pdfLoadingTask) {
             // We need to destroy already opened document
             return this.close().then(
@@ -63,12 +63,14 @@ var PDFViewerApplication = {
         this.setTitleUsingUrl(url);
 
         // Loading document.
-        var loadingTask = pdfjsLib.getDocument({
+        var obj = await ObjectPdf.create(params.loaderInit)
+        var initTask = {
             url: url,
             maxImageSize: MAX_IMAGE_SIZE,
             cMapUrl: CMAP_URL,
-            cMapPacked: CMAP_PACKED,
-        });
+            cMapPacked: CMAP_PACKED
+        }
+        var loadingTask = pdfjsLib.getDocument({...obj, ...initTask});
         this.pdfLoadingTask = loadingTask;
 
         loadingTask.onProgress = function (progressData) {
@@ -446,6 +448,7 @@ document.addEventListener(
 PDFViewerApplication.animationStartedPromise.then(function () {
     PDFViewerApplication.open({
         url: DEFAULT_URL,
+        loaderInit: LOADER_INIT
     });
 });
 

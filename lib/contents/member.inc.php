@@ -119,7 +119,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
-            if (isset($_GET['destination'])) {
+            if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
                 header("location:" . $_GET['destination']);
             } else {
                 header('Location: index.php?p=member');
@@ -209,7 +209,12 @@ if (isset($_POST['clear_biblio'])) {
 
 if ($is_member_login) :
 
-    $member_image = $_SESSION['m_image'] && file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
+    if (filter_var($_SESSION['m_image'], FILTER_VALIDATE_URL)) {
+        $member_image_url = $_SESSION['m_image'];
+    } else {
+        $member_image = $_SESSION['m_image'] && file_exists(IMGBS . 'persons/' . $_SESSION['m_image']) ? $_SESSION['m_image'] : 'person.png';
+        $member_image_url = './images/persons/' . $member_image;
+    }
 
     // require file
     require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
@@ -706,7 +711,7 @@ if ($is_member_login) :
     <div class="d-flex">
         <div style="width: 16rem;" class="bg-grey-light p-4" id="member_sidebar">
             <div class="p-4">
-                <img src="./images/persons/<?php echo $member_image; ?>" alt="member photo" class="rounded shadow">
+                <img src="<?= $member_image_url ?>" alt="member photo" class="rounded shadow">
             </div>
             <a href="index.php?p=member&logout=1" class="btn btn-danger btn-block"><i
                         class="fas fa-sign-out-alt mr-2"></i><?php echo __('LOGOUT'); ?></a>
@@ -902,7 +907,7 @@ if ($is_member_login) :
         ?>
         <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member&destination=<?= urlencode($_GET['destination']) ?>" method="post">
+            <form action="index.php?p=member&destination=<?= urlencode($_GET['destination'] ?? '') ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>

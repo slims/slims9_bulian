@@ -48,6 +48,8 @@ $total_pages = 1;
 $header_info = '';
 // HTML metadata
 $metadata = '';
+// JS
+$js = '';
 // searched words for javascript highlight
 $searched_words_js_array = '';
 
@@ -55,6 +57,9 @@ $searched_words_js_array = '';
 if (utility::isMemberLogin()) {
   $header_info .= '<div class="alert alert-info alert-member-login" id="memberLoginInfo">'.__('You are currently Logged on as member').': <strong>'.$_SESSION['m_name'].' (<em>'.$_SESSION['m_email'].'</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">'.__('LOGOUT').'</a></div>';
 }
+
+// Load hook before content load
+SLiMS\Plugins::getInstance()->execute('before_content_load');
 
 // start the output buffering for main content
 ob_start();
@@ -64,15 +69,8 @@ if (isset($_GET['p'])) {
     // some extra checking
     $path = preg_replace('@^(http|https|ftp|sftp|file|smb):@i', '', $path);
     $path = preg_replace('@\/@i','',$path);
-    // check if the file exists
-    if (file_exists(LIB.'contents/'.$path.'.inc.php')) {
-        if ($path != 'show_detail') {
-          $metadata = '<meta name="robots" content="noindex, follow">';
-        }
-        include LIB.'contents/'.$path.'.inc.php';
-    }
     // check path from plugins
-    elseif (isset(($menu = \SLiMS\Plugins::getInstance()->getMenus('opac'))[$path])) {
+    if (isset(($menu = \SLiMS\Plugins::getInstance()->getMenus('opac'))[$path])) {
         if (file_exists($menu[$path][3])) {
             $page_title = $menu[$path][0];
             include $menu[$path][3];
@@ -80,6 +78,13 @@ if (isset($_GET['p'])) {
             // not found
             http_response_code(404);
         }
+    }
+    // check if the file exists
+    elseif (file_exists(LIB.'contents/'.$path.'.inc.php')) {
+        if ($path != 'show_detail') {
+            $metadata = '<meta name="robots" content="noindex, follow">';
+        }
+        include LIB.'contents/'.$path.'.inc.php';
     } else {
         // get content data from database
         $metadata = '<meta name="robots" content="index, follow">';
@@ -115,6 +120,9 @@ if (isset($_GET['p'])) {
 }
 // main content grab
 $main_content = ob_get_clean();
+
+// Load hook after content load
+SLiMS\Plugins::getInstance()->execute('after_content_load');
 
 // template output
 require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/index_template.inc.php';

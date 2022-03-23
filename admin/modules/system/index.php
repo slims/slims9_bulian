@@ -22,6 +22,9 @@
 /* Global application configuration */
 
 // key to authenticate
+use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
+
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
@@ -145,6 +148,9 @@ if (isset($_POST['updateData'])) {
 
     // language
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
+
+    // search engine
+    addOrUpdateSetting('search_engine', utility::filterData('search_engine', 'post', true, true, true));
 
     // opac num result
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['opac_result_num'])).'\' WHERE setting_name=\'opac_result_num\'');
@@ -307,6 +313,10 @@ $form->addAnything(__('Logo Image'), $str_input);
 // application language
 require_once(LANG.'localisation.php');
 $form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang'], 'class="form-control col-3"');
+
+// search engine
+$engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
+$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-6"');
 
 // opac result list number
 $result_num_options[] = array('10', '10');

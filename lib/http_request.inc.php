@@ -146,7 +146,7 @@ class http_request {
 
         // parse the given URL
         $url = parse_url($url);
-        if ($url['scheme'] != 'http') {
+        if (!in_array($url['scheme'], ['http', 'https'])) {
             return false;
         }
 

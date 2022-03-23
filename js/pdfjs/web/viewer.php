@@ -35,11 +35,12 @@ See https://github.com/adobe-type-tools/cmap-resources
     <!-- This snippet is used in production (included from viewer.html) -->
     <link rel="resource" type="application/l10n" href="<?php echo SWB ?>js/pdfjs/web/locale/locale.properties"/>
     <script src="<?php echo JWB.'pdfjs' ?>/build/pdf.js"></script>
+    <script src="<?php echo JWB.'pdfjs' ?>/build/ObjectPdf.js"></script>
 
     <script>
         var workerUrl = '<?php echo JWB."pdfjs" ?>/build/pdf.worker.js';
-        var defaultPdf = '<?php echo JWB."pdfjs" ?>/web/compressed.tracemonkey-pldi-09.pdf';
-        defaultPdf = '<?php echo $file_loc_url; ?>';
+        var defaultPdf = '<?php echo $file_loc_url; ?>';
+        var loaderInit = '<?= $loader_init ?? '' ?>';
     </script>
     <script src="<?php echo JWB.'pdfjs/web' ?>/viewer.js"></script>
 

@@ -50,6 +50,8 @@ export default {
                 {value: 26, text: 'SLiMS 9.3.0 | Bulian'},
                 {value: 27, text: 'SLiMS 9.3.1 | Bulian'},
                 {value: 28, text: 'SLiMS 9.4.0 | Bulian'},
+                {value: 29, text: 'SLiMS 9.4.1 | Bulian'},
+                {value: 30, text: 'SLiMS 9.4.2 | Bulian'},
             ]
         }
     },
