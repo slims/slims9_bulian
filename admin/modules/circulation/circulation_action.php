@@ -537,7 +537,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
 
         $fines_alert = FALSE;
         $total_unpaid_fines = 0;
-        $_unpaid_fines = $dbs->query('SELECT 1 FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit LIMIT 1');
+        $_unpaid_fines = $dbs->query('SELECT 1 FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debit > credit LIMIT 1');
         if($_unpaid_fines->fetch_row()) {
             $fines_alert = TRUE;
         }
