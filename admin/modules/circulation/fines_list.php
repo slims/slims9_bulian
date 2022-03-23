@@ -60,13 +60,13 @@ $page_title = 'Member Loan List';
 ob_start();
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
-    $debet = preg_replace('@[.,\-a-z ]@i', '', $_POST['debet']);
+    $debit = preg_replace('@[.,\-a-z ]@i', '', $_POST['debit']);
     $credit = preg_replace('@[.,\-a-z ]@i', '', $_POST['credit']);
     // check form validity
-    if (empty($_POST['finesDesc']) OR empty($debet)) {
-        utility::jsAlert(''.__('Fines Description and Debet value can\'t be empty').'');
-    } else if ($credit > $debet) {
-        utility::jsAlert(''.__('Value of Credit can not be higher that Debet Value').'');
+    if (empty($_POST['finesDesc']) OR empty($debit)) {
+        utility::jsAlert(''.__('Fines Description and Debit value can\'t be empty').'');
+    } else if ($credit > $debit) {
+        utility::jsAlert(''.__('Value of Credit can not be higher that Debit Value').'');
     } else {
         $data['member_id'] = $_SESSION['memberID'];
         if (empty($_POST['finesDate'])) {
@@ -75,7 +75,7 @@ if (isset($_POST['saveData'])) {
             $data['fines_date'] = trim($dbs->escape_string(strip_tags($_POST['finesDate'])));
         }
         $data['description'] = trim($dbs->escape_string(strip_tags($_POST['finesDesc'])));
-        $data['debet'] = $debet;
+        $data['debit'] = $debit;
         $data['credit'] = $credit;
 
         $sql_op = new simbio_dbop($dbs);
@@ -176,8 +176,8 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     $form->addDateField('finesDate', __('Fines Date'), $rec_d['fines_date']??'','class="form-control"');
     // fines description
     $form->addTextField('text', 'finesDesc', __('Description/Name').'*', $rec_d['description']??'', 'style="width: 60%;" class="form-control"');
-    // fines debet
-    $form->addTextField('text', 'debet', __('Debit').'*', !empty($rec_d['debet'])?$rec_d['debet']:'0', 'style="width: 20%;" class="form-control"');
+    // fines debit
+    $form->addTextField('text', 'debit', __('Debit').'*', !empty($rec_d['debit'])?$rec_d['debit']:'0', 'style="width: 20%;" class="form-control"');
     // fines credit
     $form->addTextField('text', 'credit', __('Credit'), !empty($rec_d['credit'])?$rec_d['credit']:'0', 'style="width: 20%;" class="form-control"');
 
@@ -190,11 +190,11 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
 } else {
     $fines_alert = FALSE;
     $total_unpaid_fines = 0;
-    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debet > credit';
+    $sql_unpaid_fines = 'SELECT * FROM fines WHERE member_id=\''.$dbs->escape_string($_SESSION['memberID']).'\' AND debit > credit';
     $_unpaid_fines = $dbs->query($sql_unpaid_fines);
     if ($_unpaid_fines->num_rows > 0) {
         while($row = $_unpaid_fines->fetch_assoc()) {
-            $total_unpaid_fines = $total_unpaid_fines + $row['debet'] - $row['credit'];
+            $total_unpaid_fines = $total_unpaid_fines + $row['debit'] - $row['credit'];
         }
     }
     if ($total_unpaid_fines > 0) {
@@ -212,16 +212,16 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     $datagrid->setSQLColumn('f.fines_id AS \'EDIT\'',
         'f.description AS \''.__('Description/Name').'\'',
         'f.fines_date AS \''.__('Fines Date').'\'',
-        'f.debet AS \''.__('Debit').'\'',
+        'f.debit AS \''.__('Debit').'\'',
         'f.credit AS \''.__('Credit').'\'');
     $datagrid->setSQLorder("f.fines_date DESC");
 
     $criteria = 'f.member_id=\''.$dbs->escape_string($memberID).'\' ';
     // view balanced overdue
     if (isset($_GET['balance'])) {
-        $criteria .= ' AND (f.debet=f.credit) ';
+        $criteria .= ' AND (f.debit=f.credit) ';
     } else {
-        $criteria .= ' AND (f.debet!=f.credit) ';
+        $criteria .= ' AND (f.debit!=f.credit) ';
     }
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
