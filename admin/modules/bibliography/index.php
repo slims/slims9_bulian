@@ -520,7 +520,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if ($serial_kardex_q) {
                     $serial_kardex_d = $serial_kardex_q->fetch_row();
                     // delete kardex
-                    if ($serial_kardex_d[1] > 1) {
+                    if (isset($serial_kardex_d[1]) && $serial_kardex_d[1] > 1) {
                         $sql_op->delete('kardex', "serial_id=" . $serial_kardex_d[2]);
                     }
                 }
