@@ -121,18 +121,18 @@ class simbio_dbop extends simbio
             // concat the update query string
             foreach ($array_update as $column => $new_value) {
                 if ($new_value == '') {
-                    $_set .= ", $column = ''";
+                    $_set .= ", `$column` = ''";
                 } else if ($new_value === 'NULL' OR $new_value == null) {
-                    $_set .= ", $column = NULL";
+                    $_set .= ", `$column` = NULL";
                 } else if (is_string($new_value)) {
                     if (preg_match("/^literal{.+}/i", $new_value)) {
                         $new_value = preg_replace("/literal{|}/i", '', $new_value);
-                        $_set .= ", $column = $new_value";
+                        $_set .= ", `$column` = $new_value";
                     } else {
-                        $_set .= ", $column = '$new_value'";
+                        $_set .= ", `$column` = '$new_value'";
                     }
                 } else {
-                    $_set .= ", $column = $new_value";
+                    $_set .= ", `$column` = $new_value";
                 }
             }
 
