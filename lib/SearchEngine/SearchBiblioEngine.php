@@ -253,7 +253,50 @@ class SearchBiblioEngine extends Contract
 
     function toJSON()
     {
-        // TODO: Implement toJSON() method.
+        $jsonld = [
+            '@context' => 'http://schema.org',
+            '@type' => 'Book',
+            'total_rows' => $this->num_rows,
+            'page' => $this->page,
+            'records_each_page' => $this->limit,
+            '@graph' => [],
+        ];
+
+        $db = DB::getInstance();
+
+        foreach ($this->documents as $document) 
+        {
+            $record = [];
+            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME']. SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
+            $record['name'] = trim($document['title']);
+
+            $record['author'] = [];
+            
+            foreach(explode('-', $document['author']) as $author)
+            {
+              $record['author']['name'][] = trim($author);
+            } 
+      
+            // ISBN
+            $record['isbn'] = $document['isbn_issn'];
+      
+            // publisher
+            $record['publisher'] = $document['publisher'];
+      
+            // publish date
+            $record['dateCreated'] = $document['publish_year'];
+      
+                  // doc images
+            $_image = '';
+            if (!empty($document['image'])) {
+              $_image = urlencode($document['image']);
+              $record['image'] = $_image;
+            }
+      
+            $jsonld['@graph'][] = $record;
+        }
+
+        return json_encode($jsonld);
     }
 
     function toHTML()
@@ -380,7 +423,7 @@ class SearchBiblioEngine extends Contract
         while ($author = $query->fetch()) {
             $xml->startElement('name');
             $xml->writeAttribute('type', config('authority_type')[$author['authority_type']] ?? '');
-            $xml->writeAttribute('authority', $author['auth_list']);
+            $xml->writeAttribute('authority', $author['auth_list']??'');
             $xml->startElement('namePart');
             $xml->text($author['author_name']);
             $xml->endElement(); // -- namePart

@@ -263,7 +263,54 @@ class DefaultEngine extends Contract
 
     function toJSON()
     {
-        // TODO: Implement toJSON() method.
+        $jsonld = [
+            '@context' => 'http://schema.org',
+            '@type' => 'Book',
+            'total_rows' => $this->num_rows,
+            'page' => $this->page,
+            'records_each_page' => $this->limit,
+            '@graph' => [],
+        ];
+
+        $db = DB::getInstance();
+
+        foreach ($this->documents as $document) 
+        {
+            $record = [];
+            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME']. SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
+            $record['name'] = trim($document['title']);
+      
+            // get the authors data
+            $_biblio_authors_q = $db->prepare('SELECT a.*,ba.level FROM mst_author AS a'
+              .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id=?');
+            $_biblio_authors_q->execute([$document['biblio_id']]);
+
+            $record['author'] = [];
+            
+            while ($_auth_d = $_biblio_authors_q->fetch(\PDO::FETCH_ASSOC)) {
+              $record['author']['name'][] = trim($_auth_d['author_name']);
+            } 
+      
+            // ISBN
+            $record['isbn'] = $document['isbn_issn'];
+      
+            // publisher
+            $record['publisher'] = $document['publisher'];
+      
+            // publish date
+            $record['dateCreated'] = $document['publish_year'];
+      
+                  // doc images
+            $_image = '';
+            if (!empty($document['image'])) {
+              $_image = urlencode($document['image']);
+              $record['image'] = $_image;
+            }
+      
+            $jsonld['@graph'][] = $record;
+        }
+
+        return json_encode($jsonld);
     }
 
     function toHTML()
@@ -354,7 +401,7 @@ class DefaultEngine extends Contract
             $xml->startElement('place');
             $xml->startElement('placeTerm');
             $xml->writeAttribute('type', 'text');
-            $xml->text($document['publish_place']);
+            $xml->text($document['publish_place']??'');
             $xml->endElement(); // -- placeTerm
             $xml->startElement('publisher');
             $xml->text($document['publisher']);
@@ -390,7 +437,7 @@ class DefaultEngine extends Contract
         while ($author = $query->fetch()) {
             $xml->startElement('name');
             $xml->writeAttribute('type', config('authority_type')[$author['authority_type']] ?? '');
-            $xml->writeAttribute('authority', $author['auth_list']);
+            $xml->writeAttribute('authority', $author['auth_list']??'');
             $xml->startElement('namePart');
             $xml->text($author['author_name']);
             $xml->endElement(); // -- namePart
