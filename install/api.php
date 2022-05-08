@@ -35,18 +35,16 @@ if ($action === 're-install' || $action === 're-upgrade') {
 
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '7.4';
+    $php_minimum_version = '8.1';
     $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
         $slims->databaseDriverType() &&
-        $slims->isGdOk() &&
-        $slims->isGettextOk() &&
-        $check_dir['status'] &&
-        $slims->isMbStringOk(),
+        $slims->phpExtensionCheck('bool') &&
+        $check_dir['status'],
       'data' => [
         'php' => [
-          'title' => 'PHP',
+          'title' => 'PHP Version',
           'status' => $slims->isPhpOk($php_minimum_version),
           'version' => phpversion(),
           'message' => 'Minimum PHP version to install SLiMS is ' . $php_minimum_version . '. Please upgrade it first!'
@@ -57,29 +55,11 @@ switch ($action) {
           'version' => $slims->databaseDriverType(),
           'message' => 'SLiMS required MYSQL for database management. Please install it first!'
         ],
-        'gd' => [
-          'title' => 'PHP GD',
-          'status' => $slims->isGdOk(),
-          'version' => '',
-          'message' => 'PHP GD required for image processing!'
-        ],
-        'gettext' => [
-          'title' => 'PHP gettext',
-          'status' => $slims->isGettextOk(),
-          'version' => '',
-          'message' => 'PHP gettext required for translation to other language'
-        ],
-        'mbstring' => [
-          'title' => 'PHP mbstring',
-          'status' => $slims->isMbStringOk(),
-          'version' => '',
-          'message' => 'Mbstring is used to convert strings to different encodings.'
-        ],
-        'yaz' => [
-          'title' => 'YAZ',
-          'status' => $slims->isYazOk(),
-          'version' => '',
-          'message' => 'YAZ not installed. It\'s optional, but will be needed if you want to use Z39.50 protocol.'
+        'phpextension' => [
+          'title' => 'PHP Extension',
+          'status' => '',
+          'version' => '*',
+          'data' => $slims->phpExtensionCheck()
         ],
         'chkdir' => [
           'title' => 'Pre-Installation Step',

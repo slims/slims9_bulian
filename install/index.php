@@ -87,6 +87,10 @@ $_SESSION['csrf_token'] = bin2hex(substr(str_shuffle(str_repeat($x='0123456789ab
                 transform: rotate(360deg);
             }
         }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
     </style>
 </head>
 <body>

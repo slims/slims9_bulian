@@ -41,7 +41,7 @@ export default {
                 })
         }
     },
-    template: `<div class="h-screen flex">
+    template: `<div class="min-h-screen flex">
 <div class="w-20 p-4">
     <div><logo></logo></div>
     <slims-text-vertical class="text-lg font-medium text-gray-200 pt-4"></slims-text-vertical>
@@ -51,12 +51,14 @@ export default {
     <h1 class="text-3xl font-medium">System requirements</h1>
     <p class="text-lg text-gray-700 tracking-wide mb-4">Checking the minimum system requirements to install SLiMS</p>
     <div v-if="loading">Loading...</div>
-    <div v-for="d in data" class="pt-2">
-        <h2 class="font-medium">{{d.title}}</h2>
-        <div v-if="!d.data" class="text-gray-700">{{d.version || (d.status ? 'installed' : 'not installed')}}</div>
-        <div v-html="d.data" class="text-gray-700">{{d.data}}</div>
-        <div v-if="!d.status" class="text-red-500">{{d.message}}</div>
-        <div class="w-1/3 border-b pb-2"></div>
+    <div class="flex flex-wrap">
+        <div v-for="d,i in data" class="pt-2 w-1/2">
+            <h2 class="font-medium">{{d.title}}</h2>
+            <div v-if="!d.data" class="text-gray-700">{{d.version || (d.status ? 'installed' : 'not installed')}}</div>
+            <div v-html="d.data" class="text-gray-700">{{d.data}}</div>
+            <div v-if="!d.status" class="text-red-500">{{d.message}}</div>
+            <div class="w-1/3 border-b pb-2"></div>
+        </div>
     </div>
     <button v-if="(!loading && isPass)" @click="$emit('click')" class="mt-4 rounded-full bg-blue-500 py-2 px-4 text-blue-100 hover:bg-blue-400 focus:outline-none focus:bg-blue-600">Next</button>
 </div>
