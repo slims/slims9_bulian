@@ -64,7 +64,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     $custom_field = '<dl class="row text-sm">';
     foreach ($settings['custom_fields'] as $field => $field_opts) {
       if ($field_opts[0] == 1) {
-        $custom_field .= '<dt class="col-sm-3">'.$field_opts[1].'</dt><dd class="col-sm-9">'.(trim($biblio_detail[$field]) !== '' ? $biblio_detail[$field] : '-').'</dd>';
+        $custom_field .= '<dt class="col-sm-3">'.$field_opts[1].'</dt><dd class="col-sm-9">'.(trim($biblio_detail[$field]??'') !== '' ? $biblio_detail[$field] : '-').'</dd>';
         $i++;
       }
     }
@@ -144,7 +144,7 @@ function getNotes($dbs, $biblio_id)
 
 function addEllipsis($string, $length, $end='…')
 {
-    if (strlen($string) > $length)
+    if (strlen($string??'') > $length)
     {
         $length -= strlen($end);
         $string  = substr($string, 0, $length);

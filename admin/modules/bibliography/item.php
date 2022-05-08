@@ -260,7 +260,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         // default biblio title and biblio ID
         $b_title = $rec_d['title'];
         $b_id = $rec_d['biblio_id'];
-        if (trim($rec_d['call_number']) == '') {
+        if (trim($rec_d['call_number']??'') == '') {
             $biblio_q = $dbs->query('SELECT call_number FROM biblio WHERE biblio_id='.$rec_d['biblio_id']);
             $biblio_d = $biblio_q->fetch_assoc();
             $rec_d['call_number'] = $biblio_d['call_number'];

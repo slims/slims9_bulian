@@ -83,7 +83,7 @@ class Config
                     $this->configs[$data->setting_name][$id] = $current_value;
                 }
             } else {
-                $this->configs[$data->setting_name] = stripslashes($value);
+                $this->configs[$data->setting_name] = stripslashes($value??'');
             }
         }
     }
