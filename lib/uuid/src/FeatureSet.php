@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Builder\BuilderCollection;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -43,7 +42,6 @@ use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Provider\DceSecurityProviderInterface;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
-use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -274,6 +272,7 @@ class FeatureSet
         $this->numberConverter = $this->buildNumberConverter($calculator);
         $this->timeConverter = $this->buildTimeConverter($calculator);
 
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (isset($this->timeProvider)) {
             $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
         }
@@ -349,10 +348,10 @@ class FeatureSet
             return new RandomNodeProvider();
         }
 
-        return new FallbackNodeProvider(new NodeProviderCollection([
+        return new FallbackNodeProvider([
             new SystemNodeProvider(),
             new RandomNodeProvider(),
-        ]));
+        ]);
     }
 
     /**
@@ -431,11 +430,10 @@ class FeatureSet
             return new GuidBuilder($this->numberConverter, $this->timeConverter);
         }
 
-        /** @psalm-suppress ImpureArgument */
-        return new FallbackBuilder(new BuilderCollection([
+        return new FallbackBuilder([
             new Rfc4122UuidBuilder($this->numberConverter, $this->timeConverter),
             new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter),
-        ]));
+        ]);
     }
 
     /**
