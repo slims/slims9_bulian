@@ -77,7 +77,7 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 	    exit();
           }
 		require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
-		$data['comment'] = trim(strip_tags($_POST['comment']));
+		$data['comment'] = trim(strip_tags($_POST['comment'], ['p','em','ol','ul','li','strong']));
 		$data['biblio_id'] = $detail_id;
 		$data['member_id'] = $_SESSION['mid'];
 
