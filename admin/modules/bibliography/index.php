@@ -269,6 +269,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($sysconf['log']['biblio']) {
                 $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
             }
+
+            // Remove previous popular biblio data from cache if opac use default template
+            if ($sysconf['template']['theme'] == 'default' && $_POST['opacHide'] != $_POST['opacHideOrigin']) {
+                require SB . 'api/v1/helpers/Cache.php';
+                Cache::destroy('biblio_popular');
+            }
+
             /* UPDATE RECORD MODE */
             // remove input date
             unset($data['input_date']);
@@ -1071,6 +1078,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
     $hide_options[] = array('1', __('Hide'));
+    $form->addHidden('opacHideOrigin', $rec_d['opac_hide']??0);
     $form->addRadio('opacHide', __('Hide in OPAC'), $hide_options, isset($rec_d['opac_hide']) && $rec_d['opac_hide'] ? '1' : '0');
     // biblio promote to front page
     $promote_options[] = array('0', __('Don\'t Promote'));

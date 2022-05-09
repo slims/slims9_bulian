@@ -32,4 +32,16 @@ class Cache
         }
         return null;
     }
+
+    /**
+     * @param $name string
+     * @return void
+     */
+    static function destroy($name)
+    {
+        $path = __DIR__ . '/../../../files/cache/cache_' . $name . '.json';
+        if (file_exists($path)) {
+            @unlink($path);
+        }
+    }
 }
