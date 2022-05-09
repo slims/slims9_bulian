@@ -196,6 +196,12 @@ class module extends simbio
             include 'default/submenu.php';
             foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {
                 $link = explode('|', $value);
+                // Exception for shortcut menu based on registered plugin
+                if (preg_match('/plugin_container/', $link[1]))
+                {
+                    $menu[$link[0]] = array(__($link[0]), $link[1]);
+                    continue;
+                }
                 $menu[$link[0]] = array(__($link[0]), MWB . $link[1]);
             }
         }
