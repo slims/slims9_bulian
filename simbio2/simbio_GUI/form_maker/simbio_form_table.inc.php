@@ -84,7 +84,7 @@ class simbio_form_table extends simbio_form_maker
         $_row_num = 0;
         foreach ($this->elements as $row) {
            $_form_element = $row['element']->out();
-           if ($_form_element_info = trim($row['info'])) {
+           if ($_form_element_info = trim($row['info']??'')) {
                $_form_element .= '<div class="formElementInfo">'.$_form_element_info.'</div>';
            }
            // append row

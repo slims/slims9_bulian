@@ -30,6 +30,7 @@ if (!defined('INDEX_AUTH')) {
 $errmsg = NULL;
 if (isset($_GET['errnum'])) {
     if ($_GET['errnum'] === '601') {
+        $errnum = FALSE;
         $errmsg = '<div class="alert alert-danger" role="alert">You have no authorization to download this file.</div>';
     } else {
         $errnum = FALSE;

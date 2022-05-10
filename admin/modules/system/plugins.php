@@ -124,7 +124,7 @@ $plugin_actives = $plugins->getActive();
 
             // if have migration and version is different
             // disable it.
-            $version = (json_decode($plugin_actives[$hash]->options))->version ?? '';
+            $version = (json_decode($plugin_actives[$hash]->options??''))->version ?? '';
             if ($version !== $plugin->version && $plugin->migration->is_exist) {
                 $enable_disable = __('Disabled');
                 $is_active = '';
