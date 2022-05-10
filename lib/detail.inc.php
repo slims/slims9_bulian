@@ -131,11 +131,18 @@ class detail
           return false;
         }
         foreach ($this->record_detail['attachments'] as $attachment_d) {
-
-            if (!is_null($attachment_d['access_limit']) && !utility::isMemberLogin()) {
+          // Restricted attachment check
+          if (!is_null($attachment_d['access_limit'])) {
+              // need member login access
+              if (!utility::isMemberLogin()) {
                 $_output .= '<li class="attachment-locked" style="list-style-image: url(images/labels/locked.png)"><a class="font-italic" href="index.php?p=member&destination='.urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']).'">'.__('Please login to see this attachment').'</a></li>';
                 continue;
-            }
+              // member type access check 
+              } else if (utility::isMemberLogin() && !in_array($_SESSION['m_member_type_id'], unserialize($attachment_d['access_limit']))) {
+                $_output .= '<li class="attachment-locked cursor-pointer" style="list-style-image: url(images/labels/locked.png)" title="' . __('You have no authorization to download this file.') . '">'. $attachment_d['file_title'] . '</li>';
+                continue;
+              }
+          }
 
           if ($attachment_d['mime_type'] == 'application/pdf') {
             $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" '.(utility::isMobileBrowser() ? 'target="_blank"' : 'class="openPopUp"').' title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
