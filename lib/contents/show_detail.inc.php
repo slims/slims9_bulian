@@ -89,8 +89,10 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 		$sql_op = new simbio_dbop($dbs);
 		$insert = $sql_op->insert('comment', $data);
 		if ($insert) {
-		  utility::jsAlert(__('Thank you for your comment.'));
-		} else { utility::jsAlert(__('FAILED to strore you comment. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+		  utility::jsToastr(__('Success'), __('Thank you for your comment.'), 'success');
+		} else { 
+      utility::jsToastr(__('Error'), __('FAILED to store you comment. Please Contact System Administrator') . (ENVIRONMENT === 'development' ? $sql_op->error : ''), 'error'); 
+    }
 	}
 
   if (isset($_GET['keywords'])) {
