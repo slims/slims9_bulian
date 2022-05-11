@@ -139,7 +139,7 @@ class detail
                 continue;
               // member type access check 
               } else if (utility::isMemberLogin() && !in_array($_SESSION['m_member_type_id'], unserialize($attachment_d['access_limit']))) {
-                $_output .= '<li class="attachment-locked cursor-pointer" style="list-style-image: url(images/labels/locked.png)" title="' . __('You have no authorization to download this file.') . '">'. $attachment_d['file_title'] . '</li>';
+                $_output .= '<li class="attachment-locked cursor-pointer" style="list-style-image: url(images/labels/locked.png)">'. __('You have no authorization to download this file.') . '</li>';
                 continue;
               }
           }
