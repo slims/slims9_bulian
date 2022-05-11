@@ -34,6 +34,12 @@ function showComment($_detail_id)
 		global $dbs;
         require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 		$_list_comment = '';
+		if (!is_null(config('3rd_party_comment')))
+		{
+			// execute registered hook for 3rd party comment management
+			\SLiMS\Plugins::getInstance()->execute('comment_init', [&$_list_comment]);
+			return $_list_comment;
+		}
 		$_recs_each_page = 3;
 		$_pages_each_set = 10;
 		$_all_recs = 0;
@@ -81,5 +87,4 @@ function showComment($_detail_id)
 		} else  {
 			return $_list_comment;
 		}
-
     }
