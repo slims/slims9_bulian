@@ -89,8 +89,9 @@ class Biblio
       die();
       return false;
     } else {
+      $this->records = [];
       while ($record = $_q->fetch_assoc()) {
-        $this->records[] = $record;
+          $this->records[] = $record;
       }
       // free the memory
       $_q->free_result();

@@ -74,7 +74,7 @@ if ($file_q->num_rows > 0) {
       if ($sysconf['pdf']['viewer'] == 'pdfjs') {
         $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
         $uuid = Uuid::uuid4()->toString();
-        $_SESSION[$uuid] = base64_encode($file_d['file_key']);
+        $_SESSION[$uuid] = base64_encode($file_d['file_key']??'');
         $loader_init = $uuid;
         \SLiMS\Plugins::getInstance()->execute('fstream_pdf_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
 
