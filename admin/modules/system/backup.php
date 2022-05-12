@@ -123,19 +123,53 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   ?>
 	<div class="sub_section">
 	  <div class="btn-group">
-      <button onclick="$('#createBackup').submit()" class="notAJAX btn btn-success"><?php echo __('Start New Backup'); ?></button>
+      <div>
+        <button id="startBackup" class="notAJAX btn btn-success d-block mb-1"><?php echo __('Start New Backup'); ?></button>
+        <input type="checkbox" value="yes" id="activateVerbose"/> <label>Verbose process</label>
+      </div>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/backup_proc.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" class="form-control col-md-3" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+    <form name="search" action="<?php echo MWB; ?>system/backup.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+      <input type="text" name="keywords" class="form-control col-md-3" />
+      <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
     </form>
-    <form name="createBackup" id="createBackup" target="blindSubmit" action="<?php echo MWB; ?>system/backup_proc.php" method="post" style="display: inline; visibility: hidden;">
-    <input type="hidden" name="start" value="true" />
-    <input type="hidden" name="tkn" value="<?php echo $_SESSION['token']; ?>" />
+    <form name="createBackup" id="createBackup" target="backupVerbose" action="<?php echo MWB; ?>system/backup_proc.php" method="post" style="display: inline; visibility: hidden;">
+      <input type="hidden" name="verbose" value="no"/>  
+      <input type="hidden" name="start" value="true"/>
+      <input type="hidden" name="tkn" value="<?php echo $_SESSION['token']; ?>" />
     </form>
+    <iframe name="backupVerbose" class="d-none w-100 my-2 rounded-lg" style="height: 150px; background: black;color: white"></iframe>
   </div>
 </div>
 </div>
+<script>
+  $('#startBackup').click(function(){
+    let input = $('#activateVerbose');
+
+    // Change ui
+    input.attr('disabled', '');
+    $(this).removeClass('btn-success').addClass('btn-secondary');
+    $(this).text('<?= __('Processing') ?>');
+    $('#createBackup').submit()
+  });
+
+  $('#activateVerbose').click(function(){
+    let input = $('input[name="verbose"]');
+    let iframe = $('iframe[name="backupVerbose"]');
+    let button = $('#startBackup');
+
+    if ($(this).is(':checked'))
+    {
+      input.val('yes');
+      button.trigger('click');
+      iframe.removeClass('d-none');
+    }
+    else
+    {
+      iframe.addClass('d-none');
+      input.val('false');
+    }
+  });
+</script>
 <?php
 
 /* BACKUP LOG LIST */

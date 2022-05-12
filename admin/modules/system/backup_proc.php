@@ -47,10 +47,45 @@ if (!($can_read AND $can_write)) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
+function color($message, $type = 'white')
+{
+    switch ($type) {
+        case 'success':
+            $color = 'green';
+            break;
+
+        case 'info':
+            $color = 'blue';
+            break;
+
+        case 'error':
+            $color = 'red';
+            break;        
+
+        default:
+            $color = 'white';
+            break;
+    }
+
+    return '<strong style="color: ' . $color . '; font-family: Sans">' . $message . '</strong>';
+}
+
+function outputWithFlush($message)
+{
+    if (isset($_POST['verbose']) && $_POST['verbose'] == 'yes')
+    {
+        echo str_replace('\n', ' ', $message) . '<br/>';
+        ob_flush();
+        flush();
+    }
+}
+
 // if backup process is invoked
 if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSION['token']) {
+    outputWithFlush(color('Starting...'));
     sleep(2);
     $output = '';
+    $error = false;
     // turn on implicit flush
     ob_implicit_flush();
 
@@ -97,12 +132,15 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                     @chdir($sysconf['backup_dir']);
                     // compress the backup using tar gz
                     if(function_exists('exec')){
+                        outputWithFlush(color('Compressing...'));
+                        sleep(1);
                         exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
                         if ($status == COMMAND_SUCCESS) {
                             // delete the original file
                             @unlink($data['backup_file']);
                             $output .= __("File is compressed using tar gz archive format");
                             $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                            outputWithFlush(color('Compressing Success', 'success'));
                         }
                     }
                     // return to previous PHP working dir
@@ -111,18 +149,27 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                 // input log to database
                 $sql_op = new simbio_dbop($dbs);
                 $sql_op->insert('backup_log', $data);
+                outputWithFlush(color($output, 'success'));
             } catch (\Exception $e) {
+                $error = true;
                 $output = sprintf(__('Backup FAILED!,\n%s'),$e->getMessage());
+                outputWithFlush(color($output, 'error'));
             }
         } else {
-            $output = __("Backup FAILED! The Backup directory is not exists or not writeable");
+            $error = true;
+            $output = __("Backup FAILED! The Backup directory is not exists or not writeable") . '<br> ';
             $output .= __("Contact System Administrator for the right path of backup directory");
+            outputWithFlush(color($output, 'error'));
         }
     
     // remove token
     unset($_SESSION['token']);
-    echo '<script type="text/javascript">top.alert(\''.$dbs->escape_string($output).'\');</script>';
-    echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/backup.php\');</script>';
+
+    if ($_POST['verbose'] == 'no')
+    {
+        utility::jsToastr(__('Backup'), $dbs->escape_string(strip_tags($output)), ($error ? 'error' : 'success'));
+    }
+    echo '<script type="text/javascript">setTimeout(() => { top.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/backup.php\'); }, ' . ($_POST['verbose'] == 'no' ? 0 : 5000) . ')</script>';
     exit();
 }
 
