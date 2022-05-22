@@ -149,6 +149,9 @@ if (isset($_POST['updateData'])) {
     // language
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
 
+    // timezone
+    addOrUpdateSetting('timezone', utility::filterData('timezone', 'post', true, true, true));
+
     // search engine
     addOrUpdateSetting('search_engine', utility::filterData('search_engine', 'post', true, true, true));
 
@@ -313,6 +316,11 @@ $form->addAnything(__('Logo Image'), $str_input);
 // application language
 require_once(LANG.'localisation.php');
 $form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang'], 'class="form-control col-3"');
+
+// timezone
+$html  = '<input type="text" class="form-control col-2" name="timezone" value="' . ($sysconf['timezone'] ?? 'Asia/Jakarta') . '"/>';
+$html .= '<a target="_blank" href="https://www.php.net/manual/en/timezones.php">' . __('List of timezones supported by PHP') . '</a>';
+$form->addAnything(__('Default App. Timezone'), $html);
 
 // search engine
 $engine = array_map(fn($e) => [$e, $e], Engine::init()->get());

@@ -28,7 +28,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // Environment config
-require 'config/sysconfig.env.inc.php';
+require __DIR__ . '/config/sysconfig.env.inc.php';
 
 /*
  * Set to development or production
@@ -52,20 +52,12 @@ switch (ENVIRONMENT) {
     exit(1); // EXIT_ERROR
 }
 
-// require composer library
-if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
-require 'lib/autoload.php';
-
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
 }
-
-// set default timezone
-// for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
-@date_default_timezone_set('Asia/Jakarta');
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
@@ -152,6 +144,9 @@ define('BINARY_FOUND', 1);
 define('COMMAND_SUCCESS', 0);
 define('COMMAND_FAILED', 2);
 
+// require composer library
+if (file_exists(SB . 'vendor/autoload.php')) require SB . 'vendor/autoload.php';
+require LIB . 'autoload.php';
 // simbio main class inclusion
 require SIMBIO.'simbio.inc.php';
 // simbio security class
@@ -760,7 +755,12 @@ $sysconf['max_insert_batch'] = 100;
 $sysconf['load_balanced_env'] = false;
 
 // load helper
-require_once "lib/helper.inc.php";
+require_once LIB . "helper.inc.php";
+
+// set default timezone
+// for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
+// https://www.php.net/manual/en/timezones.php
+@date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
