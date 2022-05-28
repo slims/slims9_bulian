@@ -68,7 +68,6 @@ class GroupMenu
     {
         foreach ($this->group as $key => $group) {
             if (in_array($uniq_id, $group)) return $key;
-            break;
         }
         return null;
     }
