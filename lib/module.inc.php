@@ -21,6 +21,9 @@
  *
  */
 
+use SLiMS\GroupMenu;
+use SLiMS\GroupMenuOrder;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -162,6 +165,8 @@ class module extends simbio
         if (file_exists($_submenu_file)) {
             include $_submenu_file;
 
+            $this->reorderMenus($menu, $plugin_menus); exit();
+
             // grouping menu from sub_menu.php
             $menu_grouped = [];
             $header_name = null;
@@ -206,6 +211,43 @@ class module extends simbio
             }
         }
         return $menu;
+    }
+
+    function reorderMenus($default, $plugin)
+    {
+        $groups = [];
+
+        // collect header from default menu
+        $header = null;
+        foreach ($default as $menu) {
+            if (count($menu) === 2 && strtolower($menu[0]) === 'header') {
+                // reset header
+                $header = null;
+                // initialize group
+                $groups[strtolower($menu[1])] = [];
+                $header = strtolower($menu[1]);
+                continue;
+            }
+            if (!is_null($header)) {
+                $groups[$header][] = md5($menu[1]);
+            }
+        }
+
+        $groups = array_merge($groups, GroupMenu::getInstance()->getGroup());
+
+        $items = [...$default, ...$plugin];
+        $orders = GroupMenuOrder::getInstance()->getOrder();
+        echo '<pre>';
+        var_dump($orders);
+        echo '</pre><br>';
+
+        echo '<pre>';
+        var_dump($groups);
+        echo '</pre><br>';
+
+        echo '<pre>';
+        var_dump($items);
+        echo '</pre><br>';
     }
 
     /**
