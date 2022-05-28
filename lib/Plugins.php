@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 05/11/20 13.53
@@ -32,6 +33,7 @@ class Plugins
     protected array $menus = [];
     private int $deep = 2;
     private string $current_location = '';
+    private ?string $group_name;
 
     /**
      * Plugins constructor.
@@ -205,7 +207,8 @@ class Plugins
         $this->hooks[$hook][] = $callback;
     }
 
-    public function registerHook($hook, $callback) {
+    public function registerHook($hook, $callback)
+    {
         $this->register($hook, $callback);
     }
 
@@ -219,11 +222,38 @@ class Plugins
             $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
         }
 
-        return GroupMenu::getInstance()->bind($hash);
+        $group_instance = GroupMenu::getInstance()->bind($hash);
+        if (!is_null($this->group_name)) $group_instance->group($this->group_name);
+
+        return $group_instance;
     }
 
-    public function registerSearchEngine($class_name) {
+    public function registerSearchEngine($class_name)
+    {
         Engine::init()->set($class_name);
+    }
+
+    public static function group($group_name, $callback): GroupMenuOrder
+    {
+        self::getInstance()->setGroupName($group_name);
+        $callback();
+        self::getInstance()->setGroupName(null);
+        return GroupMenuOrder::getInstance()->bind($group_name);
+    }
+
+    public static function menu($module_name, $label, $path, $description = null)
+    {
+        return self::getInstance()->registerMenu($module_name, $label, $path, $description = null);
+    }
+
+    public static function hook($hook, $callback)
+    {
+        self::getInstance()->registerHook($hook, $callback);
+    }
+
+    public function setGroupName($group_name)
+    {
+        $this->group_name = $group_name;
     }
 
     public function execute($hook, $params = [])
@@ -242,5 +272,4 @@ class Plugins
         if (is_null($module)) return $this->menus;
         return $this->menus[$module] ?? [];
     }
-
 }

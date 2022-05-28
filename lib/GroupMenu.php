@@ -54,6 +54,7 @@ class GroupMenu
             $this->group[strtolower($group_name)][] = $this->uniq_id;
             $this->uniq_id = null;
         }
+        return GroupMenuOrder::getInstance()->bind($group_name);
     }
 
     /**
