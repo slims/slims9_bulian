@@ -205,8 +205,8 @@ class module extends simbio
                     // get menu before
                     foreach ($orders as $key => $value) {
                         if (count($plugin) < 1) break;
-                        $group_menu_items = array_map(fn ($i) => $plugin[$i], $group_menu[$key]);
-                        if (strtolower($menu[1]) === $value['group'] && $value['position'] === 'before')
+                        $group_menu_items = array_map(fn ($i) => $plugin[$i] ?? [], $group_menu[$key]);
+                        if (count($group_menu_items) > 0 && strtolower($menu[1]) === $value['group'] && $value['position'] === 'before')
                             $groups[strtolower($key)] = $group_menu_items;
                     }
 
@@ -216,8 +216,8 @@ class module extends simbio
                     // get menu after
                     foreach ($orders as $key => $value) {
                         if (count($plugin) < 1) break;
-                        $group_menu_items = array_map(fn ($i) => $plugin[$i], $group_menu[$key]);
-                        if (strtolower($menu[1]) === $value['group'] && $value['position'] === 'after')
+                        $group_menu_items = array_map(fn ($i) => $plugin[$i] ?? [], $group_menu[$key]);
+                        if (count($group_menu_items) > 0 && strtolower($menu[1]) === $value['group'] && $value['position'] === 'after')
                             $groups[strtolower($key)] = $group_menu_items;
                     }
                 } else {
@@ -231,13 +231,22 @@ class module extends simbio
             }
         }
 
+        foreach ($group_menu as $header => $menus) {
+            $tmp_menu = [];
+            foreach ($menus as $hash) {
+                if (isset($plugin[$hash])) $tmp_menu[] = $plugin[$hash];
+            }
+
+            if(count($tmp_menu) > 0) $groups[$header] = $tmp_menu;
+        }
+
         // ungrouped plugin group to "plugins" group
         $ungrouped = array_filter(array_keys($plugin), fn ($p) => !in_array($p, GroupMenu::getInstance()->getPluginInGroup()));
         $ungrouped = ['plugins' => array_map(fn ($i) => $plugin[$i], $ungrouped)];
 
         // merge group
         if (count($plugin) > 0)
-            $groups = array_merge($groups, array_map(fn ($i) => array_map(fn ($j) => $plugin[$j], $i), $group_menu), $ungrouped);
+            $groups = array_merge($groups, $ungrouped);
 
         return $groups;
     }
