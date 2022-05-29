@@ -30,6 +30,8 @@ require '../sysconfig.inc.php';
 // start the session
 require SB.'admin/default/session.inc.php';
 
+if(!isset($_SESSION['uid'])) header('location: ../index.php');
+
 // write log
 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' Log Out from application from address '.$_SERVER['REMOTE_ADDR']);
 # ADV LOG SYSTEM - STIIL EXPERIMENTAL
