@@ -33,7 +33,7 @@ class Plugins
     protected array $menus = [];
     private int $deep = 2;
     private string $current_location = '';
-    private ?string $group_name;
+    private ?string $group_name = null;
 
     /**
      * Plugins constructor.
