@@ -232,7 +232,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         while ($access_data = $rec_q->fetch_assoc()) {
             $priv_data[$access_data['module_id']]['r'] = $access_data['r'];
             $priv_data[$access_data['module_id']]['w'] = $access_data['w'];
-            $priv_data[$access_data['module_id']]['menus'] = json_decode($access_data['menus']);
+            $priv_data[$access_data['module_id']]['menus'] = json_decode($access_data['menus'] ?? '{}');
         }
     $priv_table = '';
     include 'module_priv_form_adv.inc.php';
