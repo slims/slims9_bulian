@@ -1,4 +1,5 @@
 <?php
+
 /**
  * module class
  * Application modules related class
@@ -129,20 +130,18 @@ class module extends simbio
         $_submenu = '';
         $_submenu_current = 'curModuleLink';
         $i = 0;
-        $menu = $this->getSubMenuItems($str_module);
+        $menus = $this->getSubMenuItems($str_module);
         // iterate menu array
-        $header_index = 0;
-        foreach ($menu as $_list) {
-            if ($_list[0] == 'Header') {
-                $_submenu .= '<div class="subMenuHeader subMenuHeader-' . $header_index . '">' . $_list[1] . '</div>';
-                $header_index++;
-            } else {
-                if ($i > 1) $_submenu_current = '';
+        foreach ($menus as $header => $menu) {
+            $_submenu .= '<div class="subMenuHeader subMenuHeader-' . $header . '">' . strtoupper($header) . '</div>';
+
+            foreach ($menu as $item) {
+                if ($i > 0) $_submenu_current = '';
                 $_submenu .= '<a class="subMenuItem ' . $_submenu_current . '" '
-                    . ' href="' . $_list[1] . '"'
-                    . ' title="' . (isset($_list[2]) ? $_list[2] : $_list[0]) . '" href="#"><span>' . $_list[0] . '</span></a>';
+                    . ' href="' . $item[1] . '"'
+                    . ' title="' . (isset($item[2]) ? $item[2] : $item[0]) . '" href="#"><span>' . $item[0] . '</span></a>';
+                $i++;
             }
-            $i++;
         }
         $_submenu .= '&nbsp;';
         return $_submenu;
@@ -164,58 +163,36 @@ class module extends simbio
 
         if (file_exists($_submenu_file)) {
             include $_submenu_file;
-
-            $this->reorderMenus($menu, $plugin_menus); exit();
-
-            // grouping menu from sub_menu.php
-            $menu_grouped = [];
-            $header_name = null;
-            foreach ($menu ?? [] as $menu_item) {
-                if (strtolower($menu_item[0]) === 'header') {
-                    $header_name = strtolower($menu_item[1]);
-                    $menu_grouped[$header_name] = $menu_grouped[$header_name] ?? [];
-                    continue;
-                }
-                if ($_SESSION['uid'] > 1 && !in_array(md5($menu_item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
-                $menu_grouped[$header_name][] = $menu_item;
-            }
-
-            foreach ($plugin_menus as $key => $plugin_menu) {
-                if ($_SESSION['uid'] > 1 && !in_array(md5($plugin_menu[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
-                $group_name = \SLiMS\GroupMenu::getInstance()->getGroupName($key);
-                if (!is_null($group_name)) {
-                    $menu_grouped[$group_name][] = $plugin_menu;
-                    continue;
-                }
-                $menu_grouped['plugins'][] = $plugin_menu;
-            }
-
-            // ungroup menus
-            $menu = [];
-            foreach ($menu_grouped as $header => $item) {
-                if (empty($item)) continue;
-                $menu[] = ['Header', strtoupper($header)];
-                $menu = array_merge($menu, $item);
-            }
         } else {
             include 'default/submenu.php';
             foreach ($this->get_shortcuts_menu($dbs) as $key => $value) {
                 $link = explode('|', $value);
                 // Exception for shortcut menu based on registered plugin
-                if (preg_match('/plugin_container/', $link[1]))
-                {
+                if (preg_match('/plugin_container/', $link[1])) {
                     $menu[$link[0]] = array(__($link[0]), $link[1]);
                     continue;
                 }
                 $menu[$link[0]] = array(__($link[0]), MWB . $link[1]);
             }
         }
-        return $menu;
+
+        $menus = [];
+        foreach ($this->reorderMenus($menu, $plugin_menus) as $header => $items) {
+            foreach ($items as $item) {
+                $menus[$header] = $menus[$header] ?? [];
+                if ($_SESSION['uid'] > 1 && !in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                $menus[$header][] = $item;
+            }
+        }
+        $menus = array_filter($menus, fn ($m) => count($m) > 0);
+        return $menus;
     }
 
     function reorderMenus($default, $plugin)
     {
         $groups = [];
+        $orders = GroupMenuOrder::getInstance()->getOrder();
+        $group_menu = GroupMenu::getInstance()->getGroup();
 
         // collect header from default menu
         $header = null;
@@ -223,31 +200,43 @@ class module extends simbio
             if (count($menu) === 2 && strtolower($menu[0]) === 'header') {
                 // reset header
                 $header = null;
-                // initialize group
-                $groups[strtolower($menu[1])] = [];
+                // iterate orders
+                if (count($orders) > 0) {
+                    // get menu before
+                    foreach ($orders as $key => $value) {
+                        if (count($plugin) < 1) break;
+                        $group_menu_items = array_map(fn ($i) => $plugin[$i], $group_menu[$key]);
+                        if (strtolower($menu[1]) === $value['group'] && $value['position'] === 'before')
+                            $groups[strtolower($key)] = $group_menu_items;
+                    }
+
+                    // main menu
+                    $groups[strtolower($menu[1])] = [];
+
+                    // get menu after
+                    foreach ($orders as $key => $value) {
+                        if (count($plugin) < 1) break;
+                        $group_menu_items = array_map(fn ($i) => $plugin[$i], $group_menu[$key]);
+                        if (strtolower($menu[1]) === $value['group'] && $value['position'] === 'after')
+                            $groups[strtolower($key)] = $group_menu_items;
+                    }
+                } else {
+                    $groups[strtolower($menu[1])] = [];
+                }
                 $header = strtolower($menu[1]);
                 continue;
             }
             if (!is_null($header)) {
-                $groups[$header][] = md5($menu[1]);
+                $groups[strtolower($header)][] = $menu;
             }
         }
 
-        $groups = array_merge($groups, GroupMenu::getInstance()->getGroup());
+        // merge group
+        if (count($plugin) > 0) {
+            $groups = array_merge($groups, array_map(fn ($i) => array_map(fn ($j) => $plugin[$j], $i), $group_menu));
+        }
 
-        $items = [...$default, ...$plugin];
-        $orders = GroupMenuOrder::getInstance()->getOrder();
-        echo '<pre>';
-        var_dump($orders);
-        echo '</pre><br>';
-
-        echo '<pre>';
-        var_dump($groups);
-        echo '</pre><br>';
-
-        echo '<pre>';
-        var_dump($items);
-        echo '</pre><br>';
+        return $groups;
     }
 
     /**
@@ -267,5 +256,4 @@ class module extends simbio
         }
         return $shortcuts;
     }
-
 }

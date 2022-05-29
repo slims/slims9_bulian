@@ -36,6 +36,28 @@ $plugin = \SLiMS\Plugins::getInstance();
 $plugin->registerMenu('bibliography', 'Label & Barcode', __DIR__ . '/index.php');
 ```
 
+#### Group Menu Plugin
+Submenu yang ditambahkan dari plugin dapat dikelempokan. 
+Berikut ini contoh untuk meregistrasikannya, pada contoh kali ini juga akan ditampilkan bagaimana meregistrasikan plugin dengan `static method`
+```
+use \SLiMS\Plugins;
+
+Plugins::group('Nama Group', function() {
+    Plugins::menu('nama_module', 'nama menu 1', '/path/dari/endpoint/pluginya/1.php');
+    Plugins::menu('nama_module', 'nama menu 2', '/path/dari/endpoint/pluginya/2.php');
+    Plugins::menu('nama_module', 'nama menu 3', '/path/dari/endpoint/pluginya/3.php');
+});
+```
+
+Kelompok menu-menu ini juga dapat kita letakan sebelum atau setelah menu bawaan SLiMS.
+Sebagai contoh kita akan meletakan contoh menu plugin diatas setelah kelompok `Eksemplar` pada module `Bibliography`
+
+```
+Plugins::group('Nama Group', function() {
+    ...
+})->after(__('ITEMS'));
+```
+
 #### Hooking Plugin
 Jenis plugin ini akan berjalan saat sebuah fitur berada pada state tertentu.
 Berikut ini contoh untuk meregistrasikannya:
