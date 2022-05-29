@@ -231,10 +231,13 @@ class module extends simbio
             }
         }
 
+        // ungrouped plugin group to "plugins" group
+        $ungrouped = array_filter(array_keys($plugin), fn ($p) => !in_array($p, GroupMenu::getInstance()->getPluginInGroup()));
+        $ungrouped = ['plugins' => array_map(fn ($i) => $plugin[$i], $ungrouped)];
+
         // merge group
-        if (count($plugin) > 0) {
-            $groups = array_merge($groups, array_map(fn ($i) => array_map(fn ($j) => $plugin[$j], $i), $group_menu));
-        }
+        if (count($plugin) > 0)
+            $groups = array_merge($groups, array_map(fn ($i) => array_map(fn ($j) => $plugin[$j], $i), $group_menu), $ungrouped);
 
         return $groups;
     }

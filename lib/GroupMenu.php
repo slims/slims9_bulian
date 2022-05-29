@@ -28,6 +28,7 @@ class GroupMenu
     private static $instance;
     private $uniq_id;
     private $group = [];
+    private $plugin_in_group = [];
 
     /**
      * @return GroupMenu
@@ -52,6 +53,7 @@ class GroupMenu
     {
         if (!is_null($this->uniq_id)) {
             $this->group[strtolower($group_name)][] = $this->uniq_id;
+            $this->plugin_in_group[] = $this->uniq_id;
             $this->uniq_id = null;
         }
         return GroupMenuOrder::getInstance()->bind($group_name);
@@ -63,6 +65,11 @@ class GroupMenu
     public function getGroup(): array
     {
         return $this->group;
+    }
+
+    public function getPluginInGroup(): array
+    {
+        return $this->plugin_in_group;
     }
 
     function getGroupName($uniq_id)
