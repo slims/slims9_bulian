@@ -70,9 +70,10 @@ if ($current_module AND $can_read) {
     # ADV LOG SYSTEM - STIIL EXPERIMENTAL
     $log = new AlLibrarian('1101', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "module" => $current_module));
     // get content of module default content with AJAX
+    $default_menu = $module->getFirstMenu($current_module)[1] ?? AWB . 'default/home.php';
     $sysconf['page_footer'] .= "\n"
         .'<script type="text/javascript">'
-        .'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\''.MWB.$current_module.'/index.php\', {method: \'get\'}); });'
+        .'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\''.$default_menu.'\', {method: \'get\'}); });'
         .'</script>';
 } else {
     include 'default/home.php';

@@ -188,6 +188,13 @@ class module extends simbio
         return $menus;
     }
 
+    /**
+     * Method to order default menu and plugin menu
+     * 
+     * @param array $default 
+     * @param array $plugin 
+     * @return array 
+     */
     function reorderMenus($default, $plugin)
     {
         $groups = [];
@@ -249,6 +256,20 @@ class module extends simbio
             $groups = array_merge($groups, $ungrouped);
 
         return $groups;
+    }
+
+    /**
+     * Method to get a first submenu of module
+     * 
+     * @param string $str_module 
+     * @return mixed 
+     */
+    public function getFirstMenu($str_module = '')
+    {
+        $menus = $this->getSubMenuItems($str_module);
+        $key = array_keys($menus)[0] ?? false;
+        if ($key) return $menus[$key][0] ?? null;
+        return null;
     }
 
     /**
