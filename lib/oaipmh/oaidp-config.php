@@ -183,7 +183,7 @@ define('MAXIDS',100);
 
 /** After 24 hours resumptionTokens become invalid. Unit is second. */
 define('TOKEN_VALID',24*3600);
-$expirationdatetime = gmstrftime('%Y-%m-%dT%TZ', time()+TOKEN_VALID); 
+$expirationdatetime = date("Y-m-d\TH:i:s\Z", time()+TOKEN_VALID); 
 /** Where token is saved and path is included */
 define('TOKEN_PREFIX','/tmp/ANDS_DBPD-');
 
