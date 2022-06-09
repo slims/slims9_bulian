@@ -60,6 +60,15 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
     header('Content-Type: application/ld+json');
     echo $output;
     exit();
+} else if (isset($_GET['MARC']) AND !empty($_GET['MARC'])) {
+  // filter the ID
+  $detail_id = intval($_GET['id']);
+  include MDLBS . 'bibliography/File/MARC.php';
+  $biblio = new Biblio($dbs, null);
+  header('Content-type: application/marc');
+  header('Content-disposition: attachment; filename=biblio-detail-' . $detail_id . '.mrc');
+  echo $biblio->marc_export($detail_id);
+  exit;
 } else {
     // filter the ID
     $detail_id = intval($_GET['id']);
