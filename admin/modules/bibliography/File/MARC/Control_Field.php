@@ -123,7 +123,7 @@ class File_MARC_Control_Field extends File_MARC_Field
      *
      * @return bool Returns true if the field is empty, otherwise false
      */
-    function isEmpty()
+    function isEmpty():bool
     {
         return ($this->data) ? false : true;
     }
