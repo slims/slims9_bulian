@@ -3,8 +3,10 @@
 namespace PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Reader\DefaultReadFilter;
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use SimpleXMLElement;
 
 class ColumnAndRowAttributes extends BaseParserClass
 {
@@ -12,7 +14,7 @@ class ColumnAndRowAttributes extends BaseParserClass
 
     private $worksheetXml;
 
-    public function __construct(Worksheet $workSheet, \SimpleXMLElement $worksheetXml = null)
+    public function __construct(Worksheet $workSheet, ?SimpleXMLElement $worksheetXml = null)
     {
         $this->worksheet = $workSheet;
         $this->worksheetXml = $worksheetXml;
@@ -25,7 +27,7 @@ class ColumnAndRowAttributes extends BaseParserClass
      * @param array $columnAttributes array of attributes (indexes are attribute name, values are value)
      *                               'xfIndex', 'visible', 'collapsed', 'outlineLevel', 'width', ... ?
      */
-    private function setColumnAttributes($columnAddress, array $columnAttributes)
+    private function setColumnAttributes($columnAddress, array $columnAttributes): void
     {
         if (isset($columnAttributes['xfIndex'])) {
             $this->worksheet->getColumnDimension($columnAddress)->setXfIndex($columnAttributes['xfIndex']);
@@ -51,7 +53,7 @@ class ColumnAndRowAttributes extends BaseParserClass
      * @param array $rowAttributes array of attributes (indexes are attribute name, values are value)
      *                               'xfIndex', 'visible', 'collapsed', 'outlineLevel', 'rowHeight', ... ?
      */
-    private function setRowAttributes($rowNumber, array $rowAttributes)
+    private function setRowAttributes($rowNumber, array $rowAttributes): void
     {
         if (isset($rowAttributes['xfIndex'])) {
             $this->worksheet->getRowDimension($rowNumber)->setXfIndex($rowAttributes['xfIndex']);
@@ -70,11 +72,7 @@ class ColumnAndRowAttributes extends BaseParserClass
         }
     }
 
-    /**
-     * @param IReadFilter $readFilter
-     * @param bool $readDataOnly
-     */
-    public function load(IReadFilter $readFilter = null, $readDataOnly = false)
+    public function load(?IReadFilter $readFilter = null, bool $readDataOnly = false): void
     {
         if ($this->worksheetXml === null) {
             return;
@@ -90,11 +88,17 @@ class ColumnAndRowAttributes extends BaseParserClass
             $rowsAttributes = $this->readRowAttributes($this->worksheetXml->sheetData->row, $readDataOnly);
         }
 
+        if ($readFilter !== null && get_class($readFilter) === DefaultReadFilter::class) {
+            $readFilter = null;
+        }
+
         // set columns/rows attributes
         $columnsAttributesAreSet = [];
         foreach ($columnsAttributes as $columnCoordinate => $columnAttributes) {
-            if ($readFilter === null ||
-                !$this->isFilteredColumn($readFilter, $columnCoordinate, $rowsAttributes)) {
+            if (
+                $readFilter === null ||
+                !$this->isFilteredColumn($readFilter, $columnCoordinate, $rowsAttributes)
+            ) {
                 if (!isset($columnsAttributesAreSet[$columnCoordinate])) {
                     $this->setColumnAttributes($columnCoordinate, $columnAttributes);
                     $columnsAttributesAreSet[$columnCoordinate] = true;
@@ -104,8 +108,10 @@ class ColumnAndRowAttributes extends BaseParserClass
 
         $rowsAttributesAreSet = [];
         foreach ($rowsAttributes as $rowCoordinate => $rowAttributes) {
-            if ($readFilter === null ||
-                !$this->isFilteredRow($readFilter, $rowCoordinate, $columnsAttributes)) {
+            if (
+                $readFilter === null ||
+                !$this->isFilteredRow($readFilter, $rowCoordinate, $columnsAttributes)
+            ) {
                 if (!isset($rowsAttributesAreSet[$rowCoordinate])) {
                     $this->setRowAttributes($rowCoordinate, $rowAttributes);
                     $rowsAttributesAreSet[$rowCoordinate] = true;
@@ -125,7 +131,7 @@ class ColumnAndRowAttributes extends BaseParserClass
         return false;
     }
 
-    private function readColumnAttributes(\SimpleXMLElement $worksheetCols, $readDataOnly)
+    private function readColumnAttributes(SimpleXMLElement $worksheetCols, $readDataOnly)
     {
         $columnAttributes = [];
 
@@ -145,7 +151,7 @@ class ColumnAndRowAttributes extends BaseParserClass
         return $columnAttributes;
     }
 
-    private function readColumnRangeAttributes(\SimpleXMLElement $column, $readDataOnly)
+    private function readColumnRangeAttributes(SimpleXMLElement $column, $readDataOnly)
     {
         $columnAttributes = [];
 
@@ -177,7 +183,7 @@ class ColumnAndRowAttributes extends BaseParserClass
         return false;
     }
 
-    private function readRowAttributes(\SimpleXMLElement $worksheetRow, $readDataOnly)
+    private function readRowAttributes(SimpleXMLElement $worksheetRow, $readDataOnly)
     {
         $rowAttributes = [];
 

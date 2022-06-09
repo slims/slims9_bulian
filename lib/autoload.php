@@ -22,7 +22,12 @@ $namespaces = [
     "GuzzleHttp\\Exception\\" => "/guzzle/src/",
     "GuzzleHttp\Promise" => "/guzzlehttp/promises/src",
     "Psr\\Http\\Message\\" => "/psr/http-message/src",
-    "Psr\\Http\\Client\\" => "/psr/http-client/src"
+    "Psr\\Http\\Client\\" => "/psr/http-client/src",
+    "Complex\\" => "/markbaker/comples/classes/src/",
+    "Matrix\\" => "/markbaker/matrix/classes/src/",
+    "MyCLabs\\Enum\\" => "/myclabs/php-enum/src/",
+    "Symfony\\Polyfill\\Mbstring\\" => "/symfony/polyfill-mbstring/",
+    "ZipStream\\" => "/maennchen/zipstream-php/src/"
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {
@@ -46,5 +51,7 @@ foreach ($namespaces as $namespace => $classpaths) {
  | Load library with self autoload
  |--------------------------------------------------------------------------
  */
-include "markbaker/complex/classes/Autoloader.php";
-include "markbaker/matrix/classes/Autoloader.php";
+// Ezyang
+include "ezyang/htmlpurifier/library/HTMLPurifier.auto.php";
+// Symfony
+include "symfony/polyfill-mbstring/bootstrap.php";

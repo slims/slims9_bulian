@@ -8,19 +8,18 @@ use PhpOffice\PhpSpreadsheet\RichText\Run;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 
 class StringTable extends WriterPart
 {
     /**
      * Create worksheet stringtable.
      *
-     * @param Worksheet $pSheet Worksheet
-     * @param string[] $pExistingTable Existing table to eventually merge with
+     * @param Worksheet $worksheet Worksheet
+     * @param string[] $existingTable Existing table to eventually merge with
      *
      * @return string[] String table for worksheet
      */
-    public function createStringTable(Worksheet $pSheet, $pExistingTable = null)
+    public function createStringTable(Worksheet $worksheet, $existingTable = null)
     {
         // Create string lookup table
         $aStringTable = [];
@@ -28,27 +27,31 @@ class StringTable extends WriterPart
         $aFlippedStringTable = null; // For faster lookup
 
         // Is an existing table given?
-        if (($pExistingTable !== null) && is_array($pExistingTable)) {
-            $aStringTable = $pExistingTable;
+        if (($existingTable !== null) && is_array($existingTable)) {
+            $aStringTable = $existingTable;
         }
 
         // Fill index array
         $aFlippedStringTable = $this->flipStringTable($aStringTable);
 
         // Loop through cells
-        foreach ($pSheet->getCoordinates() as $coordinate) {
-            $cell = $pSheet->getCell($coordinate);
+        foreach ($worksheet->getCoordinates() as $coordinate) {
+            $cell = $worksheet->getCell($coordinate);
             $cellValue = $cell->getValue();
-            if (!is_object($cellValue) &&
+            if (
+                !is_object($cellValue) &&
                 ($cellValue !== null) &&
                 $cellValue !== '' &&
-                !isset($aFlippedStringTable[$cellValue]) &&
-                ($cell->getDataType() == DataType::TYPE_STRING || $cell->getDataType() == DataType::TYPE_STRING2 || $cell->getDataType() == DataType::TYPE_NULL)) {
+                ($cell->getDataType() == DataType::TYPE_STRING || $cell->getDataType() == DataType::TYPE_STRING2 || $cell->getDataType() == DataType::TYPE_NULL) &&
+                !isset($aFlippedStringTable[$cellValue])
+            ) {
                 $aStringTable[] = $cellValue;
                 $aFlippedStringTable[$cellValue] = true;
-            } elseif ($cellValue instanceof RichText &&
+            } elseif (
+                $cellValue instanceof RichText &&
                 ($cellValue !== null) &&
-                !isset($aFlippedStringTable[$cellValue->getHashCode()])) {
+                !isset($aFlippedStringTable[$cellValue->getHashCode()])
+            ) {
                 $aStringTable[] = $cellValue;
                 $aFlippedStringTable[$cellValue->getHashCode()] = true;
             }
@@ -60,13 +63,11 @@ class StringTable extends WriterPart
     /**
      * Write string table to XML format.
      *
-     * @param string[] $pStringTable
-     *
-     * @throws WriterException
+     * @param string[] $stringTable
      *
      * @return string XML Output
      */
-    public function writeStringTable(array $pStringTable)
+    public function writeStringTable(array $stringTable)
     {
         // Create XML writer
         $objWriter = null;
@@ -82,10 +83,10 @@ class StringTable extends WriterPart
         // String table
         $objWriter->startElement('sst');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
-        $objWriter->writeAttribute('uniqueCount', count($pStringTable));
+        $objWriter->writeAttribute('uniqueCount', count($stringTable));
 
         // Loop through string table
-        foreach ($pStringTable as $textElement) {
+        foreach ($stringTable as $textElement) {
             $objWriter->startElement('si');
 
             if (!$textElement instanceof RichText) {
@@ -111,18 +112,16 @@ class StringTable extends WriterPart
     /**
      * Write Rich Text.
      *
-     * @param XMLWriter $objWriter XML Writer
-     * @param RichText $pRichText Rich text
      * @param string $prefix Optional Namespace prefix
      */
-    public function writeRichText(XMLWriter $objWriter, RichText $pRichText, $prefix = null)
+    public function writeRichText(XMLWriter $objWriter, RichText $richText, $prefix = null): void
     {
         if ($prefix !== null) {
             $prefix .= ':';
         }
 
         // Loop through rich text elements
-        $elements = $pRichText->getRichTextElements();
+        $elements = $richText->getRichTextElements();
         foreach ($elements as $element) {
             // r
             $objWriter->startElement($prefix . 'r');
@@ -194,16 +193,15 @@ class StringTable extends WriterPart
     /**
      * Write Rich Text.
      *
-     * @param XMLWriter $objWriter XML Writer
-     * @param RichText|string $pRichText text string or Rich text
+     * @param RichText|string $richText text string or Rich text
      * @param string $prefix Optional Namespace prefix
      */
-    public function writeRichTextForCharts(XMLWriter $objWriter, $pRichText = null, $prefix = null)
+    public function writeRichTextForCharts(XMLWriter $objWriter, $richText = null, $prefix = null): void
     {
-        if (!$pRichText instanceof RichText) {
-            $textRun = $pRichText;
-            $pRichText = new RichText();
-            $pRichText->createTextRun($textRun);
+        if (!$richText instanceof RichText) {
+            $textRun = $richText;
+            $richText = new RichText();
+            $richText->createTextRun($textRun);
         }
 
         if ($prefix !== null) {
@@ -211,7 +209,7 @@ class StringTable extends WriterPart
         }
 
         // Loop through rich text elements
-        $elements = $pRichText->getRichTextElements();
+        $elements = $richText->getRichTextElements();
         foreach ($elements as $element) {
             // r
             $objWriter->startElement($prefix . 'r');

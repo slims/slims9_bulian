@@ -21,10 +21,9 @@ class Row
     /**
      * Create a new row.
      *
-     * @param Worksheet $worksheet
      * @param int $rowIndex
      */
-    public function __construct(Worksheet $worksheet = null, $rowIndex = 1)
+    public function __construct(?Worksheet $worksheet = null, $rowIndex = 1)
     {
         // Set parent and row index
         $this->worksheet = $worksheet;
@@ -36,15 +35,13 @@ class Row
      */
     public function __destruct()
     {
-        unset($this->worksheet);
+        $this->worksheet = null; // @phpstan-ignore-line
     }
 
     /**
      * Get row index.
-     *
-     * @return int
      */
-    public function getRowIndex()
+    public function getRowIndex(): int
     {
         return $this->rowIndex;
     }
@@ -64,10 +61,8 @@ class Row
 
     /**
      * Returns bound worksheet.
-     *
-     * @return Worksheet
      */
-    public function getWorksheet()
+    public function getWorksheet(): Worksheet
     {
         return $this->worksheet;
     }

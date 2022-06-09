@@ -4,6 +4,7 @@ namespace PhpOffice\PhpSpreadsheet\Reader\Ods;
 
 use PhpOffice\PhpSpreadsheet\Document\Properties as DocumentProperties;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use SimpleXMLElement;
 
 class Properties
 {
@@ -14,7 +15,7 @@ class Properties
         $this->spreadsheet = $spreadsheet;
     }
 
-    public function load(\SimpleXMLElement $xml, $namespacesMeta)
+    public function load(SimpleXMLElement $xml, $namespacesMeta): void
     {
         $docProps = $this->spreadsheet->getProperties();
         $officeProperty = $xml->children($namespacesMeta['office']);
@@ -25,7 +26,7 @@ class Properties
                 $this->setCoreProperties($docProps, $officePropertiesDC);
             }
 
-            $officePropertyMeta = (object) [];
+            $officePropertyMeta = [];
             if (isset($namespacesMeta['dc'])) {
                 $officePropertyMeta = $officePropertyData->children($namespacesMeta['meta']);
             }
@@ -35,7 +36,7 @@ class Properties
         }
     }
 
-    private function setCoreProperties(DocumentProperties $docProps, \SimpleXMLElement $officePropertyDC)
+    private function setCoreProperties(DocumentProperties $docProps, SimpleXMLElement $officePropertyDC): void
     {
         foreach ($officePropertyDC as $propertyName => $propertyValue) {
             $propertyValue = (string) $propertyValue;
@@ -53,14 +54,8 @@ class Properties
                     $docProps->setLastModifiedBy($propertyValue);
 
                     break;
-                case 'creation-date':
-                    $creationDate = strtotime($propertyValue);
-                    $docProps->setCreated($creationDate);
-                    $docProps->setModified($creationDate);
-
-                    break;
-                case 'keyword':
-                    $docProps->setKeywords($propertyValue);
+                case 'date':
+                    $docProps->setModified($propertyValue);
 
                     break;
                 case 'description':
@@ -73,10 +68,10 @@ class Properties
 
     private function setMetaProperties(
         $namespacesMeta,
-        \SimpleXMLElement $propertyValue,
+        SimpleXMLElement $propertyValue,
         $propertyName,
         DocumentProperties $docProps
-    ) {
+    ): void {
         $propertyValueAttributes = $propertyValue->attributes($namespacesMeta['meta']);
         $propertyValue = (string) $propertyValue;
         switch ($propertyName) {
@@ -89,8 +84,7 @@ class Properties
 
                 break;
             case 'creation-date':
-                $creationDate = strtotime($propertyValue);
-                $docProps->setCreated($creationDate);
+                $docProps->setCreated($propertyValue);
 
                 break;
             case 'user-defined':
@@ -100,7 +94,7 @@ class Properties
         }
     }
 
-    private function setUserDefinedProperty($propertyValueAttributes, $propertyValue, DocumentProperties $docProps)
+    private function setUserDefinedProperty($propertyValueAttributes, $propertyValue, DocumentProperties $docProps): void
     {
         $propertyValueName = '';
         $propertyValueType = DocumentProperties::PROPERTY_TYPE_STRING;

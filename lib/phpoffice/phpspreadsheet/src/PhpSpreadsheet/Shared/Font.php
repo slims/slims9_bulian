@@ -4,6 +4,8 @@ namespace PhpOffice\PhpSpreadsheet\Shared;
 
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Font as FontStyle;
 
 class Font
 {
@@ -44,10 +46,10 @@ class Font
     const ARIAL_ITALIC = 'ariali.ttf';
     const ARIAL_BOLD_ITALIC = 'arialbi.ttf';
 
-    const CALIBRI = 'CALIBRI.TTF';
-    const CALIBRI_BOLD = 'CALIBRIB.TTF';
-    const CALIBRI_ITALIC = 'CALIBRII.TTF';
-    const CALIBRI_BOLD_ITALIC = 'CALIBRIZ.TTF';
+    const CALIBRI = 'calibri.ttf';
+    const CALIBRI_BOLD = 'calibrib.ttf';
+    const CALIBRI_ITALIC = 'calibrii.ttf';
+    const CALIBRI_BOLD_ITALIC = 'calibriz.ttf';
 
     const COMIC_SANS_MS = 'comic.ttf';
     const COMIC_SANS_MS_BOLD = 'comicbd.ttf';
@@ -111,7 +113,7 @@ class Font
      *
      * @var string
      */
-    private static $trueTypeFontPath = null;
+    private static $trueTypeFontPath;
 
     /**
      * How wide is a default column for a given default font and size?
@@ -163,16 +165,16 @@ class Font
     /**
      * Set autoSize method.
      *
-     * @param string $pValue see self::AUTOSIZE_METHOD_*
+     * @param string $method see self::AUTOSIZE_METHOD_*
      *
      * @return bool Success or failure
      */
-    public static function setAutoSizeMethod($pValue)
+    public static function setAutoSizeMethod($method)
     {
-        if (!in_array($pValue, self::$autoSizeMethods)) {
+        if (!in_array($method, self::$autoSizeMethods)) {
             return false;
         }
-        self::$autoSizeMethod = $pValue;
+        self::$autoSizeMethod = $method;
 
         return true;
     }
@@ -196,11 +198,11 @@ class Font
      *        <li>~/.fonts/</li>
      * </ul>.
      *
-     * @param string $pValue
+     * @param string $folderPath
      */
-    public static function setTrueTypeFontPath($pValue)
+    public static function setTrueTypeFontPath($folderPath): void
     {
-        self::$trueTypeFontPath = $pValue;
+        self::$trueTypeFontPath = $folderPath;
     }
 
     /**
@@ -216,26 +218,30 @@ class Font
     /**
      * Calculate an (approximate) OpenXML column width, based on font size and text contained.
      *
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font Font object
+     * @param FontStyle $font Font object
      * @param RichText|string $cellText Text to calculate width
      * @param int $rotation Rotation angle
-     * @param null|\PhpOffice\PhpSpreadsheet\Style\Font $defaultFont Font object
-     *
-     * @return int Column width
+     * @param null|FontStyle $defaultFont Font object
+     * @param bool $filterAdjustment Add space for Autofilter or Table dropdown
      */
-    public static function calculateColumnWidth(\PhpOffice\PhpSpreadsheet\Style\Font $font, $cellText = '', $rotation = 0, \PhpOffice\PhpSpreadsheet\Style\Font $defaultFont = null)
-    {
+    public static function calculateColumnWidth(
+        FontStyle $font,
+        $cellText = '',
+        $rotation = 0,
+        ?FontStyle $defaultFont = null,
+        bool $filterAdjustment = false
+    ): int {
         // If it is rich text, use plain text
         if ($cellText instanceof RichText) {
             $cellText = $cellText->getPlainText();
         }
 
         // Special case if there are one or more newline characters ("\n")
-        if (strpos($cellText, "\n") !== false) {
+        if (strpos($cellText ?? '', "\n") !== false) {
             $lineTexts = explode("\n", $cellText);
             $lineWidths = [];
             foreach ($lineTexts as $lineText) {
-                $lineWidths[] = self::calculateColumnWidth($font, $lineText, $rotation = 0, $defaultFont);
+                $lineWidths[] = self::calculateColumnWidth($font, $lineText, $rotation = 0, $defaultFont, $filterAdjustment);
             }
 
             return max($lineWidths); // width of longest line in cell
@@ -243,8 +249,15 @@ class Font
 
         // Try to get the exact text width in pixels
         $approximate = self::$autoSizeMethod == self::AUTOSIZE_METHOD_APPROX;
+        $columnWidth = 0;
         if (!$approximate) {
-            $columnWidthAdjust = ceil(self::getTextWidthPixelsExact('n', $font, 0) * 1.07);
+            $columnWidthAdjust = ceil(
+                self::getTextWidthPixelsExact(
+                    str_repeat('n', 1 * ($filterAdjustment ? 3 : 1)),
+                    $font,
+                    0
+                ) * 1.07
+            );
 
             try {
                 // Width of text in pixels excl. padding
@@ -256,31 +269,27 @@ class Font
         }
 
         if ($approximate) {
-            $columnWidthAdjust = self::getTextWidthPixelsApprox('n', $font, 0);
+            $columnWidthAdjust = self::getTextWidthPixelsApprox(
+                str_repeat('n', 1 * ($filterAdjustment ? 3 : 1)),
+                $font,
+                0
+            );
             // Width of text in pixels excl. padding, approximation
             // and addition because Excel adds some padding, just use approx width of 'n' glyph
             $columnWidth = self::getTextWidthPixelsApprox($cellText, $font, $rotation) + $columnWidthAdjust;
         }
 
         // Convert from pixel width to column width
-        $columnWidth = Drawing::pixelsToCellDimension($columnWidth, $defaultFont);
+        $columnWidth = Drawing::pixelsToCellDimension((int) $columnWidth, $defaultFont);
 
         // Return
-        return round($columnWidth, 6);
+        return (int) round($columnWidth, 6);
     }
 
     /**
      * Get GD text width in pixels for a string of text in a certain font at a certain rotation angle.
-     *
-     * @param string $text
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font
-     * @param int $rotation
-     *
-     * @throws PhpSpreadsheetException
-     *
-     * @return int
      */
-    public static function getTextWidthPixelsExact($text, \PhpOffice\PhpSpreadsheet\Style\Font $font, $rotation = 0)
+    public static function getTextWidthPixelsExact(string $text, FontStyle $font, int $rotation = 0): int
     {
         if (!function_exists('imagettfbbox')) {
             throw new PhpSpreadsheetException('GD library needs to be enabled');
@@ -305,12 +314,11 @@ class Font
      * Get approximate width in pixels for a string of text in a certain font at a certain rotation angle.
      *
      * @param string $columnText
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font
      * @param int $rotation
      *
      * @return int Text width in pixels (no padding added)
      */
-    public static function getTextWidthPixelsApprox($columnText, \PhpOffice\PhpSpreadsheet\Style\Font $font, $rotation = 0)
+    public static function getTextWidthPixelsApprox($columnText, FontStyle $font, $rotation = 0)
     {
         $fontName = $font->getName();
         $fontSize = $font->getSize();
@@ -321,27 +329,31 @@ class Font
                 // value 8.26 was found via interpolation by inspecting real Excel files with Calibri 11 font.
                 $columnWidth = (int) (8.26 * StringHelper::countCharacters($columnText));
                 $columnWidth = $columnWidth * $fontSize / 11; // extrapolate from font size
+
                 break;
             case 'Arial':
                 // value 8 was set because of experience in different exports at Arial 10 font.
                 $columnWidth = (int) (8 * StringHelper::countCharacters($columnText));
                 $columnWidth = $columnWidth * $fontSize / 10; // extrapolate from font size
+
                 break;
             case 'Verdana':
                 // value 8 was found via interpolation by inspecting real Excel files with Verdana 10 font.
                 $columnWidth = (int) (8 * StringHelper::countCharacters($columnText));
                 $columnWidth = $columnWidth * $fontSize / 10; // extrapolate from font size
+
                 break;
             default:
                 // just assume Calibri
                 $columnWidth = (int) (8.26 * StringHelper::countCharacters($columnText));
                 $columnWidth = $columnWidth * $fontSize / 11; // extrapolate from font size
+
                 break;
         }
 
         // Calculate approximate rotated column width
         if ($rotation !== 0) {
-            if ($rotation == -165) {
+            if ($rotation == Alignment::TEXTROTATION_STACK_PHPSPREADSHEET) {
                 // stacked text
                 $columnWidth = 4; // approximation
             } else {
@@ -394,11 +406,9 @@ class Font
     /**
      * Returns the font path given the font.
      *
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font
-     *
      * @return string Path to TrueType font file
      */
-    public static function getTrueTypeFontFileFromFont($font)
+    public static function getTrueTypeFontFileFromFont(FontStyle $font)
     {
         if (!file_exists(self::$trueTypeFontPath) || !is_dir(self::$trueTypeFontPath)) {
             throw new PhpSpreadsheetException('Valid directory to TrueType Font files not specified');
@@ -524,13 +534,13 @@ class Font
     /**
      * Returns the associated charset for the font name.
      *
-     * @param string $name Font name
+     * @param string $fontName Font name
      *
      * @return int Character set code
      */
-    public static function getCharsetFromFontName($name)
+    public static function getCharsetFromFontName($fontName)
     {
-        switch ($name) {
+        switch ($fontName) {
             // Add more cases. Check FONT records in real Excel files.
             case 'EucrosiaUPC':
                 return self::CHARSET_ANSI_THAI;
@@ -549,28 +559,28 @@ class Font
      * Get the effective column width for columns without a column dimension or column with width -1
      * For example, for Calibri 11 this is 9.140625 (64 px).
      *
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font The workbooks default font
-     * @param bool $pPixels true = return column width in pixels, false = return in OOXML units
+     * @param FontStyle $font The workbooks default font
+     * @param bool $returnAsPixels true = return column width in pixels, false = return in OOXML units
      *
      * @return mixed Column width
      */
-    public static function getDefaultColumnWidthByFont(\PhpOffice\PhpSpreadsheet\Style\Font $font, $pPixels = false)
+    public static function getDefaultColumnWidthByFont(FontStyle $font, $returnAsPixels = false)
     {
         if (isset(self::$defaultColumnWidths[$font->getName()][$font->getSize()])) {
             // Exact width can be determined
-            $columnWidth = $pPixels ?
+            $columnWidth = $returnAsPixels ?
                 self::$defaultColumnWidths[$font->getName()][$font->getSize()]['px']
                     : self::$defaultColumnWidths[$font->getName()][$font->getSize()]['width'];
         } else {
             // We don't have data for this particular font and size, use approximation by
             // extrapolating from Calibri 11
-            $columnWidth = $pPixels ?
+            $columnWidth = $returnAsPixels ?
                 self::$defaultColumnWidths['Calibri'][11]['px']
                     : self::$defaultColumnWidths['Calibri'][11]['width'];
             $columnWidth = $columnWidth * $font->getSize() / 11;
 
             // Round pixels to closest integer
-            if ($pPixels) {
+            if ($returnAsPixels) {
                 $columnWidth = (int) round($columnWidth);
             }
         }
@@ -582,11 +592,11 @@ class Font
      * Get the effective row height for rows without a row dimension or rows with height -1
      * For example, for Calibri 11 this is 15 points.
      *
-     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font The workbooks default font
+     * @param FontStyle $font The workbooks default font
      *
      * @return float Row height in points
      */
-    public static function getDefaultRowHeightByFont(\PhpOffice\PhpSpreadsheet\Style\Font $font)
+    public static function getDefaultRowHeightByFont(FontStyle $font)
     {
         switch ($font->getName()) {
             case 'Arial':
