@@ -543,7 +543,7 @@ HTML;
               */
 
             // $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
-            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']??'');
             $xml->startElement('namePart'); $this->xmlWrite($xml, $_auth_d['author_name']); $xml->endElement();
             $xml->startElement('role');
                 $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
@@ -638,7 +638,7 @@ HTML;
             $_xml_output .= '<'.$_subject_type.'><![CDATA['.$_topic_d['topic'].']]></'.$_subject_type.'>';
             $_xml_output .= '</subject>'."\n";
             */
-            $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']);
+            $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']??'');
             $xml->startElement($_subject_type); $this->xmlWrite($xml, $_topic_d['topic']); $xml->endElement();
             $xml->endElement();
         }
@@ -1049,7 +1049,7 @@ HTML;
         if ($mode == 'CData') {
             $xmlwriter->writeCData($data);
         } else {
-            $xmlwriter->text($data);
+            $xmlwriter->text($data??'');
         }
     }
 }
