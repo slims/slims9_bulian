@@ -40,14 +40,14 @@
  */
 
 require_once 'PEAR/Exception.php';
-require_once 'File/MARCBASE.php';
-require_once 'File/MARC/Record.php';
-require_once 'File/MARC/Field.php';
-require_once 'File/MARC/Control_Field.php';
-require_once 'File/MARC/Data_Field.php';
-require_once 'File/MARC/Subfield.php';
-require_once 'File/MARC/Exception.php';
-require_once 'File/MARC/List.php';
+require_once MDLBS . 'bibliography/File/MARCBASE.php';
+require_once MDLBS . 'bibliography/File/MARC/Record.php';
+require_once MDLBS . 'bibliography/File/MARC/Field.php';
+require_once MDLBS . 'bibliography/File/MARC/Control_Field.php';
+require_once MDLBS . 'bibliography/File/MARC/Data_Field.php';
+require_once MDLBS . 'bibliography/File/MARC/Subfield.php';
+require_once MDLBS . 'bibliography/File/MARC/Exception.php';
+require_once MDLBS . 'bibliography/File/MARC/List.php';
 
 // {{{ class File_MARC
 /**
@@ -169,7 +169,7 @@ class File_MARC extends File_MARCBASE
 
         case self::SOURCE_STRING:
             $this->type = self::SOURCE_STRING;
-            $this->source = explode(File_MARC::END_OF_RECORD, $source);
+            $this->source = explode(File_MARC::END_OF_RECORD, $source??'');
             break;
 
         default:

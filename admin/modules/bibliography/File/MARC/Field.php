@@ -36,7 +36,7 @@
  * @link      http://pear.php.net/package/File_MARC
  */
 
-require_once 'File/MARC/List.php';
+require_once MDLBS . 'bibliography/File/MARC/List.php';
 
 // {{{ class File_MARC_Field extends File_MARC_List
 /**
@@ -133,7 +133,7 @@ class File_MARC_Field extends File_MARC_List
      *
      * @return bool Returns true if the field is empty, otherwise false
      */
-    function isEmpty()
+    function isEmpty():bool
     {
         if ($this->getTag()) {
             return false;
