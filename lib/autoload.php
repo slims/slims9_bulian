@@ -27,7 +27,11 @@ $namespaces = [
     "Matrix\\" => "/markbaker/matrix/classes/src/",
     "MyCLabs\\Enum\\" => "/myclabs/php-enum/src/",
     "Symfony\\Polyfill\\Mbstring\\" => "/symfony/polyfill-mbstring/",
-    "ZipStream\\" => "/maennchen/zipstream-php/src/"
+    "Symfony\\Component\\Translation\\" => "/symfony/translation/",
+    "Symfony\\Contracts\\Translation\\" => "/symfony/translation-contracts/",
+    "ZipStream\\" => "/maennchen/zipstream-php/src/",
+    "Carbon\\" => "/nesbot/carbon/src/Carbon/"
+
 ];
 
 foreach ($namespaces as $namespace => $classpaths) {
