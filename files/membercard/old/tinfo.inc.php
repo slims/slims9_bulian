@@ -91,11 +91,8 @@ $sysconf['print'][$theme_key] = [
     'rules' => [
     'dbfield' => 'data[rules]',
     'label' => __('Rules'),
-    'type' => 'longtext',
+    'type' => 'ckeditor',
     'default' => $sysconf['print'][$theme_key]['rules'],
-    'width' => '100',
-    'max' => 1000,
-    'class' => 'ckeditor'
   ],  
   'rules_font_size' => [
     'dbfield' => 'data[rules_font_size]',
@@ -108,10 +105,8 @@ $sysconf['print'][$theme_key] = [
     'address' => [
     'dbfield' => 'data[address]',
     'label' => __('Address'),
-    'type' => 'longtext',
+    'type' => 'ckeditor',
     'default' => $sysconf['print'][$theme_key]['address'],
-    'width' => '100',
-    'class' => 'ckeditor'
   ],  
   'address_font_size' => [
     'dbfield' => 'data[address_font_size]',
