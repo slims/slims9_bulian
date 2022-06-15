@@ -59,3 +59,5 @@ foreach ($namespaces as $namespace => $classpaths) {
 include "ezyang/htmlpurifier/library/HTMLPurifier.auto.php";
 // Symfony
 include "symfony/polyfill-mbstring/bootstrap.php";
+// Nesbot legacy function
+include "nesbot/carbon/legacy.func.php";
