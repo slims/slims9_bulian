@@ -787,7 +787,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
     $str_input = '<div class="form-inline">';
     $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"') . '&nbsp;';
-    $str_input .= '<input type="text" class="form-control col-4" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
+    $str_input .= '<input type="text" class="form-control col-4 noAutoFocus" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
     $str_input .= '<div class="' . $visibility . '">
   <div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">' . __('Options') . '</div>';
     $str_input .= '<a href="' . MWB . 'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="' . __('Add new pattern') . '">' . __('Add New Pattern') . '</a></div></div>';
