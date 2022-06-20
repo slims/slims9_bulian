@@ -353,12 +353,14 @@ class utility
             }
         }
 
-        // trim whitespace on string
-        if ($bool_trim) { $mix_input = trim($mix_input); }
-        // strip html
-        if ($bool_strip_html) { $mix_input = strip_tags($mix_input); }
-        // escape SQL string
-        if ($bool_escape_sql) { $mix_input = $dbs->escape_string($mix_input); }
+        if (!is_null($mix_input)) {
+            // trim whitespace on string
+            if ($bool_trim) { $mix_input = trim($mix_input); }
+            // strip html
+            if ($bool_strip_html) { $mix_input = strip_tags($mix_input); }
+            // escape SQL string
+            if ($bool_escape_sql) { $mix_input = $dbs->escape_string($mix_input); }
+        }
 
         return $mix_input;
     }

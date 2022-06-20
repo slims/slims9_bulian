@@ -129,20 +129,20 @@ class biblio_indexer
           $data['biblio_id'] = $int_biblio_id;
           
           /* GMD , Title, Year  */
-          $data['title'] = $this->obj_db->escape_string($rb_id['title']);
-          $data['edition'] = $this->obj_db->escape_string($rb_id['edition']);
-          $data['gmd'] = $this->obj_db->escape_string($rb_id['gmd']);
-          $data['content_type'] = $this->obj_db->escape_string($rb_id['content_type']);
-          $data['media_type'] = $this->obj_db->escape_string($rb_id['media_type']);
-          $data['carrier_type'] = $this->obj_db->escape_string($rb_id['carrier_type']);
-          $data['publisher'] = $this->obj_db->escape_string($rb_id['publisher']);
-          $data['publish_place'] = $this->obj_db->escape_string($rb_id['publish_place']);
-          $data['isbn_issn'] = $this->obj_db->escape_string($rb_id['isbn_issn']);
-          $data['language'] = $this->obj_db->escape_string($rb_id['language']);
-          $data['publish_year'] = $this->obj_db->escape_string($rb_id['publish_year']);
-          $data['classification'] = $this->obj_db->escape_string($rb_id['classification']);
-          $data['spec_detail_info'] = $this->obj_db->escape_string($rb_id['spec_detail_info']);
-          $data['call_number'] = $this->obj_db->escape_string($rb_id['call_number']);
+          $data['title'] = $this->obj_db->escape_string($rb_id['title'] ?? '');
+          $data['edition'] = $this->obj_db->escape_string($rb_id['edition'] ?? '');
+          $data['gmd'] = $this->obj_db->escape_string($rb_id['gmd'] ?? '');
+          $data['content_type'] = $this->obj_db->escape_string($rb_id['content_type'] ?? '');
+          $data['media_type'] = $this->obj_db->escape_string($rb_id['media_type'] ?? '');
+          $data['carrier_type'] = $this->obj_db->escape_string($rb_id['carrier_type'] ?? '');
+          $data['publisher'] = $this->obj_db->escape_string($rb_id['publisher'] ?? '');
+          $data['publish_place'] = $this->obj_db->escape_string($rb_id['publish_place'] ?? '');
+          $data['isbn_issn'] = $this->obj_db->escape_string($rb_id['isbn_issn'] ?? '');
+          $data['language'] = $this->obj_db->escape_string($rb_id['language'] ?? '');
+          $data['publish_year'] = $this->obj_db->escape_string($rb_id['publish_year'] ?? '');
+          $data['classification'] = $this->obj_db->escape_string($rb_id['classification'] ?? '');
+          $data['spec_detail_info'] = $this->obj_db->escape_string($rb_id['spec_detail_info'] ?? '');
+          $data['call_number'] = $this->obj_db->escape_string($rb_id['call_number'] ?? '');
           $data['opac_hide'] = $rb_id['opac_hide'];
           $data['promoted'] = $rb_id['promoted'];
           if ($rb_id['labels']) {
@@ -150,15 +150,15 @@ class biblio_indexer
           } else {
               $data['labels'] = 'literal{NULL}';
           }
-          $data['collation'] = $this->obj_db->escape_string($rb_id['collation']);
-          $data['image'] = $this->obj_db->escape_string($rb_id['image']);
+          $data['collation'] = $this->obj_db->escape_string($rb_id['collation'] ?? '');
+          $data['image'] = $this->obj_db->escape_string($rb_id['image'] ?? '');
           $data['input_date'] = $rb_id['input_date'];
           $data['last_update'] = $rb_id['last_update'];
           if ($rb_id['notes'] != '') {
-              $data['notes'] = trim($this->obj_db->escape_string(strip_tags($rb_id['notes'], '<br><p><div><span><i><em><strong><b><code>')));
+              $data['notes'] = trim($this->obj_db->escape_string(strip_tags($rb_id['notes'], '<br><p><div><span><i><em><strong><b><code>')) ?? '');
           }
           if ($rb_id['series_title'] != '') {
-              $data['series_title'] = $this->obj_db->escape_string($rb_id['series_title']);
+              $data['series_title'] = $this->obj_db->escape_string($rb_id['series_title'] ?? '');
           }
           
           /* author  */
@@ -172,7 +172,7 @@ class biblio_indexer
           }
           if ($au_all !='') {
           	$au_all = substr_replace($au_all, '', -3);
-          	$data['author'] = $this->obj_db->escape_string($au_all);
+          	$data['author'] = $this->obj_db->escape_string($au_all ?? '');
           }
           
           /* subject  */
@@ -186,7 +186,7 @@ class biblio_indexer
           }
           if ($topic_all != '') {
           	$topic_all = substr_replace($topic_all, '', -3);
-          	$data['topic'] = $this->obj_db->escape_string($topic_all);
+          	$data['topic'] = $this->obj_db->escape_string($topic_all ?? '');
           }
           
           /* items */
@@ -215,7 +215,7 @@ class biblio_indexer
           }
           if ($loc_all != '') {
           	$loc_all = substr_replace($loc_all, '', -3);
-          	$data['location'] = $this->obj_db->escape_string($loc_all);
+          	$data['location'] = $this->obj_db->escape_string($loc_all ?? '');
           }
           
           /* collection types */
@@ -232,7 +232,7 @@ class biblio_indexer
           }
           if ($colltype_all != '') {
           	$colltype_all = substr_replace($colltype_all, '', -3);
-          	$data['collection_types'] = $this->obj_db->escape_string($colltype_all);
+          	$data['collection_types'] = $this->obj_db->escape_string($colltype_all ?? '');
           }
 
           if ($this->index_type == 'nosql') {
