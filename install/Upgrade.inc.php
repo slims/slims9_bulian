@@ -1023,6 +1023,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           $sql['alter'][] = "ALTER TABLE `biblio` DROP `update_date`;";
         }
         $sql['alter'][] = "ALTER TABLE `mst_topic` CHANGE `classification` `classification` varchar(50) COLLATE 'utf8_unicode_ci' NULL COMMENT 'Classification Code' AFTER `auth_list`;";
+        $sql['alter'][] = "ALTER TABLE `content` ADD `is_draft` smallint(1) NULL DEFAULT '0' AFTER `is_news`, ADD `publish_date` date NULL AFTER `is_draft`;";
 
         return $this->slims->query($sql, ['alter']);
     }

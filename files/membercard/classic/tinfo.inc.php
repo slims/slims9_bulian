@@ -76,11 +76,8 @@ $sysconf['print'][$theme_key] = [
     'rules' => [
     'dbfield' => 'data[rules]',
     'label' => __('Rules'),
-    'type' => 'longtext',
+    'type' => 'ckeditor',
     'default' => $sysconf['print'][$theme_key]['rules'],
-    'width' => '100',
-    'class' => 'ckeditor',
-    'max' => 100
   ],
     'f_color' => [
     'dbfield' => 'data[f_color]',

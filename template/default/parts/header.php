@@ -71,6 +71,8 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     <!-- Vegas CSS -->
     <link rel="stylesheet" href="<?php echo assets('plugin/vegas/vegas.min.css'); ?>">
     <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css"/>
+    <!-- CKEditor5 CSS -->
+    <link rel="stylesheet" href="<?= JWB; ?>ckeditor5/ckeditor5.css">
     <!-- SLiMS CSS -->
     <link rel="stylesheet" href="<?= JWB; ?>colorbox/colorbox.css">
     <!-- // Flag css -->

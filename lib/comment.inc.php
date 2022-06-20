@@ -75,14 +75,18 @@ function showComment($_detail_id)
 
 		if (ISSET($_SESSION['mid'])) {
 		// Comment form
-			$_forms  = '<form method="post" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
-			$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input form-control ckeditor"'). '<br />';
+			$_forms  = '<form method="post" id="mainForm" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
+			//$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input form-control ckeditor"'). '<br />';
+			$_forms .= '<div id="container0" class="mb-3" data-field="comment"><div id="ckeditor-toolbar0"></div><div id="ckeditor-content0" style="min-height: 150px"></div></div>';
 			$_forms .= '<input type="submit" name="SaveComment" value="Save comment" class="s-btn btn btn-primary">';
 			$_forms .= \Volnix\CSRF\CSRF::getHiddenInputString();
 			$_forms .= '</form>';
 			// ckeditor for rich feature
-			$js = '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
-			$js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
+			$js = '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.js"></script>';
+			$js .= '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.tinfo.js"></script>';
+			$js .= "<script>createMultiEditor('1', '#mainForm', ['bold','italic','bulletedList','numberedList'])</script>";
+			// $js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
+
 			return $_list_comment.$_forms.$js;
 		} else  {
 			return $_list_comment;
