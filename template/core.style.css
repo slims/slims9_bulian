@@ -1,0 +1,223 @@
+/* AJAX drop down list */
+.ajaxDDlist {
+    display: none;
+    position: absolute;
+    border: 1px solid #727272;
+    border-top: 0;
+    margin: 0;
+    padding: 0;
+    height: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #FFFFFF;
+    list-style-type: none;
+    list-style-position: outside;
+}
+
+.ajaxDDlist > li {
+    margin: 0;
+    padding: 0;
+}
+
+.ajaxDDlist > li > .DDlink,.DDlink:hover {
+    display: block;
+    padding: 2px;
+    text-decoration: none;
+}
+
+.ajaxDDlist > li > .DDlink:hover {
+    background-color: #CCCCCC;
+}
+
+.ajaxInputField {
+    width: 190px;
+}
+
+/* HTML Pop Up Div */
+#htmlPop {
+    width: 600px;
+    background: #000;
+    padding: 10px;
+    position: fixed;
+    -moz-border-radius: 5px;
+}
+
+#htmlPopTitle {
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 5px;
+}
+
+#htmlPopFrame {
+    width: 100%;
+}
+
+/* Calendar */
+#calendarPop {
+    padding: 5px;
+    background: #CCCCCC;
+    border: 1px solid #666666;
+}
+
+.calendar {
+    width: 100%;
+    clear: both;
+    font-size: 90%;
+}
+
+.calendar th {
+    background: #FFFFFF;
+}
+
+.calendar td {
+    text-align: center;
+}
+
+.calendar td a {
+    color: #555555;
+    display: block;
+}
+
+.calendar td.selected {
+    background-color:   #00ff70;
+}
+
+.monthyearselect {
+    background: #FFFFFF;
+}
+
+form.clock {
+    text-align: center;
+}
+
+/* Member Login/Area related style */
+#memberLogin {
+    padding: 5px;
+    background: #CCCCCC;
+    border: 1px solid #666;
+}
+
+#memberLogin legend {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#memberLogin .fieldLabel {
+    font-weight: bold;
+}
+
+#memberLogin input[type=text] {
+    width: 90%;
+}
+
+#memberLogin input[type=password] {
+    width: 90%;
+}
+
+#memberLogin .loginInfo {
+    font-style: italic;
+}
+
+#memberLoginInfo {
+    text-align: right;
+    margin: 3px;
+    padding: 3px;
+    border-bottom: 1px solid #999;
+}
+
+#memberLogout {
+    color: #FF0000;
+    font-weight: bold;
+}
+
+.errorBox {
+    margin: 3px;
+    padding: 3px;
+    color: #f00;
+    border: 1px solid #f00;
+}
+
+.memberLoanList, .memberDetail, .memberBasketList {
+    width: 99%;
+    margin: 3px;
+    border: 1px solid #999;
+}
+
+.memberLoanListInfo, .memberDetailInfo, .memberBasketInfo {
+    border: 0;
+    padding: 3px;
+}
+
+.dataListHeader {
+    background: #fc0;
+}
+
+.alterCell, .alterCell2 {
+    background-color: #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.alterCell2 {
+    background-color: #fff;
+}
+
+.biblioMarkForm .biblioMarkFormAction {
+    margin-left: 10px;
+}
+
+.biblioMarkForm .biblioMarkFormAction input.button {
+    display: block;
+    height: 25px;
+    padding-right: 25px;
+    cursor: pointer;
+    background: #003380 url(../images/default/basket.png) center right no-repeat;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    -moz-border-radius: 5px;
+    -opera-border-radius: 5px;
+}
+
+/* Visitor counter */
+#visitorCounterWrap {
+    margin: 0 auto;
+    width: 500px;
+    background: #fff;
+    border: 1px solid #999;
+    padding: 5px;
+}
+
+#visitorCounterWrap #counterInfo {
+    display: none;
+    padding: 3px;
+    border: 1px dotted #f00;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+#visitorCounterWrap .info {
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+}
+
+#visitorCounterWrap legend {
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#visitorCounterWrap input[type=text] {
+    width: 100%;
+}
+
+#visitorCounterForm {
+    width: 100%;
+}
+
+#visitorCounterPhoto {
+    margin-top: 5px;
+    width: 100px;
+}
+
+.s-member-account td::before {
+    display: none;
+}
