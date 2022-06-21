@@ -105,7 +105,14 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
         'add-drop-database' => false,
         'hex-blob' => true,
         'no-create-info' => false,
-        'where' => ''
+        'where' => '',
+        /**
+         * an option for definer state in trigger query. 
+         * For some case, user had bad experience 
+         * when they move their SLiMS database to other database 
+         * machine without same privileged user as trigger definer.
+         */
+        'skip-definer' => true, 
         );    
 
         // checking are the backup directory is exists and writable
