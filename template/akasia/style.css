@@ -816,14 +816,20 @@ a:hover {
     left: 0px;
   }
 }
-keyframes coverShake 0% {
-  left: 0px;
+@keyframes coverShake {
+  0% {
+    left: 0px;
+  }
 }
-keyframes coverShake 50% {
-  left: 10px;
+@keyframes coverShake {
+  50% {
+    left: 10px;
+  }
 }
-keyframes coverShake 100% {
-  left: 0px;
+@keyframes coverShake {
+  100% {
+    left: 0px;
+  }
 }
 .s-feature {
   top: 150px;
@@ -1199,14 +1205,20 @@ keyframes coverShake 100% {
     bottom: 0px;
   }
 }
-keyframes coverUp 0% {
-  bottom: 0px;
+@keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
 }
-keyframes coverUp 50% {
-  bottom: 10px;
+@keyframes coverUp {
+  50% {
+    bottom: 10px;
+  }
 }
-keyframes coverUp 100% {
-  bottom: 0px;
+@keyframes coverUp {
+  100% {
+    bottom: 0px;
+  }
 }
 .biblioRecord .cover-list .img-thumbnail {
   padding: 0;
