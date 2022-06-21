@@ -77,9 +77,15 @@ if (isset($_POST['finish'])) {
     if ($flush == TRANS_FLUSH_ERROR) {
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')', 'Transaction', 'Failed');
-        echo '<script type="text/javascript">';
-        echo 'alert(\''.__('ERROR! Loan data can\'t be saved to database').'\');';
-        echo '</script>';
+        utility::jsToastr(__('Error'), __('ERROR! Loan data can\'t be saved to database'), 'error');
+        // set error result
+        if (ENVIRONMENT === 'development')
+        {
+            echo '<script>
+                parent.$("#errordump").removeClass("d-none").addClass("d-block");
+                parent.$("#errordump").html("' . $circulation->error . '");
+            </script>';
+        }
     } else {
         // insert visitor log
         visitOnLoan($memberID);
@@ -555,6 +561,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         }
 
 		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
+        echo '<div id="errordump" class="w-100 d-none p-3 mb-2 bg-danger text-white font-weight-bold"></div>';
         echo '<a class="nav-item nav-link '.$active_loan.' notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
         echo '<a class="nav-item nav-link '.$active_loan_list.' notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {

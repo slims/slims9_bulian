@@ -49,6 +49,7 @@ class circulation extends member
     public $holiday_dayname = array('Sun');
     public $holiday_date = array();
     public $loan_have_overdue = false;
+    public $error = '';
 
     /**
      * class constructor
@@ -456,20 +457,25 @@ class circulation extends member
                 $data['input_date'] = date("Y-m-d H:i:s");
                 $data['last_update'] = date("Y-m-d H:i:s");
                 $data['uid'] = $_SESSION['uid'];
-                $sql_op = new simbio_dbop($this->obj_db);
-                if (!$sql_op->insert('loan', $data)) {
-                    $error_num++;
-                } else {
-                    if (isset($_SESSION['receipt_record'])) {
-                        // get title
-                        $_title_q = $this->obj_db->query('SELECT title FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
-                        $_title_d = $_title_q->fetch_row();
-                        $_title = $_title_d[0];
-                        // add to receipt
-                        $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date']);
+                try {    
+                    $sql_op = new simbio_dbop($this->obj_db);
+                    if ($sql_op->insert('loan', $data)) {
+                        if (isset($_SESSION['receipt_record'])) {
+                            // get title
+                            $_title_q = $this->obj_db->query('SELECT title FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
+                            $_title_d = $_title_q->fetch_row();
+                            $_title = $_title_d[0];
+                            // add to receipt
+                            $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date']);
+                        }
+                        // remove any reservation related to this items
+                        @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
+                    } else {
+                        throw new Exception($sql_op->error);
                     }
-                    // remove any reservation related to this items
-                    @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
+                } catch (Exception $e) {
+                    $this->error = $e->getMessage();
+                    $error_num++;
                 }
             }
             // clean all circulation sessions
