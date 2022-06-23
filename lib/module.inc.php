@@ -205,6 +205,15 @@ class module extends simbio
         $header = null;
         foreach ($default as $menu) {
             if (count($menu) === 2 && strtolower($menu[0]) === 'header') {
+                // before continue to new header
+                // check to plugin group
+                if (!is_null($header) && isset($group_menu[$header])) {
+                    foreach ($group_menu[$header] as $hash) {
+                        $groups[$header][] = $plugin[$hash];
+                    }
+                    unset($group_menu[$header]);
+                }
+
                 // reset header
                 $header = null;
                 // iterate orders
