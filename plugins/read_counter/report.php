@@ -20,7 +20,7 @@ if (!$reportView) {
 ?>
 <!-- filter -->
 <div class="per_title">
-    <h2><?php echo __('Read Counter Rerport'); ?></h2>
+    <h2><?php echo __('Read Counter Report'); ?></h2>
 </div>
 <div class="infoBox">
     <?php echo __('Report Filter'); ?>
