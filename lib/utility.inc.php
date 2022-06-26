@@ -158,7 +158,7 @@ class utility
 
 
         $_checksum = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
-        if ($_SESSION['checksum'] != $_checksum) {
+        if (!isset($_SESSION['checksum']) || $_SESSION['checksum'] != $_checksum) {
             return false;
         }
         // check privilege type
