@@ -9,7 +9,7 @@ defined('INDEX_AUTH') OR die('Direct access not allowed!');
 
 require MDLBS . 'reporting/report_dbgrid.inc.php';
 
-$page_title = 'Read Counter Rerport';
+$page_title = 'Read Counter Report';
 $reportView = false;
 $num_recs_show = 20;
 if (isset($_GET['reportView'])) {
