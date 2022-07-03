@@ -500,7 +500,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
             }
 
-            #\SLiMS\Plugins::getInstance()->execute('bibliography_before_delete', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
             \SLiMS\Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
