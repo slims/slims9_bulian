@@ -276,11 +276,13 @@ class circulation extends member
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            #$_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code, l.loan_id FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
-            $_SESSION['receipt_record']['return'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'returnDate' => $_return_date, 'overdues' => $_fines);
+            #$_SESSION['receipt_record']['return'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'returnDate' => $_return_date, 'overdues' => $_fines);
+            $_SESSION['receipt_record']['return'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'returnDate' => $_return_date, 'overdues' => $_fines, 'loan_id' => $int_loan_id);
         }
         // check if this item is being reserved by other member
         $_resv_q = $this->obj_db->query("SELECT l.item_code FROM reserve AS rs
@@ -333,11 +335,12 @@ class circulation extends member
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            #$_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code, l.loan_id FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
-            $_SESSION['receipt_record']['extend'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'loanDate' => $_loan_date, 'dueDate' => $_due_date);
+            $_SESSION['receipt_record']['extend'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'loanDate' => $_loan_date, 'dueDate' => $_due_date, 'loan_id' => $int_loan_id);
         }
         return true;
     }
@@ -460,13 +463,15 @@ class circulation extends member
                 try {    
                     $sql_op = new simbio_dbop($this->obj_db);
                     if ($sql_op->insert('loan', $data)) {
+                        # get last insert id (loan_id)
+                        $loan_id = $this->obj_db->insert_id;
                         if (isset($_SESSION['receipt_record'])) {
                             // get title
                             $_title_q = $this->obj_db->query('SELECT title FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
                             $_title_d = $_title_q->fetch_row();
                             $_title = $_title_d[0];
                             // add to receipt
-                            $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date']);
+                            $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date'], 'loan_id' => $loan_id);
                         }
                         // remove any reservation related to this items
                         @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
