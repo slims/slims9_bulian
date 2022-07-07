@@ -346,7 +346,7 @@ class circulation extends member
             $_loans['itemCode'] = $_title_d['item_code'];
             $_loans['loanDate'] = $_loan_date;
             $_loans['dueDate'] = $_due_date;
-            $_SESSION['receipt_record']['return'][] = $_loans;
+            $_SESSION['receipt_record']['extend'][] = $_loans;
         }
         return true;
     }
