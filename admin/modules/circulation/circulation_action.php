@@ -272,7 +272,7 @@ if (isset($_GET['removeID'])) {
 // quick return proccess
 if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
     // get loan data
-    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, mt.member_type_name FROM loan AS l
+    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, b.classification, mt.member_type_name FROM loan AS l
         LEFT JOIN item AS i ON i.item_code=l.item_code
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
         LEFT JOIN member AS m ON l.member_id=m.member_id
@@ -322,10 +322,14 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         $return_data['memberName'] = $loan_d['member_name'];
         $return_data['memberType'] = $loan_d['member_type_name'];
         $return_data['date'] = date("Y-m-d h:i:s");
+        $return_data['return'][0] = array ();
+        $return_data['return'][0] = $loan_d;
         $return_data['return'][0]['itemCode'] = $_POST['quickReturnID'];
         $return_data['return'][0]['title'] = $loan_d['title'];
         $return_data['return'][0]['returnDate'] = date("Y-m-d");
         $return_data['return'][0]['overdues'] = $overdue;
+        $return_data['return'][0]['loan_id'] = $loan_d['loan_id'];
+        $return_data['return'][0]['is_return'] = (INT)$loan_d['is_return'] + 1;
         \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => $return_data));
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
