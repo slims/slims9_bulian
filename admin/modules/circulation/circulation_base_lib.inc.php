@@ -473,11 +473,20 @@ class circulation extends member
                         $loan_id = $this->obj_db->insert_id;
                         if (isset($_SESSION['receipt_record'])) {
                             // get title
-                            $_title_q = $this->obj_db->query('SELECT title FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
+                            $_title_q = $this->obj_db->query('SELECT title, classification FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
                             $_title_d = $_title_q->fetch_row();
                             $_title = $_title_d[0];
+                            $_classification = $_title_d[1];
                             // add to receipt
-                            $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date'], 'loan_id' => $loan_id);
+                            $data_loan = (array)circapi::loan_load_by_id($this->obj_db, $loan_id);
+                            $_loans = array ();
+                            $_loans = $data_loan;
+                            $_loans['itemCode'] = $data['item_code'];
+                            $_loans['title'] = $_title;
+                            $_loans['classification'] = $_classification;
+                            $_loans['loanDate'] = $data['loan_date'];
+                            $_loans['dueDate'] = $data['due_date'];
+                            $_SESSION['receipt_record']['loan'][] = $_loans;
                         }
                         // remove any reservation related to this items
                         @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
