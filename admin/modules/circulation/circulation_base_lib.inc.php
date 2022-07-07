@@ -337,11 +337,16 @@ class circulation extends member
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code, l.loan_id FROM loan AS l
+            $_title_q = $this->obj_db->query('SELECT b.title, b.classification, l.* FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
-            $_SESSION['receipt_record']['extend'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'loanDate' => $_loan_date, 'dueDate' => $_due_date, 'loan_id' => $int_loan_id);
+            $_loans = array();
+            $_loans = $_title_d;
+            $_loans['itemCode'] = $_title_d['item_code'];
+            $_loans['loanDate'] = $_loan_date;
+            $_loans['dueDate'] = $_due_date;
+            $_SESSION['receipt_record']['return'][] = $_loans;
         }
         return true;
     }
