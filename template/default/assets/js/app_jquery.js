@@ -63,6 +63,14 @@ $(document).ready(() => {
             let id = e.target.getAttribute('id')
             $(`#btn-${id} i`).removeClass('fa-angle-double-up').addClass('fa-angle-double-down')
         })
+
+    $(".year-slider").ionRangeSlider({
+        onFinish: function (data) {
+            // Called then action is done and mouse is released
+
+            console.log(data);
+        },
+    });
 });
 
 // remove &nbsp in pagging

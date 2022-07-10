@@ -907,3 +907,7 @@ html {
 .highlight{
 	color:red;
 }
+
+.biblioPagingTop {
+    display: none;
+}
