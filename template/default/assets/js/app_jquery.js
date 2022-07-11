@@ -1,10 +1,13 @@
 'use strict';
 
+const filterTmp = {}
+const urls = new URLSearchParams(location.search)
+
 $(document).ready(() => {
     // 65x83
-    var images = $('.fit-height');
+    const images = $('.fit-height');
     $.each(images, (i, v) => {
-        var width = $(v).width(),
+        const width = $(v).width(),
             height = (width * 83) / 65;
         // console.log(height);
         $(v).height(height)
@@ -64,13 +67,42 @@ $(document).ready(() => {
             $(`#btn-${id} i`).removeClass('fa-angle-double-up').addClass('fa-angle-double-down')
         })
 
-    $(".year-slider").ionRangeSlider({
+    $(".input-slider").ionRangeSlider({
         onFinish: function (data) {
-            // Called then action is done and mouse is released
+            // collect old filter
+            urls.forEach((value, key) => {
+                filterTmp[key] = value
+            })
 
-            console.log(data);
+            // collect new filter
+            $.each($('#search-filter').serializeArray(), function (i, v) {
+                filterTmp[v.name] = v.value
+            })
+
+            // redirect to new filter
+            window.location.href = window.location.href.split('?')[0] + '?' + $.param(filterTmp)
         },
     });
+
+    $('#search-filter input:not(.input-slider)').on('change', function () {
+        let key = $(this).attr('name'), value = $(this).val()
+
+        // collect old filter
+        urls.forEach((value, key) => {
+            filterTmp[key] = value
+        })
+
+        // collect new filter
+        $.each($('#search-filter').serializeArray(), function (i, v) {
+            filterTmp[v.name] = v.value
+        })
+
+        // clear unused filter
+        if(!$(this).is(':checked')) delete filterTmp[key]
+
+        // redirect to new filter
+        window.location.href = window.location.href.split('?')[0] + '?' + $.param(filterTmp)
+    })
 });
 
 // remove &nbsp in pagging

@@ -51,7 +51,7 @@ if (isset($_GET['search'])) {
         if (!empty($searched_fields)) {
             // get criteria from advanced search
             foreach ($searched_fields as $field) {
-                $value = trim(strip_tags(urldecode($_GET[$field])));
+                $value = !is_array($_GET[$field]) ? trim(strip_tags(urldecode($_GET[$field]))) : '';
                 if ($value !== '' && $value !== '0') $criteria->and($field, $value);
             }
             $keywords = $criteria->getQueries();
