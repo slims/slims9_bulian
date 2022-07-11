@@ -14,7 +14,7 @@ trait SearchFilter
         list($min, $max) = $this->getYears();
         $filter[] = [
             'header' => __('Publish Year'),
-            'name' => 'year',
+            'name' => 'years',
             'type' => 'range',
             'min' => $min,
             'max' => $max,
@@ -29,11 +29,11 @@ trait SearchFilter
             'type' => 'radio',
             'items' => [
                 [
-                    'value' => '0',
+                    'value' => '1',
                     'label' => __('Available')
                 ],
                 [
-                    'value' => '1',
+                    'value' => '0',
                     'label' => __('On Loan')
                 ]
             ]
@@ -128,6 +128,10 @@ trait SearchFilter
 
     public function buildFilter($filters): string
     {
+        // get filter from url
+        $filterStr = \utility::filterData('filter', 'get', false, true, true);
+        $filterArr = json_decode($filterStr, true);
+
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
         foreach ($filters as $index => $filter) {
             if ($index < 1) {
@@ -144,7 +148,7 @@ trait SearchFilter
                 <div class="collapse show text-sm" id="collapse-{$index}"><div class="mt-2">
 HTML;
 
-            $value = \utility::filterData($filter['name'], 'get', true, true, true);
+            $value = $filterArr[$filter['name']] ?? null;
 
             switch ($filter['type']) {
                 case 'range':
@@ -174,7 +178,7 @@ HTML;
                         $filter_name = $filter['name'];
                         if($filter['type'] == 'checkbox') {
                             $filter_name .= '['.$idx.']';
-                            $value = $_GET[$filter['name']][$idx] ?? null;
+                            $value = $filterArr[$filter['name'].'['.$idx.']'] ?? null;
                         }
 
                         $checked = $value == $item['value'] ? 'checked' : '';

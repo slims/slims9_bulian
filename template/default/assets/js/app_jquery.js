@@ -1,7 +1,22 @@
 'use strict';
 
-const filterTmp = {}
 const urls = new URLSearchParams(location.search)
+function filter() {
+    const filterTmp = {}
+    // collect new filter
+    $.each($('#search-filter').serializeArray(), function (i, v) {
+        filterTmp[v.name] = v.value
+    })
+
+    if (urls.has('filter')) {
+        urls.set('filter', JSON.stringify(filterTmp))
+    } else {
+        urls.append('filter', JSON.stringify(filterTmp))
+    }
+
+    // redirect to new filter
+    window.location.href = window.location.href.split('?')[0] + '?' + urls.toString()
+}
 
 $(document).ready(() => {
     // 65x83
@@ -69,39 +84,12 @@ $(document).ready(() => {
 
     $(".input-slider").ionRangeSlider({
         onFinish: function (data) {
-            // collect old filter
-            urls.forEach((value, key) => {
-                filterTmp[key] = value
-            })
-
-            // collect new filter
-            $.each($('#search-filter').serializeArray(), function (i, v) {
-                filterTmp[v.name] = v.value
-            })
-
-            // redirect to new filter
-            window.location.href = window.location.href.split('?')[0] + '?' + $.param(filterTmp)
+            filter()
         },
     });
 
     $('#search-filter input:not(.input-slider)').on('change', function () {
-        let key = $(this).attr('name'), value = $(this).val()
-
-        // collect old filter
-        urls.forEach((value, key) => {
-            filterTmp[key] = value
-        })
-
-        // collect new filter
-        $.each($('#search-filter').serializeArray(), function (i, v) {
-            filterTmp[v.name] = v.value
-        })
-
-        // clear unused filter
-        if(!$(this).is(':checked')) delete filterTmp[key]
-
-        // redirect to new filter
-        window.location.href = window.location.href.split('?')[0] + '?' + $.param(filterTmp)
+        filter()
     })
 });
 

@@ -30,8 +30,9 @@ class DefaultEngine extends Contract
 {
     public array $searchable_fields = [
         'title', 'author', 'subject', 'isbn',
-        'publisher', 'gmd', 'notes', 'colltype', 'publishyear',
-        'location', 'itemcode', 'callnumber', 'itemcallnumber', 'notes'
+        'publisher', 'gmd', 'notes', 'colltype', 'publishyear', 'years',
+        'location', 'itemcode', 'callnumber', 'itemcallnumber', 'notes',
+        'availability'
     ];
 
     function getDocuments()
@@ -86,7 +87,7 @@ class DefaultEngine extends Contract
         }
 
         $sql_criteria = 'where b.opac_hide=0 ';
-        $sql_criteria .= ($c = $this->buildCriteria($this->criteria)) !== '' ? 'and (' . $c . ') ' : '';
+        $sql_criteria .= ($c = $this->buildCriteria()) !== '' ? 'and (' . $c . ') ' : '';
 
         $sql_query = $sql_select . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group . ' order by b.last_update desc limit ' . $this->limit . ' offset ' . $this->offset;
         $sql_count = 'select count(b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group;
@@ -105,6 +106,9 @@ class DefaultEngine extends Contract
         foreach ($this->criteria->toCQLToken($this->stop_words) as $token) {
             $field = $token['f'];
 
+            // break the loop if we meet cql_end field
+            if ($field === 'cql_end') break;
+
             if ($title_buffer === '' && $field !== 'boolean')
                 $sql_criteria .= ' ' . $boolean . ' ';
 
@@ -115,9 +119,6 @@ class DefaultEngine extends Contract
                 // reset title buffer
                 $title_buffer = '';
             }
-
-            // break the loop if we meet cql_end field
-            if ($field === 'cql_end') break;
 
             // boolean mode
             $bool = $token['b'] ?? $token;
