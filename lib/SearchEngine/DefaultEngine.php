@@ -30,9 +30,8 @@ class DefaultEngine extends Contract
 {
     public array $searchable_fields = [
         'title', 'author', 'subject', 'isbn',
-        'publisher', 'gmd', 'notes', 'colltype', 'publishyear', 'years',
+        'publisher', 'gmd', 'notes', 'colltype', 'publishyear',
         'location', 'itemcode', 'callnumber', 'itemcallnumber', 'notes',
-        'availability'
     ];
 
     function getDocuments()

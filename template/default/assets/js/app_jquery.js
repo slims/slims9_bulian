@@ -6,6 +6,9 @@ function filter() {
     // collect new filter
     $.each($('#search-filter').serializeArray(), function (i, v) {
         filterTmp[v.name] = v.value
+        // remove or move advanced search to filter
+        let key = v.name.split('[')[0]
+        if (urls.has(key)) urls.delete(key)
     })
 
     if (urls.has('filter')) {

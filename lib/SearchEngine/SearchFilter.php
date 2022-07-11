@@ -63,7 +63,7 @@ trait SearchFilter
         # Collection type
         $filter[] = [
             'header' => __('Collection Type'),
-            'name' => 'collType',
+            'name' => 'colltype',
             'type' => 'checkbox',
             'items' => $this->getCollectionType()
         ];
@@ -148,7 +148,7 @@ trait SearchFilter
                 <div class="collapse show text-sm" id="collapse-{$index}"><div class="mt-2">
 HTML;
 
-            $value = $filterArr[$filter['name']] ?? null;
+            $value = $value ?? $filterArr[$filter['name']] ?? null;
 
             switch ($filter['type']) {
                 case 'range':
@@ -180,6 +180,10 @@ HTML;
                             $filter_name .= '['.$idx.']';
                             $value = $filterArr[$filter['name'].'['.$idx.']'] ?? null;
                         }
+
+                        # from advanced search
+                        if (isset($_GET[$filter['name']]) && $_GET[$filter['name']] == $item['label'])
+                            $value = $item['value'];
 
                         $checked = $value == $item['value'] ? 'checked' : '';
 
