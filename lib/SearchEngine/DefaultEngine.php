@@ -42,6 +42,8 @@ class DefaultEngine extends Contract
         // build sql command
         $sql = $this->buildSQL();
 
+        var_dump($sql['count']);
+
         // execute query
         $db = DB::getInstance();
         $count = $db->query($sql['count']);
@@ -81,7 +83,8 @@ class DefaultEngine extends Contract
         // location
         $sql_group = '';
         if (!is_null($this->criteria->location) || !is_null($this->criteria->colltype)
-            || !is_null($this->filter->location) || !is_null($this->filter->colltype)) {
+            || !is_null($this->filter->location) || !is_null($this->filter->colltype)
+            || !is_null($this->filter->availability)) {
             $sql_join .= 'left join item as i on b.biblio_id=i.biblio_id ';
             $sql_group = 'group by b.biblio_id';
         }
@@ -283,10 +286,12 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'availability':
+                    $sql_criteria .= ' i.item_id is not null ';
+
                     $sub_query = "select distinct item.biblio_id from item 
                                     left join loan on item.item_code = loan.item_code 
                                     where loan.is_return = 0";
-                    $sql_criteria .= ' b.biblio_id not in ( ' . $sub_query . ' ) ';
+                    $sql_criteria .= ' and b.biblio_id not in('.$sub_query.')';
                     break;
 
                 case 'attachment':
