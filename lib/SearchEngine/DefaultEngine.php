@@ -106,7 +106,7 @@ class DefaultEngine extends Contract
         }
 
         $sql_query = $sql_select . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group . ' order by '.$sql_order.' limit ' . $this->limit . ' offset ' . $this->offset;
-        $sql_count = 'select count(b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group;
+        $sql_count = 'select count(distinct b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria;
 
         return [
             'count' => $sql_count,
