@@ -28,6 +28,7 @@ $namespaces = [
     "MyCLabs\\Enum\\" => "/myclabs/php-enum/src/",
     "Symfony\\Polyfill\\Mbstring\\" => "/symfony/polyfill-mbstring/",
     "Symfony\\Component\\Translation\\" => "/symfony/translation/",
+    "Symfony\\Component\VarDumper\\" => "/symfony/var-dumper/",
     "Symfony\\Contracts\\Translation\\" => "/symfony/translation-contracts/",
     "ZipStream\\" => "/maennchen/zipstream-php/src/",
     "Carbon\\" => "/nesbot/carbon/src/Carbon/"
@@ -61,3 +62,6 @@ include "ezyang/htmlpurifier/library/HTMLPurifier.auto.php";
 include "symfony/polyfill-mbstring/bootstrap.php";
 // Nesbot legacy function
 include "nesbot/carbon/legacy.func.php";
+// Var-dumper
+// Load the global dump() function
+include 'symfony/var-dumper/Resources/functions/dump.php';
