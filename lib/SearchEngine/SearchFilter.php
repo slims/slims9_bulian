@@ -203,7 +203,12 @@ HTML;
 
             $str .= '</div></div></li>';
         }
-        $str .= '</ul></form>';
+        $str .= '</ul>';
+
+        # prepare to sort
+        $str .= '<input id="sort" name="sort" type="hidden" value="0" />';
+
+        $str .= '</form>';
         return $str;
     }
 }

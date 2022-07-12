@@ -42,16 +42,10 @@
                         echo str_replace('{biblio_list->num_rows}', $engine->getNumRows(), $search_result_info);
                         ?>
                     </div>
-                    <form class="form-inline pl-3">
+                    <div class="form-inline pl-3">
                         <label class="mr-2 font-weight-bold" for="result-sort">Sort by</label>
-                        <select class="custom-select custom-select-sm" id="result-sort">
-                            <option selected>Most relevant</option>
-                            <option value="1">Last Update</option>
-                            <option value="2">Publish Year</option>
-                            <option value="3">Title Ascending</option>
-                            <option value="3">Title Descending</option>
-                        </select>
-                    </form>
+                        <select class="custom-select custom-select-sm" id="search-order"><?= $sort_select ?></select>
+                    </div>
                 </div>
                 <div class="wrapper">
                     <?php

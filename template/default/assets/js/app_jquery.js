@@ -85,6 +85,7 @@ $(document).ready(() => {
             $(`#btn-${id} i`).removeClass('fa-angle-double-up').addClass('fa-angle-double-down')
         })
 
+    // Filter and sort
     $(".input-slider").ionRangeSlider({
         onFinish: function (data) {
             filter()
@@ -92,6 +93,11 @@ $(document).ready(() => {
     });
 
     $('#search-filter input:not(.input-slider)').on('change', function () {
+        filter()
+    })
+
+    $('#search-order').on('change', function () {
+        $('#sort').val($(this).val())
         filter()
     })
 });

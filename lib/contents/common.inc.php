@@ -69,6 +69,24 @@ foreach ($available_languages AS $lang_index) {
 }
 $language_select = ob_get_clean();
 
+/* Sort order selection list */
+ob_start();
+$sorts = [
+    ['0', __('Most relevant')],
+    ['last-update', __('Last Update')],
+    ['publish-year', __('Publish Year')],
+    ['title-asc', __('Title Ascending')],
+    ['title-desc', __('Title Descending')],
+];
+foreach ($sorts as $sort) {
+    $selected = null;
+    $filterStr = \utility::filterData('filter', 'get', false, true, true);
+    $filterArr = json_decode($filterStr, true);
+    if ($sort[0] === $filterArr['sort']) $selected = 'selected';
+    echo '<option value="'.$sort[0].'" '.$selected.'>'.$sort[1].'</option>';
+}
+$sort_select = ob_get_clean();
+
 /* include simbio form element library */
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
 /* Advanced Search Author AJAX field */

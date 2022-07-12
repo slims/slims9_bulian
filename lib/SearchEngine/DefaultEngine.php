@@ -90,7 +90,21 @@ class DefaultEngine extends Contract
         $sql_criteria .= ($c = $this->buildCriteria($this->criteria)) !== '' ? 'and (' . $c . ') ' : '';
         $sql_criteria .= ($c = $this->buildCriteria($this->filter)) !== '' ? 'and (' . $c . ') ' : '';
 
-        $sql_query = $sql_select . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group . ' order by b.last_update desc limit ' . $this->limit . ' offset ' . $this->offset;
+        switch ($this->filter->sort) {
+            case 'publish-year':
+                $sql_order = 'b.publish_year desc';
+                break;
+            case 'title-asc':
+                $sql_order = 'b.title asc';
+                break;
+            case 'title-desc':
+                $sql_order = 'b.title desc';
+                break;
+            default:
+                $sql_order = 'b.last_update desc';
+        }
+
+        $sql_query = $sql_select . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group . ' order by '.$sql_order.' limit ' . $this->limit . ' offset ' . $this->offset;
         $sql_count = 'select count(b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group;
 
         return [

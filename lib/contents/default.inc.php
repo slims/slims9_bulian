@@ -65,7 +65,7 @@ if (isset($_GET['search'])) {
         }
 
         // filter
-        $filter = new Criteria;
+        $filterCriteria = new Criteria;
         if (isset($_GET['filter'])) {
             $filter = utility::filterData('filter', 'get', false, true, true);
             $filterArr = json_decode($filter, true);
@@ -81,16 +81,16 @@ if (isset($_GET['search'])) {
 
             foreach ($filters as $key => $value) {
                 if (is_array($value)) {
-                    $filter->and($key, json_encode($value));
+                    $filterCriteria->and($key, json_encode($value));
                 } else {
-                    $filter->and($key, $value);
+                    $filterCriteria->and($key, $value);
                 }
             }
         }
 
         // get records base on criteria
         $engine->setCriteria($criteria);
-        $engine->setFilter($filter);
+        $engine->setFilter($filterCriteria);
         $engine->getDocuments();
 
         // create output
