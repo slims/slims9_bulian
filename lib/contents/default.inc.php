@@ -48,7 +48,7 @@ if (isset($_GET['search'])) {
         // initialize criteria
         $criteria = new Criteria;
         $searched_fields = array_intersect($engine->searchable_fields, array_keys($_GET));
-        if (!empty($searched_fields)) {
+        if (!empty($searched_fields) && !isset($_GET['filter'])) {
             // get criteria from advanced search
             foreach ($searched_fields as $field) {
                 $value = !is_array($_GET[$field]) ? trim(strip_tags(urldecode($_GET[$field]))) : '';
@@ -58,11 +58,39 @@ if (isset($_GET['search'])) {
         } else {
             // get criteria from simple search
             $keywords = trim(strip_tags(urldecode($_GET['keywords'] ?? '')));
-            if ($keywords !== '') $criteria->keywords = $keywords;
+            if ($keywords !== '') {
+                $criteria->keywords = $keywords;
+                foreach (['title', 'author', 'subject'] as $item) $criteria->or($item, $keywords);
+            }
+        }
+
+        // filter
+        $filter = new Criteria;
+        if (isset($_GET['filter'])) {
+            $filter = utility::filterData('filter', 'get', false, true, true);
+            $filterArr = json_decode($filter, true);
+            $filters = [];
+            foreach ($filterArr as $idx => $x) {
+                if (strpos($idx, '[') !== false) {
+                    $arr = explode('[', $idx);
+                    $filters[$arr[0]][] = $x;
+                } else {
+                    $filters[$idx] = $x;
+                }
+            }
+
+            foreach ($filters as $key => $value) {
+                if (is_array($value)) {
+                    $filter->and($key, json_encode($value));
+                } else {
+                    $filter->and($key, $value);
+                }
+            }
         }
 
         // get records base on criteria
         $engine->setCriteria($criteria);
+        $engine->setFilter($filter);
         $engine->getDocuments();
 
         // create output

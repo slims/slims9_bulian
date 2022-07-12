@@ -31,10 +31,6 @@ trait SearchFilter
                 [
                     'value' => '1',
                     'label' => __('Available')
-                ],
-                [
-                    'value' => '0',
-                    'label' => __('On Loan')
                 ]
             ]
         ];
@@ -46,15 +42,15 @@ trait SearchFilter
             'type' => 'checkbox',
             'items' => [
                 [
-                    'value' => '0',
+                    'value' => 'pdf',
                     'label' => __('PDF')
                 ],
                 [
-                    'value' => '1',
+                    'value' => 'audio',
                     'label' => __('Audio')
                 ],
                 [
-                    'value' => '2',
+                    'value' => 'video',
                     'label' => __('Video')
                 ]
             ]
@@ -179,6 +175,8 @@ HTML;
                         if($filter['type'] == 'checkbox') {
                             $filter_name .= '['.$idx.']';
                             $value = $filterArr[$filter['name'].'['.$idx.']'] ?? null;
+                        } else {
+                            $value = $filterArr[$filter['name']] ?? null;
                         }
 
                         # from advanced search

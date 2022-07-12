@@ -80,13 +80,15 @@ class DefaultEngine extends Contract
 
         // location
         $sql_group = '';
-        if (!is_null($this->criteria->location) || !is_null($this->criteria->colltype)) {
+        if (!is_null($this->criteria->location) || !is_null($this->criteria->colltype)
+            || !is_null($this->filter->location) || !is_null($this->filter->colltype)) {
             $sql_join .= 'left join item as i on b.biblio_id=i.biblio_id ';
             $sql_group = 'group by b.biblio_id';
         }
 
         $sql_criteria = 'where b.opac_hide=0 ';
-        $sql_criteria .= ($c = $this->buildCriteria()) !== '' ? 'and (' . $c . ') ' : '';
+        $sql_criteria .= ($c = $this->buildCriteria($this->criteria)) !== '' ? 'and (' . $c . ') ' : '';
+        $sql_criteria .= ($c = $this->buildCriteria($this->filter)) !== '' ? 'and (' . $c . ') ' : '';
 
         $sql_query = $sql_select . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group . ' order by b.last_update desc limit ' . $this->limit . ' offset ' . $this->offset;
         $sql_count = 'select count(b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria . $sql_group;
@@ -97,12 +99,12 @@ class DefaultEngine extends Contract
         ];
     }
 
-    function buildCriteria(): string
+    function buildCriteria($criteria): string
     {
         $title_buffer = '';
         $boolean = '';
         $sql_criteria = '';
-        foreach ($this->criteria->toCQLToken($this->stop_words) as $token) {
+        foreach ($criteria->toCQLToken($this->stop_words) as $token) {
             $field = $token['f'];
 
             // break the loop if we meet cql_end field
@@ -160,7 +162,10 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'location':
-                    $sub_query = "select location_id from mst_location where location_name = '" . $query . "'";
+                    $idx = json_decode($query);
+                    $sub_query = "'" . implode("', '", $idx) . "'";
+                    if (is_null($idx))
+                        $sub_query = "select location_id from mst_location where location_name = '" . $query . "'";
                     if ($bool === '-') {
                         $sql_criteria .= ' i.location_id not in(' . $sub_query . ')';
                     } else {
@@ -169,7 +174,10 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'colltype':
-                    $sub_query = "select coll_type_id from mst_coll_type where coll_type_name = '" . $query . "'";
+                    $idx = json_decode($query);
+                    $sub_query = implode(", ", $idx);
+                    if (is_null($idx))
+                        $sub_query = "select coll_type_id from mst_coll_type where coll_type_name = '" . $query . "'";
                     if ($bool === '-') {
                         $sql_criteria .= ' i.coll_type_id not in(' . $sub_query . ')';
                     } else {
@@ -234,8 +242,16 @@ class DefaultEngine extends Contract
                     }
                     break;
 
+                case 'years':
+                    list($from, $to) = explode(';', $query);
+                    $sql_criteria .= " (b.publish_year between " . $from . " and " . $to . ") ";
+                    break;
+
                 case 'gmd':
-                    $sub_query = "select gmd_id from mst_gmd where gmd_name like '%" . $query . "%'";
+                    $idx = json_decode($query);
+                    $sub_query = implode(", ", $idx);
+                    if (is_null($idx))
+                        $sub_query = "select gmd_id from mst_gmd where gmd_name like '%" . $query . "%'";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.gmd_id not in (' . $sub_query . ')';
                     } else {
@@ -249,6 +265,51 @@ class DefaultEngine extends Contract
                         $sql_criteria .= " not (match (b.notes) against ('" . $query . "' in boolean mode))";
                     } else {
                         $sql_criteria .= " (match (b.notes) against ('" . $query . "' in boolean mode))";
+                    }
+                    break;
+
+                case 'availability':
+                    $sub_query = "select distinct item.biblio_id from item 
+                                    left join loan on item.item_code = loan.item_code 
+                                    where loan.is_return = 0";
+                    $sql_criteria .= ' b.biblio_id not in ( ' . $sub_query . ' ) ';
+                    break;
+
+                case 'attachment':
+                    $mime_types = [];
+                    $queryArr = json_decode($query, true);
+                    foreach ($queryArr as $q) {
+                        switch ($q) {
+                            case 'pdf':
+                                $mime_types[] = 'application/pdf';
+                                break;
+                            case 'audio':
+                                $mime_types[] = 'audio/mpeg';
+                                break;
+                            case 'video':
+                                $mime_types[] = 'video/x-flv';
+                                $mime_types[] = 'video/mp4';
+                                break;
+                        }
+                    }
+
+                    $sub_query_criteria = "'" . implode("', '", $mime_types) . "'";
+
+                    $sub_query = "select bat.biblio_id from biblio_attachment as bat left join files as f on bat.file_id=f.file_id where f.mime_type in(" . $sub_query_criteria . ")";
+                    if ($bool === '-') {
+                        $sql_criteria .= ' b.biblio_id not in(' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' b.biblio_id in(' . $sub_query . ')';
+                    }
+                    break;
+
+                case 'lang':
+                    $idx = json_decode($query);
+                    $sub_query = "'" . implode("', '", $idx) . "'";
+                    if ($bool === '-') {
+                        $sql_criteria .= ' b.language_id not in (' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' b.language_id in (' . $sub_query . ')';
                     }
                     break;
             }
@@ -274,39 +335,38 @@ class DefaultEngine extends Contract
 
         $db = DB::getInstance();
 
-        foreach ($this->documents as $document) 
-        {
+        foreach ($this->documents as $document) {
             $record = [];
-            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME']. SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
+            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME'] . SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
             $record['name'] = trim($document['title']);
-      
+
             // get the authors data
             $_biblio_authors_q = $db->prepare('SELECT a.*,ba.level FROM mst_author AS a'
-              .' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id=?');
+                . ' LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id WHERE ba.biblio_id=?');
             $_biblio_authors_q->execute([$document['biblio_id']]);
 
             $record['author'] = [];
-            
+
             while ($_auth_d = $_biblio_authors_q->fetch(\PDO::FETCH_ASSOC)) {
-              $record['author']['name'][] = trim($_auth_d['author_name']);
-            } 
-      
+                $record['author']['name'][] = trim($_auth_d['author_name']);
+            }
+
             // ISBN
             $record['isbn'] = $document['isbn_issn'];
-      
+
             // publisher
             $record['publisher'] = $document['publisher'];
-      
+
             // publish date
             $record['dateCreated'] = $document['publish_year'];
-      
-                  // doc images
+
+            // doc images
             $_image = '';
             if (!empty($document['image'])) {
-              $_image = urlencode($document['image']);
-              $record['image'] = $_image;
+                $_image = urlencode($document['image']);
+                $record['image'] = $_image;
             }
-      
+
             $jsonld['@graph'][] = $record;
         }
 
@@ -401,7 +461,7 @@ class DefaultEngine extends Contract
             $xml->startElement('place');
             $xml->startElement('placeTerm');
             $xml->writeAttribute('type', 'text');
-            $xml->text($document['publish_place']??'');
+            $xml->text($document['publish_place'] ?? '');
             $xml->endElement(); // -- placeTerm
             $xml->startElement('publisher');
             $xml->text($document['publisher']);
@@ -437,7 +497,7 @@ class DefaultEngine extends Contract
         while ($author = $query->fetch()) {
             $xml->startElement('name');
             $xml->writeAttribute('type', config('authority_type')[$author['authority_type']] ?? '');
-            $xml->writeAttribute('authority', $author['auth_list']??'');
+            $xml->writeAttribute('authority', $author['auth_list'] ?? '');
             $xml->startElement('namePart');
             $xml->text($author['author_name']);
             $xml->endElement(); // -- namePart

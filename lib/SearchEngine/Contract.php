@@ -34,6 +34,7 @@ abstract class Contract
     protected array $documents = [];
     protected array $custom_fields = [];
     protected Criteria $criteria;
+    protected Criteria $filter;
     public float $query_time = 0;
     public array $searchable_fields = ['title', 'author', 'isbn', 'subject', 'location', 'gmd', 'colltype', 'publisher', 'callnumber'];
     public array $stop_words = array('a', 'an', 'of', 'the', 'to', 'so', 'as', 'be');
@@ -52,6 +53,14 @@ abstract class Contract
     public function setCriteria(Criteria $criteria): void
     {
         $this->criteria = $criteria;
+    }
+
+    /**
+     * @param Criteria $criteria
+     */
+    public function setFilter(Criteria $criteria): void
+    {
+        $this->filter = $criteria;
     }
 
     /**
