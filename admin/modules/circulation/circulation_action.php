@@ -111,7 +111,6 @@ if (isset($_POST['finish'])) {
     exit();
 }
 
-
 // return and extend process
 if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     $loanID = intval($_POST['loanID']);
@@ -159,7 +158,6 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     }
     exit();
 }
-
 
 // add temporary item to session
 if (isset($_POST['tempLoanID'])) {
@@ -240,7 +238,6 @@ if (isset($_POST['tempLoanID'])) {
     exit();
 }
 
-
 // loan limit override
 if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     // define constant
@@ -258,7 +255,6 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     exit();
 }
 
-
 // remove temporary item session
 if (isset($_GET['removeID'])) {
     // create circulation object
@@ -273,14 +269,14 @@ if (isset($_GET['removeID'])) {
     exit();
 }
 
-
 // quick return proccess
 if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
     // get loan data
-    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title FROM loan AS l
+    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, b.classification, mt.member_type_name FROM loan AS l
         LEFT JOIN item AS i ON i.item_code=l.item_code
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
         LEFT JOIN member AS m ON l.member_id=m.member_id
+        LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
         WHERE l.item_code='".$dbs->escape_string($_POST['quickReturnID'])."' AND is_lent=1 AND is_return=0");
     if ($loan_info_q->num_rows < 1) {
         echo '<div class="errorBox">'.__('This is item already returned or not exists in loan database').'</div>';
@@ -319,6 +315,22 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         }
         // write log
         utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $dbs->escape_string($_SESSION['realname']).' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method', 'Quick Loan', 'Returned');
+        # Support for circulation_after_successful_transaction hook in 
+        # quick return (circulation)
+        $return_data = array();
+        $return_data['memberID'] = $loan_d['member_id'];
+        $return_data['memberName'] = $loan_d['member_name'];
+        $return_data['memberType'] = $loan_d['member_type_name'];
+        $return_data['date'] = date("Y-m-d h:i:s");
+        $return_data['return'][0] = array ();
+        $return_data['return'][0] = $loan_d;
+        $return_data['return'][0]['itemCode'] = $_POST['quickReturnID'];
+        $return_data['return'][0]['title'] = $loan_d['title'];
+        $return_data['return'][0]['returnDate'] = date("Y-m-d");
+        $return_data['return'][0]['overdues'] = $overdue;
+        $return_data['return'][0]['loan_id'] = $loan_d['loan_id'];
+        $return_data['return'][0]['is_return'] = (INT)$loan_d['is_return'] + 1;
+        \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => $return_data));
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object
@@ -346,7 +358,6 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
     }
     exit();
 }
-
 
 // add reservation
 if (isset($_POST['reserveItemID'])) {
@@ -414,7 +425,6 @@ if (isset($_POST['reserveItemID'])) {
     exit();
 }
 
-
 // remove reservation item
 if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
     $reserveID = intval($_POST['reserveID']);
@@ -432,7 +442,6 @@ if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
     exit();
 }
 
-
 // removing fines
 if (isset($_POST['removeFines'])) {
     foreach ($_POST['removeFines'] as $fines_id) {
@@ -446,7 +455,6 @@ if (isset($_POST['removeFines'])) {
     echo '</script>';
     exit();
 }
-
 
 // transaction is started
 if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {

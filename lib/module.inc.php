@@ -180,7 +180,7 @@ class module extends simbio
         foreach ($this->reorderMenus($menu, $plugin_menus) as $header => $items) {
             foreach ($items as $item) {
                 $menus[$header] = $menus[$header] ?? [];
-                if ($_SESSION['uid'] > 1 && !in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                if ($_SESSION['uid'] > 1 && !empty($str_module) && !in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
                 $menus[$header][] = $item;
             }
         }

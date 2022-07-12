@@ -96,7 +96,7 @@ ob_start();
                             if ($main_menu_child[0] == 'Header') {
                               echo '<option disabled="disabled" class="option-disabled">'.$main_menu_child[1].'</option>';
                             } else {
-                              echo '<option value="'.$main_menu_child[0].'|'.str_ireplace(MWB, '/', $main_menu_child[1]).'" id="submenu_'.$id.'">&nbsp;&nbsp; '.$main_menu_child[0].'</option>';
+                              echo '<option value="'.$main_menu_child[0][0].'|'.str_ireplace(MWB, '/', $main_menu_child[0][1]).'" id="submenu_'.$id.'">&nbsp;&nbsp; '.$main_menu_child[0][0].'</option>';
                             }
                           }
                         }

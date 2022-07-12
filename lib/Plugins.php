@@ -135,7 +135,7 @@ class Plugins
     {
         if (isset($this->active_plugins[$id])) {
             try {
-                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options);
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options??'');
             } catch (\Exception $exception) {
                 $this->plugins[$id]->options = new stdClass;
             }
