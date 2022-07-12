@@ -51,7 +51,10 @@
                     <?php
                     // catch empty list
                     if (trim(strip_tags($main_content)) === '') {
-                        echo '<h2 class="text-danger">' . __('No Result') . '</h2><hr/><p class="text-danger">' . __('Please try again') . '</p>';
+                        echo '<div class="d-flex justify-content-center border-t mb-4" style="padding-top: 80px">
+                                <img src="'.assets('images/empty.svg').'" />
+                              </div>
+                              <div class="text-center text-danger"><strong>'.__('No Result').'.</strong> '.__('Please try again').'</div>';
                     } else {
                         echo $main_content;
                     }
