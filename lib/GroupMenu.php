@@ -51,7 +51,8 @@ class GroupMenu
 
     function group($group_name)
     {
-        if (!is_null($this->uniq_id)) {
+        if (!isset($this->group[strtolower($group_name)])) $this->group[strtolower($group_name)] = [];
+        if (!is_null($this->uniq_id) && !in_array($this->uniq_id, $this->group[strtolower($group_name)])) {
             $this->group[strtolower($group_name)][] = $this->uniq_id;
             $this->plugin_in_group[] = $this->uniq_id;
             $this->uniq_id = null;
