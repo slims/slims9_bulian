@@ -42,8 +42,6 @@ class DefaultEngine extends Contract
         // build sql command
         $sql = $this->buildSQL();
 
-        var_dump($sql['count']);
-
         // execute query
         $db = DB::getInstance();
         $count = $db->query($sql['count']);
