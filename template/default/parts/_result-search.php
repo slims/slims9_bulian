@@ -28,7 +28,7 @@
     <section class="container mt-5">
         <div class="row">
             <div class="col-md-3">
-                <h4>Filter</h4>
+                <h4><?= __('Filter by') ?></h4>
                 <?= $engine->getFilter(true) ?>
             </div>
             <div class="col-md-9">
@@ -51,7 +51,7 @@
                     <?php
                     // catch empty list
                     if (trim(strip_tags($main_content)) === '') {
-                        echo '<div class="d-flex justify-content-center border-t mb-4" style="padding-top: 80px">
+                        echo '<div class="d-flex justify-content-center border-t">
                                 <img src="'.assets('images/empty.svg').'" />
                               </div>
                               <div class="text-center text-danger"><strong>'.__('No Result').'.</strong> '.__('Please try again').'</div>';

@@ -72,9 +72,12 @@ $language_select = ob_get_clean();
 /* Sort order selection list */
 ob_start();
 $sorts = [
-    ['0', __('Most relevant')],
+    ['most-relevant', __('Most relevant')],
+    ['recently-added', __('Recently Added')],
     ['last-update', __('Last Update')],
-    ['publish-year', __('Publish Year')],
+    ['most-loaned', __('Most Loaned')],
+    ['publish-year-newest', __('Publication Year [newest]')],
+    ['publish-year-oldest', __('Publication Year [oldest]')],
     ['title-asc', __('Title Ascending')],
     ['title-desc', __('Title Descending')],
 ];

@@ -13,7 +13,7 @@ trait SearchFilter
         # Publish Year
         list($min, $max) = $this->getYears();
         $filter[] = [
-            'header' => __('Publish Year'),
+            'header' => __('Publication Year'),
             'name' => 'years',
             'type' => 'range',
             'min' => $min,
@@ -30,7 +30,7 @@ trait SearchFilter
             'items' => [
                 [
                     'value' => '1',
-                    'label' => __('Available')
+                    'label' => __('On Shelf')
                 ]
             ]
         ];
@@ -112,13 +112,13 @@ trait SearchFilter
 
     private function getLocation()
     {
-        $query = DB::getInstance()->query("select location_id `value`, location_name `label` from mst_location");
+        $query = DB::getInstance()->query("select location_id `value`, location_name `label` from mst_location order by location_name asc");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function getLanguage()
     {
-        $query = DB::getInstance()->query("select language_id `value`, language_name `label` from mst_language");
+        $query = DB::getInstance()->query("select language_id `value`, language_name `label` from mst_language order by language_name asc");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 

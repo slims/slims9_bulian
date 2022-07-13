@@ -92,8 +92,14 @@ class DefaultEngine extends Contract
         $sql_criteria .= ($c = $this->buildCriteria($this->filter)) !== '' ? 'and (' . $c . ') ' : '';
 
         switch ($this->filter->sort) {
-            case 'publish-year':
+            case 'recently-added':
+                $sql_order = 'b.input_date desc';
+                break;
+            case 'publish-year-newest':
                 $sql_order = 'b.publish_year desc';
+                break;
+            case 'publish-year-oldest':
+                $sql_order = 'b.publish_year asc';
                 break;
             case 'title-asc':
                 $sql_order = 'b.title asc';
@@ -101,6 +107,8 @@ class DefaultEngine extends Contract
             case 'title-desc':
                 $sql_order = 'b.title desc';
                 break;
+            case 'most-relevant':
+            case 'most-loaned':
             default:
                 $sql_order = 'b.last_update desc';
         }
