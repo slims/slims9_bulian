@@ -117,8 +117,8 @@ class DefaultEngine extends Contract
         $sql_count = 'select count(distinct b.biblio_id)' . ' from biblio as b ' . $sql_join . $sql_criteria;
 
         return [
-            'count' => $sql_count,
-            'query' => $sql_query
+            'count' => preg_replace('/\s+/', ' ', trim($sql_count)),
+            'query' => preg_replace('/\s+/', ' ', trim($sql_query))
         ];
     }
 
