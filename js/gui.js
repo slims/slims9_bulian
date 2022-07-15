@@ -297,14 +297,20 @@ var showHideTableRows = function(str_table_id, int_start_row, obj_button, str_hi
 
 /* prepare for filter */
 const urls = new URLSearchParams(location.search)
-function filter() {
-    const filterTmp = {}
+function filter(clear = false) {
+    let filterTmp = {}
     // collect new filter
     $.each($('#search-filter').serializeArray(), function (i, v) {
+        if (clear) {
+          filterTmp = {}
+          filterTmp[v.name] = v.value
+          return false
+        } else {
+          // remove or move advanced search to filter
+          let key = v.name.split('[')[0]
+          if (urls.has(key)) urls.delete(key)
+        }
         filterTmp[v.name] = v.value
-        // remove or move advanced search to filter
-        let key = v.name.split('[')[0]
-        if (urls.has(key)) urls.delete(key)
     })
 
     if (urls.has('filter')) {
@@ -499,7 +505,7 @@ $('document').ready(function() {
   });
 
   $('#search-filter input:not(.input-slider)').on('change', function () {
-      filter()
+      filter($(this).attr('clear'))
   })
 
   $('#search-order').on('change', function () {
