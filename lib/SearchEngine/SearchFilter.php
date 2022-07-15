@@ -92,31 +92,31 @@ trait SearchFilter
         return $filter;
     }
 
-    private function getYears()
+    public function getYears()
     {
         $query = DB::getInstance()->query("select min(publish_year), max(publish_year) from biblio where publish_year REGEXP '^-?[0-9]+$'");
         return $query->fetch(\PDO::FETCH_NUM);
     }
 
-    private function getCollectionType()
+    public function getCollectionType()
     {
         $query = DB::getInstance()->query("select coll_type_id `value`, coll_type_name `label` from mst_coll_type");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function getGMD()
+    public function getGMD()
     {
         $query = DB::getInstance()->query("select gmd_id `value`, gmd_name `label` from mst_gmd");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function getLocation()
+    public function getLocation()
     {
         $query = DB::getInstance()->query("select location_id `value`, location_name `label` from mst_location order by location_name asc");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function getLanguage()
+    public function getLanguage()
     {
         $query = DB::getInstance()->query("select language_id `value`, language_name `label` from mst_language order by language_name asc");
         return $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -144,7 +144,7 @@ trait SearchFilter
                 <div class="collapse show text-sm" id="collapse-{$index}"><div class="mt-2">
 HTML;
 
-            $value = $value ?? $filterArr[$filter['name']] ?? null;
+            $value = $filterArr[$filter['name']] ?? null;
 
             switch ($filter['type']) {
                 case 'range':
@@ -184,11 +184,12 @@ HTML;
                             $value = $item['value'];
 
                         $checked = $value == $item['value'] ? 'checked' : '';
+                        $clear = ($filter['clear'] ?? false) ? 'clear="'.$filter_name.'"' : '';
 
                         $str .= <<<HTML
                             <div class="form-check">
                                 <input class="form-check-input" name="{$filter_name}" type="{$filter['type']}" 
-                                    id="item-{$item_index}" value="{$item['value']}" {$checked}>
+                                    id="item-{$item_index}" value="{$item['value']}" {$checked} {$clear}>
                                 <label class="form-check-label" for="item-{$item_index}">{$item['label']}</label>
                             </div>
 HTML;
