@@ -2,9 +2,9 @@
 
 $(document).ready(() => {
     // 65x83
-    var images = $('.fit-height');
+    const images = $('.fit-height');
     $.each(images, (i, v) => {
-        var width = $(v).width(),
+        const width = $(v).width(),
             height = (width * 83) / 65;
         // console.log(height);
         $(v).height(height)

@@ -27,6 +27,8 @@ use SLiMS\DB;
 
 class SearchBiblioEngine extends Contract
 {
+    protected $disable_item_data = false;
+
     function getDocuments()
     {
         // start time to benchmarking
@@ -70,21 +72,44 @@ class SearchBiblioEngine extends Contract
 
         $sql_criteria = 'where sb.opac_hide=0 ';
         $sql_criteria .= ($c = $this->buildCriteria($this->criteria)) !== '' ? 'and (' . $c . ') ' : '';
+        $sql_criteria .= ($f = $this->buildCriteria($this->filter)) !== '' ? 'and (' . $f . ') ' : '';
 
-        $sql_query = $sql_select . ' from search_biblio as sb ' . $sql_criteria . ' order by sb.last_update desc limit ' . $this->limit . ' offset ' . $this->offset;
+        switch ($this->filter->sort) {
+            case 'recently-added':
+                $sql_order = 'sb.input_date desc';
+                break;
+            case 'publish-year-newest':
+                $sql_order = 'sb.publish_year desc';
+                break;
+            case 'publish-year-oldest':
+                $sql_order = 'sb.publish_year asc';
+                break;
+            case 'title-asc':
+                $sql_order = 'sb.title asc';
+                break;
+            case 'title-desc':
+                $sql_order = 'sb.title desc';
+                break;
+            case 'most-relevant':
+            case 'most-loaned':
+            default:
+                $sql_order = 'sb.last_update desc';
+        }
+
+        $sql_query = $sql_select . ' from search_biblio as sb ' . $sql_criteria . ' order by '. $sql_order .' limit ' . $this->limit . ' offset ' . $this->offset;
         $sql_count = 'select count(sb.biblio_id)' . ' from search_biblio as sb ' . $sql_criteria;
 
         return [
-            'count' => $sql_count,
-            'query' => $sql_query
+            'count' => preg_replace('/\s+/', ' ', trim($sql_count)),
+            'query' => preg_replace('/\s+/', ' ', trim($sql_query))
         ];
     }
 
-    function buildCriteria()
+    function buildCriteria(Criteria $criteria)
     {
         $boolean = '';
         $sql_criteria = '';
-        foreach ($this->criteria->toCQLToken($this->stop_words) as $token) {
+        foreach ($criteria->toCQLToken($this->stop_words) as $token) {
             $field = $token['f'];
 
             $is_phrase = isset($token['is_phrase']);
@@ -130,6 +155,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " (match (sb.author) against ('$query' in boolean mode))";
                     }
                     break;
+
                 case 'subject':
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.topic) against ('$query' in boolean mode))";
@@ -137,12 +163,22 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " (match (sb.topic) against ('$query' in boolean mode))";
                     }
                     break;
+
                 case 'location':
                     if (!$this->disable_item_data) {
-                        if ($bool == '-') {
-                            $sql_criteria .= " not (match (sb.location) against ('$query' in boolean mode))";
-                        } else {
-                            $sql_criteria .= " (match (sb.location) against ('$query' in boolean mode))";
+                        $idx = json_decode($query);
+                        $sub_query = "'" . implode("', '", $idx) . "'";
+                        if (!is_null($idx)) {
+                            $sql_criteria_tmp = [];
+                            $location_q = DB::getInstance()->query("select location_name from mst_location where location_id in (" . $sub_query . ")");
+                            while ($location_d = $location_q->fetch()) {
+                                if ($bool == '-') {
+                                    $sql_criteria_tmp[] = " sb.location not like '%" . $location_d[0] . "%'";
+                                } else {
+                                    $sql_criteria_tmp[] = " sb.location like '%" . $location_d[0] . "%'";
+                                }
+                            }
+                            $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         }
                     } else {
                         if ($bool == '-') {
@@ -152,15 +188,33 @@ class SearchBiblioEngine extends Contract
                         }
                     }
                     break;
+
                 case 'colltype':
+                    $idx = json_decode($query);
+                    $sub_query = implode(", ", $idx);
+
                     if (!$this->disable_item_data) {
-                        if ($bool == '-') {
-                            $sql_criteria .= " not (match (sb.collection_types) against ('$query' in boolean mode))";
+                        if (!is_null($idx)) {
+                            $sql_criteria_tmp = [];
+                            $coll_type_q = DB::getInstance()->query("select coll_type_name from mst_coll_type where coll_type_id in (" . $sub_query . ")");
+                            while ($coll_type_d = $coll_type_q->fetch()) {
+                                if ($bool == '-') {
+                                    $sql_criteria_tmp[] = " sb.collection_types not like '%" . $coll_type_d[0] . "%'";
+                                } else {
+                                    $sql_criteria_tmp[] = " sb.collection_types like '%" . $coll_type_d[0] . "%'";
+                                }
+                            }
+                            $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         } else {
-                            $sql_criteria .= " match (sb.collection_types) against ('$query' in boolean mode)";
+                            if ($bool == '-') {
+                                $sql_criteria .= " not (match (sb.collection_types) against ('$query' in boolean mode))";
+                            } else {
+                                $sql_criteria .= " match (sb.collection_types) against ('$query' in boolean mode)";
+                            }
                         }
                     }
                     break;
+
                 case 'itemcode':
                     if (!$this->disable_item_data) {
                         if ($bool == '-') {
@@ -170,6 +224,7 @@ class SearchBiblioEngine extends Contract
                         }
                     }
                     break;
+
                 case 'callnumber':
                     if ($bool == '-') {
                         $sql_criteria .= ' biblio.call_number not LIKE \'' . $query . '%\'';
@@ -177,6 +232,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= ' sb.call_number LIKE \'' . $query . '%\'';
                     }
                     break;
+
                 case 'itemcallnumber':
                     if (!$this->disable_item_data) {
                         if ($bool == '-') {
@@ -186,6 +242,7 @@ class SearchBiblioEngine extends Contract
                         }
                     }
                     break;
+
                 case 'class':
                     if ($bool == '-') {
                         $sql_criteria .= ' sb.classification not LIKE \'' . $query . '%\'';
@@ -193,6 +250,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= ' sb.classification LIKE \'' . $query . '%\'';
                     }
                     break;
+
                 case 'isbn':
                     if ($bool == '-') {
                         $sql_criteria .= ' sb.isbn_issn not LIKE \'' . $query . '%\'';
@@ -200,6 +258,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= ' sb.isbn_issn LIKE \'' . $query . '%\'';
                     }
                     break;
+
                 case 'publisher':
                     if ($bool == '-') {
                         $sql_criteria .= " sb.publisher!='$query'";
@@ -207,6 +266,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " sb.publisher LIKE '$query%'";
                     }
                     break;
+
                 case 'publishyear':
                     if ($bool == '-') {
                         $sql_criteria .= ' sb.publish_year!=\'' . $query . '\'';
@@ -214,13 +274,35 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= ' sb.publish_year LIKE \'' . $query . '\'';
                     }
                     break;
+
+                case 'years':
+                    list($from, $to) = explode(';', $query);
+                    $sql_criteria .= " (sb.publish_year between " . $from . " and " . $to . ") ";
+                    break;
+
                 case 'gmd':
-                    if ($bool == '-') {
-                        $sql_criteria .= " sb.gmd!='$query'";
+                    $idx = json_decode($query);
+                    $sub_query = implode(", ", $idx);
+                    if (!is_null($idx)) {
+                        $sql_criteria_tmp = [];
+                        $gmd_q = DB::getInstance()->query("select gmd_name from mst_gmd where gmd_id in (" . $sub_query . ")");
+                        while ($gmd_d = $gmd_q->fetch()) {
+                            if ($bool == '-') {
+                                $sql_criteria_tmp[] = " sb.gmd != '" . $gmd_d[0] . "'";
+                            } else {
+                                $sql_criteria_tmp[] = " sb.gmd = '" . $gmd_d[0] . "'";
+                            }
+                        }
+                        $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                     } else {
-                        $sql_criteria .= " sb.gmd='$query'";
+                        if ($bool == '-') {
+                            $sql_criteria .= " sb.gmd!='$query'";
+                        } else {
+                            $sql_criteria .= " sb.gmd='$query'";
+                        }
                     }
                     break;
+
                 case 'notes':
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.notes) against ('" . $query . "' in boolean mode))";
@@ -234,6 +316,70 @@ class SearchBiblioEngine extends Contract
                 case 'closegroup':
                     $sql_criteria .= ")";
                     break;
+
+                case 'availability':
+                    $sql_criteria .= ' sb.items is not null ';
+
+                    $sub_query = "select distinct biblio_id from loan_history where is_return = 0 and biblio_id is not null";
+                    $sql_criteria .= ' and sb.biblio_id not in(' . $sub_query . ')';
+                    break;
+
+                case 'attachment':
+                    $mime_types = [];
+                    $queryArr = json_decode($query, true);
+                    foreach ($queryArr as $q) {
+                        switch ($q) {
+                            case 'pdf':
+                                $mime_types[] = 'application/pdf';
+                                break;
+                            case 'audio':
+                                $mime_types[] = 'audio/mpeg';
+                                break;
+                            case 'video':
+                                $mime_types[] = 'video/x-flv';
+                                $mime_types[] = 'video/mp4';
+                                break;
+                        }
+                    }
+
+                    $sub_query_criteria = "'" . implode("', '", $mime_types) . "'";
+
+                    $sub_query = "select distinct bat.biblio_id from biblio_attachment as bat left join files as f on bat.file_id=f.file_id where f.mime_type in(" . $sub_query_criteria . ")";
+                    if ($bool === '-') {
+                        $sql_criteria .= ' sb.biblio_id not in(' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' sb.biblio_id in(' . $sub_query . ')';
+                    }
+                    break;
+
+                case 'lang':
+                    $idx = json_decode($query);
+                    $sub_query = "'" . implode("', '", $idx) . "'";
+
+                    if (!is_null($idx)) {
+                        $sql_criteria_tmp = [];
+                        $lang_q = DB::getInstance()->query("select language_name from mst_language where language_id in (" . $sub_query . ")");
+                        while ($lang_d = $lang_q->fetch()) {
+                            if ($bool == '-') {
+                                $sql_criteria_tmp[] = "sb.language != '" . $lang_d[0] . "'";
+                            } else {
+                                $sql_criteria_tmp[] = "sb.language = '" . $lang_d[0] . "'";
+                            }
+                        }
+                        $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
+                    } else {
+                        if ($bool === '-') {
+                            $sql_criteria .= ' sb.language != \'' . $sub_query . '\'';
+                        } else {
+                            $sql_criteria .= ' sb.language = \'' . $sub_query . '\'';
+                        }
+                    }
+                    break;
+
+                case 'sort':
+                    $sql_criteria . '';
+                    break;
+
                 default:
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.title, sb.series_title) against ('$query' in boolean mode))";
@@ -264,35 +410,33 @@ class SearchBiblioEngine extends Contract
 
         $db = DB::getInstance();
 
-        foreach ($this->documents as $document) 
-        {
+        foreach ($this->documents as $document) {
             $record = [];
-            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME']. SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
+            $record['@id'] = 'http://' . $_SERVER['SERVER_NAME'] . SWB . 'index.php?p=show_detail&id=' . $document['biblio_id'];
             $record['name'] = trim($document['title']);
 
             $record['author'] = [];
-            
-            foreach(explode('-', $document['author']) as $author)
-            {
-              $record['author']['name'][] = trim($author);
-            } 
-      
+
+            foreach (explode('-', $document['author']) as $author) {
+                $record['author']['name'][] = trim($author);
+            }
+
             // ISBN
             $record['isbn'] = $document['isbn_issn'];
-      
+
             // publisher
             $record['publisher'] = $document['publisher'];
-      
+
             // publish date
             $record['dateCreated'] = $document['publish_year'];
-      
-                  // doc images
+
+            // doc images
             $_image = '';
             if (!empty($document['image'])) {
-              $_image = urlencode($document['image']);
-              $record['image'] = $_image;
+                $_image = urlencode($document['image']);
+                $record['image'] = $_image;
             }
-      
+
             $jsonld['@graph'][] = $record;
         }
 
@@ -423,7 +567,7 @@ class SearchBiblioEngine extends Contract
         while ($author = $query->fetch()) {
             $xml->startElement('name');
             $xml->writeAttribute('type', config('authority_type')[$author['authority_type']] ?? '');
-            $xml->writeAttribute('authority', $author['auth_list']??'');
+            $xml->writeAttribute('authority', $author['auth_list'] ?? '');
             $xml->startElement('namePart');
             $xml->text($author['author_name']);
             $xml->endElement(); // -- namePart

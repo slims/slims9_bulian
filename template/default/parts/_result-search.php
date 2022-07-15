@@ -12,71 +12,53 @@
     <section id="section1 container-fluid">
         <header class="c-header">
             <div class="mask"></div>
-          <?php
-          // ----------------------------------------------------------------------
-          // include navbar part
-          // ----------------------------------------------------------------------
-          include '_navbar.php'; ?>
+            <?php
+            // ----------------------------------------------------------------------
+            // include navbar part
+            // ----------------------------------------------------------------------
+            include '_navbar.php'; ?>
         </header>
-      <?php
-      // ------------------------------------------------------------------------
-      // include search form part
-      // ------------------------------------------------------------------------
-      include '_search-form.php'; ?>
+        <?php
+        // ------------------------------------------------------------------------
+        // include search form part
+        // ------------------------------------------------------------------------
+        include '_search-form.php'; ?>
     </section>
 
     <section class="container mt-5">
         <div class="row">
-            <div class="col-md-8">
-                <div class="wraper">
-                  <?php
-                  // catch empty list
-                  if (trim(strip_tags($main_content)) === '') {
-                    echo '<h2 class="text-danger">' . __('No Result') . '</h2><hr/><p class="text-danger">' . __('Please try again') . '</p>';
-                  } else {
-                    echo $main_content;
-                  }
-                  ?>
-                </div>
+            <div class="col-md-3">
+                <h4><?= __('Filter by') ?></h4>
+                <?= $engine->getFilter(true) ?>
             </div>
-            <div class="col-md-4">
-                <h4 class="mb-2"><?= __('Search Result')?></h4>
-              <?php
-              echo '<div class=" mb-4 text-sm">' . $search_result_info . '</div><hr>';
-              if ($sysconf['template']['classic_suggestion']) {
-              $randome = getRandomBiblio($dbs);
-              if (count($randome) > 0) {
-              ?>
-                <h6 class="mb-2"><?= __('Suggestion')?></h6>
-                <div class="card-list d-flex flex-column mb-4">
-                  <?php
-                  foreach ($randome as $biblio) {
-                    $images_loc = 'images/docs/' . $biblio['image'];
-                    $thumb_url = './lib/minigalnano/createthumb.php?filename=' . urlencode($images_loc) . '&width=120';
-                    ?>
-                      <div class="card sugestion border-0 elevation-1 mb-2">
-                          <div class="card-body">
-                              <div class="container-img elevation-2">
-                                  <img src="<?= $thumb_url; ?>" alt="image" class="img-fluid">
-                              </div>
-                              <div class="card-text title">
-                                  <a class="text-decoration-none text-grey-darker"
-                                     href="<?= SWB . 'index.php?p=show_detail&id=' . $biblio['biblio_id']; ?>"><?= $biblio['title']; ?></a>
-                              </div>
-                              <div class="card-text author">
-                                  <i><?= $biblio['author']; ?></i>
-                              </div>
-                          </div>
-                      </div>
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mt-1 mb-2 text-sm">
+                    <div>
+                        <?php
+                        $keywords_info = '<span class="search-keyword-info" title="' . htmlentities($keywords) . '">' . ((strlen($keywords) > 30) ? substr($keywords, 0, 30) . '...' : $keywords) . '</span>';
+                        $search_result_info = '<div class="search-found-info">';
+                        $search_result_info .= __('Found <strong>{biblio_list->num_rows}</strong> from your keywords') . ': <strong class="search-found-info-keywords">' . $keywords_info . '</strong>';
+                        $search_result_info .= '</div>';
+                        echo str_replace('{biblio_list->num_rows}', $engine->getNumRows(), $search_result_info);
+                        ?>
+                    </div>
+                    <div class="form-inline pl-3">
+                        <label class="mr-2 font-weight-bold" for="result-sort">Sort by</label>
+                        <select class="custom-select custom-select-sm" id="search-order"><?= $sort_select ?></select>
+                    </div>
+                </div>
+                <div class="wrapper">
                     <?php
-                  }
-                  }
-                  } elseif ($sysconf['enable_search_clustering']) {
-                      if ($sysconf['index']['engine']['enable']) {
-                          echo '<div class="cluster">'.$biblio_list->getClustering().'</div>';
-                      }
-                  }
-                  ?>
+                    // catch empty list
+                    if (trim(strip_tags($main_content)) === '') {
+                        echo '<div class="d-flex justify-content-center border-t">
+                                <img src="'.assets('images/empty.svg').'" />
+                              </div>
+                              <div class="text-center text-danger"><strong>'.__('No Result').'.</strong> '.__('Please try again').'</div>';
+                    } else {
+                        echo $main_content;
+                    }
+                    ?>
                 </div>
             </div>
         </div>

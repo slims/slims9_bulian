@@ -119,7 +119,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $output .= '</div>'; // -- close d-flex flex-column
   $output .= '</div>'; // -- close card-body pt-3 pb-2 px-1
   $output .= '</div>'; // -- close card availability
-  $output .= '<a class="btn btn-outline-primary btn-block mt-2 btn-sm" href="'.$detail_url.'">'.__('View Detail').'</a>';
+//  $output .= '<a class="btn btn-outline-primary btn-block mt-2 btn-sm" href="'.$detail_url.'">'.__('View Detail').'</a>';
   $output .= '<a class="btn btn-outline-secondary btn-block mt-2 btn-sm" href="'.$detail_url.'&MARC=true" title="Download detail data in MARC" target="_blank">'.__('MARC Download').'</a>';
   $output .= '<a class="btn btn-outline-secondary btn-block mt-2 btn-sm openPopUp citationLink" href="'.$cite_url.'" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a>';
   $output .= '</div>'; // -- close col-2

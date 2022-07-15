@@ -1025,7 +1025,25 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         $sql['alter'][] = "ALTER TABLE `mst_topic` CHANGE `classification` `classification` varchar(50) COLLATE 'utf8_unicode_ci' NULL COMMENT 'Classification Code' AFTER `auth_list`;";
         $sql['alter'][] = "ALTER TABLE `content` ADD `is_draft` smallint(1) NULL DEFAULT '0' AFTER `is_news`, ADD `publish_date` date NULL AFTER `is_draft`;";
 
-        return $this->slims->query($sql, ['alter']);
+        $sql['create'][] = "CREATE TABLE `index_words` (
+          `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+          `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+          `num_hits` int NOT NULL,
+          `doc_hits` int NOT NULL
+        ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
+
+        $sql['create'][] = "CREATE TABLE `index_documents` (
+          `document_id` int(11) NOT NULL,
+          `word_id` bigint(20) NOT NULL,
+          `location` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+          `hit_count` int(11) NOT NULL,
+          PRIMARY KEY (`document_id`,`word_id`,`location`),
+          KEY `document_id` (`document_id`),
+          KEY `word_id` (`word_id`),
+          KEY `location` (`location`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+        return $this->slims->query($sql, ['create', 'alter']);
     }
 
 }

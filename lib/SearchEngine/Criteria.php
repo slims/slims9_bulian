@@ -80,6 +80,21 @@ class Criteria
         return implode('&', $q);
     }
 
+    public function removeCriteria($fields)
+    {
+        if (!is_array($fields)) $fields = [$fields];
+        foreach ($this->queries as $index => $arr) {
+            if (in_array($arr[0], $fields)) {
+                // unset current fielad
+                unset($this->queries[$index]);
+                // unset next field if it's a boolean
+                if (isset($this->queries[$index+1]) && $this->queries[$index+1][0] == 'boolean')
+                    unset($this->queries[$index+1]);
+                
+            }
+        }
+    }
+
     /**
      * CQL Tokenizer
      * Tokenize CQL string to array for easy processing
@@ -92,10 +107,6 @@ class Criteria
      */
     function toCQLToken(array $stop_words = [], int $max_words = 20): Generator
     {
-        // simple search by default search to title, author and subject field
-        if (empty($this->queries) && !is_null($this->keywords) && $this->keywords !== '')
-            foreach (['title', 'author', 'subject'] as $item) $this->or($item, $this->keywords);
-
         $inside_quote = false;
         $phrase = '';
         $last_boolean = '+';
