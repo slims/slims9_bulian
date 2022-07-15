@@ -80,6 +80,21 @@ class Criteria
         return implode('&', $q);
     }
 
+    public function removeCriteria($fields)
+    {
+        if (!is_array($fields)) $fields = [$fields];
+        foreach ($this->queries as $index => $arr) {
+            if (in_array($arr[0], $fields)) {
+                // unset current fielad
+                unset($this->queries[$index]);
+                // unset next field if it's a boolean
+                if (isset($this->queries[$index+1]) && $this->queries[$index+1][0] == 'boolean')
+                    unset($this->queries[$index+1]);
+                
+            }
+        }
+    }
+
     /**
      * CQL Tokenizer
      * Tokenize CQL string to array for easy processing

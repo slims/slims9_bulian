@@ -28,7 +28,7 @@ abstract class Contract
     use SearchFilter;
 
     protected int $page = 1;
-    protected int $offset;
+    protected int $offset = 0;
     protected int $limit = 10;
     protected int $num_rows = 0;
     protected array $documents = [];

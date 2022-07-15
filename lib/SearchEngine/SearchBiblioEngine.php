@@ -23,7 +23,6 @@
 
 namespace SLiMS\SearchEngine;
 
-use PDO;
 use SLiMS\DB;
 
 class SearchBiblioEngine extends Contract
