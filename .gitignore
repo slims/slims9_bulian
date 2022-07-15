@@ -25,6 +25,8 @@ slims8_akasia.sublime-workspace
 plugins/*
 !plugins/read_counter/
 
+template/*
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
