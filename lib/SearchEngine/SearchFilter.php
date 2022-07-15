@@ -126,7 +126,7 @@ trait SearchFilter
     {
         // get filter from url
         $filterStr = \utility::filterData('filter', 'get', false, true, true);
-        $filterArr = json_decode($filterStr, true);
+        $filterArr = json_decode($filterStr??'', true);
 
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
         foreach ($filters as $index => $filter) {
