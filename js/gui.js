@@ -498,11 +498,13 @@ $('document').ready(function() {
   if ($(this).registerLoader !== undefined) $(this).registerLoader();
 
   // Filter and sort
-  $(".input-slider").ionRangeSlider({
-      onFinish: function (data) {
-          filter()
-      },
-  });
+  if ($.isFunction($.fn.ionRangeSlider)) {
+    $(".input-slider").ionRangeSlider({
+        onFinish: function (data) {
+            filter()
+        },
+    });
+  }
 
   $('#search-filter input:not(.input-slider)').on('change', function () {
       filter($(this).attr('clear'))
