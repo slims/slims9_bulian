@@ -6,6 +6,13 @@ use SLiMS\DB;
 
 trait SearchFilter
 {
+    private $customFilter = [];
+
+    public function setCustomFilter($filter)
+    {
+        $this->customFilter = $filter;
+    }
+
     public function getFilter($build = false)
     {
         $filter = [];
@@ -88,8 +95,8 @@ trait SearchFilter
             'items' => $this->getLanguage()
         ];
 
-        if ($build) return $this->buildFilter($filter);
-        return $filter;
+        if ($build) return $this->buildFilter(array_merge($filter, $this->customFilter));
+        return array_merge($filter, $this->customFilter);
     }
 
     public function getYears()
@@ -129,7 +136,7 @@ trait SearchFilter
         $filterArr = json_decode($filterStr??'', true);
 
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
-        foreach ($filters as $index => $filter) {
+        foreach ($this->reOrder($filters) as $index => $filter) {
             if ($index < 1) {
                 $str .= '<li class="list-group-item bg-transparent pl-0 border-top-0">';
             } else {
@@ -211,5 +218,28 @@ HTML;
 
         $str .= '</form>';
         return $str;
+    }
+
+    public function reOrder($filters)
+    {
+        $orderFilter = [];
+        $match = [];
+        foreach ($filters as $index => $filter) {
+            if (in_array($filter['header'], $match)) continue;
+            foreach ($filters as $checkOrderFilter) {
+                if (isset($checkOrderFilter['before']) && $checkOrderFilter['before'] === $filter['header']) {
+                    $orderFilter[$index] = $checkOrderFilter;
+                    $orderFilter[($index + 1)] = $filter;
+                    array_push($match, $checkOrderFilter['header'], $checkOrderFilter['before']);
+                } elseif (isset($checkOrderFilter['after']) && $checkOrderFilter['after'] === $filter['header']) {
+                    $orderFilter[$index] = $filter;
+                    $orderFilter[($index + 1)] = $checkOrderFilter;
+                    array_push($match, $checkOrderFilter['header'], $checkOrderFilter['after']);
+                }
+            }
+            if (!in_array($filter['header'], $match)) $orderFilter[] = $filter;
+        }
+
+        return $orderFilter;
     }
 }
