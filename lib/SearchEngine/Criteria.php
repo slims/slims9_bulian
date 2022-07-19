@@ -150,7 +150,7 @@ class Criteria
                 $value = substr_replace($value, '', 0, 1);
             }
             if ($inside_quote) {
-                if (strpos($value, "") === strlen($value) - 1) {
+                if (strpos($value, '"') === strlen($value) - 1) {
                     $inside_quote = false;
                     $phrase .= str_replace('"', '', $value);
                     yield ['f' => $key, 'b' => $last_boolean, 'q' => $phrase, 'is_phrase' => true];
