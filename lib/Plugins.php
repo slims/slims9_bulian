@@ -259,7 +259,7 @@ class Plugins
     public function execute($hook, $params = [])
     {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
-            if (is_callable($hook)) call_user_func_array($hook, $params);
+            if (is_callable($hook)) call_user_func_array($hook, array_values($params));
         }
     }
 
