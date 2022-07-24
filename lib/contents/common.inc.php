@@ -84,8 +84,8 @@ $sorts = [
 foreach ($sorts as $sort) {
     $selected = null;
     $filterStr = \utility::filterData('filter', 'get', false, true, true);
-    $filterArr = json_decode($filterStr, true);
-    if ($sort[0] === $filterArr['sort']) $selected = 'selected';
+    $filterArr = json_decode($filterStr??'', true);
+    if ($sort[0] === ($filterArr['sort']??'')) $selected = 'selected';
     echo '<option value="'.$sort[0].'" '.$selected.'>'.$sort[1].'</option>';
 }
 $sort_select = ob_get_clean();
