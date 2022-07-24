@@ -156,6 +156,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         }
 
+        // Register advance custom field data
+        \SLiMS\Plugins::getInstance()->execute('advance_custom_field_data', ['custom_data' => &$custom_data]);
+
         $data['title'] = $dbs->escape_string($title);
         /* modified by hendro */
         $data['sor'] = trim($dbs->escape_string(strip_tags($_POST['sor'])));
@@ -1080,6 +1083,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             }
         }
     }
+    
+    // get advance custom field based on plugin
+    $js = '';
+    \SLiMS\Plugins::getInstance()->execute('advance_custom_field_form', ['form' => $form, 'js' => &$js]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
@@ -1197,6 +1204,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                         }
                     });
             });
+
+            <?php
+            if (isset($js) && !empty($js))
+            {
+                echo $js;
+            }
+            ?>
         });
     </script>
     <?php
