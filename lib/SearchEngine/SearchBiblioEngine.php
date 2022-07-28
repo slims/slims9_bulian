@@ -167,7 +167,7 @@ class SearchBiblioEngine extends Contract
                 case 'location':
                     if (!$this->disable_item_data) {
                         $idx = json_decode($query);
-                        $sub_query = "'" . implode("', '", $idx) . "'";
+                        $sub_query = "'" . implode("', '", $idx??[]) . "'";
                         if (!is_null($idx)) {
                             $sql_criteria_tmp = [];
                             $location_q = DB::getInstance()->query("select location_name from mst_location where location_id in (" . $sub_query . ")");
@@ -191,7 +191,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'colltype':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx);
+                    $sub_query = implode(", ", $idx??[]);
 
                     if (!$this->disable_item_data) {
                         if (!is_null($idx)) {
@@ -282,7 +282,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'gmd':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx);
+                    $sub_query = implode(", ", $idx??[]);
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];
                         $gmd_q = DB::getInstance()->query("select gmd_name from mst_gmd where gmd_id in (" . $sub_query . ")");
@@ -354,7 +354,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'lang':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx) . "'";
+                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
 
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];

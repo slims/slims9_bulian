@@ -186,7 +186,7 @@ class DefaultEngine extends Contract
 
                 case 'location':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx) . "'";
+                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
                     if (is_null($idx))
                         $sub_query = "select location_id from mst_location where location_name = '" . $query . "'";
                     if ($bool === '-') {
@@ -198,7 +198,7 @@ class DefaultEngine extends Contract
 
                 case 'colltype':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx);
+                    $sub_query = implode(", ", $idx??[]);
                     if (is_null($idx))
                         $sub_query = "select coll_type_id from mst_coll_type where coll_type_name = '" . $query . "'";
                     if ($bool === '-') {
@@ -272,7 +272,7 @@ class DefaultEngine extends Contract
 
                 case 'gmd':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx);
+                    $sub_query = implode(", ", $idx??[]);
                     if (is_null($idx))
                         $sub_query = "select gmd_id from mst_gmd where gmd_name like '%" . $query . "%'";
                     if ($bool === '-') {
@@ -330,7 +330,7 @@ class DefaultEngine extends Contract
 
                 case 'lang':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx) . "'";
+                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.language_id not in (' . $sub_query . ')';
                     } else {
