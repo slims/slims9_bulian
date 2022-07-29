@@ -49,3 +49,4 @@ $RECYCLE.BIN/
 /vendor/
 composer.lock
 config/sysconfig.env.inc.php
+lib/alias/*.php
