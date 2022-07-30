@@ -2,6 +2,11 @@
     "name": "slims/slims9_bulian",
     "description": "SLiMS (Senayan Library Management System)",
     "type": "project",
+    "autoload": {
+        "psr-0": {
+            "Slims": "src/"
+        }
+    },
     "require": {
         "elasticsearch/elasticsearch": "~6.0",
         "ext-json": "*",

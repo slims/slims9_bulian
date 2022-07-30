@@ -915,6 +915,7 @@ if ($is_member_login) :
                 <div class="login_input"><input class="form-control" type="password" name="memberPassWord"
                                                 placeholder="Enter password" required autocomplete="off"/></div>
                 <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                 <!-- Captcha in form - start -->
                 <div>
                     <?php if ($sysconf['captcha']['member']['enable']) { ?>

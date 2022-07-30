@@ -11,6 +11,8 @@
 <?php
 // clean request uri from xss
 $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
+header("Content-Security-Policy: base-uri 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; frame-src 'self' *.google.com; font-src 'self'; media-src 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; frame-ancestors 'none';");
+header('X-Content-Type-Options: nosniff');
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,6 +23,7 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self' 'unsafe-eval'; frame-src 'self' *.google.com; font-src 'self'; media-src 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; frame-ancestors 'none';">
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0"/>
     <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT"/>

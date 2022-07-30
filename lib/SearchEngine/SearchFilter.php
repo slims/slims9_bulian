@@ -136,6 +136,8 @@ trait SearchFilter
         $filterArr = json_decode($filterStr??'', true);
 
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
+        $str .= '<input type="hidden" name="csrf_token" value="'.$_SESSION['csrf_token'].'">';
+
         foreach ($this->reOrder($filters) as $index => $filter) {
             if ($index < 1) {
                 $str .= '<li class="list-group-item bg-transparent pl-0 border-top-0">';
