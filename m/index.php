@@ -31,10 +31,35 @@ require '../sysconfig.inc.php';
 $cookie_path = preg_replace('@m\/*@i', '', SENAYAN_WEB_ROOT_DIR);
 // create cookies of lightweight mode
 if (isset($_GET['fullsite'])) {
-    @setcookie('FULLSITE_MODE', 1, time()+43200, $cookie_path);
+    #@setcookie('FULLSITE_MODE', 1, time()+43200, $cookie_path);
+    #@setcookie('FULLSITE_MODE', 1, time()+43200, $cookie_path, "", FALSE, TRUE);
+
+    @setcookie('FULLSITE_MODE', 1, [
+        'expires' => time()+43200,
+        'path' => $cookie_path,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
 } else {
 	// remove cookies
-	@setcookie('FULLSITE_MODE', 0, time()-43200, $cookie_path);
+	#@setcookie('FULLSITE_MODE', 0, time()-43200, $cookie_path);
+	#@setcookie('FULLSITE_MODE', 0, time()-43200, $cookie_path, "", FALSE, TRUE);
+
+    @setcookie('FULLSITE_MODE', 0, [
+        'expires' => time()-43200,
+        'path' => $cookie_path,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
+
 }
 // redirect to main bootstrap
 header('Location: ../index.php');

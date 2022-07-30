@@ -33,7 +33,19 @@ if ($unauthorized) {
     $msg .= 'top.location.href = \''.SWB.'index.php?p=login\';'."\n";
     $msg .= '</script>'."\n";
     // unset cookie admin flag
-    setcookie('admin_logged_in', false, time()-86400, SWB);
+    #setcookie('admin_logged_in', false, time()-86400, SWB);
+    #setcookie('admin_logged_in', false, time()-86400, SWB, "", FALSE, TRUE);
+
+    setcookie('admin_logged_in', FALSE, [
+        'expires' => time()-86400,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
     simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 }
 
@@ -49,7 +61,19 @@ if ($unauthorized) {
     $msg .= __('You are not authorized to view this section');
     $msg .= '</div>'."\n";
     // unset cookie admin flag
-    setcookie('admin_logged_in', true, time()-86400, SWB);
+    #setcookie('admin_logged_in', true, time()-86400, SWB);
+    #setcookie('admin_logged_in', true, time()-86400, SWB, "", FALSE, TRUE);
+
+    setcookie('admin_logged_in', TRUE, [
+        'expires' => time()-86400,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
     simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 }
 
@@ -61,7 +85,20 @@ if ($timeout && !isset($_SESSION['remember_me'])) {
     $msg .= __('Your Login session has timed out.').' <a target="_top" href="'.SWB.'index.php?p=login" style="text-decoration: underline; color: #000;">'.__('Click here to Login again').'</a>';
     $msg .= '</div>'."\n";
     // unset cookie admin flag
-    setcookie('admin_logged_in', true, time()-86400, SWB);
+    #setcookie('admin_logged_in', true, time()-86400, SWB);
+    #setcookie('admin_logged_in', true, time()-86400, SWB, "", FALSE, TRUE);
+
+    setcookie('admin_logged_in', TRUE, [
+        'expires' => time()-86400,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
+
     simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 } else {
     // renew session logintime

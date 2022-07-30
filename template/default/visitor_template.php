@@ -12,10 +12,36 @@ if (isset($_GET['select_lang'])) {
     $select_lang = trim(strip_tags($_GET['select_lang']));
     // delete previous language cookie
     if (isset($_COOKIE['select_lang'])) {
-        @setcookie('select_lang', $select_lang, time()-14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()-14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()-14400, SWB, "", FALSE, TRUE);
+
+        @setcookie('select_lang', $select_lang, [
+            'expires' => time()-14400,
+            'path' => SWB,
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
+
+
     }
     // create language cookie
-    @setcookie('select_lang', $select_lang, time()+14400, SWB);
+    #@setcookie('select_lang', $select_lang, time()+14400, SWB);
+    #@setcookie('select_lang', $select_lang, time()+14400, SWB, "", FALSE, TRUE);
+
+    @setcookie('select_lang', $select_lang, [
+        'expires' => time()+14400,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
+
     $sysconf['default_lang'] = $select_lang;
 } else if (isset($_COOKIE['select_lang'])) {
     $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));

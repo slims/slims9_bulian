@@ -68,8 +68,33 @@ if (isset($_POST['updatePassword'])) {
       utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR'], 'Password', 'Update');
 
       // clear cookie
-      setcookie('token', '', time()-3600, SWB);
-      setcookie('uname', '', time()-3600, SWB);
+      #setcookie('token', '', time()-3600, SWB);
+      #setcookie('token', '', time()-3600, SWB, "", FALSE, TRUE);
+
+      setcookie('token', '', [
+        'expires' => time()-3600,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
+
+      #setcookie('uname', '', time()-3600, SWB);
+      #setcookie('uname', '', time()-3600, SWB, "", FALSE, TRUE);
+
+      setcookie('uname', '', [
+        'expires' => time()-3600,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
       echo '<script type="text/javascript">';
       echo 'alert("'.__("Password has been updated successfully.").'");';
       echo 'location.href = "index.php?p=login";';
