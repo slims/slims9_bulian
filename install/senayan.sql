@@ -1529,3 +1529,24 @@ DROP TRIGGER IF EXISTS `insert_loan_history`;
 ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
 ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
 
+-- 
+-- Index Word and Document
+-- 
+
+CREATE TABLE `index_words` (
+  `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+  `num_hits` int NOT NULL,
+  `doc_hits` int NOT NULL
+) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';
+
+CREATE TABLE `index_documents` (
+  `document_id` int(11) NOT NULL,
+  `word_id` bigint(20) NOT NULL,
+  `location` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hit_count` int(11) NOT NULL,
+  PRIMARY KEY (`document_id`,`word_id`,`location`),
+  KEY `document_id` (`document_id`),
+  KEY `word_id` (`word_id`),
+  KEY `location` (`location`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
