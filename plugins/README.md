@@ -78,6 +78,20 @@ $plugin = \SLiMS\Plugins::getInstance();
 // parameter 1 = tag hook
 // parameter 2 = callback
 $plugin->register('bibliography_on_delete', function () {});
+
+// Registering Hook via handler class
+// opsi 1
+Plugins::use(\Namespace\Library\Anda::class)->for(function($plugins){
+    // chain style
+    // parameter 1 = tag hook
+    // parameter 2 = method yang ada di \Namespace\Library\Anda::class
+    $plugins->registerHook('bibliography_after_save', 'saveTo3rdPartyIndexer');
+    // atau menggunakan static class
+    Plugins::hook('bibliography_after_save', 'saveTo3rdPartyIndexer');
+});
+// opsi 2 (jika tidak digabungkan dalam satu closure pada metode for())
+Plugins::use(\Namespace\Library\Anda::class);
+$plugins->registerHook('bibliography_after_save', 'saveTo3rdPartyIndexer');
 ```
 Berikut ini `tag hook` yang tersedia:
 - Modul bibliografi
@@ -209,6 +223,20 @@ $plugin = \SLiMS\Plugins::getInstance();
 // parameter 1 = hook's tag
 // parameter 2 = callback
 $plugin->register('bibliography_on_delete', function () {});
+
+// Registering Hook via handler class
+// option 1
+Plugins::use(\Your\Library\Namespace::class)->for(function($plugins){
+    // chain style
+    // parameter 1 = tag hook
+    // parameter 2 = public method at \Namespace\Library\Anda::class
+    $plugins->registerHook('bibliography_after_save', 'saveTo3rdPartyIndexer');
+    // or use static class
+    Plugins::hook('bibliography_after_save', 'saveTo3rdPartyIndexer');
+});
+// option 2 (if not combined in one closure in for() method)
+Plugins::use(\Your\Library\Namespace::class);
+$plugins->registerHook('bibliography_after_save', 'saveTo3rdPartyIndexer');
 ```
 Available `tag hook` are:
 

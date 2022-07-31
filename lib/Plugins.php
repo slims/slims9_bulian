@@ -32,6 +32,7 @@ class Plugins
     protected array $hooks = [];
     protected array $menus = [];
     private int $deep = 2;
+    private string $hook_handler = '';
     private string $current_location = '';
     private ?string $group_name = null;
 
@@ -204,7 +205,7 @@ class Plugins
 
     public function register($hook, $callback)
     {
-        $this->hooks[$hook][] = $callback;
+        $this->hooks[$hook][] = [$callback, $this->hook_handler];
     }
 
     public function registerHook($hook, $callback)
@@ -259,8 +260,23 @@ class Plugins
     public function execute($hook, $params = [])
     {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
-            if (is_callable($hook)) call_user_func_array($hook, array_values($params));
+            list($callback, $handler) = $hook;
+            if (is_callable($callback)) call_user_func_array($callback, array_values($params));
+            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) 
+            {call_user_func_array([$handlerInstance, $callback], array_values($params));}
         }
+    }
+
+    public static function use($handler_class)
+    {
+        self::getInstance()->hook_handler = $handler_class;
+        return self::getInstance();
+    }
+
+    public function for($hooks)
+    {
+        if (empty($this->hook_handler)) return;
+        if (is_callable($hooks)) call_user_func_array($hooks, [$this]);
     }
 
     /**
