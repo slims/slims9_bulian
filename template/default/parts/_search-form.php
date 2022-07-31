@@ -8,7 +8,7 @@
 
 if ( (isset($_SESSION['csrf_token'])) AND (isset($_GET['csrf_token'])) ) {
     if (!(\Slims\Opac\Security::checkCsrfToken($_SESSION['csrf_token'], $_GET['csrf_token']))) {
-        die('Invalid token');
+        echo '<div class="alert alert-danger" role="alert">Invalid Token!</div>'; die();
     }
 }
 $_SESSION['csrf_token'] = \Slims\Opac\Security::getCsrfToken();
