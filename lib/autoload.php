@@ -9,6 +9,7 @@
 
 $namespaces = [
     "SLiMS\\" => "/",
+    "Slims\\Opac\\" => "../src/Slims/Opac",
     "Volnix\\CSRF\\" => "/csrf/src/",
     "Psr\\SimpleCache\\" => "/psr/simple-cache/src/",
     "PhpOffice\\PhpSpreadsheet\\" => "/phpoffice/phpspreadsheet/src/PhpSpreadsheet/",
