@@ -9,7 +9,7 @@ class Security {
 
     public static function checkCsrfToken($session_token, $get_token) {
         if ( (isset($session_token)) AND (isset($get_token)) ) {
-            $csrf_token = filter_input(INPUT_GET, 'csrf_token', FILTER_SANITIZE_STRING);
+            $csrf_token = filter_input(INPUT_GET, 'csrf_token', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if (!$csrf_token || $csrf_token !== $session_token) {
                 return FALSE;
             } else {
