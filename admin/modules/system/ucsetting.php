@@ -23,6 +23,25 @@ require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+// Took from index.php at system module
+if (!function_exists('addOrUpdateSetting')) {
+  function addOrUpdateSetting($name, $value) {
+      global $dbs;
+      $sql_op = new simbio_dbop($dbs);
+      $data['setting_value'] = $dbs->escape_string(serialize($value));
+
+      $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+      if ($query->num_rows > 0) {
+          // update
+          return ['status' => $sql_op->update('setting', $data, "setting_name='{$name}'"), 'state' => 'updated'];
+      } else {
+          // insert
+          $data['setting_name'] = $name;
+          return ['status' => $sql_op->insert('setting', $data), 'state' => 'inserted'];
+      }
+  }
+}
+
 if (isset($_POST['updateData'])) {
   $ucs['enable'] = $_POST['enable'];
   $ucs['auto_delete'] = $_POST['auto_delete'];
@@ -34,23 +53,19 @@ if (isset($_POST['updateData'])) {
 
   // data serialize
   $data_serialize = serialize($ucs);
-    // insert if not available value ucsettings
-  $insert = $dbs->query("INSERT INTO setting(setting_name, setting_value) VALUES ('ucs','$data_serialize')");
-  if (!$insert) {
-    // update into database
-    $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'ucs\'');
-    if ($update) {
-      // write log
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings', 'UCS config', 'Update');
-      utility::jsToastr(__('UCS Configuration'), __('Settings updated.'), 'success');
-    } else {
-      // write log
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
-      utility::jsToastr(__('UCS Configuration'), __('Failed save settings!'), 'success');      
-    }
+  // insert if not available value ucsettings
+  $upsert = addOrUpdateSetting('ucs', $ucs);
+
+  if ($upsert['status']) {
+    // write log
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings', 'UCS config', 'Update');
+    utility::jsToastr(__('UCS Configuration'), __('Settings ' . $upsert['state'] . '.'), 'success');
   } else {
-    utility::jsToastr(__('UCS Configuration'), __('Settings inserted.'), 'success');
+    // write log
+    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
+    utility::jsToastr(__('UCS Configuration'), __('Failed save settings!'), 'success');      
   }
+
   echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
   exit();
 }
