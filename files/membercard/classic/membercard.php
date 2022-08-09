@@ -57,7 +57,14 @@ strong {
 }
 
 #front-card {
-  background-color: <?php echo $sysconf['print']['membercard']['fr_color']??'#E5E5E5';  ?>;    
+  background-color: <?php echo $sysconf['print']['membercard']['fr_color']??'#E5E5E5';  ?>;
+  overflow: hidden;    
+}
+
+#front-card main {
+  position: absolute;
+  top: 55px;
+  width: 100%;
 }
 
 #front-card header {
@@ -65,6 +72,9 @@ strong {
   background-color: #fff;
   text-transform: uppercase;
   color: <?php echo $sysconf['print']['membercard']['header_font_color']??'#000'; ?> !important;  
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 #front-card header .brand {
@@ -178,12 +188,19 @@ strong {
 }
 
 #back-card {
-  background: <?php echo $sysconf['print']['membercard']['b_color']??'#ffffff';  ?> url("<?php echo $card_path.'images/'.$sysconf['print']['membercard']['back_side_image'] ?>") center center no-repeat;
   background-size: cover;
+  overflow: hidden;
+  position: relative;
 }
 
 #back-card .rules {
   padding: 15px;
+  position: absolute;
+  top: 0;
+}
+
+.bg-img {
+  width: 100%;
 }
 
 #back-card .rules ul {
@@ -227,6 +244,8 @@ strong {
 }
 #back-card address {
   font-style: normal;
+  font-size: smaller;
+  width: 10rem;
 }
 .print_btn {
   background: #333;
@@ -235,6 +254,12 @@ strong {
   color: #fff;
   margin-bottom: 5px;
   display: inline-block;
+}
+.logo-img{
+  height: 36px;
+}
+.page{
+  margin-bottom: 30rem;
 }
 
 @media print {
@@ -246,16 +271,32 @@ strong {
 </head>
 <body>
 <a class="print_btn" href="#" onclick="window.print()"><?php echo __('Print Again') ?></a>
-<table cellpadding="0" cellspacing="0">
-  <?php foreach ($chunked_card_arrays as $membercard_rows) : ?>
+<br>
+<?php 
+  $jumlah = count($chunked_card_arrays) / 4;
+  $room = explode('.', $jumlah);
+  $room = (isset($room[1]))? $room[0] + 1 : $room[0];
+  // die(var_dump($room));
+  // exit;
+?>
+  <?php
+  //  foreach ($chunked_card_arrays as $membercard_rows) :
+    for ($i=0; $i < $room; $i++):
+   ?>
+    <table cellpadding="0" class="page" cellspacing="0">
+    <?php 
+    $data_start = $i*4;
+    for ($x=$data_start; $x < $data_start+4 ; $x++):
+      $membercard_rows = $chunked_card_arrays[$x];
+    foreach ($membercard_rows as $card) : ?>
   <tr>
-    <?php foreach ($membercard_rows as $card) : ?>
     <td>
     <!-- Frontcard -->
     <section id="front-card">
+      <img src="<?php echo $card_path.'images/'.$sysconf['print']['membercard']['front_side_image'] ?>" alt="" class="bg-img">
       <header>
         <div class="logo">
-          <img src="<?php echo $card_logo ?>" alt="No Photo">
+          <img class="logo-img" src="<?php echo $card_logo ?>" alt="No Photo">
           <div class="sub-brand"><?php echo $sysconf['print']['membercard']['front_header1_text'] ?></div>
           <div class="brand"><?php echo $sysconf['print']['membercard']['front_header2_text'] ?></div>
         </div>
@@ -302,7 +343,9 @@ strong {
     <td>
     <!-- Backcard -->
     <section id="back-card">
+      <img class="bg-img" src="<?php echo $card_path.'images/'.$sysconf['print']['membercard']['back_side_image'] ?>" alt="">
         <div class="rules">
+        <!-- <?php echo $card_signature ?> -->
           <strong><?php echo __('Library Rules') ?></strong>
           <?php echo html_entity_decode($sysconf['print']['membercard']['rules']) ?>
         </div>
@@ -326,10 +369,15 @@ strong {
     </section>
     <!-- End Backcard -->
     </td>
-    <?php endforeach ?>
   </tr>
-  <?php endforeach ?>
+    <?php endforeach;
+     endfor; ?>
 </table>
+  <?php
+   
+  endfor;
+  //  endforeach
+    ?>
 
 <script type="text/javascript">
   self.print();
