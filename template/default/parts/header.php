@@ -90,6 +90,7 @@ header('X-Content-Type-Options: nosniff');
     <script src="<?php echo assets('js/vue.min.js'); ?>"></script>
     <!-- // load jquery library -->
     <script src="<?php echo assets('js/jquery.min.js'); ?>"></script>
+    <script src="<?php echo assets('js/masonry.pkgd.min.js'); ?>"></script>
     <!-- // load bootstrap javascript -->
     <script src="<?php echo assets('js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- // load vegas javascript -->

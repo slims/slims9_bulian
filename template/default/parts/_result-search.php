@@ -45,6 +45,23 @@
                     <div class="form-inline pl-3">
                         <label class="mr-2 font-weight-bold" for="result-sort">Sort by</label>
                         <select class="custom-select custom-select-sm" id="search-order"><?= $sort_select ?></select>
+                        <form class="ml-2" method="POST" action="<?= $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] ?>">
+                            <?php if(($_SESSION['LIST_VIEW'] ?? 'list') === 'list'): ?>
+                                <input type="hidden" name="view" value="grid" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary items-center flex py-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">
+                                        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+                                    </svg>
+                                </button>
+                            <?php else: ?>
+                                <input type="hidden" name="view" value="list" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary items-center flex py-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
+                                        <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z"/>
+                                    </svg>
+                                </button>
+                            <?php endif; ?>
+                            </form>
                     </div>
                 </div>
                 <div class="wrapper">
@@ -64,3 +81,11 @@
         </div>
     </section>
 </div>
+<?php if(($_SESSION['LIST_VIEW'] ?? 'list') === 'grid'): ?>
+    <script>
+        $(document).ready(() => {
+            $('.biblioResult').addClass('row').masonry({ itemSelector: '.grid-item' })
+            $('.dropdown-toggle').dropdown()
+        })
+    </script>
+<?php endif; ?>

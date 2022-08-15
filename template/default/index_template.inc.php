@@ -12,6 +12,9 @@
 //echo '<pre>'; print_r($a); echo '</pre>'; die();
 //echo '<pre>'; print_r($_SESSION); echo '</pre>'; die();
 
+// setup list view
+$_SESSION['LIST_VIEW'] = $_POST['view'] ?? $_SESSION['LIST_VIEW'] ?? 'list';
+
 // ----------------------------------------------------------------------------
 // load function library for classic template
 // ----------------------------------------------------------------------------
