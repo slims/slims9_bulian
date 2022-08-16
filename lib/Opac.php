@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-08-16 15:42:19
+ * @modify date 2022-08-16 16:18:26
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -88,6 +88,9 @@ class Opac
     {
         if (isset(($menu = Plugins::getInstance()->getMenus('opac'))[$this->path])) {
             if (file_exists($menu[$this->path][3])) {
+                // extract defined variable
+                extract($this->definedVariable);
+                
                 // Default variable for this method
                 $path = $this->path;
                 $sysconf = $this->sysconf;
@@ -98,7 +101,10 @@ class Opac
                 include $menu[$this->path][3];
                 $this->matchPath = true;
             }
-            throw new Exception("Plugin for path {$this->path} is not found!", 1);
+            else
+            {
+                throw new Exception("Plugin for path {$this->path} is not found!");
+            }
         }
         return $this;
     }
