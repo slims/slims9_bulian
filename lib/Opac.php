@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-08-16 16:18:26
+ * @modify date 2022-08-17 14:13:41
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -245,7 +245,7 @@ class Opac
 
         ob_start();
         if (empty($filteredQuery)) {
-            $this->defineVariable['metadata'] = '<meta name="robots" content="index, follow">';
+            $this->definedVariable['metadata'] = '<meta name="robots" content="index, follow">';
             // get content data from database
             include LIB.'content.inc.php';
             $content = new Content();
@@ -262,12 +262,37 @@ class Opac
     /**
      * Output content as JSON with header
      *
-     * @param [type] $data
+     * @param mix $data
      * @return void
      */
     public function toJson($data)
     {
         if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] === 'application/json') 
             die(Json::stringify($data)->withHeader());
+    }
+
+    /**
+     * Setter for sysconf & definedVariable property
+     *
+     * @param string $key
+     * @param string $value
+     * @return @return Undocumented function
+     */
+    public function __set($key, $value)
+    {
+        if (isset($this->definedVariable[$key])) $this->definedVariable[$key] = $value;
+        if (isset($this->sysconf[$key])) $this->sysconf[$key] = $value;
+    }
+
+    /**
+     * Getter for sysconf & definedVariable property
+     *
+     * @param string $key
+     * @return @return Undocumented function
+     */
+    public function __get($key)
+    {
+        if (isset($this->definedVariable[$key])) return $this->definedVariable[$key];
+        if (isset($this->sysconf[$key])) return $this->sysconf[$key];
     }
 }

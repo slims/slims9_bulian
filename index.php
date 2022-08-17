@@ -70,7 +70,7 @@ $Opac = new Opac($opacVariable, $sysconf, $dbs);
 // running hook to override process/variable before
 // content load
 $Opac->hookBeforeContent(function($Opac){
-  Plugins::getInstance()->execute('before_content_load');
+  Plugins::getInstance()->execute('before_content_load', [$Opac]);
 });
 
 // Path process or show welcome page
@@ -79,7 +79,7 @@ $Opac->handle('p')->orWelcome();
 // running hook to override process/variable after
 // content load
 $Opac->hookAfterContent(function($Opac){
-  Plugins::getInstance()->execute('after_content_load');
+  Plugins::getInstance()->execute('after_content_load', [$Opac]);
 });
 
 // templating
