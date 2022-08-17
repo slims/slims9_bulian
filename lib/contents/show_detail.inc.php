@@ -132,18 +132,18 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
 
   // output the record detail
   echo $detail->showDetail();
-  $page_title = $detail->record_title.' | '.$sysconf['library_name'];
-  $metadata   = $detail->metadata;
-  $image_src  = $detail->image_src;
-  $notes      = $detail->notes;
+  $opac->page_title = $detail->record_title.' | '.$sysconf['library_name'];
+  $opac->metadata   = $detail->metadata;
+  $opac->image_src  = $detail->image_src;
+  $opac->notes      = $detail->notes;
 
   // get keywords
-  $subject    = '';
+  $opac->subject    = '';
   if(isset($detail->subjects[0]) && count($detail->subjects[0]) > 0) {
     foreach($detail->subjects as $_subject) {
-      $subject .= strtolower($_subject['topic']).',';
+      $opac->subject .= strtolower($_subject['topic']).',';
     }
-    $subject = substr($subject,0,-1);
+    $opac->subject = substr($opac->subject,0,-1);
   }
   echo '<br />'."\n";
 }

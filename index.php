@@ -39,7 +39,7 @@ if ($sysconf['template']['base'] == 'html') {
   require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 }
 
-// start the output buffering for main content
+// default opac variable
 $opacVariable = [
     // default library info
     'page_title' => $sysconf['library_subname'].' | '.$sysconf['library_name'],

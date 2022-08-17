@@ -338,7 +338,7 @@ if (isset($_POST['updatePassword'])) {
 $main_content = ob_get_clean();
 
 // page title
-$page_title = __('Library Automation Login').' | '.$sysconf['library_name'];
+$opac->page_title = __('Library Automation Login').' | '.$sysconf['library_name'];
 
 if ($sysconf['template']['base'] == 'html') {
     // create the template object

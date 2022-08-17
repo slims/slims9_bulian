@@ -22,7 +22,7 @@ require_once LIB.'content.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require_once SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/news_template.php';
 
-$page_title = __('Library News');
+$opac->page_title = __('Library News');
 
 $keywords = null;
 if (isset($_GET['keywords'])) {

@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-08-17 14:13:41
+ * @modify date 2022-08-17 15:49:36
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -129,6 +129,7 @@ class Opac
             $path = $this->path;
             $sysconf = $this->sysconf;
             $dbs = $this->dbs;
+            $opac = $this;
             
             include LIB.'contents/'.$this->path.'.inc.php';
             $this->matchPath = true;
@@ -152,7 +153,7 @@ class Opac
             $content = new Content();
             $content_data = $content->get($this->dbs, $this->path);
             if ($content_data) {
-                $page_title = $content_data['Title'];
+                $this->page_title = $content_data['Title'];
                 echo $content_data['Content'];
                 unset($content_data);
                 $this->matchPath = true;
@@ -189,6 +190,9 @@ class Opac
         // extract defined variable
         extract($this->definedVariable);
         $sysconf = $this->sysconf;
+        $dbs = $this->dbs;
+        // Load common SLiMS variable
+        require LIB.'contents/common.inc.php';
         $main_content = ob_get_clean();
 
         // parse into template
@@ -272,7 +276,20 @@ class Opac
     }
 
     /**
-     * Setter for sysconf & definedVariable property
+     * Mutatate an existing key in sysconf
+     * we don't want to add new key directly
+     *
+     * @param [type] $key
+     * @param [type] $value
+     * @return void
+     */
+    public function mutateConf($key, $value)
+    {
+        if (isset($this->sysconf[$key])) $this->sysconf[$key] = $value;
+    }
+
+    /**
+     * Setter for definedVariable property
      *
      * @param string $key
      * @param string $value
@@ -280,8 +297,7 @@ class Opac
      */
     public function __set($key, $value)
     {
-        if (isset($this->definedVariable[$key])) $this->definedVariable[$key] = $value;
-        if (isset($this->sysconf[$key])) $this->sysconf[$key] = $value;
+        $this->definedVariable[$key] = $value;
     }
 
     /**

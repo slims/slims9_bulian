@@ -29,7 +29,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // $info = __('Profile of our Librarian');
-$page_title = __('Profile of our Librarian') ;
+$opac->page_title = __('Profile of our Librarian') ;
 
 // query librarian data
 $librarian_q = $dbs->query('SELECT * FROM user WHERE user_type IN (1,2) ORDER BY user_type DESC LIMIT 20');
