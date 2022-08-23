@@ -687,12 +687,15 @@ if ($is_member_login) :
 
     // send reserve e-mail
     if (isset($_POST['sendReserve']) && $_POST['sendReserve'] == 1) {
-
+        // Make a notification for librarian or member
+        \SLiMS\Plugins::getInstance()->execute('custom_reserve_notification');
+        // save reservation to database
         if ($sysconf['reserve_direct_database'] ?? false) {
             header('content-type: application/json');
             echo json_encode(saveReserve($dbs, $sysconf));
             exit;
         } else {
+            // by email
             $mail = sendReserveMail();
             if ($mail['status'] != 'ERROR') {
                 $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!');
