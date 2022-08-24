@@ -97,7 +97,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
                 $stk_data = 'Finished';
             }
         } elseif($headings == __('Stock Take Participants')){
-            $stk_data = unserialize($stk_data);
+            $stk_data = unserialize($stk_data??'');
             $str = '';
             if(is_array($stk_data)){
                 $str .= '<ol>';

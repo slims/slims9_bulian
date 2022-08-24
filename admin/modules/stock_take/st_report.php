@@ -113,7 +113,7 @@ if ($stk_query->num_rows < 1) {
     // stock take start date
     $report_row[__('Start Date')] = nl2br($stk_data['start_date']);
     // stock take end date
-    $report_row[__('End Date')] = nl2br($stk_data['end_date']);
+    $report_row[__('End Date')] = nl2br($stk_data['end_date']??'');
 
     // initial row count
     $row = 1;
@@ -156,10 +156,12 @@ if ($stk_query->num_rows < 1) {
         $row_class = ($row_class == 'alterCell')?'alterCell2':'alterCell';
         $class_count_str .= '<tr><td class="'.$row_class.'"><strong>'.$cls_d[0].'</strong> classes</td>';
         foreach ($arr_status as $status) {
-            $cls_count_q = $dbs->query("SELECT COUNT(item_code) FROM stock_take_item WHERE TRIM(classification)='".$cls_d[0]."' AND status='$status'");
-            $cls_count_d = $cls_count_q->fetch_row();
-            // append to string
-            $class_count_str .= '<td class="'.$row_class.'">'.$cls_count_d[0].'</td>';
+            $cls_count_q = $dbs->query("SELECT COUNT(item_code) FROM stock_take_item WHERE TRIM(classification)='".$dbs->escape_string($cls_d[0])."' AND status='$status'");
+            if ($cls_count_q) {
+                $cls_count_d = $cls_count_q->fetch_row();
+                // append to string
+                $class_count_str .= '<td class="'.$row_class.'">'.$cls_count_d[0].'</td>';
+            }
         }
         $class_count_str .= '</tr>';
     }
