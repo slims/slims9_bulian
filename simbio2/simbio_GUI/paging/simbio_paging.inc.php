@@ -71,12 +71,12 @@ class simbio_paging
                 if (is_string($varvalue)) {
                     $varvalue = urlencode($varvalue);
                     if ($varname != 'page') {
-                        $_query_str_page .= $varname.'='.$varvalue.'&';
+                        $_query_str_page .= simbio_security::xssFree($varname).'='.simbio_security::xssFree($varvalue).'&';
                     }
                 } else if (is_array($varvalue)) {
                     foreach ($varvalue as $e_val) {
                         if ($varname != 'page') {
-                            $_query_str_page .= $varname.'[]='.$e_val.'&';
+                            $_query_str_page .= simbio_security::xssFree($varname).'[]='.simbio_security::xssFree($e_val).'&';
                         }
                     }
                 }

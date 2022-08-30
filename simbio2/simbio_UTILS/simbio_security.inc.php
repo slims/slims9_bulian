@@ -82,4 +82,17 @@ class simbio_security
             if ($str_msg) { echo $str_msg; }
         }
     }
+
+
+    /**
+     * Static method to clean all string character
+     * from html element and attributes
+     *
+     * @param string $str_char
+     * @return string
+     */
+    public static function xssFree($str_char)
+    {
+        return str_replace(['\'', '"'], '', strip_tags($str_char));
+    }
 }
