@@ -35,7 +35,7 @@ $namespaces = [
     "Carbon\\" => "/nesbot/carbon/src/Carbon/"
 ];
 
-$namespaces_alias = [
+$class_alias = [
     // 'DB' => \SLiMS\DB::class,
 ]; // make a short class call
 
@@ -43,7 +43,7 @@ foreach ($namespaces as $namespace => $classpaths) {
     if (!is_array($classpaths)) {
         $classpaths = array($classpaths);
     }
-    spl_autoload_register(function ($classname) use ($namespace, $classpaths, $namespaces_alias) {
+    spl_autoload_register(function ($classname) use ($namespace, $classpaths, $class_alias) {
         if (preg_match("#^" . preg_quote($namespace) . "#", $classname)) {
             $classname = str_replace($namespace, "", $classname);
             $filename = preg_replace("#\\\\#", "/", $classname) . ".php";
@@ -51,11 +51,8 @@ foreach ($namespaces as $namespace => $classpaths) {
                 $fullpath = __DIR__ . "/" . $classpath . "/$filename";
                 if (file_exists($fullpath)) include_once $fullpath;
             }
-        } elseif (isset($namespaces_alias[$classname])) {
-            $namespace_alias = $namespaces_alias[$classname];
-            if (!file_exists($filealias = __DIR__ . DS . 'alias' . DS . $classname . '.php')) 
-            {file_put_contents($filealias, '<?php class ' . $classname . ' extends \\' . $namespace_alias . ' {} ?>');}
-            include_once $filealias;
+        } elseif (isset($class_alias[$classname]) && class_exists($class_alias[$classname])) {
+            class_alias($class_alias[$classname], $classname);
         }
     });
 }
