@@ -243,7 +243,16 @@ class module extends simbio
                 continue;
             }
             if (!is_null($header)) {
-                $groups[strtolower($header)][] = $menu;
+                // Check if the registered plugin menu label is the same as the default
+                $override_menu = array_values(array_filter($plugin, function($itemPlugin) use($menu) {
+                    if ($itemPlugin[0] === $menu[0] && isset($itemPlugin[3])) return true;
+                }))[0]??$menu;
+
+                // if match then remove matching plugin from plugin list
+                if (isset($override_menu[3])) unset($plugin[md5(realpath($override_menu[3]??''))]);
+
+                // Register menu into group
+                $groups[strtolower($header)][] = $override_menu;
             }
         }
 
