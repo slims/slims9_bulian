@@ -16,6 +16,7 @@ $plugin_id = utility::filterData('id', 'get', false, true, true);
 // check if plugin is enabled
 $all_active_menu_plugin = \SLiMS\Plugins::getInstance()->getMenus($module);
 if (!isset($all_active_menu_plugin[$plugin_id])) die('Plugin not found / disabled!');
+if (!$all_active_menu_plugin[$plugin_id][3]) die('File path is not found!');
 
 // load plugin
 require_once $all_active_menu_plugin[$plugin_id][3];
