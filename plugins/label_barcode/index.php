@@ -151,7 +151,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     }
 
     // send query to database
-    $biblio_q = $dbs->query('SELECT IF(i.call_number<>\'\', i.call_number, b.call_number), i.item_code FROM biblio AS b LEFT JOIN item AS i ON b.biblio_id=i.biblio_id WHERE ' . $criteria);
+    $biblio_q = $dbs->query('SELECT IF(i.call_number<>\'\', i.call_number, b.call_number), i.item_code, b.title FROM biblio AS b LEFT JOIN item AS i ON b.biblio_id=i.biblio_id WHERE ' . $criteria);
 
     $label_data_array = array();
     while ($biblio_d = $biblio_q->fetch_row()) {
@@ -191,7 +191,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
             $label = $labels[0];
             $html_str .= '<td valign="top">';
             $html_str .= '<div class="card card-body"><div class="d-flex align-items-center">';
-            $html_str .= '<div style="width:240px; margin-right: 40px">';
+            $html_str .= '<div style="width:240px; margin-right: 40px;position:relative;">';
+            $html_str .= '<div style="padding:0 1rem;font-size:10pt;text-align:center;position:absolute;top:-1px;left:0;right:0;z-index:1;background:white;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;line-height:1.25">'.$labels[2].'</div>';
             $html_str .= '<img class="img-fluid" src="' . SWB . IMG . '/barcodes/' . urlencode(urlencode($barcode_text)) . '.png?' . date('YmdHis') . '" border="0" />';
             $html_str .= '</div>';
             $html_str .= '<div>';
