@@ -73,7 +73,7 @@ class admin_logon
 
         // if the ip checking is enabled
         if ($this->ip_check) {
-            if (!in_array($_SERVER['REMOTE_ADDR'], $this->ip_allowed)) {
+            if (!in_array(ip(), $this->ip_allowed)) {
                 $this->errors = 'IP not allowed to login';
                 return false;
             }
@@ -142,7 +142,7 @@ class admin_logon
 
         // save md5sum of  current application path
         if ($sysconf['load_balanced_env']) {
-            $server_addr = $_SERVER['REMOTE_ADDR'];
+            $server_addr = ip();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }
@@ -150,7 +150,7 @@ class admin_logon
 
         // update the last login time
         $obj_db->query("UPDATE user SET last_login='".date("Y-m-d H:i:s")."',
-            last_login_ip='".$_SERVER['REMOTE_ADDR']."'
+            last_login_ip='".ip()."'
             WHERE user_id=".$this->user_info['user_id']);
 
         return true;

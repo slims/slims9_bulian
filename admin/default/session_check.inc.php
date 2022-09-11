@@ -51,10 +51,11 @@ if ($unauthorized) {
 
 // checking session checksum
 if ($sysconf['load_balanced_env']) {
-    $server_addr = $_SERVER['REMOTE_ADDR'];
+    $server_addr = ip();
 } else {
     $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
 }
+
 $unauthorized = $_SESSION['checksum'] != md5($server_addr.SB.'admin');
 if ($unauthorized) {
     $msg = '<div style="padding: 5px; border: 1px dotted #FF0000; color: #FF0000;">';

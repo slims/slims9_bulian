@@ -151,7 +151,7 @@ class utility
         global $sysconf;
         // checking checksum
         if ($sysconf['load_balanced_env']) {
-            $server_addr = $_SERVER['REMOTE_ADDR'];
+            $server_addr = ip();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }

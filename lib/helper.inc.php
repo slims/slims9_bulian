@@ -21,7 +21,7 @@
  *
  */
 
-use SLiMS\Config;
+use SLiMS\{Config,Ip};
 
 if (!function_exists('config')) {
     /**
@@ -33,5 +33,17 @@ if (!function_exists('config')) {
      */
     function config($key, $default = null) {
         return Config::getInstance()->get($key, $default);
+    }
+}
+
+if (!function_exists('ip'))
+{
+    /**
+     * Helper to get client Ip Address
+     * and check if app is behind proxy or not
+     */
+    function ip()
+    {
+        return Ip::getInstance();
     }
 }

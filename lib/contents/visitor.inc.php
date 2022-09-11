@@ -32,7 +32,7 @@ if (!defined('INDEX_AUTH')) {
 utility::loadSettings($dbs);
 
 $allowed_counter_ip = $sysconf['allowed_counter_ip'];
-$remote_addr = $_SERVER['REMOTE_ADDR'];
+$remote_addr = ip();
 $confirmation = 0;
 $limit_time_visit = $sysconf['time_visitor_limitation'];
 

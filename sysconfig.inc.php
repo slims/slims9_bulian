@@ -707,6 +707,10 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
   require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
 }
 
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+$sysconf['load_balanced_source_ip'] = 'HTTP_X_FORWARDED_FOR';
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
 
@@ -776,9 +780,6 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
 
-/* Load balancing environment */
-$sysconf['load_balanced_env'] = false;
-
 // load helper
 require_once LIB . "helper.inc.php";
 
@@ -786,6 +787,9 @@ require_once LIB . "helper.inc.php";
 // for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
 // https://www.php.net/manual/en/timezones.php
 @date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
+
+// set real client ip address if SLiMS behind a reverse proxy
+if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();

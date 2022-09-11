@@ -232,6 +232,10 @@ if (isset($_POST['updateData'])) {
     $spellchecker_enabled = $_POST['spellchecker_enabled'] == '1'?true:false;
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
+    // loan balance environment
+    addOrUpdateSetting('load_balanced_env', (bool)utility::filterData('load_balanced_env', 'post', true, true, true));
+    addOrUpdateSetting('load_balanced_source_ip', utility::filterData('load_balanced_source_ip', 'post', true, true, true));
+
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
@@ -420,6 +424,13 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('reserve_on_loan_only', __('Reserve for item on loan only'), $options, $sysconf['reserve_on_loan_only']?'1':'0','class="form-control col-3"');
+
+$options = null;
+$options[] = array('0', __('Disable'));
+$options[] = array('1', __('Enable'));
+$form->addSelectList('load_balanced_env', __('Activate Load Balance Environment?'), $options, $sysconf['load_balanced_env']?'1':'0','class="form-control col-3"');
+
+$form->addTextField('text', 'load_balanced_source_ip', __('Source IP'), $sysconf['load_balanced_source_ip'], 'style="width: 100%;" class="form-control"');
 
 // print out the object
 echo $form->printOut();

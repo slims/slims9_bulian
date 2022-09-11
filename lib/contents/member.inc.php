@@ -60,7 +60,7 @@ define('CANT_UPDATE_PASSWD', -3);
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
-    utility::writeLogs($dbs, 'member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . $_SERVER['REMOTE_ADDR']);
+    utility::writeLogs($dbs, 'member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . ip());
     // completely destroy session cookie
     simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
     header('Location: index.php?p=member');
@@ -92,7 +92,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 require_once LIB . $sysconf['captcha']['member']['folder'] . '/' . $sysconf['captcha']['member']['incfile'];
                 $privatekey = $sysconf['captcha']['member']['privatekey'];
                 $resp = recaptcha_check_answer($privatekey,
-                    $_SERVER["REMOTE_ADDR"],
+                    ip(),
                     $_POST["g-recaptcha-response"]);
 
                 if (!$resp->is_valid) {
@@ -118,7 +118,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
 
         if ($logon->valid($dbs)) {
             // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
+            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
             if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
                 header("location:" . $_GET['destination']);
             } else {
@@ -127,7 +127,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
             exit();
         } else {
             // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,$_SERVER['REMOTE_ADDR']));
+            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
             // message
             $msg = '<div class="errorBox">' . __('Login FAILED! Wrong username or password!') . '</div>';
             simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);

@@ -33,7 +33,7 @@ require SB.'admin/default/session.inc.php';
 if(!isset($_SESSION['uid'])) header('location: ../index.php');
 
 // write log
-utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' Log Out from application from address '.$_SERVER['REMOTE_ADDR']);
+utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' Log Out from application from address '.ip());
 # ADV LOG SYSTEM - STIIL EXPERIMENTAL
 $log = new AlLibrarian('1003', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
 
