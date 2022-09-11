@@ -745,7 +745,7 @@ $sysconf['system_user_type'][2] = __('Senior Librarian');
 $sysconf['system_user_type'][3] = __('Library Staff');
 
 // redirect to mobile template on mobile mode
-if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && $sysconf['template']['responsive'] === false) {
+if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && (bool)$sysconf['template']['responsive'] === false) {
   $sysconf['template']['theme'] = 'lightweight';
   $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
   $sysconf['enable_xml_detail'] = false;
