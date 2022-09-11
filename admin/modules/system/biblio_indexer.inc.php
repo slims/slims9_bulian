@@ -200,16 +200,8 @@ class biblio_indexer
 		}
 
 		/* items */
-		$barcode_all = '';
-		$barcode_sql = 'SELECT i.item_code FROM item AS i WHERE i.biblio_id =' . $int_biblio_id;
-		$barcode_q = $this->obj_db->query($barcode_sql);
-		while ($rs_barcode = $barcode_q->fetch_assoc()) {
-			$barcode_all .= $rs_barcode['item_code'] . ' - ';
-		}
-		if ($barcode_all != '') {
-			$barcode_all = substr_replace($barcode_all, '', -3);
-			$data['items'] = $barcode_all;
-		}
+		$barcode_all = $this->getItems($int_biblio_id);
+		if (!empty($barcode_all)) $data['items'] = $barcode_all;
 
 		/* location  */
 		$loc_all = '';
@@ -387,5 +379,32 @@ class biblio_indexer
 
 		# save to index document
 		foreach ($word_ids as $wid) $this->documentIndex($biblio_id, $wid, $increase);
+	}
+
+	public function updateItems($int_biblio_id)
+	{
+		$int_biblio_id = (int)$int_biblio_id;
+		$itemsString = $this->obj_db->escape_string($this->getItems($int_biblio_id));
+
+		if (!empty($itemsString))
+		{
+			/*  SQL operation object  */
+			$sql_op = new simbio_dbop($this->obj_db);
+			$sql_op->update('search_biblio', ['items' => $itemsString], "biblio_id = $int_biblio_id");
+		}
+
+	}
+
+	public function getItems($int_biblio_id)
+	{
+		$int_biblio_id = (int)$int_biblio_id;
+		$barcode_all = '';
+		$barcode_sql = 'SELECT i.item_code FROM item AS i WHERE i.biblio_id =' . $int_biblio_id;
+		$barcode_q = $this->obj_db->query($barcode_sql);
+		while ($rs_barcode = $barcode_q->fetch_assoc()) {
+			$barcode_all .= $rs_barcode['item_code'] . ' - ';
+		}
+
+		return empty($barcode_all) ? '' : substr_replace($barcode_all, '', -3);
 	}
 }
