@@ -66,15 +66,25 @@ ob_start();
 // info
 $info = __('You are currently logged in as').' <strong>'.$_SESSION['realname'].'</strong>'; //mfc
 
+// get default current module menu 
+$firstMenu = $module->getFirstMenu($current_module);
 if ($current_module AND $can_read) {
-    # ADV LOG SYSTEM - STIIL EXPERIMENTAL
-    $log = new AlLibrarian('1101', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "module" => $current_module));
-    // get content of module default content with AJAX
-    $default_menu = $module->getFirstMenu($current_module)[1] ?? AWB . 'default/home.php';
-    $sysconf['page_footer'] .= "\n"
-        .'<script type="text/javascript">'
-        .'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\''.$default_menu.'\', {method: \'get\'}); });'
-        .'</script>';
+    if (!isset($firstMenu[1]))
+    {
+        // set unprivileged module warning
+        $module->unprivileged();
+    }
+    else
+    {
+        # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+        $log = new AlLibrarian('1101', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "module" => $current_module));
+        // get content of module default content with AJAX
+        $defaultUrl = $firstMenu[1];
+        $sysconf['page_footer'] .= "\n"
+            .'<script type="text/javascript">'
+            .'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\''.$defaultUrl.'\', {method: \'get\'}); });'
+            .'</script>';
+    }
 } else {
     include 'default/home.php';
     // for debugs purpose only

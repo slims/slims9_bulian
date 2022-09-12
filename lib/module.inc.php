@@ -307,4 +307,13 @@ class module extends simbio
         }
         return $shortcuts;
     }
+
+    public function unprivileged()
+    {
+        global $sysconf;
+        $alertType = 'alert-warning';
+        $alertTitle = __('Warning');
+        $alertMessage = __('You don\'t have access to interact with this module. Call system administrator to give you right to access it.');
+        include SB . 'template/alert.php';
+    }
 }
