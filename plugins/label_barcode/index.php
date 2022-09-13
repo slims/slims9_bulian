@@ -265,7 +265,7 @@ HTML;
     if ($file_write) {
         echo '<script type="text/javascript">parent.$(\'#queueCount\').html(\'0\');</script>';
         // open result in new window
-        echo '<script type="text/javascript">top.$.colorbox({href: "' . SWB . FLS . '/' . $print_file_name . '", iframe: true, width: (1200), height: (parent.window.innerHeight - 200), title: "' . __('Labels Printing') . '"})</script>';
+        echo '<script type="text/javascript">top.$.colorbox({href: "' . SWB . FLS . '/' . $print_file_name . '?v='.date('YmdHis').'", iframe: true, width: (1200), height: (parent.window.innerHeight - 200), title: "' . __('Labels Printing') . '"})</script>';
     } else {
         utility::jsToastr('Labels Printing', str_replace('{directory}', SB . FLS, __('ERROR! Label failed to generate, possibly because {directory} directory is not writable')), 'error');
     }
@@ -329,8 +329,7 @@ if ($sysconf['index']['type'] == 'index' || ($sysconf['index']['type'] == 'sphin
     // table spec
     $table_spec = 'search_biblio AS `index` LEFT JOIN `item` ON `index`.biblio_id=`item`.biblio_id';
     if ($can_read) {
-        $datagrid->setSQLColumn('IF(item.item_id IS NOT NULL, item.item_id, CONCAT(\'b\', index.biblio_id))', 'index.title AS `' . __('Title') . '`',
-            'IF(item.call_number<>\'\', item.call_number, index.call_number) AS `' . __('Call Number') . '`', 'item.item_code AS `' . __('Item Code') . '`');
+        $datagrid->setSQLColumn('IF(item.item_id IS NOT NULL, item.item_id, CONCAT(\'b\', index.biblio_id))', 'index.title AS "' . __('Title') . '"', 'IF(item.call_number<>\'\', item.call_number, index.call_number) AS `' . __('Call Number') . '`', 'item.item_code AS `' . __('Item Code') . '`');
     }
 } else {
     require LIB . 'biblio_list.inc.php';
