@@ -11,8 +11,6 @@
 <?php
 // clean request uri from xss
 $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
-header("Content-Security-Policy: base-uri 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; frame-src 'self' *.google.com; font-src 'self'; media-src 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; frame-ancestors 'none';");
-header('X-Content-Type-Options: nosniff');
 ?>
 <!DOCTYPE html>
 <html>

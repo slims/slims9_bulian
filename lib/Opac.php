@@ -3,14 +3,14 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-08-17 15:49:36
+ * @modify date 2022-09-14 13:17:02
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
 
 namespace SLiMS;
 
-use Closure,Exception,Content,utility;
+use Closure,Exception,Content,utility,simbio_security;
 
 class Opac
 {
@@ -21,6 +21,8 @@ class Opac
      */
     private bool $matchPath = false;
     private string $path = '';
+    private string $csrf_token = '';
+    private bool $invalid_token = false;
     private array $definedVariable = [];
     private array $sysconf = [];
     private $dbs = null;
@@ -180,23 +182,85 @@ class Opac
     }
 
     /**
+     * Set HTTP header
+     *
+     * @param string $headerName
+     * @param string $headerValue
+     * @return void
+     */
+    public function setHeader(string $headerName, string $headerValue)
+    {
+        header(trim($headerName) . ':' . trim($headerValue));
+    }
+
+    /**
+     * Set csrf token
+     *
+     * @return void
+     */
+    private function setCsrf()
+    {
+        $this->csrf_token = \Slims\Opac\Security::getCsrfToken();
+        $_SESSION['csrf_token'] = $this->csrf_token;
+    }
+
+    /**
+     * Get CSRF token
+     *
+     * @return void
+     */
+    public function getCsrf()
+    {
+        return $this->csrf_token;
+    }
+
+    /**
+     * Validate csrf token
+     *
+     * @return void
+     */
+    public function validateCsrf()
+    {
+        if ((isset($_SESSION['csrf_token'])) AND (isset($_GET['csrf_token'])) ) {
+            if (!(\Slims\Opac\Security::checkCsrfToken($_SESSION['csrf_token'], $_GET['csrf_token']))) {
+                $this->invalid_token = true;
+            }
+        }
+    }
+
+    /**
      * Parse content to template
      *
      * @return void
      */
     public function parseToTemplate()
     {
-        include LIB.'contents/default.inc.php';
+        // OPAC
+        $opac = $this;
+        
+        // Validate incoming token and session
+        $opac->validateCsrf();
+
+        // csrf
+        $opac->setCsrf();
+
         // extract defined variable
-        extract($this->definedVariable);
-        $sysconf = $this->sysconf;
-        $dbs = $this->dbs;
-        // Load common SLiMS variable
-        require LIB.'contents/common.inc.php';
-        $main_content = ob_get_clean();
+        extract($opac->definedVariable);
+        $sysconf = $opac->sysconf;
+        $dbs = $opac->dbs;
+
+        if (!$this->invalid_token)
+        {
+            // load default contents
+            include LIB.'contents/default.inc.php';
+            
+            // Load common SLiMS variable
+            require LIB.'contents/common.inc.php';
+            $main_content = ob_get_clean();
+        }
 
         // parse into template
-        require $this->sysconf['template']['dir'].'/'.$this->sysconf['template']['theme'].'/index_template.inc.php';
+        require $opac->sysconf['template']['dir'].'/'.$opac->sysconf['template']['theme'].'/index_template.inc.php';
         exit;
     }
 
@@ -225,15 +289,7 @@ class Opac
                 ->parseToTemplate(); // then parse to template
             
         } catch (Exception $e) {
-            // Clear buffer
-            ob_get_flush();
-
-            // send as json
-            $this->toJson(['status' => false, 'message' => $e->getMessage()]);
-
-            // output buffer
-            ob_start();
-            echo "<div class=\"alert alert-danger\">{$e->getMessage()}</div>";
+            echo $this->error($e->getMessage());
             $this->parseToTemplate();
         }
     }
@@ -261,6 +317,26 @@ class Opac
         }
 
         return $this;
+    }
+
+    private function error(string $message)
+    {
+        // Clear buffer
+        ob_get_flush();
+
+        // send as json
+        $this->toJson(['status' => false, 'message' => $message]);
+
+        // output buffer
+        ob_start();
+        $alertType = 'alert-danger';
+        $alertTitle = 'Error';
+        $alertMessage = $message;
+        $sysconf = $this->sysconf;
+
+        // load alert template
+        require SB . 'template/alert.php';
+        return ob_get_clean();
     }
 
     /**

@@ -13,7 +13,7 @@ trait SearchFilter
         $this->customFilter = $filter;
     }
 
-    public function getFilter($build = false)
+    public function getFilter($opac, $build = false)
     {
         $filter = [];
 
@@ -95,7 +95,7 @@ trait SearchFilter
             'items' => $this->getLanguage()
         ];
 
-        if ($build) return $this->buildFilter(array_merge($filter, $this->customFilter));
+        if ($build) return $this->buildFilter($opac, array_merge($filter, $this->customFilter));
         return array_merge($filter, $this->customFilter);
     }
 
@@ -129,14 +129,14 @@ trait SearchFilter
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function buildFilter($filters): string
+    public function buildFilter($opac, $filters): string
     {
         // get filter from url
         $filterStr = \utility::filterData('filter', 'get', false, true, true);
         $filterArr = json_decode($filterStr??'', true);
 
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
-        $str .= '<input type="hidden" name="csrf_token" value="'.$_SESSION['csrf_token'].'">';
+        $str .= '<input type="hidden" name="csrf_token" value="'.$opac->getCsrf().'">';
 
         foreach ($this->reOrder($filters) as $index => $filter) {
             if ($index < 1) {

@@ -70,6 +70,11 @@ $Opac = new Opac($opacVariable, $sysconf, $dbs);
 // running hook to override process/variable before
 // content load
 $Opac->hookBeforeContent(function($Opac){
+  // Set header for CSP
+  $Opac->setHeader('Content-Security-Policy', "base-uri 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; frame-src 'self' *.google.com; font-src 'self'; media-src 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; frame-ancestors 'none';");
+  $Opac->setHeader('X-Content-Type-Options', 'nonsniff');
+  
+  // running plugin based on hook
   Plugins::getInstance()->execute('before_content_load', [$Opac]);
 });
 

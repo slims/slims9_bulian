@@ -65,6 +65,8 @@ class simbio_paging
         // check the query string
         if (isset($_SERVER['QUERY_STRING']) AND !empty($_SERVER['QUERY_STRING'])) {
             parse_str($_SERVER['QUERY_STRING'], $arr_query_var);
+            // renew csrf token
+            if (isset($arr_query_var['csrf_token'])) $arr_query_var['csrf_token'] = $_SESSION['csrf_token']??'';
             // rebuild query str without "page" var
             $_query_str_page = '';
             foreach ($arr_query_var as $varname => $varvalue) {
