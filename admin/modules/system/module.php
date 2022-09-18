@@ -53,13 +53,13 @@ if (isset($_POST['saveData'])) {
     $moduleName = trim(strip_tags($_POST['moduleName']));
     $modulePath = trim(strip_tags($_POST['modulePath']));
     if (empty($moduleName) OR empty($modulePath)) {
-        utility::jsAlert(__('Module name and path can\'t be empty'));
+        toastr(__('Module name and path can\'t be empty'))->error();
         exit();
     } else {
         $data['module_path'] = $dbs->escape_string($modulePath);
         // check for module path existance
         if (!file_exists(MDLBS.$data['module_path'].DS)) {
-            utility::jsAlert(__('Modules path doesn\'t exists! Please check again in module base directory'));
+            toastr(__('Modules path doesn\'t exists! Please check again in module base directory'))->error();
             exit();
         }
         $data['module_name'] = $dbs->escape_string($moduleName);
@@ -76,9 +76,9 @@ if (isset($_POST['saveData'])) {
             if ($update) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update module data ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Update');
-                utility::jsAlert(__('Module Data Successfully Updated'));
+                toastr(__('Module Data Successfully Updated'))->success();
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Module Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { toastr(__('Module Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -89,9 +89,9 @@ if (isset($_POST['saveData'])) {
                 $dbs->query('INSERT INTO group_access (group_id, module_id, r,w) VALUES (1, '.$module_id.', 1, 1)');
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Add' );
-                utility::jsAlert(__('New Module Data Successfully Saved'));
+                toastr(__('New Module Data Successfully Saved'))->success();
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Module Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { toastr(__('Module Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
             exit();
         }
     }
@@ -124,10 +124,10 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        toastr(__('All Data Successfully Deleted'))->success();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->warning();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

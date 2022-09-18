@@ -78,9 +78,9 @@ if (isset($_POST['template'])) {
 
   $update = addOrUpdateSetting('membercard_print_settings', $data);
   if ($update !== true) {
-    utility::jsAlert(__('Error saving custom data!') . ' ' . $update);
+    toastr(__('Error saving custom data!') . ' ' . $update)->error();
   } else {
-    utility::jsAlert(__('Custom data saved!'));
+    toastr(__('Custom data saved!'))->success();
  }
   
   exit();

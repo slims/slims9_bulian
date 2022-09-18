@@ -64,13 +64,13 @@ $serial = new serial($dbs, $serialID);
 if (isset($_POST['saveKardexes'])) {
     // save kardexes
     $serial->saveKardexes();
-    utility::jsAlert(__('Kardex data updated!'));
+    toastr(__('Kardex data updated!'))->success();
 } else if (isset($_POST['remove'])) {
     // remove kardex
     $removeID = (integer)$_POST['remove'];
     $removed = $serial->deleteKardex($removeID);
     if ($removed) {
-        utility::jsAlert(__('Kardex data deleted!'));
+        toastr(__('Kardex data deleted!'))->success();
     }
 }
 // view kardexes list

@@ -92,16 +92,16 @@ if (isset($_POST['saveData'])) {
     $passwd2 = trim($_POST['passwd2']);
     // check form validity
     if (empty($userName) OR empty($realName)) {
-        utility::jsAlert(__('User Name or Real Name can\'t be empty'));
+        toastr(__('User Name or Real Name can\'t be empty'))->error();
         exit();
     } else if (($userName == 'admin' OR $realName == 'Administrator') AND $_SESSION['uid'] != 1) {
-        utility::jsAlert(__('Login username or Real Name is probihited!'));
+        toastr(__('Login username or Real Name is probihited!'))->error();
         exit();
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
-        utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
+        toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
         exit();
     } else if (!simbio_form_maker::isTokenValid()) {
-        utility::jsAlert(__('Invalid form submission token!'));
+        toastr(__('Invalid form submission token!'))->error();
         exit();
     } else {
         $data['username'] = $dbs->escape_string(trim($userName));
@@ -175,7 +175,7 @@ if (isset($_POST['saveData'])) {
             if ($update) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
-                utility::jsAlert(__('User Data Successfully Updated'));
+                toastr(__('User Data Successfully Updated'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
@@ -183,16 +183,16 @@ if (isset($_POST['saveData'])) {
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
-                        utility::jsAlert(__('Image Uploaded Successfully'));
+                        toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
-                        utility::jsAlert(__('Image FAILED to upload'));
+                        toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'].'\');</script>';
-            } else { utility::jsAlert(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { toastr(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -200,7 +200,7 @@ if (isset($_POST['saveData'])) {
             if ($sql_op->insert('user', $data)) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
-                utility::jsAlert(__('New User Data Successfully Saved'));
+                toastr(__('New User Data Successfully Saved'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
@@ -208,15 +208,15 @@ if (isset($_POST['saveData'])) {
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
-                        utility::jsAlert(__('Image Uploaded Successfully'));
+                        toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
-                        utility::jsAlert(__('Image FAILED to upload'));
+                        toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('User Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+            } else { toastr(__('User Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
             exit();
         }
     }
@@ -249,10 +249,10 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        toastr(__('All Data Successfully Deleted'))->success();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->error();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();

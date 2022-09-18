@@ -143,7 +143,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
 
       echo $alert_update;
     } else {
-      utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+      toastr(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error)->error();
     }
     
   } else {
@@ -153,7 +153,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     $check_dc = $check_vc->fetch_row();
     if ($check_dc[0] > 0) {
       // already add
-      utility::jsAlert(__('Subject ALREADY Added in Relation!'));
+      toastr(__('Subject ALREADY Added in Relation!'))->success();
     } else {
       // insert primary vocabolary
       if ($sql_op->insert('mst_voc_ctrl', $data)) {
@@ -166,7 +166,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
           if ($insert) {
             echo $alert_add;
           }else{
-            utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+            toastr(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error)->error();
           }
 
         }else{
@@ -174,7 +174,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
         }
 
       } else {
-        utility::jsAlert(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error);
+        toastr(__('Subject FAILED to Add. Please Contact System Administrator')."\n".$sql_op->error)->error();
       }
     }
 

@@ -49,7 +49,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   $server_uri = trim(strip_tags($_POST['serverUri']));
   // check form validity
     if (empty($server_name) OR empty($server_uri)) {
-      utility::jsAlert(__('Server Name And URI can\'t be empty'));
+      toastr(__('Server Name And URI can\'t be empty'))->error();
       exit();
     } else {
       $data['name'] = $dbs->escape_string($server_name);
@@ -68,16 +68,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         // update the data
         $update = $sql_op->update('mst_servers', $data, 'server_id='.$updateRecordID);
         if ($update) {
-            utility::jsAlert(__('Server Data Successfully Updated'));
+            toastr(__('Server Data Successfully Updated'))->success();
             echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-        } else { utility::jsAlert(__('Server Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+        } else { toastr(__('Server Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
         exit();
       } else {
         // insert the data
         if ($sql_op->insert('mst_servers', $data)) {
-            utility::jsAlert(__('New Server Data Successfully Saved'));
+            toastr(__('New Server Data Successfully Saved'))->success();
             echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-        } else { utility::jsAlert(__('Server Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+        } else { toastr(__('Server Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
         exit();
       }
     }
@@ -104,10 +104,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
   // error alerting
   if ($error_num == 0) {
-      utility::jsAlert(__('All Data Successfully Deleted'));
+      toastr(__('All Data Successfully Deleted'))->success();
       echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
   } else {
-      utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+      toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->warning();
       echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
   }
   exit();

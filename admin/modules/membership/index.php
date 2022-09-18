@@ -95,10 +95,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $mpasswd1 = trim($_POST['memberPasswd']);
     $mpasswd2 = trim($_POST['memberPasswd2']);
     if (empty($memberID) OR empty($memberName) OR empty($birthDate)) {
-        utility::jsAlert(__('Member ID, Name and Birthday cannot be empty')); //mfc
+        toastr(__('Member ID, Name and Birthday cannot be empty'))->error(); //mfc
         exit();
     } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
-        utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
+        toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
         exit();
     } else {
 
@@ -125,11 +125,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 else{
                   $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
                   if($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val!='')){
-                    utility::jsToastr(__('Membership'), sprintf(__('Field %s only number for allowed'),$cfield['label']), 'error');      
+                    toastr(sprintf(__('Field %s only number for allowed'),$cfield['label']))->error(__('Membership'));      
                     exit();        
                   }
                   elseif ($cfield['type'] == 'date' && $cf_val == '') {
-                    utility::jsToastr(__('Membership'), sprintf(__('Field %s is date format, empty not allowed'),$cfield['label']), 'error');      
+                    toastr(sprintf(__('Field %s is date format, empty not allowed'),$cfield['label']))->error(__('Membership'));      
                     exit();
                   }
                   $custom_data[$cf_dbfield] = $cf_val;
@@ -244,17 +244,17 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // update other tables contain this member ID
                 @$dbs->query('UPDATE loan SET member_id=\''.$data['member_id'].'\' WHERE member_id=\''.$old_member_ID.'\'');
                 @$dbs->query('UPDATE fines SET member_id=\''.$data['member_id'].'\' WHERE member_id=\''.$old_member_ID.'\'');
-                utility::jsAlert(__('Member Data Successfully Updated'));
+                toastr(__('Member Data Successfully Updated'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Update');
-                        utility::jsAlert(__('Image Uploaded Successfully'));
+                        toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
-                        utility::jsAlert(__('Image FAILED to upload'));
+                        toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
@@ -264,7 +264,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 } else {
                   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 }
-            } else { utility::jsAlert(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { toastr(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -281,23 +281,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 \SLiMS\Plugins::getInstance()->execute('membership_after_save', ['data' => api::member_load($dbs, $data['member_id'])]);
 
-                utility::jsAlert(__('New Member Data Successfully Saved'));
+                toastr(__('New Member Data Successfully Saved'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
-                        utility::jsAlert(__('Image Uploaded Successfully'));
+                        toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
                         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
-                        utility::jsAlert(__('Image FAILED to upload'));
+                        toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { toastr(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->danger(); }
             exit();
         }
     }
@@ -360,15 +360,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         foreach ($still_have_loan as $mbr) {
             $members .= $mbr."\n";
         }
-        utility::jsAlert(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$mbr);
+        toastr(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$mbr)->error();
         exit();
     }
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
+        toastr(__('All Data Successfully Deleted'))->success();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->error();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
@@ -664,6 +664,7 @@ $(document).ready(function() {
 </script>
 <?php
 } else {
+    
     /* MEMBERSHIP LIST */
     function showMemberImage($obj_db, $array_data){
       global $sysconf;

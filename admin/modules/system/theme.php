@@ -102,13 +102,13 @@ if (isset($_POST['updateData'])) {
       }
       $update = addOrUpdateSetting($theme_key, $data);
       if ($update !== true) {
-        utility::jsAlert(__('Error saving custom data!') . ' ' . $update);
+        toastr(__('Error saving custom data!') . ' ' . $update)->error();
       } else {
-        utility::jsAlert(__('Custom data saved! Reload the page to see changes.'));
+        toastr(__('Custom data saved! Reload the page to see changes.'))->success();
       }
     }
   } else {
-    utility::jsAlert(__('This theme not customizable. ' . $path));
+    toastr(__('This theme not customizable. ' . $path))->warning();
   }
 
   exit();

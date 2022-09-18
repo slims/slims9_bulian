@@ -47,3 +47,57 @@ if (!function_exists('ip'))
         return Ip::getInstance();
     }
 }
+
+if (!function_exists('toastr'))
+{
+    /**
+     * Helper to call toastrJS
+     * alert template as function
+     * 
+     * usage: 
+     * 
+     * toastr('your message')->{template}('Toastr alert title leave empty for default title');
+     * 
+     * example:
+     * 
+     * toastr('Success insert data')->success();
+     * 
+     * Available template
+     * - error, info, success, warning
+     * 
+     * if you use outside template, by default this function
+     * will you use native browser alert.
+     * 
+     * @param string $message
+     * @return void
+     */
+    function toastr(string $message)
+    {
+        // Anonymous class
+        return new Class($message)
+        {
+            public function __construct($message)
+            {
+                $this->message = $message;
+            }
+
+            /**
+             * use magic method to identifiy what
+             * template user use.
+             */
+            public function __call($method, $parameters)
+            {
+                if (in_array($method, ['error','info','success','warning']))
+                {
+                    // Call toastrJS on utility class
+                    utility::jsToastr($parameters[0]??__(ucfirst($method)), $this->message, $method);
+                }
+                else
+                {
+                    // native as default if template not available
+                    utility::jsAlert($this->message);
+                }
+            }
+        };
+    }
+}

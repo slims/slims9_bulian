@@ -74,17 +74,17 @@ if (isset($_POST['saveData'])) {
         // update the data
         $update = $sql_op->update('mst_loan_rules', $data, 'loan_rules_id='.$updateRecordID);
         if ($update) {
-            utility::jsAlert(__('Loan Rules Successfully Updated'));
+            toastr(__('Loan Rules Successfully Updated'))->success();
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-        } else { utility::jsAlert(__('Loan Rules FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+        } else { toastr(__('Loan Rules FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
         exit();
     } else {
         /* INSERT RECORD MODE */
         $insert = $sql_op->insert('mst_loan_rules', $data);
         if ($insert) {
-            utility::jsAlert(__('New Loan Rules Successfully Saved'));
+            toastr(__('New Loan Rules Successfully Saved'))->success();
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-        } else { utility::jsAlert(__('Loan Rules FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+        } else { toastr(__('Loan Rules FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
         exit();
     }
     exit();
@@ -114,14 +114,14 @@ if (isset($_POST['saveData'])) {
     // error alerting
     if ($error_num == 0) {
         if (!$lrStatus) {
-            utility::jsAlert(__('All Data Successfully Deleted'));
+            toastr(__('All Data Successfully Deleted'))->success();
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
         } else {
-            utility::jsAlert(__('Sorry. There is active loan transaction(s) using this loan rules.'));
+            toastr(__('Sorry. There is active loan transaction(s) using this loan rules.'))->info();
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
         }
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
+        toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->success();
         echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
