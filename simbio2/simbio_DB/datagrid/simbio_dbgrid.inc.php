@@ -66,7 +66,8 @@ class simbio_datagrid extends simbio_table
     public $chbox_property;
     public $edit_property;
     public $chbox_action_button = false;
-    public $chbox_confirm_msg = false;
+    public $enable_chbox_confirm = true;
+    public $chbox_confirm_msg = '';
     public $current_page = 1;
     public $query_time = 1;
     # are we using AJAX or not
@@ -101,9 +102,11 @@ class simbio_datagrid extends simbio_table
         // set editable flag
         $this->editable = $bool_editable;
 
-        if (!$this->chbox_confirm_msg) {
-            $this->chbox_confirm_msg = __('Are You Sure Want to DELETE Selected Data?');
-        }
+        // set default confirm message
+        if (empty($this->chbox_confirm_msg)) $this->chbox_confirm_msg = __('Are You Sure Want to DELETE Selected Data?');
+
+        // enable or disable confirm message
+        $this->enable_chbox_confirm = config('enable_chbox_confirm', $this->enable_chbox_confirm);
 
         $this->sql_table = $str_db_table;
         $this->highlight_row = true;
@@ -383,7 +386,7 @@ class simbio_datagrid extends simbio_table
             $_button_grp = '<table cellspacing="0" cellpadding="5" class="datagrid-action-bar" style="width: 100%;"><tr>';
             // if checkbox is include then show button
             if ($this->chbox_property) {
-                $_button_grp .= '<td><input type="button" onclick="chboxFormSubmit(\''.$this->table_name.'\', \''.$this->chbox_confirm_msg.'\')" value="'.($this->chbox_action_button?$this->chbox_action_button:__('Delete Selected Data')).'" class="s-btn btn '.($this->chbox_action_button?'btn-success':'btn-danger').'" /> '
+                $_button_grp .= '<td><input type="button" onclick="chboxFormSubmit(\''.$this->table_name.'\', \''.$this->chbox_confirm_msg.'\', '.((int)$this->enable_chbox_confirm).')" value="'.($this->chbox_action_button?$this->chbox_action_button:__('Delete Selected Data')).'" class="s-btn btn '.($this->chbox_action_button?'btn-success':'btn-danger').'" /> '
                     .'<input type="button" value="'.$_check_all.'" class="check-all button btn btn-default" /> '
                     .'<input type="button" value="'.$_uncheck_all.'" class="uncheck-all button btn btn-default" /> '
                     .'</td>';

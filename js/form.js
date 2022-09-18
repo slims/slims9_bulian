@@ -62,8 +62,16 @@ var checkAll = function(strFormID, boolUncheck) {
 }
 
 /* function to collect checkbox data and submit form */
-var chboxFormSubmit = function(strFormID, strMessage) {
+var chboxFormSubmit = function(strFormID, strMessage, withConfirm) {
   var formObj = $('#'+strFormID);
+
+  if (!withConfirm)
+  {
+    // submit the form
+    formObj[0].submit();
+    return;
+  }
+
   // get all checkbox element
   var chkBoxs = formObj.find('input[type=checkbox]:checked');
 
@@ -94,7 +102,12 @@ var serializeChbox = function(strParentID) {
 }
 
 /* form submit confirmation */
-var confSubmit = function(strFormID, strMsg) {
+var confSubmit = function(strFormID, strMsg, withConfirm) {
+  if (!withConfirm)
+  {
+    $('#'+strFormID).submit();
+    return;
+  }
   strMsg = strMsg.replace(/\'/i, "\'");
   var yesno = confirm(strMsg);
   if (yesno) { $('#'+strFormID).submit(); }
