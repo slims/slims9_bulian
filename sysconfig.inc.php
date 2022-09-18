@@ -711,6 +711,15 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
 $sysconf['load_balanced_env'] = false;
 $sysconf['load_balanced_source_ip'] = 'HTTP_X_FORWARDED_FOR';
 
+// visitor limitation
+$sysconf['enable_counter_by_ip'] = true;
+$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
+$sysconf['enable_visitor_limitation']     = false; // "true" or "false"
+$sysconf['time_visitor_limitation']       = 60; // in minute
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
 
@@ -752,12 +761,6 @@ if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset(
   $sysconf['enable_xml_result'] = false;
 }
 
-// visitor limitation
-$sysconf['enable_counter_by_ip'] = true;
-$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
-$sysconf['enable_visitor_limitation']     = false; // "true" or "false"
-$sysconf['time_visitor_limitation']       = 60; // in minute
-
 /* new log system */
 $sysconf['log']['biblio'] = TRUE;
 
@@ -776,9 +779,6 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 # for elasticsearch
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
-
-/* maximum insert batch */
-$sysconf['max_insert_batch'] = 100;
 
 // load helper
 require_once LIB . "helper.inc.php";
