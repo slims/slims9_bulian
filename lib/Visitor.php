@@ -3,7 +3,7 @@
  * @compose by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-09-18 19:39:17
- * @modify date 2022-09-18 22:10:52
+ * @modify date 2022-09-19 15:55:59
  * @license GPLv3
  * @desc [description]
  */
@@ -17,18 +17,18 @@ class Visitor
      *
      * @var array
      */
-    private array $allowedIp;
-    private string $visitTimeLimit;
-    private bool $accessAllow = false;
-    private array $data = [];
-    private bool $alreadyCheckIn = false;
-    private bool $member = false;
-    private bool $memberExpire = false;
-    private bool $institutionEmpty = false;
-    private string $error = '';
-    private string $image = 'person.png';
-    private bool $result = false;
-    private $opac;
+    protected array $allowedIp;
+    protected string $visitTimeLimit;
+    protected bool $accessAllow = false;
+    protected array $data = [];
+    protected bool $alreadyCheckIn = false;
+    protected bool $member = false;
+    protected bool $memberExpire = false;
+    protected bool $institutionEmpty = false;
+    protected string $error = '';
+    protected string $image = 'person.png';
+    protected bool $result = false;
+    protected $opac;
 
     public function __construct(array $allowedIp, string $visitTimeLimit, Opac $opac)
     {
@@ -86,6 +86,7 @@ class Visitor
                 unset($data[2]);
 
                 $this->data = array_values($data);
+                Plugins::getInstance()->execute('MEMBER_ON_VISIT', ['data' => $statement->fetch(\PDO::FETCH_ASSOC)]);
             }
             // Guest
             else
@@ -100,6 +101,7 @@ class Visitor
                 // default non member photos
                 $this->image = 'non_member.png';
                 $this->data = [ null, $memberId,trim($_POST['institution'])];
+                Plugins::getInstance()->execute('NON_MEMBER_ON_VISIT', ['data' => array_slice($this->data, 1)]);
             }
 
         
@@ -132,7 +134,7 @@ class Visitor
      * @param boolean $isMember
      * @return bool
      */
-    private function alreadyCheckIn($memberIdOrName, $isMember = true)
+    protected function alreadyCheckIn($memberIdOrName, $isMember = true)
     {
         $db = DB::getInstance();
         $criteria = 'member_name';
