@@ -6,7 +6,7 @@ use SLiMS\DB;
 
 trait SearchFilter
 {
-    private $customFilter = [];
+    protected $customFilter = [];
 
     public function setCustomFilter($filter)
     {
