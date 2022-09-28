@@ -83,7 +83,7 @@ class utility
       // replace newline with javascripts newline
       $str_message = str_replace("\n", '\n', addslashes($str_message));
       echo '<script type="text/javascript">'."\n";
-      echo 'parent.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
+      echo 'top.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
       echo '</script>'."\n";
     }
 
