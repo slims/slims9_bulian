@@ -30,6 +30,7 @@ $sysconf['template']['classic_footer_about_us'] = <<<HTML
 <p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features that will help libraries and librarians to do their job easily 
 and quickly. Follow <a target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some features provided by SLiMS.</p>
 HTML;
+$sysconf['template']['classic_library_disableslide'] = 0;
 
 
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
@@ -51,6 +52,16 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
         'data' => [
             [1, __('Show')],
             [0, __('Hide')]
+        ]
+    ],
+    'disableslide' => [
+        'dbfield' => 'classic_library_disableslide',
+        'label' => __('Disable Slide'),
+        'type' => 'dropdown',
+        'default' => 0,
+        'data' => [
+            [1, __('Yes')],
+            [0, __('No')]
         ]
     ],
     'transition' => [

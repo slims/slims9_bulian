@@ -5,8 +5,8 @@
  * @File name           : vegas.js.php
  */
 
+if (!$sysconf['template']['classic_library_disableslide']):
 ?>
-
 <script>
   $('.c-header, .vegas-slide').vegas({
         delay: <?= $sysconf['template']['classic_slide_delay']; ?>,
@@ -21,3 +21,5 @@
         ]
     });
 </script>
+<?php
+endif;
