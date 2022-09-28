@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:08:37
- * @modify date 2022-06-02 23:25:47
+ * @modify date 2022-09-28 15:52:28
  * @license GPLv3
  * @desc [description]
  */
@@ -38,6 +38,11 @@ class Blueprint
      * @var [type]
      */
     private $grammarClass = null;
+
+    /**
+     * Mode type
+     */
+    private $type = '';
 
     /**
      * Set grammar class for static 
@@ -214,6 +219,7 @@ class Blueprint
      */
     private function scopeFulltext(string $columnName)
     {
+        $this->type = 'option';
         $this->data['options'][] = 'FULLTEXT KEY `' . $columnName . '_fulltext` (`' . $columnName . '`)';
     }
 
@@ -225,6 +231,7 @@ class Blueprint
      */
     private function scopeIndex(string $columnName)
     {
+        $this->type = 'option';
         $this->data['options'][] = 'KEY `' . $columnName . '_index` (`' . $columnName . '`)';
     }
 
@@ -236,6 +243,7 @@ class Blueprint
      */
     private function scopePrimary($columnName = '')
     {
+        $this->type = 'option';
         if (empty($columnName) && !is_array($columnName))
         {
             $lastIndexData = array_key_last($this->data['columns']);
@@ -320,10 +328,12 @@ class Blueprint
      */
     private function scopeAdd()
     {
-        $lastIndexData = array_key_last($this->data['columns']);
+        $type = empty($this->type) ? 'columns' : 'options';
+        $lastIndexData = array_key_last($this->data[$type]);
 
-        $perWord = explode(' ', $this->data['columns'][$lastIndexData]); // 0 as column name
-        $this->data['columns'][$lastIndexData] = 'ADD ' . $this->data['columns'][$lastIndexData];
+        $perWord = explode(' ', $this->data[$type][$lastIndexData]??''); // 0 as column name
+        $this->data[$type][$lastIndexData] = 'ADD ' . ($this->data[$type][$lastIndexData]??'');
+        $this->type = '';
     }
 
     /**

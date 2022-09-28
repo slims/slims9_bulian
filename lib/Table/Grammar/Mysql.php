@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:42:38
- * @modify date 2022-06-02 23:01:12
+ * @modify date 2022-09-28 17:47:03
  * @license GPLv3
  * @desc [description]
  */
@@ -72,7 +72,7 @@ class Mysql
         extract($attributes);
 
         // set state
-        $columns = implode(',', $columns);
+        $columns = count($columns) ? implode(',', $columns) : '';
         $options = count($options) ? ', ' . implode(',', $options) : '';
 
         return self::compile('alter', $tableName, $columns, $options, $rdbmsOpt);
@@ -128,6 +128,7 @@ class Mysql
                 break;
             
             case 'alter':
+                if (empty($columns)) $options = trim(substr_replace($options, '', 0,1));
                 $SQL = <<<SQL
                     ALTER TABLE `{$tableName}`
                         {$columns}
