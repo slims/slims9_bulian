@@ -48,7 +48,7 @@ if (isset($_GET['select_lang'])) {
 }
 
 ?>
-<div class="vegas-slide" style="position: fixed; z-index: -1"></div>
+<div class="<?= $sysconf['template']['classic_library_disableslide'] ? 'vegas-slide c-header' : 'vegas-slide' ?>" style="position: fixed; z-index: -1"></div>
 <div class="flex h-screen w-full" id="visitor-counter" style="background: rgba(0,0,0,0.3)">
     <div class="bg-white w-full md:w-1/3 px-8 pt-8 pb-3 flex flex-col justify-between">
         <div>
