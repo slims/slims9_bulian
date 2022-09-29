@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-09-14 13:17:02
+ * @modify date 2022-09-29 19:30:39
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -226,6 +226,18 @@ class Opac
                 $this->invalid_token = true;
             }
         }
+    }
+
+    /**
+     * Set Content Security Policy
+     *
+     * @param array $additionalCsp
+     * @return void
+     */
+    public function setCsp(array $additionalCsp = [])
+    {
+        $defaultCsp = config('csp', []);
+        if (count($defaultCsp)) $this->setHeader('Content-Security-Policy', implode(';', array_merge($defaultCsp, $additionalCsp)));
     }
 
     /**
