@@ -189,7 +189,7 @@ class member_logon
         // get user info
         $this->user_info = $_member_q->fetch_assoc();
         // verify password hash
-        $verified = password_verify($this->password, $this->user_info['mpasswd']);
+        $verified = password_verify($this->password, $this->user_info['mpasswd']??'');
         if (!$verified) {
             //check if md5
             if($this->user_info['mpasswd'] == md5($this->password)){
