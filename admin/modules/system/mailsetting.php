@@ -3,11 +3,11 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2021-10-27 10:43:48
- * @modify date 2021-10-27 10:43:48
+ * @modify date 2022-10-08 12:39:36
  * @desc [description]
  */
 
-use PHPMailer\PHPMailer\{SMTP,PHPMailer};
+use SLiMS\Mail;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -26,19 +26,18 @@ require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
-$configPath = SB.'config'.DS.'sysconfig.mail.inc.php';
-$samplePath = SB.'config'.DS.'sysconfig.mail.inc-sample.php';
+$configPath = SB.'config'.DS.'mail.php';
+$samplePath = SB.'config'.DS.'mail.sample.php';
 $isConfigExists = file_exists($configPath);
 $isConfigWriteable = is_writable(SB.'config'.DS);
 
 function setValue($key)
 {
-    global $isConfigExists, $configPath, $sysconf;
+    global $isConfigExists;
 
-    if ($isConfigExists && isset($sysconf['mail'][$key]))
+    if ($isConfigExists)
     {
-        include_once $configPath;
-        return $sysconf['mail'][$key];
+        return config('mail')[$key]??'';
     }
 
     return '';
@@ -46,11 +45,23 @@ function setValue($key)
 
 function setPlaceholder($key, $ignore = 'auth_password')
 {
-    global $sysconf;
+    $placeholder = [
+      'SMTPSecure' => 'ssl', // ssl or tls
+      'enable' => true,
+      'server' => 'ssl://smtp.gmail.com:465', // SMTP server
+      'server_port' => 465, // the SMTP port
+      'auth_enable' => true, // enable SMTP authentication
+      'auth_username' => 'admin', // SMTP account username
+      'auth_password' => 'admin', // SMTP account password
+      'from' => 'admin@localhost.com',
+      'from_name' => 'SLiMS Administrator',
+      'reply_to' => 'admin@localhost.com',
+      'reply_to_name' => 'SLiMS Administrator'
+    ];
 
-    if (isset($sysconf['mail'][$key]))
+    if (isset($placeholder[$key]))
     {
-        $label = ($key === $ignore) ? ' 123. ' . __('NB : Password is hidden for security reason') : $sysconf['mail'][$key];
+        $label = ($key === $ignore) ? ' 123. ' . __('NB : Password is hidden for security reason') : ($placeholder[$key]??'');
         return __('Example') . ' : ' . $label;
     }
 
@@ -61,22 +72,20 @@ if (isset($_POST['saveData']))
 {
     if (!$isConfigWriteable)
     {
-        utility::jsToastr(__('Error'), __('Directory config is not writeable.'), 'error');
+        toastr(__('Directory config is not writeable.'))->error();
         exit;
     }
 
     if (isset($_POST['edit']) && empty(trim($_POST['authpassword'])))
     {
-      include_once $configPath;
-      $_POST['authpassword'] = $sysconf['mail']['auth_password']; // if user change configuration without password, use available password
+      $_POST['authpassword'] = config('mail')['auth_password']??''; // if user change configuration without password, use available password
     }
 
-    // include sample
-    include $samplePath;
     // get sample
     $Config = file_get_contents($samplePath);
+    $mailConfig = $isConfigExists ? config('mail') : require $samplePath;
 
-    foreach ($sysconf['mail'] as $key => $value) 
+    foreach ($mailConfig as $key => $value) 
     {
         $key = str_replace('_', '', $key);
         $customConfig = ($_POST[$key]) ?? '?';
@@ -87,7 +96,7 @@ if (isset($_POST['saveData']))
     file_put_contents($configPath, $Config);
 
     // alert
-    utility::jsToastr(__('E-Mail Configuration'), __('Settings inserted.'), 'success');
+    toastr(__('Settings inserted.'))->success(__('E-Mail Configuration'));
 
     // redirect
     echo '<script>setTimeout(() => {parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\')}, 5000)</script>';
@@ -96,40 +105,15 @@ if (isset($_POST['saveData']))
 
 if (isset($_POST['testMail']))
 {
-  include_once $configPath;
-  $mail = new PHPMailer(true);
   try {
-      ob_start();
-      //Server settings
-      $mail->SMTPDebug = $sysconf['mail']['debug'];                      // Enable verbose debug output
-      $mail->isSMTP();                                                                // Send using SMTP
-      $mail->Host = $sysconf['mail']['server'];                                       // Set the SMTP server to send through
-      $mail->SMTPAuth = $sysconf['mail']['auth_enable'];                              // Enable SMTP authentication
-      $mail->Username = $sysconf['mail']['auth_username'];                            // SMTP username
-      $mail->Password = $sysconf['mail']['auth_password'];                            // SMTP password
-      if ($sysconf['mail']['SMTPSecure'] === 'tls') {                                 // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-      } else if ($sysconf['mail']['SMTPSecure'] === 'ssl') {
-          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-      }
-      $mail->Port = $sysconf['mail']['server_port'];                                  // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+      Mail::to($_POST['receiveraddress'], $_POST['receivername'])
+            ->subject('SLiMS :: Outgoing Mail Testing')
+            ->message($_POST['dummyMessage'])
+            ->send();
 
-      //Recipients
-      $mail->setFrom($sysconf['mail']['from'], $sysconf['mail']['from_name']);
-      $mail->addReplyTo($sysconf['mail']['reply_to'], $sysconf['mail']['reply_to_name']);
-      $mail->addAddress($_POST['receiveraddress'], $_POST['receivername']);
-
-      $mail->isHTML(true);                                  // Set email format to HTML
-      $mail->Subject = 'SLiMS :: Outgoing Mail Testing';
-      $mail->msgHTML($_POST['dummyMessage']);
-      $mail->AltBody = strip_tags($_POST['dummyMessage']);
-
-      $mail->send();
-      $result = ob_get_clean();
-
-      utility::jsToastr(__('Success'), 'Mail testing has been sent', 'success');
+      toastr('Mail testing has been sent')->success();
   } catch (Exception $exception) {
-      utility::jsToastr(__('Success'), 'Mail testing could not be sent. Mailer Error: ' . $mail->ErrorInfo, 'success');
+      toastr('Mail testing could not be sent. Mailer Error: ' . Mail::getInstance()->ErrorInfo)->error();
   }
   exit;
 }
@@ -146,7 +130,7 @@ $form->table_content_attr = 'class="alterCell2"';
 <div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
-      <h2><?php echo __('E-Mail Configuration'); ?></h2>
+      <h2><?= __('E-Mail Configuration'); ?></h2>
     </div>
     <div class="<?= $isConfigWriteable ? 'info' : 'error' ?>Box">
       <?php
@@ -165,67 +149,67 @@ $form->table_content_attr = 'class="alterCell2"';
 </div>
 <?php
 if (!isset($_GET['section'])):
-/* Set field */
-$form->submit_button_attr = 'name="saveData" value="'.__('Save Settings').'" class="btn btn-default"';
+  /* Set field */
+  $form->submit_button_attr = 'name="saveData" value="'.__('Save Settings').'" class="btn btn-default"';
 
-// edit mode
-if ($isConfigExists) $form->addHidden('edit', true);
+  // edit mode
+  if ($isConfigExists) $form->addHidden('edit', true);
 
-// Debug
-$DebugOptions = [
-  [SMTP::DEBUG_OFF, __('Production')],
-  [SMTP::DEBUG_SERVER, __('Development')]
-];
-$form->addSelectList('debug', __('Environment'), $DebugOptions, (int)setValue('debug') ,'class="form-control col-3"');
+  // Debug
+  $form->addSelectList('debug', __('Environment'), array_values(Mail::availableEnv()), (int)setValue('debug') ,'class="form-control col-3"');
 
-// SMTPSecure
-$form->addTextField('text', 'SMTPSecure', __('SMTP Encryption'), setValue('SMTPSecure'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('SMTPSecure').'"');
+  // SMTPSecure
+  $form->addTextField('text', 'SMTPSecure', __('SMTP Encryption'), setValue('SMTPSecure'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('SMTPSecure').'"');
 
-// Server
-$form->addTextField('text', 'server', __('SMTP Server address'), setValue('server'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('server').'"');
+  // Server
+  $form->addTextField('text', 'server', __('SMTP Server address'), setValue('server'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('server').'"');
 
-// Server Port
-$form->addTextField('text', 'serverport', __('SMTP Port'), setValue('server_port'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('server_port').'"');
+  // Server Port
+  $form->addTextField('text', 'serverport', __('SMTP Port'), setValue('server_port'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('server_port').'"');
 
-// set field username
-$form->addTextField('text', 'authusername', __('Authentication Username'), setValue('auth_username'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('auth_username').'"',);
+  // set field username
+  $form->addTextField('text', 'authusername', __('Authentication Username'), setValue('auth_username'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('auth_username').'"',);
 
-// set field password
-$form->addTextField('password', 'authpassword', __('Authentication Password'), '', 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('auth_password').'"', __('Password does not appearance for security reason. If you want to look it, open sysconfig.mail.inc.php file.'));
+  // set field password
+  $form->addTextField('password', 'authpassword', __('Authentication Password'), '', 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('auth_password').'"', __('Password does not appearance for security reason. If you want to look it, open sysconfig.mail.inc.php file.'));
 
-// set email sender address
-$form->addTextField('text', 'from', __('Email Sender Address'), setValue('from'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('from').'"');
+  // set email sender address
+  $form->addTextField('text', 'from', __('Email Sender Address'), setValue('from'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('from').'"');
 
-// set email sender label
-$form->addTextField('text', 'fromname', __('Email Sender Label'), setValue('from_name'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('from_name').'"');
+  // set email sender label
+  $form->addTextField('text', 'fromname', __('Email Sender Label'), setValue('from_name'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('from_name').'"');
 
-// test mail
-if ($isConfigExists)
-{
-  $BtnLabel = __('Do Test');
-  $Url = $_SERVER['PHP_SELF'] . '?section=test';
-  $html = <<<HTML
-    <button data-href="{$Url}" class="testMail btn btn-primary">  
-      <i class="fa fa-gears"></i>
-      {$BtnLabel}
-    </button>
-  HTML;
-  $form->addAnything('Test Mail Configuration', $html);
-}
-// print out the object
-echo $form->printOut();
-// End main configuration
+  // test mail
+  if ($isConfigExists)
+  {
+    $BtnLabel = __('Do Test');
+    $Url = $_SERVER['PHP_SELF'] . '?section=test';
+    $html = <<<HTML
+      <button data-href="{$Url}" class="testMail btn btn-primary">  
+        <i class="fa fa-gears"></i>
+        {$BtnLabel}
+      </button>
+    HTML;
+    $form->addAnything('Test Mail Configuration', $html);
+  }
+
+  // print out the object
+  echo $form->printOut();
+  // End main configuration
+
 else:
-// Dummy content
-$content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
-// start test page
-$form->submit_button_attr = 'name="testMail" value="'.__('Send Mail').'" class="btn btn-default"';
-$form->addTextField('text', 'receivername',  __('Receiver Name'),'', 'style="width: 60%;" class="form-control"');
-$form->addTextField('text', 'receiveraddress', __('Receiver Address'), '', 'style="width: 60%;" class="form-control"');
-$form->addTextField('textarea', 'dummyMessage', __('Dummy Content'), $content, 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control"');
-// print out the object
-echo $form->printOut();
-// end test page
+
+  // Dummy content
+  $content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
+  // start test page
+  $form->submit_button_attr = 'name="testMail" value="'.__('Send Mail').'" class="btn btn-default"';
+  $form->addTextField('text', 'receivername',  __('Receiver Name'),'', 'style="width: 60%;" class="form-control"');
+  $form->addTextField('text', 'receiveraddress', __('Receiver Address'), '', 'style="width: 60%;" class="form-control"');
+  $form->addTextField('textarea', 'dummyMessage', __('Dummy Content'), $content, 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control"');
+  // print out the object
+  echo $form->printOut();
+  // end test page
+
 endif;
 ?>
 <script>

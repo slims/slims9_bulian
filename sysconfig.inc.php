@@ -502,25 +502,6 @@ if ($sysconf['captcha']['forgot']['enable']) {
 }
 
 /**
- * Mailing Settings
- */
-$sysconf['mail']['debug'] = 0;
-$sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
-$sysconf['mail']['enable'] = true;
-$sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
-$sysconf['mail']['server_port'] = 465; // the SMTP port
-$sysconf['mail']['auth_enable'] = true; // enable SMTP authentication
-$sysconf['mail']['auth_username'] = 'admin'; // SMTP account username
-$sysconf['mail']['auth_password'] = 'admin'; // SMTP account password
-$sysconf['mail']['from'] = 'admin@localhost';
-$sysconf['mail']['from_name'] = 'SLiMS Administrator';
-$sysconf['mail']['reply_to'] = &$sysconf['mail']['from'];
-$sysconf['mail']['reply_to_name'] = &$sysconf['mail']['from_name'];
-
-if (file_exists(SB.'config'.DS.'sysconfig.mail.inc.php')) {
-  include SB.'config'.DS.'sysconfig.mail.inc.php';
-}
-/**
  * Maximum biblio mark for member
  */
 $sysconf['max_biblio_mark'] = 20;
