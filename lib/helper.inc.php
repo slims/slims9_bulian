@@ -21,7 +21,7 @@
  *
  */
 
-use SLiMS\{Config,Ip};
+use SLiMS\{Config,Ip,Number,Currency};
 
 if (!function_exists('config')) {
     /**
@@ -45,6 +45,34 @@ if (!function_exists('ip'))
     function ip()
     {
         return Ip::getInstance();
+    }
+}
+
+if (!function_exists('number'))
+{
+    /**
+     * function to call number instance
+     *
+     * @param mixed $input
+     * @return Number
+     */
+    function number($input)
+    {
+        return Number::set($input);
+    }
+}
+
+if (!function_exists('currency'))
+{
+    /**
+     * function to call currency instance
+     *
+     * @param mixed $input
+     * @return Number
+     */
+    function currency($input)
+    {
+        return new Currency($input);
     }
 }
 
