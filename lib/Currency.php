@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-10 23:32:04
- * @modify date 2022-10-11 01:20:17
+ * @modify date 2022-10-11 13:07:55
  * @license GPLv3
  * @desc [description]
  */
@@ -18,7 +18,7 @@ class Currency
     public function __construct(mixed $input = null)
     {
         $this->input = $input;
-        if ($this->isSupport()) $this->formatter = new \NumberFormatter(config('custom_currency_locale', config('default_lang')), \NumberFormatter::CURRENCY);
+        if ($this->isSupport()) $this->formatter = new \NumberFormatter(config('custom_currency_locale.region', config('default_lang')), \NumberFormatter::CURRENCY);
     }
 
     /**
@@ -41,6 +41,21 @@ class Currency
     {
         if (!$this->isSupport()) return $this->input;
         
+        // override default value
+        $custom = config('custom_currency_locale');
+
+        // enable or not
+        if (isset($custom['enable']) && !(bool)$custom['enable']) return $this->input;
+
+        if (!is_null($custom))
+        {
+            foreach ($custom['detail']??[] as $property => $data) {
+                foreach ($data as $const => $value) {
+                    call_user_func_array([$this->formatter, 'set' . ucfirst($property)], [constant('\NumberFormatter::'. $const), $value]);
+                }
+            }
+        }
+
         return $this->formatter->formatCurrency($this->input, $this->formatter->getTextAttribute(\NumberFormatter::CURRENCY_CODE));
     }
 
@@ -65,13 +80,28 @@ class Currency
         if (!$this->isSupport()) return [['0', 'Extension Intl must be enable first']];
 
         // return list
-        return array_filter(array_reduce(\ResourceBundle::getLocales(''), function (array $currencies, string $locale) {
-            $currencies[$locale] = [\NumberFormatter::create(
+        $list = array_filter(array_reduce(\ResourceBundle::getLocales(''), function (array $currencies, string $locale) {
+            $code = \NumberFormatter::create(
                 $locale,
                 \NumberFormatter::CURRENCY
-            )->getTextAttribute(\NumberFormatter::CURRENCY_CODE), locale_get_display_region($locale)];
+            )->getTextAttribute(\NumberFormatter::CURRENCY_CODE);
+            $currencies[$locale] = [$locale, locale_get_display_region($locale) . ' - ' . $locale . ' - ' . $code];
         
             return $currencies;
-        },[]), fn($code) => ($code[0] !== 'XXX'));
+        },[]), fn($code) => (!preg_match('/XXX/i', $code[1])));
+
+        sort($list);
+
+        return $list;
+    }
+
+    /**
+     * Convert object to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->get();
     }
 }

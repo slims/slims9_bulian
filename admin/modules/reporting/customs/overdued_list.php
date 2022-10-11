@@ -198,15 +198,14 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
 
             //calculate Fines
             $overdue_days = $circulation->countOverdueValue($ovd_title_d['loan_id'], date('Y-m-d'))['days'];
-            $fines = $overdue_days * $member_d[4];
+            $fines = currency($overdue_days * $member_d[4]);
             if (!is_null($ovd_title_d['fine_each_day'])) $fines = $overdue_days * $ovd_title_d['fine_each_day'];
             // format number
             $overdue_days = number_format($overdue_days, '0', ',', '.');
-            $fines = number_format($fines, '0', ',', '.');
 
             $_buffer .= '<tr>';
             $_buffer .= '<td valign="top" width="10%">' . $ovd_title_d['item_code'] . '</td>';
-            $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . $ovd_title_d['price'] . ' ' . $ovd_title_d['price_currency'] . '</div></td>';
+            $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . currency($ovd_title_d['price']) . '</div></td>';
             $_buffer .= '<td width="20%"><div>' . __('Overdue') . ': ' . $overdue_days . ' ' . __('day(s)') . '</div><div>'.__('Fines').': '.$fines.'</div></td>';
             $_buffer .= '<td width="30%">' . __('Loan Date') . ': ' . $ovd_title_d['loan_date'] . ' &nbsp; ' . __('Due Date') . ': ' . $ovd_title_d['due_date'] . '</td>';
             $_buffer .= '</tr>';

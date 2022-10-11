@@ -35,6 +35,7 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('Theme'), MWB.'system/theme.php', __('Configure theme Preferences'));
     $menu[] = array(__('Plugins'), MWB . 'system/plugins.php');
     $menu[] = array(__('Custom Field'), MWB.'system/custom_field.php', __('Configure custom field'));
+    $menu[] = array(__('Currency Setting'), MWB.'system/currencysetting.php', __('Configure System Currency'));
     $menu[] = array(__('E-Mail Setting'), MWB.'system/mailsetting.php', __('Configure E-Mail Preferences'));
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
