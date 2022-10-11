@@ -126,13 +126,15 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         $return_status = $circulation->returnItem($loanID);
         // write log
         utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Return');
-        echo '<script type="text/javascript">';
         if ($circulation->loan_have_overdue) {
             toastr(__('Overdue fines inserted to fines database'))->success();
         }
+        echo '<script type="text/javascript">';
         if ($return_status === ITEM_RESERVED) {
             echo 'location.href = \'loan_list.php?reserveAlert='.urlencode($loan_d[0]).'\';';
-        } else { echo 'location.href = \'loan_list.php\';'; }
+        } else { 
+            echo 'location.href = \'loan_list.php\';'; 
+        }
         echo '</script>';
     } else {
         // set holiday settings
