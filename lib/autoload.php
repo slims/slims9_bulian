@@ -32,7 +32,8 @@ $namespaces = [
     "Symfony\\Component\VarDumper\\" => "/symfony/var-dumper/",
     "Symfony\\Contracts\\Translation\\" => "/symfony/translation-contracts/",
     "ZipStream\\" => "/maennchen/zipstream-php/src/",
-    "Carbon\\" => "/nesbot/carbon/src/Carbon/"
+    "Carbon\\" => "/nesbot/carbon/src/Carbon/",
+    "Minigalnano\\" => "/minigalnano/",
 ];
 
 $class_alias = [
