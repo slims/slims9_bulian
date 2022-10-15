@@ -123,6 +123,26 @@ if (isset($_POST['updateData'])) {
       }
     }
 
+    if (!empty($_FILES['icon']) AND $_FILES['icon']['size']) {
+      // remove previous image
+      @unlink(IMGBS.'default/'.$sysconf['webicon']);
+      // create upload object
+      $image_upload = new simbio_file_upload();
+      $image_upload->setAllowableFormat(['.ico','.png']);
+      $image_upload->setMaxSize(100*1024);
+      $image_upload->setUploadDir(IMGBS.'default');
+      $img_upload_status = $image_upload->doUpload('icon','webicon');
+      if ($img_upload_status == UPLOAD_SUCCESS) {
+        $logo_image = $dbs->escape_string($image_upload->new_filename);
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'webicon\'');
+        if($update) {
+          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'webicon\'');
+        }
+      }else{
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
+      }
+    }
+
     // reset/truncate setting table content
     // library name
     $library_name = $dbs->escape_string(strip_tags(trim($_POST['library_name'])));
@@ -267,16 +287,30 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 
 //logo
 $str_input = '';
+$str_input .= '<strong class="d-block">Utama</strong>';
 if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
-$str_input .= '<div class="custom-file col-3">';
+$str_input .= '<div class="custom-file col-3 d-block">';
 $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
-$str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+
+// Web icon
+$str_input .= '<strong class="d-block mt-2">Web Ikon <small>(yang muncul pada tab browser)</small></strong>';
+if(isset($sysconf['webicon']) && file_exists(IMGBS.'default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
+    $str_input .= '<div style="padding:10px;">';
+    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['webicon'].'&width=130" class="img-fluid rounded" alt="Image cover">';
+    $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
+}
+$str_input .= '<div class="custom-file col-3">';
+$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile"');
+$str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+$str_input .= '</div>';
+$str_input .= '<div class="mt-2 ml-2">Maximum 100 KB</div>';
 $str_input .= <<<HTML
 <script>
 $('.custom-file input').on('change',function(){

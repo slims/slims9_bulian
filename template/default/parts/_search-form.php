@@ -7,7 +7,7 @@
 # @Last modified time: 2018-01-26T16:53:56+07:00
 
 if ($opac->invalid_token) {
-    die($opac->error('invalid CSRF token'));
+    //die($opac->error('invalid CSRF token'));
 }
 ?>
 

@@ -5,6 +5,7 @@ images/labels/*
 images/cache/*
 images/content/*
 images/default/logo.png
+images/default/webicon.*
 files/*
 !files/membercard/*
 repository/*
