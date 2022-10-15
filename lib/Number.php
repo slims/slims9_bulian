@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-10 22:51:38
- * @modify date 2022-10-11 01:31:05
+ * @modify date 2022-10-15 12:07:31
  * @license GPLv3
  * @desc Number manipulation tool
  */
@@ -12,9 +12,9 @@ namespace SLiMS;
 
 class Number
 {
-    private mixed $input;
+    private $input;
     
-    public function __construct(mixed $input)
+    public function __construct($input)
     {
         $this->input = $input;
     }
@@ -22,10 +22,10 @@ class Number
     /**
      * Set an input value
      *
-     * @param mixed $input
+     * @param $input
      * @return Number
      */
-    public static function set(mixed $input)
+    public static function set($input)
     {
         return new static($input);
     }
