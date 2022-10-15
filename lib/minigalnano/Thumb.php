@@ -1,9 +1,10 @@
 <?php
 /**
- * @composed by Drajat Hasan
+ * @original modified by Hendro Wicaksono (hendrowicaksono@yahoo.com)
+ * @rebuild by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-14 12:49:19
- * @modify date 2022-10-14 22:45:35
+ * @modify date 2022-10-15 11:58:48
  * @desc 
 */
 /*
@@ -29,7 +30,7 @@
 
 namespace Minigalnano;
 
-error_reporting(E_ALL ^ E_DEPRECATED);
+// error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Thumb
 {
@@ -70,6 +71,8 @@ class Thumb
      */
     private $width = 0;
     private $height = 0;
+    private $imageWidth = 0;
+    private $imageHeight = 0;
 
     /**
      * file
@@ -107,11 +110,12 @@ class Thumb
      *
      * @return void
      */
-    public function setContentType()
+    public function setContentType(string $type = '')
     {
-        if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) header('Content-type: image/jpeg');
-        if (preg_match("/.gif$/i", $this->filePath)) header('Content-type: image/gif');
-        if (preg_match("/.png$/i", $this->filePath)) header('Content-type: image/png');
+        if (preg_match("/.jpg$|.jpeg$/i", $this->filePath) && empty($type)) header('Content-type: image/jpeg');
+        if (preg_match("/.gif$/i", $this->filePath) && empty($type)) header('Content-type: image/gif');
+        if (preg_match("/.png$/i", $this->filePath) && empty($type)) header('Content-type: image/png');
+        if (!empty($type)) header('Content-type: ' . $type);
     }
 
     /**
@@ -207,25 +211,27 @@ class Thumb
     public function prepare()
     {
         $imageSize = GetImageSize($this->filePath);
-        $imageWidth = $imageSize[0];
-        $imageHeight = $imageSize[1];
+        $this->imageWidth = $imageSize[0];
+        $this->imageHeight = $imageSize[1];
 
-        $this->resulutionWidth = $this->defaultResWidth;
-        if ($this->width != 0) $this->resulutionWidth = $this->width;
-
-        $this->resulutionHeight = ($this->resulutionWidth/$imageWidth) * $imageHeight;
-        if ($this->height != 0) $this->resulutionHeight = $this->height;
-
+        $this->resulutionWidth = $this->width != 0 ? $this->width : $this->defaultResWidth;
+        $this->resulutionHeight = $this->height == 0 ? number((($this->resulutionWidth/$this->imageWidth) * $this->imageHeight))->toInteger() : $this->height;
+        
         $this->cache['file'] = str_replace(['resolutionWidth','resolutionHeight'], [$this->resulutionWidth,$this->resulutionHeight], $this->cache['file']);
 
         return $this;
     }
 
+    /**
+     * Set error state
+     *
+     * @return value
+     */
     public function orError()
     {
         if (empty($this->error)) return;
         // Create http header based on file extension
-        $this->setContentType();
+        $this->setContentType('image/png');
         echo file_get_contents(__DIR__ . '/' . $this->error . '.png');
         exit;
     }
@@ -237,6 +243,9 @@ class Thumb
      */
     public function generate()
     {
+        // Create http header based on file extension
+        $this->setContentType();
+        
         // Create image source
         $target = imagecreatetruecolor($this->resulutionWidth, $this->resulutionHeight);
         if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromjpeg($this->filePath);
@@ -249,11 +258,8 @@ class Thumb
         $transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
         imagefilledrectangle($target, 0, 0, $this->resulutionWidth, $this->resulutionHeight, $transparent);
 
-        imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resulutionWidth,$this->resulutionHeight,$this->width,$this->height);
+        imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resulutionWidth, $this->resulutionHeight,$this->imageWidth,$this->imageHeight);
         imagedestroy($source);
-
-        // Create http header based on file extension
-        $this->setContentType();
 
         if (!$this->isCacheExists())
         {
