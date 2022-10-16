@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-10 23:32:04
- * @modify date 2022-10-11 13:07:55
+ * @modify date 2022-10-16 19:42:18
  * @license GPLv3
  * @desc [description]
  */
@@ -12,10 +12,10 @@ namespace SLiMS;
 
 class Currency
 {
-    private mixed $input;
+    private $input;
     private ?object $formatter = null;
 
-    public function __construct(mixed $input = null)
+    public function __construct($input = null)
     {
         $this->input = $input;
         if ($this->isSupport()) $this->formatter = new \NumberFormatter(config('custom_currency_locale.region', config('default_lang')), \NumberFormatter::CURRENCY);

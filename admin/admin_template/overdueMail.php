@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-08 11:10:32
- * @modify date 2022-10-16 16:19:24
+ * @modify date 2022-10-16 16:26:29
  * @license GPLv3
  * @desc [description]
  */
@@ -20,55 +20,6 @@ class overdueMail extends TemplateContract
     public function __construct($member)
     {
         $this->member = $member;
-    }
-
-    /**
-     * Host check
-     *
-     * @return bool
-     */
-    public function isLocal()
-    {
-        // host check
-        if (preg_match('/localhost/i', $_SERVER['HTTP_HOST'])) return true;
-
-        // ip address = local
-        if (preg_match('/(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/i', $_SERVER['HTTP_HOST'])) return true;
-
-        // schema check
-        if ($_SERVER['REQUEST_SCHEME'] == 'http' && !ip()->isBehindProxy()) return true;
-
-        // online
-        return false;
-    }
-
-    /**
-     * Minify html template
-     *
-     * @param boolean $status
-     * @return void
-     */
-    public function setMinify(bool $status)
-    {
-        $this->minify = $status;
-    }
-
-    /**
-     * Book cover generator
-     * 
-     * https is required to make our resource is secure at 
-     * browser (CSP issue)
-     *
-     * @param string $filename
-     * @return void
-     */
-    public function generateCoverUrl(string $filename)
-    {
-        // in local environment? ok, use dummy image from shutterstock
-        if ($this->isLocal()) return 'https://image.shutterstock.com/image-vector/abstract-a4-printable-brochure-book-600w-2105860082.jpg';
-        
-        // get from SLiMS with https
-        return 'https://' . $_SERVER['SERVER_NAME'] . SWB . 'lib/minigalnano/createthumb.php?filename=images/docs/' . $filename . '&width=60';
     }
 
     /**
@@ -104,7 +55,7 @@ class overdueMail extends TemplateContract
 
         // Header information
         $header = __('To <strong><!--MEMBER_NAME--> (<!--MEMBER_ID-->)</strong>
-        This is notification e-mail to inform you that you have <strong>OVERDUED</strong> library loan,
+         This is notification e-mail to inform you that you have <strong>OVERDUED</strong> library loan,
         the overdued collection(s) are:');
 
         // Closing
