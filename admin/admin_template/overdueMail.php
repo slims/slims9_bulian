@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-08 11:10:32
- * @modify date 2022-10-08 11:17:45
+ * @modify date 2022-10-16 16:19:24
  * @license GPLv3
  * @desc [description]
  */
@@ -36,7 +36,7 @@ class overdueMail extends TemplateContract
         if (preg_match('/(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/i', $_SERVER['HTTP_HOST'])) return true;
 
         // schema check
-        if ($_SERVER['REQUEST_SCHEME'] == 'http') return true;
+        if ($_SERVER['REQUEST_SCHEME'] == 'http' && !ip()->isBehindProxy()) return true;
 
         // online
         return false;
