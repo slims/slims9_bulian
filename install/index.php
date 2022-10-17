@@ -93,8 +93,8 @@ $_SESSION['csrf_token'] = bin2hex(substr(str_shuffle(str_repeat($x='0123456789ab
         }
     </style>
 </head>
-<body>
-<div id="app" class="bg-gray-800 font-light">
+<body class="bg-gray-800">
+<div id="app" class="bg-transparent font-light">
     <welcome v-if="section === 'welcome'" @click="section = 'system'"></welcome>
     <system v-if="section === 'system'" @click="section = 'select-task'"></system>
     <tasks v-if="section === 'select-task'" @click="selectTask"></tasks>
