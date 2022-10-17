@@ -45,9 +45,17 @@ include 'function.php';
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
   <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT" />
+  
+  <?php
+  $icon = SWB . 'webicon.ico';
+  if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && file_exists(SB . 'images/default/' . $sysconf['webicon']))
+  {
+      $icon = SWB . 'images/default/' . $sysconf['webicon'];
+  }
+  ?>
 
-  <link rel="icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
+  <link rel="icon" href="<?= $icon ?>" type="image/x-icon" />
+  <link rel="shortcut icon" href="<?= $icon ?>" type="image/x-icon" />
   <link href="<?php echo SWB; ?>css/bootstrap.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
   <link href="<?php echo SWB; ?>css/core.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
