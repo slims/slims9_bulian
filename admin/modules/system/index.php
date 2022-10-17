@@ -60,6 +60,7 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
+        $name = $dbs->escape_string($name);
         $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
@@ -91,13 +92,18 @@ if (!function_exists('addOrUpdateSetting')) {
 /* Config Vars update process */
 
 /* remove logo */
-if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
-      $logo_image = '';
-      $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
-      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+if (isset($_POST['removeImage'])) {
+      foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
+        if (isset($_POST[$key]))
+        {
+          @unlink(IMGBS.'default/'.$sysconf[$data]);
+          addOrUpdateSetting($data, NULL); // set null
+        }
+      }
+
       utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
       utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
-      echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+      echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
       exit();
 }
 
@@ -113,11 +119,7 @@ if (isset($_POST['updateData'])) {
       $image_upload->setUploadDir(IMGBS.'default');
       $img_upload_status = $image_upload->doUpload('image','logo');
       if ($img_upload_status == UPLOAD_SUCCESS) {
-        $logo_image = $dbs->escape_string($image_upload->new_filename);
-        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
-        if($update) {
-          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
-        }
+        addOrUpdateSetting('logo_image', $dbs->escape_string($image_upload->new_filename));
       }else{
         utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
@@ -133,11 +135,7 @@ if (isset($_POST['updateData'])) {
       $image_upload->setUploadDir(IMGBS.'default');
       $img_upload_status = $image_upload->doUpload('icon','webicon');
       if ($img_upload_status == UPLOAD_SUCCESS) {
-        $logo_image = $dbs->escape_string($image_upload->new_filename);
-        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'webicon\'');
-        if($update) {
-          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'webicon\'');
-        }
+        addOrUpdateSetting('webicon', $dbs->escape_string($image_upload->new_filename));
       }else{
         utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
