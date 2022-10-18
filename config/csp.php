@@ -15,9 +15,9 @@ return [
     "connect-src 'self' https://kutipan.herokuapp.com",
     "frame-src 'self' *.google.com",
     "font-src 'self'",
-    "media-src 'none'",
-    "object-src 'none'",
-    "manifest-src 'none'", 
-    "worker-src 'none'",
-    "frame-ancestors 'none'"
+    "media-src 'self'",
+    "object-src 'self'",
+    "manifest-src 'self'", 
+    "worker-src 'self'",
+    "frame-ancestors 'self'"
 ];
