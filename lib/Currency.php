@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-10 23:32:04
- * @modify date 2022-10-16 19:42:18
+ * @modify date 2022-10-19 15:59:55
  * @license GPLv3
  * @desc [description]
  */
@@ -102,6 +102,6 @@ class Currency
      */
     public function __toString()
     {
-        return $this->get();
+        return (string)$this->get();
     }
 }
