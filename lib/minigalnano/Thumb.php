@@ -4,7 +4,7 @@
  * @rebuild by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-14 12:49:19
- * @modify date 2022-10-15 11:58:48
+ * @modify date 2022-10-20 16:14:36
  * @desc 
 */
 /*
@@ -112,6 +112,7 @@ class Thumb
      */
     public function setContentType(string $type = '')
     {
+        if (defined('THUMB_HEADER_CACHE')) header('Cache-Control: max-age=86400');
         if (preg_match("/.jpg$|.jpeg$/i", $this->filePath) && empty($type)) header('Content-type: image/jpeg');
         if (preg_match("/.gif$/i", $this->filePath) && empty($type)) header('Content-type: image/gif');
         if (preg_match("/.png$/i", $this->filePath) && empty($type)) header('Content-type: image/png');
