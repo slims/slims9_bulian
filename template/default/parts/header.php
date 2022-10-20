@@ -21,8 +21,6 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <?php // open csp.php in config directory if you want custom it ?>
-    <meta http-equiv="Content-Security-Policy" content="<?= implode(';', config('csp', [])) ?>">
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0"/>
     <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT"/>

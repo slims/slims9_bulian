@@ -12,7 +12,7 @@ return [
     "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self'",
-    "connect-src 'self' https://kutipan.herokuapp.com",
+    "connect-src 'self' kutipan.herokuapp.com",
     "frame-src 'self' *.google.com",
     "font-src 'self'",
     "media-src 'self'",
