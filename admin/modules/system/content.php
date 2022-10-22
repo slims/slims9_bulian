@@ -229,7 +229,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         <div id="detail" class="col-4">
             <fieldset>
                 <div class="d-flex justify-content-between">
-                    <label><?= __('Content Sttings') ?></label>
+                    <label><?= __('Content Settings') ?></label>
                     <button type="submit" name="saveData" class="btn btn-primary"><?= $rec_q->num_rows == 0 ? __("Save") : __("Update") ?></button>
                 </div>
                 <hr>
