@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 23:16+0700\n"
-"PO-Revision-Date: 2022-10-22 23:18+0700\n"
+"POT-Creation-Date: 2022-10-22 23:35+0700\n"
+"PO-Revision-Date: 2022-10-22 23:36+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -2889,6 +2889,7 @@ msgstr "Penempatan"
 #: admin/modules/bibliography/pop_attach.php:252
 #: admin/modules/reporting/customs/member_fines_list.php:188
 #: admin/modules/reporting/customs/procurement_report.php:125
+#: admin/modules/system/plugins.php:111
 msgid "Description"
 msgstr "Deskripsi"
 
@@ -7559,6 +7560,10 @@ msgid ""
 "10.120.33.40;20.100.34.10. "
 msgstr "Kisaran IP yang akan berdampak. Contoh : 10.120.33.40;20.100.34.10. "
 
+#: admin/modules/system/envsetting.php:142
+msgid "Leave it empty, if you want to set environment to impact for all IP"
+msgstr "Biarkan kosong, jika ingin konfigurasi berdampak pada seluruh IP"
+
 #: admin/modules/system/holiday.php:58 admin/modules/system/holiday.php:63
 #: admin/modules/system/holiday.php:78 admin/modules/system/holiday.php:85
 #: admin/modules/system/holiday.php:92 admin/modules/system/holiday.php:99
@@ -7914,6 +7919,22 @@ msgstr "Nama Pengirim Surel"
 msgid "Do Test"
 msgstr "Coba kirim surel"
 
+#: admin/modules/system/mailsetting.php:204
+msgid "Send Mail"
+msgstr "Kirim Surat"
+
+#: admin/modules/system/mailsetting.php:205
+msgid "Receiver Name"
+msgstr "Nama Penerima"
+
+#: admin/modules/system/mailsetting.php:206
+msgid "Receiver Address"
+msgstr "Alamat Penerima"
+
+#: admin/modules/system/mailsetting.php:207
+msgid "Dummy Content"
+msgstr "Contoh Isi"
+
 #: admin/modules/system/membercard_theme.php:81
 #: admin/modules/system/theme.php:105
 msgid "Error saving custom data!"
@@ -8041,6 +8062,14 @@ msgstr "Plugin %s nonaktif"
 #: admin/modules/system/plugins.php:96
 msgid "Plugin List"
 msgstr "Daftar Plugin"
+
+#: admin/modules/system/plugins.php:110
+msgid "Plugin"
+msgstr "Plugin"
+
+#: admin/modules/system/plugins.php:112
+msgid "Enable/Disable"
+msgstr "Aktif/Nonaktif"
 
 #: admin/modules/system/plugins.php:122 admin/modules/system/plugins.php:194
 msgid "Enabled"
@@ -10016,9 +10045,6 @@ msgstr "Masukkan kata kunci..."
 
 #~ msgid "Did you mean:"
 #~ msgstr "Yang Anda maksud:"
-
-#~ msgid "Send"
-#~ msgstr "Kirim"
 
 #~ msgid "Telegram Account"
 #~ msgstr "Akun Telegram"

@@ -107,9 +107,9 @@ $plugin_actives = $plugins->getActive();
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">Plugin</th>
-        <th scope="col">Description</th>
-        <th scope="col">Enable/Disable</th>
+        <th scope="col"><?= __('Plugin') ?></th>
+        <th scope="col"><?= __('Description')?></th>
+        <th scope="col"><?= __('Enable/Disable') ?></th>
     </tr>
     </thead>
     <tbody>
