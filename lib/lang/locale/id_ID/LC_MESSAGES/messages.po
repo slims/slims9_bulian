@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 21:00+0700\n"
-"PO-Revision-Date: 2022-10-22 21:13+0700\n"
+"POT-Creation-Date: 2022-10-22 21:18+0700\n"
+"PO-Revision-Date: 2022-10-22 22:08+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -7284,16 +7284,12 @@ msgid "Content Title"
 msgstr "Judul Konten"
 
 #: admin/modules/system/content.php:232
-#, fuzzy
-#| msgid "Content List"
-msgid "Content Sttings"
-msgstr "Daftar Konten"
+msgid "Content Settings"
+msgstr "Penyetelan Konten"
 
 #: admin/modules/system/content.php:236
-#, fuzzy
-#| msgid "Publish year"
 msgid "Publish at"
-msgstr "Tahun terbit"
+msgstr "Diterbitkan pada"
 
 #: admin/modules/system/content.php:238
 msgid "This is News"
@@ -7306,43 +7302,39 @@ msgstr "<i>Path</i> (Harus unik)"
 
 #: admin/modules/system/content.php:242
 msgid "Max 20 character"
-msgstr ""
+msgstr "Dua puluh karakter maksimal"
 
 #: admin/modules/system/content.php:243
 msgid "Draft?"
-msgstr ""
+msgstr "Konsep?"
 
 #: admin/modules/system/currencysetting.php:72
-msgid "Successfull save currency configuration"
-msgstr ""
+msgid "Successfully save currency configuration"
+msgstr "Penyetelan mata uang berhasil disimpan"
 
 #: admin/modules/system/currencysetting.php:85
-#, fuzzy
-#| msgid "UCS Configuration"
 msgid "Currency Configuration"
-msgstr "Pengaturan UCS"
+msgstr "Penyetelan mata uang"
 
 #: admin/modules/system/currencysetting.php:91
 msgid "Extension Intl must be enable first."
-msgstr ""
+msgstr "Aktifkan extensi Intl terlebih dahulu."
 
 #: admin/modules/system/currencysetting.php:114
 msgid "Enable system currency?"
-msgstr ""
+msgstr "Sistem mata uang diaktifkan?"
 
 #: admin/modules/system/currencysetting.php:117
-#, fuzzy
-#| msgid "Religion"
 msgid "Region"
-msgstr "Agama"
+msgstr "Wilayah"
 
 #: admin/modules/system/currencysetting.php:117
 msgid "By default region value same as default language"
-msgstr ""
+msgstr "Nilai wilayah secara baku bernilai sama dengan nilai bahasa"
 
 #: admin/modules/system/currencysetting.php:121
 msgid "Number of decimal position"
-msgstr ""
+msgstr "Jumlah angka desimal"
 
 #: admin/modules/system/custom_field.php:56
 #: admin/modules/system/custom_field.php:71
@@ -7689,13 +7681,11 @@ msgstr "Bahasa Aplikasi Baku"
 
 #: admin/modules/system/index.php:357
 msgid "List of timezones supported by PHP"
-msgstr ""
+msgstr "Zona waktu yang didukung oleh PHP"
 
 #: admin/modules/system/index.php:358
-#, fuzzy
-#| msgid "Default App. Language"
 msgid "Default App. Timezone"
-msgstr "Bahasa Aplikasi Baku"
+msgstr "Zona waktu baku"
 
 #: admin/modules/system/index.php:362
 msgid "Search Engine"
@@ -7775,7 +7765,7 @@ msgstr "IP yang Diizinkan"
 
 #: admin/modules/system/index.php:442
 msgid "Seperate ip with ;"
-msgstr ""
+msgstr "IP dipisahkan dengan ;"
 
 #: admin/modules/system/index.php:444
 msgid "Visitor Limitation by Time"
@@ -7803,7 +7793,7 @@ msgstr "Pemesanan hanya untuk eksemplar terpinjam"
 
 #: admin/modules/system/index.php:462
 msgid "Activate Confirm Alert?"
-msgstr ""
+msgstr "Peringatan Konfirmasi Diaktifkan?"
 
 #: admin/modules/system/mailsetting.php:64
 msgid "NB : Password is hidden for security reason"
@@ -8086,16 +8076,12 @@ msgid "Configure custom field"
 msgstr "Konfigurasi ruas tambahan"
 
 #: admin/modules/system/submenu.php:38
-#, fuzzy
-#| msgid "UCS Setting"
 msgid "Currency Setting"
-msgstr "Pengaturan UCS"
+msgstr "Pengaturan mata uang"
 
 #: admin/modules/system/submenu.php:38
-#, fuzzy
-#| msgid "Configure Global System Preferences"
 msgid "Configure System Currency"
-msgstr "Konfigurasi Preferensi Global Sistem"
+msgstr "Pengaturan Sistem Mata Uang"
 
 #: admin/modules/system/submenu.php:39
 msgid "E-Mail Setting"
@@ -8206,10 +8192,8 @@ msgid "UCS Configuration"
 msgstr "Pengaturan UCS"
 
 #: admin/modules/system/ucsetting.php:62
-#, fuzzy
-#| msgid "Settings saved"
 msgid "Settings "
-msgstr "Setelan tersimpan"
+msgstr "Pengaturan"
 
 #: admin/modules/system/ucsetting.php:66
 msgid "Failed save settings!"
@@ -8453,10 +8437,8 @@ msgid "Development"
 msgstr "Pengembangan"
 
 #: lib/SearchEngine/SearchFilter.php:23
-#, fuzzy
-#| msgid "Publishing Year"
 msgid "Publication Year"
-msgstr "Tahun Terbit"
+msgstr "Tahun Penerbitan"
 
 #: lib/SearchEngine/SearchFilter.php:34
 #: template/akasia-dz/custom_frontpage_record.inc.php:11
@@ -8472,31 +8454,27 @@ msgstr "Ketersediaan"
 
 #: lib/SearchEngine/SearchFilter.php:40
 msgid "On Shelf"
-msgstr ""
+msgstr "Tersedia di Rak"
 
 #: lib/SearchEngine/SearchFilter.php:47
-#, fuzzy
-#| msgid "No Attachment"
 msgid "Attachment"
-msgstr "Tidak ada Lampiran"
+msgstr "Lampiran"
 
 #: lib/SearchEngine/SearchFilter.php:53
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: lib/SearchEngine/SearchFilter.php:57
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 #: lib/SearchEngine/SearchFilter.php:61
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: lib/SearchEngine/SearchFilter.php:209
-#, fuzzy
-#| msgid "Read More"
 msgid "See More"
-msgstr "Lanjutkan Membaca"
+msgstr "Lihat Lebih Banyak"
 
 #: lib/biblio_list_elasticsearch.inc.php:279 lib/biblio_list_model.inc.php:221
 msgid "Put marked selection into basket"
@@ -8556,41 +8534,31 @@ msgstr "Semua GMD/Media"
 
 #: lib/contents/common.inc.php:75
 msgid "Most relevant"
-msgstr ""
+msgstr "Paling relevan"
 
 #: lib/contents/common.inc.php:76
 msgid "Recently Added"
-msgstr ""
+msgstr "Baru Ditambahkan"
 
 #: lib/contents/common.inc.php:78
-#, fuzzy
-#| msgid "Total Loan"
 msgid "Most Loaned"
-msgstr "Total Peminjaman"
+msgstr "Sering Dipinjam"
 
 #: lib/contents/common.inc.php:79
-#, fuzzy
-#| msgid "Publishing Year"
 msgid "Publication Year [newest]"
-msgstr "Tahun Terbit"
+msgstr "Tahun Terbit [terbaru]"
 
 #: lib/contents/common.inc.php:80
-#, fuzzy
-#| msgid "Publishing Year"
 msgid "Publication Year [oldest]"
-msgstr "Tahun Terbit"
+msgstr "Tahun Terbit [terlama]"
 
 #: lib/contents/common.inc.php:81
-#, fuzzy
-#| msgid "descendingly"
 msgid "Title Ascending"
-msgstr "urutkan dari bawah"
+msgstr "Urutkan dari Atas"
 
 #: lib/contents/common.inc.php:82
-#, fuzzy
-#| msgid "descendingly"
 msgid "Title Descending"
-msgstr "urutkan dari bawah"
+msgstr "Urutkan dari Bawah"
 
 #: lib/contents/default.inc.php:121
 #: template/default/parts/_result-search.php:40
@@ -8887,12 +8855,12 @@ msgid "Password update FAILED! ERROR ON DATABASE!"
 msgstr "Perubahan kata sandi GAGAL! GALAT PADA PANGKALAN DATA!"
 
 #: lib/contents/member.inc.php:659
-#, fuzzy
-#| msgid "Reservation e-mail sent successfully!"
 msgid ""
 "Reservation e-mail sent successfully!. please contact librarians for further "
 "info."
-msgstr "Surel untuk reservasi berhasil dikirim!"
+msgstr ""
+"Sukses mengirimkan surel pemesanan!. hubungi pustakawan untuk info "
+"selanjutnya."
 
 #: lib/contents/member.inc.php:706
 msgid "Current Loan"
@@ -8924,7 +8892,7 @@ msgstr "Detail Keanggotaan"
 
 #: lib/contents/member.inc.php:819
 msgid "Please wait. your reservation is being sent"
-msgstr ""
+msgstr "Pemesananan sedang dikirim. Mohon menunggu"
 
 #: lib/contents/member.inc.php:865
 msgid "Library Member Login"
@@ -8979,10 +8947,8 @@ msgid "Thank you for your comment."
 msgstr "Terima kasih atas komentar Anda."
 
 #: lib/contents/show_detail.inc.php:104
-#, fuzzy
-#| msgid "FAILED to strore you comment. Please Contact System Administrator"
 msgid "FAILED to store you comment. Please Contact System Administrator"
-msgstr "Komentar gagal disimpan. Harap hubungi Administrator Sistem"
+msgstr "Komentar TIDAK DAPAT disimpan. Hubungi Administrator Sistem"
 
 #: lib/contents/show_detail.inc.php:125
 #: template/akasia-dz/biblio_list_template.php:79
@@ -9023,10 +8989,8 @@ msgid "Cite this"
 msgstr "Kutip ini"
 
 #: lib/contents/visitor.inc.php:47
-#, fuzzy
-#| msgid "Member Type Name can't be empty"
 msgid "Member ID can't be empty"
-msgstr "Tipe Keanggotaan Tidak Boleh Kosong"
+msgstr "Tidak dapat mengosongkan ID Anggota"
 
 #: lib/contents/visitor.inc.php:62
 msgid ", thank you for inserting your data to our visitor log"
@@ -9075,10 +9039,8 @@ msgid "Please login to see this attachment"
 msgstr "Harap masuk untuk melihat lampiran"
 
 #: lib/detail.inc.php:142
-#, fuzzy
-#| msgid "You are not authorized to view this section"
 msgid "You have no authorization to download this file."
-msgstr "Anda tidak memiliki wewenang untuk masuk ke bagian ini"
+msgstr "Pengunduhan berkas ini tidak diizinkan."
 
 #: lib/detail.inc.php:251
 msgid "Currently On Loan (Due on"
@@ -9191,16 +9153,16 @@ msgid "View OPAC in New Window"
 msgstr "Tampilkan OPAC dalam Jendela Baru"
 
 #: lib/module.inc.php:315
-#, fuzzy
-#| msgid "Due Date Warning"
 msgid "Warning"
-msgstr "Peringatan Jatuh Tempo"
+msgstr "Peringatan"
 
 #: lib/module.inc.php:316
 msgid ""
 "You don't have access to interact with this module. Call system "
 "administrator to give you right to access it."
 msgstr ""
+"Tidak tersedia interaksi dengan modul ini. Hubungi administrator sistem "
+"untuk mengatur akses yang diperlukan."
 
 #: plugins/label_barcode/index.php:280
 msgid "Labels & Barcode Printing"
@@ -9208,7 +9170,7 @@ msgstr "Cetak Label & Barkod"
 
 #: plugins/read_counter/index.php:64
 msgid "No data found with item code {itemcode}."
-msgstr ""
+msgstr "Kode eksemplar {itemcode} tidak ditemukan."
 
 #: plugins/read_counter/index.php:72
 #: plugins/read_counter/read_counter_plugin.php:15
@@ -9224,22 +9186,16 @@ msgid "Barcode"
 msgstr "Barkod"
 
 #: plugins/read_counter/report.php:23
-#, fuzzy
-#| msgid "Read Counter"
 msgid "Read Counter Report"
-msgstr "Penghitung Koleksi Dibaca"
+msgstr "Laporan Penghitung Baca di Tempat"
 
 #: plugins/read_counter/report.php:45
-#, fuzzy
-#| msgid "Read Counter"
 msgid "Read Start"
-msgstr "Penghitung Koleksi Dibaca"
+msgstr "Tanggal Mulai Pendataan"
 
 #: plugins/read_counter/report.php:51
-#, fuzzy
-#| msgid "Reserve Date Until"
 msgid "Read Until"
-msgstr "Tanggal Pesan Hingga"
+msgstr "Tanggal Terakhir Pendataan"
 
 #: simbio2/simbio_DB/datagrid/simbio_dbgrid.inc.php:90
 msgid "DELETE"
@@ -9683,22 +9639,16 @@ msgid "Add to basket"
 msgstr "Tambahkan ke dalam keranjang"
 
 #: template/default/biblio_list_template.php:122
-#, fuzzy
-#| msgid "This Item is currently not available"
 msgid "Items not available"
-msgstr "Saat ini, eksemplar tidak tersedia"
+msgstr "Eksemplar tidak tersedia"
 
 #: template/default/biblio_list_template.php:128
-#, fuzzy
-#| msgid "Download"
 msgid "MARC Download"
-msgstr "Unduh"
+msgstr "Unduh MARC"
 
 #: template/default/biblio_list_template.php:168
-#, fuzzy
-#| msgid "Not Available"
 msgid "Item Not Available"
-msgstr "Tidak Tersedia"
+msgstr "Eksemplar tidak tersedia"
 
 #: template/default/detail_template.php:134
 msgid "You must be logged in to post a comment"
@@ -9821,7 +9771,7 @@ msgstr "Profil"
 
 #: template/default/parts/_result-search.php:31
 msgid "Filter by"
-msgstr ""
+msgstr "Ditapis dengan"
 
 #: template/default/parts/_search-form.php:27
 msgid "Enter keyword to search collection..."
@@ -9885,10 +9835,8 @@ msgid "Library Sub Name"
 msgstr "Nama Tambahan Perpustakaan"
 
 #: template/default/tinfo.inc.php:59
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable Slide"
-msgstr "Nonaktif"
+msgstr "Transisi Gambar Dimatikan"
 
 #: template/default/tinfo.inc.php:69
 msgid "Slide Transition"
