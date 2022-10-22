@@ -69,7 +69,7 @@ if (isset($_POST['saveData']))
     if (config('custom_currency_locale.region') !== $_POST['region']) unset($setting['detail']);
 
     addOrUpdateSetting('custom_currency_locale', $setting);
-    toastr(__('Successfull save currency configuration'))->success();
+    toastr(__('Successfully save currency configuration'))->success();
     echo '<script>top.$("#mainContent").simbioAJAX("' . $_SERVER['PHP_SELF'] . '")</script>';
     exit;
 }
