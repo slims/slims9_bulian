@@ -121,9 +121,7 @@ $form->table_content_attr = 'class="alterCell2"';
 if ($BasedIp)
 {
     $thisEnv = ucfirst((!in_array(getCurrentIp(), $RangeIp) ? $Environment : $ConditionEnvironment));
-    $HTML = <<<HTML
-        <b>{$thisEnv}</b>
-    HTML;
+    $HTML = '<b>{$thisEnv}</b>';
     $form->addAnything('Your Environment Mode', $HTML);
 
     $Environment = $ConditionEnvironment;

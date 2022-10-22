@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 22:48+0700\n"
-"PO-Revision-Date: 2022-10-22 22:53+0700\n"
+"POT-Creation-Date: 2022-10-22 23:16+0700\n"
+"PO-Revision-Date: 2022-10-22 23:18+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -5426,22 +5426,24 @@ msgid "Loan Periode (In Days)"
 msgstr "Lama Peminjaman (Dalam Hari)"
 
 #: admin/modules/membership/member_type.php:226
-#: admin/modules/system/index.php:379 admin/modules/system/index.php:391
-#: admin/modules/system/index.php:397 admin/modules/system/index.php:404
-#: admin/modules/system/index.php:410 admin/modules/system/index.php:416
-#: admin/modules/system/index.php:422 admin/modules/system/index.php:440
-#: admin/modules/system/index.php:456 admin/modules/system/index.php:460
-#: admin/modules/system/ucsetting.php:104 template/default/tinfo.inc.php:228
+#: admin/modules/system/envsetting.php:139 admin/modules/system/index.php:379
+#: admin/modules/system/index.php:391 admin/modules/system/index.php:397
+#: admin/modules/system/index.php:404 admin/modules/system/index.php:410
+#: admin/modules/system/index.php:416 admin/modules/system/index.php:422
+#: admin/modules/system/index.php:440 admin/modules/system/index.php:456
+#: admin/modules/system/index.php:460 admin/modules/system/ucsetting.php:104
+#: template/default/tinfo.inc.php:228
 msgid "Enable"
 msgstr "Dimungkinkan"
 
 #: admin/modules/membership/member_type.php:227
-#: admin/modules/system/index.php:378 admin/modules/system/index.php:390
-#: admin/modules/system/index.php:396 admin/modules/system/index.php:403
-#: admin/modules/system/index.php:409 admin/modules/system/index.php:415
-#: admin/modules/system/index.php:421 admin/modules/system/index.php:439
-#: admin/modules/system/index.php:455 admin/modules/system/index.php:461
-#: admin/modules/system/ucsetting.php:103 template/default/tinfo.inc.php:229
+#: admin/modules/system/envsetting.php:138 admin/modules/system/index.php:378
+#: admin/modules/system/index.php:390 admin/modules/system/index.php:396
+#: admin/modules/system/index.php:403 admin/modules/system/index.php:409
+#: admin/modules/system/index.php:415 admin/modules/system/index.php:421
+#: admin/modules/system/index.php:439 admin/modules/system/index.php:455
+#: admin/modules/system/index.php:461 admin/modules/system/ucsetting.php:103
+#: template/default/tinfo.inc.php:229
 msgid "Disable"
 msgstr "Tidak mungkin"
 
@@ -7535,6 +7537,28 @@ msgstr "Setelan Lingkungan Sistem"
 msgid "SLiMS Environment preferences."
 msgstr "Pilihan Lingkungan SLiMS."
 
+#: admin/modules/system/envsetting.php:132 lib/Mail.php:156
+msgid "Production"
+msgstr "Produksi"
+
+#: admin/modules/system/envsetting.php:133 lib/Mail.php:157
+msgid "Development"
+msgstr "Pengembangan"
+
+#: admin/modules/system/envsetting.php:135
+msgid "System Environment Mode"
+msgstr "Moda Lingkungan Sistem"
+
+#: admin/modules/system/envsetting.php:141
+msgid "Environment for some IP?"
+msgstr "Konfigurasi IP untuk beberapa lingkungan?"
+
+#: admin/modules/system/envsetting.php:142
+msgid ""
+"Range Ip wil be impacted with Environment. Example : "
+"10.120.33.40;20.100.34.10. "
+msgstr "Kisaran IP yang akan berdampak. Contoh : 10.120.33.40;20.100.34.10. "
+
 #: admin/modules/system/holiday.php:58 admin/modules/system/holiday.php:63
 #: admin/modules/system/holiday.php:78 admin/modules/system/holiday.php:85
 #: admin/modules/system/holiday.php:92 admin/modules/system/holiday.php:99
@@ -8439,14 +8463,6 @@ msgstr "Anda saat ini masuk sebagai anggota"
 #: index.php:54 lib/contents/member.inc.php:678
 msgid "LOGOUT"
 msgstr "KELUAR"
-
-#: lib/Mail.php:156
-msgid "Production"
-msgstr "Produksi"
-
-#: lib/Mail.php:157
-msgid "Development"
-msgstr "Pengembangan"
 
 #: lib/SearchEngine/SearchFilter.php:23
 msgid "Publication Year"
