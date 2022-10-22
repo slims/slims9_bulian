@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 21:18+0700\n"
-"PO-Revision-Date: 2022-10-22 22:08+0700\n"
+"POT-Creation-Date: 2022-10-22 22:48+0700\n"
+"PO-Revision-Date: 2022-10-22 22:53+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -7054,6 +7054,10 @@ msgstr "Salinan Pangkalan Data"
 msgid "Start New Backup"
 msgstr "Mulai Salinan Baru"
 
+#: admin/modules/system/backup.php:128
+msgid "Verbose process"
+msgstr "Proses detail"
+
 #: admin/modules/system/backup.php:151
 msgid "Processing"
 msgstr "Memproses"
@@ -7671,6 +7675,14 @@ msgstr "Nama Perpustakaan"
 msgid "Library Subname"
 msgstr "Nama Tambahan Perpustakaan"
 
+#: admin/modules/system/index.php:288
+msgid "Main Logo"
+msgstr "Logo Utama"
+
+#: admin/modules/system/index.php:301
+msgid "Favicon"
+msgstr "Favicon"
+
 #: admin/modules/system/index.php:322
 msgid "Logo Image"
 msgstr "Gambar Logo"
@@ -7764,7 +7776,7 @@ msgid "Allowed Counter IP"
 msgstr "IP yang Diizinkan"
 
 #: admin/modules/system/index.php:442
-msgid "Seperate ip with ;"
+msgid "Separate ip with ;"
 msgstr "IP dipisahkan dengan ;"
 
 #: admin/modules/system/index.php:444

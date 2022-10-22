@@ -125,7 +125,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 	  <div class="btn-group">
       <div>
         <button id="startBackup" class="notAJAX btn btn-success d-block mb-1"><?php echo __('Start New Backup'); ?></button>
-        <input type="checkbox" value="yes" id="activateVerbose"/> <label>Verbose process</label>
+        <input type="checkbox" value="yes" id="activateVerbose"/> <label><?= __('Verbose process')?></label>
       </div>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>system/backup.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 

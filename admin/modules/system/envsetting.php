@@ -134,7 +134,8 @@ $EnvOptions = [
     [1, __('Production')],
     [0, __('Development')]
   ];
-$form->addSelectList('env', __('System Environment Mode'), $EnvOptions, ( $Environment == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
+$label = __('System Environment Mode');
+$form->addSelectList('env', $label, $EnvOptions, ( $Environment == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
 $BasedIpOptions = [
     [0, __('Disable')],
     [1, __('Enable')]
