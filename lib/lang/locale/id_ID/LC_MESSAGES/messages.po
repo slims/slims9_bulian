@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 23:35+0700\n"
-"PO-Revision-Date: 2022-10-23 16:28+0700\n"
+"POT-Creation-Date: 2022-10-23 19:52+0700\n"
+"PO-Revision-Date: 2022-10-23 19:54+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -1270,14 +1270,14 @@ msgstr ""
 
 #: admin/modules/bibliography/import.php:258
 #: admin/modules/bibliography/item_import.php:217
-#: admin/modules/bibliography/marcimport.php:403
+#: admin/modules/bibliography/marcimport.php:399
 #: admin/modules/membership/import.php:199
 msgid "Import Now"
 msgstr "Impor Sekarang"
 
 #: admin/modules/bibliography/import.php:278
 #: admin/modules/bibliography/item_import.php:236
-#: admin/modules/bibliography/marcimport.php:422
+#: admin/modules/bibliography/marcimport.php:418
 #: admin/modules/membership/import.php:219
 msgid "File To Import"
 msgstr "Berkas untuk di impor"
@@ -2669,24 +2669,19 @@ msgstr "Perangkat Impor MARC"
 #: admin/modules/bibliography/marcimport.php:391
 msgid ""
 "Import bibliographic records from MARC file. The file can be native MARC "
-"record format file (.mrc) or\n"
-"        MARCXML XML file (.xml).\n"
-"        You need to have PHP PEAR and PEAR's File_MARC package installed in "
-"your system.\n"
-"        To convert native/legacy MARC file to MARCXML\n"
-"        you can use <a class=\"notAJAX\" href=\"http://www.loc.gov/standards/"
-"marcxml/marcxml.zip\">MARCXML Toolkit</a>"
+"record format file (.mrc) or MARCXML XML file (.xml). You need to have PHP "
+"PEAR and PEAR's File_MARC package installed in your system. To convert "
+"native/legacy MARC file to MARCXML you can use <a class=\"notAJAX\" href="
+"\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
 msgstr ""
 "Mengimpor cantuman bibliografi dari berkas MARC. Berkas tersebut bisa "
-"berbentuk cantuman format MARC asli (.mrc) atau\n"
-"        berkas MARCXML XML (.xml).\n"
-"        Untuk itu, perlu dipastikan di sistem Anda sudah terpasang paket PHP "
-"PEAR serta File_MARC PEAR.\n"
-"        Untuk mengubah berkas asli MARC ke dalam format MARCXML\n"
-"        Anda dapat menggunakan <a class=\"notAJAX\" href=\"http://www.loc."
+"berbentuk cantuman format MARC asli (.mrc) atau berkas MARCXML XML (.xml). "
+"Untuk itu, perlu dipastikan di sistem Anda sudah terpasang paket PHP PEAR "
+"serta File_MARC PEAR. Untuk mengubah berkas asli MARC ke dalam format "
+"MARCXML Anda dapat menggunakan <a class=\"notAJAX\" href=\"http://www.loc."
 "gov/standards/marcxml/marcxml.zip\">Perangkat MARCXML</a>"
 
-#: admin/modules/bibliography/marcimport.php:426
+#: admin/modules/bibliography/marcimport.php:422
 msgid "Number of records to import (0 for all records)"
 msgstr "Jumlah Cantuman untuk diimpor (0 untuk semua cantuman)"
 
