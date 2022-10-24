@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-23 19:52+0700\n"
-"PO-Revision-Date: 2022-10-23 19:54+0700\n"
+"POT-Creation-Date: 2022-10-24 10:53+0700\n"
+"PO-Revision-Date: 2022-10-24 10:54+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
 "X-Poedit-Basepath: ../../../../..\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:21
@@ -1265,8 +1265,8 @@ msgid ""
 "id\" target=\"_blank\">Official Website</a>"
 msgstr ""
 "Berkas CSV untuk impor data bibliografi. Lihat panduan tentang urutan ruas "
-"dalam berkas CSV atau kunjungi <a href=\"http://slims.web.id\" target="
-"\"_blank\">Situs Resmi SLiMS</a>"
+"dalam berkas CSV atau kunjungi <a href=\"http://slims.web.id\" "
+"target=\"_blank\">Situs Resmi SLiMS</a>"
 
 #: admin/modules/bibliography/import.php:258
 #: admin/modules/bibliography/item_import.php:217
@@ -2671,8 +2671,8 @@ msgid ""
 "Import bibliographic records from MARC file. The file can be native MARC "
 "record format file (.mrc) or MARCXML XML file (.xml). You need to have PHP "
 "PEAR and PEAR's File_MARC package installed in your system. To convert "
-"native/legacy MARC file to MARCXML you can use <a class=\"notAJAX\" href="
-"\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
+"native/legacy MARC file to MARCXML you can use <a class=\"notAJAX\" "
+"href=\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
 msgstr ""
 "Mengimpor cantuman bibliografi dari berkas MARC. Berkas tersebut bisa "
 "berbentuk cantuman format MARC asli (.mrc) atau berkas MARCXML XML (.xml). "
@@ -7080,14 +7080,26 @@ msgstr "Ukuran Berkas"
 msgid "File not found"
 msgstr "Berkas tidak ada"
 
+#: admin/modules/system/backup_proc.php:85
+msgid "Starting..."
+msgstr "Memulai..."
+
 #: admin/modules/system/backup_proc.php:133
 #, php-format
 msgid "Backup SUCCESSFUL, backup files saved to %s !"
 msgstr "BERHASIL membuat cadangan, berkas pencadangan ada di %s !"
 
+#: admin/modules/system/backup_proc.php:142
+msgid "Compressing..."
+msgstr "Mengkompres..."
+
 #: admin/modules/system/backup_proc.php:148
 msgid "File is compressed using tar gz archive format"
 msgstr "Bentukan tar gz digunakan untuk mengkompresi berkas"
+
+#: admin/modules/system/backup_proc.php:150
+msgid "Compressing Success"
+msgstr "Kompresi Berhasil"
 
 #: admin/modules/system/backup_proc.php:162
 #, php-format
@@ -8066,16 +8078,28 @@ msgstr "Plugin"
 msgid "Enable/Disable"
 msgstr "Aktif/Nonaktif"
 
-#: admin/modules/system/plugins.php:122 admin/modules/system/plugins.php:194
+#: admin/modules/system/plugins.php:122 admin/modules/system/plugins.php:196
 msgid "Enabled"
 msgstr "Aktif"
 
 #: admin/modules/system/plugins.php:129 admin/modules/system/plugins.php:134
-#: admin/modules/system/plugins.php:196
+#: admin/modules/system/plugins.php:198
 msgid "Disabled"
 msgstr "Nonaktif"
 
-#: admin/modules/system/plugins.php:164
+#: admin/modules/system/plugins.php:138
+msgid "Version"
+msgstr "Versi"
+
+#: admin/modules/system/plugins.php:138
+msgid "By"
+msgstr "Dibuat oleh"
+
+#: admin/modules/system/plugins.php:138
+msgid "View Detail"
+msgstr "Tampilkan Detail"
+
+#: admin/modules/system/plugins.php:166
 msgid ""
 "Plugin has been disabled.\\nRun Migration too? This may will drop this "
 "plugin's table and the data can not be restored!"
@@ -9192,6 +9216,10 @@ msgstr "Jangan Pilih Semua"
 msgid "Select Invert"
 msgstr "Pilih Kebalikan"
 
+#: lib/member_api.inc.php:38
+msgid "All"
+msgstr "Semua"
+
 #: lib/module.inc.php:46 template/akasia-dz/partials/footer.php:51
 #: template/akasia-dz/partials/nav.php:5 template/akasia/partials/footer.php:51
 #: template/akasia/partials/nav.php:5 template/default/parts/_navbar.php:11
@@ -10027,9 +10055,6 @@ msgstr "Masukkan kata kunci..."
 
 #~ msgid "Settings updated."
 #~ msgstr "Pengaturan tersimpan."
-
-#~ msgid "View Detail"
-#~ msgstr "Tampilkan Detail"
 
 #~ msgid ""
 #~ "You currently on page <strong>{page}</strong> of <strong>{total_pages}</"

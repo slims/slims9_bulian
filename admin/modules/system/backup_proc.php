@@ -82,7 +82,7 @@ function outputWithFlush($message)
 
 // if backup process is invoked
 if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSION['token']) {
-    outputWithFlush(color('Starting...'));
+    outputWithFlush(color(__('Starting...')));
     sleep(2);
     $output = '';
     $error = false;
@@ -139,7 +139,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                     @chdir($sysconf['backup_dir']);
                     // compress the backup using tar gz
                     if(function_exists('exec')){
-                        outputWithFlush(color('Compressing...'));
+                        outputWithFlush(color(__('Compressing...')));
                         sleep(1);
                         exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
                         if ($status == COMMAND_SUCCESS) {
@@ -147,7 +147,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
                             @unlink($data['backup_file']);
                             $output .= __("File is compressed using tar gz archive format");
                             $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
-                            outputWithFlush(color('Compressing Success', 'success'));
+                            outputWithFlush(color(__('Compressing Success'), 'success'));
                         }
                     }
                     // return to previous PHP working dir
