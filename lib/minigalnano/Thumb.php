@@ -4,7 +4,7 @@
  * @rebuild by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-14 12:49:19
- * @modify date 2022-10-20 16:14:36
+ * @modify date 2022-10-24 08:30:15
  * @desc 
 */
 /*
@@ -246,24 +246,26 @@ class Thumb
     {
         // Create http header based on file extension
         $this->setContentType();
-        
-        // Create image source
-        $target = imagecreatetruecolor($this->resulutionWidth, $this->resulutionHeight);
-        if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromjpeg($this->filePath);
-        if (preg_match("/.gif$/i", $this->filePath)) $source = imagecreatefromgif($this->filePath);
-        if (preg_match("/.png$/i", $this->filePath)) $source = imagecreatefrompng($this->filePath);
-
-        // preserve transparency
-        imagealphablending($target, false);
-        imagesavealpha($target,true);
-        $transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
-        imagefilledrectangle($target, 0, 0, $this->resulutionWidth, $this->resulutionHeight, $transparent);
-
-        imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resulutionWidth, $this->resulutionHeight,$this->imageWidth,$this->imageHeight);
-        imagedestroy($source);
 
         if (!$this->isCacheExists())
         {
+            ob_start();
+            // Create image source
+            $target = imagecreatetruecolor($this->resulutionWidth, $this->resulutionHeight);
+            if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromjpeg($this->filePath);
+            if (preg_match("/.gif$/i", $this->filePath)) $source = imagecreatefromgif($this->filePath);
+            if (preg_match("/.png$/i", $this->filePath)) $source = imagecreatefrompng($this->filePath);
+
+            // preserve transparency
+            imagealphablending($target, false);
+            imagesavealpha($target,true);
+            $transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
+            imagefilledrectangle($target, 0, 0, $this->resulutionWidth, $this->resulutionHeight, $transparent);
+
+            imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resulutionWidth, $this->resulutionHeight,$this->imageWidth,$this->imageHeight);
+            imagedestroy($source);
+            ob_end_clean();
+
             if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) {
                 imagejpeg($target,null,90);
                 if ($this->cache['enable']) imagejpeg($target,$this->cache['file'],90);
