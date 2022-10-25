@@ -35,7 +35,7 @@ class membershipApi
     $sMtype = 'SELECT * FROM mst_member_type';
     $qMtype = $obj_db->query($sMtype);
     $_return = array ();
-    $_return[0]['member_type_name'] = 'All';
+    $_return[0]['member_type_name'] = __('All');
 
     if (!$obj_db->errno) {
       $i = 0;
