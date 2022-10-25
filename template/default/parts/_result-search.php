@@ -83,9 +83,33 @@
 </div>
 <?php if(($_SESSION['LIST_VIEW'] ?? 'list') === 'grid'): ?>
     <script>
-        $(document).ready(() => {
-            $('.biblioResult').addClass('row').masonry({ itemSelector: '.grid-item' })
-            $('.dropdown-toggle').dropdown()
-        })
+        // This code modified from: https://www.seancdavis.com/posts/wait-until-all-images-loaded/
+        $(document).ready(function () {
+            // Images loaded is zero because we're going to process a new set of images.
+            let imagesLoaded = 0;
+            // Total images is still the total number of <img> elements on the page.
+            let totalImages = $(".grid-item .img-thumbnail").length;
+
+            // Step through each image in the DOM, clone it, attach an onload event
+            // listener, then set its source to the source of the original image. When
+            // that new image has loaded, fire the imageLoaded() callback.
+            $(".grid-item .img-thumbnail").each(function (idx, img) {
+                $("<img>").on("load", imageLoaded).attr("src", $(img).attr("src"));
+            });
+
+            // Do exactly as we had before -- increment the loaded count and if all are
+            // loaded, call the allImagesLoaded() function.
+            function imageLoaded() {
+                imagesLoaded++;
+                if (imagesLoaded == totalImages) {
+                allImagesLoaded();
+                }
+            }
+
+            function allImagesLoaded() {
+                $('.biblioResult').addClass('row').masonry({ itemSelector: '.grid-item', columnWidth: '.grid-item' })
+                $('.dropdown-toggle').dropdown()
+            }
+        });
     </script>
 <?php endif; ?>
