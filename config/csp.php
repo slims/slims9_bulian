@@ -11,7 +11,7 @@ return [
     "base-uri 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self'",
+    "img-src 'self' data:",
     "connect-src 'self' kutipan.herokuapp.com",
     "frame-src 'self' *.google.com",
     "font-src 'self'",
