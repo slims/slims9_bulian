@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-06 22:44:30
- * @modify date 2022-10-08 11:33:08
+ * @modify date 2022-10-26 12:16:08
  * @license GPLv3
  * @desc [description]
  */
@@ -106,7 +106,7 @@ class Mail extends PHPMailer
      */
     public function loadTemplate(object $template)
     {
-        if (!$template instanceof TemplateContract) throw new Exception("Class {$templateClass} is not instance of SLiMS\Mail\TemplateContract!");
+        if (!$template instanceof TemplateContract) throw new Exception("Class {$template} is not instance of SLiMS\Mail\TemplateContract!");
 
         $this->isHTML(true); // html yes!
         $this->msgHTML($template->render());
