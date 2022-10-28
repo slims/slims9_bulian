@@ -19,6 +19,7 @@
  */
 
 /* MEMBER BASE LIBRARY */
+use SLiMS\{Mail,Plugins};
 
 class member
 {
@@ -149,7 +150,7 @@ class member
         $_overdues = array();
         $_ovd_title_q = $obj_db->query(sprintf('SELECT l.loan_id, l.item_code, i.price, i.price_currency,
             b.title, l.loan_date,
-            l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\'
+            l.due_date, (TO_DAYS(DATE(NOW()))-TO_DAYS(due_date)) AS \'Overdue Days\', b.image
             FROM loan AS l
             LEFT JOIN item AS i ON l.item_code=i.item_code
             LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
@@ -165,69 +166,25 @@ class member
     # send overdue notice e-mail
     public function sendOverdueNotice()
     {
-        global $sysconf;
-        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        // execute registered hook
+        Plugins::getInstance()->execute('overduenotice_init');
+
         try {
-            //Server settings
-            //$mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;                      // Enable verbose debug output
-            $mail->isSMTP();                                                                // Send using SMTP
-            $mail->Host = $sysconf['mail']['server'];                                       // Set the SMTP server to send through
-            $mail->SMTPAuth = $sysconf['mail']['auth_enable'];                              // Enable SMTP authentication
-            $mail->Username = $sysconf['mail']['auth_username'];                            // SMTP username
-            $mail->Password = $sysconf['mail']['auth_password'];                            // SMTP password
-            if ($sysconf['mail']['SMTPSecure'] === 'tls') {                                 // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-            } else if ($sysconf['mail']['SMTPSecure'] === 'ssl') {
-                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-            }
-            $mail->Port = $sysconf['mail']['server_port'];                                  // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-
-            //Recipients
-            $mail->setFrom($sysconf['mail']['from'], $sysconf['mail']['from_name']);
-            $mail->addReplyTo($sysconf['mail']['reply_to'], $sysconf['mail']['reply_to_name']);
-            $mail->addAddress($this->member_email, $this->member_name);
-
-            // Content
-            // get message template
-            ob_start();
-            include SB . 'admin/admin_template/overdue-mail-tpl.php';
-            require MDLBS . 'circulation/circulation_base_lib.inc.php';
-
-            $circulation = new circulation($this->obj_db, $this->member_id);
-            $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-            $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
-            $circulation->holiday_date = $_SESSION['holiday_date'];
-
-            $_msg_tpl = ob_get_clean();
-
-            // date
-            $_curr_date = date('Y-m-d H:i:s');
-
-            // compile overdue data
-            $_overdue_data = '<table width="100%" border="1">' . "\n";
-            $_overdue_data .= '<tr><th>' . __('Title') . '</th><th>' . __('Item Code') . '</th><th>' . __('Loan Date') . '</th><th>' . __('Due Date') . '</th><th>' . __('Overdue') . '</th></tr>' . "\n";
-            $_arr_overdued = self::getOverduedLoan($this->obj_db, $this->member_id);
-            foreach ($_arr_overdued as $_overdue) {
-                $_overdue_data .= '<tr>';
-                $_overdue_data .= '<td>' . $_overdue['title'] . '</td><td>' . $_overdue['item_code'] . '</td><td>' . $_overdue['loan_date'] . '</td><td>' . $_overdue['due_date'] . '</td><td>' . $circulation->countOverdueValue($_overdue['loan_id'], date('Y-m-d'))['days'] . ' ' . __('days') . '</td>' . "\n";
-                $_overdue_data .= '</tr>';
-            }
-            $_overdue_data .= '</table>';
-
-
-            // message
-            $_message = str_ireplace(array('<!--MEMBER_ID-->', '<!--MEMBER_NAME-->', '<!--OVERDUE_DATA-->', '<!--DATE-->'),
-                array($this->member_id, $this->member_name, $_overdue_data, $_curr_date), $_msg_tpl);
-
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = str_replace(array('{member_name}', '{member_email}'), array($this->member_name, $this->member_email), __('Overdue Notice for Member {member_name} ({member_email})'));
-            $mail->msgHTML($_message);
-            $mail->AltBody = strip_tags($_message);
-
-            $mail->send();
-            return array('status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to ' . $this->member_email);
+            // Template
+            include SB . 'admin/admin_template/overdueMail.php';
+            $overdueTemplate = new overdueMail($this);
+            $overdueTemplate->setMinify(true);
+            $overdueTemplate->setCirculationData($this->obj_db, self::getOverduedLoan($this->obj_db, $this->member_id));
+            
+            // Send email to member
+            Mail::to($this->member_email, $this->member_name)
+                    ->subject(str_replace(['{member_name}', '{member_email}'], [$this->member_name, $this->member_email], __('Overdue Notice for Member {member_name} ({member_email})')))
+                    ->loadTemplate($overdueTemplate)
+                    ->send();
+            
+            return ['status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to ' . $this->member_email];
         } catch (Exception $exception) {
-            return array('status' => 'ERROR', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            return ['status' => 'ERROR', 'message' => "Message could not be sent. Mailer Error: " . Mail::getInstance()->ErrorInfo];
         }
     }
 }

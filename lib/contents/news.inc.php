@@ -22,7 +22,7 @@ require_once LIB.'content.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require_once SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/news_template.php';
 
-$page_title = __('Library News');
+$opac->page_title = __('Library News');
 
 $keywords = null;
 if (isset($_GET['keywords'])) {
@@ -41,7 +41,7 @@ if ($total > 0) {
 
 foreach ($content_list as $c) {
     $summary = Content::createSummary($c['content_desc'], 300);
-    echo news_list_tpl($c['content_title'], $c['content_path'], $c['last_update'], $summary);
+    echo news_list_tpl($c['content_title'], $c['content_path'], $c['publish_date']??$c['last_update'], $summary);
 }
 
 echo simbio_paging::paging($total, $sysconf['news']['num_each_page'], 5);

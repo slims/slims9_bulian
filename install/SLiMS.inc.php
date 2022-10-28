@@ -50,6 +50,31 @@ class SLiMS
     return null;
   }
 
+  function phpExtensionCheck($returnType = 'html')
+  {
+    if ($returnType == 'bool')
+    {
+      // Minimum SLiMS PHP Extension requirement
+      return $this->isGdOk() && $this->isMbStringOk() && $this->isGettextOk() && $this->isPdoOk();
+    }
+
+    $message  = '<div class="flex flex-col">';
+    $message .= $this->isGdOk() ? '<span>GD : installed</span>' : '<div>GD : <strong class="text-red-500">not installed. PHP GD required for image processing!</strong></div>';
+    $message .= $this->isMbStringOk() ? '<span>Mbstring : installed</span>' : '<divMbstring : <strong class="text-red-500">not installed. PHP Mbstring is used to convert strings to different encodings.</strong></div>';
+    $message .= $this->isGettextOk() ? '<span>Gettext : installed</span>' : '<div>Gettext : <strong class="text-red-500">not installed. PHP gettext required for translation to other language.</strong></div>';
+    $message .= $this->isPdoOk() ? '<span>PDO MySQL : installed</span>' : '<div>PDO : <strong class="text-red-500">not installed. PHP pdo required by some feature in SLiMS.</strong></div>';
+    // Yaz is optional
+    $message .= $this->isYazOk() ? '<span>YAZ : installed</span>' : '<div>YAZ : <strong class="text-red-500">not installed. It\'s optional, but will be needed if you want to use Z39.50 protocol.</strong></div>';
+    $message .= '</div>';
+
+    return $message;
+  }
+
+  function isPdoOk()
+  {
+    return class_exists('PDO') && in_array('mysql', \PDO::getAvailableDrivers());
+  }
+
   function isPhpOk($expectedVersion)
   {
     // Is this version of PHP greater than minimum version required?
@@ -94,8 +119,17 @@ class SLiMS
     $gd_info = gd_info();
     $gd_version = preg_replace('/[^0-9\.]/', '', $gd_info['GD Version']);
 
+    // Image extension Support
+    $Need = ['GIF Read Support','GIF Create Support','JPEG Support','PNG Support'];
+    $extensionCheck = array_filter($Need, function($Extension) use($gd_info) {
+      if (isset($gd_info[$Extension]) && ($gd_info[$Extension]))
+      {
+          return true;
+      }
+    });
+
     // If the GD version is at least 1.0
-    return ($gd_version >= 1);
+    return ($gd_version >= 1 && count($extensionCheck) == 4);
   }
 
   function isYazOk()
@@ -374,6 +408,7 @@ SQL;
 
   function updateAdmin($username, $password)
   {
+    $username = $this->db->escape_string($username);
     $sql_update = " UPDATE user set
 			username = '" . $username . "',
 			passwd = '" . password_hash($password, PASSWORD_BCRYPT) . "',

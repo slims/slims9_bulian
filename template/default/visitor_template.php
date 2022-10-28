@@ -12,17 +12,43 @@ if (isset($_GET['select_lang'])) {
     $select_lang = trim(strip_tags($_GET['select_lang']));
     // delete previous language cookie
     if (isset($_COOKIE['select_lang'])) {
-        @setcookie('select_lang', $select_lang, time()-14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()-14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()-14400, SWB, "", FALSE, TRUE);
+
+        @setcookie('select_lang', $select_lang, [
+            'expires' => time()-14400,
+            'path' => SWB,
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
+
+
     }
     // create language cookie
-    @setcookie('select_lang', $select_lang, time()+14400, SWB);
+    #@setcookie('select_lang', $select_lang, time()+14400, SWB);
+    #@setcookie('select_lang', $select_lang, time()+14400, SWB, "", FALSE, TRUE);
+
+    @setcookie('select_lang', $select_lang, [
+        'expires' => time()+14400,
+        'path' => SWB,
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+
+
     $sysconf['default_lang'] = $select_lang;
 } else if (isset($_COOKIE['select_lang'])) {
     $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
 }
 
 ?>
-<div class="vegas-slide" style="position: fixed; z-index: -1"></div>
+<div class="<?= $sysconf['template']['classic_library_disableslide'] ? 'vegas-slide c-header' : 'vegas-slide' ?>" style="position: fixed; z-index: -1"></div>
 <div class="flex h-screen w-full" id="visitor-counter" style="background: rgba(0,0,0,0.3)">
     <div class="bg-white w-full md:w-1/3 px-8 pt-8 pb-3 flex flex-col justify-between">
         <div>
@@ -62,7 +88,6 @@ if (isset($_GET['select_lang'])) {
                 </div>
                 <div class="px-8">
                     <h3 class="font-light text-white mb-2" v-html="textInfo"></h3>
-                    </p>
                 </div>
             </div>
             <div class="flex h-screen items-end p-8">
@@ -98,7 +123,8 @@ if (isset($_GET['select_lang'])) {
                 this.image = './images/persons/photo.png'
             },
             getQuotes: function() {
-                axios.get('https://api.quotable.io/random')
+                // Alternative Free Quotes API: https://api.quotable.io/random
+                axios.get('https://kutipan.herokuapp.com/')
                     .then(res => {
                         this.quotes = res.data
                     })
@@ -130,8 +156,8 @@ if (isset($_GET['select_lang'])) {
                     headers: {'Content-Type': 'multipart/form-data' }
                 })
                     .then(res => {
-                        this.textInfo = res.data
-                        this.image = `./images/persons/member_${this.memberId}.jpg`
+                        this.textInfo = res.data.message
+                        this.image = `./images/persons/${res.data.image}`
                         <?php if ($sysconf['template']['visitor_log_voice']) : ?>
                             this.textToSpeech(this.textInfo.replace(/(<([^>]+)>)/ig, ''))
                         <?php endif; ?>

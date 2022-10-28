@@ -46,7 +46,7 @@ class Content
         return $summary;
     }
     
-    public function getContents($obj_db, $max_each_page = 10, &$total, $search_query = '')
+    public function getContents($obj_db, $max_each_page = 10, &$total = 0, $search_query = '')
     {
         global $sysconf;
         $contents = array();
@@ -63,7 +63,7 @@ class Content
         $_lang = strtolower($sysconf['default_lang']);
 
         // query content
-        $_sql_content = "SELECT SQL_CALC_FOUND_ROWS * FROM content WHERE is_news=1";
+        $_sql_content = "SELECT SQL_CALC_FOUND_ROWS * FROM content WHERE is_news=1 AND is_draft=0";
         if ($search_query) {
             $search_query = $obj_db->escape_string(trim($search_query));
             $_sql_content .= " AND MATCH(`content_title`, `content_desc`) AGAINST('$search_query' IN BOOLEAN MODE)";
@@ -107,7 +107,7 @@ class Content
         $_path_lang = $_path.'_'.$_lang;
 
         // check for language
-        $_sql_check = sprintf('SELECT COUNT(*) FROM content WHERE content_path=\'%s\'', $obj_db->escape_string($_path_lang));
+        $_sql_check = sprintf('SELECT COUNT(*) FROM content WHERE content_path=\'%s\' AND is_draft = 0', $obj_db->escape_string($_path_lang));
         $_check_q = $obj_db->query($_sql_check);
         $_check_d = $_check_q->fetch_row();
         if ($_check_d[0] > 0) {
@@ -115,7 +115,7 @@ class Content
         }
 
         // query content
-        $_sql_content = sprintf('SELECT * FROM content WHERE content_path=\'%s\'', $obj_db->escape_string($_path));
+        $_sql_content = sprintf('SELECT * FROM content WHERE content_path=\'%s\' AND is_draft = 0', $obj_db->escape_string($_path));
         $_content_q = $obj_db->query($_sql_content);
         // get content data
         $_content_d = $_content_q->fetch_assoc();
@@ -124,10 +124,10 @@ class Content
         } else {
             $_content['Title'] = $_content_d['content_title'];
             $_content['Path'] = $_content_d['content_path'];
-            $_content['Content'] = $_content_d['content_desc'];
+            $_content['Content'] = '<div class="ck-content p-5">' . $_content_d['content_desc'] . '</div>';
             // strip html
             if ($this->strip_html) {
-                $_content['Content'] = strip_tags($_content['Content'], $this->allowed_tags);
+                $_content['Content'] = '<div class="ck-content p-5">' . strip_tags($_content['Content'], $this->allowed_tags) . '</div>';
             }
 
             return $_content;

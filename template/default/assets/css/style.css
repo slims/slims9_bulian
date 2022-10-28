@@ -907,3 +907,63 @@ html {
 .highlight{
 	color:red;
 }
+
+.biblioPagingTop {
+    display: none;
+}
+
+.grid-item {
+    font-size: 12.04px;
+    font-family: "Open Sauce One", sans-serif;
+}
+
+.grid-item--title {
+	box-sizing: border-box;
+    color: rgb(33, 33, 33);
+    cursor: pointer;
+    display: -webkit-box;
+    line-height: 18.0667px;
+    margin-bottom: 4px;
+    max-height: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    -moz-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.grid-item .list-group-item {
+    padding: .25rem .5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid-item .list-group-item label {
+    color: #6D7588;
+    padding: 0;
+    margin: 0;
+}
+
+img.not-available {
+    filter: grayscale(.9);
+}
+
+.grid-item--menu {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 10;
+}
+
+.grid-item--menu .dropdown-toggle {
+    text-decoration: none;
+    color: inherit;
+}
+
+.grid-item--menu .dropdown-toggle::after {
+    display: none;
+}

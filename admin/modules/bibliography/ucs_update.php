@@ -69,24 +69,25 @@ if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['nodeOpe
     $to_sent['node_info'] = $sysconf['ucs'];
     $to_sent['node_data'] = $data;
     // create HTTP request
-    $http_request = new http_request();
-    // send HTTP POST request
-    $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-	if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
-      $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/uc-ops.php', $server_addr, $to_sent, 'POST', 'text/json');
-	} else {
-	  $http_request->send_http_request($sysconf['ucs']['serveraddr'].'/ucs.php', $server_addr, $to_sent, 'POST', 'text/json');
-	}
+    $http_request = new \GuzzleHttp\Client();
+    $http_param = ['body' => json_encode($to_sent), 'http_errors' => false];
+
+    if (isset($sysconf['ucs']['serverversion']) && $sysconf['ucs']['serverversion'] < 3) {
+        $request = $http_request->request('POST', $sysconf['ucs']['serveraddr'].'/uc-ops.php', $http_param);
+    } else {
+        $request = $http_request->request('POST', $sysconf['ucs']['serveraddr'].'/ucs.php', $http_param);
+    }
+
     // below is for debugging purpose only
-    // die(json_encode(array('status' => 'RAW', 'message' => $http_request->body())));
+    // die(json_encode(array('status' => 'RAW', 'message' => $request->getBody())));
 
     // check for http request error
-    if ($req_error = $http_request->error()) {
-	    die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => $req_error['message'])));
+    if ($request->getStatusCode() != '200') {
+        die(json_encode(array('status' => 'HTTP_REQUEST_ERROR', 'message' => 'HTTP Request error with code : ' . $request->getStatusCode())));
     }
 
     // print out body of request result
-    echo $http_request->body();
+    echo $request->getBody();
     exit();
 } else {
     die(json_encode(array('status' => 'NO_BIBLIO_SELECTED', 'message' => 'Please select bibliographic data to update!')));

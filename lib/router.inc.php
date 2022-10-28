@@ -117,13 +117,15 @@ class Router extends AltoRouter
         if( $match && is_callable( $match['target'] ) ) {
             call_user_func_array( $match['target'], $match['params'] ); 
         } else {
-            if ($callable = $this->makeCallable($match['target'])) {
+            if ($callable = $this->makeCallable($match['target']??'')) {
                 call_user_func_array($callable, $match['params']);
             } else {
                 // no route was matched
                 // header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
                 // include $this->sysconf['template']['dir'].'/'.$this->sysconf['template']['theme'].'/404.php';
-                header ("location:index.php");
+                // header ("location:index.php");
+                http_response_code(404);
+                throw new Exception("Not found!");
             }
         }
     }

@@ -400,7 +400,7 @@ class File_MARC_Data_Field extends File_MARC_Field
      *
      * @return bool Returns true if the field is empty, otherwise false
      */
-    function isEmpty()
+    function isEmpty():bool
     {
         // If $this->subfields is null, we must have deleted it
         if (!$this->subfields) {

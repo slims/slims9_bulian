@@ -189,7 +189,7 @@ class member_logon
         // get user info
         $this->user_info = $_member_q->fetch_assoc();
         // verify password hash
-        $verified = password_verify($this->password, $this->user_info['mpasswd']);
+        $verified = password_verify($this->password, $this->user_info['mpasswd']??'');
         if (!$verified) {
             //check if md5
             if($this->user_info['mpasswd'] == md5($this->password)){
@@ -252,7 +252,7 @@ class member_logon
 
         // update the last login time
         $obj_db->query("UPDATE member SET last_login='".date("Y-m-d H:i:s")."',
-            last_login_ip='".$_SERVER['REMOTE_ADDR']."'
+            last_login_ip='".ip()."'
             WHERE member_id='".$obj_db->escape_string($this->user_info['member_id'])."'");
 
         return true;

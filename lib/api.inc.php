@@ -59,6 +59,7 @@ class api
     $s_bib .= '';
     $q_bib = $obj_db->query($s_bib);
     if (!$obj_db->errno) {
+      $_return = [];
       while ($r_bib = $q_bib->fetch_assoc()) {
         $_return['id'] = $r_bib['biblio_id'];
         $_return['_id'] = $r_bib['biblio_id'];
@@ -326,6 +327,7 @@ class api
     $s_mbr .= 'WHERE mbr.member_id=\''.$member_id.'\'';
     $q_mbr = $obj_db->query($s_mbr);
     if (!$obj_db->errno) {
+      $_return = [];
       while ($r_mbr = $q_mbr->fetch_assoc()) {
         $_return[$i]['member_id'] = $r_mbr['member_id'];
         $_return[$i]['member_name'] = $r_mbr['member_name'];

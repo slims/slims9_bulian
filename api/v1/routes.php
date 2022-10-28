@@ -41,6 +41,9 @@ $router->map('GET', '/loan/summary', 'LoanController@getSummary');
 $router->map('GET', '/loan/getdate/[*:start_date]', 'LoanController@getDate');
 $router->map('GET', '/loan/summary/[*:date]', 'LoanController@getSummaryDate');
 
+/*----------  Custom route based on hook plugin  ----------*/
+\SLiMS\Plugins::getInstance()->execute('custom_api_route', ['router' => $router]);
+
 /*----------  Run matching route  ----------*/
 $router->run();
 

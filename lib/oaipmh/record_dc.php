@@ -62,7 +62,7 @@ function create_metadata($outputObj, $cur_record, $identifier, $setspec, $db) {
 }
 
 function xml_safe($string){
-	return preg_replace('/[\x00-\x1f]/','',htmlspecialchars($string));
+	return preg_replace('/[\x00-\x1f]/','',htmlspecialchars($string??''));
 }
 
 function date_safe($string){

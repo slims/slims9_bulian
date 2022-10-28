@@ -83,7 +83,8 @@ const show_advanced = new Vue({
         },
         searchSubmit: function () {
             if (this.keywords !== '') this.saveKeyword()
-            window.location.href = `index.php?${this.searchBy}=${this.keywords}&search=search`;
+            const token = this.$refs["csrf_token"].value
+            window.location.href = `index.php?${this.searchBy}=${this.keywords}&search=search&csrf_token=${token}`;
         },
         saveKeyword: function () {
             let rawKeywords = localStorage.getItem('keywords')
@@ -174,7 +175,8 @@ Vue.component('slims-book', {
                         createElement('img', {
                             attrs: {
                                 src: this.image,
-                                class: 'img-fluid'
+                                class: 'img-fluid',
+                                loading: 'lazy'
                             }
                         })
                     ]),
@@ -239,7 +241,8 @@ Vue.component('slims-member', {
                         createElement('img', {
                             attrs: {
                                 class: 'img-fluid h-auto',
-                                src: this.image
+                                src: this.image,
+                                loading: 'lazy'
                             }
                         })
                     ]),

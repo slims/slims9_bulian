@@ -83,7 +83,7 @@ class utility
       // replace newline with javascripts newline
       $str_message = str_replace("\n", '\n', addslashes($str_message));
       echo '<script type="text/javascript">'."\n";
-      echo 'parent.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
+      echo 'top.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
       echo '</script>'."\n";
     }
 
@@ -121,15 +121,18 @@ class utility
             while ($_setting_data = $_setting_query->fetch_assoc()) {
                 $_value = @unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
-                    foreach ($_value as $_idx=>$_curr_value) {
-                        if (is_array($_curr_value)) {
-                            $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
-                        } else {
-                            $sysconf[$_setting_data['setting_name']][$_idx] = stripslashes($_curr_value);
-                        }
+                    // make sure setting is available before
+                    if (!isset($sysconf[$_setting_data['setting_name']]))
+                        $sysconf[$_setting_data['setting_name']] = [];
+
+                    foreach ($_value as $_idx => $_curr_value) {
+                        // convert default setting value into array
+                        if (!is_array($sysconf[$_setting_data['setting_name']]))
+                            $sysconf[$_setting_data['setting_name']] = [$sysconf[$_setting_data['setting_name']]];
+                        $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = stripslashes($_value);
+                    $sysconf[$_setting_data['setting_name']] = stripcslashes($_value??'');
                 }
             }
         }
@@ -148,14 +151,14 @@ class utility
         global $sysconf;
         // checking checksum
         if ($sysconf['load_balanced_env']) {
-            $server_addr = $_SERVER['REMOTE_ADDR'];
+            $server_addr = ip();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }
 
 
         $_checksum = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
-        if ($_SESSION['checksum'] != $_checksum) {
+        if (!isset($_SESSION['checksum']) || $_SESSION['checksum'] != $_checksum) {
             return false;
         }
         // check privilege type
@@ -179,7 +182,7 @@ class utility
      * @param   string  $str_log_msg
      * @return  void
      */
-    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod=NULL, $str_log_action=NULL)
+    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod='', $str_log_action='')
     {
         if (!$obj_db->error) {
             // log table
@@ -350,12 +353,14 @@ class utility
             }
         }
 
-        // trim whitespace on string
-        if ($bool_trim) { $mix_input = trim($mix_input); }
-        // strip html
-        if ($bool_strip_html) { $mix_input = strip_tags($mix_input); }
-        // escape SQL string
-        if ($bool_escape_sql) { $mix_input = $dbs->escape_string($mix_input); }
+        if (!is_null($mix_input)) {
+            // trim whitespace on string
+            if ($bool_trim) { $mix_input = trim($mix_input); }
+            // strip html
+            if ($bool_strip_html) { $mix_input = strip_tags($mix_input); }
+            // escape SQL string
+            if ($bool_escape_sql) { $mix_input = $dbs->escape_string($mix_input); }
+        }
 
         return $mix_input;
     }

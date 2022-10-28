@@ -191,21 +191,21 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
           WHERE (l.is_lent=1 AND l.is_return=0 AND TO_DAYS(due_date) < TO_DAYS(\'' . date('Y-m-d') . '\')) AND l.member_id=\'' . $array_data[0] . '\'' . (!empty($date_criteria) ? $date_criteria : ''));
         $_buffer = '<div style="font-weight: bold; color: black; font-size: 10pt; margin-bottom: 3px;">' . $member_name . ' (' . $array_data[0] . ')</div>';
         $_buffer .= '<div style="color: black; font-size: 10pt; margin-bottom: 3px;">' . $member_mail_address . '</div>';
-        $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="' . $array_data[0] . 'emailStatus"></div>' . __('E-mail') . ': <a href="mailto:' . $member_d[1] . '">' . $member_d[1] . '</a> - <a class="usingAJAX" href="' . MWB . 'membership/overdue_mail.php' . '" postdata="memberID=' . $array_data[0] . '" loadcontainer="' . $array_data[0] . 'emailStatus">' . __('Send Notification e-mail') . '</a> - ' . __('Phone Number') . ': ' . $member_d[2] . '</div>';
+        if (!empty($member_d[1])) $_buffer .= '<div style="font-size: 10pt; margin-bottom: 3px;"><div id="' . $array_data[0] . 'emailStatus"></div>' . __('E-mail') . ' : <a href="mailto:' . $member_d[1] . '">' . $member_d[1] . '</a> - <a class="usingAJAX btn btn-sm btn-outline-primary" href="' . MWB . 'membership/overdue_mail.php' . '" postdata="memberID=' . $array_data[0] . '" loadcontainer="' . $array_data[0] . 'emailStatus"><i class="fa fa-paper-plane-o"></i>&nbsp;' . __('Send Notification e-mail') . '</a> <br/>';
+        $_buffer .= __('Phone Number') . ': ' . $member_d[2] . '</div>';
         $_buffer .= '<table width="100%" cellspacing="0">';
         while ($ovd_title_d = $ovd_title_q->fetch_assoc()) {
 
             //calculate Fines
             $overdue_days = $circulation->countOverdueValue($ovd_title_d['loan_id'], date('Y-m-d'))['days'];
-            $fines = $overdue_days * $member_d[4];
+            $fines = currency($overdue_days * $member_d[4]);
             if (!is_null($ovd_title_d['fine_each_day'])) $fines = $overdue_days * $ovd_title_d['fine_each_day'];
             // format number
             $overdue_days = number_format($overdue_days, '0', ',', '.');
-            $fines = number_format($fines, '0', ',', '.');
 
             $_buffer .= '<tr>';
             $_buffer .= '<td valign="top" width="10%">' . $ovd_title_d['item_code'] . '</td>';
-            $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . $ovd_title_d['price'] . ' ' . $ovd_title_d['price_currency'] . '</div></td>';
+            $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . currency($ovd_title_d['price']) . '</div></td>';
             $_buffer .= '<td width="20%"><div>' . __('Overdue') . ': ' . $overdue_days . ' ' . __('day(s)') . '</div><div>'.__('Fines').': '.$fines.'</div></td>';
             $_buffer .= '<td width="30%">' . __('Loan Date') . ': ' . $ovd_title_d['loan_date'] . ' &nbsp; ' . __('Due Date') . ': ' . $ovd_title_d['due_date'] . '</td>';
             $_buffer .= '</tr>';
@@ -236,6 +236,7 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
                 var loadContainer = anchor.attr('loadcontainer');
                 if (loadContainer) {
                     container = jQuery('#' + loadContainer);
+                    container.html('<div class="alert alert-info">Please wait....</div>');
                 }
                 // set ajax
                 if (postData) {

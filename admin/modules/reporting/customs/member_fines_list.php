@@ -187,7 +187,7 @@ if (!$reportView) {
         $credit = 0;
         $_buffer .= '<tr><td>'.__('Fines Date').'</td><td width="30%"><b>'.__('Description').'</b></td><td>'.__('Debit').'</td><td>'.__('Credit').'</td></tr>';
         while ($fines_d = $fines_q->fetch_assoc()) {
-            $_buffer .= '<tr style = "background-color:#adadad4d;"><td>'.$fines_d['fines_date'].'</td><td valign="top" width="40%">'.$fines_d['description'].'</td><td >Rp '.number_format($fines_d['debet'], 2, ',', '.').' </td><td>Rp '.number_format($fines_d['credit'], 2, ',', '.').'</td></tr>';
+            $_buffer .= '<tr style = "background-color:#adadad4d;"><td>'.$fines_d['fines_date'].'</td><td valign="top" width="40%">'.$fines_d['description'].'</td><td >'.currency($fines_d['debet']).' </td><td>'.currency($fines_d['credit']).'</td></tr>';
             $debet  = $debet + $fines_d['debet'];
             $credit = $credit + $fines_d['credit'];
         }
@@ -195,7 +195,7 @@ if (!$reportView) {
         if($debet > $credit){
             $clr = '#f9b8b8';
         }
-        $_buffer .= '<tr style = "border-top:solid 5px #eaeaea; font-weight:bold;background-color:'.$clr.';"><i><td colspan="2">Total</td><td>Rp '.number_format($debet, 2, ',', '.').'</td><td>Rp '.number_format($credit, 2, ',', '.').'</td></i></tr>';
+        $_buffer .= '<tr style = "border-top:solid 5px #eaeaea; font-weight:bold;background-color:'.$clr.';"><i><td colspan="2">Total</td><td>'.currency($debet).'</td><td>'.currency($credit).'</td></i></tr>';
         $_buffer .= '</table>';
         return $_buffer;
     }

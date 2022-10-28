@@ -37,7 +37,7 @@ require SB.'admin/default/session_check.inc.php';
 $table_fields = trim($_POST['tableFields']);
 
 if (isset($_POST['keywords']) AND !empty($_POST['keywords'])) {
-    $keywords = urldecode(trim($_POST['keywords']));
+    $keywords = $dbs->escape_string(urldecode(trim($_POST['keywords'])));
 } else {
     $keywords = '';
 }

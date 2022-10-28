@@ -21,7 +21,7 @@
  *
  */
 
-use SLiMS\Config;
+use SLiMS\{Config,Ip,Number,Currency};
 
 if (!function_exists('config')) {
     /**
@@ -33,5 +33,99 @@ if (!function_exists('config')) {
      */
     function config($key, $default = null) {
         return Config::getInstance()->get($key, $default);
+    }
+}
+
+if (!function_exists('ip'))
+{
+    /**
+     * Helper to get client Ip Address
+     * and check if app is behind proxy or not
+     */
+    function ip()
+    {
+        return Ip::getInstance();
+    }
+}
+
+if (!function_exists('number'))
+{
+    /**
+     * function to call number instance
+     *
+     * @param mixed $input
+     * @return Number
+     */
+    function number($input)
+    {
+        return Number::set($input);
+    }
+}
+
+if (!function_exists('currency'))
+{
+    /**
+     * function to call currency instance
+     *
+     * @param mixed $input
+     * @return Number
+     */
+    function currency($input)
+    {
+        return new Currency($input);
+    }
+}
+
+if (!function_exists('toastr'))
+{
+    /**
+     * Helper to call toastrJS
+     * alert template as function
+     * 
+     * usage: 
+     * 
+     * toastr('your message')->{template}('Toastr alert title leave empty for default title');
+     * 
+     * example:
+     * 
+     * toastr('Success insert data')->success();
+     * 
+     * Available template
+     * - error, info, success, warning
+     * 
+     * if you use outside template, by default this function
+     * will you use native browser alert.
+     * 
+     * @param string $message
+     * @return void
+     */
+    function toastr(string $message)
+    {
+        // Anonymous class
+        return new Class($message)
+        {
+            public function __construct($message)
+            {
+                $this->message = $message;
+            }
+
+            /**
+             * use magic method to identifiy what
+             * template user use.
+             */
+            public function __call($method, $parameters)
+            {
+                if (in_array($method, ['error','info','success','warning']))
+                {
+                    // Call toastrJS on utility class
+                    utility::jsToastr($parameters[0]??__(ucfirst($method)), $this->message, $method);
+                }
+                else
+                {
+                    // native as default if template not available
+                    utility::jsAlert($this->message);
+                }
+            }
+        };
     }
 }

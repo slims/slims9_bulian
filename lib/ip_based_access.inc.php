@@ -36,7 +36,7 @@ if (!function_exists('do_checkIP')) {
         }
         #$accmod = $sysconf['ipaccess'][''.$module.''];
         $is_allowed = false;
-        $remote_addr = $_SERVER['REMOTE_ADDR'];
+        $remote_addr = ip();
         if (($accmod != 'all') AND (is_array($accmod))) {
             foreach ($accmod as $value) {
                 $pattern = "/^".$value."/i";

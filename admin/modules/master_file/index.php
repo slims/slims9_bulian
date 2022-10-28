@@ -78,7 +78,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($update) {
                 utility::jsToastr(__('GMD (General Material Designation)'), __('GMD Data Successfully Updated'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('GMD Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+            } else { toastr(__('GMD Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
             exit();
         } else {
             /* INSERT RECORD MODE */

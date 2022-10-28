@@ -22,6 +22,9 @@
 /* Global application configuration */
 
 // key to authenticate
+use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
+
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
@@ -57,6 +60,7 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
+        $name = $dbs->escape_string($name);
         $data['setting_value'] = $dbs->escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
@@ -88,13 +92,18 @@ if (!function_exists('addOrUpdateSetting')) {
 /* Config Vars update process */
 
 /* remove logo */
-if (isset($_POST['removeImage']) && isset($_POST['limg'])) {
-      $logo_image = '';
-      $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
-      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
+if (isset($_POST['removeImage'])) {
+      foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
+        if (isset($_POST[$key]))
+        {
+          @unlink(IMGBS.'default/'.$sysconf[$data]);
+          addOrUpdateSetting($data, NULL); // set null
+        }
+      }
+
       utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
       utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
-      echo '<script type="text/javascript">top.location.href = \''.AWB.'index.php?mod=system\';</script>';
+      echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
       exit();
 }
 
@@ -110,11 +119,23 @@ if (isset($_POST['updateData'])) {
       $image_upload->setUploadDir(IMGBS.'default');
       $img_upload_status = $image_upload->doUpload('image','logo');
       if ($img_upload_status == UPLOAD_SUCCESS) {
-        $logo_image = $dbs->escape_string($image_upload->new_filename);
-        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\' WHERE setting_name=\'logo_image\'');
-        if($update) {
-          $dbs->query('INSERT INTO setting SET setting_value=\''.$dbs->escape_string(serialize($logo_image)).'\', setting_name=\'logo_image\'');
-        }
+        addOrUpdateSetting('logo_image', $dbs->escape_string($image_upload->new_filename));
+      }else{
+        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
+      }
+    }
+
+    if (!empty($_FILES['icon']) AND $_FILES['icon']['size']) {
+      // remove previous image
+      @unlink(IMGBS.'default/'.$sysconf['webicon']);
+      // create upload object
+      $image_upload = new simbio_file_upload();
+      $image_upload->setAllowableFormat(['.ico','.png']);
+      $image_upload->setMaxSize(100*1024);
+      $image_upload->setUploadDir(IMGBS.'default');
+      $img_upload_status = $image_upload->doUpload('icon','webicon');
+      if ($img_upload_status == UPLOAD_SUCCESS) {
+        addOrUpdateSetting('webicon', $dbs->escape_string($image_upload->new_filename));
       }else{
         utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
@@ -145,6 +166,12 @@ if (isset($_POST['updateData'])) {
 
     // language
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
+
+    // timezone
+    addOrUpdateSetting('timezone', utility::filterData('timezone', 'post', true, true, true));
+
+    // search engine
+    addOrUpdateSetting('search_engine', utility::filterData('search_engine', 'post', true, true, true));
 
     // opac num result
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['opac_result_num'])).'\' WHERE setting_name=\'opac_result_num\'');
@@ -223,6 +250,9 @@ if (isset($_POST['updateData'])) {
     $spellchecker_enabled = $_POST['spellchecker_enabled'] == '1'?true:false;
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
+    // enable chbox confirm
+    addOrUpdateSetting('enable_chbox_confirm', (int)utility::filterData('enable_chbox_confirm', 'post', true, true, true));
+
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
@@ -255,16 +285,30 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 
 //logo
 $str_input = '';
+$str_input .= '<strong class="d-block">'.__('Main Logo').'</strong>';
 if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
-$str_input .= '<div class="custom-file col-3">';
+$str_input .= '<div class="custom-file col-3 d-block">';
 $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
-$str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+$str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
+
+// Web icon
+$str_input .= '<strong class="d-block mt-2">'.__('Favicon').'</strong>';
+if(isset($sysconf['webicon']) && file_exists(IMGBS.'default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
+    $str_input .= '<div style="padding:10px;">';
+    $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['webicon'].'&width=130" class="img-fluid rounded" alt="Image cover">';
+    $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
+}
+$str_input .= '<div class="custom-file col-3">';
+$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile"');
+$str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
+$str_input .= '</div>';
+$str_input .= '<div class="mt-2 ml-2">Maximum 100 KB</div>';
 $str_input .= <<<HTML
 <script>
 $('.custom-file input').on('change',function(){
@@ -307,6 +351,15 @@ $form->addAnything(__('Logo Image'), $str_input);
 // application language
 require_once(LANG.'localisation.php');
 $form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang'], 'class="form-control col-3"');
+
+// timezone
+$html  = '<input type="text" class="form-control col-2" name="timezone" value="' . ($sysconf['timezone'] ?? 'Asia/Jakarta') . '"/>';
+$html .= '<a target="_blank" href="https://www.php.net/manual/en/timezones.php">' . __('List of timezones supported by PHP') . '</a>';
+$form->addAnything(__('Default App. Timezone'), $html);
+
+// search engine
+$engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
+$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-6"');
 
 // opac result list number
 $result_num_options[] = array('10', '10');
@@ -386,7 +439,7 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('enable_counter_by_ip', __('Visitor Counter by IP'), $options, $sysconf['enable_counter_by_ip']?'1':'0','class="form-control col-3"');
-$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"');
+$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
 
 $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 
@@ -402,6 +455,11 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('reserve_on_loan_only', __('Reserve for item on loan only'), $options, $sysconf['reserve_on_loan_only']?'1':'0','class="form-control col-3"');
+
+$options = null;
+$options[] = array('1', __('Enable'));
+$options[] = array('0', __('Disable'));
+$form->addSelectList('enable_chbox_confirm', __('Activate Confirm Alert?'), $options, $sysconf['enable_chbox_confirm']??'1','class="form-control col-3"');
 
 // print out the object
 echo $form->printOut();

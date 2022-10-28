@@ -105,14 +105,16 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             }
 
             while ($row = $query_of_tables->fetch_row()) {
-                $query_of_check = $dbs->query('CHECK TABLE ' . $row[0]);
-                while ($rowcheck = $query_of_check->fetch_assoc()) {
-                    if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
-                        if ($row[0] != $prevtable) {
-                            $repair .= '<li>' . __('Table') . ' ' . $row[0] . ' ' . __('might need to be repaired.') . '</li>';
+                $query_of_check = $dbs->query('CHECK TABLE `' . $row[0] . '`');
+                if ($query_of_check) {
+                    while ($rowcheck = $query_of_check->fetch_assoc()) {
+                        if (!(($rowcheck['Msg_type'] == "status") && ($rowcheck['Msg_text'] == "OK"))) {
+                            if ($row[0] != $prevtable) {
+                                $repair .= '<li>' . __('Table') . ' ' . $row[0] . ' ' . __('might need to be repaired.') . '</li>';
+                            }
+                            $prevtable = $row[0];
+                            $is_repaired = true;
                         }
-                        $prevtable = $row[0];
-                        $is_repaired = true;
                     }
                 }
             }

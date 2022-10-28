@@ -68,7 +68,7 @@ class Chart
      *
      * @var string
      */
-    private $displayBlanksAs = '0';
+    private $displayBlanksAs = DataSeries::EMPTY_AS_GAP;
 
     /**
      * Chart Asix Y as.
@@ -144,19 +144,10 @@ class Chart
      * Create a new Chart.
      *
      * @param mixed $name
-     * @param null|Title $title
-     * @param null|Legend $legend
-     * @param null|PlotArea $plotArea
      * @param mixed $plotVisibleOnly
-     * @param mixed $displayBlanksAs
-     * @param null|Title $xAxisLabel
-     * @param null|Title $yAxisLabel
-     * @param null|Axis $xAxis
-     * @param null|Axis $yAxis
-     * @param null|GridLines $majorGridlines
-     * @param null|GridLines $minorGridlines
+     * @param string $displayBlanksAs
      */
-    public function __construct($name, Title $title = null, Legend $legend = null, PlotArea $plotArea = null, $plotVisibleOnly = true, $displayBlanksAs = 'gap', Title $xAxisLabel = null, Title $yAxisLabel = null, Axis $xAxis = null, Axis $yAxis = null, GridLines $majorGridlines = null, GridLines $minorGridlines = null)
+    public function __construct($name, ?Title $title = null, ?Legend $legend = null, ?PlotArea $plotArea = null, $plotVisibleOnly = true, $displayBlanksAs = DataSeries::EMPTY_AS_GAP, ?Title $xAxisLabel = null, ?Title $yAxisLabel = null, ?Axis $xAxis = null, ?Axis $yAxis = null, ?GridLines $majorGridlines = null, ?GridLines $minorGridlines = null)
     {
         $this->name = $name;
         $this->title = $title;
@@ -195,13 +186,11 @@ class Chart
     /**
      * Set Worksheet.
      *
-     * @param Worksheet $pValue
-     *
      * @return $this
      */
-    public function setWorksheet(Worksheet $pValue = null)
+    public function setWorksheet(?Worksheet $worksheet = null)
     {
-        $this->worksheet = $pValue;
+        $this->worksheet = $worksheet;
 
         return $this;
     }
@@ -218,8 +207,6 @@ class Chart
 
     /**
      * Set Title.
-     *
-     * @param Title $title
      *
      * @return $this
      */
@@ -243,8 +230,6 @@ class Chart
     /**
      * Set Legend.
      *
-     * @param Legend $legend
-     *
      * @return $this
      */
     public function setLegend(Legend $legend)
@@ -267,8 +252,6 @@ class Chart
     /**
      * Set X-Axis Label.
      *
-     * @param Title $label
-     *
      * @return $this
      */
     public function setXAxisLabel(Title $label)
@@ -290,8 +273,6 @@ class Chart
 
     /**
      * Set Y-Axis Label.
-     *
-     * @param Title $label
      *
      * @return $this
      */
@@ -441,7 +422,7 @@ class Chart
     /**
      * Get the top left position of the chart.
      *
-     * @return array an associative array containing the cell address, X-Offset and Y-Offset from the top left of that cell
+     * @return array{cell: string, xOffset: int, yOffset: int} an associative array containing the cell address, X-Offset and Y-Offset from the top left of that cell
      */
     public function getTopLeftPosition()
     {
@@ -645,7 +626,7 @@ class Chart
         return $this->bottomRightYOffset;
     }
 
-    public function refresh()
+    public function refresh(): void
     {
         if ($this->worksheet !== null) {
             $this->plotArea->refresh($this->worksheet);

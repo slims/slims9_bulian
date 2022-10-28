@@ -41,6 +41,9 @@ if (!file_exists($cite_style_template)) {
   exit(__('Sorry, no cite template available.'));
 }
 */
+header('X-Frame-Options: SAMEORIGIN');
+header('X-Content-Type-Options: nosniff');
+
 
 require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 $dir = new simbio_directory(SB.'template'.DS.$sysconf['template']['theme'].DS.'citation');

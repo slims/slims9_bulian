@@ -7,6 +7,7 @@ use DOMElement;
 use DOMNode;
 use DOMText;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Helper\Dimension as CssDimension;
 use PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -16,8 +17,8 @@ use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Throwable;
 
-/** PhpSpreadsheet root directory */
 class Html extends BaseReader
 {
     /**
@@ -121,6 +122,7 @@ class Html extends BaseReader
         ], //    Italic
     ];
 
+    /** @var array */
     protected $rowspan = [];
 
     /**
@@ -134,16 +136,12 @@ class Html extends BaseReader
 
     /**
      * Validate that the current file is an HTML file.
-     *
-     * @param string $pFilename
-     *
-     * @return bool
      */
-    public function canRead($pFilename)
+    public function canRead(string $filename): bool
     {
         // Check if file exists
         try {
-            $this->openFile($pFilename);
+            $this->openFile($filename);
         } catch (Exception $e) {
             return false;
         }
@@ -158,19 +156,19 @@ class Html extends BaseReader
         return $startWithTag && $containsTags && $endsWithTag;
     }
 
-    private function readBeginning()
+    private function readBeginning(): string
     {
         fseek($this->fileHandle, 0);
 
-        return fread($this->fileHandle, self::TEST_SAMPLE_SIZE);
+        return (string) fread($this->fileHandle, self::TEST_SAMPLE_SIZE);
     }
 
-    private function readEnding()
+    private function readEnding(): string
     {
         $meta = stream_get_meta_data($this->fileHandle);
         $filename = $meta['uri'];
 
-        $size = filesize($filename);
+        $size = (int) filesize($filename);
         if ($size === 0) {
             return '';
         }
@@ -182,52 +180,50 @@ class Html extends BaseReader
 
         fseek($this->fileHandle, $size - $blockSize);
 
-        return fread($this->fileHandle, $blockSize);
+        return (string) fread($this->fileHandle, $blockSize);
     }
 
-    private static function startsWithTag($data)
+    private static function startsWithTag(string $data): bool
     {
         return '<' === substr(trim($data), 0, 1);
     }
 
-    private static function endsWithTag($data)
+    private static function endsWithTag(string $data): bool
     {
         return '>' === substr(trim($data), -1, 1);
     }
 
-    private static function containsTags($data)
+    private static function containsTags(string $data): bool
     {
         return strlen($data) !== strlen(strip_tags($data));
     }
 
     /**
      * Loads Spreadsheet from file.
-     *
-     * @param string $pFilename
-     *
-     * @throws Exception
-     *
-     * @return Spreadsheet
      */
-    public function load($pFilename)
+    protected function loadSpreadsheetFromFile(string $filename): Spreadsheet
     {
         // Create new Spreadsheet
         $spreadsheet = new Spreadsheet();
 
         // Load into this instance
-        return $this->loadIntoExisting($pFilename, $spreadsheet);
+        return $this->loadIntoExisting($filename, $spreadsheet);
     }
 
     /**
      * Set input encoding.
      *
-     * @param string $pValue Input encoding, eg: 'ANSI'
+     * @param string $inputEncoding Input encoding, eg: 'ANSI'
      *
      * @return $this
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated no use is made of this property
      */
-    public function setInputEncoding($pValue)
+    public function setInputEncoding($inputEncoding)
     {
-        $this->inputEncoding = $pValue;
+        $this->inputEncoding = $inputEncoding;
 
         return $this;
     }
@@ -236,6 +232,10 @@ class Html extends BaseReader
      * Get input encoding.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated no use is made of this property
      */
     public function getInputEncoding()
     {
@@ -243,13 +243,17 @@ class Html extends BaseReader
     }
 
     //    Data Array used for testing only, should write to Spreadsheet object on completion of tests
+
+    /** @var array */
     protected $dataArray = [];
 
+    /** @var int */
     protected $tableLevel = 0;
 
+    /** @var array */
     protected $nestedColumn = ['A'];
 
-    protected function setTableStartColumn($column)
+    protected function setTableStartColumn(string $column): string
     {
         if ($this->tableLevel == 0) {
             $column = 'A';
@@ -260,19 +264,26 @@ class Html extends BaseReader
         return $this->nestedColumn[$this->tableLevel];
     }
 
-    protected function getTableStartColumn()
+    protected function getTableStartColumn(): string
     {
         return $this->nestedColumn[$this->tableLevel];
     }
 
-    protected function releaseTableStartColumn()
+    protected function releaseTableStartColumn(): string
     {
         --$this->tableLevel;
 
         return array_pop($this->nestedColumn);
     }
 
-    protected function flushCell(Worksheet $sheet, $column, $row, &$cellContent)
+    /**
+     * Flush cell.
+     *
+     * @param string $column
+     * @param int|string $row
+     * @param mixed $cellContent
+     */
+    protected function flushCell(Worksheet $sheet, $column, $row, &$cellContent): void
     {
         if (is_string($cellContent)) {
             //    Simple String content
@@ -291,18 +302,324 @@ class Html extends BaseReader
         $cellContent = (string) '';
     }
 
-    /**
-     * @param DOMNode $element
-     * @param Worksheet $sheet
-     * @param int $row
-     * @param string $column
-     * @param string $cellContent
-     */
-    protected function processDomElement(DOMNode $element, Worksheet $sheet, &$row, &$column, &$cellContent)
+    private function processDomElementBody(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child): void
+    {
+        $attributeArray = [];
+        foreach (($child->attributes ?? []) as $attribute) {
+            $attributeArray[$attribute->name] = $attribute->value;
+        }
+
+        if ($child->nodeName === 'body') {
+            $row = 1;
+            $column = 'A';
+            $cellContent = '';
+            $this->tableLevel = 0;
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+        } else {
+            $this->processDomElementTitle($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementTitle(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'title') {
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+            $sheet->setTitle($cellContent, true, true);
+            $cellContent = '';
+        } else {
+            $this->processDomElementSpanEtc($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private const SPAN_ETC = ['span', 'div', 'font', 'i', 'em', 'strong', 'b'];
+
+    private function processDomElementSpanEtc(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if (in_array((string) $child->nodeName, self::SPAN_ETC, true)) {
+            if (isset($attributeArray['class']) && $attributeArray['class'] === 'comment') {
+                $sheet->getComment($column . $row)
+                    ->getText()
+                    ->createTextRun($child->textContent);
+            } else {
+                $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+            }
+
+            if (isset($this->formats[$child->nodeName])) {
+                $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
+            }
+        } else {
+            $this->processDomElementHr($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementHr(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'hr') {
+            $this->flushCell($sheet, $column, $row, $cellContent);
+            ++$row;
+            if (isset($this->formats[$child->nodeName])) {
+                $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
+            }
+            ++$row;
+        }
+        // fall through to br
+        $this->processDomElementBr($sheet, $row, $column, $cellContent, $child, $attributeArray);
+    }
+
+    private function processDomElementBr(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'br' || $child->nodeName === 'hr') {
+            if ($this->tableLevel > 0) {
+                //    If we're inside a table, replace with a \n and set the cell to wrap
+                $cellContent .= "\n";
+                $sheet->getStyle($column . $row)->getAlignment()->setWrapText(true);
+            } else {
+                //    Otherwise flush our existing content and move the row cursor on
+                $this->flushCell($sheet, $column, $row, $cellContent);
+                ++$row;
+            }
+        } else {
+            $this->processDomElementA($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementA(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'a') {
+            foreach ($attributeArray as $attributeName => $attributeValue) {
+                switch ($attributeName) {
+                    case 'href':
+                        $sheet->getCell($column . $row)->getHyperlink()->setUrl($attributeValue);
+                        if (isset($this->formats[$child->nodeName])) {
+                            $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
+                        }
+
+                        break;
+                    case 'class':
+                        if ($attributeValue === 'comment-indicator') {
+                            break; // Ignore - it's just a red square.
+                        }
+                }
+            }
+            // no idea why this should be needed
+            //$cellContent .= ' ';
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+        } else {
+            $this->processDomElementH1Etc($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private const H1_ETC = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', 'p'];
+
+    private function processDomElementH1Etc(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if (in_array((string) $child->nodeName, self::H1_ETC, true)) {
+            if ($this->tableLevel > 0) {
+                //    If we're inside a table, replace with a \n
+                $cellContent .= $cellContent ? "\n" : '';
+                $sheet->getStyle($column . $row)->getAlignment()->setWrapText(true);
+                $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+            } else {
+                if ($cellContent > '') {
+                    $this->flushCell($sheet, $column, $row, $cellContent);
+                    ++$row;
+                }
+                $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+                $this->flushCell($sheet, $column, $row, $cellContent);
+
+                if (isset($this->formats[$child->nodeName])) {
+                    $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
+                }
+
+                ++$row;
+                $column = 'A';
+            }
+        } else {
+            $this->processDomElementLi($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementLi(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'li') {
+            if ($this->tableLevel > 0) {
+                //    If we're inside a table, replace with a \n
+                $cellContent .= $cellContent ? "\n" : '';
+                $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+            } else {
+                if ($cellContent > '') {
+                    $this->flushCell($sheet, $column, $row, $cellContent);
+                }
+                ++$row;
+                $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+                $this->flushCell($sheet, $column, $row, $cellContent);
+                $column = 'A';
+            }
+        } else {
+            $this->processDomElementImg($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementImg(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'img') {
+            $this->insertImage($sheet, $column, $row, $attributeArray);
+        } else {
+            $this->processDomElementTable($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementTable(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'table') {
+            $this->flushCell($sheet, $column, $row, $cellContent);
+            $column = $this->setTableStartColumn($column);
+            if ($this->tableLevel > 1 && $row > 1) {
+                --$row;
+            }
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+            $column = $this->releaseTableStartColumn();
+            if ($this->tableLevel > 1) {
+                ++$column;
+            } else {
+                ++$row;
+            }
+        } else {
+            $this->processDomElementTr($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementTr(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName === 'tr') {
+            $column = $this->getTableStartColumn();
+            $cellContent = '';
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+
+            if (isset($attributeArray['height'])) {
+                $sheet->getRowDimension($row)->setRowHeight($attributeArray['height']);
+            }
+
+            ++$row;
+        } else {
+            $this->processDomElementThTdOther($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementThTdOther(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        if ($child->nodeName !== 'td' && $child->nodeName !== 'th') {
+            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+        } else {
+            $this->processDomElementThTd($sheet, $row, $column, $cellContent, $child, $attributeArray);
+        }
+    }
+
+    private function processDomElementBgcolor(Worksheet $sheet, int $row, string $column, array $attributeArray): void
+    {
+        if (isset($attributeArray['bgcolor'])) {
+            $sheet->getStyle("$column$row")->applyFromArray(
+                [
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID,
+                        'color' => ['rgb' => $this->getStyleColor($attributeArray['bgcolor'])],
+                    ],
+                ]
+            );
+        }
+    }
+
+    private function processDomElementWidth(Worksheet $sheet, string $column, array $attributeArray): void
+    {
+        if (isset($attributeArray['width'])) {
+            $sheet->getColumnDimension($column)->setWidth((new CssDimension($attributeArray['width']))->width());
+        }
+    }
+
+    private function processDomElementHeight(Worksheet $sheet, int $row, array $attributeArray): void
+    {
+        if (isset($attributeArray['height'])) {
+            $sheet->getRowDimension($row)->setRowHeight((new CssDimension($attributeArray['height']))->height());
+        }
+    }
+
+    private function processDomElementAlign(Worksheet $sheet, int $row, string $column, array $attributeArray): void
+    {
+        if (isset($attributeArray['align'])) {
+            $sheet->getStyle($column . $row)->getAlignment()->setHorizontal($attributeArray['align']);
+        }
+    }
+
+    private function processDomElementVAlign(Worksheet $sheet, int $row, string $column, array $attributeArray): void
+    {
+        if (isset($attributeArray['valign'])) {
+            $sheet->getStyle($column . $row)->getAlignment()->setVertical($attributeArray['valign']);
+        }
+    }
+
+    private function processDomElementDataFormat(Worksheet $sheet, int $row, string $column, array $attributeArray): void
+    {
+        if (isset($attributeArray['data-format'])) {
+            $sheet->getStyle($column . $row)->getNumberFormat()->setFormatCode($attributeArray['data-format']);
+        }
+    }
+
+    private function processDomElementThTd(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
+    {
+        while (isset($this->rowspan[$column . $row])) {
+            ++$column;
+        }
+        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
+
+        // apply inline style
+        $this->applyInlineStyle($sheet, $row, $column, $attributeArray);
+
+        $this->flushCell($sheet, $column, $row, $cellContent);
+
+        $this->processDomElementBgcolor($sheet, $row, $column, $attributeArray);
+        $this->processDomElementWidth($sheet, $column, $attributeArray);
+        $this->processDomElementHeight($sheet, $row, $attributeArray);
+        $this->processDomElementAlign($sheet, $row, $column, $attributeArray);
+        $this->processDomElementVAlign($sheet, $row, $column, $attributeArray);
+        $this->processDomElementDataFormat($sheet, $row, $column, $attributeArray);
+
+        if (isset($attributeArray['rowspan'], $attributeArray['colspan'])) {
+            //create merging rowspan and colspan
+            $columnTo = $column;
+            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
+                ++$columnTo;
+            }
+            $range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
+            foreach (Coordinate::extractAllCellReferencesInRange($range) as $value) {
+                $this->rowspan[$value] = true;
+            }
+            $sheet->mergeCells($range);
+            $column = $columnTo;
+        } elseif (isset($attributeArray['rowspan'])) {
+            //create merging rowspan
+            $range = $column . $row . ':' . $column . ($row + (int) $attributeArray['rowspan'] - 1);
+            foreach (Coordinate::extractAllCellReferencesInRange($range) as $value) {
+                $this->rowspan[$value] = true;
+            }
+            $sheet->mergeCells($range);
+        } elseif (isset($attributeArray['colspan'])) {
+            //create merging colspan
+            $columnTo = $column;
+            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
+                ++$columnTo;
+            }
+            $sheet->mergeCells($column . $row . ':' . $columnTo . $row);
+            $column = $columnTo;
+        }
+
+        ++$column;
+    }
+
+    protected function processDomElement(DOMNode $element, Worksheet $sheet, int &$row, string &$column, string &$cellContent): void
     {
         foreach ($element->childNodes as $child) {
             if ($child instanceof DOMText) {
-                $domText = preg_replace('/\s+/u', ' ', trim($child->nodeValue));
+                $domText = preg_replace('/\s+/u', ' ', trim($child->nodeValue ?: ''));
                 if (is_string($cellContent)) {
                     //    simply append the text if the cell content is a plain text string
                     $cellContent .= $domText;
@@ -310,294 +627,46 @@ class Html extends BaseReader
                 //    but if we have a rich text run instead, we need to append it correctly
                     //    TODO
             } elseif ($child instanceof DOMElement) {
-                $attributeArray = [];
-                foreach ($child->attributes as $attribute) {
-                    $attributeArray[$attribute->name] = $attribute->value;
-                }
-
-                switch ($child->nodeName) {
-                    case 'meta':
-                        foreach ($attributeArray as $attributeName => $attributeValue) {
-                            // Extract character set, so we can convert to UTF-8 if required
-                            if ($attributeName === 'charset') {
-                                $this->setInputEncoding($attributeValue);
-                            }
-                        }
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        break;
-                    case 'title':
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                        $sheet->setTitle($cellContent, true, false);
-                        $cellContent = '';
-
-                        break;
-                    case 'span':
-                    case 'div':
-                    case 'font':
-                    case 'i':
-                    case 'em':
-                    case 'strong':
-                    case 'b':
-                        if (isset($attributeArray['class']) && $attributeArray['class'] === 'comment') {
-                            $sheet->getComment($column . $row)
-                                ->getText()
-                                ->createTextRun($child->textContent);
-
-                            break;
-                        }
-
-                        if ($cellContent > '') {
-                            $cellContent .= ' ';
-                        }
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                        if ($cellContent > '') {
-                            $cellContent .= ' ';
-                        }
-
-                        if (isset($this->formats[$child->nodeName])) {
-                            $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
-                        }
-
-                        break;
-                    case 'hr':
-                        $this->flushCell($sheet, $column, $row, $cellContent);
-                        ++$row;
-                        if (isset($this->formats[$child->nodeName])) {
-                            $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
-                        } else {
-                            $cellContent = '----------';
-                            $this->flushCell($sheet, $column, $row, $cellContent);
-                        }
-                        ++$row;
-                        // Add a break after a horizontal rule, simply by allowing the code to dropthru
-                        // no break
-                    case 'br':
-                        if ($this->tableLevel > 0) {
-                            //    If we're inside a table, replace with a \n and set the cell to wrap
-                            $cellContent .= "\n";
-                            $sheet->getStyle($column . $row)->getAlignment()->setWrapText(true);
-                        } else {
-                            //    Otherwise flush our existing content and move the row cursor on
-                            $this->flushCell($sheet, $column, $row, $cellContent);
-                            ++$row;
-                        }
-
-                        break;
-                    case 'a':
-                        foreach ($attributeArray as $attributeName => $attributeValue) {
-                            switch ($attributeName) {
-                                case 'href':
-                                    $sheet->getCell($column . $row)->getHyperlink()->setUrl($attributeValue);
-                                    if (isset($this->formats[$child->nodeName])) {
-                                        $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
-                                    }
-
-                                    break;
-                                case 'class':
-                                    if ($attributeValue === 'comment-indicator') {
-                                        break; // Ignore - it's just a red square.
-                                    }
-                            }
-                        }
-                        $cellContent .= ' ';
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        break;
-                    case 'h1':
-                    case 'h2':
-                    case 'h3':
-                    case 'h4':
-                    case 'h5':
-                    case 'h6':
-                    case 'ol':
-                    case 'ul':
-                    case 'p':
-                        if ($this->tableLevel > 0) {
-                            //    If we're inside a table, replace with a \n
-                            $cellContent .= "\n";
-                            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                        } else {
-                            if ($cellContent > '') {
-                                $this->flushCell($sheet, $column, $row, $cellContent);
-                                ++$row;
-                            }
-                            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                            $this->flushCell($sheet, $column, $row, $cellContent);
-
-                            if (isset($this->formats[$child->nodeName])) {
-                                $sheet->getStyle($column . $row)->applyFromArray($this->formats[$child->nodeName]);
-                            }
-
-                            ++$row;
-                            $column = 'A';
-                        }
-
-                        break;
-                    case 'li':
-                        if ($this->tableLevel > 0) {
-                            //    If we're inside a table, replace with a \n
-                            $cellContent .= "\n";
-                            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                        } else {
-                            if ($cellContent > '') {
-                                $this->flushCell($sheet, $column, $row, $cellContent);
-                            }
-                            ++$row;
-                            $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                            $this->flushCell($sheet, $column, $row, $cellContent);
-                            $column = 'A';
-                        }
-
-                        break;
-                    case 'img':
-                        $this->insertImage($sheet, $column, $row, $attributeArray);
-
-                        break;
-                    case 'table':
-                        $this->flushCell($sheet, $column, $row, $cellContent);
-                        $column = $this->setTableStartColumn($column);
-                        if ($this->tableLevel > 1) {
-                            --$row;
-                        }
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                        $column = $this->releaseTableStartColumn();
-                        if ($this->tableLevel > 1) {
-                            ++$column;
-                        } else {
-                            ++$row;
-                        }
-
-                        break;
-                    case 'thead':
-                    case 'tbody':
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        break;
-                    case 'tr':
-                        $column = $this->getTableStartColumn();
-                        $cellContent = '';
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        if (isset($attributeArray['height'])) {
-                            $sheet->getRowDimension($row)->setRowHeight($attributeArray['height']);
-                        }
-
-                        ++$row;
-
-                        break;
-                    case 'th':
-                    case 'td':
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        while (isset($this->rowspan[$column . $row])) {
-                            ++$column;
-                        }
-
-                        // apply inline style
-                        $this->applyInlineStyle($sheet, $row, $column, $attributeArray);
-
-                        $this->flushCell($sheet, $column, $row, $cellContent);
-
-                        if (isset($attributeArray['rowspan'], $attributeArray['colspan'])) {
-                            //create merging rowspan and colspan
-                            $columnTo = $column;
-                            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-                                ++$columnTo;
-                            }
-                            $range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
-                            foreach (Coordinate::extractAllCellReferencesInRange($range) as $value) {
-                                $this->rowspan[$value] = true;
-                            }
-                            $sheet->mergeCells($range);
-                            $column = $columnTo;
-                        } elseif (isset($attributeArray['rowspan'])) {
-                            //create merging rowspan
-                            $range = $column . $row . ':' . $column . ($row + (int) $attributeArray['rowspan'] - 1);
-                            foreach (Coordinate::extractAllCellReferencesInRange($range) as $value) {
-                                $this->rowspan[$value] = true;
-                            }
-                            $sheet->mergeCells($range);
-                        } elseif (isset($attributeArray['colspan'])) {
-                            //create merging colspan
-                            $columnTo = $column;
-                            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-                                ++$columnTo;
-                            }
-                            $sheet->mergeCells($column . $row . ':' . $columnTo . $row);
-                            $column = $columnTo;
-                        } elseif (isset($attributeArray['bgcolor'])) {
-                            $sheet->getStyle($column . $row)->applyFromArray(
-                                [
-                                    'fill' => [
-                                        'fillType' => Fill::FILL_SOLID,
-                                        'color' => ['rgb' => $attributeArray['bgcolor']],
-                                    ],
-                                ]
-                            );
-                        }
-
-                        if (isset($attributeArray['width'])) {
-                            $sheet->getColumnDimension($column)->setWidth($attributeArray['width']);
-                        }
-
-                        if (isset($attributeArray['height'])) {
-                            $sheet->getRowDimension($row)->setRowHeight($attributeArray['height']);
-                        }
-
-                        if (isset($attributeArray['align'])) {
-                            $sheet->getStyle($column . $row)->getAlignment()->setHorizontal($attributeArray['align']);
-                        }
-
-                        if (isset($attributeArray['valign'])) {
-                            $sheet->getStyle($column . $row)->getAlignment()->setVertical($attributeArray['valign']);
-                        }
-
-                        if (isset($attributeArray['data-format'])) {
-                            $sheet->getStyle($column . $row)->getNumberFormat()->setFormatCode($attributeArray['data-format']);
-                        }
-
-                        ++$column;
-
-                        break;
-                    case 'body':
-                        $row = 1;
-                        $column = 'A';
-                        $cellContent = '';
-                        $this->tableLevel = 0;
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-
-                        break;
-                    default:
-                        $this->processDomElement($child, $sheet, $row, $column, $cellContent);
-                }
+                $this->processDomElementBody($sheet, $row, $column, $cellContent, $child);
             }
         }
     }
 
     /**
+     * Make sure mb_convert_encoding returns string.
+     *
+     * @param mixed $result
+     */
+    private static function ensureString($result): string
+    {
+        return is_string($result) ? $result : '';
+    }
+
+    /**
      * Loads PhpSpreadsheet from file into PhpSpreadsheet instance.
      *
-     * @param string $pFilename
-     * @param Spreadsheet $spreadsheet
-     *
-     * @throws Exception
+     * @param string $filename
      *
      * @return Spreadsheet
      */
-    public function loadIntoExisting($pFilename, Spreadsheet $spreadsheet)
+    public function loadIntoExisting($filename, Spreadsheet $spreadsheet)
     {
         // Validate
-        if (!$this->canRead($pFilename)) {
-            throw new Exception($pFilename . ' is an Invalid HTML file.');
+        if (!$this->canRead($filename)) {
+            throw new Exception($filename . ' is an Invalid HTML file.');
         }
 
         // Create a new DOM object
         $dom = new DOMDocument();
         // Reload the HTML file into the DOM object
-        $loaded = $dom->loadHTML(mb_convert_encoding($this->securityScanner->scanFile($pFilename), 'HTML-ENTITIES', 'UTF-8'));
+        try {
+            $convert = mb_convert_encoding($this->securityScanner->scanFile($filename), 'HTML-ENTITIES', 'UTF-8');
+            $loaded = $dom->loadHTML(self::ensureString($convert));
+        } catch (Throwable $e) {
+            $loaded = false;
+        }
         if ($loaded === false) {
-            throw new Exception('Failed to load ' . $pFilename . ' as a DOM Document');
+            throw new Exception('Failed to load ' . $filename . ' as a DOM Document', 0, $e ?? null);
         }
 
         return $this->loadDocument($dom, $spreadsheet);
@@ -607,18 +676,20 @@ class Html extends BaseReader
      * Spreadsheet from content.
      *
      * @param string $content
-     * @param null|Spreadsheet $spreadsheet
-     *
-     * @return Spreadsheet
      */
     public function loadFromString($content, ?Spreadsheet $spreadsheet = null): Spreadsheet
     {
         //    Create a new DOM object
         $dom = new DOMDocument();
         //    Reload the HTML file into the DOM object
-        $loaded = $dom->loadHTML(mb_convert_encoding($this->securityScanner->scan($content), 'HTML-ENTITIES', 'UTF-8'));
+        try {
+            $convert = mb_convert_encoding($this->securityScanner->scan($content), 'HTML-ENTITIES', 'UTF-8');
+            $loaded = $dom->loadHTML(self::ensureString($convert));
+        } catch (Throwable $e) {
+            $loaded = false;
+        }
         if ($loaded === false) {
-            throw new Exception('Failed to load content as a DOM Document');
+            throw new Exception('Failed to load content as a DOM Document', 0, $e ?? null);
         }
 
         return $this->loadDocument($dom, $spreadsheet ?? new Spreadsheet());
@@ -626,13 +697,6 @@ class Html extends BaseReader
 
     /**
      * Loads PhpSpreadsheet from DOMDocument into PhpSpreadsheet instance.
-     *
-     * @param DOMDocument $document
-     * @param Spreadsheet $spreadsheet
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     *
-     * @return Spreadsheet
      */
     private function loadDocument(DOMDocument $document, Spreadsheet $spreadsheet): Spreadsheet
     {
@@ -667,13 +731,13 @@ class Html extends BaseReader
     /**
      * Set sheet index.
      *
-     * @param int $pValue Sheet index
+     * @param int $sheetIndex Sheet index
      *
      * @return $this
      */
-    public function setSheetIndex($pValue)
+    public function setSheetIndex($sheetIndex)
     {
-        $this->sheetIndex = $pValue;
+        $this->sheetIndex = $sheetIndex;
 
         return $this;
     }
@@ -688,18 +752,36 @@ class Html extends BaseReader
      * TODO :
      * - Implement to other propertie, such as border
      *
-     * @param Worksheet $sheet
      * @param int $row
      * @param string $column
      * @param array $attributeArray
      */
-    private function applyInlineStyle(&$sheet, $row, $column, $attributeArray)
+    private function applyInlineStyle(Worksheet &$sheet, $row, $column, $attributeArray): void
     {
         if (!isset($attributeArray['style'])) {
             return;
         }
 
-        $cellStyle = $sheet->getStyle($column . $row);
+        if (isset($attributeArray['rowspan'], $attributeArray['colspan'])) {
+            $columnTo = $column;
+            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
+                ++$columnTo;
+            }
+            $range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
+            $cellStyle = $sheet->getStyle($range);
+        } elseif (isset($attributeArray['rowspan'])) {
+            $range = $column . $row . ':' . $column . ($row + (int) $attributeArray['rowspan'] - 1);
+            $cellStyle = $sheet->getStyle($range);
+        } elseif (isset($attributeArray['colspan'])) {
+            $columnTo = $column;
+            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
+                ++$columnTo;
+            }
+            $range = $column . $row . ':' . $columnTo . $row;
+            $cellStyle = $sheet->getStyle($range);
+        } else {
+            $cellStyle = $sheet->getStyle($column . $row);
+        }
 
         // add color styles (background & text) from dom element,currently support : td & th, using ONLY inline css style with RGB color
         $styles = explode(';', $attributeArray['style']);
@@ -707,6 +789,7 @@ class Html extends BaseReader
             $value = explode(':', $st);
             $styleName = isset($value[0]) ? trim($value[0]) : null;
             $styleValue = isset($value[1]) ? trim($value[1]) : null;
+            $styleValueString = (string) $styleValue;
 
             if (!$styleName) {
                 continue;
@@ -715,7 +798,7 @@ class Html extends BaseReader
             switch ($styleName) {
                 case 'background':
                 case 'background-color':
-                    $styleColor = $this->getStyleColor($styleValue);
+                    $styleColor = $this->getStyleColor($styleValueString);
 
                     if (!$styleColor) {
                         continue 2;
@@ -725,7 +808,7 @@ class Html extends BaseReader
 
                     break;
                 case 'color':
-                    $styleColor = $this->getStyleColor($styleValue);
+                    $styleColor = $this->getStyleColor($styleValueString);
 
                     if (!$styleColor) {
                         continue 2;
@@ -736,27 +819,27 @@ class Html extends BaseReader
                     break;
 
                 case 'border':
-                    $this->setBorderStyle($cellStyle, $styleValue, 'allBorders');
+                    $this->setBorderStyle($cellStyle, $styleValueString, 'allBorders');
 
                     break;
 
                 case 'border-top':
-                    $this->setBorderStyle($cellStyle, $styleValue, 'top');
+                    $this->setBorderStyle($cellStyle, $styleValueString, 'top');
 
                     break;
 
                 case 'border-bottom':
-                    $this->setBorderStyle($cellStyle, $styleValue, 'bottom');
+                    $this->setBorderStyle($cellStyle, $styleValueString, 'bottom');
 
                     break;
 
                 case 'border-left':
-                    $this->setBorderStyle($cellStyle, $styleValue, 'left');
+                    $this->setBorderStyle($cellStyle, $styleValueString, 'left');
 
                     break;
 
                 case 'border-right':
-                    $this->setBorderStyle($cellStyle, $styleValue, 'right');
+                    $this->setBorderStyle($cellStyle, $styleValueString, 'right');
 
                     break;
 
@@ -782,7 +865,7 @@ class Html extends BaseReader
                     break;
 
                 case 'font-family':
-                    $cellStyle->getFont()->setName(str_replace('\'', '', $styleValue));
+                    $cellStyle->getFont()->setName(str_replace('\'', '', $styleValueString));
 
                     break;
 
@@ -801,25 +884,25 @@ class Html extends BaseReader
                     break;
 
                 case 'text-align':
-                    $cellStyle->getAlignment()->setHorizontal($styleValue);
+                    $cellStyle->getAlignment()->setHorizontal($styleValueString);
 
                     break;
 
                 case 'vertical-align':
-                    $cellStyle->getAlignment()->setVertical($styleValue);
+                    $cellStyle->getAlignment()->setVertical($styleValueString);
 
                     break;
 
                 case 'width':
                     $sheet->getColumnDimension($column)->setWidth(
-                        str_replace('px', '', $styleValue)
+                        (new CssDimension($styleValue ?? ''))->width()
                     );
 
                     break;
 
                 case 'height':
                     $sheet->getRowDimension($row)->setRowHeight(
-                        str_replace('px', '', $styleValue)
+                        (new CssDimension($styleValue ?? ''))->height()
                     );
 
                     break;
@@ -833,7 +916,7 @@ class Html extends BaseReader
 
                 case 'text-indent':
                     $cellStyle->getAlignment()->setIndent(
-                        (int) str_replace(['px'], '', $styleValue)
+                        (int) str_replace(['px'], '', $styleValueString)
                     );
 
                     break;
@@ -844,28 +927,25 @@ class Html extends BaseReader
     /**
      * Check if has #, so we can get clean hex.
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return null|string
      */
     public function getStyleColor($value)
     {
-        if (strpos($value, '#') === 0) {
+        $value = (string) $value;
+        if (strpos($value ?? '', '#') === 0) {
             return substr($value, 1);
         }
 
-        return null;
+        return \PhpOffice\PhpSpreadsheet\Helper\Html::colourNameLookup($value);
     }
 
     /**
-     * @param Worksheet $sheet
      * @param string    $column
      * @param int       $row
-     * @param array     $attributes
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function insertImage(Worksheet $sheet, $column, $row, array $attributes)
+    private function insertImage(Worksheet $sheet, $column, $row, array $attributes): void
     {
         if (!isset($attributes['src'])) {
             return;
@@ -874,7 +954,7 @@ class Html extends BaseReader
         $src = urldecode($attributes['src']);
         $width = isset($attributes['width']) ? (float) $attributes['width'] : null;
         $height = isset($attributes['height']) ? (float) $attributes['height'] : null;
-        $name = isset($attributes['alt']) ? (float) $attributes['alt'] : null;
+        $name = $attributes['alt'] ?? null;
 
         $drawing = new Drawing();
         $drawing->setPath($src);
@@ -905,6 +985,28 @@ class Html extends BaseReader
         );
     }
 
+    private const BORDER_MAPPINGS = [
+        'dash-dot' => Border::BORDER_DASHDOT,
+        'dash-dot-dot' => Border::BORDER_DASHDOTDOT,
+        'dashed' => Border::BORDER_DASHED,
+        'dotted' => Border::BORDER_DOTTED,
+        'double' => Border::BORDER_DOUBLE,
+        'hair' => Border::BORDER_HAIR,
+        'medium' => Border::BORDER_MEDIUM,
+        'medium-dashed' => Border::BORDER_MEDIUMDASHED,
+        'medium-dash-dot' => Border::BORDER_MEDIUMDASHDOT,
+        'medium-dash-dot-dot' => Border::BORDER_MEDIUMDASHDOTDOT,
+        'none' => Border::BORDER_NONE,
+        'slant-dash-dot' => Border::BORDER_SLANTDASHDOT,
+        'solid' => Border::BORDER_THIN,
+        'thick' => Border::BORDER_THICK,
+    ];
+
+    public static function getBorderMappings(): array
+    {
+        return self::BORDER_MAPPINGS;
+    }
+
     /**
      * Map html border style to PhpSpreadsheet border style.
      *
@@ -914,48 +1016,29 @@ class Html extends BaseReader
      */
     public function getBorderStyle($style)
     {
-        switch ($style) {
-            case 'solid':
-                return Border::BORDER_THIN;
-            case 'dashed':
-                return Border::BORDER_DASHED;
-            case 'dotted':
-                return Border::BORDER_DOTTED;
-            case 'medium':
-                return Border::BORDER_MEDIUM;
-            case 'thick':
-                return Border::BORDER_THICK;
-            case 'none':
-                return Border::BORDER_NONE;
-            case 'dash-dot':
-                return Border::BORDER_DASHDOT;
-            case 'dash-dot-dot':
-                return Border::BORDER_DASHDOTDOT;
-            case 'double':
-                return Border::BORDER_DOUBLE;
-            case 'hair':
-                return Border::BORDER_HAIR;
-            case 'medium-dash-dot':
-                return Border::BORDER_MEDIUMDASHDOT;
-            case 'medium-dash-dot-dot':
-                return Border::BORDER_MEDIUMDASHDOTDOT;
-            case 'medium-dashed':
-                return Border::BORDER_MEDIUMDASHED;
-            case 'slant-dash-dot':
-                return Border::BORDER_SLANTDASHDOT;
-        }
-
-        return null;
+        return self::BORDER_MAPPINGS[$style] ?? null;
     }
 
     /**
-     * @param Style  $cellStyle
      * @param string $styleValue
      * @param string $type
      */
-    private function setBorderStyle(Style $cellStyle, $styleValue, $type)
+    private function setBorderStyle(Style $cellStyle, $styleValue, $type): void
     {
-        [, $borderStyle, $color] = explode(' ', $styleValue);
+        if (trim($styleValue) === Border::BORDER_NONE) {
+            $borderStyle = Border::BORDER_NONE;
+            $color = null;
+        } else {
+            $borderArray = explode(' ', $styleValue);
+            $borderCount = count($borderArray);
+            if ($borderCount >= 3) {
+                $borderStyle = $borderArray[1];
+                $color = $borderArray[2];
+            } else {
+                $borderStyle = $borderArray[0];
+                $color = $borderArray[1] ?? null;
+            }
+        }
 
         $cellStyle->applyFromArray([
             'borders' => [

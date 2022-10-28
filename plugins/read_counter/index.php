@@ -45,15 +45,23 @@ function httpQuery($query = [])
     return http_build_query(array_unique(array_merge($_GET, $query)));
 }
 
-if (isset($_POST['item_code'])) {
+if (isset($_GET['report']))
+{
+    include __DIR__ . '/report.php';
+    exit;
+}
+
+$flashError = '';
+if (isset($_POST['item_code']) && !empty($_POST['item_code'])) {
     $item_code = utility::filterData('item_code', 'post', true, true, true);
     $stmt = \SLiMS\DB::getInstance()->prepare("SELECT i.item_code, b.title FROM item AS i LEFT JOIN biblio b on i.biblio_id = b.biblio_id WHERE i.item_code = :item_code");
     $stmt->execute(['item_code' => $item_code]);
+
     if ($stmt->rowCount() > 0) {
         $data = $stmt->fetchObject();
         $stmt = \SLiMS\DB::getInstance()->prepare("INSERT INTO read_counter(item_code, title, created_at, uid) VALUES (:item_code, :title, :created_at, :uid)");
         $stmt->execute(['item_code' => $data->item_code, 'title' => $data->title, 'created_at' => date('Y-m-d H:i:s'), 'uid' => $_SESSION['uid']]);
-    }
+    } else { $flashError = str_replace('{itemcode}', $item_code, __('No data found with item code {itemcode}.')); }
 }
 
 ?>
@@ -66,7 +74,13 @@ if (isset($_POST['item_code'])) {
         <div class="infoBox">
             <?= __('Enter item code / barcode value into input form below!') ?>
         </div>
+        <div class="<?= empty($flashError) ? 'd-none' : 'alert alert-warning font-weight-bold' ?>">
+            <?= $flashError ?>
+        </div>
         <div class="sub_section">
+            <div class="btn-group">
+                <a href="<?= $_SERVER['PHP_SELF'] . '?' . httpQuery(['report' => 'yes']) ?>" class="btn btn-default"><?php echo __('Report'); ?></a>
+            </div>
             <form name="read_counter" action="<?= $_SERVER['PHP_SELF'] . '?' . httpQuery() ?>" id="search" method="post"
                   class="form-inline"><?php echo __('Barcode'); ?>&nbsp;:&nbsp;
                 <input type="text" name="item_code" class="form-control col-md-3" autocomplete="off"/>

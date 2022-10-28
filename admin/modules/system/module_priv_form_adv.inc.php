@@ -19,7 +19,7 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center" id="headingOne">
                 <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?= $module_data['module_path'] ?>" aria-expanded="true" aria-controls="<?= $module_data['module_path'] ?>">
-                    <?= ucwords(str_replace('_', ' ', $module_data['module_name'])) ?>
+                    <?= __(ucwords(str_replace('_', ' ', $module_data['module_name']))) ?>
                 </button>
 
                 <?php

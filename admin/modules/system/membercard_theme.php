@@ -78,9 +78,9 @@ if (isset($_POST['template'])) {
 
   $update = addOrUpdateSetting('membercard_print_settings', $data);
   if ($update !== true) {
-    utility::jsAlert(__('Error saving custom data!') . ' ' . $update);
+    toastr(__('Error saving custom data!') . ' ' . $update)->error();
   } else {
-    utility::jsAlert(__('Custom data saved!'));
+    toastr(__('Custom data saved!'))->success();
  }
   
   exit();
@@ -134,6 +134,10 @@ if (isset($_GET['customize'])) {
           $form->addHidden($cf_dbfield, $sysconf[$theme_key][$cf_dbfield] ?? $cf_default);
         } else if ($cfield['type'] == 'anything') {
           $form->addAnything($cf_label,$cf_default);
+        } else if ($cfield['type'] == 'ckeditor') {
+          if (!isset($ckCount)) $ckCount = 0;
+          $form->addAnything($cf_label, '<div id="container'.$ckCount.'" data-field="'.$cf_dbfield.'"><div id="ckeditor-toolbar'.$ckCount.'"></div><div id="ckeditor-content'.$ckCount.'">' . (isset($sysconf[$theme_key][$cf_dbfield]) ? html_entity_decode($sysconf[$theme_key][$cf_dbfield]) : html_entity_decode($cf_default)) . '</div></div>');
+          $ckCount++;
         }
       }
       // print out the form object
@@ -148,9 +152,13 @@ if (isset($_GET['customize'])) {
   $content = ob_get_clean();
   $css = '<link rel="stylesheet" href="'.SWB.'css/bootstrap-colorpicker.min.css"/>';
   $js  = '<script type="text/javascript" src="'.JWB.'bootstrap-colorpicker.min.js"></script>';
-  $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor/ckeditor.js"></script>';
+  $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.js"></script>';
+  $js .= '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.tinfo.js"></script>';
   $js .= '<script type="text/javascript">$(function () {  $(\'.colorpicker\').colorpicker() })</script>';
-  $js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
+  if (isset($ckCount)):
+  $js .= "<script>createMultiEditor('{$ckCount}', '#mainForm', ['bold','italic','underline','strikethrough','bulletedList', 'numberedList','alignment:left', 'alignment:right', 'alignment:center', 'alignment:justify'])</script>";
+  endif;
+  // $js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
   require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
   exit();
 }

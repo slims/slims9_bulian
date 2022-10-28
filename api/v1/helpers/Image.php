@@ -11,7 +11,7 @@ trait Image
     {
         // cover images var
         $thumb_url = '';
-        $image = urlencode($image);
+        $image = urlencode($image??'');
         $images_loc = 'images/' . $path . '/' . $image;
         $img_status = pathinfo('images/' . $path . '/' . $image);
         if(isset($img_status['extension'])){

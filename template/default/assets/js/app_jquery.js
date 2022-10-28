@@ -28,7 +28,7 @@ $(document).ready(() => {
         "hideMethod": "fadeOut"
     }
 
-    $('.add-to-chart').click(function (e) {
+    $('.add-to-chart-button').click(function (e) {
         let biblioId = $(this).attr('data-biblio')
         $.ajax({
             method: 'POST',

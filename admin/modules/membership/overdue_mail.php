@@ -35,6 +35,8 @@ if (!$can_read) { die(); }
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 require MDLBS.'membership/member_base_lib.inc.php';
 
+if (is_null(config('mail'))) die('<div class="alert alert-warning">E-Mail configuration is not ready!</div>');
+
 // get data
 $memberID = $dbs->escape_string(trim($_POST['memberID']));
 // create member Instance
@@ -42,4 +44,5 @@ $member = new member($dbs, $memberID);
 // send e-mail
 $status = $member->sendOverdueNotice();
 // get message
-echo $status['message'];
+$alertType = $status['status'] == 'SENT' ? 'alert-success' : 'alert-danger';
+echo '<div class="alert ' . $alertType . '">' . $status['message'] . '</div>';

@@ -40,9 +40,9 @@ if (isset($_POST['remove'])) {
   $vid = (integer)$_POST['remove'];
   $sql_op = new simbio_dbop($dbs);
   $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
+  toastr(addslashes(__('Topic succesfully removed!')))->success();
   echo '<script type="text/javascript">';
-  echo 'alert(\''. addslashes(__('Topic succesfully removed!')) . '\');';
-  echo 'location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';';
+  echo 'setTimeout(() => {location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';}, 2500)';
   echo '</script>';
 }
 

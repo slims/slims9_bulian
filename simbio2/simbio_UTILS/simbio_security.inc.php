@@ -59,7 +59,19 @@ class simbio_security
     {
         if (!$str_session_name) { $str_session_name = session_name(); }
         // deleting session browser cookie
-        @setcookie($str_session_name, '', time()-86400, $str_cookie_path);
+        #@setcookie($str_session_name, '', time()-86400, $str_cookie_path);
+        #@setcookie($str_session_name, '', time()-86400, $str_cookie_path, "", FALSE, TRUE);
+
+        @setcookie($str_session_name, '', [
+            'expires' => time()-86400,
+            'path' => $str_cookie_path,
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    
+
         // destroy all session
         $_SESSION = null;
         session_destroy();
@@ -69,5 +81,18 @@ class simbio_security
         } else {
             if ($str_msg) { echo $str_msg; }
         }
+    }
+
+
+    /**
+     * Static method to clean all string character
+     * from html element and attributes
+     *
+     * @param string $str_char
+     * @return string
+     */
+    public static function xssFree($str_char)
+    {
+        return str_replace(['\'', '"'], '', strip_tags($str_char));
     }
 }

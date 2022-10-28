@@ -5,6 +5,7 @@ images/labels/*
 images/cache/*
 images/content/*
 images/default/logo.png
+images/default/webicon.*
 files/*
 !files/membercard/*
 repository/*
@@ -24,6 +25,8 @@ slims8_akasia.sublime-workspace
 
 plugins/*
 !plugins/read_counter/
+
+template/*
 
 # Windows image file caches
 Thumbs.db
@@ -46,3 +49,4 @@ $RECYCLE.BIN/
 
 /vendor/
 composer.lock
+config/sysconfig.env.inc.php

@@ -110,9 +110,21 @@ if (isset($_POST['logMeIn'])) {
             if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
 
             // set cookie admin flag
-            setcookie('admin_logged_in', true, time()+14400, SWB);
+            #setcookie('admin_logged_in', true, time()+14400, SWB);
+            #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
+
+            setcookie('admin_logged_in', TRUE, [
+                'expires' => time()+14400,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+
             // write log
-            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.ip());
 
             # ADV LOG SYSTEM - STIIL EXPERIMENTAL
             $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
@@ -127,20 +139,45 @@ if (isset($_POST['logMeIn'])) {
             exit();
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user '.$username.' from address '.$_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user '.$username.' from address '.ip());
 
             // maybe still use md5 encryption
             if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
                 $token = utility::createRandomString(32);
-                setcookie('token', $token, time()+3600, SWB);
-                setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
+                #setcookie('token', $token, time()+3600, SWB);
+                #setcookie('token', $token, time()+3600, SWB, "", FALSE, TRUE);
+
+                setcookie('token', $token, [
+                    'expires' => time()+3600,
+                    'path' => SWB,
+                    'domain' => '',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+    
+
+                #setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
+                #setcookie('uname', $logon->errors['uname'], time()+3600, SWB, "", FALSE, TRUE);
+
+                setcookie('uname', $logon->errors['uname'], [
+                    'expires' => time()+3600,
+                    'path' => SWB,
+                    'domain' => '',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+
+
+
                 // message
                 header('location: index.php?p='.$path.'&update='.$token);
             } else {
                 // message
                 $msg = '<script type="text/javascript">';
                 $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
-                // $msg .= 'history.back();';
+                $msg .= 'history.back();';
                 $msg .= '</script>';
                 simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
             }
@@ -167,11 +204,35 @@ if (isset($_POST['updatePassword'])) {
         if ($logon->changePasswd($dbs, $passwd2)) {
 
             // write log
-            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user '.$_uname.' from address '.ip());
 
             // clear cookie
-            setcookie('token', '', time()-3600, SWB);
-            setcookie('uname', '', time()-3600, SWB);
+            #setcookie('token', '', time()-3600, SWB);
+            #setcookie('token', '', time()-3600, SWB, "", FALSE, TRUE);
+
+            setcookie('token', '', [
+                'expires' => time()-3600,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+
+            #setcookie('uname', '', time()-3600, SWB);
+            #setcookie('uname', '', time()-3600, SWB, "", FALSE, TRUE);
+
+            setcookie('uname', '', [
+                'expires' => time()-3600,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+
             echo '<script type="text/javascript">';
             echo 'alert("Password Updated. Please log in again!");';
             echo 'location.href = \'index.php?p='.$path.'\';';
@@ -179,7 +240,7 @@ if (isset($_POST['updatePassword'])) {
             exit();
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password FAILED for user '.$_uname.' from address '.$_SERVER['REMOTE_ADDR']);
+            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password FAILED for user '.$_uname.' from address '.ip());
             utility::jsAlert($logon->errors);
         }
     }
@@ -277,7 +338,7 @@ if (isset($_POST['updatePassword'])) {
 $main_content = ob_get_clean();
 
 // page title
-$page_title = __('Library Automation Login').' | '.$sysconf['library_name'];
+$opac->page_title = __('Library Automation Login').' | '.$sysconf['library_name'];
 
 if ($sysconf['template']['base'] == 'html') {
     // create the template object

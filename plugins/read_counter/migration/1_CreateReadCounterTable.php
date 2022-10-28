@@ -20,6 +20,9 @@
  *
  */
 
+use SLiMS\Table\Schema;
+use SLiMS\Table\Blueprint;
+
 class CreateReadCounterTable extends \SLiMS\Migration\Migration
 {
 
@@ -30,13 +33,15 @@ class CreateReadCounterTable extends \SLiMS\Migration\Migration
      */
     function up()
     {
-        \SLiMS\DB::getInstance()->query("CREATE TABLE `read_counter` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `item_code` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-          `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-          `created_at` datetime NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        Schema::create('read_counter', function(Blueprint $table){
+            $table->engine = 'MyISAM';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->autoIncrement('id');
+            $table->string('item_code', 20)->notNull();
+            $table->string('title', 255)->notNull();
+            $table->datetime('created_at')->notNull();
+        });
     }
 
     /**
@@ -46,6 +51,6 @@ class CreateReadCounterTable extends \SLiMS\Migration\Migration
      */
     function down()
     {
-        \SLiMS\DB::getInstance()->query("DROP TABLE `read_counter`;");
+        Schema::drop('read_counter');
     }
 }

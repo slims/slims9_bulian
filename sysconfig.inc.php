@@ -27,12 +27,15 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+// Environment config
+require __DIR__ . '/config/sysconfig.env.inc.php';
+
 /*
  * Set to development or production
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', 'production');
+define('ENVIRONMENT', $Environment);
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -49,10 +52,6 @@ switch (ENVIRONMENT) {
     exit(1); // EXIT_ERROR
 }
 
-// require composer library
-if (file_exists(realpath(dirname(__FILE__)) . '/vendor/autoload.php')) require 'vendor/autoload.php';
-require 'lib/autoload.php';
-
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 // check if safe mode is on
@@ -60,13 +59,9 @@ if ((bool) ini_get('safe_mode')) {
     define('SENAYAN_IN_SAFE_MODE', 1);
 }
 
-// set default timezone
-// for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
-@date_default_timezone_set('Asia/Jakarta');
-
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.4.2');
+define('SENAYAN_VERSION_TAG', 'v9.5.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -149,6 +144,9 @@ define('BINARY_FOUND', 1);
 define('COMMAND_SUCCESS', 0);
 define('COMMAND_FAILED', 2);
 
+// require composer library
+if (file_exists(SB . 'vendor/autoload.php')) require SB . 'vendor/autoload.php';
+require LIB . 'autoload.php';
 // simbio main class inclusion
 require SIMBIO.'simbio.inc.php';
 // simbio security class
@@ -202,7 +200,7 @@ $sysconf['promote_first_emphasized'] = true;
 
 /* Dynamic Content */
 $sysconf['content']['allowable_tags'] = '<p><a><cite><code><em><strong><cite><blockquote><fieldset><legend>'
-    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param><ul><ol><li>';
+    .'<h3><hr><br><table><tr><td><th><thead><tbody><tfoot><div><span><img><object><param><ul><ol><li><i>';
 
 /* allow logged in members to mark bibliography titles, show the title basket in the member details and send a mail to reserve these titles */
 $sysconf['enable_mark'] = true;
@@ -504,21 +502,6 @@ if ($sysconf['captcha']['forgot']['enable']) {
 }
 
 /**
- * Mailing Settings
- */
-$sysconf['mail']['SMTPSecure'] = 'ssl'; // ssl or tls
-$sysconf['mail']['enable'] = true;
-$sysconf['mail']['server'] = 'ssl://smtp.gmail.com:465'; // SMTP server
-$sysconf['mail']['server_port'] = 465; // the SMTP port
-$sysconf['mail']['auth_enable'] = true; // enable SMTP authentication
-$sysconf['mail']['auth_username'] = 'admin'; // SMTP account username
-$sysconf['mail']['auth_password'] = 'admin'; // SMTP account password
-$sysconf['mail']['from'] = 'admin@localhost';
-$sysconf['mail']['from_name'] = 'SLiMS Administrator';
-$sysconf['mail']['reply_to'] = &$sysconf['mail']['from'];
-$sysconf['mail']['reply_to_name'] = &$sysconf['mail']['from_name'];
-
-/**
  * Maximum biblio mark for member
  */
 $sysconf['max_biblio_mark'] = 20;
@@ -647,11 +630,36 @@ if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
         $select_lang = trim(strip_tags($_GET['select_lang']));
         // delete previous language cookie
         if (isset($_COOKIE['select_lang'])) {
-            @setcookie('select_lang', $select_lang, time()-14400, SWB);
+            #@setcookie('select_lang', $select_lang, time()-14400, SWB);
+            #@setcookie('select_lang', $select_lang, time()-14400, SWB, "", FALSE, TRUE);
+
+            @setcookie('select_lang', $select_lang, [
+                'expires' => time()-14400,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+            
+
         }
         // create language cookie
-        @setcookie('select_lang', $select_lang, time()+14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()+14400, SWB);
+        #@setcookie('select_lang', $select_lang, time()+14400, SWB, "", FALSE, TRUE);
+
+        @setcookie('select_lang', $select_lang, [
+            'expires' => time()+14400,
+            'path' => SWB,
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
         $sysconf['default_lang'] = $select_lang;
+
+
 
         //reload page on change language
         header("location:index.php");
@@ -679,6 +687,19 @@ if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'
 if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php')) {
   require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
 }
+
+/* Load balancing environment */
+$sysconf['load_balanced_env'] = false;
+$sysconf['load_balanced_source_ip'] = 'HTTP_X_FORWARDED_FOR';
+
+// visitor limitation
+$sysconf['enable_counter_by_ip'] = true;
+$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
+$sysconf['enable_visitor_limitation']     = false; // "true" or "false"
+$sysconf['time_visitor_limitation']       = 60; // in minute
+
+/* maximum insert batch */
+$sysconf['max_insert_batch'] = 100;
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
@@ -714,18 +735,12 @@ $sysconf['system_user_type'][2] = __('Senior Librarian');
 $sysconf['system_user_type'][3] = __('Library Staff');
 
 // redirect to mobile template on mobile mode
-if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && $sysconf['template']['responsive'] === false) {
+if (defined('LIGHTWEIGHT_MODE') AND !isset($_COOKIE['FULLSITE_MODE']) AND isset($sysconf['template']['responsive']) && (bool)$sysconf['template']['responsive'] === false) {
   $sysconf['template']['theme'] = 'lightweight';
   $sysconf['template']['css'] = $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/style.css';
   $sysconf['enable_xml_detail'] = false;
   $sysconf['enable_xml_result'] = false;
 }
-
-// visitor limitation
-$sysconf['enable_counter_by_ip'] = true;
-$sysconf['allowed_counter_ip'] = ['127.0.0.1'];
-$sysconf['enable_visitor_limitation']     = false; // "true" or "false"
-$sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* new log system */
 $sysconf['log']['biblio'] = TRUE;
@@ -746,14 +761,16 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
 
-/* maximum insert batch */
-$sysconf['max_insert_batch'] = 100;
-
-/* Load balancing environment */
-$sysconf['load_balanced_env'] = false;
-
 // load helper
-require_once "lib/helper.inc.php";
+require_once LIB . "helper.inc.php";
+
+// set default timezone
+// for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
+// https://www.php.net/manual/en/timezones.php
+@date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
+
+// set real client ip address if SLiMS behind a reverse proxy
+if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();

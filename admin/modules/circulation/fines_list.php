@@ -64,9 +64,9 @@ if (isset($_POST['saveData'])) {
     $credit = preg_replace('@[.,\-a-z ]@i', '', $_POST['credit']);
     // check form validity
     if (empty($_POST['finesDesc']) OR empty($debet)) {
-        utility::jsAlert(''.__('Fines Description and Debet value can\'t be empty').'');
+        toastr(__('Fines Description and Debet value can\'t be empty'))->error();
     } else if ($credit > $debet) {
-        utility::jsAlert(''.__('Value of Credit can not be higher that Debet Value').'');
+        toastr(''.__('Value of Credit can not be higher that Debet Value').'')->error();
     } else {
         $data['member_id'] = $_SESSION['memberID'];
         if (empty($_POST['finesDate'])) {
@@ -88,15 +88,15 @@ if (isset($_POST['saveData'])) {
             // update the data
             $update = $sql_op->update('fines', $data, 'fines_id='.$updateRecordID);
             if ($update) {
-                utility::jsAlert(__('Fines Data Successfully Updated'));
-            } else { utility::jsAlert(__('Fines Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error); }
+                toastr(__('Fines Data Successfully Updated'))->success();
+            } else { toastr(__('Fines Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('fines', $data);
             if ($insert) {
-                utility::jsAlert(__('New Fines Data Successfully Saved'));
-            } else { utility::jsAlert(__('Fines Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error); }
+                toastr(__('New Fines Data Successfully Saved'))->success();
+            } else { toastr(__('Fines Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
         }
     }
 } else if ($_SESSION['uid'] == 1 && isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction'])) {
@@ -122,9 +122,9 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('Fines data succesfully deleted!'));
+        toastr(__('Fines data succesfully deleted!'))->success();
     } else {
-        utility::jsAlert(__('Fines data FAILED to delete!'));
+        toastr(__('Fines data FAILED to delete!'))->error();
     }
 }
 /* RECORD OPERATION END */
@@ -200,7 +200,7 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
     if ($total_unpaid_fines > 0) {
         $fines_alert = TRUE;
     }
-    echo '<strong class="text-danger col">' . __('Total of unpaid fines') . ': '.$total_unpaid_fines.'</strong>';
+    echo '<strong class="text-danger col">' . __('Total of unpaid fines') . ': '.currency($total_unpaid_fines).'</strong>';
 
     /* FINES LIST */
     $memberID = trim($_SESSION['memberID']);
@@ -229,6 +229,19 @@ if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']
         $criteria .= " AND (f.description LIKE '%$keyword%' OR f.fines_date LIKE '%$keyword%')";
     }
     $datagrid->setSQLCriteria($criteria);
+
+    function setCurrencyAtDebet($db, $data)
+    {
+        return currency($data[3]);
+    }
+
+    function setCurrencyAtCredit($db, $data)
+    {
+        return currency($data[4]);
+    }
+
+    $datagrid->modifyColumnContent(3, 'callback{setCurrencyAtDebet}');
+    $datagrid->modifyColumnContent(4, 'callback{setCurrencyAtCredit}');
 
     // set table and table header attributes
     $datagrid->table_attr = 'align="center" id="dataList" style="width: 100%;" cellpadding="5" cellspacing="0"';

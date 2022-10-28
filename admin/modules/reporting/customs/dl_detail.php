@@ -142,7 +142,7 @@ if (!$reportView) {
     }
     if (isset($_GET['author']) AND !empty($_GET['author'])) {
         $author = $dbs->escape_string($_GET['author']);
-        $criteria .= ' AND b.author_name LIKE \'%'.$author.'%\'';
+        $criteria .= ' AND b.author LIKE \'%'.$author.'%\'';
     }
     if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
         $publish_year = $dbs->escape_string(trim($_GET['publishYear']));

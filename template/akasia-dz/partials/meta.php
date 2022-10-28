@@ -78,6 +78,11 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
 <script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/bootstrap.min.js"></script>
 <script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/custom.js"></script>
 <script src="<?php echo $sysconf['template']['dir'].DS.$sysconf['template']['theme']; ?>/js/vegas.min.js"></script>
+<?php 
+if (isset($js)): 
+    echo $js;
+endif;
+?>
 
 <!-- Animation options
 ============================================= -->

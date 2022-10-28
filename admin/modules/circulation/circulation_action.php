@@ -59,7 +59,7 @@ function visitOnLoan($member_id)
         $checkin_date  = date('Y-m-d H:i:s');
         $insert = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$institution', '$checkin_date')");
         if (!$insert) {
-            utility::jsAlert(__('ERROR! Can\'t insert visitor counter data'));
+            toastr(__('ERROR! Can\'t insert visitor counter data'))->error();
             return false;
         }
     }
@@ -77,9 +77,15 @@ if (isset($_POST['finish'])) {
     if ($flush == TRANS_FLUSH_ERROR) {
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')', 'Transaction', 'Failed');
-        echo '<script type="text/javascript">';
-        echo 'alert(\''.__('ERROR! Loan data can\'t be saved to database').'\');';
-        echo '</script>';
+        toastr(__('ERROR! Loan data can\'t be saved to database'))->error();
+        // set error result
+        if (ENVIRONMENT === 'development')
+        {
+            echo '<script>
+                parent.$("#errordump").removeClass("d-none").addClass("d-block");
+                parent.$("#errordump").html("' . $circulation->error . '");
+            </script>';
+        }
     } else {
         // insert visitor log
         visitOnLoan($memberID);
@@ -92,7 +98,7 @@ if (isset($_POST['finish'])) {
         // send message
         echo '<script type="text/javascript">';
         if ($sysconf['transaction_finished_notification']) {
-            echo 'alert(\''.__('Transaction finished').'\');';
+            toastr(__('Transaction finished'))->success();
         }
         // print receipt only if enabled and $_SESSION['receipt_record'] not empty
         if ($sysconf['circulation_receipt'] && isset($_SESSION['receipt_record'])) {
@@ -104,7 +110,6 @@ if (isset($_POST['finish'])) {
     }
     exit();
 }
-
 
 // return and extend process
 if (isset($_POST['process']) AND isset($_POST['loanID'])) {
@@ -121,13 +126,15 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         $return_status = $circulation->returnItem($loanID);
         // write log
         utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Return');
-        echo '<script type="text/javascript">';
         if ($circulation->loan_have_overdue) {
-            echo "\n".'alert(\''.__('Overdue fines inserted to fines database').'\');'."\n";
+            toastr(__('Overdue fines inserted to fines database'))->success();
         }
+        echo '<script type="text/javascript">';
         if ($return_status === ITEM_RESERVED) {
             echo 'location.href = \'loan_list.php?reserveAlert='.urlencode($loan_d[0]).'\';';
-        } else { echo 'location.href = \'loan_list.php\';'; }
+        } else { 
+            echo 'location.href = \'loan_list.php\';'; 
+        }
         echo '</script>';
     } else {
         // set holiday settings
@@ -135,25 +142,24 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         $circulation->holiday_date = $_SESSION['holiday_date'];
         $extend_status = $circulation->extendItemLoan($loanID);
         if ($extend_status === ITEM_RESERVED) {
+            toastr(__('Item CANNOT BE Extended! This Item is being reserved by other member'))->warning();
             echo '<script type="text/javascript">';
-            echo 'alert(\''.__('Item CANNOT BE Extended! This Item is being reserved by other member').'\');';
             echo 'location.href = \'loan_list.php\';';
             echo '</script>';
         } else {
             // write log
             utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Extended');
-            echo '<script type="text/javascript">';
-            echo 'alert(\''.__('Loan Extended').'\');';
+            toastr(__('Loan Extended'))->success();
             if ($circulation->loan_have_overdue) {
-                echo "\n".'alert(\''.__('Overdue fines inserted to fines database').'\');'."\n";
+                toastr(__('Overdue fines inserted to fines database'))->success();
             }
+            echo '<script type="text/javascript">';
             echo 'location.href = \'loan_list.php\';';
             echo '</script>';
         }
     }
     exit();
 }
-
 
 // add temporary item to session
 if (isset($_POST['tempLoanID'])) {
@@ -178,7 +184,7 @@ if (isset($_POST['tempLoanID'])) {
             echo '</script>';
         } else {
             echo '<script type="text/javascript">';
-            echo 'alert(\''.__('Loan Limit Reached!').'\');';
+            toastr(__('Loan Limit Reached!'))->info();
             echo 'location.href = \'loan.php\';';
             echo '</script>';
         }
@@ -201,28 +207,28 @@ if (isset($_POST['tempLoanID'])) {
         echo '</html>';
         exit();
     } else if ($add == ITEM_NOT_FOUND) {
+        toastr(__('This Item is not registered in database'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('This Item is not registered in database').'\');';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else if ($add == ITEM_UNAVAILABLE) {
+        toastr(__('This Item is currently not available'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('This Item is currently not available').'\');';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else if ($add == LOAN_NOT_PERMITTED) {
+        toastr(__('Loan NOT PERMITTED! Membership already EXPIRED!'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Loan NOT PERMITTED! Membership already EXPIRED!').'\');';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else if ($add == LOAN_NOT_PERMITTED_PENDING) {
+        toastr(__('Loan NOT PERMITTED! Membership under PENDING State!'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Loan NOT PERMITTED! Membership under PENDING State!').'\');';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else if ($add == ITEM_LOAN_FORBID) {
+        toastr(__('Loan Forbidden for this Item!'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Loan Forbidden for this Item!').'\');';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
     } else {
@@ -233,7 +239,6 @@ if (isset($_POST['tempLoanID'])) {
     }
     exit();
 }
-
 
 // loan limit override
 if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
@@ -252,29 +257,28 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     exit();
 }
 
-
 // remove temporary item session
 if (isset($_GET['removeID'])) {
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // remove item from loan session
     $circulation->removeLoanSession($_GET['removeID']);
-    echo '<script type="text/javascript">';
     $msg = str_replace('{removeID}', $_GET['removeID'], __('Item {removeID} removed from session')); //mfc
-    echo 'alert(\''.$msg.'\');';
+    toastr($msg)->success();
+    echo '<script type="text/javascript">';
     echo 'location.href = \'loan.php\';';
     echo '</script>';
     exit();
 }
 
-
 // quick return proccess
 if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
     // get loan data
-    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title FROM loan AS l
+    $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, b.classification, mt.member_type_name FROM loan AS l
         LEFT JOIN item AS i ON i.item_code=l.item_code
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
         LEFT JOIN member AS m ON l.member_id=m.member_id
+        LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
         WHERE l.item_code='".$dbs->escape_string($_POST['quickReturnID'])."' AND is_lent=1 AND is_return=0");
     if ($loan_info_q->num_rows < 1) {
         echo '<div class="errorBox">'.__('This is item already returned or not exists in loan database').'</div>';
@@ -313,6 +317,22 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         }
         // write log
         utility::writeLogs($dbs, 'member', $loan_d['member_id'], 'circulation', $dbs->escape_string($_SESSION['realname']).' return item ('.$_POST['quickReturnID'].') with title ('.$loan_d['title'].') with Quick Return method', 'Quick Loan', 'Returned');
+        # Support for circulation_after_successful_transaction hook in 
+        # quick return (circulation)
+        $return_data = array();
+        $return_data['memberID'] = $loan_d['member_id'];
+        $return_data['memberName'] = $loan_d['member_name'];
+        $return_data['memberType'] = $loan_d['member_type_name'];
+        $return_data['date'] = date("Y-m-d h:i:s");
+        $return_data['return'][0] = array ();
+        $return_data['return'][0] = $loan_d;
+        $return_data['return'][0]['itemCode'] = $_POST['quickReturnID'];
+        $return_data['return'][0]['title'] = $loan_d['title'];
+        $return_data['return'][0]['returnDate'] = date("Y-m-d");
+        $return_data['return'][0]['overdues'] = $overdue;
+        $return_data['return'][0]['loan_id'] = $loan_d['loan_id'];
+        $return_data['return'][0]['is_return'] = (INT)$loan_d['is_return'] + 1;
+        \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => $return_data));
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object
@@ -341,13 +361,12 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
     exit();
 }
 
-
 // add reservation
 if (isset($_POST['reserveItemID'])) {
-    $item_id = trim($_POST['reserveItemID']);
+    $item_id = $dbs->escape_string(trim($_POST['reserveItemID']));
     if (!$item_id) {
+        toastr(__('NO DATA Selected to reserve!'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('NO DATA Selected to reserve!').'\');';
         echo 'location.href = \'reserve_list.php\';';
         echo '</script>';
         die();
@@ -359,8 +378,8 @@ if (isset($_POST['reserveItemID'])) {
     $current_reserve_q = $dbs->query('SELECT COUNT(reserve_id) FROM reserve WHERE member_id=\''.$dbs->escape_string(trim($_SESSION['memberID'])).'\'');
     $current_reserve_d = $current_reserve_q->fetch_row();
     if ($current_reserve_d[0] >= $reserve_limit_d[0]) {
+        toastr(__('Can not add more reservation. Maximum limit reached'))->error();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Can not add more reservation. Maximum limit reached').'\');';
         echo 'location.href = \'reserve_list.php\';';
         echo '</script>';
         die();
@@ -377,8 +396,8 @@ if (isset($_POST['reserveItemID'])) {
         $arr_rules = @unserialize($biblio_d[1]);
         if ($arr_rules) {
             if (in_array(NO_LOAN_TRANSACTION, $arr_rules)) {
+                toastr(__('Can\'t reserve this Item. Loan Forbidden!'))->error();
                 echo '<script type="text/javascript">';
-                echo 'alert(\''.__('Can\'t reserve this Item. Loan Forbidden!').'\');';
                 echo 'location.href = \'reserve_list.php\';';
                 echo '</script>';
                 die();
@@ -395,19 +414,18 @@ if (isset($_POST['reserveItemID'])) {
         // add reservation to database
         $reserve_date = date('Y-m-d H:i:s');
         $dbs->query('INSERT INTO reserve(member_id, biblio_id, item_code, reserve_date) VALUES (\''.$dbs->escape_string($_SESSION['memberID']).'\', \''.$biblio_d[0].'\', \''.$item_id.'\', \''.$reserve_date.'\')');
+        toastr(__('Reservation added'))->success();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Reservation added').'\');';
         echo 'location.href = \'reserve_list.php\';';
         echo '</script>';
     } else {
+        toastr(__('Item for this title is already available or already on hold by this member!'))->info();
         echo '<script type="text/javascript">';
-        echo 'alert(\''.__('Item for this title is already available or already on hold by this member!').'\');';
         echo 'location.href = \'reserve_list.php\';';
         echo '</script>';
     }
     exit();
 }
-
 
 // remove reservation item
 if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
@@ -419,13 +437,12 @@ if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
     $dbs->query('DELETE FROM reserve WHERE reserve_id='.$reserveID);
     // write log
     utility::writeLogs($dbs, 'member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' remove reservation for item '.$reserve_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Reservation', 'Delete');
+    toastr(__('Reservation removed'))->success();
     echo '<script type="text/javascript">';
-    echo 'alert(\''.__('Reservation removed').'\');';
     echo 'location.href = \'reserve_list.php\';';
     echo '</script>';
     exit();
 }
-
 
 // removing fines
 if (isset($_POST['removeFines'])) {
@@ -434,13 +451,12 @@ if (isset($_POST['removeFines'])) {
         // change loan data
         $dbs->query("DELETE FROM fines WHERE fines_id=$fines_id");
     }
+    toastr(__('Fines data removed'))->success();
     echo '<script type="text/javascript">';
-    echo 'alert(\''.__('Fines data removed').'\');';
     echo 'location.href = \'fines_list.php\';';
     echo '</script>';
     exit();
 }
-
 
 // transaction is started
 if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
@@ -491,7 +507,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '<td colspan="5">';
         // hidden form for transaction finish
         echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php">
-        <input type="button" class="btn btn-danger" id="circFinish" accesskey="T" value="'.__('Finish Transaction').' (Esc)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\')" /><input type="hidden" name="finish" value="true" /></form>';
+        <input type="button" class="btn btn-danger" id="circFinish" accesskey="T" value="'.__('Finish Transaction').' (Esc)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\', '.config('enable_chbox_confirm', '1').')" /><input type="hidden" name="finish" value="true" /></form>';
         echo '</td>';
         echo '</tr>'."\n";
         echo '<tr>'."\n";
@@ -555,6 +571,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         }
 
 		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
+        echo '<div id="errordump" class="w-100 d-none p-3 mb-2 bg-danger text-white font-weight-bold"></div>';
         echo '<a class="nav-item nav-link '.$active_loan.' notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
         echo '<a class="nav-item nav-link '.$active_loan_list.' notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {

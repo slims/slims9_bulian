@@ -34,7 +34,7 @@ if (!defined('INDEX_AUTH')) {
  *
  * @param   string  $str_query
  * @param   array   $arr_stop_words
- * @return  string
+ * @return  array
  **/
 function simbio_tokenizeCQL($str_query, $arr_searcheable_fields, $arr_stop_words = array(), $int_max_words = 20)
 {

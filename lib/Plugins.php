@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 05/11/20 13.53
@@ -8,6 +9,7 @@
 namespace SLiMS;
 
 
+use SLiMS\SearchEngine\Engine;
 use stdClass;
 
 class Plugins
@@ -30,7 +32,9 @@ class Plugins
     protected array $hooks = [];
     protected array $menus = [];
     private int $deep = 2;
+    private string $hook_handler = '';
     private string $current_location = '';
+    private ?string $group_name = null;
 
     /**
      * Plugins constructor.
@@ -132,7 +136,7 @@ class Plugins
     {
         if (isset($this->active_plugins[$id])) {
             try {
-                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options);
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options??'');
             } catch (\Exception $exception) {
                 $this->plugins[$id]->options = new stdClass;
             }
@@ -201,7 +205,12 @@ class Plugins
 
     public function register($hook, $callback)
     {
-        $this->hooks[$hook][] = $callback;
+        $this->hooks[$hook][] = [$callback, $this->hook_handler];
+    }
+
+    public function registerHook($hook, $callback)
+    {
+        $this->register($hook, $callback);
     }
 
     public function registerMenu($module_name, $label, $path, $description = null)
@@ -209,17 +218,65 @@ class Plugins
         $hash = md5(realpath($path));
         if ($module_name === 'opac') {
             $name = strtolower(implode('_', explode(' ', $label)));
-            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $module_name, $description, realpath($path)];
+            $this->menus[$module_name][$name] = [$label, SWB . 'index.php?p=' . $name, $description, realpath($path)];
         } else {
             $this->menus[$module_name][$hash] = [$label, AWB . 'plugin_container.php?mod=' . $module_name . '&id=' . $hash, $description, realpath($path)];
         }
+
+        $group_instance = GroupMenu::getInstance()->bind($hash);
+        if (!is_null($this->group_name)) $group_instance->group($this->group_name);
+
+        return $group_instance;
+    }
+
+    public function registerSearchEngine($class_name)
+    {
+        Engine::init()->set($class_name);
+    }
+
+    public static function group($group_name, $callback): GroupMenuOrder
+    {
+        self::getInstance()->setGroupName($group_name);
+        $callback();
+        self::getInstance()->setGroupName(null);
+        return GroupMenuOrder::getInstance()->bind($group_name);
+    }
+
+    public static function menu($module_name, $label, $path, $description = null)
+    {
+        return self::getInstance()->registerMenu($module_name, $label, $path, $description = null);
+    }
+
+    public static function hook($hook, $callback)
+    {
+        self::getInstance()->registerHook($hook, $callback);
+    }
+
+    public function setGroupName($group_name)
+    {
+        $this->group_name = $group_name;
     }
 
     public function execute($hook, $params = [])
     {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
-            if (is_callable($hook)) call_user_func_array($hook, $params);
+            list($callback, $handler) = $hook;
+            if (is_callable($callback)) call_user_func_array($callback, array_values($params));
+            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) 
+            {call_user_func_array([$handlerInstance, $callback], array_values($params));}
         }
+    }
+
+    public static function use($handler_class)
+    {
+        self::getInstance()->hook_handler = $handler_class;
+        return self::getInstance();
+    }
+
+    public function for($hooks)
+    {
+        if (empty($this->hook_handler)) return;
+        if (is_callable($hooks)) call_user_func_array($hooks, [$this]);
     }
 
     /**
@@ -231,5 +288,4 @@ class Plugins
         if (is_null($module)) return $this->menus;
         return $this->menus[$module] ?? [];
     }
-
 }

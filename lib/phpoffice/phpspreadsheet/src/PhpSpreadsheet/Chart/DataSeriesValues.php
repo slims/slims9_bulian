@@ -55,7 +55,7 @@ class DataSeriesValues
     /**
      * Data Values.
      *
-     * @var array of mixed
+     * @var mixed[]
      */
     private $dataValues = [];
 
@@ -114,8 +114,6 @@ class DataSeriesValues
      *                                        Normally used for axis point values
      *                                    DataSeriesValues::DATASERIES_TYPE_NUMBER
      *                                        Normally used for chart data values
-     *
-     * @throws Exception
      *
      * @return $this
      */
@@ -247,8 +245,6 @@ class DataSeriesValues
      *
      * @param string $color value for color
      *
-     * @throws \Exception thrown if color is invalid
-     *
      * @return bool true if validation was successful
      */
     private function validateColor($color)
@@ -317,7 +313,7 @@ class DataSeriesValues
     /**
      * Get Series Data Values.
      *
-     * @return array of mixed
+     * @return mixed[]
      */
     public function getDataValues()
     {
@@ -356,7 +352,7 @@ class DataSeriesValues
         return $this;
     }
 
-    public function refresh(Worksheet $worksheet, $flatten = true)
+    public function refresh(Worksheet $worksheet, $flatten = true): void
     {
         if ($this->dataSource !== null) {
             $calcEngine = Calculation::getInstance($worksheet->getParent());

@@ -199,7 +199,7 @@ class simbio_table
      * @param   string  $str_column_attr
      * @return  void
      */
-    public function setCellAttr($int_row = 0, $int_column = null, $str_column_attr)
+    public function setCellAttr($int_row = 0, $int_column = null, $str_column_attr = null)
     {
         if (is_null($int_column)) {
             $this->row_attr[$int_row] = $str_column_attr;

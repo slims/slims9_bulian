@@ -49,6 +49,7 @@ class circulation extends member
     public $holiday_dayname = array('Sun');
     public $holiday_date = array();
     public $loan_have_overdue = false;
+    public $error = '';
 
     /**
      * class constructor
@@ -177,7 +178,7 @@ class circulation extends member
                         WHERE rs.item_code='$str_item_code' ORDER BY reserve_date ASC LIMIT 1");
                     $_resv2_d = $_resv2_q->fetch_assoc();
                     if ($_resv2_d['member_id'] != $_SESSION['memberID']) {
-                        return ITEM_RESERVED;    
+                        return ITEM_RESERVED;
                     }
                 }
             }
@@ -262,7 +263,7 @@ class circulation extends member
             $this->overdue_days = $_fines['days'];
             $overdue_description = str_replace("{item_code}", $_fines['item'], __("Overdue fines for item {item_code}"));
             if (is_numeric($this->overdue_days) AND $this->overdue_days > 0) {
-                $this->obj_db->query("INSERT INTO fines VALUES(NULL, '$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
+                $this->obj_db->query("INSERT INTO fines (fines_date, member_id, debet, credit, description) VALUES('$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
             }
             // add to receipt
             if (isset($_SESSION['receipt_record'])) {
@@ -270,16 +271,20 @@ class circulation extends member
             }
         }
         // update the loan data
-        #$this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
         $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            $_title_q = $this->obj_db->query('SELECT b.title, b.classification, l.* FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
-            $_SESSION['receipt_record']['return'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'returnDate' => $_return_date, 'overdues' => $_fines);
+            $_returns = array();
+            $_returns = $_title_d;
+            $_returns['overdues'] = $_fines;
+            $_returns['itemCode'] = $_title_d['item_code'];
+            $_returns['returnDate'] = $_return_date;
+            $_SESSION['receipt_record']['return'][] = $_returns;
         }
         // check if this item is being reserved by other member
         $_resv_q = $this->obj_db->query("SELECT l.item_code FROM reserve AS rs
@@ -332,11 +337,16 @@ class circulation extends member
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, l.item_code FROM loan AS l
+            $_title_q = $this->obj_db->query('SELECT b.title, b.classification, l.* FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
-            $_SESSION['receipt_record']['extend'][] = array('itemCode' => $_title_d['item_code'], 'title' => $_title_d['title'], 'loanDate' => $_loan_date, 'dueDate' => $_due_date);
+            $_loans = array();
+            $_loans = $_title_d;
+            $_loans['itemCode'] = $_title_d['item_code'];
+            $_loans['loanDate'] = $_loan_date;
+            $_loans['dueDate'] = $_due_date;
+            $_SESSION['receipt_record']['extend'][] = $_loans;
         }
         return true;
     }
@@ -359,15 +369,15 @@ class circulation extends member
         if ($_date == $str_return_date) {
             // how many days the overdue
             $_overdue_days = simbio_date::calcDay($str_return_date, $_loan_d[0]);
-            
+
             /* modified by Indra Sutriadi */
-            if ($this->ignore_holidays_fine_calc === true) {
+            if ($this->ignore_holidays_fine_calc === true || $this->ignore_holidays_fine_calc > 0) {
                 // count holiday and subtract it from overdue days
                 $_holiday_count = simbio_date::countHolidayBetween($_loan_d[0], $str_return_date, $this->holiday_dayname, $this->holiday_date);
-                $_overdue_days = $_overdue_days-$_holiday_count;
+                $_overdue_days_ignore_holiday = $_overdue_days-$_holiday_count;
             }
             /* end of modification */
-            
+
             if ($_overdue_days < 1) {
                 return false;
             }
@@ -398,6 +408,10 @@ class circulation extends member
                 return array('days' => 'On Grace Periode', 'value' => 0, 'item' => $_loan_d[2]);
             } else {
                 $_fines_value = $this->fine_each_day*$_overdue_days;
+                if (isset($_overdue_days_ignore_holiday)){
+                    $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;  
+                    $_overdue_days = $_overdue_days_ignore_holiday;
+                }
                 return array('days' => $_overdue_days, 'value' => $_fines_value, 'item' => $_loan_d[2]);
             }
         }
@@ -452,20 +466,36 @@ class circulation extends member
                 $data['input_date'] = date("Y-m-d H:i:s");
                 $data['last_update'] = date("Y-m-d H:i:s");
                 $data['uid'] = $_SESSION['uid'];
-                $sql_op = new simbio_dbop($this->obj_db);
-                if (!$sql_op->insert('loan', $data)) {
-                    $error_num++;
-                } else {
-                    if (isset($_SESSION['receipt_record'])) {
-                        // get title
-                        $_title_q = $this->obj_db->query('SELECT title FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
-                        $_title_d = $_title_q->fetch_row();
-                        $_title = $_title_d[0];
-                        // add to receipt
-                        $_SESSION['receipt_record']['loan'][] = array('itemCode' => $data['item_code'], 'title' => $_title, 'loanDate' => $data['loan_date'], 'dueDate' => $data['due_date']);
+                try {    
+                    $sql_op = new simbio_dbop($this->obj_db);
+                    if ($sql_op->insert('loan', $data)) {
+                        # get last insert id (loan_id)
+                        $loan_id = $this->obj_db->insert_id;
+                        if (isset($_SESSION['receipt_record'])) {
+                            // get title
+                            $_title_q = $this->obj_db->query('SELECT title, classification FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
+                            $_title_d = $_title_q->fetch_row();
+                            $_title = $_title_d[0];
+                            $_classification = $_title_d[1];
+                            // add to receipt
+                            $data_loan = (array)circapi::loan_load_by_id($this->obj_db, $loan_id);
+                            $_loans = array ();
+                            $_loans = $data_loan;
+                            $_loans['itemCode'] = $data['item_code'];
+                            $_loans['title'] = $_title;
+                            $_loans['classification'] = $_classification;
+                            $_loans['loanDate'] = $data['loan_date'];
+                            $_loans['dueDate'] = $data['due_date'];
+                            $_SESSION['receipt_record']['loan'][] = $_loans;
+                        }
+                        // remove any reservation related to this items
+                        @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
+                    } else {
+                        throw new Exception($sql_op->error);
                     }
-                    // remove any reservation related to this items
-                    @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
+                } catch (Exception $e) {
+                    $this->error = $e->getMessage();
+                    $error_num++;
                 }
             }
             // clean all circulation sessions

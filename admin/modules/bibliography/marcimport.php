@@ -388,11 +388,7 @@ if (isset($_POST['doImport'])) {
     	<h2><?php echo __('MARC Import tool'); ?></h2>
 	</div>
 	<div class="infoBox">
-    <?php echo __('Import bibliographic records from MARC file. The file can be native MARC record format file (.mrc) or
-        MARCXML XML file (.xml).
-        You need to have PHP PEAR and PEAR\'s File_MARC package installed in your system.
-        To convert native/legacy MARC file to MARCXML
-        you can use <a class="notAJAX" href="http://www.loc.gov/standards/marcxml/marcxml.zip">MARCXML Toolkit</a>'); ?>
+    <?php echo __('Import bibliographic records from MARC file. The file can be native MARC record format file (.mrc) or MARCXML XML file (.xml). You need to have PHP PEAR and PEAR\'s File_MARC package installed in your system. To convert native/legacy MARC file to MARCXML you can use <a class="notAJAX" href="http://www.loc.gov/standards/marcxml/marcxml.zip">MARCXML Toolkit</a>'); ?>
 	</div>
 </div>
 </div>

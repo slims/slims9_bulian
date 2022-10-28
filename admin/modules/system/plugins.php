@@ -107,9 +107,9 @@ $plugin_actives = $plugins->getActive();
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">Plugin</th>
-        <th scope="col">Description</th>
-        <th scope="col">Enable/Disable</th>
+        <th scope="col"><?= __('Plugin') ?></th>
+        <th scope="col"><?= __('Description')?></th>
+        <th scope="col"><?= __('Enable/Disable') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -124,7 +124,7 @@ $plugin_actives = $plugins->getActive();
 
             // if have migration and version is different
             // disable it.
-            $version = (json_decode($plugin_actives[$hash]->options))->version ?? '';
+            $version = (json_decode($plugin_actives[$hash]->options??''))->version ?? '';
             if ($version !== $plugin->version && $plugin->migration->is_exist) {
                 $enable_disable = __('Disabled');
                 $is_active = '';
@@ -135,13 +135,15 @@ $plugin_actives = $plugins->getActive();
             $is_active = '';
         }
 
+        $label = ['version' => __('Version'), 'by' => __('By'), 'viewDetail' => __('View Detail')];
+        extract($label);
         echo <<<HTML
     <tr>
         <th scope="row">{$n}</th>
         <td width="300px">{$plugin->name}</td>
         <td>
             <div class="mb-2">{$plugin->description}</div>
-            <div>Version <code>{$plugin->version}</code> | By <a target="_blank" href="{$plugin->author_uri}">{$plugin->author}</a> | <a target="_blank" href="{$plugin->uri}">View Detail</a></div>
+            <div>{$version} <code>{$plugin->version}</code> | {$by} <a target="_blank" href="{$plugin->author_uri}">{$plugin->author}</a> | <a target="_blank" href="{$plugin->uri}">{$viewDetail}</a></div>
         </td>
         <td>
             <div class="custom-control custom-switch">

@@ -35,7 +35,7 @@
  * @version   CVS: $Id: Record.php 308146 2011-02-08 20:36:20Z dbs $
  * @link      http://pear.php.net/package/File_MARC
  */
-require_once 'File/MARC/Lint/CodeData.php';
+require_once MDLBS . 'bibliography/File/MARC/Lint/CodeData.php';
 require_once 'Validate/ISPN.php';
 
 // {{{ class File_MARC_Lint

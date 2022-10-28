@@ -156,6 +156,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         }
 
+        // Register advance custom field data
+        \SLiMS\Plugins::getInstance()->execute('advance_custom_field_data', ['custom_data' => &$custom_data]);
+
         $data['title'] = $dbs->escape_string($title);
         /* modified by hendro */
         $data['sor'] = trim($dbs->escape_string(strip_tags($_POST['sor'])));
@@ -226,8 +229,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $image_upload->setAllowableFormat($sysconf['allowed_images']);
             $image_upload->setMaxSize($sysconf['max_image_upload'] * 1024);
             $image_upload->setUploadDir(IMGBS . 'docs');
+
+            $img_title = $data['title'].'_'.date("YmdHis");
+            if(strlen($data['title']) > 70){
+                $img_title = substr($data['title'], 0, 70).'_'.date("YmdHis");
+            }
+
+            $new_filename = strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title));
             // upload the file and change all space characters to underscore
-            $img_upload_status = $image_upload->doUpload('image', preg_replace('@\s+@i', '_', $_FILES['image']['name']));
+            $img_upload_status = $image_upload->doUpload('image', $new_filename);
             if ($img_upload_status == UPLOAD_SUCCESS) {
                 $data['image'] = $dbs->escape_string($image_upload->new_filename);
                 // write log
@@ -235,8 +245,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::jsToastr('Bibliography', __('Image Uploaded Successfully'), 'success');
             } else {
                 // write log
+                $data['image'] = NULL;
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->new_filename . ', with error (' . $image_upload->error . ')');
-                utility::jsToastr('Bibliography', __('Image Uploaded Failed'), 'error');
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.$image_upload->error, 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -261,6 +272,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($sysconf['log']['biblio']) {
                 $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
             }
+
+            // Remove previous popular biblio data from cache if opac use default template
+            if ($sysconf['template']['theme'] == 'default' && $_POST['opacHide'] != $_POST['opacHideOrigin']) {
+                require SB . 'api/v1/helpers/Cache.php';
+                Cache::destroy('biblio_popular');
+            }
+
             /* UPDATE RECORD MODE */
             // remove input date
             unset($data['input_date']);
@@ -315,9 +333,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
                 }
                 // update index
-                // delete from index first
-                $sql_op->delete('search_biblio', "biblio_id=$updateRecordID");
-                $indexer->makeIndex($updateRecordID);
+                $indexer->updateIndex($updateRecordID);
             } else {
                 utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator') . "\n" . $sql_op->error, 'error');
             }
@@ -384,8 +400,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $_SESSION['biblioTopic'] = array();
                 $_SESSION['biblioAttach'] = array();
                 $_SESSION['biblioToBiblio'] = array();
-                // update index
+
+                // make index
                 $indexer->makeIndex($last_biblio_id);
+                $indexer->makeIndexWord($last_biblio_id);
+
                 // auto insert catalog to UCS if enabled
                 if ($sysconf['ucs']['enable'] && $sysconf['ucs']['auto_insert']) {
                     echo '<script type="text/javascript">parent.ucsUpload(\'' . MWB . 'bibliography/ucs_upload.php\', \'itemID[]=' . $last_biblio_id . '\');</script>';
@@ -443,6 +462,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     isset($updateRecordID) ? $updateRecordID : $last_biblio_id, $itemcode, $dbs->escape_string($_POST['recvDate']), intval($_POST['supplierID']), $dbs->escape_string($_POST['ordNo']), $dbs->escape_string($_POST['orDate']), $dbs->escape_string($_POST['itemStatusID']), $dbs->escape_string($_POST['itemSite']), intval($_POST['source']), $dbs->escape_string($_POST['invoice']), intval($_POST['price']), $dbs->escape_string($_POST['priceCurrency']), $dbs->escape_string($_POST['invcDate']), $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
                 @$dbs->query($item_insert_sql);
             }
+
+            // update items data into search_biblio
+            $indexer->updateItems((isset($updateRecordID) ? $updateRecordID : $last_biblio_id));
         }
 
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . MWB . 'bibliography/index.php\', {method: \'post\', addData: \'itemID=' . (isset($updateRecordID) ? $updateRecordID : $last_biblio_id) . '&detail=true\'});</script>';
@@ -458,6 +480,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
         exit();
     }
+
+    $indexer = new biblio_indexer($dbs);
+
     /* DATA DELETION PROCESS */
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
@@ -485,7 +510,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
             }
 
-
+            \SLiMS\Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
             } else {
@@ -500,7 +525,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $sql_op->delete('biblio_author', "biblio_id=$itemID");
                 $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
                 $sql_op->delete('biblio_relation', "biblio_id=$itemID");
-                $sql_op->delete('search_biblio', "biblio_id=$itemID");
+
+                # delete from index
+                $indexer->deleteIndex($itemID);
 
                 // delete serial data
                 // check kardex if exist
@@ -772,7 +799,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
     $str_input = '<div class="form-inline">';
     $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"') . '&nbsp;';
-    $str_input .= '<input type="text" class="form-control col-4" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
+    $str_input .= '<input type="text" class="form-control col-4 noAutoFocus" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
     $str_input .= '<div class="' . $visibility . '">
   <div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">' . __('Options') . '</div>';
     $str_input .= '<a href="' . MWB . 'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="' . __('Add new pattern') . '">' . __('Add New Pattern') . '</a></div></div>';
@@ -1059,10 +1086,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             }
         }
     }
+    
+    // get advance custom field based on plugin
+    $js = '';
+    \SLiMS\Plugins::getInstance()->execute('advance_custom_field_form', ['form' => $form, 'js' => &$js]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
     $hide_options[] = array('1', __('Hide'));
+    $form->addHidden('opacHideOrigin', $rec_d['opac_hide']??0);
     $form->addRadio('opacHide', __('Hide in OPAC'), $hide_options, isset($rec_d['opac_hide']) && $rec_d['opac_hide'] ? '1' : '0');
     // biblio promote to front page
     $promote_options[] = array('0', __('Don\'t Promote'));
@@ -1175,6 +1207,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                         }
                     });
             });
+
+            <?php
+            if (isset($js) && !empty($js))
+            {
+                echo $js;
+            }
+            ?>
         });
     </script>
     <?php

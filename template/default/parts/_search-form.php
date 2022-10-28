@@ -6,7 +6,11 @@
 # @Last modified by:   user
 # @Last modified time: 2018-01-26T16:53:56+07:00
 
+if ($opac->invalid_token) {
+    //die($opac->error('invalid CSRF token'));
+}
 ?>
+
 <div class="search" id="search-wraper" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div class="container">
         <div class="row">
@@ -14,6 +18,8 @@
                 <div class="card border-0 shadow">
                     <div class="card-body">
                         <form class="" action="index.php" method="get" @submit.prevent="searchSubmit">
+                            <input type="hidden" ref="csrf_token" value="<?= $opac->getCsrf() ?>">
+                            <input type="hidden" name="csrf_token" value="<?= $opac->getCsrf() ?>">
                             <input type="hidden" name="search" value="search">
                             <input ref="keywords" value="<?= htmlentities(getQuery('keywords')) ?>" v-model.trim="keywords"
                                    @focus="searchOnFocus" @blur="searchOnBlur" type="text" id="search-input"

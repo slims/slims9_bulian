@@ -98,7 +98,7 @@ $measure['print']['label']['items_per_row']       = __('(default is 3)');
 $measure['print']['label']['items_margin']        = __('(cm)');
 $measure['print']['label']['box_width']           = __('(cm)');
 $measure['print']['label']['box_height']          = __('(cm)');
-$measure['print']['label']['include_header_text'] = ['0' => 'No', '1' => 'Yes'];
+$measure['print']['label']['include_header_text'] = [[0, 'No'], [1, 'Yes']];
 $measure['print']['label']['header_text']         = __('(empty if you want to use Library Name)');
 $measure['print']['label']['fonts']               = __('(name of the font used)');
 $measure['print']['label']['font_size']           = __('(pt)');

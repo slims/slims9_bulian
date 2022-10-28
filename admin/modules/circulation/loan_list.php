@@ -133,7 +133,7 @@ if (isset($_SESSION['memberID'])) {
         $overdue = $circulation->countOverdueValue($loan_list_data['loan_id'], $curr_date);
         if ($overdue) {
             $is_overdue = true;
-            $loan_list_data['title'] .= ' - <strong class="text-danger">'.__('OVERDUED for').' '.$overdue['days'].' '.__('days(s) with fines value').' '.$overdue['value'].'</strong>'; //mfc
+            $loan_list_data['title'] .= ' - <strong class="text-danger">'.__('OVERDUED for').' '.$overdue['days'].' '.__('days(s) with fines value').' '.currency($overdue['value']).'</strong>'; //mfc
             $_total_temp_fines = $_total_temp_fines + $overdue['value']; #newly added
         }
         // row colums array
@@ -177,7 +177,7 @@ if (isset($_SESSION['memberID'])) {
     if ($is_overdue) {
         echo '  <div class="alert alert-danger p-2 rounded-0">
                     <div class="row">
-                        <div class="pt-2 col"><strong>'.__('Total of temporary fines').' is '.$_total_temp_fines.'</strong></div>
+                        <div class="pt-2 col"><strong>'.__('Total of temporary fines').' is '.currency($_total_temp_fines).'</strong></div>
                         <div class="col text-right"><a class="btn btn-danger sendEmail usingAJAX" href="'.MWB.'membership/overdue_mail.php'.'" postdata="memberID='.$memberID.'" loadcontainer="emailStatus">'.__('Send overdues notice e-mail').'</a></div>
                     </div>
                 </div>

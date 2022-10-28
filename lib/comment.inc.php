@@ -34,12 +34,19 @@ function showComment($_detail_id)
 		global $dbs;
         require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 		$_list_comment = '';
+		if (!is_null(config('3rd_party_comment')))
+		{
+			// execute registered hook for 3rd party comment management
+			\SLiMS\Plugins::getInstance()->execute('comment_init', [&$_list_comment]);
+			return $_list_comment;
+		}
 		$_recs_each_page = 3;
 		$_pages_each_set = 10;
 		$_all_recs = 0;
+		$_detail_id = (int)$_detail_id;
 		
 		if (ISSET($_GET['page']) && $_GET['page']>1) {
-			$page = $_GET['page'];
+			$page = (int)$_GET['page'];
 		} else {
 			$page  = 1;
 		}
@@ -60,7 +67,7 @@ function showComment($_detail_id)
 			while ($_data = $commlist->fetch_assoc()) {
 				$_list_comment .= '<div class="comments">';
 				$_list_comment .= '<div class="comment-member">'.$_data['member_name']. __(' at ') . $_data['input_date']. __(' write'). '</div>';
-				$_list_comment .= '<div class="comment-content">'. $_data['comment'] . '</div>';
+				$_list_comment .= '<div class="comment-content mt-2">'. $_data['comment'] . '</div>';
 				$_list_comment .= '</div>';		
 			}
 			$_list_comment .= '<div class="comment-found">'.simbio_paging::paging($_all_recs, $_recs_each_page, $int_pages_each_set = 10, '', '_self').'</div>';
@@ -68,14 +75,20 @@ function showComment($_detail_id)
 
 		if (ISSET($_SESSION['mid'])) {
 		// Comment form
-			$_forms  = '<form method="post" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
-			$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input form-control"'). '<br />';
+			$_forms  = '<form method="post" id="mainForm" action="index.php?p=show_detail&id='.$_detail_id.'" class="comment-form">';
+			//$_forms .=  simbio_form_element::textField('textarea','comment','','placeholder="Add your comment" class="comment-input form-control ckeditor"'). '<br />';
+			$_forms .= '<div id="container0" class="mb-3" data-field="comment"><div id="ckeditor-toolbar0"></div><div id="ckeditor-content0" style="min-height: 150px"></div></div>';
 			$_forms .= '<input type="submit" name="SaveComment" value="Save comment" class="s-btn btn btn-primary">';
 			$_forms .= \Volnix\CSRF\CSRF::getHiddenInputString();
 			$_forms .= '</form>';
-			return $_list_comment.$_forms;
+			// ckeditor for rich feature
+			$js = '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.js"></script>';
+			$js .= '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.tinfo.js"></script>';
+			$js .= "<script>createMultiEditor('1', '#mainForm', ['bold','italic','bulletedList','numberedList'])</script>";
+			// $js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
+
+			return $_list_comment.$_forms.$js;
 		} else  {
 			return $_list_comment;
 		}
-
     }

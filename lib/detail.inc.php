@@ -131,11 +131,18 @@ class detail
           return false;
         }
         foreach ($this->record_detail['attachments'] as $attachment_d) {
-
-            if (!is_null($attachment_d['access_limit']) && !utility::isMemberLogin()) {
+          // Restricted attachment check
+          if (!is_null($attachment_d['access_limit'])) {
+              // need member login access
+              if (!utility::isMemberLogin()) {
                 $_output .= '<li class="attachment-locked" style="list-style-image: url(images/labels/locked.png)"><a class="font-italic" href="index.php?p=member&destination='.urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']).'">'.__('Please login to see this attachment').'</a></li>';
                 continue;
-            }
+              // member type access check 
+              } else if (utility::isMemberLogin() && !in_array($_SESSION['m_member_type_id'], unserialize($attachment_d['access_limit']))) {
+                $_output .= '<li class="attachment-locked cursor-pointer" style="list-style-image: url(images/labels/locked.png)">'. __('You have no authorization to download this file.') . '</li>';
+                continue;
+              }
+          }
 
           if ($attachment_d['mime_type'] == 'application/pdf') {
             $_output .= '<li class="attachment-pdf" style="list-style-image: url(images/labels/ebooks.png)" itemscope itemtype="http://schema.org/MediaObject"><a itemprop="name" property="name" '.(utility::isMobileBrowser() ? 'target="_blank"' : 'class="openPopUp"').' title="'.$attachment_d['file_title'].'" href="./index.php?p=fstream&fid='.$attachment_d['file_id'].'&bid='.$attachment_d['biblio_id'].'" width="780" height="520">'.$attachment_d['file_title'].'</a>';
@@ -245,7 +252,7 @@ HTML;
         } else if ($copy_d['no_loan']) {
             $_output .= '<b style="background-color: #f00; color: white; padding: 3px;">'.__('Available but not for loan').' - '.$copy_d['item_status_name'].'</b>';
         } else {
-            $_output .= '<b style="background-color: #5bc0de; color: white; padding: 3px;">'.__('Available').(trim($copy_d['item_status_name'])?' - '.$copy_d['item_status_name']:'').'</b>';
+            $_output .= '<b style="background-color: #5bc0de; color: white; padding: 3px;">'.__('Available').(trim($copy_d['item_status_name']??'')?' - '.$copy_d['item_status_name']:'').'</b>';
         }
         $loan_stat_q->free_result();
         $_output .= '</td>';
@@ -385,7 +392,7 @@ HTML;
 
         foreach ($this->record_detail as $idx => $data) {
           if ($idx == 'notes') {
-            $data = nl2br($data);
+            $data = nl2br($data??'');
           } else {
             if (is_string($data)) {
               $data = trim(strip_tags($data));
@@ -417,7 +424,7 @@ HTML;
         if (!empty($this->record_detail['image'])) {
           if ($sysconf['tg']['type'] == 'minigalnano') {
             $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($this->record_detail['image']).'&amp;width=200';
-            $this->record_detail['image'] = '<img itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" alt="'.$this->record_detail['title'].'" />';
+            $this->record_detail['image'] = '<img loading="lazy" itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" alt="'.$this->record_detail['title'].'" />';
           }
         } else {
           $this->record_detail['image_src'] = "images/default/image.png";
@@ -536,7 +543,7 @@ HTML;
               */
 
             // $xml->startElement('name'); $xml->writeAttribute('type', $sysconf['authority_type'][$_auth_d['authority_type']]); $xml->writeAttribute('authority', $_auth_d['auth_list']);
-            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']);
+            $xml->startElement('name'); $xml->writeAttribute('type', $_auth_d['authority_type']); $xml->writeAttribute('authority', $_auth_d['auth_list']??'');
             $xml->startElement('namePart'); $this->xmlWrite($xml, $_auth_d['author_name']); $xml->endElement();
             $xml->startElement('role');
                 $xml->startElement('roleTerm'); $xml->writeAttribute('type', 'text');
@@ -631,7 +638,7 @@ HTML;
             $_xml_output .= '<'.$_subject_type.'><![CDATA['.$_topic_d['topic'].']]></'.$_subject_type.'>';
             $_xml_output .= '</subject>'."\n";
             */
-            $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']);
+            $xml->startElement('subject'); $xml->writeAttribute('authority', $_topic_d['auth_list']??'');
             $xml->startElement($_subject_type); $this->xmlWrite($xml, $_topic_d['topic']); $xml->endElement();
             $xml->endElement();
         }
@@ -1042,7 +1049,7 @@ HTML;
         if ($mode == 'CData') {
             $xmlwriter->writeCData($data);
         } else {
-            $xmlwriter->text($data);
+            $xmlwriter->text($data??'');
         }
     }
 }

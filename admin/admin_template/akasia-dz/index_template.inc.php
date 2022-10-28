@@ -48,8 +48,16 @@ include 'function.php';
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
   <meta http-equiv="Expires" content="Sat, 26 Jul 1997 05:00:00 GMT" />
 
-  <link rel="icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="<?php echo SWB; ?>webicon.ico" type="image/x-icon" />
+  <?php
+  $icon = SWB . 'webicon.ico';
+  if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && file_exists(SB . 'images/default/' . $sysconf['webicon']))
+  {
+      $icon = SWB . 'images/default/' . $sysconf['webicon'];
+  }
+  ?>
+
+  <link rel="icon" href="<?= $icon ?>" type="image/x-icon" />
+  <link rel="shortcut icon" href="<?= $icon ?>" type="image/x-icon" />
   <link href="<?php echo SWB; ?>css/bootstrap.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
   <link href="<?php echo SWB; ?>css/core.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
@@ -63,7 +71,7 @@ include 'function.php';
   <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>calendar.js"></script>
-  <script type="text/javascript" src="<?php echo JWB; ?>ckeditor/ckeditor.js"></script>
+  <script type="text/javascript" src="<?php echo JWB; ?>ckeditor5/ckeditor.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>keyboard.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/chosen.jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/ajax-chosen.min.js"></script>
@@ -86,7 +94,15 @@ include 'function.php';
         <div class="s-user">
           <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
-              <img src="<?php echo '../lib/minigalnano/createthumb.php?filename='.IMG.'/persons/'.urlencode(urlencode($_SESSION['upict'])).'&width=200'?>" alt="Photo <?php echo $_SESSION['realname']?>">
+                <?php
+                if (filter_var($_SESSION['upict'], FILTER_VALIDATE_URL)) {
+                    $user_image_url = $_SESSION['upict'];
+                } else {
+                    $user_image = $_SESSION['upict'] && file_exists(IMGBS . 'persons/' . $_SESSION['upict']) ? $_SESSION['upict'] : 'person.png';
+                    $user_image_url = '../lib/minigalnano/createthumb.php?filename=' . IMG . '/persons/' . urlencode(urlencode($user_image)) . '&width=200';
+                }
+                ?>
+                <img src="<?= $user_image_url ?>" alt="Photo <?php echo $_SESSION['realname'] ?>">
             </a>
           </div>
           <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>

@@ -40,6 +40,7 @@ require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
+require SIMBIO . 'simbio_FILE/simbio_file_upload.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 // privileges checking
@@ -50,28 +51,33 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
+// Image upload handler from CKEditor5
+if (!empty($_FILES['upload']) AND $_FILES['upload']['size']) {
+    header('Content-Type: application/json');
+    try {
+        // Check base directory
+        if (!is_writable(IMGBS)) throw new Exception(IMGBS . ' is not writeable!');
+        // Create content directory if not exists
+        if (!is_dir(IMGBS . 'content') && !mkdir(IMGBS . 'content')) throw new Exception('Failed to create ' . IMGBS . 'content');
 
-if(isset($_FILES['upload']['name'])) {
- $file = $_FILES['upload']['tmp_name'];
- $file_name = $_FILES['upload']['name'];
- $file_name_array = explode(".", $file_name);
- $extension = end($file_name_array);
- $new_image_name = rand() . '.' . $extension;
- //chmod('upload', 0777);
- $allowed_extension = array("jpg", "gif", "png", "jpeg");
- if(in_array($extension, $allowed_extension))
- {
-    //check dir
-    if(!is_dir(IMGBS.'content')){
-        mkdir(IMGBS.'content');
+        ob_start();
+        // create upload object
+        $image_upload = new simbio_file_upload();
+        $image_upload->setAllowableFormat($sysconf['allowed_images']);
+        $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
+        $image_upload->setUploadDir(IMGBS.'content');
+        // upload the file and change all space characters to underscore
+        $img_upload_status = $image_upload->doUpload('upload', md5(date('this')));
+        ob_end_clean();
+        if ($img_upload_status == UPLOAD_SUCCESS) {
+            echo json_encode(['uploaded' => true, 'url' => SWB . 'images/content/'.$image_upload->new_filename]);
+        } else {
+            throw new Exception($image_upload->error);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['uploaded' => false, 'error' => ['message' => 'Error : ' . $e->getMessage()]]);
     }
-  move_uploaded_file($file, IMGBS.'content/' . $new_image_name);
-  $function_number = 1;
-  $url = SWB.'images/content/' . $new_image_name;
-  $message = '';
-  echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($function_number, '$url', '$message');</script>";
-  exit();
- }
+    exit;
 }
 
 /* RECORD OPERATION */
@@ -80,7 +86,7 @@ if (isset($_POST['saveData'])) {
     $contentPath = trim(strip_tags($_POST['contentPath']));
     // check form validity
     if (empty($contentTitle) OR empty($contentPath)) {
-        utility::jsAlert(__('Title or Path can\'t be empty!'));
+        utility::jsToastr('Error', __('Title or Path can\'t be empty!'), 'error');
         exit();
     } else {
         $data['content_title'] = $dbs->escape_string(strip_tags(trim($contentTitle)));
@@ -89,6 +95,13 @@ if (isset($_POST['saveData'])) {
         if ($_POST['isNews'] && $_POST['isNews'] == '1') {
             $data['is_news'] = '1';
         }
+        
+        if (!empty($_POST['publishDate']))
+        {
+            $data['publish_date'] = $dbs->escape_string($_POST['publishDate']);
+        }
+
+        $data['is_draft'] = $_POST['isDraft'] == '1' ? '1' : '0';
         $data['content_desc'] = $dbs->escape_string(trim($_POST['contentDesc']));
         $data['input_date'] = date('Y-m-d H:i:s');
         $data['last_update'] = date('Y-m-d H:i:s');
@@ -106,9 +119,9 @@ if (isset($_POST['saveData'])) {
             if ($update) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['content_title'].' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')', 'Content', 'Update');
-                utility::jsAlert(__('Content data updated'));
+                utility::jsToastr('Success', __('Content data updated'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
-            } else { utility::jsAlert(__('Content data FAILED to update!')."\nDEBUG : ".$sql_op->error); }
+            } else { utility::jsToastr('Error', __('Content data FAILED to update!')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -116,9 +129,9 @@ if (isset($_POST['saveData'])) {
             if ($sql_op->insert('content', $data)) {
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new content ('.$data['content_title'].') with contentname ('.$data['contentname'].')');
-                utility::jsAlert(__('Content data saved'), 'Content', 'Add');
+                utility::jsToastr('Success', __('Content data saved'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { utility::jsAlert(__('Content data FAILED to save!')."\n".$sql_op->error); }
+            } else {  utility::jsToastr('Error', __('Content data FAILED to save!')."\n".$sql_op->error, 'error'); }
             exit();
         }
     }
@@ -151,11 +164,11 @@ if (isset($_POST['saveData'])) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::jsAlert(__('All Data Successfully Deleted'));
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        utility::jsToastr('Delete', __('All Data Successfully Deleted'), 'success');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.($_POST['lastQueryStr']??$_SERVER['QUERY_STRING']).'\');</script>';
     } else {
-        utility::jsAlert(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'));
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        utility::jsToastr('Error', __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'errpr');
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.($_POST['lastQueryStr']??$_SERVER['QUERY_STRING']).'\');</script>';
     }
     exit();
 }
@@ -164,21 +177,21 @@ if (isset($_POST['saveData'])) {
 /* search form */
 ?>
 <div class="menuBox">
-<div class="menuBoxInner systemIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Content'); ?></h2>
-  </div>
-	<div class="sub_section">
-	  <div class="btn-group">
-      <a href="<?php echo MWB; ?>system/content.php" class="btn btn-default"><?php echo __('Content List'); ?></a>
-      <a href="<?php echo MWB; ?>system/content.php?action=detail" class="btn btn-default"><?php echo __('Add New Content'); ?></a>
-	  </div>
-    <form name="search" action="<?php echo MWB; ?>system/content.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-    <input type="text" name="keywords" class="form-control col-md-3" />
-    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
-    </form>
-  </div>
-</div>
+    <div class="menuBoxInner systemIcon">
+        <div class="per_title">
+            <h2><?php echo __('Content'); ?></h2>
+        </div>
+        <div class="sub_section">
+            <div class="btn-group">
+                <a href="<?php echo MWB; ?>system/content.php" class="btn btn-default"><?php echo __('Content List'); ?></a>
+                <a href="<?php echo MWB; ?>system/content.php?action=detail" class="btn btn-default"><?php echo __('Add New Content'); ?></a>
+            </div>
+            <form name="search" action="<?php echo MWB; ?>system/content.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+                <input type="text" name="keywords" class="form-control col-md-3" />
+                <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
+            </form>
+        </div>
+    </div>
 </div>
 <?php
 /* main content */
@@ -192,71 +205,107 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_q = $dbs->query('SELECT * FROM content WHERE content_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 
-    // create new instance
-    $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
-    $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="btn btn-default"';
-
-    // form table attributes
-    $form->table_attr = 'id="dataList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell font-weight-bold"';
-    $form->table_content_attr = 'class="alterCell2"';
-
-    // edit mode flag set
-    if ($rec_q->num_rows > 0) {
-        $form->edit_mode = true;
-        // record ID for delete process
-        // form record id
-        $form->record_id = $itemID;
-        // form record title
-        $form->record_title = $rec_d['content_title'];
-        // submit button attribute
-        $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="btn btn-default"';
-    }
-
-    /* Form Element(s) */
-    // content title
-    $form->addTextField('text', 'contentTitle', __('Content Title').'*', $rec_d['content_title']??'', 'class="form-control" style="width: 100%;"');
-    // content news flag
-    $news_chbox[0] = array('0', __('No'));
-    $news_chbox[1] = array('1', __('Yes'));
-    $form->addRadio('isNews', __('This is News'), $news_chbox, $rec_d['is_news']??'1');
-    // content path
-    $form->addTextField('text', 'contentPath', __('Path (Must be unique)').'*', $rec_d['content_path']??'', 'class="form-control" style="width: 50%;"');
-    // content description
-    $form->addTextField('textarea', 'contentDesc', __('Content Description'), htmlentities($rec_d['content_desc']??'', ENT_QUOTES), 'class="texteditor form-control" style="height: 500px;"');
-
-    // edit mode messagge
-    if ($form->edit_mode) {
-        echo '<div class="infoBox">'.__('You are going to update Content data'),' : <b>'.$rec_d['content_title']??''.'</b> <br />'.__('Last Updated').$rec_d['last_update'].'</div>'; //mfc
-    }
-    // print out the form object
-    echo $form->printOut();
     // texteditor instance
     ?>
+    <form class="d-flex px-3" id="contentForm" method="POST" action="<?= $_SERVER['PHP_SELF'] ?>" target="submitExec">
+        <?php
+        if ($rec_q->num_rows > 0)
+        {
+            ?>
+            <input type="hidden" name="updateRecordID" value="<?= $rec_d['content_id']??0 ?>"/>
+            <?php
+        }
+        ?>
+        <div id="editor" class="col-8">
+            <div id="titleContent" class="my-3">
+                <label class="font-weight-bold"><?= __('Content Title') ?>*</label>
+                <input id="setPath" type="text" name="contentTitle" value="<?= $rec_d['content_title']??'' ?>" class="form-control"/>
+            </div>
+            <div id="toolbarContainer"></div>
+            <div id="outerContent" style="background-color: #e1e1e1; padding: 30px">
+                <div id="contentDesc" class="rounded-lg px-5" style="background-color: white; min-height: 800px"><?= str_replace(['<script>','</script>'], '', $rec_d['content_desc']??'')??'' ?></div>
+            </div>
+        </div>
+        <div id="detail" class="col-4">
+            <fieldset>
+                <div class="d-flex justify-content-between">
+                    <label><?= __('Content Settings') ?></label>
+                    <button type="submit" name="saveData" class="btn btn-primary"><?= $rec_q->num_rows == 0 ? __("Save") : __("Update") ?></button>
+                </div>
+                <hr>
+                <label class="m-0 font-weight-bold"><?= __('Publish at') ?></label>
+                <input type="date" name="publishDate" class="form-control" value="<?= $rec_d['publish_date']??''?>"/>
+                <label class="m-0 font-weight-bold"><?= __('This is News') ?>*</label>
+                <?= simbio_form_element::selectList('isNews', [[1, __('Yes')],[0,__('No')]], $rec_d['is_news']??'', 'class="form-control"') . '&nbsp;'; ?>
+                <label class="m-0 font-weight-bold"><?= __('Path (Must be unique)') ?>*</label>
+                <input type="text" name="contentPath" value="<?= $rec_d['content_path']??'' ?>" id="path" class="form-control"/>
+                <small id="warningChar" class="text-danger d-none"><?= __('Max 20 character') ?></small>
+                <label class="m-0 font-weight-bold"><?= __('Draft?') ?>*</label><br>
+                <?= simbio_form_element::selectList('isDraft', [[0, __('No')],[1,__('Yes')]], $rec_d['is_draft']??'', 'class="form-control"') . '&nbsp;'; ?>
+            </fieldset>
+        </div>
+    </form>
+    <iframe name="submitExec" class="d-none"></iframe>
     <script type="text/javascript">
         $(document).ready(
           function() {
-            /*
-            $(\'#contentDesc\').removeAttr(\'disable\');
-            tinymce.init({
-            selector : "textarea#contentDesc",
-            theme : "modern",
-            plugins : "table media searchreplace directionality code",
-            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
-            content_css : "'.(SWB.'admin/'.$sysconf['admin_template']['css']).'",
-            height : 300
+            // automatic set path based on inputed title
+            $('#setPath').on('keyup', function(){
+                let text = $(this).val().replace(/[^a-zA-Z]/g, '-');
+                let path = $('#path');
+
+                if (text.length <= 20)
+                {
+                    path.val(text.toLowerCase());
+                }
             });
-            */
-            CKEDITOR.replace( 'contentDesc', {
-    filebrowserUploadUrl: '<?= $_SERVER['PHP_SELF']?>',
-    
-    filebrowserUploadMethod: "form"
-});
-            $(document).bind('formEnabled', function() {
-                CKEDITOR.instances.contentDesc.setReadOnly(false);
-            });
-          }
-        );
+
+            // manual input for path
+            $('#path').keyup(function(e){
+                // Reset
+                $(this).removeClass('border border-danger');
+                $('#warningChar').removeClass('d-block');
+                $(this).removeAttr('maxlength');
+
+                try {
+                    if ($(this).val().length > 20)
+                    {
+                        throw "Stop";
+                    }
+
+                    let filter = $(this).val().replace(/[^a-zA-Z]/g, '-');
+                    $(this).val(filter.toLowerCase());
+
+                } catch (error) {
+                    $(this).addClass('border border-danger');
+                    $('#warningChar').addClass('d-block');
+                    $(this).attr('maxlength', '20');
+                }
+            })
+
+            let editorInstance = '';
+
+            DecoupledEditor
+                .create(document.querySelector('#contentDesc'),{  
+                    toolbar: {shouldNotGroupWhenFull: true},
+                    ckfinder: {uploadUrl: '<?php echo $_SERVER['PHP_SELF'];?>'}
+
+                })
+                .then( editor => {
+                    const toolbarContainer = document.querySelector('#toolbarContainer');
+                    toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                    editorInstance = editor
+                })
+                .catch( error => {
+                    console.log(error);
+                });
+
+            // when form submited retrive content
+            // and put into hidden textarea
+            $('#contentForm').submit(function(){
+                $(this).append('<textarea name="contentDesc" class="d-none">' + editorInstance.getData() + '</textarea>');
+            })
+        });
         </script>
     <?php
 } else {

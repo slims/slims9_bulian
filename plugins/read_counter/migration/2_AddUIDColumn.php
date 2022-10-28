@@ -20,6 +20,9 @@
  *
  */
 
+use SLiMS\Table\Schema;
+use SLiMS\Table\Blueprint;
+
 class AddUIDColumn extends \SLiMS\Migration\Migration
 {
 
@@ -30,7 +33,9 @@ class AddUIDColumn extends \SLiMS\Migration\Migration
      */
     function up()
     {
-        \SLiMS\DB::getInstance()->query("ALTER TABLE read_counter ADD COLUMN uid int(11) NULL AFTER created_at;");
+        Schema::table('read_counter', function(Blueprint $table){
+            $table->number('uid', 11)->nullable()->after('created_at')->add();
+        });
     }
 
     /**
@@ -40,6 +45,8 @@ class AddUIDColumn extends \SLiMS\Migration\Migration
      */
     function down()
     {
-        \SLiMS\DB::getInstance()->query("ALTER TABLE read_counter DROP COLUMN uid;");
+        Schema::table('read_counter', function(Blueprint $table){
+            $table->drop('uid');
+        });
     }
 }

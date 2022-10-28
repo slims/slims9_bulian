@@ -58,7 +58,7 @@ export default {
                 })
         }
     },
-    template: `<div class="h-screen flex">
+    template: `<div class="min-h-screen flex">
 <div class="w-20 p-4">
     <div><logo></logo></div>
     <slims-text-vertical class="text-lg font-medium text-gray-200 pt-4"></slims-text-vertical>

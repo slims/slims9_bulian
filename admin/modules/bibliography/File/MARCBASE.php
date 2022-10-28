@@ -38,7 +38,7 @@
  * @example   marc_yaz.php Pretty print a MARC record retrieved through the PECL yaz extension
  */
 
-require_once 'File/MARC/Record.php';
+require_once MDLBS . 'bibliography/File/MARC/Record.php';
 
 // {{{ class File_MARCBASE
 /**

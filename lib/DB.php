@@ -37,6 +37,11 @@ class DB
         }
     }
 
+    public static function debug()
+    {
+        self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
     public static function getInstance($driver = 'pdo')
     {
         if ($driver === 'mysqli') {

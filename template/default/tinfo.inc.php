@@ -30,6 +30,7 @@ $sysconf['template']['classic_footer_about_us'] = <<<HTML
 <p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features that will help libraries and librarians to do their job easily 
 and quickly. Follow <a target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some features provided by SLiMS.</p>
 HTML;
+$sysconf['template']['classic_library_disableslide'] = 0;
 
 
 $sysconf['template']['option'][$sysconf['template']['theme']] = [
@@ -51,6 +52,16 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
         'data' => [
             [1, __('Show')],
             [0, __('Hide')]
+        ]
+    ],
+    'disableslide' => [
+        'dbfield' => 'classic_library_disableslide',
+        'label' => __('Disable Slide'),
+        'type' => 'dropdown',
+        'default' => 0,
+        'data' => [
+            [1, __('Yes')],
+            [0, __('No')]
         ]
     ],
     'transition' => [
@@ -167,11 +178,8 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
     'map-desc' => [
         'dbfield' => 'classic_map_desc',
         'label' => __('Map Description'),
-        'type' => 'longtext',
+        'type' => 'ckeditor',
         'default' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc mi. Donec vehicula turpis a quam venenatis posuere. Aliquam nibh lectus, gravida et leo sit amet, dignissim dapibus mauris.<br>Telp. (021) 9172638<br>Fax. (021) 9172638<br>',
-        'width' => '100',
-        'class' => 'ckeditor',
-        'max' => 1000
     ],
     'fb-link' => [
         'dbfield' => 'classic_fb_link',
@@ -208,11 +216,8 @@ $sysconf['template']['option'][$sysconf['template']['theme']] = [
     'footer_about_us' => [
         'dbfield' => 'classic_footer_about_us',
         'label' => __('Footer About Us'),
-        'type' => 'longtext',
+        'type' => 'ckeditor',
         'default' => '<p>As a complete Library Management System, SLiMS (Senayan Library Management System) has many features that will help libraries and librarians to do their job easily and quickly. Follow <a target="_blank" href="https://slims.web.id/web/pages/about/">this link</a> to show some features provided by SLiMS.</p>',
-        'width' => '100',
-        'class' => 'ckeditor',
-        'max' => 1000
     ],
     'visitor_voice' => [
         'dbfield' => 'visitor_log_voice',

@@ -88,6 +88,8 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
         $fdata['file_url'] = $dbs->escape_string($url);
         $fdata['file_dir'] = $dbs->escape_string($file_dir);
         $fdata['file_desc'] = $dbs->escape_string(trim(strip_tags($_POST['fileDesc'])));
+        if(isset($_POST['fileKey']) && trim($_POST['fileKey']) !== '')
+          $fdata['file_key'] = $dbs->escape_string(trim(strip_tags($_POST['fileKey'])));
         $fdata['mime_type'] = $sysconf['mimetype'][$file_ext];
         $fdata['input_date'] = date('Y-m-d H:i:s');
         $fdata['last_update'] = $fdata['input_date'];
@@ -110,6 +112,8 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       $fdata['file_url'] = $dbs->escape_string($fdata['file_name']);
       $fdata['file_dir'] = 'literal{NULL}';
       $fdata['file_desc'] = $dbs->escape_string(trim(strip_tags($_POST['fileDesc'])));
+      if(isset($_POST['fileKey']) && trim($_POST['fileKey']) !== '')
+          $fdata['file_key'] = $dbs->escape_string(trim(strip_tags($_POST['fileKey'])));
       $fdata['mime_type'] = 'text/uri-list';
       $fdata['input_date'] = date('Y-m-d H:i:s');
       $fdata['last_update'] = $fdata['input_date'];
@@ -144,7 +148,10 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       // file biblio access update
       $update1 = $sql_op->update('biblio_attachment', array('access_type' => $data['access_type'], 'access_limit' => $data['access_limit'], 'placement' => $data['placement']), 'biblio_id='.$updateBiblioID.' AND file_id='.$fileID);
       // file description update
-      $update2 = $sql_op->update('files', array('file_title' => $title, 'file_url' => $url, 'file_desc' => $dbs->escape_string(trim($_POST['fileDesc']))), 'file_id='.$fileID);
+      $file_desc_update = array('file_title' => $title, 'file_url' => $url, 'file_desc' => $dbs->escape_string(trim($_POST['fileDesc'])));
+      if(isset($_POST['fileKey']))
+          $file_desc_update['file_key'] = $dbs->escape_string(trim(strip_tags($_POST['fileKey'])));
+      $update2 = $sql_op->update('files', $file_desc_update, 'file_id='.$fileID);
       if ($update1) {
         utility::jsToastr('File Attachment', __('File Attachment data updated!'), 'success');
         echo '<script type="text/javascript">';
@@ -243,6 +250,8 @@ $form->addAnything(__('Placement'), $str_input);
 
 // file description
 $form->addTextField('textarea', 'fileDesc', __('Description'), $file_attach_d['file_desc']??'', 'rows="2" class="form-control"');
+// file key
+$form->addTextField('textarea', 'fileKey', __('File Password'), $file_attach_d['file_key']??'', 'rows="2" class="form-control"');
 // file access
 $acctype_options[] = array('public', __('Public'));
 $acctype_options[] = array('private', __('Private'));
