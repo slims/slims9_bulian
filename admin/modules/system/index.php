@@ -285,7 +285,7 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 
 //logo
 $str_input = '';
-$str_input .= '<strong class="d-block">Utama</strong>';
+$str_input .= '<strong class="d-block">'.__('Main Logo').'</strong>';
 if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
@@ -298,7 +298,7 @@ $str_input .= '</div>';
 $str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
 
 // Web icon
-$str_input .= '<strong class="d-block mt-2">Web Ikon <small>(yang muncul pada tab browser)</small></strong>';
+$str_input .= '<strong class="d-block mt-2">'.__('Favicon').'</strong>';
 if(isset($sysconf['webicon']) && file_exists(IMGBS.'default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['webicon'].'&width=130" class="img-fluid rounded" alt="Image cover">';
@@ -439,7 +439,7 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('enable_counter_by_ip', __('Visitor Counter by IP'), $options, $sysconf['enable_counter_by_ip']?'1':'0','class="form-control col-3"');
-$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"', __('Seperate ip with ;'));
+$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
 
 $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 

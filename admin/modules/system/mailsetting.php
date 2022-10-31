@@ -184,12 +184,11 @@ if (!isset($_GET['section'])):
   {
     $BtnLabel = __('Do Test');
     $Url = $_SERVER['PHP_SELF'] . '?section=test';
-    $html = <<<HTML
-      <button data-href="{$Url}" class="testMail btn btn-primary">  
+    $html = '
+      <button data-href="'.$Url.'" class="testMail btn btn-primary">  
         <i class="fa fa-gears"></i>
-        {$BtnLabel}
-      </button>
-    HTML;
+        '.$BtnLabel.'
+      </button>';
     $form->addAnything('Test Mail Configuration', $html);
   }
 

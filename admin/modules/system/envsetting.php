@@ -121,9 +121,7 @@ $form->table_content_attr = 'class="alterCell2"';
 if ($BasedIp)
 {
     $thisEnv = ucfirst((!in_array(getCurrentIp(), $RangeIp) ? $Environment : $ConditionEnvironment));
-    $HTML = <<<HTML
-        <b>{$thisEnv}</b>
-    HTML;
+    $HTML = '<b>{$thisEnv}</b>';
     $form->addAnything('Your Environment Mode', $HTML);
 
     $Environment = $ConditionEnvironment;
@@ -134,12 +132,13 @@ $EnvOptions = [
     [1, __('Production')],
     [0, __('Development')]
   ];
-$form->addSelectList('env', __('System Environment Mode'), $EnvOptions, ( $Environment == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
+$label = __('System Environment Mode');
+$form->addSelectList('env', $label, $EnvOptions, ( $Environment == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
 $BasedIpOptions = [
     [0, __('Disable')],
     [1, __('Enable')]
 ];
 $form->addSelectList('basedIp', __('Environment for some IP?'), $BasedIpOptions, ( $BasedIp ? 1 : 0 ) ,'class="form-control col-3"');
-$form->addTextField('textarea', 'rangeIp', __('Range Ip wil be impacted with Environment. Example : 10.120.33.40;20.100.34.10. '), implode(';', $RangeIp), 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control" placeholder="Leave it empty, if you want to set environment to impact for all IP"');
+$form->addTextField('textarea', 'rangeIp', __('Range Ip wil be impacted with Environment. Example : 10.120.33.40;20.100.34.10. '), implode(';', $RangeIp), 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control" placeholder="'.__('Leave it empty, if you want to set environment to impact for all IP').'"');
 // print out the object
 echo $form->printOut();

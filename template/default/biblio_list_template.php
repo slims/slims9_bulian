@@ -101,7 +101,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<div class="card-body">';
         $output .= '<div class="row">';
         $output .= '<div class="col-12 col-md-2">';
-        $output .= '<img src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" />';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" />';
         $output .= '</div>'; // -- close col-2
         $output .= '<div class="col-8">';
         $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.addEllipsis($title, 80).'</a></h5>';
@@ -157,7 +157,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
 </div>
 HTML;
         $output .= '<div class="p-5 flex justify-center items-center bg-grey-light">';
-        $output .= '<img src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'"/>';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'"/>';
         $output .= '</div>';
         $output .= '<div class="card-body p-2">';
         $output .= '<a href="'.$detail_url.'" class="text-sm text-decoration-none grid-item--title m-0">'.$title.'</a>';

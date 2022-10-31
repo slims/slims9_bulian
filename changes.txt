@@ -46,6 +46,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.5.0 (Bulian)
 ========================================================================
+Added : Improved compatibility with PHP8.x
 Added : Popup visitor report by day
 Added : Fines value in overdue list
 Added : Password field for encrypted attachment
@@ -55,11 +56,20 @@ Fixed : Image path for Minigalnano
 Updated : Server for quote in Visitor Counter page
 Fixed : Ignore holiday fines calculation
 Fixed : Unable to download backup file result from user not admin
-Fixed : Holiday setting
+Fixed : Holiday setting when empty
 Fixed : Query when import biblio data header
 Fixed : Unrelated field after import item data from CSV
 Fixed : MARC export search
 Fixed : Prevent hidden biblio to show in home page
+Updated : Improve mail configuration
+Added : Time zone switcher
+Added : Currency switcher
+Added : Default comment management
+Added : Report feature for the Read Counter plugin
+Updated : CKEditor with CKEditor 5
+Added : Use filter in default search engine
+Added : Security updates based on OWASP ZAP
+Added : Disable slide in OPAC
 
 SLiMS 9.4.2 (Bulian)
 ========================================================================

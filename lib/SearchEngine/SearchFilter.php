@@ -101,7 +101,7 @@ trait SearchFilter
 
     public function getYears()
     {
-        $query = DB::getInstance()->query("select min(publish_year), max(publish_year) from biblio where publish_year REGEXP '^-?[0-9]+$'");
+        $query = DB::getInstance()->query("select min(publish_year), max(publish_year) from biblio where length(publish_year) = 4 and substring(publish_year, 1,1) <= 2 and publish_year REGEXP '^-?[0-9]+$'");
         return $query->fetch(\PDO::FETCH_NUM);
     }
 

@@ -71,7 +71,7 @@ include 'function.php';
   <script type="text/javascript" src="<?php echo JWB; ?>gui.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>calendar.js"></script>
-  <script type="text/javascript" src="<?php echo JWB; ?>ckeditor/ckeditor.js"></script>
+  <script type="text/javascript" src="<?php echo JWB; ?>ckeditor5/ckeditor.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>keyboard.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/chosen.jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>chosen/ajax-chosen.min.js"></script>

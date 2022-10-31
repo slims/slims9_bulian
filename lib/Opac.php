@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-09-29 19:30:39
+ * @modify date 2022-10-20 11:28:34
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -261,15 +261,15 @@ class Opac
         $sysconf = $opac->sysconf;
         $dbs = $opac->dbs;
 
-        if (!$this->invalid_token)
-        {
+        // if (!$this->invalid_token)
+        // {
             // load default contents
             include LIB.'contents/default.inc.php';
             
             // Load common SLiMS variable
             require LIB.'contents/common.inc.php';
             $main_content = ob_get_clean();
-        }
+        // }
 
         // parse into template
         require $opac->sysconf['template']['dir'].'/'.$opac->sysconf['template']['theme'].'/index_template.inc.php';

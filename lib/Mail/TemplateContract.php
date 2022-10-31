@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-06 23:55:09
- * @modify date 2022-10-16 16:29:00
+ * @modify date 2022-10-19 00:42:18
  * @license GPLv3
  * @desc [description]
  */
@@ -56,13 +56,13 @@ abstract class TemplateContract
      * @param string $filename
      * @return void
      */
-    public function generateCoverUrl(string $filename)
+    public function generateCoverUrl($filename)
     {
         // in local environment? ok, use dummy image from shutterstock
         if ($this->isLocal()) return 'https://image.shutterstock.com/image-vector/abstract-a4-printable-brochure-book-600w-2105860082.jpg';
-        
+
         // get from SLiMS with https
-        return 'https://' . $_SERVER['SERVER_NAME'] . SWB . 'lib/minigalnano/createthumb.php?filename=images/docs/' . $filename . '&width=60';
+        return 'https://' . $_SERVER['SERVER_NAME'] . SWB . 'lib/minigalnano/createthumb.php?filename=images/' . (empty($filename) ? 'default/image.png' : 'docs/' . $filename) . '&width=60';
     }
 
     /**

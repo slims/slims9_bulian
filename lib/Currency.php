@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-10 23:32:04
- * @modify date 2022-10-16 19:42:18
+ * @modify date 2022-10-23 16:02:21
  * @license GPLv3
  * @desc [description]
  */
@@ -15,7 +15,7 @@ class Currency
     private $input;
     private ?object $formatter = null;
 
-    public function __construct($input = null)
+    public function __construct($input = 0)
     {
         $this->input = $input;
         if ($this->isSupport()) $this->formatter = new \NumberFormatter(config('custom_currency_locale.region', config('default_lang')), \NumberFormatter::CURRENCY);
@@ -56,7 +56,7 @@ class Currency
             }
         }
 
-        return $this->formatter->formatCurrency($this->input, $this->formatter->getTextAttribute(\NumberFormatter::CURRENCY_CODE));
+        return $this->formatter->formatCurrency($this->input??0, $this->formatter->getTextAttribute(\NumberFormatter::CURRENCY_CODE));
     }
 
     /**
@@ -102,6 +102,6 @@ class Currency
      */
     public function __toString()
     {
-        return $this->get();
+        return (string)$this->get();
     }
 }
