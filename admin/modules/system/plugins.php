@@ -30,6 +30,11 @@ if (!$can_read) die('<div class="errorBox">' . __('You don\'t have enough privil
 
 $plugins = Plugins::getInstance();
 
+// get plugins from composer packages
+if(method_exists(\Composer\InstalledVersions::class, 'getInstalledPackagesByType')) 
+    foreach (\Composer\InstalledVersions::getInstalledPackagesByType('slims-plugin') as $package) 
+            $plugins->addLocation(\Composer\InstalledVersions::getInstallPath($package));
+
 $_POST = json_decode(file_get_contents('php://input'), true);
 if (isset($_POST['enable'])) {
     $id = $_POST['id'];
