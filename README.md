@@ -12,7 +12,7 @@ to learn more about GPL.
 
 ### System Requirements
 - PHP version 8.x;
-- Use MariaDB version 10.3 or above;
+- MySQL version 5.7 and or MariaDB version 10.3;
 - PHP GD enabled
 - PHP gettext enabled
 - PHP mbstring enabled
