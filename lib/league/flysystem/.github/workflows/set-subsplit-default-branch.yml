@@ -1,0 +1,30 @@
+---
+name: Update default sub-split branch
+
+on: workflow_dispatch
+
+jobs:
+  set-default-branch:
+    name: Set default git branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          persist-credentials: 'false'
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          script: |
+            const fs = require('fs');
+            let splits = JSON.parse(fs.readFileSync('config.subsplit-publish.json'))['sub-splits'];
+
+            for (let split of splits) {
+              const { groups: { repo } } = /git@github\.com:thephpleague\/(?<repo>.*)\.git/.exec(split.target);
+              console.log(`Found repo ${repo}`);
+              await github.rest.repos.update({
+                owner: 'thephpleague',
+                repo,
+                default_branch: '3.x',
+              });
+            }

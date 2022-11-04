@@ -34,6 +34,9 @@ $namespaces = [
     "ZipStream\\" => "/maennchen/zipstream-php/src/",
     "Carbon\\" => "/nesbot/carbon/src/Carbon/",
     "Minigalnano\\" => "/minigalnano/",
+    "League\\Flysystem\\" => "/league/flysystem/src/",
+    "League\\MimeTypeDetection\\" => "/league/mime-type-detection/src/",
+    "phpseclib3\\" => "/phpseclib/phpseclib/phpseclib/",
 ];
 
 $class_alias = [

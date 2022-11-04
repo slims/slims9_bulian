@@ -18,6 +18,8 @@
  *
  */
 
+use \SLiMS\Filesystems\Storage;
+
 /**
  * Utility function to get author ID
  **/
@@ -107,6 +109,7 @@ function showTitleAuthors($obj_db, $array_data)
   $_image = '';
 
   $img = 'images/default/image.png';
+  $imageDisk = Storage::images();
   // biblio author detail
   if ($sysconf['index']['type'] == 'default') {
       $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image FROM biblio AS b
@@ -124,7 +127,7 @@ function showTitleAuthors($obj_db, $array_data)
           $_labels = $_biblio_d[4];
       }
       $_authors = substr_replace($_authors, '', -3);
-      if($_image!='' AND file_exists('../../../images/docs/'.$_image)){
+      if($_image!='' AND $imageDisk->isExists('docs/'.$_image)){
         $img = 'images/docs/'.urlencode($_image);  
       }
       $_output = '<div class="media">
@@ -140,7 +143,7 @@ function showTitleAuthors($obj_db, $array_data)
 	      $_promoted  = (integer)$_biblio_d[1];
 	    }
 
-      if($array_data[3]!='' AND file_exists('../../../images/docs/'.$array_data[3])){
+      if($array_data[3]!='' AND $imageDisk->isExists('docs/'.$array_data[3])){
         $img = 'images/docs/'.urlencode($array_data[3]);  
       }
       $_output = '<div class="media">

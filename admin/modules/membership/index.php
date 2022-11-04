@@ -19,6 +19,7 @@
  */
 
 /* Membership Management section */
+use SLiMS\Filesystems\Storage;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -76,11 +77,11 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
 
   $query_image = $dbs->query("SELECT member_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
   if (!empty($query_image->num_rows)) {
-    $_delete = $dbs->query(sprintf("UPDATE member SET member_image=NULL WHERE member_id='%s", $member_id));
+    $_delete = $dbs->query(sprintf("UPDATE member SET member_image=NULL WHERE member_id='%s'", $member_id));
     if ($_delete) {
       $postImage = stripslashes($_POST['img']);
       $postImage = str_replace('/', '', $postImage);
-      @unlink(sprintf(IMGBS.'persons/%s', $postImage));
+      @Storage::images()->delete(sprintf('persons/%s', $postImage));
       exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $postImage, __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
     }
   }
@@ -181,17 +182,25 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['is_pending'] = isset($_POST['isPending'])? intval($_POST['isPending']) : '0';
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
+
+        $imageDisk = Storage::images();
         if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
           // create upload object
-          $upload = new simbio_file_upload();
-          $upload->setAllowableFormat($sysconf['allowed_images']);
-          $upload->setMaxSize($sysconf['max_image_upload']*1024); // approx. 100 kb
-          $upload->setUploadDir(IMGBS.'persons');
-          // give new name for upload file
-          $new_filename = 'member_'.$data['member_id'];
-          $upload_status = $upload->doUpload('image', $new_filename);
-          if ($upload_status == UPLOAD_SUCCESS) {
-            $data['member_image'] = $dbs->escape_string($upload->new_filename);
+          $upload = $imageDisk->upload('image', function($image) use($sysconf) {
+
+            // Extension check
+            $image->isExtensionAllowed($sysconf['allowed_images']);
+
+            // File size check
+            $image->isLimitExceeded($sysconf['max_image_upload']*1024);
+
+            // destroy it if failed
+            if (!empty($image->getError())) $image->destroyIfFailed();
+
+          })->as('persons/' . 'member_'.$data['member_id']);
+
+          if ($upload->getUploadStatus()) {
+            $data['member_image'] = $dbs->escape_string($upload->getUploadedFileName());
           }
         } else if (!empty($_POST['base64picstring'])) {
 			    list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -201,10 +210,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
 			    $new_filename = 'member_'.$data['member_id'].'.'.strtolower($filedom);
 
-			    if ($valid AND file_put_contents(IMGBS.'persons/'.$new_filename, $filedata)) {
-				    $data['member_image'] = $dbs->escape_string($new_filename);
-				    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-				    $upload_status = UPLOAD_SUCCESS;
+			    if ($valid) {
+            @$imageDisk->put('persons/'.$new_filename, $filedata);
+
+            if ($imageDisk->isExists('persons/'.$new_filename))
+            {
+              $data['member_image'] = $dbs->escape_string($new_filename);
+              if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+              $upload_status = UPLOAD_SUCCESS;
+            }
 			    }
 		    }
         // password confirmation
@@ -560,10 +574,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input  = '<div class="row">';
     $str_input .= '<div class="col-2">';
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
-    if (isset($rec_d['member_image']) && file_exists(IMGBS.'/persons/'.$rec_d['member_image'])) {
+    if (isset($rec_d['member_image']) && Storage::images()->isExists('persons/'.$rec_d['member_image'])) {
         $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400">';
         // $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
-        $str_input .= '<img src="'.$upper_dir.'../images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
+        $str_input .= '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=148&v='.date('this').'" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
     }else{
@@ -634,8 +648,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // edit mode messagge
     if ($form->edit_mode) {
         if (isset($rec_d['member_image'])) {
-            if (file_exists(IMGBS.'persons/'.$rec_d['member_image'])) {
-                echo '<div id="memberImage"><img src="'.SWB.'images/persons/'.urlencode($rec_d['member_image']).'?'.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
+            if (Storage::images()->isExists('persons/'.$rec_d['member_image'])) {
+                echo '<div id="memberImage"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode($rec_d['member_image']).'&width=120&v='.date('his').'" alt="'.$rec_d['member_name'].'" /></div>';
             }
         }
         echo '<div class="infoBox">
@@ -668,20 +682,22 @@ $(document).ready(function() {
     /* MEMBERSHIP LIST */
     function showMemberImage($obj_db, $array_data){
       global $sysconf;
-      $image = '../images/persons/photo.png';
+      $imageDisk = Storage::images();
+      $image = 'images/persons/photo.png';
       $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$array_data[0].'"');
       if(isset($_q->num_rows)){
         $_d = $_q->fetch_row();
-        if($_d[0] != NULL){      
-          $image = file_exists(IMGBS.'/persons/'.$_d[0])?'../images/persons/'.$_d[0]:'../images/persons/photo.png';
+        if($_d[0] != NULL){     
+          $image = $imageDisk->isExists('persons/'.$_d[0])?'images/persons/'.$_d[0]:'images/persons/photo.png';
         }
         $addr  = $_d[2]!=''?'<i class="fa fa-map-marker" aria-hidden="true"></i></i>&nbsp;'.$_d[2]:'';
         $phone = $_d[3]!=''?'<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;'.$_d[3]:'';
       }
 
+       $imageUrl = SWB . 'lib/minigalnano/createthumb.php?filename=' . $image . '&width=120';
        $_output = '<div class="media"> 
-                    <a href="'.$image.'" class="openPopUp notAJAX" title="'.$_d[1].'" width="300" height="400" >
-                    <img class="mr-3 rounded" src="'.$image.'" alt="cover image" width="60"></a>
+                    <a href="'.$imageUrl.'" class="openPopUp notAJAX" title="'.$_d[1].'" width="300" height="400" >
+                    <img class="mr-3 rounded" src="'.$imageUrl.'" alt="cover image" width="60"></a>
                     <div class="media-body">
                       <div class="title">'.$array_data[2].'</div>
                       <div class="sub">'.$phone.'</div>

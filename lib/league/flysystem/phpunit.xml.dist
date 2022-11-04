@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="phpunit.php">
+    <testsuites>
+        <testsuite name="Flysystem">
+            <directory suffix="Test.php">src/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="FLYSYSTEM_TEST_SFTP" value="yes" />
+    </php>
+    <filter>
+        <whitelist>
+            <directory>src/</directory>
+            <exclude>
+                <directory suffix="Test.php">src/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <groups>
+        <exclude>
+            <group>legacy</group>
+        </exclude>
+    </groups>
+</phpunit>

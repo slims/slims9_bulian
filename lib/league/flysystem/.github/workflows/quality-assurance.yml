@@ -1,0 +1,72 @@
+---
+name: Quality Assurance
+on:
+  push:
+    paths:
+      - src/**/*.php
+      - .github/workflows/quality-assurance.yml
+    branches:
+      - 3.x
+  pull_request:
+    paths:
+      - src/**/*.php
+      - .github/workflows/quality-assurance.yml
+    branches:
+      - 2.x
+      - 3.x
+
+env:
+  FLYSYSTEM_AWS_S3_KEY: '${{ secrets.FLYSYSTEM_AWS_S3_KEY }}'
+  FLYSYSTEM_AWS_S3_SECRET: '${{ secrets.FLYSYSTEM_AWS_S3_SECRET }}'
+  FLYSYSTEM_AWS_S3_BUCKET: '${{ secrets.FLYSYSTEM_AWS_S3_BUCKET }}'
+  FLYSYSTEM_TEST_DANGEROUS_THINGS: "yes"
+  FLYSYSTEM_TEST_SFTP: "yes"
+
+jobs:
+  phpunit:
+    name: PHPUnit tests on ${{ matrix.php }} ${{ matrix.composer-flags }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.0', '8.1' ]
+        composer-flags: [ '' ]
+        experimental: [false]
+        phpstan: [true]
+        phpunit-flags: [ '--coverage-text' ]
+        include:
+          - php: '8.0'
+            composer-flags: '--prefer-lowest'
+            experimental: false
+            phpstan: false
+            phpunit-flags: '--no-coverage'
+          - php: '8.2'
+            composer-flags: '--ignore-platform-reqs'
+            experimental: true
+            phpstan: false
+            phpunit-flags: '--no-coverage'
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker-compose -f docker-compose.yml up -d
+      - name: Start an SSH Agent
+        uses: frankdejonge/use-ssh-agent@1.0.2
+      - run: chmod 0400 ./test_files/sftp/id_*
+      - id: ssh_agent
+        run: ssh-add ./test_files/sftp/id_rsa
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+          tools: composer:v2
+      - run: composer update --no-progress ${{ matrix.composer-flags }}
+      - run: php test_files/wait_for_sftp.php
+      - run: php test_files/wait_for_ftp.php 2121
+      - run: php test_files/wait_for_ftp.php 2122
+      - run: COMPOSER_OPTS='${{ matrix.composer-flags }}' vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+      - run: vendor/bin/phpstan analyse
+        if: ${{ matrix.phpstan }}
+      - run: vendor/bin/php-cs-fixer fix --diff --dry-run
+        continue-on-error: true
+        if: ${{ matrix.php == '8.0' }}
+

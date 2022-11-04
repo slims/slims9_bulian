@@ -19,6 +19,7 @@
  */
 
 use Ramsey\Uuid\Uuid;
+use SLiMS\Filesystems\Storage;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -52,8 +53,9 @@ $file_d = $file_q->fetch_assoc();
 if ($file_q->num_rows > 0) {
   \SLiMS\Plugins::getInstance()->execute('fstream_all_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
   $file_loc_url = SWB . 'index.php?p=fstream&fid=' . $fileID . '&bid=' . $biblioID;
-  $file_loc = REPOBS . ($file_d['file_dir'] ? $file_d['file_dir'] . '/' : '') . $file_d['file_name'];
-  if (file_exists($file_loc)) {
+  $file_loc = ($file_d['file_dir'] ? $file_d['file_dir'] . '/' : '') . $file_d['file_name'];
+  $repository = Storage::repository();
+  if ($repository->isExists($file_loc)) {
     // check access limit
     if ($file_d['access_limit']) {
       if (utility::isMemberLogin()) {
@@ -91,22 +93,20 @@ if ($file_q->num_rows > 0) {
     } else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
       \SLiMS\Plugins::getInstance()->execute('fstream_img_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
 	    utility::dlCount($dbs, $fileID, $memberID, $userID);
-      header('Content-Disposition: inline; filename="' . basename($file_loc) . '"');
-      header('Content-Type: ' . $file_d['mime_type']);
-      echo file_get_contents($file_loc);
-      \SLiMS\Plugins::getInstance()->execute('fstream_img_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-      exit();
+      $repository->streamFile($file_loc, function(){
+        \SLiMS\Plugins::getInstance()->execute('fstream_img_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+      });
+      exit;
     } else {
       if (strpos($file_d['mime_type'], 'video') !== false) {
         require_once LIB . 'VideoStream.php';
-        $stream = new VideoStream($file_loc, $file_d['mime_type']);
+        $stream = new VideoStream($repository, $file_loc, $file_d['mime_type']);
         $stream->start();
       } else {
         \SLiMS\Plugins::getInstance()->execute('fstream_oth_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-        header('Content-Disposition: Attachment; filename="' . basename($file_loc) . '"');
-        header('Content-Type: ' . $file_d['mime_type']);
-        echo file_get_contents($file_loc);
-        \SLiMS\Plugins::getInstance()->execute('fstream_oth_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+        $repository->streamFile($file_loc, function(){
+          \SLiMS\Plugins::getInstance()->execute('fstream_oth_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+        });
       }
       exit();
     }

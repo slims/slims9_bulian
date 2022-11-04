@@ -9,15 +9,18 @@
  * - 2022 modified by Drajat Hasan (drajathasan20@gmail.com)
  */
 use Minigalnano\Thumb;
+use SLiMS\Filesystems\Storage;
 
 define('INDEX_AUTH', '1');
 include __DIR__ . '/../../sysconfig.inc.php';
 
 // Fetch filename based on query request
-$filename = isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png';
+$filenameinput = isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png';
+$filename = trim(substr($filenameinput, strpos($filenameinput, '/', 1)), '/');
+$storage = Storage::{dirname($filenameinput, 2)}();
 
 // thumb instance need parameter 1st as path to image file
-$thumbnail = new Thumb(SB . $filename);
+$thumbnail = new Thumb($storage, $filename);
 
 /** Thumb option **/
 // Turn on image caching

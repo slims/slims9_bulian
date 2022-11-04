@@ -26,6 +26,8 @@
  * and also it's not supported by Adobe anymore. 
  */
 
+use SLiMS\Filesystems\Storage;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -52,9 +54,10 @@ if ($file_q->num_rows < 1) {
 }
 // check if file exists
 $file_d = $file_q->fetch_assoc();
-$file_loc = REPOBS.str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
+$file_loc = str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
 $mime = $file_d['mime_type'];
-if (!file_exists($file_loc)) {
+$repository = Storage::repository();
+if (!$repository->isExists($file_loc)) {
   die();
 }
 // multimedia URL

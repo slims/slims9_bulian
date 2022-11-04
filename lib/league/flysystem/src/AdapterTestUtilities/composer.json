@@ -1,0 +1,26 @@
+{
+    "name": "league/flysystem-adapter-test-utilities",
+    "description": "Flysystem utilities for testing adapters.",
+    "keywords": ["filesystem", "flysystem", "adapter", "test", "utilities"],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "League\\Flysystem\\AdapterTestUtilities\\": ""
+        },
+        "files": [
+            "test-functions.php"
+        ]
+    },
+    "require": {
+        "php": "^8.0.2",
+        "league/flysystem": "^3.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frank de Jonge",
+            "email": "info@frankdejonge.nl"
+        }
+    ]
+}

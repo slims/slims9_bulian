@@ -1,0 +1,10 @@
+/vendor/
+/coverage/
+/.phpunit.result.cache
+/phpunit.xml
+/composer.lock
+/index_*.php
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+/google-cloud-service-account.json
+.idea
