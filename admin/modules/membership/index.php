@@ -76,7 +76,7 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
 
   $query_image = $dbs->query("SELECT member_id FROM member WHERE member_id='{$member_id}' AND member_image='{$image_name}'");
   if (!empty($query_image->num_rows)) {
-    $_delete = $dbs->query(sprintf("UPDATE member SET member_image=NULL WHERE member_id='%s", $member_id));
+    $_delete = $dbs->query(sprintf("UPDATE member SET member_image=NULL WHERE member_id='%s'", $member_id));
     if ($_delete) {
       $postImage = stripslashes($_POST['img']);
       $postImage = str_replace('/', '', $postImage);
