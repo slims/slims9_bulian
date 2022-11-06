@@ -72,6 +72,7 @@
                                 <img src="'.assets('images/empty.svg').'" />
                               </div>
                               <div class="text-center text-danger"><strong>'.__('No Result').'.</strong> '.__('Please try again').'</div>';
+                        if (ENVIRONMENT == 'development' && !empty($engine->getError())) echo '<div class="alert alert-danger mt-2 text-center">' . $engine->getError() . '</div>';
                     } else {
                         echo $main_content;
                     }

@@ -780,7 +780,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   KEY `add_indexes` (`gmd`,`publisher`,`publish_place`,`language`,`classification`,`publish_year`,`call_number`),
   KEY `add_indexes2` (`opac_hide`,`promoted`),
   KEY `rda_indexes` (`carrier_type`,`media_type`,`content_type`),
-  FULLTEXT `title` (`title`),
+  FULLTEXT `title` (`title`,`series_title`),
   FULLTEXT `author` (`author`),
   FULLTEXT `topic` (`topic`),
   FULLTEXT `location` (`location`),

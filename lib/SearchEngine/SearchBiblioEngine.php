@@ -34,17 +34,29 @@ class SearchBiblioEngine extends Contract
         // start time to benchmarking
         $start = microtime(true);
 
-        // build sql command
-        $sql = $this->buildSQL();
+        try {
+            // build sql command
+            $sql = $this->buildSQL();
 
-        // execute query
-        $db = DB::getInstance();
-        $count = $db->query($sql['count']);
-        $query = $db->query($sql['query']);
+            if (ENVIRONMENT == 'development') DB::debug();
 
-        // get results
-        $this->num_rows = ($count->fetch(\PDO::FETCH_NUM))[0] ?? 0;
-        $this->documents = $query->fetchAll(\PDO::FETCH_ASSOC);
+            // Debug prepared query
+            // dump($sql['query'], $this->execute);
+
+            // execute query
+            $db = DB::getInstance();
+            $count = $db->prepare($sql['count']);
+            $count->execute($this->execute);
+            $query = $db->prepare($sql['query']);
+            $query->execute($this->execute);
+
+            // get results
+            $this->num_rows = ($count->fetch(\PDO::FETCH_NUM))[0] ?? 0;
+            $this->documents = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        } catch (\PDOException | \Exception $e) {
+            $this->error = $e->getMessage();
+        }
 
         // end time
         $end = microtime(true);
@@ -149,67 +161,76 @@ class SearchBiblioEngine extends Contract
             // check fields
             switch ($field) {
                 case 'author':
+                    $this->execute[] = "'$query' in boolean mode";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.author) against ('$query' in boolean mode))";
+                        $sql_criteria .= " not (match (sb.author) against (?))";
                     } else {
-                        $sql_criteria .= " (match (sb.author) against ('$query' in boolean mode))";
+                        $sql_criteria .= " (match (sb.author) against (?))";
                     }
                     break;
 
                 case 'subject':
+                    $this->execute[] = "'$query' in boolean mode";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.topic) against ('$query' in boolean mode))";
+                        $sql_criteria .= " not (match (sb.topic) against (?))";
                     } else {
-                        $sql_criteria .= " (match (sb.topic) against ('$query' in boolean mode))";
+                        $sql_criteria .= " (match (sb.topic) against (?))";
                     }
                     break;
 
                 case 'location':
                     if (!$this->disable_item_data) {
                         $idx = json_decode($query);
-                        $sub_query = "'" . implode("', '", $idx??[]) . "'";
+                        $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
                         if (!is_null($idx)) {
                             $sql_criteria_tmp = [];
-                            $location_q = DB::getInstance()->query("select location_name from mst_location where location_id in (" . $sub_query . ")");
+                            $location_q = DB::getInstance()->prepare("select location_name from mst_location where location_id in (" . $sub_query . ")");
+                            $location_q->execute($idx);
                             while ($location_d = $location_q->fetch()) {
+                                $this->execute[] = "%" . $location_d[0] . "%";
                                 if ($bool == '-') {
-                                    $sql_criteria_tmp[] = " sb.location not like '%" . $location_d[0] . "%'";
+                                    $sql_criteria_tmp[] = " sb.location not like ?";
                                 } else {
-                                    $sql_criteria_tmp[] = " sb.location like '%" . $location_d[0] . "%'";
+                                    $sql_criteria_tmp[] = " sb.location like ?";
                                 }
                             }
                             $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         }
                     } else {
+                        $this->execute[] = $query;
                         if ($bool == '-') {
-                            $sql_criteria .= " sb.node !='$query'";
+                            $sql_criteria .= " sb.node !=?";
                         } else {
-                            $sql_criteria .= " sb.node = '$query'";
+                            $sql_criteria .= " sb.node = ?";
                         }
                     }
                     break;
 
                 case 'colltype':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx??[]);
+                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
 
                     if (!$this->disable_item_data) {
                         if (!is_null($idx)) {
                             $sql_criteria_tmp = [];
-                            $coll_type_q = DB::getInstance()->query("select coll_type_name from mst_coll_type where coll_type_id in (" . $sub_query . ")");
+                            $coll_type_q = DB::getInstance()->prepare("select coll_type_name from mst_coll_type where coll_type_id in (" . $sub_query . ")");
+                            $coll_type_q->execute($idx);
                             while ($coll_type_d = $coll_type_q->fetch()) {
                                 if ($bool == '-') {
-                                    $sql_criteria_tmp[] = " sb.collection_types not like '%" . $coll_type_d[0] . "%'";
+                                    $this->execute[] = "%" . $coll_type_d[0] . "%";
+                                    $sql_criteria_tmp[] = " sb.collection_types not like ?";
                                 } else {
-                                    $sql_criteria_tmp[] = " sb.collection_types like '%" . $coll_type_d[0] . "%'";
+                                    $this->execute[] = "%" . $coll_type_d[0] . "%";
+                                    $sql_criteria_tmp[] = " sb.collection_types like ?";
                                 }
                             }
                             $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         } else {
+                            $this->execute[] = "'$query' in boolean mode";
                             if ($bool == '-') {
-                                $sql_criteria .= " not (match (sb.collection_types) against ('$query' in boolean mode))";
+                                $sql_criteria .= " not (match (sb.collection_types) against (?))";
                             } else {
-                                $sql_criteria .= " match (sb.collection_types) against ('$query' in boolean mode)";
+                                $sql_criteria .= " match (sb.collection_types) against (?)";
                             }
                         }
                     }
@@ -217,97 +238,113 @@ class SearchBiblioEngine extends Contract
 
                 case 'itemcode':
                     if (!$this->disable_item_data) {
+                        $this->execute[] = "'$query' in boolean mode";
                         if ($bool == '-') {
-                            $sql_criteria .= " not (match (sb.items) against ('$query' in boolean mode))";
+                            $sql_criteria .= " not (match (sb.items) against (?))";
                         } else {
-                            $sql_criteria .= " match (sb.items) against ('$query' in boolean mode)";
+                            $sql_criteria .= " match (sb.items) against (?)";
                         }
                     }
                     break;
 
                 case 'callnumber':
+                    $this->execute[] = "'". $query . "'%";
                     if ($bool == '-') {
-                        $sql_criteria .= ' biblio.call_number not LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' biblio.call_number not LIKE ?';
                     } else {
-                        $sql_criteria .= ' sb.call_number LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' sb.call_number LIKE ?';
                     }
                     break;
 
                 case 'itemcallnumber':
                     if (!$this->disable_item_data) {
+                        $this->execute[] = "'". $query . "'%";
                         if ($bool == '-') {
-                            $sql_criteria .= ' item.call_number not LIKE \'' . $query . '%\'';
+                            $sql_criteria .= ' item.call_number not LIKE ?';
                         } else {
-                            $sql_criteria .= ' item.call_number LIKE \'' . $query . '%\'';
+                            $sql_criteria .= ' item.call_number LIKE ?';
                         }
                     }
                     break;
 
                 case 'class':
+                    $this->execute[] = "'". $query . "'%";
                     if ($bool == '-') {
-                        $sql_criteria .= ' sb.classification not LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' sb.classification not LIKE ?';
                     } else {
-                        $sql_criteria .= ' sb.classification LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' sb.classification LIKE ?';
                     }
                     break;
 
                 case 'isbn':
+                    $this->execute[] = "'". $query . "'%";
                     if ($bool == '-') {
-                        $sql_criteria .= ' sb.isbn_issn not LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' sb.isbn_issn not LIKE ?';
                     } else {
-                        $sql_criteria .= ' sb.isbn_issn LIKE \'' . $query . '%\'';
+                        $sql_criteria .= ' sb.isbn_issn LIKE ?';
                     }
                     break;
 
                 case 'publisher':
                     if ($bool == '-') {
-                        $sql_criteria .= " sb.publisher!='$query'";
+                        $this->execute[] = $query;
+                        $sql_criteria .= " sb.publisher!=?";
                     } else {
-                        $sql_criteria .= " sb.publisher LIKE '$query%'";
+                        $this->execute[] = "'$query%'";
+                        $sql_criteria .= " sb.publisher LIKE ?";
                     }
                     break;
 
                 case 'publishyear':
                     if ($bool == '-') {
-                        $sql_criteria .= ' sb.publish_year!=\'' . $query . '\'';
+                        $this->execute[] = $query;
+                        $sql_criteria .= ' sb.publish_year!=?';
                     } else {
-                        $sql_criteria .= ' sb.publish_year LIKE \'' . $query . '\'';
+                        $this->execute[] = "'%" . $query . "%'";
+                        $sql_criteria .= ' sb.publish_year LIKE ?';
                     }
                     break;
 
                 case 'years':
                     list($from, $to) = explode(';', $query);
-                    $sql_criteria .= " (sb.publish_year between " . $from . " and " . $to . ") ";
+                    $this->execute[] = $from;
+                    $this->execute[] = $to;
+                    $sql_criteria .= " (sb.publish_year between ? and ?) ";
                     break;
 
                 case 'gmd':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx??[]);
+                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];
-                        $gmd_q = DB::getInstance()->query("select gmd_name from mst_gmd where gmd_id in (" . $sub_query . ")");
+                        $gmd_q = DB::getInstance()->prepare("select gmd_name from mst_gmd where gmd_id in (" . $sub_query . ")");
+                        $gmd_q->execute($idx);
                         while ($gmd_d = $gmd_q->fetch()) {
                             if ($bool == '-') {
-                                $sql_criteria_tmp[] = " sb.gmd != '" . $gmd_d[0] . "'";
+                                $this->execute[] = $gmd_d[0];
+                                $sql_criteria_tmp[] = " sb.gmd != ?";
                             } else {
-                                $sql_criteria_tmp[] = " sb.gmd = '" . $gmd_d[0] . "'";
+                                $this->execute[] = $gmd_d[0];
+                                $sql_criteria_tmp[] = " sb.gmd = ?";
                             }
                         }
                         $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                     } else {
+                        $this->execute[] = $query;
                         if ($bool == '-') {
-                            $sql_criteria .= " sb.gmd!='$query'";
+                            $sql_criteria .= " sb.gmd!=?";
                         } else {
-                            $sql_criteria .= " sb.gmd='$query'";
+                            $sql_criteria .= " sb.gmd=?";
                         }
                     }
                     break;
 
                 case 'notes':
+                    $this->execute[] = "'" . $query . "' in boolean mode";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.notes) against ('" . $query . "' in boolean mode))";
+                        $sql_criteria .= " not (match (sb.notes) against (?))";
                     } else {
-                        $sql_criteria .= " (match (sb.notes) against ('" . $query . "' in boolean mode))";
+                        $sql_criteria .= " (match (sb.notes) against (?))";
                     }
                     break;
                 case 'opengroup':
@@ -342,7 +379,8 @@ class SearchBiblioEngine extends Contract
                         }
                     }
 
-                    $sub_query_criteria = "'" . implode("', '", $mime_types) . "'";
+                    $this->execute = array_merge($this->execute, $mime_types);
+                    $sub_query_criteria = trim(str_repeat('?,', count($mime_types??1)), ',');
 
                     $sub_query = "select distinct bat.biblio_id from biblio_attachment as bat left join files as f on bat.file_id=f.file_id where f.mime_type in(" . $sub_query_criteria . ")";
                     if ($bool === '-') {
@@ -354,20 +392,23 @@ class SearchBiblioEngine extends Contract
 
                 case 'lang':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
+                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
 
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];
-                        $lang_q = DB::getInstance()->query("select language_name from mst_language where language_id in (" . $sub_query . ")");
+                        $lang_q = DB::getInstance()->prepare("select language_name from mst_language where language_id in (" . $sub_query . ")");
+                        $lang_q->execute($idx);
                         while ($lang_d = $lang_q->fetch()) {
+                            $this->execute[] = $lang_d[0];
                             if ($bool == '-') {
-                                $sql_criteria_tmp[] = "sb.language != '" . $lang_d[0] . "'";
+                                $sql_criteria_tmp[] = "sb.language != ?";
                             } else {
-                                $sql_criteria_tmp[] = "sb.language = '" . $lang_d[0] . "'";
+                                $sql_criteria_tmp[] = "sb.language = ?";
                             }
                         }
                         $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                     } else {
+                        $this->execute[] = $query;
                         if ($bool === '-') {
                             $sql_criteria .= ' sb.language != \'' . $sub_query . '\'';
                         } else {
@@ -381,10 +422,11 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 default:
+                    $this->execute[] = "'$query' in boolean mode";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.title, sb.series_title) against ('$query' in boolean mode))";
+                        $sql_criteria .= " not (match (sb.title, sb.series_title) against (?))";
                     } else {
-                        $sql_criteria .= " (match (sb.title, sb.series_title) against ('$query' in boolean mode))";
+                        $sql_criteria .= " (match (sb.title, sb.series_title) against (?))";
                     }
                     break;
             }
