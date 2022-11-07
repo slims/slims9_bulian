@@ -93,9 +93,11 @@ if (!$reportView) {
         <div class="form-group divRow">
             <div class="divRowLabel"><?php echo __('Fines Date'); ?></div>
             <div class="divRowContent">
-            <?php
-            echo simbio_form_element::dateField('finesDate', date('Y-m-d'),' class="form-control"');
-            ?>
+                <div id="range">
+                    <input type="text" name="finesDateStart">
+                    <span>To</span>
+                    <input type="text" name="finesDateEnd">
+                </div>
             </div>
         </div>
         <div class="form-group form-group divRow">
@@ -109,6 +111,15 @@ if (!$reportView) {
     <input type="hidden" name="reportView" value="true" />
     </form>
     </div>
+    <script>
+        $(document).ready(function(){
+            const elem = document.getElementById('range');
+            const dateRangePicker = new DateRangePicker(elem, {
+                language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+                format: 'yyyy-mm-dd',
+            });
+        })
+    </script>
     <!-- filter end -->
     <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
@@ -143,13 +154,15 @@ if (!$reportView) {
         }
     }
     // fines date
-    if (isset($_GET['finesDate'])) {
-        $date_criteria = ' AND fines_date=\''.$_GET['finesDate'].'\' ';
+    if (isset($_GET['finesDateStart']) && !empty($_GET['finesDateStart']) && isset($_GET['finesDateEnd']) && !empty($_GET['finesDateEnd'])) 
+    {
+        $date_criteria = ' AND (fines_date >=\''.$_GET['finesDateStart'].'\' AND fines_date <=\''.$_GET['finesDateEnd'].'\') ';
         $fines_criteria .= $date_criteria;
     }
-    elseif(!isset($_GET['finesDate'])){
+    else
+    {
         $date_criteria = ' AND fines_date=\''.date('Y-m-d').'\' ';
-        $fines_criteria .= $date_criteria;       
+        $fines_criteria .= $date_criteria;   
     }
 
     if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != '0')) {
@@ -206,7 +219,7 @@ if (!$reportView) {
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
     echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
+    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set??'').'\');'."\n";
     echo '</script>';
 
     $content = ob_get_clean();
