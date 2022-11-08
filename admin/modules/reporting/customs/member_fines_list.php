@@ -157,11 +157,13 @@ if (!$reportView) {
     if (isset($_GET['finesDateStart']) && !empty($_GET['finesDateStart']) && isset($_GET['finesDateEnd']) && !empty($_GET['finesDateEnd'])) 
     {
         $date_criteria = ' AND (fines_date >=\''.$dbs->escape_string($_GET['finesDateStart']).'\' AND fines_date <=\''.$dbs->escape_string($_GET['finesDateEnd']).'\') ';
+        $dateInput = '?finesDateStart='.$_GET['finesDateStart'].'&finesDateEnd='.$_GET['finesDateEnd'];
         $fines_criteria .= $date_criteria;
     }
     else
     {
         $date_criteria = ' AND fines_date=\''.date('Y-m-d').'\' ';
+        $dateInput = '?finesDateStart='.date('Y-m-d');
         $fines_criteria .= $date_criteria;   
     }
 
@@ -181,7 +183,7 @@ if (!$reportView) {
     $reportgrid->table_header_attr = 'class="dataListHeaderPrinted"';
     $reportgrid->column_width = array('1' => '80%');
     $reportgrid->show_spreadsheet_export = true;
-    $reportgrid->spreadsheet_export_btn = '<a href="' . AWB . 'modules/reporting/customs/member_fines_list.csv.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
+    $reportgrid->spreadsheet_export_btn = '<a href="' . AWB . 'modules/reporting/customs/member_fines_list.csv.php'.$dateInput.'" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
 
     // callback function to show fines list
     function showFinesList($obj_db, $array_data)

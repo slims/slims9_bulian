@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-08 15:41:21
- * @modify date 2022-11-08 19:54:46
+ * @modify date 2022-11-08 21:51:20
  * @license GPLv3
  * @desc [description]
  */
@@ -31,11 +31,24 @@ if (!$can_read) {
 header("Content-Type: application/xls"); 
 header('Content-Disposition: attachment; filename="member_fines_list_'.date('YmdHis').'.xls"');
 
+if (isset($_GET['finesDateStart']) && isset($_GET['finesDateEnd']) && !empty($_GET['finesDateStart']) && !empty($_GET['finesDateEnd']))
+{
+    $date_criteria = ' AND (fines_date >= ? AND fines_date <= ?) ';
+    $executeDate = [$_GET['finesDateStart'], $_GET['finesDateEnd']];
+}
+else
+{
+    $date_criteria = ' AND fines_date=?'; 
+    $executeDate = [date('Y-m-d')];
+}
+
+$finesStatement = \SLiMS\DB::getInstance()
+                        ->prepare('SELECT f.debet `' . __('Debet') . '`,f.credit `' . __('Credit') . '`, f.fines_date `' . __('Fines Date') . '`, f.description `' . __('Description') . '` 
+                                    FROM fines AS f WHERE f.member_id= ? ' . $date_criteria);
+
 $columns = '';
 foreach ($_SESSION['csvData']??[] as $memberId => $value) {
-    $finesStatement = \SLiMS\DB::getInstance()
-                        ->prepare('SELECT f.debet `' . __('Debet') . '`,f.credit `' . __('Credit') . '`, f.fines_date `' . __('Fines Date') . '`, f.description `' . __('Description') . '` FROM fines AS f WHERE f.member_id= ? ' . $value['dateCriteria']);
-    $finesStatement->execute([$memberId]);
+    $finesStatement->execute(array_merge([$memberId], $executeDate));
 
     if (empty($columns))
     {
