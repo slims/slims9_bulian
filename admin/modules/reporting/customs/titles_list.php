@@ -103,6 +103,16 @@ if (!$reportView) {
                 ?>
             </div>
             <div class="form-group divRow">
+                <label><?php echo __('Input Date'); ?></label>
+                <div class="divRowContent">
+                    <div id="range">
+                        <input type="text" name="inputDateStart">
+                        <span><?= __('to') ?></span>
+                        <input type="text" name="inputDateEnd">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group divRow">
                 <label><?php echo __('Publish year'); ?></label>
                 <?php echo simbio_form_element::textField('text', 'publishYear', '', 'class="form-control col-4"'); ?>
             </div>
@@ -116,6 +126,15 @@ if (!$reportView) {
         <input type="hidden" name="reportView" value="true" />
     </form>
 </div>
+<script>
+    $(document).ready(function(){
+        const elem = document.getElementById('range');
+        const dateRangePicker = new DateRangePicker(elem, {
+            language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+            format: 'yyyy-mm-dd',
+        });
+    })
+</script>
 <!-- filter end -->
 <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
 <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
@@ -197,6 +216,11 @@ if (!$reportView) {
     if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
         $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
         $criteria .= ' AND bsub.publish_year LIKE \'%'.$publish_year.'%\'';
+    }
+    if (isset($_GET['inputDateStart']) AND !empty($_GET['inputDateStart']) && isset($_GET['inputDateEnd']) AND !empty($_GET['inputDateEnd'])) {
+        $inputDateStart = $dbs->escape_string(trim($_GET['inputDateStart']));
+        $inputDateEnd = $dbs->escape_string(trim($_GET['inputDateEnd']));
+        $criteria .= ' AND (bsub.input_date >= \'' . $inputDateStart . '\' AND bsub.input_date <= \'' . $inputDateEnd . '\')';
     }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
