@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-08 15:41:21
- * @modify date 2022-11-08 16:16:09
+ * @modify date 2022-11-08 19:42:25
  * @license GPLv3
  * @desc [description]
  */
@@ -28,9 +28,30 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="member_fines_list_'.date('YmdHis').'.xlsx"');
 
-foreach ($_SESSION['csvData'] as $memberId => $data) {
+$columns = '';
+foreach ($_SESSION['csvData']??[] as $memberId => $value) {
     $finesStatement = \SLiMS\DB::getInstance()
-                        ->prepare('SELECT f.debet,f.credit, f.description, f.fines_date FROM fines AS f WHERE f.member_id= ? ' . $data['dateCriteria']);
+                        ->prepare('SELECT f.debet `' . __('Debet') . '`,f.credit `' . __('Credit') . '`, f.fines_date `' . __('Fines Date') . '`, f.description `' . __('Description') . '` FROM fines AS f WHERE f.member_id= ? ' . $value['dateCriteria']);
     $finesStatement->execute([$memberId]);
+
+    if (empty($columns))
+    {
+        $columns .= '"' . __('Member Name') . '";"' . __('Member ID') . '";';
+        for ($i = 0; $i < $finesStatement->columnCount(); $i++) {
+            $col = $finesStatement->getColumnMeta($i);
+            $columns .= '"' . $col['name'] . '";';
+        }
+        echo $columns . "\n";
+    }
+
+    $no = 0;
+    while ($data = $finesStatement->fetch(PDO::FETCH_NUM)) {
+        if ($no == 0) echo '"' . $value['data'][0] . '";"'.$memberId.'";';
+        if ($no > 0) echo '"";"";';
+        echo '"' . implode('";"', $data) . '"'  . "\n";
+        $no++;
+    }
 }
