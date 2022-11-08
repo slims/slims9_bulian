@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 10:53+0700\n"
-"PO-Revision-Date: 2022-10-24 10:54+0700\n"
+"POT-Creation-Date: 2022-11-08 22:17+0700\n"
+"PO-Revision-Date: 2022-11-08 22:22+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_ngettext:1,2\n"
 "X-Poedit-Basepath: ../../../../..\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: admin/AJAX_check_id.php:21
@@ -58,8 +58,8 @@ msgstr "OPAC"
 msgid "Logout"
 msgstr "Keluar"
 
-#: admin/admin_template/akasia-dz/index_template.inc.php:120
-#: admin/admin_template/akasia/index_template.inc.php:119
+#: admin/admin_template/akasia-dz/index_template.inc.php:125
+#: admin/admin_template/akasia/index_template.inc.php:124
 #: template/default/parts/_navbar.php:23
 msgid "Help"
 msgstr "Bantuan"
@@ -84,8 +84,8 @@ msgstr "Pembaca Kode batang"
 msgid "Close"
 msgstr "Tutup"
 
-#: admin/admin_template/default/index_template.inc.php:88
-#: admin/admin_template/nightmode/index_template.inc.php:84 admin/chat.php:15
+#: admin/admin_template/default/index_template.inc.php:93
+#: admin/admin_template/nightmode/index_template.inc.php:89 admin/chat.php:15
 #: lib/contents/chat.php:89 sysconfig.inc.php:733
 #: template/akasia-dz/partials/nav.php:10 template/akasia/partials/nav.php:10
 #: template/default/parts/_navbar.php:27 template/default/parts/footer.php:41
@@ -329,7 +329,7 @@ msgstr "Dipinjamkan"
 #: admin/default/home.php:188 admin/modules/bibliography/index.php:832
 #: admin/modules/bibliography/item.php:323
 #: admin/modules/circulation/reserve_list.php:110
-#: admin/modules/reporting/customs/item_titles_list.php:263
+#: admin/modules/reporting/customs/item_titles_list.php:287
 #: lib/detail.inc.php:255
 msgid "Available"
 msgstr "Tersedia"
@@ -371,12 +371,12 @@ msgstr "Total"
 msgid "New"
 msgstr "Baru"
 
-#: admin/default/home.php:236 admin/modules/reporting/customs/staff_act.php:100
+#: admin/default/home.php:236 admin/modules/reporting/customs/staff_act.php:113
 msgid "Extends"
 msgstr "Perpanjang"
 
 #: admin/default/home.php:242 admin/default/home.php:305
-#: admin/modules/reporting/customs/overdued_list.php:209
+#: admin/modules/reporting/customs/overdued_list.php:215
 msgid "Overdue"
 msgstr "Keterlambatan"
 
@@ -560,8 +560,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/system/custom_field.php:173
 #: admin/modules/system/custom_field.php:175
 #: admin/modules/system/module.php:149 admin/modules/system/module.php:151
-#: admin/modules/system/sys_log.php:86 admin/modules/system/sys_log.php:88
-#: admin/modules/system/user_group.php:194
+#: admin/modules/system/plugins.php:119 admin/modules/system/sys_log.php:86
+#: admin/modules/system/sys_log.php:88 admin/modules/system/user_group.php:194
 #: admin/modules/system/user_group.php:196 plugins/label_barcode/index.php:294
 #: plugins/label_barcode/index.php:296
 #: template/akasia-dz/index_template.inc.php:96
@@ -589,13 +589,13 @@ msgstr "Cari"
 #: admin/modules/circulation/member_loan_hist.php:62
 #: admin/modules/circulation/reserve_list.php:96
 #: admin/modules/reporting/customs/item_titles_list.php:75
-#: admin/modules/reporting/customs/item_titles_list.php:161
-#: admin/modules/reporting/customs/item_titles_list.php:288
+#: admin/modules/reporting/customs/item_titles_list.php:180
+#: admin/modules/reporting/customs/item_titles_list.php:312
 #: admin/modules/reporting/customs/item_usage.php:73
 #: admin/modules/reporting/customs/item_usage.php:107
 #: admin/modules/reporting/customs/loan_history.php:91
-#: admin/modules/reporting/customs/loan_history.php:151
-#: admin/modules/reporting/customs/loan_history.php:236
+#: admin/modules/reporting/customs/loan_history.php:161
+#: admin/modules/reporting/customs/loan_history.php:246
 #: admin/modules/reporting/customs/pop_procurement_list.php:118
 #: admin/modules/reporting/customs/pop_procurement_list.php:157
 #: admin/modules/reporting/customs/reserve_list.php:77
@@ -628,21 +628,22 @@ msgstr "Kode Eksemplar"
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/due_date_warning.php:99
 #: admin/modules/reporting/customs/loan_history.php:71
-#: admin/modules/reporting/customs/loan_history.php:148
-#: admin/modules/reporting/customs/loan_history.php:234
+#: admin/modules/reporting/customs/loan_history.php:158
+#: admin/modules/reporting/customs/loan_history.php:244
+#: admin/modules/reporting/customs/member_fines_list.csv.php:55
 #: admin/modules/reporting/customs/member_fines_list.php:72
-#: admin/modules/reporting/customs/member_fines_list.php:123
+#: admin/modules/reporting/customs/member_fines_list.php:134
 #: admin/modules/reporting/customs/member_list.php:84
-#: admin/modules/reporting/customs/member_list.php:132
-#: admin/modules/reporting/customs/member_list.php:175
+#: admin/modules/reporting/customs/member_list.php:146
+#: admin/modules/reporting/customs/member_list.php:189
 #: admin/modules/reporting/customs/member_loan_list.php:71
-#: admin/modules/reporting/customs/member_loan_list.php:122
+#: admin/modules/reporting/customs/member_loan_list.php:131
 #: admin/modules/reporting/customs/overdued_list.php:75
-#: admin/modules/reporting/customs/overdued_list.php:125
+#: admin/modules/reporting/customs/overdued_list.php:131
 #: admin/modules/reporting/customs/reserve_list.php:69
 #: admin/modules/reporting/customs/reserve_list.php:115
-#: admin/modules/reporting/customs/visitor_list.php:125
-#: admin/modules/reporting/customs/visitor_list.php:170
+#: admin/modules/reporting/customs/visitor_list.php:139
+#: admin/modules/reporting/customs/visitor_list.php:184
 #: files/membercard/old/membercard.php:293 lib/contents/member.inc.php:249
 #: lib/contents/member.inc.php:875 template/default/visitor_template.php:64
 msgid "Member ID"
@@ -682,23 +683,23 @@ msgstr "ID Anggota"
 #: admin/modules/master_file/detail_comment.php:98
 #: admin/modules/reporting/customs/class_recap.php:94
 #: admin/modules/reporting/customs/class_recap.php:96
-#: admin/modules/reporting/customs/dl_counter.php:113
-#: admin/modules/reporting/customs/dl_counter.php:200
+#: admin/modules/reporting/customs/dl_counter.php:123
+#: admin/modules/reporting/customs/dl_counter.php:210
 #: admin/modules/reporting/customs/dl_detail.php:120
 #: admin/modules/reporting/customs/dl_detail.php:182
-#: admin/modules/reporting/customs/item_titles_list.php:162
-#: admin/modules/reporting/customs/item_titles_list.php:289
+#: admin/modules/reporting/customs/item_titles_list.php:181
+#: admin/modules/reporting/customs/item_titles_list.php:313
 #: admin/modules/reporting/customs/item_usage.php:108
 #: admin/modules/reporting/customs/loan_history.php:85
-#: admin/modules/reporting/customs/loan_history.php:152
-#: admin/modules/reporting/customs/loan_history.php:237
+#: admin/modules/reporting/customs/loan_history.php:162
+#: admin/modules/reporting/customs/loan_history.php:247
 #: admin/modules/reporting/customs/pop_procurement_list.php:119
 #: admin/modules/reporting/customs/pop_procurement_list.php:159
 #: admin/modules/reporting/customs/procurement_report.php:57
 #: admin/modules/reporting/customs/procurement_report.php:125
 #: admin/modules/reporting/customs/reserve_list.php:113
-#: admin/modules/reporting/customs/titles_list.php:128
-#: admin/modules/reporting/customs/titles_list.php:255
+#: admin/modules/reporting/customs/titles_list.php:147
+#: admin/modules/reporting/customs/titles_list.php:279
 #: admin/modules/serial_control/index.php:67
 #: admin/modules/stock_take/current.php:149
 #: admin/modules/stock_take/finish.php:105
@@ -725,10 +726,10 @@ msgstr "Judul"
 #: admin/modules/circulation/loan_list.php:98
 #: admin/modules/circulation/member_loan_hist.php:64
 #: admin/modules/reporting/customs/due_date_warning.php:158
-#: admin/modules/reporting/customs/loan_history.php:153
-#: admin/modules/reporting/customs/loan_history.php:238
-#: admin/modules/reporting/customs/member_loan_list.php:191
-#: admin/modules/reporting/customs/overdued_list.php:210
+#: admin/modules/reporting/customs/loan_history.php:163
+#: admin/modules/reporting/customs/loan_history.php:248
+#: admin/modules/reporting/customs/member_loan_list.php:200
+#: admin/modules/reporting/customs/overdued_list.php:216
 #: lib/contents/download_current_loan.inc.php:63
 #: lib/contents/download_loan_history.inc.php:63
 #: lib/contents/member.inc.php:366 lib/contents/member.inc.php:412
@@ -740,10 +741,10 @@ msgstr "Tanggal Pinjam"
 #: admin/modules/circulation/loan.php:195
 #: admin/modules/circulation/loan_list.php:98
 #: admin/modules/reporting/customs/due_date_warning.php:158
-#: admin/modules/reporting/customs/loan_history.php:154
-#: admin/modules/reporting/customs/loan_history.php:239
-#: admin/modules/reporting/customs/member_loan_list.php:191
-#: admin/modules/reporting/customs/overdued_list.php:210
+#: admin/modules/reporting/customs/loan_history.php:164
+#: admin/modules/reporting/customs/loan_history.php:249
+#: admin/modules/reporting/customs/member_loan_list.php:200
+#: admin/modules/reporting/customs/overdued_list.php:216
 #: lib/contents/download_current_loan.inc.php:64
 #: lib/contents/member.inc.php:367
 msgid "Due Date"
@@ -903,10 +904,10 @@ msgstr "dalam antrian menunggu untuk dicetak."
 #: admin/modules/bibliography/item.php:451
 #: admin/modules/bibliography/item.php:463
 #: admin/modules/bibliography/pop_p2p.php:63
-#: admin/modules/reporting/customs/item_titles_list.php:165
-#: admin/modules/reporting/customs/item_titles_list.php:292
-#: admin/modules/reporting/customs/titles_list.php:132
-#: admin/modules/reporting/customs/titles_list.php:259
+#: admin/modules/reporting/customs/item_titles_list.php:184
+#: admin/modules/reporting/customs/item_titles_list.php:316
+#: admin/modules/reporting/customs/titles_list.php:151
+#: admin/modules/reporting/customs/titles_list.php:283
 #: admin/modules/stock_take/current.php:150
 #: admin/modules/stock_take/lost_item_list.php:144
 #: plugins/label_barcode/index.php:332 plugins/label_barcode/index.php:340
@@ -956,7 +957,7 @@ msgstr "Tambahkan dalam antrian cetak?"
 #: admin/modules/bibliography/marcexport.php:266
 #: admin/modules/bibliography/printed_card.php:403
 #: admin/modules/master_file/detail_comment.php:117
-#: lib/contents/default.inc.php:124 plugins/label_barcode/index.php:380
+#: lib/contents/default.inc.php:125 plugins/label_barcode/index.php:380
 msgid "Query took"
 msgstr "Permintaan membutuhkan"
 
@@ -967,7 +968,7 @@ msgstr "Permintaan membutuhkan"
 #: admin/modules/bibliography/marcexport.php:266
 #: admin/modules/bibliography/printed_card.php:403
 #: admin/modules/master_file/detail_comment.php:117
-#: lib/contents/default.inc.php:124 plugins/label_barcode/index.php:380
+#: lib/contents/default.inc.php:125 plugins/label_barcode/index.php:380
 msgid "second(s) to complete"
 msgstr "detik untuk selesai"
 
@@ -1265,8 +1266,8 @@ msgid ""
 "id\" target=\"_blank\">Official Website</a>"
 msgstr ""
 "Berkas CSV untuk impor data bibliografi. Lihat panduan tentang urutan ruas "
-"dalam berkas CSV atau kunjungi <a href=\"http://slims.web.id\" "
-"target=\"_blank\">Situs Resmi SLiMS</a>"
+"dalam berkas CSV atau kunjungi <a href=\"http://slims.web.id\" target="
+"\"_blank\">Situs Resmi SLiMS</a>"
 
 #: admin/modules/bibliography/import.php:258
 #: admin/modules/bibliography/item_import.php:217
@@ -1477,8 +1478,8 @@ msgstr "Pengarang"
 #: admin/modules/bibliography/z3950.php:293
 #: admin/modules/bibliography/z3950sru.php:214
 #: admin/modules/bibliography/z3950sru.php:320
-#: admin/modules/reporting/customs/titles_list.php:131
-#: admin/modules/reporting/customs/titles_list.php:259
+#: admin/modules/reporting/customs/titles_list.php:150
+#: admin/modules/reporting/customs/titles_list.php:283
 #: admin/modules/serial_control/index.php:70
 #: template/akasia-dz/custom_frontpage_record.inc.php:7
 #: template/akasia-dz/detail_template.php:87
@@ -1512,8 +1513,8 @@ msgstr "ISBN/ISSN"
 #: admin/modules/master_file/publisher.php:150
 #: admin/modules/master_file/submenu.php:31
 #: admin/modules/reporting/customs/pop_procurement_list.php:160
-#: admin/modules/reporting/customs/titles_list.php:130
-#: admin/modules/reporting/customs/titles_list.php:258
+#: admin/modules/reporting/customs/titles_list.php:149
+#: admin/modules/reporting/customs/titles_list.php:282
 #: template/akasia-dz/detail_template.php:64
 #: template/akasia/detail_template.php:64
 #: template/default/detail_template.php:46
@@ -1545,8 +1546,8 @@ msgstr "Sembunyikan di OPAC"
 #: admin/modules/reporting/customs/loan_by_class.php:105
 #: admin/modules/reporting/customs/loan_by_class.php:268
 #: admin/modules/reporting/customs/loan_by_class.php:271
-#: admin/modules/reporting/customs/loan_history.php:110
-#: admin/modules/reporting/customs/loan_history.php:117
+#: admin/modules/reporting/customs/loan_history.php:111
+#: admin/modules/reporting/customs/loan_history.php:118
 #: admin/modules/reporting/customs/member_list.php:76
 #: admin/modules/reporting/customs/member_list.php:90
 #: admin/modules/reporting/customs/pop_procurement_list.php:59
@@ -1813,7 +1814,7 @@ msgstr "Tambah Pola Baru"
 #: admin/modules/master_file/location.php:149
 #: admin/modules/master_file/submenu.php:35
 #: admin/modules/reporting/customs/item_titles_list.php:118
-#: admin/modules/reporting/customs/loan_history.php:113
+#: admin/modules/reporting/customs/loan_history.php:114
 #: admin/modules/reporting/customs/pop_procurement_list.php:83
 #: admin/modules/reporting/customs/pop_procurement_list.php:167
 #: admin/modules/stock_take/init.php:209
@@ -1857,8 +1858,8 @@ msgstr "Lokasi Rak"
 #: admin/modules/reporting/customs/class_recap.php:72
 #: admin/modules/reporting/customs/class_recap.php:149
 #: admin/modules/reporting/customs/item_titles_list.php:94
-#: admin/modules/reporting/customs/item_titles_list.php:163
-#: admin/modules/reporting/customs/item_titles_list.php:290
+#: admin/modules/reporting/customs/item_titles_list.php:182
+#: admin/modules/reporting/customs/item_titles_list.php:314
 #: admin/modules/reporting/customs/loan_by_class.php:86
 #: admin/modules/reporting/customs/pop_procurement_list.php:69
 #: admin/modules/reporting/customs/pop_procurement_list.php:121
@@ -1889,8 +1890,8 @@ msgstr "Tipe Koleksi"
 #: admin/modules/master_file/item_status.php:184
 #: admin/modules/master_file/submenu.php:38
 #: admin/modules/reporting/customs/item_titles_list.php:106
-#: admin/modules/reporting/customs/item_titles_list.php:164
-#: admin/modules/reporting/customs/item_titles_list.php:291
+#: admin/modules/reporting/customs/item_titles_list.php:183
+#: admin/modules/reporting/customs/item_titles_list.php:315
 msgid "Item Status"
 msgstr "Status Eksemplar"
 
@@ -2045,8 +2046,8 @@ msgstr "Tahun Terbit"
 
 #: admin/modules/bibliography/index.php:947
 #: admin/modules/reporting/customs/pop_procurement_list.php:162
-#: admin/modules/reporting/customs/titles_list.php:129
-#: admin/modules/reporting/customs/titles_list.php:257
+#: admin/modules/reporting/customs/titles_list.php:148
+#: admin/modules/reporting/customs/titles_list.php:281
 msgid "Publishing Place"
 msgstr "Tempat Terbit"
 
@@ -2375,8 +2376,8 @@ msgstr "Tidak Ada"
 #: admin/modules/bibliography/index.php:1276
 #: admin/modules/bibliography/index.php:1282
 #: admin/modules/bibliography/printed_card.php:212
-#: admin/modules/reporting/customs/titles_list.php:128
-#: admin/modules/reporting/customs/titles_list.php:256
+#: admin/modules/reporting/customs/titles_list.php:147
+#: admin/modules/reporting/customs/titles_list.php:280
 msgid "Copies"
 msgstr "Salin"
 
@@ -2560,6 +2561,7 @@ msgstr "Impor data eksemplar dari data CSV"
 #: admin/modules/reporting/customs/item_usage.php:41
 #: admin/modules/reporting/customs/loan_by_class.php:42
 #: admin/modules/reporting/customs/loan_history.php:41
+#: admin/modules/reporting/customs/member_fines_list.csv.php:28
 #: admin/modules/reporting/customs/member_fines_list.php:41
 #: admin/modules/reporting/customs/member_list.php:42
 #: admin/modules/reporting/customs/member_loan_list.php:41
@@ -2671,8 +2673,8 @@ msgid ""
 "Import bibliographic records from MARC file. The file can be native MARC "
 "record format file (.mrc) or MARCXML XML file (.xml). You need to have PHP "
 "PEAR and PEAR's File_MARC package installed in your system. To convert "
-"native/legacy MARC file to MARCXML you can use <a class=\"notAJAX\" "
-"href=\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
+"native/legacy MARC file to MARCXML you can use <a class=\"notAJAX\" href="
+"\"http://www.loc.gov/standards/marcxml/marcxml.zip\">MARCXML Toolkit</a>"
 msgstr ""
 "Mengimpor cantuman bibliografi dari berkas MARC. Berkas tersebut bisa "
 "berbentuk cantuman format MARC asli (.mrc) atau berkas MARCXML XML (.xml). "
@@ -2805,7 +2807,7 @@ msgstr "Berkas Digital"
 
 #: admin/modules/bibliography/p2p.php:369
 #: admin/modules/bibliography/p2p.php:422
-#: admin/modules/reporting/customs/dl_counter.php:185
+#: admin/modules/reporting/customs/dl_counter.php:195
 msgid "Detail"
 msgstr "Detail"
 
@@ -2882,9 +2884,10 @@ msgid "Placement"
 msgstr "Penempatan"
 
 #: admin/modules/bibliography/pop_attach.php:252
-#: admin/modules/reporting/customs/member_fines_list.php:188
+#: admin/modules/reporting/customs/member_fines_list.csv.php:46
+#: admin/modules/reporting/customs/member_fines_list.php:209
 #: admin/modules/reporting/customs/procurement_report.php:125
-#: admin/modules/system/plugins.php:111
+#: admin/modules/system/plugins.php:137
 msgid "Description"
 msgstr "Deskripsi"
 
@@ -2901,8 +2904,8 @@ msgid "Private"
 msgstr "Tertutup"
 
 #: admin/modules/bibliography/pop_attach.php:258
-#: admin/modules/reporting/customs/dl_counter.php:113
-#: admin/modules/reporting/customs/dl_counter.php:200
+#: admin/modules/reporting/customs/dl_counter.php:123
+#: admin/modules/reporting/customs/dl_counter.php:210
 msgid "Access"
 msgstr "Akses"
 
@@ -3528,12 +3531,13 @@ msgstr "Eksemplar {itemCode} berhasi dikembalikan pada&nbsp;{returnDate}"
 #: admin/modules/membership/member_card_generator.php:226
 #: admin/modules/reporting/customs/due_date_warning.php:71
 #: admin/modules/reporting/customs/loan_history.php:71
-#: admin/modules/reporting/customs/loan_history.php:149
-#: admin/modules/reporting/customs/loan_history.php:235
+#: admin/modules/reporting/customs/loan_history.php:159
+#: admin/modules/reporting/customs/loan_history.php:245
+#: admin/modules/reporting/customs/member_fines_list.csv.php:55
 #: admin/modules/reporting/customs/member_fines_list.php:72
 #: admin/modules/reporting/customs/member_list.php:84
-#: admin/modules/reporting/customs/member_list.php:133
-#: admin/modules/reporting/customs/member_list.php:176
+#: admin/modules/reporting/customs/member_list.php:147
+#: admin/modules/reporting/customs/member_list.php:190
 #: admin/modules/reporting/customs/member_loan_list.php:71
 #: admin/modules/reporting/customs/overdued_list.php:75
 #: admin/modules/reporting/customs/reserve_list.php:69
@@ -3640,7 +3644,7 @@ msgstr ""
 "Keanggotaan saat ini ditunda, transaksi peminjaman tidak bisa dilakukan."
 
 #: admin/modules/circulation/circulation_action.php:575
-#: admin/modules/reporting/customs/staff_act.php:98
+#: admin/modules/reporting/customs/staff_act.php:111
 msgid "Loans"
 msgstr "Peminjaman"
 
@@ -3655,7 +3659,7 @@ msgstr "Reservasi"
 
 #: admin/modules/circulation/circulation_action.php:581
 #: admin/modules/circulation/circulation_action.php:583
-#: admin/modules/reporting/customs/overdued_list.php:209
+#: admin/modules/reporting/customs/overdued_list.php:215
 msgid "Fines"
 msgstr "Denda"
 
@@ -3717,8 +3721,9 @@ msgstr "Denda Yang sudah Lunas"
 
 #: admin/modules/circulation/fines_list.php:176
 #: admin/modules/circulation/fines_list.php:214
+#: admin/modules/reporting/customs/member_fines_list.csv.php:46
 #: admin/modules/reporting/customs/member_fines_list.php:94
-#: admin/modules/reporting/customs/member_fines_list.php:188
+#: admin/modules/reporting/customs/member_fines_list.php:209
 msgid "Fines Date"
 msgstr "Tanggal Denda"
 
@@ -3729,13 +3734,14 @@ msgstr "Deskripsi/Nama"
 
 #: admin/modules/circulation/fines_list.php:180
 #: admin/modules/circulation/fines_list.php:215
-#: admin/modules/reporting/customs/member_fines_list.php:188
+#: admin/modules/reporting/customs/member_fines_list.php:209
 msgid "Debit"
 msgstr "Debet"
 
 #: admin/modules/circulation/fines_list.php:182
 #: admin/modules/circulation/fines_list.php:216
-#: admin/modules/reporting/customs/member_fines_list.php:188
+#: admin/modules/reporting/customs/member_fines_list.csv.php:46
+#: admin/modules/reporting/customs/member_fines_list.php:209
 msgid "Credit"
 msgstr "Kredit"
 
@@ -5039,8 +5045,8 @@ msgstr "Kontak"
 #: admin/modules/master_file/supplier.php:238
 #: admin/modules/membership/index.php:510
 #: admin/modules/reporting/customs/due_date_warning.php:152
-#: admin/modules/reporting/customs/member_loan_list.php:185
-#: admin/modules/reporting/customs/overdued_list.php:195
+#: admin/modules/reporting/customs/member_loan_list.php:194
+#: admin/modules/reporting/customs/overdued_list.php:201
 #: files/membercard/classic/membercard.php:286
 #: files/membercard/old/membercard.php:331
 msgid "Phone Number"
@@ -5223,8 +5229,8 @@ msgstr "Set Otomatis"
 
 #: admin/modules/membership/index.php:490
 #: admin/modules/reporting/customs/visitor_list.php:89
-#: admin/modules/reporting/customs/visitor_list.php:128
-#: admin/modules/reporting/customs/visitor_list.php:173
+#: admin/modules/reporting/customs/visitor_list.php:142
+#: admin/modules/reporting/customs/visitor_list.php:187
 #: files/membercard/old/membercard.php:314 lib/contents/member.inc.php:260
 #: template/akasia-dz/visitor_template.php:53
 #: template/akasia/visitor_template.php:53
@@ -5241,15 +5247,15 @@ msgstr "Institusi"
 #: admin/modules/membership/member_type.php:261
 #: admin/modules/reporting/customs/loan_by_class.php:109
 #: admin/modules/reporting/customs/loan_history.php:75
-#: admin/modules/reporting/customs/loan_history.php:150
+#: admin/modules/reporting/customs/loan_history.php:160
 #: admin/modules/reporting/customs/member_fines_list.php:81
 #: admin/modules/reporting/customs/member_list.php:72
-#: admin/modules/reporting/customs/member_list.php:134
-#: admin/modules/reporting/customs/member_list.php:177
+#: admin/modules/reporting/customs/member_list.php:148
+#: admin/modules/reporting/customs/member_list.php:191
 #: admin/modules/reporting/customs/member_loan_list.php:76
 #: admin/modules/reporting/customs/visitor_list.php:72
-#: admin/modules/reporting/customs/visitor_list.php:127
-#: admin/modules/reporting/customs/visitor_list.php:172
+#: admin/modules/reporting/customs/visitor_list.php:141
+#: admin/modules/reporting/customs/visitor_list.php:186
 msgid "Membership Type"
 msgstr "Tipe Keanggotaan"
 
@@ -5302,8 +5308,8 @@ msgstr "Foto"
 #: admin/modules/membership/index.php:705
 #: admin/modules/membership/index.php:712
 #: admin/modules/reporting/customs/due_date_warning.php:152
-#: admin/modules/reporting/customs/member_loan_list.php:185
-#: admin/modules/reporting/customs/overdued_list.php:194
+#: admin/modules/reporting/customs/member_loan_list.php:194
+#: admin/modules/reporting/customs/overdued_list.php:200
 #: files/membercard/old/membercard.php:322
 msgid "E-mail"
 msgstr "Surel"
@@ -5563,22 +5569,22 @@ msgid "Recap By"
 msgstr "Rekap berdasar"
 
 #: admin/modules/reporting/customs/class_recap.php:76
-#: admin/modules/reporting/customs/dl_counter.php:100
+#: admin/modules/reporting/customs/dl_counter.php:101
 #: admin/modules/reporting/customs/dl_detail.php:106
 #: admin/modules/reporting/customs/due_date_warning.php:83
 #: admin/modules/reporting/customs/fines_report.php:103
-#: admin/modules/reporting/customs/item_titles_list.php:140
+#: admin/modules/reporting/customs/item_titles_list.php:150
 #: admin/modules/reporting/customs/item_usage.php:89
 #: admin/modules/reporting/customs/loan_by_class.php:120
-#: admin/modules/reporting/customs/loan_history.php:131
-#: admin/modules/reporting/customs/member_fines_list.php:108
-#: admin/modules/reporting/customs/member_list.php:115
+#: admin/modules/reporting/customs/loan_history.php:132
+#: admin/modules/reporting/customs/member_fines_list.php:110
+#: admin/modules/reporting/customs/member_list.php:120
 #: admin/modules/reporting/customs/member_loan_list.php:107
-#: admin/modules/reporting/customs/overdued_list.php:106
+#: admin/modules/reporting/customs/overdued_list.php:103
 #: admin/modules/reporting/customs/reserve_list.php:94
-#: admin/modules/reporting/customs/staff_act.php:78
-#: admin/modules/reporting/customs/titles_list.php:115
-#: admin/modules/reporting/customs/visitor_list.php:107
+#: admin/modules/reporting/customs/staff_act.php:81
+#: admin/modules/reporting/customs/titles_list.php:125
+#: admin/modules/reporting/customs/visitor_list.php:112
 #: admin/modules/reporting/customs/visitor_report.php:72
 #: admin/modules/reporting/customs/visitor_report_day.php:96
 #: admin/modules/stock_take/lost_item_list.php:122
@@ -5601,6 +5607,7 @@ msgstr "Cetak Halaman ini"
 
 #: admin/modules/reporting/customs/class_recap.php:272
 #: admin/modules/reporting/customs/loan_by_class.php:272
+#: admin/modules/reporting/customs/member_fines_list.php:186
 #: admin/modules/reporting/customs/pop_procurement_list.php:98
 #: admin/modules/reporting/report_dbgrid.inc.php:42
 #: admin/modules/stock_take/st_report_detail.php:96
@@ -5731,81 +5738,94 @@ msgstr "Judul/ISBN"
 
 #: admin/modules/reporting/customs/dl_counter.php:79
 #: admin/modules/reporting/customs/dl_detail.php:85
-#: admin/modules/reporting/customs/item_titles_list.php:130
-#: admin/modules/reporting/customs/titles_list.php:106
+#: admin/modules/reporting/customs/item_titles_list.php:140
+#: admin/modules/reporting/customs/titles_list.php:116
 msgid "Publish year"
 msgstr "Tahun terbit"
 
-#: admin/modules/reporting/customs/dl_counter.php:83
+#: admin/modules/reporting/customs/dl_counter.php:85
 #: admin/modules/reporting/customs/dl_detail.php:89
 msgid "Access Date after"
 msgstr "Tanggal Akses dari"
 
-#: admin/modules/reporting/customs/dl_counter.php:89
+#: admin/modules/reporting/customs/dl_counter.php:86
 #: admin/modules/reporting/customs/dl_detail.php:95
 msgid "Access Date before"
 msgstr "Tanggal Akses hingga"
 
-#: admin/modules/reporting/customs/dl_counter.php:95
+#: admin/modules/reporting/customs/dl_counter.php:90
+#: admin/modules/reporting/customs/item_titles_list.php:134
+#: admin/modules/reporting/customs/loan_history.php:104
+#: admin/modules/reporting/customs/member_fines_list.php:98
+#: admin/modules/reporting/customs/member_list.php:108
+#: admin/modules/reporting/customs/member_loan_list.php:95
+#: admin/modules/reporting/customs/overdued_list.php:90
+#: admin/modules/reporting/customs/staff_act.php:75
+#: admin/modules/reporting/customs/titles_list.php:110
+#: admin/modules/reporting/customs/visitor_list.php:100
+msgid "to"
+msgstr "ke"
+
+#: admin/modules/reporting/customs/dl_counter.php:96
 #: admin/modules/reporting/customs/dl_detail.php:101
 #: admin/modules/reporting/customs/due_date_warning.php:77
-#: admin/modules/reporting/customs/item_titles_list.php:134
-#: admin/modules/reporting/customs/loan_history.php:125
-#: admin/modules/reporting/customs/member_fines_list.php:102
-#: admin/modules/reporting/customs/member_list.php:109
+#: admin/modules/reporting/customs/item_titles_list.php:144
+#: admin/modules/reporting/customs/loan_history.php:126
+#: admin/modules/reporting/customs/member_fines_list.php:104
+#: admin/modules/reporting/customs/member_list.php:114
 #: admin/modules/reporting/customs/member_loan_list.php:101
-#: admin/modules/reporting/customs/overdued_list.php:99
-#: admin/modules/reporting/customs/titles_list.php:110
-#: admin/modules/reporting/customs/visitor_list.php:101
+#: admin/modules/reporting/customs/overdued_list.php:96
+#: admin/modules/reporting/customs/titles_list.php:120
+#: admin/modules/reporting/customs/visitor_list.php:106
 #: plugins/read_counter/report.php:57
 msgid "Record each page"
 msgstr "Cantuman per halaman"
 
-#: admin/modules/reporting/customs/dl_counter.php:96
+#: admin/modules/reporting/customs/dl_counter.php:97
 #: admin/modules/reporting/customs/dl_detail.php:102
 #: admin/modules/reporting/customs/due_date_warning.php:79
-#: admin/modules/reporting/customs/item_titles_list.php:136
-#: admin/modules/reporting/customs/loan_history.php:127
-#: admin/modules/reporting/customs/member_fines_list.php:104
-#: admin/modules/reporting/customs/member_list.php:111
+#: admin/modules/reporting/customs/item_titles_list.php:146
+#: admin/modules/reporting/customs/loan_history.php:128
+#: admin/modules/reporting/customs/member_fines_list.php:106
+#: admin/modules/reporting/customs/member_list.php:116
 #: admin/modules/reporting/customs/member_loan_list.php:103
-#: admin/modules/reporting/customs/overdued_list.php:100
-#: admin/modules/reporting/customs/titles_list.php:111
-#: admin/modules/reporting/customs/visitor_list.php:103
+#: admin/modules/reporting/customs/overdued_list.php:97
+#: admin/modules/reporting/customs/titles_list.php:121
+#: admin/modules/reporting/customs/visitor_list.php:108
 #: plugins/read_counter/report.php:58
 msgid "Set between 20 and 200"
 msgstr "Buat antara 20 dan 200"
 
-#: admin/modules/reporting/customs/dl_counter.php:99
+#: admin/modules/reporting/customs/dl_counter.php:100
 #: admin/modules/reporting/customs/dl_detail.php:105
 #: admin/modules/reporting/customs/due_date_warning.php:82
 #: admin/modules/reporting/customs/fines_report.php:102
-#: admin/modules/reporting/customs/item_titles_list.php:139
+#: admin/modules/reporting/customs/item_titles_list.php:149
 #: admin/modules/reporting/customs/item_usage.php:88
 #: admin/modules/reporting/customs/loan_by_class.php:119
-#: admin/modules/reporting/customs/loan_history.php:130
-#: admin/modules/reporting/customs/member_fines_list.php:107
-#: admin/modules/reporting/customs/member_list.php:114
+#: admin/modules/reporting/customs/loan_history.php:131
+#: admin/modules/reporting/customs/member_fines_list.php:109
+#: admin/modules/reporting/customs/member_list.php:119
 #: admin/modules/reporting/customs/member_loan_list.php:106
-#: admin/modules/reporting/customs/overdued_list.php:105
+#: admin/modules/reporting/customs/overdued_list.php:102
 #: admin/modules/reporting/customs/reserve_list.php:93
-#: admin/modules/reporting/customs/staff_act.php:77
-#: admin/modules/reporting/customs/titles_list.php:114
-#: admin/modules/reporting/customs/visitor_list.php:106
+#: admin/modules/reporting/customs/staff_act.php:80
+#: admin/modules/reporting/customs/titles_list.php:124
+#: admin/modules/reporting/customs/visitor_list.php:111
 #: admin/modules/stock_take/lost_item_list.php:123
 #: plugins/read_counter/report.php:61
 msgid "Show More Filter Options"
 msgstr "Tunjukan Opsi Filter Lebih Banyak"
 
-#: admin/modules/reporting/customs/dl_counter.php:113
-#: admin/modules/reporting/customs/dl_counter.php:200
+#: admin/modules/reporting/customs/dl_counter.php:123
+#: admin/modules/reporting/customs/dl_counter.php:210
 #: admin/modules/reporting/customs/dl_detail.php:120
 #: admin/modules/reporting/customs/dl_detail.php:182
 msgid "File title"
 msgstr "Judul berkas"
 
-#: admin/modules/reporting/customs/dl_counter.php:113
-#: admin/modules/reporting/customs/dl_counter.php:200
+#: admin/modules/reporting/customs/dl_counter.php:123
+#: admin/modules/reporting/customs/dl_counter.php:210
 #: admin/modules/reporting/customs/dl_detail.php:120
 #: admin/modules/reporting/customs/dl_detail.php:182
 #: admin/modules/system/custom_field.php:271
@@ -5954,6 +5974,15 @@ msgstr "Laporan perhitungan denda untuk"
 msgid "Press Ctrl and click to select multiple entries"
 msgstr "Tekan Ctrl dan klik untuk memilih lebih dari satu"
 
+#: admin/modules/reporting/customs/item_titles_list.php:130
+#: admin/modules/reporting/customs/pop_procurement_list.php:122
+#: admin/modules/reporting/customs/pop_procurement_list.php:169
+#: admin/modules/reporting/customs/titles_list.php:106
+#: plugins/read_counter/index.php:96 plugins/read_counter/report.php:75
+#: plugins/read_counter/report.php:122
+msgid "Input Date"
+msgstr "Tanggal Masuk"
+
 #: admin/modules/reporting/customs/loan_by_class.php:70
 msgid "0 Classes"
 msgstr "Klas 0"
@@ -6023,69 +6052,66 @@ msgstr "untuk tahun"
 msgid "Show in chart/plot"
 msgstr "Tunjukkan dalam grafik"
 
-#: admin/modules/reporting/customs/loan_history.php:97
-#: admin/modules/reporting/customs/member_loan_list.php:89
-#: admin/modules/reporting/customs/overdued_list.php:83
+#: admin/modules/reporting/customs/loan_history.php:99
+#: admin/modules/reporting/customs/member_loan_list.php:90
+#: admin/modules/reporting/customs/overdued_list.php:85
 msgid "Loan Date From"
 msgstr "Tanggal Pinjam Sejak"
 
-#: admin/modules/reporting/customs/loan_history.php:103
-#: admin/modules/reporting/customs/member_loan_list.php:95
-#: admin/modules/reporting/customs/overdued_list.php:91
+#: admin/modules/reporting/customs/loan_history.php:100
+#: admin/modules/reporting/customs/member_loan_list.php:91
+#: admin/modules/reporting/customs/overdued_list.php:86
 msgid "Loan Date Until"
 msgstr "Tanggal Pinjam Hingga"
 
-#: admin/modules/reporting/customs/loan_history.php:109
-#: admin/modules/reporting/customs/loan_history.php:154
-#: admin/modules/reporting/customs/loan_history.php:239
+#: admin/modules/reporting/customs/loan_history.php:110
+#: admin/modules/reporting/customs/loan_history.php:164
+#: admin/modules/reporting/customs/loan_history.php:249
 msgid "Loan Status"
 msgstr "Status peminjaman"
 
-#: admin/modules/reporting/customs/loan_history.php:110
-#: admin/modules/reporting/customs/loan_history.php:216
+#: admin/modules/reporting/customs/loan_history.php:111
+#: admin/modules/reporting/customs/loan_history.php:226
 #: admin/modules/stock_take/current.php:153
 msgid "On Loan"
 msgstr "Sedang Dipinjam"
 
-#: admin/modules/reporting/customs/loan_history.php:110
-#: admin/modules/reporting/customs/loan_history.php:218
+#: admin/modules/reporting/customs/loan_history.php:111
+#: admin/modules/reporting/customs/loan_history.php:228
 msgid "Returned"
 msgstr "Telah Kembali"
+
+#: admin/modules/reporting/customs/member_fines_list.csv.php:46
+msgid "Debet"
+msgstr "Debit"
 
 #: admin/modules/reporting/customs/member_fines_list.php:63
 msgid "Fines List by Member"
 msgstr "Daftar Denda Anggota"
 
-#: admin/modules/reporting/customs/member_list.php:101
+#: admin/modules/reporting/customs/member_list.php:103
 msgid "Register Date From"
 msgstr "Tanggal Pendaftaran Sejak"
 
-#: admin/modules/reporting/customs/member_list.php:105
+#: admin/modules/reporting/customs/member_list.php:104
 msgid "Register Date Until"
 msgstr "Tanggal Pendaftaran Hingga"
 
-#: admin/modules/reporting/customs/overdued_list.php:194
+#: admin/modules/reporting/customs/overdued_list.php:200
 msgid "Send Notification e-mail"
 msgstr "Kirim surel Pemberitahuan"
 
-#: admin/modules/reporting/customs/overdued_list.php:208
+#: admin/modules/reporting/customs/overdued_list.php:214
 msgid "Book Price"
 msgstr "Harga Buku"
 
-#: admin/modules/reporting/customs/overdued_list.php:209
+#: admin/modules/reporting/customs/overdued_list.php:215
 msgid "day(s)"
 msgstr "hari"
 
 #: admin/modules/reporting/customs/pop_procurement_list.php:43
 msgid "Procurement List in Year : "
 msgstr "Daftar Perolehan dalam Tahun: "
-
-#: admin/modules/reporting/customs/pop_procurement_list.php:122
-#: admin/modules/reporting/customs/pop_procurement_list.php:169
-#: plugins/read_counter/index.php:96 plugins/read_counter/report.php:75
-#: plugins/read_counter/report.php:122
-msgid "Input Date"
-msgstr "Tanggal Masuk"
 
 #: admin/modules/reporting/customs/pop_procurement_list.php:166
 msgid "Self Location"
@@ -6129,39 +6155,39 @@ msgstr "Tanggal Pesan sejak"
 msgid "Reserve Date Until"
 msgstr "Tanggal Pesan Hingga"
 
-#: admin/modules/reporting/customs/staff_act.php:69
+#: admin/modules/reporting/customs/staff_act.php:70
 msgid "Activity Date From"
 msgstr "Aktifitas Sejak"
 
-#: admin/modules/reporting/customs/staff_act.php:73
+#: admin/modules/reporting/customs/staff_act.php:71
 msgid "Activity Date Until"
 msgstr "Aktifitas Hingga"
 
-#: admin/modules/reporting/customs/staff_act.php:93
+#: admin/modules/reporting/customs/staff_act.php:106
 #: admin/modules/system/app_user.php:335 admin/modules/system/app_user.php:441
 #: admin/modules/system/app_user.php:448 admin/modules/system/app_user.php:449
 msgid "Real Name"
 msgstr "Nama Asli"
 
-#: admin/modules/reporting/customs/staff_act.php:94
+#: admin/modules/reporting/customs/staff_act.php:107
 #: admin/modules/system/app_user.php:329 admin/modules/system/app_user.php:331
 #: admin/modules/system/app_user.php:442
 msgid "Login Username"
 msgstr "Nama masuk Pengguna"
 
-#: admin/modules/reporting/customs/staff_act.php:95
+#: admin/modules/reporting/customs/staff_act.php:108
 msgid "Bibliography Data Entry"
 msgstr "Entri Data Bibliografi"
 
-#: admin/modules/reporting/customs/staff_act.php:96
+#: admin/modules/reporting/customs/staff_act.php:109
 msgid "Item Data Entry"
 msgstr "Entri Data Eksemplar/Kopi"
 
-#: admin/modules/reporting/customs/staff_act.php:97
+#: admin/modules/reporting/customs/staff_act.php:110
 msgid "Member Data Entry"
 msgstr "Entri Data Anggota"
 
-#: admin/modules/reporting/customs/staff_act.php:99
+#: admin/modules/reporting/customs/staff_act.php:112
 msgid "Returns"
 msgstr "Pengembalian"
 
@@ -6178,21 +6204,21 @@ msgid "Visitor ID"
 msgstr "ID Pengunjung"
 
 #: admin/modules/reporting/customs/visitor_list.php:85
-#: admin/modules/reporting/customs/visitor_list.php:126
-#: admin/modules/reporting/customs/visitor_list.php:171
+#: admin/modules/reporting/customs/visitor_list.php:140
+#: admin/modules/reporting/customs/visitor_list.php:185
 msgid "Visitor Name"
 msgstr "Nama Pengunjung"
 
-#: admin/modules/reporting/customs/visitor_list.php:93
+#: admin/modules/reporting/customs/visitor_list.php:95
 msgid "Visit Date From"
 msgstr "Tanggal Kunjungan Dari"
 
-#: admin/modules/reporting/customs/visitor_list.php:97
+#: admin/modules/reporting/customs/visitor_list.php:96
 msgid "Visit Date Until"
 msgstr "Tanggal Kunjungan Hingga"
 
-#: admin/modules/reporting/customs/visitor_list.php:129
-#: admin/modules/reporting/customs/visitor_list.php:174
+#: admin/modules/reporting/customs/visitor_list.php:143
+#: admin/modules/reporting/customs/visitor_list.php:188
 msgid "Visit Date"
 msgstr "Tanggal Kunjungan"
 
@@ -8052,60 +8078,51 @@ msgstr "Ubah"
 msgid "Enable or disable submenu"
 msgstr "Aktifkan atau nonaktifkan submenu"
 
-#: admin/modules/system/plugins.php:38
+#: admin/modules/system/plugins.php:43
 msgid "Plugin not found"
 msgstr "Tidak ditemukan plugin"
 
-#: admin/modules/system/plugins.php:61
+#: admin/modules/system/plugins.php:66
 #, php-format
 msgid "Plugin %s enabled"
 msgstr "Plugin %s aktif"
 
-#: admin/modules/system/plugins.php:74
+#: admin/modules/system/plugins.php:79
 #, php-format
 msgid "Plugin %s disabled"
 msgstr "Plugin %s nonaktif"
 
-#: admin/modules/system/plugins.php:96
+#: admin/modules/system/plugins.php:103
 msgid "Plugin List"
 msgstr "Daftar Plugin"
 
-#: admin/modules/system/plugins.php:110
+#: admin/modules/system/plugins.php:136
 msgid "Plugin"
 msgstr "Plugin"
 
-#: admin/modules/system/plugins.php:112
+#: admin/modules/system/plugins.php:138
 msgid "Enable/Disable"
 msgstr "Aktif/Nonaktif"
 
-#: admin/modules/system/plugins.php:122 admin/modules/system/plugins.php:196
+#: admin/modules/system/plugins.php:151
 msgid "Enabled"
 msgstr "Aktif"
 
-#: admin/modules/system/plugins.php:129 admin/modules/system/plugins.php:134
-#: admin/modules/system/plugins.php:198
+#: admin/modules/system/plugins.php:158 admin/modules/system/plugins.php:163
 msgid "Disabled"
 msgstr "Nonaktif"
 
-#: admin/modules/system/plugins.php:138
+#: admin/modules/system/plugins.php:167
 msgid "Version"
 msgstr "Versi"
 
-#: admin/modules/system/plugins.php:138
+#: admin/modules/system/plugins.php:167
 msgid "By"
 msgstr "Dibuat oleh"
 
-#: admin/modules/system/plugins.php:138
+#: admin/modules/system/plugins.php:167
 msgid "View Detail"
 msgstr "Tampilkan Detail"
-
-#: admin/modules/system/plugins.php:166
-msgid ""
-"Plugin has been disabled.\\nRun Migration too? This may will drop this "
-"plugin's table and the data can not be restored!"
-msgstr ""
-"Plugin telah dimatikan.\\nJalankan Migrasi? Ini akan menghapus pangkalan "
-"data yang digunakan oleh plugin dan data tidak dapat dipulihkan!"
 
 #: admin/modules/system/shortcut.php:60
 msgid "Shortcut Settings"
@@ -8636,7 +8653,7 @@ msgstr "Urutkan dari Atas"
 msgid "Title Descending"
 msgstr "Urutkan dari Bawah"
 
-#: lib/contents/default.inc.php:121
+#: lib/contents/default.inc.php:122
 #: template/default/parts/_result-search.php:40
 msgid "Found <strong>{biblio_list->num_rows}</strong> from your keywords"
 msgstr ""
@@ -10047,6 +10064,13 @@ msgstr "Masuk"
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
 
+#~ msgid ""
+#~ "Plugin has been disabled.\\nRun Migration too? This may will drop this "
+#~ "plugin's table and the data can not be restored!"
+#~ msgstr ""
+#~ "Plugin telah dimatikan.\\nJalankan Migrasi? Ini akan menghapus pangkalan "
+#~ "data yang digunakan oleh plugin dan data tidak dapat dipulihkan!"
+
 #~ msgid "Content Description"
 #~ msgstr "Deskripsi Konten"
 
@@ -10151,9 +10175,6 @@ msgstr "Masukkan kata kunci..."
 #~| msgid "Current Loans"
 #~ msgid "Current Fines"
 #~ msgstr "Pinjaman Saat Ini"
-
-#~ msgid "Debet"
-#~ msgstr "Debit"
 
 #, fuzzy
 #~| msgid "Title can not be empty"

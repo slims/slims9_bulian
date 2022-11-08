@@ -79,20 +79,17 @@ if (!$reportView) {
                                 ?>
                         </div>
                     </div>
-                    <div class="divRow">
-                        <div class="divRowLabel"><?php echo __('Loan Date From'); ?></div>
+                    <div class="form-group divRow">
                         <div class="divRowContent">
-                          <?php
-echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
-    ?>
-                        </div>
-                    </div>
-                    <div class="divRow">
-                        <div class="divRowLabel"><?php echo __('Loan Date Until'); ?></div>
-                        <div class="divRowContent">
-                          <?php
-echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
-    ?>
+                            <div>
+                                <label style="width: 195px;"><?php echo __('Loan Date From'); ?></label>
+                                <label><?php echo __('Loan Date Until'); ?></label>
+                            </div>
+                            <div id="range">
+                                <input type="text" name="startDate" value="2000-01-01">
+                                <span><?= __('to') ?></span>
+                                <input type="text" name="untilDate" value="<?= date('Y-m-d') ?>">
+                            </div>
                         </div>
                     </div>
                     <div class="divRow">
@@ -109,6 +106,15 @@ echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-cont
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            const elem = document.getElementById('range');
+            const dateRangePicker = new DateRangePicker(elem, {
+                language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+                format: 'yyyy-mm-dd',
+            });
+        })
+    </script>
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>"

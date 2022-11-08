@@ -39,17 +39,27 @@ class DefaultEngine extends Contract
         // start time to benchmarking
         $start = microtime(true);
 
-        // build sql command
-        $sql = $this->buildSQL();
+        try {
+            // build sql command
+            $sql = $this->buildSQL();
 
-        // execute query
-        $db = DB::getInstance();
-        $count = $db->query($sql['count']);
-        $query = $db->query($sql['query']);
+            // debug if in development.
+            if (ENVIRONMENT == 'development') DB::debug();
 
-        // get results
-        $this->num_rows = ($count->fetch(\PDO::FETCH_NUM))[0] ?? 0;
-        $this->documents = $query->fetchAll(\PDO::FETCH_ASSOC);
+            // execute query
+            $db = DB::getInstance();
+            // dd($sql['count'],$this->execute);
+            $count = $db->prepare($sql['count']);
+            $count->execute($this->execute);
+            $query = $db->prepare($sql['query']);
+            $query->execute($this->execute);
+
+            // get results
+            $this->num_rows = ($count->fetch(\PDO::FETCH_NUM))[0] ?? 0;
+            $this->documents = $query->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException | \Exception $e) {
+            $this->error = $e->getMessage();
+        }
 
         // end time
         $end = microtime(true);
@@ -139,7 +149,7 @@ class DefaultEngine extends Contract
             // flush title string concatenation
             if ($field !== 'title' && $title_buffer !== '') {
                 $title_buffer = trim($title_buffer);
-                $sql_criteria .= " b.biblio_id in(select distinct biblio_id from biblio where match (title, series_title) against ('" . $title_buffer . "' in boolean mode)) ";
+                $sql_criteria .= " b.biblio_id in(select distinct biblio_id from biblio where match (title, series_title) against (" . $title_buffer . ")) ";
                 // reset title buffer
                 $title_buffer = '';
             }
@@ -153,19 +163,23 @@ class DefaultEngine extends Contract
             switch ($field) {
                 case 'title':
                     if (strlen($query) < 4) {
-                        $sql_criteria .= " b.title like '%" . $query . "%' ";
+                        $this->execute[] = "'%" . $query . "'%'";
+                        $sql_criteria .= " b.title like ? ";
                         $title_buffer = '';
                     } else {
                         if ($token['is_phrase'] ?? false) {
-                            $title_buffer .= ' ' . $bool . '"' . $query . '"';
+                            $this->execute[] = ' ' . $bool . '"' . $query . '" ';
+                            $title_buffer .= '?';
                         } else {
-                            $title_buffer .= ' ' . $bool . $query;
+                            $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
+                            $title_buffer .= ' ?';
                         }
                     }
                     break;
 
                 case 'author':
-                    $sub_query = "select ba.biblio_id from biblio_author as ba left join mst_author as ma on ba.author_id=ma.author_id where ma.author_name like '%" . $query . "%'";
+                    $this->execute[] = "'%" . $query . "%'";
+                    $sub_query = "select ba.biblio_id from biblio_author as ba left join mst_author as ma on ba.author_id=ma.author_id where ma.author_name like ?";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.biblio_id not in(' . $sub_query . ')';
                     } else {
@@ -174,7 +188,8 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'subject':
-                    $sub_query = "select bt.biblio_id from biblio_topic as bt left join mst_topic as mt on bt.topic_id=mt.topic_id where mt.topic like '%" . $query . "%'";
+                    $this->execute[] = "'%" . $query . "%'";
+                    $sub_query = "select bt.biblio_id from biblio_topic as bt left join mst_topic as mt on bt.topic_id=mt.topic_id where mt.topic like ?";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.biblio_id not in(' . $sub_query . ')';
                     } else {
@@ -186,70 +201,93 @@ class DefaultEngine extends Contract
 
                 case 'location':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
                     if (is_null($idx))
-                        $sub_query = "select location_id from mst_location where location_name = '" . $query . "'";
-                    if ($bool === '-') {
-                        $sql_criteria .= ' i.location_id not in(' . $sub_query . ')';
-                    } else {
-                        $sql_criteria .= ' i.location_id in(' . $sub_query . ')';
+                    {
+                        $this->execute[] = $query;
+                        $sub_query = "select location_id from mst_location where location_id = ?";
+                    }
+                    else
+                    {
+                        $this->execute = array_merge($this->execute, $idx);
+                        $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                        
+                        if ($bool === '-') {
+                            $sql_criteria .= ' i.location_id not in(' . $sub_query . ')';
+                        } else {
+                            $sql_criteria .= ' i.location_id in(' . $sub_query . ')';
+                        }
                     }
                     break;
 
                 case 'colltype':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx??[]);
+                    
                     if (is_null($idx))
-                        $sub_query = "select coll_type_id from mst_coll_type where coll_type_name = '" . $query . "'";
-                    if ($bool === '-') {
-                        $sql_criteria .= ' i.coll_type_id not in(' . $sub_query . ')';
-                    } else {
-                        $sql_criteria .= ' i.coll_type_id in(' . $sub_query . ')';
+                    {
+                        $this->execute[] = $query;
+                        $sub_query = "select coll_type_id from mst_coll_type where coll_type_id = ?";
                     }
+                    else
+                    {
+                        $this->execute = array_merge($this->execute, $idx);
+                        $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+
+                        if ($bool === '-') {
+                            $sql_criteria .= ' i.coll_type_id not in(' . $sub_query . ')';
+                        } else {
+                            $sql_criteria .= ' i.coll_type_id in(' . $sub_query . ')';
+                        }
+                    }                    
                     break;
 
                 case 'itemcode':
+                    $this->execute[] = $query;
                     if ($bool === '-') {
-                        $sql_criteria .= " i.item_code != '" . $query . "'";
+                        $sql_criteria .= " i.item_code != ?";
                     } else {
-                        $sql_criteria .= " i.item_code = '" . $query . "'";
+                        $sql_criteria .= " i.item_code = ?";
                     }
                     break;
 
                 case 'callnumber':
+                    $this->execute[] = $query . '%';
                     if ($bool === '-') {
-                        $sql_criteria .= " b.call_number not like '" . $query . "%'";
+                        $sql_criteria .= " b.call_number not like ?";
                     } else {
-                        $sql_criteria .= " b.call_number like '" . $query . "%'";
+                        $sql_criteria .= " b.call_number like ?";
                     }
                     break;
 
                 case 'itemcallnumber':
+                    $this->execute[] = $query . '%';
                     if ($bool === '-') {
-                        $sql_criteria .= " i.call_number not like '" . $query . "%'";
+                        $sql_criteria .= " i.call_number not like ?";
                     } else {
-                        $sql_criteria .= " i.call_number like '" . $query . "%'";
+                        $sql_criteria .= " i.call_number like ?";
                     }
                     break;
 
                 case 'class':
+                    $this->execute[] = $query . '%';
                     if ($bool === '-') {
-                        $sql_criteria .= " b.classification not like '" . $query . "%'";
+                        $sql_criteria .= " b.classification not like ?";
                     } else {
-                        $sql_criteria .= " b.classification like '" . $query . "%'";
+                        $sql_criteria .= " b.classification like ?";
                     }
                     break;
 
                 case 'isbn':
+                    $this->execute[] = $query;
                     if ($bool === '-') {
-                        $sql_criteria .= " b.isbn_issn != '" . $query . "'";
+                        $sql_criteria .= " b.isbn_issn != ?";
                     } else {
-                        $sql_criteria .= " b.isbn_issn = '" . $query . "'";
+                        $sql_criteria .= " b.isbn_issn = ?";
                     }
                     break;
 
                 case 'publisher':
-                    $sub_query = "select publisher_id from mst_publisher where publisher_name like '%" . $query . "%'";
+                    $this->execute[] = '%' . $query . '%';
+                    $sub_query = "select publisher_id from mst_publisher where publisher_name like ?";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.publisher_id not in (' . $sub_query . ')';
                     } else {
@@ -258,34 +296,46 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'publishyear':
+                    $this->execute[] = $query;
                     if ($bool === '-') {
-                        $sql_criteria .= " b.publish_year != '" . $query . "'";
+                        $sql_criteria .= " b.publish_year != ?";
                     } else {
-                        $sql_criteria .= " b.publish_year = '" . $query . "'";
+                        $sql_criteria .= " b.publish_year = ?";
                     }
                     break;
 
                 case 'years':
                     list($from, $to) = explode(';', $query);
-                    $sql_criteria .= " (b.publish_year between " . $from . " and " . $to . ") ";
+                    $this->execute[] = $from;
+                    $this->execute[] = $to;
+                    $sql_criteria .= " (b.publish_year between ? and ?) ";
                     break;
 
                 case 'gmd':
                     $idx = json_decode($query);
-                    $sub_query = implode(", ", $idx??[]);
+                    
                     if (is_null($idx))
-                        $sub_query = "select gmd_id from mst_gmd where gmd_name like '%" . $query . "%'";
-                    if ($bool === '-') {
-                        $sql_criteria .= ' b.gmd_id not in (' . $sub_query . ')';
-                    } else {
-                        $sql_criteria .= ' b.gmd_id in (' . $sub_query . ')';
+                    {
+                        $this->execute[] = '%' . $query . '%';
+                        $sub_query = "select gmd_id from mst_gmd where gmd_name like ?";
+                    }
+                    else
+                    {
+                        $this->execute = array_merge($this->execute, $idx);
+                        $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                        if ($bool === '-') {
+                            $sql_criteria .= ' b.gmd_id not in (' . $sub_query . ')';
+                        } else {
+                            $sql_criteria .= ' b.gmd_id in (' . $sub_query . ')';
+                        }
                     }
                     break;
 
                 case 'notes':
                     $query = isset($query['is_phrase']) ? '"' . $query . '"' : $query;
+                    $this->execute[] = "'" . $query . "' in boolean mode";
                     if ($bool === '-') {
-                        $sql_criteria .= " not (match (b.notes) against ('" . $query . "' in boolean mode))";
+                        $sql_criteria .= " not (match (b.notes) against (?))";
                     } else {
                         $sql_criteria .= " (match (b.notes) against ('" . $query . "' in boolean mode))";
                     }
@@ -318,7 +368,8 @@ class DefaultEngine extends Contract
                         }
                     }
 
-                    $sub_query_criteria = "'" . implode("', '", $mime_types) . "'";
+                    $this->execute = array_merge($this->execute, $mime_types);
+                    $sub_query_criteria = trim(str_repeat('?,', count($mime_types??1)), ',');
 
                     $sub_query = "select bat.biblio_id from biblio_attachment as bat left join files as f on bat.file_id=f.file_id where f.mime_type in(" . $sub_query_criteria . ")";
                     if ($bool === '-') {
@@ -330,7 +381,8 @@ class DefaultEngine extends Contract
 
                 case 'lang':
                     $idx = json_decode($query);
-                    $sub_query = "'" . implode("', '", $idx??[]) . "'";
+                    $this->execute = array_merge($this->execute, $idx);
+                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
                     if ($bool === '-') {
                         $sql_criteria .= ' b.language_id not in (' . $sub_query . ')';
                     } else {

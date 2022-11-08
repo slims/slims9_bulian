@@ -30,6 +30,11 @@ if (!$can_read) die('<div class="errorBox">' . __('You don\'t have enough privil
 
 $plugins = Plugins::getInstance();
 
+// get plugins from composer packages
+if(method_exists(\Composer\InstalledVersions::class, 'getInstalledPackagesByType')) 
+    foreach (\Composer\InstalledVersions::getInstalledPackagesByType('slims-plugin') as $package) 
+            $plugins->addLocation(\Composer\InstalledVersions::getInstallPath($package));
+
 $_POST = json_decode(file_get_contents('php://input'), true);
 if (isset($_POST['enable'])) {
     $id = $_POST['id'];
@@ -88,12 +93,32 @@ if (isset($_POST['enable'])) {
     exit();
 }
 
+if (isset($_GET['view']) && !empty($_GET['view'])) $_SESSION['view'] = $_GET['view'];
+
 ?>
 
 <div class="menuBox">
     <div class="menuBoxInner masterFileIcon">
         <div class="per_title">
             <h2><?php echo __('Plugin List'); ?></h2>
+        </div>
+        <div class="sub_section">
+            <div class="btn-group">
+                <a href="<?= $_SERVER['PHP_SELF'] ?>?view=<?= (!isset($_SESSION['view']) || $_SESSION['view'] == 'list' ? 'card' : 'list') ?>" class="btn btn-sm btn-outline-secondary items-center flex p-2">
+                    <?php if (!isset($_SESSION['view']) || $_SESSION['view'] == 'list'): ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">
+                            <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"></path>
+                        </svg>
+                    <?php else: ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
+                            <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z"></path>
+                        </svg>
+                    <?php endif; ?>
+                </a>
+            </div>
+            <div id="search" method="get" class="form-inline"><?= __('Search') ?> 
+                <input type="text" name="keywords" onkeyup="searchPlugin(this)" class="form-control col-md-3">
+            </div>
         </div>
     </div>
 </div>
@@ -103,16 +128,20 @@ if (isset($_POST['enable'])) {
 $plugin_actives = $plugins->getActive();
 
 ?>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col"><?= __('Plugin') ?></th>
-        <th scope="col"><?= __('Description')?></th>
-        <th scope="col"><?= __('Enable/Disable') ?></th>
-    </tr>
-    </thead>
-    <tbody>
+<?php if (!isset($_SESSION['view']) || $_SESSION['view'] == 'list'): ?>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col"><?= __('Plugin') ?></th>
+            <th scope="col"><?= __('Description')?></th>
+            <th scope="col"><?= __('Enable/Disable') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+<?php else: ?>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 mx-3">
+<?php endif; ?>
     <?php
 
     $n = 1;
@@ -137,22 +166,44 @@ $plugin_actives = $plugins->getActive();
 
         $label = ['version' => __('Version'), 'by' => __('By'), 'viewDetail' => __('View Detail')];
         extract($label);
-        echo <<<HTML
-    <tr>
-        <th scope="row">{$n}</th>
-        <td width="300px">{$plugin->name}</td>
-        <td>
-            <div class="mb-2">{$plugin->description}</div>
-            <div>{$version} <code>{$plugin->version}</code> | {$by} <a target="_blank" href="{$plugin->author_uri}">{$plugin->author}</a> | <a target="_blank" href="{$plugin->uri}">{$viewDetail}</a></div>
-        </td>
-        <td>
-            <div class="custom-control custom-switch">
-                <input onchange="enablePlugin(event, {$plugin->migration->is_exist})" type="checkbox" class="custom-control-input" id="{$hash}" {$is_active}>
-                <label class="custom-control-label" for="{$hash}">{$enable_disable}</label>
-            </div>
-        </td>
-    </tr>
-HTML;
+
+        if (!isset($_SESSION['view']) || $_SESSION['view'] == 'list') {
+            echo <<<HTML
+                <tr id="section{$n}">
+                    <th scope="row">{$n}</th>
+                    <td width="300px" class="plugin-title" data-section="{$n}">{$plugin->name}</td>
+                    <td>
+                        <div class="mb-2">{$plugin->description}</div>
+                        <div>{$version} <code>{$plugin->version}</code> | {$by} <a target="_blank" href="{$plugin->author_uri}">{$plugin->author}</a> | <a target="_blank" href="{$plugin->uri}">{$viewDetail}</a></div>
+                    </td>
+                    <td>
+                        <div class="custom-control custom-switch">
+                            <input onchange="enablePlugin(event, {$plugin->migration->is_exist})" type="checkbox" class="custom-control-input" id="{$hash}" {$is_active}>
+                            <label class="custom-control-label" for="{$hash}">{$enable_disable}</label>
+                        </div>
+                    </td>
+                </tr>
+            HTML;
+        } else {
+            echo <<<HTML
+                <div id="section{$n}" class="col my-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title plugin-title" data-section="{$n}">{$plugin->name}</h5>
+                            <p class="card-text">{$plugin->description}</p>
+                            <p class="card-text">
+                                <small>{$version} <code>{$plugin->version}</code> | {$by} <a target="_blank" href="{$plugin->author_uri}">{$plugin->author}</a> | <a target="_blank" href="{$plugin->uri}">{$viewDetail}</a></small>
+                            </p>
+                            <hr/>
+                            <div class="custom-control custom-switch float-right">
+                                <input onchange="enablePlugin(event, {$plugin->migration->is_exist})" type="checkbox" class="custom-control-input" id="{$hash}" {$is_active}>
+                                <label class="custom-control-label" for="{$hash}">{$enable_disable}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            HTML;
+        }
         $n++;
     }
 
@@ -197,5 +248,22 @@ HTML;
         } else {
             label.innerHTML = '<?= __('Disabled') ?>'
         }
+    }
+
+    function searchPlugin(e)
+    {
+        let keywords = new RegExp(e.value, 'gi')
+        document.querySelectorAll('.plugin-title')?.forEach(el => {
+            var section = document.getElementById(`section${el.dataset.section}`)
+
+            if (!el.innerHTML.match(keywords))
+            {
+                section.classList.add('d-none')
+            }
+            else
+            {
+                section.classList.remove('d-none')
+            }
+        })
     }
 </script>
