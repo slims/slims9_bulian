@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-08 15:41:21
- * @modify date 2022-11-08 19:42:25
+ * @modify date 2022-11-08 19:54:46
  * @license GPLv3
  * @desc [description]
  */
@@ -28,8 +28,8 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="member_fines_list_'.date('YmdHis').'.xlsx"');
+header("Content-Type: application/xls"); 
+header('Content-Disposition: attachment; filename="member_fines_list_'.date('YmdHis').'.xls"');
 
 $columns = '';
 foreach ($_SESSION['csvData']??[] as $memberId => $value) {
