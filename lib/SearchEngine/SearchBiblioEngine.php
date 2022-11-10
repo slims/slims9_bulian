@@ -248,7 +248,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 case 'callnumber':
-                    $this->execute[] = "'". $query . "'%";
+                    $this->execute[] = $query . "%";
                     if ($bool == '-') {
                         $sql_criteria .= ' biblio.call_number not LIKE ?';
                     } else {
@@ -258,7 +258,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'itemcallnumber':
                     if (!$this->disable_item_data) {
-                        $this->execute[] = "'". $query . "'%";
+                        $this->execute[] = $query . "%";
                         if ($bool == '-') {
                             $sql_criteria .= ' item.call_number not LIKE ?';
                         } else {
@@ -268,7 +268,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 case 'class':
-                    $this->execute[] = "'". $query . "'%";
+                    $this->execute[] = $query . "%";
                     if ($bool == '-') {
                         $sql_criteria .= ' sb.classification not LIKE ?';
                     } else {
@@ -277,7 +277,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 case 'isbn':
-                    $this->execute[] = "'". $query . "'%";
+                    $this->execute[] = $query . "%";
                     if ($bool == '-') {
                         $sql_criteria .= ' sb.isbn_issn not LIKE ?';
                     } else {
@@ -300,7 +300,7 @@ class SearchBiblioEngine extends Contract
                         $this->execute[] = $query;
                         $sql_criteria .= ' sb.publish_year!=?';
                     } else {
-                        $this->execute[] = "'%" . $query . "%'";
+                        $this->execute[] = "%" . $query . "%";
                         $sql_criteria .= ' sb.publish_year LIKE ?';
                     }
                     break;

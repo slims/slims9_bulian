@@ -163,7 +163,7 @@ class DefaultEngine extends Contract
             switch ($field) {
                 case 'title':
                     if (strlen($query) < 4) {
-                        $this->execute[] = "'%" . $query . "'%'";
+                        $this->execute[] = "%" . $query . "%";
                         $sql_criteria .= " b.title like ? ";
                         $title_buffer = '';
                     } else {
@@ -178,7 +178,7 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'author':
-                    $this->execute[] = "'%" . $query . "%'";
+                    $this->execute[] = "%" . $query . "%";
                     $sub_query = "select ba.biblio_id from biblio_author as ba left join mst_author as ma on ba.author_id=ma.author_id where ma.author_name like ?";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.biblio_id not in(' . $sub_query . ')';
@@ -188,7 +188,7 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'subject':
-                    $this->execute[] = "'%" . $query . "%'";
+                    $this->execute[] = "%" . $query . "%";
                     $sub_query = "select bt.biblio_id from biblio_topic as bt left join mst_topic as mt on bt.topic_id=mt.topic_id where mt.topic like ?";
                     if ($bool === '-') {
                         $sql_criteria .= ' b.biblio_id not in(' . $sub_query . ')';
