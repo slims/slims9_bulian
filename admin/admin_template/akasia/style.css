@@ -1770,3 +1770,20 @@ table.datagrid-action-bar > tbody > tr:first-child > td {
 .alterCellPrinted {
   background: transparent;
 }
+
+button.view-switch {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+  font-size: 11pt;
+}
+button.next-btn {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+}
+button.prev-btn {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+}

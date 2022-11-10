@@ -69,6 +69,7 @@ if (isset($_GET['search'])) {
         if (isset($_GET['filter'])) {
             $filter = utility::filterData('filter', 'get', false, true, true);
             $filterArr = json_decode($filter, true);
+            unset($filterArr['csrf_token']);
             $filters = [];
             foreach ($filterArr as $idx => $x) {
                 if (strpos($idx, '[') !== false) {

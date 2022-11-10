@@ -35,6 +35,8 @@ abstract class Contract
     protected array $custom_fields = [];
     protected Criteria $criteria;
     protected Criteria $filter;
+    protected array $execute = [];
+    protected string $error = '';
     public float $query_time = 0;
     public array $searchable_fields = ['title', 'author', 'isbn', 'subject', 'location', 'gmd', 'colltype', 'publisher', 'callnumber'];
     public array $stop_words = array('a', 'an', 'of', 'the', 'to', 'so', 'as', 'be');
@@ -85,6 +87,14 @@ abstract class Contract
     public function getNumRows(): int
     {
         return $this->num_rows;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError(): string
+    {
+        return $this->error;
     }
 
     abstract function getDocuments();

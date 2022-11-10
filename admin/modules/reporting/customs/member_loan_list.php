@@ -73,29 +73,29 @@ if (!$reportView) {
             </div>
 
             <div class="form-group divRow">
-            <label><?php echo __('Membership Type'); ?></label>
-            <div class="divRowContent">
-                <select name="membershipType" class="form-control col-2">
-                <?php 
-                foreach ($membershipTypes as $key => $membershipType) {
-                    echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
-                }
-                ?>
-                </select>
-            </div>
-            </div>
-
-            <div class="form-group divRow">
-                <label><?php echo __('Loan Date From'); ?></label>
-                <?php
-                echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
-                ?>
+                <label><?php echo __('Membership Type'); ?></label>
+                <div class="divRowContent">
+                    <select name="membershipType" class="form-control col-2">
+                    <?php 
+                    foreach ($membershipTypes as $key => $membershipType) {
+                        echo '<option value="'.$key.'">'.$membershipType['member_type_name'].'</option>';
+                    }
+                    ?>
+                    </select>
+                </div>
             </div>
             <div class="form-group divRow">
-                <label><?php echo __('Loan Date Until'); ?></label>
-                <?php
-                echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
-                ?>
+                <div class="divRowContent">
+                    <div>
+                        <label style="width: 195px;"><?php echo __('Loan Date From'); ?></label>
+                        <label><?php echo __('Loan Date Until'); ?></label>
+                    </div>
+                    <div id="range">
+                        <input type="text" name="startDate" value="2000-01-01">
+                        <span><?= __('to') ?></span>
+                        <input type="text" name="untilDate" value="<?= date('Y-m-d') ?>">
+                    </div>
+                </div>
             </div>
             <div class="form-group divRow">
                 <label><?php echo __('Record each page'); ?></label>
@@ -108,6 +108,15 @@ if (!$reportView) {
         <input type="hidden" name="reportView" value="true" />
     </form>
     </div>
+    <script>
+        $(document).ready(function(){
+            const elem = document.getElementById('range');
+            const dateRangePicker = new DateRangePicker(elem, {
+                language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+                format: 'yyyy-mm-dd',
+            });
+        })
+    </script>
     <!-- filter end -->
     <div class="paging-area"><div class="pt-3 pr-3" id="pagingBox"></div></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>

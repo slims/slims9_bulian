@@ -1491,3 +1491,38 @@ table {
 #editor {
   color: black !important
 }
+
+button.view-switch {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+  font-size: 11pt;
+}
+button.next-btn {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+}
+button.prev-btn {
+  background: whitesmoke;
+  border: none;
+  font-weight: bold;
+}
+.datepicker-grid > .day {
+  color: #000 !important;
+}
+.datepicker-grid > .prev {
+  color: rgb(105, 105, 105) !important;
+}
+.datepicker-grid > .next {
+  color: rgb(105, 105, 105) !important;
+}
+.days-of-week > .dow {
+  color: #000 !important;
+}
+.datepicker-grid > .range-start {
+  color: white !important;
+}
+.datepicker-grid > .range-end {
+  color: white !important;
+}

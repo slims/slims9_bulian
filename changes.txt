@@ -44,6 +44,12 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.5.1 (Bulian)
+========================================================================
+Fixed : Security enhancement for SQL injection
+Added : Date range for multiple reporting filter
+Added : Add plugins compatibility with PHP Composer
+
 SLiMS 9.5.0 (Bulian)
 ========================================================================
 Added : Improved compatibility with PHP8.x

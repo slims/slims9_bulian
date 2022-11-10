@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 31;
+  private $version = 32;
 
   /**
    * @param SLiMS $slims
@@ -958,7 +958,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
   function upgrade_role_26()
   {
       $sql['create'][] = "
-        CREATE TABLE `plugins` (
+        CREATE TABLE IF NOT EXISTS `plugins` (
           `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
           `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
           `created_at` datetime NOT NULL,
@@ -1014,7 +1014,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     }
 
     /**
-     * Upgrade role to v9.x.x
+     * Upgrade role to v9.5.0
      */
     function upgrade_role_31()
     {
@@ -1025,14 +1025,14 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         $sql['alter'][] = "ALTER TABLE `mst_topic` CHANGE `classification` `classification` varchar(50) COLLATE 'utf8_unicode_ci' NULL COMMENT 'Classification Code' AFTER `auth_list`;";
         $sql['alter'][] = "ALTER TABLE `content` ADD `is_draft` smallint(1) NULL DEFAULT '0' AFTER `is_news`, ADD `publish_date` date NULL AFTER `is_draft`;";
 
-        $sql['create'][] = "CREATE TABLE `index_words` (
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
           `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
           `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
           `num_hits` int NOT NULL,
           `doc_hits` int NOT NULL
         ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
 
-        $sql['create'][] = "CREATE TABLE `index_documents` (
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_documents` (
           `document_id` int(11) NOT NULL,
           `word_id` bigint(20) NOT NULL,
           `location` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1044,6 +1044,14 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
         return $this->slims->query($sql, ['create', 'alter']);
+    }
+
+    /**
+     * Upgrade role to v9.x.x
+     */
+    function upgrade_role_32()
+    {
+        $sql['alter'][] = 'ALTER TABLE `s95`.`search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
     }
 
 }
