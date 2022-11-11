@@ -147,6 +147,7 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " and ";
                     }
                 }
+                
                 $bool = $token['b'];
                 $query = $token['q'];
                 if (in_array($field, array('title', 'author', 'subject', 'notes'))) {
@@ -157,6 +158,8 @@ class SearchBiblioEngine extends Contract
                 }
                 $boolean = '';
             }
+
+            // dump($sql_criteria);
 
             // check fields
             switch ($field) {
@@ -181,7 +184,7 @@ class SearchBiblioEngine extends Contract
                 case 'location':
                     if (!$this->disable_item_data) {
                         $idx = json_decode($query);
-                        $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                        $sub_query = trim(str_repeat('?,', count($idx??[])), ',');
                         if (!is_null($idx)) {
                             $sql_criteria_tmp = [];
                             $location_q = DB::getInstance()->prepare("select location_name from mst_location where location_id in (" . $sub_query . ")");
@@ -208,7 +211,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'colltype':
                     $idx = json_decode($query);
-                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                    $sub_query = trim(str_repeat('?,', count($idx??[])), ',');
 
                     if (!$this->disable_item_data) {
                         if (!is_null($idx)) {
@@ -226,11 +229,11 @@ class SearchBiblioEngine extends Contract
                             }
                             $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         } else {
-                            $this->execute[] = "'$query' in boolean mode";
+                            $this->execute[] = "$query";
                             if ($bool == '-') {
-                                $sql_criteria .= " not (match (sb.collection_types) against (?))";
+                                $sql_criteria .= " not (match (sb.collection_types) against (? in boolean mode))";
                             } else {
-                                $sql_criteria .= " match (sb.collection_types) against (?)";
+                                $sql_criteria .= " match (sb.collection_types) against (? in boolean mode)";
                             }
                         }
                     }
@@ -314,7 +317,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'gmd':
                     $idx = json_decode($query);
-                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                    $sub_query = trim(str_repeat('?,', count($idx??[])), ',');
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];
                         $gmd_q = DB::getInstance()->prepare("select gmd_name from mst_gmd where gmd_id in (" . $sub_query . ")");
@@ -392,7 +395,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'lang':
                     $idx = json_decode($query);
-                    $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
+                    $sub_query = trim(str_repeat('?,', count($idx??[])), ',');
 
                     if (!is_null($idx)) {
                         $sql_criteria_tmp = [];
