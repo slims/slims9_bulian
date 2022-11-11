@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-08 11:10:32
- * @modify date 2022-10-16 16:26:29
+ * @modify date 2022-11-12 06:31:55
  * @license GPLv3
  * @desc [description]
  */
@@ -72,11 +72,11 @@ class overdueMail extends TemplateContract
 
         // Institution logo
         $logo = '';
-        if (!$this->isLocal() && file_exists(SB . 'images/default/' . config('logo_image', 'notfound.png')))
-        {
-            $url = 'https://' . $_SERVER['SERVER_NAME'] . SWB . 'images/default/' . config('logo_image', 'notfound.png');
-            $logo = '<img src="" style="width: 60px; height: 60px"/>';
-        }
+        // if (!$this->isLocal() && file_exists(SB . 'images/default/' . config('logo_image', 'notfound.png')))
+        // {
+        //     $url = 'https://' . $_SERVER['SERVER_NAME'] . SWB . 'images/default/' . config('logo_image', 'notfound.png');
+        //     $logo = '<img src="" style="width: 60px; height: 60px"/>';
+        // }
 
         $loanData = '';
         foreach ($this->overdueData as $overdueData) {
