@@ -159,8 +159,6 @@ class SearchBiblioEngine extends Contract
                 $boolean = '';
             }
 
-            // dump($sql_criteria);
-
             // check fields
             switch ($field) {
                 case 'author':

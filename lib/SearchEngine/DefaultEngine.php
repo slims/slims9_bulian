@@ -46,6 +46,9 @@ class DefaultEngine extends Contract
             // debug if in development.
             if (ENVIRONMENT == 'development') DB::debug();
 
+            // debug query
+            // dump($sql['query'], $this->execute);
+
             // execute query
             $db = DB::getInstance();
             // dd($sql['count'],$this->execute);
@@ -153,7 +156,6 @@ class DefaultEngine extends Contract
                 // reset title buffer
                 $title_buffer = '';
             }
-
             // boolean mode
             $bool = $token['b'] ?? $token;
             $boolean = ($bool === '*') ? 'or' : 'and';
@@ -172,7 +174,7 @@ class DefaultEngine extends Contract
                             $title_buffer .= '?';
                         } else {
                             $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
-                            $title_buffer .= ' ?';
+                            $sql_criteria .= ' match (title, series_title) against (?)';
                         }
                     }
                     break;
