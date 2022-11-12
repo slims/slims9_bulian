@@ -158,7 +158,7 @@ if (!$reportView) {
 
     $criteria = '';
     // class
-    $class_num = isset($_GET['class'])?trim($_GET['class']):'ALL';
+    $class_num = isset($_GET['class'])?$dbs->escape_string(trim($_GET['class'])):'ALL';
     // year
     $selected_year = '%';
     if (isset($_GET['year']) AND !empty($_GET['year']) AND $_GET['year']!='0') {
@@ -169,14 +169,14 @@ if (!$reportView) {
     }
 
     if (isset($_GET['membershipType']) AND !empty($_GET['membershipType']) AND $_GET['membershipType']!='All') {
-        $membershipType = (string)$_GET['membershipType'];
+        $membershipType = $dbs->escape_string((string)$_GET['membershipType']);
         $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
     }else{
         $criteria .= ' AND member_type_name LIKE \'%%\'';
     }
 
     if (isset($_GET['collType']) AND !empty($_GET['collType']) AND $_GET['collType']!='0') {
-        $collType = (string)$_GET['collType'];
+        $collType = $dbs->escape_string((string)$_GET['collType']);
         $criteria .= ' AND collection_type_name LIKE \''.$collType.'\'';
     }else{
         $criteria .= ' AND collection_type_name LIKE \'%%\'';
