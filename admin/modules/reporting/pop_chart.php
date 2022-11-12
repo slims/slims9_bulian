@@ -30,23 +30,25 @@ ob_start();
 $label = array();
 $data = array();
 
-$page_title = $_SESSION['chart']['title'].($_GET['filter']??'');
-$chart_type = $_SESSION['chart']['chart_type']??'Line';
+$filter = simbio_security::xssFree($_GET['filter']??'');
+$chart = $_SESSION['chart']??[];
+$page_title = isset($chart['title']) ? $chart['title'].$filter : 'Chart ' . $filter;
+$chart_type = isset($chart['chart_type']) ? $chart['chart_type'] : 'Line';
 
-foreach ($_SESSION['chart']['xAxis'] as $key => $value) {
+foreach ($chart['xAxis']??[] as $key => $value) {
 	array_push($label,$value);
 }
 
 $num_color = 1;
 $legend = [];
 
-$dataset = isset($_GET['filter'])?$_SESSION['chart']['data'][$_GET['filter']]:$_SESSION['chart']['data'];
+$dataset = !empty($filter) && isset($chart['data']) ?$chart['data'][$filter]:($chart['data']??[]);
 
 foreach ($dataset as $key => $value) {
 	$color = $array_color[$num_color];
     $legend[$key] = $color;
 	$data[] = array(
-		'fillColor'=> (!isset($_SESSION['chart']['chart_type'])?'rgba(220,220,220,0)':$color),
+		'fillColor'=> (!isset($chart['chart_type'])?'rgba(220,220,220,0)':$color),
 		'strokeColor'=> $color,
 		'pointColor' => $color,
 		'data' => array_values($value));
