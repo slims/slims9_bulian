@@ -183,8 +183,8 @@ if (isset($_POST['tempLoanID'])) {
             echo '} else { self.location.href = \'loan.php\';}';
             echo '</script>';
         } else {
-            echo '<script type="text/javascript">';
             toastr(__('Loan Limit Reached!'))->info();
+            echo '<script type="text/javascript">';
             echo 'location.href = \'loan.php\';';
             echo '</script>';
         }
