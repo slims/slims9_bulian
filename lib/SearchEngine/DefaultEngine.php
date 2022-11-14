@@ -164,19 +164,19 @@ class DefaultEngine extends Contract
             $query = $token['q'] ?? null;
             switch ($field) {
                 case 'title':
-                    if (strlen($query) < 4) {
+                    // if (strlen($query) < 4) {
                         $this->execute[] = "%" . $query . "%";
                         $sql_criteria .= " b.title like ? ";
                         $title_buffer = '';
-                    } else {
-                        if ($token['is_phrase'] ?? false) {
-                            $this->execute[] = ' ' . $bool . '"' . $query . '" ';
-                            $title_buffer .= '?';
-                        } else {
-                            $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
-                            $sql_criteria .= ' match (title, series_title) against (?)';
-                        }
-                    }
+                    // } else {
+                    //     if ($token['is_phrase'] ?? false) {
+                    //         $this->execute[] = ' ' . $bool . '"' . $query . '" ';
+                    //         $title_buffer .= '?';
+                    //     } else {
+                    //         $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
+                    //         $sql_criteria .= ' match (title, series_title) against (?)';
+                    //     }
+                    // }
                     break;
 
                 case 'author':
