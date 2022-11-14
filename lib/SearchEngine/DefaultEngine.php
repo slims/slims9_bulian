@@ -46,6 +46,9 @@ class DefaultEngine extends Contract
             // debug if in development.
             if (ENVIRONMENT == 'development') DB::debug();
 
+            // debug query
+            // dump($sql['query'], $this->execute);
+
             // execute query
             $db = DB::getInstance();
             // dd($sql['count'],$this->execute);
@@ -153,7 +156,6 @@ class DefaultEngine extends Contract
                 // reset title buffer
                 $title_buffer = '';
             }
-
             // boolean mode
             $bool = $token['b'] ?? $token;
             $boolean = ($bool === '*') ? 'or' : 'and';
@@ -172,7 +174,7 @@ class DefaultEngine extends Contract
                             $title_buffer .= '?';
                         } else {
                             $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
-                            $title_buffer .= ' ?';
+                            $sql_criteria .= ' match (title, series_title) against (?)';
                         }
                     }
                     break;
@@ -204,18 +206,18 @@ class DefaultEngine extends Contract
                     if (is_null($idx))
                     {
                         $this->execute[] = $query;
-                        $sub_query = "select location_id from mst_location where location_id = ?";
+                        $sub_query = "select location_id from mst_location where location_name = ?";
                     }
                     else
                     {
                         $this->execute = array_merge($this->execute, $idx);
                         $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
-                        
-                        if ($bool === '-') {
-                            $sql_criteria .= ' i.location_id not in(' . $sub_query . ')';
-                        } else {
-                            $sql_criteria .= ' i.location_id in(' . $sub_query . ')';
-                        }
+                    }
+
+                    if ($bool === '-') {
+                        $sql_criteria .= ' i.location_id not in(' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' i.location_id in(' . $sub_query . ')';
                     }
                     break;
 
@@ -225,19 +227,19 @@ class DefaultEngine extends Contract
                     if (is_null($idx))
                     {
                         $this->execute[] = $query;
-                        $sub_query = "select coll_type_id from mst_coll_type where coll_type_id = ?";
+                        $sub_query = "select coll_type_id from mst_coll_type where coll_type_name = ?";
                     }
                     else
                     {
                         $this->execute = array_merge($this->execute, $idx);
                         $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
-
-                        if ($bool === '-') {
-                            $sql_criteria .= ' i.coll_type_id not in(' . $sub_query . ')';
-                        } else {
-                            $sql_criteria .= ' i.coll_type_id in(' . $sub_query . ')';
-                        }
-                    }                    
+                    }
+                    
+                    if ($bool === '-') {
+                        $sql_criteria .= ' i.coll_type_id not in(' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' i.coll_type_id in(' . $sub_query . ')';
+                    }
                     break;
 
                 case 'itemcode':
@@ -323,11 +325,12 @@ class DefaultEngine extends Contract
                     {
                         $this->execute = array_merge($this->execute, $idx);
                         $sub_query = trim(str_repeat('?,', count($idx??1)), ',');
-                        if ($bool === '-') {
-                            $sql_criteria .= ' b.gmd_id not in (' . $sub_query . ')';
-                        } else {
-                            $sql_criteria .= ' b.gmd_id in (' . $sub_query . ')';
-                        }
+                    }
+
+                    if ($bool === '-') {
+                        $sql_criteria .= ' b.gmd_id not in (' . $sub_query . ')';
+                    } else {
+                        $sql_criteria .= ' b.gmd_id in (' . $sub_query . ')';
                     }
                     break;
 

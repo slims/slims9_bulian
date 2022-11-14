@@ -204,6 +204,10 @@ if (!$reportView) {
 
             //calculate Fines
             $overdue_days = $circulation->countOverdueValue($ovd_title_d['loan_id'], date('Y-m-d'))['days'];
+            // because SLiMS have a grace periode feature in circulation modules,
+            // make sure $overdue_days is numeric or not, if not then set it to 0
+            // or if its bool then cast to integer
+            $overdue_days = !is_numeric($overdue_days) ? 0 : (int)$overdue_days;
             $fines = currency($overdue_days * $member_d[4]);
             if (!is_null($ovd_title_d['fine_each_day'])) $fines = $overdue_days * $ovd_title_d['fine_each_day'];
             // format number
