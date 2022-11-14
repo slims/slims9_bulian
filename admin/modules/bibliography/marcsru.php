@@ -56,7 +56,8 @@ while ($server = $server_q->fetch_assoc()) {
 }
 
 if (isset($_GET['marc_SRU_source'])) {
-    $zserver = trim(urldecode($_GET['marc_SRU_source']));
+    $inList = (bool)count(array_filter($sysconf['marc_SRU_source'], fn($sru) => trim(urldecode($_GET['marc_SRU_source'])) == $sru['uri']));
+    $zserver = $inList ? trim(urldecode($_GET['marc_SRU_source'])) : '';
 } else {
     $zserver = 'http://opac.perpusnas.go.id/sru.aspx';
 }
@@ -291,6 +292,8 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
 
 // Search
 if (isset($_GET['keywords'])) {
+
+  if (empty($zserver)) die('<div class="errorBox">'. __('Current Marc SRU address is not register in database!') .'</div>');
 
   $source = trim($_GET['marc_SRU_source']);
   $index = trim($_GET['index']);
