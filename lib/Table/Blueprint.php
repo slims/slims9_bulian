@@ -12,6 +12,29 @@ namespace SLiMS\Table;
 
 use RuntimeException;
 
+/**
+ * @package SLiMS\Table
+ * 
+ * @property string $engine
+ * @property string $charset
+ * @property string $collation
+ * 
+ * @method SLiMS\Table\Blueprint string(string $column, int $length)
+ * @method void autoIncrement(string $column)
+ * @method void id()
+ * @method void timestamps()
+ * @method void fulltext(string $column)
+ * @method void index(string $column)
+ * @method void primary(string $column)
+ * @method void nullable()
+ * @method void notNull()
+ * @method void after(string $column)
+ * @method void first()
+ * @method void change(string $newColumn)
+ * @method void add()
+ * @method void drop(string $column)
+ * @method void default(string $value)
+ */
 class Blueprint
 {
     /**
