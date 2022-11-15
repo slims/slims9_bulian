@@ -162,7 +162,7 @@ class SearchBiblioEngine extends Contract
             // check fields
             switch ($field) {
                 case 'author':
-                    $this->execute[] = "'$query' in boolean mode";
+                    $this->execute[] = "$query in boolean mode";
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.author) against (?))";
                     } else {
@@ -171,7 +171,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 case 'subject':
-                    $this->execute[] = "'$query' in boolean mode";
+                    $this->execute[] = "$query in boolean mode";
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.topic) against (?))";
                     } else {
@@ -239,7 +239,7 @@ class SearchBiblioEngine extends Contract
 
                 case 'itemcode':
                     if (!$this->disable_item_data) {
-                        $this->execute[] = "'$query' in boolean mode";
+                        $this->execute[] = "$query in boolean mode";
                         if ($bool == '-') {
                             $sql_criteria .= " not (match (sb.items) against (?))";
                         } else {
@@ -341,7 +341,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 case 'notes':
-                    $this->execute[] = "'" . $query . "' in boolean mode";
+                    $this->execute[] = $query . " in boolean mode";
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.notes) against (?))";
                     } else {
@@ -423,7 +423,7 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 default:
-                    $this->execute[] = "'$query' in boolean mode";
+                    $this->execute[] = "$query in boolean mode";
                     if ($bool == '-') {
                         $sql_criteria .= " not (match (sb.title, sb.series_title) against (?))";
                     } else {
