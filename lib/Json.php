@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-07-29 13:05:34
- * @modify date 2022-07-31 19:40:08
+ * @modify date 2022-11-15 17:07:17
  * @license GPLv3
  * @desc : 
  * - Manage & manipulation JSON en|de-code process
@@ -130,7 +130,7 @@ class Json implements IteratorAggregate,Countable
     public function count(): int
     {
         $this->process();
-        return count(is_array($this->attributes) ? $this->attributes : [$this->attributes]);
+        return count((array)$this->attributes);
     }
 
     /**
