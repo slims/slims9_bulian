@@ -66,13 +66,13 @@
                 </div>
                 <div class="wrapper">
                     <?php
+                    if (ENVIRONMENT == 'development' && !empty($engine->getError())) echo '<div class="alert alert-danger mt-2 text-center">' . $engine->getError() . '</div>';
                     // catch empty list
                     if (trim(strip_tags($main_content)) === '') {
                         echo '<div class="d-flex justify-content-center border-t">
                                 <img src="'.assets('images/empty.svg').'" />
                               </div>
                               <div class="text-center text-danger"><strong>'.__('No Result').'.</strong> '.__('Please try again').'</div>';
-                        if (ENVIRONMENT == 'development' && !empty($engine->getError())) echo '<div class="alert alert-danger mt-2 text-center">' . $engine->getError() . '</div>';
                     } else {
                         echo $main_content;
                     }

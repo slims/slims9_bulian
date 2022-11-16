@@ -25,7 +25,7 @@ class DB
                 self::$instance_mysqli = new \mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
             } else {
                 self::$instance = new PDO("mysql:host=".DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME, DB_USERNAME, DB_PASSWORD);
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+                self::$instance->setAttribute(PDO::ATTR_ERRMODE, ENVIRONMENT == 'development' ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
                 self::$instance->query('SET NAMES utf8');
                 self::$instance->query('SET CHARACTER SET utf8');
             }
@@ -35,11 +35,6 @@ class DB
         } catch (Exception $error) {
             echo $error->getMessage();
         }
-    }
-
-    public static function debug()
-    {
-        self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     public static function getInstance($driver = 'pdo')
