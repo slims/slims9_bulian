@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Plugins;
+
 /* Membership Management section */
 
 // key to authenticate
@@ -54,7 +56,7 @@ if (!$can_read) {
 }
 
 // execute registered hook
-\SLiMS\Plugins::getInstance()->execute('membership_init');
+Plugins::getInstance()->execute(Plugins::MEMBERSHIP_INIT);
 
 /* Just In Case for PHP < 5.4 */
 /* Taken From imageman (http://www.php.net/manual/en/function.getimagesizefromstring.php#113976) */
@@ -222,12 +224,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // filter update record ID
             $updateRecordID = $dbs->escape_string(trim($_POST['updateRecordID']));
             $old_member_ID = $updateRecordID;
+
+            // execute registered hook
+            Plugins::getInstance()->execute(Plugins::MEMBERSHIP_BEFORE_UPDATE, ['data' => $data]);
+
             // update the data
             $update = $sql_op->update('member', $data, "member_id='$updateRecordID'");
             if ($update) {
 
                 // execute registered hook
-                \SLiMS\Plugins::getInstance()->execute('membership_after_update', ['data' => api::member_load($dbs, $updateRecordID)]);
+                Plugins::getInstance()->execute(Plugins::MEMBERSHIP_AFTER_UPDATE, ['data' => api::member_load($dbs, $updateRecordID)]);
 
                 // update custom data
                 if (isset($custom_data)) {
@@ -279,7 +285,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                   @$sql_op->insert('member_custom', $custom_data);
                 }
 
-                \SLiMS\Plugins::getInstance()->execute('membership_after_save', ['data' => api::member_load($dbs, $data['member_id'])]);
+                Plugins::getInstance()->execute(Plugins::MEMBERSHIP_AFTER_SAVE, ['data' => api::member_load($dbs, $data['member_id'])]);
 
                 toastr(__('New Member Data Successfully Saved'))->success();
                 // upload status alert
@@ -439,10 +445,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     /* Form Element(s) */
     if ($form->edit_mode) {
-
-        // execute registered hook
-        \SLiMS\Plugins::getInstance()->execute('membership_before_update', ['data' => api::member_load($dbs, $itemID)]);
-
         // check if member expired
         $curr_date = date('Y-m-d');
         $compared_date = simbio_date::compareDates($rec_d['expire_date'], $curr_date);

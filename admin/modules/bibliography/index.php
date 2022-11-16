@@ -27,6 +27,7 @@ if (!defined('INDEX_AUTH')) {
 
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use SLiMS\Plugins;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -60,7 +61,7 @@ if (!$can_read) {
 }
 
 // execute registered hook
-\SLiMS\Plugins::getInstance()->execute('bibliography_init');
+Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_INIT);
 
 // load settings
 utility::loadSettings($dbs);
@@ -157,7 +158,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
 
         // Register advance custom field data
-        \SLiMS\Plugins::getInstance()->execute('advance_custom_field_data', ['custom_data' => &$custom_data]);
+        Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_DATA, ['custom_data' => &$custom_data]);
 
         $data['title'] = $dbs->escape_string($title);
         /* modified by hendro */
@@ -285,14 +286,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
-            \SLiMS\Plugins::getInstance()->execute('bibliography_before_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
             // update data
             $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
             // send an alert
             if ($update) {
 
                 // execute registered hook
-                \SLiMS\Plugins::getInstance()->execute('bibliography_after_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
 
                 // update custom data
                 if (isset($custom_data)) {
@@ -340,7 +341,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else {
 
             // execute registered hook
-            \SLiMS\Plugins::getInstance()->execute('bibliography_before_save', ['data' => $data]);
+            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_SAVE, ['data' => $data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -351,7 +352,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // execute registered hook
                 $data['biblio_id'] = $last_biblio_id;
-                \SLiMS\Plugins::getInstance()->execute('bibliography_after_save', ['data' => $data]);
+                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_SAVE, ['data' => $data]);
 
                 // add authors
                 if ($_SESSION['biblioAuthor']) {
@@ -510,13 +511,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
             }
 
-            \SLiMS\Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
+            // execute registered hook
+            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_DELETE, [$itemID]);
+            
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
             } else {
 
                 // execute registered hook
-                \SLiMS\Plugins::getInstance()->execute('bibliography_on_delete', [$itemID]);
+                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_DELETE, [$itemID]);
 
                 // write log
                 utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . $biblio_item_d[0] . ') with biblio_id (' . $itemID . ')');
@@ -1089,7 +1092,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     
     // get advance custom field based on plugin
     $js = '';
-    \SLiMS\Plugins::getInstance()->execute('advance_custom_field_form', ['form' => $form, 'js' => &$js]);
+    Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
