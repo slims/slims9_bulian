@@ -202,6 +202,11 @@ class SearchBiblioEngine extends Contract
                             }
                             $sql_criteria .= " (" . implode(' or ', $sql_criteria_tmp) . ") ";
                         }
+                        else
+                        {
+                            $this->execute[':locationadv'] = $query;
+                            $sql_criteria .= " sb.location = :locationadv";
+                        }
                     } else {
                         $this->execute[':node'] = $query;
                         if ($bool == '-') {
