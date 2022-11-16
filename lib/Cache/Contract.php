@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-07-13 11:33:34
- * @modify date 2022-11-13 22:58:52
+ * @modify date 2022-11-16 09:04:20
  * @license GPLv3
  * @desc
  */
@@ -12,6 +12,8 @@ namespace SLiMS\Cache;
 
 abstract class Contract
 {
+    private string $error = '';
+    
     /**
      * Create a new cache files/value
      *
@@ -67,4 +69,17 @@ abstract class Contract
      * @return string
      */
     abstract public function getPath();
+
+    /**
+     * @return boolean
+     */
+    abstract public function isExists(string $cacheName);
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
 }
