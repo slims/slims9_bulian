@@ -43,11 +43,8 @@ class DefaultEngine extends Contract
             // build sql command
             $sql = $this->buildSQL();
 
-            // debug if in development.
-            if (ENVIRONMENT == 'development') DB::debug();
-
-            // debug query
-            // dump($sql['query'], $this->execute);
+            // debug SQL
+            debug($sql, $this->execute);
 
             // execute query
             $db = DB::getInstance();

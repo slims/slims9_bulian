@@ -34,15 +34,13 @@ class SearchBiblioEngine extends Contract
         // start time to benchmarking
         $start = microtime(true);
 
+        // build sql command
+        $sql = $this->buildSQL();
+
+        // debug SQL
+        debug($sql, $this->execute);
+
         try {
-            // build sql command
-            $sql = $this->buildSQL();
-
-            if (ENVIRONMENT == 'development') DB::debug();
-
-            // Debug prepared query
-            dump($sql['query'], $this->execute);
-
             // execute query
             $db = DB::getInstance();
             $count = $db->prepare($sql['count']);
