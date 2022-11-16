@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-06 22:44:30
- * @modify date 2022-10-26 12:16:08
+ * @modify date 2022-11-12 05:27:50
  * @license GPLv3
  * @desc [description]
  */
@@ -20,6 +20,7 @@ class Mail extends PHPMailer
     use Queue;
     
     private static $instance = null;
+    public static $mode = 'singleton';
 
     /**
      * Initialize default php mailer
@@ -54,6 +55,7 @@ class Mail extends PHPMailer
 
     public static function getInstance()
     {
+        if (!empty(self::$mode) && self::$mode != 'singleton') self::$instance = null;
         if (is_null(self::$instance)) self::$instance = new Mail(true);
         return self::$instance;
     }
@@ -138,10 +140,10 @@ class Mail extends PHPMailer
     public function setEnv(string $envName)
     {
         // bypass if env not available!
-        if (!array_key_exists($key, self::availableEnv())) return $this;
+        if (!array_key_exists($envName, self::availableEnv())) return $this;
 
         // override debug status
-        $this->SMTPDebug = $availableEnv[$envName][0];
+        $this->SMTPDebug = self::availableEnv()[$envName][0];
         return $this;
     }
 

@@ -57,7 +57,8 @@ while ($server = $server_q->fetch_assoc()) {
 }
 
 if (isset($_GET['z3950_SRU_source'])) {
-    $zserver = trim(urldecode($_GET['z3950_SRU_source']));
+    $inList = (bool)count(array_filter($sysconf['z3950_SRU_source'], fn($sru) => trim(urldecode($_GET['z3950_SRU_source'])) == $sru['uri']));
+    $zserver = $inList ? trim(urldecode($_GET['z3950_SRU_source'])) : '';
 } else {
     $zserver = 'http://z3950.loc.gov:7090/voyager?';
 }
@@ -183,6 +184,9 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
 
 /* SEARCH OPERATION */
 if (isset($_GET['keywords']) AND $can_read) {
+  
+  if (empty($zserver)) die('<div class="errorBox">'. __('Current z3950 SRU address is not register in database!') .'</div>');
+
   require LIB.'modsxmlslims.inc.php';
   $_SESSION['z3950result'] = array();
   if ($_GET['index'] != 0) {

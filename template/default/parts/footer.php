@@ -52,8 +52,8 @@
                 <h4 class="mb-4"><?= __('Search'); ?></h4>
                 <div class="mb-2"><?= __('start it by typing one or more keywords for title, author or subject'); ?></div>
                 <form action="index.php">
-                    <input type="hidden" ref="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                    <input type="hidden" ref="csrf_token" value="<?= $_SESSION['csrf_token']??'' ?>">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']??'' ?>">
                     <div class="input-group mb-3">
                         <input name="keywords" type="text" class="form-control"
                                placeholder="<?= __('Enter keywords'); ?>"

@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2021-10-27 17:12:17
- * @modify date 2021-10-27 17:12:17
+ * @modify date 2022-11-11 16:21:27
  * @desc [description]
  */
 // key to authenticate
@@ -121,7 +121,7 @@ $form->table_content_attr = 'class="alterCell2"';
 if ($BasedIp)
 {
     $thisEnv = ucfirst((!in_array(getCurrentIp(), $RangeIp) ? $Environment : $ConditionEnvironment));
-    $HTML = '<b>{$thisEnv}</b>';
+    $HTML = '<b>' . __($thisEnv) . '</b>';
     $form->addAnything('Your Environment Mode', $HTML);
 
     $Environment = $ConditionEnvironment;

@@ -21,6 +21,8 @@
  *
  */
 
+use SLiMS\Plugins;
+
 // be sure that this file not accessed directly
 if (INDEX_AUTH != 1) { 
     die("can not access this file directly");
@@ -38,3 +40,6 @@ if (INDEX_AUTH != 1) {
 @session_set_cookie_params(86400, SWB.'admin/');
 // start session
 session_start();
+
+// hooking after session started
+Plugins::run(Plugins::ADMIN_SESSION_AFTER_START);

@@ -173,6 +173,7 @@ HTML;
                 case 'radio':
                 case 'checkbox':
                     foreach ($filter['items'] as $idx => $item) {
+                        if (empty($item['value'])) continue;
                         $item_index = md5($filter['header'] . $item['value']);
 
                         if ($idx == 4) {

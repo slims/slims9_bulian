@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Plugins;
+
 /* circulation transaction process */
 
 // key to authenticate
@@ -91,7 +93,7 @@ if (isset($_POST['finish'])) {
         visitOnLoan($memberID);
         // hook method on after successful transaction
         if (isset($_SESSION['receipt_record'])) {
-            \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
+            Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION, array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
         }
         // write log
         utility::writeLogs($dbs, 'member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')', 'Transaction', 'finished');
@@ -183,8 +185,8 @@ if (isset($_POST['tempLoanID'])) {
             echo '} else { self.location.href = \'loan.php\';}';
             echo '</script>';
         } else {
-            echo '<script type="text/javascript">';
             toastr(__('Loan Limit Reached!'))->info();
+            echo '<script type="text/javascript">';
             echo 'location.href = \'loan.php\';';
             echo '</script>';
         }
@@ -332,7 +334,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         $return_data['return'][0]['overdues'] = $overdue;
         $return_data['return'][0]['loan_id'] = $loan_d['loan_id'];
         $return_data['return'][0]['is_return'] = (INT)$loan_d['is_return'] + 1;
-        \SLiMS\Plugins::getInstance()->execute('circulation_after_successful_transaction', array ('data' => $return_data));
+        Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION, array ('data' => $return_data));
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object

@@ -356,7 +356,7 @@ class circulation extends member
      * count overdue value
      * @param   integer $int_loan_id
      * @param   string  $str_return_date
-     * @return  boolean
+     * @return  boolean|string|integer
      **/
     public function countOverdueValue($int_loan_id, $str_return_date)
     {
