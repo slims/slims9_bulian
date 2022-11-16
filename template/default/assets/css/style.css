@@ -967,3 +967,7 @@ img.not-available {
 .grid-item--menu .dropdown-toggle::after {
     display: none;
 }
+
+pre.sf-dump, pre.sf-dump .sf-dump-default {
+    z-index: 888 !important;
+}
