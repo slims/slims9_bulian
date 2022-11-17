@@ -55,9 +55,9 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="adv-coll-type"><?=__('Collection Type');?></label>
-                            <select name="colltype" class="form-control"
-                                    id="adv-coll-type"><?=$colltype_list; ?></select>
+                            <label for="adv-publishyear"><?=__('Publish Year');?></label>
+                            <input type="text" name="publishyear" class="form-control" id="adv-publishyear"
+                                   placeholder="<?=__('Enter publish year'); ?>">
                         </div>
                     </div>
                     <div class="col">
@@ -75,7 +75,13 @@
                             <select id="adv-gmd" name="gmd" class="form-control"><?=$gmd_list; ?></select>
                         </div>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="adv-coll-type"><?=__('Collection Type');?></label>
+                            <select name="colltype" class="form-control"
+                                    id="adv-coll-type"><?=$colltype_list; ?></select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

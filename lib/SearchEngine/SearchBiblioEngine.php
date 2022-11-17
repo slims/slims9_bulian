@@ -28,6 +28,11 @@ use SLiMS\DB;
 class SearchBiblioEngine extends Contract
 {
     protected $disable_item_data = false;
+    public array $searchable_fields = [
+        'title', 'author', 'isbn', 'subject', 
+        'location', 'gmd', 'colltype', 'publisher', 
+        'callnumber', 'publishyear'
+    ];
 
     function getDocuments()
     {
@@ -37,8 +42,8 @@ class SearchBiblioEngine extends Contract
         // build sql command
         $sql = $this->buildSQL();
 
-        // debug SQL
-        debug("SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
+        // dump SQL
+        $this->dump($sql);
 
         try {
             // execute query
@@ -663,5 +668,10 @@ class SearchBiblioEngine extends Contract
     function toRSS()
     {
         // TODO: Implement toRSS() method.
+    }
+
+    function dump(array $sql)
+    {
+        debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
     }
 }
