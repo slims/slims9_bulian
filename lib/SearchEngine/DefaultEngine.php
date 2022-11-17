@@ -44,11 +44,9 @@ class DefaultEngine extends Contract
             $sql = $this->buildSQL();
 
             // debug SQL
-            debug($sql, $this->execute);
+            debug("SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
 
-            // execute query
             $db = DB::getInstance();
-            // dd($sql['count'],$this->execute);
             $count = $db->prepare($sql['count']);
             $count->execute($this->execute);
             $query = $db->prepare($sql['query']);

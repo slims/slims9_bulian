@@ -99,9 +99,9 @@ include LIB . "contents/chat.php"; ?>
 
 <!-- // Load highlight -->
 <script src="<?= JWB; ?>highlight.js"></script>
-<?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != '') && $searched_words_js_array)   : ?>
+<?php if($searchableInJsArray = $this->generateKeywords($engine->searchable_fields)) : ?>
 <script>
-  $('.card-link, p, dl > dd').highlight(<?= $searched_words_js_array; ?>);
+  $('.card-link, p, dl > dd, a').highlight(<?= $searchableInJsArray ?>);
 </script>
 <?php endif; ?>
 

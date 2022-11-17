@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-10-20 11:28:34
+ * @modify date 2022-11-17 14:55:00
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -79,6 +79,29 @@ class Opac
         $path = preg_replace('@\/@i','',$path);
 
         return $path;
+    }
+
+    /**
+     * Generate search keywords
+     * into array javascript with Json::stringify
+     *
+     * @return void
+     */
+    public function generateKeywords(array $advanceSearch = [])
+    {
+        $result = [];
+        $hasKeywords = isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != '');
+        $hasAdvanceSearch = [];
+
+        foreach ($advanceSearch as $search) { $hasAdvanceSearch[] =  trim($_GET[$search]??''); }
+
+        if ($hasKeywords || $hasAdvanceSearch) 
+        {
+            $result = preg_replace('@\b(exact|and|or|not)\b@i', '', $_GET['keywords']??implode(' ', $hasAdvanceSearch));
+            $result = explode(' ', preg_replace('/[^A-Za-z0-9\s]/i', '', $result));
+        }
+
+        return Json::stringify($result);
     }
 
     /**

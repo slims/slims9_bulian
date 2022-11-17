@@ -38,7 +38,7 @@ class SearchBiblioEngine extends Contract
         $sql = $this->buildSQL();
 
         // debug SQL
-        debug($sql, $this->execute);
+        debug("SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
 
         try {
             // execute query
@@ -150,14 +150,15 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " and ";
                     }
                 }
+
                 
                 $bool = $token['b'];
                 $query = $token['q'];
                 if (in_array($field, array('title', 'author', 'subject', 'notes'))) {
                     $query = '+' . ($is_phrase ? '"' . $query . '"' : $query);
-                    if (!$is_phrase) {
-                        $query = preg_replace('@\s+@i', ' +', $query);
-                    }
+                    // if (!$is_phrase) {
+                    //     $query = preg_replace('@\s+@i', ' +', $query);
+                    // }
                 }
                 $boolean = '';
             }
@@ -192,11 +193,11 @@ class SearchBiblioEngine extends Contract
                             $location_q->execute($idx);
                             $id = 0;
                             while ($location_d = $location_q->fetch()) {
-                                $this->execute[':location' . $id] = "%" . $location_d[0] . "%";
+                                $this->execute[':location' . $id] = $location_d[0];
                                 if ($bool == '-') {
-                                    $sql_criteria_tmp[] = " sb.location not like :location$id";
+                                    $sql_criteria_tmp[] = " sb.location not = :location$id";
                                 } else {
-                                    $sql_criteria_tmp[] = " sb.location like :location$id";
+                                    $sql_criteria_tmp[] = " sb.location = :location$id";
                                 }
                                 $id++;
                             }
