@@ -100,15 +100,18 @@ class Criteria
         return preg_match('@\b(exact|and|or|not)\b@i', $value);
     }
 
+    public function separateBooleanChar($value)
+    {
+        return array_filter(explode(' ', $value), function($value){
+            if (!$this->isBool($value)) return true;
+        });
+    }
+
     public function convertToBooleanChar($value)
     {
         $result = '';
         $matchBoolean = '+';
         preg_match('@\b(exact|and|or|not)\b@i', $value, $match);
-        
-        $values = array_filter(explode(' ', $value), function($value){
-            if (!preg_match('@\b(exact|and|or|not)\b@i', $value)) return true;
-        });
         
         if (count($match))
         {
@@ -126,7 +129,7 @@ class Criteria
             }
         }
 
-        return [implode(' ' .$matchBoolean, $values), $matchBoolean];
+        return [implode(' ' .$matchBoolean, $this->separateBooleanChar($value)), $matchBoolean];
     }
 
     /**

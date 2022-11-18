@@ -171,19 +171,25 @@ class SearchBiblioEngine extends Contract
             // check fields
             switch ($field) {
                 case 'author':
-                    $this->execute[':author'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.author) against (:author in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':authormatch'] = "'$match'";
+                        $this->execute[':authornotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.author) against (:authormatch in boolean mode)) and not (match (sb.author) against (:authornotmatch in boolean mode))";
                     } else {
+                        $this->execute[':author'] = "'$query'";
                         $sql_criteria .= " (match (sb.author) against (:author in boolean mode))";
                     }
                     break;
 
                 case 'subject':
-                    $this->execute[':subject'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.topic) against (:subject in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':subjectmatch'] = "'$match'";
+                        $this->execute[':subjectnotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.topic) against (:subjectmatch in boolean mode)) and not (match (sb.topic) against (:subjectnotmatch in boolean mode))";
                     } else {
+                        $this->execute[':subject'] = "'$query'";
                         $sql_criteria .= " (match (sb.topic) against (:subject in boolean mode))";
                     }
                     break;
@@ -443,10 +449,14 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 default:
-                    $this->execute[':title'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.title, sb.series_title) against (:title in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':titlematch'] = "'$match'";
+                        $this->execute[':titlenotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.title, sb.series_title) against (:titlematch in boolean mode))";
+                        $sql_criteria .= " and not (match (sb.title, sb.series_title) against (:titlenotmatch in boolean mode))";
                     } else {
+                        $this->execute[':title'] = "'$query'";
                         $sql_criteria .= " (match (sb.title, sb.series_title) against (:title in boolean mode))";
                     }
                     break;
