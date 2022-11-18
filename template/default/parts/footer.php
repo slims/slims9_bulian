@@ -101,7 +101,7 @@ include LIB . "contents/chat.php"; ?>
 <script src="<?= JWB; ?>highlight.js"></script>
 <?php if(isset($engine) && $searchableInJsArray = $this->generateKeywords($engine->searchable_fields)) : ?>
 <script>
-  $('.card-link, p, dl > dd, a').highlight(<?= $searchableInJsArray ?>);
+  $('.card-body > *').highlight(<?= $searchableInJsArray ?>);
 </script>
 <?php endif; ?>
 
