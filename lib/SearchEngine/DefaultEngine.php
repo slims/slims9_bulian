@@ -43,15 +43,10 @@ class DefaultEngine extends Contract
             // build sql command
             $sql = $this->buildSQL();
 
-            // debug if in development.
-            if (ENVIRONMENT == 'development') DB::debug();
+            // dump SQL
+            $this->dump($sql);
 
-            // debug query
-            // dump($sql['query'], $this->execute);
-
-            // execute query
             $db = DB::getInstance();
-            // dd($sql['count'],$this->execute);
             $count = $db->prepare($sql['count']);
             $count->execute($this->execute);
             $query = $db->prepare($sql['query']);
@@ -164,19 +159,19 @@ class DefaultEngine extends Contract
             $query = $token['q'] ?? null;
             switch ($field) {
                 case 'title':
-                    if (strlen($query) < 4) {
+                    // if (strlen($query) < 4) {
                         $this->execute[] = "%" . $query . "%";
                         $sql_criteria .= " b.title like ? ";
                         $title_buffer = '';
-                    } else {
-                        if ($token['is_phrase'] ?? false) {
-                            $this->execute[] = ' ' . $bool . '"' . $query . '" ';
-                            $title_buffer .= '?';
-                        } else {
-                            $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
-                            $sql_criteria .= ' match (title, series_title) against (?)';
-                        }
-                    }
+                    // } else {
+                    //     if ($token['is_phrase'] ?? false) {
+                    //         $this->execute[] = ' ' . $bool . '"' . $query . '" ';
+                    //         $title_buffer .= '?';
+                    //     } else {
+                    //         $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
+                    //         $sql_criteria .= ' match (title, series_title) against (?)';
+                    //     }
+                    // }
                     break;
 
                 case 'author':
@@ -298,11 +293,11 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'publishyear':
-                    $this->execute[] = $query;
+                    $this->execute[] = '%' . $query . '%';
                     if ($bool === '-') {
-                        $sql_criteria .= " b.publish_year != ?";
+                        $sql_criteria .= " b.publish_year NOT LIKE ?";
                     } else {
-                        $sql_criteria .= " b.publish_year = ?";
+                        $sql_criteria .= " b.publish_year LIKE ?";
                     }
                     break;
 
@@ -615,5 +610,10 @@ class DefaultEngine extends Contract
     function toRSS()
     {
         // TODO: Implement toRSS() method.
+    }
+
+    function dump(array $sql)
+    {
+        debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
     }
 }

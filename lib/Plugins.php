@@ -16,6 +16,29 @@ class Plugins
 {
     const DATABASE_VERSION = 'db_version';
 
+    /**
+     * Constanta's List of Hooks
+     */
+    const ADMIN_SESSION_AFTER_START = 'admin_session_after_start';
+    const CONTENT_BEFORE_LOAD = 'before_content_load';
+    const CONTENT_AFTER_LOAD = 'after_content_load';
+    const BIBLIOGRAPHY_INIT = 'bibliography_init';
+    const BIBLIOGRAPHY_BEFORE_UPDATE = 'bibliography_before_update';
+    const BIBLIOGRAPHY_AFTER_UPDATE = 'bibliography_after_update';
+    const BIBLIOGRAPHY_BEFORE_SAVE = 'bibliography_before_save';
+    const BIBLIOGRAPHY_AFTER_SAVE = 'bibliography_after_save';
+    const BIBLIOGRAPHY_BEFORE_DELETE = 'bibliography_before_delete';
+    const BIBLIOGRAPHY_AFTER_DELETE = 'bibliography_after_delete';
+    const BIBLIOGRAPHY_CUSTOM_FIELD_DATA = 'advance_custom_field_data';
+    const BIBLIOGRAPHY_CUSTOM_FIELD_FORM = 'advance_custom_field_form';
+    const CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION = 'circulation_after_successful_transaction';
+    const MEMBERSHIP_INIT = 'membership_init';
+    const MEMBERSHIP_BEFORE_UPDATE = 'membership_before_update';
+    const MEMBERSHIP_AFTER_UPDATE = 'membership_after_update';
+    const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
+    const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
+    const OVERDUE_NOTICE_INIT = 'overduenotice_init';
+
     private static $instance;
     /**
      * Store plugins location, so plugins can stored in multiple location
@@ -250,6 +273,10 @@ class Plugins
     public static function hook($hook, $callback)
     {
         self::getInstance()->registerHook($hook, $callback);
+    }
+
+    public static function run($hook, $params = []) {
+        self::getInstance()->execute($hook, $params);
     }
 
     public function setGroupName($group_name)

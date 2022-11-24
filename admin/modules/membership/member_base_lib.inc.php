@@ -167,7 +167,7 @@ class member
     public function sendOverdueNotice()
     {
         // execute registered hook
-        Plugins::getInstance()->execute('overduenotice_init', ['member' => $this]);
+        Plugins::getInstance()->execute(Plugins::OVERDUE_NOTICE_INIT, ['member' => $this]);
 
         try {
             // Template

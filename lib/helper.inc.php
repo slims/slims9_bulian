@@ -76,6 +76,19 @@ if (!function_exists('currency'))
     }
 }
 
+if (!function_exists('debug'))
+{
+    /**
+     * Helper to verbosing 
+     * debug process
+     * @return void
+     */
+    function debug()
+    {
+        if (ENVIRONMENT == 'development') dump(...func_get_args());
+    }
+}
+
 if (!function_exists('toastr'))
 {
     /**

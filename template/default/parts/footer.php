@@ -52,8 +52,8 @@
                 <h4 class="mb-4"><?= __('Search'); ?></h4>
                 <div class="mb-2"><?= __('start it by typing one or more keywords for title, author or subject'); ?></div>
                 <form action="index.php">
-                    <input type="hidden" ref="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                    <input type="hidden" ref="csrf_token" value="<?= $_SESSION['csrf_token']??'' ?>">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']??'' ?>">
                     <div class="input-group mb-3">
                         <input name="keywords" type="text" class="form-control"
                                placeholder="<?= __('Enter keywords'); ?>"
@@ -99,9 +99,9 @@ include LIB . "contents/chat.php"; ?>
 
 <!-- // Load highlight -->
 <script src="<?= JWB; ?>highlight.js"></script>
-<?php if(isset($_GET['search']) && (isset($_GET['keywords'])) && ($_GET['keywords'] != '') && $searched_words_js_array)   : ?>
+<?php if(isset($engine) && $searchableInJsArray = $this->generateKeywords($engine->searchable_fields)) : ?>
 <script>
-  $('.card-link, p, dl > dd').highlight(<?= $searched_words_js_array; ?>);
+  $('.card-body > *').highlight(<?= $searchableInJsArray ?>);
 </script>
 <?php endif; ?>
 

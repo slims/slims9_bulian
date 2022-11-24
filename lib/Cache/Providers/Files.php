@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-07-13 11:33:34
- * @modify date 2022-11-13 23:06:22
+ * @modify date 2022-11-16 09:03:17
  * @license GPLv3
  * @desc
  */
@@ -95,12 +95,20 @@ class Files extends \SLiMS\Cache\Contract
     }
 
     /**
-     * Undocumented function
+     * Get cache as list
      *
      * @return array
      */
     public function getList()
     {
         return array_values(array_diff(scandir($this->directory), ['.gitkeep', '.', '..','index.php','index.html']));
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExists(string $cacheName)
+    {
+        return file_exists($this->directory . basename($cacheName));
     }
 }

@@ -1051,7 +1051,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      */
     function upgrade_role_32()
     {
-        $sql['alter'][] = 'ALTER TABLE `s95`.`search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
+        $sql['alter'][] = 'ALTER TABLE `search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
     }
 
 }
