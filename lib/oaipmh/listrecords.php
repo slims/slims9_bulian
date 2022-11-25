@@ -114,7 +114,7 @@ $maxrec = min($num_rows - $deliveredrecords, $maxItems);
 if ($num_rows - $deliveredrecords > $maxItems) {
 	$cursor = (int)$deliveredrecords + $maxItems;
 	$restoken = createResumToken($cursor, $extquery, $metadataPrefix);
-	$expirationdatetime = gmstrftime('%Y-%m-%dT%TZ', time()+TOKEN_VALID);	
+	$expirationdatetime = DateTimeImmutable::createFromFormat('U', time()+TOKEN_VALID)->format('Y-m-dTTZ');
 }
 // Last delivery, return empty ResumptionToken
 elseif (isset($args['resumptionToken'])) {
