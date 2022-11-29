@@ -448,7 +448,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                 'ct.coll_type_name AS \''.__('Collection Type').'\'',
                 'loc.location_name AS \''.__('Location').'\'',
                 #'index.classification AS \''.__('Classification').'\'',
-                'item.call_number AS \''.__('Call Number').'\'',
+                'index.call_number AS \''.__('Call Number').'\'',
                 'item.last_update AS \''.__('Last Updated').'\'');
             $datagrid->invisible_fields = array(2);
             $title_field_idx = 2;
@@ -460,7 +460,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                 'ct.coll_type_name AS \''.__('Collection Type').'\'',
                 'loc.location_name AS \''.__('Location').'\'',
                 #'index.classification AS \''.__('Classification').'\'',
-                'item.call_number AS \''.__('Call Number').'\'',
+                'index.call_number AS \''.__('Call Number').'\'',
                 'item.last_update AS \''.__('Last Updated').'\'');
             $datagrid->invisible_fields = array(2);
             $title_field_idx = 1;
