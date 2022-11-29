@@ -84,7 +84,7 @@ if (isset($_POST['doExport'])) {
         }
         // fetch all data from item table
         $sql = "SELECT
-            i.item_code, i.call_number, ct.coll_type_name,
+            i.item_code, b.call_number, ct.coll_type_name,
             i.inventory_code, i.received_date, spl.supplier_name,
             i.order_no, loc.location_name,
             i.order_date, st.item_status_name, i.site,
