@@ -10,6 +10,7 @@ namespace SLiMS;
 
 
 use SLiMS\SearchEngine\Engine;
+use SLiMS\Session\Factory;
 use stdClass;
 
 class Plugins
@@ -255,6 +256,11 @@ class Plugins
     public function registerSearchEngine($class_name)
     {
         Engine::init()->set($class_name);
+    }
+
+    public function registerSessionDriver($class_name)
+    {
+        Factory::getInstance()->registerDriver($class_name);
     }
 
     public static function group($group_name, $callback): GroupMenuOrder
