@@ -369,6 +369,12 @@ class simbio_datagrid extends simbio_table
         }
         // if editable
         if ($this->editable) {
+            if (ENVIRONMENT === 'development') 
+            {
+                $_buffer .= '<small class="mx-1"># Debug</small>|<button id="enlargeBox" class="btn btn-link mx-1 p-0">' . __('Enlarge Debug Box') . '</button>';
+                $_buffer .= '<iframe id="submitExec" name="submitExec" class="border border-secondary w-100" style="height: 50px;"></iframe>';
+                $_buffer .= '<script>$(\'#enlargeBox\').click(function() {$(\'#submitExec\').attr(\'style\', \'height: 500px;\')})</script>';
+            }
             if (class_exists('simbio_form_maker')) {
               $form_maker = new simbio_form_maker($this->table_name, $this->chbox_form_URL, $str_form_method = 'post', false);
               $form_maker->submit_target = $_target;
@@ -405,8 +411,8 @@ class simbio_datagrid extends simbio_table
             $_buffer .= $_button_grp.$this->printTable().$_button_grp
                 .'<input type="hidden" name="itemAction" value="true" />'
                 .'<input type="hidden" name="lastQueryStr" value="'.$_SERVER['QUERY_STRING'].'" />'."\n"
-                .'</form>'."\n"
-                .$_iframe;
+                .'</form>'."\n";
+            if (ENVIRONMENT !== 'development') $_buffer .= $_iframe;
         } else {
             // paging
             $_button_grp = '';
