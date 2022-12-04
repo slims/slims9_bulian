@@ -149,7 +149,7 @@ $compression = null;
 // see: http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm
 // Basically use domainname
 // please adjust
-$repositoryIdentifier = $_SERVER['SERVER_NAME']; 
+$repositoryIdentifier = $_SERVER['SERVER_NAME'];
 
 // For RIF-CS, especially with ANDS, each registryObject much has a group for the ownership of data.
 // For detail please see ANDS guide on its web site. Each data provider should have only one REG_OBJ_GROUP
@@ -161,7 +161,7 @@ define('REG_OBJ_GROUP','Something agreed on');
 // data-providers).
 // Please check identify.php for other possible containers 
 // in the Identify response
-$show_identifier = false;
+$show_identifier = true;
 // MUST (only one)
 // should not be changed. Only useful when NODE description is included in the response to Identifier
 $delimiter	= ':';
@@ -289,7 +289,7 @@ $oaiprefix = "oai".$delimiter.$repositoryIdentifier.$delimiter.$idPrefix;
 //$oaiprefix = "";
 
 // adjust anIdentifier with sample contents an identifier
-// $sampleIdentifier     = $oaiprefix.'anIdentifier';
+$sampleIdentifier = $oaiprefix.'-1';
 
 // the name of the column where you store your datestamps
 $SQL['datestamp'] = 'input_date';
