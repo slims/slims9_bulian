@@ -267,7 +267,7 @@ class utility
             palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|
             treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|
             xda|xiino/i',
-        @$_SERVER['HTTP_USER_AGENT'])
+        @$_SERVER['HTTP_USER_AGENT'] ?? '')
         || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|
             a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|
             amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|
@@ -297,7 +297,7 @@ class utility
             vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|
             vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|
             wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i',
-        substr(@$_SERVER['HTTP_USER_AGENT'],0,4)))
+        substr(@$_SERVER['HTTP_USER_AGENT'] ?? '',0,4)))
             $_is_mobile_browser = true;
 
         return $_is_mobile_browser;
