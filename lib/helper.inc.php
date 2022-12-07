@@ -89,6 +89,14 @@ if (!function_exists('debug'))
     }
 }
 
+if (!function_exists('isDev')) 
+{
+    function isDev()
+    {
+        return ENVIRONMENT === 'development' ? true : false;
+    }
+}
+
 if (!function_exists('toastr'))
 {
     /**
