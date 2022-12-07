@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-11-17 14:55:00
+ * @modify date 2022-12-07 19:04:13
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -324,7 +324,7 @@ class Opac
                 ->parseToTemplate(); // then parse to template
             
         } catch (Exception $e) {
-            echo $this->error($e->getMessage());
+            echo $this->error(isDev() ? $e->getMessage() : 'something wrong.');
             $this->parseToTemplate();
         }
     }
