@@ -664,9 +664,8 @@ class utility
             $str_value_id = $obj_db->escape_string(trim($str_member_id));
             $str_user_id = $obj_db->escape_string(trim($str_user_id));
             // insert log data to database
-            @$obj_db->query('INSERT INTO '.$_log_table.'
-            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.$_SERVER[
-			'REMOTE_ADDR'].'\')');
+            @$obj_db->query('INSERT INTO `'.$_log_table.'` (`filelog_id`,`file_id`,`date_read`,`member_id`,`user_id`,`client_ip`) 
+            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.ip().'\')');
         }
     }
 }
