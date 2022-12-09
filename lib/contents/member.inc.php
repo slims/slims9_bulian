@@ -835,6 +835,7 @@ if ($is_member_login) :
                                             toastr.error(message)
                                         } else {
                                             toastr.success(message)
+                                            setTimeout(() => window.location.href = '?p=member&sec=title_basket', 2500);
                                         }
                                     }
 
@@ -844,6 +845,7 @@ if ($is_member_login) :
                                         toastr.error(message)
                                     } else {
                                         toastr.success(message)
+                                        setTimeout(() => window.location.href = '?p=member&sec=title_basket', 2500);
                                     }
                                 }
 
