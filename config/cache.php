@@ -7,10 +7,9 @@ return [
     'default' => 'Files',
 
     /**
-     * Supported providers
+     * Supported providers.
      * 
-     * 1. Files
-     * 2. Redis
+     * You can create yours, read the contract to create it
      */
     'providers' => [
         'Files' => [
@@ -19,11 +18,11 @@ return [
                 'directory' => SB . 'files/cache/'
             ]
         ],
-        'Redis' => [
-            'class' => \SLiMS\Cache\Providers\Redis::class,
+        /*'Redis' => [
+            'class' => <another-cache-provider-namespace>
             'options' => [
                 'prefix' => 'SLiMSCache:'
             ]
-        ]
+        ]*/
     ]
 ];
