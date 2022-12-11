@@ -44,6 +44,10 @@ class simbio_form_table_AJAX extends simbio_form_maker
     // back button
     public $back_button = true;
     public $delete_button = true;
+    public $name = '';
+    public $str = '';
+    public $url = '';
+    public $style = '';
 
     # CONSTRUCTOR
     public function __construct($str_form_name, $str_form_action, $str_form_method = 'post')

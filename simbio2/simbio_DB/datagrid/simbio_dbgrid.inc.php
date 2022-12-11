@@ -70,6 +70,8 @@ class simbio_datagrid extends simbio_table
     public $chbox_confirm_msg = '';
     public $current_page = 1;
     public $query_time = 1;
+    public $icon_edit = '';
+    public $delete_URL = '';
     # are we using AJAX or not
     public $using_AJAX = true;
     public $invisible_fields = array();
