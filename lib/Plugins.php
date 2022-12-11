@@ -56,6 +56,7 @@ class Plugins
     protected array $hooks = [];
     protected array $menus = [];
     private int $deep = 2;
+    private array $autoloadList = [];
     private string $hook_handler = '';
     private string $current_location = '';
     private ?string $group_name = null;
@@ -76,6 +77,7 @@ class Plugins
     }
 
     /**
+     * Add .plugin.php | plugin file into list
      * @param array|string $location
      * @return Plugins
      */
@@ -92,6 +94,13 @@ class Plugins
         return $this;
     }
 
+    /**
+     * Collection plugin information from .plugin.php
+     * documentation at top of file.
+     * 
+     * @param string $path
+     * @return stdClass
+     */
     private function getPluginInfo($path): stdClass
     {
         $file_open = fopen($path, 'r');
@@ -118,6 +127,14 @@ class Plugins
         return $plugin;
     }
 
+    /**
+     * Scan plugin directory to get plugin information.
+     * by default SLiMS use <slims-root>/plugin to store
+     * plugin. Please read 'addLocation' method method.
+     * 
+     * @param string $location
+     * @return void
+     */
     private function getPluginsInfo($location)
     {
         // open location
@@ -143,6 +160,14 @@ class Plugins
         }
     }
 
+    /**
+     * Register migration directory in each plugin
+     * if it exists. This method is use SLiMS\Migration\Migration
+     * to migrate some query | schema | files etc from some plugin.
+     * 
+     * @param Plugins $plugin
+     * @return stdClass
+     */
     private function getMigrationInfo($plugin): stdClass
     {
         $migration = new stdClass;
@@ -156,6 +181,11 @@ class Plugins
         return $migration;
     }
 
+    /**
+     * Plugin option is an information about
+     * plugin migration | database history
+     * @param string $id
+     */
     private function getOptions($id): void
     {
         if (isset($this->active_plugins[$id])) {
@@ -177,12 +207,20 @@ class Plugins
         }
     }
 
+    /**
+     * @param string $id
+     */
     private function getDBVersion($id): int
     {
         $this->getOptions($id);
         return $this->plugins[$id]->options->{self::DATABASE_VERSION} ?? 0;
     }
 
+    /**
+     * Check if path location have sub-directory
+     * 
+     * @param string $location
+     */
     function isDeep($location): bool
     {
         $sub_dir = str_replace($this->current_location, '', $location);
@@ -220,6 +258,10 @@ class Plugins
         return $query->rowCount() > 0;
     }
 
+    /**
+     * load .plugin.php file from plugin
+     * @return void
+     */
     public function loadPlugins()
     {
         foreach ($this->getActive() as $item) {
@@ -227,16 +269,48 @@ class Plugins
         }
     }
 
+    /**
+     * A method to listing hook into list
+     * 
+     * @param string $hook
+     * @param closure $callback
+     * @return void
+     */
     public function register($hook, $callback)
     {
         $this->hooks[$hook][] = [$callback, $this->hook_handler];
     }
 
+    /**
+     * A shortcut to register method
+     * 
+     * @param string $hook
+     * @param closure $callback
+     * @return void
+     */
     public function registerHook($hook, $callback)
     {
         $this->register($hook, $callback);
     }
 
+    /**
+     * shortcut to 'registerHook'
+     */
+    public static function hook($hook, $callback)
+    {
+        self::getInstance()->registerHook($hook, $callback);
+    }
+
+    /**
+     * A method to listing menu into SLiMS module
+     * submenut.
+     * 
+     * @param string $module_name
+     * @param string $label
+     * @param string $path
+     * @param string $description
+     * @return void
+     */
     public function registerMenu($module_name, $label, $path, $description = null)
     {
         $hash = md5(realpath($path));
@@ -253,16 +327,59 @@ class Plugins
         return $group_instance;
     }
 
+    /**
+     * Shortcut for 'registerMenu'
+     */
+    public static function menu($module_name, $label, $path, $description = null)
+    {
+        return self::getInstance()->registerMenu($module_name, $label, $path, $description = null);
+    }
+
+    /**
+     * This method is relate to SLiMS\SearchEngine\Engine
+     * 
+     * @param string $class_name
+     * @return void
+     */
     public function registerSearchEngine($class_name)
     {
         Engine::init()->set($class_name);
     }
 
+    /**
+     * This method is relate to SLiMS\Session\Factory
+     * 
+     * @param string $class_name
+     * @return void
+     */
     public function registerSessionDriver($class_name)
     {
         Factory::getInstance()->registerDriver($class_name);
     }
 
+    /**
+     * Seperate root composer ('slims-plugin') detector
+     * and plugin base composer (vendor inside each plugin).
+     * The autoload.php will be call in plugin_container.php
+     */
+    public function registerAutoload($directoryToAutoload)
+    {
+        $match = file_exists($path = $directoryToAutoload . DS . 'vendor/autoload.php') || file_exists($path = $directoryToAutoload);
+        if ($match) $this->autoloadList[$directoryToAutoload] = $path;
+    }
+
+    public function getAutoload($pluginPath)
+    {
+        $pluginDirectory = explode(DS, str_replace(SB . 'plugins' . DS, '', $pluginPath))[0]??'';
+        if (isset($this->autoloadList[SB . 'plugins' . DS . $pluginDirectory])) include_once $this->autoloadList[SB . 'plugins' . DS . $pluginDirectory];
+    }
+
+    /**
+     * Grouping some plugin into submenu.
+     * 
+     * @param string $group_name
+     * @param closure $callback
+     */
     public static function group($group_name, $callback): GroupMenuOrder
     {
         self::getInstance()->setGroupName($group_name);
@@ -271,23 +388,20 @@ class Plugins
         return GroupMenuOrder::getInstance()->bind($group_name);
     }
 
-    public static function menu($module_name, $label, $path, $description = null)
-    {
-        return self::getInstance()->registerMenu($module_name, $label, $path, $description = null);
-    }
-
-    public static function hook($hook, $callback)
-    {
-        self::getInstance()->registerHook($hook, $callback);
-    }
-
-    public static function run($hook, $params = []) {
-        self::getInstance()->execute($hook, $params);
-    }
-
     public function setGroupName($group_name)
     {
         $this->group_name = $group_name;
+    }
+
+    /**
+     * Running hook process.
+     * 
+     * @param string $hook
+     * @param array $params
+     * @return void
+     */
+    public static function run($hook, $params = []) {
+        self::getInstance()->execute($hook, $params);
     }
 
     public function execute($hook, $params = [])
@@ -300,12 +414,25 @@ class Plugins
         }
     }
 
+    /**
+     * This method is part of hooking process.
+     * If you have class to handle some hook, this
+     * method to set up your class.
+     * 
+     * @param string $handler_class
+     */
     public static function use($handler_class)
     {
         self::getInstance()->hook_handler = $handler_class;
         return self::getInstance();
     }
 
+    /**
+     * This method call closure to use hook
+     * handler
+     * 
+     * @param closure $hooks
+     */
     public function for($hooks)
     {
         if (empty($this->hook_handler)) return;
