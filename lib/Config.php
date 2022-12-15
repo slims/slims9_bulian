@@ -144,4 +144,18 @@ class Config
         }
         return $config;
     }
+
+    /**
+     * Create some configuration file
+     * into <slims-root>/config/
+     *
+     * @param string $filename
+     * @param string $content
+     * @return void
+     */
+    public static function create(string $filename, $content = '')
+    {
+        if (is_callable($content)) $content = $content($filename);
+        file_put_contents(SB . 'config/' . basename($filename), $content);
+    }
 }
