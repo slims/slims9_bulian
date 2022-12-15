@@ -21,13 +21,14 @@ $slims = new SLiMS();
 $_POST = json_decode(file_get_contents('php://input'), true);
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 if ($action === 're-install' || $action === 're-upgrade') {
-  if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
-    require_once __DIR__ . '/../config/sysconfig.local.inc.php';
-    $_SESSION['db_host'] = DB_HOST;
-    $_SESSION['db_name'] = DB_NAME;
-    $_SESSION['db_user'] = DB_USERNAME;
-    $_SESSION['db_pass'] = DB_PASSWORD;
-    $_SESSION['db_port'] = DB_PORT;
+  if (file_exists($databaseConfigPath = __DIR__ . '/../config/database.php')) {
+    $profile = require_once $databaseConfigPath;
+    extract($profile['nodes'][$profile['default']]);
+    $_SESSION['db_host'] = $host;
+    $_SESSION['db_name'] = $database;
+    $_SESSION['db_user'] = $username;
+    $_SESSION['db_pass'] = $password;
+    $_SESSION['db_port'] = $port;
   } else {
     die(json_encode(['status' => false, 'message' => ['Config file not exist. Please, create it first!']]));
   }

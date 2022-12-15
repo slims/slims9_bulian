@@ -14,17 +14,31 @@ use PHPMailer\PHPMailer\Exception;
 
 class DB
 {
+    /**
+     * PDO instance
+     * @var null
+     */
     private static $instance = null;
+
+    /**
+     * MySQLi Instance
+     * @var null
+     */
     private static $instance_mysqli = null;
 
+    /**
+     * Intial database instance
+     *
+     * @param string $driver
+     */
     private function __construct($driver = 'pdo')
     {
         try {
 
             if ($driver === 'mysqli') {
-                self::$instance_mysqli = new \mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
+                self::$instance_mysqli = new \mysqli(...$this->getProfile($driver));
             } else {
-                self::$instance = new PDO("mysql:host=".DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME, DB_USERNAME, DB_PASSWORD);
+                self::$instance = new PDO(...$this->getProfile($driver));
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, ENVIRONMENT == 'development' ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
                 self::$instance->query('SET NAMES utf8');
                 self::$instance->query('SET CHARACTER SET utf8');
@@ -37,6 +51,13 @@ class DB
         }
     }
 
+    /**
+     * An method to get database instance
+     * based on database driver PDO | MySQLi
+     *
+     * @param string $driver
+     * @return PDO|MySQLi
+     */
     public static function getInstance($driver = 'pdo')
     {
         if ($driver === 'mysqli') {
@@ -46,5 +67,62 @@ class DB
             if (is_null(self::$instance)) new DB();
             return self::$instance;
         }
+    }
+
+    /**
+     * Retrive database profile 
+     * from database.php and 
+     * return database parameter as splat
+     *
+     * @param string $driver
+     * @return array
+     */
+    private function getProfile($driver = 'pdo')
+    {
+        $config = $this->getConfig();
+        $defaultProfile = $config['default_profile'];
+
+        if ($config['proxy']) $defaultProfile = $this->setProxy();
+
+        extract($config['nodes'][$defaultProfile]??[]);
+
+        if (!isset($host)) throw new \Exception("Database " . $defaultProfile . " is not valid!");
+
+        return $driver === 'pdo' ? 
+                ['mysql:host=' . $host . ';port=' . $port . ';dbname=' . $database, $username, $password] 
+                :
+                [$host, $username, $password, $database, $port];
+    }
+
+    /**
+     * Get database credential
+     *
+     * @param string $nodeName
+     * @return array
+     */
+    private function getNode(string $nodeName)
+    {
+        return $this->getConfig()['nodes'][$nodeName]??[];
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfig()
+    {
+        return require SB . 'config/database.php';
+    }
+
+    /**
+     * Load proxy validator
+     * to manage database connection
+     *
+     * @return string
+     */
+    private function setProxy()
+    {
+        if (!file_exists($dbProxy = SB . 'config/database_proxy.php')) return [];
+        include $dbProxy;
+        return $defaultProfile;
     }
 }

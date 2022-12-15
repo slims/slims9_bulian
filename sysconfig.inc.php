@@ -213,23 +213,6 @@ $sysconf['enable_xml_result'] = true;
 $sysconf['jsonld_result'] = true;
 $sysconf['jsonld_detail'] = true;
 
-/* DATABASE BACKUP config */
-// specify the full path of mysqldump binary
-// Added by Drajat Hasan
-// For Windows platform with XAMPP
-if (preg_match("/(Windows)/i", php_uname('a'))) {
-   if (preg_match("/(xampp)/i", __DIR__)) {
-      $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
-      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";
-    } else {
-      // not use XAMPP? change this value with full path of mysqldump.exe
-      $sysconf['mysqldump'] = 'C:\...\mysqldump.exe';
-    }
-} else {
-   // For Linux Platform
-   $sysconf['mysqldump'] = '/usr/bin/mysqldump';
-}
-
 // backup location (make sure it is accessible and rewritable to webserver!)
 $sysconf['temp_dir'] = '/tmp';
 $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
@@ -584,39 +567,14 @@ if ($is_auto = @ini_get('session.auto_start')) { define('SESSION_AUTO_STARTED', 
 if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 
 // check for local sysconfig For Admin (fa) file
-if (defined('DB_ACCESS') && DB_ACCESS == 'fa' && file_exists(SB.'config'.DS.'sysconfig.local.fa.inc.php')) {
-  include SB.'sysconfig.local.fa.inc.php';
-} else {
-  // check for local sysconfig file
-  if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
-    include SB.'config'.DS.'sysconfig.local.inc.php';
-  } else {
-    header("location: install/index.php");
-    exit;
-  }
+// check for local sysconfig file
+if (!file_exists(SB.'config'.DS.'database.php')) {
+  header('location: ' . SWB . 'install/index.php');
+  exit;
 }
 
 /* DATABASE RELATED */
-if (!defined('DB_HOST')) { define('DB_HOST', 'localhost'); }
-if (!defined('DB_PORT')) { define('DB_PORT', '3306'); }
-if (!defined('DB_NAME')) { define('DB_NAME', 'senayandb'); }
-if (!defined('DB_USERNAME')) { define('DB_USERNAME', 'senayanuser'); }
-if (!defined('DB_PASSWORD')) { define('DB_PASSWORD', 'password_senayanuser'); }
-// database connection
-// we prefer to use mysqli extensions if its available
-if (extension_loaded('mysqli')) {
-    /* MYSQLI */
-    $dbs = @new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
-    if (mysqli_connect_error()) {
-        die("Error Connecting to Database with message: ".mysqli_connect_error().". Please check your configuration!\n");
-    }
-} else {
-    /* MYSQL */
-    // require the simbio mysql class
-    include SIMBIO.'simbio_DB/mysql/simbio_mysql.inc.php';
-    // make a new connection object that will be used by all applications
-    $dbs = @new simbio_mysql(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
-}
+$dbs = \SLiMS\DB::getInstance('mysqli');
 
 /* Force UTF-8 for MySQL connection */
 $dbs->query('SET NAMES \'utf8\'');

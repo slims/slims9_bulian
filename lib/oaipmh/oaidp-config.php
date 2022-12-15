@@ -236,17 +236,17 @@ define('XMLSCHEMA', 'http://www.w3.org/2001/XMLSchema-instance');
 //
 
 // change according to your local DB setup.
-$DB_HOST   = DB_HOST;
-$DB_PORT   = DB_PORT;
-$DB_USER   = DB_USERNAME;
-$DB_PASSWD = DB_PASSWORD;
-$DB_NAME   = DB_NAME;												           
+// $DB_HOST   = DB_HOST;
+// $DB_PORT   = DB_PORT;
+// $DB_USER   = DB_USERNAME;
+// $DB_PASSWD = DB_PASSWORD;
+// $DB_NAME   = DB_NAME;												           
 
 // Data Source Name: This is the universal connection string
 // if you use something other than mysql edit accordingly.
 // Example for MySQL
 //$DSN = "mysql://$DB_USER:$DB_PASSWD@$DB_HOST/$DB_NAME";
-$DSN = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME";
+// $DSN = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME";
 // Example for Oracle
 // $DSN = "oci8://$DB_USER:$DB_PASSWD@$DB_NAME";
 

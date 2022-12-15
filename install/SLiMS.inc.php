@@ -349,15 +349,12 @@ SQL;
 
   function createConfigFile(array $options)
   {
-    $base_config_file = __DIR__ . '/../config/sysconfig.local.inc-sample.php';
-    $config_file_path = __DIR__ . '/../config/sysconfig.local.inc.php';
+    $base_config_file = __DIR__ . '/../config/database.sample.php';
+    $config_file_path = __DIR__ . '/../config/database.php';
 
-    if (!is_readable($base_config_file)) {
-      throw new Exception('File ' . $base_config_file . ' not readable', 5000);
-    }
-    if (!is_writable(dirname($base_config_file))) {
-      throw new Exception('Directory ' . dirname($base_config_file) . ' not writable', 5001);
-    }
+    if (!is_readable($base_config_file)) throw new Exception('File ' . $base_config_file . ' not readable', 5000);
+
+    if (!is_writable(dirname($base_config_file))) throw new Exception('Directory ' . dirname($base_config_file) . ' not writable', 5001);
 
     $config_content = file_get_contents($base_config_file);
     $config_content = str_replace("_DB_HOST_", $options['db_host'], $config_content);

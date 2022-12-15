@@ -5,7 +5,7 @@
  * @File name           : index.php
  */
 
-if (file_exists(__DIR__ . '/../config/sysconfig.local.inc.php')) {
+if (file_exists(__DIR__ . '/../config/database.php')) {
     header('Location: ' . '../index.php');
     exit();
 }
