@@ -566,11 +566,22 @@ $sysconf['admin_home']['mode'] = 'dashboard'; // set as 'default' or 'dashboard'
 if ($is_auto = @ini_get('session.auto_start')) { define('SESSION_AUTO_STARTED', $is_auto); }
 if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 
-// check for local sysconfig For Admin (fa) file
-// check for local sysconfig file
+// Check database config
 if (!file_exists(SB.'config'.DS.'database.php')) {
-  header('location: ' . SWB . 'install/index.php');
-  exit;
+  // backward compatibility if upgrade process from `git pull`
+  if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
+    \SLiMS\Config::create('database.php', function($filename){
+      // get last database connection
+      include SB.'config'.DS.'sysconfig.local.inc.php';
+      $source = file_get_contents(SB.'config'.DS.'database.sample.php');
+      $params = [['_DB_HOST_','_DB_NAME_','_DB_PORT_','_DB_USER_','_DB_PASSWORD_'],[DB_HOST,DB_NAME,DB_PORT,DB_USERNAME,DB_PASSWORD], $source];
+      return str_replace(...$params);
+    });
+  } else {
+    // Redirect to installer
+    header('location: ' . SWB . 'install/index.php');
+    exit;
+  }
 }
 
 /* DATABASE RELATED */

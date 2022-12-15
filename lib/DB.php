@@ -88,6 +88,9 @@ class DB
 
         if (!isset($host)) throw new \Exception("Database " . $defaultProfile . " is not valid!");
 
+        // Casting $port as integer
+        $port = (int)$port;
+
         return $driver === 'pdo' ? 
                 ['mysql:host=' . $host . ';port=' . $port . ';dbname=' . $database, $username, $password] 
                 :

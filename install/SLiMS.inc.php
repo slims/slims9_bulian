@@ -358,7 +358,7 @@ SQL;
 
     $config_content = file_get_contents($base_config_file);
     $config_content = str_replace("_DB_HOST_", $options['db_host'], $config_content);
-    $config_content = str_replace("_DB_PORT_", (isset($options['db_port']) ? $options['db_port'] : 3306), $config_content);
+    $config_content = str_replace("'_DB_PORT_'", (isset($options['db_port']) ? (int)$options['db_port'] : 3306), $config_content);
     $config_content = str_replace("_DB_NAME_", $options['db_name'], $config_content);
     $config_content = str_replace("_DB_USER_", $options['db_user'], $config_content);
     $config_content = str_replace("_DB_PASSWORD_", $options['db_pass'], $config_content);
