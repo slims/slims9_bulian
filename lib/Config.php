@@ -118,6 +118,13 @@ class Config
         return $config;
     }
 
+    /**
+     * Get data with dot separator
+     *
+     * @param string $key
+     * @param stirng $default
+     * @return array|null
+     */
     public function getGlobal($key, $default = null)
     {
         global $sysconf;
