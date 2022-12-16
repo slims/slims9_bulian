@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:08:37
- * @modify date 2022-09-28 15:52:28
+ * @modify date 2022-12-16 15:04:15
  * @license GPLv3
  * @desc [description]
  */
@@ -149,10 +149,7 @@ class Blueprint
      */
     public function __set(string $key, $value)
     {
-        if (isset($this->data['rdbmsOpt'][$key]))
-        {
-            $this->data['rdbmsOpt'][$key] = $value;
-        }
+        if (isset($this->data['rdbmsOpt'][$key])) $this->data['rdbmsOpt'][$key] = $value;
     }
 
     /**
