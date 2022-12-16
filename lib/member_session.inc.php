@@ -21,6 +21,9 @@
  *
  */
 
+use SLiMS\Session\Factory as SessionFactory;
+use SLiMS\Session\Driver\Files;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -28,14 +31,5 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-
-// always use session cookies
-@ini_set('session.use_cookies', true);
-// use more secure session ids
-@ini_set('session.hash_function', 1);
-// no cache
-@session_cache_limiter('nocache');
-// set session name and start the session
-@session_name(MEMBER_COOKIES_NAME);
-// set session cookies params
-@session_set_cookie_params(43200, SWB);
+// use session factory to handle session based on default SLiMS or user handler
+SessionFactory::use(config('customSession', Files::class))->start('memberArea');

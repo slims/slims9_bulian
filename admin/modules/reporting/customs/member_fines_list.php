@@ -162,8 +162,9 @@ if (!$reportView) {
     }
     else
     {
-        $date_criteria = ' AND fines_date=\''.date('Y-m-d').'\' ';
-        $dateInput = '?finesDateStart='.date('Y-m-d');
+        $date_input = isset($_GET['singleDate']) ? $_GET['finesDate'] : date('Y-m-d');
+        $date_criteria = ' AND fines_date=\''.$date_input.'\' ';
+        $dateInput = '?finesDateStart='.$date_input;
         $fines_criteria .= $date_criteria;   
     }
 
@@ -183,7 +184,7 @@ if (!$reportView) {
     $reportgrid->table_header_attr = 'class="dataListHeaderPrinted"';
     $reportgrid->column_width = array('1' => '80%');
     $reportgrid->show_spreadsheet_export = true;
-    $reportgrid->spreadsheet_export_btn = '<a href="' . AWB . 'modules/reporting/customs/member_fines_list.csv.php'.$dateInput.'" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
+    $reportgrid->spreadsheet_export_btn = '<a href="' . AWB . 'modules/reporting/customs/member_fines_list.csv.php'.simbio_security::xssFree($dateInput).'" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
 
     // callback function to show fines list
     function showFinesList($obj_db, $array_data)

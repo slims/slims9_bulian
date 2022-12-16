@@ -97,6 +97,8 @@ abstract class Contract
         return $this->error;
     }
 
+    abstract function dump(array $query);
+
     abstract function getDocuments();
 
     abstract function toArray();

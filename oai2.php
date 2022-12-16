@@ -85,12 +85,7 @@ foreach($attribs as $val) {
 
 
 // Create a PDO object
-try {
-		//$db = new PDO($DSN);
-	$db = new PDO($DSN, $DB_USER, $DB_PASSWD);
-} catch (PDOException $e) {
-    exit('Connection failed: ' . $e->getMessage());
-}
+$db = \SLiMS\DB::getInstance();
 
 // For generic usage or just trying:
 // require_once('xml_creater.php');

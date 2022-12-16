@@ -43,12 +43,10 @@ class DefaultEngine extends Contract
             // build sql command
             $sql = $this->buildSQL();
 
-            // debug SQL
-            debug($sql, $this->execute);
+            // dump SQL
+            $this->dump($sql);
 
-            // execute query
             $db = DB::getInstance();
-            // dd($sql['count'],$this->execute);
             $count = $db->prepare($sql['count']);
             $count->execute($this->execute);
             $query = $db->prepare($sql['query']);
@@ -295,11 +293,11 @@ class DefaultEngine extends Contract
                     break;
 
                 case 'publishyear':
-                    $this->execute[] = $query;
+                    $this->execute[] = '%' . $query . '%';
                     if ($bool === '-') {
-                        $sql_criteria .= " b.publish_year != ?";
+                        $sql_criteria .= " b.publish_year NOT LIKE ?";
                     } else {
-                        $sql_criteria .= " b.publish_year = ?";
+                        $sql_criteria .= " b.publish_year LIKE ?";
                     }
                     break;
 
@@ -612,5 +610,10 @@ class DefaultEngine extends Contract
     function toRSS()
     {
         // TODO: Implement toRSS() method.
+    }
+
+    function dump(array $sql)
+    {
+        debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
     }
 }

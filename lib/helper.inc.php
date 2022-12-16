@@ -89,6 +89,14 @@ if (!function_exists('debug'))
     }
 }
 
+if (!function_exists('isDev')) 
+{
+    function isDev()
+    {
+        return ENVIRONMENT === 'development' ? true : false;
+    }
+}
+
 if (!function_exists('toastr'))
 {
     /**
@@ -117,27 +125,23 @@ if (!function_exists('toastr'))
         // Anonymous class
         return new Class($message)
         {
+            private $message = '';
+
             public function __construct($message)
             {
                 $this->message = $message;
             }
 
             /**
-             * use magic method to identifiy what
+             * use magic method to identifiy which
              * template user use.
              */
             public function __call($method, $parameters)
             {
-                if (in_array($method, ['error','info','success','warning']))
-                {
-                    // Call toastrJS on utility class
-                    utility::jsToastr($parameters[0]??__(ucfirst($method)), $this->message, $method);
-                }
-                else
-                {
-                    // native as default if template not available
-                    utility::jsAlert($this->message);
-                }
+                // Call toastrJS on utility class
+                if (in_array($method, ['error','info','success','warning'])) utility::jsToastr($parameters[0]??__(ucfirst($method)), $this->message, $method);
+                // native as default if template not available
+                else utility::jsAlert($this->message);
             }
         };
     }

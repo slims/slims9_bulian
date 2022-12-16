@@ -23,7 +23,15 @@ if (is_array($METADATAFORMATS[$metadataPrefix])
 	$errors[] = oai_error('cannotDisseminateFormat', 'metadataPrefix', $metadataPrefix);
 }
 
-$identifier = $args['identifier'];
+if (is_numeric($args['identifier'])) {
+    $identifier = $args['identifier'];
+    $official_identifier = $oaiprefix = "oai".$delimiter.$repositoryIdentifier.$delimiter.$idPrefix.'-'.$identifier;
+} else {
+    $_identifier = explode('-', $args['identifier']);
+    $identifier = $_identifier[1];
+    $official_identifier = urldecode($args['identifier']);
+}
+
 $query = selectallQuery($metadataPrefix, $identifier);
 
 debug_message("Query: $query") ;
@@ -56,7 +64,7 @@ if ($record===false) {
 	$errors[] = oai_error('idDoesNotExist', '', $identifier);	
 }
 
-$identifier = $record[$SQL['identifier']];;
+$identifier = $record[$SQL['identifier']];
 
 $datestamp = formatDatestamp($record[$SQL['datestamp']]); 
 
@@ -69,7 +77,8 @@ if (isset($record[$SQL['deleted']]) && ($record[$SQL['deleted']] == 'true') &&
 
 $outputObj = new ANDS_Response_XML($args);
 $cur_record = $outputObj->create_record();
-$cur_header = $outputObj->create_header($identifier, $datestamp,$record[$SQL['set']],$cur_record);
+#$cur_header = $outputObj->create_header($identifier, $datestamp,$record[$SQL['set']],$cur_record);
+$cur_header = $outputObj->create_header($official_identifier, $datestamp,$record[$SQL['set']],$cur_record);
 // return the metadata record itself
 if (!$status_deleted) {
 	include($inc_record); // where the metadata node is generated.

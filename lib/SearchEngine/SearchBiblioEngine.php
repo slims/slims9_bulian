@@ -28,6 +28,11 @@ use SLiMS\DB;
 class SearchBiblioEngine extends Contract
 {
     protected $disable_item_data = false;
+    public array $searchable_fields = [
+        'title', 'author', 'isbn', 'subject', 
+        'location', 'gmd', 'colltype', 'publisher', 
+        'callnumber', 'publishyear'
+    ];
 
     function getDocuments()
     {
@@ -37,8 +42,8 @@ class SearchBiblioEngine extends Contract
         // build sql command
         $sql = $this->buildSQL();
 
-        // debug SQL
-        debug($sql, $this->execute);
+        // dump SQL
+        $this->dump($sql);
 
         try {
             // execute query
@@ -150,14 +155,15 @@ class SearchBiblioEngine extends Contract
                         $sql_criteria .= " and ";
                     }
                 }
+
                 
                 $bool = $token['b'];
                 $query = $token['q'];
                 if (in_array($field, array('title', 'author', 'subject', 'notes'))) {
                     $query = '+' . ($is_phrase ? '"' . $query . '"' : $query);
-                    if (!$is_phrase) {
-                        $query = preg_replace('@\s+@i', ' +', $query);
-                    }
+                    // if (!$is_phrase) {
+                    //     $query = preg_replace('@\s+@i', ' +', $query);
+                    // }
                 }
                 $boolean = '';
             }
@@ -165,19 +171,25 @@ class SearchBiblioEngine extends Contract
             // check fields
             switch ($field) {
                 case 'author':
-                    $this->execute[':author'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.author) against (:author in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':authormatch'] = "'$match'";
+                        $this->execute[':authornotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.author) against (:authormatch in boolean mode)) and not (match (sb.author) against (:authornotmatch in boolean mode))";
                     } else {
+                        $this->execute[':author'] = "'$query'";
                         $sql_criteria .= " (match (sb.author) against (:author in boolean mode))";
                     }
                     break;
 
                 case 'subject':
-                    $this->execute[':subject'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.topic) against (:subject in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':subjectmatch'] = "'$match'";
+                        $this->execute[':subjectnotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.topic) against (:subjectmatch in boolean mode)) and not (match (sb.topic) against (:subjectnotmatch in boolean mode))";
                     } else {
+                        $this->execute[':subject'] = "'$query'";
                         $sql_criteria .= " (match (sb.topic) against (:subject in boolean mode))";
                     }
                     break;
@@ -192,11 +204,11 @@ class SearchBiblioEngine extends Contract
                             $location_q->execute($idx);
                             $id = 0;
                             while ($location_d = $location_q->fetch()) {
-                                $this->execute[':location' . $id] = "%" . $location_d[0] . "%";
+                                $this->execute[':location' . $id] = $location_d[0];
                                 if ($bool == '-') {
-                                    $sql_criteria_tmp[] = " sb.location not like :location$id";
+                                    $sql_criteria_tmp[] = " sb.location not = :location$id";
                                 } else {
-                                    $sql_criteria_tmp[] = " sb.location like :location$id";
+                                    $sql_criteria_tmp[] = " sb.location = :location$id";
                                 }
                                 $id++;
                             }
@@ -437,10 +449,14 @@ class SearchBiblioEngine extends Contract
                     break;
 
                 default:
-                    $this->execute[':title'] = "'$query'";
                     if ($bool == '-') {
-                        $sql_criteria .= " not (match (sb.title, sb.series_title) against (:title in boolean mode))";
+                        list($match, $notMatch) = explode(' ', $query);
+                        $this->execute[':titlematch'] = "'$match'";
+                        $this->execute[':titlenotmatch'] = "'" . str_replace('-', '+', $notMatch) . "'";
+                        $sql_criteria .= " (match (sb.title, sb.series_title) against (:titlematch in boolean mode))";
+                        $sql_criteria .= " and not (match (sb.title, sb.series_title) against (:titlenotmatch in boolean mode))";
                     } else {
+                        $this->execute[':title'] = "'$query'";
                         $sql_criteria .= " (match (sb.title, sb.series_title) against (:title in boolean mode))";
                     }
                     break;
@@ -662,5 +678,10 @@ class SearchBiblioEngine extends Contract
     function toRSS()
     {
         // TODO: Implement toRSS() method.
+    }
+
+    function dump(array $sql)
+    {
+        debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
     }
 }

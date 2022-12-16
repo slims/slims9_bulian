@@ -17,6 +17,7 @@ class Cache
 {
     private object $provider;
     private array $options;
+    private static $instance = null;
 
     /**
      * Cache initialization
@@ -26,13 +27,19 @@ class Cache
      * @param array $options
      * @return void
      */
-    public function __construct(string $provider, array $options)
+    private function __construct(string $provider, array $options)
     {
         if (!$this->isProviderExists($provider)) throw new Exception("Provider {$provider} is not exists!");
 
         $this->provider = new $provider(...array_values($options));
 
         if (!$this->isProviderUseStandart()) throw new Exception("Provider {$provider} is not use Contract class");
+    }
+
+    public static function getInstance(string $provider, array $options)
+    {
+        if (is_null(self::$instance)) self::$instance = new Cache($provider, $options);
+        return self::$instance;
     }
 
     /**
@@ -65,7 +72,7 @@ class Cache
         
         $cacheProviderDetail = $cacheConfig['providers'][$cacheProviderName];
         
-        return new Static($cacheProviderDetail['class'], $cacheProviderDetail['options']);
+        return self::getInstance($cacheProviderDetail['class'], $cacheProviderDetail['options']);
     }
 
     /**

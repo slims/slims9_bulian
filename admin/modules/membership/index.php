@@ -427,9 +427,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
     }
     /* RECORD FORM */
-    $itemID = $dbs->escape_string(trim(isset($_POST['itemID'])?$_POST['itemID']:''));
-    $rec_q = $dbs->query("SELECT * FROM member WHERE member_id='$itemID'");
-    $rec_d = $rec_q->fetch_assoc();
+    $itemID = $dbs->escape_string(trim(isset($_POST['itemID'])?$_POST['itemID']:'0'));
+    $rec_d = [];
+    if (!empty($itemID))
+    {
+      $rec_q = $dbs->query("SELECT * FROM member WHERE member_id='$itemID'");
+      $rec_d = $rec_q->fetch_assoc();
+    }
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
@@ -441,7 +445,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->table_content_attr = 'class="alterCell2"';
 
     // edit mode flag set
-    if ($rec_q->num_rows > 0) {
+    if (!empty($itemID) && $rec_q->num_rows > 0) {
         $form->edit_mode = true;
         // record ID for delete process
         $form->record_id = $itemID;
@@ -731,7 +735,7 @@ $(document).ready(function() {
             'm.last_update AS \''.__('Last Updated').'\'');
             $datagrid->modifyColumnContent(1, 'callback{showMemberImage}');
     }
-    $datagrid->setSQLorder('member_name ASC');
+    $datagrid->setSQLorder('m.last_update DESC');
 
     // is there any search
     $criteria = 'm.member_id IS NOT NULL ';

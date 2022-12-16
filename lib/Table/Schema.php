@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:07:17
- * @modify date 2022-06-02 22:55:09
+ * @modify date 2022-12-16 14:20:41
  * @license GPLv3
  * @desc [description]
  */
@@ -21,6 +21,7 @@ class Schema
     
     private static $instance = null;
     private static $connection = null;
+    private static $connectionProfile = [];
     
     /**
      * Create Information Schema database connection
@@ -28,7 +29,8 @@ class Schema
     private function __construct()
     {
         try {
-            self::$connection = new PDO("mysql:host=".DB_HOST.';port='.DB_PORT.';dbname=information_schema', DB_USERNAME, DB_PASSWORD);
+            self::$connectionProfile = config('database.nodes.SLiMS', []);
+            self::$connection = new PDO("mysql:host=".self::$connectionProfile['host'].';port='.self::$connectionProfile['port'].';dbname=information_schema', self::$connectionProfile['username'], self::$connectionProfile['password']);
         } catch (RuntimeException $e) {
             die($e->getMessage());
         }
@@ -136,7 +138,7 @@ class Schema
 
         // Create table state
         $tableState = self::$connection->prepare('SELECT * FROM `TABLES` WHERE `TABLE_SCHEMA` = :database_name AND `TABLE_NAME` = :table_name');
-        $tableState->execute(['database_name' => DB_NAME, 'table_name' => $tableName]);
+        $tableState->execute(['database_name' => self::$connectionProfile['database'], 'table_name' => $tableName]);
 
         return (bool) $tableState->rowCount();
     }
@@ -155,7 +157,7 @@ class Schema
 
         // Create table state
         $tableState = self::$connection->prepare('SELECT * FROM `COLUMNS` WHERE `TABLE_SCHEMA` = :database_name AND `TABLE_NAME` = :table_name AND `COLUMN_NAME` = :column_name');
-        $tableState->execute(['database_name' => DB_NAME, 'table_name' => $tableName, ':column_name' => $columnName]);
+        $tableState->execute(['database_name' => self::$connectionProfile['database'], 'table_name' => $tableName, ':column_name' => $columnName]);
 
         return (bool) $tableState->rowCount();
     }
