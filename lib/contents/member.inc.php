@@ -22,6 +22,8 @@
  *
  */
 
+use SLiMS\Url;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -119,7 +121,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
-            if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
+            if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
                 header("location:" . $_GET['destination']);
             } else {
                 header('Location: index.php?p=member');
@@ -873,7 +875,7 @@ if ($is_member_login) :
         ?>
         <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member&destination=<?= urlencode($_GET['destination'] ?? '') ?>" method="post">
+            <form action="index.php?p=member&destination=<?= urlencode(simbio_security::xssFree($_GET['destination'] ?? '')) ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>
