@@ -135,7 +135,7 @@ class detail
           if (!is_null($attachment_d['access_limit'])) {
               // need member login access
               if (!utility::isMemberLogin()) {
-                $_output .= '<li class="attachment-locked" style="list-style-image: url(images/labels/locked.png)"><a class="font-italic" href="index.php?p=member&destination='.urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']).'">'.__('Please login to see this attachment').'</a></li>';
+                $_output .= '<li class="attachment-locked" style="list-style-image: url(images/labels/locked.png)"><a class="font-italic" href="index.php?p=member&destination=' . (\SLiMS\Url::getSlimsFullUri('#attachment')->encode()) . '">'.__('Please login to see this attachment').'</a></li>';
                 continue;
               // member type access check 
               } else if (utility::isMemberLogin() && !in_array($_SESSION['m_member_type_id'], unserialize($attachment_d['access_limit']))) {

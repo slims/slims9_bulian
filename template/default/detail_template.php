@@ -122,7 +122,7 @@
               <?php echo ($related) ? $related : '<p class="text-grey-dark">' . __('No other version available') . '</p>'; ?>
             </div>
 
-            <h5 class="mt-4 mb-1"><?= __('File Attachment'); ?></h5>
+            <h5 id="attachment" class="mt-4 mb-1"><?= __('File Attachment'); ?></h5>
             <div itemprop="associatedMedia">
               <?= !$file_att ? '<i>'.__('No Data').'</i>' : $file_att ; ?>
             </div>
