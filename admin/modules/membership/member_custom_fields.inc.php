@@ -20,6 +20,8 @@
  *
  */
 
+use SLiMS\Table\{Schema,Blueprint};
+
 // be sure that this file not accessed directly
 if (INDEX_AUTH != 1) {
     die("can not access this file directly");
@@ -31,17 +33,28 @@ $_q = $dbs->query("SELECT * FROM mst_custom_field WHERE `primary_table`='member'
 if(isset($_q->num_rows)){
 	while($_d = $_q->fetch_assoc()){
 		$dbfield[] = $_d;
-		// check biblio_custom field
-		$chkcol = $dbs->query("SELECT * FROM `member_custom` LIMIT 1");
-		$field = $chkcol->fetch_array();
-		// add field if not exist
-		if(!isset($field[$_d['dbfield']])){
-			$type = $_d['type']=='date'?'date':($_d['type']=='numeric'?'INT(11)':'text');
-	  		@$dbs->query("ALTER TABLE `member_custom` ADD ".$_d['dbfield']." ".$type." DEFAULT NULL comment 'field for ".$_d['label']."'");
-	  	}  	
-	  	$member_custom_fields = $dbfield;
+		
+		if (!Schema::hasColumn('member_custom', $_d['dbfield']))
+		{
+			$type = $_d['type']=='date'?'date':($_d['type']=='numeric'?['number', 11]:'text');
+			Schema::table('member_custom', function(Blueprint $table) use($_d,$type) {
+				// Set $table parametter
+				$params = [$_d['dbfield']]; // if $type didn't have constraint
+
+				// Need constraint?
+				if (is_array($type)) {
+					$params[] = $type[1];
+					$type = $type[0];
+				}
+
+				// Register coloumn into $table
+				$table->{$type}(...$params)->nullable()->comment('field for ' . $_d['label'])->add();
+			});
+		}
+		$member_custom_fields = $dbfield;
 	}
 }
+
 /**
  * Here you can add custom field to SLiMS Membership database
  * The field you define here must also exists in 'member_custom' table in database
