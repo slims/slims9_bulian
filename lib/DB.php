@@ -11,6 +11,7 @@ namespace SLiMS;
 use PDO;
 use PDOException;
 use PHPMailer\PHPMailer\Exception;
+use Ifsnop\Mysqldump as IMysqldump;
 
 class DB
 {
@@ -67,6 +68,20 @@ class DB
             if (is_null(self::$instance)) new DB();
             return self::$instance;
         }
+    }
+
+    /**
+     * Create MySQLDump instance 
+     * with default profile provide by
+     * this Object.
+     *
+     * @param array $settings
+     * @return IMysqldump\Mysqldump
+     */
+    public static function backup(array $settings = [])
+    {
+        $static = new static;
+        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [$settings]));
     }
 
     /**

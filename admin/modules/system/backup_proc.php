@@ -19,6 +19,9 @@
  *
  */
 
+use SLiMS\DB;
+use Ifsnop\Mysqldump as IMysqldump;
+
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
@@ -32,8 +35,6 @@ require '../../../sysconfig.inc.php';
 require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-system');
-
-use Ifsnop\Mysqldump as IMysqldump;
 
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
@@ -124,7 +125,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
 
                 // time string to append to filename
                 $time2append = (date('Ymd_His'));
-                $dump = new IMysqldump\Mysqldump("mysql:host=".DB_HOST.";port=".DB_PORT.";dbname=".DB_NAME, DB_USERNAME,DB_PASSWORD,$dumpSettings);
+                $dump = DB::backup($dumpSettings);
                 $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
 
                 $data['user_id'] = $_SESSION['uid'];
