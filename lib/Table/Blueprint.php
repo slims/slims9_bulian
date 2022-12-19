@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:08:37
- * @modify date 2022-12-16 15:04:15
+ * @modify date 2022-12-19 12:10:35
  * @license GPLv3
  * @desc [description]
  */
@@ -291,6 +291,19 @@ class Blueprint
         $lastIndexData = array_key_last($this->data['columns']);
 
         $this->data['columns'][$lastIndexData] = $this->data['columns'][$lastIndexData] . ' DEFAULT NULL';
+    }
+
+    /**
+     * Detail information for a column
+     *
+     * @param sring $comment
+     * @return void
+     */
+    private function scopeComment(string $comment)
+    {
+        $lastIndexData = array_key_last($this->data['columns']);
+        
+        $this->data['columns'][$lastIndexData] = $this->data['columns'][$lastIndexData] . ' COMMENT \'' . $comment . '\' ';
     }
 
     /**
