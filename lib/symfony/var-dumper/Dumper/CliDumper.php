@@ -558,9 +558,15 @@ class CliDumper extends AbstractDumper
     protected function dumpLine(int $depth, bool $endOfValue = false)
     {
         if ($this->colors) {
-            $this->line = sprintf("\033[%sm%s\033[m", $this->styles['default'], $this->line);
+            $file = '';
+            if (0 === $depth && isset($_SESSION['dumpFile'])) 
+            {
+                $file = isset($_SESSION['dumpFile']) ? '# '. $_SESSION['dumpFile'] . PHP_EOL : '';
+            }
+            $this->line = $file . sprintf("\033[%sm%s\033[m", $this->styles['default'], $this->line);
         }
         parent::dumpLine($depth);
+        unset($_SESSION['dumpFile']);
     }
 
     protected function endValue(Cursor $cursor)
