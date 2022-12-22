@@ -97,6 +97,17 @@ if (!function_exists('isDev'))
     }
 }
 
+// set version on static files
+if (!function_exists('v'))
+{
+  function v($filename)
+  {
+    global $sysconf;
+    $version = substr(isDev() ? md5(date('this')) : md5(SENAYAN_VERSION_TAG . $sysconf['static_file_version']), 0,5);
+    return  $filename . '?v=' . $version;
+  }
+}
+
 if (!function_exists('toastr'))
 {
     /**

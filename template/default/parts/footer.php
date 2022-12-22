@@ -107,8 +107,8 @@ include LIB . "contents/chat.php"; ?>
 <?php endif; ?>
 
 <!-- // load our vue app.js -->
-<script src="<?php echo assets('js/app.js?v=' . date('Ymd-his')); ?>"></script>
-<script src="<?php echo assets('js/app_jquery.js?v=' . date('Ymd-his')); ?>"></script>
+<script src="<?php echo assets(v('js/app.js')); ?>"></script>
+<script src="<?php echo assets(v('js/app_jquery.js')); ?>"></script>
 <?php include __DIR__ . "./../assets/js/vegas.js.php"; ?>
 <?php if ($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) : ?>
     <script>

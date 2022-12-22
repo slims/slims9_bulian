@@ -670,6 +670,9 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
 
+/* Random static file version for production mode */
+$sysconf['static_file_version'] = 444981076;
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
 
