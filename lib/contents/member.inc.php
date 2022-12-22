@@ -174,10 +174,11 @@ if ($is_member_login) {
             // switch to delete process
             if (isset($_POST['delete_bookmark']))
             {
+
                 DB::getInstance()
                     ->prepare('DELETE FROM `biblio_mark` WHERE `biblio_id` = ? AND `member_id` = ?')
                     ->execute([$_POST['bookmark_id'], $_SESSION['mid']]);
-
+                unset($_SESSION['bookmark'][$_POST['bookmark_id']]);
                 exit(Json::stringify(['status' => true, 'message' => __('Data has been deleted')])->withHeader());    
             }
 
@@ -186,7 +187,9 @@ if ($is_member_login) {
                 ->prepare('INSERT IGNORE INTO `biblio_mark` SET `biblio_id` = ?, `member_id` = ?, `id` = ?')
                 ->execute([$_POST['bookmark_id'], $_SESSION['mid'], md5($_POST['bookmark_id'] . $_SESSION['mid'])]);
 
-            exit(Json::stringify(['status' => true, 'message' => __('Data has been saved')])->withHeader());
+            $_SESSION['bookmark'][$_POST['bookmark_id']] = $_POST['bookmark_id'];
+
+            exit(Json::stringify(['status' => true, 'message' => __('Data has been saved'), 'label' => __('Bookmarked')])->withHeader());
         } catch (PDOException $e) {
             exit(Json::stringify(['status' => false, 'message' => isDev() ? $e->getMessage() : __('Data failed saved')])->withHeader());   
         } catch (Exception $e) {

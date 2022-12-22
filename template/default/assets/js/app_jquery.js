@@ -56,8 +56,12 @@ $(document).ready(() => {
 
     $('.bookMarkBook').click(function(e){
         e.preventDefault()
+        if ($(this).hasClass('bg-success')) return;
+
         let id = $(this).data('id')
         $.post('index.php?p=member&sec=bookmark', {bookmark_id: id, callback: 'json'}, (res,state,http) => {
+            $(this).removeClass('text-secondary').addClass('bg-success text-white rounded-lg')
+            $('#label-' + id).html(res.label)
             toastr.success(res.message)
         }).fail(function(state){
             toastr.error(state.responseJSON.message, '', {

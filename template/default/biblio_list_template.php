@@ -220,24 +220,26 @@ function createButton(int $biblio_id, string $title)
                                 Url::getSlimsBaseUri('?p=show_detail&id=' . $biblio_id . '#comment') : 
                                 Url::getSlimsBaseUri('?p=member&destination=' . Url::getSlimsBaseUri('?p=show_detail&id=' . $biblio_id . '#comment')->encode()));
 
-    list($comment,$bookmark,$share) = [__('Comment'),__('Bookmark'),__('Share')];
+    list($comment,$bookmark,$share) = [__('Comment'), (in_array($biblio_id, $_SESSION['bookmark']??[]) ? __('Bookmarked') : __('Bookmark')),__('Share')];
+
+    $setBookmarked = trim(isset($_SESSION['bookmark'][$biblio_id]) ? 'bg-success text-white rounded-lg' : 'text-secondary');
     return <<<HTML
     <div class="d-flex flex-row text-xs my-1">
-        <a href="{$commentUrlCondition}" class="text-decoration-none text-secondary font-weight-bolder mr-3">
+        <a href="{$commentUrlCondition}" style="cursor: pointer" class="text-decoration-none text-secondary font-weight-bolder mr-1 px-2 py-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
                 <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                 <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
             </svg>
             {$comment}
         </a>
-        <a href="#" data-id="{$biblio_id}" class="bookMarkBook text-decoration-none text-secondary font-weight-bolder mr-3">
+        <a href="javascript:void(0)" style="cursor: pointer" data-id="{$biblio_id}" class="bookMarkBook text-decoration-none font-weight-bolder mr-1 px-2 py-1 {$setBookmarked}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-postcard-heart" viewBox="0 0 16 16">
                 <path d="M8 4.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7Zm3.5.878c1.482-1.42 4.795 1.392 0 4.622-4.795-3.23-1.482-6.043 0-4.622ZM2.5 5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Z"/>
                 <path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2Z"/>
             </svg>
-            {$bookmark}
+            <label id="label-{$biblio_id}" style="cursor: pointer !important" class="m-0">{$bookmark}</label>
         </a>
-        <a href="javascript:void(0)" data-id="{$biblio_id}" data-title="{$title}" data-toggle="modal" data-target="#mediaSocialModal" class="text-decoration-none text-secondary font-weight-bolder mr-3">
+        <a href="javascript:void(0)" style="cursor: pointer" data-id="{$biblio_id}" data-title="{$title}" data-toggle="modal" data-target="#mediaSocialModal" class="text-decoration-none text-secondary font-weight-bolder mr-1 px-2 py-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
                 <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
             </svg>
