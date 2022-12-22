@@ -1047,11 +1047,21 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     }
 
     /**
-     * Upgrade role to v9.x.x
+     * Upgrade role to v9.5.2
      */
     function upgrade_role_32()
     {
         $sql['alter'][] = 'ALTER TABLE `search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
-    }
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
+          `id` varchar(32) NOT NULL,
+          `member_id` varchar(20) NOT NULL,
+          `biblio_id` int(11) NOT NULL,
+          `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+          UNIQUE KEY `id` (`id`),
+          KEY `member_id_idx` (`member_id`),
+          KEY `biblio_id_idx` (`biblio_id`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
+        return $this->slims->query($sql, ['create', 'alter']);
+    }
 }

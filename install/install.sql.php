@@ -1109,6 +1109,16 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_documents` (
   KEY `location` (`location`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
+  `id` varchar(32) NOT NULL,
+  `member_id` varchar(20) NOT NULL,
+  `biblio_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  UNIQUE KEY `id` (`id`),
+  KEY `member_id_idx` (`member_id`),
+  KEY `biblio_id_idx` (`biblio_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
 $query_trigger[] = "
     CREATE TRIGGER `delete_loan_history` AFTER DELETE ON `loan`
      FOR EACH ROW DELETE FROM `loan_history` WHERE loan_id=OLD.loan_id;";

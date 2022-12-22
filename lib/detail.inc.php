@@ -343,7 +343,7 @@ HTML;
           foreach ($biblio_custom_fields as $custom_field) {
             if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
 
-              $data_field = unserialize($custom_field['data']);
+              $data_field = unserialize($custom_field['data']??'');
               $data_record  = $data[$custom_field['dbfield']];
 
               switch ($custom_field['type']) {

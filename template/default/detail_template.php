@@ -4,7 +4,6 @@
  * @Date                : 2019-01-30 00:58
  * @File name           : detail_template.php
  */
-
 ?>
 
 <div class="container">
@@ -14,6 +13,21 @@
                 <div class="shadow">
                   <?= $image; ?>
                 </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center text-sm my-3">
+                <a href="#" data-id="<?= $biblio_id ?>" class="bookMarkBook text-decoration-none text-secondary font-weight-bolder mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-postcard-heart" viewBox="0 0 16 16">
+                        <path d="M8 4.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7Zm3.5.878c1.482-1.42 4.795 1.392 0 4.622-4.795-3.23-1.482-6.043 0-4.622ZM2.5 5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Z"/>
+                        <path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2Z"/>
+                    </svg>
+                    <?= __('Bookmark') ?>
+                </a>
+                <a href="javascript:void(0)" data-toggle="modal" data-id="<?= $biblio_id ?>" data-title="<?= $title ?>" data-target="#mediaSocialModal" class="text-decoration-none text-secondary font-weight-bolder mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                        <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                    </svg>
+                    <?= __('Share') ?>
+                </a>
             </div>
         </div>
         <div class="flex-1 p-0 px-md-4">
@@ -127,7 +141,7 @@
               <?= !$file_att ? '<i>'.__('No Data').'</i>' : $file_att ; ?>
             </div>
 
-            <h5 class="mt-4 mb-1"><?= __('Comments'); ?></h5>
+            <h5 id="comment" class="mt-4 mb-1"><?= __('Comments'); ?></h5>
           <?php echo showComment($biblio_id); ?>
           <?php if(!isset($_SESSION['mid']) && $sysconf['comment']['enable']) : ?>
               <hr>

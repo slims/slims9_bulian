@@ -22,7 +22,7 @@
  *
  */
 
-use SLiMS\Url;
+use SLiMS\{Url,DB,Json};
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -165,10 +165,33 @@ if ($is_member_login) {
                 'message' => $message,
                 'count' => count($_SESSION['m_mark_biblio'])
             ];
-            header('Content-type: application/json');
-            echo json_encode($res);
-            exit();
+            exit(Json::stringify($res)->withHeader());
         }
+    }
+    if (isset($_POST['bookmark_id']))
+    {
+        try {
+            // switch to delete process
+            if (isset($_POST['delete_bookmark']))
+            {
+                DB::getInstance()
+                    ->prepare('DELETE FROM `biblio_mark` WHERE `biblio_id` = ? AND `member_id` = ?')
+                    ->execute([$_POST['bookmark_id'], $_SESSION['mid']]);
+
+                exit(Json::stringify(['status' => true, 'message' => __('Data has been deleted')])->withHeader());    
+            }
+
+            // input biblio data to database
+            DB::getInstance()
+                ->prepare('INSERT IGNORE INTO `biblio_mark` SET `biblio_id` = ?, `member_id` = ?, `id` = ?')
+                ->execute([$_POST['bookmark_id'], $_SESSION['mid'], md5($_POST['bookmark_id'] . $_SESSION['mid'])]);
+
+            exit(Json::stringify(['status' => true, 'message' => __('Data has been saved')])->withHeader());
+        } catch (PDOException $e) {
+            exit(Json::stringify(['status' => false, 'message' => isDev() ? $e->getMessage() : __('Data failed saved')])->withHeader());   
+        } catch (Exception $e) {
+            exit(Json::stringify(['status' => false, 'message' => isDev() ? $e->getMessage() : __('Data failed saved')])->withHeader());   
+        } 
     }
 } else {
     if (isset($_POST['callback']) && $_POST['callback'] === 'json') {
@@ -177,10 +200,8 @@ if ($is_member_login) {
             'message' => 'Please, login first!',
             'count' => 0
         ];
-        header('Content-type: application/json');
         http_response_code(401);
-        echo json_encode($res);
-        exit();
+        exit(Json::stringify($res)->withHeader());
     }
 }
 
@@ -381,6 +402,68 @@ if ($is_member_login) :
         $_result = $_loan_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
         $_result = '<div class="memberLoanListInfo my-3">' . $_loan_list->num_rows . ' ' . __('item(s) currently on loan') . ' | <a href="?p=download_current_loan" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i>&nbsp;&nbsp;' . __('Download All Current Loan') . '</a></div>' . "\n" . $_result;
         return $_result;
+    }
+
+    function showBookmarkList($num_recs_show = 20)
+    {
+        global $dbs;
+
+        // table spec
+        $_table_spec = 'biblio_mark AS bm
+            INNER JOIN biblio AS b ON b.biblio_id=bm.biblio_id';
+        // create datagrid
+        $_mark_list = new simbio_datagrid();
+        $_mark_list->disable_paging = false;
+        $_mark_list->table_ID = 'loanlist';
+        $_mark_list->setSQLColumn('b.title AS \'' . __('Title') . '\'', 'bm.created_at AS \'' . __('Marked At') . '\'','bm.biblio_id AS \'' . __('Action') . '\'');
+        $_mark_list->setSQLorder('bm.created_at DESC');
+        // $_mark_list->invisible_fields = [2];
+        $_criteria = sprintf('bm.member_id=\'%s\'', $_SESSION['mid']);
+        $_mark_list->setSQLCriteria($_criteria);
+
+
+        // modify column value
+        $_mark_list->modifyColumnContent(0, 'callback{showBookCover}');
+        $_mark_list->modifyColumnContent(1, 'callback{showDetailDate}');
+        $_mark_list->modifyColumnContent(2, 'callback{showMarkDetail}');
+        // set table and table header attributes
+        $_mark_list->table_attr = 'align="center" class="memberBookmarkList table table-striped" cellpadding="5" cellspacing="0"';
+        $_mark_list->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+        $_mark_list->using_AJAX = false;
+        // return the result
+        $_result = $_mark_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
+        $_result = '<div class="memberLoanListInfo my-3">' . $_mark_list->num_rows . ' ' . __('title currently on list') . ' </div>' . "\n" . $_result;
+        return $_result;
+    }
+
+    function showDetailDate($obj_db, $data)
+    {
+        global $sysconf;
+        if (isset($_COOKIE['select_lang'])) $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
+        return \Carbon\Carbon::parse($data[1])->locale($sysconf['default_lang'])->isoFormat('dddd, LL');
+    }
+
+    function showBookCover($obj_db, $data)
+    {
+        $author = $obj_db->query('select ma.author_name from biblio_author as ba 
+        inner join mst_author as ma on ba.author_id = ma.author_id where ba.biblio_id = ' . $obj_db->escape_string($data[2]));
+        $list = [];
+
+        if ($author->num_rows > 0)
+        {
+            while ($result = $author->fetch_row()) {
+                $list[] = $result[0];
+            }
+        }
+
+        return '<strong><a title="'.__('Click to view detail').'" href="'.Url::getSlimsBaseUri('?p=show_detail&id=' . $data[2]).'">'.$data[0].'</a></strong>
+                <br>
+                <div class="d-flex flex-row"><span class="text-muted text-sm">'.implode('</span>,<span class="text-muted text-sm">', $list).'</span></div>';
+    }
+
+    function showMarkDetail($obj_db, $data)
+    {
+        return '<button class="btn btn-danger btn-sm deleteBookmark" data-id="' . $data[2] . '"><i class="fa fa-trash"></i></button>';
     }
 
     /* callback function to show overdue */
@@ -708,6 +791,10 @@ if ($is_member_login) :
                             'text' => __('Current Loan'),
                             'link' => 'index.php?p=member'
                         ],
+                        'bookmark' => [
+                            'text' => __('Title Bookmark'),
+                            'link' => 'index.php?p=member&sec=bookmark'
+                        ],
                         'title_basket' => [
                             'text' => __('Title Basket'),
                             'link' => 'index.php?p=member&sec=title_basket'
@@ -739,6 +826,12 @@ if ($is_member_login) :
                             echo '<div class="memberInfoHead">' . __('My Current Loan') . '</div>' . "\n";
                             echo '</div>';
                             echo showLoanList();
+                            break;
+                        case 'bookmark':
+                            echo '<div class="tagline">';
+                            echo '<div class="memberInfoHead">' . __('My Title Bookmark') . '</div>' . "\n";
+                            echo '</div>';
+                            echo showBookmarkList();
                             break;
                         case 'title_basket':
                             echo '<div class="tagline">';
@@ -861,6 +954,29 @@ if ($is_member_login) :
                         }
                     });
                 });
+                
+                $('.deleteBookmark').click(function(e){
+                    e.preventDefault();
+                    let id = $(this).data('id')
+                    $.post('index.php?p=member', {bookmark_id:id,delete_bookmark: true}, function(res,state) {
+                        if (!res.status)
+                        {
+                            toastr.error(res.message)    
+                        }
+                        else
+                        {
+                            toastr.success(res.message, '',{
+                                timeOut: 2000,
+                                onHidden: function() {
+                                    window.location.replace('index.php?p=member&sec=bookmark')
+                                }
+                            })
+                        }
+                    }).fail(function(state){
+                        console.log(state)
+                        toastr.error('<?= __('Unexcpected error. Please tell it to the librarian') ?>')
+                    })
+                })
             }
         );
     </script>

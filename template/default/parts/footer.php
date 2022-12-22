@@ -96,6 +96,7 @@ include LIB . "contents/chat.php"; ?>
 <!-- // Load modal -->
 <?php include "_modal_topic.php"; ?>
 <?php include "_modal_advanced.php"; ?>
+<?php include "_modal_social_media.php"; ?>
 
 <!-- // Load highlight -->
 <script src="<?= JWB; ?>highlight.js"></script>
