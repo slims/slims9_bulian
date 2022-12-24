@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-24 18:55+0700\n"
-"PO-Revision-Date: 2022-12-24 19:29+0700\n"
+"PO-Revision-Date: 2022-12-24 19:32+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -8894,7 +8894,7 @@ msgstr "Unduh Semua Pinjaman Terkini"
 
 #: lib/contents/member.inc.php:421
 msgid "Marked At"
-msgstr "Ditandai di"
+msgstr "Ditandai pada"
 
 #: lib/contents/member.inc.php:421
 msgid "Action"
