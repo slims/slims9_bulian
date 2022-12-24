@@ -1,4 +1,3 @@
-
 SENAYAN 3 Stable Branch
 SLiMS 5
 SLiMS 7
@@ -11,12 +10,13 @@ Hendro Wicaksono (hendrowicaksono@yahoo.com, hendrowicaksono@gmail.com)
 Arie Nugraha (dicarve@yahoo.com, dicarve@gmail.com)
 Wardiyono (wynerst@gmail.com)
 Purwoko (purgeologi@yahoo.com, tamanjiwa@gmail.com)
-Arif Syamsudin (aarif.syamsudin@gmail.com)
+Arif Syamsudin (arif.syamsudin@pm.me)
 Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)
 Eddy Subratha (eddy.subratha@gmail.com, mucill@gmail.com) 
 Indra Sutriadi (indra.sutriadi@gmail.com)
 Waris Agung Widodo (idoalit@gmail.com, ido.alit@gmail.com)
 Heru Subekti (heroe.soebekti@gmail.com)
+Drajat Hasan (drajathasan20@gmail.com)
 
 Past Developers:
 Sulfan Zayd (sulfan@gmail.com, sulfan.zayd@gmail.com)
@@ -39,10 +39,14 @@ Other contributors:
 Gettext support: Tobias Zeumer
 Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)
 English documentation: Jim Richardson
-Code enhancement: Drajat Hasan (drajathasan20@gmail.com)
 Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
+
+SLiMS 9.5.2 (Bulian)
+========================================================================
+Added : Bookmark for biblio data
+Added : Share option for biblio data
 
 SLiMS 9.5.1 (Bulian)
 ========================================================================
