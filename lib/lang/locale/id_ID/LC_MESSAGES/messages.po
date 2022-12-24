@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-24 18:55+0700\n"
-"PO-Revision-Date: 2022-12-24 19:32+0700\n"
+"POT-Creation-Date: 2022-12-24 20:07+0700\n"
+"PO-Revision-Date: 2022-12-24 20:07+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -3876,8 +3876,8 @@ msgid "days(s) with fines value"
 msgstr "hari dengan jumlah denda"
 
 #: admin/modules/circulation/loan_list.php:180
-msgid "Total of temporary fines"
-msgstr "Jumlah denda sementara"
+msgid "Total amount of fine is"
+msgstr "Jumlah total denda adalah"
 
 #: admin/modules/circulation/loan_list.php:181
 msgid "Send overdues notice e-mail"
@@ -10153,6 +10153,9 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "Total of temporary fines"
+#~ msgstr "Jumlah denda sementara"
 
 #~ msgid ""
 #~ "Plugin has been disabled.\\nRun Migration too? This may will drop this "
