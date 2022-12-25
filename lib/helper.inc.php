@@ -21,7 +21,9 @@
  *
  */
 
-use SLiMS\{Config,Ip,Number,Currency};
+use SLiMS\{Config,Ip,Number,Currency,Json};
+use SLiMS\Http\Redirect;
+use SLiMS\Session\Flash;
 
 if (!function_exists('config')) {
     /**
@@ -106,6 +108,80 @@ if (!function_exists('v'))
     $version = substr(isDev() ? md5(date('this')) : md5(SENAYAN_VERSION_TAG . $sysconf['static_file_version']), 0,5);
     return  $filename . '?v=' . $version;
   }
+}
+
+if (!function_exists('flash'))
+{
+    /**
+     * Set flash session message
+     *
+     * @param string $key
+     * @param string $message
+     * @return Flash|AnonymousClass
+     */
+    function flash(string $key = '', string $message = '')
+    {
+        if (!empty($message) && !empty($key))  return Flash::register($key, $message);
+
+        return new Class {
+            public function __call($method, $arguments)
+            {
+                if (method_exists(Flash::class, $method)) 
+                {
+                    return Flash::{$method}(...$arguments);
+                }
+                else
+                {
+                    return Flash::init()->$method(...$arguments);
+                }
+            }
+        };
+    }
+}
+
+if (!function_exists('redirect'))
+{
+    /**
+     * Redirect page with many options
+     *
+     * @param string $urlOrPath
+     * @return void
+     */
+    function redirect(string $urlOrPath = '')
+    {
+        if (!empty($urlOrPath))  Redirect::getInstance()->to($urlOrPath);
+
+        return new Class {
+            /**
+             * Redirect html content via Simbio AJAX
+             *
+             * @param string $url
+             * @param string $data
+             * @param string $position
+             * @param string $selector
+             * @return void
+             */
+            public function simbioAJAX(string $url, string $data = '', string $position = 'top.', string $selector = '#mainContent')
+            {
+                $params = empty($data) ? $url : "'$url', {method: 'post', addData: '$data'}";
+                exit(<<<HTML
+                <script>{$position}\$('{$selector}').simbioAJAX({$params})</script>
+                HTML);
+            }
+
+            public function __call($method, $arguments)
+            {
+                if (method_exists(Flash::class, $method)) 
+                {
+                    return Redirect::{$method}(...$arguments);
+                }
+                else
+                {
+                    return Redirect::getInstance()->$method(...$arguments);
+                }
+            }
+        };
+    }
 }
 
 if (!function_exists('toastr'))

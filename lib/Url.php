@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-17 07:14:29
- * @modify date 2022-12-17 10:48:42
+ * @modify date 2022-12-25 10:08:42
  * @license GPLv3
  * @desc [description]
  */
@@ -106,6 +106,11 @@ class Url
     {
         if (is_callable($callBack)) return $callBack($_SERVER['QUERY_STRING']);
         return '?' . $_SERVER['QUERY_STRING'];
+    }
+
+    public static function getReferer()
+    {
+        return $_SERVER['HTTP_REFERER']??self::getSlimsFullUri();
     }
 
     /**

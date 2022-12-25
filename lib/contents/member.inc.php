@@ -23,6 +23,7 @@
  */
 
 use SLiMS\{Url,DB,Json};
+use Volnix\CSRF\CSRF;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -65,28 +66,24 @@ if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     utility::writeLogs($dbs, 'member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . ip());
     // completely destroy session cookie
     simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
-    header('Location: index.php?p=member');
-    header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-    header('Pragma: no-cache');
-    exit();
+    redirect()->withHeader([
+        ['Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'],
+        ['Expires', 'Sat, 26 Jul 1997 05:00:00 GMT'],
+        ['Pragma', 'no-cache']
+    ])->to('?p=member');
 }
 
 // if there is member login action
 if (isset($_POST['logMeIn']) && !$is_member_login) {
-    if (!\Volnix\CSRF\CSRF::validate($_POST)) {
+    if (!CSRF::validate($_POST)) {
         session_unset();
-        echo '<script type="text/javascript">';
-        echo 'alert("Invalid login form!");';
-        echo 'location.href = \'index.php?p=member\';';
-        echo '</script>';
-        exit();
+        redirect()->withMessage('csrf_failed', __('Invalid login form!'))->back();
     }
     $username = trim(strip_tags($_POST['memberID']));
     $password = trim(strip_tags($_POST['memberPassWord']));
     // check if username or password is empty
     if (!$username OR !$password) {
-        echo '<div class="errorBox">' . __('Please fill your Username and Password to Login!') . '</div>';
+        redirect()->withMessage('empty_field', __('Please fill your Username and Password to Login!'))->back();
     } else {
         # <!-- Captcha form processing - start -->
         if ($sysconf['captcha']['member']['enable']) {
@@ -100,8 +97,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 if (!$resp->is_valid) {
                     // What happens when the CAPTCHA was entered incorrectly
                     session_unset();
-                    header("location:index.php?p=member&captchaInvalid=true");
-                    die();
+                    redirect('index.php?p=member&captchaInvalid=true');
                 }
             } else if ($sysconf['captcha']['member']['type'] == 'others') {
                 # other captchas here
@@ -122,17 +118,18 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
             if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
-                header("location:" . $_GET['destination']);
+                redirect($_GET['destination']);
             } else {
-                header('Location: index.php?p=member');
+                redirect()->toPath('member');
             }
             exit();
         } else {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
             // message
-            $msg = '<div class="errorBox">' . __('Login FAILED! Wrong username or password!') . '</div>';
-            simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+            //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+            CSRF::generateToken();
+            redirect()->withMessage('wrong_password', __('Login FAILED! Wrong username or password!'))->to('?p=member');
         }
     }
 }
@@ -200,7 +197,7 @@ if ($is_member_login) {
     if (isset($_POST['callback']) && $_POST['callback'] === 'json') {
         $res = [
             'status' => false,
-            'message' => 'Please, login first!',
+            'message' => __('Please, login first!'),
             'count' => 0
         ];
         http_response_code(401);
@@ -928,7 +925,7 @@ if ($is_member_login) :
 
                                     for (let i = 0; i < ajaxRespond.length; i++) {
                                         const element = ajaxRespond[i];
-                                        let message = element.message ?? 'Reservation request sent';
+                                        let message = element.message ?? '<?= __('Reservation request sent') ?>';
                                         if(element.status == 'ERROR') {
                                             toastr.error(message)
                                         } else {
@@ -938,7 +935,7 @@ if ($is_member_login) :
                                     }
 
                                 } else {
-                                    let message = ajaxRespond.message ?? 'Reservation request sent';
+                                    let message = ajaxRespond.message ?? '<?= __('Reservation request sent') ?>';
                                     if(ajaxRespond.status == 'ERROR') {
                                         toastr.error(message)
                                     } else {
@@ -948,7 +945,7 @@ if ($is_member_login) :
                                 }
 
                             <?php else: ?>
-                                toastr.success('Reservation e-mail sent');
+                                toastr.success('<?= __('Reservation e-mail sent') ?>');
                                 setTimeout(() => {
                                     window.location.href = aHREF; 
                                 }, 5000);
@@ -992,7 +989,18 @@ if ($is_member_login) :
             echo '<div class="errorBox alert alert-danger">' . __('Wrong Captcha Code entered, Please write the right code!') . '</div>';
         }
         ?>
-        <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
+        <div class="loginInfo">
+            <?php 
+            if (flash()->isEmpty())
+            {
+                echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); 
+            }
+            elseif ($key = flash()->includes('wrong_password','csrf_failed','empty_field'))
+            {
+                flash()->danger($key);
+            }
+            ?>
+        </div>
         <div class="loginInfo">
             <form action="index.php?p=member&destination=<?= urlencode(simbio_security::xssFree($_GET['destination'] ?? '')) ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
