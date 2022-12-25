@@ -129,7 +129,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
             // message
             //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
             CSRF::generateToken();
-            redirect()->withMessage('wrong_password', __('Login FAILED! Wrong username or password!'))->to('?p=member');
+            redirect()->withMessage('wrong_password', __('Login FAILED! Wrong Member ID or password!'))->to('?p=member');
         }
     }
 }
