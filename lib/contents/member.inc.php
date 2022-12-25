@@ -97,7 +97,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 if (!$resp->is_valid) {
                     // What happens when the CAPTCHA was entered incorrectly
                     session_unset();
-                    redirect('index.php?p=member&captchaInvalid=true');
+                    redirect()->withMessage('captchaInvalid', __('Wrong Captcha Code entered, Please write the right code!'))->back();
                 }
             } else if ($sysconf['captcha']['member']['type'] == 'others') {
                 # other captchas here
@@ -983,19 +983,13 @@ if ($is_member_login) :
 <?php else: ?>
     <div>
         <div class="tagline"><?php echo __('Library Member Login'); ?></div>
-        <?php
-        // captcha invalid warning
-        if (isset($_GET['captchaInvalid']) && $_GET['captchaInvalid'] === 'true') {
-            echo '<div class="errorBox alert alert-danger">' . __('Wrong Captcha Code entered, Please write the right code!') . '</div>';
-        }
-        ?>
         <div class="loginInfo">
             <?php 
             if (flash()->isEmpty())
             {
                 echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); 
             }
-            elseif ($key = flash()->includes('wrong_password','csrf_failed','empty_field'))
+            elseif ($key = flash()->includes('wrong_password','csrf_failed','empty_field','captchaInvalid'))
             {
                 flash()->danger($key);
             }

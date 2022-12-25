@@ -29,6 +29,7 @@ if (!defined('INDEX_AUTH')) {
 
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use Volnix\CSRF\CSRF;
 
 if ($sysconf['baseurl'] != '') {
   $_host = $sysconf['baseurl'];
@@ -52,26 +53,26 @@ if ($sysconf['https_enable']) {
 
 // check if session browser cookie already exists
 if (isset($_COOKIE['admin_logged_in'])) {
-    header('location: admin/index.php');
+    redirect()->to('admin/index.php');
 }
+
+if (isset($_GET['wrongpass'])) {
+    redirect()->withMessage('wrong_password', __('Wrong Username or Password. ACCESS DENIED'))->toPath('login');
+} 
 
 // start the output buffering for main content
 ob_start();
 
 // if there is login action
 if (isset($_POST['logMeIn'])) {
-    if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+    if (!CSRF::validate($_POST) ) {
         session_unset();
-        echo '<script type="text/javascript">';
-        echo 'alert("Invalid login form!");';
-        echo 'location.href = \'index.php?p='.$path.'\';';
-        echo '</script>';
-        exit();
+        redirect()->withMessage('csrf_failed', __('Invalid login form!'))->back();
     }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
-    if (!$username OR !$password) {
-        echo '<script type="text/javascript">alert(\''.__('Please supply valid username and password').'\');</script>';
+    if (empty($username) OR empty($password)) {
+        redirect()->withMessage('empty_field', __('Please supply valid username and password'))->back();
     } else {
         // destroy previous session set in OPAC
         simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
@@ -97,7 +98,7 @@ if (isset($_POST['logMeIn'])) {
                     if (!$resp->is_valid) {
                         // What happens when the CAPTCHA was entered incorrectly
                         session_unset();
-                        header("location:index.php?p=".$path);
+                        redirect()->toPath($path);
                         die();
                     }
                 } elseif ($sysconf['captcha']['smc']['type'] == 'others') {
@@ -129,14 +130,9 @@ if (isset($_POST['logMeIn'])) {
             # ADV LOG SYSTEM - STIIL EXPERIMENTAL
             $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
 
-            echo '<script type="text/javascript">';
-            if ($sysconf['login_message']) {
-                echo 'alert(\''.__('Welcome to Library Automation, ').$logon->real_name.'\');';
-            }
-            #echo 'location.href = \'admin/index.php\';';
-            echo 'location.href = \''.SWB.'admin/index.php\';';
-            echo '</script>';
-            exit();
+            if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ').$logon->real_name);
+            
+            redirect('admin/index.php');
         } else {
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user '.$username.' from address '.ip());
@@ -172,14 +168,11 @@ if (isset($_POST['logMeIn'])) {
 
 
                 // message
-                header('location: index.php?p='.$path.'&update='.$token);
+                redirect()->toPath($path.'&update='.$token);
             } else {
                 // message
-                $msg = '<script type="text/javascript">';
-                $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
-                $msg .= 'history.back();';
-                $msg .= '</script>';
-                simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
+                simbio_security::destroySessionCookie(__('Wrong Username or Password. ACCESS DENIED'), COOKIES_NAME, SWB.'admin', false);
+                redirect('?p=login&wrongpass=true');
             }
             exit();
         }
@@ -231,7 +224,6 @@ if (isset($_POST['updatePassword'])) {
                 'httponly' => true,
                 'samesite' => 'Lax',
             ]);
-
 
             echo '<script type="text/javascript">';
             echo 'alert("Password Updated. Please log in again!");';
@@ -289,7 +281,14 @@ if (isset($_POST['updatePassword'])) {
             <div class="alert alert-danger"><?= __('Not valid token!') ?></div>
             <a class="homeButton" href="index.php"><?= __('Go Home') ?></a>
         <?php } ?>
-    <?php } else { ?>
+        <?php 
+        } else { 
+            if ($key = flash()->includes('wrong_password','csrf_failed','empty_field','captchaInvalid'))
+            {
+                flash()->danger($key);
+            }
+        ?>
+        
         <div class="heading1"><?php echo __('Username'); ?></div>
         <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
