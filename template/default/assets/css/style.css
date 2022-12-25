@@ -971,3 +971,20 @@ img.not-available {
 pre.sf-dump, pre.sf-dump .sf-dump-default {
     z-index: 888 !important;
 }
+
+.availability-item {
+    color: white; 
+    padding: 10px; 
+    border-radius: 5px
+}
+
+.item-onloan, .item-notforloan  {
+    background-color: #f00; 
+    width: 100%; 
+    display: block;
+}
+
+.item-available {
+    background-color: #5bc0de; 
+}
+

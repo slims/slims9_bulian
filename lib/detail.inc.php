@@ -231,34 +231,51 @@ HTML;
       if (!$copies) {
         return false;
       }
-      $_output = '<table class="table table-bordered table-small itemList">';
+      $_output = '<div class="flex flex-col">';
       foreach ($copies as $copy_d) {
         // check if this collection is on loan
         $loan_stat_q = $this->db->query('SELECT due_date FROM loan AS l
             LEFT JOIN item AS i ON l.item_code=i.item_code
             WHERE l.item_code=\''.$copy_d['item_code'].'\' AND is_lent=1 AND is_return=0');
-        $_output .= '<tr>';
-        $_output .= '<td class="biblio-item-code">'.$copy_d['item_code'].'</td>';
-        $_output .= '<td class="biblio-call-number">'.$copy_d['call_number'].'</td>';
-        $_output .= '<td class="biblio-location">'.$copy_d['location_name'];
-        if (trim($copy_d['site']) != "") {
-            $_output .= ' ('.$copy_d['site'].')';
-        }
-        $_output .= '</td>';
-        $_output .= '<td width="30%">';
+        
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
-            $_output .= '<b style="background-color: #f00; color: white; padding: 3px;">'.__('Currently On Loan (Due on').' '.date($sysconf['date_format'], strtotime($loan_stat_d[0])).')</b>'; //mfc
+            list($avail_class, $avail_status) = ['item-onloan', __('Currently On Loan (Due on').' '.date($sysconf['date_format'], strtotime($loan_stat_d[0])).')'];
         } else if ($copy_d['no_loan']) {
-            $_output .= '<b style="background-color: #f00; color: white; padding: 3px;">'.__('Available but not for loan').' - '.$copy_d['item_status_name'].'</b>';
+            list($avail_class, $avail_status) = ['item-notforloan', __('Available but not for loan').' - '.$copy_d['item_status_name']];
         } else {
-            $_output .= '<b style="background-color: #5bc0de; color: white; padding: 3px;">'.__('Available').(trim($copy_d['item_status_name']??'')?' - '.$copy_d['item_status_name']:'').'</b>';
+            list($avail_class, $avail_status) = ['item-available', __('Available').(trim($copy_d['item_status_name']??'')?' - '.$copy_d['item_status_name']:'')];
         }
+
+        extract($copy_d);
+        $location_name = empty($location_name) ? __('Location name is not set') : $location_name;
+
+        if (trim($copy_d['site']) != "") {
+          $location_name .= ' ('.$copy_d['site'].')';
+        }
+
+        $call_number = empty($call_number) ? __('Location name is not set') : $call_number;
+        $_output .= <<<HTML
+            <div class="w-100 flex flex-row w-full">
+                <div class="col-7 flex flex-row border border-gray-300 p-3">
+                    <div>#</div>
+                    <div class="mx-2">
+                      <span class="block mx-auto">{$location_name}</span>
+                      <small class="text-sm text-muted">{$call_number}</small>
+                    </div>
+                </div>
+                <div class="col-2 border border-gray-300 p-3">
+                    {$item_code}
+                </div>
+                <div class="col-3 border border-gray-300 p-3">
+                  <b class="text-sm availability-item {$avail_class}">{$avail_status}</b>
+                </div>
+            </div>
+        HTML;
+
         $loan_stat_q->free_result();
-        $_output .= '</td>';
-        $_output .= '</tr>';
       }
-      $_output .= '</table>';
+      $_output .= '</div>';
       return $_output;
     }
 
