@@ -60,7 +60,8 @@ $(document).ready(() => {
 
         let id = $(this).data('id')
         $.post('index.php?p=member&sec=bookmark', {bookmark_id: id, callback: 'json'}, (res,state,http) => {
-            $(this).removeClass('text-secondary').addClass('bg-success text-white rounded-lg')
+            let classAttr = $(this).data('detail') === undefined ? 'bg-success text-white rounded-lg' : 'bg-success text-white rounded-lg px-2 py-1'
+            $(this).removeClass('text-secondary').addClass(classAttr)
             $('#label-' + id).html(res.label)
             toastr.success(res.message)
         }).fail(function(state){

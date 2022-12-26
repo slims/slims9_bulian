@@ -14,10 +14,10 @@
             <div class="col-md-3">
               <?php
               if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
-                echo '<img class="h-16 mb-2" src="images/default/'.$sysconf['logo_image'].'">';
+                echo '<img class="h-16 mb-2" src="images/default/'.v($sysconf['logo_image']).'">';
                 }
               elseif (file_exists(__DIR__ . '/../assets/images/logo.png')) {
-                echo '<img class="h-12 w-12 mb-2" src="' . assets('images/logo.png') . '">';
+                echo '<img class="h-12 w-12 mb-2" src="' . assets(v('images/logo.png')) . '">';
               } else {
                 ?>
                   <svg

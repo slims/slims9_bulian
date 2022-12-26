@@ -47,6 +47,10 @@ SLiMS 9.5.2 (Bulian)
 ========================================================================
 Added : Bookmark for biblio data
 Added : Share option for biblio data
+Added : Version number for OPAC static file
+Added : Session Factory to handle custom session configuration
+Fixed : Invalid Form Login
+Fixed : Full text search in SearchEngineBiblio
 
 SLiMS 9.5.1 (Bulian)
 ========================================================================
