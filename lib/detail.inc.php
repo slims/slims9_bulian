@@ -240,7 +240,7 @@ HTML;
         
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
-            list($avail_class, $avail_status) = ['item-onloan', __('Currently On Loan (Due on').' '.date($sysconf['date_format'], strtotime($loan_stat_d[0])).')'];
+            list($avail_class, $avail_status) = ['item-onloan', __('Currently On Loan (Due on ').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')'];
         } else if ($copy_d['no_loan']) {
             list($avail_class, $avail_status) = ['item-notforloan', __('Available but not for loan').' - '.$copy_d['item_status_name']];
         } else {
