@@ -10,11 +10,11 @@
 return [
     "base-uri 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' *.bootstrapcdn.com *.googleapis.com",
     "img-src 'self' data:",
     "connect-src 'self' kutipan.herokuapp.com",
     "frame-src 'self' *.google.com",
-    "font-src 'self'",
+    "font-src 'self' *.gstatic.com",
     "media-src 'self'",
     "object-src 'self'",
     "manifest-src 'self'", 

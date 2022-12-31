@@ -1070,7 +1070,7 @@ CREATE TABLE IF NOT EXISTS `mst_custom_field` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
-CREATE TABLE `files_read` (
+CREATE TABLE IF NOT EXISTS `files_read` (
   `filelog_id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
   `date_read` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -1081,7 +1081,7 @@ CREATE TABLE `files_read` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
-CREATE TABLE `plugins` (
+CREATE TABLE IF NOT EXISTS `plugins` (
   `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE ,
   `options` json NULL,
   `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1091,14 +1091,14 @@ CREATE TABLE `plugins` (
   `uid` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-$sql['create'][] = "CREATE TABLE `index_words` (
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
 ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
 
-$sql['create'][] = "CREATE TABLE `index_documents` (
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_documents` (
   `document_id` int(11) NOT NULL,
   `word_id` bigint(20) NOT NULL,
   `location` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1107,6 +1107,16 @@ $sql['create'][] = "CREATE TABLE `index_documents` (
   KEY `document_id` (`document_id`),
   KEY `word_id` (`word_id`),
   KEY `location` (`location`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
+  `id` varchar(32) NOT NULL,
+  `member_id` varchar(20) NOT NULL,
+  `biblio_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  UNIQUE KEY `id` (`id`),
+  KEY `member_id_idx` (`member_id`),
+  KEY `biblio_id_idx` (`biblio_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
 $query_trigger[] = "

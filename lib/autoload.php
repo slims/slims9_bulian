@@ -36,9 +36,8 @@ $namespaces = [
     "Minigalnano\\" => "/minigalnano/",
 ];
 
-$class_alias = [
-    // 'DB' => \SLiMS\DB::class,
-]; // make a short class call
+$class_alias = [];
+if (file_exists($classAliasPath = __DIR__ . '/../config/class_alias.php')) $class_alias = require $classAliasPath;
 
 foreach ($namespaces as $namespace => $classpaths) {
     if (!is_array($classpaths)) {

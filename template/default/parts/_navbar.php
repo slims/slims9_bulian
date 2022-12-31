@@ -34,7 +34,7 @@ $main_menus = [
     <a class="navbar-brand inline-flex items-center" href="index.php">
         <?php
         if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
-            echo '<img class="h-10 w-15" src="images/default/'.$sysconf['logo_image'].'">';
+            echo '<img class="h-10 w-15" src="images/default/'.v($sysconf['logo_image']).'">';
         }
         elseif (file_exists(__DIR__ . '/../assets/images/logo.png')) {
             echo '<img class="h-8 w-8" src="'.assets('images/logo.png').'">';
@@ -108,8 +108,9 @@ HTML;
                   <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item" href="index.php?p=member"><i class="fas fa-user-circle mr-3"></i> <?= __('Profile');?></a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="index.php?p=member&logout=1"><i
-                                  class="fas fa-sign-out-alt mr-3"></i> <?= __('Logout'); ?></a>
+                      <a class="dropdown-item" href="index.php?p=member&sec=bookmark"><i class="fas fa-bookmark mr-3"></i> <?= __('Bookmark');?></a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="index.php?p=member&logout=1"><i class="fas fa-sign-out-alt mr-3"></i> <?= __('Logout'); ?></a>
                   </div>
               </li>
           <?php } else { ?>

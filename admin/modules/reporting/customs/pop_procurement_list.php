@@ -35,7 +35,7 @@ ob_start();
 
 $page_title = 'Procurement List';
 
-$filter = isset($_GET['filter'])?$dbs->escape_string($_GET['filter']):'%%';
+$filter = isset($_GET['filter'])?$dbs->escape_string(simbio_security::xssFree($_GET['filter'])):'%%';
 ?>
 <div class="menuBox">
 <div class="menuBoxInner backupIcon">

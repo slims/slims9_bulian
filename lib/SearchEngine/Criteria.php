@@ -95,6 +95,43 @@ class Criteria
         }
     }
 
+    public function isBool($value)
+    {
+        return preg_match('@\b(exact|and|or|not)\b@i', $value);
+    }
+
+    public function separateBooleanChar($value)
+    {
+        return array_filter(explode(' ', $value), function($value){
+            if (!$this->isBool($value)) return true;
+        });
+    }
+
+    public function convertToBooleanChar($value)
+    {
+        $result = '';
+        $matchBoolean = '+';
+        preg_match('@\b(exact|and|or|not)\b@i', $value, $match);
+        
+        if (count($match))
+        {
+            $bool = strtolower($match[0]??'AND');
+            switch ($bool) {
+                case 'exact':
+                    $matchBoolean = '++';
+                    break;
+                case 'or':
+                    $matchBoolean = '*';
+                    break;
+                case 'not':
+                    $matchBoolean = '-';
+                    break;
+            }
+        }
+
+        return [implode(' ' .$matchBoolean, $this->separateBooleanChar($value)), $matchBoolean];
+    }
+
     /**
      * CQL Tokenizer
      * Tokenize CQL string to array for easy processing
@@ -121,25 +158,9 @@ class Criteria
             if (in_array($value, $stop_words)) continue;
 
             // check for boolean mode
-            if (preg_match('@\b(exact|and|or|not)\b@i', $value)) {
-                $bool = strtolower($value);
-                $last_boolean = '+';
-                if (!$inside_quote) {
-                    switch ($bool) {
-                        case 'exact':
-                            $last_boolean = '++';
-                            break;
-                        case 'or':
-                            $last_boolean = '*';
-                            break;
-                        case 'not':
-                            $last_boolean = '-';
-                            break;
-                    }
-                }
-
-                yield ['f' => 'boolean', 'b' => $last_boolean];
-
+            if ($this->isBool($value)) {
+                list($query, $last_boolean) = $this->convertToBooleanChar($value);
+                yield ['f' => $key, 'q' => $query, 'b' => $last_boolean];
                 continue;
             }
 

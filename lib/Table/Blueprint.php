@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:08:37
- * @modify date 2022-09-28 15:52:28
+ * @modify date 2022-12-19 12:10:35
  * @license GPLv3
  * @desc [description]
  */
@@ -12,6 +12,29 @@ namespace SLiMS\Table;
 
 use RuntimeException;
 
+/**
+ * @package SLiMS\Table
+ * 
+ * @property string $engine
+ * @property string $charset
+ * @property string $collation
+ * 
+ * @method SLiMS\Table\Blueprint string(string $column, int $length)
+ * @method void autoIncrement(string $column)
+ * @method void id()
+ * @method void timestamps()
+ * @method void fulltext(string $column)
+ * @method void index(string $column)
+ * @method void primary(string $column)
+ * @method void nullable()
+ * @method void notNull()
+ * @method void after(string $column)
+ * @method void first()
+ * @method void change(string $newColumn)
+ * @method void add()
+ * @method void drop(string $column)
+ * @method void default(string $value)
+ */
 class Blueprint
 {
     /**
@@ -126,10 +149,7 @@ class Blueprint
      */
     public function __set(string $key, $value)
     {
-        if (isset($this->data['rdbmsOpt'][$key]))
-        {
-            $this->data['rdbmsOpt'][$key] = $value;
-        }
+        if (isset($this->data['rdbmsOpt'][$key])) $this->data['rdbmsOpt'][$key] = $value;
     }
 
     /**
@@ -271,6 +291,19 @@ class Blueprint
         $lastIndexData = array_key_last($this->data['columns']);
 
         $this->data['columns'][$lastIndexData] = $this->data['columns'][$lastIndexData] . ' DEFAULT NULL';
+    }
+
+    /**
+     * Detail information for a column
+     *
+     * @param sring $comment
+     * @return void
+     */
+    private function scopeComment(string $comment)
+    {
+        $lastIndexData = array_key_last($this->data['columns']);
+        
+        $this->data['columns'][$lastIndexData] = $this->data['columns'][$lastIndexData] . ' COMMENT \'' . $comment . '\' ';
     }
 
     /**

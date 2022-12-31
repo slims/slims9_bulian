@@ -123,6 +123,7 @@ if (isset($_POST['updateData'])) {
       }else{
         utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
+      addOrUpdateSetting('static_file_version', rand());
     }
 
     if (!empty($_FILES['icon']) AND $_FILES['icon']['size']) {
@@ -139,6 +140,7 @@ if (isset($_POST['updateData'])) {
       }else{
         utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
       }
+      addOrUpdateSetting('static_file_version', rand());
     }
 
     // reset/truncate setting table content

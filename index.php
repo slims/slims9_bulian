@@ -33,8 +33,6 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('opac');
 // member session params
 require LIB.'member_session.inc.php';
-// start session
-session_start();
 if ($sysconf['template']['base'] == 'html') {
   require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 }
@@ -75,7 +73,7 @@ $Opac->hookBeforeContent(function($Opac){
   $Opac->setHeader('X-Content-Type-Options', 'nonsniff');
   
   // running plugin based on hook
-  Plugins::getInstance()->execute('before_content_load', [$Opac]);
+  Plugins::getInstance()->execute(Plugins::CONTENT_BEFORE_LOAD, [$Opac]);
 });
 
 // Path process or show welcome page
@@ -84,7 +82,7 @@ $Opac->handle('p')->orWelcome();
 // running hook to override process/variable after
 // content load
 $Opac->hookAfterContent(function($Opac){
-  Plugins::getInstance()->execute('after_content_load', [$Opac]);
+  Plugins::getInstance()->execute(Plugins::CONTENT_AFTER_LOAD, [$Opac]);
 });
 
 // templating

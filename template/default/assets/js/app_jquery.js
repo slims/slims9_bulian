@@ -54,6 +54,32 @@ $(document).ready(() => {
             })
     })
 
+    $('.bookMarkBook').click(function(e){
+        e.preventDefault()
+        if ($(this).hasClass('bg-success')) return;
+
+        let id = $(this).data('id')
+        $.post('index.php?p=member&sec=bookmark', {bookmark_id: id, callback: 'json'}, (res,state,http) => {
+            let classAttr = $(this).data('detail') === undefined ? 'bg-success text-white rounded-lg' : 'bg-success text-white rounded-lg px-2 py-1'
+            $(this).removeClass('text-secondary').addClass(classAttr)
+            $('#label-' + id).html(res.label)
+            toastr.success(res.message)
+        }).fail(function(state){
+            toastr.error(state.responseJSON.message, '', {
+                timeOut: 2000,
+                onHidden: function() {
+                    window.location.replace('index.php?p=member&destination=' + encodeURIComponent(window.location.href + '#card-' + id))
+                }
+            })
+        })
+    })
+
+    $('a[data-target="#mediaSocialModal"]').click(function(){
+        let id = encodeURIComponent($(this).data('id'))
+        let title = encodeURIComponent($(this).data('title').replace(/<\/?[^>]+(>|$)/g, "").replace(/\"|\'/i, ''))
+        $('#mediaSocialModalBody').html(`<iframe src="?p=sharelink&id=${id}&title=${title}" class="w-100" style="height: 5.5rem"></iframe>`)
+    })
+
     $('.collapse-detail')
         .on('shown.bs.collapse', e => {
             let id = e.target.getAttribute('id')

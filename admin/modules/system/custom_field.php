@@ -21,6 +21,8 @@
 /* Custom Field Management section */
 /* Modified Heru Subekti (heroe.soebekti@gmail.com) */
 
+use SLiMS\Table\Schema;
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 // key to get full database access
@@ -91,7 +93,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if($_q->num_rows){
                 $_d = $_q->fetch_row();
                 if($_d[0]!=$data['primary_table']){
-                    @$dbs->query("ALTER TABLE `".$_d[0]."_custom` DROP ".$_d[1]);
+                    // drop column
+                    $schemaParams = [$_d[0].'_custom', $_d[1]];
+                    if (Schema::hasColumn(...$schemaParams)) Schema::dropColumn(...$schemaParams);
                 }
             }
             // update the data
@@ -138,8 +142,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         //get dbfield name
         $dbfield_q = $dbs->query("SELECT dbfield,primary_table,label FROM mst_custom_field WHERE field_id=".$itemID);
         $field = $dbfield_q->fetch_row();
-        //drop field
-        @$dbs->query("ALTER TABLE ".$field[1]."_custom DROP ".$field[0]."");   
+        
+        // drop column
+        $schemaParams = [$field[1].'_custom', $field[0]];
+        if (Schema::hasColumn(...$schemaParams)) Schema::dropColumn(...$schemaParams);
+        
+        // Delete from custom field
         if (!$sql_op->delete('mst_custom_field', "field_id='$itemID'")) {
             $error_num++;
         }

@@ -944,7 +944,8 @@ EOHTML
     protected function dumpLine(int $depth, bool $endOfValue = false)
     {
         if (-1 === $this->lastDepth) {
-            $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad).$this->line;
+            $file = isset($_SESSION['dumpFile']) ? '<strong style="color: gray"># ' . $_SESSION['dumpFile'] . '</strong></br>' : '';
+            $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad) . trim($file) . $this->line;
         }
         if ($this->headerIsDumped !== ($this->outputStream ?? $this->lineDumper)) {
             $this->line = $this->getDumpHeader().$this->line;
@@ -966,6 +967,7 @@ EOHTML
             AbstractDumper::dumpLine(0);
         }
         AbstractDumper::dumpLine($depth);
+        unset($_SESSION['dumpFile']);
     }
 
     private function getSourceLink(string $file, int $line)

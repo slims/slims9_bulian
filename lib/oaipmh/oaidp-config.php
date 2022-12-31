@@ -149,7 +149,7 @@ $compression = null;
 // see: http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm
 // Basically use domainname
 // please adjust
-$repositoryIdentifier = $_SERVER['SERVER_NAME']; 
+$repositoryIdentifier = $_SERVER['SERVER_NAME'];
 
 // For RIF-CS, especially with ANDS, each registryObject much has a group for the ownership of data.
 // For detail please see ANDS guide on its web site. Each data provider should have only one REG_OBJ_GROUP
@@ -161,7 +161,7 @@ define('REG_OBJ_GROUP','Something agreed on');
 // data-providers).
 // Please check identify.php for other possible containers 
 // in the Identify response
-$show_identifier = false;
+$show_identifier = true;
 // MUST (only one)
 // should not be changed. Only useful when NODE description is included in the response to Identifier
 $delimiter	= ':';
@@ -236,17 +236,17 @@ define('XMLSCHEMA', 'http://www.w3.org/2001/XMLSchema-instance');
 //
 
 // change according to your local DB setup.
-$DB_HOST   = DB_HOST;
-$DB_PORT   = DB_PORT;
-$DB_USER   = DB_USERNAME;
-$DB_PASSWD = DB_PASSWORD;
-$DB_NAME   = DB_NAME;												           
+// $DB_HOST   = DB_HOST;
+// $DB_PORT   = DB_PORT;
+// $DB_USER   = DB_USERNAME;
+// $DB_PASSWD = DB_PASSWORD;
+// $DB_NAME   = DB_NAME;												           
 
 // Data Source Name: This is the universal connection string
 // if you use something other than mysql edit accordingly.
 // Example for MySQL
 //$DSN = "mysql://$DB_USER:$DB_PASSWD@$DB_HOST/$DB_NAME";
-$DSN = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME";
+// $DSN = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME";
 // Example for Oracle
 // $DSN = "oci8://$DB_USER:$DB_PASSWD@$DB_NAME";
 
@@ -289,7 +289,7 @@ $oaiprefix = "oai".$delimiter.$repositoryIdentifier.$delimiter.$idPrefix;
 //$oaiprefix = "";
 
 // adjust anIdentifier with sample contents an identifier
-// $sampleIdentifier     = $oaiprefix.'anIdentifier';
+$sampleIdentifier = $oaiprefix.'-1';
 
 // the name of the column where you store your datestamps
 $SQL['datestamp'] = 'input_date';

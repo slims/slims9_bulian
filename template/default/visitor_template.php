@@ -101,6 +101,7 @@ if (isset($_GET['select_lang'])) {
 </div>
 
 <script src="<?php echo $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/assets/js/axios.min.js'; ?>"></script>
+<script src="<?= JWB . 'he.js' ?>"></script>
 <script>
     new Vue({
         el: '#visitor-counter',
@@ -126,6 +127,7 @@ if (isset($_GET['select_lang'])) {
                 // Alternative Free Quotes API: https://api.quotable.io/random
                 axios.get('https://kutipan.herokuapp.com/')
                     .then(res => {
+                        res.data.content = he.decode(res.data.content)
                         this.quotes = res.data
                     })
                     .catch(() => {

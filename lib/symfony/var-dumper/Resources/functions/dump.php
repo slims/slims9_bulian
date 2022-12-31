@@ -17,6 +17,8 @@ if (!function_exists('dump')) {
      */
     function dump($var, ...$moreVars)
     {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $_SESSION['dumpFile'] = ($trace['file']??'') . ':' . ($trace['line']??'');
         VarDumper::dump($var);
 
         foreach ($moreVars as $v) {
@@ -41,6 +43,8 @@ if (!function_exists('dd')) {
             header('HTTP/1.1 500 Internal Server Error');
         }
 
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $_SESSION['dumpFile'] = ($trace['file']??'') . ':' . ($trace['line']);
         foreach ($vars as $v) {
             VarDumper::dump($v);
         }

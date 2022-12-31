@@ -213,23 +213,6 @@ $sysconf['enable_xml_result'] = true;
 $sysconf['jsonld_result'] = true;
 $sysconf['jsonld_detail'] = true;
 
-/* DATABASE BACKUP config */
-// specify the full path of mysqldump binary
-// Added by Drajat Hasan
-// For Windows platform with XAMPP
-if (preg_match("/(Windows)/i", php_uname('a'))) {
-   if (preg_match("/(xampp)/i", __DIR__)) {
-      $rempath = substr(__DIR__, 0, strpos(__DIR__, "htdocs"));
-      $sysconf['mysqldump'] = $rempath."mysql\bin\mysqldump.exe";
-    } else {
-      // not use XAMPP? change this value with full path of mysqldump.exe
-      $sysconf['mysqldump'] = 'C:\...\mysqldump.exe';
-    }
-} else {
-   // For Linux Platform
-   $sysconf['mysqldump'] = '/usr/bin/mysqldump';
-}
-
 // backup location (make sure it is accessible and rewritable to webserver!)
 $sysconf['temp_dir'] = '/tmp';
 $sysconf['backup_dir'] = UPLOAD.'backup'.DS;
@@ -583,40 +566,26 @@ $sysconf['admin_home']['mode'] = 'dashboard'; // set as 'default' or 'dashboard'
 if ($is_auto = @ini_get('session.auto_start')) { define('SESSION_AUTO_STARTED', $is_auto); }
 if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 
-// check for local sysconfig For Admin (fa) file
-if (defined('DB_ACCESS') && DB_ACCESS == 'fa' && file_exists(SB.'config'.DS.'sysconfig.local.fa.inc.php')) {
-  include SB.'sysconfig.local.fa.inc.php';
-} else {
-  // check for local sysconfig file
+// Check database config
+if (!file_exists(SB.'config'.DS.'database.php')) {
+  // backward compatibility if upgrade process from `git pull`
   if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
-    include SB.'config'.DS.'sysconfig.local.inc.php';
+    \SLiMS\Config::create('database.php', function($filename){
+      // get last database connection
+      include SB.'config'.DS.'sysconfig.local.inc.php';
+      $source = file_get_contents(SB.'config'.DS.'database.sample.php');
+      $params = [['_DB_HOST_','_DB_NAME_','_DB_PORT_','_DB_USER_','_DB_PASSWORD_'],[DB_HOST,DB_NAME,DB_PORT,DB_USERNAME,DB_PASSWORD], $source];
+      return str_replace(...$params);
+    });
   } else {
-    header("location: install/index.php");
+    // Redirect to installer
+    header('location: ' . SWB . 'install/index.php');
     exit;
   }
 }
 
 /* DATABASE RELATED */
-if (!defined('DB_HOST')) { define('DB_HOST', 'localhost'); }
-if (!defined('DB_PORT')) { define('DB_PORT', '3306'); }
-if (!defined('DB_NAME')) { define('DB_NAME', 'senayandb'); }
-if (!defined('DB_USERNAME')) { define('DB_USERNAME', 'senayanuser'); }
-if (!defined('DB_PASSWORD')) { define('DB_PASSWORD', 'password_senayanuser'); }
-// database connection
-// we prefer to use mysqli extensions if its available
-if (extension_loaded('mysqli')) {
-    /* MYSQLI */
-    $dbs = @new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
-    if (mysqli_connect_error()) {
-        die("Error Connecting to Database with message: ".mysqli_connect_error().". Please check your configuration!\n");
-    }
-} else {
-    /* MYSQL */
-    // require the simbio mysql class
-    include SIMBIO.'simbio_DB/mysql/simbio_mysql.inc.php';
-    // make a new connection object that will be used by all applications
-    $dbs = @new simbio_mysql(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
-}
+$dbs = \SLiMS\DB::getInstance('mysqli');
 
 /* Force UTF-8 for MySQL connection */
 $dbs->query('SET NAMES \'utf8\'');
@@ -700,6 +669,9 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
+
+/* Random static file version for production mode */
+$sysconf['static_file_version'] = 444981076;
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
