@@ -36,29 +36,9 @@
             "target": "git@github.com:thephpleague/flysystem-async-aws-s3.git"
         },
         {
-            "name": "azure-blob-storage",
-            "directory": "src/AzureBlobStorage",
-            "target": "git@github.com:thephpleague/flysystem-azure-blob-storage.git"
-        },
-        {
             "name": "google-cloud-storage",
             "directory": "src/GoogleCloudStorage",
             "target": "git@github.com:thephpleague/flysystem-google-cloud-storage.git"
-        },
-        {
-            "name": "readonly",
-            "directory": "src/ReadOnly",
-            "target": "git@github.com:thephpleague/flysystem-read-only.git"
-        },
-        {
-            "name": "pathprefixing",
-            "directory": "src/PathPrefixing",
-            "target": "git@github.com:thephpleague/flysystem-path-prefixing.git"
-        },
-        {
-            "name": "webdav",
-            "directory": "src/WebDAV",
-            "target": "git@github.com:thephpleague/flysystem-webdav.git"
         },
         {
             "name": "adapter-test-utilities",

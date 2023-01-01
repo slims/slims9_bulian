@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 16:04:53
- * @modify date 2022-11-03 11:38:21
+ * @modify date 2023-01-01 21:20:25
  * @license GPLv3
  * @desc [description]
  */
@@ -36,7 +36,43 @@ trait Utils
         $inByte = $Number * ('1' . str_repeat(0,$Unitmap[$InjectUnit]));
         return $inByte;
     }   
-    
+
+    /**
+     * Took from https://stackoverflow.com/questions/5501427/php-filesize-mb-kb-conversion#answer-5501447
+     *
+     * @param [type] $bytes
+     * @return void
+     */
+    public function toUnitSize($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 0) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 0) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 0) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+
     /**
      * Get extension from path info
      *

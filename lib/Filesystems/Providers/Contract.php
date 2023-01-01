@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 10:18:42
- * @modify date 2022-11-04 08:03:09
+ * @modify date 2023-01-01 20:36:46
  * @license GPLv3
  * @desc [description]
  */
@@ -54,7 +54,7 @@ abstract class Contract
      */
     public function isExists(string $path)
     {
-        return $this->filesystem->has($path);
+        return $this->filesystem->fileExists($path);
     }
 
     /**

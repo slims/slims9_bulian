@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 12:06:21
- * @modify date 2022-11-04 10:38:23
+ * @modify date 2023-01-01 21:26:13
  * @license GPLv3
  * @desc [description]
  */
@@ -27,7 +27,7 @@ trait Guard
         $detector = new ExtensionMimeTypeDetector();
         $this->uploadStatus = in_array($detector->detectMimeTypeFromPath($this->path . $this->uploadedFile), ($allowedMime ? $allowedMime : config('mimetype')));
 
-        if (!$this->uploadStatus) $this->error = 'Mime ' . $detector->detectMimeTypeFromPath($this->path . $this->uploadedFile) . ' is not allowed!';
+        if (!$this->uploadStatus) $this->error = str_replace('{mime}', $detector->detectMimeTypeFromPath($this->path . $this->uploadedFile), __('Mime {mime} is not allowed!'));
 
         return $this->uploadStatus;
     }
@@ -44,7 +44,7 @@ trait Guard
 
         $this->uploadStatus = in_array($this->getExt($this->path . $this->uploadedFile)??'', ($allowedExtension ? $allowedExtension : config('allowed_file_att')));
 
-        if (!$this->uploadStatus) $this->error = 'Extension ' . $this->getExt($this->path . $this->uploadedFile) . ' is not allowed!';
+        if (!$this->uploadStatus) $this->error = str_replace('{extension}', $this->getExt($this->path . $this->uploadedFile), __('Extension {extension} is not allowed!'));
 
         return $this->uploadStatus;
     }
@@ -61,7 +61,7 @@ trait Guard
         
         $this->uploadStatus = $maxSize > $this->getSize($this->uploadedFile);
 
-        if (!$this->uploadStatus) $this->error = 'Size ' . $this->getSize($this->uploadedFile) . ' greater than ' . $maxSize;
+        if (!$this->uploadStatus) $this->error = str_replace(['{fileSize}','{maxSize}'], [$this->toUnitSize($this->getSize($this->uploadedFile)), $this->toUnitSize($maxSize)], __('Size {fileSize} greater than {maxSize}.'));
 
         return $this->uploadStatus;
     }

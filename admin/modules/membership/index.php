@@ -203,6 +203,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
           if ($upload->getUploadStatus()) {
             $data['member_image'] = $dbs->escape_string($upload->getUploadedFileName());
+          } else {
+            // write log
+            $data['member_image'] = NULL;
+            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')');
+            utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
           }
         } else if (!empty($_POST['base64picstring'])) {
 			    list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);

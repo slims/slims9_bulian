@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace League\Flysystem;
 
-use DateTimeInterface;
-
 /**
  * This interface contains everything to read from and inspect
  * a filesystem. All methods containing are non-destructive.
- *
- * @method string publicUrl(string $path, array $config = []) Will be added in 4.0
- * @method string temporaryUrl(string $path, DateTimeInterface $expiresAt, array $config = []) Will be added in 4.0
- * @method string checksum(string $path, array $config = []) Will be added in 4.0
  */
 interface FilesystemReader
 {
@@ -21,21 +15,9 @@ interface FilesystemReader
 
     /**
      * @throws FilesystemException
-     * @throws UnableToCheckExistence
+     * @throws UnableToCheckFileExistence
      */
     public function fileExists(string $location): bool;
-
-    /**
-     * @throws FilesystemException
-     * @throws UnableToCheckExistence
-     */
-    public function directoryExists(string $location): bool;
-
-    /**
-     * @throws FilesystemException
-     * @throws UnableToCheckExistence
-     */
-    public function has(string $location): bool;
 
     /**
      * @throws UnableToReadFile
@@ -55,7 +37,6 @@ interface FilesystemReader
      * @return DirectoryListing<StorageAttributes>
      *
      * @throws FilesystemException
-     * @throws UnableToListContents
      */
     public function listContents(string $location, bool $deep = self::LIST_SHALLOW): DirectoryListing;
 

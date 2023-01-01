@@ -35,7 +35,7 @@ class DirectoryAttributes implements StorageAttributes
 
     public function __construct(string $path, ?string $visibility = null, ?int $lastModified = null, array $extraMetadata = [])
     {
-        $this->path = trim($path, '/');
+        $this->path = $path;
         $this->visibility = $visibility;
         $this->lastModified = $lastModified;
         $this->extraMetadata = $extraMetadata;
@@ -76,7 +76,7 @@ class DirectoryAttributes implements StorageAttributes
         return true;
     }
 
-    public function withPath(string $path): self
+    public function withPath(string $path): StorageAttributes
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -84,7 +84,7 @@ class DirectoryAttributes implements StorageAttributes
         return $clone;
     }
 
-    public static function fromArray(array $attributes): self
+    public static function fromArray(array $attributes): StorageAttributes
     {
         return new DirectoryAttributes(
             $attributes[StorageAttributes::ATTRIBUTE_PATH],
