@@ -61,7 +61,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.5.1');
+define('SENAYAN_VERSION_TAG', 'v9.5.2');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -669,6 +669,9 @@ $sysconf['time_visitor_limitation']       = 60; // in minute
 
 /* maximum insert batch */
 $sysconf['max_insert_batch'] = 100;
+
+/* Random static file version for production mode */
+$sysconf['static_file_version'] = 444981076;
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);

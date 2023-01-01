@@ -85,7 +85,7 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     $icon = 'webicon.ico';
     if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && file_exists(SB . 'images/default/' . $sysconf['webicon']))
     {
-        $icon = SWB . 'images/default/' . $sysconf['webicon'];
+        $icon = SWB . 'images/default/' . v($sysconf['webicon']);;
     }
     ?>
     <link rel="shortcut icon" href="<?= $icon ?>" type="image/x-icon"/>
@@ -102,7 +102,7 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     <script src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
     <!-- // load SLiMS javascript -->
     <script src="<?php echo JWB; ?>colorbox/jquery.colorbox-min.js"></script>
-    <script src="<?php echo JWB; ?>gui.js"></script>
+    <script src="<?php echo JWB . v('gui.js'); ?>"></script>
     <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
     <script src="<?php echo JWB; ?>ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
     <?php

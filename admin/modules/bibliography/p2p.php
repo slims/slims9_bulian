@@ -317,7 +317,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
                     <span class="mx-2"><?php echo __('Server'); ?>:</span>
                     <select name="p2pserver" style="width: 20%;"
                             class="form-control"><?php foreach ($sysconf['p2pserver'] as $serverid => $p2pserver) {
-                            echo '<option value="' . $serverid . '">' . $p2pserver['name'] . '</option>';
+                            echo '<option value="' . $serverid . '" '.trim(isset($_GET['p2pserver']) && $_GET['p2pserver'] == $serverid ? 'selected' : '').'>' . $p2pserver['name'] . '</option>';
                         } ?></select>
                     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>"
                            class="s-btn btn btn-default"/>
@@ -439,7 +439,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
     echo $table->printTable();  
     $page = new simbio_paging();
     echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $page->paging($data['result_num'],10)).'\');'."\n";
+    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $page->paging($data['result_num'],10)??'').'\');'."\n";
     echo '</script>';
     ?>
     <script>

@@ -243,6 +243,18 @@ class member_logon
         $_SESSION['m_can_reserve'] = $this->user_info['enable_reserve'];
         $_SESSION['m_reserve_limit'] = $this->user_info['reserve_limit'];
         $_SESSION['m_image'] = $this->user_info['member_image'];
+
+        // set bookmark
+        $bookmarkStatement = $obj_db->query('SELECT `biblio_id` FROM `biblio_mark` WHERE `member_id` = \'' . $obj_db->escape_string($this->user_info['member_id']) . '\'');
+
+        if ($bookmarkStatement)
+        {
+            $_SESSION['bookmark'] = [];
+            while ($bookmark = $bookmarkStatement->fetch_row()) {
+                $_SESSION['bookmark'][$bookmark[0]] = $bookmark[0];
+            }
+        }
+
         // check member expiry date
         require_once SIMBIO.'simbio_UTILS/simbio_date.inc.php';
         $_curr_date = date('Y-m-d');

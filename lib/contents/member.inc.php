@@ -22,6 +22,9 @@
  *
  */
 
+use SLiMS\{Url,DB,Json};
+use Volnix\CSRF\CSRF;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -63,28 +66,24 @@ if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     utility::writeLogs($dbs, 'member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . ip());
     // completely destroy session cookie
     simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
-    header('Location: index.php?p=member');
-    header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-    header('Pragma: no-cache');
-    exit();
+    redirect()->withHeader([
+        ['Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'],
+        ['Expires', 'Sat, 26 Jul 1997 05:00:00 GMT'],
+        ['Pragma', 'no-cache']
+    ])->to('?p=member');
 }
 
 // if there is member login action
 if (isset($_POST['logMeIn']) && !$is_member_login) {
-    if (!\Volnix\CSRF\CSRF::validate($_POST)) {
+    if (!CSRF::validate($_POST)) {
         session_unset();
-        echo '<script type="text/javascript">';
-        echo 'alert("Invalid login form!");';
-        echo 'location.href = \'index.php?p=member\';';
-        echo '</script>';
-        exit();
+        redirect()->withMessage('csrf_failed', __('Invalid login form!'))->back();
     }
     $username = trim(strip_tags($_POST['memberID']));
     $password = trim(strip_tags($_POST['memberPassWord']));
     // check if username or password is empty
     if (!$username OR !$password) {
-        echo '<div class="errorBox">' . __('Please fill your Username and Password to Login!') . '</div>';
+        redirect()->withMessage('empty_field', __('Please fill your Username and Password to Login!'))->back();
     } else {
         # <!-- Captcha form processing - start -->
         if ($sysconf['captcha']['member']['enable']) {
@@ -98,8 +97,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
                 if (!$resp->is_valid) {
                     // What happens when the CAPTCHA was entered incorrectly
                     session_unset();
-                    header("location:index.php?p=member&captchaInvalid=true");
-                    die();
+                    redirect()->withMessage('captchaInvalid', __('Wrong Captcha Code entered, Please write the right code!'))->back();
                 }
             } else if ($sysconf['captcha']['member']['type'] == 'others') {
                 # other captchas here
@@ -119,18 +117,19 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         if ($logon->valid($dbs)) {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
-            if (isset($_GET['destination']) && filter_var($_GET['destination'], FILTER_VALIDATE_URL)) {
-                header("location:" . $_GET['destination']);
+            if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
+                redirect($_GET['destination']);
             } else {
-                header('Location: index.php?p=member');
+                redirect()->toPath('member');
             }
             exit();
         } else {
             // write log
             utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
             // message
-            $msg = '<div class="errorBox">' . __('Login FAILED! Wrong username or password!') . '</div>';
-            simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+            //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+            CSRF::generateToken();
+            redirect()->withMessage('wrong_password', __('Login FAILED! Wrong Member ID or password!'))->to('?p=member');
         }
     }
 }
@@ -163,22 +162,46 @@ if ($is_member_login) {
                 'message' => $message,
                 'count' => count($_SESSION['m_mark_biblio'])
             ];
-            header('Content-type: application/json');
-            echo json_encode($res);
-            exit();
+            exit(Json::stringify($res)->withHeader());
         }
+    }
+    if (isset($_POST['bookmark_id']))
+    {
+        try {
+            // switch to delete process
+            if (isset($_POST['delete_bookmark']))
+            {
+
+                DB::getInstance()
+                    ->prepare('DELETE FROM `biblio_mark` WHERE `biblio_id` = ? AND `member_id` = ?')
+                    ->execute([$_POST['bookmark_id'], $_SESSION['mid']]);
+                unset($_SESSION['bookmark'][$_POST['bookmark_id']]);
+                exit(Json::stringify(['status' => true, 'message' => __('Data has been deleted')])->withHeader());    
+            }
+
+            // input biblio data to database
+            DB::getInstance()
+                ->prepare('INSERT IGNORE INTO `biblio_mark` SET `biblio_id` = ?, `member_id` = ?, `id` = ?')
+                ->execute([$_POST['bookmark_id'], $_SESSION['mid'], md5($_POST['bookmark_id'] . $_SESSION['mid'])]);
+
+            $_SESSION['bookmark'][$_POST['bookmark_id']] = $_POST['bookmark_id'];
+
+            exit(Json::stringify(['status' => true, 'message' => __('Data has been saved'), 'label' => __('Bookmarked')])->withHeader());
+        } catch (PDOException $e) {
+            exit(Json::stringify(['status' => false, 'message' => isDev() ? $e->getMessage() : __('Data failed saved')])->withHeader());   
+        } catch (Exception $e) {
+            exit(Json::stringify(['status' => false, 'message' => isDev() ? $e->getMessage() : __('Data failed saved')])->withHeader());   
+        } 
     }
 } else {
     if (isset($_POST['callback']) && $_POST['callback'] === 'json') {
         $res = [
             'status' => false,
-            'message' => 'Please, login first!',
+            'message' => __('Please, login first!'),
             'count' => 0
         ];
-        header('Content-type: application/json');
         http_response_code(401);
-        echo json_encode($res);
-        exit();
+        exit(Json::stringify($res)->withHeader());
     }
 }
 
@@ -379,6 +402,68 @@ if ($is_member_login) :
         $_result = $_loan_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
         $_result = '<div class="memberLoanListInfo my-3">' . $_loan_list->num_rows . ' ' . __('item(s) currently on loan') . ' | <a href="?p=download_current_loan" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i>&nbsp;&nbsp;' . __('Download All Current Loan') . '</a></div>' . "\n" . $_result;
         return $_result;
+    }
+
+    function showBookmarkList($num_recs_show = 20)
+    {
+        global $dbs;
+
+        // table spec
+        $_table_spec = 'biblio_mark AS bm
+            INNER JOIN biblio AS b ON b.biblio_id=bm.biblio_id';
+        // create datagrid
+        $_mark_list = new simbio_datagrid();
+        $_mark_list->disable_paging = false;
+        $_mark_list->table_ID = 'loanlist';
+        $_mark_list->setSQLColumn('b.title AS \'' . __('Title') . '\'', 'bm.created_at AS \'' . __('Marked At') . '\'','bm.biblio_id AS \'' . __('Action') . '\'');
+        $_mark_list->setSQLorder('bm.created_at DESC');
+        // $_mark_list->invisible_fields = [2];
+        $_criteria = sprintf('bm.member_id=\'%s\'', $_SESSION['mid']);
+        $_mark_list->setSQLCriteria($_criteria);
+
+
+        // modify column value
+        $_mark_list->modifyColumnContent(0, 'callback{showBookCover}');
+        $_mark_list->modifyColumnContent(1, 'callback{showDetailDate}');
+        $_mark_list->modifyColumnContent(2, 'callback{showMarkDetail}');
+        // set table and table header attributes
+        $_mark_list->table_attr = 'align="center" class="memberBookmarkList table table-striped" cellpadding="5" cellspacing="0"';
+        $_mark_list->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+        $_mark_list->using_AJAX = false;
+        // return the result
+        $_result = $_mark_list->createDataGrid($dbs, $_table_spec, $num_recs_show);
+        $_result = '<div class="memberLoanListInfo my-3">' . $_mark_list->num_rows . ' ' . __('title currently on list') . ' </div>' . "\n" . $_result;
+        return $_result;
+    }
+
+    function showDetailDate($obj_db, $data)
+    {
+        global $sysconf;
+        if (isset($_COOKIE['select_lang'])) $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
+        return \Carbon\Carbon::parse($data[1])->locale($sysconf['default_lang'])->isoFormat('dddd, LL');
+    }
+
+    function showBookCover($obj_db, $data)
+    {
+        $author = $obj_db->query('select ma.author_name from biblio_author as ba 
+        inner join mst_author as ma on ba.author_id = ma.author_id where ba.biblio_id = ' . $obj_db->escape_string($data[2]));
+        $list = [];
+
+        if ($author->num_rows > 0)
+        {
+            while ($result = $author->fetch_row()) {
+                $list[] = $result[0];
+            }
+        }
+
+        return '<strong><a title="'.__('Click to view detail').'" href="'.Url::getSlimsBaseUri('?p=show_detail&id=' . $data[2]).'">'.$data[0].'</a></strong>
+                <br>
+                <div class="d-flex flex-row"><span class="text-muted text-sm">'.implode('</span>,<span class="text-muted text-sm">', $list).'</span></div>';
+    }
+
+    function showMarkDetail($obj_db, $data)
+    {
+        return '<button class="btn btn-danger btn-sm deleteBookmark" data-id="' . $data[2] . '"><i class="fa fa-trash"></i></button>';
     }
 
     /* callback function to show overdue */
@@ -706,6 +791,10 @@ if ($is_member_login) :
                             'text' => __('Current Loan'),
                             'link' => 'index.php?p=member'
                         ],
+                        'bookmark' => [
+                            'text' => __('Title Bookmark'),
+                            'link' => 'index.php?p=member&sec=bookmark'
+                        ],
                         'title_basket' => [
                             'text' => __('Title Basket'),
                             'link' => 'index.php?p=member&sec=title_basket'
@@ -737,6 +826,12 @@ if ($is_member_login) :
                             echo '<div class="memberInfoHead">' . __('My Current Loan') . '</div>' . "\n";
                             echo '</div>';
                             echo showLoanList();
+                            break;
+                        case 'bookmark':
+                            echo '<div class="tagline">';
+                            echo '<div class="memberInfoHead">' . __('My Title Bookmark') . '</div>' . "\n";
+                            echo '</div>';
+                            echo showBookmarkList();
                             break;
                         case 'title_basket':
                             echo '<div class="tagline">';
@@ -830,7 +925,7 @@ if ($is_member_login) :
 
                                     for (let i = 0; i < ajaxRespond.length; i++) {
                                         const element = ajaxRespond[i];
-                                        let message = element.message ?? 'Reservation request sent';
+                                        let message = element.message ?? '<?= __('Reservation request sent') ?>';
                                         if(element.status == 'ERROR') {
                                             toastr.error(message)
                                         } else {
@@ -840,7 +935,7 @@ if ($is_member_login) :
                                     }
 
                                 } else {
-                                    let message = ajaxRespond.message ?? 'Reservation request sent';
+                                    let message = ajaxRespond.message ?? '<?= __('Reservation request sent') ?>';
                                     if(ajaxRespond.status == 'ERROR') {
                                         toastr.error(message)
                                     } else {
@@ -850,7 +945,7 @@ if ($is_member_login) :
                                 }
 
                             <?php else: ?>
-                                toastr.success('Reservation e-mail sent');
+                                toastr.success('<?= __('Reservation e-mail sent') ?>');
                                 setTimeout(() => {
                                     window.location.href = aHREF; 
                                 }, 5000);
@@ -859,21 +954,49 @@ if ($is_member_login) :
                         }
                     });
                 });
+                
+                $('.deleteBookmark').click(function(e){
+                    e.preventDefault();
+                    let id = $(this).data('id')
+                    $.post('index.php?p=member', {bookmark_id:id,delete_bookmark: true}, function(res,state) {
+                        if (!res.status)
+                        {
+                            toastr.error(res.message)    
+                        }
+                        else
+                        {
+                            toastr.success(res.message, '',{
+                                timeOut: 2000,
+                                onHidden: function() {
+                                    window.location.replace('index.php?p=member&sec=bookmark')
+                                }
+                            })
+                        }
+                    }).fail(function(state){
+                        console.log(state)
+                        toastr.error('<?= __('Unexcpected error. Please tell it to the librarian') ?>')
+                    })
+                })
             }
         );
     </script>
 <?php else: ?>
     <div>
         <div class="tagline"><?php echo __('Library Member Login'); ?></div>
-        <?php
-        // captcha invalid warning
-        if (isset($_GET['captchaInvalid']) && $_GET['captchaInvalid'] === 'true') {
-            echo '<div class="errorBox alert alert-danger">' . __('Wrong Captcha Code entered, Please write the right code!') . '</div>';
-        }
-        ?>
-        <div class="loginInfo"><?php echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); ?></div>
         <div class="loginInfo">
-            <form action="index.php?p=member&destination=<?= urlencode($_GET['destination'] ?? '') ?>" method="post">
+            <?php 
+            if (flash()->isEmpty())
+            {
+                echo __('Please insert your member ID and password given by library system administrator. If you are library\'s member and don\'t have a password yet, please contact library staff.'); 
+            }
+            elseif ($key = flash()->includes('wrong_password','csrf_failed','empty_field','captchaInvalid'))
+            {
+                flash()->danger($key);
+            }
+            ?>
+        </div>
+        <div class="loginInfo">
+            <form action="index.php?p=member&destination=<?= urlencode(simbio_security::xssFree($_GET['destination'] ?? '')) ?>" method="post">
                 <div class="fieldLabel"><?php echo __('Member ID'); ?></div>
                 <div class="login_input"><input class="form-control" type="text" name="memberID"
                                                 placeholder="Enter member ID" required/></div>

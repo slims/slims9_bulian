@@ -14,10 +14,10 @@
             <div class="col-md-3">
               <?php
               if(isset($sysconf['logo_image']) && $sysconf['logo_image'] != '' && file_exists('images/default/'.$sysconf['logo_image'])){
-                echo '<img class="h-16 mb-2" src="images/default/'.$sysconf['logo_image'].'">';
+                echo '<img class="h-16 mb-2" src="images/default/'.v($sysconf['logo_image']).'">';
                 }
               elseif (file_exists(__DIR__ . '/../assets/images/logo.png')) {
-                echo '<img class="h-12 w-12 mb-2" src="' . assets('images/logo.png') . '">';
+                echo '<img class="h-12 w-12 mb-2" src="' . assets(v('images/logo.png')) . '">';
               } else {
                 ?>
                   <svg
@@ -96,6 +96,7 @@ include LIB . "contents/chat.php"; ?>
 <!-- // Load modal -->
 <?php include "_modal_topic.php"; ?>
 <?php include "_modal_advanced.php"; ?>
+<?php include "_modal_social_media.php"; ?>
 
 <!-- // Load highlight -->
 <script src="<?= JWB; ?>highlight.js"></script>
@@ -106,8 +107,8 @@ include LIB . "contents/chat.php"; ?>
 <?php endif; ?>
 
 <!-- // load our vue app.js -->
-<script src="<?php echo assets('js/app.js?v=' . date('Ymd-his')); ?>"></script>
-<script src="<?php echo assets('js/app_jquery.js?v=' . date('Ymd-his')); ?>"></script>
+<script src="<?php echo assets(v('js/app.js')); ?>"></script>
+<script src="<?php echo assets(v('js/app_jquery.js')); ?>"></script>
 <?php include __DIR__ . "./../assets/js/vegas.js.php"; ?>
 <?php if ($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) : ?>
     <script>

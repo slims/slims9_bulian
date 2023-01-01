@@ -93,10 +93,12 @@ ob_start();
                         echo '<optgroup label="'.strtoupper(__($_formated_module_name)).'">';
                         if (isset($main_menu['childs']) && $main_menu['childs']) {
                           foreach ($main_menu['childs'] as $id => $main_menu_child) {
-                            if ($main_menu_child[0] == 'Header') {
-                              echo '<option disabled="disabled" class="option-disabled">'.$main_menu_child[1].'</option>';
-                            } else {
-                              echo '<option value="'.$main_menu_child[0][0].'|'.str_ireplace(MWB, '/', $main_menu_child[0][1]).'" id="submenu_'.$id.'">&nbsp;&nbsp; '.$main_menu_child[0][0].'</option>';
+                            foreach ($main_menu_child as $idc => $main_submenu_child) {
+                              if ($main_submenu_child[0] == 'Header') {
+                                echo '<option disabled="disabled" class="option-disabled">'.$main_submenu_child[1].'</option>';
+                              } else {
+                                echo '<option value="'.$main_submenu_child[0].'|'.str_ireplace(MWB, '/', $main_submenu_child[1]).'" id="submenu_'.$idc.'">&nbsp;&nbsp; '.$main_submenu_child[0].'</option>';
+                              }
                             }
                           }
                         }
