@@ -391,7 +391,7 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 /**
  * Peer to peer server config
  */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims9_bulian', 'name' => 'SLiMS Library');
+$sysconf['p2pserver'][1] = array('uri' => \SLiMS\Url::getSlimsBaseUri(), 'name' => $sysconf['library_name']);
 
 /**
  * User and member login method

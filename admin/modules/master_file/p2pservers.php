@@ -9,6 +9,8 @@
 
 /* P2P/Copy Cataloging Server Management section */
 
+use SLiMS\Url;
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 // key to get full database access
@@ -53,6 +55,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       exit();
     } else {
       $data['name'] = $dbs->escape_string($server_name);
+      if (!Url::isValid($server_uri)) exit(toastr(__('URI isn\'t valid, start witch prefix like e.g: http://, https:// etc.'))->error());
       $data['uri'] = $dbs->escape_string($server_uri);
       $data['server_type'] = $dbs->escape_string($_POST['serverType']);
       $data['input_date'] = date('Y-m-d H:i:s');
