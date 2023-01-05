@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-15 08:26:27
- * @modify date 2022-11-15 17:27:18
+ * @modify date 2023-01-05 21:39:33
  * @license GPLv3
  * @desc [description]
  */
@@ -42,5 +42,10 @@ trait Utils
     public function setError(string $error)
     {
         $this->error = $error;
+    }
+
+    public function getError()
+    {
+        return $this->error;
     }
 }

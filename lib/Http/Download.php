@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-15 17:20:28
- * @modify date 2022-11-15 17:52:59
+ * @modify date 2023-01-05 22:14:51
  * @license GPLv3
  * @desc [description]
  */
@@ -20,19 +20,20 @@ trait Download
      * @param string $url
      * @return anonymousClass
      */
-    public static function download(string $url)
+    public static function download(string $url, array $options = [])
     {
         self::reset();
         $http = self::init($url);
-        return new Class($url, $http) {
+        return new Class($url, $http, $options) {
             private $url = '';
             private $top = null;
             private $options = [];
 
-            public function __construct($url, $top)
+            public function __construct($url, $top, $options)
             {
                 $this->url = $url;
                 $this->top = $top;
+                $this->options = $options;
             }
 
             /**
@@ -49,6 +50,8 @@ trait Download
                 } catch (\Exception $e) {
                     $this->top->setError($e->getMessage());
                 }
+
+                return $this->top;
             }
 
             /**
