@@ -28,5 +28,6 @@ $menu[] = array(__('Start Transaction'), MWB.'circulation/index.php?action=start
 $menu[] = array(__('Quick Return'), MWB.'circulation/quick_return.php', __('Quick Return Collection'));
 $menu[] = array(__('Loan Rules'), MWB.'circulation/loan_rules.php', __('View and Modify Circulation Loan Rules'));
 $menu[] = array(__('Loan History'), MWB.'reporting/customs/loan_history.php', __('Loan History Overview'));
+$menu[] = array(__('Due Date Warning'), MWB.'reporting/customs/due_date_warning.php', __('View Members That About to Have Overdues'));
 $menu[] = array(__('Overdued List'), MWB.'reporting/customs/overdued_list.php', __('View Members Having Overdues'));
 $menu[] = array(__('Reservation'), MWB.'reporting/customs/reserve_list.php', __('Reservation'));
