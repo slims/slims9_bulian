@@ -39,6 +39,7 @@ class Plugins
     const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
     const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
     const OVERDUE_NOTICE_INIT = 'overduenotice_init';
+    const DUEDATE_NOTICE_INIT = 'duedate_init';
 
     private static $instance;
     /**
