@@ -110,20 +110,6 @@ if (isset($_POST['logMeIn'])) {
             // remember me
             if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
 
-            // set cookie admin flag
-            #setcookie('admin_logged_in', true, time()+14400, SWB);
-            #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
-
-            setcookie('admin_logged_in', TRUE, [
-                'expires' => time()+14400,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-
-
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user '.$username.' from address '.ip());
 
@@ -132,7 +118,27 @@ if (isset($_POST['logMeIn'])) {
 
             if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ').$logon->real_name);
             
-            redirect('admin/index.php');
+            if($_SESSION['2fa']) {
+                // check for 2fa
+                redirect('index.php?p=2fa');
+            } else {
+                // set cookie admin flag
+                #setcookie('admin_logged_in', true, time()+14400, SWB);
+                #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
+
+                setcookie('admin_logged_in', TRUE, [
+                    'expires' => time()+14400,
+                    'path' => SWB,
+                    'domain' => '',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+            
+                // redirect admin
+                redirect('admin/index.php');
+            }
+
         } else {
             // write log
             utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user '.$username.' from address '.ip());
