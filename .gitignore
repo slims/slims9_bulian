@@ -51,3 +51,4 @@ $RECYCLE.BIN/
 composer.lock
 config/sysconfig.env.inc.php
 config/database.php
+config/develop_migration.php
