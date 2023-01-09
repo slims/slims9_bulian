@@ -465,34 +465,38 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $qrcode = $writer->writeString($otp->getProvisioningUri());
         $otp_html = '';
         if (($rec_d['2fa'] ?? false)) {
-            $otp_html .= '<div class="alert alert-success d-flex justify-content-between"><span>🔐 Two Factor Authentication enabled.</span><div><button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1&changecurrent=1" type="submit" name="disable2fa" value="1" class="btn btn-danger btn-sm">Disable It</button></div></div>';
+            $otp_html .= '<div class="alert alert-success d-flex justify-content-between"><span>🔐 ' . __('Two Factor Authentication enabled.') . '</span><div><button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1&changecurrent=1" type="submit" name="disable2fa" value="1" class="btn btn-danger btn-sm">' . __('Disable It') . '</button></div></div>';
         }
+        list($otp_app, $verification_code, $verify) = [
+            str_replace('{link}', '<a href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp" target="_blank">FreeOTP</a>', __('Scan this QRcode with your authenticator (e.g. Google Authenticator or {link}) <br> and enter verification code below to enable Two Factor Authentication.')),
+            __('Verification code'),
+            __('Verify')
+        ];
         $otp_html .= <<<HTML
         <div style="display:flex; align-items:center">
             <div>{$qrcode}</div>
             <div>
                 <div class="my-3">
-                    Scan this QRcode with your authenticator (e.g. Google Authenticator or <a href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp" target="_blank">FreeOTP</a>) <br>
-                    and enter verification code below to enable Two Factor Authentication.
+                    {$otp}
                 </div>
                 <input form="formVerify2fa" type="hidden" name="secret_code" value="{$secret}">
-                <div class="text-muted">Verification code</div>
+                <div class="text-muted">{$verification_code}</div>
                 <div class="input-group mb-3">
                     <input form="formVerify2fa" type="text" name="verify_code" class="form-control mr-0" placeholder="Enter code from authenticator" aria-label="Enter code from authenticator" aria-describedby="button-addon2">
                     <div class="input-group-append">
-                        <button form="formVerify2fa" class="btn btn-outline-secondary" type="submit" id="button-addon2">Verify</button>
+                        <button form="formVerify2fa" class="btn btn-outline-secondary" type="submit" id="button-addon2">{$verify}</button>
                     </div>
                 </div>
             </div>
         </div>
         HTML;
-        $form->addAnything('Enable Two Factor Authentication', $otp_html);
+        $form->addAnything(__('Enable Two Factor Authentication'), $otp_html);
     }
 
     // ability to disable Two Factor Authentication for administrator
     if ($_SESSION['uid'] == 1 && ($rec_d['2fa'] ?? false)) {
-        $otp_html = '<button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1" type="submit" name="disable2fa" value="1" class="btn btn-danger">Disable Two Factor Authentication</button>';
-        $form->addAnything('Disable Two Factor Authentication', $otp_html);
+        $otp_html = '<button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1" type="submit" name="disable2fa" value="1" class="btn btn-danger">'.__('Disable Two Factor Authentication').'</button>';
+        $form->addAnything(__('Disable Two Factor Authentication'), $otp_html);
     }
 
     // edit mode messagge
