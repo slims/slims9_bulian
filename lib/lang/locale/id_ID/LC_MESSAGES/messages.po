@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-07 13:27+0700\n"
-"PO-Revision-Date: 2023-01-07 15:25+0700\n"
+"POT-Creation-Date: 2023-01-09 20:12+0700\n"
+"PO-Revision-Date: 2023-01-09 20:17+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -460,7 +460,7 @@ msgstr "Klik di sini untuk Masuk kembali"
 msgid "SHORTCUT"
 msgstr "PEMINTAS"
 
-#: admin/default/submenu.php:22 admin/modules/system/app_user.php:415
+#: admin/default/submenu.php:22
 msgid "Change User Profiles"
 msgstr "Ubah Profil Pengguna"
 
@@ -582,8 +582,8 @@ msgstr "Daftar Eksemplar Keluar"
 #: admin/modules/stock_take/current.php:130
 #: admin/modules/stock_take/index.php:58 admin/modules/stock_take/index.php:60
 #: admin/modules/stock_take/st_log.php:59
-#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:275
-#: admin/modules/system/app_user.php:277 admin/modules/system/backup.php:131
+#: admin/modules/stock_take/st_log.php:61 admin/modules/system/app_user.php:316
+#: admin/modules/system/app_user.php:318 admin/modules/system/backup.php:131
 #: admin/modules/system/backup.php:133 admin/modules/system/content.php:189
 #: admin/modules/system/content.php:191
 #: admin/modules/system/custom_field.php:181
@@ -813,8 +813,7 @@ msgstr "Tanggal Kembali"
 #: admin/modules/serial_control/subscription.php:256
 #: admin/modules/stock_take/current.php:194
 #: admin/modules/stock_take/index.php:170
-#: admin/modules/stock_take/st_log.php:112
-#: admin/modules/system/app_user.php:475 admin/modules/system/backup.php:219
+#: admin/modules/stock_take/st_log.php:112 admin/modules/system/backup.php:219
 #: admin/modules/system/content.php:347
 #: admin/modules/system/custom_field.php:299
 #: admin/modules/system/holiday.php:296 admin/modules/system/module.php:226
@@ -909,7 +908,7 @@ msgstr "Ubah setelan cetak label"
 #: admin/modules/bibliography/item_barcode_generator.php:228
 #: admin/modules/bibliography/printed_card.php:320
 #: admin/modules/membership/member_card_generator.php:207
-#: admin/modules/system/app_user.php:362 plugins/label_barcode/index.php:302
+#: admin/modules/system/app_user.php:403 plugins/label_barcode/index.php:302
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -1326,13 +1325,13 @@ msgid "The first row is the columns names"
 msgstr "Baris pertama adalah nama kolom"
 
 #: admin/modules/bibliography/index.php:100
-#: admin/modules/membership/index.php:86 admin/modules/system/app_user.php:82
+#: admin/modules/membership/index.php:86 admin/modules/system/app_user.php:117
 msgid "{imageFilename} successfully removed!"
 msgstr "{imageFilename} berhasil hapus!"
 
 #: admin/modules/bibliography/index.php:110
 #: admin/modules/bibliography/index.php:480
-#: admin/modules/system/app_user.php:104
+#: admin/modules/system/app_user.php:139
 msgid "Invalid form submission token!"
 msgstr "Invalid form submission token!"
 
@@ -1354,8 +1353,8 @@ msgstr "Ruas %s adalah tanggal, tidak boleh kosong"
 
 #: admin/modules/bibliography/index.php:246
 #: admin/modules/membership/index.php:259
-#: admin/modules/membership/index.php:296 admin/modules/system/app_user.php:186
-#: admin/modules/system/app_user.php:211
+#: admin/modules/membership/index.php:296 admin/modules/system/app_user.php:227
+#: admin/modules/system/app_user.php:252
 msgid "Image Uploaded Successfully"
 msgstr "Gambar Berhasil Diunggah"
 
@@ -1423,7 +1422,7 @@ msgstr "Data berikut tidak bisa dihapus :"
 #: admin/modules/master_file/topic.php:166
 #: admin/modules/membership/index.php:374
 #: admin/modules/membership/member_type.php:152
-#: admin/modules/system/app_user.php:252 admin/modules/system/backup.php:103
+#: admin/modules/system/app_user.php:293 admin/modules/system/backup.php:103
 #: admin/modules/system/content.php:167
 #: admin/modules/system/custom_field.php:158
 #: admin/modules/system/holiday.php:160 admin/modules/system/module.php:127
@@ -1450,7 +1449,7 @@ msgstr "Semua Data Berhasil Dihapus"
 #: admin/modules/master_file/topic.php:169
 #: admin/modules/membership/index.php:377
 #: admin/modules/membership/member_type.php:160
-#: admin/modules/system/app_user.php:255 admin/modules/system/backup.php:106
+#: admin/modules/system/app_user.php:296 admin/modules/system/backup.php:106
 #: admin/modules/system/content.php:170
 #: admin/modules/system/custom_field.php:162
 #: admin/modules/system/holiday.php:163 admin/modules/system/module.php:130
@@ -1690,7 +1689,7 @@ msgstr "Catatan Biblio"
 #: admin/modules/membership/member_type.php:200
 #: admin/modules/serial_control/serial_base_lib.inc.php:202
 #: admin/modules/serial_control/subscription.php:163
-#: admin/modules/system/app_user.php:302 admin/modules/system/content.php:233
+#: admin/modules/system/app_user.php:343 admin/modules/system/content.php:233
 #: admin/modules/system/custom_field.php:202
 #: admin/modules/system/holiday.php:195 admin/modules/system/module.php:167
 #: admin/modules/system/shortcut.php:131
@@ -1726,10 +1725,10 @@ msgstr "Catatan"
 #: admin/modules/membership/index.php:441
 #: admin/modules/membership/member_type.php:215
 #: admin/modules/serial_control/subscription.php:178
-#: admin/modules/system/app_user.php:323 admin/modules/system/content.php:233
+#: admin/modules/system/app_user.php:364 admin/modules/system/content.php:233
 #: admin/modules/system/custom_field.php:218
 #: admin/modules/system/holiday.php:210 admin/modules/system/module.php:182
-#: admin/modules/system/user_group.php:227 lib/contents/login.inc.php:277
+#: admin/modules/system/user_group.php:227 lib/contents/login.inc.php:281
 #: lib/contents/newpass.inc.php:128
 msgid "Update"
 msgstr "Perbaharui"
@@ -2247,7 +2246,7 @@ msgid "Show scan dialog"
 msgstr "Tunjukkan dialog pindai"
 
 #: admin/modules/bibliography/index.php:1022
-#: admin/modules/membership/index.php:615 admin/modules/system/app_user.php:380
+#: admin/modules/membership/index.php:615 admin/modules/system/app_user.php:421
 msgid "Reset"
 msgstr "Setel ulang"
 
@@ -2304,7 +2303,7 @@ msgid "Vertical:"
 msgstr "Vertikal:"
 
 #: admin/modules/bibliography/index.php:1034
-#: admin/modules/membership/index.php:612 admin/modules/system/app_user.php:377
+#: admin/modules/membership/index.php:612 admin/modules/system/app_user.php:418
 msgid "Capture"
 msgstr "Ambil Gambar"
 
@@ -2468,8 +2467,6 @@ msgstr "Salin"
 #: admin/modules/master_file/topic.php:260
 #: admin/modules/master_file/topic.php:286
 #: admin/modules/master_file/topic.php:292
-#: admin/modules/system/app_user.php:416 admin/modules/system/app_user.php:445
-#: admin/modules/system/app_user.php:452
 #: admin/modules/system/user_group.php:249
 #: admin/modules/system/user_group.php:261 lib/contents/common.inc.php:77
 msgid "Last Update"
@@ -3831,8 +3828,8 @@ msgstr "Total denda tidak terbayar"
 #: admin/modules/membership/index.php:413
 #: admin/modules/membership/member_type.php:191
 #: admin/modules/reporting/customs/pop_procurement_list.php:31
-#: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:289
-#: admin/modules/system/app_user.php:430 admin/modules/system/backup.php:49
+#: admin/modules/system/app_user.php:63 admin/modules/system/app_user.php:97
+#: admin/modules/system/app_user.php:330 admin/modules/system/backup.php:49
 #: admin/modules/system/backup_proc.php:48
 #: admin/modules/system/barcode_generator.php:43
 #: admin/modules/system/biblio_indexes.php:45
@@ -4071,17 +4068,27 @@ msgid "Loan History Overview"
 msgstr "Sejarah Peminjaman"
 
 #: admin/modules/circulation/submenu.php:31
+#: admin/modules/reporting/customs/customs_report_list.inc.php:36
+#: admin/modules/reporting/customs/due_date_warning.php:61
+msgid "Due Date Warning"
+msgstr "Peringatan Jatuh Tempo"
+
+#: admin/modules/circulation/submenu.php:31
+msgid "View Members That About to Have Overdues"
+msgstr "Tampilkan Anggota yang AKAN Memiliki Keterlambatan"
+
+#: admin/modules/circulation/submenu.php:32
 #: admin/modules/reporting/customs/customs_report_list.inc.php:37
 #: admin/modules/reporting/customs/overdued_list.php:66
 msgid "Overdued List"
 msgstr "Daftar Keterlambatan"
 
-#: admin/modules/circulation/submenu.php:31
+#: admin/modules/circulation/submenu.php:32
 #: admin/modules/reporting/customs/customs_report_list.inc.php:37
 msgid "View Members Having Overdues"
 msgstr "Daftar Anggota yang Memiliki Keterlambatan"
 
-#: admin/modules/circulation/submenu.php:32
+#: admin/modules/circulation/submenu.php:33
 #: admin/modules/reporting/customs/reserve_list.php:60
 msgid "Reservation"
 msgstr "Reservasi"
@@ -5186,7 +5193,7 @@ msgstr "Kode Klasifikasi"
 #: admin/modules/membership/duedate_mail.php:28
 #: admin/modules/membership/overdue_mail.php:39
 msgid "E-Mail configuration is not ready!"
-msgstr "Konfigurasi surel belum tersedia"
+msgstr "Konfigurasi surel belum tersedia!"
 
 #: admin/modules/membership/export.php:125
 msgid "There is no record in membership database yet, Export FAILED!"
@@ -5221,8 +5228,8 @@ msgstr "Baris pertama adalah nama kolom"
 msgid "Member ID, Name and Birthday cannot be empty"
 msgstr "ID dan Nama Anggota dan Tanggal Lahir tidak boleh kosong"
 
-#: admin/modules/membership/index.php:103 admin/modules/system/app_user.php:101
-#: lib/contents/login.inc.php:193 lib/contents/newpass.inc.php:57
+#: admin/modules/membership/index.php:103 admin/modules/system/app_user.php:136
+#: lib/contents/login.inc.php:198 lib/contents/newpass.inc.php:57
 msgid "Password confirmation does not match. See if your Caps Lock key is on!"
 msgstr ""
 "Kata sandi dan konfirmasinya tidak cocok. Pastikan penggunaan huruf besar "
@@ -5240,8 +5247,8 @@ msgid "Member Data Successfully Updated"
 msgstr "Data Anggota Berhasil diperbarui"
 
 #: admin/modules/membership/index.php:263
-#: admin/modules/membership/index.php:300 admin/modules/system/app_user.php:190
-#: admin/modules/system/app_user.php:215
+#: admin/modules/membership/index.php:300 admin/modules/system/app_user.php:231
+#: admin/modules/system/app_user.php:256
 msgid "Image FAILED to upload"
 msgstr "Citra/Berkas Gambar GAGAL Diunggah"
 
@@ -5361,11 +5368,11 @@ msgstr "Nomor Identitas"
 msgid "Pending Membership"
 msgstr "Tunda Keanggotaan"
 
-#: admin/modules/membership/index.php:600 admin/modules/system/app_user.php:365
+#: admin/modules/membership/index.php:600 admin/modules/system/app_user.php:406
 msgid "or take a photo"
 msgstr "atau ambil foto"
 
-#: admin/modules/membership/index.php:603 admin/modules/system/app_user.php:368
+#: admin/modules/membership/index.php:603 admin/modules/system/app_user.php:409
 msgid "Load Camera"
 msgstr "Muat Kamera"
 
@@ -5383,14 +5390,14 @@ msgstr "Foto"
 msgid "E-mail"
 msgstr "Surel"
 
-#: admin/modules/membership/index.php:636 admin/modules/system/app_user.php:409
-#: lib/contents/login.inc.php:252 lib/contents/member.inc.php:307
+#: admin/modules/membership/index.php:636 admin/modules/system/app_user.php:450
+#: lib/contents/login.inc.php:257 lib/contents/member.inc.php:307
 #: lib/contents/newpass.inc.php:123
 msgid "New Password"
 msgstr "Kata sandi Baru"
 
-#: admin/modules/membership/index.php:638 admin/modules/system/app_user.php:411
-#: lib/contents/login.inc.php:254 lib/contents/newpass.inc.php:125
+#: admin/modules/membership/index.php:638 admin/modules/system/app_user.php:452
+#: lib/contents/login.inc.php:259 lib/contents/newpass.inc.php:125
 msgid "Confirm New Password"
 msgstr "Konfirmasi Kata Sandi Baru"
 
@@ -5399,7 +5406,7 @@ msgstr "Konfirmasi Kata Sandi Baru"
 msgid "You are going to edit member data"
 msgstr "Anda akan menyunting data anggota"
 
-#: admin/modules/membership/index.php:650 admin/modules/system/app_user.php:417
+#: admin/modules/membership/index.php:650
 msgid "Leave Password field blank if you don't want to change the password"
 msgstr "Biarkan ruas Kata Sandi kosong jika tidak ingin mengubahnya"
 
@@ -5745,11 +5752,6 @@ msgstr "Daftar Peminjaman Anggota"
 #: admin/modules/reporting/customs/customs_report_list.inc.php:34
 msgid "List of loan by each member"
 msgstr "Daftar Peminjaman Tiap Anggota"
-
-#: admin/modules/reporting/customs/customs_report_list.inc.php:36
-#: admin/modules/reporting/customs/due_date_warning.php:61
-msgid "Due Date Warning"
-msgstr "Peringatan Jatuh Tempo"
 
 #: admin/modules/reporting/customs/customs_report_list.inc.php:36
 msgid "Loan Due Date Warnings"
@@ -6248,14 +6250,12 @@ msgid "Activity Date Until"
 msgstr "Aktifitas Hingga"
 
 #: admin/modules/reporting/customs/staff_act.php:106
-#: admin/modules/system/app_user.php:335 admin/modules/system/app_user.php:441
-#: admin/modules/system/app_user.php:448 admin/modules/system/app_user.php:449
+#: admin/modules/system/app_user.php:376
 msgid "Real Name"
 msgstr "Nama Asli"
 
 #: admin/modules/reporting/customs/staff_act.php:107
-#: admin/modules/system/app_user.php:329 admin/modules/system/app_user.php:331
-#: admin/modules/system/app_user.php:442
+#: admin/modules/system/app_user.php:370 admin/modules/system/app_user.php:372
 msgid "Login Username"
 msgstr "Nama masuk Pengguna"
 
@@ -6892,7 +6892,7 @@ msgstr "Resinkronisasi Sekarang"
 msgid "Stock Take Log"
 msgstr "Catatan Inventarisasi"
 
-#: admin/modules/stock_take/st_log.php:76 lib/contents/login.inc.php:292
+#: admin/modules/stock_take/st_log.php:76 lib/contents/login.inc.php:295
 msgid "Username"
 msgstr "Nama Akun"
 
@@ -7084,74 +7084,81 @@ msgstr "Resinkronisasi data bibliografi dengan inventarisasi terkini"
 msgid "Finish Current Stock Take Proccess"
 msgstr "Selesaikan Proses Inventarisasi Terkini"
 
-#: admin/modules/system/app_user.php:95
+#: admin/modules/system/app_user.php:77
+msgid "Code verified!"
+msgstr "Kode terverifikasi!"
+
+#: admin/modules/system/app_user.php:80
+msgid "Invalid verification code!"
+msgstr "Kode verifikasi salah!"
+
+#: admin/modules/system/app_user.php:92
+msgid "Two-factor authentication has been disabled."
+msgstr "Autentikasi Dua-faktor telah dimatikan."
+
+#: admin/modules/system/app_user.php:94
+msgid "Upss... something wrong!"
+msgstr "Duh... ada yang salah!"
+
+#: admin/modules/system/app_user.php:130
 msgid "User Name or Real Name can't be empty"
 msgstr "Nama Pengguna atau Nama Asli tidak boleh kosong"
 
-#: admin/modules/system/app_user.php:98
+#: admin/modules/system/app_user.php:133
 msgid "Login username or Real Name is probihited!"
 msgstr "Nama masuk pengguna atau Nama Lengkap tidak bisa digunakan!"
 
-#: admin/modules/system/app_user.php:178
+#: admin/modules/system/app_user.php:219
 msgid "User Data Successfully Updated"
 msgstr "Data Pengguna Berhasil Diperbaharui"
 
-#: admin/modules/system/app_user.php:195
+#: admin/modules/system/app_user.php:236
 msgid "User Data FAILED to Updated. Please Contact System Administrator"
 msgstr "Data Pengguna GAGAL Diperbaharui. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:203
+#: admin/modules/system/app_user.php:244
 msgid "New User Data Successfully Saved"
 msgstr "Data Pengguna Baru Berhasil Disimpan"
 
-#: admin/modules/system/app_user.php:219
+#: admin/modules/system/app_user.php:260
 msgid "User Data FAILED to Save. Please Contact System Administrator"
 msgstr "Data Pengguna Baru GAGAL Disimpan. Hubungi Administrator Sistem"
 
-#: admin/modules/system/app_user.php:268 admin/modules/system/submenu.php:51
+#: admin/modules/system/app_user.php:309 admin/modules/system/submenu.php:51
 msgid "Librarian & System Users"
 msgstr "Pustakawan & Pengguna Sistem"
 
-#: admin/modules/system/app_user.php:272
+#: admin/modules/system/app_user.php:313
 msgid "User List"
 msgstr "Daftar Pengguna"
 
-#: admin/modules/system/app_user.php:273
+#: admin/modules/system/app_user.php:314
 msgid "Add New User"
 msgstr "Tambah Pengguna"
 
-#: admin/modules/system/app_user.php:341 admin/modules/system/app_user.php:443
-#: admin/modules/system/app_user.php:450
+#: admin/modules/system/app_user.php:382
 msgid "User Type"
 msgstr "Tipe Keanggotaan"
 
-#: admin/modules/system/app_user.php:343 lib/contents/librarian.inc.php:49
+#: admin/modules/system/app_user.php:384 lib/contents/librarian.inc.php:49
 msgid "E-Mail"
 msgstr "Surel"
 
-#: admin/modules/system/app_user.php:355
+#: admin/modules/system/app_user.php:396
 msgid "Social Media"
 msgstr "Media Sosial"
 
-#: admin/modules/system/app_user.php:359
+#: admin/modules/system/app_user.php:400
 msgid "REMOVE IMAGE"
 msgstr "HILANGKAN GAMBAR"
 
-#: admin/modules/system/app_user.php:391
+#: admin/modules/system/app_user.php:432
 msgid "User Photo"
 msgstr "Foto Pengguna"
 
-#: admin/modules/system/app_user.php:406
+#: admin/modules/system/app_user.php:447
 msgid "Group(s)"
 msgstr "Kelompok"
-
-#: admin/modules/system/app_user.php:416
-msgid "You are going to edit user profile"
-msgstr "Anda akan menyunting data pengguna"
-
-#: admin/modules/system/app_user.php:444 admin/modules/system/app_user.php:451
-msgid "Last Login"
-msgstr "Terakhir kali Masuk"
 
 #: admin/modules/system/backup.php:103 admin/modules/system/backup.php:106
 #: admin/modules/system/backup.php:117 admin/modules/system/submenu.php:58
@@ -8669,6 +8676,10 @@ msgstr " pada "
 msgid " write"
 msgstr " tulis"
 
+#: lib/contents/2fa.inc.php:39 lib/contents/login.inc.php:139
+msgid "Welcome to Library Automation, "
+msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
+
 #: lib/contents/chat.php:69
 msgid "Chat As "
 msgstr "Berbincang sebagai "
@@ -8774,7 +8785,7 @@ msgstr ""
 "Jika Anda membutuhkan bantuan untuk mengganti kata sandi, kami akan kirimkan "
 "tautan untuk menggantinya."
 
-#: lib/contents/forgot.inc.php:52 lib/contents/login.inc.php:75
+#: lib/contents/forgot.inc.php:52 lib/contents/login.inc.php:76
 msgid "Please supply valid username and password"
 msgstr "Masukkan nama pengguna dan kata sandi yang benar"
 
@@ -8803,7 +8814,7 @@ msgstr ""
 msgid "Current email not found. Please try again."
 msgstr "Alamat surel tidak ditemukan. Harap coba kembali."
 
-#: lib/contents/forgot.inc.php:125 lib/contents/login.inc.php:243
+#: lib/contents/forgot.inc.php:125 lib/contents/login.inc.php:248
 #: lib/contents/newpass.inc.php:117
 msgid ""
 "Your browser does not support Javascript or Javascript is disabled. "
@@ -8840,55 +8851,51 @@ msgstr "Media Sosial"
 msgid "No librarian data yet"
 msgstr "Belum ada data Pustakawan"
 
-#: lib/contents/login.inc.php:60 lib/contents/login.inc.php:174
+#: lib/contents/login.inc.php:61 lib/contents/login.inc.php:179
 msgid "Wrong Username or Password. ACCESS DENIED"
 msgstr "Nama Pengguna atau Kata Sandi Salah. AKSES DITOLAK"
 
-#: lib/contents/login.inc.php:70 lib/contents/member.inc.php:80
+#: lib/contents/login.inc.php:71 lib/contents/member.inc.php:80
 msgid "Invalid login form!"
 msgstr "Salah laman masuk!"
 
-#: lib/contents/login.inc.php:133
-msgid "Welcome to Library Automation, "
-msgstr "Selamat Datang di Otomatisasi Perpustakaan, "
-
-#: lib/contents/login.inc.php:191 lib/contents/newpass.inc.php:55
+#: lib/contents/login.inc.php:196 lib/contents/newpass.inc.php:55
 msgid "Current password can not be empty!"
 msgstr "Kata Sandi saat ini tidak boleh kosong!"
 
-#: lib/contents/login.inc.php:249
+#: lib/contents/login.inc.php:254
 msgid "Hi {username}, please update your password!"
 msgstr "Hai {username}, mohon perbarui kata sandi Anda!"
 
-#: lib/contents/login.inc.php:250 lib/contents/member.inc.php:303
+#: lib/contents/login.inc.php:255 lib/contents/member.inc.php:303
 msgid "Current Password"
 msgstr "Kata Sandi Terkini"
 
-#: lib/contents/login.inc.php:281
+#: lib/contents/login.inc.php:285
 msgid "Not valid token!"
 msgstr "Token tidak valid!"
 
-#: lib/contents/login.inc.php:282
+#: lib/contents/login.inc.php:286
 msgid "Go Home"
 msgstr "Kembali ke Beranda"
 
-#: lib/contents/login.inc.php:294 lib/contents/member.inc.php:1003
+#: lib/contents/login.inc.php:297 lib/contents/member.inc.php:1003
 msgid "Password"
 msgstr "Kata Sandi"
 
-#: lib/contents/login.inc.php:322
+#: lib/contents/login.inc.php:324
 msgid "Remember me"
 msgstr "Ingat saya"
 
-#: lib/contents/login.inc.php:326 lib/contents/member.inc.php:1029
+#: lib/contents/login.inc.php:328 lib/contents/member.inc.php:1029
 msgid "Login"
 msgstr "Masuk"
 
-#: lib/contents/login.inc.php:328
+#: lib/contents/login.inc.php:330
 msgid "Forgot my password"
 msgstr "Lupa kata sandi"
 
-#: lib/contents/login.inc.php:340
+#: lib/contents/login.inc.php:344
 msgid "Library Automation Login"
 msgstr "Masuk Otomasi Perpustakaan"
 
@@ -10263,6 +10270,12 @@ msgstr "Masuk"
 #: template/lightweight/index_template.inc.php:204
 msgid "Put some keyword(s)..."
 msgstr "Masukkan kata kunci..."
+
+#~ msgid "You are going to edit user profile"
+#~ msgstr "Anda akan menyunting data pengguna"
+
+#~ msgid "Last Login"
+#~ msgstr "Terakhir kali Masuk"
 
 #~ msgid "Click to view others documents with this author"
 #~ msgstr "Klik disini untuk mencari dokumen lain dari pengarang ini"
