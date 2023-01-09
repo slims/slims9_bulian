@@ -1064,4 +1064,13 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
         return $this->slims->query($sql, ['create', 'alter']);
     }
+
+    /**
+     * Upgrade role to v9.x.x
+     */
+    function upgrade_role_33()
+    {
+        $sql['alter'][] = "ALTER TABLE `user` ADD `2fa` text COLLATE 'utf8_unicode_ci' NULL AFTER `passwd`;";
+        return $this->slims->query($sql, ['alter']);
+    }
 }

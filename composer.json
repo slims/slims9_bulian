@@ -8,9 +8,12 @@
         }
     },
     "require": {
+        "elasticsearch/elasticsearch": "~6.0",
         "ext-json": "*",
-        "spomky-labs/otphp": "^11.1",
-        "bacon/bacon-qr-code": "^2.0"
+        "volnix/csrf": "~1.0",
+        "monolog/monolog": "^2.0",
+        "ramsey/uuid": "^4.0",
+        "ifsnop/mysqldump-php": "^2.9"
     },
     "license": "GNU GPL v3"
 }

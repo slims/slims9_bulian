@@ -2501,6 +2501,12 @@ return [
         'default' => ''
       ],
       [
+        'field' => '2fa',
+        'type' => 'text',
+        'null' => true,
+        'default' => ''
+      ],
+      [
         'field' => 'email',
         'type' => 'varchar(200)',
         'null' => true,

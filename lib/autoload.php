@@ -34,6 +34,10 @@ $namespaces = [
     "ZipStream\\" => "/maennchen/zipstream-php/src/",
     "Carbon\\" => "/nesbot/carbon/src/Carbon/",
     "Minigalnano\\" => "/minigalnano/",
+    'ParagonIE\\ConstantTime\\' => '/paragonie/constant_time_encoding/src',
+    'OTPHP\\' => '/spomky-labs/otphp/src',
+    'DASPRiD\\Enum\\' => '/dasprid/enum/src',
+    'BaconQrCode\\' => '/bacon/bacon-qr-code/src',
 ];
 
 $class_alias = [];

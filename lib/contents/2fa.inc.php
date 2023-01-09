@@ -2,18 +2,27 @@
 // set page title
 $opac->page_title = '';
 
-// dump(debug_backtrace());
-// exit;
-
-if (!isset($_SESSION['2fa']) || is_null($_SESSION['2fa'] ?? null)) redirect('index.php?p=login');
+if (!isset($_SESSION['user']['2fa']) || is_null($_SESSION['user']['2fa'] ?? null)) redirect('index.php?p=login');
 
 if (isset($_POST['code-6'])) {
     $code = '';
     for ($i=1; $i <= 6; $i++) $code .= $_POST['code-' . $i];
-    $otp = OTPHP\TOTP::createFromSecret($_SESSION['2fa']);
+    $otp = OTPHP\TOTP::createFromSecret($_SESSION['user']['2fa']);
     if ($otp->verify($code)) {
+
+        $username = $_SESSION['user']['username'];
+        $realname = $_SESSION['user']['realname'];
+        $user_info = $_SESSION['user'];
+
+        // destroy previous session set in OPAC
+        simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
+        require SB . 'admin/default/session.inc.php';
+
+        // regenerate session ID to prevent session hijacking
+        session_regenerate_id(true);
+
         setcookie('admin_logged_in', TRUE, [
-            'expires' => time()+14400,
+            'expires' => time() + 14400,
             'path' => SWB,
             'domain' => '',
             'secure' => false,
@@ -21,13 +30,25 @@ if (isset($_POST['code-6'])) {
             'samesite' => 'Lax',
         ]);
 
+        // write log
+        utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
+
+        # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+        $log = new SLiMS\AlLibrarian('1001', array("username" => $username, "realname" => $realname));
+
+        if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $realname);
+
+        require LIB . 'admin_logon.inc.php';
+        $logon = new admin_logon($username, '');
+        $logon->setUserInfo($user_info);
+        $logon->setupSession($dbs);
         redirect('admin/index.php');
     }
 }
 
 ?>
 
-<form action="post" class="row" method="post" action="<?= $_SERVER['PHP_SELF'] ?>?p=2fa">
+<form class="row" method="post" action="<?= $_SERVER['PHP_SELF'] ?>?p=2fa">
     <div class="col-md-6 offset-md-3 card card-body text-center">
         <div>
             <div class="w-24 h-24 bg-blue-lighter rounded-full p-4 mb-4 inline-block">

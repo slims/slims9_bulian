@@ -997,6 +997,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `realname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `passwd` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `2fa` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_type` smallint(2) DEFAULT NULL,
   `user_image` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
