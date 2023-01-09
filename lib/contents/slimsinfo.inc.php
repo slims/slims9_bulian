@@ -38,7 +38,7 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2021 Senayan Developer Community<br />
+Copyright (c) 2007-2023 Senayan Developer Community<br />
 Simbio Engine v2.0, Copyright (c) 2007-2013 Arie Nugraha
 </p>
 <p>&nbsp;</p>
