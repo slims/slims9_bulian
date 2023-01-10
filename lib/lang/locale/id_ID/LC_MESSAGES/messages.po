@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-09 20:12+0700\n"
-"PO-Revision-Date: 2023-01-09 20:17+0700\n"
+"POT-Creation-Date: 2023-01-10 20:58+0700\n"
+"PO-Revision-Date: 2023-01-10 21:43+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -7159,6 +7159,32 @@ msgstr "Foto Pengguna"
 #: admin/modules/system/app_user.php:447
 msgid "Group(s)"
 msgstr "Kelompok"
+
+#: admin/modules/system/app_user.php:468
+msgid "Two Factor Authentication enabled."
+msgstr "Autentikasi Dua-faktor diaktifkan."
+
+#: admin/modules/system/app_user.php:468
+msgid "Disable It"
+msgstr "Matikan"
+
+#: admin/modules/system/app_user.php:471
+msgid ""
+"Scan this QRcode with your authenticator (e.g. Google Authenticator or "
+"{link}) <br> and enter verification code below to enable Two Factor "
+"Authentication."
+msgstr ""
+"Gunakan aplikasi autentikator (contoh: Goggle Authenticator atau{link}) "
+"untuk memindai QRcode ini <br> kemudian masukkan kode pada autentikator "
+"untuk mengaktifkan Autentikasi Dua Faktor."
+
+#: admin/modules/system/app_user.php:472
+msgid "Verification code"
+msgstr "Kode verifikasi"
+
+#: admin/modules/system/app_user.php:473
+msgid "Verify"
+msgstr "Verifikasi"
 
 #: admin/modules/system/backup.php:103 admin/modules/system/backup.php:106
 #: admin/modules/system/backup.php:117 admin/modules/system/submenu.php:58
