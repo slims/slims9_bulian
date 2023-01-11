@@ -43,7 +43,7 @@ return [
         'repository' => [
             'provider' => \SLiMS\Filesystems\Providers\Local::class,
             'options' => [
-                'root' => '/repository/'
+                'root' => SB . 'repository/'
             ]
         ],
     ]
