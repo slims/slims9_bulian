@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 09:40:33
- * @modify date 2023-01-01 20:27:58
+ * @modify date 2023-01-11 13:39:23
  * @license GPLv3
  * @desc 
  * 
@@ -42,7 +42,7 @@ class Storage
     public static function disk(string $Disk, array $arguments = [])
     {
         $class = config('filesystem.disks.' . $Disk, false) ? config('filesystem.disks.' . $Disk . '.provider') : self::$defaultProvider;
-        return new $class(...$arguments);
+        return new $class(...array_merge($arguments, [$Disk]));
     }
 
     /**
