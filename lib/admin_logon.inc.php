@@ -63,7 +63,6 @@ class admin_logon
      * @return  void
      */
     public function adminValid($obj_db) {
-        global $sysconf;
         $this->obj_db = $obj_db;
         $_check_login = call_user_func(array($this, $this->auth_method.'Login'));
         // check if the user exist in database
@@ -79,6 +78,17 @@ class admin_logon
             }
         }
 
+        // update the last login time
+        $obj_db->query("UPDATE user SET last_login='".date("Y-m-d H:i:s")."',
+            last_login_ip='".ip()."'
+            WHERE user_id=".$this->user_info['user_id']);
+
+        return true;
+    }
+
+    function setupSession($obj_db)
+    {
+        global $sysconf;
         $this->real_name = $this->user_info['realname'];
         // fill all sessions var
         $_SESSION['uid'] = $this->user_info['user_id'];
@@ -147,13 +157,17 @@ class admin_logon
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }
         $_SESSION['checksum'] = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
+    }
 
-        // update the last login time
-        $obj_db->query("UPDATE user SET last_login='".date("Y-m-d H:i:s")."',
-            last_login_ip='".ip()."'
-            WHERE user_id=".$this->user_info['user_id']);
+    function setUserInfo($user_info)
+    {
+        $this->user_info = $user_info;
+    }
 
-        return true;
+    function getUserInfo($key = null)
+    {
+        if (!is_null($key)) return $this->user_info[$key] ?? null;
+        return $this->user_info;
     }
 
 
@@ -244,7 +258,7 @@ class admin_logon
         */
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username, u.passwd,
-            u.realname, u.groups, u.user_image
+            u.realname, u.groups, u.user_image, u.2fa
             FROM user AS u
             WHERE u.username='%s'", $this->obj_db->escape_string($this->username));
         $_user_q = $this->obj_db->query($_sql_librarian_login);
@@ -285,7 +299,7 @@ class admin_logon
     protected function nativeLoginMd5() {
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username,
-            u.realname, u.groups
+            u.realname, u.groups, u.2fa
             FROM user AS u
             WHERE u.username='%s'
                 AND u.passwd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));

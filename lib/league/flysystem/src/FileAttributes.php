@@ -7,56 +7,17 @@ namespace League\Flysystem;
 class FileAttributes implements StorageAttributes
 {
     use ProxyArrayAccessToProperties;
-
-    /**
-     * @var string
-     */
-    private $type = StorageAttributes::TYPE_FILE;
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var int|null
-     */
-    private $fileSize;
-
-    /**
-     * @var string|null
-     */
-    private $visibility;
-
-    /**
-     * @var int|null
-     */
-    private $lastModified;
-
-    /**
-     * @var string|null
-     */
-    private $mimeType;
-
-    /**
-     * @var array
-     */
-    private $extraMetadata;
+    private string $type = StorageAttributes::TYPE_FILE;
 
     public function __construct(
-        string $path,
-        ?int $fileSize = null,
-        ?string $visibility = null,
-        ?int $lastModified = null,
-        ?string $mimeType = null,
-        array $extraMetadata = []
+        private string $path,
+        private ?int $fileSize = null,
+        private ?string $visibility = null,
+        private ?int $lastModified = null,
+        private ?string $mimeType = null,
+        private array $extraMetadata = []
     ) {
-        $this->path = $path;
-        $this->fileSize = $fileSize;
-        $this->visibility = $visibility;
-        $this->lastModified = $lastModified;
-        $this->mimeType = $mimeType;
-        $this->extraMetadata = $extraMetadata;
+        $this->path = ltrim($this->path, '/');
     }
 
     public function type(): string
@@ -104,7 +65,7 @@ class FileAttributes implements StorageAttributes
         return false;
     }
 
-    public function withPath(string $path): StorageAttributes
+    public function withPath(string $path): self
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -112,7 +73,7 @@ class FileAttributes implements StorageAttributes
         return $clone;
     }
 
-    public static function fromArray(array $attributes): StorageAttributes
+    public static function fromArray(array $attributes): self
     {
         return new FileAttributes(
             $attributes[StorageAttributes::ATTRIBUTE_PATH],

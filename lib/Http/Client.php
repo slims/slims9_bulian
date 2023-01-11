@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-15 07:54:25
- * @modify date 2022-11-15 17:56:25
+ * @modify date 2023-01-05 21:39:11
  * @license GPLv3
  * @desc easy library to interact with Guzzlehttp/Client
  */
@@ -111,6 +111,6 @@ class Client implements IteratorAggregate,Countable
 
     public function __call($method, $options)
     {
-        return self::magicCaller($method, $options);
+        if (!method_exists($this, $method)) return  self::magicCaller($method, $options);
     }
 }

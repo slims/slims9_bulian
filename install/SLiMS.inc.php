@@ -215,7 +215,7 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $port = '3306', $user, $pass = '', $name = null)
+  function createConnection($host, $port = '3306', $user = 'root', $pass = '', $name = null)
   {
     if (is_null($this->db)) {
         $this->db = @new mysqli($host, $user, $pass, $name, $port);
@@ -224,6 +224,11 @@ class SLiMS
       throw new Exception("Error Connecting to Database with message: ".mysqli_connect_error());
     }
     return $this->db;
+  }
+
+  function setConnection($db)
+  {
+    $this->db = $db;
   }
 
   function isDatabaseExist($database_name)

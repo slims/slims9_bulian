@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-17 07:14:29
- * @modify date 2022-12-26 13:16:42
+ * @modify date 2023-01-05 20:49:37
  * @license GPLv3
  * @desc [description]
  */
@@ -81,8 +81,8 @@ class Url
      */
     public static function getPath($callBack = '')
     {
-        if (is_callable($callBack)) return $callBack($_SERVER['PHP_SELF']);
-        return trim($_SERVER['PHP_SELF'] == '/index.php' ? '/' : dirname($_SERVER['PHP_SELF']) . '/');
+        if (is_callable($callBack)) return $callBack(SWB);
+        return SWB;
     }
 
     /**

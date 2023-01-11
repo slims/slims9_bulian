@@ -391,7 +391,7 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 /**
  * Peer to peer server config
  */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims9_bulian', 'name' => 'SLiMS Library');
+$sysconf['p2pserver'][1] = array('uri' => \SLiMS\Url::getSlimsBaseUri(), 'name' => $sysconf['library_name']);
 
 /**
  * User and member login method
@@ -570,7 +570,7 @@ if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 if (!file_exists(SB.'config'.DS.'database.php')) {
   // backward compatibility if upgrade process from `git pull`
   if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
-    \SLiMS\Config::create('database.php', function($filename){
+    \SLiMS\Config::create('database', function($filename){
       // get last database connection
       include SB.'config'.DS.'sysconfig.local.inc.php';
       $source = file_get_contents(SB.'config'.DS.'database.sample.php');
@@ -735,6 +735,9 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 
 // load helper
 require_once LIB . "helper.inc.php";
+
+// Migrating new column or table in development mode
+\SLiMS\Migration\Develop::migrate();
 
 // set default timezone
 // for a list of timezone, please see PHP Manual at "List of Supported Timezones" section

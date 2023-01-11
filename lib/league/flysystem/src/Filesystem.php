@@ -4,29 +4,30 @@ declare(strict_types=1);
 
 namespace League\Flysystem;
 
+use DateTimeInterface;
+use Generator;
+use League\Flysystem\UrlGeneration\ShardedPrefixPublicUrlGenerator;
+use League\Flysystem\UrlGeneration\PrefixPublicUrlGenerator;
+use League\Flysystem\UrlGeneration\PublicUrlGenerator;
+use League\Flysystem\UrlGeneration\TemporaryUrlGenerator;
+use Throwable;
+
+use function is_array;
+
 class Filesystem implements FilesystemOperator
 {
-    /**
-     * @var FilesystemAdapter
-     */
-    private $adapter;
+    use CalculateChecksumFromStream;
 
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var PathNormalizer
-     */
-    private $pathNormalizer;
+    private Config $config;
+    private PathNormalizer $pathNormalizer;
 
     public function __construct(
-        FilesystemAdapter $adapter,
+        private FilesystemAdapter $adapter,
         array $config = [],
-        PathNormalizer $pathNormalizer = null
+        PathNormalizer $pathNormalizer = null,
+        private ?PublicUrlGenerator $publicUrlGenerator = null,
+        private ?TemporaryUrlGenerator $temporaryUrlGenerator = null,
     ) {
-        $this->adapter = $adapter;
         $this->config = new Config($config);
         $this->pathNormalizer = $pathNormalizer ?: new WhitespacePathNormalizer();
     }
@@ -34,6 +35,18 @@ class Filesystem implements FilesystemOperator
     public function fileExists(string $location): bool
     {
         return $this->adapter->fileExists($this->pathNormalizer->normalizePath($location));
+    }
+
+    public function directoryExists(string $location): bool
+    {
+        return $this->adapter->directoryExists($this->pathNormalizer->normalizePath($location));
+    }
+
+    public function has(string $location): bool
+    {
+        $path = $this->pathNormalizer->normalizePath($location);
+
+        return $this->adapter->fileExists($path) || $this->adapter->directoryExists($path);
     }
 
     public function write(string $location, string $contents, array $config = []): void
@@ -88,8 +101,20 @@ class Filesystem implements FilesystemOperator
     public function listContents(string $location, bool $deep = self::LIST_SHALLOW): DirectoryListing
     {
         $path = $this->pathNormalizer->normalizePath($location);
+        $listing = $this->adapter->listContents($path, $deep);
 
-        return new DirectoryListing($this->adapter->listContents($path, $deep));
+        return new DirectoryListing($this->pipeListing($location, $deep, $listing));
+    }
+
+    private function pipeListing(string $location, bool $deep, iterable $listing): Generator
+    {
+        try {
+            foreach ($listing as $item) {
+                yield $item;
+            }
+        } catch (Throwable $exception) {
+            throw UnableToListContents::atLocation($location, $deep, $exception);
+        }
     }
 
     public function move(string $source, string $destination, array $config = []): void
@@ -133,6 +158,57 @@ class Filesystem implements FilesystemOperator
     public function visibility(string $path): string
     {
         return $this->adapter->visibility($this->pathNormalizer->normalizePath($path))->visibility();
+    }
+
+    public function publicUrl(string $path, array $config = []): string
+    {
+        $this->publicUrlGenerator ??= $this->resolvePublicUrlGenerator()
+            ?: throw UnableToGeneratePublicUrl::noGeneratorConfigured($path);
+        $config = $this->config->extend($config);
+
+        return $this->publicUrlGenerator->publicUrl($path, $config);
+    }
+
+    public function temporaryUrl(string $path, DateTimeInterface $expiresAt, array $config = []): string
+    {
+        $generator = $this->temporaryUrlGenerator ?: $this->adapter;
+
+        if ($generator instanceof TemporaryUrlGenerator) {
+            return $generator->temporaryUrl($path, $expiresAt, $this->config->extend($config));
+        }
+
+        throw UnableToGenerateTemporaryUrl::noGeneratorConfigured($path);
+    }
+
+    public function checksum(string $path, array $config = []): string
+    {
+        $config = $this->config->extend($config);
+
+        if ( ! $this->adapter instanceof ChecksumProvider) {
+            return $this->calculateChecksumFromStream($path, $config);
+        }
+
+        try {
+            return $this->adapter->checksum($path, $config);
+        } catch (ChecksumAlgoIsNotSupported) {
+            return $this->calculateChecksumFromStream($path, $config);
+        }
+    }
+
+    private function resolvePublicUrlGenerator(): ?PublicUrlGenerator
+    {
+        if ($publicUrl = $this->config->get('public_url')) {
+            return match (true) {
+                is_array($publicUrl) => new ShardedPrefixPublicUrlGenerator($publicUrl),
+                default => new PrefixPublicUrlGenerator($publicUrl),
+            };
+        }
+
+        if ($this->adapter instanceof PublicUrlGenerator) {
+            return $this->adapter;
+        }
+
+        return null;
     }
 
     /**

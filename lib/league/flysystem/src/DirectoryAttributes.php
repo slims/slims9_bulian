@@ -7,38 +7,15 @@ namespace League\Flysystem;
 class DirectoryAttributes implements StorageAttributes
 {
     use ProxyArrayAccessToProperties;
+    private string $type = StorageAttributes::TYPE_DIRECTORY;
 
-    /**
-     * @var string
-     */
-    private $type = StorageAttributes::TYPE_DIRECTORY;
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var string|null
-     */
-    private $visibility;
-
-    /**
-     * @var int|null
-     */
-    private $lastModified;
-
-    /**
-     * @var array
-     */
-    private $extraMetadata;
-
-    public function __construct(string $path, ?string $visibility = null, ?int $lastModified = null, array $extraMetadata = [])
+    public function __construct(
+        private string $path,
+        private ?string $visibility = null,
+        private ?int $lastModified = null,
+        private array $extraMetadata = [])
     {
-        $this->path = $path;
-        $this->visibility = $visibility;
-        $this->lastModified = $lastModified;
-        $this->extraMetadata = $extraMetadata;
+        $this->path = trim($this->path, '/');
     }
 
     public function path(): string
@@ -48,7 +25,7 @@ class DirectoryAttributes implements StorageAttributes
 
     public function type(): string
     {
-        return StorageAttributes::TYPE_DIRECTORY;
+        return $this->type;
     }
 
     public function visibility(): ?string
@@ -76,7 +53,7 @@ class DirectoryAttributes implements StorageAttributes
         return true;
     }
 
-    public function withPath(string $path): StorageAttributes
+    public function withPath(string $path): self
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -84,7 +61,7 @@ class DirectoryAttributes implements StorageAttributes
         return $clone;
     }
 
-    public static function fromArray(array $attributes): StorageAttributes
+    public static function fromArray(array $attributes): self
     {
         return new DirectoryAttributes(
             $attributes[StorageAttributes::ATTRIBUTE_PATH],

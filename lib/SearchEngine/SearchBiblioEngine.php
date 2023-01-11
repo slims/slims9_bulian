@@ -682,6 +682,6 @@ class SearchBiblioEngine extends Contract
 
     function dump(array $sql)
     {
-        debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
+        if (!isset($_GET['resultXML'])) debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
     }
 }

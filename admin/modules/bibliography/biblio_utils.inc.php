@@ -131,7 +131,7 @@ function showTitleAuthors($obj_db, $array_data)
         $img = 'images/docs/'.urlencode($_image);  
       }
       $_output = '<div class="media">
-                    <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
+                    <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
                       <div class="title">'.stripslashes($_title).'</div><div class="authors">'.$_authors.'</div>
                     </div>
@@ -147,7 +147,7 @@ function showTitleAuthors($obj_db, $array_data)
         $img = 'images/docs/'.urlencode($array_data[3]);  
       }
       $_output = '<div class="media">
-                    <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
+                    <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
                       <div class="title">'.stripslashes($array_data[1]).'</div><div class="authors">'.$array_data[4].'</div>
                     </div>
