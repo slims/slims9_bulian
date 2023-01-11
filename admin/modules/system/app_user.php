@@ -477,7 +477,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             <div>{$qrcode}</div>
             <div>
                 <div class="my-3">
-                    {$otp}
+                    {$otp_app}
                 </div>
                 <input form="formVerify2fa" type="hidden" name="secret_code" value="{$secret}">
                 <div class="text-muted">{$verification_code}</div>
