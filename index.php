@@ -28,9 +28,11 @@ define('INDEX_AUTH', '1');
 
 // required file
 require 'sysconfig.inc.php';
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('opac');
+
 // member session params
 require LIB.'member_session.inc.php';
 if ($sysconf['template']['base'] == 'html') {
@@ -77,7 +79,9 @@ $Opac->hookBeforeContent(function($Opac){
 });
 
 // Path process or show welcome page
-$Opac->handle('p')->orWelcome();
+$Opac->onWeb(function($Opac){
+  $Opac->handle('p')->orWelcome();
+})->onCli();
 
 // running hook to override process/variable after
 // content load

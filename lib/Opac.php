@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2022-12-07 19:04:13
+ * @modify date 2023-01-12 12:15:24
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -297,6 +297,17 @@ class Opac
         // parse into template
         require $opac->sysconf['template']['dir'].'/'.$opac->sysconf['template']['theme'].'/index_template.inc.php';
         exit;
+    }
+
+    public function onWeb(Closure $callback)
+    {
+        if (!isCli()) $callback($this);
+        return $this;
+    }
+
+    public function onCli()
+    {
+        Cli\Console::getInstance()->run();
     }
 
     /**

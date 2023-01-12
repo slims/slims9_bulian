@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-17 07:14:29
- * @modify date 2023-01-05 20:49:37
+ * @modify date 2023-01-12 11:34:58
  * @license GPLv3
  * @desc [description]
  */
@@ -184,6 +184,8 @@ class Url
      */
     public static function __callStatic($method, $arguments)
     {
+        if (php_sapi_name() === 'cli') return;
+        
         $static = new Static;
         $method = lcfirst(str_replace('get', '', $method));
         if (!isset(self::$scopes[$method])) return;

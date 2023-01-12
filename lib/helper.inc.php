@@ -82,7 +82,15 @@ if (!function_exists('isDev'))
 {
     function isDev()
     {
-        return ENVIRONMENT === 'development' ? true : false;
+        return ENVIRONMENT === 'development';
+    }
+}
+
+if (!function_exists('isCli')) 
+{
+    function isCli()
+    {
+        return php_sapi_name() === 'cli';
     }
 }
 
