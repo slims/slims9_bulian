@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 09:40:33
- * @modify date 2023-01-11 13:39:23
+ * @modify date 2023-01-12 08:00:03
  * @license GPLv3
  * @desc 
  * 
@@ -64,5 +64,7 @@ class Storage
             
             return self::disk($diskName, array_merge(array_values($disks[$diskName]['options']), $arguments));
         }
+
+        throw new Exception("Disk {$diskName} not registered in filesystem");
     }
 }
