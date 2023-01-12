@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 12:29:51
- * @modify date 2023-01-12 15:45:28
+ * @modify date 2023-01-12 23:22:18
  * @license GPLv3
  * @desc [description]
  */
@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\Table;
 
 class Command extends CoreCommand
 {
@@ -26,24 +25,15 @@ class Command extends CoreCommand
     protected string $description = '';
     protected string $help = '';
     protected string $signature = '';
+    private $input = null;
+    private $output = null;
+    private $arguments = [];
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->handle();
-        switch (true) {
-            case is_array($this->output) && isset($this->output['table']):
-                $table = new Table($output);
-                $table
-                    ->setHeaders($this->output['table'][0])
-                    ->setRows($this->output['table'][1]);
-                $table->render();
-                break;
-            
-            default:
-                $output->writeln($this->output??'?');
-                break;
-        }
-        
+        $this->input = $input;
+        $this->output = $output;
+        $this->handle();        
         return 1;
     }
 
@@ -104,7 +94,7 @@ class Command extends CoreCommand
                     // Name
                     $argument[0],
                     // mode optional|required
-                    (substr($item, -1) === '?' ? InputArgument::OPTIONAL : InputArgument::REQUIRED),
+                    (substr($item, -1) === '?' || empty($item) ? InputArgument::OPTIONAL : InputArgument::REQUIRED),
                     // description
                     (stripos($item, ':') ? trim(substr($item, strpos($item, ':')),' : ') : ''),
                     // set default

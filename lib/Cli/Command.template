@@ -1,0 +1,32 @@
+<?php
+namespace Commands;
+
+use SLiMS\Cli\Command;
+
+class <CommandName> extends Command
+{
+    /**
+     * Signature is combination of command name
+     * argument and options
+     *
+     * @var string
+     */
+    protected string $signature = 'command:name';
+
+    /**
+     * Command description
+     *
+     * @var string
+     */
+    protected string $description = 'Command description';
+
+    /**
+     * Handle command process
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // write your code here
+    }
+} 
