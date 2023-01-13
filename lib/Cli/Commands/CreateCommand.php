@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:56:39
- * @modify date 2023-01-12 23:14:57
+ * @modify date 2023-01-13 14:42:45
  * @license GPLv3
  * @desc [description]
  */
@@ -25,7 +25,7 @@ class CreateCommand extends \SLiMS\Cli\Command
      *
      * @var string
      */
-    protected string $description = 'Create new command';
+    protected string $description = 'Create new command in plugins/Commands';
 
     /**
      * Handle command process

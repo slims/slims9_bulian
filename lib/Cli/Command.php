@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 12:29:51
- * @modify date 2023-01-12 23:22:18
+ * @modify date 2023-01-13 09:51:13
  * @license GPLv3
  * @desc [description]
  */
@@ -17,17 +17,47 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class Command extends CoreCommand
+abstract class Command extends CoreCommand
 {
     use Utils;
     
+    /**
+     * Command name
+     *
+     * @var string
+     */
     protected string $name = '';
+
+    /**
+     * Command description
+     *
+     * @var string
+     */
     protected string $description = '';
+
+    /**
+     * Write your help word with
+     * this property
+     *
+     * @var string
+     */
     protected string $help = '';
+
+    /**
+     * Command signature is combination of name,
+     * argument, and option
+     *
+     * @var string
+     */
     protected string $signature = '';
+
+    /**
+     * Input and Output interface property
+     *
+     * @var [type]
+     */
     private $input = null;
     private $output = null;
-    private $arguments = [];
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -37,10 +67,20 @@ class Command extends CoreCommand
         return 1;
     }
 
-    protected function handle()
-    {
-    }
+    /**
+     * Write some conde inside
+     * this method
+     *
+     * @return void
+     */
+    abstract protected function handle();
 
+    /**
+     * Command configuration, setup your
+     * description, name, argument, options etc
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         $this->setDescription($this->description);
