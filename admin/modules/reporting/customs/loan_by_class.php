@@ -66,7 +66,7 @@ if (!$reportView) {
             <div class="form-group divRow">
                 <label><?php echo __('Classification'); ?></label>
                 <?php
-                $class_options[] = array('ALL', __('ALL'));
+                $class_options[] = array(__('All'), __('All'));
                 $class_options[] = array('0', __('0 Classes'));
                 $class_options[] = array('1', __('1 Classes'));
                 $class_options[] = array('2', __('2 Classes'));
@@ -87,7 +87,7 @@ if (!$reportView) {
                 <?php
                 $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
                 $coll_type_options = array();
-                $coll_type_options[] = array('0', __('ALL'));
+                $coll_type_options[] = array('0', __('All'));
                 while ($coll_type_d = $coll_type_q->fetch_row()) {
                     $coll_type_options[] = array($coll_type_d[1], $coll_type_d[1]);
                 }
@@ -98,11 +98,11 @@ if (!$reportView) {
                 <label><?php echo __('Year'); ?></label>
                 <?php
                 $current_year = date('Y');
-                $year_options[] = array('',__('ALL'));
+                $year_options[] = array('',__('All'));
                 for ($y = $current_year; $y > 1999; $y--) {
                     $year_options[] = array($y, $y);
                 }
-                echo simbio_form_element::selectList('year', $year_options, __('ALL'),'class="form-control col-1"');
+                echo simbio_form_element::selectList('year', $year_options, __('All'),'class="form-control col-1"');
                 ?>
             </div>
             <div class="form-group divRow">
@@ -158,7 +158,7 @@ if (!$reportView) {
 
     $criteria = '';
     // class
-    $class_num = isset($_GET['class'])?$dbs->escape_string(trim($_GET['class'])):'ALL';
+    $class_num = isset($_GET['class'])?$dbs->escape_string(trim($_GET['class'])) : __('All');
     // year
     $selected_year = '%';
     if (isset($_GET['year']) AND !empty($_GET['year']) AND $_GET['year']!='0') {
@@ -168,7 +168,7 @@ if (!$reportView) {
         $criteria .= ' AND loan_date LIKE \'%%\'';
     }
 
-    if (isset($_GET['membershipType']) AND !empty($_GET['membershipType']) AND $_GET['membershipType']!='All') {
+    if (isset($_GET['membershipType']) AND !empty($_GET['membershipType']) AND $_GET['membershipType'] != __('All')) {
         $membershipType = $dbs->escape_string((string)$_GET['membershipType']);
         $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
     }else{
@@ -195,7 +195,7 @@ if (!$reportView) {
         SUM(IF(loan_date LIKE '".$selected_year."-11%',1,0)),
         SUM(IF(loan_date LIKE '".$selected_year."-12%',1,0))";
 
-    if ($class_num == 'ALL') {
+    if ($class_num == __('All')) {
         //main class
         for ($main_class=0; $main_class < 10; $main_class++) { 
         $query = "SELECT $coll_query FROM loan_history WHERE TRIM(classification) LIKE '".$main_class."%' ".$criteria;
@@ -265,10 +265,10 @@ if (!$reportView) {
     unset($_SESSION['chart']);
     $chart['xAxis'] = $months;
     $chart['data'] = $data;
-    $chart['title'] =  __('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('ALL')).'</strong>';
+    $chart['title'] =  __('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('All')).'</strong>';
     $_SESSION['chart'] = $chart;
     // print out
-    echo '<div class="mb-2">'.__('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('ALL')).'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
+    echo '<div class="mb-2">'.__('Loan Recap By Class'). ' <strong>'.$class_num.'</strong> '._('for year').' <strong>'.($selected_year!='%'?$selected_year:__('All')).'</strong>'.( isset($coll_type_name)?'<div>'.$coll_type_name.'</div>':'' ).' <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
     echo '<a href="../xlsoutput.php" class="s-btn btn btn-default" target="_BLANK">'.__('Export to spreadsheet format').'</a>
     <a class="s-btn btn btn-info notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530" title="'.__('Loan Recap By Class'). '">'.__('Show in chart/plot').'</a></div>'."\n";
     echo $output;
