@@ -9,6 +9,7 @@
 namespace SLiMS;
 
 
+use SLiMS\Cli\Console;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Session\Factory;
 use stdClass;
@@ -356,6 +357,17 @@ class Plugins
     public function registerSessionDriver($class_name)
     {
         Factory::getInstance()->registerDriver($class_name);
+    }
+
+    /**
+     * This method is relate to SLiMS\Cli\Console
+     * 
+     * @param string $class_name
+     * @return void
+     */
+    public function registerCommand($class_name)
+    {
+        Console::getInstance()->registerCommand($class_name);
     }
 
     /**

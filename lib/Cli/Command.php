@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 12:29:51
- * @modify date 2023-01-13 09:51:13
+ * @modify date 2023-01-13 22:34:49
  * @license GPLv3
  * @desc [description]
  */
@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class Command extends CoreCommand
 {
@@ -56,13 +57,15 @@ abstract class Command extends CoreCommand
      *
      * @var [type]
      */
-    private $input = null;
-    private $output = null;
+    protected $io = null;
+    protected $input = null;
+    protected $output = null;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
+        $this->io = new SymfonyStyle($input, $output);
         $this->handle();        
         return 1;
     }

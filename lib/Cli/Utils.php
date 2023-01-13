@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:15:06
- * @modify date 2023-01-13 11:38:46
+ * @modify date 2023-01-13 21:54:51
  * @license GPLv3
  * @desc [description]
  */
@@ -57,7 +57,7 @@ trait Utils
 
     public function json($content)
     {
-        $this->output(json_encode($content, JSON_PRETTY_PRINT));
+        $this->output(json_encode($content, \JSON_PRETTY_PRINT));
     }
 
     public function table(array $header, array $data)

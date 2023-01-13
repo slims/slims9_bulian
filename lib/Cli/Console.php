@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 11:55:24
- * @modify date 2023-01-13 14:42:04
+ * @modify date 2023-01-13 22:15:33
  * @license GPLv3
  * @desc [description]
  */
@@ -80,7 +80,7 @@ final class Console
      */
     public function registerCommand(Command $command)
     {
-        $this->app->add($command);
+        if (isCli()) $this->app->add($command);
     }
 
     /**
