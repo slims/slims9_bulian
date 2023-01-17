@@ -399,7 +399,7 @@ class Mysqldump
      * @return null
      * @throws \Exception
      */
-    public function start($filename = '')
+    public function start($filename = '', $progress = null)
     {
         // Output file can be redefined here
         if (!empty($filename)) {
@@ -407,6 +407,7 @@ class Mysqldump
         }
 
         // Connect to database
+        if (null !== $progress) $progress->setMessage(__('Create database connection'));
         $this->connect();
 
         // Create output file
@@ -433,12 +434,28 @@ class Mysqldump
 
         // Get table, view, trigger, procedures, functions and events structures from
         // database.
-        $this->getDatabaseStructureTables();
-        $this->getDatabaseStructureViews();
-        $this->getDatabaseStructureTriggers();
-        $this->getDatabaseStructureProcedures();
-        $this->getDatabaseStructureFunctions();
-        $this->getDatabaseStructureEvents();
+        if (null !== $progress) $progress->setMessage(__('Get database attributes'));
+        $structures = [
+            ['Tables', 'Get structure tables'],
+            ['Views', 'Get structure views'],
+            ['Triggers', 'Get structure triggers'],
+            ['Procedures', 'Get structure procedures'],
+            ['Functions', 'Get structure functions'],
+            ['Events', 'Get structure events'],
+        ];
+        
+        if (null !== $progress) $progress->start(6);
+        foreach ($structures as $structure) {
+            if (null !== $progress) {
+                $progress->setMessage('Processing ' . $structure[1]);
+                $progress->advance();
+            }
+            // Run method
+            $this->{'getDatabaseStructure' . $structure[0]}();
+            if (null !== $progress) usleep(50000);
+        }
+
+        if (null !== $progress) $progress->finish();
 
         if ($this->dumpSettings['databases']) {
             $this->compressManager->write(
@@ -455,12 +472,28 @@ class Mysqldump
             throw new Exception("Table (".$name.") not found in database");
         }
 
-        $this->exportTables();
-        $this->exportTriggers();
-        $this->exportFunctions();
-        $this->exportProcedures();
-        $this->exportViews();
-        $this->exportEvents();
+        $exportContents = [
+            ['Tables', 'exporting tables'],
+            ['Views', 'exporting views'],
+            ['Triggers', 'exporting triggers'],
+            ['Procedures', 'exporting procedures'],
+            ['Functions', 'exporting functions'],
+            ['Events', 'exporting events'],
+        ];
+
+        if (null !== $progress) $progress->setMessage(__('Exporting table contents'));
+        if (null !== $progress) $progress->start(6);
+        foreach ($exportContents as $exportContent) {
+            if (null !== $progress) {
+                $progress->setMessage($exportContent[1]);
+                $progress->advance();
+            }
+            // Run method
+            $this->{'export' . $exportContent[0]}();
+            if (null !== $progress) usleep(50000);
+        }
+
+        if (null !== $progress) $progress->finish();
 
         // Restore saved parameters.
         $this->compressManager->write(

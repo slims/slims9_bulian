@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:56:39
- * @modify date 2023-01-13 14:44:38
+ * @modify date 2023-01-14 12:40:58
  * @license GPLv3
  * @desc [description]
  */
@@ -45,12 +45,14 @@ class GetPlugin extends \SLiMS\Cli\Command
             case 'active':
                 $activePlugins = array_values(array_map(function($item){
                     $data = (array)$item;
-                    unset($data['options']);
-                    unset($data['uid']);
-                    unset($data['updated_at']);
-                    unset($data['deleted_at']);
+                    foreach (['options','uid','updated_at','deleted_at'] as $item) unset($data[$item]);
                     return $data;
                 }, Plugins::getInstance()->getActive()));
+
+                if (!$activePlugins) {
+                    $this->info('No active plugins');
+                    return self::INVALID;
+                }
 
                 $tableAttribute = [
                     array_keys($activePlugins[0]),
@@ -61,6 +63,7 @@ class GetPlugin extends \SLiMS\Cli\Command
             
             case 'all':
             case 'inactive':
+            case 'available':
             default:
                 $this->getAllPlugin();
                 $tableAttribute = [
@@ -73,9 +76,10 @@ class GetPlugin extends \SLiMS\Cli\Command
 
         // Create table
         $this->table(...$tableAttribute);
+        return 1;
     }
 
-    public function getAllPlugin(string $path = SB . 'plugins/')
+    public function getAllPlugin(string $path = SB . 'plugins' . DS)
     {
         // open location
         $dir = array_diff(scandir($path), ['.','..']);

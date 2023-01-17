@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 12:29:51
- * @modify date 2023-01-13 22:34:49
+ * @modify date 2023-01-15 07:36:27
  * @license GPLv3
  * @desc [description]
  */
@@ -65,9 +65,8 @@ abstract class Command extends CoreCommand
     {
         $this->input = $input;
         $this->output = $output;
-        $this->io = new SymfonyStyle($input, $output);
-        $this->handle();        
-        return 1;
+        $this->io = new SymfonyStyle($input, $output);        
+        return $this->handle()??1;
     }
 
     /**
@@ -108,7 +107,7 @@ abstract class Command extends CoreCommand
                 $option = explode('|', str_replace('-', '', $item));
 
                 // set name and alias
-                $name = explode('=', explode(' : ', $option[1]??$option[0])[0])[0];
+                $name = trim(explode('=', explode(' : ', $option[1]??$option[0])[0])[0], '?');
                 $alias = explode('=', $option[0]??'')[0];
 
                 // set option argument
@@ -135,7 +134,7 @@ abstract class Command extends CoreCommand
                 // set option argument
                 $addArgumentArguments = [
                     // Name
-                    $argument[0],
+                    trim($argument[0], '?'),
                     // mode optional|required
                     (substr($item, -1) === '?' || empty($item) ? InputArgument::OPTIONAL : InputArgument::REQUIRED),
                     // description

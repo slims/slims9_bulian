@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:15:06
- * @modify date 2023-01-13 21:54:51
+ * @modify date 2023-01-15 07:54:51
  * @license GPLv3
  * @desc [description]
  */
@@ -11,6 +11,7 @@
 namespace SLiMS\Cli;
 
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\ArrayInput;
 
 trait Utils
 {
@@ -33,6 +34,11 @@ trait Utils
     public function argument(string $key)
     {
         return $this->input->getArgument($key);
+    }
+
+    public function command(string $commandName)
+    {
+        dd($this->getApplication()->find($commandName));
     }
 
     public function output(string $content)
