@@ -998,8 +998,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     }
     $imageDisk = Storage::images();
     if (isset($rec_d['image']) && $imageDisk->isExists('docs/' . $rec_d['image'])) {
-        $str_input .= '<a href="' . SWB . 'images/docs/' . ($rec_d['image'] ?? '') . '" class="openPopUp notAJAX" title="' . __('Click to enlarge preview') . '">';
-        $str_input .= '<img src="' . $upper_dir . '../lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($rec_d['image'] ?? '').'&width=130" class="img-fluid rounded" alt="Image cover">';
+        $url = $upper_dir . '../lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($rec_d['image'] ?? '');
+        $str_input .= '<a href="' . $url . '&width=220" class="openPopUp notAJAX" title="' . __('Click to enlarge preview') . '">';
+        $str_input .= '<img src="' . $url .'&width=130" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="' . MWB . 'bibliography/index.php" postdata="removeImage=true&bimg=' . $itemID . '&img=' . ($rec_d['image'] ?? '') . '" loadcontainer="imageFilename" class="s-margin__bottom-1 mt-1 s-btn btn btn-danger btn-block makeHidden removeImage">' . __('Remove Image') . '</a>';
     } else {

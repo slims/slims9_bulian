@@ -195,12 +195,12 @@ if (!$reportView) {
            TO_DAYS(\''.utility::filterData('untilDate', 'get', true, true, true).'\'))';
     }
     // loan status
-    if (isset($_GET['loanStatus']) AND $_GET['loanStatus'] != 'ALL') {
+    if (isset($_GET['loanStatus']) AND $_GET['loanStatus'] != __('ALL')) {
         $loanStatus = (integer)utility::filterData('loanStatus', 'get', true, true, true);
         $criteria .= ' AND is_return='.$loanStatus;
     }
 
-    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != 'All')) {
+    if ((isset($_GET['membershipType'])) AND ($_GET['membershipType'] != __('All'))) {
         $membershipType = utility::filterData('membershipType', 'get', true, true, true);
         $criteria .= ' AND member_type_name LIKE \''.$membershipType.'\'';
     }else{
@@ -208,7 +208,7 @@ if (!$reportView) {
     }
 	
     // item location	
-    if (isset($_GET['location']) AND !empty($_GET['location'])) {
+    if (isset($_GET['location']) AND !empty($_GET['location']) AND $_GET['location'] != __('All')) {
         $location = utility::filterData('location', 'get', true, true, true);
         $criteria .= ' AND location_name LIKE \''.$location.'\'';
     }

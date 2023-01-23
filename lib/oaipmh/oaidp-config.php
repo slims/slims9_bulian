@@ -75,7 +75,12 @@ $identifyResponse = array();
 
 // MUST (only one)
 // please adjust
-$identifyResponse["repositoryName"] = $_SERVER['SERVER_NAME'];
+$setting = $dbs->query('SELECT * FROM setting WHERE setting_name=\'library_name\'');
+$_libname = $setting->fetch_assoc();
+if (isset($_libname['setting_value'])) {
+    $libname = unserialize($_libname['setting_value']);
+}
+$identifyResponse["repositoryName"] = $libname;
 
 // For ANDS to harvest of RIF-CS, originatingSource is plantaccelerator.org.au
 // $dataSource = "plantaccelerator.org.au";

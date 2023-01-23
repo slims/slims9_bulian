@@ -165,7 +165,7 @@ class simbio_datagrid extends simbio_table
             ' '.$this->sql_group_by.' '.$this->sql_order." LIMIT $int_num2show OFFSET $_offset";
 
         // for debugging purpose only
-        // return $_sql_str;
+        debug($_sql_str);
 
         // real query
         $_start = function_exists('microtime')?microtime(true):time();

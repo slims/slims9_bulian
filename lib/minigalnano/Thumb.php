@@ -4,7 +4,7 @@
  * @rebuild by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-14 12:49:19
- * @modify date 2022-11-04 08:06:37
+ * @modify date 2023-01-12 08:07:16
  * @desc 
 */
 /*
@@ -233,9 +233,15 @@ class Thumb
     public function orError()
     {
         if (empty($this->error)) return;
+        self::setError($this->error);
+    }
+
+    public static function setError(string $error = 'filenotfound')
+    {
+        $static = new static(null, __DIR__);
         // Create http header based on file extension
-        $this->setContentType('image/png');
-        echo file_get_contents(__DIR__ . '/' . $this->error . '.png');
+        $static->setContentType('image/png');
+        echo file_get_contents(__DIR__ . '/' . $error . '.png');
         exit;
     }
 

@@ -55,37 +55,22 @@ $biblio_detail = $biblio->detail();
 // var_dump($biblio_detail);
 extract($biblio_detail);
 
-// Pre-proccess author
-$authors_string = '';
-$author_list = array();
-$last_author = '';
-$a = 0;
-foreach ($authors as $auth) {
-  // invert first author name if it is not inverted
-  if ($a == 0 && stripos($auth['author_name'], ',', 2) === false) {
-    $last_name = strrpos($auth['author_name'], ' ') + 1;
-    $name = substr($auth['author_name'], $last_name);
-    die($name);
-    $author_list[] = $name;
-  } else {
-    $author_list[] = $auth['author_name'];  
-  }
-  $last_author = $auth['author_name'];
-  $a++;
-}
-$authors_string = implode(', ', $author_list);
-
-foreach ($style_files as $file) {
-  if (false === stripos($file, '_style_template.php')) {
-    continue;
-  } else {
-    include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.$file;  
-  }
-}
+// foreach ($style_files as $file) {
+//   if (false === stripos($file, '_style_template.php')) {
+//     continue;
+//   } else {
+    include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.'apa_style_template.php'; 
+    include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.'mla_style_template.php'; 
+//   }
+// }
 
 // main content
 $main_content = ob_get_clean();
 // page title
+echo '<link href="' . SWB . 'css/bootstrap.min.css" rel="stylesheet"/>';
+echo '<link href="' . SWB . 'template/default/assets/plugin/font-awesome/css/fontawesome-all.min.css" rel="stylesheet"/>';
+echo '<div class="mx-3">';
 echo $main_content;
+echo '</div>';
 echo '<p class="spacer">&nbsp;</p>';
 exit();

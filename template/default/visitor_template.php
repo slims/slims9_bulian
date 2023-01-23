@@ -125,7 +125,7 @@ if (isset($_GET['select_lang'])) {
             },
             getQuotes: function() {
                 // Alternative Free Quotes API: https://api.quotable.io/random
-                axios.get('https://kutipan.herokuapp.com/')
+                axios.get('https://slims.web.id/kutipan/')
                     .then(res => {
                         res.data.content = he.decode(res.data.content)
                         this.quotes = res.data
