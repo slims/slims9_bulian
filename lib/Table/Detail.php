@@ -3,12 +3,14 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-20 09:41:31
- * @modify date 2022-12-21 08:47:25
+ * @modify date 2023-01-23 11:56:13
  * @license GPLv3
  * @desc [description]
  */
 
 namespace SLiMS\Table;
+
+use PDO;
 
 trait Detail
 {
@@ -150,6 +152,28 @@ trait Detail
     public function columns(bool $fetchAll = false)
     {
         return !empty($this->table) ? $this->getTableColumn($this->table, $fetchAll) : [];
+    }
+
+    /**
+     * Get all table data from current database
+     *
+     * @return array
+     */
+    public static function tables()
+    {
+        // set database instance
+        self::getInstance();
+
+        // Create table state
+        $tableState = self::$connection->prepare('SELECT `TABLE_NAME` FROM `TABLES` WHERE `TABLE_SCHEMA` = :database_name');
+        $tableState->execute(['database_name' => self::$connectionProfile['database']]);
+
+        $table = [];
+        while ($data = $tableState->fetch(PDO::FETCH_ASSOC)) {
+            $table[] = $data['TABLE_NAME'];
+        }
+
+        return $table;
     }
 
     /**

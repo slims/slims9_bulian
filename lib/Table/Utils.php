@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 21:48:33
- * @modify date 2022-06-02 12:58:27
+ * @modify date 2023-01-23 12:22:40
  * @license GPLv3
  * @desc [description]
  */
@@ -56,5 +56,21 @@ trait Utils
     public function debug()
     {
         echo $this->verbose . PHP_EOL;
+    }
+
+    public static function checkTable(string $tableName)
+    {
+        $tableName = \SLiMS\DB::getInstance('mysqli')->escape_string($tableName);
+        $tablestate = \SLiMS\DB::getInstance('mysqli')->query('CHECK TABLE `' . $tableName . '`');
+
+        return $tablestate->fetch_object();
+    }
+
+    public static function repairTable(string $tableName)
+    {
+        $tableName = \SLiMS\DB::getInstance('mysqli')->escape_string($tableName);
+        $tablestate = \SLiMS\DB::getInstance('mysqli')->query('REPAIR TABLE `' . $tableName . '`');
+
+        return $tablestate->fetch_object();
     }
 }

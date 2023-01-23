@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:56:39
- * @modify date 2023-01-14 12:40:58
+ * @modify date 2023-01-23 05:57:58
  * @license GPLv3
  * @desc [description]
  */
@@ -31,7 +31,7 @@ class GetPlugin extends \SLiMS\Cli\Command
     protected string $description = 'Get available plugin';
 
     // plugin property
-    private $plugins = null;
+    protected $plugins = null;
 
     /**
      * Handle command process
