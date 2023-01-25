@@ -1120,6 +1120,17 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
   KEY `biblio_id_idx` (`biblio_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `unique_code` int(11) NOT NULL COMMENT 'Code for identification each room',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_code_unq` (`unique_code`),
+  KEY `unique_code_idx` (`unique_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
 $query_trigger[] = "
     CREATE TRIGGER `delete_loan_history` AFTER DELETE ON `loan`
      FOR EACH ROW DELETE FROM `loan_history` WHERE loan_id=OLD.loan_id;";
