@@ -1087,7 +1087,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           KEY `unique_code_idx` (`unique_code`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
         $sql['alter'][] = "ALTER TABLE `visitor_count` ADD IF NOT EXISTS `room_code` varchar(5) COLLATE 'utf8_unicode_ci' NULL AFTER `institution`;";
-        $sql['alter'][] = "ALTER TABLE `visitor_count` DROP INDEX `room_code`, ADD INDEX `room_code` (`room_code`);";
+        $sql['alter'][] = "ALTER TABLE `visitor_count` ADD INDEX `room_code` (`room_code`);";
 
         return $this->slims->query($sql, ['create', 'alter']);
     }

@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-09 16:30:13
- * @modify date 2023-01-09 17:24:10
+ * @modify date 2023-01-26 16:06:23
  * @license GPLv3
  * @desc [description]
  */
@@ -35,7 +35,7 @@ class Develop
 
         try {
             // always get last version
-            $upgrade->from($upgrade->getVersion());
+            $upgrade->from($upgrade->getVersion() - 1);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
