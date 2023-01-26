@@ -736,9 +736,6 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 // load helper
 require_once LIB . "helper.inc.php";
 
-// Migrating new column or table in development mode
-\SLiMS\Migration\Develop::migrate();
-
 // set default timezone
 // for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
 // https://www.php.net/manual/en/timezones.php

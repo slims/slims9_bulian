@@ -1024,7 +1024,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     function upgrade_role_31()
     {
         $sql['alter'][] = "ALTER TABLE `files` ADD IF NOT EXISTS `file_key` text COLLATE 'utf8_unicode_ci' NULL AFTER `file_desc`;";
-        if($_POST['oldVersion'] > 19) {
+        if($_POST['oldVersion']??0 > 19) {
           $sql['alter'][] = "ALTER TABLE `biblio` DROP IF EXISTS `update_date`;";
         }
         $sql['alter'][] = "ALTER TABLE `mst_topic` CHANGE `classification` `classification` varchar(50) COLLATE 'utf8_unicode_ci' NULL COMMENT 'Classification Code' AFTER `auth_list`;";
