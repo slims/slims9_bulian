@@ -3,10 +3,12 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-25 11:41:11
- * @modify date 2023-01-25 15:57:50
+ * @modify date 2023-01-26 14:54:00
  * @license GPLv3
  * @desc [description]
  */
+
+use SLiMS\Url;
 
 define('INDEX_AUTH', '1');
 
@@ -31,17 +33,32 @@ if (!$can_read) {
 if (isset($_POST['saveData']))
 {
     $SQL = trim(
-            (isset($_POST['updateRecordID']) ? 'UPDATE' : 'INSERT INTO') . 
-            ' `mst_visitor_room` SET `name` = ?, `unique_code` = ?' . 
-            (
-                !isset($_POST['updateRecordID']) ? ', created_at = current_timestamp()' : ' WHERE id = ' . 
-                ((int)$_POST['updateRecordID'])
-            )
-        );
-    $state = \SLiMS\DB::getInstance()->prepare($SQL);
-    $state->execute([$_POST['name'], $_POST['code']]);
+        // Query statement
+        (isset($_POST['updateRecordID']) ? 'UPDATE' : 'INSERT INTO') . 
 
-    toastr(__('Success saved data'))->success();
+        // set prepared data
+        ' `mst_visitor_room` SET `name` = ?, `unique_code` = ?' . 
+
+        // with time or criteria
+        (
+            !isset($_POST['updateRecordID']) ? 
+                ', created_at = current_timestamp()' 
+                : 
+                ' WHERE id = ' . ((int)$_POST['updateRecordID'])
+        )
+    );
+
+    try {
+        $state = \SLiMS\DB::getInstance()->prepare($SQL);
+        $state->execute([$_POST['name'], $_POST['code']]);
+
+        toastr(__('Success saved data'))->success();
+    } catch (PDOException $e) {
+        toastr($e->getMessage())->error();
+    } catch (Exception $e) {
+        toastr($e->getMessage())->error(); 
+    }
+    redirect()->simbioAJAX(Url::getSelf());
     exit;
 }
 ?>
@@ -123,6 +140,13 @@ else
         $datagrid->setSQLCriteria($criteria_str);
     }
 
+    function getLink($db, $data)
+    {
+        return '<a href="#" class="btn btn-link notAJAX copylink" data-code="'.$data[2].'" title="' . __('Copy this room link') . '"><i class="fa fa-clipboard"></i> ' . $data[2] . '</a>';
+    }
+
+    $datagrid->modifyColumnContent(2, 'callback{getLink}');
+
     // set table and table header attributes
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
@@ -136,4 +160,20 @@ else
         echo '<div class="infoBox">' . $msg . ' : "' . htmlspecialchars($_GET['keywords']) . '"<div>' . __('Query took') . ' <b>' . $datagrid->query_time . '</b> ' . __('second(s) to complete') . '</div></div>';
     }
     echo $datagrid_result;
+    ?>
+    <script>
+        $(document).ready(function() {
+            $('.copylink').click(function(e){
+                e.preventDefault()
+                navigator.clipboard.writeText(`<?= Url::getSlimsBaseUri() ?>?p=visitor&room=${$(this).data('code')}`)
+						.then(() => {
+                            top.toastr.info('<?= __('Success copied visitor room link') ?>');
+                        })
+                        .catch(err => {
+                            top.toastr.error(err);
+                        })
+            })
+        });
+    </script>
+    <?php
 }

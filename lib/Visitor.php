@@ -3,7 +3,7 @@
  * @compose by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-09-18 19:39:17
- * @modify date 2022-09-19 15:55:59
+ * @modify date 2023-01-26 15:04:20
  * @license GPLv3
  * @desc [description]
  */
@@ -69,6 +69,9 @@ class Visitor
             $statement = $db->prepare($query);
             $statement->execute([$memberId]);
 
+            // room code check
+            if (isset($_GET['room']) && strlen($_GET['room']) > 5) throw new \PDOException("Room code is not valid!");
+
             // Member
             if ($statement->rowCount() > 0)
             {
@@ -105,7 +108,7 @@ class Visitor
             }
 
         
-            $insertQuery = "INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES (?,?,?,?)";
+            $insertQuery = "INSERT INTO visitor_count (member_id, member_name, institution, room_code, checkin_date) VALUES (?,?,?,?,?)";
             $insertStatement = $db->prepare($insertQuery);
 
             if ($this->opac->enable_visitor_limitation && $this->alreadyCheckIn($memberId, $this->member))
@@ -115,7 +118,7 @@ class Visitor
             }
             else
             {
-                $this->result = $insertStatement->execute(array_merge($this->data, [date('Y-m-d H:i:s')]));
+                $this->result = $insertStatement->execute(array_merge($this->data, [$_GET['room']??null, date('Y-m-d H:i:s')]));
             }
         } catch (\PDOException $e) {
             // set error

@@ -735,9 +735,11 @@ CREATE TABLE IF NOT EXISTS `visitor_count` (
   `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `member_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `institution` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `room_code` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `checkin_date` datetime NOT NULL,
   PRIMARY KEY (`visitor_id`),
-  KEY `member_id` (`member_id`)
+  KEY `member_id` (`member_id`),
+  KEY `room_code` (`room_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
