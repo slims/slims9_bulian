@@ -158,7 +158,7 @@ if (!function_exists('redirect'))
              */
             public function simbioAJAX(string $url, string $data = '', string $position = 'top.', string $selector = '#mainContent')
             {
-                $params = empty($data) ? $url : "'$url', {method: 'post', addData: '$data'}";
+                $params = empty($data) ? "'$url'" : "'$url', {method: 'post', addData: '$data'}";
                 exit(<<<HTML
                 <script>{$position}\$('{$selector}').simbioAJAX({$params})</script>
                 HTML);

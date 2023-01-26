@@ -735,9 +735,11 @@ CREATE TABLE IF NOT EXISTS `visitor_count` (
   `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `member_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `institution` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `room_code` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `checkin_date` datetime NOT NULL,
   PRIMARY KEY (`visitor_id`),
-  KEY `member_id` (`member_id`)
+  KEY `member_id` (`member_id`),
+  KEY `room_code` (`room_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
@@ -1118,6 +1120,17 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
   UNIQUE KEY `id` (`id`),
   KEY `member_id_idx` (`member_id`),
   KEY `biblio_id_idx` (`biblio_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `unique_code` int(11) NOT NULL COMMENT 'Code for identification each room',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_code_unq` (`unique_code`),
+  KEY `unique_code_idx` (`unique_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
 $query_trigger[] = "

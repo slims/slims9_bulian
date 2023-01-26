@@ -1076,6 +1076,19 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     function upgrade_role_33()
     {
         $sql['alter'][] = "ALTER TABLE `user` ADD IF NOT EXISTS `2fa` text COLLATE 'utf8_unicode_ci' NULL AFTER `passwd`;";
-        return $this->slims->query($sql, ['alter']);
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `name` varchar(50) NOT NULL,
+          `unique_code` varchar(5) NOT NULL COMMENT 'Code for identification each room',
+          `created_at` datetime DEFAULT NULL,
+          `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
+          PRIMARY KEY (`id`),
+          UNIQUE KEY `unique_code_unq` (`unique_code`),
+          KEY `unique_code_idx` (`unique_code`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        $sql['alter'][] = "ALTER TABLE `visitor_count` ADD IF NOT EXISTS `room_code` varchar(5) COLLATE 'utf8_unicode_ci' NULL AFTER `institution`;";
+        $sql['alter'][] = "ALTER TABLE `visitor_count` ADD INDEX `room_code` (`room_code`);";
+
+        return $this->slims->query($sql, ['create', 'alter']);
     }
 }

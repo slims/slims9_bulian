@@ -145,7 +145,7 @@ if (isset($_GET['select_lang'])) {
                     this.resetForm()
                     return
                 }
-                let url = 'index.php?p=visitor'
+                let url = 'index.php?p=visitor<?= trim(isset($_GET['room']) ? '&room=' . simbio_security::xssFree($_GET['room']) : '')  ?>'
                 let data = new FormData()
                 data.append('memberID', this.memberId)
                 data.append('institution', this.institution)

@@ -70,7 +70,6 @@ if (empty($errors)) {
 	if (isset($deliveredrecords)){
 		$query .= " LIMIT " . MAXRECORDS . " OFFSET $deliveredrecords ";
 	}
-
 	debug_message("Query: $query") ;
 
 	$res = $db->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
@@ -91,7 +90,7 @@ if (empty($errors)) {
 		}
 		$num_rows = rowCount($metadataPrefix, $extquery, $db);  
 		if ($num_rows==0) {
-			echo "Cannot find records: $query\n";
+			#echo "Cannot find records: $query\n"; #debug
 			$errors[] = oai_error('noRecordsMatch');
 		}
 	}
