@@ -180,3 +180,27 @@ function showTitleAuthors($obj_db, $array_data)
   }
   return $_output;
 }
+
+function importProgress(int $percentage)
+{
+  if ($percentage > 100) return;
+  echo <<<HTML
+  <script>
+    if (!parent.$('#preview').hasClass('d-none')) parent.$('#preview').addClass('d-none')
+    if (parent.$('#progress').hasClass('d-none')) parent.$('#progress').removeClass('d-none')
+    parent.$('.progress-bar').attr('style', 'width: {$percentage}%')
+    parent.$('.progress-bar').html('{$percentage}%')
+  </script>
+  HTML;
+  ob_flush();
+  flush();
+}
+
+function isItemExists(string $itemCode)
+{
+  $itemCode = trim($itemCode, '\'');
+  $state = \SLiMS\DB::getInstance()->prepare('select item_code from item where item_code = ?');
+  $state->execute([$itemCode]);
+
+  return (bool)$state->rowCount();
+}

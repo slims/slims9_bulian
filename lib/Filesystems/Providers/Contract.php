@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 10:18:42
- * @modify date 2023-01-11 08:05:33
+ * @modify date 2023-02-04 18:07:53
  * @license GPLv3
  * @desc [description]
  */
@@ -175,6 +175,16 @@ abstract class Contract
     {
         $Class = new ReflectionClass($this);
         return $Class->getShortName();
+    }
+
+    /**
+     * Get main path
+     *
+     * @return void
+     */
+    public function getPath(string $additionalPath = '')
+    {
+        return $this->path . DS . $additionalPath;
     }
 
     /**

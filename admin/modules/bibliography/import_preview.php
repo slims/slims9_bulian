@@ -1,0 +1,149 @@
+<?php
+/**
+ * @author Drajat Hasan
+ * @email drajathasan20@gmail.com
+ * @create date 2023-02-04 15:23:54
+ * @modify date 2023-02-05 09:53:46
+ * @license GPLv3
+ * @desc CSV viewer before imported to SLiMS
+ */
+
+use SLiMS\Url;
+use SLiMS\Filesystems\Storage;
+
+// key to authenticate
+define('INDEX_AUTH', '1');
+// key to get full database access
+define('DB_ACCESS', 'fa');
+
+// main system configuration
+require '../../../sysconfig.inc.php';
+// IP based access limitation
+require LIB.'ip_based_access.inc.php';
+do_checkIP('smc');
+do_checkIP('smc-bibliography');
+// start the session
+require SB.'admin/default/session.inc.php';
+require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
+require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+
+// create upload object
+$files_disk = Storage::files();
+
+if (isset($_GET['cancel'])) {
+    $action = $_SESSION['csv']['action']??MWB . 'bibliography/import.php';
+
+    // remove csv file
+    $files_disk->delete('temp' . DS . $_SESSION['csv']['name'] . '.csv');
+
+    // clear csv session
+    unset($_SESSION['csv']['name']);
+    
+    // redirect to previous content
+    redirect()->simbioAJAX($action);
+}
+
+?>
+
+<div class="menuBox">
+    <div class="menuBoxInner importIcon">
+        <div class="per_title">
+        <h2><?php echo __('Preview Import'); ?></h2>
+        </div>
+        <div class="infoBox">
+            <?php echo __('Preview your data before import to SLiMS'); ?>
+        </div>
+    </div>
+</div>
+<div id="progress" class="d-none my-2 mx-2">
+    <p class="w-100 block"><?= __('Importing data to SLiMS') ?></p>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+    </div>
+</div>
+<div id="preview" class="my-3 mx-2">
+    <form action="<?= $_SESSION['csv']['action']??MWB . 'bibliography/import.php' ?>" method="post" target="blindSubmit">
+        <h4 class="my-3"><?= __('Imported data list preview') ?></h4>
+        <p><?= __('Make sure all the data that appears matches the column you enter.') ?></p>
+        <div class="d-flex flex-row">
+            <label>Show per :</label>
+            <select class="perpage form-control col-1">
+                <?php 
+                foreach([5,10,15,20,25,30,35,40,45,50,0] as $num)  {
+                    $selected = trim(isset($_GET['perpage']) && $_GET['perpage'] == $num ? 'selected' : '');
+                    echo '<option value="' . $num . '" ' . $selected . '>'.($num === 0 ? __('All') : $num).'</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <input type="hidden" name="process" value="yes"/>
+        <div class="d-flex flex-row">
+            <button type="submit" name="doImport" class="btn btn-primary mx-1"><?= __('Import Now') ?></button>
+            <a href="<?= Url::getSelf() ?>?cancel=true" class="btn btn-secondary mx-1">Cancel</a>
+        </div>
+        <div class="overflow-auto">
+        <?php
+        // set PHP time limit
+        set_time_limit(0);
+        // set ob implicit flush
+        ob_implicit_flush();
+
+        $limit = $_GET['perpage']??5;
+
+        try {
+            $columns = explode(',', 'No.,item_code,call_number,coll_type_name,inventory_code,received_date,supplier_name,order_no,location_name,order_date,item_status_name,site,source,invoice,price,price_currency,invoice_date,input_date,last_update,title');
+            if ($_SESSION['csv']['section'] === 'biblio') {
+                $columns = explode(',', 'No.,title,gmd_name,edition,isbn_issn,publisher_name,publish_year,collation,series_title,call_number,language_name,place_name,classification,notes,image,sor,authors,topics,item_code');
+            }
+
+            $table = new simbio_table();
+            $table->table_attr = 'class="table table-bordered"';
+
+            $file = $files_disk->readStream('temp' . DS . $_SESSION['csv']['name'] . '.csv');
+            $row = 1;
+            
+            $table->setHeader($columns);
+            $table->table_header_attr = 'class="alterCell2 font-weight-bold"';
+            while (!feof($file)) {
+                // break it if limit exceed
+                if ($limit > 0 && ($limit + 1) === $row) break;
+
+                $field = fgetcsv($file, 1024*100, $_SESSION['csv']['format']['fieldSep'], $_SESSION['csv']['format']['fieldEnc']);
+                
+                if (!is_array($field)) continue;
+
+                if (in_array(trim($field[0]), ['item_code','title'])) continue;
+
+                if (isset($field[12])) $field[12] = strlen($field[12]) > 50 ? '<div style="height: 250px; overflow-y: auto;">' . $field[12] . '</div>' : strlen($field[12]);
+                foreach ($field as $index => $column_value) 
+                {
+                    if ($index != 12) $field[$index] = htmlspecialchars($field[$index]);
+                    $table->setCellAttr($row, $index, 'class="alterCell" valign="top" style="width: '.strlen($column_value).'px;"');
+                }
+                // append data to table row
+                $table->appendTableRow(array_merge([$row], $field));
+                ob_flush();
+                flush();
+                $row++;
+            }
+
+            // print out the table
+            echo $table->printTable();
+        } catch (Exception $e) {
+            debug($e->getMessage());
+        }
+        ?>
+        <div class="d-flex flex-row">
+            <button type="submit" name="doImport" class="btn btn-primary mx-1"><?= __('Import Now') ?></button>
+            <a href="<?= Url::getSelf() ?>?cancel=true" class="btn btn-secondary mx-1">Cancel</a>
+        </div>
+    <form>
+    <script>
+        $(document).ready(function(){
+            $('.perpage').change(function(){
+                let number = $(this).val()
+                $('#mainContent').simbioAJAX(`<?= Url::getSelf() ?>?perpage=${number}`)
+            })
+        })
+    </script>
+</div>

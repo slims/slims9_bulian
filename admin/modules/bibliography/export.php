@@ -120,7 +120,7 @@ if (isset($_POST['doExport'])) {
                   // skip biblio_id field
                   if ($n > 0) {
                       $headers[$key] = $key;
-                      $fld_d = $dbs->escape_string($fld_d);
+                      $fld_d = $dbs->escape_string($fld_d??'');
                       // data
                       $buffer .=  stripslashes($encloser.$fld_d.$encloser);
                       // field separator
@@ -196,7 +196,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(';').'', 'style="width: 10%;" maxlength="3" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
 $form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // record separator
