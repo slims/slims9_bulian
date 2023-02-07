@@ -22,7 +22,9 @@ export default {
             loading: false,
             message: [],
             isPass: false,
-            sampleData: false
+            sampleData: false,
+            engines: [],
+            engine: 'MyISAM'
         }
     },
     methods: {
@@ -45,7 +47,8 @@ export default {
                     username: this.username,
                     passwd: this.passwd,
                     confirmPasswd: this.confirmPasswd,
-                    sampleData: this.sampleData
+                    sampleData: this.sampleData,
+                    engine: this.engine
                 })
             })
                 .then(res => res.json())
@@ -60,7 +63,26 @@ export default {
                         this.$emit('success')
                     }
                 })
+        },
+        async getEngines() {
+            try {
+                let request = await (await (fetch('./api.php?storeage_engines=yes'))).json()
+
+                if (!request.status) throw request.message??'Something error'
+
+                this.engines = request.data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        setSuggestion(engine)
+        {
+            if (engine === 'Aria') return engine + ' - recommended for crash safe'
+            return engine
         }
+    },
+    mounted() {
+        this.getEngines()
     },
     template: `<div class="min-h-screen flex">
 <div class="w-20 p-4">
@@ -79,6 +101,18 @@ export default {
       <select v-model="sampleData" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
         <option :value="false">No, don't do that!</option>
         <option :value="true">Yes, please.</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+      </div>
+    </div>
+
+    <h2 class="font-medium text-lg" v-if="engines.length > 0">Storage Engine</h2>
+    <p class="mb-2" v-if="engines.length > 0"><slims-text></slims-text> comes with variant of database storage engine, it can improve your database performance such as crash-safe, transaction etc.</p>
+
+    <div class="inline-block relative w-64 mb-4" v-if="engines.length > 0">
+      <select v-model="engine" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <option v-for="engine in engines" :value="engine[0]" :title="engine[1]">{{ setSuggestion(engine[0]) }}</option>
       </select>
       <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

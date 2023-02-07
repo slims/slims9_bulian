@@ -30,7 +30,9 @@ return [
             'port' => '_DB_PORT_',
             'username' => '_DB_USER_',
             'password' => '_DB_PASSWORD_',
-            'options' => []
+            'options' => [
+                'storage_engine' => '_STORAGE_ENGINE_'
+            ]
         ]
     ]
 ];

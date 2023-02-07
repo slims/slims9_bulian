@@ -34,6 +34,26 @@ if ($action === 're-install' || $action === 're-upgrade') {
   }
 }
 
+if (isset($_GET['storeage_engines'])) {
+  $isProfileExists = isset($_SESSION['db_host']) && 
+                     isset($_SESSION['db_name']) && 
+                     isset($_SESSION['db_user']) && 
+                     isset($_SESSION['db_pass']) && 
+                     isset($_SESSION['db_port']);
+
+  if (!$isProfileExists) die(json_encode(['status' => false]));
+
+  try {
+    $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port']??'3306', $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+    $engines = $slims->getStorageEngines();
+    ksort($engines);
+    die(json_encode(['status' => true, 'data' => array_values($engines)]));
+  } catch (Exception $e) {
+    die(json_encode(['status' => false, 'message' => $e->getMessage()]));
+  }
+  exit;
+}
+
 switch ($action) {
   case 'system-requirement':
     $php_minimum_version = '7.4';

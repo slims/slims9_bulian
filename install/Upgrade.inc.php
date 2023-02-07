@@ -66,6 +66,9 @@ class Upgrade
       // make sure use default template
       $this->slims->updateTheme('default');
 
+      // update storeage engine
+      $this->slims->updateStorageEngine();
+
       // rollback sql_mode
       $this->slims->rollbackSqlMode();
   }
@@ -999,7 +1002,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
                                 ADD `options` json NULL AFTER `path`,
                                 ADD `updated_at` datetime NULL AFTER `created_at`,
                                 ADD `deleted_at` datetime NULL AFTER `updated_at`;";
-        $sql['alter'][] = "ALTER TABLE `plugins` ADD IF NOT EXISTS UNIQUE `id` (`id`);";
+        $sql['alter'][] = "ALTER TABLE `plugins` ADD UNIQUE `id` (`id`);";
 
         return $this->slims->query($sql, ['alter']);
     }

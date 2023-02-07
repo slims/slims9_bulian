@@ -247,6 +247,36 @@ class SLiMS
     return $this->db;
   }
 
+  function getStorageEngines()
+  {
+    $basic_engines = [1 => 'MyISAM','Aria','InnoDB'];
+    $state = $this->db->query('SHOW ENGINES');
+
+    $engines = [];
+    while ($result = $state->fetch_object()) {
+      foreach ($basic_engines as $index => $engine) {
+        if ($result->Engine === $engine && in_array($result->Support, ['YES','DEFAULT'])) {
+          $engines[$index] = [$result->Engine, $result->Comment];
+        }      
+      }
+    }
+
+    return $engines;
+  }
+
+  function updateStorageEngine()
+  {
+    if (!isset($_POST['engine']) || $_POST['engine'] === 'MyISAM') return;
+    
+    $state = $this->db->query('SHOW TABLES');
+
+    while ($result = $state->fetch_row()) {
+      $tableName = $this->db->escape_string($result[0]);
+      $tableEngine = $this->db->escape_string($_POST['engine']);
+      $this->db->query('ALTER TABLE `' . $tableName . '` ENGINE=\''.$tableEngine.'\';');
+    }
+  }
+
   function createTable($table) {
     try {
       $column_str = '';
@@ -367,6 +397,7 @@ SQL;
     $config_content = str_replace("_DB_NAME_", $options['db_name'], $config_content);
     $config_content = str_replace("_DB_USER_", $options['db_user'], $config_content);
     $config_content = str_replace("_DB_PASSWORD_", $options['db_pass'], $config_content);
+    if (isset($_POST['engine'])) $config_content = str_replace("_STORAGE_ENGINE_", trim($_POST['engine']), $config_content);
 
     $config_file = fopen($config_file_path, 'w');
     $write = fwrite($config_file, $config_content);
@@ -380,6 +411,10 @@ SQL;
       if (array_key_exists($type, $array)) {
         foreach ($array[$type] as $item) {
           try {
+            if (isset($_POST['engine']) && $_POST['engine'] !== 'MyISAM') 
+            {
+              $item = str_replace('ENGINE=MyISAM', 'ENGINE=' . trim($_POST['engine']), $item);
+            }
             $stmt = $this->db->prepare($item);
             if (!$stmt) throw new Exception($this->db->error . '. Your syntax: ' . $item);
             $stmt->execute();

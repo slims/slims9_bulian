@@ -746,7 +746,7 @@ $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `biblio_custom` (
 `biblio_id` INT NOT NULL ,
 PRIMARY KEY ( `biblio_id` )
-) ENGINE = MYISAM COMMENT = 'one to one relation with real biblio table';";
+) ENGINE=MyISAM COMMENT = 'one to one relation with real biblio table';";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `search_biblio` (
@@ -795,7 +795,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `member_custom` (
 `member_id` VARCHAR(20) NOT NULL ,
 PRIMARY KEY ( `member_id` )
-) ENGINE = MYISAM COMMENT = 'one to one relation with real member table';";
+) ENGINE=MyISAM COMMENT = 'one to one relation with real member table';";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -1099,7 +1099,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
   `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
-) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
+) ENGINE=MyISAM COLLATE 'utf8mb4_unicode_ci';";
 
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_documents` (
   `document_id` int(11) NOT NULL,
