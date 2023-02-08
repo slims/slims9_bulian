@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-02-04 15:23:54
- * @modify date 2023-02-05 09:53:46
+ * @modify date 2023-02-08 15:46:22
  * @license GPLv3
  * @desc CSV viewer before imported to SLiMS
  */
@@ -27,6 +27,14 @@ require SB.'admin/default/session.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+// privileges checking
+$can_read = utility::havePrivilege('bibliography', 'r') || utility::havePrivilege('membership', 'r');
+$can_write = utility::havePrivilege('bibliography', 'w') || utility::havePrivilege('membership', 'w');
+
+if (!$can_read) {
+  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
 // create upload object
 $files_disk = Storage::files();
 
@@ -42,7 +50,6 @@ if (isset($_GET['cancel'])) {
     // redirect to previous content
     redirect()->simbioAJAX($action);
 }
-
 ?>
 
 <div class="menuBox">
@@ -91,10 +98,28 @@ if (isset($_GET['cancel'])) {
         $limit = $_GET['perpage']??5;
 
         try {
-            $columns = explode(',', 'No.,item_code,call_number,coll_type_name,inventory_code,received_date,supplier_name,order_no,location_name,order_date,item_status_name,site,source,invoice,price,price_currency,invoice_date,input_date,last_update,title');
-            if ($_SESSION['csv']['section'] === 'biblio') {
-                $columns = explode(',', 'No.,title,gmd_name,edition,isbn_issn,publisher_name,publish_year,collation,series_title,call_number,language_name,place_name,classification,notes,image,sor,authors,topics,item_code');
+            // set column information based on csv import section
+            switch ($_SESSION['csv']['section']) {
+                case 'biblio':
+                    $stringColumn = 'No.,title,gmd_name,edition,isbn_issn,publisher_name,publish_year,collation,series_title,call_number,language_name,place_name,classification,notes,image,sor,authors,topics,item_code';
+                    break;
+
+                case 'biblio':
+                    $stringColumn = 'No.,item_code,call_number,coll_type_name,inventory_code,received_date,supplier_name,order_no,location_name,order_date,item_status_name,site,source,invoice,price,price_currency,invoice_date,input_date,last_update,title';
+                    break;
+                
+                case 'membership':
+                    $stringColumn = 'No.,member_id,member_name,gender,member_type_name,member_email,member_address,postal_code,inst_name,is_new,member_image,pin,member_phone,member_fax,member_since_date,register_date,expire_date,birth_date,member_notes';
+                    if ($_SESSION['csv']['password'] == 1) $stringColumn .= ',mpasswd';
+                    break;
+
+                default:
+                    $stringColumn = '';
+                    break;
             }
+
+            // show error box
+            if (empty($stringColumn)) die('<div class="errorBox">' . __('Uknown CSV import section!') . '</div>');
 
             $table = new simbio_table();
             $table->table_attr = 'class="table table-bordered"';
@@ -102,24 +127,29 @@ if (isset($_GET['cancel'])) {
             $file = $files_disk->readStream('temp' . DS . $_SESSION['csv']['name'] . '.csv');
             $row = 1;
             
-            $table->setHeader($columns);
+            // register $stringColumn as header
+            $table->setHeader(explode(',', $stringColumn));
             $table->table_header_attr = 'class="alterCell2 font-weight-bold"';
+
+            // let preview!
             while (!feof($file)) {
                 // break it if limit exceed
                 if ($limit > 0 && ($limit + 1) === $row) break;
 
                 $field = fgetcsv($file, 1024*100, $_SESSION['csv']['format']['fieldSep'], $_SESSION['csv']['format']['fieldEnc']);
-                
+
                 if (!is_array($field)) continue;
 
                 if (in_array(trim($field[0]), ['item_code','title'])) continue;
 
                 if (isset($field[12])) $field[12] = strlen($field[12]) > 50 ? '<div style="height: 250px; overflow-y: auto;">' . $field[12] . '</div>' : strlen($field[12]);
+                
                 foreach ($field as $index => $column_value) 
                 {
                     if ($index != 12) $field[$index] = htmlspecialchars($field[$index]);
                     $table->setCellAttr($row, $index, 'class="alterCell" valign="top" style="width: '.strlen($column_value).'px;"');
                 }
+
                 // append data to table row
                 $table->appendTableRow(array_merge([$row], $field));
                 ob_flush();

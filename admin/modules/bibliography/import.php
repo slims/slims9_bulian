@@ -92,6 +92,7 @@ if (isset($_POST['doImport'])) {
 
     $_SESSION['csv']['section'] = 'biblio';
     $_SESSION['csv']['action'] = $_SERVER['PHP_SELF'];
+    if (isset($_POST['header'])) $_SESSION['csv']['header'] = 1;
 
     // create upload object
     $csv_upload = $files_disk->upload('importFile', function($files) use($sysconf) {
@@ -212,7 +213,7 @@ if (isset($_POST['doImport'])) {
                         $notes, $image, $sor, $curr_datetime, $curr_datetime)";
   
                 // first field is header
-                if (isset($_POST['header']) && $n < 1) {
+                if (isset($_SESSION['csv']['header']) && $n < 1) {
                     $n++; continue;
                 } else {
                   // send query
