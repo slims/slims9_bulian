@@ -194,7 +194,7 @@ if (isset($_POST['doImport'])) {
                         $lastKey = array_key_last($field);
                         $withPassword = isset($_SESSION['csv']['password']) && $_SESSION['csv']['password'] == 1;
                         $isPasswordValid = isset($field[$lastKey]) && !empty($field[$lastKey]);
-                        $mpasswd = $withPassword && $isPasswordValid ? '\'' . password_hash($field[$lastKey], PASSWORD_BCRYPT) . '\'' : NULL;
+                        $mpasswd = $withPassword && $isPasswordValid ? '\'' . password_hash($field[$lastKey], PASSWORD_BCRYPT) . '\'' : 'NULL';
 
                         // sql insert string
                         $sql_str = "INSERT IGNORE INTO member
@@ -257,7 +257,7 @@ if (isset($_POST['doImport'])) {
         $end_time = time();
         $import_time_sec = $end_time-$start_time;
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'Importing '.$inserted_row.' members data from file : '.$fileName, 'Import', 'Add');
-        $label = str_replace(['{row_count}','{time_to_finish}'], [$row_count, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
+        $label = str_replace(['{row_count}','{time_to_finish}'], [$inserted_row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
         exit(<<<HTML
         <script>
         parent.\$('.infoBox').html('{$label}')

@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-02-04 15:23:54
- * @modify date 2023-02-08 15:46:22
+ * @modify date 2023-02-10 07:51:25
  * @license GPLv3
  * @desc CSV viewer before imported to SLiMS
  */
@@ -104,7 +104,7 @@ if (isset($_GET['cancel'])) {
                     $stringColumn = 'No.,title,gmd_name,edition,isbn_issn,publisher_name,publish_year,collation,series_title,call_number,language_name,place_name,classification,notes,image,sor,authors,topics,item_code';
                     break;
 
-                case 'biblio':
+                case 'item':
                     $stringColumn = 'No.,item_code,call_number,coll_type_name,inventory_code,received_date,supplier_name,order_no,location_name,order_date,item_status_name,site,source,invoice,price,price_currency,invoice_date,input_date,last_update,title';
                     break;
                 
@@ -140,7 +140,7 @@ if (isset($_GET['cancel'])) {
 
                 if (!is_array($field)) continue;
 
-                if (in_array(trim($field[0]), ['item_code','title'])) continue;
+                if (in_array(trim($field[0]), ['item_code','title','member_id'])) continue;
 
                 if (isset($field[12])) $field[12] = strlen($field[12]) > 50 ? '<div style="height: 250px; overflow-y: auto;">' . $field[12] . '</div>' : strlen($field[12]);
                 
@@ -172,6 +172,13 @@ if (isset($_GET['cancel'])) {
         $(document).ready(function(){
             $('.perpage').change(function(){
                 let number = $(this).val()
+
+                if (number == 0 && !confirm('<?= __('Loading all the data in the preview section may take longer. Would you like to continue the process?') ?>'))
+                {
+                    $(this).val() = 5
+                    return;
+                }
+
                 $('#mainContent').simbioAJAX(`<?= Url::getSelf() ?>?perpage=${number}`)
             })
         })
