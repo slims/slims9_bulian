@@ -24,6 +24,7 @@
 
 use SLiMS\GroupMenu;
 use SLiMS\GroupMenuOrder;
+use SLiMS\Plugins;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -101,11 +102,15 @@ class module extends simbio
             $module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);
         }
 
+        // Get module from plugin
+        Plugins::run('module_main_menu_init', [&$module_list]);
+        
         // sort modules
         if ($module_list) {
             foreach ($module_list as $_id => $_module) {
                 $_mod_dir = $_module['path'];
-                if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && file_exists($this->modules_dir . $_mod_dir)) {
+                $_path_exists = file_exists($this->modules_dir . $_mod_dir) || (isset($_module['plugin_module_path']) && file_exists($_module['plugin_module_path']));
+                if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && $_path_exists) {
                     $_menu[$_id] = $_module;
                     if ($also_get_childs) {
                         $_menu[$_id]['childs'] = $this->getSubMenuItems($_module['name']);
@@ -161,7 +166,7 @@ class module extends simbio
         // get menus from plugins
         $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($str_module);
 
-        if (file_exists($_submenu_file)) {
+        if (file_exists($_submenu_file) || (isset($_SESSION['priv'][$str_module]['submenu']) && file_exists($_submenu_file = $_SESSION['priv'][$str_module]['submenu']))) {
             include $_submenu_file;
         } else {
             include 'default/submenu.php';
