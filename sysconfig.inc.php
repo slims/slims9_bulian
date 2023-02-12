@@ -746,3 +746,6 @@ if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_
 
 // load all Plugins
 \SLiMS\Plugins::getInstance()->loadPlugins();
+
+// Captcha factory
+\SLiMS\Captcha\Factory::operate();

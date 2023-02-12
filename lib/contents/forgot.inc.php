@@ -20,6 +20,9 @@
  *
  */
 
+use SLiMS\Url;
+use SLiMS\Http\Client;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -44,8 +47,6 @@ if ($sysconf['https_enable']) {
 // start the output buffering for main content
 ob_start();
 
-// if there is login action
-$message = __('If you need help resetting your password, we can help by sending you a link to reset it.');
 if (isset($_POST['resetPass'])) {
     $email = $dbs->escape_string($_POST['currentmail']);
     if (!$email) {
@@ -58,62 +59,45 @@ if (isset($_POST['resetPass'])) {
                 $privatekey = $sysconf['captcha']['forgot']['privatekey'];
                 $resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["g-recaptcha-response"]);
 
-                if (!$resp->is_valid) {
-                    // What happens when the CAPTCHA was entered incorrectly
-                    $message = __('Captcha incorrect.');
-                } else {
+                try {
+                    if (!$resp->is_valid) throw new Exception(__('Captcha incorrect.'));
+                        
                     // Validate current email
                     $_q = $dbs->query("SELECT user_id, realname FROM user WHERE email='{$email}'");
-                    if ($_q->num_rows > 0) {
-                        /// Name
-                        $file_d = $_q->fetch_assoc();
-                        $name = $file_d['realname'];
-                        /// Generate a token for forgot password
-                        $salt = password_hash($email, PASSWORD_DEFAULT);
-                        $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
-                        // write log
-                        utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.', 'Password', 'Request');
-                        $_update_q = $dbs->query($_sql_update_salt);
-                        // error check
-                        if ($dbs->error) {
-                            $message = __('Failed to query user data from database with error: ').$dbs->error;
-                        } else {
-                            $path = 'https://slims.web.id/mailer/forgot.php';
-                            $fields = array(
-                                'url' => sprintf("%s://%s%s", isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http', $_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']),
-                                'salt' => $salt,
-                                'email' => $email,
-                                'name' => $name
-                            );
-                            
-                            $header = array(
-                                "X-API-KEY: ".$salt
-                            );
 
-                            $curl = curl_init();
-                            curl_setopt_array($curl, array(
-                                CURLOPT_URL => $path,
-                                CURLOPT_POST => true,
-                                CURLOPT_HTTPHEADER => $header,
-                                CURLOPT_POSTFIELDS => $fields,
-                                CURLOPT_RETURNTRANSFER => true,
-                                CURLOPT_USERAGENT => "Slims"
-                            ));
+                    if ($_q->num_rows === 0) throw new Exception(__('Current email not found. Please try again.'));
+                    
+                    // Name
+                    $file_d = $_q->fetch_assoc();
+                    $name = $file_d['realname'];
+                    /// Generate a token for forgot password
+                    $salt = password_hash($email, PASSWORD_DEFAULT);
+                    $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
+                    // write log
+                    utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.', 'Password', 'Request');
+                    $_update_q = $dbs->query($_sql_update_salt);
+                    
+                    // force scheme to https
+                    if (Url::getPort() == '443') Url::$forceHttps = true;
 
-                            $response = curl_exec($curl);
-                            $err = curl_error($curl);
-                            curl_close($curl);
+                    // set hook process variable
+                    $hookProcess = Client::withHeaders([
+                        "X-API-KEY" => $salt
+                    ])->post('https://slims.web.id/mailer/forgot.php', [
+                        'url' => (string)Url::getSlimsFullUri(),
+                        'salt' => $salt,
+                        'email' => $email,
+                        'name' => $name
+                    ]);
 
-                            if ($response == 'false') {
-                                $message = __('Cannot send the email. Please try again.');
-                            } else {
-                                $message = __('<strong>Congratulations! </strong>An instruction has been sent to your email. Please check your inbox.');
-                            }        
-                        }
-                    } else {
-                        $message = __('Current email not found. Please try again.');
+                    if ($hookProcess->getStatusCode() !== 200 || $hookProcess->getContent() == 'false') {
+                        $error = (isDev() ? ' ' . __('Error') . ' : ' . $hookProcess->getError() : ' ' . __('Error not available'));
+                        throw new Exception(__('Cannot send the email. Please try again.') . $error);
                     }
-
+                        
+                    flash('resetSuccess', __('<strong>Congratulations! </strong>An instruction has been sent to your email. Please check your inbox.'));
+                } catch (Exception $e) {
+                    flash('resetFailed', $e->getMessage());
                 }
             }
         }
@@ -124,7 +108,16 @@ if (isset($_POST['resetPass'])) {
     <noscript>
         <div style="font-weight: bold; color: #FF0000;"><?php echo __('Your browser does not support Javascript or Javascript is disabled. Application won\'t run without Javascript!'); ?><div>
     </noscript>
-    <div class="reset-info mb-3"><?php echo $message ?></div>
+    <div class="mb-3">
+        <?php 
+        if (flash()->isEmpty()) {
+            // if there is login action
+            echo __('If you need help resetting your password, we can help by sending you a link to reset it.');
+        } else if ($key = flash()->includes('resetFailed','resetSuccess')) {
+            flash()->show($key);
+        }
+        ?>
+    </div>
     <form action="index.php?p=forgot" method="post" novalidation>
         <div class="heading1"><?php echo __('Your email address'); ?></div>
         <div class="login_input"><input type="email" name="currentmail" id="currentmail" class="login_input" required /></div>
