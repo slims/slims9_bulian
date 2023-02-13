@@ -22,6 +22,7 @@
 
 use SLiMS\Url;
 use SLiMS\Http\Client;
+use SLiMS\Captcha\Factory as Captcha;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -44,6 +45,9 @@ if ($sysconf['https_enable']) {
     simbio_security::doCheckHttps($sysconf['https_port']);
 }
 
+// Captcha initialize
+$captcha = Captcha::section('forgot');
+
 // start the output buffering for main content
 ob_start();
 
@@ -53,52 +57,46 @@ if (isset($_POST['resetPass'])) {
         echo '<script type="text/javascript">alert(\''.__('Please supply valid username and password').'\');</script>';
     } else {
         # <!-- Captcha form processing - start -->
-        if ($sysconf['captcha']['forgot']['enable']) {
-            if ($sysconf['captcha']['forgot']['type'] == 'recaptcha') {
-                require_once LIB.$sysconf['captcha']['forgot']['folder'].'/'.$sysconf['captcha']['forgot']['incfile'];
-                $privatekey = $sysconf['captcha']['forgot']['privatekey'];
-                $resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["g-recaptcha-response"]);
-
-                try {
-                    if (!$resp->is_valid) throw new Exception(__('Captcha incorrect.'));
-                        
-                    // Validate current email
-                    $_q = $dbs->query("SELECT user_id, realname FROM user WHERE email='{$email}'");
-
-                    if ($_q->num_rows === 0) throw new Exception(__('Current email not found. Please try again.'));
+        if ($captcha->isSectionActive()) {    
+            try {
+                if ($captcha->isValid() === false) throw new Exception(__('Captcha incorrect.'));
                     
-                    // Name
-                    $file_d = $_q->fetch_assoc();
-                    $name = $file_d['realname'];
-                    /// Generate a token for forgot password
-                    $salt = password_hash($email, PASSWORD_DEFAULT);
-                    $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
-                    // write log
-                    utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.', 'Password', 'Request');
-                    $_update_q = $dbs->query($_sql_update_salt);
-                    
-                    // force scheme to https
-                    if (Url::getPort() == '443') Url::$forceHttps = true;
+                // Validate current email
+                $_q = $dbs->query("SELECT user_id, realname FROM user WHERE email='{$email}'");
 
-                    // set hook process variable
-                    $hookProcess = Client::withHeaders([
-                        "X-API-KEY" => $salt
-                    ])->post('https://slims.web.id/mailer/forgot.php', [
-                        'url' => (string)Url::getSlimsFullUri(),
-                        'salt' => $salt,
-                        'email' => $email,
-                        'name' => $name
-                    ]);
+                if ($_q->num_rows === 0) throw new Exception(__('Current email not found. Please try again.'));
+                
+                // Name
+                $file_d = $_q->fetch_assoc();
+                $name = $file_d['realname'];
+                /// Generate a token for forgot password
+                $salt = password_hash($email, PASSWORD_DEFAULT);
+                $_sql_update_salt = sprintf("UPDATE user SET forgot = '{$salt}', last_update = CURDATE() WHERE email = '%s'", $email);
+                // write log
+                utility::writeLogs($dbs, 'staff', $name, 'Forgot Password', $name.' has been requested a new password.', 'Password', 'Request');
+                $_update_q = $dbs->query($_sql_update_salt);
+                
+                // force scheme to https
+                if (Url::getPort() == '443') Url::$forceHttps = true;
 
-                    if ($hookProcess->getStatusCode() !== 200 || $hookProcess->getContent() == 'false') {
-                        $error = (isDev() ? ' ' . __('Error') . ' : ' . $hookProcess->getError() : ' ' . __('Error not available'));
-                        throw new Exception(__('Cannot send the email. Please try again.') . $error);
-                    }
-                        
-                    flash('resetSuccess', __('<strong>Congratulations! </strong>An instruction has been sent to your email. Please check your inbox.'));
-                } catch (Exception $e) {
-                    flash('resetFailed', $e->getMessage());
+                // set hook process variable
+                $hookProcess = Client::withHeaders([
+                    "X-API-KEY" => $salt
+                ])->post('https://slims.web.id/mailer/forgot.php', [
+                    'url' => (string)Url::getSlimsFullUri(),
+                    'salt' => $salt,
+                    'email' => $email,
+                    'name' => $name
+                ]);
+
+                if ($hookProcess->getStatusCode() !== 200 || $hookProcess->getContent() == 'false') {
+                    $error = (isDev() ? ' ' . __('Error') . ' : ' . $hookProcess->getError() : ' ' . __('Error not available'));
+                    throw new Exception(__('Cannot send the email. Please try again.') . $error);
                 }
+                    
+                flash('resetSuccess', __('<strong>Congratulations! </strong>An instruction has been sent to your email. Please check your inbox.'));
+            } catch (Exception $e) {
+                flash('resetFailed', $e->getMessage());
             }
         }
     }
@@ -121,13 +119,14 @@ if (isset($_POST['resetPass'])) {
     <form action="index.php?p=forgot" method="post" novalidation>
         <div class="heading1"><?php echo __('Your email address'); ?></div>
         <div class="login_input"><input type="email" name="currentmail" id="currentmail" class="login_input" required /></div>
-        <div class="captchaAdmin">
-        <?php
-        require_once LIB.$sysconf['captcha']['forgot']['folder'].'/'.$sysconf['captcha']['forgot']['incfile'];
-        $publickey = $sysconf['captcha']['forgot']['publickey'];
-        echo recaptcha_get_html($publickey);
+        <?php 
+        if ($captcha->isSectionActive()) { ?>
+            <div class="captchaAdmin">
+                <?= $captcha->getCaptcha() ?>
+            </div>
+            <?php
+        }
         ?>
-        </div>
         <div class="marginTop">
         <input type="submit" name="resetPass" value="<?php echo __('Reset my password'); ?>" class="loginButton" />
         <a class="forgotButton" href="index.php?p=login"><?php echo __('Cancel') ?></a>

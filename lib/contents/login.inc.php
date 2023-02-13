@@ -30,6 +30,7 @@ if (!defined('INDEX_AUTH')) {
 
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use SLiMS\Captcha\Factory as Captcha;
 use Volnix\CSRF\CSRF;
 
 if ($sysconf['baseurl'] != '') {
@@ -61,6 +62,9 @@ if (isset($_GET['wrongpass'])) {
     redirect()->withMessage('wrong_password', __('Wrong Username or Password. ACCESS DENIED'))->toPath('login');
 }
 
+// Captcha initialize
+$captcha = Captcha::section('librarian');
+
 // start the output buffering for main content
 ob_start();
 
@@ -72,115 +76,103 @@ if (isset($_POST['logMeIn'])) {
     }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
-    if (empty($username) or empty($password)) {
-        redirect()->withMessage('empty_field', __('Please supply valid username and password'))->back();
-    } else {
-        // create logon class instance
-        $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
-        if ($sysconf['auth']['user']['method'] == 'LDAP') $ldap_configs = $sysconf['auth']['user'];
 
-        if ($logon->adminValid($dbs)) {
-            # <!-- Captcha form processing - start -->
-            if ($sysconf['captcha']['smc']['enable']) {
-                if ($sysconf['captcha']['smc']['type'] == 'recaptcha') {
-                    require_once LIB . $sysconf['captcha']['smc']['folder'] . '/' . $sysconf['captcha']['smc']['incfile'];
-                    $privatekey = $sysconf['captcha']['smc']['privatekey'];
-                    $resp = recaptcha_check_answer(
-                        $privatekey,
-                        $_SERVER["REMOTE_ADDR"],
-                        $_POST["g-recaptcha-response"]
-                    );
+    // Empty username or password
+    if (empty($username) or empty($password)) redirect()->withMessage('empty_field', __('Please supply valid username and password'))->back();
+        
+    
+    // create logon class instance
+    $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
+    if ($sysconf['auth']['user']['method'] == 'LDAP') $ldap_configs = $sysconf['auth']['user'];
 
-                    if (!$resp->is_valid) {
-                        // What happens when the CAPTCHA was entered incorrectly
-                        session_unset();
-                        redirect()->toPath($path);
-                        die();
-                    }
-                } elseif ($sysconf['captcha']['smc']['type'] == 'others') {
-                    # other captchas here
-                }
-            }
-            # <!-- Captcha form processing - end -->
-
-            // remember me
-            if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
-
-            if ($_2fa = $logon->getUserInfo('2fa')) {
-                # redirect to f2a page
-                $_SESSION['user'] = $logon->getUserInfo();
-                redirect('index.php?p=2fa');
-            } else {
-                // destroy previous session set in OPAC
-                simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
-                require SB . 'admin/default/session.inc.php';
-                // regenerate session ID to prevent session hijacking
-                session_regenerate_id(true);
-
-                // set cookie admin flag
-                #setcookie('admin_logged_in', true, time()+14400, SWB);
-                #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
-
-                setcookie('admin_logged_in', TRUE, [
-                    'expires' => time() + 14400,
-                    'path' => SWB,
-                    'domain' => '',
-                    'secure' => false,
-                    'httponly' => true,
-                    'samesite' => 'Lax',
-                ]);
-
-                // write log
-                utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
-
-                # ADV LOG SYSTEM - STIIL EXPERIMENTAL
-                $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
-
-                if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $logon->real_name);
-
-                $logon->setupSession($dbs);
-                redirect('admin/index.php');
-            }
-        } else {
-            // write log
-            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user ' . $username . ' from address ' . ip());
-
-            // maybe still use md5 encryption
-            if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
-                $token = utility::createRandomString(32);
-                #setcookie('token', $token, time()+3600, SWB);
-                #setcookie('token', $token, time()+3600, SWB, "", FALSE, TRUE);
-
-                setcookie('token', $token, [
-                    'expires' => time() + 3600,
-                    'path' => SWB,
-                    'domain' => '',
-                    'secure' => false,
-                    'httponly' => true,
-                    'samesite' => 'Lax',
-                ]);
-
-                #setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
-                #setcookie('uname', $logon->errors['uname'], time()+3600, SWB, "", FALSE, TRUE);
-
-                setcookie('uname', $logon->errors['uname'], [
-                    'expires' => time() + 3600,
-                    'path' => SWB,
-                    'domain' => '',
-                    'secure' => false,
-                    'httponly' => true,
-                    'samesite' => 'Lax',
-                ]);
-
-                // message
-                redirect()->toPath($path . '&update=' . $token);
-            } else {
-                // message
-                simbio_security::destroySessionCookie(__('Wrong Username or Password. ACCESS DENIED'), COOKIES_NAME, SWB . 'admin', false);
-                redirect('?p=login&wrongpass=true');
-            }
-            exit();
+    if ($logon->adminValid($dbs)) {
+        # <!-- Captcha form processing - start -->
+        if ($captcha->isSectionActive() && $captcha->isValid() === false) {
+            // set error message
+            $message = isDev() ? $captcha->getError() : __('Wrong Captcha Code entered, Please write the right code!'); 
+            // What happens when the CAPTCHA was entered incorrectly
+            session_unset();
+            redirect()->withMessage('captchaInvalid', $message)->back();
         }
+        # <!-- Captcha form processing - end -->
+
+        // remember me
+        if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
+
+        if ($_2fa = $logon->getUserInfo('2fa')) {
+            # redirect to f2a page
+            $_SESSION['user'] = $logon->getUserInfo();
+            redirect('index.php?p=2fa');
+        } else {
+            // destroy previous session set in OPAC
+            simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
+            require SB . 'admin/default/session.inc.php';
+            // regenerate session ID to prevent session hijacking
+            session_regenerate_id(true);
+
+            // set cookie admin flag
+            #setcookie('admin_logged_in', true, time()+14400, SWB);
+            #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
+
+            setcookie('admin_logged_in', TRUE, [
+                'expires' => time() + 14400,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+            // write log
+            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
+
+            # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+            $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
+
+            if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $logon->real_name);
+
+            $logon->setupSession($dbs);
+            redirect('admin/index.php');
+        }
+    } else {
+        // write log
+        utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user ' . $username . ' from address ' . ip());
+
+        // maybe still use md5 encryption
+        if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
+            $token = utility::createRandomString(32);
+            #setcookie('token', $token, time()+3600, SWB);
+            #setcookie('token', $token, time()+3600, SWB, "", FALSE, TRUE);
+
+            setcookie('token', $token, [
+                'expires' => time() + 3600,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+            #setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
+            #setcookie('uname', $logon->errors['uname'], time()+3600, SWB, "", FALSE, TRUE);
+
+            setcookie('uname', $logon->errors['uname'], [
+                'expires' => time() + 3600,
+                'path' => SWB,
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+
+            // message
+            redirect()->toPath($path . '&update=' . $token);
+        } else {
+            // message
+            simbio_security::destroySessionCookie(__('Wrong Username or Password. ACCESS DENIED'), COOKIES_NAME, SWB . 'admin', false);
+            redirect('?p=login&wrongpass=true');
+        }
+        exit();
     }
 }
 
@@ -297,23 +289,16 @@ if (isset($_POST['updatePassword'])) {
             <div class="heading1"><?php echo __('Password'); ?></div>
             <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
             <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+            
             <!-- Captcha in form - start -->
-            <?php if ($sysconf['captcha']['smc']['enable']) { ?>
-                <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
-                    <div class="captchaAdmin">
-                        <?php
-                        require_once LIB . $sysconf['captcha']['smc']['folder'] . '/' . $sysconf['captcha']['smc']['incfile'];
-                        $publickey = $sysconf['captcha']['smc']['publickey'];
-                        echo recaptcha_get_html($publickey);
-                        ?>
-                    </div>
-                    <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
-            <?php
-                } elseif ($sysconf['captcha']['smc']['type'] == "others") {
-                }
-                #debugging
-                #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
-            } ?>
+            <?php 
+            if ($captcha->isSectionActive()) { ?>
+                <div class="captchaAdmin">
+                    <?= $captcha->getCaptcha() ?>
+                </div>
+                <?php
+            }
+            ?>
             <!-- Captcha in form - end -->
 
             <div class="marginTop">

@@ -459,31 +459,6 @@ $sysconf['index']['engine']['es_opts'] = array(
   'index' => 'slims' // name of index in ElasticSearch
 );
 
-
-/**
- * Captcha Settings
- */
-// Captcha settings for Senayan Management Console (aka Librarian Login)
-$sysconf['captcha']['smc']['enable'] = false; // value can be 'true' or 'false'
-$sysconf['captcha']['smc']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['smc']['enable']) {
-    include_once LIB.$sysconf['captcha']['smc']['type'].DS.'smc_settings.inc.php';
-}
-
-// Captcha settings for Member Login
-$sysconf['captcha']['member']['enable'] = false; // value can be 'true' or 'false'
-$sysconf['captcha']['member']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['member']['enable']) {
-    include_once LIB.$sysconf['captcha']['member']['type'].DS.'member_settings.inc.php';
-}
-
-// Captcha settings for Forgot Password
-$sysconf['captcha']['forgot']['enable'] = true; // value can be 'true' or 'false'
-$sysconf['captcha']['forgot']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['forgot']['enable']) {
-    include_once LIB.$sysconf['captcha']['forgot']['type'].DS.'forgot_settings.inc.php';
-}
-
 /**
  * Maximum biblio mark for member
  */

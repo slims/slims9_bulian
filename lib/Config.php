@@ -146,6 +146,14 @@ class Config
     }
 
     /**
+     * Get config as plain text
+     */
+    public static function getFile(string $filename)
+    {
+        return file_exists($path = SB . 'config/' . $filename . '.php') ? file_get_contents($path) : null;
+    }
+
+    /**
      * Create some configuration file
      * into <slims-root>/config/
      *
