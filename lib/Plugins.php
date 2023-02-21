@@ -376,7 +376,7 @@ class Plugins
         Plugins::group($module_name, function() use($path,$md5_path) {
             // Scan all file inside module directory as menu
             foreach (array_diff(scandir($path), ['.','..','submenu.php']) as $menu) {
-                if (is_dir($menu) && strpos($menu, '.inc.php')) continue;
+                if (is_dir($menu) || strpos($menu, '.inc.php')) continue;
 
                 // set label
                 $label = trim($menu, '.php');
