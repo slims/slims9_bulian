@@ -65,6 +65,5 @@ if (!function_exists('debug'))
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
         $_SESSION['dumpFile'] = ($trace['file']??'') . ':' . ($trace['line']);
         if (ENVIRONMENT == 'development') foreach(func_get_args() as $arg) VarDumper::dump($arg);
-        else exit('<div class="errorBox">' . __('Something error. Turn on development to get error detail.') . '</div>');
     }
 }
