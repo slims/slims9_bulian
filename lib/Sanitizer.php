@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-03-01 20:22:50
- * @modify date 2023-03-01 20:56:02
+ * @modify date 2023-03-07 08:09:40
  * @license GPLv3
  * @desc [description]
  */
@@ -30,6 +30,7 @@ class Sanitizer
     {
         foreach ($this->variableToClean as $type => $globalVariable) {
             foreach ($globalVariable as $key => $value) {
+                if (is_array($value)) continue;
                 $newValue = utility::filterData($key, $type, true, true, true);
 
                 switch ($type) {
