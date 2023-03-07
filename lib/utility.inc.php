@@ -338,19 +338,23 @@ class utility
                 $mix_input = filter_input(INPUT_COOKIE, $mix_input);
             } else if ($str_input_type == 'session') {
                 $mix_input = filter_input(INPUT_SESSION, $mix_input);
+            } else if ($str_input_type == 'server') {
+                $mix_input = $_SERVER[$mix_input]??null;
             } else {
                 $mix_input = filter_input(INPUT_GET, $mix_input);
             }
         } else {
             if ($str_input_type == 'get') {
-                $mix_input = $_GET[$mix_input];
+                $mix_input = $_GET[$mix_input]??null;
             } else if ($str_input_type == 'post') {
-                $mix_input = $_POST[$mix_input];
+                $mix_input = $_POST[$mix_input]??null;
             } else if ($str_input_type == 'cookie') {
-                $mix_input = $_COOKIE[$mix_input];
+                $mix_input = $_COOKIE[$mix_input]??null;
             } else if ($str_input_type == 'session') {
-                $mix_input = $_SESSION[$mix_input];
-            }
+                $mix_input = $_SESSION[$mix_input]??null;
+            } else if ($str_input_type == 'server') {
+                $mix_input = $_SERVER[$mix_input]??null;
+            } 
         }
 
         if (!is_null($mix_input)) {
