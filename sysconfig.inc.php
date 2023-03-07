@@ -389,11 +389,6 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 
 
 /**
- * Peer to peer server config
- */
-$sysconf['p2pserver'][1] = array('uri' => \SLiMS\Url::getSlimsBaseUri(), 'name' => $sysconf['library_name']);
-
-/**
  * User and member login method
  */
 $sysconf['auth']['user']['method'] = 'native'; // method can be 'native' or 'LDAP'
@@ -650,6 +645,11 @@ $sysconf['static_file_version'] = 444981076;
 
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
+
+/**
+ * Peer to peer server config
+ */
+$sysconf['p2pserver'][1] = array('uri' => \SLiMS\Url::getSlimsBaseUri(), 'name' => $sysconf['library_name']);
 
 /* AUTHORITY TYPE */
 $sysconf['authority_type']['p'] = __('Personal Name');
