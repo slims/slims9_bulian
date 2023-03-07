@@ -353,9 +353,9 @@ class Plugins
         $md5_path = md5($path);
 
         // Register module as hook
-        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function(&$module_list) use($path,$md5_path, $callback_priv) {
+        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function(&$module_list) use($module_name, $path, $md5_path, $description, $callback_priv) {
             // set module list
-            $module_list[] = ['name' => 'repository', 'plugin_module_path' => $path, 'path' => $md5_path, 'desc' => 'Repository Module'];
+            $module_list[] = ['name' => $module_name, 'plugin_module_path' => $path, 'path' => $md5_path, 'desc' => $description];
 
             // set session 
             if (!isset($_SESSION['priv'][$md5_path])) {
