@@ -83,7 +83,7 @@ if (isset($_POST['itemCode'])) {
             // current time
             $curr_time = date('Y-m-d H:i:s');
             $update = $dbs->query("UPDATE stock_take_item SET status='e', checked_by='".$_SESSION['realname']."', last_update='".$curr_time."' WHERE item_code='$item_code'");
-            $update = $dbs->query("UPDATE stock_take SET total_item_lost=total_item_lost-1 WHERE is_active=1");
+            $update = $dbs->query("UPDATE stock_take SET total_item_lost=total_item_lost-1, total_item_exists=total_item_exists+1 WHERE is_active=1");
 
             //update stocktake participants
             //get user participants
