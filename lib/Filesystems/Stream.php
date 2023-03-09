@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-03 09:54:25
- * @modify date 2022-11-04 10:37:34
+ * @modify date 2023-03-10 02:43:27
  * @license GPLv3
  * @desc [description]
  */
@@ -22,7 +22,7 @@ trait Stream
     public function streamFile(string $filePath, $callback = '')
     {
         header('Content-Disposition: inline; filename="'.basename($filePath).'"');
-        header('Content-Type: '.$this->filesystem->mimeType($filePath));
+        header('Content-Type: '. mime_content_type($filePath));
 
         echo $this->filesystem->read($filePath);
         if (is_callable($callback))

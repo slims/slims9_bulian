@@ -60,7 +60,7 @@ if ($file_q->num_rows > 0) {
                 //~ continue;
             }
         }
-        $repository->download($file_loc);
+        $repository->streamFile($file_loc);
     } else {
       die('<div class="errorBox">File Not Found!</div>');
     }
