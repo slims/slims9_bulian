@@ -1526,3 +1526,7 @@ button.prev-btn {
 .datepicker-grid > .range-end {
   color: white !important;
 }
+
+pre.sf-dump, pre.sf-dump .sf-dump-default {
+  z-index: 0 !important;
+}
