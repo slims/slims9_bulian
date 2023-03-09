@@ -70,7 +70,14 @@ function downloadFile($url, $path)
 function cleanUrl($url)
 {
   $Url = Url::parse($url);
-  return $Url->getScheme() . '://' . $Url->getDomain() . (!is_null($Url->getPort()) ? ':' . $Url->getPort() : '') . $Url->getPath() . '/';
+  
+  return $Url->getScheme() . '://' . // http or https
+         // localhost, ip, or domain       
+         $Url->getDomain() .
+         // http standart port (80 & 443) or non http standart port
+         (!is_null($Url->getPort()) ? ':' . $Url->getPort() : '') .
+         // path
+         (substr($Url->getPath(), -1) == '/' ? $Url->getPath() . '' : $Url->getPath() . '/');
 }
 
 function remoteFileExists($url) 
@@ -298,6 +305,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   # get server information
   $serverid = (integer)$_GET['p2pserver'];
   $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
+  dump($p2pserver);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
 
   $_SESSION['p2pserver'] = $p2pserver;
@@ -309,11 +317,11 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
 
   if($_GET['fields']!=''){
     $keywords = $_GET['fields'].'='.$keywords;
-    $url = $p2pserver . "/index.php?resultXML=true&".$keywords."&search=Search&page=".$page;
+    $url = $p2pserver . "index.php?resultXML=true&".$keywords."&search=Search&page=".$page;
     $data = modsXMLsenayan($url, 'uri');
   }
   else{
-    $url = $p2pserver . "/index.php?resultXML=true&search=Search&page=".$page."&keywords=" . $keywords;
+    $url = $p2pserver . "index.php?resultXML=true&search=Search&page=".$page."&keywords=" . $keywords;
     $data = modsXMLsenayan($url, 'uri');
   }
 
