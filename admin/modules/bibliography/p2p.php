@@ -305,7 +305,6 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   # get server information
   $serverid = (integer)$_GET['p2pserver'];
   $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
-  dump($p2pserver);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
 
   $_SESSION['p2pserver'] = $p2pserver;
