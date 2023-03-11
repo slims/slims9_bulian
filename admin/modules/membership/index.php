@@ -619,7 +619,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+        $str_input .= '<button id="btn_load" type="button" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
         $str_input .= '</div>';
         $str_input .= '<div class="form-group pr-2">';
         $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
@@ -628,7 +628,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
         $str_input .= '</div>';
         $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button id="btn_pause" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
+        $str_input .= '<button id="btn_pause" type="button" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
         $str_input .= '</div>';
         $str_input .= '<div class="form-group pr-2">';
         $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
