@@ -75,6 +75,9 @@ if ($file_d['access_limit']) {
   }
 }
 
+/**
+ * PDF Stream
+ */
 if ($file_d['mime_type'] == 'application/pdf') {
   if ($sysconf['pdf']['viewer'] == 'pdfjs') {
     $file_loc_url = SWB . 'index.php?p=fstream-pdf&fid=' . $fileID . '&bid=' . $biblioID;
@@ -91,27 +94,35 @@ if ($file_d['mime_type'] == 'application/pdf') {
 
     Plugins::getInstance()->execute('fstream_pdf_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
     utility::dlCount($dbs, $fileID, $memberID, $userID);
-    exit();
+    exit;
   }
-} else if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
-  Plugins::getInstance()->execute('fstream_img_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-  utility::dlCount($dbs, $fileID, $memberID, $userID);
-  header('Content-Disposition: inline; filename="' . basename($file_loc) . '"');
-  header('Content-Type: ' . $file_d['mime_type']);
-  echo file_get_contents($file_loc);
-  Plugins::getInstance()->execute('fstream_img_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-  exit();
-} else {
-  if (strpos($file_d['mime_type'], 'video') !== false) {
-    require_once LIB . 'VideoStream.php';
-    $stream = new VideoStream($repository, $file_loc, $file_d['mime_type']);
-    $stream->start();
-  } else {
-    Plugins::getInstance()->execute('fstream_oth_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-    header('Content-Disposition: Attachment; filename="' . basename($file_loc) . '"');
-    header('Content-Type: ' . $file_d['mime_type']);
-    echo file_get_contents($file_loc);
-    Plugins::getInstance()->execute('fstream_oth_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
-  }
-  exit();
+} 
+
+/**
+ * Video strema file
+ */
+if (strpos($file_d['mime_type'], 'video') === true) {
+  require_once LIB . 'VideoStream.php';
+  $stream = new VideoStream($repository, $file_loc, $file_d['mime_type']);
+  $stream->start();
+  exit;
 }
+
+/**
+ * Image stream
+ */
+if (preg_match('@(image)/.+@i', $file_d['mime_type'])) {
+    Plugins::getInstance()->execute('fstream_img_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+    utility::dlCount($dbs, $fileID, $memberID, $userID);
+    $repository->streamFile($file_loc);
+    Plugins::getInstance()->execute('fstream_img_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+    exit();
+}
+
+/**
+ * Other stream file
+ */
+Plugins::getInstance()->execute('fstream_oth_before_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+$repository->streamFile($file_loc);
+Plugins::getInstance()->execute('fstream_oth_after_download', ['data' => array('fileID' => $fileID, 'memberID' => $memberID, 'userID' => $userID, 'biblioID' => $biblioID, 'file_d' => $file_d)]);
+exit();  
