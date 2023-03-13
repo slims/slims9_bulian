@@ -119,6 +119,7 @@ define('HELP', SB.'help'.DS);
 // senayan web doc root dir
 /* Custom base URL */
 $sysconf['baseurl'] = '';
+$_SERVER['PHP_SELF'] = strip_tags(str_replace(['"','\''], '', $_SERVER['PHP_SELF']));
 $temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
 define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
 
