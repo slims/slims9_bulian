@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-15 07:54:25
- * @modify date 2023-02-12 10:55:35
+ * @modify date 2023-03-13 12:16:32
  * @license GPLv3
  * @desc easy library to interact with Guzzlehttp/Client
  */
@@ -70,7 +70,7 @@ class Client implements IteratorAggregate,Countable
      * @param array|string $value
      * @return void
      */
-    public static function withOption(string $key, array|string $value)
+    public static function withOption(string $key, array|string|bool $value)
     {
         self::init();
         self::$instance->httpOptions[$key] = $value;
