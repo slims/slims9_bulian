@@ -46,7 +46,7 @@ trait Download
             public function to(string $pathToSaveFile)
             {
                 try {
-                    $this->top->get($this->url, array_merge(['sink' => $pathToSaveFile], $this->options));
+                    $this->top::withOption('verify',false)->get($this->url, array_merge(['sink' => $pathToSaveFile], $this->options));
                     $this->forceIfNotSinked($pathToSaveFile);
                 } catch (\Exception $e) {
                     $this->top->setError($e->getMessage());
