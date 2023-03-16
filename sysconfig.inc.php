@@ -644,6 +644,18 @@ $sysconf['max_insert_batch'] = 100;
 /* Random static file version for production mode */
 $sysconf['static_file_version'] = 444981076;
 
+// Http Option
+$sysconf['http'] = [
+  // SLiMS by default use Guzzle as Http client. You
+  // can provide yours at this configuration.
+  'client' => [
+    // verify ssl
+    'verify' => true,
+    // in seconds
+    'timeout' => 5 
+  ]
+];
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
 

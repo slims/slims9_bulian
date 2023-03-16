@@ -51,7 +51,7 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
       $modsxml = $str_modsxml;
       if ($str_xml_type == 'uri' && Url::isValid($modsxml))
       {
-        $getModsxml = Client::withOption('verify', false)->get($modsxml);
+        $getModsxml = Client::get($modsxml);
         if (!empty($getModsxml->getError())) throw new Exception($getModsxml->getError());
         $modsxml = $getModsxml->getContent();
       }
