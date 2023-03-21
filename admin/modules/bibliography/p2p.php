@@ -456,7 +456,10 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
     <?php
      exit();
   } else {
-    echo '<div class="errorBox">' . sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . '</div>';
+    echo '<div class="errorBox">' . 
+    sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . ',<button type="button" onclick="$(\'#detailError\').show()" class="' . (!isDev() ? 'notAJAX btn btn-link text-white' : 'd-none') . ' ">' . __('read error detail') . '.</button>' .
+    '<div id="detailError" class="mt-2" style="display: none;background-color: #18171B; padding: 15px; color: #56DB3A; font: 12px Menlo, Monaco, Consolas, monospace">' . ((string)$data) . '</div>' .
+    '</div>';
     exit();
   }
 }

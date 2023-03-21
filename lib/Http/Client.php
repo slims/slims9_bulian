@@ -14,6 +14,7 @@ use Countable;
 use IteratorAggregate;
 use Exception;
 use GuzzleHttp\Client as CoreClient;
+use GuzzleHttp\Exception\ConnectException;
 
 class Client implements IteratorAggregate,Countable
 {
@@ -58,10 +59,24 @@ class Client implements IteratorAggregate,Countable
         if (is_null(self::$instance)) {
             self::$instance = new static;
             self::$instance->client = empty($url) ? new CoreClient() : new CoreClient(array_merge(['base_uri' => trim($url, '/') . '/'], $options));
+            self::loadDefaultOptions();
         }
         
         return self::$instance;
-    }    
+    }
+
+    /**
+     * Default SLiMS Http Client
+     *
+     * @return void
+     */
+    private static function loadDefaultOptions()
+    {
+        foreach (config('http.client') as $option => $value) {
+            if (!is_array($value)) self::withOption($option, $value);
+            else self::withOptions($value);
+        }
+    }
 
     /**
      * Register guzzle option
@@ -87,7 +102,7 @@ class Client implements IteratorAggregate,Countable
     public static function withOptions(array $options)
     {
         self::init();
-        foreach ($options as $key => $value) self::option($key, $value);
+        foreach ($options as $key => $value) self::withOption($key, $value);
 
         return self::$instance;
     }
@@ -123,7 +138,7 @@ class Client implements IteratorAggregate,Countable
             $http->response->headers = $http->request->getHeaders();
             $http->response->content = $http->request->getBody()->getContents();
             
-        } catch (Exception $e) {
+        } catch (ConnectException $e) {
             $http->error = explode("\n", $e->getMessage())[0]??'Error';
         }        
 
