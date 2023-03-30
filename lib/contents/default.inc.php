@@ -36,6 +36,8 @@ if (isset($_GET['search'])) {
 
     // get engine name from setting
     $search_engine = config('search_engine', DefaultEngine::class);
+    // data setting exists but class not exists
+    if (!class_exists($search_engine)) $search_engine = DefaultEngine::class;
 
     // starting engine
     $engine = new $search_engine;
