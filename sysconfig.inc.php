@@ -115,26 +115,6 @@ define('LANG', LIB.'lang'.DS);
 //help base dir
 define('HELP', SB.'help'.DS);
 
-
-// senayan web doc root dir
-/* Custom base URL */
-$sysconf['baseurl'] = '';
-$_SERVER['PHP_SELF'] = strip_tags(str_replace(['"','\''], '', $_SERVER['PHP_SELF']));
-$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
-define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
-
-// admin section web root dir
-define('AWB', SWB.'admin/');
-
-// javascript library web root dir
-define('JWB', SWB.'js/');
-
-// library automation module web root dir
-define('MWB', SWB.'admin/'.MDL.'/');
-
-// repository web base dir
-define('REPO_WBS', SWB.REPO.'/');
-
 // item status rules
 define('NO_LOAN_TRANSACTION', 1);
 define('SKIP_STOCK_TAKE', 2);
@@ -161,6 +141,26 @@ require MDLBS.'bibliography/biblio.inc.php';
 
 // check if we are in mobile browser mode
 if (utility::isMobileBrowser()) { define('LIGHTWEIGHT_MODE', 1); }
+
+// senayan web doc root dir
+/* Custom base URL */
+$sysconf['baseurl'] = \SLiMS\Config::getInstance()->get('url.base', '');
+$_SERVER['PHP_SELF'] = strip_tags(str_replace(['"','\''], '', $_SERVER['PHP_SELF']));
+$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
+define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
+$_SERVER['PHP_SELF'] = $sysconf['baseurl'] . $_SERVER['PHP_SELF'];
+
+// admin section web root dir
+define('AWB', SWB.'admin/');
+
+// javascript library web root dir
+define('JWB', SWB.'js/');
+
+// library automation module web root dir
+define('MWB', SWB.'admin/'.MDL.'/');
+
+// repository web base dir
+define('REPO_WBS', SWB.REPO.'/');
 
 /* AJAX SECURITY */
 $sysconf['ajaxsec_user'] = 'ajax';
