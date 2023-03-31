@@ -119,6 +119,7 @@ if (isset($_GET['search'])) {
             } else {
                 // default to HTML mode
                 // generate search result info
+                $keywords = str_replace(['\\'], '', $keywords);
                 $keywords_info = '<span class="search-keyword-info" title="' . htmlentities($keywords) . '">' . ((strlen($keywords) > 30) ? substr($keywords, 0, 30) . '...' : $keywords) . '</span>';
                 $search_result_info .= '<div class="search-found-info">';
                 $search_result_info .= __('Found <strong>{biblio_list->num_rows}</strong> from your keywords') . ': <strong class="search-found-info-keywords">' . $keywords_info . '</strong>';

@@ -157,6 +157,7 @@ class DefaultEngine extends Contract
 
             // search value
             $query = $token['q'] ?? null;
+            $query = str_replace(['\\','"','\''], '', $query);
             switch ($field) {
                 case 'title':
                     // if (strlen($query) < 4) {
