@@ -102,10 +102,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     	$message = __('Please empty the Index first before re-creating the Index');
     	echo '<div class="errorBox">'.$message.'</div>'."\n";
     } else {
-    	$indexer = new biblio_indexer($dbs);
-    	$indexer->createFullIndex(false);
+    	$indexer = new biblio_indexer($dbs, bool_verbose: true);
+      $indexer->createFullIndex(false);
     	$finish_minutes = $indexer->indexing_time/60;
-    	$finish_sec = $indexer->indexing_time%60;
+    	$finish_sec = ((int)$indexer->indexing_time)%60;
     	// message
     	$message = sprintf(__('<strong>%d</strong> records (from total of <strong>%d</strong>) re-indexed. Finished in %d second(s)'), $indexer->indexed, $indexer->total_records, $finish_minutes, $finish_sec);
     	if ($indexer->failed) {
@@ -128,8 +128,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       <div class="sub_section">.
         <div class="btn-group">
           <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=empty" class="btn btn-danger" > <?php echo __('Emptying Index'); ?></a>
-          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=reindex" class="btn btn-default"><?php echo __('Re-create Index'); ?></a>
-          <a href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=update" class="btn btn-default"><?php echo __('Update Index'); ?></a>
+          <a target="progress" href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=reindex" class="btn btn-default"><?php echo __('Re-create Index'); ?></a>
+          <a target="progress" href="<?php echo MWB; ?>system/biblio_indexes.php?action=detail&detail=update" class="btn btn-default"><?php echo __('Update Index'); ?></a>
         </div>
       </div>
       <div class="infoBox"><?php echo __('Bibliographic indexing will speed up on cataloging search') ?></div>
@@ -154,8 +154,10 @@ if (isset($_SESSION['message'])) {
   echo '<div class="alert alert-info">'.$_SESSION['message'].'</div>';
   unset($_SESSION['message']);
 }
-echo '<div>'.__('Total data on biblio: ') . $bib_total . __(' records.').'</div>';
-echo '<div>'.__('Total indexed data: ') . $idx_total . __(' records.').'</div>';
-echo '<div>'.__('Unidexed data: ') . $unidx_total . __(' records.').'</div>';
+echo '<div>'.__('Total data on biblio: ') . '<strong>' . $bib_total . '</strong>' . __(' records.').'</div>';
+echo '<div>'.__('Total indexed data: ') . '<strong id="indexed">' . $idx_total . '</strong>' . __(' records.').'</div>';
+echo '<div>'.__('Unidexed data: ') . '<strong id="unindexed">' .  $unidx_total . '</strong>' . __(' records.').'</div>';
 echo '</div>';
 }
+?>
+<iframe name="progress" class="w-full" style="height: 300px"></iframe>
