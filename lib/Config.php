@@ -75,6 +75,8 @@ class Config
      */
     function loadFromDatabase()
     {
+        if (self::getFile('database') === null) return;
+        
         $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
         while ($data = $query->fetch(PDO::FETCH_OBJ)) {
             $value = @unserialize($data->setting_value);
