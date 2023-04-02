@@ -78,10 +78,10 @@ class DB
      * @param array $settings
      * @return IMysqldump\Mysqldump
      */
-    public static function backup(array $settings = [])
+    public static function backup()
     {
         $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [$settings]));
+        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [config('database_backup.options')]));
     }
 
     /**

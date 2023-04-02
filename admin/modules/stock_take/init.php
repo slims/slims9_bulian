@@ -68,7 +68,7 @@ if ($q_backup->num_rows < 1 && !isset($_GET['skip_backup']) && !isset($_POST['sa
         <hr>
         <p class="lead"><?= __('Before stock taking, it is recommended to backup your database first.') ?>
            <br/><?= __('Looks like you have not backed up before.'); ?></p>
-        <a href="<?= MWB.'system/backup_proc.php'; ?>" id="backupproc" class="notAJAX btn btn-primary" title="<?= __('Goto System Module > Database Backup'); ?>"><?= __('Backup Now') ?></a>
+        <a href="<?= MWB.'system/backup_proc.php'; ?>" id="backupproc" class="notAJAX btn btn-primary"><?= __('Backup Now') ?></a>
         <a href="<?= MWB.'stock_take/init.php?skip_backup=1' ?>" class="btn btn-link" title="<?= __('Skip backup at your own risk!'); ?>"><?= __('Skip'); ?></a>
     </div>
     <script>

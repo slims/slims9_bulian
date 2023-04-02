@@ -36,6 +36,11 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         </div>
     </div>
 </div>
+<div id="backupProccess" style="display: none">
+    <div class="alert alert-info">
+        <strong><?= __('Database backup process is running, please wait') ?></strong>
+    </div>
+</div>
 <div class="contentDesc">
     <div class="container-fluid">
 
@@ -128,6 +133,20 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         <input type="hidden" name="do_repair" value="1">
         <input type="submit" value="' . __('Click Here To Repair The Tables') . '" class="button btn btn-block btn-default">
         </form>';
+            }
+        }
+
+        // info
+        $backup = $dbs->query('SELECT backup_log_id FROM backup_log WHERE substring(backup_time, 1,10) = \'' . date('Y-m-d') . '\'');
+        $alreadyBackup = $backup->num_rows > 0;
+        if ((!$alreadyBackup) && (config('database_backup.reminder') || config('database_backup.auto'))) $_SESSION['token'] = utility::createRandomString(32);
+        if ($_SESSION['uid'] == '1' && !$is_repaired && config('database_backup.reminder') && !config('database_backup.auto')) {
+            if (!$alreadyBackup) {
+                echo '<div class="alert alert-info border-0 mt-3">';
+                echo '<span>' . __('It looks like today you haven\'t backup your database.') . 
+                '.&nbsp;&nbsp;<a href="'.MWB.'system/backup_proc.php" id="backupproc" class="notAJAX btn btn-primary">' . __('Backup Now') . '</a>' .
+                '</span>';
+                echo '</div>';
             }
         }
 
@@ -393,6 +412,51 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
                     $('#alert-new-version a').attr('href', res.html_url)
                 }
             })
+
+            function backupDatabase(href, callback) {
+                $.post(href, {start:true,tkn:'<?= $_SESSION['token'] ?>',verbose:'no',response:'json'}, function(result, status, post){
+                        var result = JSON.parse(result)
+                        callback(result)
+                });
+            }
+
+            <?php if (config('database_backup.reminder') && !config('database_backup.auto')): ?>
+                // Backup process
+                $('#backupproc').click(function(e) {
+                    e.preventDefault()
+                    
+                    let currentLabel = $(this).html()
+
+                    $(this).removeClass('btn-primary').addClass('btn-secondary disabled')
+                    $(this).html('<?= __('Please wait') ?>')
+
+                    backupDatabase($(this).attr('href'), function(result) {
+                        if (result.status)  {
+                            window.location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+                        } else {
+                            $(this).html(currentLabel)
+                            console.error(result.message)
+                            window.toastr.error(result.message, '<?= __('Error') ?>')
+                        }
+                    })                    
+                })
+            <?php endif; ?>
+
+            <?php if (!$is_repaired && !$alreadyBackup && config('database_backup.auto')): ?>
+                $('.contentDesc').slideUp();
+                $('#backupProccess').slideDown();
+
+                backupDatabase('<?= MWB.'system/backup_proc.php' ?>', function(result) {
+                    if (result.status)  {
+                        window.location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+                    } else {
+                        $(this).html(currentLabel)
+                        console.error(result.message)
+                        window.toastr.error(result.message, '<?= __('Error') ?>')
+                    }
+                })
+            <?php endif; ?>
+
         <?php endif; ?>
 
     </script>

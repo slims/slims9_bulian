@@ -168,4 +168,32 @@ class Config
         if (is_callable($content)) $content = $content($filename);
         file_put_contents(SB . 'config/' . basename($filename) . '.php', $content);
     }
+
+    /**
+     * Create or update SLiMS configuration
+     * to database
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return bool
+     */
+    public static function createOrUpdate(string $name, $value)
+    {
+        require_once SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+        $sql_op = new \simbio_dbop($dbs = DB::getInstance('mysqli'));
+        $name = $dbs->escape_string($name);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
+
+        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+        if ($query->num_rows > 0) {
+            // update
+            $status = $sql_op->update('setting', $data, "setting_name='{$name}'");
+        } else {
+            // insert
+            $data['setting_name'] = $name;
+            $status = $sql_op->insert('setting', $data);
+        }
+
+        return $status;
+    }
 }

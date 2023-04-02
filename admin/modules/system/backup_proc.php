@@ -88,33 +88,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
     $output = '';
     $error = false;
     // turn on implicit flush
-    ob_implicit_flush();
-
-    $dumpSettings = array(
-        'compress' => IMysqldump\Mysqldump::NONE,
-        'no-data' => false,
-        'add-drop-table' => true,
-        'single-transaction' => true,
-        'lock-tables' => true,
-        'add-locks' => false,
-        'extended-insert' => false,
-        'disable-keys' => true,
-        'skip-triggers' => false,
-        'add-drop-trigger' => true,
-        'routines' => true,
-        'databases' => false,
-        'add-drop-database' => false,
-        'hex-blob' => true,
-        'no-create-info' => false,
-        'where' => '',
-        /**
-         * an option for definer state in trigger query. 
-         * For some case, user had bad experience 
-         * when they move their SLiMS database to other database 
-         * machine without same privileged user as trigger definer.
-         */
-        'skip-definer' => true, 
-    );    
+    ob_implicit_flush();    
 
     // checking are the backup directory is exists and writable
     if (file_exists($sysconf['backup_dir']) AND is_writable($sysconf['backup_dir'])) {
@@ -125,7 +99,7 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
 
             // time string to append to filename
             $time2append = (date('Ymd_His'));
-            $dump = DB::backup($dumpSettings);
+            $dump = DB::backup();
             $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
 
             $data['user_id'] = $_SESSION['uid'];

@@ -647,12 +647,51 @@ $sysconf['static_file_version'] = 444981076;
 // Http Option
 $sysconf['http'] = [
   // SLiMS by default use Guzzle as Http client. You
-  // can provide yours at this configuration.
+  // can provide your config.
   'client' => [
     // verify ssl
     'verify' => true,
     // in seconds
     'timeout' => 5 
+  ]
+];
+
+// Database backup
+$sysconf['database_backup'] = [
+  // show reminder message at admin
+  // dashboard
+  'reminder' => true,
+
+  // backup data automatically when
+  // super admin first login in to SLiMS
+  'auto' => false,
+
+  // Backup options
+  // SLiMS use Ifsnop\Mysqldump library.
+  'options' => [
+      'compress' => \Ifsnop\Mysqldump\Mysqldump::NONE,
+      'no-data' => false,
+      'add-drop-table' => true,
+      'single-transaction' => true,
+      'lock-tables' => true,
+      'add-locks' => false,
+      'extended-insert' => false,
+      'disable-keys' => true,
+      'skip-triggers' => false,
+      'add-drop-trigger' => true,
+      'routines' => true,
+      'databases' => false,
+      'add-drop-database' => false,
+      'hex-blob' => true,
+      'no-create-info' => false,
+      'where' => '',
+      /**
+       * an option for definer state in trigger query. 
+       * For some case, user had bad experience 
+       * when they move their SLiMS database to other database 
+       * machine without same privileged user as trigger definer.
+       */
+      'skip-definer' => true
   ]
 ];
 

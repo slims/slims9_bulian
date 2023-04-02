@@ -122,9 +122,14 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
  // }
   ?>
 	<div class="sub_section">
-	  <div class="btn-group">
-      <div>
+	  <div class="btn-group d-flex flex-column">
+      <div class="d-flex">
         <button id="startBackup" class="notAJAX btn btn-success d-block mb-1"><?php echo __('Start New Backup'); ?></button>
+        <?php if ($_SESSION['uid'] == 1): ?>
+        <a href="<?= MWB ?>system/backup_config.php" title="<?= __('Database Backup Configuration') ?>" class="notAJAX openPopUp btn btn-secondary d-block mb-1"><?php echo __('Backup Configuration'); ?></a>
+        <?php endif; ?>
+      </div>
+      <div>
         <input type="checkbox" value="yes" id="activateVerbose"/> <label><?= __('Verbose process')?></label>
       </div>
 	  </div>
