@@ -414,7 +414,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             })
 
             function backupDatabase(href, callback) {
-                $.post(href, {start:true,tkn:'<?= $_SESSION['token'] ?>',verbose:'no',response:'json'}, function(result, status, post){
+                $.post(href, {start:true,tkn:'<?= $_SESSION['token']??'' ?>',verbose:'no',response:'json'}, function(result, status, post){
                         var result = JSON.parse(result)
                         callback(result)
                 });
