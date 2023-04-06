@@ -772,6 +772,7 @@ require_once LIB . "helper.inc.php";
 if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
 
 // load all Plugins
+$sysconf['max_plugin_upload'] = 5000;
 \SLiMS\Plugins::getInstance()->loadPlugins();
 
 // Captcha factory

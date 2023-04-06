@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 10:18:42
- * @modify date 2023-03-12 07:56:24
+ * @modify date 2023-04-06 11:20:48
  * @license GPLv3
  * @desc [description]
  */
@@ -87,9 +87,9 @@ abstract class Contract
      * @param string $path
      * @return void
      */
-    public function delete(string $path)
+    public function delete(string $inputPath)
     {
-        return $this->filesystem->delete($path);
+        return is_dir($this->path . $inputPath) ? $this->deleteDirectory($inputPath) : $this->filesystem->delete($inputPath);
     }
 
     /**

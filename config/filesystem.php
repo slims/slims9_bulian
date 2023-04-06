@@ -46,5 +46,17 @@ return [
                 'root' => SB . 'repository/'
             ]
         ],
+
+        /**
+         * Plugin disk
+         * 
+         * store plugin file such as pdf, docx, etc.
+         */
+        'plugin' => [
+            'provider' => \SLiMS\Filesystems\Providers\Local::class,
+            'options' => [
+                'root' => SB . 'plugins/'
+            ]
+        ],
     ]
 ];
