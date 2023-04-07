@@ -83,8 +83,7 @@ const show_advanced = new Vue({
         },
         searchSubmit: function () {
             if (this.keywords !== '') this.saveKeyword()
-            const token = this.$refs["csrf_token"].value
-            window.location.href = `index.php?${this.searchBy}=${this.keywords}&search=search&csrf_token=${token}`;
+            window.location.href = `index.php?${this.searchBy}=${this.keywords}&search=search`;
         },
         saveKeyword: function () {
             let rawKeywords = localStorage.getItem('keywords')

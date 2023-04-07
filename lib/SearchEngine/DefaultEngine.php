@@ -157,22 +157,12 @@ class DefaultEngine extends Contract
 
             // search value
             $query = $token['q'] ?? null;
-            $query = str_replace(['\\','"','\''], '', $query);
+            $query = !in_array($field, ['location','colltype','gmd','attachment','lang']) ? str_replace(['\\','"','\''], '', $query) : $query;
             switch ($field) {
                 case 'title':
-                    // if (strlen($query) < 4) {
-                        $this->execute[] = "%" . $query . "%";
-                        $sql_criteria .= " b.title like ? ";
-                        $title_buffer = '';
-                    // } else {
-                    //     if ($token['is_phrase'] ?? false) {
-                    //         $this->execute[] = ' ' . $bool . '"' . $query . '" ';
-                    //         $title_buffer .= '?';
-                    //     } else {
-                    //         $this->execute[] =  "'" . $bool . $query . "' in boolean mode";
-                    //         $sql_criteria .= ' match (title, series_title) against (?)';
-                    //     }
-                    // }
+                    $this->execute[] = "%" . $query . "%";
+                    $sql_criteria .= " b.title like ? ";
+                    $title_buffer = '';
                     break;
 
                 case 'author':
@@ -352,7 +342,7 @@ class DefaultEngine extends Contract
                 case 'attachment':
                     $mime_types = [];
                     $queryArr = json_decode($query, true);
-                    foreach ($queryArr as $q) {
+                    foreach ($queryArr??[] as $q) {
                         switch ($q) {
                             case 'pdf':
                                 $mime_types[] = 'application/pdf';

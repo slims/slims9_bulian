@@ -73,7 +73,7 @@ if (isset($_GET['search'])) {
             $filterArr = json_decode($filter, true);
             unset($filterArr['csrf_token']);
             $filters = [];
-            foreach ($filterArr as $idx => $x) {
+            foreach ($filterArr??[] as $idx => $x) {
                 if (strpos($idx, '[') !== false) {
                     $arr = explode('[', $idx);
                     $filters[$arr[0]][] = $x;
