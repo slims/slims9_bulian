@@ -43,6 +43,14 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.6.0 (Bulian)
+========================================================================
+Added : CSV import preview
+Added : Due date warning email notification
+Added : Storage library
+Added : Console feature
+Added : 2FA at admin login page
+
 SLiMS 9.5.2 (Bulian)
 ========================================================================
 Added : Bookmark for biblio data

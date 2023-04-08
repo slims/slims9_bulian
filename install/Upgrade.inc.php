@@ -1074,7 +1074,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     }
 
     /**
-     * Upgrade role to v9.x.x
+     * Upgrade role to v9.6.0
      */
     function upgrade_role_33()
     {
