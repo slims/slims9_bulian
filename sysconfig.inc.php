@@ -61,7 +61,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.5.2');
+define('SENAYAN_VERSION_TAG', 'v9.6.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -779,7 +779,11 @@ $sysconf['max_plugin_upload'] = 5000;
 \SLiMS\Captcha\Factory::operate();
 
 // Sanitize incoming data
-\SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
+$sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
   'get' => $_GET,
-  'server' => $_SERVER
-]))->cleanUp();
+  'server' => $_SERVER,
+  'post' => $_POST
+]));
+
+// Cleanup SQL Injection and Common XSS
+$sanitizer->cleanUp(exception: ['contentDesc','comment']);

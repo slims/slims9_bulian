@@ -61,7 +61,10 @@ $opacVariable = [
 
     // searched words for javascript highlight
     'searched_words_js_array' => '',
-    'available_languages' => $available_languages
+    'available_languages' => $available_languages,
+
+    // Sanitizer
+    'sanitizer' => $sanitizer,
 ];
 
 // OPAC Instance

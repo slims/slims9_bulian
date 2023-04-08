@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2023-01-12 12:15:24
+ * @modify date 2023-04-08 10:35:20
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -289,6 +289,9 @@ class Opac
             // load default contents
             include LIB.'contents/default.inc.php';
             
+            // Sanitaze quote payload before content
+            $sanitizer->quoteFree(exception: ['contentDesc','comment']);
+
             // Load common SLiMS variable
             require LIB.'contents/common.inc.php';
             $main_content = ob_get_clean();

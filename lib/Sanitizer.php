@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-03-01 20:22:50
- * @modify date 2023-03-07 08:09:40
+ * @modify date 2023-04-08 10:33:36
  * @license GPLv3
  * @desc [description]
  */
@@ -26,30 +26,49 @@ class Sanitizer
         $this->variableToClean = $variableToClean;
     }
 
-    public function cleanUp(): void
+    private function setNewValue(string $type, string $key, $value)
+    {
+        switch ($type) {
+            case 'get':
+                $_GET[$key] = $value;
+                break;
+
+            case 'post':
+                $_POST[$key] = $value;
+                break;
+            
+            case 'server':
+                $_SERVER[$key] = $value;
+                break;
+
+            case 'cookie':
+                $_COOKIE[$key] = $value;
+                break;
+
+            case 'session':
+                $_SESSION[$key] = $value;
+                break;
+        }
+    }
+
+    public function quoteFree(array $exception = [])
     {
         foreach ($this->variableToClean as $type => $globalVariable) {
             foreach ($globalVariable as $key => $value) {
+                if (in_array($key, $exception)) continue;
                 if (is_array($value)) continue;
-                $newValue = utility::filterData($key, $type, true, true, true);
+                $this->setNewValue($type, $key, str_replace(['\'','"','`'],'',$value));
+            }
+        }
+    }
 
-                switch ($type) {
-                    case 'get':
-                        $_GET[$key] = $newValue;
-                        break;
-                    
-                    case 'server':
-                        $_SERVER[$key] = $newValue;
-                        break;
-
-                    case 'cookie':
-                        $_COOKIE[$key] = $newValue;
-                        break;
-
-                    case 'session':
-                        $_SESSION[$key] = $newValue;
-                        break;
-                }
+    public function cleanUp(array $exception = []): void
+    {
+        foreach ($this->variableToClean as $type => $globalVariable) {
+            foreach ($globalVariable as $key => $value) {
+                if (in_array($key, $exception)) continue;
+                if (is_array($value)) continue;
+                $this->setNewValue($type, $key, utility::filterData($key, $type, true, true, true));
             }
         }
     }
