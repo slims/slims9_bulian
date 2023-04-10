@@ -75,6 +75,29 @@ class simbio_security
         // destroy all session
         $_SESSION = null;
         session_destroy();
+
+        /**
+         * Check request content-type
+         */
+        // From getallhreaders()
+        $contentType = isset(getallheaders()['Content-Type']) && getallheaders()['Content-Type'] == 'application/json';
+        $accept = isset(getallheaders()['Accept']) && getallheaders()['Accept'] == 'application/json';
+
+        // from $_SERVER
+        $serverContentType = isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/json';
+
+        // from $_GET
+        $queryFormat = isset($_GET['format']) && $_GET['format'] == 'json';
+
+        // From $_POST
+        if (count($_POST) === 0) $_POST = json_decode(file_get_contents('php://input'), TRUE);
+        $postJson = isset($_POST['format']) && $_POST['format'] == 'json';
+
+        $isJson = $contentType || $accept || $serverContentType || $queryFormat || $postJson;
+
+        // bring back response
+        if ($isJson) die(\SLiMS\Json::stringify(['status' => false, 'message' => __('Your Login session has timed out.'), 'code' => 401])->withHeader());
+
         if ($bool_die === true) {
             // shutdown current script
             die($str_msg);

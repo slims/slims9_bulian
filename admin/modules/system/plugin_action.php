@@ -66,7 +66,7 @@ if (isset($_POST['enable'])) {
     $id = $_POST['id'];
     $plugin = array_filter($plugins->getPlugins(), function ($plugin) use ($id) {
             return $plugin->id === $id;
-        })[$id] ?? die(json_encode(['status' => false, 'message' => __('Plugin not found')]));
+        })[$id] ?? die(isset($_POST['format']) ? json_encode(['status' => false, 'message' => __('Plugin not found')]) : toastr(__('Plugin not found'))->error());
 
     try {
         if ($_POST['enable']) {
