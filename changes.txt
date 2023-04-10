@@ -50,6 +50,15 @@ Added : Due date warning email notification
 Added : Storage library
 Added : Console feature
 Added : 2FA at admin login page
+Added : Configuration for multiple databases
+Added : Room location visitor counter
+Added : Captcha configuration user interface
+Added : Backup database notification
+Added : PHP 8 for minimum requirement
+Fixed : Zero existing items for stock opname report
+Fixed : Compatibility with MySQL 8
+Fixed : Loan by classification reporting query
+Fixed : OAIPMH for GetRecord
 
 SLiMS 9.5.2 (Bulian)
 ========================================================================

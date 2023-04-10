@@ -53,3 +53,4 @@ config/sysconfig.env.inc.php
 config/database.php
 config/captcha.php
 tarsius
+config/sysconfig.env.inc.php
