@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Senayan3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-07 09:24+0700\n"
-"PO-Revision-Date: 2023-04-07 09:31+0700\n"
+"PO-Revision-Date: 2023-04-10 17:56+0700\n"
 "Last-Translator: Arif Syamsudin Budi W. <buitenzorg812@yahoo.com>\n"
 "Language-Team: Arie Nugraha; Hendro Wicaksono; Wardiyono <dicarve@yahoo.com; "
 "hendrowicaksono@yahoo.com; wynerst@gmail.com>\n"
@@ -9318,7 +9318,7 @@ msgid ""
 "Reservation e-mail sent successfully!. please contact librarians for further "
 "info."
 msgstr ""
-"Sukses mengirimkan surel pemesanan!. hubungi pustakawan untuk info "
+"Sukses mengirimkan surel pemesanan! hubungi pustakawan untuk info "
 "selanjutnya."
 
 #: lib/contents/member.inc.php:784
@@ -9367,7 +9367,7 @@ msgstr "Pesan permintaan terkirim"
 
 #: lib/contents/member.inc.php:941
 msgid "Reservation e-mail sent"
-msgstr "Surel Pemensanan terkirim"
+msgstr "Surel Pemesanan terkirim"
 
 #: lib/contents/member.inc.php:970
 msgid "Unexcpected error. Please tell it to the librarian"
