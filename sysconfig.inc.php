@@ -786,4 +786,4 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
 ]));
 
 // Cleanup SQL Injection and Common XSS
-$sanitizer->cleanUp(exception: ['contentDesc','comment']);
+$sanitizer->cleanUp(exception: ['contentDesc','comment','fieldEnc']);
