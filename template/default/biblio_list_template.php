@@ -42,9 +42,10 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     // init output var
     $output     = '';
 
+    dump($settings);
     $title      = $biblio_detail['title'];
     $biblio_id  = $biblio_detail['biblio_id'];
-    $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
+    $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.urlencode($settings['keywords']);
     $cite_url   = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];
     // $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
 
