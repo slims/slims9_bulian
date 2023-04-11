@@ -19,6 +19,8 @@
  *
  */
 
+use SLiMS\DB;
+
 /* Visitor Report */
 
 // key to authenticate
@@ -59,8 +61,8 @@ if (!$reportView) {
       <?php echo __('Report Filter'); ?>
     </div>
     <div class="sub_section">
-      <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView"  class="form-inline">
-        <label><?php echo __('Year'); ?></label>
+      <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
+        <label class="mr-2"><?php echo __('Year'); ?></label>
         <?php
         $current_year = date('Y');
         $year_options = array();
@@ -104,6 +106,7 @@ if (!$reportView) {
         $output .= '<td>'.$month.'</td>';
         $xAxis[$month_num] = $month;
     }
+    $output .= '<td>TOTAL</td>';
     $output .= '</tr>';
 
     // year
@@ -117,35 +120,51 @@ if (!$reportView) {
     while ($_d = $_q->fetch_row()) {
         $member_types[$_d[0]] = $_d[1];
     }
-    $r = 1;
-    // count library member visitor each month
+
+    /**
+     * @var $db \PDO
+     */
+    $db = DB::getInstance();
+    $visitors = [];
+    foreach ($months as $month_num => $month) {
+        $visitor_q = $db->query("SELECT m.member_type_id, count(visitor_id) FROM visitor_count AS vc 
+            LEFT JOIN member AS m ON vc.member_id=m.member_id
+            WHERE (vc.member_id IS NOT NULL OR vc.member_id != '') AND checkin_date LIKE '$selected_year-$month_num%' GROUP BY member_type_id ORDER BY member_type_id");
+        $visitor_d = $visitor_q->fetchAll();
+        foreach ($member_types as $id => $member_type) {
+            $visitors[$id][$month_num] = 0;
+            foreach ($visitor_d as $visitor) {
+                if ($visitor[0] == $id) {
+                    $visitors[$id][$month_num] = $visitor[1];
+                    $total_month[$month_num] += $visitor[1];
+                    break;
+                }
+            }
+        }
+    }
+
     foreach ($member_types as $id => $member_type) {
         $output .= '<tr>';
         $output .= '<td>'.$member_type.'</td>'."\n";
-        $data[$member_type] = $months;
-        foreach ($months as $month_num => $month) {
-            $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
-                INNER JOIN (member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id) ON m.member_id=vc.member_id
-                WHERE m.member_type_id=$id AND vc.checkin_date LIKE '$selected_year-$month_num-%'";
-            $visitor_q = $dbs->query($sql_str);
-            $visitor_d = $visitor_q->fetch_row();
-            if ($visitor_d[0] > 0) {
-              $data[$member_type][$month_num] = $visitor_d[0];
-              $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
+        $count_row = 0;
+        foreach ($visitors[$id] as $month => $value) {
+            if ($value > 0) {
+                $output .= '<td><strong>'.$value.'</strong></td>';
             } else {
-              $data[$member_type][$month_num] = 0; 
-              $output .= '<td>'.$visitor_d[0].'</td>';
+                $output .= '<td>'.$value.'</td>';
             }
-            $total_month[$month_num] += $visitor_d[0];
+            $data[$member_type][$month] = $value;
+            $count_row += $value;
         }
+        $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
         $output .= '</tr>';
-        $r++;
     }
 
     // non member visitor count
     $output .= '<tr>';
     $output .= '<td>'.__('NON-Member Visitor').'</td>'."\n";
     $data['non_member'] = $months;
+    $count_row = 0;
     foreach ($months as $month_num => $month) {
         $sql_str = "SELECT COUNT(visitor_id) FROM visitor_count AS vc
             WHERE (vc.member_id IS NULL OR vc.member_id='') AND vc.checkin_date LIKE '$selected_year-$month_num-%'";
@@ -158,16 +177,23 @@ if (!$reportView) {
             $data['non_member'][$month_num] = 0;
             $output .= '<td>'.$visitor_d[0].'</td>';
         }
+        $count_row += $visitor_d[0];
         $total_month[$month_num] += $visitor_d[0];
     }
+    $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
     $output .= '</tr>';
+
+
 
     // total for each month
     $output .= '<tr class="table-warning">';
     $output .= '<td>'.__('Total visit/month').'</td>';
+    $count_row = 0;
     foreach ($months as $month_num => $month) {
         $output .= '<td>'.$total_month[$month_num].'</td>';
+        $count_row += $total_month[$month_num];
     }
+    $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
     $output .= '</tr>';
 
     $output .= '</table>';
@@ -182,7 +208,7 @@ if (!$reportView) {
     // print out
 
     echo '<div class="mb-2">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>'));
-    echo '<div class="btn-group"> <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>
+    echo '&nbsp;<div class="btn-group"><a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>
     <a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530">'.__('Show in chart/plot').'</a></div></div>'."\n";
     echo $output;
 
