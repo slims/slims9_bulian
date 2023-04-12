@@ -48,7 +48,7 @@ switch (ENVIRONMENT) {
     @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
     break;
   default:
-    if (file_exists(__DIR__ . '/config/database.php')) {
+    if (file_exists(__DIR__ . '/config/database.php') && php_sapi_name() !== 'cli') {
       header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
       include __DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'serviceunavailable.php';
       exit(1); // EXIT_ERROR

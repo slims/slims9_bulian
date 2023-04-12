@@ -34,7 +34,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config', ['sysconfig.local.inc.php', 'sysconfig.local.inc-sample.php']);
+        $this->load(__DIR__ . '/../config', ['env.php', 'env.sample.php']);
     }
 
     /**
