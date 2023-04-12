@@ -28,14 +28,15 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // Environment config
-require __DIR__ . '/config/sysconfig.env.inc.php';
+$envExists = file_exists($envFile = __DIR__ .  '/config/env.php');
+if ($envExists) require $envFile;
 
 /*
  * Set to development or production
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', $Environment);
+define('ENVIRONMENT', $env??'unvailable');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -47,9 +48,11 @@ switch (ENVIRONMENT) {
     @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
     break;
   default:
-    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-    echo 'The application environment is not set correctly.';
-    exit(1); // EXIT_ERROR
+    if (file_exists(__DIR__ . '/config/database.php')) {
+      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+      include __DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'serviceunavailable.php';
+      exit(1); // EXIT_ERROR
+    }
 }
 
 // use httpOnly for cookie

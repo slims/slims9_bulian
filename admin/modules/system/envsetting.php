@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2021-10-27 17:12:17
- * @modify date 2022-11-11 16:21:27
+ * @modify date 2023-04-11 14:02:21
  * @desc [description]
  */
 // key to authenticate
@@ -16,16 +16,14 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-system');
 
-// path
-define('ENV_FILE', SB . 'config' . DS . 'sysconfig.env.inc.php');
-
 // start the session
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
-require ENV_FILE;
+
+$envSample = SB . 'config' . DS . 'env.sample.php';
 
 function setValue($key)
 {
@@ -44,50 +42,33 @@ function getCurrentIp()
 
 if (isset($_POST['saveData']))
 {
-    if (!is_writable(ENV_FILE))
-    {
-        utility::jsToastr(__('Error'), __('sysconfig.env.inc.php file is not writeable!'));
-        exit;
-    }
+    if (!file_exists($envSample)) toastr(__('env.sample.php file is not exists!'))->error();
 
     // get env file
-    $EnvFile = file_get_contents(ENV_FILE);
-
-    // set current ip
-    $CurrentRangeIP = (count($RangeIp)) ? "'".implode("','", $RangeIp)."'" : '';
+    $EnvFile = file_get_contents($envSample);
     
     // get environment user input
     $InputEnv = (utility::filterData('env', 'post') == 0 ? 'development' : 'production');
 
     /* replacing data */
 
-    $disini = 'Yes';
     // change environment
-    if (isset($_POST['basedIp']) && (!$_POST['basedIp']))
-    {
-        $disini = 'Yes1';
-        $EnvFile = str_replace('$Environment = \''.$Environment.'\'', '$Environment = \'' . $InputEnv . '\'', $EnvFile);
-    }
+    $EnvFile = str_replace('<environment>', ($_POST['basedIp'] == 0 ? $InputEnv : $env), $EnvFile);
 
     // based ip ?
-    if (isset($_POST['basedIp']) && isset($_POST['rangeIp']) && !empty($_POST['rangeIp']))
-    {
-        $Change = (int)$_POST['basedIp'];
-        $InputRangeIp = "'" . implode("','", explode(';', trim($_POST['rangeIp']))) . "'";
-        $EnvFile = str_replace('$BasedIp = ' . $BasedIp . ';', '$BasedIp = ' . $Change . ';', $EnvFile);
-        $EnvFile = str_replace('$ConditionEnvironment = \'' . $ConditionEnvironment . '\'', '$ConditionEnvironment = \'' . $InputEnv . '\'', $EnvFile);
-        $EnvFile = str_replace('$RangeIp = ['.$CurrentRangeIP.']', '$RangeIp = ['.$InputRangeIp.']', $EnvFile);
-    }
+    $InputRangeIp = !empty(trim($_POST['rangeIp'])) ? implode("','", explode(';', trim($_POST['rangeIp']))) : "";
+    $EnvFile = str_replace('\'<based_on_ip>\'', (isset($_POST['basedIp']) && $_POST['basedIp'] == 0? 'false' : 'true'), $EnvFile);
+    $EnvFile = str_replace('<conditional_environment>', $InputEnv, $EnvFile);
+    $EnvFile = str_replace('<ip_range>', $InputRangeIp, $EnvFile);
 
     // write env file
     // file_put_contents(str_replace('.inc.php', '.inc-debug.php', ENV_FILE), $EnvFile); // debug
-    $write = file_put_contents(ENV_FILE, $EnvFile);
+    $write = file_put_contents(SB . 'config' . DS . 'env.php', $EnvFile);
 
     utility::jsToastr(__('Success'), __('Configuration has been saved!'), 'success');
 
     // Redirect
-    echo '<script>setTimeout(() => {parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\')}, 5000)</script>';
-    // utility::jsAlert(json_encode($write));
+    redirect()->simbioAJAX(timeout: 0, url: $_SERVER['PHP_SELF']);
     exit;
 }
 
@@ -118,13 +99,13 @@ $form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
 // Your Environment
-if ($BasedIp)
+if ($based_on_ip)
 {
-    $thisEnv = ucfirst((!in_array(getCurrentIp(), $RangeIp) ? $Environment : $ConditionEnvironment));
+    $thisEnv = ucfirst((!in_array(getCurrentIp(), $range_ip) ? $env : $conditional_environment));
     $HTML = '<b>' . __($thisEnv) . '</b>';
     $form->addAnything('Your Environment Mode', $HTML);
 
-    $Environment = $ConditionEnvironment;
+    $env = $conditional_environment;
 }
 
 // Environment List
@@ -133,12 +114,12 @@ $EnvOptions = [
     [0, __('Development')]
   ];
 $label = __('System Environment Mode');
-$form->addSelectList('env', $label, $EnvOptions, ( $Environment == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
+$form->addSelectList('env', $label, $EnvOptions, ( $env == 'production' ? 1 : 0 ) ,'class="form-control col-3"');
 $BasedIpOptions = [
     [0, __('Disable')],
     [1, __('Enable')]
 ];
-$form->addSelectList('basedIp', __('Environment for some IP?'), $BasedIpOptions, ( $BasedIp ? 1 : 0 ) ,'class="form-control col-3"');
-$form->addTextField('textarea', 'rangeIp', __('Range Ip wil be impacted with Environment. Example : 10.120.33.40;20.100.34.10. '), implode(';', $RangeIp), 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control" placeholder="'.__('Leave it empty, if you want to set environment to impact for all IP').'"');
+$form->addSelectList('basedIp', __('Environment for some IP?'), $BasedIpOptions, ( $based_on_ip ? 1 : 0 ) ,'class="form-control col-3"');
+$form->addTextField('textarea', 'rangeIp', __('Range Ip wil be impacted with Environment. Example : 10.120.33.40;20.100.34.10. '), implode(';', $range_ip), 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control" placeholder="'.__('Leave it empty, if you want to set environment to impact for all IP').'"');
 // print out the object
 echo $form->printOut();

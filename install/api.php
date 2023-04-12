@@ -132,6 +132,8 @@ switch ($action) {
       $slims->getDb()->query("USE `{$_SESSION['db_name']}`");
       // write configuration file
       $slims->createConfigFile($_SESSION);
+      // write environment file
+      $slims->createEnvFile();
       // check if database already have table for make sure this database is empty
       foreach ($slims->getTables() as $table) {
         if ($table === 'biblio') {
@@ -188,6 +190,8 @@ switch ($action) {
       $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
       // write configuration file
       $slims->createConfigFile($_SESSION);
+      // write environment file
+      $slims->createEnvFile();
 
       if ($action === 're-upgrade') {
         $_POST['oldVersion'] = $_SESSION['oldVersion'];

@@ -404,6 +404,26 @@ SQL;
     return ['status' => $write];
   }
 
+  function createEnvFile()
+  {
+    $base_env_file = __DIR__ . '/../config/env.sample.php';
+    $env_file_path = __DIR__ . '/../config/env.php';
+
+    if (!file_exists($base_env_file)) {
+      throw new Exception("File {$base_env_file} not found!", 404);
+    }
+    
+    $sample = file_get_contents($base_env_file);
+    $sample = str_replace('<environment>', 'production', $sample);
+    $sample = str_replace('<conditional_environment>', 'production', $sample);
+    $sample = str_replace('\'<based_on_ip>\'', 'false', $sample);
+    $sample = str_replace('<ip_range>', '', $sample);
+
+    $writeEnv = file_put_contents($env_file_path, $sample);
+
+    if ($writeEnv === false) throw new Exception("Cannot write env file. Create it manually in config directory based on env.sample.php", 403);
+  }
+
   function query($array, $types = [])
   {
     $_return = [];

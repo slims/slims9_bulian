@@ -406,7 +406,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
             .then(res => res.json())
             .then(res => {
-                if (res.tag_name !== '<?= SENAYAN_VERSION_TAG; ?>') {
+                if (res.tag_name > '<?= SENAYAN_VERSION_TAG; ?>') {
                     $('#new_version').text(res.tag_name);
                     $('#alert-new-version').removeClass('hidden');
                     $('#alert-new-version a').attr('href', res.html_url)
