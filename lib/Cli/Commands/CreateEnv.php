@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:56:39
- * @modify date 2023-04-12 10:15:58
+ * @modify date 2023-04-14 10:16:43
  * @license GPLv3
  * @desc [description]
  */
@@ -48,8 +48,8 @@ class CreateEnv extends \SLiMS\Cli\Command
         }
 
         $sample = file_get_contents($envSample);
-        $sample = str_replace('<environment>', 'production', $sample);
-        $sample = str_replace('<conditional_environment>', 'production', $sample);
+        $sample = str_replace('<environment>', $this->option('mode'), $sample);
+        $sample = str_replace('<conditional_environment>', $this->option('mode'), $sample);
         $sample = str_replace('\'<based_on_ip>\'', 'false', $sample);
         $sample = str_replace('<ip_range>', '', $sample);
 
