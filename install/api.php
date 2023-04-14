@@ -56,7 +56,7 @@ if (isset($_GET['storeage_engines'])) {
 
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '8.1';
+    $php_minimum_version = '8.2';
     $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
