@@ -95,7 +95,7 @@ trait Creator
             setlocale(LC_NUMERIC, $locale);
         }
 
-        self::setLastErrors(parent::getLastErrors());
+        self::setLastErrors(is_array(parent::getLastErrors()) ? parent::getLastErrors() : []);
     }
 
     /**
