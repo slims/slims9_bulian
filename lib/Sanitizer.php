@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-03-01 20:22:50
- * @modify date 2023-04-08 10:33:36
+ * @modify date 2023-04-14 07:22:00
  * @license GPLv3
  * @desc [description]
  */
@@ -62,13 +62,13 @@ class Sanitizer
         }
     }
 
-    public function cleanUp(array $exception = []): void
+    public function cleanUp(array $exception = [], array $filter = [true, true, true] /* escape_sql, trim, strip_tag */): void
     {
         foreach ($this->variableToClean as $type => $globalVariable) {
             foreach ($globalVariable as $key => $value) {
                 if (in_array($key, $exception)) continue;
                 if (is_array($value)) continue;
-                $this->setNewValue($type, $key, utility::filterData($key, $type, true, true, true));
+                $this->setNewValue($type, $key, utility::filterData($key, $type, ...$filter));
             }
         }
     }

@@ -30,6 +30,9 @@ if (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
+// Cleanup SQL Injection and Common XSS
+$sanitizer->cleanUp(filter: [false, true, true] /* escape_sql, trim, strip_tag */, exception: ['contentDesc','comment']);
+
 // use session factory to handle session based on default SLiMS or user handler
 SessionFactory::use(config('customSession', Files::class))->start('admin');
 

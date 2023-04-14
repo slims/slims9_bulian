@@ -29,6 +29,9 @@ define('INDEX_AUTH', '1');
 // required file
 require 'sysconfig.inc.php';
 
+// Cleanup SQL Injection and Common XSS
+$sanitizer->cleanUp(exception: ['contentDesc','fieldEnc']);
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('opac');
