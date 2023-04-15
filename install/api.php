@@ -74,7 +74,7 @@ switch ($action) {
           'title' => 'Database driver',
           'status' => $slims->databaseDriverType(),
           'version' => $slims->databaseDriverType(),
-          'message' => 'SLiMS required MYSQL for database management. Please install it first!'
+          'message' => 'SLiMS required MySQLi and PDO MySQL extension for database management. Please install it first!'
         ],
         'phpextension' => [
           'title' => 'PHP Extension',

@@ -83,10 +83,10 @@ class SLiMS
 
   function databaseDriverType()
   {
-    if (extension_loaded('mysql')) {
-      $type = 'mysql';
-    } else if (extension_loaded('mysqli')) {
-      $type = 'mysqli';
+    $mysql = extension_loaded('mysqli') || extension_loaded('nd_mysqli');
+    $pdoMySQL = extension_loaded('pdo_mysql') || extension_loaded('nd_pdo_mysql');
+    if ($mysql && $pdoMySQL) {
+      $type = 'MySQLi & PDO MySQL';  
     } else {
       $type = null;
     }
