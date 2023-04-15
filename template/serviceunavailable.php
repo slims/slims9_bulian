@@ -2,12 +2,13 @@
 $serverContent = isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/json';
 $headerContent = isset(getallheaders()['Content-Type']) && getallheaders()['Content-Type'] == 'application/json';
 if ($serverContent || $headerContent) exit(json_encode(['status' => false, 'message' => 'The Application Environment is not set correctly.']));
+$baseUrl = strip_tags(str_replace(['/index.php','admin'],'', $_SERVER['PHP_SELF']));
 ?>
 <!DOCTYPE Html>
 <html>
     <head>
         <title>Service Unvailable</title>
-        <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="<?= $baseUrl ?>/css/bootstrap.min.css" rel="stylesheet"/>
     </head>
     <body>
         <div class="alert alert-danger text-left d-flex align-items-center">
