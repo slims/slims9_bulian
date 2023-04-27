@@ -359,6 +359,8 @@ if ($sysconf['index']['type'] == 'index' || ($sysconf['index']['type'] == 'sphin
         $datagrid->setSQLColumn('biblio.biblio_id, biblio.title, COUNT(i.item_id) as '.__('Item'));
     }
 
+    $datagrid->sql_group_by = "biblio.biblio_id";
+
 //  SELECT IF(item.item_id IS NOT NULL, item.item_id, CONCAT('b', biblio.biblio_id)), biblio.title AS 'Title', IF(item.call_number<>'', item.call_number, biblio.call_number) AS 'Call Number'
 //  FROM biblio LEFT JOIN item ON biblio.biblio_id=item.biblio_id
 
@@ -383,7 +385,6 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
 if (isset($criteria)) {
   $datagrid->setSQLcriteria('('.$criteria['sql_criteria'].')');
 }
-$datagrid->sql_group_by = "biblio.biblio_id";
 
 // set table and table header attributes
 $datagrid->table_attr = 'id="dataList" class="s-table table"';
