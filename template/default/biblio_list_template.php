@@ -212,7 +212,7 @@ function getAvailability($dbs, $biblio_id, $sysconf)
     $_total_avail = $_item_c[0]-$_borrowed_c[0];
 
     // check if this collection is on reserve
-    $reserve_stat_q = $dbs->query('SELECT item_code FROM item WHERE biblio_id = ' . $biblio_id);
+    $reserve_stat_q = $dbs->query('SELECT r.item_code FROM reserve AS r INNER JOIN biblio AS b ON r.biblio_id = b.biblio_id WHERE r.biblio_id = ' . $biblio_id);
     if (!$sysconf['reserve_on_loan_only'] && $reserve_stat_q && ($_total_avail >= $_total_reserve_row = $reserve_stat_q->num_rows)) {
         $_total_avail = $_total_avail - $_total_reserve_row;
     }

@@ -240,7 +240,8 @@ HTML;
             WHERE l.item_code=\''.$copy_d['item_code'].'\' AND is_lent=1 AND is_return=0');
         
         // check if this collection is on reserve
-        $reserve_stat_q = $this->db->query('SELECT item_code FROM item WHERE item_code = \''.$copy_d['item_code'].'\'');
+        $reserve_stat_q = $this->db->query('SELECT r.item_code FROM reserve AS r
+        INNER JOIN biblio AS b ON r.biblio_id = b.biblio_id WHERE r.item_code = \''.$copy_d['item_code'].'\'');
 
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
