@@ -42,7 +42,7 @@ class Upgrade
       $this->slims->updateSqlMode($new_sql_mode);
   }
 
-  function hookAfterUpgrade() {
+  function hookAfterUpgrade($version) {
       // cek if table not exist
       $tables = require 'tables.php';
       foreach ($tables as $table) {
@@ -64,7 +64,7 @@ class Upgrade
       }
 
       // make sure use default template
-      $this->slims->updateTheme('default');
+      $this->slims->updateTheme('default', $version);
 
       // update storeage engine
       $this->slims->updateStorageEngine();
@@ -101,7 +101,7 @@ class Upgrade
     }
 
     // run after script
-    $this->hookAfterUpgrade();
+    $this->hookAfterUpgrade($version);
     return $err;
   }
 

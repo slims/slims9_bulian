@@ -480,12 +480,13 @@ SQL;
     return $this->db->query($sql_update);
   }
 
-  function updateTheme($theme = 'default') {
+  function updateTheme($theme = 'default', $upgrade_from) {
     // get template setting
     $sysconf = [];
     $query = $this->db->query("SELECT setting_name, setting_value 
                                FROM setting 
-                               WHERE setting_name = 'template' OR setting_name = 'admin_template'");
+                               WHERE setting_name IN ('template','admin_template')");
+                               
     while ($data = $query->fetch_assoc()) {
       // get value
       $value = @unserialize($data['setting_value']);
@@ -493,13 +494,21 @@ SQL;
         foreach ($value as $k => $v) {
           $sysconf[$data['setting_name']][$k] = $v;
         }
+
+        // update value
+        if (isset($sysconf[$data['setting_name']]['theme'])) $sysconf[$data['setting_name']]['theme'] = $theme;
+        if (isset($sysconf[$data['setting_name']]['css'])) $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/'.$theme.'/style.css';
+
+      } else {
+        // Default template if unserialize process is failed
+        $sysconf[$data['setting_name']]['theme'] = 'default';
+        $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/default/style.css';
       }
 
-      // update value
-      if (isset($sysconf[$data['setting_name']]['theme']))
-        $sysconf[$data['setting_name']]['theme'] = $theme;
-      if (isset($sysconf[$data['setting_name']]['css']))
-        $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/'.$theme.'/style.css';
+      // update admin template per user if SLiMS version start from v9.2.0
+      if ($upgrade_from > 22 && $data['setting_name'] == 'admin_template') {
+        $this->db->query('UPDATE user SET admin_template = \''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\'');
+      }
 
       // save again
       $this->db->query('UPDATE setting SET setting_value=\''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\' WHERE setting_name=\''.$data['setting_name'].'\'');
