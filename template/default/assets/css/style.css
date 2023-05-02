@@ -988,3 +988,6 @@ pre.sf-dump, pre.sf-dump .sf-dump-default {
     background-color: #5bc0de; 
 }
 
+.item-onreserve {
+    background-color: orange; 
+}

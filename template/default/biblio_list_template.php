@@ -79,7 +79,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     }
 
     // availability
-    $availability = getAvailability($dbs, $biblio_id);
+    $availability = getAvailability($dbs, $biblio_id, $sysconf);
     $class_avail = ($availability > 0) ? '' : 'text-danger';
 
     // authors
@@ -101,7 +101,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<div class="card-body">';
         $output .= '<div class="row">';
         $output .= '<div class="col-12 col-md-2">';
-        $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" />';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" title="' . ($availability > 0 ?:  __('Items is not available')) . '"/>';
         $output .= '</div>'; // -- close col-2
         $output .= '<div class="col-8">';
         $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.addEllipsis($title, 80).'</a></h5>';
@@ -158,7 +158,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
 </div>
 HTML;
         $output .= '<div class="p-5 flex justify-center items-center bg-grey-light">';
-        $output .= '<img loading="lazy" src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'"/>';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'" title="' . ($availability > 0 ?:  __('Items is not available')) . '"/>';
         $output .= '</div>';
         $output .= '<div class="card-body p-2">';
         $output .= '<a href="'.$detail_url.'" class="text-sm text-decoration-none grid-item--title m-0">'.$title.'</a>';
@@ -199,7 +199,7 @@ function addEllipsis($string, $length, $end='…')
     return $string;
 }
 
-function getAvailability($dbs, $biblio_id)
+function getAvailability($dbs, $biblio_id, $sysconf)
 {
     // get total number of this biblio items/copies
     $_item_q = $dbs->query('SELECT COUNT(*) FROM item WHERE biblio_id='.$biblio_id);
@@ -210,6 +210,12 @@ function getAvailability($dbs, $biblio_id)
     $_borrowed_c = $_borrowed_q->fetch_row();
     // total available
     $_total_avail = $_item_c[0]-$_borrowed_c[0];
+
+    // check if this collection is on reserve
+    $reserve_stat_q = $dbs->query('SELECT item_code FROM item WHERE biblio_id = ' . $biblio_id);
+    if (!$sysconf['reserve_on_loan_only'] && $reserve_stat_q && ($_total_avail >= $_total_reserve_row = $reserve_stat_q->num_rows)) {
+        $_total_avail = $_total_avail - $_total_reserve_row;
+    }
 
     return $_total_avail;
 }

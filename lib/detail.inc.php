@@ -41,6 +41,7 @@ class detail
     private $error = false;
     private $output_format = 'html';
     private $template = 'html';
+    private $total_item_available = 0;
     protected $detail_prefix = '';
     protected $detail_suffix = '';
     public $record_title;
@@ -238,12 +239,18 @@ HTML;
             LEFT JOIN item AS i ON l.item_code=i.item_code
             WHERE l.item_code=\''.$copy_d['item_code'].'\' AND is_lent=1 AND is_return=0');
         
+        // check if this collection is on reserve
+        $reserve_stat_q = $this->db->query('SELECT item_code FROM item WHERE item_code = \''.$copy_d['item_code'].'\'');
+
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
             list($avail_class, $avail_status) = ['item-onloan', __('Currently On Loan (Due on ').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')'];
+        } else if (!$sysconf['reserve_on_loan_only'] && $reserve_stat_q->num_rows) {
+            list($avail_class, $avail_status) = ['item-onreserve', __('Currently On Reserve')];
         } else if ($copy_d['no_loan']) {
             list($avail_class, $avail_status) = ['item-notforloan', __('Available but not for loan').' - '.$copy_d['item_status_name']];
         } else {
+            $this->total_item_available++;
             list($avail_class, $avail_status) = ['item-available', __('Available').(trim($copy_d['item_status_name']??'')?' - '.$copy_d['item_status_name']:'')];
         }
 
@@ -437,20 +444,6 @@ HTML;
         $this->metadata .= '<meta name="Edition" content="'.$this->record_detail['edition'].'" />';
         $this->metadata .= '<meta name="Call Number" content="'.$this->record_detail['call_number'].'" />';
 
-        // check image
-        if (!empty($this->record_detail['image'])) {
-          if ($sysconf['tg']['type'] == 'minigalnano') {
-            $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($this->record_detail['image']).'&amp;width=200';
-            $this->record_detail['image'] = '<img loading="lazy" itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" alt="'.$this->record_detail['title'].'" />';
-          }
-        } else {
-          $this->record_detail['image_src'] = "images/default/image.png";
-          $this->record_detail['image'] = '<img src="./'.$this->record_detail['image_src'].'" alt="No image available for this title" border="0" alt="'.$this->record_detail['title'].'" />';
-        }
-
-        // get image source
-        $this->image_src = $this->record_detail['image_src'];
-
         // get the authors data
         $authors = '';
         $data = array();
@@ -478,6 +471,21 @@ HTML;
         $this->record_detail['file_att'] = $this->getAttachments();
         $this->record_detail['related'] = $this->getRelatedBiblio();
         $this->record_detail['biblio_custom'] = $this->getBiblioCustom();
+
+        // check image
+        if (!empty($this->record_detail['image'])) {
+          if ($sysconf['tg']['type'] == 'minigalnano') {
+            $isItemAvailable = $this->total_item_available > 0;
+            $this->record_detail['image_src'] = 'lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($this->record_detail['image']).'&amp;width=200';
+            $this->record_detail['image'] = '<img class="' . ($isItemAvailable ? 'available' : 'not-available') . '" title="' . ($isItemAvailable ? $this->record_title : __('Items is not available')) . '" loading="lazy" itemprop="image" alt="'.sprintf('Image of %s', $this->record_title).'" src="./'.$this->record_detail['image_src'].'" border="0" alt="'.$this->record_detail['title'].'" />';
+          }
+        } else {
+          $this->record_detail['image_src'] = "images/default/image.png";
+          $this->record_detail['image'] = '<img src="./'.$this->record_detail['image_src'].'" alt="No image available for this title" border="0" alt="'.$this->record_detail['title'].'" />';
+        }
+
+        // get image source
+        $this->image_src = $this->record_detail['image_src'];
 
         if ($sysconf['social_shares']) {
         // share buttons
