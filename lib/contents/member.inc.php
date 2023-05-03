@@ -632,7 +632,7 @@ if ($is_member_login) :
                     
                     if($sysconf['reserve_on_loan_only']) {
                         // ambil secara random dari koleksi yang dipinjam
-                        $item_code = _getItemReserveFromLoan($dbs);
+                        $item_code = _getItemReserveFromLoan($dbs, $id);
                     } else {
                         // Semua item bisa direservasi
                         $item_code = _getItemReserve($dbs, $id);
@@ -689,9 +689,10 @@ if ($is_member_login) :
         return $data[0] ?? null;
     }
 
-    function _getItemReserveFromLoan($dbs)
+    function _getItemReserveFromLoan($dbs, $biblio_id)
     {
-        $sql = "SELECT item_code, due_date FROM loan WHERE is_lent=1 AND is_return=0 ORDER BY RAND() ASC LIMIT 1";
+        $biblio_id = (int)$biblio_id;
+        $sql = "SELECT l.item_code, l.due_date FROM loan AS l WHERE l.is_lent=1 AND l.is_return=0 AND l.item_code IN (SELECT i.item_code FROM item AS i WHERE i.biblio_id = $biblio_id) ORDER BY RAND() ASC LIMIT 1";
         $query = $dbs->query($sql);
         $data = $query->fetch_row();
         return $data[0] ?? null;
