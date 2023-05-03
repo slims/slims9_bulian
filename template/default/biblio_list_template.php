@@ -119,9 +119,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<span class="label">'.__('Availability').'</span>';
         $output .= '<span class="value '.$class_avail.'">'.$availability.'</span>';
         $output .= '</div>'; // -- close d-flex flex-column
-        $output .= '<div class="add-to-chart ' . ($availability < 1 ?: 'add-to-chart-button') . ' align-items-center justify-content-center flex-column" data-biblio="'.$biblio_id.'">';
-        $output .= '<span class="label">'. ($availability > 0 ? __('Add to basket') : __('Items not available') ) .'</span>';
-        $output .= '<span class="value"><i class="fas ' . ($availability > 0 ? 'fa-plus' : 'fa-ban') . '"></i></span>';
+        $output .= '<div class="add-to-chart add-to-chart-button align-items-center justify-content-center flex-column" data-biblio="'.$biblio_id.'">';
+        $output .= '<span class="label">'. __('Add to basket') .'</span>';
+        $output .= '<span class="value"><i class="fas fa-plus"></i></span>';
         $output .= '</div>'; // -- close d-flex flex-column
         $output .= '</div>'; // -- close card-body pt-3 pb-2 px-1
         $output .= '</div>'; // -- close card availability
