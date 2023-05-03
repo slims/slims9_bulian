@@ -238,16 +238,10 @@ HTML;
         $loan_stat_q = $this->db->query('SELECT due_date FROM loan AS l
             LEFT JOIN item AS i ON l.item_code=i.item_code
             WHERE l.item_code=\''.$copy_d['item_code'].'\' AND is_lent=1 AND is_return=0');
-        
-        // check if this collection is on reserve
-        $reserve_stat_q = $this->db->query('SELECT r.item_code FROM reserve AS r
-        INNER JOIN biblio AS b ON r.biblio_id = b.biblio_id WHERE r.item_code = \''.$copy_d['item_code'].'\'');
 
         if ($loan_stat_q->num_rows > 0) {
             $loan_stat_d = $loan_stat_q->fetch_row();
             list($avail_class, $avail_status) = ['item-onloan', __('Currently On Loan (Due on ').date($sysconf['date_format'], strtotime($loan_stat_d[0])).')'];
-        } else if (!$sysconf['reserve_on_loan_only'] && $reserve_stat_q->num_rows) {
-            list($avail_class, $avail_status) = ['item-onreserve', __('Currently On Reserve')];
         } else if ($copy_d['no_loan']) {
             list($avail_class, $avail_status) = ['item-notforloan', __('Available but not for loan').' - '.$copy_d['item_status_name']];
         } else {
