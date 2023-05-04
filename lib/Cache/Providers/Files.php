@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-07-13 11:33:34
- * @modify date 2022-11-16 09:03:17
+ * @modify date 2023-05-03 09:34:46
  * @license GPLv3
  * @desc
  */
@@ -33,7 +33,7 @@ class Files extends \SLiMS\Cache\Contract
      */
     public function set(string $cacheName, $contents)
     {
-        return file_put_contents($this->directory . basename($cacheName), $contents);
+        return file_put_contents($this->directory . basename($cacheName), json_encode($contents));
     }
 
     /**
@@ -45,7 +45,7 @@ class Files extends \SLiMS\Cache\Contract
      */
     public function get(string $cacheName, $callBack = '')
     {
-        $content = file_get_contents($this->directory . basename($cacheName));
+        $content = json_decode(file_get_contents($this->directory . basename($cacheName)));
         return is_callable($callBack) ? $callBack($content) : $content;
     }
 

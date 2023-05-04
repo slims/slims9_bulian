@@ -1091,6 +1091,14 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
         $sql['alter'][] = "ALTER TABLE `visitor_count` ADD `room_code` varchar(5) COLLATE 'utf8_unicode_ci' NULL AFTER `institution`;";
         $sql['alter'][] = "ALTER TABLE `visitor_count` ADD INDEX `room_code` (`room_code`);";
+        $sql['create'][] = "CREATE TABLE `cache` (
+          `name` varchar(64) NOT NULL,
+          `contents` text NOT NULL,
+          `created_at` datetime NOT NULL,
+          `updated_at` datetime NOT NULL,
+          `expired_at` datetime DEFAULT NULL,
+          UNIQUE KEY `name` (`name`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
         return $this->slims->query($sql, ['create', 'alter']);
     }
