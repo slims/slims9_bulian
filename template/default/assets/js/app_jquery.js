@@ -83,8 +83,10 @@ $(document).ready(() => {
     let oembed = $('oembed')
 
     if (oembed.length > 0) {
-        let urlSrc = oembed.attr('url').replace('watch?v=', 'embed/')
-        $('figure.media').append('<iframe style="width: 100%; height: '+(window.innerHeight - 200)+'px" src="' + urlSrc + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>')
+        oembed.each(function(index,el){
+            let urlSrc = $(el).attr('url').replace('watch?v=', 'embed/')
+            $('figure.media').append('<iframe style="width: 100%; height: '+(window.innerHeight - 200)+'px" src="' + urlSrc + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>')  
+        })
     }
 
     $('.collapse-detail')
