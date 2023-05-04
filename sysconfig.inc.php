@@ -656,6 +656,9 @@ $sysconf['http'] = [
     'verify' => true,
     // in seconds
     'timeout' => 5 
+  ],
+  'cache' => [
+    'lifetime' => 300 // in seconds
   ]
 ];
 

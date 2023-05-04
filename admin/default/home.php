@@ -276,7 +276,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 
             async function getTotal(url, selector = null) {
                 if(selector !== null) $(selector).text('...');
-                let res = await (await fetch(url)).json();
+                let res = await (await fetch(url,{headers: {'SLiMS-Http-Cache': 'cache'}})).json();
                 if(selector !== null) $(selector).text(new Intl.NumberFormat('id-ID').format(res.data));
                 return res.data;
             }
@@ -287,7 +287,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             getTotal('<?= SWB ?>index.php?p=api/item/total/available', '.item_total_available');
 
             // get summary
-            fetch('<?= SWB ?>index.php?p=api/loan/summary')
+            fetch('<?= SWB ?>index.php?p=api/loan/summary', {headers: {'SLiMS-Http-Cache': 'cache'}})
                 .then(res => res.json())
                 .then(res => {
 
@@ -348,7 +348,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             // bar chart
             // ===================================
 
-            fetch('<?= SWB ?>index.php?p=api/loan/getdate/<?= $start_date ?>')
+            fetch('<?= SWB ?>index.php?p=api/loan/getdate/<?= $start_date ?>', {headers: {'SLiMS-Http-Cache': 'cache'}})
             .then(res => res.json())
             .then(res => {
 
