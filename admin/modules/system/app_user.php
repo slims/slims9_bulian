@@ -103,6 +103,9 @@ if (isset($_POST['saveData'])) {
     } else if (!simbio_form_maker::isTokenValid()) {
         toastr(__('Invalid form submission token!'))->error();
         exit();
+	} else if ($passwd1 && !strong_password($passwd1)) {
+        toastr(__('Password lemah! Minimal 8 karakter, mengandung huruf kecil, huruf besar, angka, dan simbol'))->error();
+        exit();	
     } else {
         $data['username'] = $dbs->escape_string(trim($userName));
         $data['realname'] = $dbs->escape_string(trim($realName));
@@ -145,7 +148,7 @@ if (isset($_POST['saveData'])) {
           $new_filename = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username']));
           $upload_status = $upload->doUpload('image', $new_filename);
           if ($upload_status == UPLOAD_SUCCESS) {
-            $data['user_image'] = $dbs->escape_string($upload->new_filename);
+            $data['user_image'] = $dbs->escape_string(strip_tags($upload->new_filename));
           }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -156,7 +159,7 @@ if (isset($_POST['saveData'])) {
 			    $new_filename = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username'])).'.'.strtolower($filedom);
 
 			    if ($valid AND file_put_contents(IMGBS.'persons/'.$new_filename, $filedata)) {
-				    $data['user_image'] = $dbs->escape_string($new_filename);
+				    $data['user_image'] = $dbs->escape_string(strip_tags($new_filename));
 				    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
 				    $upload_status = UPLOAD_SUCCESS;
 			    }
@@ -458,7 +461,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // is there any search
     $criteria = 'u.user_id != 1 ';
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
-       $keywords = $dbs->escape_string($_GET['keywords']);
+       $keywords = $dbs->escape_string(strip_tags($_GET['keywords']));
        $criteria .= " AND (u.username LIKE '%$keywords%' OR u.realname LIKE '%$keywords%')";
     }
     $datagrid->setSQLCriteria($criteria);
@@ -479,4 +482,19 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     echo $datagrid_result;
 }
 /* main content end */
+
+    // to check password strength
+
+function strong_password($password){
+	$uppercase = preg_match('@[A-Z]@', $password);
+	$lowercase = preg_match('@[a-z]@', $password);
+	$number    = preg_match('@[0-9]@', $password);
+	$specialChars = preg_match('@[^\w]@', $password);
+
+	if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+		return false;
+	}else{
+		return true;
+	}
+}
 ?>
