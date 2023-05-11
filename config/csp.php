@@ -9,7 +9,7 @@
  */
 return [
     "base-uri 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+
     "style-src 'self' 'unsafe-inline' *.bootstrapcdn.com *.googleapis.com",
     "img-src 'self' data:",
     "connect-src 'self' kutipan.herokuapp.com",
