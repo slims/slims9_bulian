@@ -20,8 +20,8 @@ return [
         'ReCaptcha' => [
             'varify_url' => 'https://www.google.com/recaptcha/api/siteverify',
             /**
-             * This is SLiMS public and private key based on
-             * localhost only. If your SLiMS is online you can register
+             * This is SLiMS public and private key only
+             * work on localhost. If your SLiMS was online you can register
              * your app and get your key from https://www.google.com/recaptcha/admin/create
              */
             'publickey' => '<publickey>',
@@ -32,6 +32,6 @@ return [
              * ReCaptcha library, feel free to change it with yours.
              */
             'class' => \SLiMS\Captcha\Providers\ReCaptcha::class
-        ]
+        ]// Add another providers here
     ]
 ];

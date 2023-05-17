@@ -4,7 +4,7 @@
  * @email ido.alit@gmail.com
  * @Last Modified by drajathasan (drajathasan20@gmail.com)
  * @create date 2018-04-04 06:48:28
- * @modify date 2023-02-13 08:22:16
+ * @modify date 2023-05-16 11:39:21
  *
  * Copyright (C) 2017  Waris Agung Widodo (ido.alit@gmail.com)
  */
@@ -18,6 +18,8 @@ use SLiMS\Http\Client;
 class ReCaptcha extends Contract
 {
     protected $factory = null;
+    const PUBKEY = '6LdCzFAUAAAAAKV0pEX3h3523MZA5ATRZf2GpgQC';
+    const PRIVKEY = '6LdCzFAUAAAAABb8kVMaf97GiQFP9lfX56BPhhGs';
     
     public function __construct(Factory $factory)
     {

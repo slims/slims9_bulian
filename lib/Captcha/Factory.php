@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-02-12 11:31:06
- * @modify date 2023-02-13 11:07:11
+ * @modify date 2023-05-17 07:53:37
  * @license GPLv3
  * @desc [description]
  */
@@ -13,6 +13,7 @@ namespace SLiMS\Captcha;
 use Exception;
 use SLiMS\Config;
 use SLiMS\Captcha\Providers\Contract;
+use SLiMS\Captcha\Providers\ReCaptcha;
 
 final class Factory
 {
@@ -29,7 +30,6 @@ final class Factory
 
     public static function getInstance()
     {
-        self::createConfigFromSample();
         if (is_null(self::$instance)) self::$instance = new Factory(config('captcha.default', 'ReCaptcha'));
         return self::$instance;
     }
@@ -99,8 +99,6 @@ final class Factory
      */
     public static function createConfigFromSample()
     {
-        if (!is_null(config('captcha')) && !isset($_POST['default'])) return;
-
         Config::create('captcha', function(){
             $filesample = Config::getFile('captcha.sample');
             // set data
@@ -118,11 +116,19 @@ final class Factory
             $ready = isset($_POST['recaptcha']) && isset($_POST['recaptcha']['publickey']) && isset($_POST['recaptcha']['privatekey']);
 
             // key
-            $filesample = str_replace('<publickey>', ($ready ? $_POST['recaptcha']['publickey'] : '6LdCzFAUAAAAAKV0pEX3h3523MZA5ATRZf2GpgQC'), $filesample);
-            $filesample = str_replace('<privatekey>', ($ready ? $_POST['recaptcha']['privatekey'] : '6LdCzFAUAAAAABb8kVMaf97GiQFP9lfX56BPhhGs'), $filesample);
+            if ($_POST['default'] === 'ReCaptcha') {
+                $filesample = str_replace('<publickey>', ($ready ? $_POST['recaptcha']['publickey'] : ReCaptcha::PUBKEY), $filesample);
+                $filesample = str_replace('<privatekey>', ($ready ? $_POST['recaptcha']['privatekey'] : ReCaptcha::PRIVKEY), $filesample);
+            }
+            else
+            {
+                $searchClass = array_values(array_filter(array_keys(self::$instance->getProviderList()), fn($class) => strpos($class, $_POST['default'])));
+                $class = $searchClass[0]??ReCaptcha::class;
+                $filesample = str_replace('// Add another providers here', ",\n\t\t'{$_POST['default']}' => ['class' => '{$class}']\n\t\t// Add another providers here", $filesample);
+            }
     
             return $filesample;
-        }); 
+        });
     }
 
     public function getProviderList()
@@ -132,9 +138,9 @@ final class Factory
         return $this->providerList;
     }
 
-    public function registerProvider(string $providerName)
+    public function registerProvider(string $providerName, string $providerClass)
     {
-        $this->providerList[] = $providerName;
+        $this->providerList[$providerClass] = $providerName;
     }
 
     /**
@@ -150,6 +156,11 @@ final class Factory
     public function getError()
     {
         return self::$providerInstance->getError();
+    }
+
+    public function getCaptchaSection()
+    {
+        return $this->captchaSection;
     }
 
     /**
@@ -184,7 +195,7 @@ final class Factory
         self::getInstance();
         
         if (is_null(self::$providerInstance)) {
-            $class = config('captcha.providers.' . self::getInstance()->providerName . '.class', \SLiMS\Captcha\Providers\ReCaptcha::class);
+            $class = config('captcha.providers.' . self::getInstance()->providerName . '.class', ReCaptcha::class);
             self::$providerInstance = new $class(self::getInstance());
 
             // is provider use our contract?

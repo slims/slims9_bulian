@@ -3,12 +3,13 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-11 07:25:22
- * @modify date 2023-02-13 11:00:43
+ * @modify date 2023-05-17 07:54:59
  * @license GPLv3
  * @desc [description]
  */
 
 use SLiMS\Captcha\Factory;
+use SLiMS\Captcha\Providers\ReCaptcha;
 use SLiMS\Config;
 
 // key to authenticate
@@ -70,26 +71,29 @@ $form->addSelectList('default', __('Default captcha provider'), Factory::getInst
 // sections
 $sectionList = [['librarian','librarian'],['memberarea','memberarea']];
 $defaultData = [];
-foreach (config('captcha.sections') as $section => $status) {
+foreach (config('captcha.sections')??[] as $section => $status) {
  if ($status['active']) $defaultData[] = $section;
 }
 
 $form->addCheckBox('section', __('Enable for section'), $sectionList, $defaultData, ' class="form-control"');
 
-$recaptcha = Factory::getInstance()->getConfig('providers.ReCaptcha');
-$pubkey = $recaptcha['publickey'];
-$privkey = $recaptcha['privatekey'];
-$html = <<<HTML
-<div id="ReCaptcha" class="providers">
-    <h5>ReCaptcha</h5>
-    <label>Public Key</label>
-    <input type="text" name="recaptcha[publickey]" value="{$pubkey}" class="form-control"/>
-    <label>Private Key</label>
-    <input type="text" name="recaptcha[privatekey]" value="{$privkey}" class="form-control"/>
-</div>
-HTML;
+if (config('captcha.default', 'ReCaptcha') === 'ReCaptcha')
+{
+  $recaptcha = Factory::getInstance()->getConfig('providers.ReCaptcha');
+  $pubkey = $recaptcha['publickey']??ReCaptcha::PUBKEY;
+  $privkey = $recaptcha['privatekey']??ReCaptcha::PRIVKEY;
+  $html = <<<HTML
+  <div id="ReCaptcha" class="providers">
+      <h5>ReCaptcha</h5>
+      <label>Public Key</label>
+      <input type="text" name="recaptcha[publickey]" value="{$pubkey}" class="form-control"/>
+      <label>Private Key</label>
+      <input type="text" name="recaptcha[privatekey]" value="{$privkey}" class="form-control"/>
+  </div>
+  HTML;
 
-$form->addAnything('Provider Option', $html);
+  $form->addAnything('Provider Option', $html);
+}
 
 // print out the object
 echo $form->printOut();
