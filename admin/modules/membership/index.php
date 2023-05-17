@@ -91,8 +91,8 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
 /* member update process */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // check form validity
-    $memberID = trim($_POST['memberID']);
-    $memberName = trim($_POST['memberName']);
+    $memberID = trim(strip_tags($_POST['memberID']));
+    $memberName = trim(strip_tags($_POST['memberName']));
     $birthDate = trim($_POST['birthDate']);
     $mpasswd1 = trim($_POST['memberPasswd']);
     $mpasswd2 = trim($_POST['memberPasswd2']);
@@ -101,6 +101,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         exit();
     } else if (($mpasswd1 OR $mpasswd2) AND ($mpasswd1 !== $mpasswd2)) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
+        exit();
+	} else if ($mpasswd1 && !strong_password($mpasswd1)) {
+        toastr(__('Password minimum 8 chars, contains uppercase, lowercase, number, and symbol'))->error();
         exit();
     } else {
 
@@ -143,8 +146,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           }
         }
 
-        $data['member_id'] = $dbs->escape_string($memberID);
-        $data['member_name'] = $dbs->escape_string($memberName);
+        $data['member_id'] = $dbs->escape_string(strip_tags($memberID));
+        $data['member_name'] = $dbs->escape_string(strip_tags($memberName));
         $data['member_type_id'] = (integer)$_POST['memberTypeID'];
         $data['inst_name'] = trim($dbs->escape_string(strip_tags($_POST['instName'])));
         $data['gender'] = trim($dbs->escape_string(strip_tags($_POST['gender'])));
@@ -193,7 +196,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           $new_filename = 'member_'.$data['member_id'];
           $upload_status = $upload->doUpload('image', $new_filename);
           if ($upload_status == UPLOAD_SUCCESS) {
-            $data['member_image'] = $dbs->escape_string($upload->new_filename);
+            $data['member_image'] = $dbs->escape_string(strip_tags($upload->new_filename));
           }
         } else if (!empty($_POST['base64picstring'])) {
 			    list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -204,7 +207,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 			    $new_filename = 'member_'.$data['member_id'].'.'.strtolower($filedom);
 
 			    if ($valid AND file_put_contents(IMGBS.'persons/'.$new_filename, $filedata)) {
-				    $data['member_image'] = $dbs->escape_string($new_filename);
+				    $data['member_image'] = $dbs->escape_string(strip_tags($new_filename));
 				    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
 				    $upload_status = UPLOAD_SUCCESS;
 			    }
@@ -724,7 +727,7 @@ $(document).ready(function() {
     // is there any search
     $criteria = 'm.member_id IS NOT NULL ';
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
-       $keywords = $dbs->escape_string($_GET['keywords']);
+       $keywords = $dbs->escape_string(strip_tags($_GET['keywords']));
        $criteria .= " AND (m.member_name LIKE '%$keywords%' OR m.member_id LIKE '%$keywords%') ";
     }
     if (isset($_GET['expire'])) {
@@ -762,3 +765,18 @@ $(document).ready(function() {
     echo $datagrid_result;
 }
 /* main content end */
+
+    // to check password strength
+
+function strong_password($password){
+	$uppercase = preg_match('@[A-Z]@', $password);
+	$lowercase = preg_match('@[a-z]@', $password);
+	$number    = preg_match('@[0-9]@', $password);
+	$specialChars = preg_match('@[^\w]@', $password);
+
+	if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+		return false;
+	}else{
+		return true;
+	}
+}
