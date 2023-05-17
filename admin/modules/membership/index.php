@@ -103,7 +103,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
         exit();
 	} else if ($mpasswd1 && !strong_password($mpasswd1)) {
-        toastr(__('Password lemah! Minimal 8 karakter, huruf kecil, huruf besar, angka, dan simbol'))->error();
+        toastr(__('Password minimum 8 chars, contains uppercase, lowercase, number, and symbol'))->error();
         exit();
     } else {
 
