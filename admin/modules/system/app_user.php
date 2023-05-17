@@ -104,7 +104,7 @@ if (isset($_POST['saveData'])) {
         toastr(__('Invalid form submission token!'))->error();
         exit();
 	} else if ($passwd1 && !strong_password($passwd1)) {
-        toastr(__('Password lemah! Minimal 8 karakter, mengandung huruf kecil, huruf besar, angka, dan simbol'))->error();
+        toastr(__('Password minimum 8 chars, contains uppercase, lowercase, number, and symbol'))->error();
         exit();	
     } else {
         $data['username'] = $dbs->escape_string(trim($userName));
