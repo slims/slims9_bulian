@@ -1,0 +1,6 @@
+# Polyglot
+ini merupakan pustaka berdiri diatas pustaka **gettext** yang digunakan untuk mengelola penerjemahan bahasa dari bahasa Inggris ke bahasa lokal yang diatur via modul sistem. Disamping itu juga dapat dimanfaatkan untuk proses ekstensi terjemahan dari pengguna via sistem plugin, dengan demikian pengguna/pengembang tidak perlu repot mengganti isi terjamahan SLiMS sepenuh nya hanya untuk menambahkan satu atau dua terjamhan untuk perubahan yang dilakukan dimana terjemahan tidak tersedia secara langsung di SLiMS.
+
+## Informasi Terjemahan
+Format yang digunakan di SLiMS untuk perihal terjemahan bahasa menggunakan format .mo. Format tersebut meruapakan versi binary dari format .po (Portable Object) yang umumnya digunakan untuk proses penerjemahan bahasa pada perangkat lunak umumnya. Guna dapat mengubah isi .mo anda memerlukan perangkat lunak seperti [Poedit](https://poedit.net/).
+Setiap terjemahan SLiMS disimpan pada folder ``` <slims-root>/lib/lang/locale/<code_CODE>/LC_MESSAGES/messages.(mo|po) ``` contoh misalnya ``` <slims-root>/lib/lang/locale/id_ID/LC_MESSAGES/messages.mo ```. 

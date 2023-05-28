@@ -585,7 +585,7 @@ $localisation->load(function($memory){
     exit;    
   }
 
-  // set locale based on temp loan language
+  // set locale based on temp locale language
   if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
 });
 

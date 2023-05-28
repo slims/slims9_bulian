@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-05-28 07:42:15
- * @modify date 2023-05-28 09:44:35
+ * @modify date 2023-05-28 13:43:06
  * @license GPLv3
  * @desc [description]
  */
@@ -44,7 +44,6 @@ final class Learn
      */
     public function fromPhpFile(string $localePath): void
     {
-        $memory = Memory::getInstance();
-        $memory->appendWords(require $localePath);
+        Memory::getInstance()->appendWords(require $localePath);
     }
 }
