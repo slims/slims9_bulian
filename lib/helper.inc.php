@@ -24,6 +24,7 @@
 use SLiMS\{Config,Ip,Number,Currency,Json};
 use SLiMS\Http\Redirect;
 use SLiMS\Session\Flash;
+use SLiMS\Polyglot\Memory;
 
 if (!function_exists('config')) {
     /**
@@ -226,5 +227,13 @@ if (!function_exists('toastr'))
                 else utility::jsAlert($this->message);
             }
         };
+    }
+}
+
+if (!function_exists('__'))
+{
+    function __(string $content)
+    {
+        return Memory::find($content);
     }
 }

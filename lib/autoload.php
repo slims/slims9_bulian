@@ -45,6 +45,8 @@ $namespaces = [
     'OTPHP\\' => '/spomky-labs/otphp/src',
     'DASPRiD\\Enum\\' => '/dasprid/enum/src',
     'BaconQrCode\\' => '/bacon/bacon-qr-code/src',
+    'Gettext\\' => '/lang/gettext/gettext/src',
+    'Gettext\\Languages\\' => '/lang/gettext/languages/src'
 ];
 
 $class_alias = [];
