@@ -398,8 +398,8 @@ CREATE TABLE IF NOT EXISTS `mst_item_status` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['insert'][] = 'INSERT INTO `mst_item_status` (`item_status_id`, `item_status_name`, `rules`, `input_date`, `last_update`, `no_loan`, `skip_stock_take`) VALUES
-(\'R\', \'Repair\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'0\'),
-(\'NL\', \'No Loan\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'0\'),
+(\'R\', \'Repair\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'1\'),
+(\'NL\', \'No Loan\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'1\'),
 (\'MIS\', \'Missing\', NULL, DATE(NOW()), DATE(NOW()), \'1\', \'1\');';
 
 $sql['create'][] = "
@@ -1133,7 +1133,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
   KEY `unique_code_idx` (`unique_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-$sql['create'][] = "CREATE TABLE `cache` (
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `cache` (
   `name` varchar(64) NOT NULL,
   `contents` text NOT NULL,
   `created_at` datetime NOT NULL,
