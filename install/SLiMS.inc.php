@@ -480,7 +480,7 @@ SQL;
     return $this->db->query($sql_update);
   }
 
-  function updateTheme($theme = 'default', $upgrade_from) {
+  function updateTheme($theme = 'default', $upgrade_from = '') {
     // get template setting
     $sysconf = [];
     $query = $this->db->query("SELECT setting_name, setting_value 
