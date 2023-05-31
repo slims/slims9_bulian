@@ -20,6 +20,8 @@
  * some patches by hendro
  */
 
+use SLiMS\DB;
+
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
@@ -137,17 +139,20 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         }
 
         // info
-        $backup = $dbs->query('SELECT backup_log_id FROM backup_log WHERE substring(backup_time, 1,10) = \'' . date('Y-m-d') . '\'');
-        $alreadyBackup = $backup->num_rows > 0;
-        if ((!$alreadyBackup) && (config('database_backup.reminder') || config('database_backup.auto'))) $_SESSION['token'] = utility::createRandomString(32);
-        if ($_SESSION['uid'] == '1' && !$is_repaired && config('database_backup.reminder') && !config('database_backup.auto')) {
-            if (!$alreadyBackup) {
-                echo '<div class="alert alert-info border-0 mt-3">';
-                echo '<span>' . __('It looks like today you haven\'t backup your database.') . 
-                '.&nbsp;&nbsp;<a href="'.MWB.'system/backup_proc.php" id="backupproc" class="notAJAX btn btn-primary">' . __('Backup Now') . '</a>' .
-                '</span>';
-                echo '</div>';
-            }
+        $backupConfigStatus = config('database_backup.reminder') || config('database_backup.auto');
+        $backupIsNoAuto = config('database_backup.reminder') && !config('database_backup.auto');
+        $alreadyBackup = DB::hasBackup(by: DB::BACKUP_BASED_ON_DAY);
+        
+
+        if ($alreadyBackup === false && $backupConfigStatus) 
+            $_SESSION['token'] = utility::createRandomString(32);
+        
+        if ($alreadyBackup === false && $is_repaired === false && $backupIsNoAuto === true) {
+            echo '<div class="alert alert-info border-0 mt-3">';
+            echo '<span>' . __('It looks like today you haven\'t backup your database.') . 
+            '.&nbsp;&nbsp;<a href="'.MWB.'system/backup_proc.php" id="backupproc" class="notAJAX btn btn-primary">' . __('Backup Now') . '</a>' .
+            '</span>';
+            echo '</div>';
         }
 
         // if there any warnings
