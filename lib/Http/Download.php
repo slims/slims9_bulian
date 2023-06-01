@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-15 17:20:28
- * @modify date 2022-11-15 17:52:59
+ * @modify date 2023-03-10 02:24:14
  * @license GPLv3
  * @desc [description]
  */
@@ -20,19 +20,20 @@ trait Download
      * @param string $url
      * @return anonymousClass
      */
-    public static function download(string $url)
+    public static function download(string $url, array $options = [])
     {
         self::reset();
         $http = self::init($url);
-        return new Class($url, $http) {
+        return new Class($url, $http, $options) {
             private $url = '';
             private $top = null;
             private $options = [];
 
-            public function __construct($url, $top)
+            public function __construct($url, $top, $options)
             {
                 $this->url = $url;
                 $this->top = $top;
+                $this->options = $options;
             }
 
             /**
@@ -46,8 +47,25 @@ trait Download
             {
                 try {
                     $this->top->get($this->url, array_merge(['sink' => $pathToSaveFile], $this->options));
+                    $this->forceIfNotSinked($pathToSaveFile);
                 } catch (\Exception $e) {
                     $this->top->setError($e->getMessage());
+                }
+
+                return $this->top;
+            }
+
+            /**
+             * Sometimes sink options is not working
+             * and we need to sink file manually
+             *
+             * @param string $pathToSaveFile
+             * @return void
+             */
+            private function forceIfNotSinked(string $pathToSaveFile)
+            {
+                if (!file_exists($pathToSaveFile)) {
+                    file_put_contents($pathToSaveFile, $this->top->getContent());
                 }
             }
 

@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Filesystems\Storage;
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 
@@ -42,13 +44,11 @@ $file_q = $dbs->query('SELECT * FROM files WHERE file_id='.$fileID);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
-    $file_loc = REPOBS.str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
-    if (file_exists($file_loc)) {
+    $file_loc = str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
+    $repository = Storage::repository();
+    if ($repository->isExists($file_loc)) {
 		utility::dlCount($dbs, $fileID, $memberID, $userID);
-        header('Content-Disposition: inline; filename="'.basename($file_loc).'"');
-        header('Content-Type: '.$file_d['mime_type']);
-        echo file_get_contents($file_loc);
-        exit();
+        $repository->streamFile($file_loc);
     } else {
         if ($file_d['mime_type'] == 'text/uri-list') {
             header('Location: '.$file_d['file_url']);

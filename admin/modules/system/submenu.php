@@ -37,6 +37,7 @@ if ($_SESSION['uid'] == 1) {
     $menu[] = array(__('Custom Field'), MWB.'system/custom_field.php', __('Configure custom field'));
     $menu[] = array(__('Currency Setting'), MWB.'system/currencysetting.php', __('Configure System Currency'));
     $menu[] = array(__('E-Mail Setting'), MWB.'system/mailsetting.php', __('Configure E-Mail Preferences'));
+    $menu[] = array(__('Captcha Setting'), MWB.'system/captchasetting.php', __('Configure Captcha'));
 }
 $menu[] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus

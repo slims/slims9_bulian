@@ -34,9 +34,29 @@ if ($action === 're-install' || $action === 're-upgrade') {
   }
 }
 
+if (isset($_GET['storeage_engines'])) {
+  $isProfileExists = isset($_SESSION['db_host']) && 
+                     isset($_SESSION['db_name']) && 
+                     isset($_SESSION['db_user']) && 
+                     isset($_SESSION['db_pass']) && 
+                     isset($_SESSION['db_port']);
+
+  if (!$isProfileExists) die(json_encode(['status' => false]));
+
+  try {
+    $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port']??'3306', $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
+    $engines = $slims->getStorageEngines();
+    ksort($engines);
+    die(json_encode(['status' => true, 'data' => array_values($engines)]));
+  } catch (Exception $e) {
+    die(json_encode(['status' => false, 'message' => $e->getMessage()]));
+  }
+  exit;
+}
+
 switch ($action) {
   case 'system-requirement':
-    $php_minimum_version = '7.4';
+    $php_minimum_version = '8.1';
     $check_dir = $slims->chkDir();
     $data = [
       'is_pass' => $slims->isPhpOk($php_minimum_version) &&
@@ -54,7 +74,7 @@ switch ($action) {
           'title' => 'Database driver',
           'status' => $slims->databaseDriverType(),
           'version' => $slims->databaseDriverType(),
-          'message' => 'SLiMS required MYSQL for database management. Please install it first!'
+          'message' => 'SLiMS required MySQLi and PDO MySQL extension for database management. Please install it first!'
         ],
         'phpextension' => [
           'title' => 'PHP Extension',
@@ -112,6 +132,8 @@ switch ($action) {
       $slims->getDb()->query("USE `{$_SESSION['db_name']}`");
       // write configuration file
       $slims->createConfigFile($_SESSION);
+      // write environment file
+      $slims->createEnvFile();
       // check if database already have table for make sure this database is empty
       foreach ($slims->getTables() as $table) {
         if ($table === 'biblio') {
@@ -168,6 +190,8 @@ switch ($action) {
       $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
       // write configuration file
       $slims->createConfigFile($_SESSION);
+      // write environment file
+      $slims->createEnvFile();
 
       if ($action === 're-upgrade') {
         $_POST['oldVersion'] = $_SESSION['oldVersion'];

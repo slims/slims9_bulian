@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+use SLiMS\Cli\Console;
+
+const INDEX_AUTH = 1;
+
+require __DIR__ . '/sysconfig.inc.php';
+
+// Running console
+Console::getInstance()->run();

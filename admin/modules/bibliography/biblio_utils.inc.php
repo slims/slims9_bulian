@@ -18,6 +18,8 @@
  *
  */
 
+use \SLiMS\Filesystems\Storage;
+
 /**
  * Utility function to get author ID
  **/
@@ -107,6 +109,7 @@ function showTitleAuthors($obj_db, $array_data)
   $_image = '';
 
   $img = 'images/default/image.png';
+  $imageDisk = Storage::images();
   // biblio author detail
   if ($sysconf['index']['type'] == 'default') {
       $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image FROM biblio AS b
@@ -124,11 +127,11 @@ function showTitleAuthors($obj_db, $array_data)
           $_labels = $_biblio_d[4];
       }
       $_authors = substr_replace($_authors, '', -3);
-      if($_image!='' AND file_exists('../../../images/docs/'.$_image)){
+      if($_image!='' AND $imageDisk->isExists('docs/'.$_image)){
         $img = 'images/docs/'.urlencode($_image);  
       }
       $_output = '<div class="media">
-                    <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
+                    <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
                       <div class="title">'.stripslashes($_title).'</div><div class="authors">'.$_authors.'</div>
                     </div>
@@ -140,11 +143,11 @@ function showTitleAuthors($obj_db, $array_data)
 	      $_promoted  = (integer)$_biblio_d[1];
 	    }
 
-      if($array_data[3]!='' AND file_exists('../../../images/docs/'.$array_data[3])){
+      if($array_data[3]!='' AND $imageDisk->isExists('docs/'.$array_data[3])){
         $img = 'images/docs/'.urlencode($array_data[3]);  
       }
       $_output = '<div class="media">
-                    <img class="mr-3 rounded" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
+                    <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
                       <div class="title">'.stripslashes($array_data[1]).'</div><div class="authors">'.$array_data[4].'</div>
                     </div>
@@ -176,4 +179,28 @@ function showTitleAuthors($obj_db, $array_data)
 	}
   }
   return $_output;
+}
+
+function importProgress(int $percentage)
+{
+  if ($percentage > 100) return;
+  echo <<<HTML
+  <script>
+    if (!parent.$('#preview').hasClass('d-none')) parent.$('#preview').addClass('d-none')
+    if (parent.$('#progress').hasClass('d-none')) parent.$('#progress').removeClass('d-none')
+    parent.$('.progress-bar').attr('style', 'width: {$percentage}%')
+    parent.$('.progress-bar').html('{$percentage}%')
+  </script>
+  HTML;
+  ob_flush();
+  flush();
+}
+
+function isItemExists(string $itemCode)
+{
+  $itemCode = trim($itemCode, '\'');
+  $state = \SLiMS\DB::getInstance()->prepare('select item_code from item where item_code = ?');
+  $state->execute([$itemCode]);
+
+  return (bool)$state->rowCount();
 }

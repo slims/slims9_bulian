@@ -49,5 +49,7 @@ $RECYCLE.BIN/
 
 /vendor/
 composer.lock
-config/sysconfig.env.inc.php
 config/database.php
+config/captcha.php
+config/env.php
+tarsius

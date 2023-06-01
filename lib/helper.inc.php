@@ -78,24 +78,19 @@ if (!function_exists('currency'))
     }
 }
 
-if (!function_exists('debug'))
-{
-    /**
-     * Helper to verbosing 
-     * debug process
-     * @return void
-     */
-    function debug()
-    {
-        if (ENVIRONMENT == 'development') dump(...func_get_args());
-    }
-}
-
 if (!function_exists('isDev')) 
 {
     function isDev()
     {
-        return ENVIRONMENT === 'development' ? true : false;
+        return ENVIRONMENT === 'development';
+    }
+}
+
+if (!function_exists('isCli')) 
+{
+    function isCli()
+    {
+        return php_sapi_name() === 'cli';
     }
 }
 
@@ -161,11 +156,11 @@ if (!function_exists('redirect'))
              * @param string $selector
              * @return void
              */
-            public function simbioAJAX(string $url, string $data = '', string $position = 'top.', string $selector = '#mainContent')
+            public function simbioAJAX(string $url, string $data = '', string $position = 'top.', string $selector = '#mainContent', int $timeout = 0)
             {
-                $params = empty($data) ? $url : "'$url', {method: 'post', addData: '$data'}";
+                $params = empty($data) ? "'$url'" : "'$url', {method: 'post', addData: '$data'}";
                 exit(<<<HTML
-                <script>{$position}\$('{$selector}').simbioAJAX({$params})</script>
+                <script>setTimeout(() => {$position}\$('{$selector}').simbioAJAX({$params}), {$timeout})</script>
                 HTML);
             }
 

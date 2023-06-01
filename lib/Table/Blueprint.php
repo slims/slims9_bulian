@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:08:37
- * @modify date 2022-12-19 12:10:35
+ * @modify date 2023-04-14 07:45:53
  * @license GPLv3
  * @desc [description]
  */
@@ -254,6 +254,31 @@ class Blueprint
         $this->type = 'option';
         $this->data['options'][] = 'KEY `' . $columnName . '_index` (`' . $columnName . '`)';
     }
+
+    /**
+     * Create unique key
+     *
+     * @param string $columnName
+     * @return void
+     */
+    private function scopeUnique(string $columnName)
+    {
+        $this->type = 'option';
+        $this->data['options'][] = 'UNIQUE `' . $columnName . '_unq` (`' . $columnName . '`)';
+    }
+
+        /**
+     * Delete existing index
+     *
+     * @param string $indexName
+     * @return void
+     */
+    private function scopeDropIndex(string $indexName, string $suffix = '')
+    {
+        $this->type = 'option';
+        $this->data['options'][] = 'DROP INDEX `' . trim($indexName . $suffix) . '`';
+    }
+
 
     /**
      * Set primarykey

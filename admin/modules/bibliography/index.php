@@ -27,6 +27,7 @@ if (!defined('INDEX_AUTH')) {
 
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use SLiMS\Filesystems\Storage;
 use SLiMS\Plugins;
 
 // key to get full database access
@@ -224,31 +225,38 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['last_update'] = date('Y-m-d H:i:s');
 
         // image uploading
+        $images_disk = Storage::images();
         if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-            // create upload object
-            $image_upload = new simbio_file_upload();
-            $image_upload->setAllowableFormat($sysconf['allowed_images']);
-            $image_upload->setMaxSize($sysconf['max_image_upload'] * 1024);
-            $image_upload->setUploadDir(IMGBS . 'docs');
-
+            // Title
             $img_title = $data['title'].'_'.date("YmdHis");
             if(strlen($data['title']) > 70){
                 $img_title = substr($data['title'], 0, 70).'_'.date("YmdHis");
             }
 
-            $new_filename = strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title));
-            // upload the file and change all space characters to underscore
-            $img_upload_status = $image_upload->doUpload('image', $new_filename);
-            if ($img_upload_status == UPLOAD_SUCCESS) {
-                $data['image'] = $dbs->escape_string($image_upload->new_filename);
+            // create upload object
+            $image_upload = $images_disk->upload('image', function($images) use($sysconf) {
+                // Extension check
+                $images->isExtensionAllowed($sysconf['allowed_images']);
+
+                // File size check
+                $images->isLimitExceeded($sysconf['max_image_upload']*1024);
+
+                // destroy it if failed
+                if (!empty($images->getError())) $images->destroyIfFailed();
+
+            })->as('docs/' . strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title)));
+
+            
+            if ($image_upload->getUploadStatus()) {
+                $data['image'] = $dbs->escape_string($image_upload->getUploadedFileName());
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' upload image file ' . $image_upload->new_filename);
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' upload image file ' . $image_upload->getUploadedFileName());
                 utility::jsToastr('Bibliography', __('Image Uploaded Successfully'), 'success');
             } else {
                 // write log
                 $data['image'] = NULL;
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->new_filename . ', with error (' . $image_upload->error . ')');
-                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.$image_upload->error, 'error');
+                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->getUploadedFileName() . ', with error (' . $image_upload->getError() . ')');
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.$image_upload->getError(), 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
@@ -257,13 +265,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $valid = strlen($filedata) / 1024 < $sysconf['max_image_upload'];
             $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
             $new_filename = strtolower('cover_'
-                . preg_replace("/[^a-zA-Z0-9]+/", "_", $data['title'])
+                . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')
                 . '.' . $filedom);
 
-            if ($valid AND file_put_contents(IMGBS . 'docs/' . $new_filename, $filedata)) {
-                $data['image'] = $dbs->escape_string($new_filename);
-                if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-                $upload_status = UPLOAD_SUCCESS;
+            if ($valid) {
+                @$images_disk->put('docs/' . $new_filename, $filedata);
+                
+                if ($images_disk->isExists('docs/' . $new_filename))
+                {
+                    $data['image'] = $dbs->escape_string($new_filename);
+                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                    $upload_status = UPLOAD_SUCCESS;
+                }
             }
         }
 
@@ -983,9 +996,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     if ($in_pop_up) {
         $upper_dir = '../../';
     }
-    if (isset($rec_d['image']) && file_exists('../../../images/docs/' . $rec_d['image'])) {
-        $str_input .= '<a href="' . SWB . 'images/docs/' . ($rec_d['image'] ?? '') . '" class="openPopUp notAJAX" title="' . __('Click to enlarge preview') . '">';
-        $str_input .= '<img src="' . $upper_dir . '../images/docs/' . urlencode($rec_d['image'] ?? '') . '" class="img-fluid rounded" alt="Image cover">';
+    $imageDisk = Storage::images();
+    if (isset($rec_d['image']) && $imageDisk->isExists('docs/' . $rec_d['image'])) {
+        $url = $upper_dir . '../lib/minigalnano/createthumb.php?filename=images/docs/'.urlencode($rec_d['image'] ?? '');
+        $str_input .= '<a href="' . $url . '&width=220" class="openPopUp notAJAX" title="' . __('Click to enlarge preview') . '">';
+        $str_input .= '<img src="' . $url .'&width=130" class="img-fluid rounded" alt="Image cover">';
         $str_input .= '</a>';
         $str_input .= '<a href="' . MWB . 'bibliography/index.php" postdata="removeImage=true&bimg=' . $itemID . '&img=' . ($rec_d['image'] ?? '') . '" loadcontainer="imageFilename" class="s-margin__bottom-1 mt-1 s-btn btn btn-danger btn-block makeHidden removeImage">' . __('Remove Image') . '</a>';
     } else {

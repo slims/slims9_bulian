@@ -337,6 +337,10 @@ $('document').ready(function() {
 	if (anchor.hasClass('notAJAX')) {
       return true;
 	}
+  // Prevent click action in symfony var-dumper
+  if (anchor.hasClass('sf-dump-toggle') || anchor.hasClass('sf-dump-str-toggle')) {
+    return true
+  }
 	if (anchor.attr('target') && anchor.attr('target') != '_self') {
 	  return true;
 	}

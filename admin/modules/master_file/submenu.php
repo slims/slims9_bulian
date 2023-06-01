@@ -41,6 +41,7 @@ $menu[] = array(__('Doc. Language'), MWB.'master_file/doc_language.php', __('Doc
 $menu[] = array(__('Label'), MWB.'master_file/label.php', __('Special Labels for Titles to Show Up On Homepage'));
 $menu[] = array(__('Frequency'), MWB.'master_file/frequency.php', __('Frequency'));
 $menu[] = array('Header', __('TOOLS'));
+$menu[] = array(__('Visitor Room'), MWB.'master_file/visitor_room.php', __('List of members comment about biblio'));
 $menu[] = array(__('Comment Management'), MWB.'master_file/detail_comment.php', __('List of members comment about biblio'));
 $menu[] = array(__('Cataloging Servers'), MWB.'master_file/p2pservers.php', __('List of available Copy Cataloging Servers'));
 $menu[] = array(__('Item Code Pattern'), MWB.'master_file/item_code_pattern.php', __('Manage item code pattern'));

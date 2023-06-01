@@ -80,6 +80,15 @@ $(document).ready(() => {
         $('#mediaSocialModalBody').html(`<iframe src="?p=sharelink&id=${id}&title=${title}" class="w-100" style="height: 5.5rem"></iframe>`)
     })
 
+    let oembed = $('oembed')
+
+    if (oembed.length > 0) {
+        oembed.each(function(index,el){
+            let urlSrc = $(el).attr('url').replace('watch?v=', 'embed/')
+            $('figure.media').append('<iframe style="width: 100%; height: '+(window.innerHeight - 200)+'px" src="' + urlSrc + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>')  
+        })
+    }
+
     $('.collapse-detail')
         .on('shown.bs.collapse', e => {
             let id = e.target.getAttribute('id')

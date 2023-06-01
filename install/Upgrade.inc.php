@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 32;
+  private $version = 33;
 
   /**
    * @param SLiMS $slims
@@ -42,7 +42,7 @@ class Upgrade
       $this->slims->updateSqlMode($new_sql_mode);
   }
 
-  function hookAfterUpgrade() {
+  function hookAfterUpgrade($version) {
       // cek if table not exist
       $tables = require 'tables.php';
       foreach ($tables as $table) {
@@ -64,7 +64,10 @@ class Upgrade
       }
 
       // make sure use default template
-      $this->slims->updateTheme('default');
+      $this->slims->updateTheme('default', $version);
+
+      // update storeage engine
+      $this->slims->updateStorageEngine();
 
       // rollback sql_mode
       $this->slims->rollbackSqlMode();
@@ -98,8 +101,13 @@ class Upgrade
     }
 
     // run after script
-    $this->hookAfterUpgrade();
+    $this->hookAfterUpgrade($version);
     return $err;
+  }
+
+  function getVersion()
+  {
+    return $this->version;
   }
 
   /**
@@ -1019,8 +1027,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     function upgrade_role_31()
     {
         $sql['alter'][] = "ALTER TABLE `files` ADD `file_key` text COLLATE 'utf8_unicode_ci' NULL AFTER `file_desc`;";
-        if($_POST['oldVersion'] > 19) {
-          $sql['alter'][] = "ALTER TABLE `biblio` DROP IF EXISTS `update_date`;";
+        if($_POST['oldVersion']??0 > 19) {
+          $sql['alter'][] = "ALTER TABLE `biblio` DROP `update_date`;";
         }
         $sql['alter'][] = "ALTER TABLE `mst_topic` CHANGE `classification` `classification` varchar(50) COLLATE 'utf8_unicode_ci' NULL COMMENT 'Classification Code' AFTER `auth_list`;";
         $sql['alter'][] = "ALTER TABLE `content` ADD `is_draft` smallint(1) NULL DEFAULT '0' AFTER `is_news`, ADD `publish_date` date NULL AFTER `is_draft`;";
@@ -1063,5 +1071,36 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
         return $this->slims->query($sql, ['create', 'alter']);
+    }
+
+    /**
+     * Upgrade role to v9.6.0
+     */
+    function upgrade_role_33()
+    {
+        $sql['alter'][] = "ALTER TABLE `user` ADD `2fa` text COLLATE 'utf8_unicode_ci' NULL AFTER `passwd`;";
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `name` varchar(50) NOT NULL,
+          `unique_code` varchar(5) NOT NULL COMMENT 'Code for identification each room',
+          `created_at` datetime DEFAULT NULL,
+          `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
+          PRIMARY KEY (`id`),
+          UNIQUE KEY `unique_code_unq` (`unique_code`),
+          KEY `unique_code_idx` (`unique_code`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        $sql['alter'][] = "ALTER TABLE `visitor_count` ADD `room_code` varchar(5) COLLATE 'utf8_unicode_ci' NULL AFTER `institution`;";
+        $sql['alter'][] = "ALTER TABLE `visitor_count` ADD INDEX `room_code` (`room_code`);";
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `cache` (
+          `name` varchar(64) NOT NULL,
+          `contents` text NOT NULL,
+          `created_at` datetime NOT NULL,
+          `updated_at` datetime NOT NULL,
+          `expired_at` datetime DEFAULT NULL,
+          UNIQUE KEY `name` (`name`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        $sql['update'][] = "UPDATE `mst_item_status` SET `skip_stock_take` = 1 WHERE `item_status_id` IN ('NL','R')";
+
+        return $this->slims->query($sql, ['create', 'alter','update']);
     }
 }

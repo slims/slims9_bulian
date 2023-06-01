@@ -20,6 +20,8 @@ export default {
             isPass: null,
             message: '',
             loading: false,
+            engines: [],
+            engine: 'MyISAM',
             allVersion: [
                 {value: 0, text: '-- Select Version --'},
                 {value: 1, text: 'Senayan 3 - Stable 3'},
@@ -53,7 +55,8 @@ export default {
                 {value: 29, text: 'SLiMS 9.4.1 | Bulian'},
                 {value: 30, text: 'SLiMS 9.4.2 | Bulian'},
 				{value: 31, text: 'SLiMS 9.5.0 | Bulian'},
-                {value: 32, text: 'SLiMS 9.5.1 | Bulian'}
+                {value: 32, text: 'SLiMS 9.5.1 | Bulian'},
+                {value: 33, text: 'SLiMS 9.5.2 | Bulian'}
             ]
         }
     },
@@ -69,7 +72,8 @@ export default {
                 },
                 body: JSON.stringify({
                     action: 'do-upgrade',
-                    oldVersion: this.oldVersion
+                    oldVersion: this.oldVersion,
+                    engine: this.engine
                 })
             })
                 .then(res => res.json())
@@ -89,7 +93,26 @@ export default {
                     this.message = [error.message]
                     this.loading = false
                 });
+        },
+        async getEngines() {
+            try {
+                let request = await (await (fetch('./api.php?storeage_engines=yes'))).json()
+
+                if (!request.status) throw request.message??'Something error'
+
+                this.engines = request.data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        setSuggestion(engine)
+        {
+            if (engine === 'Aria') return engine + ' - recommended for crash safe'
+            return engine
         }
+    },
+    mounted() {
+        this.getEngines()
     },
     template: `<div class="h-screen flex">
 <div class="w-20 p-4">
@@ -118,6 +141,19 @@ export default {
         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
       </div>
     </div>
+
+    <h2 class="font-medium text-lg" v-if="engines.length > 0">Storage Engine</h2>
+    <p class="mb-2" v-if="engines.length > 0"><slims-text></slims-text> comes with variant of database storage engine, it can improve your database performance such as crash-safe, transaction etc.</p>
+
+    <div class="inline-block relative w-64 mb-4" v-if="engines.length > 0">
+      <select v-model="engine" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <option v-for="engine in engines" :value="engine[0]" :title="engine[1]">{{ setSuggestion(engine[0]) }}</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+      </div>
+    </div>
+
     <slims-button @click="doUpgrade" :loading="loading" :disabled="oldVersion < 1" type="button" text="Run the installation"></slims-button>
 </div>
 </div>`

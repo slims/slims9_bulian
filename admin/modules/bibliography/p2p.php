@@ -19,6 +19,8 @@
  */
 
 /* Peer-to-Peer Web Services section */
+use SLiMS\Url;
+use SLiMS\Http\Client;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -50,70 +52,44 @@ if (!$can_read) {
 
 function downloadFile($url, $path)
 {
+  $cover = Client::download($url, [
+    'headers' => [
+      'User-Agent' => $_SERVER['HTTP_USER_AGENT']
+    ]
+  ]);
 
-  $fp = fopen($path, 'w+');
+  $savingCover = $cover->to($path);
 
-  $curl = curl_init();
-
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_SSL_VERIFYHOST => false,
-    CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
-    CURLOPT_FILE => $fp
-  ));
-
-  $response = curl_exec($curl);
-  $err = curl_error($curl);
-
-  curl_close($curl);
-  fclose($fp);
-
-  if ($err) {
-    return $err;
+  if (!empty($savingCover->getError())) {
+    return $savingCover->getError();
   } else {
-    // file_put_contents($path, $response);
     return true;
   }
 }
 
 function cleanUrl($url)
 {
-  $_url = parse_url(trim($url));
-  // var_dump($_url);
-  $_path = preg_replace('/(\/index.php|\/)$/', '', trim($_url['path'] ?? ''));
-  $_port = isset($_url['port']) ? ':' . $_url['port'] : '';
-  return $_url['scheme'] . '://' . $_url['host'] . $_port . $_path . '/';
+  $Url = Url::parse($url);
+  
+  return $Url->getScheme() . '://' . // http or https
+         // localhost, ip, or domain       
+         $Url->getDomain() .
+         // http standart port (80 & 443) or non http standart port
+         (!is_null($Url->getPort()) ? ':' . $Url->getPort() : '') .
+         // path
+         (substr($Url->getPath(), -1) == '/' ? $Url->getPath() . '' : $Url->getPath() . '/');
 }
 
 function remoteFileExists($url) 
 {
-  $curl = curl_init($url);
-  curl_setopt($curl, CURLOPT_NOBODY, true);
-  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,  false);
-  $result = curl_exec($curl);
-  $status = null;
-  if ($result !== false) {
-    $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);  
-    if ($statusCode == 200) {
-        $status = $url;   
-    }
-  }
-  curl_close($curl);
-  return $status;
+  $existation = Client::get($url);
+  return $existation->getStatusCode() == 200 ? $url : null;
 }    
 
 // get servers
 $server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
-  $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+  if (Url::isValid($server['uri'])) $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
 }
 
 /* RECORD OPERATION */
@@ -194,13 +170,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       if (isset($biblio['image']) && remoteFileExists($p2pserver . 'images/docs/' . $biblio['image'])) {
         $url_image  = $p2pserver . 'images/docs/' . $biblio['image']; 
         $image_path = IMGBS . 'docs' . DS . $biblio['image'];
-        $arrContextOptions = array(
-          "ssl" => array(
-            "verify_peer" => false,
-            "verify_peer_name" => false,
-          ),
-        );
-        file_put_contents($image_path, file_get_contents($url_image, false, stream_context_create($arrContextOptions)));
+        downloadFile($url_image, $image_path);
       }else{
         $biblio['image'] = NULL; 
       }
@@ -214,6 +184,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       echo '<p>' . $sql_op->error . '</p><p>&nbsp;</p>';
       $biblio_id = $sql_op->insert_id;
       if ($biblio_id < 1) {
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('failed %s download file ( %s ) from  ( %s )') . ' : ' . $sql_op->error,$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
         continue;
       }
       // insert authors
@@ -345,15 +316,16 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
 
   if($_GET['fields']!=''){
     $keywords = $_GET['fields'].'='.$keywords;
-    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&".$keywords."&search=Search&page=".$page, 'uri');
+    $url = $p2pserver . "index.php?resultXML=true&".$keywords."&search=Search&page=".$page;
+    $data = modsXMLsenayan($url, 'uri');
   }
   else{
-    $data = modsXMLsenayan($p2pserver . "/index.php?resultXML=true&search=Search&page=".$page."&keywords=" . $keywords, 'uri');
+    $url = $p2pserver . "index.php?resultXML=true&search=Search&page=".$page."&keywords=" . $keywords;
+    $data = modsXMLsenayan($url, 'uri');
   }
 
   # debugging tools
-  # echo $p2pserver."/index.php?resultXML=true&keywords=".$keywords;
-  # echo '<br />';
+  debug($url, $data);
 
   if (isset($data['records'])) {
 
@@ -421,7 +393,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
 
       $detail = '<a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri='.$server.'&biblioID='.$record['id'].'" title="detail">'.__('Detail').'</a>';
       $title_content = '<div class="media">
-                    <img class="mr-3 rounded" src="'.$image_uri.'" alt="'.$image_uri.'" style="height:70px;">
+                    <img class="mr-3 rounded" src="'.$image_uri.'" alt="'.$image_uri.'" loading="lazy" style="height:70px;">
                     <div class="media-body">
                       <div class="title">'.stripslashes($record['title']).'</div><div class="authors">'.$authors.'</div>
                     </div>
@@ -484,7 +456,10 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
     <?php
      exit();
   } else {
-    echo '<div class="errorBox">' . sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . '</div>';
+    echo '<div class="errorBox">' . 
+    sprintf(__('Sorry, no result found from %s OR maybe XML result and detail disabled.'), $p2pserver) . ',<button type="button" onclick="$(\'#detailError\').show()" class="' . (!isDev() ? 'notAJAX btn btn-link text-white' : 'd-none') . ' ">' . __('read error detail') . '.</button>' .
+    '<div id="detailError" class="mt-2" style="display: none;background-color: #18171B; padding: 15px; color: #56DB3A; font: 12px Menlo, Monaco, Consolas, monospace">' . ((string)$data) . '</div>' .
+    '</div>';
     exit();
   }
 }

@@ -398,8 +398,8 @@ CREATE TABLE IF NOT EXISTS `mst_item_status` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['insert'][] = 'INSERT INTO `mst_item_status` (`item_status_id`, `item_status_name`, `rules`, `input_date`, `last_update`, `no_loan`, `skip_stock_take`) VALUES
-(\'R\', \'Repair\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'0\'),
-(\'NL\', \'No Loan\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'0\'),
+(\'R\', \'Repair\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'1\'),
+(\'NL\', \'No Loan\', \'a:1:{i:0;s:1:"1";}\', DATE(NOW()), DATE(NOW()), \'1\', \'1\'),
 (\'MIS\', \'Missing\', NULL, DATE(NOW()), DATE(NOW()), \'1\', \'1\');';
 
 $sql['create'][] = "
@@ -695,6 +695,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `realname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `passwd` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `2fa` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_type` smallint(2) DEFAULT NULL,
   `user_image` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -734,16 +735,18 @@ CREATE TABLE IF NOT EXISTS `visitor_count` (
   `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `member_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `institution` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `room_code` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `checkin_date` datetime NOT NULL,
   PRIMARY KEY (`visitor_id`),
-  KEY `member_id` (`member_id`)
+  KEY `member_id` (`member_id`),
+  KEY `room_code` (`room_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `biblio_custom` (
 `biblio_id` INT NOT NULL ,
 PRIMARY KEY ( `biblio_id` )
-) ENGINE = MYISAM COMMENT = 'one to one relation with real biblio table';";
+) ENGINE=MyISAM COMMENT = 'one to one relation with real biblio table';";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `search_biblio` (
@@ -792,7 +795,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `member_custom` (
 `member_id` VARCHAR(20) NOT NULL ,
 PRIMARY KEY ( `member_id` )
-) ENGINE = MYISAM COMMENT = 'one to one relation with real member table';";
+) ENGINE=MyISAM COMMENT = 'one to one relation with real member table';";
 
 $sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -1096,7 +1099,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
   `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
-) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
+) ENGINE=MyISAM COLLATE 'utf8mb4_unicode_ci';";
 
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_documents` (
   `document_id` int(11) NOT NULL,
@@ -1117,6 +1120,26 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
   UNIQUE KEY `id` (`id`),
   KEY `member_id_idx` (`member_id`),
   KEY `biblio_id_idx` (`biblio_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `unique_code` int(11) NOT NULL COMMENT 'Code for identification each room',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_code_unq` (`unique_code`),
+  KEY `unique_code_idx` (`unique_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+$sql['create'][] = "CREATE TABLE IF NOT EXISTS `cache` (
+  `name` varchar(64) NOT NULL,
+  `contents` text NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `expired_at` datetime DEFAULT NULL,
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
 $query_trigger[] = "

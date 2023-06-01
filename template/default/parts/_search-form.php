@@ -18,8 +18,6 @@ if ($opac->invalid_token) {
                 <div class="card border-0 shadow">
                     <div class="card-body">
                         <form class="" action="index.php" method="get" @submit.prevent="searchSubmit">
-                            <input type="hidden" ref="csrf_token" value="<?= $opac->getCsrf() ?>">
-                            <input type="hidden" name="csrf_token" value="<?= $opac->getCsrf() ?>">
                             <input type="hidden" name="search" value="search">
                             <input ref="keywords" value="<?= htmlentities(getQuery('keywords')) ?>" v-model.trim="keywords"
                                    @focus="searchOnFocus" @blur="searchOnBlur" type="text" id="search-input"

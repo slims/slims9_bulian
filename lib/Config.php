@@ -34,7 +34,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config', ['sysconfig.local.inc.php', 'sysconfig.local.inc-sample.php']);
+        $this->load(__DIR__ . '/../config', ['env.php', 'env.sample.php']);
     }
 
     /**
@@ -75,6 +75,8 @@ class Config
      */
     function loadFromDatabase()
     {
+        if (self::getFile('database') === null) return;
+        
         $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
         while ($data = $query->fetch(PDO::FETCH_OBJ)) {
             $value = @unserialize($data->setting_value);
@@ -146,6 +148,14 @@ class Config
     }
 
     /**
+     * Get config as plain text
+     */
+    public static function getFile(string $filename)
+    {
+        return file_exists($path = SB . 'config/' . $filename . '.php') ? file_get_contents($path) : null;
+    }
+
+    /**
      * Create some configuration file
      * into <slims-root>/config/
      *
@@ -156,6 +166,34 @@ class Config
     public static function create(string $filename, $content = '')
     {
         if (is_callable($content)) $content = $content($filename);
-        file_put_contents(SB . 'config/' . basename($filename), $content);
+        file_put_contents(SB . 'config/' . basename($filename) . '.php', $content);
+    }
+
+    /**
+     * Create or update SLiMS configuration
+     * to database
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return bool
+     */
+    public static function createOrUpdate(string $name, $value)
+    {
+        require_once SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+        $sql_op = new \simbio_dbop($dbs = DB::getInstance('mysqli'));
+        $name = $dbs->escape_string($name);
+        $data['setting_value'] = $dbs->escape_string(serialize($value));
+
+        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+        if ($query->num_rows > 0) {
+            // update
+            $status = $sql_op->update('setting', $data, "setting_name='{$name}'");
+        } else {
+            // insert
+            $data['setting_name'] = $name;
+            $status = $sql_op->insert('setting', $data);
+        }
+
+        return $status;
     }
 }

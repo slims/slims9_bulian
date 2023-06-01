@@ -44,7 +44,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
 
     $title      = $biblio_detail['title'];
     $biblio_id  = $biblio_detail['biblio_id'];
-    $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
+    $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.urlencode($settings['keywords']??'');
     $cite_url   = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];
     // $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
 
@@ -79,7 +79,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     }
 
     // availability
-    $availability = getAvailability($dbs, $biblio_id);
+    $availability = getAvailability($dbs, $biblio_id, $sysconf);
     $class_avail = ($availability > 0) ? '' : 'text-danger';
 
     // authors
@@ -101,7 +101,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<div class="card-body">';
         $output .= '<div class="row">';
         $output .= '<div class="col-12 col-md-2">';
-        $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" />';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" title="' . ($availability > 0 ?:  __('Items is not available')) . '"/>';
         $output .= '</div>'; // -- close col-2
         $output .= '<div class="col-8">';
         $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.addEllipsis($title, 80).'</a></h5>';
@@ -119,9 +119,9 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<span class="label">'.__('Availability').'</span>';
         $output .= '<span class="value '.$class_avail.'">'.$availability.'</span>';
         $output .= '</div>'; // -- close d-flex flex-column
-        $output .= '<div class="add-to-chart ' . ($availability < 1 ?: 'add-to-chart-button') . ' align-items-center justify-content-center flex-column" data-biblio="'.$biblio_id.'">';
-        $output .= '<span class="label">'. ($availability > 0 ? __('Add to basket') : __('Items not available') ) .'</span>';
-        $output .= '<span class="value"><i class="fas ' . ($availability > 0 ? 'fa-plus' : 'fa-ban') . '"></i></span>';
+        $output .= '<div class="add-to-chart add-to-chart-button align-items-center justify-content-center flex-column" data-biblio="'.$biblio_id.'">';
+        $output .= '<span class="label">'. __('Add to basket') .'</span>';
+        $output .= '<span class="value"><i class="fas fa-plus"></i></span>';
         $output .= '</div>'; // -- close d-flex flex-column
         $output .= '</div>'; // -- close card-body pt-3 pb-2 px-1
         $output .= '</div>'; // -- close card availability
@@ -158,7 +158,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
 </div>
 HTML;
         $output .= '<div class="p-5 flex justify-center items-center bg-grey-light">';
-        $output .= '<img loading="lazy" src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'"/>';
+        $output .= '<img loading="lazy" src="'.$thumb_url.'" class="img-fluid img-thumbnail shadow '.($availability > 0 ?: 'not-available').'" title="' . ($availability > 0 ?:  __('Items is not available')) . '"/>';
         $output .= '</div>';
         $output .= '<div class="card-body p-2">';
         $output .= '<a href="'.$detail_url.'" class="text-sm text-decoration-none grid-item--title m-0">'.$title.'</a>';
@@ -199,7 +199,7 @@ function addEllipsis($string, $length, $end='…')
     return $string;
 }
 
-function getAvailability($dbs, $biblio_id)
+function getAvailability($dbs, $biblio_id, $sysconf)
 {
     // get total number of this biblio items/copies
     $_item_q = $dbs->query('SELECT COUNT(*) FROM item WHERE biblio_id='.$biblio_id);

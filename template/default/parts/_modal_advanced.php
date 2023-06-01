@@ -11,8 +11,6 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <form class="modal-content" action="index.php" method="get">
-            <input type="hidden" ref="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><?=__('Advanced Search'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

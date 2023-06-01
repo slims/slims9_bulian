@@ -96,7 +96,7 @@ if (isset($_POST['doExport'])) {
                     $buffer = null;
                     foreach ($member_data as $key => $fld_data) {
                         $headers[$key] = $key;
-                        $fld_data = $dbs->escape_string($fld_data);
+                        $fld_data = $dbs->escape_string($fld_data??'');
                         // data
                         $buffer .=  $encloser.$fld_data.$encloser;
                         // field separator
@@ -153,7 +153,7 @@ $form->table_content_attr = 'class="alterCell2"';
 
 /* Form Element(s) */
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(';').'', 'style="width: 10%;" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" class="form-control"');
 //  field enclosed
 $form->addTextField('text', 'fieldEnc', __('Field Enclosed With'), ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
 // record separator

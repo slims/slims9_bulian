@@ -131,7 +131,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
         'st.stock_take_name AS \''.__('Stock Take Name').'\'',
         'st.start_date AS \''.__('Start Date').'\'',
         'st.end_date AS \''.__('End Date').'\'',
-        'CONCAT(\'<a class="notAJAX" href="'.SWB.FLS.'/'.REP.'/\', st.report_file, \'" target="_blank">\', st.report_file, \'</a>\') AS \''.__('Report').'\'');
+        'st.report_file AS \'' . __('Report') . '\'');
     $datagrid->setSQLorder('st.start_date DESC');
     $datagrid->disableSort('Report');
 
@@ -152,7 +152,8 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
             $datagrid->setSQLCriteria("stock_take_name LIKE '%$keyword%' OR init_user LIKE '%$keyword%'");
         }
     }
-    $datagrid->modifyColumnContent(0, 'callback{stockTakeDetail}'); 
+    $datagrid->modifyColumnContent(0, 'callback{stockTakeDetail}');
+    $datagrid->modifyColumnContent(4, 'callback{showReport}'); 
     // set table and table header attributes
     $datagrid->icon_edit = $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
@@ -163,6 +164,15 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID'])) {
     function stockTakeDetail($obj_db,$array_data){
         $str = '<a class="fa fa-search" href="'.$_SERVER['PHP_SELF'].'?itemID=5&amp;detail=true&amp;ajaxload=1" postdata="itemID='.$array_data[0].'&amp;detail=true">&nbsp;</a>';
         return $str;
+    }
+
+    function showReport($db, $array_data)
+    {
+
+        return '<a class="btn btn-primary btn-sm notAJAX openPopUp" width="1000" title="'.str_replace('<title>', $array_data[1], __('Stock take report : <title>')).'" height="500" href="'.MWB.'stock_take/report_reader.php?file=' . $db->escape_string($array_data[4]) . '">
+        <i class="fa fa-file-text"></i>&nbsp;
+        ' . __('Show') . '
+        </a>';
     }
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, false);

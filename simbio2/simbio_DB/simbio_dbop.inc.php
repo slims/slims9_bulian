@@ -89,15 +89,20 @@ class simbio_dbop extends simbio
         $_str_columns = substr_replace($_str_columns, '', 0, 1);
         $_str_value = substr_replace($_str_value, '', 0, 1);
 
-        // the insert query
-        $this->sql_string = "INSERT INTO `$str_table` ($_str_columns) "
-            ."VALUES ($_str_value)";
-        $_insert = $this->obj_db->query($this->sql_string);
-        // if an error occur
-        if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
-        // get last inserted record ID
-        $this->insert_id = $this->obj_db->insert_id;
-        $this->affected_rows = $this->obj_db->affected_rows;
+        try {
+            // the insert query
+            $this->sql_string = "INSERT INTO `$str_table` ($_str_columns) "
+                ."VALUES ($_str_value)";
+            $_insert = $this->obj_db->query($this->sql_string);
+            
+            // get last inserted record ID
+            $this->insert_id = $this->obj_db->insert_id;
+            $this->affected_rows = $this->obj_db->affected_rows;
+        } catch (Exception $e) {
+            // if an error occur
+            $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : ''; 
+            return false; 
+        }
 
         return true;
     }
@@ -121,18 +126,18 @@ class simbio_dbop extends simbio
             // concat the update query string
             foreach ($array_update as $column => $new_value) {
                 if ($new_value == '') {
-                    $_set .= ", $column = ''";
+                    $_set .= ", `$column` = ''";
                 } else if ($new_value === 'NULL' OR $new_value == null) {
-                    $_set .= ", $column = NULL";
+                    $_set .= ", `$column` = NULL";
                 } else if (is_string($new_value)) {
                     if (preg_match("/^literal{.+}/i", $new_value)) {
                         $new_value = preg_replace("/literal{|}/i", '', $new_value);
-                        $_set .= ", $column = $new_value";
+                        $_set .= ", `$column` = $new_value";
                     } else {
-                        $_set .= ", $column = '$new_value'";
+                        $_set .= ", `$column` = '$new_value'";
                     }
                 } else {
-                    $_set .= ", $column = $new_value";
+                    $_set .= ", `$column` = $new_value";
                 }
             }
 
@@ -141,12 +146,16 @@ class simbio_dbop extends simbio
         }
 
         // update query
-        $this->sql_string = "UPDATE $str_table SET $_set WHERE $str_criteria";
-        $_update = $this->obj_db->query($this->sql_string);
-        // if an error occur
-        if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
-        // number of affected rows
-        $this->affected_rows = $this->obj_db->affected_rows;
+        try {
+            $this->sql_string = "UPDATE $str_table SET $_set WHERE $str_criteria";
+            $_update = $this->obj_db->query($this->sql_string);
+            // number of affected rows
+            $this->affected_rows = $this->obj_db->affected_rows;
+        } catch (Exception $e) {
+             // if an error occur
+             $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : ''; 
+             return false; 
+        }
 
         return true;
     }
@@ -161,13 +170,17 @@ class simbio_dbop extends simbio
      */
     public function delete($str_table, $str_criteria)
     {
-        // the delete query
-        $this->sql_string = "DELETE FROM $str_table WHERE $str_criteria";
-        $_delete = $this->obj_db->query($this->sql_string);
-        // if an error occur
-        if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
-        // affected rows
-        $this->affected_rows = $this->obj_db->affected_rows;
+        try {
+            // the delete query
+            $this->sql_string = "DELETE FROM $str_table WHERE $str_criteria";
+            $_delete = $this->obj_db->query($this->sql_string);
+            // affected rows
+            $this->affected_rows = $this->obj_db->affected_rows;
+        } catch (Exception $e) {
+            // if an error occur
+            $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : ''; 
+            return false; 
+        }
 
         return true;
     }

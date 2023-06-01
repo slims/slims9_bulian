@@ -246,7 +246,7 @@ if (!$reportView) {
                 var loadContainer = anchor.attr('loadcontainer');
                 if (loadContainer) {
                     container = jQuery('#' + loadContainer);
-                    container.html('<div class="alert alert-info">Please wait....</div>');
+                    container.html('<div class="alert alert-info"><?= __('Please wait') ?>....</div>');
                 }
                 // set ajax
                 if (postData) {

@@ -146,9 +146,9 @@ function formatDatestamp($datestamp)
  * It needs to clean all time-zone informaion from time string and reformat it
  */
 function checkDateFormat($date) {
-	$date = str_replace(array("T","Z")," ",$date);
+	$date = str_replace(array("T","Z")," ",urldecode($date));
 	$time_val = strtotime($date);
-	if (SHOW_QUERY_ERROR) { echo "timeval: $time_val\n"; }
+    if (SHOW_QUERY_ERROR) { echo "timeval: $time_val\n"; }
 	if(!$time_val) return false;
 	if(strstr($date,":")) {
 		return date("Y-m-d H:i:s",$time_val);

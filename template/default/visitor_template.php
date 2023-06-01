@@ -125,7 +125,7 @@ if (isset($_GET['select_lang'])) {
             },
             getQuotes: function() {
                 // Alternative Free Quotes API: https://api.quotable.io/random
-                axios.get('https://kutipan.herokuapp.com/')
+                axios.get('https://slims.web.id/kutipan/')
                     .then(res => {
                         res.data.content = he.decode(res.data.content)
                         this.quotes = res.data
@@ -145,7 +145,7 @@ if (isset($_GET['select_lang'])) {
                     this.resetForm()
                     return
                 }
-                let url = 'index.php?p=visitor'
+                let url = 'index.php?p=visitor<?= trim(isset($_GET['room']) ? '&room=' . simbio_security::xssFree($_GET['room']) : '')  ?>'
                 let data = new FormData()
                 data.append('memberID', this.memberId)
                 data.append('institution', this.institution)

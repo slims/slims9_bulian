@@ -83,10 +83,10 @@ class SLiMS
 
   function databaseDriverType()
   {
-    if (extension_loaded('mysql')) {
-      $type = 'mysql';
-    } else if (extension_loaded('mysqli')) {
-      $type = 'mysqli';
+    $mysql = extension_loaded('mysqli') || extension_loaded('nd_mysqli');
+    $pdoMySQL = extension_loaded('pdo_mysql') || extension_loaded('nd_pdo_mysql');
+    if ($mysql && $pdoMySQL) {
+      $type = 'MySQLi & PDO MySQL';  
     } else {
       $type = null;
     }
@@ -215,7 +215,7 @@ class SLiMS
     return $mix_input;
   }
 
-  function createConnection($host, $port = '3306', $user, $pass = '', $name = null)
+  function createConnection($host, $port = '3306', $user = 'root', $pass = '', $name = null)
   {
     if (is_null($this->db)) {
         $this->db = @new mysqli($host, $user, $pass, $name, $port);
@@ -224,6 +224,11 @@ class SLiMS
       throw new Exception("Error Connecting to Database with message: ".mysqli_connect_error());
     }
     return $this->db;
+  }
+
+  function setConnection($db)
+  {
+    $this->db = $db;
   }
 
   function isDatabaseExist($database_name)
@@ -240,6 +245,36 @@ class SLiMS
   public function getDb()
   {
     return $this->db;
+  }
+
+  function getStorageEngines()
+  {
+    $basic_engines = [1 => 'MyISAM','Aria','InnoDB'];
+    $state = $this->db->query('SHOW ENGINES');
+
+    $engines = [];
+    while ($result = $state->fetch_object()) {
+      foreach ($basic_engines as $index => $engine) {
+        if ($result->Engine === $engine && in_array($result->Support, ['YES','DEFAULT'])) {
+          $engines[$index] = [$result->Engine, $result->Comment];
+        }      
+      }
+    }
+
+    return $engines;
+  }
+
+  function updateStorageEngine()
+  {
+    if (!isset($_POST['engine']) || $_POST['engine'] === 'MyISAM') return;
+    
+    $state = $this->db->query('SHOW TABLES');
+
+    while ($result = $state->fetch_row()) {
+      $tableName = $this->db->escape_string($result[0]);
+      $tableEngine = $this->db->escape_string($_POST['engine']);
+      $this->db->query('ALTER TABLE `' . $tableName . '` ENGINE=\''.$tableEngine.'\';');
+    }
   }
 
   function createTable($table) {
@@ -362,10 +397,31 @@ SQL;
     $config_content = str_replace("_DB_NAME_", $options['db_name'], $config_content);
     $config_content = str_replace("_DB_USER_", $options['db_user'], $config_content);
     $config_content = str_replace("_DB_PASSWORD_", $options['db_pass'], $config_content);
+    if (isset($_POST['engine'])) $config_content = str_replace("_STORAGE_ENGINE_", trim($_POST['engine']), $config_content);
 
     $config_file = fopen($config_file_path, 'w');
     $write = fwrite($config_file, $config_content);
     return ['status' => $write];
+  }
+
+  function createEnvFile()
+  {
+    $base_env_file = __DIR__ . '/../config/env.sample.php';
+    $env_file_path = __DIR__ . '/../config/env.php';
+
+    if (!file_exists($base_env_file)) {
+      throw new Exception("File {$base_env_file} not found!", 404);
+    }
+    
+    $sample = file_get_contents($base_env_file);
+    $sample = str_replace('<environment>', 'production', $sample);
+    $sample = str_replace('<conditional_environment>', 'production', $sample);
+    $sample = str_replace('\'<based_on_ip>\'', 'false', $sample);
+    $sample = str_replace('<ip_range>', '', $sample);
+
+    $writeEnv = file_put_contents($env_file_path, $sample);
+
+    if ($writeEnv === false) throw new Exception("Cannot write env file. Create it manually in config directory based on env.sample.php", 403);
   }
 
   function query($array, $types = [])
@@ -375,6 +431,10 @@ SQL;
       if (array_key_exists($type, $array)) {
         foreach ($array[$type] as $item) {
           try {
+            if (isset($_POST['engine']) && $_POST['engine'] !== 'MyISAM') 
+            {
+              $item = str_replace('ENGINE=MyISAM', 'ENGINE=' . trim($_POST['engine']), $item);
+            }
             $stmt = $this->db->prepare($item);
             if (!$stmt) throw new Exception($this->db->error . '. Your syntax: ' . $item);
             $stmt->execute();
@@ -420,12 +480,13 @@ SQL;
     return $this->db->query($sql_update);
   }
 
-  function updateTheme($theme = 'default') {
+  function updateTheme($theme = 'default', $upgrade_from = '') {
     // get template setting
     $sysconf = [];
     $query = $this->db->query("SELECT setting_name, setting_value 
                                FROM setting 
-                               WHERE setting_name = 'template' OR setting_name = 'admin_template'");
+                               WHERE setting_name IN ('template','admin_template')");
+                               
     while ($data = $query->fetch_assoc()) {
       // get value
       $value = @unserialize($data['setting_value']);
@@ -433,13 +494,21 @@ SQL;
         foreach ($value as $k => $v) {
           $sysconf[$data['setting_name']][$k] = $v;
         }
+
+        // update value
+        if (isset($sysconf[$data['setting_name']]['theme'])) $sysconf[$data['setting_name']]['theme'] = $theme;
+        if (isset($sysconf[$data['setting_name']]['css'])) $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/'.$theme.'/style.css';
+
+      } else {
+        // Default template if unserialize process is failed
+        $sysconf[$data['setting_name']]['theme'] = 'default';
+        $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/default/style.css';
       }
 
-      // update value
-      if (isset($sysconf[$data['setting_name']]['theme']))
-        $sysconf[$data['setting_name']]['theme'] = $theme;
-      if (isset($sysconf[$data['setting_name']]['css']))
-        $sysconf[$data['setting_name']]['css'] = $data['setting_name'].'/'.$theme.'/style.css';
+      // update admin template per user if SLiMS version start from v9.2.0
+      if ($upgrade_from > 22 && $data['setting_name'] == 'admin_template') {
+        $this->db->query('UPDATE user SET admin_template = \''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\'');
+      }
 
       // save again
       $this->db->query('UPDATE setting SET setting_value=\''.$this->db->escape_string(serialize($sysconf[$data['setting_name']])).'\' WHERE setting_name=\''.$data['setting_name'].'\'');

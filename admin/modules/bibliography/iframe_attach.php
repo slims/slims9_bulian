@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Filesystems\Storage;
+
 /* Attachment List */
 
 // key to authenticate
@@ -51,6 +53,8 @@ if (isset($_GET['biblioID']) AND !empty($_GET['biblioID'])) {
     $biblioID = (integer)$_GET['biblioID'];
 }
 
+$repository = Storage::repository();
+
 // start the output buffer
 ob_start();
 ?>
@@ -76,7 +80,7 @@ function confirmProcess(int_biblio_id, int_file_id, str_file_name)
 if (isset($_GET['removesess'])) {
   $idx = (integer)$_GET['removesess'];
   // remove file from filesystem
-  @unlink(REPOBS.str_replace('/', DS, $_SESSION['biblioAttach'][$idx]['file_dir']).DS.$_SESSION['biblioAttach'][$idx]['file_name']);
+  @$repository->delete(str_replace('/', DS, $_SESSION['biblioAttach'][$idx]['file_dir']).DS.$_SESSION['biblioAttach'][$idx]['file_name']);
   // remove session array
   unset($_SESSION['biblioAttach'][$idx]);
   utility::jsToastr('Attachment', __('Attachment removed!'), 'success');
@@ -97,7 +101,7 @@ if (isset($_POST['bid']) AND isset($_POST['remove'])) {
 
   if ($_POST['alsoDeleteFile'] == '1') {
     // remove file from repository and filesystem
-    @unlink(REPOBS.str_replace('/', DS, $file_d['file_dir']).DS.$file_d['file_name']);
+    @$repository->delete(str_replace('/', DS, $file_d['file_dir']).DS.$file_d['file_name']);
     utility::jsToastr('Attachment', addslashes(str_replace('{filename}', $file_d['file_name'], __('Attachment {filename} succesfully removed!'))), 'success');
   }
   echo '<script type="text/javascript">';
@@ -127,7 +131,7 @@ if ($biblioID) {
     $edit_link = '<a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_attach.php?biblioID='.$biblioID.'&fileID='.$biblio_attach_d['file_id'].'" width="780" height="500" title="'.__('File Attachments').'">' . __('Edit') . '</a>';
 
     // file link
-    if (preg_match('@(video|audio|image)/.+@i', $biblio_attach_d['mime_type'])) {
+    if (preg_match('@(video|audio|image)/.+@i', $biblio_attach_d['mime_type']??'')) {
         $file = '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'index.php?p=multimediastream&fid='.$biblio_attach_d['file_id'].'&bid='.$biblio_attach_d['biblio_id'].'" width="480" height="320" title="'.$biblio_attach_d['file_title'].'">'.$biblio_attach_d['file_title'].'</a>';
     } else {
         $file = '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($biblio_attach_d['file_id']).'" width="780" height="500" target="_blank">'.$biblio_attach_d['file_title'].'</a>';

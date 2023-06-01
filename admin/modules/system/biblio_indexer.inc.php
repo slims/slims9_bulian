@@ -133,9 +133,8 @@ class biblio_indexer
 			$rb_id = $rec_bib->fetch_assoc();
 		}
 
-		if ($this->verbose) {
-			echo 'Indexing: ' . $rb_id['title'] . '...';
-		}
+		$verbose_message = 'Indexing: ' . $rb_id['title'] . '...';
+
 		$data['biblio_id'] = $int_biblio_id;
 
 		/* GMD , Title, Year  */
@@ -245,23 +244,17 @@ class biblio_indexer
 			$this->biblio->insert($data);
 			// create index
 			$this->biblio->ensureIndex(array('title' => 1, 'author' => 1, 'topic' => 1));
-			if ($this->verbose) {
-				echo " indexed\n";
-			}
+			$this->verbose(" indexed<br>");
 			$this->indexed++;
 		} else {
 			/*  SQL operation object  */
 			$sql_op = new simbio_dbop($this->obj_db);
 			/*  Insert all variable  */
 			if ($sql_op->insert('search_biblio', $data)) {
-				if ($this->verbose) {
-					echo " indexed\n";
-				}
 				$this->indexed++;
+				$this->verbose("$verbose_message indexed<br>", increment: $this->indexed);
 			} else {
-				if ($this->verbose) {
-					echo " FAILED! (Error: '.$sql_op->error.')\n";
-				}
+				$this->verbose("$verbose_message FAILED! (Error: '.$sql_op->error.')<br>", increment: 0);
 				$this->failed[] = $int_biblio_id;
 				// line below is for debugging purpose only
 				// echo '<div>'.$sql_op->error.'</div>';
@@ -313,7 +306,7 @@ class biblio_indexer
 			while ($rb_id = $rec_bib->fetch_row()) {
 				$biblio_id = $rb_id[0];
 				$index = $this->makeIndex($biblio_id);
-				$this->makeIndex($biblio_id);
+				$this->makeIndexWord($biblio_id);
 			}
 			// end time
 			$_end = function_exists('microtime') ? microtime(true) : time();
@@ -406,5 +399,29 @@ class biblio_indexer
 		}
 
 		return empty($barcode_all) ? '' : substr_replace($barcode_all, '', -3);
+	}
+
+	private function verbose($message, $increment = 0)
+	{
+		if (!$this->verbose || $increment == 0) return;
+		$decrement = $this->total_records - $increment;
+
+		echo <<<HTML
+		<div style="background-color: #18171B; color: #00FF10; line-height: 1.2em; font: 14px Menlo, Monaco, Consolas, monospace; word-wrap: break-word;z-index: 99999;word-break: break-all;">
+			{$message}
+		</div>
+		<script>
+			setTimeout(() => {
+				scroll({
+					top: document.body.scrollHeight,
+					behavior: "smooth"
+				});
+				parent.$('#indexed').html('{$increment}')
+				parent.$('#unindexed').html('{$decrement}')
+			}, 1000);
+		</script>
+		HTML;
+        ob_flush();
+        flush();
 	}
 }

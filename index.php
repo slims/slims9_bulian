@@ -28,9 +28,14 @@ define('INDEX_AUTH', '1');
 
 // required file
 require 'sysconfig.inc.php';
+
+// Cleanup SQL Injection and Common XSS
+$sanitizer->cleanUp(exception: ['contentDesc','fieldEnc']);
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('opac');
+
 // member session params
 require LIB.'member_session.inc.php';
 if ($sysconf['template']['base'] == 'html') {
@@ -59,7 +64,10 @@ $opacVariable = [
 
     // searched words for javascript highlight
     'searched_words_js_array' => '',
-    'available_languages' => $available_languages
+    'available_languages' => $available_languages,
+
+    // Sanitizer
+    'sanitizer' => $sanitizer,
 ];
 
 // OPAC Instance
@@ -77,7 +85,9 @@ $Opac->hookBeforeContent(function($Opac){
 });
 
 // Path process or show welcome page
-$Opac->handle('p')->orWelcome();
+$Opac->onWeb(function($Opac){
+  $Opac->handle('p')->orWelcome();
+})->onCli();
 
 // running hook to override process/variable after
 // content load

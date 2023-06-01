@@ -52,3 +52,18 @@ if (!function_exists('dd')) {
         exit(1);
     }
 }
+
+if (!function_exists('debug'))
+{
+    /**
+     * Helper to verbosing 
+     * debug process
+     * @return void
+     */
+    function debug()
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $_SESSION['dumpFile'] = ($trace['file']??'') . ':' . ($trace['line']);
+        if (ENVIRONMENT == 'development') foreach(func_get_args() as $arg) VarDumper::dump($arg);
+    }
+}

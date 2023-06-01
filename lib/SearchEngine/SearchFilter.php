@@ -136,7 +136,7 @@ trait SearchFilter
         $filterArr = json_decode($filterStr??'', true);
 
         $str = '<form id="search-filter"><ul class="list-group list-group-flush">';
-        $str .= '<input type="hidden" name="csrf_token" value="'.$opac->getCsrf().'">';
+        // $str .= '<input type="hidden" name="csrf_token" value="'.$opac->getCsrf().'">';
 
         foreach ($this->reOrder($filters) as $index => $filter) {
             if ($index < 1) {

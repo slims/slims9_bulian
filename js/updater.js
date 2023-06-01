@@ -36,6 +36,22 @@ jQuery.extend({
     }
 });
 
+var simbioAJAXError = function (url, errorObject) {
+    let env = $('meta[name="env"]').attr('content')
+    return env === 'prod' ? `
+    <div class="w-full p-5">
+        <div class="col-6">
+            <h1 style="font-size: 30pt">${errorObject.status}</h1>
+            <strong style="font-size: 18pt">${errorObject.statusText}</strong>
+            <p style="font-size: 14pt">Please contact system admin or change <strong>system environment to development</strong> at system module for more information about this error.</p>
+            <div>
+                <strong>URL : </strong>
+                <span class="text-muted">${url}</span>
+            </div>
+        </div>
+    </div>` : errorObject.responseText??'Uknown error'
+}
+
 /**
  * Function to Set AJAX content
  *
@@ -82,9 +98,7 @@ jQuery.fn.simbioAJAX = async function (strURL, params) {
             data: options.addData, async: true
         })
     } catch (err) {
-        ajaxResponse = `<div class="alert alert-danger error-message">Unknown error</div>`;
-        if (err.responseText !== undefined)
-            ajaxResponse = `<div class="alert alert-danger error-message">${err.responseText}</div>`;
+        ajaxResponse = simbioAJAXError(strURL, err);
     }
 
     // add to elements

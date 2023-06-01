@@ -4,7 +4,7 @@
  * @rebuild by Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-14 12:49:19
- * @modify date 2022-10-24 08:30:15
+ * @modify date 2023-01-12 08:07:16
  * @desc 
 */
 /*
@@ -79,11 +79,13 @@ class Thumb
      *
      * @var string
      */
+    private $storage = '';
     private $filePath = '';
     private $error = '';
     
-    public function __construct($filePath, $cachePrefix = '_slims_img_cache_resolutionWidth_x_resolutionHeight_')
+    public function __construct($storage, $filePath, $cachePrefix = '_slims_img_cache_resolutionWidth_x_resolutionHeight_')
     {
+        $this->storage = $storage;
         $this->filePath = $filePath;
         $this->cache['prefix'] = $cachePrefix;
         $this->cache['file'] = $this->cache['folder'] . $cachePrefix . basename($filePath);
@@ -151,7 +153,7 @@ class Thumb
      */
     public function isFileExists()
     {
-        if (!file_exists($this->filePath))
+        if (!$this->storage->isExists($this->filePath))
         {
             $this->error = 'filenotfound';
         }
@@ -165,7 +167,7 @@ class Thumb
      */
     public function isReadable()
     {
-        if (!is_readable($this->filePath))
+        if (!$this->storage->read($this->filePath))
         {
             $this->error = 'filecantbeopened';
         }
@@ -211,7 +213,7 @@ class Thumb
      */
     public function prepare()
     {
-        $imageSize = GetImageSize($this->filePath);
+        $imageSize = getimagesizefromstring($this->storage->read($this->filePath));
         $this->imageWidth = $imageSize[0];
         $this->imageHeight = $imageSize[1];
 
@@ -231,9 +233,15 @@ class Thumb
     public function orError()
     {
         if (empty($this->error)) return;
+        self::setError($this->error);
+    }
+
+    public static function setError(string $error = 'filenotfound')
+    {
+        $static = new static(null, __DIR__);
         // Create http header based on file extension
-        $this->setContentType('image/png');
-        echo file_get_contents(__DIR__ . '/' . $this->error . '.png');
+        $static->setContentType('image/png');
+        echo file_get_contents(__DIR__ . '/' . $error . '.png');
         exit;
     }
 
@@ -252,9 +260,9 @@ class Thumb
             ob_start();
             // Create image source
             $target = imagecreatetruecolor($this->resulutionWidth, $this->resulutionHeight);
-            if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromjpeg($this->filePath);
-            if (preg_match("/.gif$/i", $this->filePath)) $source = imagecreatefromgif($this->filePath);
-            if (preg_match("/.png$/i", $this->filePath)) $source = imagecreatefrompng($this->filePath);
+            if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
+            if (preg_match("/.gif$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
+            if (preg_match("/.png$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
 
             // preserve transparency
             imagealphablending($target, false);
@@ -268,17 +276,17 @@ class Thumb
 
             if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) {
                 imagejpeg($target,null,90);
-                if ($this->cache['enable']) imagejpeg($target,$this->cache['file'],90);
+                if ($this->cache['enable']) $this->createCache($target, 'jpeg');
             }
 
             if (preg_match("/.gif$/i", $this->filePath)) {
                 imagegif($target,null);
-                if ($this->cache['enable']) imagegif($target,$this->cache['file']);
+                if ($this->cache['enable']) $this->createCache($target, 'gif');
             }
 
             if (preg_match("/.png$/i", $this->filePath)) {
                 imagepng($target,null,9);
-                if ($this->cache['enable']) imagepng($target,$this->cache['file'],9);
+                if ($this->cache['enable']) $this->createCache($target, 'png');
             }
             
             imagedestroy($target);
@@ -288,5 +296,32 @@ class Thumb
             echo file_get_contents($this->cache['file']);
         }
         exit;
+    }
+
+    /**
+     * Create image cache
+     *
+     * @param [type] $target
+     * @param string $imageType
+     * @return void
+     */
+    private function createCache($target, string $imageType)
+    {
+        if ($this->storage->getProviderName() == 'Local')
+        {
+            switch ($imageType) {
+                case 'jpeg':
+                    imagejpeg($target,$this->cache['file'],90);
+                    break;
+                
+                case 'gif':
+                    imagegif($target,$this->cache['file']);
+                    break;
+    
+                case 'png':
+                    imagepng($target,$this->cache['file'],9);
+                    break;
+            }
+        }
     }
 }

@@ -22,7 +22,10 @@
  *
  */
 
-use SLiMS\{Url,DB,Json};
+use SLiMS\Url;
+use SLiMS\DB;
+use SLiMS\Json;
+use SLiMS\Captcha\Factory as Captcha;
 use Volnix\CSRF\CSRF;
 
 // be sure that this file not accessed directly
@@ -44,6 +47,9 @@ do_checkIP('opac-member');
 // Required flie
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 require LIB . 'member_logon.inc.php';
+
+// Captcha initialize
+$captcha = Captcha::section('memberarea');
 
 // check if member already logged in
 $is_member_login = utility::isMemberLogin();
@@ -81,56 +87,43 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
     }
     $username = trim(strip_tags($_POST['memberID']));
     $password = trim(strip_tags($_POST['memberPassWord']));
+    
     // check if username or password is empty
-    if (!$username OR !$password) {
-        redirect()->withMessage('empty_field', __('Please fill your Username and Password to Login!'))->back();
-    } else {
-        # <!-- Captcha form processing - start -->
-        if ($sysconf['captcha']['member']['enable']) {
-            if ($sysconf['captcha']['member']['type'] == 'recaptcha') {
-                require_once LIB . $sysconf['captcha']['member']['folder'] . '/' . $sysconf['captcha']['member']['incfile'];
-                $privatekey = $sysconf['captcha']['member']['privatekey'];
-                $resp = recaptcha_check_answer($privatekey,
-                    ip(),
-                    $_POST["g-recaptcha-response"]);
+    if (!$username OR !$password) redirect()->withMessage('empty_field', __('Please fill your Username and Password to Login!'))->back();
+    
+    # <!-- Captcha form processing - start -->
+    if ($captcha->isSectionActive() && $captcha->isValid() === false) {
+        // set error message
+        $message = isDev() ? $captcha->getError() : __('Wrong Captcha Code entered, Please write the right code!'); 
+        // What happens when the CAPTCHA was entered incorrectly
+        session_unset();
+        redirect()->withMessage('captchaInvalid', $message)->back();
+    }
+    # <!-- Captcha form processing - end -->
 
-                if (!$resp->is_valid) {
-                    // What happens when the CAPTCHA was entered incorrectly
-                    session_unset();
-                    redirect()->withMessage('captchaInvalid', __('Wrong Captcha Code entered, Please write the right code!'))->back();
-                }
-            } else if ($sysconf['captcha']['member']['type'] == 'others') {
-                # other captchas here
-            }
-        }
-        # <!-- Captcha form processing - end -->
+    // regenerate session ID to prevent session hijacking
+    session_regenerate_id(true);
 
-        // regenerate session ID to prevent session hijacking
-        session_regenerate_id(true);
+    // create logon class instance
+    $logon = new member_logon($username, $password, $sysconf['auth']['member']['method']);
+    if ($sysconf['auth']['member']['method'] === 'LDAP') $ldap_configs = $sysconf['auth']['member'];
 
-        // create logon class instance
-        $logon = new member_logon($username, $password, $sysconf['auth']['member']['method']);
-        if ($sysconf['auth']['member']['method'] === 'LDAP') {
-            $ldap_configs = $sysconf['auth']['member'];
-        }
-
-        if ($logon->valid($dbs)) {
-            // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
-            if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
-                redirect($_GET['destination']);
-            } else {
-                redirect()->toPath('member');
-            }
-            exit();
+    if ($logon->valid($dbs)) {
+        // write log
+        utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
+        if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
+            redirect($_GET['destination']);
         } else {
-            // write log
-            utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
-            // message
-            //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
-            CSRF::generateToken();
-            redirect()->withMessage('wrong_password', __('Login FAILED! Wrong Member ID or password!'))->to('?p=member');
+            redirect()->toPath('member');
         }
+        exit();
+    } else {
+        // write log
+        utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
+        // message
+        //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
+        CSRF::generateToken();
+        redirect()->withMessage('wrong_password', __('Login FAILED! Wrong Member ID or password!'))->to('?p=member');
     }
 }
 
@@ -639,7 +632,7 @@ if ($is_member_login) :
                     
                     if($sysconf['reserve_on_loan_only']) {
                         // ambil secara random dari koleksi yang dipinjam
-                        $item_code = _getItemReserveFromLoan($dbs);
+                        $item_code = _getItemReserveFromLoan($dbs, $id);
                     } else {
                         // Semua item bisa direservasi
                         $item_code = _getItemReserve($dbs, $id);
@@ -696,9 +689,10 @@ if ($is_member_login) :
         return $data[0] ?? null;
     }
 
-    function _getItemReserveFromLoan($dbs)
+    function _getItemReserveFromLoan($dbs, $biblio_id)
     {
-        $sql = "SELECT item_code, due_date FROM loan WHERE is_lent=1 AND is_return=0 ORDER BY RAND() ASC LIMIT 1";
+        $biblio_id = (int)$biblio_id;
+        $sql = "SELECT l.item_code, l.due_date FROM loan AS l WHERE l.is_lent=1 AND l.is_return=0 AND l.item_code IN (SELECT i.item_code FROM item AS i WHERE i.biblio_id = $biblio_id) ORDER BY RAND() ASC LIMIT 1";
         $query = $dbs->query($sql);
         $data = $query->fetch_row();
         return $data[0] ?? null;
@@ -1007,23 +1001,14 @@ if ($is_member_login) :
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']??'' ?>">
                 <!-- Captcha in form - start -->
                 <div>
-                    <?php if ($sysconf['captcha']['member']['enable']) { ?>
-                        <?php if ($sysconf['captcha']['member']['type'] == "recaptcha") { ?>
-                            <div class="captchaMember">
-                                <?php
-                                require_once LIB . $sysconf['captcha']['member']['folder'] . '/' . $sysconf['captcha']['member']['incfile'];
-                                $publickey = $sysconf['captcha']['member']['publickey'];
-                                echo recaptcha_get_html($publickey);
-                                ?>
-                            </div>
-                            <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
-                            <?php
-                        } elseif ($sysconf['captcha']['member']['type'] == "others") {
-                            #code here
-                        }
-                        #debugging
-                        #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
-                    } ?>
+                    <?php 
+                    if ($captcha->isSectionActive()) { ?>
+                        <div class="captchaMember">
+                            <?= $captcha->getCaptcha() ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <!-- Captcha in form - end -->
                 <input type="submit" name="logMeIn" value="<?php echo __('Login'); ?>" class="memberButton"/>

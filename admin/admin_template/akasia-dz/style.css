@@ -1,1 +1,5 @@
 @import "assets/css/style.css";
+
+pre.sf-dump, pre.sf-dump .sf-dump-default {
+    z-index: 0 !important;
+}

@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Filesystems\Storage;
+
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
@@ -42,8 +44,9 @@ $file_q = $dbs->query($sql_q);
 $file_d = $file_q->fetch_assoc();
 
 if ($file_q->num_rows > 0) {
-    $file_loc = REPOBS.str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
-    if (file_exists($file_loc)) {
+    $file_loc = str_ireplace('/', DS, $file_d['file_dir']).DS.$file_d['file_name'];
+    $repository = Storage::repository();
+    if ($repository->isExists($file_loc)) {
         if ($file_d['access_limit']) {
             if (utility::isMemberLogin()) {
                 $allowed_mem_types = @unserialize($file_d['access_limit']);
@@ -57,11 +60,7 @@ if ($file_q->num_rows > 0) {
                 //~ continue;
             }
         }
-        header("Content-Description: File Transfer");
-        header('Content-Disposition: attachment; filename="'.basename($file_loc).'"');
-        header('Content-Type: '.$file_d['mime_type']);
-        echo file_get_contents($file_loc);
-        exit();
+        $repository->streamFile($file_loc);
     } else {
       die('<div class="errorBox">File Not Found!</div>');
     }

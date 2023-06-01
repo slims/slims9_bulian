@@ -40,6 +40,11 @@
  * The rest of settings will not normally need to be adjusted. Read source code for details.
 */
 
+use SLiMS\Url;
+
+// change scheme to https
+if (Url::getPort() == '443' || defined('FORCE_HTTPS')) Url::$forceHttps = true;
+
 /**
  * Whether to show error message for dubug.
  * For installation, testing and debuging set SHOW_QUERY_ERROR to TRUE
@@ -74,24 +79,23 @@ define('CONTENT_TYPE', 'Content-Type: text/xml');
 $identifyResponse = array();
 
 // MUST (only one)
-// please adjust
-$identifyResponse["repositoryName"] = $_SERVER['SERVER_NAME'];
+$identifyResponse["repositoryName"] = config('library_name');
 
 // For ANDS to harvest of RIF-CS, originatingSource is plantaccelerator.org.au
 // $dataSource = "plantaccelerator.org.au";
-define('DATASOURCE',$_SERVER['SERVER_NAME']);
+define('DATASOURCE', Url::getScheme() . Url::getDomain());
 
 // do not change
-define('MY_URI','http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
+define('MY_URI', Url::slimsBaseUri() . trim(Url::getSelf(), '/'));
 // You can use a static URI as well.
 // $baseURL 			= "http://my.server.org/oai/oai2.php";
 $identifyResponse["baseURL"] = MY_URI;
 
 // By default SLIMS_SERVER_NAME is taken from the $_SERVER array. If it is different than your
 // expected name, please change its value to your actual server name such as: my.server.name.com
-define('SLIMS_SERVER_NAME', $_SERVER['SERVER_NAME']);
+define('SLIMS_SERVER_NAME', Url::getDomain());
 
-define('SLIMS_BASE_URL', 'http://'.SLIMS_SERVER_NAME.dirname($_SERVER['SCRIPT_NAME']));
+define('SLIMS_BASE_URL', Url::slimsBaseUri());
 
 // do not change
 $identifyResponse["protocolVersion"] = '2.0';
@@ -132,7 +136,7 @@ if (strcmp($identifyResponse["granularity"],'YYYY-MM-DDThh:mm:ssZ')==0) {
 
 // MUST (multiple)
 // please adjust
-$adminEmail			= array('some.one@contact.com'); 
+$adminEmail			= config('mail.oai_admin', ['some.one@contact.com']); 
 
 /** Compression methods supported. Optional (multiple). Default: null.
 * 
@@ -149,7 +153,7 @@ $compression = null;
 // see: http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm
 // Basically use domainname
 // please adjust
-$repositoryIdentifier = $_SERVER['SERVER_NAME'];
+$repositoryIdentifier = Url::getDomain();
 
 // For RIF-CS, especially with ANDS, each registryObject much has a group for the ownership of data.
 // For detail please see ANDS guide on its web site. Each data provider should have only one REG_OBJ_GROUP

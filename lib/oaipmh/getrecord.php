@@ -28,7 +28,8 @@ if (is_numeric($args['identifier'])) {
     $official_identifier = $oaiprefix = "oai".$delimiter.$repositoryIdentifier.$delimiter.$idPrefix.'-'.$identifier;
 } else {
     $_identifier = explode('-', $args['identifier']);
-    $identifier = $_identifier[1];
+    $key = count($_identifier) - 1;
+    $identifier = $_identifier[$key];
     $official_identifier = urldecode($args['identifier']);
 }
 

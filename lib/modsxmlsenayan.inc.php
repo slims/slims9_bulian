@@ -24,6 +24,9 @@
 
 define('MODS_XML_PARSE_ERROR', 199);
 
+use SLiMS\Url;
+use SLiMS\Http\Client;
+
 /**
  * MODS XML parser for SENAYAN 3
  * @param string $str_modsxml : can be string, file or uri
@@ -33,14 +36,6 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
 {
   // initiate records array
   $_records = array();
-  libxml_use_internal_errors(true);
-
-  libxml_set_streams_context(stream_context_create([
-      'ssl' => [
-          'verify_peer' => false,
-          'verify_peer_name' => false
-      ]
-  ]));
 
   // load XML
   if ($str_xml_type == 'file') {
@@ -53,14 +48,18 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
   } else {
     // load from string
     try {
-      // check if type is URI
-      if ($str_xml_type == 'uri') {
-        $xml = @new SimpleXMLElement($str_modsxml, LIBXML_NSCLEAN, true);
-      } else {
-        $xml = @new SimpleXMLElement($str_modsxml, LIBXML_NSCLEAN);
+      $modsxml = $str_modsxml;
+      if ($str_xml_type == 'uri' && Url::isValid($modsxml))
+      {
+        $getModsxml = Client::get($modsxml);
+        if (!empty($getModsxml->getError())) throw new Exception($getModsxml->getError());
+        $modsxml = $getModsxml->getContent();
       }
+
+      // parse xml string 
+      $xml = @new SimpleXMLElement($modsxml, LIBXML_NSCLEAN);
     } catch (Exception $xmlerr) {
-      return MODS_XML_PARSE_ERROR;
+      return $xmlerr->getMessage();
       // die($xmlerr->getMessage());
     }
   }

@@ -45,8 +45,9 @@
                     <div class="form-inline pl-3">
                         <label class="mr-2 font-weight-bold" for="result-sort">Sort by</label>
                         <select class="custom-select custom-select-sm" id="search-order"><?= $sort_select ?></select>
-                        <form class="ml-2" method="POST" action="<?= $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge(['csrf_token' => $opac->getCsrf()], array_filter($_GET, fn($key) => $key !== 'csrf_token', ARRAY_FILTER_USE_KEY))) ?>">
+                        <form class="ml-2" method="POST" action="<?= $_SERVER['PHP_SELF'] . '?' . http_build_query(array_filter($_GET, fn($key) => $key !== 'csrf_token', ARRAY_FILTER_USE_KEY)) ?>">
                             <?php if(($_SESSION['LIST_VIEW'] ?? 'list') === 'list'): ?>
+                                <input type="hidden" name="csrf_token" value="<?= $opac->getCsrf() ?>"/>
                                 <input type="hidden" name="view" value="grid" />
                                 <button type="submit" class="btn btn-sm btn-outline-secondary items-center flex py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">

@@ -255,6 +255,11 @@ if (isset($_POST['updateData'])) {
     // enable chbox confirm
     addOrUpdateSetting('enable_chbox_confirm', (int)utility::filterData('enable_chbox_confirm', 'post', true, true, true));
 
+    // SSL verification
+    $http = config('http');
+    $http['client']['verify'] = (bool)$_POST['ignore_ssl_verification'];
+    addOrUpdateSetting('http', $http);
+
     // write log
     utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
@@ -462,6 +467,11 @@ $options = null;
 $options[] = array('1', __('Enable'));
 $options[] = array('0', __('Disable'));
 $form->addSelectList('enable_chbox_confirm', __('Activate Confirm Alert?'), $options, $sysconf['enable_chbox_confirm']??'1','class="form-control col-3"');
+
+$options = null;
+$options[] = array('1', __('Enable'));
+$options[] = array('0', __('Disable'));
+$form->addSelectList('ignore_ssl_verification', __('Ignore SSL verification'), $options, ((int)config('http.client.verify')),'class="form-control col-3"', __('SLiMS will ignore all error about SSL validation while download contents from other resource'));
 
 // print out the object
 echo $form->printOut();

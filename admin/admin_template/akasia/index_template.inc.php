@@ -61,7 +61,7 @@ include 'function.php';
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>jquery.imgareaselect/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo $sysconf['admin_template']['css']; ?>?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+  <link href="<?php echo $sysconf['admin_template']['css']; ?>?v=<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>datepicker/css/datepicker-bs4.min.css" rel="stylesheet" />
   <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
 

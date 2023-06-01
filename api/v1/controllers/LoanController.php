@@ -126,7 +126,7 @@ class LoanController extends Controller
                     WHERE 
                         loan_date = '".$value."' 
                         AND is_lent     = 1 
-                        AND renewed     > 1
+                        AND renewed     >= 1
                         AND is_return   = 0
                     GROUP BY 
                         return_date");

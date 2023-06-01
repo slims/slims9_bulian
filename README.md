@@ -11,7 +11,7 @@ SLiMS is licensed under GNU GPL version 3. Please read "GPL-3.0 License.txt"
 to learn more about GPL.
 
 ### System Requirements
-- PHP version 7.4;
+- PHP version >= 8.1;
 - MySQL version 5.7 and or MariaDB version 10.3;
 - PHP GD enabled
 - PHP gettext enabled

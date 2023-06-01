@@ -64,6 +64,41 @@ if (!$changecurrent) {
     }
 }
 
+/**
+ * Verify Two-factor authentication (2FA)
+ */
+if (isset($_POST['secret_code']) && isset($_POST['verify_code'])) {
+    $secret = utility::filterData('secret_code', 'post', true, true, true);
+    $otp = OTPHP\TOTP::createFromSecret($secret);
+    $isOk = $otp->verify(trim($_POST['verify_code']));
+    if ($isOk) {
+        // save to session for next purpose
+        $_SESSION['2fa_secret'] = $secret;
+        toastr(__('Code verified!'))->success();
+    } else {
+        unset($_SESSION['2fa_secret']);
+        toastr(__('Invalid verification code!'))->error();
+    }
+    exit;
+}
+
+if (isset($_POST['updateRecordID']) && isset($_POST['disable2fa']) && isset($_GET['diable2fa'])) {
+    $uid = (int)utility::filterData('updateRecordID', 'post', true, true, true);
+    $arr = explode(':', $uid);
+    if ($_SESSION['uid'] == 1 || $uid == $_SESSION['uid']) {
+        $update = $dbs->query(sprintf("update user set 2fa = null where user_id = '%s'", $uid));
+        if ($update) {
+            echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
+            toastr(__('Two-factor authentication has been disabled.'))->success();
+        } else {
+            toastr(__('Upss... something wrong!'))->error();
+        }
+    } else {
+        toastr(__('You don\'t have enough privileges to view this section'))->error();
+    }
+    exit;
+}
+
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img'])) {
   // validate post image
@@ -134,6 +169,12 @@ if (isset($_POST['saveData'])) {
         }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
+
+        // save 2fa secret to database
+        if (isset($_SESSION['2fa_secret'])) {
+            $data['2fa'] = $_SESSION['2fa_secret'];
+            unset($_SESSION['2fa_secret']);
+        }
 
         // create upload object
         $upload = new simbio_file_upload();
@@ -365,7 +406,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $str_input .= '<p>'.__('or take a photo').'</p>';
         $str_input .= '<div class="form-inline">';
         $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+        $str_input .= '<button type="button" id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
         $str_input .= '</div>';
         $str_input .= '<div class="form-group pr-2">';
         $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
@@ -410,6 +451,54 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // user password confirm
     $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');
 
+    // Two Factor Authentication
+    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid']) {
+        $otp = OTPHP\TOTP::generate();
+        $otp->setLabel(config('library_name'));
+        $secret = $otp->getSecret();
+        // generate qrcode
+        $render = new BaconQrCode\Renderer\ImageRenderer(
+            new BaconQrCode\Renderer\RendererStyle\RendererStyle(150),
+            new BaconQrCode\Renderer\Image\SvgImageBackEnd()
+        );
+        $writer = new BaconQrCode\Writer($render);
+        $qrcode = $writer->writeString($otp->getProvisioningUri());
+        $otp_html = '';
+        if (($rec_d['2fa'] ?? false)) {
+            $otp_html .= '<div class="alert alert-success d-flex justify-content-between"><span>🔐 ' . __('Two Factor Authentication enabled.') . '</span><div><button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1&changecurrent=1" type="submit" name="disable2fa" value="1" class="btn btn-danger btn-sm">' . __('Disable It') . '</button></div></div>';
+        }
+        list($otp_app, $verification_code, $verify) = [
+            str_replace('{link}', '<a href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp" target="_blank">FreeOTP</a>', __('Scan this QRcode with your authenticator (e.g. Google Authenticator or {link}) <br> and enter verification code below to enable Two Factor Authentication.')),
+            __('Verification code'),
+            __('Verify')
+        ];
+        $otp_html .= <<<HTML
+        <div style="display:flex; align-items:center">
+            <div>{$qrcode}</div>
+            <div>
+                <div class="my-3">
+                    {$otp_app}
+                </div>
+                <input form="formVerify2fa" type="hidden" name="secret_code" value="{$secret}">
+                <div class="text-muted">{$verification_code}</div>
+                <div class="input-group mb-3">
+                    <input form="formVerify2fa" type="text" name="verify_code" class="form-control mr-0" placeholder="Enter code from authenticator" aria-label="Enter code from authenticator" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button form="formVerify2fa" class="btn btn-outline-secondary" type="submit" id="button-addon2">{$verify}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        HTML;
+        $form->addAnything(__('Enable Two Factor Authentication'), $otp_html);
+    }
+
+    // ability to disable Two Factor Authentication for administrator
+    if ($_SESSION['uid'] == 1 && ($rec_d['2fa'] ?? false)) {
+        $otp_html = '<button formaction="'.$_SERVER['PHP_SELF'].'?diable2fa=1" type="submit" name="disable2fa" value="1" class="btn btn-danger">'.__('Disable Two Factor Authentication').'</button>';
+        $form->addAnything(__('Disable Two Factor Authentication'), $otp_html);
+    }
+
     // edit mode messagge
     if ($form->edit_mode) {
         echo '<div class="per_title"><h2>'.__('Change User Profiles').'</h2></div>';
@@ -424,6 +513,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     // print out the form object
     echo $form->printOut();
+    echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"><form>';
 } else {
     // only administrator have privileges to view user list
     if (!($can_read AND $can_write) OR $_SESSION['uid'] != 1) {

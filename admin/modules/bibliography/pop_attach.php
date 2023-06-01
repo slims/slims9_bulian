@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Filesystems\Storage;
+
 /* Biblio file Adding Pop Windows */
 
 // key to authenticate
@@ -72,31 +74,44 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
   // create new sql op object
   $sql_op = new simbio_dbop($dbs);
   // FILE UPLOADING
+  if ($_FILES['file2attach']['error'] == 1)
+  {
+    toastr(__('Invalid attacment, make sure your file is not exceeded system max upload'))->error();
+  }
+
   if (isset($_FILES['file2attach']) AND $_FILES['file2attach']['size']) {
-    // create upload object
     $file_dir = trim($_POST['fileDir']);
-    $file_upload = new simbio_file_upload();
-    $file_upload->setAllowableFormat($sysconf['allowed_file_att']);
-    $file_upload->setMaxSize($sysconf['max_upload']*1024);
-    $file_upload->setUploadDir(REPOBS.DS.str_replace('/', DS, $file_dir));
-    $file_upload_status = $file_upload->doUpload('file2attach',md5(date('Y-m-d H:i:s')));
-    if ($file_upload_status === UPLOAD_SUCCESS) {
-        $file_ext = substr($file_upload->new_filename, strrpos($file_upload->new_filename, '.')+1);
+    // create upload object
+    $file_upload = Storage::repository()->upload('file2attach', function($repository) use($sysconf) {
+
+      // Extension check
+      $repository->isExtensionAllowed();
+
+      // File size check
+      $repository->isLimitExceeded($sysconf['max_upload']*1024);
+
+      // destroy it if failed
+      if (!empty($repository->getError())) $repository->destroyIfFailed();
+
+    })->as(md5(date('Y-m-d H:i:s'))); // set new name
+
+    if ($file_upload->getUploadStatus()) {
+        $file_ext = $file_upload->getExt($file_upload->getUploadedFileName());
         $fdata['uploader_id'] = $_SESSION['uid'];
         $fdata['file_title'] = $dbs->escape_string($title);
-        $fdata['file_name'] = $dbs->escape_string($file_upload->new_filename);
+        $fdata['file_name'] = $dbs->escape_string($file_upload->getUploadedFileName());
         $fdata['file_url'] = $dbs->escape_string($url);
         $fdata['file_dir'] = $dbs->escape_string($file_dir);
         $fdata['file_desc'] = $dbs->escape_string(trim(strip_tags($_POST['fileDesc'])));
         if(isset($_POST['fileKey']) && trim($_POST['fileKey']) !== '')
           $fdata['file_key'] = $dbs->escape_string(trim(strip_tags($_POST['fileKey'])));
-        $fdata['mime_type'] = $sysconf['mimetype'][$file_ext];
+        $fdata['mime_type'] = $sysconf['mimetype'][trim($file_ext, '.')]??'';
         $fdata['input_date'] = date('Y-m-d H:i:s');
         $fdata['last_update'] = $fdata['input_date'];
         // insert file data to database
         @$sql_op->insert('files', $fdata);
         $uploaded_file_id = $sql_op->insert_id;
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->new_filename.')', 'Attachment', 'Add');
+        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload file ('.$file_upload->getUploadedFileName().')', 'Attachment', 'Add');
     } else {
       utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
       echo '<script type="text/javascript">';

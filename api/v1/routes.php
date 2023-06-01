@@ -9,6 +9,12 @@
  * Copyright (C) 2017  Waris Agung Widodo (ido.alit@gmail.com)
  */
 
+$header = getallheaders();
+
+if ((isset($header['SLiMS-Http-Cache']) || isset($header['slims-http-cache']))) {
+    if ($sysconf['http']['cache']['lifetime'] > 0) header('Cache-Control: max-age=' . $sysconf['http']['cache']['lifetime']);
+}
+
 /*----------  Require dependencies  ----------*/
 require 'lib/router.inc.php';
 require __DIR__ . '/controllers/HomeController.php';

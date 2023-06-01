@@ -90,6 +90,18 @@ if (!$reportView) {
                     <?php echo simbio_form_element::textField('text', 'institution', '', 'class="form-control col-3"'); ?>
                 </div>
                 <div class="form-group divRow">
+                    <label><?php echo __('Room'); ?></label>
+                    <?php
+                    $room_q = $dbs->query('SELECT unique_code, name FROM mst_visitor_room');
+                    $room_options = [];
+                    $room_options[] = ['0', __('ALL')];
+                    while ($room_d = $room_q->fetch_row()) {
+                        $room_options[] = [$room_d[0], $room_d[1]];
+                    }
+                    echo simbio_form_element::selectList('room_code', $room_options,'','class="form-control col-3"');
+                    ?>
+                </div>
+                <div class="form-group divRow">
                     <div class="divRowContent">
                         <div>
                             <label style="width: 195px;"><?php echo __('Visit Date From'); ?></label>
@@ -130,6 +142,7 @@ if (!$reportView) {
     ob_start();
     // table spec
     $table_spec = 'visitor_count AS vc
+        LEFT JOIN mst_visitor_room AS mr ON mr.unique_code = vc.room_code
         LEFT JOIN (member AS m LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id)
         ON vc.member_id=m.member_id';
 
@@ -139,6 +152,7 @@ if (!$reportView) {
     $reportgrid->setSQLColumn('IF(vc.member_id IS NOT NULL, vc.member_id, \'NON-MEMBER\')  AS \''.__('Member ID').'\'',
         'vc.member_name AS \''.__('Visitor Name').'\'',
         'IF(mt.member_type_name IS NOT NULL, mt.member_type_name, \'NON-MEMBER\') AS \''.__('Membership Type').'\'',
+        'mr.name AS \'' . __('Room Name') . '\'',
         'vc.institution AS \''.__('Institution').'\'',
         'vc.checkin_date AS \''.__('Visit Date').'\'');
     $reportgrid->setSQLorder('vc.member_id ASC');
@@ -160,6 +174,10 @@ if (!$reportView) {
     if (isset($_GET['institution']) AND !empty($_GET['institution'])) {
         $institution = $dbs->escape_string(trim($_GET['institution']));
         $criteria .= ' AND vc.institution LIKE \'%'.$institution.'%\'';
+    }
+    if (isset($_GET['room_code']) AND !empty($_GET['room_code'])) {
+        $roomcode = $dbs->escape_string(trim($_GET['room_code']));
+        $criteria .= ' AND vc.room_code = \''.$roomcode.'\'';
     }
     // register date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
@@ -185,6 +203,7 @@ if (!$reportView) {
         ', vc.member_name AS \''.__('Visitor Name').'\''.
         ', IF(mt.member_type_name IS NOT NULL, mt.member_type_name, \'NON-MEMBER\') AS \''.__('Membership Type').'\''.
         ', vc.institution AS \''.__('Institution').'\''.
+        ', mr.name AS \''.__('Room Name').'\''.
         ', vc.checkin_date AS \''.__('Visit Date').'\''.
 		' FROM '.$table_spec.' WHERE '.$criteria. ' ORDER BY vc.member_id ASC';
 

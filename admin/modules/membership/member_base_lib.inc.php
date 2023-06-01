@@ -182,9 +182,9 @@ class member
                     ->loadTemplate($overdueTemplate)
                     ->send();
             
-            return ['status' => 'SENT', 'message' => 'Overdue notification E-Mail have been sent to ' . $this->member_email];
+            return ['status' => 'SENT', 'message' => __('Overdue notification E-Mail have been sent to ') . $this->member_email];
         } catch (Exception $exception) {
-            return ['status' => 'ERROR', 'message' => "Message could not be sent. Mailer Error: " . Mail::getInstance()->ErrorInfo];
+            return ['status' => 'ERROR', 'message' => __('Message could not be sent. Mailer Error: ') . Mail::getInstance()->ErrorInfo];
         }
     }
 }

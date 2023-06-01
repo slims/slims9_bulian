@@ -20,6 +20,8 @@
  * some patches by hendro
  */
 
+use SLiMS\DB;
+
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
@@ -34,6 +36,11 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         <div class="per_title">
             <h2><?php echo __('Library Administration'); ?></h2>
         </div>
+    </div>
+</div>
+<div id="backupProccess" style="display: none">
+    <div class="alert alert-info">
+        <strong><?= __('Database backup process is running, please wait') ?></strong>
     </div>
 </div>
 <div class="contentDesc">
@@ -128,6 +135,26 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         <input type="hidden" name="do_repair" value="1">
         <input type="submit" value="' . __('Click Here To Repair The Tables') . '" class="button btn btn-block btn-default">
         </form>';
+            }
+        }
+
+        if (utility::havePrivilege('system', 'r') && utility::havePrivilege('system', 'w'))
+        {
+            // info
+            $backupConfigStatus = config('database_backup.reminder') || config('database_backup.auto');
+            $backupIsNoAuto = config('database_backup.reminder') && !config('database_backup.auto');
+            $alreadyBackup = DB::hasBackup(by: DB::BACKUP_BASED_ON_DAY);
+
+
+            if ($alreadyBackup === false && $backupConfigStatus) 
+                $_SESSION['token'] = utility::createRandomString(32);
+            
+            if ($alreadyBackup === false && $is_repaired === false && $backupIsNoAuto === true) {
+                echo '<div class="alert alert-info border-0 mt-3">';
+                echo '<span>' . __('It looks like today you haven\'t backup your database.') . 
+                '.&nbsp;&nbsp;<a href="'.MWB.'system/backup_proc.php" id="backupproc" class="notAJAX btn btn-primary">' . __('Backup Now') . '</a>' .
+                '</span>';
+                echo '</div>';
             }
         }
 
@@ -257,7 +284,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 
             async function getTotal(url, selector = null) {
                 if(selector !== null) $(selector).text('...');
-                let res = await (await fetch(url)).json();
+                let res = await (await fetch(url,{headers: {'SLiMS-Http-Cache': 'cache'}})).json();
                 if(selector !== null) $(selector).text(new Intl.NumberFormat('id-ID').format(res.data));
                 return res.data;
             }
@@ -268,7 +295,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             getTotal('<?= SWB ?>index.php?p=api/item/total/available', '.item_total_available');
 
             // get summary
-            fetch('<?= SWB ?>index.php?p=api/loan/summary')
+            fetch('<?= SWB ?>index.php?p=api/loan/summary', {headers: {'SLiMS-Http-Cache': 'cache'}})
                 .then(res => res.json())
                 .then(res => {
 
@@ -329,7 +356,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             // bar chart
             // ===================================
 
-            fetch('<?= SWB ?>index.php?p=api/loan/getdate/<?= $start_date ?>')
+            fetch('<?= SWB ?>index.php?p=api/loan/getdate/<?= $start_date ?>', {headers: {'SLiMS-Http-Cache': 'cache'}})
             .then(res => res.json())
             .then(res => {
 
@@ -382,12 +409,58 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             })
         });
 
+        <?php if (utility::havePrivilege('system', 'r') && utility::havePrivilege('system', 'w')): ?>
+            <?php if (config('database_backup.reminder') && !config('database_backup.auto')): ?>
+                // Backup process
+                $('#backupproc').click(function(e) {
+                    e.preventDefault()
+                    
+                    let currentLabel = $(this).html()
+
+                    $(this).removeClass('btn-primary').addClass('btn-secondary disabled')
+                    $(this).html('<?= __('Please wait') ?>')
+
+                    backupDatabase($(this).attr('href'), function(result) {
+                        if (result.status)  {
+                            window.location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+                        } else {
+                            $(this).html(currentLabel)
+                            console.error(result.message)
+                            window.toastr.error(result.message, '<?= __('Error') ?>')
+                        }
+                    })                    
+                })
+            <?php endif; ?>
+
+            function backupDatabase(href, callback) {
+                $.post(href, {start:true,tkn:'<?= $_SESSION['token']??'' ?>',verbose:'no',response:'json'}, function(result, status, post){
+                        var result = JSON.parse(result)
+                        callback(result)
+                });
+            }
+
+            <?php if (!$is_repaired && !$alreadyBackup && config('database_backup.auto')): ?>
+                $('.contentDesc').slideUp();
+                $('#backupProccess').slideDown();
+
+                backupDatabase('<?= MWB.'system/backup_proc.php' ?>', function(result) {
+                    if (result.status)  {
+                        window.location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+                    } else {
+                        $(this).html(currentLabel)
+                        console.error(result.message)
+                        window.toastr.error(result.message, '<?= __('Error') ?>')
+                    }
+                })
+            <?php endif; ?>
+        <?php endif; ?>
+
         <?php if ($_SESSION['uid'] === '1') : ?>
         // get lastest release
         fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
             .then(res => res.json())
             .then(res => {
-                if (res.tag_name !== '<?= SENAYAN_VERSION_TAG; ?>') {
+                if (res.tag_name > '<?= SENAYAN_VERSION_TAG; ?>') {
                     $('#new_version').text(res.tag_name);
                     $('#alert-new-version').removeClass('hidden');
                     $('#alert-new-version a').attr('href', res.html_url)

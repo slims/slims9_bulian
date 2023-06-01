@@ -88,95 +88,75 @@ if (isset($_POST['start']) && isset($_POST['tkn']) && $_POST['tkn'] === $_SESSIO
     $output = '';
     $error = false;
     // turn on implicit flush
-    ob_implicit_flush();
+    ob_implicit_flush();    
 
-    $dumpSettings = array(
-        'compress' => IMysqldump\Mysqldump::NONE,
-        'no-data' => false,
-        'add-drop-table' => true,
-        'single-transaction' => true,
-        'lock-tables' => true,
-        'add-locks' => false,
-        'extended-insert' => false,
-        'disable-keys' => true,
-        'skip-triggers' => false,
-        'add-drop-trigger' => true,
-        'routines' => true,
-        'databases' => false,
-        'add-drop-database' => false,
-        'hex-blob' => true,
-        'no-create-info' => false,
-        'where' => '',
-        /**
-         * an option for definer state in trigger query. 
-         * For some case, user had bad experience 
-         * when they move their SLiMS database to other database 
-         * machine without same privileged user as trigger definer.
-         */
-        'skip-definer' => true, 
-        );    
+    // checking are the backup directory is exists and writable
+    if (file_exists($sysconf['backup_dir']) AND is_writable($sysconf['backup_dir'])) {
+        // execute the backup process
+        try {
+            // set for unlimited time
+            ini_set('max_execution_time', 0);
 
-        // checking are the backup directory is exists and writable
-        if (file_exists($sysconf['backup_dir']) AND is_writable($sysconf['backup_dir'])) {
-            // execute the backup process
-            try {
-                // set for unlimited time
-                ini_set('max_execution_time', 0);
+            // time string to append to filename
+            $time2append = (date('Ymd_His'));
+            $dump = DB::backup();
+            $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
 
-                // time string to append to filename
-                $time2append = (date('Ymd_His'));
-                $dump = DB::backup($dumpSettings);
-                $dump->start($sysconf['backup_dir'].DS.'backup_'.$time2append.'.sql');
+            $data['user_id'] = $_SESSION['uid'];
+            $data['backup_time'] = date('Y-m-d H:i"s');
+            $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql');
+            $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),str_replace('\'', '/',$sysconf['backup_dir']));
 
-                $data['user_id'] = $_SESSION['uid'];
-                $data['backup_time'] = date('Y-m-d H:i"s');
-                $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql');
-                $output = sprintf(__('Backup SUCCESSFUL, backup files saved to %s !'),str_replace('\'', '/',$sysconf['backup_dir']));
-
-                if (!preg_match('@^WIN.*@i', PHP_OS)) {
-                    // get current directory path
-                    $curr_dir = getcwd();
-                    // change current PHP working dir
-                    @chdir($sysconf['backup_dir']);
-                    // compress the backup using tar gz
-                    if(function_exists('exec')){
-                        outputWithFlush(color(__('Compressing...')));
-                        sleep(1);
-                        exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
-                        if ($status == COMMAND_SUCCESS) {
-                            // delete the original file
-                            @unlink($data['backup_file']);
-                            $output .= __("File is compressed using tar gz archive format");
-                            $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
-                            outputWithFlush(color(__('Compressing Success'), 'success'));
-                        }
+            if (!preg_match('@^WIN.*@i', PHP_OS)) {
+                // get current directory path
+                $curr_dir = getcwd();
+                // change current PHP working dir
+                @chdir($sysconf['backup_dir']);
+                // compress the backup using tar gz
+                if(function_exists('exec')){
+                    outputWithFlush(color(__('Compressing...')));
+                    sleep(1);
+                    exec('tar cvzf backup_'.$time2append.'.sql.tar.gz backup_'.$time2append.'.sql', $outputs, $status);
+                    if ($status == COMMAND_SUCCESS) {
+                        // delete the original file
+                        @unlink($data['backup_file']);
+                        $output .= __("File is compressed using tar gz archive format");
+                        $data['backup_file'] = $dbs->escape_string($sysconf['backup_dir'].'backup_'.$time2append.'.sql.tar.gz');
+                        outputWithFlush(color(__('Compressing Success'), 'success'));
                     }
-                    // return to previous PHP working dir
-                    @chdir($curr_dir);
                 }
-                // input log to database
-                $sql_op = new simbio_dbop($dbs);
-                $sql_op->insert('backup_log', $data);
-                outputWithFlush(color($output, 'success'));
-            } catch (\Exception $e) {
-                $error = true;
-                $output = sprintf(__('Backup FAILED!,\n%s'),$e->getMessage());
-                outputWithFlush(color($output, 'error'));
+                // return to previous PHP working dir
+                @chdir($curr_dir);
             }
-        } else {
+            // input log to database
+            $sql_op = new simbio_dbop($dbs);
+            $sql_op->insert('backup_log', $data);
+            outputWithFlush(color($output, 'success'));
+        } catch (\Exception $e) {
             $error = true;
-            $output = __("Backup FAILED! The Backup directory is not exists or not writeable") . '<br> ';
-            $output .= __("Contact System Administrator for the right path of backup directory");
+            $output = sprintf(__('Backup FAILED!,\n%s'),$e->getMessage());
             outputWithFlush(color($output, 'error'));
         }
+    } else {
+        $error = true;
+        $output = __("Backup FAILED! The Backup directory is not exists or not writeable") . '<br> ';
+        $output .= __("Contact System Administrator for the right path of backup directory");
+        outputWithFlush(color($output, 'error'));
+    }
     
     // remove token
     unset($_SESSION['token']);
 
-    if ($_POST['verbose'] == 'no')
+    if ($_POST['verbose'] == 'no' && !isset($_POST['response']))
     {
         utility::jsToastr(__('Backup'), $dbs->escape_string(strip_tags($output)), ($error ? 'error' : 'success'));
     }
+
+    if (isset($_POST['response']) && $_POST['response'] === 'json')
+    {
+        exit(\SLiMS\Json::stringify(['status' => !$error, 'message' => strip_tags($output)]));
+    }
+
     echo '<script type="text/javascript">setTimeout(() => { top.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/backup.php\'); }, ' . ($_POST['verbose'] == 'no' ? 0 : 5000) . ')</script>';
     exit();
 }

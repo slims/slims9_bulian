@@ -28,6 +28,12 @@ class DB
     private static $instance_mysqli = null;
 
     /**
+     * Backup const
+     */
+    const BACKUP_BASED_ON_DAY = 1;
+    const BACKUP_BASED_ON_LAST_ITEM = 2;
+
+    /**
      * Intial database instance
      *
      * @param string $driver
@@ -78,10 +84,28 @@ class DB
      * @param array $settings
      * @return IMysqldump\Mysqldump
      */
-    public static function backup(array $settings = [])
+    public static function backup()
     {
         $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [$settings]));
+        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [config('database_backup.options')]));
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public static function hasBackup($by = self::BACKUP_BASED_ON_DAY)
+    {
+        $criteria = "substring(backup_time, 1,10) = '" . date('Y-m-d') . "'";
+
+        if ($by === self::BACKUP_BASED_ON_LAST_ITEM) $criteria = 'backup_time >= (SELECT last_update FROM item ORDER BY last_update DESC LIMIT 1)';
+
+        $state = self::getInstance()->query(<<<SQL
+            SELECT backup_log_id FROM backup_log WHERE {$criteria}
+        SQL);
+
+        return (bool)$state->rowCount();
     }
 
     /**

@@ -38,9 +38,10 @@ $version = "c42bab9fd2925ceb03f7dd9cfb3b6342027c877b";
 <p>&nbsp;</p>
 <p>
 SLiMS (Senayan Library Management System)<br />
-Copyright (c) 2007-2021 Senayan Developer Community<br />
+Copyright (c) 2007-2023 Senayan Developer Community<br />
 Simbio Engine v2.0, Copyright (c) 2007-2013 Arie Nugraha
 </p>
+<p>&nbsp;</p>
 
 <p>
 <div style="font-weight:bold;">Developers:</div>
@@ -53,8 +54,10 @@ Rasyid Ridho (rasyidridho@gmail.com, ridhoedogawa@yahoo.com)<br />
 Eddy Subratha (eddy.subratha@gmail.com, mucill@gmail.com)<br />
 Indra Sutriadi (indra.sutriadi@gmail.com)<br />
 Waris Agung Widodo (idoalit@gmail.com, ido.alit@gmail.com)<br />
-Heru Subekti (heroe.soebekti@gmail.com)
+Heru Subekti (heroe.soebekti@gmail.com)<br />
+Drajat Hasan (drajathasan20@gmail.com)
 </p>
+<p>&nbsp;</p>
 
 <p>
 <div style="font-weight:bold;">Past Developers:</div>
@@ -62,6 +65,7 @@ Past Developers:
 Sulfan Zayd (sulfan@gmail.com, sulfan.zayd@gmail.com)<br />
 Widianto Nugroho (wnugroho@gmail.com)
 </p>
+<p>&nbsp;</p>
 
 <p>
 <div style="font-weight:bold;">Localisation contributors:</div>
@@ -77,13 +81,13 @@ Urdu (Pakistan): Faheem Akbar (onlinevws@gmail.com), Aijaz Akhter Ahmadani (rite
 Turkish: Ali Yasir Yılmaz (aliyasiryilmaz@gmail.com)<br />
 Russian: Igor Gaydyshev (https://sourceforge.net/projects/russiantranslationforsenayan/)
 </p>
+<p>&nbsp;</p>
 
 <p>
 <div style="font-weight:bold;">Other contributors:</div>
 Gettext support: Tobias Zeumer<br />
 Membercard modification: Jushadi Arman Saz (jushadi@unsulbar.ac.id)<br />
 English documentation: Jim Richardson<br />
-Code enhancement: Drajat Hasan (drajathasan20@gmail.com)<br />
 Code enhancement: John Antony (john.antony@iamplus.com)
 </p>
 

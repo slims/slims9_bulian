@@ -28,14 +28,15 @@ if (!defined('INDEX_AUTH')) {
 }
 
 // Environment config
-require __DIR__ . '/config/sysconfig.env.inc.php';
+$envExists = file_exists($envFile = __DIR__ .  '/config/env.php');
+if ($envExists) require $envFile;
 
 /*
  * Set to development or production
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', $Environment);
+define('ENVIRONMENT', $env??'unvailable');
 
 switch (ENVIRONMENT) {
   case 'development':
@@ -47,9 +48,11 @@ switch (ENVIRONMENT) {
     @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
     break;
   default:
-    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-    echo 'The application environment is not set correctly.';
-    exit(1); // EXIT_ERROR
+    if (file_exists(__DIR__ . '/config/database.php') && php_sapi_name() !== 'cli') {
+      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+      include __DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'serviceunavailable.php';
+      exit(1); // EXIT_ERROR
+    }
 }
 
 // use httpOnly for cookie
@@ -61,7 +64,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.5.2');
+define('SENAYAN_VERSION_TAG', 'v9.6.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -115,25 +118,6 @@ define('LANG', LIB.'lang'.DS);
 //help base dir
 define('HELP', SB.'help'.DS);
 
-
-// senayan web doc root dir
-/* Custom base URL */
-$sysconf['baseurl'] = '';
-$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
-define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
-
-// admin section web root dir
-define('AWB', SWB.'admin/');
-
-// javascript library web root dir
-define('JWB', SWB.'js/');
-
-// library automation module web root dir
-define('MWB', SWB.'admin/'.MDL.'/');
-
-// repository web base dir
-define('REPO_WBS', SWB.REPO.'/');
-
 // item status rules
 define('NO_LOAN_TRANSACTION', 1);
 define('SKIP_STOCK_TAKE', 2);
@@ -160,6 +144,26 @@ require MDLBS.'bibliography/biblio.inc.php';
 
 // check if we are in mobile browser mode
 if (utility::isMobileBrowser()) { define('LIGHTWEIGHT_MODE', 1); }
+
+// senayan web doc root dir
+/* Custom base URL */
+$sysconf['baseurl'] = \SLiMS\Config::getInstance()->get('url.base', '');
+$_SERVER['PHP_SELF'] = strip_tags(str_replace(['"','\''], '', $_SERVER['PHP_SELF']));
+$temp_senayan_web_root_dir = preg_replace('@admin.*@i', '', str_replace('\\', '/', dirname(@$_SERVER['PHP_SELF'])));
+define('SWB', $sysconf['baseurl'].$temp_senayan_web_root_dir.(preg_match('@\/$@i', $temp_senayan_web_root_dir)?'':'/'));
+$_SERVER['PHP_SELF'] = $sysconf['baseurl'] . $_SERVER['PHP_SELF'];
+
+// admin section web root dir
+define('AWB', SWB.'admin/');
+
+// javascript library web root dir
+define('JWB', SWB.'js/');
+
+// library automation module web root dir
+define('MWB', SWB.'admin/'.MDL.'/');
+
+// repository web base dir
+define('REPO_WBS', SWB.REPO.'/');
 
 /* AJAX SECURITY */
 $sysconf['ajaxsec_user'] = 'ajax';
@@ -389,11 +393,6 @@ $sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru
 
 
 /**
- * Peer to peer server config
- */
-$sysconf['p2pserver'][1] = array('uri' => 'http://127.0.0.1/slims9_bulian', 'name' => 'SLiMS Library');
-
-/**
  * User and member login method
  */
 $sysconf['auth']['user']['method'] = 'native'; // method can be 'native' or 'LDAP'
@@ -458,31 +457,6 @@ $sysconf['index']['engine']['es_opts'] = array(
   'hosts' => ['localhost:9200'],
   'index' => 'slims' // name of index in ElasticSearch
 );
-
-
-/**
- * Captcha Settings
- */
-// Captcha settings for Senayan Management Console (aka Librarian Login)
-$sysconf['captcha']['smc']['enable'] = false; // value can be 'true' or 'false'
-$sysconf['captcha']['smc']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['smc']['enable']) {
-    include_once LIB.$sysconf['captcha']['smc']['type'].DS.'smc_settings.inc.php';
-}
-
-// Captcha settings for Member Login
-$sysconf['captcha']['member']['enable'] = false; // value can be 'true' or 'false'
-$sysconf['captcha']['member']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['member']['enable']) {
-    include_once LIB.$sysconf['captcha']['member']['type'].DS.'member_settings.inc.php';
-}
-
-// Captcha settings for Forgot Password
-$sysconf['captcha']['forgot']['enable'] = true; // value can be 'true' or 'false'
-$sysconf['captcha']['forgot']['type'] = 'recaptcha'; // value can be 'recaptcha' (at this time)
-if ($sysconf['captcha']['forgot']['enable']) {
-    include_once LIB.$sysconf['captcha']['forgot']['type'].DS.'forgot_settings.inc.php';
-}
 
 /**
  * Maximum biblio mark for member
@@ -570,7 +544,7 @@ if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 if (!file_exists(SB.'config'.DS.'database.php')) {
   // backward compatibility if upgrade process from `git pull`
   if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
-    \SLiMS\Config::create('database.php', function($filename){
+    \SLiMS\Config::create('database', function($filename){
       // get last database connection
       include SB.'config'.DS.'sysconfig.local.inc.php';
       $source = file_get_contents(SB.'config'.DS.'database.sample.php');
@@ -673,8 +647,67 @@ $sysconf['max_insert_batch'] = 100;
 /* Random static file version for production mode */
 $sysconf['static_file_version'] = 444981076;
 
+// Http Option
+$sysconf['http'] = [
+  // SLiMS by default use Guzzle as Http client. You
+  // can provide your config.
+  'client' => [
+    // verify ssl
+    'verify' => true,
+    // in seconds
+    'timeout' => 60 
+  ],
+  'cache' => [
+    'lifetime' => 300 // in seconds
+  ]
+];
+
+// Database backup
+$sysconf['database_backup'] = [
+  // show reminder message at admin
+  // dashboard
+  'reminder' => true,
+
+  // backup data automatically when
+  // super admin first login in to SLiMS
+  'auto' => false,
+
+  // Backup options
+  // SLiMS use Ifsnop\Mysqldump library.
+  'options' => [
+      'compress' => \Ifsnop\Mysqldump\Mysqldump::NONE,
+      'no-data' => false,
+      'add-drop-table' => true,
+      'single-transaction' => true,
+      'lock-tables' => true,
+      'add-locks' => false,
+      'extended-insert' => false,
+      'disable-keys' => true,
+      'skip-triggers' => false,
+      'add-drop-trigger' => true,
+      'routines' => true,
+      'databases' => false,
+      'add-drop-database' => false,
+      'hex-blob' => true,
+      'no-create-info' => false,
+      'where' => '',
+      /**
+       * an option for definer state in trigger query. 
+       * For some case, user had bad experience 
+       * when they move their SLiMS database to other database 
+       * machine without same privileged user as trigger definer.
+       */
+      'skip-definer' => true
+  ]
+];
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
+
+/**
+ * Peer to peer server config
+ */
+$sysconf['p2pserver'][1] = array('uri' => \SLiMS\Url::getSlimsBaseUri(), 'name' => $sysconf['library_name']);
 
 /* AUTHORITY TYPE */
 $sysconf['authority_type']['p'] = __('Personal Name');
@@ -745,4 +778,15 @@ require_once LIB . "helper.inc.php";
 if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
 
 // load all Plugins
+$sysconf['max_plugin_upload'] = 5000;
 \SLiMS\Plugins::getInstance()->loadPlugins();
+
+// Captcha factory
+\SLiMS\Captcha\Factory::operate();
+
+// Sanitize incoming data
+$sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
+  'get' => $_GET,
+  'server' => $_SERVER,
+  'post' => $_POST
+]));

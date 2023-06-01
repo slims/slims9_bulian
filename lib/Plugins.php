@@ -9,6 +9,7 @@
 namespace SLiMS;
 
 
+use SLiMS\Cli\Console;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Session\Factory;
 use stdClass;
@@ -39,6 +40,8 @@ class Plugins
     const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
     const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
     const OVERDUE_NOTICE_INIT = 'overduenotice_init';
+    const DUEDATE_NOTICE_INIT = 'duedate_init';
+    const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
 
     private static $instance;
     /**
@@ -336,6 +339,70 @@ class Plugins
     }
 
     /**
+     * Register SLiMS Module as Plugin
+     *
+     * @param string $module_name
+     * @param string $path
+     * @param string $description
+     * @param string $callback_priv
+     * @return void
+     */
+    public function registerModule($module_name, $path, $description = '', $callback_priv = '')
+    {
+        // Conver current path to md5 (prevent path transversal)
+        $md5_path = md5($path);
+
+        // Register module as hook
+        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function(&$module_list) use($module_name, $path, $md5_path, $description, $callback_priv) {
+            // set module list
+            $module_list[] = ['name' => $module_name, 'plugin_module_path' => $path, 'path' => $md5_path, 'desc' => $description];
+
+            // set session 
+            if (!isset($_SESSION['priv'][$md5_path])) {
+                // Custom privelges
+                if (is_callable($callback_priv)) {
+                    $callback_priv();
+                } else {
+                    $_SESSION['priv'][$md5_path] = [
+                        'r' => true,
+                        'w' => true,
+                        'submenu' => $path . 'submenu.php'
+                    ];
+                }
+            }
+        });
+
+        // Make default group menu
+        Plugins::group($module_name, function() use($path,$md5_path) {
+            // Scan all file inside module directory as menu
+            foreach (array_diff(scandir($path), ['.','..','submenu.php']) as $menu) {
+                if (is_dir($menu) || strpos($menu, '.inc.php')) continue;
+
+                // set label
+                $label = trim($menu, '.php');
+                $label = $label === 'index' ? __('Main List') : ucwords(str_replace('_', ' ', strtolower($menu)));
+
+                // Register module menu
+                Plugins::menu($md5_path, $label, $path . DS . $menu);
+            }
+        });
+    }
+
+    /**
+     * A shortcut for registerModule
+     *
+     * @param string $module_name
+     * @param string $path
+     * @param string $description
+     * @param string $callback_priv
+     * @return void
+     */
+    public function module($module_name, $path, $description = '', $callback_priv = '')
+    {
+        self::getInstance()->registerModule($module_name, $path, $description, $callback_priv);
+    }
+
+    /**
      * This method is relate to SLiMS\SearchEngine\Engine
      * 
      * @param string $class_name
@@ -358,9 +425,20 @@ class Plugins
     }
 
     /**
+     * This method is relate to SLiMS\Cli\Console
+     * 
+     * @param string $class_name
+     * @return void
+     */
+    public function registerCommand($class_name)
+    {
+        Console::getInstance()->registerCommand($class_name);
+    }
+
+    /**
      * Seperate root composer ('slims-plugin') detector
      * and plugin base composer (vendor inside each plugin).
-     * The autoload.php will be call in plugin_container.php
+     * The autoload.php will be call at plugin_container.php
      */
     public function registerAutoload($directoryToAutoload)
     {

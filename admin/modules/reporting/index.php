@@ -56,13 +56,14 @@ $table->table_attr = 'class="s-table table table-bordered mb-0"';
 
 // total number of titles
 $stat_query = $dbs->query('SELECT COUNT(biblio_id) FROM biblio');
-$stat_data = $stat_query->fetch_row();
-$collection_stat[__('Total Titles')] = $stat_data[0].' '.__(' (including titles that still don\'t have items yet)');
+$total_title_all = $stat_query->fetch_row()[0]??'?';
+$collection_stat[__('Total Titles')] = $total_title_all.' '.__(' (including titles that still don\'t have items yet)');
 
 // total number of titles
 $stat_query = $dbs->query('SELECT DISTINCT biblio.biblio_id FROM biblio INNER JOIN item ON biblio.biblio_id = item.biblio_id');
 $stat_data = $stat_query->num_rows;
 $collection_stat[__('Total Titles with items')] = $stat_data.__(' (only titles that have items)');
+$collection_stat[__('Total Titles without items')] = ($total_title_all - $stat_data).__(' (only titles that haven\'t items)');
 
 // total number of items
 $stat_query = $dbs->query('SELECT item.item_code FROM item,biblio WHERE item.biblio_id=biblio.biblio_id');
@@ -107,7 +108,7 @@ $stat_data = substr($stat_data,0,-1);
 $collection_stat[__('Total Items By Collection Type')] = $stat_data;
 
 // popular titles
-$stat_query = $dbs->query('SELECT title,biblio_id AS total_loans FROM `loan_history` WHERE member_id IS NOT NULL AND biblio_id IS NOT NULL
+$stat_query = $dbs->query('SELECT max(title), max(biblio_id) AS total_loans FROM `loan_history` WHERE member_id IS NOT NULL AND biblio_id IS NOT NULL
     GROUP BY biblio_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
 $stat_data = '<ol>';
 if(!empty($stat_query->num_rows)){

@@ -149,7 +149,8 @@ if (!$reportView) {
             WHERE (l.is_lent=1 AND l.is_return=0 AND ( (TO_DAYS(due_date)-TO_DAYS(\''.date('Y-m-d').'\')) BETWEEN 0 AND 3) AND l.member_id=\''.$array_data[0].'\')');
         $_buffer = '<div class="font-weight-bold">'.$member_name.' ('.$array_data[0].')';
         $_buffer .= '<div>'.$member_mail_address;
-        $_buffer .= __('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - '.__('Phone Number').': '.$member_d[2].'</div></div>';
+        if (!empty($member_d[1])) $_buffer .= '<div id="' . $array_data[0] . 'emailStatus"></div>' . __('E-mail').': <a href="mailto:'.$member_d[1].'">'.$member_d[1].'</a> - <a class="usingAJAX btn btn-sm btn-outline-primary" href="' . MWB . 'membership/duedate_mail.php' . '" postdata="memberID=' . $array_data[0] . '" loadcontainer="' . $array_data[0] . 'emailStatus"><i class="fa fa-paper-plane-o"></i>&nbsp;' . __('Send Notification e-mail') . '</a><br/>';
+        $_buffer .= __('Phone Number').': '.$member_d[2].'</div></div>';
         $_buffer .= '<table width="100%" cellspacing="0">';
         while ($_title_d = $_title_q->fetch_assoc()) {
             $_buffer .= '<tr>';
@@ -166,11 +167,35 @@ if (!$reportView) {
 
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
+    ?>
+    <script type="text/javascript" src="<?php echo JWB . 'jquery.js'; ?>"></script>
+    <script type="text/javascript" src="<?php echo JWB . 'updater.js'; ?>"></script>
+    <script type="text/javascript">
+        // registering event for send email button
+        $(document).ready(function () {
+            parent.$('#pagingBox').html('<?php echo str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set) ?>');
+            $('a.usingAJAX').click(function (evt) {
+                evt.preventDefault();
+                var anchor = $(this);
+                // get anchor href
+                var url = anchor.attr('href');
+                var postData = anchor.attr('postdata');
+                var loadContainer = anchor.attr('loadcontainer');
+                if (loadContainer) {
+                    container = jQuery('#' + loadContainer);
+                    container.html('<div class="alert alert-info"><?= __('Please wait') ?>....</div>');
+                }
+                // set ajax
+                if (postData) {
+                    container.simbioAJAX(url, {method: 'post', addData: postData});
+                } else {
+                    container.simbioAJAX(url, {addData: {ajaxload: 1}});
+                }
+            });
+        })
+    </script>
 
-    echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
-    echo '</script>';
-
+    <?php
     $content = ob_get_clean();
     // include the page template
     require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';

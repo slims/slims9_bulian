@@ -223,7 +223,7 @@ if ($stk_query->num_rows < 1) {
         $file_write = @file_put_contents(REPBS.'stock_take_print_result.html', $html_str);
         if ($file_write) {
             // open result in new window
-            echo '<script type="text/javascript">parent.openWin(\''.SWB.'/'.FLS.'/'.REP.'/stock_take_print_result.html\', \'popMemberReport\', 800, 500, true)</script>';
+            echo '<script type="text/javascript">parent.openWin(\''.\SLiMS\Url::getSlimsBaseUri().FLS.'/'.REP.'/stock_take_print_result.html\', \'popMemberReport\', 800, 500, true)</script>';
         } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Current Stock Take Report failed to generate, possibly because {directory} directory is not writable'))); }
         exit();
     } else {
