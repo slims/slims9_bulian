@@ -81,7 +81,7 @@ class Mail extends PHPMailer
      */
     public function subject(string $mailObject)
     {
-        $this->Subject = $mailObject;
+        $this->Subject = utf8_encode($mailObject);
         return $this;
     }
 
@@ -94,8 +94,8 @@ class Mail extends PHPMailer
     public function message(string $mailPlainMessage)
     {
         $this->isHTML(false);
-        $this->Body = $mailPlainMessage;
-        $this->AltBody = $mailPlainMessage;
+        $this->Body = utf8_encode($mailPlainMessage);
+        $this->AltBody = utf8_encode($mailPlainMessage);
         
         return $this;
     }
