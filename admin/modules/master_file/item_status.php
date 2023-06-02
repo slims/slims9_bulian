@@ -73,15 +73,12 @@ if (isset($_POST['saveData'])) {
         }
 		*/
         $data['rules'] = 'literal{NULL}';
-		if (isset($_POST['rules']) AND !empty($_POST['rules'])) {
-			foreach ($_POST['rules'] as $rule) {
-				if ((integer)$rule == NO_LOAN_TRANSACTION) {
-					$data['no_loan'] = 1;
-				} else if ((integer)$rule == SKIP_STOCK_TAKE) {
-					$data['skip_stock_take'] = 1;
-				}
-			}
-		}
+        $data['no_loan'] = '0';
+        $data['skip_stock_take'] = '0';
+        foreach ($_POST['rules']??[] as $rule) {
+            if ((integer)$rule === NO_LOAN_TRANSACTION) $data['no_loan'] = '1';
+            if ((integer)$rule === SKIP_STOCK_TAKE) $data['skip_stock_take'] = '1';
+        }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
@@ -230,12 +227,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'itemStatus', __('Item Status Name').'*', $rec_d['item_status_name']??'', 'style="width: 60%;" class="form-control"');
     // item status rules
 	$rules = array();
-	if (isset($rec_d['no_loan'])) {
-		$rules[] = NO_LOAN_TRANSACTION;
-	}
-	if (isset($rec_d['skip_stock_take'])) {
-		$rules[] = SKIP_STOCK_TAKE;
-	}
+
+	if ($rec_d['no_loan']??false) $rules[] = NO_LOAN_TRANSACTION;
+
+	if ($rec_d['skip_stock_take']??false) $rules[] = SKIP_STOCK_TAKE;
+
     $form->addCheckbox('rules', __('Rules'), $rules_option, $rules);
 
     // edit mode messagge

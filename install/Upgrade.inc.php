@@ -1091,7 +1091,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
         $sql['alter'][] = "ALTER TABLE `visitor_count` ADD `room_code` varchar(5) COLLATE 'utf8_unicode_ci' NULL AFTER `institution`;";
         $sql['alter'][] = "ALTER TABLE `visitor_count` ADD INDEX `room_code` (`room_code`);";
-        $sql['create'][] = "CREATE TABLE `cache` (
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `cache` (
           `name` varchar(64) NOT NULL,
           `contents` text NOT NULL,
           `created_at` datetime NOT NULL,
@@ -1099,7 +1099,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           `expired_at` datetime DEFAULT NULL,
           UNIQUE KEY `name` (`name`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        $sql['update'][] = "UPDATE `mst_item_status` SET `skip_stock_take` = 1 WHERE `item_status_id` IN ('NL','R')";
 
-        return $this->slims->query($sql, ['create', 'alter']);
+        return $this->slims->query($sql, ['create', 'alter','update']);
     }
 }
