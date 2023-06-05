@@ -1,6 +1,13 @@
 <?php
+/**
+ * @Source by          : Waris Agung Widodo (ido.alit@gmail.com)
+ * @Created Date       : 05/11/20 21.33
+ * @File name          : plugins.php
+ * @Modified by        : Drajat Hasan (drajathasan20@gmail.com)
+ */
 
 use SLiMS\DB;
+use SLiMS\Json;
 use SLiMS\Migration\Runner;
 use SLiMS\Plugins;
 use SLiMS\Filesystems\Storage;
@@ -107,27 +114,15 @@ if (isset($_POST['enable'])) {
 
         $run = $query->execute();
 
-        if ($run) {
-            if (isset($_POST['format'])) echo json_encode(['status' => true, 'message' => $message]);
-        } else {
-            if (isset($_POST['format'])) echo json_encode(['status' => false, 'message' => DB::getInstance()->errorInfo()]);
-        }
+        if (!$run) $message = __('Something error : turn on development mode to get more information');
 
-        if (!isset($_POST['format'])) {
-            $message = toastr($run == false ? DB::getInstance()->errorInfo() : $message);
-            if ($run == false) $message->error();
-            else $message->success();
-        }
+        if (isset($_POST['format'])) echo Json::stringify(['status' => (bool)$run, 'message' => $message])->withHeader();
+        else toastr($message . ' 1')->{($run === false ? 'error' : 'success')};
 
     } catch (Exception $exception) {
-        if (isset($_POST['format'])) echo json_encode(['status' => false, 'message' => $exception->getMessage()]);
-        else toastr($exception->getMessage())->error();
+        if (isset($_POST['format'])) echo Json::stringify(['status' => false, 'message' => $exception->getMessage()])->withHeader();
+        else toastr($exception->getMessage() . ' 2')->error();
     }
 
     exit();
 }
-
-// if (isset($_POST['upload'])) {
-
-//     exit;
-// }

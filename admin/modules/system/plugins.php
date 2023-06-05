@@ -42,7 +42,7 @@ if (isset($_GET['upload']))
 {
     $package = Package::prepare(SB . 'files/temp/test.zip');
     ob_start();
-    if ($package->isCompressorExists()) {
+    if ($package?->isCompressorExists()) {
         // create new instance
         $form = new simbio_form_table_AJAX('mainForm', MWB . 'system/plugin_action.php', 'post');
         $form->submit_button_attr = 'name="upload" value="' . __('Save') . '" class="s-btn btn btn-default"';
