@@ -8,10 +8,11 @@
 
 use SLiMS\DB;
 use SLiMS\Json;
-use SLiMS\Migration\Runner;
+use SLiMS\Jquery;
 use SLiMS\Plugins;
-use SLiMS\Filesystems\Storage;
 use SLiMS\Parcel\Package;
+use SLiMS\Migration\Runner;
+use SLiMS\Filesystems\Storage;
 
 define('INDEX_AUTH', 1);
 
@@ -21,6 +22,7 @@ require SB . 'admin/default/session.inc.php';
 require SB . 'admin/default/session_check.inc.php';
 
 $plugins = Plugins::getInstance();
+$upload_success = false;
 
 if (count($_POST) == 0) $_POST = json_decode(file_get_contents('php://input'), true);
 
@@ -60,7 +62,7 @@ if (isset($_POST['upload']) && !empty($_FILES['plugin'])) {
                 if (dirname($plugin->path) == $pluginPath) return true;
             }));
         });
-        
+        $upload_success = true;
     }
     else
     {
@@ -124,5 +126,10 @@ if (isset($_POST['enable'])) {
         else toastr($exception->getMessage() . ' 2')->error();
     }
 
+    // redirect content
+    if ($upload_success) {
+        Jquery::raw('colorbox.close()');
+        redirect()->simbioAJAX(AWB . 'modules/system/plugins.php');
+    }
     exit();
 }

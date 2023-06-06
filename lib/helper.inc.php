@@ -21,7 +21,12 @@
  *
  */
 
-use SLiMS\{Config,Ip,Number,Currency,Json};
+use SLiMS\Config;
+use SLiMS\Ip;
+use SLiMS\Number;
+use SLiMS\Currency;
+use SLiMS\Json;
+use SLiMS\Jquery;
 use SLiMS\Http\Redirect;
 use SLiMS\Session\Flash;
 
@@ -134,6 +139,15 @@ if (!function_exists('flash'))
     }
 }
 
+if (!function_exists('jQuery'))
+{
+    function jQuery(string $selector = '')
+    {
+        if (!empty($selector)) return Jquery::getInstance($selector);
+        echo Jquery::getInstance('');
+    }
+}
+
 if (!function_exists('redirect'))
 {
     /**
@@ -159,9 +173,7 @@ if (!function_exists('redirect'))
             public function simbioAJAX(string $url, string $data = '', string $position = 'top.', string $selector = '#mainContent', int $timeout = 0)
             {
                 $params = empty($data) ? "'$url'" : "'$url', {method: 'post', addData: '$data'}";
-                exit(<<<HTML
-                <script>setTimeout(() => {$position}\$('{$selector}').simbioAJAX({$params}), {$timeout})</script>
-                HTML);
+                exit(jQuery($selector)->setPosition($position)->simbioAJAX($params)->delayIn($timeout));
             }
 
             public function __call($method, $arguments)
@@ -178,6 +190,7 @@ if (!function_exists('redirect'))
         };
     }
 }
+
 
 if (!function_exists('toastr'))
 {
