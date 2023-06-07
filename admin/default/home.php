@@ -20,6 +20,8 @@
  * some patches by hendro
  */
 
+use SLiMS\DB;
+
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
@@ -136,12 +138,18 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             }
         }
 
-        // info
-        $backup = $dbs->query('SELECT backup_log_id FROM backup_log WHERE substring(backup_time, 1,10) = \'' . date('Y-m-d') . '\'');
-        $alreadyBackup = $backup->num_rows > 0;
-        if ((!$alreadyBackup) && (config('database_backup.reminder') || config('database_backup.auto'))) $_SESSION['token'] = utility::createRandomString(32);
-        if ($_SESSION['uid'] == '1' && !$is_repaired && config('database_backup.reminder') && !config('database_backup.auto')) {
-            if (!$alreadyBackup) {
+        if (utility::havePrivilege('system', 'r') && utility::havePrivilege('system', 'w'))
+        {
+            // info
+            $backupConfigStatus = config('database_backup.reminder') || config('database_backup.auto');
+            $backupIsNoAuto = config('database_backup.reminder') && !config('database_backup.auto');
+            $alreadyBackup = DB::hasBackup(by: DB::BACKUP_BASED_ON_DAY);
+
+
+            if ($alreadyBackup === false && $backupConfigStatus) 
+                $_SESSION['token'] = utility::createRandomString(32);
+            
+            if ($alreadyBackup === false && $is_repaired === false && $backupIsNoAuto === true) {
                 echo '<div class="alert alert-info border-0 mt-3">';
                 echo '<span>' . __('It looks like today you haven\'t backup your database.') . 
                 '.&nbsp;&nbsp;<a href="'.MWB.'system/backup_proc.php" id="backupproc" class="notAJAX btn btn-primary">' . __('Backup Now') . '</a>' .
@@ -401,25 +409,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             })
         });
 
-        <?php if ($_SESSION['uid'] === '1') : ?>
-        // get lastest release
-        fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
-            .then(res => res.json())
-            .then(res => {
-                if (res.tag_name > '<?= SENAYAN_VERSION_TAG; ?>') {
-                    $('#new_version').text(res.tag_name);
-                    $('#alert-new-version').removeClass('hidden');
-                    $('#alert-new-version a').attr('href', res.html_url)
-                }
-            })
-
-            function backupDatabase(href, callback) {
-                $.post(href, {start:true,tkn:'<?= $_SESSION['token']??'' ?>',verbose:'no',response:'json'}, function(result, status, post){
-                        var result = JSON.parse(result)
-                        callback(result)
-                });
-            }
-
+        <?php if (utility::havePrivilege('system', 'r') && utility::havePrivilege('system', 'w')): ?>
             <?php if (config('database_backup.reminder') && !config('database_backup.auto')): ?>
                 // Backup process
                 $('#backupproc').click(function(e) {
@@ -442,6 +432,13 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
                 })
             <?php endif; ?>
 
+            function backupDatabase(href, callback) {
+                $.post(href, {start:true,tkn:'<?= $_SESSION['token']??'' ?>',verbose:'no',response:'json'}, function(result, status, post){
+                        var result = JSON.parse(result)
+                        callback(result)
+                });
+            }
+
             <?php if (!$is_repaired && !$alreadyBackup && config('database_backup.auto')): ?>
                 $('.contentDesc').slideUp();
                 $('#backupProccess').slideDown();
@@ -456,7 +453,19 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
                     }
                 })
             <?php endif; ?>
+        <?php endif; ?>
 
+        <?php if ($_SESSION['uid'] === '1') : ?>
+        // get lastest release
+        fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
+            .then(res => res.json())
+            .then(res => {
+                if (res.tag_name > '<?= SENAYAN_VERSION_TAG; ?>') {
+                    $('#new_version').text(res.tag_name);
+                    $('#alert-new-version').removeClass('hidden');
+                    $('#alert-new-version a').attr('href', res.html_url)
+                }
+            })
         <?php endif; ?>
 
     </script>

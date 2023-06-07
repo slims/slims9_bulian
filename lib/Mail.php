@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-10-06 22:44:30
- * @modify date 2022-11-12 05:27:50
+ * @modify date 2023-06-04 06:20:36
  * @license GPLv3
  * @desc [description]
  */
@@ -51,6 +51,7 @@ class Mail extends PHPMailer
         //Recipients
         $this->setFrom($mail['from'], $mail['from_name']);
         $this->addReplyTo($mail['reply_to'], $mail['reply_to_name']);
+        $this->charSet($mail['charset']??'UTF-8');
     }
 
     public static function getInstance()
@@ -83,6 +84,17 @@ class Mail extends PHPMailer
     {
         $this->Subject = $mailObject;
         return $this;
+    }
+
+    /**
+     * Set content charset
+     *
+     * @param string $charSet
+     * @return void
+     */
+    public function charSet(string $charSet)
+    {
+        $this->CharSet = $charSet;
     }
 
     /**

@@ -20,6 +20,8 @@
 
 /* Stock Take */
 
+use SLiMS\DB;
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 // key to get full database access
@@ -61,7 +63,7 @@ if ($_SESSION['uid'] != '1') {
 $q_item = $dbs->query("SELECT last_update FROM item ORDER BY last_update DESC LIMIT 1");
 $d_item = $q_item->fetch_row();
 $q_backup = $dbs->query("SELECT backup_log_id FROM backup_log WHERE backup_time >= '{$d_item[0]}'");
-if ($q_backup->num_rows < 1 && !isset($_GET['skip_backup']) && !isset($_POST['saveData'])) {
+if ((DB::hasBackup(by: DB::BACKUP_BASED_ON_LAST_ITEM) === false) && !isset($_GET['skip_backup']) && !isset($_POST['saveData'])) {
   $_SESSION['token'] = utility::createRandomString(32);
   ?>
     <div class="container-fluid">

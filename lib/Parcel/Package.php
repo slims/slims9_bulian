@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-04-06 07:59:09
- * @modify date 2023-04-06 13:36:54
+ * @modify date 2023-06-06 05:35:28
  * @license GPLv3
  * @desc [description]
  */
@@ -91,5 +91,10 @@ class Package implements \IteratorAggregate,\JsonSerializable,\Countable
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->packages);
+    }
+
+    public static function getError()
+    {
+        return self::getInstance()->error;
     }
 }
