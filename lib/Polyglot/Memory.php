@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-05-27 21:37:29
- * @modify date 2023-05-28 09:41:58
+ * @modify date 2023-06-09 15:06:01
  * @license GPLv3
  * @desc [description]
  */
@@ -11,6 +11,7 @@ namespace SLiMS\Polyglot;
 
 use SLiMS\Config;
 use Gettext\Loader\MoLoader;
+use SLiMS\Filesystems\Storage;
 
 final class Memory
 {
@@ -271,6 +272,11 @@ final class Memory
     public function hasTempLanguage(string $remeberAs = 'select_lang'): bool
     {
         return isset($_COOKIE['select_lang']);
+    }
+
+    public function registerUserLocale()
+    {
+        if (Storage::plugin()->isExists('lang') === false) return;
     }
 
     /**
