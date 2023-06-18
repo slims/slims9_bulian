@@ -389,7 +389,7 @@ $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voya
 /**
  * MARC copy cataloguing sources
  */
-$sysconf['marc_SRU_source'][1] = array('uri' => 'http://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
+$sysconf['marc_SRU_source'][1] = array('uri' => 'https://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
 
 
 /**

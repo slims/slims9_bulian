@@ -10,6 +10,8 @@
 
 namespace Marc;
 
+use SLiMS\Http\Client;
+
 /**
  * Parser record Marc XML
  */
@@ -23,34 +25,28 @@ class XMLParser
   // set error
   protected $error = false;
   // set messages
-  protected $message;
+  protected $message = '';
 
   function __construct($source, $type = 'file', $namespace = '', $isPrefix = false)
   {
+    try {
+      $this->counter = 0;
+      $resource = preg_match('/(http|s)\:\/\//i', $source) ? Client::get($source . '&xmlformat=marc21') : file_get_contents($source);
+      
+      if ($error = $resource?->getError() || empty($resource)) throw new \Exception($error);
+      else $content = is_object($resource) ? $resource->getContent() : $resource;
+      
+      $this->source = \simplexml_load_string($content, 'SimpleXMLElement', 0, $namespace, $isPrefix);
 
-    $this->counter = 0;
-
-    libxml_set_streams_context(stream_context_create([
-        'ssl' => [
-            'verify_peer' => false,
-            'verify_peer_name' => false
-        ]
-    ]));
-
-    switch ($type) {
-      case 'string':
-        $this->source = \simplexml_load_string($source, 'SimpleXMLElement', 0, $namespace, $isPrefix);
-        break;
-
-      default:
-        $this->source = \simplexml_load_file($source, 'SimpleXMLElement', 0, $namespace, $isPrefix);
-        break;
-    }
-
-    if (!$this->source) {
+    } catch (\GuzzleHttp\Exception\BadResponseException | \Exception $e) {
       $this->error = true;
-      $this->messagge = 'Can\'t load MARC Source.';
+      $this->message = isDev() ? $e->getMessage() : __('Can\'t load MARC Source.');
     }
+  }
+
+  public static function isSupport()
+  {
+    return function_exists('simplexml_load_string');
   }
 
   public function isError()
@@ -60,12 +56,12 @@ class XMLParser
 
   public function getMessage()
   {
-    return $this->messagge;
+    return $this->message;
   }
 
   public function count()
   {
-    return count($this->source->record);
+    return count($this->source?->record??[]);
   }
 
   public function next()

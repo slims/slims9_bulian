@@ -56,6 +56,6 @@ final class Factory
         if (!method_exists($this->driver, $sessionSection)) throw new \Exception("Section fro $sessionSection is not available!");
         $this->driver->{$sessionSection}();
         // start session
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) session_start();
     }
 }

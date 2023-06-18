@@ -49,6 +49,10 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+if (!\Marc\XMLParser::isSupport()) {
+  die('<div class="errorBox">'.__('Extension XML is not enabled').'</div>');
+}
+
 // get servers
 $server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 4 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
@@ -59,7 +63,7 @@ if (isset($_GET['marc_SRU_source'])) {
     $inList = (bool)count(array_filter($sysconf['marc_SRU_source'], fn($sru) => trim(urldecode($_GET['marc_SRU_source'])) == $sru['uri']));
     $zserver = $inList ? trim(urldecode($_GET['marc_SRU_source'])) : '';
 } else {
-    $zserver = 'http://opac.perpusnas.go.id/sru.aspx';
+    $zserver = 'https://opac.perpusnas.go.id/sru.aspx';
 }
 
 function getAcronym($sentence)
