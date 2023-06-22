@@ -569,6 +569,11 @@ utility::loadSettings($dbs);
 
 // Apply language settings
 $localisation = \SLiMS\Polyglot\Memory::getInstance();
+
+// plugin locale
+$localisation->registerLanguageFromPlugin();
+
+// load localisation
 $localisation->load(function($memory){
   // OPAC Only
   if (\SLiMS\Url::isOpac() === false) return;
@@ -593,20 +598,20 @@ $localisation->load(function($memory){
 require_once LIB . "helper.inc.php";
 
 $localisation->registerLanguages([
-  ['ar_SA', __('Arabic'), 'Arabic'],
-  ['bn_BD', __('Bengali'), 'Bengali'],
-  ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
-  ['en_US', __('English'), 'English'],
-  ['es_ES', __('Espanol'), 'Espanol'],
-  ['de_DE', __('German'), 'Deutsch'],
-  ['id_ID', __('Indonesian'), 'Indonesia'],
-  ['ja_JP', __('Japanese'), 'Japanese'],
-  ['ms_MY', __('Malay'), 'Malay'],
-  ['fa_IR', __('Persian'), 'Persian'],
-  ['ru_RU', __('Russian'), 'Russian'],
-  ['th_TH', __('Thai'), 'Thai'],
-  ['tr_TR', __('Turkish'), 'Turkish'],
-  ['ur_PK', __('Urdu'), 'Urdu']
+    ['ar_SA', __('Arabic'), 'Arabic'],
+    ['bn_BD', __('Bengali'), 'Bengali'],
+    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
+    ['en_US', __('English'), 'English'],
+    ['es_ES', __('Espanol'), 'Espanol'],
+    ['de_DE', __('German'), 'Deutsch'],
+    ['id_ID', __('Indonesian'), 'Indonesia'],
+    ['ja_JP', __('Japanese'), 'Japanese'],
+    ['ms_MY', __('Malay'), 'Malay'],
+    ['fa_IR', __('Persian'), 'Persian'],
+    ['ru_RU', __('Russian'), 'Russian'],
+    ['th_TH', __('Thai'), 'Thai'],
+    ['tr_TR', __('Turkish'), 'Turkish'],
+    ['ur_PK', __('Urdu'), 'Urdu']
 ]);
 
 // template info config
