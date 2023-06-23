@@ -20,6 +20,8 @@
 
 /* Biblio Import section */
 use SLiMS\Filesystems\Storage;
+use SLiMS\DB;
+use SLiMS\Csv;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -56,6 +58,27 @@ if ($sysconf['index']['type'] == 'index') {
 
 // Redirect content
 if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
+
+if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
+{
+  $csv = new Csv;
+  $csv->create([array_merge(DB::getInstance()->query(<<<SQL
+  SELECT
+        b.title, gmd.gmd_name, b.edition,
+        b.isbn_issn, publ.publisher_name, b.publish_year,
+        b.collation, b.series_title, b.call_number,
+        lang.language_name, pl.place_name, b.classification,
+        b.notes, b.image, b.sor
+        FROM biblio AS b
+        LEFT JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
+        LEFT JOIN mst_publisher AS publ ON b.publisher_id=publ.publisher_id
+        LEFT JOIN mst_language AS lang ON b.language_id=lang.language_id
+        LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id ORDER BY b.last_update DESC
+        LIMIT 1
+  SQL)->fetch(PDO::FETCH_ASSOC), ['authors' => '','topics' => '','item_code' => ''])], ['only_header' => true]);
+
+  $csv->asStream('biblio_sample_import');
+}
 
 // max chars in line for file operations
 $max_chars = 1024*100;
@@ -351,9 +374,9 @@ $str_input .= '</div>';
 $str_input .= '</div>';
 $form->addAnything(__('File To Import'), $str_input);
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(',').'', 'style="width: 10%;" maxlength="3" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(config('csv.separator')).'', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
-$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities('"').'', 'style="width: 10%;" class="form-control"');
+$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities(config('csv.enclosed_with')).'', 'style="width: 10%;" class="form-control"');
 // number of records to import
 $form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
@@ -368,4 +391,9 @@ $(document).on('change', '.custom-file-input', function () {
     let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
     $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
 });
+
+// download sample
+$('.edit-link-area').append(`
+      <a href="<?= $_SERVER['PHP_SELF'] ?>?action=download_sample" class="btn btn-secondary notAJAX"><?= __('Download Sample') ?></a>
+`)
 </script>
