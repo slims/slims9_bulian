@@ -21,7 +21,8 @@
 /* Biblio Import section */
 use SLiMS\Filesystems\Storage;
 use SLiMS\DB;
-use SLiMS\Csv;
+use SLiMS\Csv\Writer;
+use SLiMS\Csv\Row;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -61,23 +62,20 @@ if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->si
 
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 {
-  $csv = new Csv;
-  $csv->create([array_merge(DB::getInstance()->query(<<<SQL
-  SELECT
-        b.title, gmd.gmd_name, b.edition,
-        b.isbn_issn, publ.publisher_name, b.publish_year,
-        b.collation, b.series_title, b.call_number,
-        lang.language_name, pl.place_name, b.classification,
-        b.notes, b.image, b.sor
-        FROM biblio AS b
-        LEFT JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
-        LEFT JOIN mst_publisher AS publ ON b.publisher_id=publ.publisher_id
-        LEFT JOIN mst_language AS lang ON b.language_id=lang.language_id
-        LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id ORDER BY b.last_update DESC
-        LIMIT 1
-  SQL)->fetch(PDO::FETCH_ASSOC), ['authors' => '','topics' => '','item_code' => ''])], ['only_header' => true]);
+  // Create Csv instance
+  $csv = new Writer;
+  $csv->add(new Row([
+    'title','gmd_name','edition',
+    'isbn_issn','publisher_name',
+    'publish_year','collation',
+    'series_title','call_number',
+    'language_name','place_name',
+    'classification','notes','image',
+    'sor','authors','topics','item_code'
+  ]));
 
-  $csv->asStream('biblio_sample_import');
+  // Download CSV
+  $csv->download('biblio_sample_import');
 }
 
 // max chars in line for file operations
@@ -343,8 +341,9 @@ if (isset($_POST['doImport'])) {
     <h2><?php echo __('Import Tool'); ?></h2>
     </div>
     <div class="infoBox">
-    <?php echo __('Import for bibliographics data from CSV file. For guide on CSV fields order and format please refer to documentation or visit <a href="http://slims.web.id" target="_blank">Official Website</a>'); ?>
-	</div>
+      <?php echo __('Import for bibliographics data from CSV file. For guide on CSV fields order and format please refer to documentation or visit <a href="http://slims.web.id" target="_blank">Official Website</a>'); ?>
+      &nbsp;<a href="<?= $_SERVER['PHP_SELF'] ?>?action=download_sample" class="s-btn btn btn-secondary notAJAX"><?= __('Download Sample') ?></a>
+	  </div>
 </div>
 </div>
 <div id="importInfo" class="infoBox" style="display: none;">&nbsp;</div><div id="importError" class="errorBox" style="display: none;">&nbsp;</div>
@@ -391,9 +390,4 @@ $(document).on('change', '.custom-file-input', function () {
     let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
     $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
 });
-
-// download sample
-$('.edit-link-area').append(`
-      <a href="<?= $_SERVER['PHP_SELF'] ?>?action=download_sample" class="btn btn-secondary notAJAX"><?= __('Download Sample') ?></a>
-`)
 </script>
