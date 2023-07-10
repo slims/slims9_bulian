@@ -263,15 +263,15 @@ class simbio_fe_radio extends abs_simbio_form_element
     $_buffer .= '<tr>'."\n";
     foreach ($_chunked_array as $_chunk) {
       $_buffer .= '<td valign="top">';
-      foreach ($_chunk as $_radio) {
+      foreach ($_chunk as $order => $_radio) {
         if ($_radio[0] == $this->element_value) {
-          $_buffer .= '<div><input type="radio" name="'.$this->element_name.'" id="'.$this->element_name.'"'
+          $_buffer .= '<div><input style="cursor:pointer" type="radio" name="'.$this->element_name.'" id="'.$this->element_name.$order.'"'
             .' value="'.$_radio[0].'" style="border: 0;" checked />'
-            .' '.$_radio[1]."</div>\n";
+            .' <label style="cursor:pointer" for="'.$this->element_name.$order.'">'.$_radio[1]."</label></div>\n";
         } else {
-          $_buffer .= '<div><input type="radio" name="'.$this->element_name.'" id="'.$this->element_name.'"'
+          $_buffer .= '<div><input style="cursor:pointer" type="radio" name="'.$this->element_name.'" id="'.$this->element_name.$order.'"'
             .' value="'.$_radio[0].'" style="border: 0;" />'
-            .' '.$_radio[1]."</div>\n";
+            .' <label style="cursor:pointer" for="'.$this->element_name.$order.'">'.$_radio[1]."</label></div>\n";
         }
       }
       $_buffer .= '</td>';
