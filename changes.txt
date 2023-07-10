@@ -43,9 +43,12 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
-SLiMS 9.6.X (Bulian)
+SLiMS 9.6.1 (Bulian)
 ========================================================================
 Add : CSV import sample
+Add : Clickable label element at input radio and checkbox
+Add : CSV Import Sample for Biblio, Item, & Member data
+Fixed : SSRF & LFI vulnerability
 Fixed : re-run session
 Fixed : unmatch column type at mst_visitor_room
 

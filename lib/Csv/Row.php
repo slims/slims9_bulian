@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-06-24 14:22:22
- * @modify date 2023-06-28 17:14:09
+ * @modify date 2023-07-09 14:34:56
  * @license GPLv3
  * @desc [description]
  */
@@ -154,6 +154,11 @@ class Row implements IteratorAggregate,Countable
         if (is_array($key)) $this->standart = array_merge($this->standart, $key);
         else $this->standart[$key] = $value;
         return $this;
+    }
+
+    public function toArray()
+    {
+        return (array)$this->columns;
     }
 
     public function getIterator(): ArrayIterator
