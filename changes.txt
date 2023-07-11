@@ -49,6 +49,9 @@ Add : CSP Manager
 Add : CSV import sample
 Add : Clickable label element at input radio and checkbox
 Add : CSV Import Sample for Biblio, Item, & Member data
+Fixed : CJK (Chinese, Japanese, and Korean) character in E-Mail content
+Fixed : Bug in stock opname resync
+Fixed : MARC SRU Perpusnas RI
 Fixed : SSRF & LFI vulnerability
 Fixed : re-run session
 Fixed : unmatch column type at mst_visitor_room
