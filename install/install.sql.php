@@ -1125,7 +1125,7 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  `unique_code` int(11) NOT NULL COMMENT 'Code for identification each room',
+  `unique_code` varchar(5) NOT NULL COMMENT 'Code for identification each room',
   `created_at` datetime DEFAULT NULL,
   `updated_at`datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),

@@ -1451,3 +1451,7 @@ button.prev-btn {
 pre.sf-dump, pre.sf-dump .sf-dump-default {
   z-index: 0 !important;
 }
+
+input[id*='simbio-checkbox-'], label[for*='simbio-checkbox-'] {
+  cursor: pointer !important;
+}

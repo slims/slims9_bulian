@@ -20,6 +20,8 @@
 
 /* Item Import section */
 use SLiMS\Filesystems\Storage;
+use SLiMS\Csv\Writer;
+use SLiMS\Csv\Row;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -49,6 +51,21 @@ if (!$can_read) {
 
 // Redirect content
 if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
+
+if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
+{
+  // Create Csv instance
+  $csv = new Writer;
+  $csv->add(new Row([
+    'item_code','call_number','coll_type_name','inventory_code',
+    'received_date','supplier_name','order_no','location_name',
+    'order_date','item_status_name','site','source','invoice',
+    'price','price_currency','invoice_date','input_date','last_update','title'
+  ]));
+
+  // Download CSV
+  $csv->download('biblio_item_sample_import');
+}
 
 // max chars in line for file operations
 $max_chars = 1024*100;
@@ -278,6 +295,7 @@ if (isset($_POST['doImport'])) {
         </div>
         <div class="infoBox">
             <?php echo __('Import for item data from CSV file'); ?>
+            &nbsp;<a href="<?= $_SERVER['PHP_SELF'] ?>?action=download_sample" class="s-btn btn btn-secondary notAJAX"><?= __('Download Sample') ?></a>
         </div>
     </div>
 </div>
