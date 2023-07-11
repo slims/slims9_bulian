@@ -45,6 +45,7 @@ THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
 SLiMS 9.6.1 (Bulian)
 ========================================================================
+Add : CSP Manager
 Add : CSV import sample
 Add : Clickable label element at input radio and checkbox
 Add : CSV Import Sample for Biblio, Item, & Member data

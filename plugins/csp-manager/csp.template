@@ -1,0 +1,27 @@
+<?php
+/**
+ * CSP (Content Security Policy)
+ * 
+ * fell free to add your custom CSP.
+ * 
+ * original code by 2022 Hendro Wicaksono (hendrowicaksono@yahoo.com)
+ * modified by Drajat Hasan (drajathasan20@gmail.com)
+ *
+ * @Customize by {realname}
+ * @ModifiedAt {timeModified}
+ * @HostName {hostName}
+ */
+return [
+    "base-uri {base-uri}",
+    "script-src {script-src}",
+    "style-src {style-src}",
+    "img-src {img-src}",
+    "connect-src {connect-src}",
+    "frame-src {frame-src}",
+    "font-src {font-src}",
+    "media-src {media-src}",
+    "object-src {object-src}",
+    "manifest-src {manifest-src}", 
+    "worker-src {worker-src}",
+    "frame-ancestors {frame-ancestors}"
+];
