@@ -37,8 +37,6 @@ $can_read = utility::havePrivilege('bibliography', 'r');
 $can_write = utility::havePrivilege('bibliography', 'w');
 
 // sent HTTP header
-header('Content-type: text/json');
-
 if (!($can_read && $can_write)) {
     $response = Json::stringify(['status' => 'UNAUTHORIZED', 'message' => 'Unauthorized Access!'])->withHeader();
     exit($response);
