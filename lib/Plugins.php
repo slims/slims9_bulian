@@ -152,6 +152,7 @@ class Plugins
                         // get migration info
                         $this->plugins[$plugin->id] = $plugin;
                         $this->plugins[$plugin->id]->migration = $this->getMigrationInfo($plugin);
+                        $this->plugins[$plugin->id]->action = $this->getActionInfo($plugin);
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
                     // get plugins from sub folder location
@@ -182,6 +183,20 @@ class Plugins
             $migration->{self::DATABASE_VERSION} = $this->getDBVersion($plugin->id);
         }
         return $migration;
+    }
+
+
+    private function getActionInfo($plugin)
+    {
+        $action = new stdClass;
+        $action->is_exist = false;
+
+        $action_directory = dirname($plugin->path) . DIRECTORY_SEPARATOR . 'action';
+        if (is_dir($action_directory)) {
+            $action->directory = $action_directory;
+            $action->is_exist = true;
+        }
+        return $action;
     }
 
     /**
@@ -397,7 +412,7 @@ class Plugins
      * @param string $callback_priv
      * @return void
      */
-    public function module($module_name, $path, $description = '', $callback_priv = '')
+    public static function module($module_name, $path, $description = '', $callback_priv = '')
     {
         self::getInstance()->registerModule($module_name, $path, $description, $callback_priv);
     }
