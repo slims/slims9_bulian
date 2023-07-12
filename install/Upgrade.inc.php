@@ -21,7 +21,7 @@ class Upgrade
    *
    * @var int
    */
-  private $version = 33;
+  private $version = 34;
 
   /**
    * @param SLiMS $slims
@@ -1103,4 +1103,9 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
         return $this->slims->query($sql, ['create', 'alter','update']);
     }
+
+    /**
+     * Upgrade role to v9.6.0
+     */
+    function upgrade_role_34(){}
 }
