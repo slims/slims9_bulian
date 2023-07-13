@@ -79,9 +79,7 @@ if (isset($_POST['enable'])) {
         })[$id] ?? die(isset($_POST['format']) ? json_encode(['status' => false, 'message' => __('Plugin not found')]) : toastr(__('Plugin not found'))->error());
 
     try {
-        if ($plugin->action->is_exist) {
-            Action::setDirectory($plugin->action->directory);
-        }
+        if ($plugin->action->is_exist) Action::setDirectory($plugin->action->directory);
 
         if ($_POST['enable']) {
             $options = ['version' => $plugin->version];

@@ -185,7 +185,17 @@ class Plugins
         return $migration;
     }
 
-
+    /**
+     * Some times we need to move
+     * a file into SLiMS core code such as
+     * config etc without manual process. 
+     * Maybe you ask "Why we need action? Is it migration 
+     * feature is enough?" the answer is "seperate". Seperating 
+     * database migration process and file migration process.
+     * 
+     * @param Plugins $plugin
+     * @return stdClass
+     */
     private function getActionInfo($plugin)
     {
         $action = new stdClass;
