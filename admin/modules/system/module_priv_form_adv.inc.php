@@ -18,7 +18,7 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
         <?php $n = 0; while ($module_data = $module_query->fetch_assoc()): ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center" id="headingOne">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?= $module_data['module_path'] ?>" aria-expanded="true" aria-controls="<?= $module_data['module_path'] ?>">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?= $module_data['module_name'] ?>" aria-expanded="true" aria-controls="<?= $module_data['module_name'] ?>">
                     <?= __(ucwords(str_replace('_', ' ', $module_data['module_name']))) ?>
                 </button>
 
@@ -40,17 +40,17 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
 
                 <div class="d-flex">
                     <div class="custom-control custom-switch mr-4">
-                        <input name="read[]" value="<?= $module_data['module_id'] ?>" <?= $read_checked ?> type="checkbox" class="custom-control-input" id="read-<?= $module_data['module_path'] ?>">
+                        <input name="read[]" value="<?= $module_data['module_id'] ?>" <?= $read_checked ?> type="checkbox" class="custom-control-input" id="read-<?= $module_data['module_name'] ?>">
                         <label class="custom-control-label" for="read-<?= $module_data['module_path'] ?>"><?= __('Read') ?></label>
                     </div>
                     <div class="custom-control custom-switch">
-                        <input name="write[]" value="<?= $module_data['module_id'] ?>" <?= $write_checked ?> type="checkbox" class="custom-control-input" id="write-<?= $module_data['module_path'] ?>">
+                        <input name="write[]" value="<?= $module_data['module_id'] ?>" <?= $write_checked ?> type="checkbox" class="custom-control-input" id="write-<?= $module_data['module_name'] ?>">
                         <label class="custom-control-label" for="write-<?= $module_data['module_path'] ?>"><?= __('Write') ?></label>
                     </div>
                 </div>
             </div>
 
-            <div id="<?= $module_data['module_path'] ?>" class="collapse <?= $n < 1 ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="<?= $module_data['module_name'] ?>" class="collapse <?= $n < 1 ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <?php
                     $menu = [];
                     $_ = '__';
