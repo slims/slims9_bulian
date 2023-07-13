@@ -71,7 +71,7 @@ HTML;
                     $submenu .= '</li>';
 
                     // load submenu from plugins
-                    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($module_data['module_path']);
+                    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($module_data['module_name']);
                     $menu = array_merge($menu, $plugin_menus);
 
                     foreach ($menu as $item) {
