@@ -16,9 +16,10 @@ include __DIR__ . '/../../sysconfig.inc.php';
 
 try {
     // Fetch filename based on query request
-    $filenameinput = isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png';
-    $filename = trim(substr($filenameinput, strpos($filenameinput, '/', 1)), '/');
-    $storage = Storage::{dirname($filenameinput, 2)}();
+    $filenameinput = pathinfo(isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png');
+    $storageName = explode('/', $filenameinput['dirname'])[0]??'uknown';
+    $filename = str_replace($storageName, '', $filenameinput['dirname']) . '/' . $filenameinput['basename'];
+    $storage = Storage::{$storageName}();
 
     // thumb instance need parameter 1st as path to image file
     $thumbnail = new Thumb($storage, $filename);
