@@ -816,14 +816,20 @@ a:hover {
     left: 0px;
   }
 }
-keyframes coverShake 0% {
-  left: 0px;
+@keyframes coverShake {
+  0% {
+    left: 0px;
+  }
 }
-keyframes coverShake 50% {
-  left: 10px;
+@keyframes coverShake {
+  50% {
+    left: 10px;
+  }
 }
-keyframes coverShake 100% {
-  left: 0px;
+@keyframes coverShake {
+  100% {
+    left: 0px;
+  }
 }
 .s-feature {
   top: 150px;
@@ -1199,14 +1205,20 @@ keyframes coverShake 100% {
     bottom: 0px;
   }
 }
-keyframes coverUp 0% {
-  bottom: 0px;
+@keyframes coverUp {
+  0% {
+    bottom: 0px;
+  }
 }
-keyframes coverUp 50% {
-  bottom: 10px;
+@keyframes coverUp {
+  50% {
+    bottom: 10px;
+  }
 }
-keyframes coverUp 100% {
-  bottom: 0px;
+@keyframes coverUp {
+  100% {
+    bottom: 0px;
+  }
 }
 .biblioRecord .cover-list .img-thumbnail {
   padding: 0;
@@ -1278,7 +1290,7 @@ keyframes coverUp 100% {
   .biblioRecord .subItem {
     bottom: 10px;
     margin-left: 18px;
-    position: absolute;
+    position: relative;
   }
 }
 .biblioRecord .detailLink,
@@ -1445,7 +1457,7 @@ keyframes coverUp 100% {
 /* Collection Mark
  ================================ */
 .biblioRecord .biblioCheck {
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 10px;
   z-index: -1;
@@ -1454,7 +1466,8 @@ keyframes coverUp 100% {
   cursor: pointer;
   background: #282828;
   width: 100%;
-  position: fixed;
+  position: relative;
+  margin-top: 10px;
   top: 0px;
   right: 0px;
   font-size: 8px;
@@ -1695,7 +1708,7 @@ keyframes coverUp 100% {
   font-size: 10pt;
 }
 .dataListHeader {
-  background: #282828;
+  background: #282828 !important;
   color: #fff;
   letter-spacing: 4px;
   font-size: 8px;
