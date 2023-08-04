@@ -134,5 +134,13 @@ $sysconf['print'][$theme_key] = [
     'default' => $sysconf['print'][$theme_key]['back_side_image'],
     'width' => '40',
     'data' => json_decode(json_encode($img),true)
+  ], 
+  'front_side_image' => [
+    'dbfield' => 'data[front_side_image]',
+    'label' => __('Front Side Image'),
+    'type' => 'dropdown',
+    'default' => $sysconf['print'][$theme_key]['front_side_image'],
+    'width' => '40',
+    'data' => json_decode(json_encode($img),true)
   ]
 ];
