@@ -16,7 +16,7 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
 <html>
 <head>
     <meta charset="utf-8">
-    <title><?php echo $page_title; ?></title>
+    <title><?php echo $sysconf['library_name']." || ".$sysconf['library_subname']; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
