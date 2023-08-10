@@ -27,6 +27,7 @@ use SLiMS\Number;
 use SLiMS\Currency;
 use SLiMS\Json;
 use SLiMS\Jquery;
+use SLiMS\Url;
 use SLiMS\Http\Redirect;
 use SLiMS\Session\Flash;
 
@@ -188,6 +189,64 @@ if (!function_exists('redirect'))
                 }
             }
         };
+    }
+}
+
+if (!function_exists('pluginUrl'))
+{
+    /**
+     * Generate URL with plugin_container.php?id=<id>&mod=<mod> + custom query
+     *
+     * @param array $data
+     * @param boolean $reset
+     * @return string
+     */
+    function pluginUrl(array $data = [], bool $reset = false): string
+    {
+        // back to base uri
+        if ($reset) return Url::getSelf(fn($self) => $self . '?mod=' . $_GET['mod'] . '&id=' . $_GET['id']);
+        
+        // override current value
+        foreach($data as $key => $val) {
+            if (isset($_GET[$key])) {
+                $_GET[$key] = $val;
+                unset($data[$key]);
+            }
+        }
+
+        return Url::getSelf(function($self) use($data) {
+            return $self . '?' . http_build_query(array_merge($_GET,$data));
+        });
+    }
+}
+
+if (!function_exists('pluginNavigateTo'))
+{
+    /**
+     * Create url based on registered plugin menu
+     * to navigate from current page to another page
+     * without pain 😁
+     *
+     * @param string $filepath
+     * @return string
+     */
+    function pluginNavigateTo(string $filepath): string
+    {
+        $fileInfo = pathinfo($filepath);
+        $trace = debug_backtrace(limit:1)[0];
+        $currentPath = dirname($trace['file']) . DS;
+
+        if ($fileInfo['dirname'] != './' || '.\\')
+        {
+            $optionalPath = realpath($currentPath . $fileInfo['dirname']) . DS;
+            // make sure path is only inside plugin/ 
+            if ($optionalPath !== false) $currentPath = $optionalPath;
+        }
+
+        $path = $currentPath . $fileInfo['filename'] . '.' . ($fileInfo['extension']??'php');
+        if (!file_exists($path)) return pluginUrl(['id' => 'notfound']);
+        
+        return pluginUrl(['id' => md5($path)]);
     }
 }
 
