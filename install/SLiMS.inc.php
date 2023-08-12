@@ -440,7 +440,7 @@ SQL;
             $stmt->execute();
             $stmt->close();
           } catch (Exception $exception) {
-            $_return[] = $exception->getMessage();
+            $_return[] = $this->showErrorIfNeeded($exception);
           }
         }
       }
@@ -457,10 +457,21 @@ SQL;
         $sql = $this->db->query($item);
         if(!$sql) throw new Exception($this->db->error . '. Your syntax: ' . $item);
       } catch (Exception $exception) {
-        $_return[] = $exception->getMessage();
+        $_return[] = $this->showErrorIfNeeded($exception);
       }
     }
     return $_return;
+  }
+
+  function showErrorIfNeeded($exception)
+  {
+    $excludeCodes = [1050, 1359,1060,1061,1091];
+
+    $_is_exclude = in_array($exception->getCode(), $excludeCodes);
+    return [
+      'priority_error' => ($_is_exclude === false ? $exception->getMessage() : null),
+      'optional_error' => ($_is_exclude === true ? $exception->getMessage() : null)
+    ];
   }
 
   function updateAdmin($username, $password)
