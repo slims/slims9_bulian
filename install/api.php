@@ -19,6 +19,16 @@ require_once 'SLiMS.inc.php';
 
 $slims = new SLiMS();
 
+// success executed query list
+if (!isset($_SESSION['success_quries'])) {
+  $_SESSION['success_quries'] = [
+    'trigger' => [],
+    'regular' => []
+  ];
+}
+
+// if (isset($_GET['success_query'])) exit(json_encode($_SESSION['success_quries']??''));
+
 // switch request
 $_POST = json_decode(file_get_contents('php://input'), true);
 $action = isset($_POST['action']) ? $_POST['action'] : '';
@@ -245,6 +255,8 @@ switch ($action) {
       if (count($upgrade) > 0) {
         die(json_encode(['status' => false, 'message' => $upgrade, 'code' => 5006]));
       }
+
+      unset($_SESSION['success_quries']);
 
       die(json_encode(['status' => true]));
     } catch (Exception $exception) {

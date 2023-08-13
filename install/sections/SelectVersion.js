@@ -22,7 +22,8 @@ export default {
             loading: false,
             engines: [],
             engine: 'MyISAM',
-            allVersion: []
+            allVersion: [],
+            btnLabel: 'Run the installation'
         }
     },
     methods: {
@@ -54,6 +55,7 @@ export default {
 
                     if (!this.isPass && (hasPriorityError.length > 0 || res.code === 5000 || res.code === 5001)) {
                         this.loading = false
+                        this.btnLabel = 'Re-' + this.btnLabel
                     } else if (this.message.length > 0 && hasPriorityError.length < 1) {
                         this.$emit('redirectwithmsg', optionalError)
                     } else if (this.isPass) {
@@ -61,6 +63,7 @@ export default {
                     }
                 })
                 .catch((error) => {
+                    console.log(error)
                     this.isPass = false
                     this.message = [error.message]
                     this.loading = false
@@ -114,8 +117,10 @@ export default {
     <p class="mb-2">Please select your current <slims-text></slims-text> version before continue.</p>
     
     <div v-if="!isPass && message !== ''" class="rounded border bg-pink-200 border-pink-500 text-pink-500 px-4 py-2 my-2 md:w-1/2">
+        <h2 class="text-xl font-medium">Oops! Something error</h2>
+        <p class="text-lg tracking-wide mb-4">Please fix the error(s), and Re-Run Instalation again</p>
         <ul>
-            <li class="py-2" v-for="m in message">{{m}}</li>
+            <li class="py-2" v-for="m in message">{{m.priority_error}}</li>
         </ul>
     </div>
     
@@ -140,7 +145,7 @@ export default {
       </div>
     </div>
 
-    <slims-button @click="doUpgrade" :loading="loading" :disabled="oldVersion < 1" type="button" text="Run the installation"></slims-button>
+    <slims-button @click="doUpgrade" :loading="loading" :disabled="oldVersion < 1" type="button" :text="btnLabel"></slims-button>
 </div>
 </div>`
 }
