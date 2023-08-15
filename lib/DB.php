@@ -8,6 +8,7 @@
 namespace SLiMS;
 
 
+use mysqli;
 use PDO;
 use PDOException;
 use PHPMailer\PHPMailer\Exception;
@@ -19,13 +20,32 @@ class DB
      * PDO instance
      * @var null
      */
-    private static $instance = null;
+    private static $instance = [];
 
     /**
      * MySQLi Instance
      * @var null
      */
-    private static $instance_mysqli = null;
+    private static $instance_mysqli = [];
+
+    // Current connection name
+    private static $connectionName = null;
+
+    /**
+     * @var SLiMS\Collection
+     */
+    private static $connectionCollection = null;
+
+    /**
+     * Database config
+     */
+    private array $config = [];
+
+    /**
+     * Current database credential
+     */
+
+    private static array $credentials = [];
 
     /**
      * Backup const
@@ -41,16 +61,8 @@ class DB
     private function __construct($driver = 'pdo')
     {
         try {
-
-            if ($driver === 'mysqli') {
-                self::$instance_mysqli = new \mysqli(...$this->getProfile($driver));
-            } else {
-                self::$instance = new PDO(...$this->getProfile($driver));
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, ENVIRONMENT == 'development' ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
-                self::$instance->query('SET NAMES utf8');
-                self::$instance->query('SET CHARACTER SET utf8');
-            }
-
+            $this->getConfig();
+            $this->setConnection($driver);
         } catch(PDOException $error) {
             echo $error->getMessage();
         } catch (Exception $error) {
@@ -65,15 +77,23 @@ class DB
      * @param string $driver
      * @return PDO|MySQLi
      */
-    public static function getInstance($driver = 'pdo')
+    public static function getInstance($driver = 'pdo', $connectionName = 'SLiMS')
     {
-        if ($driver === 'mysqli') {
-            if (is_null(self::$instance_mysqli)) new DB('mysqli');
-            return self::$instance_mysqli;
-        } else {
-            if (is_null(self::$instance)) new DB();
-            return self::$instance;
-        }
+        // Create collection instance
+        if (is_null(self::$connectionCollection)) self::$connectionCollection = new Collection(Connection::class);
+
+        // set current connection name
+        self::$connectionName = $connectionName;
+
+        // get connection from collection
+        $instance = self::$connectionCollection->get($driver . '_' . $connectionName)?->getConn();
+
+        if (is_null($instance) === false) return $instance;
+        
+        // not exists? then create it.
+        new DB($driver);
+        
+        return self::$connectionCollection->get($driver . '_' . $connectionName)?->getConn();
     }
 
     /**
@@ -87,7 +107,30 @@ class DB
     public static function backup()
     {
         $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [config('database_backup.options')]));
+        return new IMysqldump\Mysqldump(...array_merge($static->getProfile(), [config('database_backup.options')]));
+    }
+
+    /**
+     * Connection profiling
+     *
+     * @param string $name
+     * @param string $driver
+     * @return void
+     */
+    public static function connection(string $name = 'SLiMS', string $driver = 'pdo')
+    {
+        return self::getInstance($driver, $name);
+    }
+
+    /**
+     * Register connection into collection
+     *
+     * @param string $driver
+     * @return void
+     */
+    private function setConnection(string $driver = 'pdo')
+    {
+        self::$connectionCollection->add(new Connection(self::$connectionName??'database', $this->getProfile(), $driver));
     }
 
     /**
@@ -116,43 +159,41 @@ class DB
      * @param string $driver
      * @return array
      */
-    private function getProfile($driver = 'pdo')
+    private function getProfile()
     {
-        $config = $this->getConfig();
-        $defaultProfile = $config['default_profile'];
+        $connectionName = 
+            self::$connectionName === $this->config['default_profile'] ? 
+                // get default profile?
+                $this->config['default_profile'] : self::$connectionName;
 
-        if ($config['proxy']) $defaultProfile = $this->setProxy();
+        // in Proxy?
+        if ($config['proxy']??false) $connectionName = $this->setProxy();
 
-        extract($config['nodes'][$defaultProfile]??[]);
+        // in database.php?
+        if (isset($this->config['nodes'][$connectionName])) {
+            $config = $this->config['nodes'][$connectionName];
+        } else {
+            $this->getConfig($connectionName);
+            $config = $this->config['database'];
+        }
 
-        if (!isset($host)) throw new \Exception("Database " . $defaultProfile . " is not valid!");
+        self::$credentials[self::$connectionName] = $config;
 
-        // Casting $port as integer
-        $port = (int)$port;
-
-        return $driver === 'pdo' ? 
-                ['mysql:host=' . $host . ';port=' . $port . ';dbname=' . $database, $username, $password] 
-                :
-                [$host, $username, $password, $database, $port];
-    }
-
-    /**
-     * Get database credential
-     *
-     * @param string $nodeName
-     * @return array
-     */
-    private function getNode(string $nodeName)
-    {
-        return $this->getConfig()['nodes'][$nodeName]??[];
+        return $config;
     }
 
     /**
      * @return array
      */
-    private function getConfig()
+    private function getConfig(?string $path = null)
     {
-        return require SB . 'config/database.php';
+        $this->config = require SB . 'config/' . basename($path??'database') . '.php';
+        return $this->config;
+    }
+
+    public static function getCredential(string $name)
+    {
+        return self::$credentials[$name]??null;
     }
 
     /**
