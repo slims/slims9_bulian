@@ -31,6 +31,7 @@ class References implements JsonSerializable, Countable, IteratorAggregate
 
     public function add(string $filename, int $line = null): self
     {
+        $filename = str_replace(SB, '', $filename);
         $fileReferences = $this->references[$filename] ?? [];
 
         if (isset($line) && !in_array($line, $fileReferences)) {

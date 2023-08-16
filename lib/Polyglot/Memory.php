@@ -3,14 +3,16 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-05-27 21:37:29
- * @modify date 2023-05-28 09:41:58
+ * @modify date 2023-06-22 14:44:39
  * @license GPLv3
  * @desc [description]
  */
 namespace SLiMS\Polyglot;
 
 use SLiMS\Config;
+use SLiMS\Json;
 use Gettext\Loader\MoLoader;
+use SLiMS\Filesystems\Storage;
 
 final class Memory
 {
@@ -146,10 +148,17 @@ final class Memory
      * @param string $nativeName
      * @return memory
      */
-    public function registerLanguage(string $code, string $englishName, string $nativeName): Memory
+    public function registerLanguage(string $code, string $englishName, string $nativeName, string $path = LIB . 'lang/locale/'): Memory
     {
-        $this->languages = array_merge($this->languages, [[$code, $englishName, $nativeName]]);
+        $this->languages = array_merge($this->languages, [[$code, $englishName, $nativeName, $path]]);
         return $this;
+    }
+
+    public function registerLanguageFromPlugin()
+    {
+        foreach (array_diff(scandir($base = SB . 'plugins/lang/'), ['.','..']) as $dir) {
+            $this->registerLanguage(...Json::parse(file_get_contents($base . '/' . $dir . '/LC_MESSAGES/meta.json'))->toArray());
+        }
     }
 
     /**
@@ -264,6 +273,13 @@ final class Memory
         return $this->hasTempLanguage($remeberAs) ? $_COOKIE['select_lang'] : null;
     }
 
+    public function findLanguage(string $localeInput)
+    {
+        return array_values(array_filter($this->languages, function($language) use($localeInput) {
+            return $language[0] === $localeInput;
+        }))[0]??[];
+    }
+
     /**
      * @param string $remeberAs
      * @return boolean
@@ -271,6 +287,15 @@ final class Memory
     public function hasTempLanguage(string $remeberAs = 'select_lang'): bool
     {
         return isset($_COOKIE['select_lang']);
+    }
+
+    public function loadPluginLocale()
+    {
+        if ($this->isLocaleExists() === false && ($localePluginBase = $this->findLanguage($this->locale)))
+        {
+            list($code, $languageName, $nativeName, $path) = $localePluginBase;
+            $this->localePath = $path . DS;
+        }
     }
 
     /**
@@ -283,6 +308,7 @@ final class Memory
     public function load(\Closure|string $callback = ''): void
     {
         if (is_callable($callback)) $callback(self::getInstance());
+        $this->loadPluginLocale();
         if ($this->isLocaleExists() === false) $this->locale = 'en_US';
         $this->dictionary = $this->loader?->loadFile($this->getLocalePath());
     }

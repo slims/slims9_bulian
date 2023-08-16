@@ -45,7 +45,7 @@ if (isset($_POST['resync'])) {
             LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
                 LEFT JOIN mst_gmd AS g ON b.gmd_id=g.gmd_id
         SET sti.title=b.title, sti.gmd_name=g.gmd_name,
-            sti.classification=b.classification, sti.call_number=b.call_number,
+            sti.classification=b.classification, sti.call_number=i.call_number,
             sti.coll_type_name=ct.coll_type_name');
     if (!$dbs->error) {
         $aff_rows = $dbs->affected_rows;
