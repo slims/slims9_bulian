@@ -250,6 +250,42 @@ if (!function_exists('pluginNavigateTo'))
     }
 }
 
+if (!function_exists('commonList'))
+{
+    function commonList(string $type)
+    {
+        $dbs = \SLiMS\DB::getInstance('mysqli');
+        ob_start();
+        switch ($type) {
+            case 'location':
+                echo '<option value="0">'.__('All Locations').'</option>';
+                $loc_q = $dbs->query('SELECT location_name FROM mst_location LIMIT 50');
+                while ($loc_d = $loc_q->fetch_row()) {
+                    echo '<option value="'.$loc_d[0].'">'.$loc_d[0].'</option>';
+                }
+                break;
+
+            case 'collection':
+                echo '<option value="0">'.__('All Collections').'</option>';
+                $colltype_q = $dbs->query('SELECT coll_type_name FROM mst_coll_type LIMIT 50');
+                while ($colltype_d = $colltype_q->fetch_row()) {
+                    echo '<option value="'.$colltype_d[0].'">'.$colltype_d[0].'</option>';
+                }
+                break;
+            
+            case 'gmd':
+                echo '<option value="0">'.__('All GMD/Media').'</option>';
+                $gmd_q = $dbs->query('SELECT gmd_name FROM mst_gmd LIMIT 50');
+                while ($gmd_d = $gmd_q->fetch_row()) {
+                    echo '<option value="'.$gmd_d[0].'">'.$gmd_d[0].'</option>';
+                }
+                break;
+        }
+        
+        return ob_get_clean();
+
+    }
+}
 
 if (!function_exists('toastr'))
 {
