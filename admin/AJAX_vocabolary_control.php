@@ -43,7 +43,7 @@ $table_fields = trim($_POST['tableFields']);
 if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
 	$keywords = $dbs->escape_string(urldecode(ltrim($_POST['keywords'])));
 } else {
-	$keywords = '';
+	exit('<option value="0">' . __('Keyword can\'t be empty') . '</option>');
 }
 
 // explode table fields data

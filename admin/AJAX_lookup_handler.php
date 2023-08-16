@@ -34,7 +34,11 @@ require SB . 'admin/default/session.inc.php';
 require SB . 'admin/default/session_check.inc.php';
 
 // receive json data if $_POST data empty
-if (empty($_POST)) $_POST = json_decode(file_get_contents('php://input'), true);
+$rawInput = false;
+if (empty($_POST)) {
+	$rawInput = true;
+	$_POST = json_decode(file_get_contents('php://input'), true);
+}
 
 // list limit
 $limit = 20;
@@ -45,7 +49,8 @@ $table_fields = trim($_POST['tableFields']);
 if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
 	$keywords = $dbs->escape_string(urldecode(ltrim($_POST['keywords'])));
 } else {
-	$keywords = '';
+	if ($rawInput == false) exit('<option value="0">' . __('Keyword can\'t be empty') . '</option>');
+	else exit(json_encode(array('id' => 0, 'text' => __('Keyword can\'t be empty'))));
 }
 
 // explode table fields data
