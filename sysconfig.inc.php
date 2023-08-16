@@ -64,7 +64,7 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.6.0');
+define('SENAYAN_VERSION_TAG', 'v9.6.1');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');

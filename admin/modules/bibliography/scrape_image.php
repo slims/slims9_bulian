@@ -18,6 +18,9 @@
  *
  */
 
+use SLiMS\Json;
+use SLiMS\Http\Client;
+
 /* Image Processing */
 
 // key to authenticate
@@ -34,20 +37,37 @@ $can_read = utility::havePrivilege('bibliography', 'r');
 $can_write = utility::havePrivilege('bibliography', 'w');
 
 // sent HTTP header
-header('Content-type: text/json');
-
 if (!($can_read && $can_write)) {
-    die(json_encode(array('status' => 'UNAUTHORIZED', 'message' => 'Unauthorized Access!')));
+    $response = Json::stringify(['status' => 'UNAUTHORIZED', 'message' => 'Unauthorized Access!'])->withHeader();
+    exit($response);
 }
 
-if (isset($_POST['imageURL']) && !empty($_POST['imageURL'])) {
+try {
+    // field check
+    if (!isset($_POST['imageURL']) && empty($_POST['imageURL'])) throw new Exception(__('URL can\'t empty!'));
+
+    // imageURL must be a valid URL format
     $url = $_POST['imageURL'];
-    $img = file_get_contents($url);
-    $url_info = pathinfo($url);
-    $src = 'data:image/jpg;base64,'. base64_encode($img);
-    $image = base64_encode($img).'#image/type#jpg';
-    echo json_encode(array('status' => 'VALID', 'message' => $src, 'image' => $image));
-}
- else {
-    echo json_encode(array('status' => 'NOT_VALID', 'message' => __('URL not valid!')));
+    if (!filter_var($url, FILTER_VALIDATE_URL)) throw new Exception(__('URL not valid!'));
+
+    // Get image from another service
+    $stream = Client::get($url, [
+        'headers' => [
+            'User-Agent' => $_SERVER['HTTP_USER_AGENT']
+        ]
+    ]);
+
+    // Get image info from string
+    $imageInfo = getimagesizefromstring($image = $stream->getContent());
+
+    if (!$imageInfo) throw new Exception(__('Image is not valid!'));
+    
+    $src = 'data:' . $imageInfo['mime'] . ';base64,'. ($encodedImage = base64_encode($image));
+    $type = str_replace('image/', '',$imageInfo['mime']);
+    $result = $encodedImage. '#image/type#' . $type;
+    exit(Json::stringify(['status' => 'VALID', 'message' => $src, 'image' => $result])->withHeader());
+
+} catch (Exception $e) {
+    $response = Json::stringify(['status' => 'INVALID', 'message' => $e->getMessage()])->withHeader();
+    exit($response);
 }

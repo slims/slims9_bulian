@@ -11,6 +11,17 @@ export default {
         SlimsTextVertical,
         Version
     },
+    data() {
+        return {
+            optionalMessage: false
+        }
+    },
+    methods: {
+        showOptionalMessage() {
+            this.optionalMessage = true
+        }
+    },
+    props: ['optionalmsg'],
     template: `<div class="h-screen flex">
 <div class="w-20 p-4">
     <div><logo></logo></div>
@@ -23,7 +34,13 @@ export default {
     <p class="rounded border bg-pink-100 border-pink-500 text-pink-500 px-4 py-2 mt-2 mb-8 text-lg">
     Folder <code class="font-bold px-2">install</code> in your <slims-text></slims-text> is already exist. For security
                         reason please rename or remove it from your machine.</p>
-                        
+    <div v-if="optionalmsg.length > 0">
+        <h1 class="text-3xl font-medium">Upgrade result</h1>
+        <p class="mb-4 mt-1 text-grey-700 leading-normal">Some upgrade process didn't work, but don't worry it doesn't have big impact on your <slims-text></slims-text>, <strong class="font-bold cursor-pointer" title="For more information" v-on:click="showOptionalMessage()" >show detail</strong>. Now it ready to use</p>
+        <div v-if="optionalMessage" class="rounded border bg-blue-100 border-blue-500 text-blue-500 px-4 py-2 mt-2 mb-8 text-lg">
+            <p v-for="msg in optionalmsg">{{ msg }}</p>
+        </div>
+    </div>            
     <div class="w-2/3">
         <h1 class="text-2xl font-medium">Support Us</h1>
         <p class="mb-4 mt-1 text-grey-700 leading-normal">

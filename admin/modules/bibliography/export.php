@@ -18,7 +18,8 @@
  *
  */
 
-
+use SLiMS\Csv\Writer;
+use SLiMS\Csv\Row;
 /* Biblio data export section */
 
 // key to authenticate
@@ -71,17 +72,8 @@ if (isset($_POST['doExport'])) {
     }
 
     // limit
-    $sep = trim($_POST['fieldSep']);
-    $encloser = trim($_POST['fieldEnc']);
     $limit = intval($_POST['recordNum']);
     $offset = intval($_POST['recordOffset']);
-    if ($_POST['recordSep'] === 'NEWLINE') {
-        $rec_sep = "\n";
-    } else if ($_POST['recordSep'] === 'RETURN') {
-        $rec_sep = "\r";
-    } else {
-        $rec_sep = trim($_POST['recordSep']);
-    }
     // fetch all data from biblio table
     $sql = "SELECT
         b.biblio_id, b.title, gmd.gmd_name, b.edition,
@@ -109,62 +101,73 @@ if (isset($_POST['doExport'])) {
       utility::jsToastr('Data Export', __('Error on query to database, Export FAILED!'), 'error');
     } else {
         if ($all_data_q->num_rows > 0) {
-          header('Content-type: text/plain');
-          header('Content-Disposition: attachment; filename="senayan_biblio_export.csv"');
-          $headers = [];
-          $itemData = [];
+          // Define CSV standart based on user input
+          $standart = [
+            'separator' => trim($_POST['fieldSep']),
+            'enclosed_with' =>  trim($_POST['fieldEnc']),
+            'record_separator' => [
+                'newline' => ($_POST['recordSep'] === 'NEWLINE' ? "\n" : "\r"),
+                'return' => "\r"
+            ]
+          ];
+
+          $formatter = function($content) use($dbs) {
+            return $dbs->escape_string($content) . ' - ' . rand(1,$limit);
+          };
+
+          $csv = new Writer;
+
+          // Define header row instance
+          $header = new Row([], array_merge($standart, ['key_based' => true]));
+
           while ($biblio_d = $all_data_q->fetch_assoc()) {
-              $buffer = null;
-              $n = 0;
-              foreach ($biblio_d as $key => $fld_d) {
-                  // skip biblio_id field
-                  if ($n > 0) {
-                      $headers[$key] = $key;
-                      $fld_d = $dbs->escape_string($fld_d??'');
-                      // data
-                      $buffer .=  stripslashes($encloser.$fld_d.$encloser);
-                      // field separator
-                      $buffer .= $sep;
-                  }
-                  $n++;
+              $itemData = '';
+              $id = $biblio_d['biblio_id'];
+
+              // skip biblio_id
+              unset($biblio_d['biblio_id']);
+
+              // Header process
+              if (count($header) === 0 && isset($_POST['header'])) {
+                // main header data
+                foreach ($biblio_d as $columnName => $value) $header->add($columnName, $value??'');
+                // additional header data
+                $header->add('authors', '');
+                $header->add('topics', '');
+                $header->add('item_code', '');
+
+                // add into csv collection
+                $csv->add($header);
               }
-              // authors
-              $headers['authors'] = 'authors';
-              $authors = getValues($dbs, 'SELECT a.author_name FROM biblio_author AS ba
-                  LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
-                  WHERE ba.biblio_id='.$biblio_d['biblio_id']);
-              $buffer .= $encloser.$authors.$encloser;
-              $buffer .= $sep;
-              // topics
-              $headers['topics'] = 'topics';
-              $topics = getValues($dbs, 'SELECT t.topic FROM biblio_topic AS bt
-                  LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
-                  WHERE bt.biblio_id='.$biblio_d['biblio_id']);
-              $buffer .= $encloser.$topics.$encloser;
-              $buffer .= $sep;
-              // item code
-              $headers['item_code'] = 'item_code';
-              $items = getValues($dbs, 'SELECT item_code FROM item AS i
-                  WHERE i.biblio_id='.$biblio_d['biblio_id']);
-              $buffer .= $encloser.$items.$encloser;
+              
+              // initialization csv row data with custom formatter
+              $itemData = new Row($biblio_d, $standart, $formatter);
 
-              $itemData[] = $buffer;
+              /**
+               * Author,Topic & Item Code seperated from
+               * main query. After main data add into row instance
+               * we need to add another with "add" method.
+               */
+              // authors column
+              $itemData->add('authors', getValues($dbs, 'SELECT a.author_name FROM biblio_author AS ba
+              LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
+              WHERE ba.biblio_id='.$id)??'');
+
+              // topics column
+              $itemData->add('topics', getValues($dbs, 'SELECT t.topic FROM biblio_topic AS bt
+              LEFT JOIN mst_topic AS t ON bt.topic_id=t.topic_id
+              WHERE bt.biblio_id='.$id)??'');
+
+              // item code column
+              $itemData->add('item_code', getValues($dbs, 'SELECT item_code FROM item AS i
+              WHERE i.biblio_id='.$id)??'');
+
+              // add into csv collection
+              $csv->add($itemData);
           }
 
-          $header_buffer = '';
-          foreach ($headers as $header) {
-            $header_buffer .= $encloser.$header.$encloser.$sep;
-          }
-          $header_buffer .= $rec_sep;
-
-          $item_buffer = '';
-          foreach ($itemData as $item) {
-            $item_buffer .= $item.$rec_sep;
-          }
-
-          if (isset($_POST['header'])) echo $header_buffer;
-          echo $item_buffer;
-          exit();
+          // After all we stream it into a file
+          $csv->download('senayan_biblio_export');
         } else {
           utility::jsToastr('Data Export', __('There is no record in bibliographic database yet, Export FAILED!'), 'error');
         }

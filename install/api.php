@@ -7,6 +7,8 @@
 
 use Install\SLiMS;
 
+header('Content-Type: application/json');
+
 // key to authenticate
 define('INDEX_AUTH', '1');
 
@@ -16,6 +18,16 @@ session_start();
 require_once 'SLiMS.inc.php';
 
 $slims = new SLiMS();
+
+// success executed query list
+if (!isset($_SESSION['success_quries'])) {
+  $_SESSION['success_quries'] = [
+    'trigger' => [],
+    'regular' => []
+  ];
+}
+
+// if (isset($_GET['success_query'])) exit(json_encode($_SESSION['success_quries']??''));
 
 // switch request
 $_POST = json_decode(file_get_contents('php://input'), true);
@@ -52,6 +64,47 @@ if (isset($_GET['storeage_engines'])) {
     die(json_encode(['status' => false, 'message' => $e->getMessage()]));
   }
   exit;
+}
+
+if (isset($_GET['versionlist'])) {
+  $versionList = [
+    '-- Select Version --',
+    'Senayan 3 - Stable 3',
+    'Senayan 3 - Stable 4',
+    'Senayan 3 - Stable 5',
+    'Senayan 3 - Stable 6',
+    'Senayan 3 - Stable 7',
+    'Senayan 3 - Stable 8',
+    'Senayan 3 - Stable 9',
+    'Senayan 3 - Stable 10',
+    'Senayan 3 - Stable 11',
+    'Senayan 3 - Stable 12',
+    'Senayan 3 - Stable 13',
+    'Senayan 3 - Stable 14 | Seulanga',
+    'Senayan 3 - Stable 15 | Matoa',
+    'SLiMS 5 | Meranti',
+    'SLiMS 7 | Cendana',
+    'SLiMS 8 | Akasia',
+    'SLiMS 8.2 | Akasia',
+    'SLiMS 8.3 | Akasia',
+    'SLiMS 8.3.1 | Akasia',
+    'SLiMS 9.0.0 | Bulian',
+    'SLiMS 9.1.0 | Bulian',
+    'SLiMS 9.1.1 | Bulian',
+    'SLiMS 9.2.0 | Bulian',
+    'SLiMS 9.2.1 | Bulian',
+    'SLiMS 9.2.2 | Bulian',
+    'SLiMS 9.3.0 | Bulian',
+    'SLiMS 9.3.1 | Bulian',
+    'SLiMS 9.4.0 | Bulian',
+    'SLiMS 9.4.1 | Bulian',
+    'SLiMS 9.4.2 | Bulian',
+    'SLiMS 9.5.0 | Bulian',
+    'SLiMS 9.5.1 | Bulian',
+    'SLiMS 9.5.2 | Bulian',
+    'SLiMS 9.6.0 | Bulian'
+  ];
+  die(json_encode(['status' => true, 'data' => $versionList]));
 }
 
 switch ($action) {
@@ -202,6 +255,8 @@ switch ($action) {
       if (count($upgrade) > 0) {
         die(json_encode(['status' => false, 'message' => $upgrade, 'code' => 5006]));
       }
+
+      unset($_SESSION['success_quries']);
 
       die(json_encode(['status' => true]));
     } catch (Exception $exception) {
