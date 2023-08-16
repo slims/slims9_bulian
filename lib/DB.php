@@ -8,10 +8,10 @@
 namespace SLiMS;
 
 
+use Exception;
 use mysqli;
 use PDO;
 use PDOException;
-use PHPMailer\PHPMailer\Exception;
 use Ifsnop\Mysqldump as IMysqldump;
 
 class DB
@@ -39,7 +39,7 @@ class DB
     /**
      * Database config
      */
-    private array $config = [];
+    private static array $config = [];
 
     /**
      * Current database credential
@@ -61,7 +61,6 @@ class DB
     private function __construct($driver = 'pdo')
     {
         try {
-            $this->getConfig();
             $this->setConnection($driver);
         } catch(PDOException $error) {
             echo $error->getMessage();
@@ -77,8 +76,10 @@ class DB
      * @param string $driver
      * @return PDO|MySQLi
      */
-    public static function getInstance($driver = 'pdo', $connectionName = 'SLiMS')
+    public static function getInstance($driver = 'pdo', $connectionName = '')
     {
+        self::getConfig();
+
         // Create collection instance
         if (is_null(self::$connectionCollection)) self::$connectionCollection = new Collection(Connection::class);
 
@@ -86,14 +87,14 @@ class DB
         self::$connectionName = $connectionName;
 
         // get connection from collection
-        $instance = self::$connectionCollection->get($driver . '_' . $connectionName)?->getConn();
+        $instance = self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
 
         if (is_null($instance) === false) return $instance;
         
         // not exists? then create it.
         new DB($driver);
         
-        return self::$connectionCollection->get($driver . '_' . $connectionName)?->getConn();
+        return self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
     }
 
     /**
@@ -117,7 +118,7 @@ class DB
      * @param string $driver
      * @return void
      */
-    public static function connection(string $name = 'SLiMS', string $driver = 'pdo')
+    public static function connection(string $name, string $driver = 'pdo')
     {
         return self::getInstance($driver, $name);
     }
@@ -162,19 +163,19 @@ class DB
     private function getProfile()
     {
         $connectionName = 
-            self::$connectionName === $this->config['default_profile'] ? 
+            empty(self::$connectionName) ? 
                 // get default profile?
-                $this->config['default_profile'] : self::$connectionName;
+                self::$config['default_profile'] : self::$connectionName;
 
         // in Proxy?
         if ($config['proxy']??false) $connectionName = $this->setProxy();
 
         // in database.php?
-        if (isset($this->config['nodes'][$connectionName])) {
-            $config = $this->config['nodes'][$connectionName];
+        if (isset(self::$config['nodes'][$connectionName])) {
+            $config = self::$config['nodes'][$connectionName];
         } else {
-            $this->getConfig($connectionName);
-            $config = $this->config['database'];
+            self::getConfig($connectionName);
+            $config = self::$config['database'];
         }
 
         self::$credentials[self::$connectionName] = $config;
@@ -185,10 +186,10 @@ class DB
     /**
      * @return array
      */
-    private function getConfig(?string $path = null)
+    private static function getConfig(?string $path = null)
     {
-        $this->config = require SB . 'config/' . basename($path??'database') . '.php';
-        return $this->config;
+        self::$config = require SB . 'config/' . basename($path??'database') . '.php';
+        return self::$config;
     }
 
     public static function getCredential(string $name)
