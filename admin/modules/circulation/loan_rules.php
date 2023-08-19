@@ -53,14 +53,14 @@ if (!$can_read) {
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
-    $data['member_type_id'] = $_POST['memberTypeID'];
-    $data['coll_type_id'] = $_POST['collTypeID'];
-    $data['gmd_id'] = $_POST['gmdID'];
-    $data['loan_limit'] = trim($_POST['loanLimit']);
-    $data['loan_periode'] = trim($_POST['loanPeriode']);
-    $data['reborrow_limit'] = trim($_POST['reborrowLimit']);
-    $data['fine_each_day'] = trim($_POST['fineEachDay']);
-    $data['grace_periode'] = trim($_POST['gracePeriode']);
+    $data['member_type_id'] = $dbs->escape_string($_POST['memberTypeID']);
+    $data['coll_type_id'] = $dbs->escape_string($_POST['collTypeID']);
+    $data['gmd_id'] = $dbs->escape_string($_POST['gmdID']);
+    $data['loan_limit'] = $dbs->escape_string(trim($_POST['loanLimit']));
+    $data['loan_periode'] = $dbs->escape_string(trim($_POST['loanPeriode']));
+    $data['reborrow_limit'] = $dbs->escape_string(trim($_POST['reborrowLimit']));
+    $data['fine_each_day'] = $dbs->escape_string(trim($_POST['fineEachDay']));
+    $data['grace_periode'] = $dbs->escape_string(trim($_POST['gracePeriode']));
     $data['input_date'] = date('Y-m-d');
     $data['last_update'] = date('Y-m-d');
     // create sql op object

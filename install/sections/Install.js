@@ -21,11 +21,14 @@ export default {
             pass: '',
             isPass: null,
             field: '',
-            message: ''
+            message: '',
+            btnLabel: 'Test Connection'
         }
     },
     methods: {
         testConnection() {
+            if (this.btnLabel === 'Please Wait') return
+            this.btnLabel = 'Please Wait'
             fetch('./api.php', {
                 method: 'POST',
                 headers: {
@@ -44,6 +47,7 @@ export default {
             })
                 .then(res => res.json())
                 .then(res => {
+                    this.btnLabel = 'Test Connection'
                     this.isPass = res.status
                     this.message = res.message
                     this.field = res.field
@@ -106,7 +110,7 @@ export default {
           <input v-model="pass" id="db_pass" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="password" placeholder="Enter password">
       </div>
       
-      <button v-if="!isPass" type="submit" class="mt-4 mb-4 rounded-full bg-gray-500 py-2 px-4 text-gray-100 hover:bg-gray-700 focus:outline-none focus:bg-gray-600">Test Connection</button>
+      <button v-if="!isPass" type="submit" class="mt-4 mb-4 rounded-full bg-gray-500 py-2 px-4 text-gray-100 hover:bg-gray-700 focus:outline-none focus:bg-gray-600">{{ btnLabel }}</button>
       <button v-if="isPass" type="button" @click="$emit('next')" class="mt-4 mb-4 rounded-full bg-green-500 py-2 px-4 text-green-100 hover:bg-green-700 focus:outline-none focus:bg-green-600">Connection OK. Next</button>
     </form>
 </div>

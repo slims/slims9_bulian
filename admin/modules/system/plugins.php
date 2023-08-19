@@ -187,6 +187,9 @@ else
 
             fetch('<?= MWB ?>system/plugin_action.php', {
                 method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     format: 'json',
                     enable: e.target.checked,

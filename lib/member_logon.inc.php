@@ -62,7 +62,7 @@ class member_logon
      * @return  boolean
      */
     protected function ldapLogin() {
-        global $ldap_configs;
+        $ldap_configs = config('auth.member');
         if (!function_exists('ldap_connect')) {
             $this->errors = 'LDAP library is not installed yet!';
             return false;

@@ -22,43 +22,8 @@ export default {
             loading: false,
             engines: [],
             engine: 'MyISAM',
-            allVersion: [
-                {value: 0, text: '-- Select Version --'},
-                {value: 1, text: 'Senayan 3 - Stable 3'},
-                {value: 2, text: 'Senayan 3 - Stable 4'},
-                {value: 3, text: 'Senayan 3 - Stable 5'},
-                {value: 4, text: 'Senayan 3 - Stable 6'},
-                {value: 5, text: 'Senayan 3 - Stable 7'},
-                {value: 6, text: 'Senayan 3 - Stable 8'},
-                {value: 7, text: 'Senayan 3 - Stable 9'},
-                {value: 8, text: 'Senayan 3 - Stable 10'},
-                {value: 9, text: 'Senayan 3 - Stable 11'},
-                {value: 10, text: 'Senayan 3 - Stable 12'},
-                {value: 11, text: 'Senayan 3 - Stable 13'},
-                {value: 12, text: 'Senayan 3 - Stable 14 | Seulanga'},
-                {value: 13, text: 'Senayan 3 - Stable 15 | Matoa'},
-                {value: 14, text: 'SLiMS 5 | Meranti'},
-                {value: 15, text: 'SLiMS 7 | Cendana'},
-                {value: 16, text: 'SLiMS 8 | Akasia'},
-                {value: 17, text: 'SLiMS 8.2 | Akasia'},
-                {value: 18, text: 'SLiMS 8.3 | Akasia'},
-                {value: 19, text: 'SLiMS 8.3.1 | Akasia'},
-                {value: 20, text: 'SLiMS 9.0.0 | Bulian'},
-                {value: 21, text: 'SLiMS 9.1.0 | Bulian'},
-                {value: 22, text: 'SLiMS 9.1.1 | Bulian'},
-                {value: 23, text: 'SLiMS 9.2.0 | Bulian'},
-                {value: 24, text: 'SLiMS 9.2.1 | Bulian'},
-                {value: 25, text: 'SLiMS 9.2.2 | Bulian'},
-                {value: 26, text: 'SLiMS 9.3.0 | Bulian'},
-                {value: 27, text: 'SLiMS 9.3.1 | Bulian'},
-                {value: 28, text: 'SLiMS 9.4.0 | Bulian'},
-                {value: 29, text: 'SLiMS 9.4.1 | Bulian'},
-                {value: 30, text: 'SLiMS 9.4.2 | Bulian'},
-				{value: 31, text: 'SLiMS 9.5.0 | Bulian'},
-                {value: 32, text: 'SLiMS 9.5.1 | Bulian'},
-                {value: 33, text: 'SLiMS 9.5.2 | Bulian'},
-                {value: 34, text: 'SLiMS 9.6.0 | Bulian'}
-            ]
+            allVersion: [],
+            btnLabel: 'Run the installation'
         }
     },
     methods: {
@@ -83,13 +48,22 @@ export default {
                     this.message = res.message
                     this.loading = false
 
-                    if (!this.isPass && (res.code === 5000 || res.code === 5001)) {
-                        this.$emit('notwrite')
+                    let hasPriorityError = this.message.filter((item) => item.priority_error !== null)
+                    let optionalError = this.message
+                                                .filter((item) => item.priority_error === null)
+                                                .map((item) => item.optional_error)
+
+                    if (!this.isPass && (hasPriorityError.length > 0 || res.code === 5000 || res.code === 5001)) {
+                        this.loading = false
+                        this.btnLabel = 'Re-' + this.btnLabel
+                    } else if (this.message.length > 0 && hasPriorityError.length < 1) {
+                        this.$emit('redirectwithmsg', optionalError)
                     } else if (this.isPass) {
                         this.$emit('success')
                     }
                 })
                 .catch((error) => {
+                    console.log(error)
                     this.isPass = false
                     this.message = [error.message]
                     this.loading = false
@@ -106,6 +80,19 @@ export default {
                 console.log(error)
             }
         },
+        async getVersionList() {
+            try {
+                let request = await (await (fetch('./api.php?versionlist=yes'))).json()
+
+                if (!request.status) throw request.message??'Something error'
+
+                this.allVersion = request.data.map(function(label, order){
+                    return {value: order, text: label}
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
         setSuggestion(engine)
         {
             if (engine === 'Aria') return engine + ' - recommended for crash safe'
@@ -113,6 +100,7 @@ export default {
         }
     },
     mounted() {
+        this.getVersionList()
         this.getEngines()
     },
     template: `<div class="h-screen flex">
@@ -129,8 +117,10 @@ export default {
     <p class="mb-2">Please select your current <slims-text></slims-text> version before continue.</p>
     
     <div v-if="!isPass && message !== ''" class="rounded border bg-pink-200 border-pink-500 text-pink-500 px-4 py-2 my-2 md:w-1/2">
+        <h2 class="text-xl font-medium">Oops! Something error</h2>
+        <p class="text-lg tracking-wide mb-4">Please fix the error(s), and Re-Run Instalation again</p>
         <ul>
-            <li class="py-2" v-for="m in message">{{m}}</li>
+            <li class="py-2" v-for="m in message">{{m.priority_error}}</li>
         </ul>
     </div>
     
@@ -155,7 +145,7 @@ export default {
       </div>
     </div>
 
-    <slims-button @click="doUpgrade" :loading="loading" :disabled="oldVersion < 1" type="button" text="Run the installation"></slims-button>
+    <slims-button @click="doUpgrade" :loading="loading" :disabled="oldVersion < 1" type="button" :text="btnLabel"></slims-button>
 </div>
 </div>`
 }

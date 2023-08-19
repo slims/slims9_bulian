@@ -141,6 +141,7 @@ class module extends simbio
             $_submenu .= '<div class="subMenuHeader subMenuHeader-' . $header . '">' . strtoupper($header) . '</div>';
 
             foreach ($menu as $item) {
+                if (!$item) continue;
                 if ($i > 0) $_submenu_current = '';
                 $_submenu .= '<a class="subMenuItem ' . $_submenu_current . '" '
                     . ' href="' . $item[1] . '"'

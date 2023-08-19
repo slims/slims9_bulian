@@ -6,3 +6,6 @@
         Header set Expires 0
     </FilesMatch>
 </IfModule>
+
+DirectoryIndex index.html
+php_flag engine off

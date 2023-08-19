@@ -9,9 +9,11 @@
 namespace SLiMS;
 
 
+use SLiMS\DB;
 use SLiMS\Cli\Console;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Session\Factory;
+use Symfony\Component\Finder\Finder;
 use stdClass;
 
 class Plugins
@@ -63,6 +65,7 @@ class Plugins
     private string $hook_handler = '';
     private string $current_location = '';
     private ?string $group_name = null;
+    private array $default_module = [];
 
     /**
      * Plugins constructor.
@@ -152,6 +155,7 @@ class Plugins
                         // get migration info
                         $this->plugins[$plugin->id] = $plugin;
                         $this->plugins[$plugin->id]->migration = $this->getMigrationInfo($plugin);
+                        $this->plugins[$plugin->id]->action = $this->getActionInfo($plugin);
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
                     // get plugins from sub folder location
@@ -182,6 +186,30 @@ class Plugins
             $migration->{self::DATABASE_VERSION} = $this->getDBVersion($plugin->id);
         }
         return $migration;
+    }
+
+    /**
+     * Some times we need to move
+     * a file into SLiMS core code such as
+     * config etc without manual process. 
+     * Maybe you ask "Why we need action? Is it migration 
+     * feature is enough?" the answer is "seperate". Seperating 
+     * database migration process and file migration process.
+     * 
+     * @param Plugins $plugin
+     * @return stdClass
+     */
+    private function getActionInfo($plugin)
+    {
+        $action = new stdClass;
+        $action->is_exist = false;
+
+        $action_directory = dirname($plugin->path) . DIRECTORY_SEPARATOR . 'action';
+        if (is_dir($action_directory)) {
+            $action->directory = $action_directory;
+            $action->is_exist = true;
+        }
+        return $action;
     }
 
     /**
@@ -397,7 +425,7 @@ class Plugins
      * @param string $callback_priv
      * @return void
      */
-    public function module($module_name, $path, $description = '', $callback_priv = '')
+    public static function module($module_name, $path, $description = '', $callback_priv = '')
     {
         self::getInstance()->registerModule($module_name, $path, $description, $callback_priv);
     }
@@ -525,5 +553,118 @@ class Plugins
     {
         if (is_null($module)) return $this->menus;
         return $this->menus[$module] ?? [];
+    }
+
+    /**
+     * Load php files inside (pages/) of a plugin
+     * and register as module menu with 
+     * hierarchical directory.
+     * 
+     * Description :
+     * 
+     * pages/ # first directory
+     * --- bibliography # as module
+     * ---- index.php # as file
+     * 
+     * or
+     * --- membership # as module
+     * ---- GROUP # as group name of plugin
+     * ----- index.php # as file
+     * 
+     * or if you want to grouping and ordering menu
+     * --- membership # as module
+     * ---- GROUP_<after|before>_<EXISTING_GROUP> # as group name of plugin, e.g : GROUP_before_TOOLS
+     * ----- index.php # as file
+     * 
+     * @param string $pathToPages
+     * @return void
+     */
+    public static function registerPages(string $pathToPages = 'pages')
+    {
+        $trace = debug_backtrace(limit:1)[0];
+        $pathToPages = self::pathResolver($pathToPages, $trace['file']);
+
+        // output as null a.k.a stop process
+        if (!is_dir($pathToPages)) return;
+
+        $finder = new Finder;
+        $finder
+            ->files()
+            ->name('*.php')
+            ->notName('*.inc.*')
+            ->depth('< 3')->in($pathToPages);
+
+        foreach ($finder as $item) {
+            $paths = explode(DS, $item->getRelativePath());
+            
+            $module_name = $paths[0];
+            $fileInfo = pathinfo($item->getFilename());
+            
+
+            $registerMenu = self::getInstance()
+                                ->registerMenu(
+                                    $module_name, 
+                                    
+                                    // label
+                                    __(ucwords(str_replace('_', ' ', $fileInfo['filename']))),
+
+                                    // absolute path
+                                    $item->getPathname()
+                                );
+
+            // Grouping process
+            if (isset($paths[1])) {
+                preg_match('/_(after|before)_/', $paths[1], $match); // get order type
+                $orderType = $match[1]??null;
+                $splitName = preg_split('/_(after|before)_/', $paths[1]);
+                $grouping = $registerMenu->group(str_replace('_', ' ', $splitName[0]??'PLUGINS'));
+
+                // set order type
+                if ($orderType !== null) $grouping->{$orderType}(__($splitName[1]));
+            }
+        }
+    }
+
+    /**
+     * Path resolver is use to get absolute path
+     * of .plugin.php which call some method in
+     * Plugins.php
+     *
+     * @param string $path
+     * @param string $traceFile
+     * @return string
+     */
+    private static function pathResolver(string $path, string $traceFile): string
+    {
+        return strpos($path, dirname($traceFile)) === false ? dirname($traceFile) . '/' . ltrim($path, '/') : $path;
+    }
+
+    /**
+     * Magic 🪄 method to manage registing menu
+     * per module via static method call.
+     * 
+     * e.g : 
+     * 
+     * Plugins::opac($webPath, $filePaath) = Plugins::menu('opac', ...etc)
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return void|object
+     */
+    public static function __callStatic(string $method, array $arguments)
+    {
+        if (!method_exists(__CLASS__, $method)) 
+        {
+            if (count($arguments) < 2) return;
+
+            $module_name = implode('_', array_map(function($item) {
+                return strtolower($item);
+            }, preg_split('/(?=[A-Z])/',lcfirst($method))));
+    
+
+            $trace = debug_backtrace(limit:1)[0];
+            $arguments[1] = self::pathResolver($arguments[1], $trace['file']??'');
+            return self::getInstance()->registerMenu($module_name, ...$arguments);
+        }
     }
 }

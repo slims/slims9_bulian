@@ -12,6 +12,7 @@ use SLiMS\Jquery;
 use SLiMS\Plugins;
 use SLiMS\Parcel\Package;
 use SLiMS\Migration\Runner;
+use SLiMS\Migration\Action;
 use SLiMS\Filesystems\Storage;
 
 define('INDEX_AUTH', 1);
@@ -78,6 +79,8 @@ if (isset($_POST['enable'])) {
         })[$id] ?? die(isset($_POST['format']) ? json_encode(['status' => false, 'message' => __('Plugin not found')]) : toastr(__('Plugin not found'))->error());
 
     try {
+        if ($plugin->action->is_exist) Action::setDirectory($plugin->action->directory);
+
         if ($_POST['enable']) {
             $options = ['version' => $plugin->version];
 
@@ -93,14 +96,21 @@ if (isset($_POST['enable'])) {
                 $query->bindValue(':options', null);
             }
 
+            if ($plugin->action->is_exist) $action = Action::preEnable();
+
             $query->bindValue(':id', $id);
             $query->bindValue(':path', $plugin->path);
             $query->bindValue(':created_at', date('Y-m-d H:i:s'));
             $query->bindValue(':deleted_at', null);
             $query->bindValue(':uid', $_SESSION['uid']);
             $message = sprintf(__('Plugin %s enabled'), $plugin->name);
+            $run = $query->execute();
+
+            if ($plugin->action->is_exist) Action::postEnable();
 
         } else {
+            if ($plugin->action->is_exist) $action = Action::preDisable();
+            
             if ($plugin->migration->is_exist && !$_POST['runDown']) {
                 $query = DB::getInstance()->prepare("UPDATE plugins SET deleted_at = :deleted_at WHERE id = :id");
                 $query->bindValue('deleted_at', date('Y-m-d H:i:s'));
@@ -112,9 +122,10 @@ if (isset($_POST['enable'])) {
             }
             $query->bindValue(':id', $id);
             $message = sprintf(__('Plugin %s disabled'), $plugin->name);
-        }
+            $run = $query->execute();
 
-        $run = $query->execute();
+            if ($plugin->action->is_exist) Action::postDisable();
+        }
 
         if (!$run) $message = __('Something error : turn on development mode to get more information');
 

@@ -244,6 +244,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // destroy it if failed
                 if (!empty($images->getError())) $images->destroyIfFailed();
 
+                // remove exif data
+                if (empty($images->getError())) $images->cleanExifInfo();
+
             })->as('docs/' . strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title)));
 
             
