@@ -1,4 +1,9 @@
 <?php
+/**
+ * @create date 2023-08-22 14:50:12
+ * @modify date 2023-08-22 14:50:12
+ * @desc Database connection manager
+ */
 namespace SLiMS;
 
 use mysqli;
@@ -8,6 +13,7 @@ class Connection {
     private ?object $conn = null;
     private string $name;
     private string $driver;
+    private string $dsnPrefix = 'mysql';
     private array $detail;
 
     public function __construct(string $name, array $detail, string $driver)
@@ -25,17 +31,32 @@ class Connection {
         } else {
             $this->conn = new mysqli(...$this->buildConnectionArgument());
         }
-        $this->conn->query('SET NAMES utf8');
-        $this->conn->query('SET CHARACTER SET utf8');
+
+        if ($this->dsnPrefix == 'mysql') {
+            $this->conn->query('SET NAMES utf8');
+            $this->conn->query('SET CHARACTER SET utf8');
+        }
     }
 
     private function buildConnectionArgument()
     {
         extract($this->detail);
-        return $this->driver === 'pdo' ? 
-                ['mysql:host=' . $host . ';port=' . $port . ';dbname=' . ($database??$name), $username, $password] 
-                :
-                [$host, $username, $password, ($database??$name), $port];
+
+        if ($this->driver === 'pdo') {
+            $this->dsnPrefix = $options['driver']??'mysql';
+            $dsn = [];
+            if (isset($options['dsn'])) {
+                $this->dsnPrefix = explode(':', $options['dsn'])[0]??'mysql';
+                $dsn[] = str_replace(['{host}','{port}','{dbname}'], [$host, $port, ($database??$name)], $options['dsn']);
+            } else {
+                $dsn[] = $this->dsnPrefix . ':host=' . $host . ';port=' . $port . ';dbname=' . ($database??$name);
+            }
+            $dsn[] = $username;
+            $dsn[] = $password;
+            return $dsn;
+        } 
+
+        return [$host, $username, $password, ($database??$name), $port];
     }
 
     public function getName()
