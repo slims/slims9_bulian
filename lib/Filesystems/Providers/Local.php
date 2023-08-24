@@ -30,10 +30,11 @@ class Local extends Contract
      *
      * @param string $root
      */
-    public function __construct(string $root)
+    public function __construct(string $root, string $diskName)
     {
         $this->adapter = new LocalFilesystemAdapter($root);
         $this->filesystem = new Filesystem($this->adapter);
+        $this->diskName = $diskName;
         $this->path = $root;
     }
 
