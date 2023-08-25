@@ -316,6 +316,8 @@ class biblio_indexer
 
 	protected function wordIndex($word, $count)
 	{
+		$word = mb_convert_encoding($word, "UTF-8", mb_detect_encoding($word));
+		$word = $this->obj_db->escape_string($word);
 		# check if already exist
 		$query = $this->obj_db->query("select id, num_hits, doc_hits from index_words where word = '" . $word . "'");
 		if ($query->num_rows > 0) {
