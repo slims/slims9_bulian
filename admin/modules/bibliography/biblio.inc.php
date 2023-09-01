@@ -48,7 +48,7 @@ class Biblio
           LEFT JOIN mst_content_type rct ON b.content_type_id=rct.id
           LEFT JOIN mst_media_type AS rmt ON b.media_type_id=rmt.id
           LEFT JOIN mst_carrier_type AS rcrt ON b.carrier_type_id=rcrt.id
-          WHERE biblio_id=%d', $this->biblio_id);
+          WHERE biblio_id=%d AND opac_hide=0', $this->biblio_id);
       $_det_q = $this->db->query($_sql);
       if ($this->db->error) {
         $this->error = $this->db->error;
