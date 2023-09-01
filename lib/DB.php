@@ -107,8 +107,7 @@ class DB
      */
     public static function backup()
     {
-        $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile(), [config('database_backup.options')]));
+        return new IMysqldump\Mysqldump(self::$connectionCollection->get('pdo_' . self::$connectionName));
     }
 
     /**

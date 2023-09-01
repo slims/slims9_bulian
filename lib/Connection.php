@@ -38,7 +38,7 @@ class Connection {
         }
     }
 
-    private function buildConnectionArgument()
+    public function buildConnectionArgument()
     {
         extract($this->detail);
 
@@ -62,6 +62,28 @@ class Connection {
     public function getName()
     {
         return $this?->name??null;
+    }
+
+    public function getDsnPrefix()
+    {
+        return $this->dsnPrefix;
+    }
+
+    public function getDetail(string $key = '', $default = null)
+    {
+        if (empty($key)) return $this->detail;
+
+        $result = null;
+        foreach (explode('.', trim($key, '.')) as $key) {
+            if (isset($this->detail[$key])) {
+                $result = $this->detail[$key];
+                continue;
+            }
+
+            if (is_array($result) && isset($result[$key])) $result = $result[$key];
+            else $result = $default;
+        }
+        return $result;
     }
 
     public function getConn()
