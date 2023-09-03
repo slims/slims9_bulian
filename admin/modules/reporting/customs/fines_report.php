@@ -122,8 +122,8 @@ if (!$reportView) {
     }
 
     // query fines data to database
-    // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal`, `fines_id` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
-    $_fines_q = $dbs->query("SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`");
+    // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debit) AS `dtotal`, `fines_id` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
+    $_fines_q = $dbs->query("SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debit) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`");
     while ($_fines_d = $_fines_q->fetch_row()) {
         $date = (integer)preg_replace('@^0+@i', '',$_fines_d[0]);
         $fines_data[$date] = '<div class="data"><a href="'.AWB.'modules/reporting/customs/member_fines_list.php?reportView=true&singleDate=true&finesDate='.$selected_year.'-'.$selected_month.'-'.$date.'" class="notAJAX openPopUp" width="800" height="600" title="'.__('Member Fines List').'">'.currency($_fines_d[1]?:'0').'</a></div>';
