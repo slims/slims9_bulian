@@ -43,7 +43,8 @@ if (empty($_POST)) {
 // list limit
 $limit = 20;
 
-$table_name = $dbs->escape_string(trim($_POST['tableName']));
+$table_state = explode(':', trim($_POST['tableName']));
+$table_name = $dbs->escape_string(trim($table_state[1]??$table_state[0]));
 $table_fields = trim($_POST['tableFields']);
 
 if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
@@ -58,6 +59,7 @@ $fields = str_replace(':', ', ', $table_fields);
 // set where criteria
 $criteria = '';
 foreach (explode(':', $table_fields) as $field) {
+	$field = $dbs->escape_string($field);
 	$criteria .= " $field LIKE '%$keywords%' OR";
 }
 // remove the last OR
@@ -76,35 +78,35 @@ $query = $dbs->query($sql_string);
 $error = $dbs->error;
 $data = array();
 
-if (isset($_GET['format'])) {
-	if ($_GET['format'] == 'json') {
+$headers = function_exists('getallheaders') ? getallheaders() : $_SERVER;
+$contentType = $headers['Content-Type']??$headers['content-type']??$headers['CONTENT_TYPE']??'';
 
-		header('Contenty-Type: application/json');
 
-		if ($error) {
-			echo json_encode(array('id' => 0, 'text' => $error));
-		}
-		if ($query->num_rows > 0) {
-			$items = [];
-			while ($row = $query->fetch_row()) {
-				$data[] = array('id' => $row[0], 'text' => $row[1] . (isset($row[2]) ? ' - ' . $row[2] : '') . (isset($row[3]) ? ' - ' . $row[3] : ''));
-				array_walk($row, function ($i) use (&$items) {
-					$items[] = strtolower(trim($i));
-				});
-			}
-			if (isset($_GET['allowNew']) && !in_array(strtolower(trim($keywords)), $items)) {
-				$data = [['id' => 'NEW:' . $keywords, 'text' => $keywords . ' &lt;' . __('Add New') . '&gt;'], ...$data];
-			}
-		} else {
-			if (isset($_GET['allowNew'])) {
-				$data[] = array('id' => 'NEW:' . $keywords, 'text' => $keywords . ' &lt;' . __('Add New') . '&gt;');
-			} else {
-				$data[] = array('id' => 'NONE', 'text' => 'NO DATA FOUND');
-			}
-		}
-		echo json_encode($data);
+if ($contentType == 'application/json') {
+	header('Contenty-Type: application/json');
+
+	if ($error) {
+		echo json_encode(array('id' => 0, 'text' => $error));
 	}
-	exit();
+	if ($query->num_rows > 0) {
+		$items = [];
+		while ($row = $query->fetch_row()) {
+			$data[] = array('id' => $row[0], 'text' => $row[1] . (isset($row[2]) ? ' - ' . $row[2] : '') . (isset($row[3]) ? ' - ' . $row[3] : ''));
+			array_walk($row, function ($i) use (&$items) {
+				$items[] = strtolower(trim($i));
+			});
+		}
+		if (isset($_GET['allowNew']) && !in_array(strtolower(trim($keywords)), $items)) {
+			$data = [['id' => 'NEW:' . $keywords, 'text' => $keywords . ' &lt;' . __('Add New') . '&gt;'], ...$data];
+		}
+	} else {
+		if ($table_state[0] === 'new') {
+			$data[] = array('id' => 'NEW:' . $keywords, 'text' => $keywords . ' &lt;' . __('Add New') . '&gt;');
+		} else {
+			$data[] = array('id' => 'NONE', 'text' => 'NO DATA FOUND');
+		}
+	}
+	exit(json_encode($data));
 } else {
 	if ($error) {
 		echo '<option value="0">' . $error . '</option>';
