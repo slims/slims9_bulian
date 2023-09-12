@@ -76,7 +76,7 @@ function outputWithFlush($message)
     if (isset($_POST['verbose']) && $_POST['verbose'] == 'yes')
     {
         echo str_replace('\n', ' ', $message) . '<br/>';
-        ob_flush();
+        if(!ob_get_level()) ob_flush();
         flush();
     }
 }

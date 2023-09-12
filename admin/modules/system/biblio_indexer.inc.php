@@ -77,7 +77,7 @@ class biblio_indexer
 			while ($rb_id = $rec_bib->fetch_row()) {
 				$biblio_id = $rb_id[0];
 				$index = $this->makeIndex($biblio_id);
-				$this->makeIndexWord($biblio_id);
+				if (config('index.word')) $this->makeIndexWord($biblio_id);
 			}
 			// get end time
 			$_end = function_exists('microtime') ? microtime(true) : time();
@@ -423,7 +423,7 @@ class biblio_indexer
 			}, 1000);
 		</script>
 		HTML;
-        ob_flush();
+        if(!ob_get_level()) ob_flush();
         flush();
 	}
 }
