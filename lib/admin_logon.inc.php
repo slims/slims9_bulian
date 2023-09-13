@@ -151,7 +151,7 @@ class admin_logon
         }
 
         // save md5sum of  current application path
-        if ($sysconf['load_balanced_env']) {
+        if (config('load_balanced.env', false)) {
             $server_addr = ip();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
@@ -177,7 +177,7 @@ class admin_logon
      * @return  boolean
      */
     protected function ldapLogin() {
-        global $ldap_configs;
+        $ldap_configs = config('auth.user');
         if (!function_exists('ldap_connect')) {
             $this->errors = 'LDAP library is not installed yet!';
             return false;

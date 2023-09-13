@@ -38,31 +38,7 @@ class DatabaseBackup extends \SLiMS\Cli\Command
      */
     public function handle()
     {
-        $backup = DB::backup([    
-            'compress' => IMysqldump\Mysqldump::NONE,
-            'no-data' => false,
-            'add-drop-table' => true,
-            'single-transaction' => true,
-            'lock-tables' => true,
-            'add-locks' => false,
-            'extended-insert' => false,
-            'disable-keys' => true,
-            'skip-triggers' => false,
-            'add-drop-trigger' => true,
-            'routines' => true,
-            'databases' => false,
-            'add-drop-database' => false,
-            'hex-blob' => true,
-            'no-create-info' => false,
-            'where' => '',
-            /**
-             * an option for definer state in trigger query. 
-             * For some case, user had bad experience 
-             * when they move their SLiMS database to other database 
-             * machine without same privileged user as trigger definer.
-             */
-            'skip-definer' => true
-        ]);
+        $backup = DB::backup();
 
         $progress = new ProgressBar($this->output);
         $progress->setBarCharacter('<info>+</info>');

@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 16:04:53
- * @modify date 2023-01-01 21:20:25
+ * @modify date 2023-08-17 20:07:12
  * @license GPLv3
  * @desc [description]
  */
@@ -103,5 +103,48 @@ trait Utils
     public function getUploadStatus()
     {
         return $this->uploadStatus;
+    }
+
+    /**
+     * Clean exif info
+     * modification from https://stackoverflow.com/a/38862429/13322576
+     * @return void
+     */
+    public function cleanExifInfo()
+    {
+        if (!empty($this->uploadedFile)) {
+            // Open the input file for binary reading
+            $originName = $this->uploadedFile;
+            $f1 = fopen($original = $this->path . DS . $originName, 'rb');
+            // Open the output file for binary writing
+            $cleanName = 'clean' . $this->uploadedFile;
+            $f2 = fopen($newFile = $this->path . DS . $cleanName, 'wb');
+
+            // Find EXIF marker
+            while (($s = fread($f1, 2))) {
+                $word = unpack('ni', $s)['i'];
+                if ($word == 0xFFE1) {
+                    // Read length (includes the word used for the length)
+                    $s = fread($f1, 2);
+                    $len = unpack('ni', $s)['i'];
+                    // Skip the EXIF info
+                    fread($f1, $len - 2);
+                    break;
+                } else {
+                    fwrite($f2, $s, 2);
+                }
+            }
+
+            // Write the rest of the file
+            while (($s = fread($f1, 4096))) {
+                fwrite($f2, $s, strlen($s));
+            }
+
+            fclose($f1);
+            fclose($f2);
+
+            // move clean version to original file
+            $this->filesystem->move($cleanName, $originName);
+        }
     }
 }

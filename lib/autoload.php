@@ -33,6 +33,7 @@ $namespaces = [
     "Symfony\\Component\VarDumper\\" => "/symfony/var-dumper/",
     "Symfony\Component\Console\\" => '/symfony/console/',
     "Symfony\Component\String\\" => '/symfony/string/',
+    "Symfony\Component\Finder\\" => '/symfony/finder/',
     "Symfony\Contracts\Service\\" => '/symfony/service-contracts/',
     "Symfony\\Contracts\\Translation\\" => "/symfony/translation-contracts/",
     "ZipStream\\" => "/maennchen/zipstream-php/src/",

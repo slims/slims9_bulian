@@ -458,6 +458,7 @@ $sysconf['index']['engine']['es_opts'] = array(
   'index' => 'slims' // name of index in ElasticSearch
 );
 
+$sysconf['index']['word'] = true;
 /**
  * Maximum biblio mark for member
  */
@@ -632,8 +633,15 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
 }
 
 /* Load balancing environment */
-$sysconf['load_balanced_env'] = false;
-$sysconf['load_balanced_source_ip'] = 'HTTP_X_FORWARDED_FOR';
+$sysconf['load_balanced'] = [
+  'env' => false,
+  'options' => [
+    'host' => 'type_your_domain', // prevent host spoofing
+    'source_ip' => 'HTTP_X_FORWARDED_FOR',
+    'scheme' => 'http',
+    'port' => 80,
+  ]
+];
 
 // visitor limitation
 $sysconf['enable_counter_by_ip'] = true;
@@ -775,7 +783,8 @@ require_once LIB . "helper.inc.php";
 @date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
 
 // set real client ip address if SLiMS behind a reverse proxy
-if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
+$load_balanced = config('load_balanced');
+if ((bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['source_ip']);
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;

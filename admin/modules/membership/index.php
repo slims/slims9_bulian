@@ -199,6 +199,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // destroy it if failed
             if (!empty($image->getError())) $image->destroyIfFailed();
 
+            // remove exif from image
+            if (empty($image->getError())) $image->cleanExifInfo();
+
           })->as('persons/' . 'member_'.$data['member_id']);
 
           if ($upload->getUploadStatus()) {

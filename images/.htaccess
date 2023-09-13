@@ -1,0 +1,7 @@
+DirectoryIndex index.html
+# Turn off PHP
+# only for DSO as PHP Handler
+# https://docs.cpanel.net/ea4/php/php-handlers/#dso
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>

@@ -12,7 +12,7 @@ use SLiMS\Jquery;
 use SLiMS\Plugins;
 use SLiMS\Parcel\Package;
 use SLiMS\Migration\Runner;
-use SLiMS\Filesystems\Storage;
+use SLiMS\Migration\Action;
 
 define('INDEX_AUTH', 1);
 
@@ -26,51 +26,6 @@ $upload_success = false;
 
 if (count($_POST) == 0) $_POST = json_decode(file_get_contents('php://input'), true);
 
-if (isset($_POST['upload']) && !empty($_FILES['plugin'])) {
-    $files_disk = Storage::files();
-
-    $files_upload = $files_disk->upload('plugin', function($plugin) {
-        // Extension check
-        $plugin->isExtensionAllowed(['.zip']);
-
-        // File size check
-        $plugin->isLimitExceeded(config('max_plugin_upload')*1024);
-
-        // destroy it if failed
-        if (!empty($plugin->getError())) $plugin->destroyIfFailed();
-
-    })->as('temp' . DS . md5(utility::createRandomString(5) . date('Y-m-d')));
-
-    if ($files_upload->getUploadStatus()) {
-        toastr('Plugin has been success upload!')->success();
-        $package = Package::prepare($tempZip = SB . 'files' . DS . 'temp' . DS .$files_upload->getUploadedFileName());
-
-        $package->extract()->to(function($zip) use($files_disk,$files_upload,$tempZip,$plugins) {
-            unlink($tempZip);
-
-            $contents = $files_disk->directories($zip->getUniquePath())->toArray();
-
-            foreach ($contents as $content) {
-                @rename(SB . 'files' . DS . $content->path(), $pluginPath = SB . 'plugins' . DS . basename($content->path()));
-            }
-
-            $files_disk->deleteDirectory($zip->getUniquePath());
-
-            if (isset($_POST['enable']) && $_POST['enable'] == '0') unset($_POST['enable']);
-
-            $_POST['id'] = array_key_first(array_filter(isset($_POST['enable']) ? $plugins->getPlugins() : [], function($plugin) use($pluginPath) {
-                if (dirname($plugin->path) == $pluginPath) return true;
-            }));
-        });
-        $upload_success = true;
-    }
-    else
-    {
-        toastr('error')->error();
-        exit;
-    }
-}
-
 if (isset($_POST['enable'])) {
     $id = $_POST['id'];
     $plugin = array_filter($plugins->getPlugins(), function ($plugin) use ($id) {
@@ -78,6 +33,8 @@ if (isset($_POST['enable'])) {
         })[$id] ?? die(isset($_POST['format']) ? json_encode(['status' => false, 'message' => __('Plugin not found')]) : toastr(__('Plugin not found'))->error());
 
     try {
+        if ($plugin->action->is_exist) Action::setDirectory($plugin->action->directory);
+
         if ($_POST['enable']) {
             $options = ['version' => $plugin->version];
 
@@ -93,14 +50,21 @@ if (isset($_POST['enable'])) {
                 $query->bindValue(':options', null);
             }
 
+            if ($plugin->action->is_exist) $action = Action::preEnable();
+
             $query->bindValue(':id', $id);
             $query->bindValue(':path', $plugin->path);
             $query->bindValue(':created_at', date('Y-m-d H:i:s'));
             $query->bindValue(':deleted_at', null);
             $query->bindValue(':uid', $_SESSION['uid']);
             $message = sprintf(__('Plugin %s enabled'), $plugin->name);
+            $run = $query->execute();
+
+            if ($plugin->action->is_exist) Action::postEnable();
 
         } else {
+            if ($plugin->action->is_exist) $action = Action::preDisable();
+            
             if ($plugin->migration->is_exist && !$_POST['runDown']) {
                 $query = DB::getInstance()->prepare("UPDATE plugins SET deleted_at = :deleted_at WHERE id = :id");
                 $query->bindValue('deleted_at', date('Y-m-d H:i:s'));
@@ -112,9 +76,10 @@ if (isset($_POST['enable'])) {
             }
             $query->bindValue(':id', $id);
             $message = sprintf(__('Plugin %s disabled'), $plugin->name);
-        }
+            $run = $query->execute();
 
-        $run = $query->execute();
+            if ($plugin->action->is_exist) Action::postDisable();
+        }
 
         if (!$run) $message = __('Something error : turn on development mode to get more information');
 
