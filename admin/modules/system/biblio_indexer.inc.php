@@ -174,7 +174,7 @@ class biblio_indexer
 		$au_all = '';
 		$au_sql = 'SELECT ba.biblio_id, ba.level, au.author_name AS `name`, au.authority_type AS `type`
           	FROM biblio_author AS ba LEFT JOIN mst_author AS au ON ba.author_id = au.author_id
-          	WHERE ba.biblio_id =' . $int_biblio_id;
+          	WHERE ba.biblio_id =' . $int_biblio_id . ' ORDER BY ba.level ASC';
 		$au_id = $this->obj_db->query($au_sql);
 		while ($rs_au = $au_id->fetch_assoc()) {
 			$au_all .= $rs_au['name'] . ' - ';
