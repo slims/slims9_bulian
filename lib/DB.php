@@ -7,7 +7,7 @@
 
 namespace SLiMS;
 
-
+use Closure;
 use Exception;
 use mysqli;
 use PDO;
@@ -46,6 +46,8 @@ class DB
      */
 
     private static array $credentials = [];
+
+    private ?Closure $proxyRule = null;
 
     /**
      * Backup const
@@ -107,8 +109,7 @@ class DB
      */
     public static function backup()
     {
-        $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile(), [config('database_backup.options')]));
+        return new IMysqldump\Mysqldump(self::$connectionCollection->get('pdo_' . self::$connectionName));
     }
 
     /**
@@ -168,7 +169,10 @@ class DB
                 self::$config['default_profile'] : self::$connectionName;
 
         // in Proxy?
-        if ($config['proxy']??false) $connectionName = $this->setProxy();
+        $this->setProxy();
+        if (self::$config['proxy']??false) {
+            call_user_func_array($this->proxyRule, [&$connectionName]);
+        }
 
         // in database.php?
         if (isset(self::$config['nodes'][$connectionName])) {
@@ -205,8 +209,10 @@ class DB
      */
     private function setProxy()
     {
-        if (!file_exists($dbProxy = SB . 'config/database_proxy.php')) return [];
-        include $dbProxy;
-        return $defaultProfile;
+        if (file_exists($dbProxy = SB . 'config/database_proxy.php')) {
+            $closure = require $dbProxy;
+            if (!$closure instanceof Closure) return;
+            $this->proxyRule = require $dbProxy;
+        }
     }
 }

@@ -391,7 +391,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
 
       $server = urlencode($p2pserver);
 
-      $detail = '<a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri='.$server.'&biblioID='.$record['id'].'" title="detail">'.__('Detail').'</a>';
+      $detail = '<a class="s-btn btn btn-default btn-sm notAJAX openPopUp" href="modules/bibliography/pop_p2p.php?uri='.$serverid.'&biblioID='.$record['id'].'" title="detail">'.__('Detail').'</a>';
       $title_content = '<div class="media">
                     <img class="mr-3 rounded" src="'.$image_uri.'" alt="'.$image_uri.'" loading="lazy" style="height:70px;">
                     <div class="media-body">

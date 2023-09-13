@@ -67,12 +67,12 @@ class detail
         $this->detail_id = $int_detail_id;
         $this->biblio = new Biblio($this->db, $int_detail_id);
         $this->record_detail = $this->biblio->detail();
-        $this->error = $this->biblio->getError();
+        $biblioError = $this->biblio->getError();
         if (isset($this->record_detail['title'])) {
           $this->record_title = $this->record_detail['title'];
           $this->notes = $this->record_detail['notes'];
           $this->subjects = $this->record_detail['subjects'];
-        } else if (!$this->error) {
+        } else if (!$biblioError) {
           $this->error = 'Data not found!';
         }
     }
@@ -93,7 +93,17 @@ class detail
     {
         global $sysconf;
         if ($this->error) {
-            return '<div class="error alert alert-error">Error Fetching data for record detail. Server return error message: '.$this->error.'</div>';
+            http_response_code(404);
+             $error = ucwords(__($this->error));
+             $detail = __('Maybe the data is temporary unvailable');
+             return <<<HTML
+             <div class="w-100 d-flex justify-content-center align-items-center" style="height: 50vh">
+                <h3>{$error}</h3>
+                <strong class="mx-3">|</strong>
+                <p>{$detail}</p>
+             </div>
+             HTML;
+            // return '<div class="error alert alert-error"> Server return error message: '.$this->error.'</div>';
         } else {
             if ($this->output_format == 'html') {
                 ob_start();
@@ -1063,6 +1073,11 @@ HTML;
     public function getSuffix()
     {
         return $this->detail_suffix;
+    }
+
+    public function getError()
+    {
+        return $this->error;
     }
 
     private function xmlWrite(&$xmlwriter, $data, $mode = 'Text') {

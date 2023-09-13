@@ -13,7 +13,6 @@ use SLiMS\Plugins;
 use SLiMS\Parcel\Package;
 use SLiMS\Migration\Runner;
 use SLiMS\Migration\Action;
-use SLiMS\Filesystems\Storage;
 
 define('INDEX_AUTH', 1);
 
@@ -26,51 +25,6 @@ $plugins = Plugins::getInstance();
 $upload_success = false;
 
 if (count($_POST) == 0) $_POST = json_decode(file_get_contents('php://input'), true);
-
-if (isset($_POST['upload']) && !empty($_FILES['plugin'])) {
-    $files_disk = Storage::files();
-
-    $files_upload = $files_disk->upload('plugin', function($plugin) {
-        // Extension check
-        $plugin->isExtensionAllowed(['.zip']);
-
-        // File size check
-        $plugin->isLimitExceeded(config('max_plugin_upload')*1024);
-
-        // destroy it if failed
-        if (!empty($plugin->getError())) $plugin->destroyIfFailed();
-
-    })->as('temp' . DS . md5(utility::createRandomString(5) . date('Y-m-d')));
-
-    if ($files_upload->getUploadStatus()) {
-        toastr('Plugin has been success upload!')->success();
-        $package = Package::prepare($tempZip = SB . 'files' . DS . 'temp' . DS .$files_upload->getUploadedFileName());
-
-        $package->extract()->to(function($zip) use($files_disk,$files_upload,$tempZip,$plugins) {
-            unlink($tempZip);
-
-            $contents = $files_disk->directories($zip->getUniquePath())->toArray();
-
-            foreach ($contents as $content) {
-                @rename(SB . 'files' . DS . $content->path(), $pluginPath = SB . 'plugins' . DS . basename($content->path()));
-            }
-
-            $files_disk->deleteDirectory($zip->getUniquePath());
-
-            if (isset($_POST['enable']) && $_POST['enable'] == '0') unset($_POST['enable']);
-
-            $_POST['id'] = array_key_first(array_filter(isset($_POST['enable']) ? $plugins->getPlugins() : [], function($plugin) use($pluginPath) {
-                if (dirname($plugin->path) == $pluginPath) return true;
-            }));
-        });
-        $upload_success = true;
-    }
-    else
-    {
-        toastr('error')->error();
-        exit;
-    }
-}
 
 if (isset($_POST['enable'])) {
     $id = $_POST['id'];

@@ -77,7 +77,7 @@ class biblio_indexer
 			while ($rb_id = $rec_bib->fetch_row()) {
 				$biblio_id = $rb_id[0];
 				$index = $this->makeIndex($biblio_id);
-				$this->makeIndexWord($biblio_id);
+				if (config('index.word')) $this->makeIndexWord($biblio_id);
 			}
 			// get end time
 			$_end = function_exists('microtime') ? microtime(true) : time();
@@ -316,6 +316,8 @@ class biblio_indexer
 
 	protected function wordIndex($word, $count)
 	{
+		$word = mb_convert_encoding($word, "UTF-8", mb_detect_encoding($word));
+		$word = $this->obj_db->escape_string($word);
 		# check if already exist
 		$query = $this->obj_db->query("select id, num_hits, doc_hits from index_words where word = '" . $word . "'");
 		if ($query->num_rows > 0) {
@@ -421,7 +423,7 @@ class biblio_indexer
 			}, 1000);
 		</script>
 		HTML;
-        ob_flush();
+        if(!ob_get_level()) ob_flush();
         flush();
 	}
 }

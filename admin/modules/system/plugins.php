@@ -72,7 +72,6 @@ else
             </div>
             <div class="sub_section">
                 <div class="btn-group">
-                    <a title="<?= __('Install plugin from .zip file') ?>" href="<?= $_SERVER['PHP_SELF'] ?>?upload=yes" class="notAJAX openPopUp btn btn-primary"><?= __('Upload Plugin') ?></a>&nbsp;
                     <a href="<?= $_SERVER['PHP_SELF'] ?>?view=<?= (!isset($_SESSION['view']) || $_SESSION['view'] == 'list' ? 'card' : 'list') ?>" class="btn btn-sm btn-outline-secondary items-center flex p-2">
                         <?php if (!isset($_SESSION['view']) || $_SESSION['view'] == 'list'): ?>
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">
@@ -187,6 +186,9 @@ else
 
             fetch('<?= MWB ?>system/plugin_action.php', {
                 method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     format: 'json',
                     enable: e.target.checked,

@@ -5,7 +5,7 @@
  * @File name           : pop_chart.php
  */
 
-
+use SLiMS\Url;
 /* Detail P2P result Pop Windows */
 
 // key to authenticate
@@ -32,7 +32,30 @@ if (!$can_write) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
-$detail_uri = $_GET['uri'] . "/index.php?p=show_detail&inXML=true&id=" . $_GET['biblioID'];
+function cleanUrl($url)
+{
+  $Url = Url::parse($url);
+  
+  return $Url->getScheme() . '://' . // http or https
+         // localhost, ip, or domain       
+         $Url->getDomain() .
+         // http standart port (80 & 443) or non http standart port
+         (!is_null($Url->getPort()) ? ':' . $Url->getPort() : '') .
+         // path
+         (substr($Url->getPath(), -1) == '/' ? $Url->getPath() . '' : $Url->getPath() . '/');
+}
+
+// get servers
+$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
+while ($server = $server_q->fetch_assoc()) {
+  if (Url::isValid($server['uri'])) $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+}
+
+$serverId = (int)$_GET['uri'];
+if (!isset($sysconf['p2pserver'][$serverId])) die('<div id="alert alert-danger">' . __('P2P Server URL is not exists!') . '</div>');
+$url = cleanUrl($sysconf['p2pserver'][$serverId]['uri']);
+
+$detail_uri = $url . "/index.php?p=show_detail&inXML=true&id=" . ((int)$_GET['biblioID']);
 // parse XML
 $data = modsXMLsenayan($detail_uri, 'uri');
 
@@ -69,7 +92,7 @@ $rec_d = $data['records'][0];
 	}
 	echo '<tr><td width="20%">'.__('Topics').'</td><td>'.substr($topic_str,0,-4).'</td></tr>';
 	echo '</table>';
-	echo '<a class="btn btn-sm btn-info" target="_BLANK" href="'.$_GET['uri'].'/index.php?p=show_detail&id='.$_GET['biblioID'].'">Original URi</a></div>'."<br/>";
+	echo '<a class="btn btn-sm btn-info" target="_BLANK" href="'.$detail_uri.'/index.php?p=show_detail&id='.((int)$_GET['biblioID']).'">Original URi</a></div>'."<br/>";
 
 /* main content end */
 $content = ob_get_clean();
