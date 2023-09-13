@@ -156,7 +156,9 @@ final class Memory
 
     public function registerLanguageFromPlugin()
     {
-        foreach (array_diff(scandir($base = SB . 'plugins/lang/'), ['.','..']) as $dir) {
+        $base = SB . 'plugins/lang/';
+        if (is_dir($base) === false) return;
+        foreach (array_diff(scandir($base), ['.','..']) as $dir) {
             $this->registerLanguage(...Json::parse(file_get_contents($base . '/' . $dir . '/LC_MESSAGES/meta.json'))->toArray());
         }
     }
