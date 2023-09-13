@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-17 07:14:29
- * @modify date 2023-01-12 11:34:58
+ * @modify date 2023-05-28 06:59:56
  * @license GPLv3
  * @desc [description]
  */
@@ -138,6 +138,21 @@ class Url
     public static function isSelf(string $url)
     {
         return self::parse($url)->getDomain() === self::getDomain($strict = false);
+    }
+
+    public static function isAdmin()
+    {
+        return stripos(self::getSelf(), '/admin');
+    }
+
+    public static function isOpac()
+    {
+        return self::isAdmin() === false;
+    }
+
+    public static function inXml()
+    {
+        return isset($_GET['resultXML']) || isset($_GET['inXML']);
     }
 
     /**

@@ -56,7 +56,7 @@ $gmd_list = ob_get_clean();
 
 /* Language selection list */
 ob_start();
-require_once(LANG.'localisation.php');
+// require_once(LANG.'localisation.php');
 $select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
 foreach ($available_languages AS $lang_index) {
     $selected = null;
