@@ -776,7 +776,7 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 
 // set real client ip address if SLiMS behind a reverse proxy
 $load_balanced = config('load_balanced');
-if ((bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['source_ip']);
+if ((bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['options']['source_ip']);
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;
