@@ -69,7 +69,10 @@ trait Utils
 
     public function justify(array $word, string $separator = '.')
     {
-        $separatorFormatter = str_repeat($separator,($this->terminal->getWidth() - (strlen(strip_tags($word[0])) + strlen(strip_tags($word[1])))));
+        $terminalWidth = $this->terminal->getWidth();
+        $wordLength = (strlen(strip_tags($word[0])) + strlen(strip_tags($word[1])));
+
+        $separatorFormatter = str_repeat($separator,($this->terminal->getWidth() - ($terminalWidth < $wordLength ? ($wordLength - $terminalWidth) : $wordLength)));
         $this->output($word[0] . $separatorFormatter . (preg_match('/\<|\>/i', $word[1]) ? $word[1] : '<info>' . $word[1] . '</info>'));
     }
 

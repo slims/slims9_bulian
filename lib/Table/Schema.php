@@ -36,6 +36,7 @@ class Schema
         try {
             self::$connectionName = $connectionName;
             self::$connection = DB::connection($connectionName);
+            self::$connectionProfile = DB::getCredential(self::$connectionName);
         } catch (RuntimeException $e) {
             die($e->getMessage());
         }

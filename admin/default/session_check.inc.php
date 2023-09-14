@@ -50,7 +50,7 @@ if ($unauthorized) {
 }
 
 // checking session checksum
-if ($sysconf['load_balanced_env']) {
+if (config('load_balanced.env', false)) {
     $server_addr = ip();
 } else {
     $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));

@@ -123,8 +123,8 @@ HTML;
               $langstr = '';
               $current_lang = '';
               $select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
-              require_once(LANG . 'localisation.php');
-              foreach ($available_languages AS $lang_index) {
+              // require_once(LANG . 'localisation.php');
+              foreach ($available_languages??[] AS $lang_index) {
                 $selected = null;
                 $lang_code = $lang_index[0];
                 $lang_name = $lang_index[1];

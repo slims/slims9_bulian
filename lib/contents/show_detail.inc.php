@@ -129,12 +129,12 @@ if (isset($_GET['inXML']) AND !empty($_GET['inXML'])) {
     
     if (isset($sysconf['enable_xml_detail']) && $sysconf['enable_xml_detail'] && !defined('LIGHTWEIGHT_MODE')) {
       $info .= '<a href="index.php?p=show_detail&inXML=true&id='.$detail_id.'" class="xmlDetailLink s-xml-detail" title="'.__('Show detail in XML format').'" target="_blank">'.__('XML Detail').'</a>';
-      $info .= '<a href="index.php?p=cite&id='.$detail_id.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($detail->record_title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite this').'</a>';
+      $info .= '<a href="index.php?p=cite&id='.$detail_id.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($detail?->record_title??'', 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite this').'</a>';
     }
 
     // output the record detail
     echo $detail->showDetail();
-    $opac->page_title = $detail->record_title.' | '.$sysconf['library_name'];
+    $opac->page_title = ($detail->record_title??'Not found').' | '.$sysconf['library_name'];
     $opac->metadata   = $detail->metadata;
     $opac->image_src  = $detail->image_src;
     $opac->notes      = $detail->notes;

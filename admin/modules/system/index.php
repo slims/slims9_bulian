@@ -24,6 +24,7 @@
 // key to authenticate
 use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\SearchEngine\Engine;
+use SLiMS\Polyglot\Memory;
 
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
@@ -356,8 +357,7 @@ $form->addAnything(__('Logo Image'), $str_input);
 // $form->addSelectList('admin_template', __('Admin Template'), $admin_tpl_options, $sysconf['admin_template']['theme']);
 
 // application language
-require_once(LANG.'localisation.php');
-$form->addSelectList('default_lang', __('Default App. Language'), $available_languages, $sysconf['default_lang'], 'class="form-control col-3"');
+$form->addSelectList('default_lang', __('Default App. Language'), Memory::getInstance()->getLanguages(), $sysconf['default_lang'], 'class="form-control col-3"');
 
 // timezone
 $html  = '<input type="text" class="form-control col-2" name="timezone" value="' . ($sysconf['timezone'] ?? 'Asia/Jakarta') . '"/>';

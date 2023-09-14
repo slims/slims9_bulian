@@ -192,7 +192,7 @@ function importProgress(int $percentage)
     parent.$('.progress-bar').html('{$percentage}%')
   </script>
   HTML;
-  ob_flush();
+  if(!ob_get_level()) ob_flush();
   flush();
 }
 

@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-12-17 07:14:29
- * @modify date 2023-01-12 11:34:58
+ * @modify date 2023-05-28 06:59:56
  * @license GPLv3
  * @desc [description]
  */
@@ -12,14 +12,6 @@ namespace SLiMS;
 
 class Url
 {
-    /**
-     * If SLiMS behind reverse proxy
-     * you must set this property to true
-     *
-     * @var boolean
-     */
-    public static $forceHttps = false;
-
     /**
      * This property is used to make
      * some magic method to generate result
@@ -50,8 +42,15 @@ class Url
      */
     public static function getDomain(bool $strict = true)
     {
-        if (!in_array(self::getPort(), [80,443]) && $strict) return $_SERVER['SERVER_NAME'] . ':' . self::getPort();
-        return $_SERVER['SERVER_NAME'];
+        $loadBalance = self::getConfig('load_balanced');
+        $domain = $loadBalance['env'] ? $loadBalance['options']['host'] : $_SERVER['SERVER_NAME'];
+        if (!in_array(self::getPort(), [80,443]) && $strict) return $domain . ':' . self::getPort();
+        return $domain;
+    }
+
+    private static function getConfig(string $path)
+    {
+        return Config::getInstance()->get($path);
     }
 
     /**
@@ -61,7 +60,8 @@ class Url
      */
     public static function getPort()
     {
-        return $_SERVER['SERVER_PORT'];
+        $loadBalance = self::getConfig('load_balanced');
+        return  $loadBalance['env'] ? $loadBalance['options']['port'] : $_SERVER['SERVER_PORT'];
     }
 
     /**
@@ -71,8 +71,9 @@ class Url
      */
     public static function getScheme()
     {
-        $urlConfig = Config::getInstance()->get('url.force_https', false);
-        return (self::$forceHttps || $urlConfig ? 'https' : $_SERVER['REQUEST_SCHEME']) . '://';
+        $forceHttps = self::getConfig('url.force_https');
+        $loadBalance = self::getConfig('load_balanced');
+        return ($forceHttps ? 'https' : ($loadBalance['env'] ? $loadBalance['options.scheme'] : 'http')) . '://';
     }
 
     /**
@@ -137,6 +138,21 @@ class Url
     public static function isSelf(string $url)
     {
         return self::parse($url)->getDomain() === self::getDomain($strict = false);
+    }
+
+    public static function isAdmin()
+    {
+        return stripos(self::getSelf(), '/admin');
+    }
+
+    public static function isOpac()
+    {
+        return self::isAdmin() === false;
+    }
+
+    public static function inXml()
+    {
+        return isset($_GET['resultXML']) || isset($_GET['inXML']);
     }
 
     /**

@@ -19,8 +19,9 @@ abstract class Contract
      * Default propperty
      *
      */
-    protected $adapter;
-    protected $filesystem;
+    protected $adapter = null;
+    protected $filesystem = null;
+    protected $diskName = '';
     protected $path = '';
     protected $error = '';
     
@@ -175,6 +176,22 @@ abstract class Contract
     {
         $Class = new ReflectionClass($this);
         return $Class->getShortName();
+    }
+
+    /**
+     * Get filesystem instance
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
+
+        /**
+     * Get filesystem instance
+     */
+    public function getDiskName()
+    {
+        return $this->diskName;
     }
 
     /**

@@ -45,6 +45,12 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.isPass = res.status
+
+                    if (this.isPass) {
+                        this.$emit('success')
+                        return
+                    }
+
                     this.message = res.message
                     this.loading = false
 
@@ -58,8 +64,6 @@ export default {
                         this.btnLabel = 'Re-' + this.btnLabel
                     } else if (this.message.length > 0 && hasPriorityError.length < 1) {
                         this.$emit('redirectwithmsg', optionalError)
-                    } else if (this.isPass) {
-                        this.$emit('success')
                     }
                 })
                 .catch((error) => {

@@ -468,8 +468,9 @@ class Plugins
      * and plugin base composer (vendor inside each plugin).
      * The autoload.php will be call at plugin_container.php
      */
-    public function registerAutoload($directoryToAutoload)
+    public function registerAutoload()
     {
+        $directoryToAutoload = dirname(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
         $match = file_exists($path = $directoryToAutoload . DS . 'vendor/autoload.php') || file_exists($path = $directoryToAutoload);
         if ($match) $this->autoloadList[$directoryToAutoload] = $path;
     }
