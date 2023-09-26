@@ -423,7 +423,8 @@ class biblio_indexer
 			}, 1000);
 		</script>
 		HTML;
-        if(!ob_get_level()) ob_flush();
+        ob_flush();
         flush();
+		usleep(2500);
 	}
 }

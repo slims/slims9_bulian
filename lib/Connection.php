@@ -25,10 +25,10 @@ class Connection {
 
     private function connect()
     {
-        if ($this->driver === 'pdo') {       
+        if ($this->driver === 'pdo' && $this->conn === null) {       
             $this->conn = new PDO(...$this->buildConnectionArgument());
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, ENVIRONMENT == 'development' ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
-        } else {
+        } else if ($this->driver === 'mysqli' && $this->conn === null) {
             $this->conn = new mysqli(...$this->buildConnectionArgument());
         }
 

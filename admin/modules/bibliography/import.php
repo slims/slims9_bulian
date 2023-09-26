@@ -216,7 +216,8 @@ if (isset($_POST['doImport'])) {
         unset($fields[16]);
         unset($fields[17]);
         
-        $state = DB::getInstance()->prepare(<<<SQL
+        $pdo = DB::getInstance();
+        $state = $pdo->prepare(<<<SQL
         INSERT IGNORE INTO biblio (title, gmd_id, edition,
                     isbn_issn, publisher_id, publish_year,
                     collation, series_title, call_number,
@@ -228,11 +229,11 @@ if (isset($_POST['doImport'])) {
         $state->execute($fields);
 
         if ($state) {
-          $biblio_id = DB::getInstance()->lastInsertId();
+          $biblio_id = $pdo->lastInsertId();
 
           if (!empty($authors)) {
             $biblio_author_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES (?,?,?)');
-            $authors = explode('><', $authors);
+            $authors = explode('><', trim($authors, '<>'));
             foreach ($authors as $author) {
               $author = trim(str_replace(array('>', '<'), '', $author));
               $author_id = utility::getID($dbs, 'mst_author', 'author_id', 'author_name', $author);
@@ -242,17 +243,7 @@ if (isset($_POST['doImport'])) {
 
           if (!empty($subjects)) {
             $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
-            $subjects = explode('><', $subjects);
-            foreach ($subjects as $subject) {
-              $subject = trim(str_replace(array('>', '<'), '', $subject));
-              $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
-              $biblio_subject_sql->execute([$biblio_id, $subject_id , 2]);
-            }
-          }
-
-          if (!empty($items)) {
-            $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
-            $subjects = explode('><', $subjects);
+            $subjects = explode('><', trim($subjects, '<>'));
             foreach ($subjects as $subject) {
               $subject = trim(str_replace(array('>', '<'), '', $subject));
               $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
@@ -277,7 +268,7 @@ if (isset($_POST['doImport'])) {
 
           $row++;
           importProgress(round($row/$lineNumber * 100));
-          sleep(1);
+          usleep(2500);
         }
       });
     } catch (Exception $e) {
