@@ -627,17 +627,6 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
   require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/tinfo.inc.php';
 }
 
-/* Load balancing environment */
-$sysconf['load_balanced'] = [
-  'env' => false,
-  'options' => [
-    'host' => 'type_your_domain', // prevent host spoofing
-    'source_ip' => 'HTTP_X_FORWARDED_FOR',
-    'scheme' => 'http',
-    'port' => 80,
-  ]
-];
-
 // visitor limitation
 $sysconf['enable_counter_by_ip'] = true;
 $sysconf['allowed_counter_ip'] = ['127.0.0.1'];
@@ -775,8 +764,8 @@ $sysconf['log']['adv']['index'] = 'slims_logs';
 @date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
 
 // set real client ip address if SLiMS behind a reverse proxy
-$load_balanced = config('load_balanced');
-if ((bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['options']['source_ip']);
+$load_balanced = config('loadbalanced');
+if ($load_balanced && (bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['options']['source_ip']);
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;
