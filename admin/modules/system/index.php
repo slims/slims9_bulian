@@ -23,6 +23,7 @@
 
 // key to authenticate
 use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\Filesystems\Storage;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Polyglot\Memory;
 
@@ -110,39 +111,50 @@ if (isset($_POST['removeImage'])) {
 
 if (isset($_POST['updateData'])) {
 
-    if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-      // remove previous image
-      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
-      // create upload object
-      $image_upload = new simbio_file_upload();
-      $image_upload->setAllowableFormat($sysconf['allowed_images']);
-      $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
-      $image_upload->setUploadDir(IMGBS.'default');
-      $img_upload_status = $image_upload->doUpload('image','logo');
-      if ($img_upload_status == UPLOAD_SUCCESS) {
-        addOrUpdateSetting('logo_image', $dbs->escape_string($image_upload->new_filename));
-      }else{
-        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
+    $imagesStorage = Storage::images();
+    $imagesConfig = [
+      'image' => [
+        'filename' => 'logo_image',
+        'extension' => $sysconf['allowed_images'],
+        'max' => $sysconf['max_image_upload']*1024,
+      ],
+      'icon' => [
+        'filename' => 'webicon',
+        'extension' => ['.ico','.png'],
+        'max' => $sysconf['max_image_upload']*1024
+      ]
+    ];
+
+    $updateImageCache = false;
+    foreach ($_FILES as $name => $detail) {
+      if (!isset($imagesConfig[$name])) continue;
+      if (empty($_FILES[$name]['name'])) continue;
+
+      $config = $imagesConfig[$name];
+      $imagesStorage->upload($name, function($imagesStorage) use($config) {
+          // Extension check
+          $imagesStorage->isExtensionAllowed($config['extension']);
+
+          // limitation
+          $imagesStorage->isLimitExceeded($config['max']);
+
+          // exif removal
+          $imagesStorage->cleanExifInfo();
+
+          // destroy it if failed
+          if (!empty($imagesStorage->getError())) $imagesStorage->destroyIfFailed();
+
+      })->as('default' . DS . $config['filename']);
+
+      if ($imagesStorage->getUploadStatus()) {
+        addOrUpdateSetting($config['filename'], $dbs->escape_string($imagesStorage->getUploadedFileName()));
+        $updateImageCache = true;
+      } else {
+          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesStorage->getError(), 'error');
       }
-      addOrUpdateSetting('static_file_version', rand());
     }
 
-    if (!empty($_FILES['icon']) AND $_FILES['icon']['size']) {
-      // remove previous image
-      @unlink(IMGBS.'default/'.$sysconf['webicon']);
-      // create upload object
-      $image_upload = new simbio_file_upload();
-      $image_upload->setAllowableFormat(['.ico','.png']);
-      $image_upload->setMaxSize(100*1024);
-      $image_upload->setUploadDir(IMGBS.'default');
-      $img_upload_status = $image_upload->doUpload('icon','webicon');
-      if ($img_upload_status == UPLOAD_SUCCESS) {
-        addOrUpdateSetting('webicon', $dbs->escape_string($image_upload->new_filename));
-      }else{
-        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
-      }
-      addOrUpdateSetting('static_file_version', rand());
-    }
+    addOrUpdateSetting('static_file_version', rand());
 
     // reset/truncate setting table content
     // library name
