@@ -4,7 +4,7 @@ images/docs/*
 images/labels/*
 images/cache/*
 images/content/*
-images/default/logo.png
+images/default/logo.*
 images/default/webicon.*
 files/*
 !files/membercard/*

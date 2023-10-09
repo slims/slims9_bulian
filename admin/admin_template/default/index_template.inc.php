@@ -12,10 +12,11 @@
     <meta name="env" content="<?= isDev() ? 'dev' : 'prod' ?>"/>
 
     <?php
+    $imagesDisk = \SLiMS\Filesystems\Storage::images();
     $icon = SWB . 'webicon.ico';
-    if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && file_exists(SB . 'images/default/' . $sysconf['webicon']))
+    if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && $imagesDisk->isExists($path = 'default/' . $sysconf['webicon']))
     {
-        $icon = SWB . 'images/default/' . $sysconf['webicon'];
+        $icon = SWB . 'lib/minigalnano/createthumb.php?filename=images/' . $path . '&width=130';
     }
     ?>
 

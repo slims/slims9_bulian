@@ -77,6 +77,7 @@ if (!function_exists('addOrUpdateSetting')) {
     }
 }
 
+$imagesDisk = Storage::images();
 ?>
 <div class="menuBox">
   <div class="menuBoxInner systemIcon">
@@ -98,7 +99,9 @@ if (isset($_POST['removeImage'])) {
       foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
         if (isset($_POST[$key]))
         {
-          @unlink(IMGBS.'default/'.$sysconf[$data]);
+          if ($imagesDisk->isExists($path = 'default/'.$sysconf[$data])) {
+            $imagesDisk->delete($path);
+          }
           addOrUpdateSetting($data, NULL); // set null
         }
       }
@@ -110,18 +113,18 @@ if (isset($_POST['removeImage'])) {
 }
 
 if (isset($_POST['updateData'])) {
-
-    $imagesStorage = Storage::images();
     $imagesConfig = [
       'image' => [
-        'filename' => 'logo_image',
+        'filename' => 'logo',
         'extension' => $sysconf['allowed_images'],
         'max' => $sysconf['max_image_upload']*1024,
+        'configname' => 'logo_image'
       ],
       'icon' => [
         'filename' => 'webicon',
         'extension' => ['.ico','.png'],
-        'max' => $sysconf['max_image_upload']*1024
+        'max' => $sysconf['max_image_upload']*1024,
+        'configname' => 'webicon'
       ]
     ];
 
@@ -131,26 +134,26 @@ if (isset($_POST['updateData'])) {
       if (empty($_FILES[$name]['name'])) continue;
 
       $config = $imagesConfig[$name];
-      $imagesStorage->upload($name, function($imagesStorage) use($config) {
+      $imagesDisk->upload($name, function($imagesDisk) use($config) {
           // Extension check
-          $imagesStorage->isExtensionAllowed($config['extension']);
+          $imagesDisk->isExtensionAllowed($config['extension']);
 
           // limitation
-          $imagesStorage->isLimitExceeded($config['max']);
+          $imagesDisk->isLimitExceeded($config['max']);
 
           // exif removal
-          $imagesStorage->cleanExifInfo();
+          $imagesDisk->cleanExifInfo();
 
           // destroy it if failed
-          if (!empty($imagesStorage->getError())) $imagesStorage->destroyIfFailed();
+          if (!empty($imagesDisk->getError())) $imagesDisk->destroyIfFailed();
 
       })->as('default' . DS . $config['filename']);
 
-      if ($imagesStorage->getUploadStatus()) {
-        addOrUpdateSetting($config['filename'], $dbs->escape_string($imagesStorage->getUploadedFileName()));
+      if ($imagesDisk->getUploadStatus()) {
+        addOrUpdateSetting($config['configname'], $dbs->escape_string($imagesDisk->getUploadedFileName()));
         $updateImageCache = true;
       } else {
-          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesStorage->getError(), 'error');
+          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesDisk->getError(), 'error');
       }
     }
 
@@ -306,7 +309,7 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 //logo
 $str_input = '';
 $str_input .= '<strong class="d-block">'.__('Main Logo').'</strong>';
-if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
+if(isset($sysconf['logo_image']) && $imagesDisk->isExists('default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
@@ -319,7 +322,7 @@ $str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' K
 
 // Web icon
 $str_input .= '<strong class="d-block mt-2">'.__('Favicon').'</strong>';
-if(isset($sysconf['webicon']) && file_exists(IMGBS.'default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
+if(isset($sysconf['webicon']) && $imagesDisk->isExists('default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['webicon'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
