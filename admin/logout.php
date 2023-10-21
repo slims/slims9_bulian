@@ -37,7 +37,7 @@ if(!isset($_SESSION['uid'])) {
 }
 
 // write log
-utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' Log Out from application from address '.ip());
+writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' Log Out from application from address '.ip());
 # ADV LOG SYSTEM - STIIL EXPERIMENTAL
 $log = new AlLibrarian('1003', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
 

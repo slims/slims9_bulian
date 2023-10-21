@@ -25,6 +25,7 @@ use SLiMS\Config;
 use SLiMS\Ip;
 use SLiMS\Number;
 use SLiMS\Currency;
+use SLiMS\Log\Factory;
 use SLiMS\Json;
 use SLiMS\Jquery;
 use SLiMS\Url;
@@ -343,5 +344,12 @@ if (!function_exists('__'))
     function __(string $content)
     {
         return Memory::find($content);
+    }
+}
+
+if (!function_exists('writeLog')) {
+    function writeLog(string $type, string $value_id, string $location, string $message, string $submod = '', string $action = '')
+    {
+        Factory::write($type, $value_id, $location, $message, $submod, $action);
     }
 }

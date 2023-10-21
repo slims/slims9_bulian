@@ -109,7 +109,7 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (!simbio_form_maker::isTokenValid()) {
         utility::jsToastr('Bibliography', __('Invalid form submission token!'), 'error');
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
+        writeLog('staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
         exit();
     }
     $title = trim(strip_tags($_POST['title']));
@@ -253,12 +253,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($image_upload->getUploadStatus()) {
                 $data['image'] = $dbs->escape_string($image_upload->getUploadedFileName());
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' upload image file ' . $image_upload->getUploadedFileName());
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' upload image file ' . $image_upload->getUploadedFileName());
                 utility::jsToastr('Bibliography', __('Image Uploaded Successfully'), 'success');
             } else {
                 // write log
                 $data['image'] = NULL;
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->getUploadedFileName() . ', with error (' . $image_upload->getError() . ')');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $image_upload->getUploadedFileName() . ', with error (' . $image_upload->getError() . ')');
                 utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.$image_upload->getError(), 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
@@ -331,7 +331,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     echo '<script type="text/javascript">parent.ucsUpload(\'' . MWB . 'bibliography/ucs_upload.php\', \'itemID[]=' . $updateRecordID . '\', false);</script>';
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' update bibliographic data (' . $data['title'] . ') with biblio_id (' . $updateRecordID . ')');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' update bibliographic data (' . $data['title'] . ') with biblio_id (' . $updateRecordID . ')');
 
                 if ($sysconf['log']['biblio']) {
                     $_currrawdata = api::biblio_load($dbs, $updateRecordID);
@@ -403,7 +403,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 utility::jsToastr('Bibliography', __('New Bibliography Data Successfully Saved'), 'success');
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' insert bibliographic data (' . $data['title'] . ') with biblio_id (' . $last_biblio_id . ')');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' insert bibliographic data (' . $data['title'] . ') with biblio_id (' . $last_biblio_id . ')');
                 if ($sysconf['log']['biblio']) {
                     $_rawdata = api::biblio_load($dbs, $last_biblio_id);
                     api::bibliolog_write($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], 'create', 'description', $_rawdata, 'New data. Bibliography.');
@@ -494,7 +494,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
     if (!simbio_form_maker::isTokenValid()) {
         utility::jsToastr('Bibliography', __('Invalid form submission token!'), 'error');
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
+        writeLog('staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
         exit();
     }
 
@@ -538,7 +538,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_DELETE, [$itemID]);
 
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . $biblio_item_d[0] . ') with biblio_id (' . $itemID . ')');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . $biblio_item_d[0] . ') with biblio_id (' . $itemID . ')');
                 // delete related data
                 $sql_op->delete('biblio_topic', "biblio_id=$itemID");
                 $sql_op->delete('biblio_author', "biblio_id=$itemID");

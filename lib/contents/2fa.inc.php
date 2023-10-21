@@ -31,7 +31,7 @@ if (isset($_POST['code-6'])) {
         ]);
 
         // write log
-        utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
+        writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
 
         # ADV LOG SYSTEM - STIIL EXPERIMENTAL
         $log = new SLiMS\AlLibrarian('1001', array("username" => $username, "realname" => $realname));

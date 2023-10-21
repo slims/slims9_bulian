@@ -185,7 +185,7 @@ if ($stk_q->num_rows) {
         // update total_lost_item field value in stock_take table
         $update_total_q = $dbs->query('UPDATE stock_take SET total_item_stock_taked=' . $total_rows_d[0] . ', total_item_loan=' . $item_loan_d[0] . ', total_item_lost=' . $total_rows_d[0] . " WHERE stock_take_id=$stock_take_id");
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR'], 'Initialize', 'OK');
+        writeLog('staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR'], 'Initialize', 'OK');
         utility::jsAlert(__('Stock Taking Initialized'));
         echo '<script type="text/javascript">parent.location.href = \'' . SWB . 'admin/index.php?mod=stock_take\';</script>';
       } else {

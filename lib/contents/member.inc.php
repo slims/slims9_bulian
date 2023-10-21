@@ -69,7 +69,7 @@ define('CANT_UPDATE_PASSWD', -3);
 // if member is logged out
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
     // write log
-    utility::writeLogs($dbs, 'member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . ip());
+    writeLog('member', $_SESSION['email'], 'Login', $_SESSION['member_name'] . ' Log Out from address ' . ip());
     // completely destroy session cookie
     simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
     redirect()->withHeader([
@@ -110,7 +110,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
 
     if ($logon->valid($dbs)) {
         // write log
-        utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
+        writeLog('member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
         if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
             redirect($_GET['destination']);
         } else {
@@ -119,7 +119,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         exit();
     } else {
         // write log
-        utility::writeLogs($dbs, 'member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
+        writeLog('member', $username, 'Login', sprintf(__('Login FAILED for member %s from address %s'),$username,ip()));
         // message
         //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
         CSRF::generateToken();
@@ -592,13 +592,13 @@ if ($is_member_login) :
                  ->send();
 
             // write to system log
-            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'Reservation notification e-mail sent to ' . $_SESSION['m_email'], 'Reservation', 'Add');
+            writeLog('member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'Reservation notification e-mail sent to ' . $_SESSION['m_email'], 'Reservation', 'Add');
 
             // sent response
             return ['status' => 'SENT', 'message' => 'Reservation notification e-mail sent to ' . $_SESSION['m_email']];
         } catch (Exception $exception) {
             // write to system log
-            utility::writeLogs($dbs, 'member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'FAILED to send reservation e-mail to ' . $_SESSION['m_email'] . ' (' . $mail->ErrorInfo . ')');
+            writeLog('member', isset($_SESSION['mid']) ? $_SESSION['mid'] : '0', 'membership', 'FAILED to send reservation e-mail to ' . $_SESSION['m_email'] . ' (' . $mail->ErrorInfo . ')');
 
             return ['status' => 'ERROR', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"];
         }

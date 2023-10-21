@@ -124,7 +124,7 @@ if (isset($_POST['logMeIn'])) {
             ]);
 
             // write log
-            utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
+            writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
 
             # ADV LOG SYSTEM - STIIL EXPERIMENTAL
             $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
@@ -136,7 +136,7 @@ if (isset($_POST['logMeIn'])) {
         }
     } else {
         // write log
-        utility::writeLogs($dbs, 'staff', $username, 'Login', 'Login FAILED for user ' . $username . ' from address ' . ip());
+        writeLog('staff', $username, 'Login', 'Login FAILED for user ' . $username . ' from address ' . ip());
 
         // maybe still use md5 encryption
         if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
@@ -194,7 +194,7 @@ if (isset($_POST['updatePassword'])) {
         if ($logon->changePasswd($dbs, $passwd2)) {
 
             // write log
-            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password SUCCESS for user ' . $_uname . ' from address ' . ip());
+            writeLog('staff', $_uname, 'Login', 'Change password SUCCESS for user ' . $_uname . ' from address ' . ip());
 
             // clear cookie
             #setcookie('token', '', time()-3600, SWB);
@@ -229,7 +229,7 @@ if (isset($_POST['updatePassword'])) {
             exit();
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_uname, 'Login', 'Change password FAILED for user ' . $_uname . ' from address ' . ip());
+            writeLog('staff', $_uname, 'Login', 'Change password FAILED for user ' . $_uname . ' from address ' . ip());
             utility::jsAlert($logon->errors);
         }
     }

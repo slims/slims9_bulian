@@ -184,7 +184,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       echo '<p>' . $sql_op->error . '</p><p>&nbsp;</p>';
       $biblio_id = $sql_op->insert_id;
       if ($biblio_id < 1) {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('failed %s download file ( %s ) from  ( %s )') . ' : ' . $sql_op->error,$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
+        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('failed %s download file ( %s ) from  ( %s )') . ' : ' . $sql_op->error,$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
         continue;
       }
       // insert authors
@@ -243,7 +243,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
               $sql_op->insert('biblio_attachment', $ba);
 
         	  // write to logs
-        	  utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
+        	  writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
 
             }
           }
@@ -256,7 +256,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from P2P service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$p2pserver,$biblio['title'],$biblio_id), 'P2P', 'Add');  
+        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from P2P service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$p2pserver,$biblio['title'],$biblio_id), 'P2P', 'Add');  
         $r++;
       }
       unset($biblio);

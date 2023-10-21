@@ -106,7 +106,7 @@ if (isset($_POST['removeImage'])) {
         }
       }
 
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
+      writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
       utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
       echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
       exit();
@@ -277,7 +277,7 @@ if (isset($_POST['updateData'])) {
     addOrUpdateSetting('http', $http);
 
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
+    writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
     echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();

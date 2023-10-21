@@ -171,7 +171,7 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
               // update index
               $indexer->makeIndex($biblio_id);
               // write to logs
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from Z3950 service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$biblio['title'],$biblio_id), 'Z3950 SRU', 'Add');  
+              writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from Z3950 service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$biblio['title'],$biblio_id), 'Z3950 SRU', 'Add');  
               $r++;
           }
       }

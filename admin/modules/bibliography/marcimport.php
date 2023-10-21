@@ -373,7 +373,7 @@ if (isset($_POST['doImport'])) {
 
       $end_time = time();
       $import_time_sec = $end_time-$start_time;
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' MARC records from file : '.$_FILES['importFile']['name'], 'MARC Import');
+      writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' MARC records from file : '.$_FILES['importFile']['name'], 'MARC Import');
       echo '<script type="text/javascript">'."\n";
       echo 'top.jQuery(\'#importInfo\').html(\'<strong>'.$updated_row.'</strong> records imported successfully in '.$import_time_sec.' second(s)</strong>\');'."\n";
       echo 'top.jQuery(\'#importInfo\').css( {display: \'block\'} );'."\n";

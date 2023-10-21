@@ -75,7 +75,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('mst_module', $data, 'module_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update module data ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update module data ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Update');
                 toastr(__('Module Data Successfully Updated'))->success();
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             } else { toastr(__('Module Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
@@ -88,7 +88,7 @@ if (isset($_POST['saveData'])) {
                 $module_id = $sql_op->insert_id;
                 $dbs->query('INSERT INTO group_access (group_id, module_id, r,w) VALUES (1, '.$module_id.', 1, 1)');
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Add' );
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new module ('.$moduleName.') with path ('.$modulePath.')', 'Module', 'Add' );
                 toastr(__('New Module Data Successfully Saved'))->success();
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { toastr(__('Module Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
@@ -118,7 +118,7 @@ if (isset($_POST['saveData'])) {
             // delete group privileges
             $dbs->query('DELETE FROM group_access WHERE module_id='.$itemID);
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE module ('.$module_d[0].') with path ('.$module_d[1].')', 'Module', 'Delete');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE module ('.$module_d[0].') with path ('.$module_d[1].')', 'Module', 'Delete');
         }
     }
 

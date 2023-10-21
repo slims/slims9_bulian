@@ -87,7 +87,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_author', $data, 'author_id='.$updateRecordID);
             if ($update) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' update author ('.$data['author_name'].').', 'Author', 'update');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' update author ('.$data['author_name'].').', 'Author', 'update');
                 utility::jsToastr(__('Author'),__('Author Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
                 if ($in_pop_up) {
@@ -103,7 +103,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // insert the data
             $insert = $sql_op->insert('mst_author', $data);
             if ($insert) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' add new author ('.$data['author_name'].').', 'Author', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' add new author ('.$data['author_name'].').', 'Author', 'Add');
                 utility::jsToastr(__('Author'),__('New Author Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
                 if ($in_pop_up) {
@@ -114,7 +114,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 }
 
             } else { 
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' can not add new author ('.$data['author_name'].').', 'Author', 'Fail');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' can not add new author ('.$data['author_name'].').', 'Author', 'Fail');
                 utility::jsToastr(__('Author'),__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error');
             }
             exit();
@@ -170,11 +170,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author ('.implode(', ', $_log_authors).').', 'Author', 'delete');
+        writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author ('.implode(', ', $_log_authors).').', 'Author', 'delete');
         utility::jsToastr(__('Author'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author(s), BUT not all ('.implode(', ', $_log_authors).').', 'Author', 'delete');
+        writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author(s), BUT not all ('.implode(', ', $_log_authors).').', 'Author', 'delete');
         utility::jsToastr(__('Author'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
