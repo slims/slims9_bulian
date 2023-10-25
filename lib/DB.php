@@ -86,7 +86,7 @@ class DB
         if (is_null(self::$connectionCollection)) self::$connectionCollection = new Collection(Connection::class);
 
         // set current connection name
-        self::$connectionName = $connectionName;
+        self::$connectionName = isset($_SESSION) && isset($_SESSION['default_connection']) ? $_SESSION['default_connection'] : $connectionName;
 
         // get connection from collection
         $instance = self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
