@@ -9,6 +9,7 @@ namespace SLiMS;
 
 use Closure;
 use Exception;
+use Generator;
 use mysqli;
 use PDO;
 use PDOException;
@@ -49,6 +50,10 @@ class DB
 
     private ?Closure $proxyRule = null;
 
+    private static array $extensions = [
+        'query' => ['class' => Query::class, 'instance' => null],
+    ];
+
     /**
      * Backup const
      */
@@ -86,7 +91,8 @@ class DB
         if (is_null(self::$connectionCollection)) self::$connectionCollection = new Collection(Connection::class);
 
         // set current connection name
-        self::$connectionName = isset($_SESSION) && isset($_SESSION['default_connection']) ? $_SESSION['default_connection'] : $connectionName;
+        $adminClusterMode = isset($_SESSION) && isset($_SESSION['default_connection']) && empty($connectionName);
+        self::$connectionName = $adminClusterMode ? $_SESSION['default_connection'] : $connectionName;
 
         // get connection from collection
         $instance = self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
@@ -113,7 +119,7 @@ class DB
     }
 
     /**
-     * Connection profiling
+     * Switching database connection
      *
      * @param string $name
      * @param string $driver
@@ -214,5 +220,34 @@ class DB
             if (!$closure instanceof Closure) return;
             $this->proxyRule = require $dbProxy;
         }
+    }
+
+    /**
+     * Load database extension
+     * - By default is Query::class,
+     * and you can use Illuminate Database
+     * if you want :)
+     *
+     * @param string $method
+     * @param array $params
+     * @return Object
+     */
+    private static function loadExtension(string $method, array $params)
+    {
+        $match = array_values(array_filter(array_keys(self::$extensions), function($extension) use($method) {
+            if ($extension === $method) return true;
+        }))[0]??null;
+        
+        if ($match === null) throw new Exception("Extension $method is not exists or not registered!");
+        
+        $extension = self::$extensions[$match];
+        $instance = $extension['class'];
+        if ($extension['instance'] === null) $instance = new $extension['class'](...$params);
+        return $instance;
+    }
+
+    public static function __callStatic($method, $params)
+    {
+        if (!method_exists(__CLASS__, $method)) return self::loadExtension($method, $params);
     }
 }
