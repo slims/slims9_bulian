@@ -83,6 +83,16 @@ final class Query implements IteratorAggregate,Countable
     private int $defaultOutput = PDO::FETCH_ASSOC;
 
     /**
+     * @var arrat
+     */
+    private array $data = [];
+
+    /**
+     * @var string
+     */
+    private string $error = '';
+
+    /**
      * @param string $sql
      * @param array $params
      * @param array $options
@@ -150,13 +160,59 @@ final class Query implements IteratorAggregate,Countable
      *
      * @return Generator
      */
-    private function execute(): Generator
+    private function fetch(): ?Generator
     {
-        $this->statement = $this->getCon()->prepare($this->sql, $this->options);
-        $this->statement->execute($this->params);
+        try {
+            $this->statement = $this->getCon()->prepare($this->sql, $this->options);
+            $this->statement->execute($this->params);
 
-        while ($result = $this->statement->fetch($this->defaultOutput)) {
-            yield $result;
+            while ($result = $this->statement->fetch($this->defaultOutput)) {
+                yield $result;
+            }
+        } catch (\PDOException $e) {
+            $this->error = $e->getMessage();
+        }
+    }
+
+    public function first()
+    {
+        return $this->toArray()[0]??null;
+    }
+
+    public function last()
+    {
+        $data = $this->toArray();
+        return $data[array_key_last($data)]??null;
+    }
+
+    public function isAffected(): bool
+    {
+        return $this->run();
+    }
+
+    public function run()
+    {
+        try {
+            $this->statement = $this->getCon()->prepare($this->sql, $this->options);
+            $this->statement->execute($this->params);
+    
+            return (bool)$this->statement->rowCount();
+        } catch (\PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public function lastInsertId():int
+    {
+        try {
+            $this->statement = $this->getCon()->prepare($this->sql, $this->options);
+            $this->statement->execute($this->params);
+
+            return $this->getCon()->lastInsertId();
+        } catch (\PDOException $e) {
+            $this->error = $e->getMessage();
+            return 0;
         }
     }
 
@@ -165,7 +221,8 @@ final class Query implements IteratorAggregate,Countable
      */
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator($this->toArray());
+        if (!$this->data) $this->toArray();
+        return new ArrayIterator($this->data);
     }
 
     /**
@@ -173,7 +230,8 @@ final class Query implements IteratorAggregate,Countable
      */
     public function count(): int
     {
-        return count($this->toArray());
+        if (!$this->data) $this->toArray();
+        return count($this->data);
     }
 
     /**
@@ -183,7 +241,8 @@ final class Query implements IteratorAggregate,Countable
      */
     public function jsonSerialize(): Array
     {
-        return $this->toArray();
+        if (!$this->data) $this->toArray();
+        return $this->data;
     }
 
     /**
@@ -193,7 +252,13 @@ final class Query implements IteratorAggregate,Countable
      */
     public function toArray(): Array
     {
-        return iterator_to_array($this->execute());
+        if (!$this->data) $this->data = iterator_to_array($this->fetch());
+        return $this->data;
+    }
+
+    public function getError()
+    {
+        return $this->error;
     }
 
     /**
@@ -203,7 +268,8 @@ final class Query implements IteratorAggregate,Countable
      */
     public function __toString(): string
     {
-        return json_encode($this->toArray());
+        if (!$this->data) $this->toArray();
+        return json_encode($this->data);
     }
 
     /**

@@ -222,6 +222,11 @@ class DB
         }
     }
 
+    public static function registerExtension(string $name, string $class, ?Object $instance = null)
+    {
+        self::$extensions[$name] = ['class' => $class, 'instance' => $instance];
+    }
+
     /**
      * Load database extension
      * - By default is Query::class,
@@ -241,8 +246,8 @@ class DB
         if ($match === null) throw new Exception("Extension $method is not exists or not registered!");
         
         $extension = self::$extensions[$match];
-        $instance = $extension['class'];
-        if ($extension['instance'] === null) $instance = new $extension['class'](...$params);
+        $instance = $extension['instance']??null;
+        if ($instance === null) $instance = new $extension['class'](...$params);
         return $instance;
     }
 
