@@ -335,8 +335,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($changecurrent) {
         $itemID = (integer)$_SESSION['uid'];
     }
-    $rec_q = $dbs->query('SELECT * FROM user WHERE user_id='.$itemID);
-    $rec_d = $rec_q->fetch_assoc();
+    $rec_q = \SLiMS\DB::query('SELECT * FROM user WHERE user_id=?', [$itemID]);
+    $rec_d = $rec_q->first();
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
@@ -348,7 +348,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->table_content_attr = 'class="alterCell2"';
 
     // edit mode flag set
-    if ($rec_q->num_rows > 0) {
+    if ($rec_q->count() > 0) {
         $form->edit_mode = true;
         // record ID for delete process
         if (!$changecurrent) {
@@ -452,7 +452,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');
 
     // Two Factor Authentication
-    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid']) {
+    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid'] && extension_loaded('iconv')) {
         $otp = OTPHP\TOTP::generate();
         $otp->setLabel(config('library_name'));
         $secret = $otp->getSecret();
