@@ -1,4 +1,7 @@
 <?php
+use SLiMS\Http\Cookie;
+use SLiMS\Auth\Validator;
+
 // set page title
 $opac->page_title = '';
 
@@ -10,7 +13,7 @@ if (isset($_POST['code-6'])) {
     $otp = OTPHP\TOTP::createFromSecret($_SESSION['user']['2fa']);
     if ($otp->verify($code)) {
 
-        $username = $_SESSION['user']['username'];
+        $username = $_SESSION['user']['uname'];
         $realname = $_SESSION['user']['realname'];
         $user_info = $_SESSION['user'];
 
@@ -21,14 +24,11 @@ if (isset($_POST['code-6'])) {
         // regenerate session ID to prevent session hijacking
         session_regenerate_id(true);
 
-        setcookie('admin_logged_in', TRUE, [
-            'expires' => time() + 14400,
-            'path' => SWB,
-            'domain' => '',
-            'secure' => false,
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
+        Cookie::withPath(SWB)
+                ->withExpires(time() + 14400)
+                ->withHttponly()
+                ->withSamesite('Lax')
+                ->set('admin_logged_in', TRUE);
 
         // write log
         writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
@@ -38,10 +38,10 @@ if (isset($_POST['code-6'])) {
 
         if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $realname);
 
-        require LIB . 'admin_logon.inc.php';
-        $logon = new admin_logon($username, '');
-        $logon->setUserInfo($user_info);
-        $logon->setupSession($dbs);
+        $logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+        $logonMethodInstance = $logon->getMethodInstance();
+        $logonMethodInstance->setData($user_info);
+        $logonMethodInstance->generateSession();
         redirect('admin/index.php');
     }
 }

@@ -32,6 +32,8 @@ if (!defined('INDEX_AUTH')) {
 use SLiMS\AlLibrarian;
 use SLiMS\Captcha\Factory as Captcha;
 use Volnix\CSRF\CSRF;
+use SLiMS\Auth\Validator;
+use SLiMS\Http\Cookie;
 
 if ($sysconf['baseurl'] != '') {
     $_host = $sysconf['baseurl'];
@@ -45,8 +47,12 @@ if (defined('LIGHTWEIGHT_MODE')) {
 */
 
 // required file
-require LIB . 'admin_logon.inc.php';
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
+
+// create logon class instance
+$logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+
+$logon->getHook();
 
 // https connection (if enabled)
 if ($sysconf['https_enable']) {
@@ -59,7 +65,8 @@ if (isset($_COOKIE['admin_logged_in'])) {
 }
 
 if (isset($_GET['wrongpass'])) {
-    redirect()->withMessage('wrong_password', __('Wrong Username or Password. ACCESS DENIED'))->toPath('login');
+    $message = Cookie::get('login_error');
+    redirect()->withMessage('wrong_password', empty($message) ? __('Wrong Username or Password. ACCESS DENIED') : $message)->toPath('login');
 }
 
 // Captcha initialize
@@ -74,104 +81,64 @@ if (isset($_POST['logMeIn'])) {
         session_unset();
         redirect()->withMessage('csrf_failed', __('Invalid login form!'))->back();
     }
+
+    # <!-- Captcha form processing - start -->
+    if ($captcha->isSectionActive() && $captcha->isValid() === false) {
+        // set error message
+        $message = isDev() ? $captcha->getError() : __('Wrong Captcha Code entered, Please write the right code!'); 
+        // What happens when the CAPTCHA was entered incorrectly
+        session_unset();
+        redirect()->withMessage('captchaInvalid', $message)->back();
+    }
+
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
 
     // Empty username or password
     if (empty($username) or empty($password)) redirect()->withMessage('empty_field', __('Please supply valid username and password'))->back();
-        
-    
-    // create logon class instance
-    $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
-    if ($sysconf['auth']['user']['method'] == 'LDAP') $ldap_configs = $sysconf['auth']['user'];
 
-    if ($logon->adminValid($dbs)) {
-        # <!-- Captcha form processing - start -->
-        if ($captcha->isSectionActive() && $captcha->isValid() === false) {
-            // set error message
-            $message = isDev() ? $captcha->getError() : __('Wrong Captcha Code entered, Please write the right code!'); 
-            // What happens when the CAPTCHA was entered incorrectly
-            session_unset();
-            redirect()->withMessage('captchaInvalid', $message)->back();
-        }
-        # <!-- Captcha form processing - end -->
-
+    if ($logon->process('admin')) {
         // remember me
         if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
 
-        if ($_2fa = $logon->getUserInfo('2fa')) {
-            # redirect to f2a page
-            $_SESSION['user'] = $logon->getUserInfo();
-            redirect('index.php?p=2fa');
-        } else {
-            // destroy previous session set in OPAC
-            simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
-            require SB . 'admin/default/session.inc.php';
-            // regenerate session ID to prevent session hijacking
-            session_regenerate_id(true);
+        # <!-- Captcha form processing - end -->
+        // destroy previous session set in OPAC
+        simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
+        require SB . 'admin/default/session.inc.php';
+        // regenerate session ID to prevent session hijacking
+        session_regenerate_id(true);
 
-            // set cookie admin flag
-            #setcookie('admin_logged_in', true, time()+14400, SWB);
-            #setcookie('admin_logged_in', true, time()+14400, SWB, "", FALSE, TRUE);
+        // set cookie admin flag
+        Cookie::withPath(SWB)
+                ->withExpires(time() + 14400)
+                ->withHttponly()
+                ->withSamesite('Lax')
+                ->set('admin_logged_in', TRUE);
 
-            setcookie('admin_logged_in', TRUE, [
-                'expires' => time() + 14400,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
+        // write log
+        writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
 
-            // write log
-            writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
+        $logon->getMethodInstance()->generateSession();
 
-            # ADV LOG SYSTEM - STIIL EXPERIMENTAL
-            $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->real_name));
+        # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+        $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->getData('real_name')));
 
-            if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $logon->real_name);
+        if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $logon->getData('real_name'));
 
-            $logon->setupSession($dbs);
-            redirect('admin/index.php');
-        }
+        redirect('admin/index.php');
     } else {
         // write log
         writeLog('staff', $username, 'Login', 'Login FAILED for user ' . $username . ' from address ' . ip());
 
-        // maybe still use md5 encryption
-        if (isset($logon->errors['status']) && $logon->errors['status'] == 'md5_encryption') {
-            $token = utility::createRandomString(32);
-            #setcookie('token', $token, time()+3600, SWB);
-            #setcookie('token', $token, time()+3600, SWB, "", FALSE, TRUE);
+        // message
+        simbio_security::destroySessionCookie($logon->getError(), COOKIES_NAME, SWB . 'admin', false);
+        Cookie::withPath(SWB)
+                ->withExpires(time() + 60)
+                ->withHttponly()
+                ->withSamesite('Lax')
+                ->set('login_error', $logon->getError());
 
-            setcookie('token', $token, [
-                'expires' => time() + 3600,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-
-            #setcookie('uname', $logon->errors['uname'], time()+3600, SWB);
-            #setcookie('uname', $logon->errors['uname'], time()+3600, SWB, "", FALSE, TRUE);
-
-            setcookie('uname', $logon->errors['uname'], [
-                'expires' => time() + 3600,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-
-            // message
-            redirect()->toPath($path . '&update=' . $token);
-        } else {
-            // message
-            simbio_security::destroySessionCookie(__('Wrong Username or Password. ACCESS DENIED'), COOKIES_NAME, SWB . 'admin', false);
-            redirect('?p=login&wrongpass=true');
-        }
+        redirect('?p=login&wrongpass=true');
         exit();
     }
 }
@@ -179,61 +146,6 @@ if (isset($_POST['logMeIn'])) {
 // uname
 $_uname = (isset($_COOKIE['uname'])) ? trim($_COOKIE['uname']) : '';
 
-// update password
-if (isset($_POST['updatePassword'])) {
-    $cpasswd = trim($_POST['currentPasswd']);
-    $passwd = trim($_POST['newPasswd']);
-    $passwd2 = trim($_POST['newPasswd2']);
-    if (empty($cpasswd)) {
-        utility::jsAlert(__('Current password can not be empty!'));
-    } else if (($passwd and $passwd2) and ($passwd !== $passwd2)) {
-        utility::jsAlert(__('Password confirmation does not match. See if your Caps Lock key is on!'));
-    } else {
-
-        $logon = new admin_logon($_uname, $cpasswd);
-        if ($logon->changePasswd($dbs, $passwd2)) {
-
-            // write log
-            writeLog('staff', $_uname, 'Login', 'Change password SUCCESS for user ' . $_uname . ' from address ' . ip());
-
-            // clear cookie
-            #setcookie('token', '', time()-3600, SWB);
-            #setcookie('token', '', time()-3600, SWB, "", FALSE, TRUE);
-
-            setcookie('token', '', [
-                'expires' => time() - 3600,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-
-
-            #setcookie('uname', '', time()-3600, SWB);
-            #setcookie('uname', '', time()-3600, SWB, "", FALSE, TRUE);
-
-            setcookie('uname', '', [
-                'expires' => time() - 3600,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-
-            echo '<script type="text/javascript">';
-            echo 'alert("Password Updated. Please log in again!");';
-            echo 'location.href = \'index.php?p=' . $path . '\';';
-            echo '</script>';
-            exit();
-        } else {
-            // write log
-            writeLog('staff', $_uname, 'Login', 'Change password FAILED for user ' . $_uname . ' from address ' . ip());
-            utility::jsAlert($logon->errors);
-        }
-    }
-}
 ?>
 <div id="loginForm">
     <noscript>

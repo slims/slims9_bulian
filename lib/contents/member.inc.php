@@ -25,6 +25,7 @@
 use SLiMS\Url;
 use SLiMS\DB;
 use SLiMS\Json;
+use SLiMS\Auth\Validator;
 use SLiMS\Captcha\Factory as Captcha;
 use Volnix\CSRF\CSRF;
 
@@ -46,7 +47,11 @@ do_checkIP('opac-member');
 
 // Required flie
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
-require LIB . 'member_logon.inc.php';
+
+// create logon class instance
+$logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+
+$logon->getHook();
 
 // Captcha initialize
 $captcha = Captcha::section('memberarea');
@@ -104,11 +109,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
     // regenerate session ID to prevent session hijacking
     session_regenerate_id(true);
 
-    // create logon class instance
-    $logon = new member_logon($username, $password, $sysconf['auth']['member']['method']);
-    if ($sysconf['auth']['member']['method'] === 'LDAP') $ldap_configs = $sysconf['auth']['member'];
-
-    if ($logon->valid($dbs)) {
+    if ($logon->process('member')) {
         // write log
         writeLog('member', $username, 'Login', sprintf(__('Login success for member %s from address %s'),$username,ip()));
         if (isset($_GET['destination']) && Url::isValid($_GET['destination']) && Url::isSelf($_GET['destination'])) {
@@ -123,7 +124,7 @@ if (isset($_POST['logMeIn']) && !$is_member_login) {
         // message
         //simbio_security::destroySessionCookie($msg, MEMBER_COOKIES_NAME, SWB, false);
         CSRF::generateToken();
-        redirect()->withMessage('wrong_password', __('Login FAILED! Wrong Member ID or password!'))->to('?p=member');
+        redirect()->withMessage('wrong_password', $logon->getError())->to('?p=member');
     }
 }
 
