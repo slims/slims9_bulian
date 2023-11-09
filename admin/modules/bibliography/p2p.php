@@ -21,6 +21,7 @@
 /* Peer-to-Peer Web Services section */
 use SLiMS\Url;
 use SLiMS\Http\Client;
+use SLiMS\Filesystems\Storage;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -50,18 +51,18 @@ if (!$can_read) {
   die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
 
-function downloadFile($url, $path)
+function downloadFile($url, $storage, $path)
 {
-  $cover = Client::download($url, [
+  $file = Client::get($url, [
     'headers' => [
       'User-Agent' => $_SERVER['HTTP_USER_AGENT']
     ]
   ]);
 
-  $savingCover = $cover->to($path);
+  $storage->put($path, $file->getContent());
 
-  if (!empty($savingCover->getError())) {
-    return $savingCover->getError();
+  if (!empty($file->getError())) {
+    return $file->getError();
   } else {
     return true;
   }
@@ -82,8 +83,12 @@ function cleanUrl($url)
 
 function remoteFileExists($url) 
 {
-  $existation = Client::get($url);
-  return $existation->getStatusCode() == 200 ? $url : null;
+  try {
+    $existation = Client::get($url);
+    return $existation->getStatusCode() == 200 ? $url : null;
+  } catch (Exception $th) {
+    return null;
+  }
 }    
 
 // get servers
@@ -106,12 +111,21 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
   $input_date = date('Y-m-d H:i:s');
   // record counter
   $r = 0;
+  $error = 0;
+  $error_message = [];
 
   foreach ($_POST['p2precord'] as $id) {
     // construct full XML URI
     $detail_uri = $p2pserver . "/index.php?p=show_detail&inXML=true&id=" . $id;
     // parse XML
     $data = modsXMLsenayan($detail_uri, 'uri');
+
+    if (is_string($data)) {
+      $error_message[] = $data;
+      $error++;
+      continue;
+    }
+
     // get record detail
     $record = $data['records'][0];
     // insert record to database
@@ -167,10 +181,8 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
 
       // download image 
 
-      if (isset($biblio['image']) && remoteFileExists($p2pserver . 'images/docs/' . $biblio['image'])) {
-        $url_image  = $p2pserver . 'images/docs/' . $biblio['image']; 
-        $image_path = IMGBS . 'docs' . DS . $biblio['image'];
-        downloadFile($url_image, $image_path);
+      if (isset($biblio['image']) && remoteFileExists($url_image = $p2pserver . 'lib/minigalnano/createthumb.php?filename=images/docs/' . $biblio['image'])) {
+        downloadFile($url_image, Storage::images(), 'docs' . DS . $biblio['image']);
       }else{
         $biblio['image'] = NULL; 
       }
@@ -219,8 +231,8 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
             $file_name = str_replace('/', '', $digital['path']);
             $url_file = $p2pserver . '/index.php?p=fstream-pdf&fid=' . $digital['id'] . '&bid=' . $id . '&fname=' . $file_name;
             $stream_file = $p2pserver . '/index.php?p=fstream&fid=' . $digital['id'] . '&bid=' . $id . '&fname=' . $file_name;
-            $target_path = REPOBS . str_replace('/', DS, $digital['path']);
-            if ($result = downloadFile($url_file, $target_path) !== true) {
+            $target_path = str_replace('/', DS, $digital['path']);
+            if ($result = downloadFile($url_file, Storage::repository(), $target_path) !== true) {
               echo '<p>' . $result . '</p>';
             } else {
               // save to files
@@ -261,6 +273,10 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       }
       unset($biblio);
     }
+  }
+
+  if ($error) {
+    toastr(sprintf(__('Failed to download data from %s because : %s'), [$p2pserver, implode("\n", $error_message)]) . ' ' . $p2pserver);
   }
   exit();
 }
@@ -385,7 +401,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
         }
       }
 
-      $image_path = isset($record['image'])?$p2pserver . 'images/docs/' . $record['image']:'../images/default/image.png';
+      $image_path = isset($record['image'])?$p2pserver . 'lib/minigalnano/createthumb.php?filename=images/docs/' . $record['image']:'../images/default/image.png';
 
       $image_uri = remoteFileExists($image_path)??'../images/default/image.png';
 
