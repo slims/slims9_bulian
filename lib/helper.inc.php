@@ -211,8 +211,7 @@ if (!function_exists('pluginUrl'))
         // override current value
         foreach($data as $key => $val) {
             if (isset($_GET[$key])) {
-                $_GET[$key] = $val;
-                unset($data[$key]);
+                unset($_GET[$key]);
             }
         }
 
