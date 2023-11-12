@@ -208,13 +208,6 @@ if (!function_exists('pluginUrl'))
         // back to base uri
         if ($reset) return Url::getSelf(fn($self) => $self . '?mod=' . $_GET['mod'] . '&id=' . $_GET['id']);
         
-        // override current value
-        foreach($data as $key => $val) {
-            if (isset($_GET[$key])) {
-                unset($_GET[$key]);
-            }
-        }
-
         return Url::getSelf(function($self) use($data) {
             return $self . '?' . http_build_query(array_merge($_GET,$data));
         });
