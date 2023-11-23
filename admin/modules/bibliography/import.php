@@ -250,16 +250,6 @@ if (isset($_POST['doImport'])) {
             }
           }
 
-          if (!empty($items)) {
-            $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
-            $subjects = explode('><', $subjects);
-            foreach ($subjects as $subject) {
-              $subject = trim(str_replace(array('>', '<'), '', $subject));
-              $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
-              $biblio_subject_sql->execute([$biblio_id, $subject_id , 2]);
-            }
-          }
-
           // items
           if (!empty($items)) {
             $item_sql = DB::getInstance()->prepare('INSERT IGNORE INTO item (biblio_id, item_code) VALUES (?,?)');
