@@ -458,6 +458,7 @@ $sysconf['index']['engine']['es_opts'] = array(
   'index' => 'slims' // name of index in ElasticSearch
 );
 
+$sysconf['index']['word'] = true;
 /**
  * Maximum biblio mark for member
  */
@@ -567,57 +568,52 @@ $dbs->query('SET NAMES \'utf8\'');
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
 
-// check for user language selection if we are not in admin areas
-if (stripos($_SERVER['PHP_SELF'], '/admin') === false) {
-    if (isset($_GET['select_lang'])) {
-        $select_lang = trim(strip_tags($_GET['select_lang']));
-        // delete previous language cookie
-        if (isset($_COOKIE['select_lang'])) {
-            #@setcookie('select_lang', $select_lang, time()-14400, SWB);
-            #@setcookie('select_lang', $select_lang, time()-14400, SWB, "", FALSE, TRUE);
-
-            @setcookie('select_lang', $select_lang, [
-                'expires' => time()-14400,
-                'path' => SWB,
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
-            
-
-        }
-        // create language cookie
-        #@setcookie('select_lang', $select_lang, time()+14400, SWB);
-        #@setcookie('select_lang', $select_lang, time()+14400, SWB, "", FALSE, TRUE);
-
-        @setcookie('select_lang', $select_lang, [
-            'expires' => time()+14400,
-            'path' => SWB,
-            'domain' => '',
-            'secure' => false,
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
-
-        $sysconf['default_lang'] = $select_lang;
-
-
-
-        //reload page on change language
-        header("location:index.php");
-        
-    } else if (isset($_COOKIE['select_lang'])) {
-        $sysconf['default_lang'] = trim(strip_tags($_COOKIE['select_lang']));
-    }
-    // set back to en_US on XML
-    if (isset($_GET['resultXML']) OR isset($_GET['inXML'])) {
-        $sysconf['default_lang'] = 'en_US';
-    }
-}
-
 // Apply language settings
-require LANG.'localisation.php';
+$localisation = \SLiMS\Polyglot\Memory::getInstance();
+
+// plugin locale
+$localisation->registerLanguageFromPlugin();
+
+// load localisation
+$localisation->load(function($memory){
+  // OPAC Only
+  if (\SLiMS\Url::isOpac() === false) return;
+
+  if (isset($_GET['select_lang'])) {
+    // remove last temp language at current memory
+    if (isset($_COOKIE['select_lang'])) $memory->forgetTempLanguage(languageName: $_GET['select_lang']);
+    
+    // make it one
+    $memory->rememberTempLanguage(languageName: $_GET['select_lang']);
+    
+    //reload page on change language
+    header("location:index.php");
+    exit;    
+  }
+
+  // set locale based on temp locale language
+  if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
+});
+
+// load helper
+require_once LIB . "helper.inc.php";
+
+$localisation->registerLanguages([
+    ['ar_SA', __('Arabic'), 'Arabic'],
+    ['bn_BD', __('Bengali'), 'Bengali'],
+    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
+    ['en_US', __('English'), 'English'],
+    ['es_ES', __('Espanol'), 'Espanol'],
+    ['de_DE', __('German'), 'Deutsch'],
+    ['id_ID', __('Indonesian'), 'Indonesia'],
+    ['ja_JP', __('Japanese'), 'Japanese'],
+    ['ms_MY', __('Malay'), 'Malay'],
+    ['fa_IR', __('Persian'), 'Persian'],
+    ['ru_RU', __('Russian'), 'Russian'],
+    ['th_TH', __('Thai'), 'Thai'],
+    ['tr_TR', __('Turkish'), 'Turkish'],
+    ['ur_PK', __('Urdu'), 'Urdu']
+]);
 
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
@@ -632,8 +628,15 @@ if (file_exists($sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']
 }
 
 /* Load balancing environment */
-$sysconf['load_balanced_env'] = false;
-$sysconf['load_balanced_source_ip'] = 'HTTP_X_FORWARDED_FOR';
+$sysconf['load_balanced'] = [
+  'env' => false,
+  'options' => [
+    'host' => 'type_your_domain', // prevent host spoofing
+    'source_ip' => 'HTTP_X_FORWARDED_FOR',
+    'scheme' => 'http',
+    'port' => 80,
+  ]
+];
 
 // visitor limitation
 $sysconf['enable_counter_by_ip'] = true;
@@ -766,16 +769,14 @@ $sysconf['log']['adv']['path'] = '/var/www/logs';
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
 
-// load helper
-require_once LIB . "helper.inc.php";
-
 // set default timezone
 // for a list of timezone, please see PHP Manual at "List of Supported Timezones" section
 // https://www.php.net/manual/en/timezones.php
 @date_default_timezone_set(config('timezone', 'Asia/Jakarta'));
 
 // set real client ip address if SLiMS behind a reverse proxy
-if ((bool)$sysconf['load_balanced_env']) ip()->setSourceRemoteIp($sysconf['load_balanced_source_ip']);
+$load_balanced = config('load_balanced');
+if ((bool)$load_balanced['env']) ip()->setSourceRemoteIp($load_balanced['options']['source_ip']);
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;

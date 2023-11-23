@@ -244,6 +244,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // destroy it if failed
                 if (!empty($images->getError())) $images->destroyIfFailed();
 
+                // remove exif data
+                if (empty($images->getError())) $images->cleanExifInfo();
+
             })->as('docs/' . strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title)));
 
             
@@ -949,7 +952,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             $publ_options[] = array($publ_d[0], $publ_d[1]);
         }
     }
-    $form->addSelectList('publisherID', __('Publisher'), $publ_options, $rec_d['publisher_id'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_publisher" data-src-cols="publisher_id:publisher_name"');
+    $form->addSelectList('publisherID', __('Publisher'), $publ_options, $rec_d['publisher_id'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php" data-src-table="new:mst_publisher" data-src-cols="publisher_id:publisher_name"');
     // biblio publish year
     $form->addTextField('text', 'year', __('Publishing Year'), $rec_d['publish_year'] ?? '', 'class="form-control" style="width: 40%;"', __('Year of publication'));
     // biblio publish place
@@ -960,7 +963,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             $plc_options[] = array($plc_d[0], $plc_d[1]);
         }
     }
-    $form->addSelectList('placeID', __('Publishing Place'), $plc_options, $rec_d['publish_place_id'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_place" data-src-cols="place_id:place_name"');
+    $form->addSelectList('placeID', __('Publishing Place'), $plc_options, $rec_d['publish_place_id'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php" data-src-table="new:mst_place" data-src-cols="place_id:place_name"');
     // biblio collation
     $form->addTextField('text', 'collation', __('Collation'), $rec_d['collation'] ?? '', 'class="form-control" style="width: 40%;"', __('Physical description of a publication e.g. publication length, width, page numbers, etc.'));
     // biblio series title
@@ -970,7 +973,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     if (isset($rec_d['classification'])) {
         $cls_options[] = array($rec_d['classification'], $rec_d['classification']);
     }
-    $form->addSelectList('class', __('Classification'), $cls_options, $rec_d['classification'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php?format=json&allowNew=true" data-src-table="mst_topic" data-src-cols="classification:classification:topic"');
+    $form->addSelectList('class', __('Classification'), $cls_options, $rec_d['classification'] ?? '', 'class="select2" data-src="' . SWB . 'admin/AJAX_lookup_handler.php" data-src-table="new:mst_topic" data-src-cols="classification:classification:topic"');
     // biblio call_number
     $form->addTextField('text', 'callNumber', __('Call Number'), $rec_d['call_number'] ?? '', 'class="form-control" style="width: 40%;"', __('Sets of ID that put in the book spine.'));
     // biblio topics

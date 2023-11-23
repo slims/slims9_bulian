@@ -22,7 +22,7 @@
  */
 
 namespace SLiMS;
-
+use Symfony\Component\Finder\Finder;
 
 use PDO;
 
@@ -34,7 +34,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config', ['env.php', 'env.sample.php']);
+        $this->load(__DIR__ . '/../config', ['*.*.php','*_*.php','index.php','env.php']);
     }
 
     /**
@@ -56,13 +56,11 @@ class Config
      */
     function load($directory, $ignore = [])
     {
-        $ignore = array_unique(array_merge(['..', '.', 'index.html', 'index.php'], $ignore));
-        $scanned_directory = array_diff(scandir($directory), $ignore);
+        $finder = new Finder;
+        $scanned_directory = $finder->files()->in($directory);
+        $scanned_directory->notName($ignore)->name('*.php');
         foreach ($scanned_directory as $file) {
-            if (strpos($file, '.php')) {
-                $file_path = $directory . DIRECTORY_SEPARATOR . $file;
-                $this->configs[basename($file_path, '.php')] = require $file_path;
-            }
+            $this->configs[basename($file->getFilename(), '.php')] = require $file->getPathname();
         }
 
         // load config from database

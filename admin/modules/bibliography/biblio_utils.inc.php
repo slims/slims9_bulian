@@ -184,6 +184,7 @@ function showTitleAuthors($obj_db, $array_data)
 function importProgress(int $percentage)
 {
   if ($percentage > 100) return;
+  if(!ob_get_level()) ob_start();
   echo <<<HTML
   <script>
     if (!parent.$('#preview').hasClass('d-none')) parent.$('#preview').addClass('d-none')
@@ -192,6 +193,7 @@ function importProgress(int $percentage)
     parent.$('.progress-bar').html('{$percentage}%')
   </script>
   HTML;
+  ob_end_flush();
   ob_flush();
   flush();
 }

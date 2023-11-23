@@ -247,7 +247,7 @@ if (isset($_POST['doImport'])) {
 
                     $row_count++;
                     importProgress(round($row_count/$lineNumber * 100));
-                    sleep(1);
+                    usleep(2500);
                 }
             }
         } catch (Exception $e) {

@@ -24,7 +24,8 @@ new Vue({
     data() {
         return {
             section: 'welcome',
-            lastSection: ''
+            lastSection: '',
+            optionalMessage: []
         }
     },
     methods: {
@@ -34,6 +35,10 @@ new Vue({
         setSection(current, last) {
             this.section = current
             this.last = last
+        },
+        setOptionalMsg(message) {
+            this.optionalMessage = message
+            this.section = 'success'
         }
     }
 })

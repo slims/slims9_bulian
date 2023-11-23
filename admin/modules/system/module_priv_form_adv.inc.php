@@ -16,9 +16,10 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
 ?>
     <div class="accordion" id="accordionExample">
         <?php $n = 0; while ($module_data = $module_query->fetch_assoc()): ?>
+         <?php $bs4AriaComponentName = strtolower(str_replace(' ', '-', $module_data['module_name'])); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center" id="headingOne">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?= $module_data['module_path'] ?>" aria-expanded="true" aria-controls="<?= $module_data['module_path'] ?>">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?= $bs4AriaComponentName ?>" aria-expanded="true" aria-controls="<?= $bs4AriaComponentName ?>">
                     <?= __(ucwords(str_replace('_', ' ', $module_data['module_name']))) ?>
                 </button>
 
@@ -40,24 +41,24 @@ $module_query = $dbs->query("SELECT * FROM mst_module");
 
                 <div class="d-flex">
                     <div class="custom-control custom-switch mr-4">
-                        <input name="read[]" value="<?= $module_data['module_id'] ?>" <?= $read_checked ?> type="checkbox" class="custom-control-input" id="read-<?= $module_data['module_path'] ?>">
-                        <label class="custom-control-label" for="read-<?= $module_data['module_path'] ?>"><?= __('Read') ?></label>
+                        <input name="read[]" value="<?= $module_data['module_id'] ?>" <?= $read_checked ?> type="checkbox" class="custom-control-input" id="read-<?= $bs4AriaComponentName ?>">
+                        <label class="custom-control-label" for="read-<?= $bs4AriaComponentName ?>"><?= __('Read') ?></label>
                     </div>
                     <div class="custom-control custom-switch">
-                        <input name="write[]" value="<?= $module_data['module_id'] ?>" <?= $write_checked ?> type="checkbox" class="custom-control-input" id="write-<?= $module_data['module_path'] ?>">
-                        <label class="custom-control-label" for="write-<?= $module_data['module_path'] ?>"><?= __('Write') ?></label>
+                        <input name="write[]" value="<?= $module_data['module_id'] ?>" <?= $write_checked ?> type="checkbox" class="custom-control-input" id="write-<?= $bs4AriaComponentName ?>">
+                        <label class="custom-control-label" for="write-<?= $bs4AriaComponentName ?>"><?= __('Write') ?></label>
                     </div>
                 </div>
             </div>
 
-            <div id="<?= $module_data['module_path'] ?>" class="collapse <?= $n < 1 ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="<?= $bs4AriaComponentName ?>" class="collapse <?= $n < 1 ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <?php
                     $menu = [];
                     $_ = '__';
                     $submenu_path = MDLBS . $module_data['module_path'] . '/submenu.php';
                     $for_select_privileges = true;
                     if (file_exists($submenu_path)) include $submenu_path;
-                    $menuID = 'prev-'.$module_data['module_path'];
+                    $menuID = 'prev-'.$bs4AriaComponentName;
                     $submenu = '<ul class="list-group list-group-flush" id="'.$menuID.'">';
                     $submenu .= '<li class="list-group-item text-bold d-flex justify-content-between">';
                     $submenu .= '<span>'.__('Enable or disable submenu').'</span>';
@@ -71,7 +72,7 @@ HTML;
                     $submenu .= '</li>';
 
                     // load submenu from plugins
-                    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($module_data['module_path']);
+                    $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus(str_replace(' ', '_', $module_data['module_name']));
                     $menu = array_merge($menu, $plugin_menus);
 
                     foreach ($menu as $item) {

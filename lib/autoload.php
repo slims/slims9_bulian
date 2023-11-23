@@ -33,6 +33,7 @@ $namespaces = [
     "Symfony\\Component\VarDumper\\" => "/symfony/var-dumper/",
     "Symfony\Component\Console\\" => '/symfony/console/',
     "Symfony\Component\String\\" => '/symfony/string/',
+    "Symfony\Component\Finder\\" => '/symfony/finder/',
     "Symfony\Contracts\Service\\" => '/symfony/service-contracts/',
     "Symfony\\Contracts\\Translation\\" => "/symfony/translation-contracts/",
     "ZipStream\\" => "/maennchen/zipstream-php/src/",
@@ -45,6 +46,10 @@ $namespaces = [
     'OTPHP\\' => '/spomky-labs/otphp/src',
     'DASPRiD\\Enum\\' => '/dasprid/enum/src',
     'BaconQrCode\\' => '/bacon/bacon-qr-code/src',
+    'Gettext\\' => '/lang/gettext/gettext/src',
+    'Gettext\\Languages\\' => '/lang/gettext/languages/src',
+    'Gettext\\Scanner\\' => '/lang/gettext/php-scanner/src',
+    'PhpParser\\' => '/lang/gettext/php-parser/lib/PhpParser',
 ];
 
 $class_alias = [];
