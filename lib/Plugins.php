@@ -602,12 +602,14 @@ class Plugins
             $fileInfo = pathinfo($item->getFilename());
             
 
+            $label = ucwords(str_replace('_', ' ', $fileInfo['filename']));
+            $label = $module_name != 'opac' ? __($label) : $label;
             $registerMenu = self::getInstance()
                                 ->registerMenu(
                                     $module_name, 
                                     
                                     // label
-                                    __(ucwords(str_replace('_', ' ', $fileInfo['filename']))),
+                                    $label,
 
                                     // absolute path
                                     $item->getPathname()
