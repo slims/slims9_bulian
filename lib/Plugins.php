@@ -44,6 +44,7 @@ class Plugins
     const OVERDUE_NOTICE_INIT = 'overduenotice_init';
     const DUEDATE_NOTICE_INIT = 'duedate_init';
     const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
+    const OAI2_INIT = 'oai2_init';
 
     private static $instance;
     /**

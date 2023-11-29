@@ -38,6 +38,8 @@
 /**
  * An array for collecting erros which can be reported later. It will be checked before a new action is taken.
  */
+use SLiMS\Plugins;
+
 $errors = array();
 
 ini_set('session.use_cookies', '0');
@@ -55,6 +57,8 @@ require_once(OAI_LIB.'oaidp-config.php');
 require_once(OAI_LIB.'oaidp-util.php');
 require_once(OAI_LIB.'ands_tpa.php');
 
+// OAI hook process
+Plugins::run(Plugins::OAI2_INIT);
 
 /**
  * Supported attributes associate to verbs.
