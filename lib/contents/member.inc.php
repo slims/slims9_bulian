@@ -535,10 +535,12 @@ if ($is_member_login) :
         }
         $_loan_list->setSQLCriteria($_criteria);
         $_loan_list->column_width[0] = '5%';
-        $_loan_list->modifyColumnContent(1, 'callback{titleLink}');
-        function titleLink($db, $data)
-        {
-            return '<a target="_blank" href="index.php?p=show_detail&id=' . $data[0] . '">' . $data[1] . '</a>';
+        $_loan_list->modifyColumnContent(1, 'callback{`titleLink`}');
+        if (!function_exists('titleLink')) {
+            function titleLink($db, $data)
+            {
+                return '<a target="_blank" href="index.php?p=show_detail&id=' . $data[0] . '">' . $data[1] . '</a>';
+            }
         }
         $_loan_list->modifyColumnContent(0, '<input type="checkbox" name="basket[]" class="basketItem" value="{column_value}" />');
 
