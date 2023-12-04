@@ -52,5 +52,7 @@ composer.lock
 config/database.php
 config/captcha.php
 config/env.php
+config/csp.php
+config/auth.php
 tarsius
 .htaccess
