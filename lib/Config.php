@@ -22,9 +22,10 @@
  */
 
 namespace SLiMS;
-use Symfony\Component\Finder\Finder;
 
+use Generator;
 use PDO;
+use Symfony\Component\Finder\Finder;
 
 class Config
 {
@@ -153,6 +154,19 @@ class Config
         return file_exists($path = SB . 'config/' . $filename . '.php') ? file_get_contents($path) : null;
     }
 
+    public static function isExists(string|array $nameOrNames):bool|Generator
+    {
+        if (is_string($nameOrNames)) {
+            return file_exists(SB . 'config' . DS . basename($nameOrNames) . '.php');
+        }
+
+        foreach ($nameOrNames as $name) {
+            $path = SB . 'config' . DS . basename($name) . '.php';
+            if (file_exists($path)) continue;
+            yield $name;
+        }
+    }
+
     /**
      * Create some configuration file
      * into <slims-root>/config/
@@ -165,6 +179,13 @@ class Config
     {
         if (is_callable($content)) $content = $content($filename);
         file_put_contents(SB . 'config/' . basename($filename) . '.php', $content);
+    }
+
+    public static function createFromSample(string $configName)
+    {
+        $basePath = SB . 'config' . DS . basename($configName);
+        @copy($basePath . '.sample.php', $basePath . '.php');
+        unset($basePath);
     }
 
     /**
