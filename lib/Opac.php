@@ -124,6 +124,7 @@ class Opac
                 $path = $this->path;
                 $sysconf = $this->sysconf;
                 $dbs = $this->dbs;
+                $opac = $this;
 
                 // Include plugin file
                 include $menu[$this->path][3];
