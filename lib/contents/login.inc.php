@@ -50,7 +50,12 @@ if (defined('LIGHTWEIGHT_MODE')) {
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
 // create logon class instance
-$logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+$logon = Validator::use(
+    config(
+    'auth.methods.' . config('auth.sections.user'),
+    \SLiMS\Auth\Methods\Native::class
+    )
+);
 
 $logon->getHook();
 

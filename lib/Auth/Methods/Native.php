@@ -58,22 +58,25 @@ class Native extends Contract
         	}
         }
 
+        $this->updateInfo();
+
+        return $this;
+    }
+
+    protected function updateInfo()
+    {
         $this->data['m_membership_pending'] = intval($this->data['m_membership_pending']) ? true : false;
 
-         // set bookmark
-         $bookmarkStatement = DB::query('SELECT `biblio_id` FROM `biblio_mark` WHERE `member_id` = ?', [$this->data['mid']]);
+        // set bookmark
+        $bookmarkStatement = DB::query('SELECT `biblio_id` FROM `biblio_mark` WHERE `member_id` = ?', [$this->data['mid']]);
 
-         if ($bookmarkStatement->count())
-         {
-            $this->data['bookmark'] = [];
-             foreach ($bookmarkStatement as $bookmark) {
-                $this->data['bookmark'][$bookmark['biblio_id']] = $bookmark['biblio_id'];
-             }
-         }
-
-        $this->data['m_logintime'] = time();
-        $this->data['m_is_expired'] = false;
-        $this->data['m_mark_biblio'] = array();
+        $this->data['m_mark_biblio'] = [];
+        if ($bookmarkStatement->count())
+        {
+            foreach ($bookmarkStatement as $bookmark) {
+                $this->data['m_mark_biblio'][$bookmark['biblio_id']] = $bookmark['biblio_id'];
+            }
+        }
  
          // check member expiry date
          require_once SIMBIO.'simbio_UTILS/simbio_date.inc.php';
@@ -87,8 +90,6 @@ class Native extends Contract
         $updateLastLogin->run();
 
         unset($this->data['mpasswd']);
-
-        return $this;
     }
 
     /**

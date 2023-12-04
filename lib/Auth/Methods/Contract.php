@@ -1,7 +1,9 @@
 <?php
 namespace SLiMS\Auth\Methods;
 
-abstract class Contract
+use Countable;
+
+abstract class Contract implements Countable
 {
     /**
      * @var string $username
@@ -17,6 +19,13 @@ abstract class Contract
      * @var array $data
      */
     protected array $data = [];
+
+    public function __construct()
+    {
+        $this->data['m_logintime'] = time();
+        $this->data['m_is_expired'] = false;
+        $this->data['m_mark_biblio'] = array();
+    }
 
     /**
      * Authentication for member
@@ -58,7 +67,7 @@ abstract class Contract
         $this->data = $data;
     }
 
-    public function isHas2Fa()
+    public function has2Fa()
     {
         return isset($this->data['2fa']) && !empty($this->data['2fa']);
     }
@@ -70,5 +79,10 @@ abstract class Contract
         if (method_exists($this, $fixMethod = $method . 'Authenticate')) {
             return $this->$fixMethod(...$arguments);
         }
+    }
+
+    public function count():int
+    {
+        return count($this->data);
     }
 }
