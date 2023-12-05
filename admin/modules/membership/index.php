@@ -698,7 +698,7 @@ $(document).ready(function() {
       global $sysconf;
       $imageDisk = Storage::images();
       $image = 'images/persons/photo.png';
-      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$array_data[0].'"');
+      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$obj_db->escape_string($array_data[0]).'"');
       if(isset($_q->num_rows)){
         $_d = $_q->fetch_row();
         if($_d[0] != NULL){     

@@ -376,6 +376,8 @@ class circulation extends member
                 // count holiday and subtract it from overdue days
                 $_holiday_count = simbio_date::countHolidayBetween($_loan_d[0], $str_return_date, $this->holiday_dayname, $this->holiday_date);
                 $_overdue_days_ignore_holiday = $_overdue_days-$_holiday_count;
+                // prevent negative value, if $_holiday_count > $_overdue_days
+                if ($_overdue_days_ignore_holiday < 0) return false;
             }
             /* end of modification */
 

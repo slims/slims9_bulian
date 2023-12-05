@@ -42,7 +42,7 @@ class Validator
 
             $authenticate = $this->methodInstance->$type();
 
-            if ($authenticate->isHas2Fa()) {
+            if ($authenticate->has2Fa()) {
                 # redirect to f2a page
                 $_SESSION['user'] = $authenticate->getData();
                 redirect('index.php?p=2fa');

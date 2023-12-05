@@ -113,6 +113,10 @@ class Opac
     {
         if (isset(($menu = Plugins::getInstance()->getMenus('opac'))[$this->path])) {
             if (file_exists($menu[$this->path][3])) {
+                // page_title is initial variable
+                // so it must be updated too
+                $this->definedVariable['page_title'] = $menu[$this->path][0];
+
                 // extract defined variable
                 extract($this->definedVariable);
                 
@@ -120,7 +124,7 @@ class Opac
                 $path = $this->path;
                 $sysconf = $this->sysconf;
                 $dbs = $this->dbs;
-                $page_title = $menu[$this->path][0];
+                $opac = $this;
 
                 // Include plugin file
                 include $menu[$this->path][3];

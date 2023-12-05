@@ -1,4 +1,12 @@
 <?php
+/**
+ * @author Drajat Hasan
+ * @email drajathasan20@gmail.com
+ * @create date 2023-12-05 15:26:50
+ * @modify date 2023-12-05 15:26:50
+ * @license GPL-3.0 
+ * @desc some modification from lib/admin_logon.inc.php
+ */
 namespace SLiMS\Auth\Methods;
 
 use SLiMS\DB;
@@ -14,6 +22,7 @@ class Native extends Contract
     protected function memberAuthenticate() 
     {
         $this->fetchRequest(['memberID','memberPassWord']);
+        $this->type = parent::MEMBER_LOGIN;
 
         /**
          * Get data from database
@@ -58,35 +67,7 @@ class Native extends Contract
         	}
         }
 
-        $this->data['m_membership_pending'] = intval($this->data['m_membership_pending']) ? true : false;
-
-         // set bookmark
-         $bookmarkStatement = DB::query('SELECT `biblio_id` FROM `biblio_mark` WHERE `member_id` = ?', [$this->data['mid']]);
-
-         if ($bookmarkStatement->count())
-         {
-            $this->data['bookmark'] = [];
-             foreach ($bookmarkStatement as $bookmark) {
-                $this->data['bookmark'][$bookmark['biblio_id']] = $bookmark['biblio_id'];
-             }
-         }
-
-        $this->data['m_logintime'] = time();
-        $this->data['m_is_expired'] = false;
-        $this->data['m_mark_biblio'] = array();
- 
-         // check member expiry date
-         require_once SIMBIO.'simbio_UTILS/simbio_date.inc.php';
-         $_curr_date = date('Y-m-d');
-         if (\simbio_date::compareDates($this->data['m_expire_date'], $_curr_date) == $_curr_date) {
-            $this->data['m_is_expired'] = true;
-         }
- 
-        // update the last login time
-        $updateLastLogin = DB::query("UPDATE member SET last_login='".date("Y-m-d H:i:s")."', last_login_ip='".ip()."' WHERE member_id=?", [$this->data['mid']]);
-        $updateLastLogin->run();
-
-        unset($this->data['mpasswd']);
+        $this->updateInfo();
 
         return $this;
     }
@@ -94,11 +75,12 @@ class Native extends Contract
     /**
      * Administrator authentication
      *
-     * @return void
+     * @return Native
      */
     protected function adminAuthenticate() 
     {
         $this->fetchRequest(['userName','passWord']);
+        $this->type = parent::LIBRARIAN_LOGIN;
 
         $user = DB::query(<<<SQL
         SELECT
@@ -157,46 +139,88 @@ class Native extends Contract
             $this->data['groups'] = null;
         }
 
-        // $this->data['mid'] = *
-        $this->data['logintime'] = time();
-        // session vars needed by some application modules
-        $this->data['temp_loan'] = array();
-        $this->data['biblioAuthor'] = array();
-        $this->data['biblioTopic'] = array();
-        $this->data['biblioAttach'] = array();
-
-
-        if (!defined('UCS_VERSION')) {
-            // load holiday data from database
-            $_holiday_dayname_q = DB::query();
-            $_holiday_dayname_q->setDefaultOutput(\PDO::FETCH_NUM);
-            $_holiday_dayname_q->prepare('SELECT holiday_dayname FROM holiday WHERE holiday_date IS NULL');
-
-            $this->data['holiday_dayname'] = array();
-            foreach ($_holiday_dayname_q as $_holiday_dayname_d) {
-                $this->data['holiday_dayname'][] = $_holiday_dayname_d[0];
-            }
-
-            $_holiday_date_q = DB::query();
-            $_holiday_date_q->setDefaultOutput(\PDO::FETCH_NUM);
-            $_holiday_date_q->prepare('SELECT holiday_date FROM holiday WHERE holiday_date IS NOT NULL ORDER BY holiday_date DESC LIMIT 365');
-
-            $this->data['holiday_date'] = array();
-            foreach ($_holiday_date_q as $_holiday_date_d) {
-                $this->data['holiday_date'][$_holiday_date_d[0]] = $_holiday_date_d[0];
-            }
-        }
-
-        // save md5sum of  current application path
-        if (config('loadbalanced.env', false)) {
-            $server_addr = ip()->getProxyIp();
-        } else {
-            $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
-        }
-        $this->data['checksum'] = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
-
-        unset($this->data['passwd']);
+        $this->updateInfo();
 
         return $this;
+    }
+
+    /**
+     * Setup another data according
+     * checksum, last_login etc
+     *
+     * @return void
+     */
+    protected function updateInfo()
+    {
+        if ($this->type === parent::MEMBER_LOGIN) {
+            $this->data['m_logintime'] = time();
+            $this->data['m_is_expired'] = false;
+            $this->data['m_mark_biblio'] = array();
+            
+            $this->data['m_membership_pending'] = intval($this->data['m_membership_pending']) ? true : false;
+
+            // set bookmark
+            $bookmarkStatement = DB::query('SELECT `biblio_id` FROM `biblio_mark` WHERE `member_id` = ?', [$this->data['mid']]);
+
+            $this->data['m_mark_biblio'] = [];
+            if ($bookmarkStatement->count())
+            {
+                foreach ($bookmarkStatement as $bookmark) {
+                    $this->data['m_mark_biblio'][$bookmark['biblio_id']] = $bookmark['biblio_id'];
+                }
+            }
+    
+            // check member expiry date
+            require_once SIMBIO.'simbio_UTILS/simbio_date.inc.php';
+            $_curr_date = date('Y-m-d');
+            if (\simbio_date::compareDates($this->data['m_expire_date'], $_curr_date) == $_curr_date) {
+                $this->data['m_is_expired'] = true;
+            }
+    
+            // update the last login time
+            $updateLastLogin = DB::query("UPDATE member SET last_login='".date("Y-m-d H:i:s")."', last_login_ip='".ip()."' WHERE member_id=?", [$this->data['mid']]);
+            $updateLastLogin->run();
+
+            unset($this->data['mpasswd']);
+        } else if ($this->type === parent::LIBRARIAN_LOGIN) {
+            // $this->data['mid'] = *
+            $this->data['logintime'] = time();
+            // session vars needed by some application modules
+            $this->data['temp_loan'] = array();
+            $this->data['biblioAuthor'] = array();
+            $this->data['biblioTopic'] = array();
+            $this->data['biblioAttach'] = array();
+
+            if (!defined('UCS_VERSION')) {
+                // load holiday data from database
+                $_holiday_dayname_q = DB::query();
+                $_holiday_dayname_q->setDefaultOutput(\PDO::FETCH_NUM);
+                $_holiday_dayname_q->prepare('SELECT holiday_dayname FROM holiday WHERE holiday_date IS NULL');
+
+                $this->data['holiday_dayname'] = array();
+                foreach ($_holiday_dayname_q as $_holiday_dayname_d) {
+                    $this->data['holiday_dayname'][] = $_holiday_dayname_d[0];
+                }
+
+                $_holiday_date_q = DB::query();
+                $_holiday_date_q->setDefaultOutput(\PDO::FETCH_NUM);
+                $_holiday_date_q->prepare('SELECT holiday_date FROM holiday WHERE holiday_date IS NOT NULL ORDER BY holiday_date DESC LIMIT 365');
+
+                $this->data['holiday_date'] = array();
+                foreach ($_holiday_date_q as $_holiday_date_d) {
+                    $this->data['holiday_date'][$_holiday_date_d[0]] = $_holiday_date_d[0];
+                }
+            }
+
+            // save md5sum of  current application path
+            if (config('loadbalanced.env', false)) {
+                $server_addr = ip()->getProxyIp();
+            } else {
+                $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+            }
+            $this->data['checksum'] = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
+
+            unset($this->data['passwd']);
+        }
     }
 }

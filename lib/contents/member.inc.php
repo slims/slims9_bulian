@@ -49,7 +49,12 @@ do_checkIP('opac-member');
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 
 // create logon class instance
-$logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+$logon = Validator::use(
+    config(
+    'auth.methods.' . config('auth.sections.member'),
+    \SLiMS\Auth\Methods\Native::class
+    )
+);
 
 $logon->getHook();
 
@@ -536,9 +541,11 @@ if ($is_member_login) :
         $_loan_list->setSQLCriteria($_criteria);
         $_loan_list->column_width[0] = '5%';
         $_loan_list->modifyColumnContent(1, 'callback{titleLink}');
-        function titleLink($db, $data)
-        {
-            return '<a target="_blank" href="index.php?p=show_detail&id=' . $data[0] . '">' . $data[1] . '</a>';
+        if (!function_exists('titleLink')) {
+            function titleLink($db, $data)
+            {
+                return '<a target="_blank" href="index.php?p=show_detail&id=' . $data[0] . '">' . $data[1] . '</a>';
+            }
         }
         $_loan_list->modifyColumnContent(0, '<input type="checkbox" name="basket[]" class="basketItem" value="{column_value}" />');
 
@@ -707,7 +714,7 @@ if ($is_member_login) :
     }
 
     // if there is change password request
-    if (isset($_POST['changePass']) && $sysconf['auth']['member']['method'] == 'native') {
+    if (isset($_POST['changePass']) && config('auth.sections.member') == 'native') {
         $change_pass = procChangePassword($_POST['currPass'], $_POST['newPass'], $_POST['newPass2']);
         if ($change_pass === true) {
             $info = '<span style="font-size: 120%; font-weight: bold; color: #28a745;">' . __('Your password have been changed successfully.') . '</span>';
@@ -846,7 +853,7 @@ if ($is_member_login) :
                             echo '</div>';
                             echo showMemberDetail();
                             // change password only form NATIVE authentication, not for others such as LDAP
-                            if ($sysconf['auth']['member']['method'] == 'native') {
+                            if (config('auth.sections.member') == 'native') {
                                 echo '<div class="tagline">';
                                 echo '<div class="memberInfoHead mt-8">' . __('Change Password') . '</div>' . "\n";
                                 echo '</div>';

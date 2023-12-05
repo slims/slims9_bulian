@@ -1,8 +1,27 @@
 <?php
+/**
+ * @author Drajat Hasan
+ * @email drajathasan20@gmail.com
+ * @create date 2023-12-05 15:26:50
+ * @modify date 2023-12-05 15:26:50
+ * @license GPL-3.0 
+ * @descp
+ */
 namespace SLiMS\Auth\Methods;
 
-abstract class Contract
+use Countable;
+
+abstract class Contract implements Countable
 {
+    // Static data for login type
+    const LIBRARIAN_LOGIN = 1;
+    const MEMBER_LOGIN = 2;
+
+    /**
+     * Login Type
+     */
+    protected int $type = 0;
+
     /**
      * @var string $username
      */
@@ -17,6 +36,11 @@ abstract class Contract
      * @var array $data
      */
     protected array $data = [];
+
+    public function __construct()
+    {
+        
+    }
 
     /**
      * Authentication for member
@@ -58,7 +82,7 @@ abstract class Contract
         $this->data = $data;
     }
 
-    public function isHas2Fa()
+    public function has2Fa()
     {
         return isset($this->data['2fa']) && !empty($this->data['2fa']);
     }
@@ -70,5 +94,10 @@ abstract class Contract
         if (method_exists($this, $fixMethod = $method . 'Authenticate')) {
             return $this->$fixMethod(...$arguments);
         }
+    }
+
+    public function count():int
+    {
+        return count($this->data);
     }
 }

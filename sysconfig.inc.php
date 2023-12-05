@@ -391,45 +391,6 @@ $sysconf['z3950_SRU_source'][1] = array('uri' => 'http://z3950.loc.gov:7090/voya
  */
 $sysconf['marc_SRU_source'][1] = array('uri' => 'https://opac.perpusnas.go.id/sru.aspx', 'name' => 'Perpustakaan Nasional RI');
 
-
-/**
- * User and member login method
- */
-$sysconf['auth']['user']['method'] = 'native'; // method can be 'native' or 'LDAP'
-$sysconf['auth']['member']['method'] = 'native'; // for library member, method can be 'native' or 'LDAP'
-/**
- * LDAP Specific setting for User
- */
-if (($sysconf['auth']['user']['method'] === 'LDAP') OR ($sysconf['auth']['member']['method'] === 'LDAP')) {
-  $sysconf['auth']['user']['ldap_server'] = '127.0.0.1'; // LDAP server
-  $sysconf['auth']['user']['ldap_base_dn'] = 'ou=slims,dc=diknas,dc=go,dc=id'; // LDAP base DN
-  $sysconf['auth']['user']['ldap_suffix'] = ''; // LDAP user suffix
-  $sysconf['auth']['user']['ldap_bind_dn'] = 'uid=#loginUserName,'.$sysconf['auth']['user']['ldap_base_dn']; // Binding DN
-  $sysconf['auth']['user']['ldap_port'] = null; // optional LDAP server connection port, use null or false for default
-  $sysconf['auth']['user']['ldap_options'] = array(
-      array(LDAP_OPT_PROTOCOL_VERSION, 3),
-      array(LDAP_OPT_REFERRALS, 0)
-      ); // optional LDAP server options
-  $sysconf['auth']['user']['ldap_search_filter'] = '(|(uid=#loginUserName)(cn=#loginUserName*))'; // LDAP search filter, #loginUserName will be replaced by the real login name
-  $sysconf['auth']['user']['userid_field'] = 'uid'; // LDAP field for username
-  $sysconf['auth']['user']['fullname_field'] = 'cn'; // LDAP field for full name
-  $sysconf['auth']['user']['mail_field'] = 'mail'; // LDAP field for e-mail
-  /**
-   * LDAP Specific setting for member
-   * By default same as User
-   */
-  $sysconf['auth']['member']['ldap_server'] = &$sysconf['auth']['user']['ldap_server']; // LDAP server
-  $sysconf['auth']['member']['ldap_base_dn'] = &$sysconf['auth']['user']['ldap_base_dn']; // LDAP base DN
-  $sysconf['auth']['member']['ldap_suffix'] = &$sysconf['auth']['user']['ldap_suffix']; // LDAP user suffix
-  $sysconf['auth']['member']['ldap_bind_dn'] = &$sysconf['auth']['user']['ldap_bind_dn']; // Binding DN
-  $sysconf['auth']['member']['ldap_port'] = &$sysconf['auth']['user']['ldap_port']; // optional LDAP server connection port, use null or false for default
-  $sysconf['auth']['member']['ldap_options'] = &$sysconf['auth']['user']['ldap_options']; // optional LDAP server options
-  $sysconf['auth']['member']['ldap_search_filter'] = &$sysconf['auth']['user']['ldap_search_filter']; // LDAP search filter, #loginUserName will be replaced by the real login name
-  $sysconf['auth']['member']['userid_field'] = &$sysconf['auth']['user']['userid_field']; // LDAP field for username
-  $sysconf['auth']['member']['fullname_field'] = &$sysconf['auth']['user']['fullname_field']; // LDAP field for full name
-  $sysconf['auth']['member']['mail_field'] = &$sysconf['auth']['user']['mail_field']; // LDAP field for e-mail
-}
-
 /**
  * BIBLIO INDEXING
  */
@@ -780,3 +741,8 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
   'server' => $_SERVER,
   'post' => $_POST
 ]));
+
+// create dynamic config file from sample
+foreach (\SLiMS\Config::isExists(['csp','auth']) as $config) {
+  \SLiMS\Config::createFromSample($config);
+}
