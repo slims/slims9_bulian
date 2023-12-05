@@ -1,10 +1,27 @@
 <?php
+/**
+ * @author Drajat Hasan
+ * @email drajathasan20@gmail.com
+ * @create date 2023-12-05 15:26:50
+ * @modify date 2023-12-05 15:26:50
+ * @license GPL-3.0 
+ * @descp
+ */
 namespace SLiMS\Auth\Methods;
 
 use Countable;
 
 abstract class Contract implements Countable
 {
+    // Static data for login type
+    const LIBRARIAN_LOGIN = 1;
+    const MEMBER_LOGIN = 2;
+
+    /**
+     * Login Type
+     */
+    protected int $type = 0;
+
     /**
      * @var string $username
      */
@@ -22,9 +39,7 @@ abstract class Contract implements Countable
 
     public function __construct()
     {
-        $this->data['m_logintime'] = time();
-        $this->data['m_is_expired'] = false;
-        $this->data['m_mark_biblio'] = array();
+        
     }
 
     /**

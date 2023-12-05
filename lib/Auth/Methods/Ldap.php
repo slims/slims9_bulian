@@ -1,4 +1,13 @@
 <?php
+/**
+ * @author Drajat Hasan
+ * @email drajathasan20@gmail.com
+ * @create date 2023-12-05 15:26:50
+ * @modify date 2023-12-05 15:26:50
+ * @license GPL-3.0 
+ * @desc some modification from lib/admin_logon.inc.php
+ */
+
 namespace SLiMS\Auth\Methods;
 
 use SLiMS\Auth\Exception;
@@ -6,6 +15,12 @@ use SLiMS\DB;
 
 class Ldap extends Native
 {
+    /**
+     * Retrieve member data from database
+     *
+     * @param string $memberId
+     * @return void
+     */
     private function getMemberDetail(string $memberId)
     {
         // check member in database
@@ -35,13 +50,21 @@ class Ldap extends Native
     /**
      * Member authentication
      *
-     * @return Native
+     * @return Ldap
      */
-    protected function memberAuthenticate() 
+    protected function memberAuthenticate()
     {
         $this->fetchRequest(['memberID','memberPassWord']);
+        $this->type = parent::MEMBER_LOGIN;
 
         $ldap_configs = config('auth.options.ldap');
+        $member_ldap_configs = $ldap_configs['member'];
+        $member_ldap_configs['bind_dn'] = str_replace(
+            ['{base_dn}','{ou}'], 
+            [$ldap_configs['base_dn'], 'ou=' . $member_ldap_configs['ou']], 
+            $member_ldap_configs['bind_dn']
+        );
+
         if (!function_exists('ldap_connect')) {
             $this->errors = 'LDAP library is not installed yet!';
             return false;
@@ -63,31 +86,32 @@ class Ldap extends Native
         // for Active Directory Server login active line below
         // $_bind = ldap_bind($_ds, ( $ldap_configs['suffix']?$this->username.'@'.$ldap_configs['suffix']:$this->username ), $this->password);
         $_bind = @ldap_bind($_ds,
-            str_ireplace('#loginUserName', $this->username, $ldap_configs['bind_dn']), $this->password);
+            str_ireplace('#loginUserName', $this->username, $member_ldap_configs['bind_dn']), $this->password);
 
         if (!$_bind) throw new Exception(__('Failed to bind to directory server!'), 500);
 
-        $_filter = str_ireplace('#loginUserName', $this->username, $ldap_configs['search_filter']);
+        $_filter = str_ireplace('#loginUserName', $this->username, $member_ldap_configs['search_filter']);
 
         // run query
-        $_search = @ldap_search($_ds, $ldap_configs['base_dn'], $_filter);
+        $base = 'ou=' . $member_ldap_configs['ou'] . ',' . $ldap_configs['base_dn'];
+        $_search = @ldap_search($_ds, $base, $_filter);
         if (!$_search) throw new Exception(__('LDAP search failed because of error!'), 500);
 
         // get query entry
         $_entries = @ldap_get_entries($_ds, $_search);
         if ($_entries) {
-            $memberId = $_entries[0][$ldap_configs['userid_field']][0];
+            $memberId = $_entries[0][$member_ldap_configs['userid_field']][0];
             $this->getMemberDetail($memberId);            
 
             if (count($this) < 1) {
                 $_curr_date = date('Y-m-d H:i:s');
-                $_fullname_field = strtolower($ldap_configs['fullname_field']);
+                $_fullname_field = strtolower($member_ldap_configs['fullname_field']);
                 // insert member data to database
                 $entryData['member_id'] = $memberId;
-                $entryData['member_name'] = $_entries[0][$_fullname_field][0];
+                $entryData['member_name'] = $_entries[0][$member_ldap_configs['fullname_field']][0];
                 $entryData['gender'] = '1';
                 $entryData['inst_name'] = 'New registered member';
-                $entryData['member_email'] = $_entries[0][$ldap_configs['mail_field']][0];
+                $entryData['member_email'] = $_entries[0][$member_ldap_configs['mail_field']][0];
                 $entryData['expire_date'] = '0000-00-00';
                 $entryData['register_date'] = '0000-00-00';
                 $entryData['is_pending'] = '1';
@@ -117,11 +141,21 @@ class Ldap extends Native
     /**
      * Administrator authentication
      *
-     * @return void
+     * @return Ldap
      */
     protected function adminAuthenticate() 
     {
-        $ldap_configs = config('auth.user');
+        $this->fetchRequest(['userName','passWord']);
+        $this->type = parent::LIBRARIAN_LOGIN;
+
+        $ldap_configs = config('auth.options.ldap');
+        $user_ldap_configs = $ldap_configs['user'];
+        $user_ldap_configs['bind_dn'] = str_replace(
+            ['{base_dn}','{ou}'], 
+            [$ldap_configs['base_dn'], 'ou=' . $user_ldap_configs['ou']], 
+            $user_ldap_configs['bind_dn']
+        );
+
         if (!function_exists('ldap_connect')) {
             $this->errors = 'LDAP library is not installed yet!';
             return false;
@@ -141,29 +175,43 @@ class Ldap extends Native
 
         // binding
         $_bind = @ldap_bind($_ds,
-            str_ireplace('#loginUserName', $this->username, $ldap_configs['bind_dn']),
+            str_ireplace('#loginUserName', $this->username, $user_ldap_configs['bind_dn']),
             $this->password);
 
         if (!$_bind) throw new Exception(__('Failed to bind to directory server!'), 500);
 
-        $_filter = str_ireplace('#loginUserName', $this->username, $ldap_configs['search_filter']);
+        $_filter = str_ireplace('#loginUserName', $this->username, $user_ldap_configs['search_filter']);
 
         // run query
-        // $_search = @ldap_search($_ds, $ldap_configs['base_dn'], $_filter);
-        $_search = @ldap_search($_ds, str_ireplace('#loginUserName', $this->username, $ldap_configs['bind_dn']), $_filter);
+        $base = 'ou=' . $user_ldap_configs['ou'] . ',' . $ldap_configs['base_dn'];
+        $_search = @ldap_search($_ds, str_ireplace('#loginUserName', $this->username, $base), $_filter);
         if (!$_search) throw new Exception(__('LDAP search failed because of error!'), 404);
 
         // get query entry
         $_entries = @ldap_get_entries($_ds, $_search);
+        
         if ($_entries) {
-            $_username = $_entries[0][$ldap_configs['userid_field']][0];
             // check if User data exists in database
-            $_check_q = DB::query("SELECT u.user_id, u.username, u.realname, u.groups
-                FROM user AS u WHERE u.username=?", [$_username]);
+            $username = $_entries[0][$user_ldap_configs['userid_field']][0];
+            $realname = $_entries[0][$user_ldap_configs['fullname_field']][0];
+            
+            DB::query("INSERT IGNORE INTO `user` SET `username` = ?, `realname` = ?", [
+                $username,
+                $realname
+            ])->run();
 
-            if ($_check_q->count() < 1) throw new Exception(__('You don\'t have enough privileges to enter this section!'), 403);
-                
+            // throw new Exception(__('You don\'t have enough privileges to enter this section!'), 403);
+
+            $_check_q = DB::query(<<<SQL
+            SELECT
+                u.user_id as uid, u.username as uname, u.passwd,
+                u.realname as realname, u.groups, u.user_image as upict, u.2fa
+                FROM user AS u
+                WHERE u.username=?
+            SQL, [$username]);
+            
             $this->data = $_check_q->first();
+            $this->updateInfo();
         } else {
             throw new Exception(__('LDAP Record not found!'), 403);
         }
