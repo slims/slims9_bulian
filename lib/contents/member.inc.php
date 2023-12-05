@@ -540,7 +540,7 @@ if ($is_member_login) :
         }
         $_loan_list->setSQLCriteria($_criteria);
         $_loan_list->column_width[0] = '5%';
-        $_loan_list->modifyColumnContent(1, 'callback{`titleLink`}');
+        $_loan_list->modifyColumnContent(1, 'callback{titleLink}');
         if (!function_exists('titleLink')) {
             function titleLink($db, $data)
             {
