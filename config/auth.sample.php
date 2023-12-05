@@ -29,18 +29,29 @@ return [
     'options' => [
         'ldap' => [
             'server' => '127.0.0.1',
-            'base_dn' => 'ou=slims,dc=diknas,dc=go,dc=id',
+            'base_dn' => 'dc=diknas,dc=go,dc=id',
             'suffix' => '',
-            'bind_dn' => 'uid=#loginUserName,ou=slims,dc=diknas,dc=go,dc=id',
             'port' => null,
             'options' => [
                 defined('LDAP_OPT_PROTOCOL_VERSION') ? [LDAP_OPT_PROTOCOL_VERSION, 3] : [],
                 defined('LDAP_OPT_REFERRALS') ? [LDAP_OPT_REFERRALS, 0] : []
             ],
-            'search_filter' => '(|(uid=#loginUserName)(cn=#loginUserName*))',
-            'userid_field' => 'uid',
-            'fullname_field' => 'displayName',
-            'mail_field' => 'mail'
+            'user' => [
+                'ou' => 'librarian',
+                'bind_dn' => 'uid=#loginUserName,{ou},{base_dn}',
+                'search_filter' => '(|(uid=#loginUserName)(cn=#loginUserName*))',
+                'userid_field' => 'uid',
+                'fullname_field' => 'displayname',
+                'mail_field' => 'mail'
+            ],
+            'member' => [
+                'ou' => 'member',
+                'bind_dn' => 'uid=#loginUserName,{ou},{base_dn}',
+                'search_filter' => '(|(uid=#loginUserName)(cn=#loginUserName*))',
+                'userid_field' => 'uid',
+                'fullname_field' => 'displayname',
+                'mail_field' => 'mail'
+            ]
         ]
     ]
 ];
