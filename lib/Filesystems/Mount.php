@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-08-24 07:55:33
- * @modify date 2023-08-24 07:55:33
+ * @modify date 2023-12-09 15:36:06
  * @desc :
  * 
  * Manage file or directory between two or more storages, such as
@@ -26,6 +26,22 @@ class Mount implements IteratorAggregate
     private array $storages = [];
     private array $action = [];
     private string $path = '';
+    
+    // See providers/Contruct.php
+    private array $funcMap = [
+        'directories' => 'listContents',
+        'makeDirectory' => 'createDirectory',
+        'isExists' => 'has',
+        'move' => 'move',
+        'copy' => 'copy',
+        'delete' => 'delete',
+        'delete' => 'deleteDirectory',
+        'put' => 'write',
+        'putStream' => 'write',
+        'read' => 'read',
+        'readStream' => 'readStream',
+        'lastModified' => 'lastModified'
+    ];
 
     public function __construct(array $filesystems)
     {
@@ -87,20 +103,25 @@ class Mount implements IteratorAggregate
     private function process()
     {
         $path = $this->action['arguments'][0];
-        $this->action['arguments'][0] = $this->pathResolver($this->path, $path);
+        if (($position = strpos($path, '://') ) !== false) {
+            $path = substr($path, $position + 3, strlen($path));
+        }
+        $this->path = $this->path . $path;
+        $this->action['arguments'][0] = $this->path;
 
-        if (in_array($this->action['method'], ['copy','move'])) {
+        if (in_array($this->action['method'], ['copy', 'move'])) {
             return $this;
         }
 
-        
-        return $this->manager->{$this->action['method']}(...$this->action['arguments']);
+        return $this->callManagerFunction($this->action['method'], $this->action['arguments']);
     }
 
-    public function pathResolver(string $storageName, string $path)
+    public function pathResolver(string $storageName, string $path = '')
     {
-        $path = substr($path, -1) === '/' ? $path : $path . '/';
-        return strpos($path, '://') === false ? $storageName . '://' . $path : $path;
+        $protocol = trim($storageName, '://');;
+        $info = pathinfo($path);
+        $result = empty($path) ? $protocol . '://' : $protocol . '://' . $path . (empty($info['extension']??'') ? '/' : '');
+        return trim($result);
     }
 
     /**
@@ -113,9 +134,10 @@ class Mount implements IteratorAggregate
     public function to(string $storage, string $path)
     {
         if (!in_array($storage, $this->storages)) throw new \Exception("Error : $storage not exists");
-        $sourcePath = $this->pathResolver($this->path, $this->action['arguments'][0]);
+        $sourcePath = $this->path;
         $destPath = $this->pathResolver($storage, trim($path));
-        return $this->manager->{$this->action['method']}($sourcePath, $destPath);
+
+        return call_user_func_array([$this->manager, $this->funcMap[$this->action['method']]], [$sourcePath, $destPath]);
     }
 
     
@@ -134,7 +156,7 @@ class Mount implements IteratorAggregate
         }
 
         // Method as MountManager method
-        if (method_exists($this->manager, $method)) {
+        if (isset($this->funcMap[$method])) {
             // capture method and arguments
             $this->action = [
                 'method' => $method,
@@ -149,5 +171,13 @@ class Mount implements IteratorAggregate
             $storage = substr($method, 2, strlen($method));
             return $this->to(strtolower($storage), ...$arguments);
         }
+    }
+
+    public function callManagerFunction(string $method, array $arguments)
+    {
+        return call_user_func_array([
+            $this->manager,
+            $this->funcMap[$method]
+        ], $arguments);
     }
 }
