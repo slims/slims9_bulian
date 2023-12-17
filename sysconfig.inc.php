@@ -27,6 +27,8 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
+define('SLiMS_START', microtime(true));
+
 // Environment config
 $envExists = file_exists($envFile = __DIR__ .  '/config/env.php');
 if ($envExists) require $envFile;
