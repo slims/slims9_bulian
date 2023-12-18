@@ -35,6 +35,7 @@ class Plugins
     const BIBLIOGRAPHY_AFTER_DELETE = 'bibliography_after_delete';
     const BIBLIOGRAPHY_CUSTOM_FIELD_DATA = 'advance_custom_field_data';
     const BIBLIOGRAPHY_CUSTOM_FIELD_FORM = 'advance_custom_field_form';
+    const BIBLIOGRAPHY_BEFORE_DATAGRID_OUTPUT = 'bibliography_before_datagrid_output';
     const CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION = 'circulation_after_successful_transaction';
     const MEMBERSHIP_INIT = 'membership_init';
     const MEMBERSHIP_BEFORE_UPDATE = 'membership_before_update';
