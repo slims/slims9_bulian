@@ -222,7 +222,7 @@ class Plugins
     {
         if (isset($this->active_plugins[$id])) {
             try {
-                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options??'');
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options ?? '');
             } catch (\Exception $exception) {
                 $this->plugins[$id]->options = new stdClass;
             }
@@ -308,9 +308,14 @@ class Plugins
      * @param closure $callback
      * @return void
      */
-    public function register($hook, $callback)
+    public function register($hook, $callback, $sequence = 9999)
     {
-        $this->hooks[$hook][] = [$callback, $this->hook_handler];
+        if (isset($this->hooks[$hook][$sequence])) {
+            $sequence++;
+            $this->register($hook, $callback, $sequence);
+        } else {
+            $this->hooks[$hook][$sequence] = [$callback, $this->hook_handler, $sequence];
+        }
     }
 
     /**
@@ -320,17 +325,17 @@ class Plugins
      * @param closure $callback
      * @return void
      */
-    public function registerHook($hook, $callback)
+    public function registerHook($hook, $callback, $sequence = 9999)
     {
-        $this->register($hook, $callback);
+        $this->register($hook, $callback, $sequence);
     }
 
     /**
      * shortcut to 'registerHook'
      */
-    public static function hook($hook, $callback)
+    public static function hook($hook, $callback, $sequence = 9999)
     {
-        self::getInstance()->registerHook($hook, $callback);
+        self::getInstance()->registerHook($hook, $callback, $sequence);
     }
 
     /**
@@ -382,7 +387,7 @@ class Plugins
         $md5_path = md5($path);
 
         // Register module as hook
-        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function(&$module_list) use($module_name, $path, $md5_path, $description, $callback_priv) {
+        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function (&$module_list) use ($module_name, $path, $md5_path, $description, $callback_priv) {
             // set module list
             $module_list[] = ['name' => $module_name, 'plugin_module_path' => $path, 'path' => $md5_path, 'desc' => $description];
 
@@ -402,9 +407,9 @@ class Plugins
         });
 
         // Make default group menu
-        Plugins::group($module_name, function() use($path,$md5_path) {
+        Plugins::group($module_name, function () use ($path, $md5_path) {
             // Scan all file inside module directory as menu
-            foreach (array_diff(scandir($path), ['.','..','submenu.php']) as $menu) {
+            foreach (array_diff(scandir($path), ['.', '..', 'submenu.php']) as $menu) {
                 if (is_dir($menu) || strpos($menu, '.inc.php')) continue;
 
                 // set label
@@ -478,7 +483,7 @@ class Plugins
 
     public function getAutoload($pluginPath)
     {
-        $pluginDirectory = explode(DS, str_replace(SB . 'plugins' . DS, '', $pluginPath))[0]??'';
+        $pluginDirectory = explode(DS, str_replace(SB . 'plugins' . DS, '', $pluginPath))[0] ?? '';
         if (isset($this->autoloadList[SB . 'plugins' . DS . $pluginDirectory])) include_once $this->autoloadList[SB . 'plugins' . DS . $pluginDirectory];
     }
 
@@ -508,17 +513,24 @@ class Plugins
      * @param array $params
      * @return void
      */
-    public static function run($hook, $params = []) {
+    public static function run($hook, $params = [])
+    {
         self::getInstance()->execute($hook, $params);
     }
 
     public function execute($hook, $params = [])
     {
-        foreach ($this->hooks[$hook] ?? [] as $hook) {
-            list($callback, $handler) = $hook;
-            if (is_callable($callback)) call_user_func_array($callback, array_values($params));
-            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) 
-            {call_user_func_array([$handlerInstance, $callback], array_values($params));}
+        try {
+            sort($this->hooks[$hook]);
+            foreach ($this->hooks[$hook] ?? [] as $hook) {
+                list($callback, $handler) = $hook;
+                if (is_callable($callback)) call_user_func_array($callback, array_values($params));
+                if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) {
+                    call_user_func_array([$handlerInstance, $callback], array_values($params));
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 
@@ -583,7 +595,7 @@ class Plugins
      */
     public static function registerPages(string $pathToPages = 'pages')
     {
-        $trace = debug_backtrace(limit:1)[0];
+        $trace = debug_backtrace(limit: 1)[0];
         $pathToPages = self::pathResolver($pathToPages, $trace['file']);
 
         // output as null a.k.a stop process
@@ -598,30 +610,30 @@ class Plugins
 
         foreach ($finder as $item) {
             $paths = explode(DS, $item->getRelativePath());
-            
+
             $module_name = $paths[0];
             $fileInfo = pathinfo($item->getFilename());
-            
+
 
             $label = ucwords(str_replace('_', ' ', $fileInfo['filename']));
             $label = $module_name != 'opac' ? __($label) : $label;
             $registerMenu = self::getInstance()
-                                ->registerMenu(
-                                    $module_name, 
-                                    
-                                    // label
-                                    $label,
+                ->registerMenu(
+                    $module_name,
 
-                                    // absolute path
-                                    $item->getPathname()
-                                );
+                    // label
+                    $label,
+
+                    // absolute path
+                    $item->getPathname()
+                );
 
             // Grouping process
             if (isset($paths[1])) {
                 preg_match('/_(after|before)_/', $paths[1], $match); // get order type
-                $orderType = $match[1]??null;
+                $orderType = $match[1] ?? null;
                 $splitName = preg_split('/_(after|before)_/', $paths[1]);
-                $grouping = $registerMenu->group(str_replace('_', ' ', $splitName[0]??'PLUGINS'));
+                $grouping = $registerMenu->group(str_replace('_', ' ', $splitName[0] ?? 'PLUGINS'));
 
                 // set order type
                 if ($orderType !== null) $grouping->{$orderType}(__($splitName[1]));
@@ -657,17 +669,16 @@ class Plugins
      */
     public static function __callStatic(string $method, array $arguments)
     {
-        if (!method_exists(__CLASS__, $method)) 
-        {
+        if (!method_exists(__CLASS__, $method)) {
             if (count($arguments) < 2) return;
 
-            $module_name = implode('_', array_map(function($item) {
+            $module_name = implode('_', array_map(function ($item) {
                 return strtolower($item);
-            }, preg_split('/(?=[A-Z])/',lcfirst($method))));
-    
+            }, preg_split('/(?=[A-Z])/', lcfirst($method))));
 
-            $trace = debug_backtrace(limit:1)[0];
-            $arguments[1] = self::pathResolver($arguments[1], $trace['file']??'');
+
+            $trace = debug_backtrace(limit: 1)[0];
+            $arguments[1] = self::pathResolver($arguments[1], $trace['file'] ?? '');
             return self::getInstance()->registerMenu($module_name, ...$arguments);
         }
     }
