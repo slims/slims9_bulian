@@ -178,15 +178,12 @@ switch ($action) {
   case 'do-install':
   case 're-install':
     try {
+      define('ACTION', 'install');
       $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass']);
       // create if not exist
       if (!$slims->isDatabaseExist($_SESSION['db_name'])) $slims->createDatabase($_SESSION['db_name']);
       // use database
       $slims->getDb()->query("USE `{$_SESSION['db_name']}`");
-      // write configuration file
-      $slims->createConfigFile($_SESSION);
-      // write environment file
-      $slims->createEnvFile();
       // check if database already have table for make sure this database is empty
       foreach ($slims->getTables() as $table) {
         if ($table === 'biblio') {
@@ -226,6 +223,10 @@ switch ($action) {
 
       if (count($error) > 0) die(json_encode(['status' => false, 'message' => $error, 'code' => 5005]));
       // success
+      // write configuration file
+      $slims->createConfigFile($_SESSION);
+      // write environment file
+      $slims->createEnvFile();
       die(json_encode(['status' => true, 'message' => 'SLiMS Successful be installed']));
     } catch (Exception $exception) {
       if ($exception->getCode() === 5000 || $exception->getCode() === 5001) {
@@ -240,6 +241,7 @@ switch ($action) {
   case 're-upgrade':
     sleep(1);
     try {
+      define('ACTION', 'upgrade');
       $slims->createConnection($_SESSION['db_host'], $_SESSION['db_port'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
       // write configuration file
       $slims->createConfigFile($_SESSION);

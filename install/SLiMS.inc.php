@@ -436,7 +436,8 @@ SQL;
             $_SESSION['success_quries']['regular'][$role_number] = [];
           }
 
-          if (in_array($type . ' ' . $order, $_SESSION['success_quries']['regular'][$role_number])) continue;
+          // no repetition for success query except in install action
+          if (ACTION !== 'install' && in_array($type . ' ' . $order, $_SESSION['success_quries']['regular'][$role_number])) continue;
 
           try {
             if (isset($_POST['engine']) && $_POST['engine'] !== 'MyISAM') 
