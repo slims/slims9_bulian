@@ -1355,6 +1355,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
     $datagrid->debug = true;
 
+    // execute registered hook
+    Plugins::run(Plugins::BIBLIOGRAPHY_BEFORE_DATAGRID_OUTPUT);
+
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
