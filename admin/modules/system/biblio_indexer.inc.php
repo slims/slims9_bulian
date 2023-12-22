@@ -62,6 +62,8 @@ class biblio_indexer
 	 */
 	public function createFullIndex($bool_empty_first = false)
 	{
+		global $sysconf;
+
 		if ($bool_empty_first) {
 			$this->emptyingIndex();
 		}
@@ -77,7 +79,9 @@ class biblio_indexer
 			while ($rb_id = $rec_bib->fetch_row()) {
 				$biblio_id = $rb_id[0];
 				$index = $this->makeIndex($biblio_id);
-				if (config('index.word')) $this->makeIndexWord($biblio_id);
+				if (isset($sysconf['index']) && ($sysconf['index']['word']??false)) {
+					$this->makeIndexWord($biblio_id);
+				}
 			}
 			// get end time
 			$_end = function_exists('microtime') ? microtime(true) : time();

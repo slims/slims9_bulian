@@ -501,12 +501,66 @@ $('document').ready(function() {
   // loader
   if ($(this).registerLoader !== undefined) $(this).registerLoader();
 
+  // use filter function to submit form
+  $('#search-filter').submit(e => {
+    e.preventDefault()
+    filter()
+  })
+
   // Filter and sort
   if ($.isFunction($.fn.ionRangeSlider)) {
-    $(".input-slider").ionRangeSlider({
-        onFinish: function (data) {
-            filter()
-        },
+    let instance,
+        $inputFrom = $(".js-input-from"),
+        $inputTo = $(".js-input-to"),
+        $inputSlider = $(".input-slider");
+    let min = $inputSlider.data('min'),
+        max = $inputSlider.data('max'),
+        from = 0,
+        to = 0;
+    
+    const updateInputs = (data) => {
+      from = data.from;
+      to = data.to;
+    
+      $inputFrom.prop("value", from);
+      $inputTo.prop("value", to);
+    }
+
+    $inputSlider.ionRangeSlider({
+        onStart: updateInputs,
+        onChange: updateInputs
+    });
+
+    instance = $inputSlider.data("ionRangeSlider");
+
+    $inputFrom.on("input", function() {
+      var val = $(this).prop("value");
+    
+      // validate
+      if (val < min) {
+        val = min;
+      } else if (val > to) {
+        val = to;
+      }
+    
+      instance.update({
+        from: val
+      });
+    });
+    
+    $inputTo.on("input", function() {
+      var val = $(this).prop("value");
+    
+      // validate
+      if (val < from) {
+        val = from;
+      } else if (val > max) {
+        val = max;
+      }
+    
+      instance.update({
+        to: val
+      });
     });
   }
 

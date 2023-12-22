@@ -159,6 +159,15 @@ HTML;
                 case 'range':
                     list($from, $to) = is_null($value) ? [$filter['from'], $filter['to']] : explode(';', $value);
                     $str .= <<<HTML
+                        <div class="row d-flex justify-content-between align-items-center mb-4">
+                            <div class="flex-1">
+                                <input type="text" class="form-control js-input-from" value="0" />
+                            </div>
+                            <div class="px-3">To</div>
+                            <div class="flex-1">
+                                <input type="text" class="form-control js-input-to" value="0" />
+                            </div>
+                        </div>
                         <input type="text" class="input-slider" name="{$filter['name']}" value=""
                                data-type="double"
                                data-min="{$filter['min']}"
@@ -215,6 +224,8 @@ HTML;
             $str .= '</div></div></li>';
         }
         $str .= '</ul>';
+
+        $str .= '<div class="my-4"><button type="submit" class="btn btn-primary w-100">'.__('Apply Filter').'</button></div>';
 
         # prepare to sort
         $str .= '<input id="sort" name="sort" type="hidden" value="0" />';
