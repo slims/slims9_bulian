@@ -11,18 +11,15 @@
 
 namespace Symfony\Component\VarDumper\Caster;
 
-use Symfony\Component\VarDumper\Cloner\Stub;
-
 /**
+ * Represents an uninitialized property.
+ *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class DsPairStub extends Stub
+class UninitializedStub extends ConstStub
 {
-    public function __construct(mixed $key, mixed $value)
+    public function __construct(\ReflectionProperty $property)
     {
-        $this->value = [
-            Caster::PREFIX_VIRTUAL.'key' => $key,
-            Caster::PREFIX_VIRTUAL.'value' => $value,
-        ];
+        parent::__construct('?'.($property->hasType() ? ' '.$property->getType() : ''), 'Uninitialized property');
     }
 }

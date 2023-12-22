@@ -14,15 +14,14 @@ namespace Symfony\Component\VarDumper\Caster;
 use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
- * @author Nicolas Grekas <p@tchwork.com>
+ * Represents any arbitrary value.
+ *
+ * @author Alexandre Daubois <alex.daubois@gmail.com>
  */
-class DsPairStub extends Stub
+class ScalarStub extends Stub
 {
-    public function __construct(mixed $key, mixed $value)
+    public function __construct(mixed $value)
     {
-        $this->value = [
-            Caster::PREFIX_VIRTUAL.'key' => $key,
-            Caster::PREFIX_VIRTUAL.'value' => $value,
-        ];
+        $this->value = $value;
     }
 }

@@ -86,4 +86,4 @@ include "symfony/polyfill-mbstring/bootstrap.php";
 include "nesbot/carbon/legacy.func.php";
 // Var-dumper
 // Load the global dump() function
-include 'symfony/var-dumper/Resources/functions/dump.php';
+// include 'symfony/var-dumper/Resources/functions/dump.php';

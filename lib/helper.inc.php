@@ -32,6 +32,7 @@ use SLiMS\Url;
 use SLiMS\Http\Redirect;
 use SLiMS\Session\Flash;
 use SLiMS\Polyglot\Memory;
+use SLiMS\Debug\VarDumper;
 
 if (!function_exists('config')) {
     /**
@@ -343,5 +344,62 @@ if (!function_exists('writeLog')) {
     function writeLog(string $type, string $value_id, string $location, string $message, string $submod = '', string $action = '')
     {
         Factory::write($type, $value_id, $location, $message, $submod, $action);
+    }
+}
+
+if (!function_exists('dump')) {
+    /**
+     * @author Nicolas Grekas <p@tchwork.com>
+     */
+    function dump($var, ...$moreVars)
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $label = ($trace['file']??'') . ':' . ($trace['line']);
+        VarDumper::dump($var, $label);
+
+        foreach ($moreVars as $v) {
+            VarDumper::dump($v, 'Hai');
+        }
+
+        if (1 < func_num_args()) {
+            return func_get_args();
+        }
+
+        return $var;
+    }
+}
+
+if (!function_exists('dd')) {
+    /**
+     * @return never
+     */
+    function dd(...$vars)
+    {
+        if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && !headers_sent()) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $label = ($trace['file']??'') . ':' . ($trace['line']);
+        foreach ($vars as $v) {
+            VarDumper::dump($v, $label);
+        }
+
+        exit(1);
+    }
+}
+
+if (!function_exists('debug'))
+{
+    /**
+     * Helper to verbosing 
+     * debug process
+     * @return void
+     */
+    function debug()
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $label = ($trace['file']??'') . ':' . ($trace['line']);
+        if (ENVIRONMENT == 'development') foreach(func_get_args() as $arg) VarDumper::dump($arg, $label);
     }
 }
