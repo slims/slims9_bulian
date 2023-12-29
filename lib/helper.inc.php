@@ -403,3 +403,10 @@ if (!function_exists('debug'))
         if (ENVIRONMENT == 'development') foreach(func_get_args() as $arg) VarDumper::dump($arg, $label);
     }
 }
+
+if (!function_exists('xssFree')) {
+    function xssFree(string $content)
+    {
+        return simbio_security::xssFree($content);
+    }
+}

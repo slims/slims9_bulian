@@ -38,24 +38,23 @@ if ($envExists) require $envFile;
  *
  * In production mode, the system error message will be disabled
  */
-define('ENVIRONMENT', $env??'unvailable');
+define('ENVIRONMENT', $env??'unavailable');
 
-switch (ENVIRONMENT) {
-  case 'development':
-    @error_reporting(-1);
-    @ini_set('display_errors', true);
-    break;
-  case 'production':
-    @ini_set('display_errors', false);
-    @error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-    break;
-  default:
-    if (file_exists(__DIR__ . '/config/database.php') && php_sapi_name() !== 'cli') {
-      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-      include __DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'serviceunavailable.php';
-      exit(1); // EXIT_ERROR
-    }
+if (ENVIRONMENT === 'unavailable' && file_exists(__DIR__ . '/config/database.php') && php_sapi_name() !== 'cli') {
+  header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+  include __DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'serviceunavailable.php';
+  exit(1); // EXIT_ERROR
 }
+
+// require composer library
+if (file_exists(__DIR__ . '/vendor/autoload.php')) require __DIR__ . '/vendor/autoload.php';
+
+// SLiMS Autoload
+require __DIR__ . '/lib/autoload.php';
+
+// Error handler
+require __DIR__ . '/lib/errorHandler.inc.php';
+registerSlimsHandler();
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
@@ -130,9 +129,6 @@ define('BINARY_FOUND', 1);
 define('COMMAND_SUCCESS', 0);
 define('COMMAND_FAILED', 2);
 
-// require composer library
-if (file_exists(SB . 'vendor/autoload.php')) require SB . 'vendor/autoload.php';
-require LIB . 'autoload.php';
 // simbio main class inclusion
 require SIMBIO.'simbio.inc.php';
 // simbio security class
