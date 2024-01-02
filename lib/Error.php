@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-12-29 10:02:23
- * @modify date 2023-12-29 10:02:23
+ * @modify date 2023-12-30 14:56:38
  * @license GPL-3.0 
  * @desc [description]
  */
@@ -49,23 +49,33 @@ final class Error
         return false;
     }
 
+    private function isCli()
+    {
+        return php_sapi_name() === 'cli';
+    }
+
     private function sendAsJson()
     {
-        exit(Json::stringify([
+        return Json::stringify([
             'status' => false,
             'message' => $this->info['message']??'-',
             'file' => $this->info['path']??'-',
             'line' => $this->info['line']??'-',
             'traces' => $this->traces
-        ])->withHeader());
+        ]);
     }
 
     private function parse()
     {
         global $sysconf;
 
-        if ($this->isJsonRequest()) {
-            $this->sendAsJson();
+        if ($this->isJsonRequest() || ($isCli = $this->isCli())) {
+            $json = $this->sendAsJson();
+
+            if (!isset($isCli)) $json->withHeader();
+            else $json->prettyPrint();
+            
+            exit($json);
         }
 
         $title = $this->info['message'];

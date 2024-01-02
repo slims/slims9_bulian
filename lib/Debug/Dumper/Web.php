@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SLiMS\Debug\Handler;
+namespace SLiMS\Debug\Dumper;
 
 use Symfony\Component\VarDumper\Dumper\AbstractDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;

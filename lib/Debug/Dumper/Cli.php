@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
- namespace SLiMS\Debug\Handler;
+ namespace SLiMS\Debug\Dumper;
 
 use Symfony\Component\VarDumper\Cloner\Cursor;
 use Symfony\Component\VarDumper\Cloner\Stub;
@@ -46,7 +46,7 @@ class Cli extends CliDumper
     {
         if ($this->colors) {
             $this->line = sprintf("\033[%sm%s\033[m", $this->styles['default'], $this->line);
-            $this->line = str_replace('^', PHP_EOL, $this->line);
+            // $this->line = str_replace('^', PHP_EOL, $this->line);
         }
         parent::dumpLine($depth);
     }

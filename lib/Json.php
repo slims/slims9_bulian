@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-07-29 13:05:34
- * @modify date 2022-11-15 17:07:17
+ * @modify date 2023-12-30 14:55:12
  * @license GPLv3
  * @desc : 
  * - Manage & manipulation JSON en|de-code process
@@ -248,9 +248,10 @@ class Json implements IteratorAggregate,Countable
     {
         $this->process('encode');
         $output = '';
-        if ($this->option === JSON_PRETTY_PRINT) $output .= '<pre>';
+        if (($isPrettry = $this->option === JSON_PRETTY_PRINT) && ($onWeb = php_sapi_name() != 'cli')) $output .= '<pre>';
         $output .= $this->attributes;
-        if ($this->option === JSON_PRETTY_PRINT) $output .= '</pre>';
+        if ($isPrettry && $onWeb) $output .= '</pre>';
+        else $output .= PHP_EOL;
         
         return $output;
     }

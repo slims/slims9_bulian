@@ -38,6 +38,7 @@ use Symfony\Component\Finder\Finder;
                         extract($trace);
                         $type = $function??$class??'Ulknown';
                         $file = $file??'';
+                        $line = $line??'?';
                         echo <<<HTML
                         <div class="d-block col-12 my-2">
                             <strong class="d-block mb-2">#{$order} {$type}</strong></td>

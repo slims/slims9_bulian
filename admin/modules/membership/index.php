@@ -302,7 +302,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($insert) {
 
                 // insert custom data
-                if ($custom_data) {
+                if (isset($custom_data)) {
                   $custom_data['member_id'] = $data['member_id'];
                   @$sql_op->insert('member_custom', $custom_data);
                 }
