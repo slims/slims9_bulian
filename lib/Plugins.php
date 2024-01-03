@@ -15,6 +15,7 @@ use SLiMS\SearchEngine\Engine;
 use SLiMS\Session\Factory;
 use Symfony\Component\Finder\Finder;
 use stdClass;
+use Exception;
 
 class Plugins
 {
@@ -521,18 +522,16 @@ class Plugins
 
     public function execute($hook, $params = [])
     {
-        try {
-            sort($this->hooks[$hook]);
-            foreach ($this->hooks[$hook] ?? [] as $hook) {
-                list($callback, $handler) = $hook;
-                if (is_callable($callback)) call_user_func_array($callback, array_values($params));
-                if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) {
-                    call_user_func_array([$handlerInstance, $callback], array_values($params));
-                }
+        $hook = $this->hooks[$hook]??[];
+        sort($hook);
+        foreach ($hook ?? [] as $hook) {
+            list($callback, $handler) = $hook;
+            if (is_callable($callback)) call_user_func_array($callback, array_values($params));
+            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) {
+                call_user_func_array([$handlerInstance, $callback], array_values($params));
             }
-        } catch (\Throwable $th) {
-            //throw $th;
         }
+        
     }
 
     /**
