@@ -206,10 +206,11 @@ final class Query implements IteratorAggregate,Countable
     public function lastInsertId():int
     {
         try {
-            $this->statement = $this->getCon()->prepare($this->sql, $this->options);
+            $con = $this->getCon();
+            $this->statement = $con->prepare($this->sql, $this->options);
             $this->statement->execute($this->params);
 
-            return $this->getCon()->lastInsertId();
+            return $con->lastInsertId();
         } catch (\PDOException $e) {
             $this->error = $e->getMessage();
             return 0;
