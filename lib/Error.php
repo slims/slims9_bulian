@@ -111,7 +111,7 @@ final class Error
 
     public function render()
     {
-        @header('HTTP/1.1 500 Error', false, 500);
+        if(!headers_sent()) header('HTTP/1.1 500 Error', true, 500);
         $this->parse();
     }
 }
