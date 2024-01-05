@@ -1,6 +1,7 @@
 <?php
 namespace SLiMS\Log\Handler;
 
+use utility;
 use SLiMS\DB;
 
 class Systemlog extends Contract
@@ -9,7 +10,7 @@ class Systemlog extends Contract
 
     public function write(string $type, string $value_id, string $location, string $message, string $submod='', string $action='')
     {
-        \utility::writeLogs(DB::getInstance('mysqli'), $type, $value_id, $location, $message, $submod, $action);
+        utility::writeLogs(DB::getInstance('mysqli'), $type, $value_id, $location, $message, $submod, $action);
     }
 
     public function read(?Object $datagrid = null): Contract
