@@ -211,7 +211,7 @@ function showFilesize($obj_db,$array_data) {
       $factor = floor((strlen($file) - 1) / 3);
       if ($factor > 0) 
         $sz = 'KMGT';
-        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
+        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . $sz[((int)$factor - 1)] . 'B';
         $str .= '&nbsp;<a class="btn btn-sm btn-info pull-right" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.__('Download').'</a>';
     }
   return $str;

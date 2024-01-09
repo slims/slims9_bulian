@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-05-27 21:37:29
- * @modify date 2023-06-22 14:44:39
+ * @modify date 2024-01-06 18:29:58
  * @license GPLv3
  * @desc [description]
  */
@@ -118,14 +118,15 @@ final class Memory
      */
     public static function find(string $content): string
     {
-        $findInDictionary = self::getInstance()->dictionary->find(null, $content);
-        $additionalWords = self::getInstance()->findFromAdditionalWords($content);
-        return $findInDictionary?->getTranslation()??$additionalWords??$content;
+        $static = self::getInstance();
+        $findInDictionary = $static->dictionary->find(null, $content);
+        return $findInDictionary?->getTranslation()??$static->findFromAdditionalWords($content)??$content;
     }
 
     public function findFromAdditionalWords(string $content)
     {
-        return $this->additionalWords[$content]??null;
+        $locale = $this->additionalWords[$this->locale]??null;
+        return $locale[$content]??null;
     }
 
     /**
