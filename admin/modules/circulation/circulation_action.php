@@ -27,7 +27,7 @@ if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
 }
 // key to get full database access
-@define('DB_ACCESS', 'fa');
+if (!defined('DB_ACCESS')) define('DB_ACCESS', 'fa');
 
 if (!defined('DIRECT_INCLUDE')) {
     // main system configuration
