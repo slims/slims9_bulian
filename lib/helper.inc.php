@@ -358,7 +358,7 @@ if (!function_exists('dump')) {
         VarDumper::dump($var, $label);
 
         foreach ($moreVars as $v) {
-            VarDumper::dump($v, 'Hai');
+            VarDumper::dump($v);
         }
 
         if (1 < func_num_args()) {
@@ -381,8 +381,8 @@ if (!function_exists('dd')) {
 
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
         $label = ($trace['file']??'') . ':' . ($trace['line']);
-        foreach ($vars as $v) {
-            VarDumper::dump($v, $label);
+        foreach ($vars as $seq => $v) {
+            VarDumper::dump($v, ($seq === 0 ? $label : ''));
         }
 
         exit(1);
