@@ -79,7 +79,7 @@ class Schema
         
         try {
             $createQuery = $bluePrint->create($tableName);
-            self::getInstance()->verbose = $createQuery;
+            $this->verbose = $createQuery;
             if (!self::$debug) self::$connection->query($createQuery);
         } catch (PDOException $e) {
             // debuging
@@ -108,7 +108,7 @@ class Schema
 
         try {
             $alterQuery = $bluePrint->alter($tableName);
-            self::getInstance()->verbose = $alterQuery;
+            $this->verbose = $alterQuery;
             if (!self::$debug) self::$connection->query($alterQuery);
         } catch (PDOException $e) {
             // debuging
