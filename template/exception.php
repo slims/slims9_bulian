@@ -1,4 +1,5 @@
 <?php
+use SLiMS\Url;
 use Symfony\Component\Finder\Finder;
 
 ?>
@@ -6,7 +7,7 @@ use Symfony\Component\Finder\Finder;
 <html>
     <head>
         <title><?= $title ?></title>
-        <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="<?= Url::getSlimsBaseUri('css/bootstrap.min.css') ?>" rel="stylesheet"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <style>
             * {
