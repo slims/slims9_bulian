@@ -805,7 +805,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         // empty pattern
         $pattern_options = array(array('', '-- ' . __('Choose pattern') . ' --'));
         $pattern_d = $pattern_q->fetch_row();
-        $val = @unserialize($pattern_d[0]);
+        $val = unserialize($pattern_d[0]??'');
         if (!empty($val)) {
             foreach ($val as $v) {
                 $pattern_options[] = array($v, $v);
