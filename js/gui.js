@@ -348,8 +348,11 @@ $('document').ready(function() {
 	var ajaxContainer = $('#mainContent,#pageContent');
     // for submenu
     // remove other menu class
-    $('.subMenuItem').removeClass('curModuleLink');
-    var subMenu = anchor.addClass('curModuleLink');
+    if (anchor[0].classList[0] == 'subMenuItem')
+    {
+      $('.subMenuItem').removeClass('curModuleLink');
+      var subMenu = anchor.addClass('curModuleLink');
+    }
     // get anchor href
     var url = anchor.attr('href');
     var postData = anchor.attr('postdata');
