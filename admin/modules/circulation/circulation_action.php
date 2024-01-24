@@ -471,6 +471,10 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         // clear previous sessions
         $_SESSION['temp_loan'] = array();
         $memberID = trim(preg_replace('@\s*(<.+)$@i', '', $_POST['memberID']));
+
+        // Hook new transaction
+        Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_START_TRANSACTION);
+
         // write log
         writeLog('member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' start transaction with member ('.$memberID.')', 'Loan', 'Started');
     }
