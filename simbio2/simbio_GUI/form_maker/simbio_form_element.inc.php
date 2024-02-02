@@ -193,14 +193,15 @@ class simbio_fe_checkbox extends abs_simbio_form_element
     $_buffer = '';
     if ($_elmnt_num <= $_row_column) {
       foreach ($this->element_options as $idx => $_cbox) {
+        $uniqId = md5($this->element_name . $_cbox[0]);
         if (is_array($this->element_value)) {
-          $_buffer .= '<div '.$_helptext.'><input type="checkbox" id="simbio-checkbox-'.$idx.'" name="'.$this->element_name.'[]"'
+          $_buffer .= '<div '.$_helptext.'><input type="checkbox" id="simbio-checkbox-'.$uniqId.'" name="'.$this->element_name.'[]"'
             .' value="'.$_cbox[0].'" style="border: 0;" '.(in_array($_cbox[0], $this->element_value)?'checked':'').$_disabled.' />'
-            .' <label for="simbio-checkbox-'.$idx.'">'.$_cbox[1]."</label></div>\n";
+            .' <label for="simbio-checkbox-'.$uniqId.'">'.$_cbox[1]."</label></div>\n";
         } else {
-          $_buffer .= '<div '.$_helptext.'><input type="checkbox" id="simbio-checkbox-'.$idx.'" name="'.$this->element_name.'[]"'
+          $_buffer .= '<div '.$_helptext.'><input type="checkbox" id="simbio-checkbox-'.$uniqId.'" name="'.$this->element_name.'[]"'
             .' value="'.$_cbox[0].'" style="border: 0;" '.(($_cbox[0] == $this->element_value)?'checked':'').$_disabled.' />'
-            .' <label for="simbio-checkbox-'.$idx.'">'.$_cbox[1]."</label></div>\n";
+            .' <label for="simbio-checkbox-'.$uniqId.'">'.$_cbox[1]."</label></div>\n";
         }
       }
     } else {
@@ -210,14 +211,15 @@ class simbio_fe_checkbox extends abs_simbio_form_element
       foreach ($_column_array as $_chunked_options) {
         $_buffer .= '<td valign="top">'."\n";
         foreach ($_chunked_options as $idx => $_cbox) {
+          $uniqId = md5($this->element_name . $_cbox[0]);
           if (is_array($this->element_value)) {
-            $_buffer .= '<div><input type="checkbox" id="simbio-checkbox-'.$idx.'" name="'.$this->element_name.'[]"'
+            $_buffer .= '<div><input type="checkbox" id="simbio-checkbox-'.$uniqId.'" name="'.$this->element_name.'[]"'
               .' value="'.$_cbox[0].'" style="border: 0;" '.(in_array($_cbox[0], $this->element_value)?'checked':'').$_disabled.' />'
-              .' <label for="simbio-checkbox-'.$idx.'">'.$_cbox[1]."</label></div>\n";
+              .' <label for="simbio-checkbox-'.$uniqId.'">'.$_cbox[1]."</label></div>\n";
           } else {
-            $_buffer .= '<div><input type="checkbox" id="simbio-checkbox-'.$idx.'" name="'.$this->element_name.'[]"'
+            $_buffer .= '<div><input type="checkbox" id="simbio-checkbox-'.$uniqId.'" name="'.$this->element_name.'[]"'
               .' value="'.$_cbox[0].'" style="border: 0;" '.(($_cbox[0] == $this->element_value)?'checked':'').$_disabled.' />'
-              .' <label for="simbio-checkbox-'.$idx.'">'.$_cbox[1]."</label></div>\n";
+              .' <label for="simbio-checkbox-'.$uniqId.'">'.$_cbox[1]."</label></div>\n";
           }
         }
         $_buffer .= '</td>'."\n";
