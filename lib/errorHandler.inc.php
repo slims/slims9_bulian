@@ -38,7 +38,7 @@ if (!function_exists('slimsExceptionHandler'))
             'path' => $exception->getFile(),
             'line' => $exception->getLine(),
             'class' => $exception::class,
-        ], $exception->getTrace())->render();
+        ], $exception->getTrace())->render()->send(inEnv: ENVIRONMENT);
     }
 }
 
@@ -55,7 +55,7 @@ if (!function_exists('slimsErrorHandler'))
                 'message' => $message,
                 'path' => $filepath,
                 'line' => $line
-            ], debug_backtrace())->render();
+            ], debug_backtrace())->render()->send(inEnv: ENVIRONMENT);
         }
     }
 }

@@ -1,7 +1,6 @@
 <?php
 use SLiMS\Url;
 use Symfony\Component\Finder\Finder;
-
 ?>
 <!DOCTYPE Html>
 <html>
@@ -30,12 +29,11 @@ use Symfony\Component\Finder\Finder;
                     <span>in <strong><?= $path ?></strong> on line <strong><?= $line ?></strong></span>
                 </div>
             </div>
-            <?php if ($traces): ?>
             <div class="row mt-4">
                 <div class="rounded bg-white d-block mx-auto col-11 p-5">
                     <h4>Traces</h4>
                     <?php
-                    foreach ($traces as $order => $trace) {
+                    foreach ($traces??[] as $order => $trace) {
                         extract($trace);
                         $type = $function??$class??'Ulknown';
                         $file = $file??'';
@@ -53,7 +51,7 @@ use Symfony\Component\Finder\Finder;
                     ?>
                 </div>
             </div>
-            <?php endif; ?>
+            <?php if (defined('SLIMS_DEBUG_FULL')): ?>
             <div class="row mt-4">
                 <div class="rounded bg-white d-block mx-auto col-11 p-5">
                     <h4>Config</h4>
@@ -95,6 +93,7 @@ use Symfony\Component\Finder\Finder;
                     </table>
                 </div>
             </div>
+            <?php endif; ?>
         </section>
     </body>
 </html>

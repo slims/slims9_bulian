@@ -76,16 +76,20 @@ class Config
     {
         if (self::getFile('database') === null) return;
         
-        $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
-        while ($data = $query->fetch(PDO::FETCH_OBJ)) {
-            $value = @unserialize($data->setting_value);
-            if (is_array($value)) {
-                foreach ($value as $id => $current_value) {
-                    $this->configs[$data->setting_name][$id] = $current_value;
+        try {
+            $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
+            while ($data = $query->fetch(PDO::FETCH_OBJ)) {
+                $value = @unserialize($data->setting_value);
+                if (is_array($value)) {
+                    foreach ($value as $id => $current_value) {
+                        $this->configs[$data->setting_name][$id] = $current_value;
+                    }
+                } else {
+                    $this->configs[$data->setting_name] = stripslashes($value??'');
                 }
-            } else {
-                $this->configs[$data->setting_name] = stripslashes($value??'');
             }
+        } catch (\Throwable $e) {
+            // throw new \Exception($e->getMessage());
         }
     }
 
