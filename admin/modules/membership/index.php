@@ -374,6 +374,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if (!$sql_op->delete('member', "member_id='$itemID'")) {
                 $error_num++;
             } else {
+                // delete custom data
+                $sql_op->delete('member_custom', "member_id='$itemID'");
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
             }

@@ -565,6 +565,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 //delete serial data
                 $sql_op->delete('serial', "biblio_id=$itemID");
 
+                //delete custom data
+                $sql_op->delete('biblio_custom', "biblio_id=$itemID");
+
                 // add to http query for UCS delete
                 $http_query .= "itemID[]=$itemID&";
             }
