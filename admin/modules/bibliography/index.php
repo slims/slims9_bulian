@@ -1113,7 +1113,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     
     // get advance custom field based on plugin
     $js = '';
-    Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d]);
+    Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
