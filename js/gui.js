@@ -185,6 +185,11 @@ jQuery.extend({
 
 /* AJAX plugins for SLiMS */
 jQuery.fn.registerAdminEvents = function(params) {
+  // enable loader on form submit
+  $('form[target=submitExec]').submit(() => {
+    $('.loader').show()
+  })
+
   // set some options
   var options = {
     ajaxifyLink: true,
