@@ -291,7 +291,7 @@ form.clock {
                 content: "ᓚᘏᗢ";
                 z-index: 0;
                 color: rgb(71 85 105);
-                animation: walk 5s ease-in-out infinite;
+                animation: walk 8s ease-in-out infinite;
             }
         }
     }
@@ -350,11 +350,11 @@ form.clock {
 
     /* Pause in the middle */
     75% {
-        transform: translateX(340px);
+        transform: translateX(80px);
     }
 
     80% {
-        transform: translateX(340px) scaleX(-1);
+        transform: translateX(100px) scaleX(-1);
     }
 
     /* Faster movement with tilt */
