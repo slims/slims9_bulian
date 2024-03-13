@@ -73,16 +73,20 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // initialize result buffer
       $_buffer = '';
 
+      // for debugging purpose only
+      if (ENVIRONMENT === 'development') {
+        $_buffer .= '<details class="debug debug-empty">' . PHP_EOL;
+        $_buffer .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
+        $_buffer .= '<section><iframe id="submitExec" name="submitExec"></iframe></section>' . PHP_EOL;
+        $_buffer .= '</details>' . PHP_EOL;
+      } else {
+        // hidden iframe for form executing
+        $_buffer .= '<iframe name="submitExec" class="noBlock" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>';
+      }
+
       // check if form tag is included
       if ($this->with_form_tag) {
           $this->submit_target = 'submitExec';
-          // for debugging purpose only
-          if (ENVIRONMENT === 'development') 
-          {
-            $_buffer .= '<small class="mx-1"># Debug</small>|<button id="enlargeBox" class="btn btn-link mx-1 p-0">' . __('Enlarge Debug Box') . '</button>';
-            $_buffer .= '<iframe id="submitExec" name="submitExec" class="border border-secondary w-100" style="height: 50px;"></iframe>';
-            $_buffer .= '<script>$(\'#enlargeBox\').click(function() {$(\'#submitExec\').attr(\'style\', \'height: 500px;\')})</script>';
-          }
           $_buffer .= $this->startForm()."\n";
       }
 

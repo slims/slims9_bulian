@@ -188,7 +188,24 @@ jQuery.fn.registerAdminEvents = function(params) {
   // enable loader on form submit
   $('form[target=submitExec]').submit(() => {
     $('.loader').show()
+    return true;
   })
+
+  // add event to iframe debug
+  const iframe = document.querySelector('iframe#submitExec')
+  if (iframe) {
+    iframe.onload = () => {
+      if (
+        iframe.contentDocument && 
+        iframe.contentDocument.body && 
+        iframe.contentDocument.body.innerHTML.trim() !== ""
+      ) {
+        $('details.debug').removeClass('debug-empty').prop('open', true)
+        const iframeWin = iframe.contentWindow || iframe.contentDocument.defaultView
+        iframe.height = iframeWin.document.body.scrollHeight + "px";
+      }
+    }
+  }
 
   // set some options
   var options = {
