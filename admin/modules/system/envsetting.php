@@ -68,6 +68,7 @@ if (isset($_POST['saveData']))
     utility::jsToastr(__('Success'), __('Configuration has been saved!'), 'success');
 
     // Redirect
+    sleep(3);
     redirect()->simbioAJAX(timeout: 0, url: $_SERVER['PHP_SELF']);
     exit;
 }

@@ -270,3 +270,97 @@ form.clock {
 [name="keywords"],[name="quickReturnID"]{
     margin-left: 8px;
 }
+
+.debug {
+    summary {
+        padding: 4px 8px;
+        background-color: rgb(148 163 184);
+    }
+    section, iframe {
+        background-color: rgb(203 213 225);
+        min-height: 1px;
+    }
+
+    &.debug-empty {
+        section {
+            position: relative;
+            &::after {
+                position: absolute;
+                bottom: 0;
+                left: 8px;
+                content: "ᓚᘏᗢ";
+                z-index: 0;
+                color: rgb(71 85 105);
+                animation: walk 8s ease-in-out infinite;
+            }
+        }
+    }
+}
+
+.ping {
+    position: relative;
+    &::after,
+    &::before {
+        --ping-size: 12px;
+        content: "";
+        position: absolute;
+        top: calc(50% - (var(--ping-size) / 2));
+        right: -16px;
+        width: var(--ping-size);
+        height: var(--ping-size);
+        background-color: rgb(220 38 38);
+        border-radius: 50%;
+        opacity: 0.75;
+    }
+
+    &::after {
+        z-index: 2;
+    }
+
+    &::before {
+        z-index: 1;
+        animation: ping 1.2s ease-in-out infinite;
+    }
+}
+
+@keyframes ping {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes walk {
+    0% {
+        transform: translateX(0px);
+    }
+
+    25% {
+        transform: translateX(5px) rotateZ(-5deg);
+    }
+
+    /* Slow movement with slight tilt */
+    50% {
+        transform: translateX(0px);
+    }
+
+    /* Pause in the middle */
+    75% {
+        transform: translateX(80px);
+    }
+
+    80% {
+        transform: translateX(100px) scaleX(-1);
+    }
+
+    /* Faster movement with tilt */
+    100% {
+        transform: translateX(0px) scaleX(-1);
+    }
+
+    /* Reset position and rotation */
+}
