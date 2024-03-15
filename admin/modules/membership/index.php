@@ -144,6 +144,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           }
         }
 
+        // Register advance custom field data
+        Plugins::getInstance()->execute(Plugins::MEMBERSHIP_CUSTOM_FIELD_DATA, ['custom_data' => &$custom_data]);
+
         $data['member_id'] = $dbs->escape_string($memberID);
         $data['member_name'] = $dbs->escape_string($memberName);
         $data['member_type_id'] = (integer)$_POST['memberTypeID'];
@@ -583,6 +586,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         }
     }
 
+    // get advance custom field based on plugin
+    $js = '';
+    Plugins::getInstance()->execute(Plugins::MEMBERSHIP_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
+
     // member is_pending
     $form->addCheckBox('isPending', __('Pending Membership'), array( array('1', __('Yes')) ), $rec_d['is_pending']??'');
     // member photo
@@ -690,6 +697,13 @@ $(document).ready(function() {
         let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
     });
+
+    <?php
+    if (isset($js) && !empty($js))
+    {
+        echo $js;
+    }
+    ?>
 });
 </script>
 <?php

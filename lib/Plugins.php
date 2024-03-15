@@ -44,6 +44,8 @@ class Plugins
     const MEMBERSHIP_AFTER_UPDATE = 'membership_after_update';
     const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
     const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
+    const MEMBERSHIP_CUSTOM_FIELD_DATA = 'membership_custom_field_data';
+    const MEMBERSHIP_CUSTOM_FIELD_FORM = 'membership_custom_field_form';
     const OVERDUE_NOTICE_INIT = 'overduenotice_init';
     const DUEDATE_NOTICE_INIT = 'duedate_init';
     const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
