@@ -84,6 +84,10 @@ $imagesDisk = Storage::images();
     <div class="per_title">
       <h2><?php echo __('System Configuration'); ?></h2>
     </div>
+    <div class="alert alert-warning m-0">
+      <strong><?= __('Your site is not register') ?></strong>&nbsp;&nbsp;
+      <a href="<?= MWB ?>system/register_site.php" class="btn btn-secondary"><?= __('Register') ?></a>
+    </div>
     <div class="infoBox">
       <?php echo __('Modify global application preferences'); ?>
     </div>
