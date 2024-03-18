@@ -10,7 +10,6 @@ use SLiMS\Config;
 use SLiMS\Json;
 use SLiMS\Http\Client;
 use SLiMS\Url;
-use Ramsey\Uuid\Uuid;
 
 define('INDEX_AUTH', '1');
 require __DIR__ . '/../../../sysconfig.inc.php';
@@ -22,7 +21,6 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 
 if (isset($_POST['saveData'])) {
     $data = array_merge([
-        'uid' => Uuid::uuid4()->toString(),
         'url' => (string)Url::getSlimsBaseUri(),
         'library_name' => config('library_name'),
         'library_subname' => config('library_subname'),
@@ -33,15 +31,15 @@ if (isset($_POST['saveData'])) {
     sleep(3);
 
     // store to SLiMS Analytic
-    // try {
-    //     Client::withHeaders([
-    //         'Content-Type' => 'application/json'
-    //     ])->withBody(
-    //         (string)Json::stringify($data)
-    //     )->post('https://analytics.slims.web.id/api/v1/register');
-    // } catch (\Throwable $th) {
-    //     //throw $th;
-    // }
+    try {
+        Client::withHeaders([
+            'Content-Type' => 'application/json'
+        ])->withBody(
+            (string)Json::stringify($data)
+        )->post('https://12.12.12.2/?p=api/v1/register');
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
 
     redirect()->simbioAJAX(Url::getSelf());
 }
@@ -55,8 +53,8 @@ if (isset($_POST['saveData'])) {
     <div class="p-4">
         <p><?= __('We\'d love to stay in touch and provide you with important things for your SLiMS site! By registering:') ?></p>
         <ul>
-            <li><?= __('You are contributing to our Moodle statistics of the worldwide community, which help us improve Moodle and our community sites.') ?></li>
-            <li><?= __('If you wish, your site can be included in the list of registered Moodle sites in your country.') ?></li>
+            <li><?= __('You are contributing to our SLiMS statistics of the worldwide community, which help us improve SLiMS and our community sites.') ?></li>
+            <li><?= __('If you wish, your site can be included in the list of registered SLiMS sites in your country.') ?></li>
         </ul>
     </div>
   </div>
