@@ -332,6 +332,10 @@ if (!function_exists('toastr'))
     }
 }
 
+/**
+ * Translatation method
+ * part of SLiMS\Polyglot
+ */
 if (!function_exists('__'))
 {
     function __(string $content)
@@ -340,6 +344,12 @@ if (!function_exists('__'))
     }
 }
 
+/**
+ * Write log with easiest way.
+ * This helper let you not only write
+ * log into database, you can write SLiMS
+ * System log to another service
+ */
 if (!function_exists('writeLog')) {
     function writeLog(string $type, string $value_id, string $location, string $message, string $submod = '', string $action = '')
     {
@@ -347,6 +357,9 @@ if (!function_exists('writeLog')) {
     }
 }
 
+/**
+ * The beauty php dumper
+ */
 if (!function_exists('dump')) {
     /**
      * @author Nicolas Grekas <p@tchwork.com>
@@ -369,6 +382,11 @@ if (!function_exists('dump')) {
     }
 }
 
+/**
+ * DD is stand for "Dump and Die!".
+ * SLiMS will be dump your process and make
+ * next proses is not execute.
+ */
 if (!function_exists('dd')) {
     /**
      * @return never
@@ -404,9 +422,61 @@ if (!function_exists('debug'))
     }
 }
 
+/**
+ * A shortcut to remove xss char
+ */
 if (!function_exists('xssFree')) {
     function xssFree(string $content)
     {
         return simbio_security::xssFree($content);
+    }
+}
+
+/**
+ * Have problem with multidimension array?
+ * e.g :
+ * with 
+ * 
+ * $record['biblio']['items']['detail'] = 'Ok';
+ * 
+ * generally every people will be do this
+ * 
+ * if (isset($record['biblio'])) {
+ *    if (isset($record['biblio']['items']) {
+ *       if (isset($record['biblio']['items']['detail']) {
+ *          // you got here. : ( so nested
+*        }
+ *    }
+ * }
+ * 
+ * // just do it and your are not waste your time
+ * $result = getArrayData(map: 'biblio.items.detail', data: $record);
+ * 
+ * // output : ok pr if not exists will be give you empty result. 
+ * 
+ * Need another data type as default result? just define your $default output
+ * at 3rd argument or default argument.
+ * 
+ * this function inspired from SLiMS\Config,
+ */
+if (!function_exists('getArrayData')) {
+    function getArrayData(?array $data, string $map, $default = '')
+    {
+        if (!is_array($data)) return $default;
+
+        $result = $default;
+        foreach (explode('.', trim($map, '.')) as $key) {
+            if (isset($data[$key]) && empty($result)) {
+                $result = $data[$key];
+                continue;
+            }
+
+            if (isset($result[$key])) {
+                $result = $result[$key];
+                continue;
+            }
+        }
+
+        return $result;
     }
 }
