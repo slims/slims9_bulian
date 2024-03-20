@@ -414,11 +414,38 @@ if (!function_exists('debug'))
      * debug process
      * @return void
      */
-    function debug()
+    function debug(string $title, ...$moreVars)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
-        $label = ($trace['file']??'') . ':' . ($trace['line']);
-        if (ENVIRONMENT == 'development') foreach(func_get_args() as $arg) VarDumper::dump($arg, $label);
+        $debugLocation = ($trace['file']??'') . ':' . ($trace['line']);
+        
+        if (isDev()) {
+            VarDumper::dump($title, $debugLocation);
+
+            foreach($moreVars as $anotherVar) {
+                VarDumper::dump(
+                    ...(
+                        is_array($anotherVar) ? [
+                            $anotherVar[1], $anotherVar[0] // var to dump, label
+                        ] : [$anotherVar]) // only var without label
+                );
+            }
+        }
+    }
+}
+
+if (!function_exists('debugBox')) {
+    function debugBox(Closure|string $content)
+    {
+        if (isDev()) {
+            $debug_box = '<details class="debug debug-empty">' . PHP_EOL;
+            $debug_box .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
+            ob_start();
+            is_callable($content) ? $content() : print($content);
+            $debug_box .= '<section>'.ob_get_clean().'</section>' . PHP_EOL;
+            $debug_box .= '</details>' . PHP_EOL;
+            echo $debug_box;
+        }
     }
 }
 
