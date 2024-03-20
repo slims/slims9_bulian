@@ -68,7 +68,7 @@ if (isset($_POST['saveData']))
     utility::jsToastr(__('Success'), __('Configuration has been saved!'), 'success');
 
     // Redirect
-    sleep(3);
+    sleep(3); // wait until file completely created
     redirect()->simbioAJAX(timeout: 0, url: $_SERVER['PHP_SELF']);
     exit;
 }
@@ -124,3 +124,9 @@ $form->addSelectList('basedIp', __('Environment for some IP?'), $BasedIpOptions,
 $form->addTextField('textarea', 'rangeIp', __('Range Ip wil be impacted with Environment. Example : 10.120.33.40;20.100.34.10. '), implode(';', $range_ip), 'style="margin-top: 0px; margin-bottom: 0px; height: 149px;" class="form-control" placeholder="'.__('Leave it empty, if you want to set environment to impact for all IP').'"');
 // print out the object
 echo $form->printOut();
+
+echo '<script>
+$(\'#mainForm\').submit(function() {
+  window.toastr.info(\'' . __('Please wait') . '\', \'Info\')
+});
+</script>';
