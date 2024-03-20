@@ -367,16 +367,12 @@ class simbio_datagrid extends simbio_table
         if ($this->using_AJAX) {
             $_target = 'submitExec';
             // below is for debugging purpose only
-            if (ENVIRONMENT === 'development') {
-                ob_start();
+            debugBox(content: function() {
                 debug($this->sql_str);
-                $debug_sql_str = ob_get_clean();
-                $_buffer .= '<details class="debug debug-empty">' . PHP_EOL;
-                $_buffer .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
-                $_buffer .= $debug_sql_str . PHP_EOL;
-                $_buffer .= '<section><iframe id="submitExec" name="submitExec" /></section>' . PHP_EOL;
-                $_buffer .= '</details>' . PHP_EOL;
-            } else {
+                echo '<section><iframe id="submitExec" name="submitExec" /></section>' . PHP_EOL;
+            });
+
+            if (isDev() === false) {
                 // hidden iframe for form executing
                 $_iframe = '<iframe name="submitExec" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
             }

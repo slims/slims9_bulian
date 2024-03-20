@@ -89,16 +89,16 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
           // escape all string value
           foreach ($record as $field => $content) { if (is_string($content)) { $biblio[$field] = $dbs->escape_string(trim($content)); } }
           // gmd
-          $biblio['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $record['gmd'], $gmd_cache);
+          $biblio['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $record['gmd']??'', $gmd_cache);
           unset($biblio['gmd']);
           // publisher
-          $biblio['publisher_id'] = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $record['publisher'], $publ_cache);
+          $biblio['publisher_id'] = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $record['publisher']??'', $publ_cache);
           unset($biblio['publisher']);
           // publish place
-          $biblio['publish_place_id'] = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $record['publish_place'], $place_cache);
+          $biblio['publish_place_id'] = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $record['publish_place']??'', $place_cache);
           unset($biblio['publish_place']);
           // language
-          $biblio['language_id'] = utility::getID($dbs, 'mst_language', 'language_id', 'language_name', $record['language']['name'], $lang_cache);
+          $biblio['language_id'] = utility::getID($dbs, 'mst_language', 'language_id', 'language_name', getArrayData($record, 'language.name.code'), $lang_cache);
           unset($biblio['language']);
           // authors
           $authors = array();
@@ -113,7 +113,7 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
               unset($biblio['subjects']);
           }
 
-          $biblio['input_date'] = $biblio['create_date'];
+          $biblio['input_date'] = $biblio['create_date']??date('Y-m-d H:i:s');
           // $biblio['last_update'] = $biblio['modified_date'];
           $biblio['last_update'] = date('Y-m-d H:i:s');
 
@@ -227,7 +227,7 @@ if (isset($_GET['keywords']) AND $can_read) {
         $_SESSION['z3950result'][$row] = $mods;
 
         // authors
-        $authors = array(); foreach ($mods['authors'] as $auth) { $authors[] = $auth['name']; }
+        $authors = array(); foreach ($mods['authors']??[] as $auth) { $authors[] = $auth['name']; }
 
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
