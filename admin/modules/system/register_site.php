@@ -22,7 +22,6 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 
 if (isset($_POST['saveData'])) {
     $data = array_merge([
-        'uid' => Uuid::uuid4()->toString(),
         'url' => (string)Url::getSlimsBaseUri(),
         'library_name' => config('library_name'),
         'library_subname' => config('library_subname'),
