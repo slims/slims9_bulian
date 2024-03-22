@@ -453,7 +453,7 @@ if (!function_exists('debugBox')) {
  * A shortcut to remove xss char
  */
 if (!function_exists('xssFree')) {
-    function xssFree(string $content)
+    function xssFree(array|string $content)
     {
         return simbio_security::xssFree($content);
     }
