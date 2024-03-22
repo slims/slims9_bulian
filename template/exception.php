@@ -1,6 +1,9 @@
 <?php
 use SLiMS\Url;
 use Symfony\Component\Finder\Finder;
+$inSimbioRequest = $this->withSimbioAJAXRequest(outputWithHeader: false);
+
+if ($inSimbioRequest === false):
 ?>
 <!DOCTYPE Html>
 <html>
@@ -15,6 +18,7 @@ use Symfony\Component\Finder\Finder;
         </style>
     </head>
     <body style="background-color: #ccc">
+<?php endif; ?>
         <section class="container-fluid">
             <div class="row bg-white">
                 <div class="col-12 p-3">
@@ -95,5 +99,7 @@ use Symfony\Component\Finder\Finder;
             </div>
             <?php endif; ?>
         </section>
+<?php if ($inSimbioRequest !== false): ?>        
     </body>
 </html>
+<?php endif; ?>

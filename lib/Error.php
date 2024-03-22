@@ -64,12 +64,12 @@ final class Error
      *
      * @return bool
      */
-    private function withSimbioAJAXRequest()
+    private function withSimbioAJAXRequest(bool $outputWithHeader = true)
     {
         $headers = getallheaders();
 
         if (isset($headers['X-Requested-With']) && $headers['X-Requested-With'] == 'XMLHttpRequest') {
-            header('Content-Type: application/json');
+            if ($outputWithHeader) header('Content-Type: application/json');
             return true;
         }
 
@@ -116,8 +116,9 @@ final class Error
         $headers = getallheaders();
 
         extract($this->info);
+        // dd(ob_get_clean());
         if (!ob_get_level()) ob_start();
-
+        ob_get_clean();
         include $this->templateLocation . $this->templateTypes['development'];
 
         $this->buffer = ob_get_clean();
