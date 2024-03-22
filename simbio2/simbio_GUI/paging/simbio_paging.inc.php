@@ -76,11 +76,7 @@ class simbio_paging
                         $_query_str_page .= simbio_security::xssFree($varname).'='.simbio_security::xssFree($varvalue).'&';
                     }
                 } else if (is_array($varvalue)) {
-                    foreach ($varvalue as $e_val) {
-                        if ($varname != 'page') {
-                            $_query_str_page .= simbio_security::xssFree($varname).'[]='.simbio_security::xssFree($e_val).'&';
-                        }
-                    }
+                    $_query_str_page .= http_build_query(xssFree($varvalue));
                 }
             }
             // append "page" var at the end
