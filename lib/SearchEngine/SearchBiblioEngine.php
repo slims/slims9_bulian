@@ -683,14 +683,15 @@ class SearchBiblioEngine extends Contract
     function dump(array $sql)
     {
         if (!isset($_GET['resultXML'])) {
-            ob_start();
-            debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
-            $debug_content = ob_get_clean();
-            $debug_box = '<details class="debug debug-empty">' . PHP_EOL;
-            $debug_box .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
-            $debug_box .= '<section>'.$debug_content.'</section>' . PHP_EOL;
-            $debug_box .= '</details>' . PHP_EOL;
-            echo $debug_box;
+            debugBox(content: function() use($sql) {
+                debug('Search Engine Debug 🔎 🪲', [
+                    'Engine Type ⚙️:', get_class($this)
+                ], [
+                    'SQL ⚙️:', $sql
+                ], [
+                    'Bind Value ⚒️:', $this->execute
+                ]);
+            });
         }
     }
 }

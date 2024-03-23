@@ -39,5 +39,7 @@ $sanitizer->cleanUp(
 // use session factory to handle session based on default SLiMS or user handler
 SessionFactory::use(config('customSession', Files::class))->start('admin');
 
+if (!ob_get_level()) ob_start();
+
 // hooking after session started
 Plugins::run(Plugins::ADMIN_SESSION_AFTER_START);
