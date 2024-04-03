@@ -261,10 +261,11 @@ class Blueprint
      * @param string $columnName
      * @return void
      */
-    private function scopeUnique(string $columnName)
+    private function scopeUnique(string $columnName, ...$moreColumn)
     {
         $this->type = 'option';
-        $this->data['options'][] = 'UNIQUE `' . $columnName . '_unq` (`' . $columnName . '`)';
+        $columns = '`' . implode('`,`', array_merge([$columnName], $moreColumn)) . '`';
+        $this->data['options'][] = 'UNIQUE `' . $columnName . '_unq` (' . $columns . ')';
     }
 
         /**
