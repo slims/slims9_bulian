@@ -11,7 +11,7 @@ return [
     "base-uri 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google.com *.gstatic.com",
     "style-src 'self' 'unsafe-inline' *.bootstrapcdn.com *.googleapis.com",
-    "img-src 'self' data:",
+    "img-src 'self' static.slims.web.id data:",
     "connect-src 'self' slims.web.id",
     "frame-src 'self' *.google.com",
     "font-src 'self' *.gstatic.com",

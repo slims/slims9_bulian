@@ -158,16 +158,18 @@ class Config
         return file_exists($path = SB . 'config/' . $filename . '.php') ? file_get_contents($path) : null;
     }
 
-    public static function isExists(string|array $nameOrNames):bool|Generator
+    public static function isExists(string $name):bool
     {
-        if (is_string($nameOrNames)) {
-            return file_exists(SB . 'config' . DS . basename($nameOrNames) . '.php');
-        }
+        return file_exists(SB . 'config' . DS . basename($name) . '.php');
+    }
+
+    public static function createFromSampleIfNotExists(string|array $nameOrNames): void
+    {
+        $nameOrNames = is_string($nameOrNames) ? [$nameOrNames] : $nameOrNames;
 
         foreach ($nameOrNames as $name) {
-            $path = SB . 'config' . DS . basename($name) . '.php';
-            if (file_exists($path)) continue;
-            yield $name;
+            if (self::isExists($name)) continue;
+            self::createFromSample($name);
         }
     }
 
@@ -187,9 +189,14 @@ class Config
 
     public static function createFromSample(string $configName)
     {
-        $basePath = SB . 'config' . DS . basename($configName);
-        @copy($basePath . '.sample.php', $basePath . '.php');
-        unset($basePath);
+        $configName = basename($configName);
+        $configBasePath = SB . 'config' . DS;
+        $configPathSampleName = $configBasePath . $configName . '.sample.php';
+        $configPathName =  $configBasePath . $configName . '.php';
+
+        if (!self::isExists($configName . '.sample')) return;
+
+        copy($configPathSampleName, $configPathName);
     }
 
     /**
