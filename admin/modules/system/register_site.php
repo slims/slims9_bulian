@@ -51,13 +51,18 @@ if (isset($_POST['saveData'])) {
     try {
 
         $response = Client::withHeaders([
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'SLiMS-' . SENAYAN_VERSION_TAG
         ])->withBody(
             (string)Json::stringify($data)
         )->$method('https://analytics.slims.web.id/?p=api/v1/register');
 
+        if (!empty($error = $response->getError())) {
+          throw new Exception($error);
+        }
+
         if ($response->getStatusCode() == 200) {
-          $content = json_decode($response->getContent(), true);
+          $content = json_decode($response->getContent()??'', true);
 
           if ($content['status'] === false) throw new Exception($content['message']);
 
