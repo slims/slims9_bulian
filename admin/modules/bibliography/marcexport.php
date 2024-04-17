@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+use SLiMS\Extension;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -44,13 +45,11 @@ if (!$can_read) {
 }
 
 // check if PEAR is installed
-ob_start();
-include MDLBS . 'bibliography/File/MARC.php';
-ob_end_clean();
-if (!class_exists('File_MARC')) {
+$marcExtRequirement = [];
+if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
   die('<div class="errorBox">'.__('<a href="http://pear.php.net/index.php">PEAR</a>, <a href="http://pear.php.net/package/File_MARC">File_MARC</a>
-    packages need to be installed in order to export MARC record').'</div>');
-  }
+  packages need to be installed in order to export MARC record').'</div>');
+}
 
 // clean print queue
 if (isset($_GET['action']) AND $_GET['action'] == 'clear') {

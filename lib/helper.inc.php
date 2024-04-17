@@ -426,7 +426,7 @@ if (!function_exists('debug'))
                 VarDumper::dump(
                     ...(
                         is_array($anotherVar) ? [
-                            $anotherVar[1], $anotherVar[0] // var to dump, label
+                            $anotherVar[1]??'', $anotherVar[0]??'' // var to dump, label
                         ] : [$anotherVar]) // only var without label
                 );
             }

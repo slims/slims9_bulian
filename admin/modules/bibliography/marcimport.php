@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
+use SLiMS\Extension;
 /* Item Import section */
 
 // key to authenticate
@@ -46,11 +46,8 @@ if (!$can_read) {
 }
 
 // check if PEAR is installed
-ob_start();
-include 'System.php';
-include 'File/MARC.php';
-ob_end_clean();
-if (!(class_exists('System') && class_exists('File_MARC'))) {
+$marcExtRequirement = [];
+if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
   die('<div class="errorBox">'.__('<a href="http://pear.php.net/index.php">PEAR</a>, <a href="http://pear.php.net/package/File_MARC">File_MARC</a>
     and <a href="http://pear.php.net/package/Structures_LinkedList/">Structures_LinkedList</a>
     packages need to be installed in order
