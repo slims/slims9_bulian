@@ -1,16 +1,17 @@
 <?php
-use SLiMS\Url;
 use Symfony\Component\Finder\Finder;
 $inSimbioRequest = $this->withSimbioAJAXRequest(outputWithHeader: false);
+
+defined('SB') or define('SB', dirname(__DIR__, 2) . DIRECTORY_SEPARATOR);
 
 if ($inSimbioRequest === false):
 ?>
 <!DOCTYPE Html>
 <html>
     <head>
-        <title><?= $title ?></title>
-        <link href="<?= Url::getSlimsBaseUri('css/bootstrap.min.css') ?>" rel="stylesheet"/>
+        <title><?= $title??'' ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <style><?= file_get_contents(SB . 'css/bootstrap.min.css') ?></style>
         <style>
             * {
                 font-family: 'Trebuchet MS', sans-serif;
