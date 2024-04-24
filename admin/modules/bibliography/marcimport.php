@@ -238,9 +238,11 @@ if (isset($_POST['doImport'])) {
         if ($rct_fld) {
           $content_type = $rct_fld->getSubfields('a');
           // get ID
-          $q = $dbs->query(sprintf('SELECT id FROM mst_content_type WHERE content_type=\'%s\'', $content_type));
-          $d = $q->fetch_row();
-          $data['content_type_id'] = $d[0];
+          if (is_array($content_type)) {
+            $content_type = trim(str_replace('[a]:', '', (string)$content_type[0]??''));
+          }
+
+          $data['content_type_id'] = utility::getID($dbs, 'mst_content_type', 'id', 'content_type', $content_type);
         }
 
         // RDA Media type
@@ -248,9 +250,11 @@ if (isset($_POST['doImport'])) {
         if ($rmt_fld) {
           $media_type = $rmt_fld->getSubfields('a');
           // get ID
-          $q = $dbs->query(sprintf('SELECT id FROM mst_media_type WHERE media_type=\'%s\'', $media_type));
-          $d = $q->fetch_row();
-          $data['media_type_id'] = $d[0];
+          if (is_array($media_type)) {
+            $media_type = trim(str_replace('[a]:', '', (string)$media_type[0]??''));
+          }
+          
+          $data['media_type_id'] = utility::getID($dbs, 'mst_media_type', 'id', 'media_type', $media_type);
         }
 
         // RDA Carrier type
@@ -258,9 +262,11 @@ if (isset($_POST['doImport'])) {
         if ($rcrt_fld) {
           $carrier_type = $rcrt_fld->getSubfields('a');
           // get ID
-          $q = $dbs->query(sprintf('SELECT id FROM mst_carrier_type WHERE carrier_type=\'%s\'', $carrier_type));
-          $d = $q->fetch_row();
-          $data['carrier_type_id'] = $d[0];
+          if (is_array($carrier_type)) {
+            $carrier_type = trim(str_replace('[a]:', '', (string)$carrier_type[0]??''));
+          }
+
+          $data['carrier_type_id'] = utility::getID($dbs, 'mst_carrier_type', 'id', 'carrier_type', $media_type);
         }
 
         // Series title
@@ -371,10 +377,8 @@ if (isset($_POST['doImport'])) {
       $end_time = time();
       $import_time_sec = $end_time-$start_time;
       writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' MARC records from file : '.$_FILES['importFile']['name'], 'MARC Import');
-      echo '<script type="text/javascript">'."\n";
-      echo 'top.jQuery(\'#importInfo\').html(\'<strong>'.$updated_row.'</strong> records imported successfully in '.$import_time_sec.' second(s)</strong>\');'."\n";
-      echo 'top.jQuery(\'#importInfo\').css( {display: \'block\'} );'."\n";
-      echo '</script>';
+      toastr($updated_row . ' records imported successfully in '.$import_time_sec.' second(s)')->success();
+      redirect()->simbioAJAX($_SERVER['PHP_SELF']);
       exit();
     }
 }
