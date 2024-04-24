@@ -63,8 +63,9 @@ final class Extension
     private function pearValidator()
     {
         try {
-            require 'System.php';
-            return class_exists('System');
+            include 'System.php';
+            include 'File/MARC.php';
+            return class_exists('System') && class_exists('File_MARC');
         } catch (\Throwable $th) {
             return false;
         }
@@ -103,10 +104,9 @@ final class Extension
     {
         $matchedTotal = 0;
         foreach ($required as $extOrKey => $extOrMethod) {
-            if (!is_numeric($extOrKey) && (method_exists($this, $extOrMethod) || $fnExists = function_exists($extOrMethod))) {
+            if (method_exists($this, $extOrMethod)) {
                 $result = (int)(isset($fnExists) ? $fnExists() : $this->$extOrMethod());
                 $ext = $extOrKey;
-                
             } else {
                 $result = (int)$this->hasLoaded($extOrMethod);
                 $ext = $extOrMethod;
