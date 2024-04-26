@@ -38,7 +38,7 @@ class Parser
             $name,
             $alias, 
             // mode optional|required
-            (substr($item, -1) === '?' ? InputOption::VALUE_OPTIONAL : InputOption::VALUE_REQUIRED),
+            (substr($item, -1) === '=' ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL),
             // description
             (stripos($item, ':') ? trim(substr($item, strpos($item, ':')),' : ') : ''),
             // set default

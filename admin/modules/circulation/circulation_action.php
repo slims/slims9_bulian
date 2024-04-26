@@ -81,13 +81,7 @@ if (isset($_POST['finish'])) {
         writeLog('member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')', 'Transaction', 'Failed');
         toastr(__('ERROR! Loan data can\'t be saved to database'))->error();
         // set error result
-        if (ENVIRONMENT === 'development')
-        {
-            echo '<script>
-                parent.$("#errordump").removeClass("d-none").addClass("d-block");
-                parent.$("#errordump").html("' . $circulation->error . '");
-            </script>';
-        }
+        dump($circulation->error);
     } else {
         // insert visitor log
         visitOnLoan($memberID);
@@ -512,7 +506,7 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         echo '<tr>'."\n";
         echo '<td colspan="5">';
         // hidden form for transaction finish
-        echo '<form id="finishForm" method="post" target="blindSubmit" action="'.MWB.'circulation/circulation_action.php">
+        echo '<form id="finishForm" method="post" target="' . (isDev() ? 'submitExec' : 'blindSubmit') . '" action="'.MWB.'circulation/circulation_action.php">
         <input type="button" class="btn btn-danger" id="circFinish" accesskey="T" value="'.__('Finish Transaction').' (Esc)" onclick="confSubmit(\'finishForm\', \''.__('Are you sure want to finish current transaction?').'\', '.config('enable_chbox_confirm', '1').')" /><input type="hidden" name="finish" value="true" /></form>';
         echo '</td>';
         echo '</tr>'."\n";
@@ -576,8 +570,8 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
           $iframe_src = 'modules/circulation/loan.php';
         }
 
+        debugBox(content : '<iframe id="submitExec" name="submitExec" class="w-100" style="height: 50vh"></iframe>');
 		echo '<div class="nav nav-tabs" id="transaction" role="tablist">';
-        echo '<div id="errordump" class="w-100 d-none p-3 mb-2 bg-danger text-white font-weight-bold"></div>';
         echo '<a class="nav-item nav-link '.$active_loan.' notAJAX" id="circLoan" href="'.MWB.'circulation/loan.php" target="listsFrame">'.__('Loans').' (F2)</a>';
         echo '<a class="nav-item nav-link '.$active_loan_list.' notAJAX" id="circInLoan" href="'.MWB.'circulation/loan_list.php" target="listsFrame">'.__('Current Loans').' (F3)</a>';
         if ($member_type_d['enable_reserve']) {

@@ -19,6 +19,7 @@
  */
 
 /* Peer-to-Peer Web Services section */
+use SLiMS\Extension;
 use SLiMS\Url;
 use SLiMS\Http\Client;
 use SLiMS\Filesystems\Storage;
@@ -49,6 +50,11 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 
 if (!$can_read) {
   die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+}
+
+$p2pExtRequirement = [];
+if (!Extension::forFeature('p2p')->isFulfilled($p2pExtRequirement)) {
+  die('<div class="errorBox">' . (sprintf(__('Feature P2P needs some PHP extension such as %s'), implode(',', $p2pExtRequirement))) . '</div>');
 }
 
 function downloadFile($url, $storage, $path)
@@ -341,7 +347,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   }
 
   # debugging tools
-  debug($url, $data);
+  debug('P2P Debug', [$url, $data]);
 
   if (isset($data['records'])) {
 

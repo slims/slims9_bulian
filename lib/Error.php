@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-12-29 10:02:23
- * @modify date 2023-12-30 14:56:38
+ * @modify date 2024-04-17 11:26:09
  * @license GPL-3.0 
  * @desc [description]
  */
@@ -64,12 +64,12 @@ final class Error
      *
      * @return bool
      */
-    private function withSimbioAJAXRequest()
+    private function withSimbioAJAXRequest(bool $outputWithHeader = true)
     {
         $headers = getallheaders();
 
         if (isset($headers['X-Requested-With']) && $headers['X-Requested-With'] == 'XMLHttpRequest') {
-            header('Content-Type: application/json');
+            if ($outputWithHeader) header('Content-Type: application/json');
             return true;
         }
 
@@ -116,10 +116,9 @@ final class Error
         $headers = getallheaders();
 
         extract($this->info);
+        ob_get_clean();
         if (!ob_get_level()) ob_start();
-
         include $this->templateLocation . $this->templateTypes['development'];
-
         $this->buffer = ob_get_clean();
 
         return $this;
@@ -143,7 +142,7 @@ final class Error
         if ($withReport) {
             $output = $this->buffer;
         } else {
-            ob_end_clean();
+            ob_get_clean();
             ob_start();
             include $this->templateLocation . $this->templateTypes['production'];
             $output = ob_get_clean();
