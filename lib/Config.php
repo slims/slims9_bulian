@@ -124,6 +124,106 @@ class Config
     }
 
     /**
+     * Find and modify multidimensional
+     * registered config
+     *
+     * @param array $config
+     * @param string $keyToModify
+     * @param mixed $newValue
+     * @param string $mode
+     * @return void
+     */
+    private function findAndModify(array &$config, string $keyToModify, $newValue, string $mode = 'append')
+    {
+        foreach ($config as $key => $value) {
+            if ($key != $keyToModify && is_array($value)) {
+                $this->findAndModify($value, $keyToModify, $newValue, $mode);
+                $config[$key] = $value;
+                continue;
+            } else if ($key == $keyToModify) {
+                if (is_array($value) && $mode == 'append') {
+                    $newValue = !is_array($newValue) ? [$newValue] : $newValue;
+                    $config[$key] = array_merge($value, $newValue);
+                } else if ($mode == 'replace') {
+                    $config[$key] = $newValue;
+                }
+            }
+        }
+    }
+
+    /**
+     * Change config value without
+     * overriding original value
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @param string $mode
+     * @return bool
+     */
+    public function change(string $key, $newValue, string $mode = 'replace')
+    {
+        if (is_null($this->get($key)) === false) {
+            // extract dot separator
+            $keys = explode('.', trim($key, '.'));
+
+            $configName = $key;
+            $keyToReplaceOrAppend = $key;
+
+            $isMultidimensional = count($keys) > 1;
+
+            // Multi Dimentional
+            if ($isMultidimensional) {
+                $configName = $keys[0];
+                $keyToReplaceOrAppend = $keys[array_key_last($keys)];
+
+                // reset array key
+                $keys = array_values($keys);
+            }
+
+            // Save accessed config into new variable
+            $configToReplaceOrAppend = $this->configs[$configName];
+
+            if ($isMultidimensional) {
+                $this->findAndModify($configToReplaceOrAppend, $keyToReplaceOrAppend, $newValue, $mode);
+            } else {
+                // merge newvalue into current config
+                if (!is_array($newValue)) $newValue = [$newValue];
+                $configToReplaceOrAppend = array_merge($configToReplaceOrAppend, $newValue);
+            }
+
+            $this->configs[$configName] = $configToReplaceOrAppend;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @return bool
+     */
+    public function append(string $key, $newValue)
+    {
+        return $this->change($key, $newValue, mode: 'append');
+    }
+
+    /**
+     * Replace current config
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @return bool
+     */
+    public function replace(string $key, $newValue)
+    {
+        return $this->change($key, $newValue, mode: 'replace');
+    }
+
+    /**
      * Get data with dot separator
      *
      * @param string $key

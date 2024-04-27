@@ -42,8 +42,12 @@ if (!function_exists('config')) {
      * @param null $default
      * @return mixed|null
      */
-    function config($key, $default = null) {
-        return Config::getInstance()->get($key, $default);
+    function config($key = '', $default = null) {
+        if (!empty($key)) {
+            return Config::getInstance()->get($key, $default);
+        }
+
+        return Config::getInstance();
     }
 }
 
