@@ -283,7 +283,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $sql_criteria = 'a.author_id > 0';
     if ($in_orphaned) {
         $table_spec = 'mst_author AS a LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id';
-        $sql_criteria = 'ba.biblio_id IS NULL OR ba.author_id IS NULL';
+        $sql_criteria = '(ba.biblio_id IS NULL OR ba.author_id IS NULL)';
     } else {
         $table_spec = 'mst_author AS a';
     }
@@ -317,8 +317,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
        $keywords = utility::filterData('keywords', 'get', true, true, true);
-       $sql_criteria = " AND a.author_name LIKE '%$keywords%'";
+       $sql_criteria .= " AND a.author_name LIKE '%$keywords%'";
     }
+    dump($sql_criteria);
     $datagrid->setSQLCriteria($sql_criteria);
 
     // set table and table header attributes
