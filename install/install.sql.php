@@ -52,6 +52,7 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
   KEY `rda_idx` (`content_type_id`, `media_type_id`, `carrier_type_id`),
   KEY `uid` (`uid`),
+  KEY `publisher_id` (`publisher_id`),
   FULLTEXT KEY `title_ft_idx` (`title`,`series_title`),
   FULLTEXT KEY `notes_ft_idx` (`notes`),
   FULLTEXT KEY `labels` (`labels`)
