@@ -22,6 +22,7 @@
  */
 
 use SLiMS\Config;
+use SLiMS\DB;
 use SLiMS\Ip;
 use SLiMS\Number;
 use SLiMS\Currency;
@@ -509,5 +510,14 @@ if (!function_exists('getArrayData')) {
         }
 
         return $result;
+    }
+}
+
+if (!function_exists('db')) {
+    function db(string $connectionName = '', string $type = 'pdo')
+    {
+        if (empty($connectionName)) return DB::getInstance($type);
+
+        return DB::connection($connectionName, $type);
     }
 }
