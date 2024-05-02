@@ -22,6 +22,7 @@
  */
 
 use SLiMS\Config;
+use SLiMS\DB;
 use SLiMS\Ip;
 use SLiMS\Number;
 use SLiMS\Currency;
@@ -42,8 +43,12 @@ if (!function_exists('config')) {
      * @param null $default
      * @return mixed|null
      */
-    function config($key, $default = null) {
-        return Config::getInstance()->get($key, $default);
+    function config($key = '', $default = null) {
+        if (!empty($key)) {
+            return Config::getInstance()->get($key, $default);
+        }
+
+        return Config::getInstance();
     }
 }
 
@@ -505,5 +510,14 @@ if (!function_exists('getArrayData')) {
         }
 
         return $result;
+    }
+}
+
+if (!function_exists('db')) {
+    function db(string $connectionName = '', string $type = 'pdo')
+    {
+        if (empty($connectionName)) return DB::getInstance($type);
+
+        return DB::connection($connectionName, $type);
     }
 }

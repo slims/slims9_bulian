@@ -31,6 +31,18 @@ class Upgrade
   {
     $upgrade = new Upgrade();
     $upgrade->slims = $slims;
+
+    // determine how mane upgrade_role is availabe
+    $versions = [];
+    foreach (get_class_methods($upgrade) as $method) {
+      if (preg_match('/upgrade_role_/', $method)) {
+        $versions[] = preg_replace('/[^0-9]/', '', $method);
+      }
+    }
+    
+    // get last version
+    sort($versions);
+    $upgrade->version = $versions[array_key_last($versions)];
     return $upgrade;
   }
 
@@ -88,12 +100,16 @@ class Upgrade
     $this->hookBeforeUpgrade();
 
     $raw_err = [];
-    for ($i = ($version + 1); $i <= $this->version; $i++) {
-      $method = 'upgrade_role_' . $i;
+    $roles = range($version, $this->version);
+    sort($roles);
+
+    foreach ($roles as $role) {
+      $method = 'upgrade_role_' . $role;
       if (method_exists($this, $method)) {
         $raw_err[] = $this->$method();
       }
     }
+
     $err = [];
     foreach ($raw_err as $e) {
       if (is_array($e)) {
@@ -1056,11 +1072,15 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
         return $this->slims->query($sql, ['create', 'alter'],31);
     }
+    /**
+     * Upgrade role to v9.5.1
+     */
+    function upgrade_role_32(){}
 
     /**
      * Upgrade role to v9.5.2
      */
-    function upgrade_role_32()
+    function upgrade_role_33()
     {
         $sql['alter'][] = 'ALTER TABLE `search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
         $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
@@ -1079,7 +1099,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     /**
      * Upgrade role to v9.6.0
      */
-    function upgrade_role_33()
+    function upgrade_role_34()
     {
         $sql['alter'][] = "ALTER TABLE `user` ADD `2fa` text COLLATE 'utf8_unicode_ci' NULL AFTER `passwd`;";
         $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
@@ -1108,7 +1128,16 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     }
 
     /**
-     * Upgrade role to v9.6.0
+     * Upgrade role to v9.6.1
      */
-    function upgrade_role_34(){}
+    function upgrade_role_35(){
+    }
+
+    /**
+     * Upgrade role to v9.x.x
+     */
+    function upgrade_role_36(){
+      $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
+      return $this->slims->query($sql, ['alter'],35);
+    }
 }
