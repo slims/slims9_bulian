@@ -513,10 +513,19 @@ if (!function_exists('getArrayData')) {
     }
 }
 
+/**
+ * @param string $connectionName
+ * @param string $type
+ */
 if (!function_exists('db')) {
-    function db(string $connectionName = '', string $type = 'pdo')
+    function db(string $connectionName = 'SLiMS', string $type = 'pdo', string $extension = '', array $extensionParams = [])
     {
-        if (empty($connectionName)) return DB::getInstance($type);
+        if (!empty($extension)) {
+            $extensionInstance = DB::$extension(...$extensionParams);
+            if (method_exists($extensionInstance, 'setConnection')) $extensionInstance->setConnection($connectionName);
+            return $extensionInstance;
+        }
+        if ($connectionName === 'SLiMS') return DB::getInstance($type);
 
         return DB::connection($connectionName, $type);
     }
