@@ -744,6 +744,6 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
 ]));
 
 // create dynamic config file from sample
-foreach (\SLiMS\Config::isExists(['csp','auth']) as $config) {
-  \SLiMS\Config::createFromSample($config);
-}
+\SLiMS\Config::createFromSampleIfNotExists([
+  'csp','auth'
+]);

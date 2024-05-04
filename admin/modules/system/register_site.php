@@ -20,25 +20,58 @@ require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 
 if (isset($_POST['saveData'])) {
+    if (trim(config('library_name')) === 'Senayan') {
+      toastr(__('Please update your Library Name first!'))->error();
+      redirect()->simbioAJAX(Url::getSelf());
+    }
+
+    if (!isset($_POST['registration_info']['aggrement']) && config('registration_info') === null) {
+      toastr(__('Please check up the agreement'))->error();
+      redirect()->simbioAJAX(Url::getSelf());
+    }
+
     $data = array_merge([
         'url' => (string)Url::getSlimsBaseUri(),
         'library_name' => config('library_name'),
         'library_subname' => config('library_subname'),
     ], $_POST['registration_info']);
 
-    dd($data);
+    $method = 'post';
+    if (isset($_POST['is_registered'])) {
+      $method = 'put';
+      if (config('registration_info.library_name') !== $data['library_name']) {
+        $method = 'post';
+      }
+    }
+
     Config::createOrUpdate('registration_info', $data);
-    sleep(3);
 
     // store to SLiMS Analytic
     try {
-        Client::withHeaders([
-            'Content-Type' => 'application/json'
+
+        $response = Client::withHeaders([
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'SLiMS-' . SENAYAN_VERSION_TAG
         ])->withBody(
             (string)Json::stringify($data)
-        )->post('https://12.12.12.2/?p=api/v1/register');
-    } catch (\Throwable $th) {
-        //throw $th;
+        )->$method('https://analytics.slims.web.id/?p=api/v1/register');
+
+        if (!empty($error = $response->getError())) {
+          throw new Exception($error);
+        }
+
+        if ($response->getStatusCode() == 200) {
+          $content = json_decode($response->getContent()??'', true);
+
+          if ($content['status'] === false) throw new Exception($content['message']);
+
+          toastr($content['message'])->success();
+          redirect()->simbioAJAX(MWB . 'system/index.php');
+        }
+        
+    } catch (Exception $e) {
+        writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ', register site : ' . $e->getMessage(), 'Logo', 'Delete');
+        toastr(__('Failed to register your site. Open system log for more info'))->error();
     }
 
     redirect()->simbioAJAX(Url::getSelf());
@@ -69,6 +102,10 @@ $form->table_attr = 'id="dataList" class="s-table table"';
 $form->table_header_attr = 'class="alterCell font-weight-bold"';
 $form->table_content_attr = 'class="alterCell2"';
 
+if (config('registration_info') !== null) {
+  $form->addHidden('is_registered', '1');
+}
+
 $form->addAnything(__('Library Name'), config('library_name'));
 $form->addAnything(__('Library Subname'), config('library_subname'));
 $form->addSelectList('registration_info[list_mysite]', __('Site listing'), [
@@ -77,8 +114,10 @@ $form->addSelectList('registration_info[list_mysite]', __('Site listing'), [
     ['showall', __('Display my site name with the link')]
 ], config('registration_info.list_mysite'), 'class="form-control col-3"', __('You can choose to have your site listed publicly in the list of registeted sites, with or without a link to your site.'));
 $form->addTextField('text', 'registration_info[npp]', __('NPP (Optional)'), config('registration_info.npp'), 'class="form-control"', __('A spesific identification code of some library in Indonesia under coordinated by Indnesia National Library.'));
-$form->addAnything('Privacy data processing agreement', '
-<input type="checkbox" class="noAutoFocus" name="registration_info[aggrement]" id="aggrement" />
-<label for="aggrement">' . __('I agree to the <a href="https://slims.web.id/privacy">Privacy notice and data processing agreement</a>') . '</label>');
+if (config('registration_info') === null) {
+  $form->addAnything('Privacy data processing agreement', '
+  <input type="checkbox" class="noAutoFocus" name="registration_info[aggrement]" value="1" id="aggrement" />
+  <label for="aggrement">' . __('I agree to the <a href="https://slims.web.id/privacy">Privacy notice and data processing agreement</a>') . '</label>');
+}
 
 echo $form->printOut();
