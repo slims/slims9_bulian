@@ -129,20 +129,6 @@ define('BINARY_FOUND', 1);
 define('COMMAND_SUCCESS', 0);
 define('COMMAND_FAILED', 2);
 
-// simbio main class inclusion
-require SIMBIO.'simbio.inc.php';
-// simbio security class
-require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
-// we must include utility library first
-require LIB.'utility.inc.php';
-// include API
-require LIB.'api.inc.php';
-// include biblio class
-require MDLBS.'bibliography/biblio.inc.php';
-
-// check if we are in mobile browser mode
-if (utility::isMobileBrowser()) { define('LIGHTWEIGHT_MODE', 1); }
-
 // senayan web doc root dir
 /* Custom base URL */
 $sysconf['baseurl'] = \SLiMS\Config::getInstance()->get('url.base', '');
@@ -162,6 +148,88 @@ define('MWB', SWB.'admin/'.MDL.'/');
 
 // repository web base dir
 define('REPO_WBS', SWB.REPO.'/');
+
+// Check database config
+if (!file_exists(SB.'config'.DS.'database.php')) {
+  // backward compatibility if upgrade process from `git pull`
+  if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
+    \SLiMS\Config::create('database', function($filename){
+      // get last database connection
+      include SB.'config'.DS.'sysconfig.local.inc.php';
+      $source = file_get_contents(SB.'config'.DS.'database.sample.php');
+      $params = [['_DB_HOST_','_DB_NAME_','_DB_PORT_','_DB_USER_','_DB_PASSWORD_'],[DB_HOST,DB_NAME,DB_PORT,DB_USERNAME,DB_PASSWORD], $source];
+      return str_replace(...$params);
+    });
+  } else {
+    // Redirect to installer
+    header('location: ' . SWB . 'install/index.php');
+    exit;
+  }
+}
+
+// Apply language settings
+$localisation = \SLiMS\Polyglot\Memory::getInstance();
+
+// plugin locale
+$localisation->registerLanguageFromPlugin();
+
+// load localisation
+$localisation->load(function($memory){
+  // OPAC Only
+  if (\SLiMS\Url::isOpac() === false) return;
+
+  if (isset($_GET['select_lang'])) {
+    // remove last temp language at current memory
+    if (isset($_COOKIE['select_lang'])) $memory->forgetTempLanguage(languageName: $_GET['select_lang']);
+    
+    // make it one
+    $memory->rememberTempLanguage(languageName: $_GET['select_lang']);
+    
+    //reload page on change language
+    header("location:index.php");
+    exit;    
+  }
+
+  // set locale based on temp locale language
+  if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
+});
+
+// load helper
+require_once LIB . "helper.inc.php";
+
+$localisation->registerLanguages([
+    ['ar_SA', __('Arabic'), 'Arabic'],
+    ['bn_BD', __('Bengali'), 'Bengali'],
+    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
+    ['en_US', __('English'), 'English'],
+    ['es_ES', __('Espanol'), 'Espanol'],
+    ['de_DE', __('German'), 'Deutsch'],
+    ['id_ID', __('Indonesian'), 'Indonesia'],
+    ['ja_JP', __('Japanese'), 'Japanese'],
+    ['ms_MY', __('Malay'), 'Malay'],
+    ['fa_IR', __('Persian'), 'Persian'],
+    ['ru_RU', __('Russian'), 'Russian'],
+    ['th_TH', __('Thai'), 'Thai'],
+    ['tr_TR', __('Turkish'), 'Turkish'],
+    ['ur_PK', __('Urdu'), 'Urdu']
+]);
+
+// Extension check
+\SLiMS\Extension::throwIfNotFulfilled();
+
+// simbio main class inclusion
+require SIMBIO.'simbio.inc.php';
+// simbio security class
+require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
+// we must include utility library first
+require LIB.'utility.inc.php';
+// include API
+require LIB.'api.inc.php';
+// include biblio class
+require MDLBS.'bibliography/biblio.inc.php';
+
+// check if we are in mobile browser mode
+if (utility::isMobileBrowser()) { define('LIGHTWEIGHT_MODE', 1); }
 
 /* AJAX SECURITY */
 $sysconf['ajaxsec_user'] = 'ajax';
@@ -500,24 +568,6 @@ $sysconf['admin_home']['mode'] = 'dashboard'; // set as 'default' or 'dashboard'
 if ($is_auto = @ini_get('session.auto_start')) { define('SESSION_AUTO_STARTED', $is_auto); }
 if (defined('SESSION_AUTO_STARTED')) { @session_destroy(); }
 
-// Check database config
-if (!file_exists(SB.'config'.DS.'database.php')) {
-  // backward compatibility if upgrade process from `git pull`
-  if (file_exists(SB.'config'.DS.'sysconfig.local.inc.php')) {
-    \SLiMS\Config::create('database', function($filename){
-      // get last database connection
-      include SB.'config'.DS.'sysconfig.local.inc.php';
-      $source = file_get_contents(SB.'config'.DS.'database.sample.php');
-      $params = [['_DB_HOST_','_DB_NAME_','_DB_PORT_','_DB_USER_','_DB_PASSWORD_'],[DB_HOST,DB_NAME,DB_PORT,DB_USERNAME,DB_PASSWORD], $source];
-      return str_replace(...$params);
-    });
-  } else {
-    // Redirect to installer
-    header('location: ' . SWB . 'install/index.php');
-    exit;
-  }
-}
-
 /* DATABASE RELATED */
 $dbs = \SLiMS\DB::getInstance('mysqli');
 
@@ -526,53 +576,6 @@ $dbs->query('SET NAMES \'utf8\'');
 
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
-
-// Apply language settings
-$localisation = \SLiMS\Polyglot\Memory::getInstance();
-
-// plugin locale
-$localisation->registerLanguageFromPlugin();
-
-// load localisation
-$localisation->load(function($memory){
-  // OPAC Only
-  if (\SLiMS\Url::isOpac() === false) return;
-
-  if (isset($_GET['select_lang'])) {
-    // remove last temp language at current memory
-    if (isset($_COOKIE['select_lang'])) $memory->forgetTempLanguage(languageName: $_GET['select_lang']);
-    
-    // make it one
-    $memory->rememberTempLanguage(languageName: $_GET['select_lang']);
-    
-    //reload page on change language
-    header("location:index.php");
-    exit;    
-  }
-
-  // set locale based on temp locale language
-  if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
-});
-
-// load helper
-require_once LIB . "helper.inc.php";
-
-$localisation->registerLanguages([
-    ['ar_SA', __('Arabic'), 'Arabic'],
-    ['bn_BD', __('Bengali'), 'Bengali'],
-    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
-    ['en_US', __('English'), 'English'],
-    ['es_ES', __('Espanol'), 'Espanol'],
-    ['de_DE', __('German'), 'Deutsch'],
-    ['id_ID', __('Indonesian'), 'Indonesia'],
-    ['ja_JP', __('Japanese'), 'Japanese'],
-    ['ms_MY', __('Malay'), 'Malay'],
-    ['fa_IR', __('Persian'), 'Persian'],
-    ['ru_RU', __('Russian'), 'Russian'],
-    ['th_TH', __('Thai'), 'Thai'],
-    ['tr_TR', __('Turkish'), 'Turkish'],
-    ['ur_PK', __('Urdu'), 'Urdu']
-]);
 
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {

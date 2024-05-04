@@ -1,12 +1,16 @@
 <?php
-use SLiMS\Url;
+$inSimbioRequest = $this->withSimbioAJAXRequest(outputWithHeader: false);
+
+defined('SB') or define('SB', dirname(__DIR__, 2) . DIRECTORY_SEPARATOR);
+
+if ($inSimbioRequest === false):
 ?>
 <!DOCTYPE Html>
 <html>
     <head>
-        <title>Error Occured</title>
-        <link href="<?= Url::getSlimsBaseUri('css/bootstrap.min.css') ?>" rel="stylesheet"/>
+        <title><?= $title??'Oops Error' ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <style><?= file_get_contents(SB . 'css/bootstrap.min.css') ?></style>
         <style>
             * {
                 font-family: 'Trebuchet MS', sans-serif;
@@ -14,6 +18,7 @@ use SLiMS\Url;
         </style>
     </head>
     <body style="background-color: #e6e6e6">
+<?php endif; ?>
         <section class="container">
             <div class="row">
                 <div class="p-5 m-5">
@@ -30,5 +35,7 @@ use SLiMS\Url;
                 </div>
             </div>
         </section>
+<?php if ($inSimbioRequest !== false): ?>        
     </body>
 </html>
+<?php endif; ?>

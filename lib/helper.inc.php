@@ -22,6 +22,7 @@
  */
 
 use SLiMS\Config;
+use SLiMS\DB;
 use SLiMS\Ip;
 use SLiMS\Number;
 use SLiMS\Currency;
@@ -42,8 +43,12 @@ if (!function_exists('config')) {
      * @param null $default
      * @return mixed|null
      */
-    function config($key, $default = null) {
-        return Config::getInstance()->get($key, $default);
+    function config($key = '', $default = null) {
+        if (!empty($key)) {
+            return Config::getInstance()->get($key, $default);
+        }
+
+        return Config::getInstance();
     }
 }
 
@@ -426,7 +431,7 @@ if (!function_exists('debug'))
                 VarDumper::dump(
                     ...(
                         is_array($anotherVar) ? [
-                            $anotherVar[1], $anotherVar[0] // var to dump, label
+                            $anotherVar[1]??'', $anotherVar[0]??'' // var to dump, label
                         ] : [$anotherVar]) // only var without label
                 );
             }
@@ -505,5 +510,23 @@ if (!function_exists('getArrayData')) {
         }
 
         return $result;
+    }
+}
+
+/**
+ * @param string $connectionName
+ * @param string $type
+ */
+if (!function_exists('db')) {
+    function db(string $connectionName = 'SLiMS', string $type = 'pdo', string $extension = '', array $extensionParams = [])
+    {
+        if (!empty($extension)) {
+            $extensionInstance = DB::$extension(...$extensionParams);
+            if (method_exists($extensionInstance, 'setConnection')) $extensionInstance->setConnection($connectionName);
+            return $extensionInstance;
+        }
+        if ($connectionName === 'SLiMS') return DB::getInstance($type);
+
+        return DB::connection($connectionName, $type);
     }
 }
