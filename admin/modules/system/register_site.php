@@ -39,7 +39,9 @@ if (isset($_POST['saveData'])) {
     $method = 'post';
     if (isset($_POST['is_registered'])) {
       $method = 'put';
-      if (config('registration_info.library_name') !== $data['library_name']) {
+      $lastData = config('registration_info');
+      if ($lastData['library_name'] !== $data['library_name'] || $lastData['url'] !== $data['url']) {
+        $data['last_data'] = $lastData;
         $method = 'post';
       }
     }
@@ -63,13 +65,14 @@ if (isset($_POST['saveData'])) {
         if ($response->getStatusCode() == 200) {
           $content = json_decode($response->getContent()??'', true);
 
-          if ($content['status'] === false) throw new Exception($content['message']);
+          if (($content['status']??false) === false) throw new Exception($content['message']);
 
           toastr($content['message'])->success();
           redirect()->simbioAJAX(MWB . 'system/index.php');
         }
         
     } catch (Exception $e) {
+        dd($e->getMessage());
         writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ', register site : ' . $e->getMessage(), 'Logo', 'Delete');
         toastr(__('Failed to register your site. Open system log for more info'))->error();
     }
@@ -117,7 +120,7 @@ $form->addTextField('text', 'registration_info[npp]', __('NPP (Optional)'), conf
 if (config('registration_info') === null) {
   $form->addAnything('Privacy data processing agreement', '
   <input type="checkbox" class="noAutoFocus" name="registration_info[aggrement]" value="1" id="aggrement" />
-  <label for="aggrement">' . __('I agree to the <a href="https://slims.web.id/privacy">Privacy notice and data processing agreement</a>') . '</label>');
+  <label for="aggrement">' . __('I agree to the <a class="notAJAX" href="https://analytics.slims.web.id/?p=privacy">Privacy notice and data processing agreement</a>') . '</label>');
 }
 
 echo $form->printOut();
