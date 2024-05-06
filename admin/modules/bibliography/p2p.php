@@ -202,10 +202,6 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       $sql_op->insert('biblio', $biblio);
       echo '<p>' . $sql_op->error . '</p><p>&nbsp;</p>';
       $biblio_id = $sql_op->insert_id;
-      if ($biblio_id < 1) {
-        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('failed %s download file ( %s ) from  ( %s )') . ' : ' . $sql_op->error,$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
-        continue;
-      }
       // insert authors
       if ($authors) {
         $author_id = 0;
@@ -261,8 +257,8 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
               $ba['access_limit'] = 'literal{NULL}';
               $sql_op->insert('biblio_attachment', $ba);
 
-        	  // write to logs
-        	  writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
+        	    // write to logs
+        	    writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
 
             }
           }
@@ -339,7 +335,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
 
-  $_SESSION['p2pid'] = $sysconf['p2pserver'][$serverid]['id'];
+  $_SESSION['p2pid'] = $sysconf['p2pserver'][$serverid]['id']??0;
   $_SESSION['p2pserver'] = $p2pserver;
   # get keywords
   $keywords = urlencode($_GET['keywords']);
