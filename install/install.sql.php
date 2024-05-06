@@ -29,7 +29,7 @@ $sql['create'][] = 'CREATE TABLE IF NOT EXISTS `biblio` (
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `language_id` char(5) collate utf8_unicode_ci default \'en\',
-  `source` varchar(3) collate utf8_unicode_ci default NULL,
+  `source` varchar(10) collate utf8_unicode_ci default NULL,
   `publish_place_id` int(11) default NULL,
   `classification` varchar(40) collate utf8_unicode_ci default NULL,
   `notes` text collate utf8_unicode_ci,
