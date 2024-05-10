@@ -71,29 +71,30 @@ $opacVariable = [
 ];
 
 // OPAC Instance
-$Opac = new Opac($opacVariable, $sysconf, $dbs);
+$opacClass = config('custom_opac', Opac::class);
+$opac = new $opacClass($opacVariable, $sysconf, $dbs);
 
 // running hook to override process/variable before
 // content load
-$Opac->hookBeforeContent(function($Opac){
+$opac->hookBeforeContent(function($opac){
   // Set header for CSP
-  $Opac->setCsp();
-  $Opac->setHeader('X-Content-Type-Options', 'nonsniff');
+  $opac->setCsp();
+  $opac->setHeader('X-Content-Type-Options', 'nonsniff');
   
   // running plugin based on hook
-  Plugins::getInstance()->execute(Plugins::CONTENT_BEFORE_LOAD, [$Opac]);
+  Plugins::getInstance()->execute(Plugins::CONTENT_BEFORE_LOAD, [$opac]);
 });
 
 // Path process or show welcome page
-$Opac->onWeb(function($Opac){
-  $Opac->handle('p')->orWelcome();
+$opac->onWeb(function($opac){
+  $opac->handle('p')->orWelcome();
 })->onCli();
 
 // running hook to override process/variable after
 // content load
-$Opac->hookAfterContent(function($Opac){
-  Plugins::getInstance()->execute(Plugins::CONTENT_AFTER_LOAD, [$Opac]);
+$opac->hookAfterContent(function($opac){
+  Plugins::getInstance()->execute(Plugins::CONTENT_AFTER_LOAD, [$opac]);
 });
 
 // templating
-$Opac->parseToTemplate();
+$opac->parseToTemplate();

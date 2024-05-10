@@ -41,7 +41,6 @@ $namespaces = [
     "Minigalnano\\" => "/minigalnano/",
     "League\\Flysystem\\" => "/league/flysystem/src/",
     "League\\MimeTypeDetection\\" => "/league/mime-type-detection/src/",
-    "phpseclib3\\" => "/phpseclib/phpseclib/phpseclib/",
     'ParagonIE\\ConstantTime\\' => '/paragonie/constant_time_encoding/src',
     'OTPHP\\' => '/spomky-labs/otphp/src',
     'DASPRiD\\Enum\\' => '/dasprid/enum/src',

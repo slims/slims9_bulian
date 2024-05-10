@@ -112,12 +112,16 @@ function showTitleAuthors($obj_db, $array_data)
   $imageDisk = Storage::images();
   // biblio author detail
   if ($sysconf['index']['type'] == 'default') {
-      $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image FROM biblio AS b
+      $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image, b.source FROM biblio AS b
           LEFT JOIN biblio_author AS ba ON b.biblio_id=ba.biblio_id
           LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
           WHERE b.biblio_id=%d', $array_data[0]);
       $_biblio_q = $obj_db->query($_sql_biblio_q);
       $_authors = '';
+      $_p2p_server_type = '';
+      $type_id = 0;
+      $server_source = '';
+
       while ($_biblio_d = $_biblio_q->fetch_row()) {
           $_title = $_biblio_d[0];
           $_image = $_biblio_d[5];
@@ -125,7 +129,24 @@ function showTitleAuthors($obj_db, $array_data)
           $_opac_hide = (integer)$_biblio_d[2];
           $_promoted = (integer)$_biblio_d[3];
           $_labels = $_biblio_d[4];
+          if ($_biblio_d[6] !== null && strpos($_biblio_d[6], '.') !== false) {
+            list($type_id, $server_source) = explode('.', trim($_biblio_d[6]));
+            $_p2p_server_type = $sysconf['p2pserver_type'][$type_id]??'';
+          }
       }
+
+      if ($server_source) {
+        $server_source = (int)$server_source;
+        $server = $obj_db->query("SELECT `name` FROM `mst_servers` WHERE `server_id` = $server_source");
+        $server_data = $server->fetch_object();
+        if ($server_data) $server_source = $server_data->name;
+        else $server_source = 'Uknown data ' . $server_source;
+      }
+
+      if ($_p2p_server_type === 'z3950 SRU server' && $server_source == 0) {
+        $server_source = 'Library of Congress SRU Voyager';
+      }
+
       $_authors = substr_replace($_authors, '', -3);
       if($_image!='' AND $imageDisk->isExists('docs/'.$_image)){
         $img = 'images/docs/'.urlencode($_image);  
@@ -133,15 +154,43 @@ function showTitleAuthors($obj_db, $array_data)
       $_output = '<div class="media">
                     <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
-                      <div class="title">'.stripslashes($_title).'</div><div class="authors">'.$_authors.'</div>
+                      <div class="title">'.stripslashes($_title).'</div>
+                      <div class="authors">'.$_authors.'</div>
+                      <div title="' . ($_p2p_server_type ? str_replace('{type}', $_p2p_server_type . ' ' . $server_source, __('Copy from {type}')) : 'Manual') . '" class="' . ($_p2p_server_type ? 'd-block' : 'd-none') . '">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-download" viewBox="0 0 16 16">
+                          <path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383"/>
+                          <path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708z"/>
+                        </svg>
+                        <span>' . trim(str_replace(['Server','server'], '', $_p2p_server_type)) . ' - ' . ($server_source??'') . '</span>
+                      </div>
                     </div>
                   </div>';
   } else {
-  	    $_q = $obj_db->query("SELECT opac_hide,promoted FROM biblio WHERE biblio_id=".$array_data[0]);
-	    while ($_biblio_d = $_q->fetch_row()) {
+  	  $_q = $obj_db->query("SELECT opac_hide,promoted,source FROM biblio WHERE biblio_id=".$array_data[0]);
+	    $_p2p_server_type = '';
+      $type_id = 0;
+      $server_source = '';
+
+      while ($_biblio_d = $_q->fetch_row()) {
 	      $_opac_hide = (integer)$_biblio_d[0];
 	      $_promoted  = (integer)$_biblio_d[1];
+        if ($_biblio_d[2] !== null && strpos($_biblio_d[2], '.') !== false) {
+          list($type_id, $server_source) = explode('.', trim($_biblio_d[2]));
+          $_p2p_server_type = $sysconf['p2pserver_type'][$type_id]??'';
+        }
 	    }
+
+      if ($server_source) {
+        $server_source = (int)$server_source;
+        $server = $obj_db->query("SELECT `name` FROM `mst_servers` WHERE `server_id` = $server_source");
+        $server_data = $server->fetch_object();
+        if ($server_data) $server_source = $server_data->name;
+        else $server_source = 'Uknown data ' . $server_source;
+      }
+
+      if ($_p2p_server_type === 'z3950 SRU server' && $server_source == 0) {
+        $server_source = 'Library of Congress SRU Voyager';
+      }
 
       if($array_data[3]!='' AND $imageDisk->isExists('docs/'.$array_data[3])){
         $img = 'images/docs/'.urlencode($array_data[3]);  
@@ -149,7 +198,15 @@ function showTitleAuthors($obj_db, $array_data)
       $_output = '<div class="media">
                     <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
-                      <div class="title">'.stripslashes($array_data[1]).'</div><div class="authors">'.$array_data[4].'</div>
+                      <div class="title">'.stripslashes($array_data[1]).'</div>
+                      <div class="authors">'.$array_data[4].'</div>
+                      <div title="' . ($_p2p_server_type ? str_replace('{type}', $_p2p_server_type . ' ' . $server_source, __('Copy from {type}')) : 'Manual') . '" class="' . ($_p2p_server_type ? 'd-block' : 'd-none') . '">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-download" viewBox="0 0 16 16">
+                          <path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383"/>
+                          <path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708z"/>
+                        </svg>
+                        <span>' . trim(str_replace(['Server','server'], '', $_p2p_server_type)) . ' - ' . ($server_source??'') . '</span>
+                      </div>
                     </div>
                   </div>';
       $_labels = $array_data[2];

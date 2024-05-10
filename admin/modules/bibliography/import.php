@@ -24,6 +24,7 @@ use SLiMS\DB;
 use SLiMS\Csv\Writer;
 use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
+use SLiMS\Debug\VarDumper;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -166,8 +167,13 @@ if (isset($_POST['doImport'])) {
     
 
     try {
+      // exit(str_replace('{title}', 'Darno'??'?', __('Success importing bibliographic data : {title}')));
       $reader->readFromStream($file);
 
+      /**
+       * Formatter : a function to format some value such as author data etc
+       * Processor : inserting data to database
+       */
       $reader->each(formatter: function(&$field, $row, $index) use($dbs) {
         $currentValue = $field[$index];
 
@@ -229,6 +235,9 @@ if (isset($_POST['doImport'])) {
         $state->execute($fields);
 
         if ($state) {
+          VarDumper::dump(
+              str_replace('{title}', $fields[0]??'?', __('Success importing bibliographic data : {title}'))
+          );
           $biblio_id = $pdo->lastInsertId();
 
           if (!empty($authors)) {
@@ -272,13 +281,12 @@ if (isset($_POST['doImport'])) {
         }
       });
     } catch (Exception $e) {
-      dd($e);
       $errorMessage = $e->getMessage();
       exit(<<<HTML
       <script>
-      parent.\$('.infoBox').html('{$errorMessage}')
-      parent.\$('.infoBox').addClass('errorBox');
-      parent.\$('.infoBox').removeClass('infoBox');
+        parent.\$('.infoBox').html('{$errorMessage}')
+        parent.\$('.infoBox').addClass('errorBox');
+        parent.\$('.infoBox').removeClass('infoBox');
       </script>
       HTML);
     }
@@ -299,7 +307,7 @@ if (isset($_POST['doImport'])) {
     $end_time = time();
     $import_time_sec = $end_time-$start_time;
     writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$fileName, 'Import' );
-    $label = str_replace(['{row_count}','{time_to_finish}'], [$row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
+    $label = str_replace(['{row_count}','{time_to_finish}'], [$inserted_row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
     exit(<<<HTML
     <script>
     parent.\$('.infoBox').html('{$label}')

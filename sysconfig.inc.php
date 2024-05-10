@@ -655,6 +655,14 @@ $sysconf['database_backup'] = [
   ]
 ];
 
+// P2P server type list
+$sysconf['p2pserver_type'] = [
+  1 => 'P2P Server',
+  'z3950 server',
+  'z3950 SRU server',
+  'MARC SRU server'
+];
+
 // load global settings again for override tinfo setting
 utility::loadSettings($dbs);
 
@@ -744,6 +752,6 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
 ]));
 
 // create dynamic config file from sample
-foreach (\SLiMS\Config::isExists(['csp','auth']) as $config) {
-  \SLiMS\Config::createFromSample($config);
-}
+\SLiMS\Config::createFromSampleIfNotExists([
+  'csp','auth'
+]);
