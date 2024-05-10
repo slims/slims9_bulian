@@ -1139,6 +1139,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     function upgrade_role_36(){
       $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
       $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
+      $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+      $sql['alter'][] = "ALTER TABLE `user` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
       return $this->slims->query($sql, ['alter'],36);
     }
 }
