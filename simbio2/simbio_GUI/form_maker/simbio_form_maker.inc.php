@@ -59,6 +59,7 @@ class simbio_form_maker
   protected $enable_token = true;
   protected $submit_token = null;
   protected $submit_token_name = null;
+  protected $custom_btn_layout = '';
 
   /**
    * Class Constructor
@@ -348,5 +349,18 @@ class simbio_form_maker
   public function addFormObject($str_elmnt_label, $obj_simbio_fe, $str_elmnt_info = '')
   {
     $this->elements[$obj_simbio_fe->element_name] = array('label' => $str_elmnt_label, 'element' => $obj_simbio_fe, 'info' => $str_elmnt_info);
+  }
+
+  /**
+   * Method to add custom button layout
+   *
+   * @param Closure $designer
+   * @return void
+   */
+  public function customBtnLayout($designer)
+  {
+    if ($designer instanceof Closure) {
+      $this->custom_btn_layout = $designer($this);
+    }
   }
 }
