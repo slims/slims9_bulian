@@ -99,7 +99,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
+                $data_label[] = "'".preg_replace('/[^A-Za-z0-9]/', '', $data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
 
@@ -135,7 +135,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
+                $data_label[] = "'".preg_replace('/[^A-Za-z0-9]/', '', $data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -151,7 +151,7 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
+                $data_label[] = "'".preg_replace('/[^A-Za-z0-9]/', '', $data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
@@ -167,10 +167,11 @@ switch ($chart) {
                 $plot_data[] = array($data[0], $data[1]);
                 $data_colors[] = '#'.generateRandomColors();
             } else {
-                $data_label[] = "'".str_replace("'",'',$data[0]).' ('.$data[1].")'";
+                $data_label[] = "'".preg_replace('/[^A-Za-z0-9]/', '', $data[0]).' ('.$data[1].")'";
                 $plot_data[] = $data[1];
             }
         }
+        // dd($data_label, $plot_data);
         break;
 }
 /**
