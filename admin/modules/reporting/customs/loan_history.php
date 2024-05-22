@@ -59,8 +59,8 @@ if (!$reportView) {
 ?>
     <!-- filter -->
     <div class="per_title">
-    	<h2><?php echo __('Loan History'); ?></h2>
-	  </div>
+        <h2><?php echo __('Loan History'); ?></h2>
+      </div>
     <div class="infoBox">
     <?php echo __('Report Filter'); ?>
     </div>
@@ -121,7 +121,7 @@ if (!$reportView) {
             }
             echo simbio_form_element::selectList('location', $loc_options,'','class="form-control col-3"');
             ?>
-        </div>	    
+        </div>      
         <div class="form-group divRow">
             <label><?php echo __('Record each page'); ?></label>
             <input type="text" name="recsEachPage" size="3" maxlength="3" class="form-control col-1" value="<?php echo $num_recs_show; ?>" />
@@ -132,7 +132,7 @@ if (!$reportView) {
     <input type="submit" class="s-btn btn btn-primary" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
     <input type="hidden" name="reportView" value="true" />
     </form>
-	</div>
+    </div>
     <script>
         $(document).ready(function(){
             const elem = document.getElementById('range');
@@ -161,8 +161,8 @@ if (!$reportView) {
         'item_code AS \''.__('Item Code').'\'',
         'title AS \''.__('Title').'\'',
         'loan_date AS \''.__('Loan Date').'\'',
-        'due_date AS \''.__('Due Date').'\'', 'is_return AS \''.__('Loan Status').'\'');
-    $reportgrid->setSQLorder('loan_date DESC');
+        'due_date AS \''.__('Due Date').'\'', 'is_return AS \''.__('Loan Status').'\'', 'loan_id', 'return_date','last_update AS \''.__('Last Update').'\'');
+    $reportgrid->setSQLorder('last_update DESC');
 
     $criteria = 'member_id IS NOT NULL ';
     if (isset($_GET['id_name']) AND !empty($_GET['id_name'])) {
@@ -195,7 +195,7 @@ if (!$reportView) {
            TO_DAYS(\''.utility::filterData('untilDate', 'get', true, true, true).'\'))';
     }
     // loan status
-    if (isset($_GET['loanStatus']) AND $_GET['loanStatus'] != __('ALL')) {
+    if (isset($_GET['loanStatus']) AND $_GET['loanStatus'] != 'ALL') {
         $loanStatus = (integer)utility::filterData('loanStatus', 'get', true, true, true);
         $criteria .= ' AND is_return='.$loanStatus;
     }
@@ -206,28 +206,42 @@ if (!$reportView) {
     }else{
         $criteria .= ' AND member_type_name LIKE \'%%\'';
     }
-	
-    // item location	
+    
+    // item location    
     if (isset($_GET['location']) AND !empty($_GET['location']) AND $_GET['location'] != __('All')) {
         $location = utility::filterData('location', 'get', true, true, true);
         $criteria .= ' AND location_name LIKE \''.$location.'\'';
     }
-	
+    
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)utility::filterData('recsEachPage', 'get', true, true, true);
         $num_recs_show = ($recsEachPage >= 20 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
     $reportgrid->setSQLCriteria($criteria);
 
-   // callback function to show loan status
+    // callback function to show loan status
     function loanStatus($obj_db, $array_data)
     {
+        global $dbs;
         if ($array_data[7] == 0) {
-            return '<strong>'.__('On Loan').'</strong>';
+            $renew = $dbs->query("SELECT renewed FROM loan_history WHERE loan_id = ".$array_data[8]);
+            $data = $renew->fetch_row();
+            $renew_str = '';
+            if($data[0] > 0){
+                $renew_str .= ' - <small class="badge badge-success">'.__('Extends').' '.$data[0].'x</small>';
+            }
+            return '<strong>'.__('On Loan').''.$renew_str.'</strong>';
         } else {
-            return __('Returned');
+            $is_overdued_str = '';
+            if($array_data[10] > $array_data[6]){
+                $days = round(abs(strtotime($array_data[10]) - strtotime($array_data[6]))/86400);
+                $is_overdued_str .= ' - <small class="badge badge-danger">'.__('Overdue').' '.$days.' '.__('Day').'</small>';
+            }
+            return __('Returned').$is_overdued_str;
         }
     }
+
+    $reportgrid->invisible_fields = array(8,9);
 
     // modify column value
     $reportgrid->modifyColumnContent(7, 'callback{loanStatus}');
@@ -241,19 +255,19 @@ if (!$reportView) {
     echo '<script type="text/javascript">'."\n";
     echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
     echo '</script>';
-	$xlsquery = 'SELECT member_id AS \''.__('Member ID').'\''.
+    $xlsquery = 'SELECT member_id AS \''.__('Member ID').'\''.
         ', member_name AS \''.__('Member Name').'\''.
         ', item_code AS \''.__('Item Code').'\''.
         ', title AS \''.__('Title').'\''.
         ', loan_date AS \''.__('Loan Date').'\''.
         ', due_date AS \''.__('Due Date').'\', is_return AS \''.__('Loan Status').'\''.
-		' FROM '.$table_spec.' WHERE '.$criteria;
+        ' FROM '.$table_spec.' WHERE '.$criteria;
 
-		unset($_SESSION['xlsdata']);
-		$_SESSION['xlsquery'] = $xlsquery;
-		$_SESSION['tblout'] = "loan_history";
+        unset($_SESSION['xlsdata']);
+        $_SESSION['xlsquery'] = $xlsquery;
+        $_SESSION['tblout'] = "loan_history";
 
-	//echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
+    //echo '<div class="s-export"><a href="../xlsoutput.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a></div>';
 
     $content = ob_get_clean();
     // include the page template
