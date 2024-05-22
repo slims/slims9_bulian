@@ -848,7 +848,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     SET is_lent=NEW.is_lent,
     is_return=NEW.is_return,
     renewed=NEW.renewed,
-    return_date=NEW.return_date
+    return_date=NEW.return_date,
+    last_update=NEW.last_update
     WHERE loan_id=NEW.loan_id;";
 
     $query_trigger[] = "
