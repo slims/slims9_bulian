@@ -185,6 +185,39 @@ jQuery.extend({
 
 /* AJAX plugins for SLiMS */
 jQuery.fn.registerAdminEvents = function(params) {
+  //
+  $('form[name="downloadForm"]').submit(async function(e) {
+    e.preventDefault()
+    try {
+      let blobReq = await (await fetch($(this).attr('action'), {
+          body: $(this).serialize() + '&doExport=yes',
+          headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+          },
+          method: "POST",
+      })).blob()
+
+      const url = window.URL.createObjectURL(blobReq);
+      const a = document.createElement('a');
+
+      a.style.display = 'none';
+      a.href = url;
+
+      // the filename you want
+      a.download = $('input[name="doExport"]').data('filename');
+
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      top.$('.loader').hide()
+
+    } catch (error) {
+      top.window.toastr.error('Something error, open devtools at console for more information', 'Yah')
+      console.log(error)
+    }
+  })
+
   // enable loader on form submit
   $('form[target=submitExec]').submit(() => {
     $('.loader').show()
