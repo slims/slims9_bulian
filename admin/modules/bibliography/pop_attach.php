@@ -74,7 +74,7 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
   // create new sql op object
   $sql_op = new simbio_dbop($dbs);
   // FILE UPLOADING
-  if ($_FILES['file2attach']['error'] == 1)
+  if (isset($_FILES['file2attach']) && $_FILES['file2attach']['error'] == 1)
   {
     toastr(__('Invalid attacment, make sure your file is not exceeded system max upload'))->error();
   }
