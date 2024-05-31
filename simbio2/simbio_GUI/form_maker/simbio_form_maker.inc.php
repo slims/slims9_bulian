@@ -106,7 +106,7 @@ class simbio_form_maker
    */
   public static function isTokenValid(){
     if (isset($_SESSION['csrf_token']) && isset($_POST['csrf_token']) && isset($_POST['form_name'])) {
-      if ($_SESSION['csrf_token'][$_POST['form_name']] === $_POST['csrf_token']) {
+      if (($_SESSION['csrf_token'][$_POST['form_name']]??'') === $_POST['csrf_token']) {
         // update token session
         $_SESSION['csrf_token'][$_POST['form_name']] = self::genRandomToken();
         self::updateToken($_POST['form_name'], $_SESSION['csrf_token'][$_POST['form_name']]);
