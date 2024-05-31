@@ -51,14 +51,15 @@ if (!$can_read) {
 }
 
 // get servers
-$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
+$server_q = $dbs->query('SELECT name, uri, server_id FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
-  $sysconf['z3950_SRU_source'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+  $sysconf['z3950_SRU_source'][] = array('id' => $server['server_id'], 'uri' => $server['uri'], 'name' => $server['name']);
 }
 
 if (isset($_GET['z3950_SRU_source'])) {
-    $inList = (bool)count(array_filter($sysconf['z3950_SRU_source'], fn($sru) => trim(urldecode($_GET['z3950_SRU_source'])) == $sru['uri']));
+    $inList = (bool)count($matchServer = array_values(array_filter($sysconf['z3950_SRU_source'], fn($sru) => trim(urldecode($_GET['z3950_SRU_source'])) == $sru['uri'])));
     $zserver = $inList ? trim(urldecode($_GET['z3950_SRU_source'])) : '';
+    $matchServer = array_pop($matchServer);
 } else {
     $zserver = 'http://z3950.loc.gov:7090/voyager?';
 }
@@ -113,6 +114,7 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
               unset($biblio['subjects']);
           }
 
+          $biblio['source'] = array_search('z3950 SRU server', $sysconf['p2pserver_type']) . '.' . ($_SESSION['z3950sru_id']??0);
           $biblio['input_date'] = $biblio['create_date']??date('Y-m-d H:i:s');
           // $biblio['last_update'] = $biblio['modified_date'];
           $biblio['last_update'] = date('Y-m-d H:i:s');
@@ -190,7 +192,7 @@ if (isset($_GET['keywords']) AND $can_read) {
   require LIB.'modsxmlslims.inc.php';
   $_SESSION['z3950result'] = array();
   if ($_GET['index'] != 0) {
-    $index = trim($_GET['index']).' any ';
+    $index = trim($_GET['index']).'=';
     $keywords = urlencode($index.'"'.trim($_GET['keywords'].'"'));
   } else {
     $keywords = urlencode('"'.trim($_GET['keywords']).'"');
@@ -198,6 +200,11 @@ if (isset($_GET['keywords']) AND $can_read) {
 
   $query = '';
   if ($keywords) {
+
+    if (isset($matchServer) && isset($matchServer['id'])) {
+      $_SESSION['z3950sru_id'] = $matchServer['id'];
+    }
+
     $sru_server = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords=20&recordSchema=mods';
     // parse SRU Server XML
     $sru_xml = new SimpleXMLElement($sru_server, LIBXML_NSCLEAN, true);

@@ -520,11 +520,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
       WHERE b.biblio_id=%d GROUP BY title', $itemID);
         $biblio_item_q = $dbs->query($_sql_biblio_item_q);
         $biblio_item_d = $biblio_item_q->fetch_row();
-        if ($biblio_item_d[1] < 1) {
+        
+        if (($biblio_item_d[1]??0) < 1) {
 
             if ($sysconf['log']['biblio']) {
                 $_rawdata = api::biblio_load($dbs, $itemID);
-                api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0], 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
+                api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0]??'Item Undefined', 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
             }
 
             // execute registered hook
@@ -538,7 +539,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_DELETE, [$itemID]);
 
                 // write log
-                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . $biblio_item_d[0] . ') with biblio_id (' . $itemID . ')');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . ($biblio_item_d[0]??'?') . ') with biblio_id (' . $itemID . ')');
                 // delete related data
                 $sql_op->delete('biblio_topic', "biblio_id=$itemID");
                 $sql_op->delete('biblio_author', "biblio_id=$itemID");
@@ -583,7 +584,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $titles .= $title . "\n";
         }
         utility::jsToastr('Bibliography', __('Below data can not be deleted:') . "\n" . $titles, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
         exit();
     }
     // auto delete data on UCS if enabled
@@ -593,15 +594,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr('Bibliography', __('All Data Successfully Deleted'), 'success');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
     } else {
         utility::jsToastr('Bibliography', __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
     }
     exit();
 }
 /* RECORD OPERATION END */
-
 if (!$in_pop_up) {
     /* search form */
     ?>

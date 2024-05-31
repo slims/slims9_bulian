@@ -98,9 +98,9 @@ function remoteFileExists($url)
 }    
 
 // get servers
-$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
+$server_q = $dbs->query('SELECT name, uri, server_id FROM mst_servers WHERE server_type = 1 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
-  if (Url::isValid($server['uri'])) $sysconf['p2pserver'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+  if (Url::isValid($server['uri'])) $sysconf['p2pserver'][] = array('id' => $server['server_id'], 'uri' => $server['uri'], 'name' => $server['name']);
 }
 
 /* RECORD OPERATION */
@@ -169,6 +169,7 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
         unset($biblio['subjects']);
       }
 
+      $biblio['source'] = array_search('P2P Server', $sysconf['p2pserver_type']) . '.' . $_SESSION['p2pid'];
       $biblio['input_date'] = date('Y-m-d H:i:s');
       $biblio['last_update'] = date('Y-m-d H:i:s');
 
@@ -201,10 +202,6 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
       $sql_op->insert('biblio', $biblio);
       echo '<p>' . $sql_op->error . '</p><p>&nbsp;</p>';
       $biblio_id = $sql_op->insert_id;
-      if ($biblio_id < 1) {
-        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('failed %s download file ( %s ) from  ( %s )') . ' : ' . $sql_op->error,$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
-        continue;
-      }
       // insert authors
       if ($authors) {
         $author_id = 0;
@@ -260,8 +257,8 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
               $ba['access_limit'] = 'literal{NULL}';
               $sql_op->insert('biblio_attachment', $ba);
 
-        	  // write to logs
-        	  writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
+        	    // write to logs
+        	    writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s download file ( %s ) from  ( %s )'),$_SESSION['realname'],$fdata['file_title'],$stream_file), 'Download');  
 
             }
           }
@@ -299,13 +296,22 @@ if (isset($_POST['saveResults']) && isset($_POST['p2precord'])) {
                 <form name="search" action="<?php echo MWB; ?>bibliography/p2p.php" id="search" method="get"
                       class="form-inline">
                     <span class="mr-2"><?php echo __('Search'); ?></span>
-                    <input type="text" name="keywords" id="keywords" class="form-control col-md-3"/>
+                    <input type="text" name="keywords" value="<?= xssFree($_GET['keywords']??'') ?>" id="keywords" class="form-control col-md-3"/>
                     <span class="mx-2"><?php echo __('Fields'); ?> :</span>
                     <select name="fields" style="width: 20%;" class="form-control">
-                        <option value=""><?php echo __('ALL'); ?></option>
-                        <option value="title"><?php echo __('Title'); ?></option>
-                        <option value="isbn"><?php echo __('ISBN'); ?></option>
-                        <option value="author"><?php echo __('Author'); ?></option>
+                        <?php
+                        $fields = [
+                          __('All') => '',
+                          __('Title') => 'title',
+                          __('ISBN') => 'isbn',
+                          __('Author') => 'author'
+                        ];
+
+                        foreach ($fields as $label => $value) {
+                          $currentField = xssFree($_GET['fields']??'');
+                          echo '<option value="' . $value . '" ' . ($currentField === $value ? 'selected' : '') . '>' . $label . '</option>';
+                        }
+                        ?>
                     </select>
                     <span class="mx-2"><?php echo __('Server'); ?>:</span>
                     <select name="p2pserver" style="width: 20%;"
@@ -329,6 +335,7 @@ if (isset($_GET['keywords']) && $can_read && isset($_GET['p2pserver'])) {
   $p2pserver = cleanUrl($sysconf['p2pserver'][$serverid]['uri']);
   $p2pserver_name = $sysconf['p2pserver'][$serverid]['name'];
 
+  $_SESSION['p2pid'] = $sysconf['p2pserver'][$serverid]['id']??0;
   $_SESSION['p2pserver'] = $p2pserver;
   # get keywords
   $keywords = urlencode($_GET['keywords']);

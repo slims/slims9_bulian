@@ -163,8 +163,8 @@ if (isset($_POST['doExport'])) {
 <?php
 
 // create new instance
-$form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
-$form->submit_button_attr = 'name="doExport" value="'.__('Export Now').'" class="s-btn btn btn-default"';
+$form = new simbio_form_table_AJAX('downloadForm', $_SERVER['PHP_SELF'], 'post');
+$form->submit_button_attr = 'name="doExport" data-filename="senayan_item_export.csv" value="'.__('Export Now').'" class="s-btn btn btn-default"';
 
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';

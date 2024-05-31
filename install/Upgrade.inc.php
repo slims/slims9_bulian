@@ -848,7 +848,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     SET is_lent=NEW.is_lent,
     is_return=NEW.is_return,
     renewed=NEW.renewed,
-    return_date=NEW.return_date
+    return_date=NEW.return_date,
+    last_update=NEW.last_update
     WHERE loan_id=NEW.loan_id;";
 
     $query_trigger[] = "
@@ -1093,7 +1094,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           KEY `biblio_id_idx` (`biblio_id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        return $this->slims->query($sql, ['create', 'alter'],32);
+        return $this->slims->query($sql, ['create', 'alter'],33);
     }
 
     /**
@@ -1124,7 +1125,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
         $sql['update'][] = "UPDATE `mst_item_status` SET `skip_stock_take` = 1 WHERE `item_status_id` IN ('NL','R')";
 
-        return $this->slims->query($sql, ['create', 'alter','update'],33);
+        return $this->slims->query($sql, ['create', 'alter','update'],34);
     }
 
     /**
@@ -1138,6 +1139,9 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      */
     function upgrade_role_36(){
       $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
-      return $this->slims->query($sql, ['alter'],35);
+      $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
+      $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+      $sql['alter'][] = "ALTER TABLE `user` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+      return $this->slims->query($sql, ['alter'],36);
     }
 }
