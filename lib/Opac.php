@@ -3,7 +3,7 @@
  * @composedBy Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-08-16 09:07:12
- * @modify date 2023-04-08 10:35:20
+ * @modify date 2023-12-25 11:09:37
  * @license GPLv3
  * @desc modify from SLiMS Index.php
  */
@@ -76,6 +76,8 @@ class Opac
         $path = utility::filterData('p', 'get', false, true, true);
         // some extra checking
         $path = preg_replace('@^(http|https|ftp|sftp|file|smb):@i', '', $path);
+        // custom api endpoint
+        if (($routes = explode('/', $path)) > 0) return $path = $routes[0];
         $path = preg_replace('@\/@i','',$path);
 
         return $path;
@@ -113,6 +115,10 @@ class Opac
     {
         if (isset(($menu = Plugins::getInstance()->getMenus('opac'))[$this->path])) {
             if (file_exists($menu[$this->path][3])) {
+                // page_title is initial variable
+                // so it must be updated too
+                $this->definedVariable['page_title'] = $menu[$this->path][0];
+
                 // extract defined variable
                 extract($this->definedVariable);
                 
@@ -120,7 +126,7 @@ class Opac
                 $path = $this->path;
                 $sysconf = $this->sysconf;
                 $dbs = $this->dbs;
-                $page_title = $menu[$this->path][0];
+                $opac = $this;
 
                 // Include plugin file
                 include $menu[$this->path][3];

@@ -24,6 +24,7 @@
 define('INDEX_AUTH', '1');
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use SLiMS\DB;
 
 // required file
 require '../sysconfig.inc.php';
@@ -40,6 +41,22 @@ require LIB.'module.inc.php';
 // https connection (if enabled)
 if ($sysconf['https_enable']) {
     simbio_security::doCheckHttps($sysconf['https_port']);
+}
+
+/**
+ * Just info for who want to
+ * upgrade SLiMS if didn't have access
+ * to last slims source code.
+ */
+if ($_SESSION['uid'] == 1 && config('init_info') === null) {
+    DB::query('insert into `setting` set `setting_name` = ?, `setting_value` = ?', [
+        'init_info',
+        serialize([
+            'version' => SENAYAN_VERSION,
+            'tag' => SENAYAN_VERSION_TAG,
+            'admin_url' => dirname($_SERVER['PHP_SELF'])
+        ])
+    ])->run();
 }
 
 // page title

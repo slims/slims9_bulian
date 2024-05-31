@@ -1,7 +1,7 @@
 <?php
 /**
  * @create date 2023-08-22 14:50:12
- * @modify date 2023-08-22 14:50:12
+ * @modify date 2023-10-28 13:08:44
  * @desc Database connection manager
  */
 namespace SLiMS;
@@ -100,5 +100,10 @@ class Connection {
     public function __wakeup()
     {
         $this->connect();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

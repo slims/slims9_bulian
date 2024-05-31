@@ -6,6 +6,8 @@
 # @Last modified by:   user
 # @Last modified time: 2018-01-26T11:37:10+07:00
 
+$imagesDisk = \SLiMS\Filesystems\Storage::images();
+
 //$a = get_defined_vars();
 //$a['sysconf'] = null;
 //$a['main_content'] = null;

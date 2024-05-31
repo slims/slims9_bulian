@@ -42,9 +42,6 @@
 
 use SLiMS\Url;
 
-// change scheme to https
-if (Url::getPort() == '443' || defined('FORCE_HTTPS')) Url::$forceHttps = true;
-
 /**
  * Whether to show error message for dubug.
  * For installation, testing and debuging set SHOW_QUERY_ERROR to TRUE

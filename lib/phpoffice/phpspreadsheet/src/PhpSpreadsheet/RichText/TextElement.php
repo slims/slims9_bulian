@@ -47,7 +47,7 @@ class TextElement implements ITextElement
     }
 
     /**
-     * Get font.
+     * Get font. For this class, the return value is always null.
      *
      * @return null|\PhpOffice\PhpSpreadsheet\Style\Font
      */
@@ -67,20 +67,5 @@ class TextElement implements ITextElement
             $this->text .
             __CLASS__
         );
-    }
-
-    /**
-     * Implement PHP __clone to create a deep clone, not just a shallow copy.
-     */
-    public function __clone()
-    {
-        $vars = get_object_vars($this);
-        foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
-        }
     }
 }

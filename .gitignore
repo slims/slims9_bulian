@@ -4,7 +4,7 @@ images/docs/*
 images/labels/*
 images/cache/*
 images/content/*
-images/default/logo.png
+images/default/logo.*
 images/default/webicon.*
 files/*
 !files/membercard/*
@@ -52,5 +52,7 @@ composer.lock
 config/database.php
 config/captcha.php
 config/env.php
+config/csp.php
+config/auth.php
 tarsius
 .htaccess

@@ -111,11 +111,20 @@ class simbio_security
      * Static method to clean all string character
      * from html element and attributes
      *
-     * @param string $str_char
+     * @param string|array $str_char
      * @return string
      */
-    public static function xssFree($str_char)
+    public static function xssFree(string|array $char)
     {
-        return str_replace(['\'', '"'], '', strip_tags($str_char));
+        $formatter = fn($chr) => str_replace(['\'', '"'], '', strip_tags($chr));
+
+        if (is_string($char)) return $formatter($char);
+
+        foreach ($char as $key => $value) {
+            if (is_string($value)) $char[$key] = $formatter($value);
+            else if (is_array($value)) $char[$key] = self::xssFree($value);
+        }
+
+        return $char;
     }
 }

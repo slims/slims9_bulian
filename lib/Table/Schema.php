@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:07:17
- * @modify date 2022-12-21 08:48:08
+ * @modify date 2024-01-21 15:07:00
  * @license GPLv3
  * @desc [description]
  */
@@ -24,29 +24,34 @@ class Schema
     private string $column = '';
     public static $debug = false;
     private static $instance = null;
-    private static $connectionName = 'SLiMS';
+    private static $connectionName = '';
     private static $connection = null;
     private static $connectionProfile = [];
     
     /**
      * Create Information Schema database connection
      */
-    private function __construct(string $connectionName)
+    private function __construct()
     {
         try {
-            self::$connectionName = $connectionName;
-            self::$connection = DB::connection($connectionName);
+            if (empty(self::$connectionName)) self::$connectionName = config('database.default_profile');
+            self::$connection = DB::connection(self::$connectionName);
             self::$connectionProfile = DB::getCredential(self::$connectionName);
         } catch (RuntimeException $e) {
             die($e->getMessage());
         }
     }
 
-    public static function connection(string $connectionName = 'SLiMS')
+    public static function connection(string $connectionName)
     {
         self::$instance = null;
         self::$connectionName = $connectionName;
         return self::getInstance();
+    }
+
+    public static function getConnectionName()
+    {
+        return self::$connectionName;
     }
 
     /**
@@ -56,7 +61,7 @@ class Schema
      */
     public static function getInstance()
     {
-        if (is_null(self::$instance)) self::$instance = new Schema(self::$connectionName);
+        if (is_null(self::$instance)) self::$instance = new Schema;
 
         return self::$instance;
     }
@@ -79,7 +84,7 @@ class Schema
         
         try {
             $createQuery = $bluePrint->create($tableName);
-            self::getInstance()->verbose = $createQuery;
+            $this->verbose = $createQuery;
             if (!self::$debug) self::$connection->query($createQuery);
         } catch (PDOException $e) {
             // debuging
@@ -108,7 +113,7 @@ class Schema
 
         try {
             $alterQuery = $bluePrint->alter($tableName);
-            self::getInstance()->verbose = $alterQuery;
+            $this->verbose = $alterQuery;
             if (!self::$debug) self::$connection->query($alterQuery);
         } catch (PDOException $e) {
             // debuging

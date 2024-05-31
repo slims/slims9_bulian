@@ -277,7 +277,7 @@ if (isset($_POST['doImport'])) {
 
         $end_time = time();
         $import_time_sec = $end_time-$start_time;
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' item records from file : '.$fileName);
+        writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$updated_row.' item records from file : '.$fileName);
         $label = str_replace(['{row_count}','{time_to_finish}'], [$row_count, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
         exit(<<<HTML
         <script>

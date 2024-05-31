@@ -20,7 +20,7 @@
  */
 
 /* Biblio Index Command Line Updater */
-
+define('INDEX_AUTH', '1');
 // main system configuration
 require 'sysconfig.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';

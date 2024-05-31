@@ -31,10 +31,15 @@ if (INDEX_AUTH != 1) {
 }
 
 // Cleanup SQL Injection and Common XSS
-$sanitizer->cleanUp(filter: [false, true, true] /* escape_sql, trim, strip_tag */, exception: ['contentDesc','comment']);
+$sanitizer->cleanUp(
+    filter: [false, true, true] /* escape_sql, trim, strip_tag */, 
+    exception: ['contentDesc','comment','classic_footer_about_us','classic_map_desc']
+);
 
 // use session factory to handle session based on default SLiMS or user handler
 SessionFactory::use(config('customSession', Files::class))->start('admin');
+
+if (!ob_get_level()) ob_start();
 
 // hooking after session started
 Plugins::run(Plugins::ADMIN_SESSION_AFTER_START);

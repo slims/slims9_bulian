@@ -7,6 +7,7 @@
 # @Last modified time: 2017-09-22T11:01:48+07:00
 
 /* Perpustakaan Nasional SRU Web Services section */
+use SLiMS\Extension;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -47,6 +48,11 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 
 if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+}
+
+$marcExtRequirement = [];
+if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
+  die('<div class="errorBox">' . (sprintf(__('Feature MARC needs some PHP extension such as %s'), implode(',', $marcExtRequirement))) . '</div>');
 }
 
 if (!\Marc\XMLParser::isSupport()) {
@@ -285,7 +291,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from MARC SRU service (server: %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$data['title'],$biblio_id), 'MARC SRU', 'Add');         
+        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from MARC SRU service (server: %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$data['title'],$biblio_id), 'MARC SRU', 'Add');         
         $r++;
     }
   }

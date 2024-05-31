@@ -111,7 +111,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
                 if ($sysconf['bibliography_item_update_notification']) {
                     utility::jsToastr('Item', __('Item Data Successfully Updated'), 'success');
 			    }
@@ -129,7 +129,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
                 utility::jsToastr('Item', __('New Item Data Successfully Saved'), 'success');
                 if ($in_pop_up) {
                     echo '<script type="text/javascript">top.setIframeContent(\'itemIframe\', \''.MWB.'bibliography/iframe_item_list.php?biblioID='.$data['biblio_id'].'\');</script>';
@@ -171,7 +171,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $error_num++;
             } else {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
         } else {
             $still_on_loan[] = $loan_d[0].' - '.$loan_d[1];

@@ -103,6 +103,9 @@ class Csv extends BaseReader
      */
     protected $preserveNumericFormatting = false;
 
+    /** @var bool */
+    private $preserveNullString = false;
+
     /**
      * Create a new CSV Reader instance.
      */
@@ -265,6 +268,18 @@ class Csv extends BaseReader
         return $this->loadIntoExisting($filename, $spreadsheet);
     }
 
+    /**
+     * Loads Spreadsheet from string.
+     */
+    public function loadSpreadsheetFromString(string $contents): Spreadsheet
+    {
+        // Create new Spreadsheet
+        $spreadsheet = new Spreadsheet();
+
+        // Load into this instance
+        return $this->loadStringOrFile('data://text/plain,' . urlencode($contents), $spreadsheet, true);
+    }
+
     private function openFileOrMemory(string $filename): void
     {
         // Open file
@@ -279,8 +294,9 @@ class Csv extends BaseReader
         if ($this->inputEncoding !== 'UTF-8') {
             fclose($this->fileHandle);
             $entireFile = file_get_contents($filename);
-            $this->fileHandle = fopen('php://memory', 'r+b');
-            if ($this->fileHandle !== false && $entireFile !== false) {
+            $fileHandle = fopen('php://memory', 'r+b');
+            if ($fileHandle !== false && $entireFile !== false) {
+                $this->fileHandle = $fileHandle;
                 $data = StringHelper::convertEncoding($entireFile, 'UTF-8', $this->inputEncoding);
                 fwrite($this->fileHandle, $data);
                 $this->skipBOM();
@@ -288,9 +304,11 @@ class Csv extends BaseReader
         }
     }
 
-    public function setTestAutoDetect(bool $value): void
+    public function setTestAutoDetect(bool $value): self
     {
         $this->testAutodetect = $value;
+
+        return $this;
     }
 
     private function setAutoDetect(?string $value): ?string
@@ -315,15 +333,42 @@ class Csv extends BaseReader
     }
 
     /**
+     * Open data uri for reading.
+     */
+    private function openDataUri(string $filename): void
+    {
+        $fileHandle = fopen($filename, 'rb');
+        if ($fileHandle === false) {
+            // @codeCoverageIgnoreStart
+            throw new ReaderException('Could not open file ' . $filename . ' for reading.');
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->fileHandle = $fileHandle;
+    }
+
+    /**
      * Loads PhpSpreadsheet from file into PhpSpreadsheet instance.
      */
     public function loadIntoExisting(string $filename, Spreadsheet $spreadsheet): Spreadsheet
+    {
+        return $this->loadStringOrFile($filename, $spreadsheet, false);
+    }
+
+    /**
+     * Loads PhpSpreadsheet from file into PhpSpreadsheet instance.
+     */
+    private function loadStringOrFile(string $filename, Spreadsheet $spreadsheet, bool $dataUri): Spreadsheet
     {
         // Deprecated in Php8.1
         $iniset = $this->setAutoDetect('1');
 
         // Open file
-        $this->openFileOrMemory($filename);
+        if ($dataUri) {
+            $this->openDataUri($filename);
+        } else {
+            $this->openFileOrMemory($filename);
+        }
         $fileHandle = $this->fileHandle;
 
         // Skip BOM, if any
@@ -351,7 +396,7 @@ class Csv extends BaseReader
             foreach ($rowData as $rowDatum) {
                 $this->convertBoolean($rowDatum, $preserveBooleanString);
                 $numberFormatMask = $this->convertFormattedNumber($rowDatum);
-                if ($rowDatum !== '' && $this->readFilter->readCell($columnLetter, $currentRow)) {
+                if (($rowDatum !== '' || $this->preserveNullString) && $this->readFilter->readCell($columnLetter, $currentRow)) {
                     if ($this->contiguous) {
                         if ($noOutputYet) {
                             $noOutputYet = false;
@@ -395,8 +440,8 @@ class Csv extends BaseReader
             } elseif (strcasecmp(Calculation::getFALSE(), $rowDatum) === 0 || strcasecmp('false', $rowDatum) === 0) {
                 $rowDatum = false;
             }
-        } elseif ($rowDatum === null) {
-            $rowDatum = '';
+        } else {
+            $rowDatum = $rowDatum ?? '';
         }
     }
 
@@ -511,7 +556,7 @@ class Csv extends BaseReader
         fclose($this->fileHandle);
 
         // Trust file extension if any
-        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $extension = strtolower(/** @scrutinizer ignore-type */ pathinfo($filename, PATHINFO_EXTENSION));
         if (in_array($extension, ['csv', 'tsv'])) {
             return true;
         }
@@ -585,5 +630,17 @@ class Csv extends BaseReader
         }
 
         return ($encoding === '') ? $dflt : $encoding;
+    }
+
+    public function setPreserveNullString(bool $value): self
+    {
+        $this->preserveNullString = $value;
+
+        return $this;
+    }
+
+    public function getPreserveNullString(): bool
+    {
+        return $this->preserveNullString;
     }
 }

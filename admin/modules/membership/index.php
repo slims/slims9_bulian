@@ -144,6 +144,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           }
         }
 
+        // Register advance custom field data
+        Plugins::getInstance()->execute(Plugins::MEMBERSHIP_CUSTOM_FIELD_DATA, ['custom_data' => &$custom_data]);
+
         $data['member_id'] = $dbs->escape_string($memberID);
         $data['member_name'] = $dbs->escape_string($memberName);
         $data['member_type_id'] = (integer)$_POST['memberTypeID'];
@@ -209,7 +212,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
           } else {
             // write log
             $data['member_image'] = NULL;
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')');
+            writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')');
             utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
           }
         } else if (!empty($_POST['base64picstring'])) {
@@ -277,16 +280,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Update');
+                        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Update');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Update', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Update', 'OK');
                 if ($sysconf['webcam'] == 'html5') {
                   echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 } else {
@@ -302,7 +305,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($insert) {
 
                 // insert custom data
-                if ($custom_data) {
+                if (isset($custom_data)) {
                   $custom_data['member_id'] = $data['member_id'];
                   @$sql_op->insert('member_custom', $custom_data);
                 }
@@ -314,16 +317,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
+                        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { toastr(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->danger(); }
             exit();
@@ -344,7 +347,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $expire_date = simbio_date::getNextDate($mtype_d[0], $curr_date);
         @$dbs->query('UPDATE member SET register_date=\''.date("Y-m-d").'\',  expire_date=\''.$expire_date.'\', last_update=\''.date("y-m-d").'\' WHERE member_id=\''.$memberID.'\'');
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Extend', 'OK');
+        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Extend', 'OK');
         $num_extended++;
     }
     header('Location: '.MWB.'membership/index.php?expire=true&numExtended='.$num_extended);
@@ -374,8 +377,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if (!$sql_op->delete('member', "member_id='$itemID'")) {
                 $error_num++;
             } else {
+                // delete custom data
+                $sql_op->delete('member_custom', "member_id='$itemID'");
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
             }
         } else {
             $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -394,7 +399,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // error alerting
     if ($error_num == 0) {
         toastr(__('All Data Successfully Deleted'))->success();
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.($_POST['lastQueryStr']??'').'\');</script>';
     } else {
         toastr(__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'))->error();
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
@@ -581,6 +586,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         }
     }
 
+    // get advance custom field based on plugin
+    $js = '';
+    Plugins::getInstance()->execute(Plugins::MEMBERSHIP_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
+
     // member is_pending
     $form->addCheckBox('isPending', __('Pending Membership'), array( array('1', __('Yes')) ), $rec_d['is_pending']??'');
     // member photo
@@ -688,6 +697,13 @@ $(document).ready(function() {
         let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
     });
+
+    <?php
+    if (isset($js) && !empty($js))
+    {
+        echo $js;
+    }
+    ?>
 });
 </script>
 <?php
@@ -698,7 +714,7 @@ $(document).ready(function() {
       global $sysconf;
       $imageDisk = Storage::images();
       $image = 'images/persons/photo.png';
-      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$array_data[0].'"');
+      $_q = $obj_db->query('SELECT member_image,member_name,member_address,member_phone FROM member WHERE member_id = "'.$obj_db->escape_string($array_data[0]).'"');
       if(isset($_q->num_rows)){
         $_d = $_q->fetch_row();
         if($_d[0] != NULL){     

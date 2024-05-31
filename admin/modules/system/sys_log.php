@@ -20,6 +20,7 @@
  */
 
 /* System Log Viewer */
+use SLiMS\Log\Factory as Log;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -50,20 +51,13 @@ if (!$can_read) {
 
 // log data save action
 if (isset($_POST['saveLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
-    $logs = $dbs->query('SELECT log_date, log_location, log_msg FROM system_log ORDER BY log_date DESC');
-    header('Content-Type: text/plain');
-    header('Content-Disposition: attachment; filename="system_logs_'.date('Ymd').'.log"');
-    echo 'SENAYAN system logs record'."\n";
-    while ($logs_d = $logs->fetch_row()) {
-        echo '['.$logs_d[0].']---'.$logs_d[1].'---'.$logs_d[2]."\n";
-    }
-    exit();
+   Log::download();
 }
 
 // log data clearance action
 if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
-    $dbs->query('TRUNCATE TABLE system_log');
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' is cleaning all logs '. 'Log record', 'Clear');
+    Log::truncate();
+    Log::write('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' is cleaning all logs '. 'Log record', 'Clear');
     utility::jsToastr(__('System Log'), __('System Log data completely cleared!'), 'success');    
     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'system/sys_log.php\');</script>';
     exit();
@@ -100,48 +94,7 @@ if (isset($_POST['clearLogs']) AND $can_write AND $_SESSION['uid'] == 1) {
 /* search form end */
 /* SYSTEM LOGS LIST */
 // table spec
-$table_spec = 'system_log AS sl';
 
 // create datagrid
-$datagrid = new simbio_datagrid();
-$datagrid->setSQLColumn(
-    'sl.log_date AS \''.__('Time').'\'',
-    'sl.log_location AS \''.__('Location').'\'',
-    'sl.log_msg AS \''.__('Message').'\'');
-$datagrid->setSQLorder('sl.log_date DESC');
-
-// is there any search
-if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    $keyword = utility::filterData('keywords', 'get', true, true, true);
-    $words = explode(' ', $keyword);
-    if (count($words) > 1) {
-        $concat_sql = ' (';
-        foreach ($words as $word) {
-            $concat_sql .= " (sl.log_date LIKE '%$word%' OR sl.log_msg LIKE '%$word%') AND";
-        }
-        // remove the last AND
-        $concat_sql = substr_replace($concat_sql, '', -3);
-        $concat_sql .= ') ';
-        $datagrid->setSQLCriteria($concat_sql);
-    } else {
-        $datagrid->setSQLCriteria("sl.log_date LIKE '%$keyword%' OR sl.log_msg LIKE '%$keyword%'");
-    }
-}
-
-// set table and table header attributes
-$datagrid->table_attr = 'id="dataList" class="s-table table"';
-$datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
-// set delete proccess URL
-$datagrid->delete_URL = $_SERVER['PHP_SELF'];
-$datagrid->column_width = array('18%', '10%', '72%');
-$datagrid->disableSort('Message');
-
-// put the result into variables
-$datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 50, false);
-if (isset($_GET['keywords']) AND $_GET['keywords']) {
-    $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-    echo '<div class="infoBox">'.$msg.' : "'.htmlspecialchars($_GET['keywords']).'"</div>';
-}
-
-echo $datagrid_result;
+echo Log::read(new simbio_datagrid());
 /* main content end */

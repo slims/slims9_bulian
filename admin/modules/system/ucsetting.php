@@ -58,11 +58,11 @@ if (isset($_POST['updateData'])) {
 
   if ($upsert['status']) {
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings', 'UCS config', 'Update');
+    writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings', 'UCS config', 'Update');
     utility::jsToastr(__('UCS Configuration'), __('Settings ' . $upsert['state'] . '.'), 'success');
   } else {
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
+    writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change UCS Settings');
     utility::jsToastr(__('UCS Configuration'), __('Failed save settings!'), 'success');      
   }
 

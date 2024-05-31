@@ -151,8 +151,8 @@ class admin_logon
         }
 
         // save md5sum of  current application path
-        if (config('load_balanced.env', false)) {
-            $server_addr = ip();
+        if (config('loadbalanced.env', false)) {
+            $server_addr = ip()->getProxyIp();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }

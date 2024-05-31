@@ -215,7 +215,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('user', $data, 'user_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
                 toastr(__('User Data Successfully Updated'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
@@ -223,11 +223,11 @@ if (isset($_POST['saveData'])) {
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
@@ -240,7 +240,7 @@ if (isset($_POST['saveData'])) {
             // insert the data
             if ($sql_op->insert('user', $data)) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
                 toastr(__('New User Data Successfully Saved'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
@@ -248,11 +248,11 @@ if (isset($_POST['saveData'])) {
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
@@ -284,7 +284,7 @@ if (isset($_POST['saveData'])) {
             $error_num++;
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')', 'User', 'Delete');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')', 'User', 'Delete');
         }
     }
 
@@ -335,8 +335,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($changecurrent) {
         $itemID = (integer)$_SESSION['uid'];
     }
-    $rec_q = $dbs->query('SELECT * FROM user WHERE user_id='.$itemID);
-    $rec_d = $rec_q->fetch_assoc();
+    $rec_q = \SLiMS\DB::query('SELECT * FROM user WHERE user_id=?', [$itemID]);
+    $rec_d = $rec_q->first();
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
@@ -348,7 +348,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->table_content_attr = 'class="alterCell2"';
 
     // edit mode flag set
-    if ($rec_q->num_rows > 0) {
+    if ($rec_q->count() > 0) {
         $form->edit_mode = true;
         // record ID for delete process
         if (!$changecurrent) {
@@ -452,7 +452,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');
 
     // Two Factor Authentication
-    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid']) {
+    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid'] && extension_loaded('iconv')) {
         $otp = OTPHP\TOTP::generate();
         $otp->setLabel(config('library_name'));
         $secret = $otp->getSecret();

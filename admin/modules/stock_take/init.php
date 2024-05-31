@@ -61,6 +61,16 @@ if ($_SESSION['uid'] != '1') {
     </div>
 <?php
 $q_item = $dbs->query("SELECT last_update FROM item ORDER BY last_update DESC LIMIT 1");
+
+if ($q_item->num_rows < 1) {
+  die('
+  <div class="errorBox">
+    <strong>' . __('No item available. Stock take process is need item data') . '</strong>
+  </div>
+  ');
+}
+
+
 $d_item = $q_item->fetch_row();
 $q_backup = $dbs->query("SELECT backup_log_id FROM backup_log WHERE backup_time >= '{$d_item[0]}'");
 if ((DB::hasBackup(by: DB::BACKUP_BASED_ON_LAST_ITEM) === false) && !isset($_GET['skip_backup']) && !isset($_POST['saveData'])) {
@@ -185,7 +195,7 @@ if ($stk_q->num_rows) {
         // update total_lost_item field value in stock_take table
         $update_total_q = $dbs->query('UPDATE stock_take SET total_item_stock_taked=' . $total_rows_d[0] . ', total_item_loan=' . $item_loan_d[0] . ', total_item_lost=' . $total_rows_d[0] . " WHERE stock_take_id=$stock_take_id");
         // write log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR'], 'Initialize', 'OK');
+        writeLog('staff', $_SESSION['uid'], 'stock_take', $_SESSION['realname'] . ' initialize stock take (' . $data['stock_take_name'] . ') from address ' . $_SERVER['REMOTE_ADDR'], 'Initialize', 'OK');
         utility::jsAlert(__('Stock Taking Initialized'));
         echo '<script type="text/javascript">parent.location.href = \'' . SWB . 'admin/index.php?mod=stock_take\';</script>';
       } else {

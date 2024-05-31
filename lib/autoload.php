@@ -41,7 +41,6 @@ $namespaces = [
     "Minigalnano\\" => "/minigalnano/",
     "League\\Flysystem\\" => "/league/flysystem/src/",
     "League\\MimeTypeDetection\\" => "/league/mime-type-detection/src/",
-    "phpseclib3\\" => "/phpseclib/phpseclib/phpseclib/",
     'ParagonIE\\ConstantTime\\' => '/paragonie/constant_time_encoding/src',
     'OTPHP\\' => '/spomky-labs/otphp/src',
     'DASPRiD\\Enum\\' => '/dasprid/enum/src',
@@ -86,4 +85,4 @@ include "symfony/polyfill-mbstring/bootstrap.php";
 include "nesbot/carbon/legacy.func.php";
 // Var-dumper
 // Load the global dump() function
-include 'symfony/var-dumper/Resources/functions/dump.php';
+// include 'symfony/var-dumper/Resources/functions/dump.php';

@@ -42,8 +42,8 @@ class Url
      */
     public static function getDomain(bool $strict = true)
     {
-        $loadBalance = self::getConfig('load_balanced');
-        $domain = $loadBalance['env'] ? $loadBalance['options']['host'] : $_SERVER['SERVER_NAME'];
+        $loadBalance = self::getConfig('loadbalanced');
+        $domain = $loadBalance && $loadBalance['env'] ? $loadBalance['options']['host'] : $_SERVER['SERVER_NAME'];
         if (!in_array(self::getPort(), [80,443]) && $strict) return $domain . ':' . self::getPort();
         return $domain;
     }
@@ -60,8 +60,8 @@ class Url
      */
     public static function getPort()
     {
-        $loadBalance = self::getConfig('load_balanced');
-        return  $loadBalance['env'] ? $loadBalance['options']['port'] : $_SERVER['SERVER_PORT'];
+        $loadBalance = self::getConfig('loadbalanced');
+        return  $loadBalance && $loadBalance['env'] ? $loadBalance['options']['port'] : $_SERVER['SERVER_PORT'];
     }
 
     /**
@@ -72,8 +72,8 @@ class Url
     public static function getScheme()
     {
         $forceHttps = self::getConfig('url.force_https');
-        $loadBalance = self::getConfig('load_balanced');
-        return ($forceHttps ? 'https' : ($loadBalance['env'] ? $loadBalance['options.scheme'] : 'http')) . '://';
+        $loadBalance = self::getConfig('loadbalanced');
+        return ($forceHttps ? 'https' : ($loadBalance && $loadBalance['env'] ? $loadBalance['options']['scheme'] : 'http')) . '://';
     }
 
     /**

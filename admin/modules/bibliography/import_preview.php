@@ -68,9 +68,13 @@ if (isset($_GET['cancel'])) {
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
     </div>
+    <div class="d-flex align-items-center justify-content-center my-3">
+        <button id="triggerProgressIframe" iframe-state="open" translate-when-open="<?= __('Show import process') ?>" translate-when-close="<?= __('Hide import process') ?>" class="btn btn-outline-secondary"><?= __('Show import process') ?></button>
+    </div>
 </div>
+<iframe name="importProgressFrame" id="importProgressFrame" class="w-100 d-none" style="height: 50vh"></iframe>
 <div id="preview" class="my-3 mx-2">
-    <form action="<?= $_SESSION['csv']['action']??MWB . 'bibliography/import.php' ?>" method="post" target="blindSubmit">
+    <form id="formPreview" action="<?= $_SESSION['csv']['action']??MWB . 'bibliography/import.php' ?>" method="post" target="importProgressFrame">
         <h4 class="my-3"><?= __('Imported data list preview') ?></h4>
         <p><?= __('Make sure all the data that appears matches the column you enter.') ?></p>
         <div class="d-flex flex-row">
@@ -159,6 +163,35 @@ if (isset($_GET['cancel'])) {
     <form>
     <script>
         $(document).ready(function(){
+            $('#formPreview').submit(function() {
+                $('#preview').fadeOut()
+                $('#progress').fadeIn()
+            });
+
+            $('#triggerProgressIframe').click(function(){
+                let state = $(this).attr('iframe-state')
+
+                if (state === 'open') {
+                    var translate = $(this).attr('translate-when-close')
+                    $(this).removeClass('btn-outline-secondary')
+                    $(this).addClass('btn-outline-primary')
+                    $(this).attr('iframe-state', 'close')
+                    $(this).text(translate)
+                    $('#importProgressFrame').removeClass('d-none')
+                    $('#importProgressFrame').addClass('d-block')
+                } else {
+                    var translate = $(this).attr('translate-when-open')
+                    $(this).removeClass('btn-outline-primary')
+                    $(this).addClass('btn-outline-secondary')
+                    $(this).attr('iframe-state', 'open')
+                    $(this).text(translate)
+                    $('#importProgressFrame').removeClass('d-block')
+                    $('#importProgressFrame').addClass('d-none')
+
+                }
+
+            });
+
             $('.perpage').change(function(){
                 let number = $(this).val()
 

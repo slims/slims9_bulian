@@ -23,6 +23,7 @@
 
 // key to authenticate
 use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\Filesystems\Storage;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Polyglot\Memory;
 
@@ -76,12 +77,24 @@ if (!function_exists('addOrUpdateSetting')) {
     }
 }
 
+$imagesDisk = Storage::images();
 ?>
 <div class="menuBox">
   <div class="menuBoxInner systemIcon">
     <div class="per_title">
       <h2><?php echo __('System Configuration'); ?></h2>
     </div>
+    <?php if (config('registration_info') === null): ?>
+    <div class="alert alert-warning m-0">
+      <strong><?= __('Your site is not register') ?></strong>&nbsp;&nbsp;
+      <a href="<?= MWB ?>system/register_site.php" class="btn btn-secondary"><?= __('Register') ?></a>
+    </div>
+    <?php else: ?>
+    <div class="alert alert-info m-0">
+      <strong><?= __('Your site is already registered') ?></strong>&nbsp;&nbsp;
+      <a href="<?= MWB ?>system/register_site.php" class="btn btn-secondary"><?= __('Edit') ?></a>
+    </div>
+    <?php endif; ?>
     <div class="infoBox">
       <?php echo __('Modify global application preferences'); ?>
     </div>
@@ -97,52 +110,65 @@ if (isset($_POST['removeImage'])) {
       foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
         if (isset($_POST[$key]))
         {
-          @unlink(IMGBS.'default/'.$sysconf[$data]);
+          if ($imagesDisk->isExists($path = 'default/'.$sysconf[$data])) {
+            $imagesDisk->delete($path);
+          }
           addOrUpdateSetting($data, NULL); // set null
         }
       }
 
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
+      writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
       utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
       echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
       exit();
 }
 
 if (isset($_POST['updateData'])) {
+    $imagesConfig = [
+      'image' => [
+        'filename' => 'logo',
+        'extension' => $sysconf['allowed_images'],
+        'max' => $sysconf['max_image_upload']*1024,
+        'configname' => 'logo_image'
+      ],
+      'icon' => [
+        'filename' => 'webicon',
+        'extension' => ['.ico','.png'],
+        'max' => $sysconf['max_image_upload']*1024,
+        'configname' => 'webicon'
+      ]
+    ];
 
-    if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-      // remove previous image
-      @unlink(IMGBS.'default/'.$sysconf['logo_image']);
-      // create upload object
-      $image_upload = new simbio_file_upload();
-      $image_upload->setAllowableFormat($sysconf['allowed_images']);
-      $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
-      $image_upload->setUploadDir(IMGBS.'default');
-      $img_upload_status = $image_upload->doUpload('image','logo');
-      if ($img_upload_status == UPLOAD_SUCCESS) {
-        addOrUpdateSetting('logo_image', $dbs->escape_string($image_upload->new_filename));
-      }else{
-        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
+    $updateImageCache = false;
+    foreach ($_FILES as $name => $detail) {
+      if (!isset($imagesConfig[$name])) continue;
+      if (empty($_FILES[$name]['name'])) continue;
+
+      $config = $imagesConfig[$name];
+      $imagesDisk->upload($name, function($imagesDisk) use($config) {
+          // Extension check
+          $imagesDisk->isExtensionAllowed($config['extension']);
+
+          // limitation
+          $imagesDisk->isLimitExceeded($config['max']);
+
+          // exif removal
+          $imagesDisk->cleanExifInfo();
+
+          // destroy it if failed
+          if (!empty($imagesDisk->getError())) $imagesDisk->destroyIfFailed();
+
+      })->as('default' . DS . $config['filename']);
+
+      if ($imagesDisk->getUploadStatus()) {
+        addOrUpdateSetting($config['configname'], $dbs->escape_string($imagesDisk->getUploadedFileName()));
+        $updateImageCache = true;
+      } else {
+          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesDisk->getError(), 'error');
       }
-      addOrUpdateSetting('static_file_version', rand());
     }
 
-    if (!empty($_FILES['icon']) AND $_FILES['icon']['size']) {
-      // remove previous image
-      @unlink(IMGBS.'default/'.$sysconf['webicon']);
-      // create upload object
-      $image_upload = new simbio_file_upload();
-      $image_upload->setAllowableFormat(['.ico','.png']);
-      $image_upload->setMaxSize(100*1024);
-      $image_upload->setUploadDir(IMGBS.'default');
-      $img_upload_status = $image_upload->doUpload('icon','webicon');
-      if ($img_upload_status == UPLOAD_SUCCESS) {
-        addOrUpdateSetting('webicon', $dbs->escape_string($image_upload->new_filename));
-      }else{
-        utility::jsToastr(__('System Configuration'), $image_upload->error, 'error'); 
-      }
-      addOrUpdateSetting('static_file_version', rand());
-    }
+    addOrUpdateSetting('static_file_version', rand());
 
     // reset/truncate setting table content
     // library name
@@ -262,7 +288,7 @@ if (isset($_POST['updateData'])) {
     addOrUpdateSetting('http', $http);
 
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
+    writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
     echo '<script type="text/javascript">setTimeout(() => { top.location.href = \''.AWB.'index.php?mod=system\' }, 2000);</script>';
     exit();
@@ -294,7 +320,7 @@ $form->addTextField('text', 'library_subname', __('Library Subname'), $sysconf['
 //logo
 $str_input = '';
 $str_input .= '<strong class="d-block">'.__('Main Logo').'</strong>';
-if(isset($sysconf['logo_image']) && file_exists(IMGBS.'default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
+if(isset($sysconf['logo_image']) && $imagesDisk->isExists('default/'.$sysconf['logo_image']) && $sysconf['logo_image']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['logo_image'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
@@ -307,7 +333,7 @@ $str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' K
 
 // Web icon
 $str_input .= '<strong class="d-block mt-2">'.__('Favicon').'</strong>';
-if(isset($sysconf['webicon']) && file_exists(IMGBS.'default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
+if(isset($sysconf['webicon']) && $imagesDisk->isExists('default/'.$sysconf['webicon']) && $sysconf['webicon']!=''){
     $str_input .= '<div style="padding:10px;">';
     $str_input .= '<img src="../lib/minigalnano/createthumb.php?filename=images/default/'.$sysconf['webicon'].'&width=130" class="img-fluid rounded" alt="Image cover">';
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';

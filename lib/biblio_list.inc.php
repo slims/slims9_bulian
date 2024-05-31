@@ -94,7 +94,7 @@ class biblio_list extends biblio_list_model {
         $_boolean = 'OR';
       } else { $_boolean = 'AND'; }
       // search value
-      $_q = @$this->obj_db->escape_string($_query['q']);
+      $_q = $this->obj_db->escape_string($_query['q']??'');
 			$_searched_word = str_replace(array('+', '-', '*'), '', $_q);
 			$this->words[$_searched_word] = $_searched_word;
       // searched fields flag set

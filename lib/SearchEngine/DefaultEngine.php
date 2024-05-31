@@ -605,6 +605,16 @@ class DefaultEngine extends Contract
 
     function dump(array $sql)
     {
-        if (!isset($_GET['resultXML'])) debug('Engine ⚙️ : ' . get_class($this), "SQL ⚒️", $sql, "Bind Value ⚒️", $this->execute);
+        if (!isset($_GET['resultXML'])) {
+            debugBox(content: function() use($sql) {
+                debug('Search Engine Debug 🔎 🪲', [
+                    'Engine Type ⚙️:', get_class($this)
+                ], [
+                    'SQL ⚙️:', $sql
+                ], [
+                    'Bind Value ⚒️:', $this->execute
+                ]);
+            });
+        }
     }
 }

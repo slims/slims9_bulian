@@ -74,21 +74,21 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
             if ($sql_op->update('holiday', $data, 'holiday_id='.$updateRecordID)) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday date for '.$data['description'], 'Holiday', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday date for '.$data['description'], 'Holiday', 'Update');
                 utility::jsToastr(__('Holiday Settings'),__('Holiday Data Successfully updated'),'success');
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
                 exit();
             } else {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed update holiday data for '.$data['description'], 'Holiday', 'Fail');
+                writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed update holiday data for '.$data['description'], 'Holiday', 'Fail');
                 utility::jsToastr(__('Holiday Settings'),__('Holiday FAILED to update. Please Contact System Administrator')."\n".$sql_op->error,'error');
             }
         } else {
             /* INSERT RECORD MODE */
             // insert the data
             if ($sql_op->insert('holiday', $data)) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' add holiday date for '.$data['description'], 'Holiday', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' add holiday date for '.$data['description'], 'Holiday', 'Add');
                 utility::jsToastr(__('Holiday Settings'),__('New Holiday Successfully Saved'),'success');
                 // update holiday_dayname session
                 $_SESSION['holiday_date'][$data['holiday_date']] = $data['holiday_date'];
@@ -120,7 +120,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?mode=special\');</script>';
                 exit();
             } else {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed to add holiday data for '.$data['description'], 'Holiday', 'Fail');
+                writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' failed to add holiday data for '.$data['description'], 'Holiday', 'Fail');
                 utility::jsToastr(__('Holiday Settings'),__('Holiday FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error,'error');
             }
         }
@@ -139,6 +139,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
     // loop array
+    $_log = '';
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // get info about this holiday
@@ -156,7 +157,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' remove holiday date with id '.$_log, 'Holiday', 'Delete');
+        writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' remove holiday date with id '.$_log, 'Holiday', 'Delete');
         utility::jsToastr(__('Holiday Settings'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
@@ -317,7 +318,7 @@ if (isset($_GET['mode'])) {
                     $_SESSION['holiday_dayname'][] = $dayname;
                 }
                 // information box
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
+                writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update holiday settings for '.implode(', ', $_SESSION['holiday_dayname']), 'Holiday', 'Set');
                 echo '<div class="infoBox">'.__('Holiday settings saved').'</div>';
             }
         }
