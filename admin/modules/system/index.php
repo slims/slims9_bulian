@@ -26,6 +26,7 @@ use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\Filesystems\Storage;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Polyglot\Memory;
+use SLiMS\Plugins;
 
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
@@ -287,6 +288,9 @@ if (isset($_POST['updateData'])) {
     $http['client']['verify'] = (bool)$_POST['ignore_ssl_verification'];
     addOrUpdateSetting('http', $http);
 
+    // Simplified the simple search
+    addOrUpdateSetting('simplified_simple_search', boolval($_POST['simplified_simple_search']));
+
     // write log
     writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
     utility::jsToastr(__('System Configuration'), __('Settings saved. Refreshing page'), 'success'); 
@@ -498,6 +502,11 @@ $options = null;
 $options[] = array('1', __('Enable'));
 $options[] = array('0', __('Disable'));
 $form->addSelectList('ignore_ssl_verification', __('Ignore SSL verification'), $options, ((int)config('http.client.verify')),'class="form-control col-3"', __('SLiMS will ignore all error about SSL validation while download contents from other resource'));
+
+$options = null;
+$options[] = array('1', __('Yes'));
+$options[] = array('0', __('No'));
+$form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
 
 // print out the object
 echo $form->printOut();
