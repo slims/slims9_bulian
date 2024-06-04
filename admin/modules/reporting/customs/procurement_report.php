@@ -68,7 +68,7 @@ if (!$reportView) {
     $output .= '<tr>'.$second_header.$detail_class_coll.'</tr>';
 
     // get year data from databse
-    $_q = $dbs->query("SELECT YEAR(input_date) AS YEAR FROM item GROUP BY YEAR(input_date)");
+    $_q = $dbs->query("SELECT YEAR(input_date) AS YEAR FROM item WHERE input_date != '' GROUP BY YEAR(input_date)");
 
     if($_q->num_rows >0){
         while ($_d = $_q->fetch_row()) {

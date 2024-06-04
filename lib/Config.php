@@ -75,17 +75,18 @@ class Config
     function loadFromDatabase()
     {
         if (self::getFile('database') === null) return;
-        
+
         try {
             $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
             while ($data = $query->fetch(PDO::FETCH_OBJ)) {
                 $value = @unserialize($data->setting_value);
+
                 if (is_array($value)) {
                     foreach ($value as $id => $current_value) {
                         $this->configs[$data->setting_name][$id] = $current_value;
                     }
                 } else {
-                    $this->configs[$data->setting_name] = stripslashes($value??'');
+                    $this->configs[$data->setting_name] = is_string($value) ? stripslashes($value??'') : $value;
                 }
             }
         } catch (\Throwable $e) {
