@@ -82,6 +82,10 @@ abstract class Contract implements Countable
         $this->data = $data;
     }
 
+    public function setType($type) : void {
+        $this->type = $type;
+    }
+
     public function has2Fa()
     {
         return isset($this->data['2fa']) && !empty($this->data['2fa']);

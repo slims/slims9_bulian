@@ -22,6 +22,7 @@
 define('INDEX_AUTH', '1');
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use SLiMS\Auth\Validator;
 
 /* Library Automation logout */
 
@@ -53,18 +54,9 @@ $msg .= 'Server = new FancyWebSocket("ws://'.$sysconf['chat_system']['server'].'
 $msg .= 'Server.bind("close", function( data ) { log( "Disconnected." ); });';
 $msg .= '</script>';
 
-// unset admin cookie flag
-#setcookie('admin_logged_in', true, time()-86400, SWB);
-#setcookie('admin_logged_in', true, time()-86400, SWB, "", FALSE, TRUE);
 
-setcookie('admin_logged_in', TRUE, [
-    'expires' => time()-86400,
-    'path' => SWB,
-    'domain' => '',
-    'secure' => false,
-    'httponly' => true,
-    'samesite' => 'Lax',
-]);
+$validator = new Validator(config('auth.methods.' . config('auth.sections.user'), \SLiMS\Auth\Methods\Native::class));
+$validator->logout(false);
 
 
 // completely destroy session cookie
