@@ -18,14 +18,14 @@
             if (!empty($book['image'])) : ?>
             <li class="book">
               <a itemprop="name" property="name" href="./index.php?p=show_detail&amp;id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
-                <img itemprop="image" src="images/docs/<?php echo $book['image'] ?>" alt="<?php echo $book['title'] ?>" />
+                <img itemprop="image" src="<?php echo SWB . 'lib/minigalnano/createthumb.php?filename=' . $book['image'] ?>" alt="<?php echo $book['title'] ?>" />
               </a>
             </li>
             <?php else: ?>
             <li class="book">
               <a itemprop="name" property="name" href="./index.php?p=show_detail&amp;id=<?php echo $book['biblio_id'] ?>" title="<?php echo $book['title'] ?>">
                 <div class="s-feature-title"><?php echo $title[0].'<br/>'.$title[1] ?><br/>...</div>
-                <img itemprop="image" src="./template/default/img/book.png" alt="<?php echo $book['title'] ?>" />
+                <img itemprop="image" src="./template/akasia/img/book.png" alt="<?php echo $book['title'] ?>" />
               </a>
             </li>
             <?php
