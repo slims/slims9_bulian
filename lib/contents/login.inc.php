@@ -65,7 +65,7 @@ if ($sysconf['https_enable']) {
 }
 
 // check if session browser cookie already exists
-if (isset($_COOKIE['admin_logged_in'])) {
+if ($logon->isUserLoggedIn()) {
     redirect()->to('admin/index.php');
 }
 
@@ -104,7 +104,10 @@ if (isset($_POST['logMeIn'])) {
 
     if ($logon->process('admin')) {
         // remember me
-        if (isset($_POST['remember']) && $_POST['remember'] == 1) $_SESSION['remember_me'] = true;
+        if (isset($_POST['remember']) && $_POST['remember'] == 1) {
+            $_SESSION['remember_me'] = true;
+            $logon->rememberMe(config('remember_me_timeout', 30));
+        }
 
         # <!-- Captcha form processing - end -->
         // destroy previous session set in OPAC
@@ -125,7 +128,7 @@ if (isset($_POST['logMeIn'])) {
 
         $logon->getMethodInstance()->generateSession();
 
-        # ADV LOG SYSTEM - STIIL EXPERIMENTAL
+        # ADV LOG SYSTEM - STILL EXPERIMENTAL
         $log = new AlLibrarian('1001', array("username" => $username, "realname" => $logon->getData('real_name')));
 
         if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $logon->getData('real_name'));

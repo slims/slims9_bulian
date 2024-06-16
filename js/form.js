@@ -150,23 +150,58 @@ var setInputValue = function(strElmntID, strValue) {
   $('#'+strElmntID + 'List').hide();
 }
 
-/* populate AJAX drop down list and show the list */
-var showDropDown = function(strURL, strElmntID, strAddParams) {
-  var inputObj = $('#'+strElmntID);
-  var inputVal = inputObj.val().replace(/<[^<]+>/i, '');
-  var inputObjWidth = inputObj.width();
-  var inputObjXY = inputObj.offset();
-  // List ID
-  var listObj = $('#'+strElmntID + 'List');
-  if (inputVal.length < 4) { listObj.hide(); return; }
-  // populate list ID
-  jsonToList(strURL, strElmntID, 'inputSearchVal=' + encodeURIComponent(inputVal) + '&' + strAddParams);
-  if (noResult) { return; }
-  // show list
-  listObj.css({'left': inputObjXY.left+'px', 'width': inputObjWidth+'px', 'display': 'block'});
-  // observe click
-  $(document).click(function(event) {
-    var clickedElement = $(this);
-    if (!clickedElement.is('#' + strElmntID + 'List')) { listObj.hide(); }
-  });
+/**
+ * Debouncing method to limit the rate at which a function is executed.
+ * 
+ * @param {*} func 
+ * @param {*} wait 
+ * @returns 
+ */
+function debounce(func, wait) {
+  let timeout;
+
+  return function executedFunction(...args) {
+      const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+      };
+
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+  };
+}
+
+// Implement debouncing technique to jsonToList method
+const debouncedFetchSuggestions = debounce(jsonToList, 800)
+
+/**
+ * Populate AJAX drop down list and show the list
+ * 
+ * @param {*} strURL 
+ * @param {*} strElmntID 
+ * @param {*} strAddParams 
+ */
+function showDropDown(strURL, strElmntID, strAddParams) {
+  const element = document.querySelector(`#${strElmntID}`)
+  const value = element.value.replace(/<[^<]+>/i, '')
+  const elementWidth = element.offsetWidth // Use offsetWidth for width
+  const elementRect = element.getBoundingClientRect() // Get position
+
+  // List element
+  const listElement = document.querySelector(`#${strElmntID}List`)
+
+  // Populate list (implementation for jsonToList omitted for brevity)
+  debouncedFetchSuggestions(strURL, strElmntID, `inputSearchVal=${encodeURIComponent(value)}&${strAddParams}`)
+  
+  // Show list
+  listElement.style.left = elementRect.left + 'px';
+  listElement.style.width = elementWidth + 'px';
+  listElement.style.display = 'block';
+
+  // Add click event listener to document for closing the list
+  document.addEventListener('click', (event) => {
+    if (!event.target.matches(`#${strElmntID}List`)) {
+      listElement.style.display = 'none'
+    }
+  })
 }

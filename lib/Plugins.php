@@ -50,6 +50,9 @@ class Plugins
     const DUEDATE_NOTICE_INIT = 'duedate_init';
     const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
     const OAI2_INIT = 'oai2_init';
+    const SYSTEM_BEFORE_CONFIGFORM_PRINTOUT = 'system_before_configform_printout';
+    const SYSTEM_BEFORE_CONFIG_SAVE = 'system_before_config_save';
+    const SYSTEM_AFTER_CONFIG_SAVE = 'system_after_config_save';
 
     private static $instance;
     /**

@@ -262,7 +262,7 @@ include "partials/bg.php";
       var title = $(this).parent().attr('title').split(' ');
       $(this).parent().append('<div class="s-feature-title">' + title[0] + '<br/>' + title[1] + '<br/>... </div>');
       $(this).attr({
-          src: './template/default/img/book.png',
+          src: './template/akasia/img/book.png',
           title: title + title[0] + ' ' + title[1]
       });
   });
