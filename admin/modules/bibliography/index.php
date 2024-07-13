@@ -584,7 +584,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $titles .= $title . "\n";
         }
         utility::jsToastr('Bibliography', __('Below data can not be deleted:') . "\n" . $titles, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
         exit();
     }
     // auto delete data on UCS if enabled
@@ -594,15 +594,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr('Bibliography', __('All Data Successfully Deleted'), 'success');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
     } else {
         utility::jsToastr('Bibliography', __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . ($_POST['lastQueryStr']??$_SERVER['HTTP_REFERER']??'') . '\'});</script>';
     }
     exit();
 }
 /* RECORD OPERATION END */
-
 if (!$in_pop_up) {
     /* search form */
     ?>

@@ -15,6 +15,9 @@ use PDO;
 use PDOException;
 use Ifsnop\Mysqldump as IMysqldump;
 
+/**
+ * @method static Query query(string $sql, array $bind_params) Method to query database
+ */
 class DB
 {
     /**

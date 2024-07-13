@@ -748,6 +748,7 @@ a:hover {
   position: relative;
   bottom: -35px;
   background: transparent url(img/shelf.png) 0 100px no-repeat;
+  background-size: contain;
   z-index: 2002;
 }
 @media only screen and (min-width: 768px) {

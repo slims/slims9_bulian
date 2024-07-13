@@ -185,6 +185,39 @@ jQuery.extend({
 
 /* AJAX plugins for SLiMS */
 jQuery.fn.registerAdminEvents = function(params) {
+  //
+  $('form[name="downloadForm"]').submit(async function(e) {
+    e.preventDefault()
+    try {
+      let blobReq = await (await fetch($(this).attr('action'), {
+          body: $(this).serialize() + '&doExport=yes',
+          headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+          },
+          method: "POST",
+      })).blob()
+
+      const url = window.URL.createObjectURL(blobReq);
+      const a = document.createElement('a');
+
+      a.style.display = 'none';
+      a.href = url;
+
+      // the filename you want
+      a.download = $('input[name="doExport"]').data('filename');
+
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      top.$('.loader').hide()
+
+    } catch (error) {
+      top.window.toastr.error('Something error, open devtools at console for more information', 'Yah')
+      console.log(error)
+    }
+  })
+
   // enable loader on form submit
   $('form[target=submitExec]').submit(() => {
     $('.loader').show()
@@ -277,6 +310,8 @@ var openWin = function(strURL, strWinName, intWidth, intHeight, boolScroll) {
   "directories=no,resizable=no,screenY=" + yPos + ",screenX=" + xPos + ",top=" + yPos + ",left=" + xPos);
 }
 
+// 
+
 /* set iframe content */
 var setIframeContent = function(strIframeID, strUrl) {
   var iframeObj = $('#'+strIframeID);
@@ -343,6 +378,26 @@ function filter(clear = false) {
 
     // redirect to new filter
     window.location.href = window.location.href.split('?')[0] + '?' + urls.toString()
+}
+
+const backToList = function(container = '#mainContent') {
+  let formUrl = $(container).find('form[method="POST"]')?.attr('action')??false
+
+  if (formUrl) {
+    formUrl = formUrl.split('?')
+    if (formUrl.length < 2) {
+      $(container).simbioAJAX(formUrl)
+      return
+    }
+    let params = new URLSearchParams(formUrl[1])
+
+    if (params.get('action')) {
+      params.delete('action')
+      formUrl[1] = params.toString()
+      $(container).simbioAJAX(formUrl.join('?'))
+      return
+    }
+  }
 }
 
 /**

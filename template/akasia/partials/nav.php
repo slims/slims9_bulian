@@ -20,7 +20,15 @@
       <label class="language-info" for="select_lang"><?php echo __('Select Language'); ?></label>
       <span class="custom-dropdown custom-dropdown--emerald custom-dropdown--small">
         <select name="select_lang" id="select_lang" title="Change language of this site" onchange="document.langSelect.submit();" class="custom-dropdown__select custom-dropdown__select--emerald">
-          <?php echo $language_select; ?>
+          <?php
+          $langstr = '';
+          $current_lang = '';
+          $select_lang = isset($_COOKIE['select_lang'])?$_COOKIE['select_lang']:$sysconf['default_lang'];
+
+          foreach ($available_languages??[] AS $lang_index) {
+            echo '<option value="'.$lang_index[0].'" ' . ($lang_index[0] === $select_lang ? 'selected' : '') . '>' . $lang_index[1] . '</option>';
+          }
+          ?>
         </select>
       </span>
     </form>

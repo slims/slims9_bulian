@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-03 09:54:25
- * @modify date 2023-03-12 08:28:19
+ * @modify date 2024-05-12 07:51:04
  * @license GPLv3
  * @desc [description]
  */
@@ -28,12 +28,12 @@ trait Stream
 
         header('Content-Description: File Transfer');
         header('Content-Disposition: inline; filename="'.basename($filePath).'"');
-        header('Content-Type: '. mime_content_type($this->getPath($filePath)));
+        header('Content-Type: '. $this->filesystem->mimeType($filePath));
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($this->getPath($filePath)));
+        header('Content-Length: ' . $this->filesystem->fileSize($filePath));
         ob_clean();
         flush();
 

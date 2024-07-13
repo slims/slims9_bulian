@@ -57,6 +57,7 @@ return [
      */
     'from' => '_from_', // example foo@example.org
     'from_name' => '_fromname_', // put a nice name here
-    'reply_to' => '_from_', // similar with 'from' option
-    'reply_to_name' => '_fromname_', // similar with 'from' option
+    'with_reply_to' => '_withreplyto_',
+    'reply_to' => '_replyto_', // similar with 'from' option if not configured
+    'reply_to_name' => '_replytoname_', // similar with 'from' option if not configured
 ];

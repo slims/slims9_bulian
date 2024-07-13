@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2021-10-27 10:43:48
- * @modify date 2022-10-08 12:39:36
+ * @modify date 2024-07-13 07:16:00
  * @desc [description]
  */
 
@@ -33,14 +33,7 @@ $isConfigWriteable = is_writable(SB.'config'.DS);
 
 function setValue($key)
 {
-    global $isConfigExists;
-
-    if ($isConfigExists)
-    {
-        return config('mail')[$key]??'';
-    }
-
-    return '';
+  return config('mail', [])[$key]??'';
 }
 
 function setPlaceholder($key, $ignore = 'auth_password')
@@ -55,8 +48,8 @@ function setPlaceholder($key, $ignore = 'auth_password')
       'auth_password' => 'admin', // SMTP account password
       'from' => 'admin@localhost.com',
       'from_name' => 'SLiMS Administrator',
-      'reply_to' => 'admin@localhost.com',
-      'reply_to_name' => 'SLiMS Administrator'
+      'reply_to' => 'reply-to@localhost.com',
+      'reply_to_name' => 'Library Information Center'
     ];
 
     if (isset($placeholder[$key]))
@@ -84,6 +77,11 @@ if (isset($_POST['saveData']))
     // get sample
     $Config = file_get_contents($samplePath);
     $mailConfig = $isConfigExists ? config('mail') : require $samplePath;
+
+    if ($_POST['withreplyto'] == 0) {
+      $_POST['replyto'] = $_POST['from'];
+      $_POST['replytoname'] = $_POST['fromname'];
+    }
 
     foreach ($mailConfig as $key => $value) 
     {
@@ -179,6 +177,18 @@ if (!isset($_GET['section'])):
   // set email sender label
   $form->addTextField('text', 'fromname', __('Email Sender Label'), setValue('from_name'), 'style="width: 60%;" class="form-control" placeholder="'.setPlaceholder('from_name').'"');
 
+  // reply to
+  $with_reply_to = (int)setValue('with_reply_to');
+  $html  = '<div class="w-100">';
+  $html .= simbio_form_element::selectList('withreplyto', [[0, __('No')],[1, __('Yes')]], (($with_reply_to ? 1 : 0)), 'class="form-control col-2 select"');
+  $html .= '<div id="with_reply" class="flex-column ' . ($with_reply_to ? 'd-flex' : 'd-none') . '">';
+  $html .= '<label><strong>' . __('Email Address for Reply') . '</strong></label>';
+  $html .= '<input type="text" name="replyto" value="' . setValue('reply_to') . '" class="form-control col-4 noAutoFocus" placeholder="' . setPlaceholder('reply_to') . '"/>';
+  $html .= '<label><strong>' . __('Email Address for Reply Name') . '</strong></label>';
+  $html .= '<input type="text" name="replytoname" value="' . setValue('reply_to_name') . '" class="form-control col-4 noAutoFocus" placeholder="' . setPlaceholder('reply_to_name') . '"/>';
+  $html .= '</div>';
+  $form->addAnything(__('"Reply to" same as Email Sender'), $html);
+
   // test mail
   if ($isConfigExists)
   {
@@ -214,5 +224,15 @@ endif;
 <script>
   $('.testMail').click(function(){
     $('#mainContent').simbioAJAX($(this).data('href'))
+  })
+
+  $('#withreplyto').change(function() {
+    if ($(this).val() == 1) {
+      $('#with_reply').addClass('d-flex')
+      $('#with_reply').removeClass('d-none')
+    } else {
+      $('#with_reply').addClass('d-none')
+      $('#with_reply').removeClass('d-flex')
+    }
   })
 </script>
