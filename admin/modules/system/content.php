@@ -118,7 +118,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('content', $data, 'content_id='.$updateRecordID);
             if ($update) {
                 // write log
-                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['content_title'].' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')', 'Content', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $contentTitle.' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')', 'Content', 'Update');
                 utility::jsToastr('Success', __('Content data updated'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             } else { utility::jsToastr('Error', __('Content data FAILED to update!')."\nDEBUG : ".$sql_op->error, 'error'); }
