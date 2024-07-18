@@ -71,8 +71,12 @@ $opacVariable = [
 ];
 
 // OPAC Instance
-$opacClass = config('custom_opac', Opac::class);
+$opacClass = config('custom_opac', $slimsOpac = Opac::class);
 $opac = new $opacClass($opacVariable, $sysconf, $dbs);
+
+if (!$opac instanceof Opac) {
+  throw new Exception("{$opacClass} is not instance of {$slimsOpac}");
+}
 
 // running hook to override process/variable before
 // content load

@@ -354,7 +354,7 @@ $sysconf['allowed_images'] = array('.jpeg', '.jpg', '.gif', '.png', '.JPEG', '.J
 // allowed file attachment to upload
 $sysconf['allowed_file_att'] = array('.pdf', '.rtf', '.txt',
     '.odt', '.odp', '.ods', '.doc', '.xls', '.ppt',
-    '.avi', '.mpeg', '.mp4', '.flv', '.mvk',
+    '.avi', '.mpeg', '.mp4', '.flv', '.mkv',
     '.jpg', '.jpeg', '.png', '.gif',
     '.docx', '.pptx', '.xlsx',
     '.ogg', '.mp3', '.xml', '.mrc');
