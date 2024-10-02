@@ -34,14 +34,22 @@ trait Stream
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
         header('Content-Length: ' . $this->filesystem->fileSize($filePath));
-        ob_clean();
-        flush();
+        
+        $resource = $this->filesystem->readStream($filePath);
+        
+        while (!feof($resource)) {
+            echo fread($resource, 8192);
 
-        echo $this->filesystem->read($filePath);
+            ob_flush();
+            flush();
+        }
+
         if (is_callable($callback))
         {   
             $callback('afterContent', $filePath);
         }
+
+        fclose($resource);
         exit;
     }
 
@@ -56,8 +64,17 @@ trait Stream
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
         header('Content-Type: '.$this->filesystem->mimeType($filePath));
-        ob_clean();
-        flush();
-        exit($this->filesystem->read($filePath));
+        
+        $resource = $this->filesystem->readStream($filePath);
+        
+        while (!feof($resource)) {
+            echo fread($resource, 8192);
+
+            ob_flush();
+            flush();
+        }
+
+        fclose($resource);
+        exit;
     }
 }
