@@ -68,7 +68,16 @@ if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'
     header("Content-Length: " .(string)(filesize($path)) );
     header('Content-Disposition: attachment; filename="'.basename($path).'"');
     header("Content-Transfer-Encoding: binary\n");
-    echo file_get_contents($path);
+    $fo = fopen($path, 'rb');
+
+    while (!feof($fo)) {
+      echo fread($fo, 8192);
+
+      ob_flush();
+      flush();
+    }
+
+    fclose($fo);
     exit();
   }
 }
