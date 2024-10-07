@@ -319,7 +319,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
        $keywords = utility::filterData('keywords', 'get', true, true, true);
        $sql_criteria .= " AND a.author_name LIKE '%$keywords%'";
     }
-    dump($sql_criteria);
+    
     $datagrid->setSQLCriteria($sql_criteria);
 
     // set table and table header attributes
