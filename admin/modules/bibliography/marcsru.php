@@ -74,7 +74,7 @@ if (isset($_GET['marc_SRU_source'])) {
 
 function getAcronym($sentence)
 {
-  $words = explode(' ', $sentenc);
+  $words = explode(' ', $sentence);
   $acronym = '';
   foreach ($words as $word) {
     $acronym .= trim($word)[0];
@@ -334,7 +334,7 @@ if (isset($_GET['keywords'])) {
     } else {
       $keywords = urlencode('"'.trim($_GET['keywords']).'"');
     }
-    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record.'&recordSchema=marc';
+    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record;
   }
 
   $marc = new \Marc\XMLParser($request);
