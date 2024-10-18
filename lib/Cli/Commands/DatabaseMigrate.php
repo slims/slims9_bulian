@@ -40,6 +40,7 @@ class DatabaseMigrate extends \SLiMS\Cli\Command
      */
     public function handle()
     {
+        defined('ACTION') or define('ACTION', 'upgrade');
         // This method need some dependencies
         // from installer
         if (!file_exists(SB . 'install')) return 0;
@@ -52,7 +53,7 @@ class DatabaseMigrate extends \SLiMS\Cli\Command
 
         try {
             // always get last version
-            $version = $this->option('from')??($upgrade->getVersion() - 1);
+            $version = $this->option('from')??($upgrade->getVersion());
             $upgrade->from($version);
             $this->success(__('Success migrating database'));
         } catch (Exception $e) {

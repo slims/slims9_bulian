@@ -108,6 +108,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
     // loop array
+    $still_have_biblio = [];
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // check if this place data still in use biblio
@@ -239,7 +240,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     } else {
     	// TODO: publisher_place was dropped in stable7...?
         $datagrid->setSQLColumn('p.publisher_name AS \''.__('Publisher Name').'\'',
-            'p.publisher_place AS \''.lang_mod_masterfile_publisher_form_field_place.'\'',
             'p.last_update AS \''.__('Last Update').'\'');
     }
     $datagrid->setSQLorder('publisher_name ASC');

@@ -253,6 +253,9 @@ if (isset($_POST['updateData'])) {
     $session_timeout = intval($_POST['session_timeout']) >= 1800?$_POST['session_timeout']:1800;
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($session_timeout)).'\' WHERE setting_name=\'session_timeout\'');
 
+    // remember_me_timeout
+    addOrUpdateSetting('remember_me_timeout', intval($_POST['remember_me_timeout']));
+
     // barcode encoding
     $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['barcode_encoding'])).'\' WHERE setting_name=\'barcode_encoding\'');
 
@@ -472,6 +475,7 @@ $form->addSelectList('allow_file_download', __('Allow OPAC File Download'), $opt
 
 // session timeout
 $form->addTextField('text', 'session_timeout', __('Session Login Timeout'), $sysconf['session_timeout'], 'style="width: 10%;" class="form-control"');
+$form->addTextField('text', 'remember_me_timeout', __('Remember Me Timeout (in day)'), $sysconf['remember_me_timeout'] ?? 30, 'style="width: 10%;" class="form-control"');
 
 // barcode encoding
 $form->addSelectList('barcode_encoding', __('Barcode Encoding'), $barcodes_encoding, $sysconf['barcode_encoding'],'class="form-control col-3"');

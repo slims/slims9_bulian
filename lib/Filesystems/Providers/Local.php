@@ -13,6 +13,7 @@ namespace SLiMS\Filesystems\Providers;
 use closure;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToWriteFile;
 use SLiMS\Filesystems\{Guard,Utils,Stream};
@@ -32,7 +33,7 @@ class Local extends Contract
      */
     public function __construct(string $root, string $diskName)
     {
-        $this->adapter = new LocalFilesystemAdapter($root);
+        $this->adapter = new LocalFilesystemAdapter($root, visibility: PortableVisibilityConverter::fromArray(permissionMap: [], defaultForDirectories: 'public'));
         $this->filesystem = new Filesystem($this->adapter);
         $this->diskName = $diskName;
         $this->path = $root;

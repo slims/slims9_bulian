@@ -106,43 +106,40 @@ trait Utils
     }
 
     /**
-     * Clean exif info
-     * modification from https://stackoverflow.com/a/38862429/13322576
+     * Clean sensitive exif info
      * @return void
      */
     public function cleanExifInfo()
     {
         if (!empty($this->uploadedFile)) {
             try {
-                // Open the input file for binary reading
                 $originName = $this->uploadedFile;
-                $f1 = fopen($original = $this->path . DS . $originName, 'rb');
-                // Open the output file for binary writing
-                $cleanName = 'clean' . $this->uploadedFile;
-                $f2 = fopen($newFile = $this->path . DS . $cleanName, 'wb');
+                $buffer = $this->filesystem->read($this->uploadedFile);
+                $imageIndetification = pathinfo($originName);
 
-                // Find EXIF marker
-                while (($s = fread($f1, 2))) {
-                    $word = unpack('ni', $s)['i'];
-                    if ($word == 0xFFE1) {
-                        // Read length (includes the word used for the length)
-                        $s = fread($f1, 2);
-                        $len = unpack('ni', $s)['i'];
-                        // Skip the EXIF info
-                        fread($f1, $len - 2);
-                        break;
-                    } else {
-                        fwrite($f2, $s, 2);
-                    }
+                if (!in_array('.' . ($imageIndetification['extension']??'?'), config('allowed_images'))) {
+                    return;
                 }
 
-                // Write the rest of the file
-                while (($s = fread($f1, 4096))) {
-                    fwrite($f2, $s, strlen($s));
-                }
+                $ext = $imageIndetification['extension'];
 
-                fclose($f1);
-                fclose($f2);
+                //  no gif
+                if (strtolower($ext) == 'gif') return;
+
+                //  jpg is jpeg
+                if ($ext == 'jpg') $ext = 'jpeg';
+
+                // create image from string
+                $image = imagecreatefromstring($buffer);
+
+                if (function_exists(($functionName = 'image' . $ext))) {
+                    $compressLevel = [
+                        'png' => 9,
+                        'jpeg' => 90
+                    ];
+
+                    $functionName($image, $this->path . DS . ($cleanName = 'clean' . $originName), $compressLevel[$ext]);
+                }
 
                 // move clean version to original file
                 $this->filesystem->move($cleanName, $originName);

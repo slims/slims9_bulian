@@ -19,13 +19,13 @@ class Opac
      *
      * @var boolean
      */
-    private bool $matchPath = false;
-    private string $path = '';
-    private string $csrf_token = '';
-    private bool $invalid_token = false;
-    private array $definedVariable = [];
-    private array $sysconf = [];
-    private $dbs = null;
+    protected bool $matchPath = false;
+    protected string $path = '';
+    protected string $csrf_token = '';
+    protected bool $invalid_token = false;
+    protected array $definedVariable = [];
+    protected array $sysconf = [];
+    protected $dbs = null;
     
     /**
      * Opac constructor
@@ -111,7 +111,7 @@ class Opac
      *
      * @return void
      */
-    private function loadPluginPath()
+    protected function loadPluginPath()
     {
         if (isset(($menu = Plugins::getInstance()->getMenus('opac'))[$this->path])) {
             if (file_exists($menu[$this->path][3])) {
@@ -146,7 +146,7 @@ class Opac
      *
      * @return void
      */
-    private function loadFileContent()
+    protected function loadFileContent()
     {
         if (file_exists(LIB.'contents/'.$this->path.'.inc.php') && !$this->matchPath) {
             // extract defined variable
@@ -174,7 +174,7 @@ class Opac
      *
      * @return void
      */
-    private function loadDbContent()
+    protected function loadDbContent()
     {
         if (!$this->matchPath)
         {
@@ -203,7 +203,7 @@ class Opac
      *
      * @return void
      */
-    private function loadApi()
+    protected function loadApi()
     {
         $sysconf = $this->sysconf;
         $dbs = $this->dbs;
@@ -227,7 +227,7 @@ class Opac
      *
      * @return void
      */
-    private function setCsrf()
+    protected function setCsrf()
     {
         $this->csrf_token = \Slims\Opac\Security::getCsrfToken();
         $_SESSION['csrf_token'] = $this->csrf_token;
@@ -374,7 +374,7 @@ class Opac
         return $this;
     }
 
-    private function error(string $message)
+    protected function error(string $message)
     {
         // Clear buffer
         ob_get_flush();

@@ -1181,3 +1181,12 @@ $query_trigger[] = "
      member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
      member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
 
+$sql['create'][] = "CREATE TABLE `user_tokens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `selector` varchar(255) NOT NULL,
+  `hashed_validator` varchar(255) NOT NULL,
+  `user_id` int NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
