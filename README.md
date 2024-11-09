@@ -16,3 +16,16 @@ to learn more about GPL.
 - PHP GD enabled
 - PHP gettext enabled
 - PHP mbstring enabled
+
+### Running Docker Development
+
+Using docker for running requires Docker Desktop service, as it will use Docker to create the database.
+You can run the test using this command :
+
+```shell
+docker compose up -d --build
+```
+
+Setting docker default can be change on docker-compose.yml
+
+
