@@ -53,3 +53,5 @@ config/database.php
 config/captcha.php
 config/env.php
 tarsius
+
+.env
