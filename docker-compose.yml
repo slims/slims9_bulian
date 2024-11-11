@@ -9,7 +9,7 @@ services:
     environment:
       - ENV=production
       - DB_HOST=db
-      - DB_PORT=${DB_PORT}
+      - DB_PORT=3306
       - DB_USER=root
       - DB_PASS=Pass123
       - DB_NAME=senayan
