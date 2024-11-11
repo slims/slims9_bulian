@@ -9,7 +9,7 @@ services:
     environment:
       - ENV=production
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=${DB_PORT}
       - DB_USER=root
       - DB_PASS=Pass123
       - DB_NAME=senayan
@@ -18,7 +18,7 @@ services:
       - appimages:/var/www/html/images
       - apprepo:/var/www/html/repository
     ports:
-      - "8881:80"
+      - "${HTTP_PORT}:80"
     networks:
       - proxy
     depends_on:
@@ -28,7 +28,7 @@ services:
     image: mariadb:lts
     container_name: db
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - ./install/senayan_ddl.sql:/docker-entrypoint-initdb.d/init.sql
       - dbdata:/var/lib/mysql
