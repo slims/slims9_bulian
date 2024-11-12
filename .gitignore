@@ -55,4 +55,6 @@ config/env.php
 config/csp.php
 config/auth.php
 tarsius
+
+.env
 .htaccess

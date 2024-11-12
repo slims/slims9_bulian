@@ -16,3 +16,17 @@ to learn more about GPL.
 - PHP GD enabled
 - PHP gettext enabled
 - PHP mbstring enabled
+
+### Running Docker Development
+
+Using docker for running requires Docker Desktop service, as it will use Docker to create the database.
+Before run docker compose copy .env.example to .env for setting http port and maria db (db) port 
+can be change on .env
+
+You can run the test using this command :
+
+```shell
+docker compose up -d --build
+```
+
+Setting docker default can be change on docker-compose.yml
