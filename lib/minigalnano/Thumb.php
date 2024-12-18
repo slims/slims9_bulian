@@ -181,6 +181,9 @@ class Thumb
      */
     public function isCacheExists()
     {
+        if (file_exists($this->cache['file'])) {
+            unlink ($this->cache['file']);
+        }
         return file_exists($this->cache['file']);
     }
 
@@ -221,7 +224,9 @@ class Thumb
         $this->resulutionHeight = $this->height == 0 ? number((($this->resulutionWidth/$this->imageWidth) * $this->imageHeight))->toInteger() : $this->height;
         
         $this->cache['file'] = str_replace(['resolutionWidth','resolutionHeight'], [$this->resulutionWidth,$this->resulutionHeight], $this->cache['file']);
-
+        if (file_exists($this->cache['file'])) {
+            unlink ($this->cache['file']);
+        }
         return $this;
     }
 
