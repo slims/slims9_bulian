@@ -19,6 +19,7 @@
  */
 
 /* Custom for visitor room by Hendro Wicaksono */
+use SLiMS\Url;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -138,8 +139,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
-      <a href="<?php echo MWB; ?>master_file/visitor_room.php" class="btn btn-default"><?php echo __('Visitor Room List'); ?></a>
-      <a href="<?php echo MWB; ?>master_file/visitor_room.php?action=detail" class="btn btn-default"><?php echo __('Add New Visitor Room'); ?></a>
+      <a href="<?php echo MWB; ?>master_file/visitor_room.php" class="btn btn-default"><?php echo __('Room List'); ?></a>
+      <a href="<?php echo MWB; ?>master_file/visitor_room.php?action=detail" class="btn btn-default"><?php echo __('Add New Room'); ?></a>
 	  </div>
     <form name="search" action="<?php echo MWB; ?>master_file/visitor_room.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
@@ -181,10 +182,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     /* Form Element(s) */
-    // cmc code
-    $form->addTextField('text', 'unique_code', __('Unique Code').'*', $rec_d['unique_code']??utility::createRandomString(5), 'style="width: 20%;" maxlength="3" class="form-control col-1"');
     // cmc name
-    $form->addTextField('text', 'name', __('Name').'*', $rec_d['name']??'', 'style="width: 60%;" class="form-control"');
+    $form->addTextField('text', 'name', __('Room Name').'*', $rec_d['name']??'', 'style="width: 60%;" class="form-control"');
+    // cmc code
+    $form->addTextField('text', 'unique_code', __('Room Code').'*', $rec_d['unique_code']??utility::createRandomString(5), 'style="width: 20%;" maxlength="3" class="form-control col-1"');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -201,15 +202,22 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid = new simbio_datagrid();
     if ($can_read AND $can_write) {
       $datagrid->setSQLColumn('g.id',
-        'g.unique_code AS \''.__('Code').'\'',
-        'g.name AS \''.__('Name').'\'',
-        'g.updated_at AS \''.__('Last Update').'\'');
+        'g.name AS \''.__('Room Name').'\'',
+        'g.unique_code AS \''.__('Room Code').'\'',
+        'g.updated_at AS \''.__('Updated At').'\'');
     } else {
-      $datagrid->setSQLColumn('g.code AS \''.__('Code').'\'',
-        'g.name AS \''.__('Name').'\'',
-        'g.updated_at AS \''.__('Last Update').'\'');
+      $datagrid->setSQLColumn('g.name AS \''.__('Name').'\'',
+        'g.unique_code AS \''.__('Code').'\'',
+        'g.updated_at AS \''.__('Updated At').'\'');
     }
     $datagrid->setSQLorder('name ASC');
+    #$datagrid->modifyColumnContent(2, 'mimpikah');
+    function getLink($db, $data)
+    {
+        return '<a href="#" class="btn btn-link notAJAX copylink" data-code="'.$data[2].'" title="' . __('Copy this room link') . '"><i class="fa fa-clipboard"></i> ' . $data[2] . '</a>';
+    }
+
+    $datagrid->modifyColumnContent(2, 'callback{getLink}');
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
@@ -234,3 +242,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     echo $datagrid_result;
 }
 /* main content end */
+?>
+<script>
+$(document).ready(function() {
+    $('.copylink').click(function(e){
+        e.preventDefault()
+        navigator.clipboard.writeText(`<?= Url::getSlimsBaseUri() ?>?p=visitor&room=${$(this).data('code')}`)
+                .then(() => {
+                    top.toastr.info('<?= __('Success copied visitor room link') ?>');
+                })
+                .catch(err => {
+                    top.toastr.error(err);
+                })
+    })
+});
+</script>
