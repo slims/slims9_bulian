@@ -18,7 +18,7 @@
  *
  */
 
-/* RDA Content Media Carrier type Management section */
+/* Custom for visitor room by Hendro Wicaksono */
 
 // key to authenticate
 define('INDEX_AUTH', '1');
