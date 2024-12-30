@@ -93,7 +93,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
       $_POST['itemID'] = array($_POST['itemID']);
     }
 
-    $error_num == 0;
+    $error_num = 0;
     foreach ($_POST['itemID'] as $itemID) {
       //delete file
       $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$itemID);
