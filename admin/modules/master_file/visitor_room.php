@@ -134,7 +134,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
-	    <h2>asdsadsad<?php #echo __('RDA '.ucwords($type).' Type'); ?></h2>
+	    <h2><?php echo __('Visitor Room'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
