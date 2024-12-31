@@ -113,8 +113,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_sql_gmd_biblio_q = sprintf('SELECT mg.gmd_name, COUNT(mg.gmd_id) FROM biblio AS b
         LEFT JOIN mst_gmd AS mg ON b.gmd_id=mg.gmd_id
         WHERE mg.gmd_id=%d GROUP BY mg.gmd_name', $itemID);
+        #die($_sql_gmd_biblio_q);
         $gmd_biblio_q = $dbs->query($_sql_gmd_biblio_q);
         $gmd_biblio_d = $gmd_biblio_q->fetch_row();
+        if (is_null($gmd_biblio_d)) {
+            $gmd_biblio_d[1] = 0;
+        }
+        #var_dump($gmd_biblio_d); die();
         if ($gmd_biblio_d[1] < 1) {
             if (!$sql_op->delete('mst_gmd', 'gmd_id='.$itemID)) {
                 $error_num++;
@@ -131,16 +136,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $titles .= $title . "\n";
         }
         utility::jsToastr( __('GMD (General Material Designation)'), __('Below data can not be deleted:') . "<br/>" . $titles, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'\'});</script>';
+        #echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
         exit();
     }
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr(__('GMD (General Material Designation)'), __('All Data Successfully Deleted'), 'success');
-        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?\');</script>';
+        #echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
         utility::jsToastr(__('GMD (General Material Designation)'), __('Some or All Data NOT deleted successfully!\nPlease contact system administrator'), 'warning');        
-        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?\');</script>';
+        #echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
 }
