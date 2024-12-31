@@ -112,6 +112,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         WHERE ml.language_id LIKE \'%s\' GROUP BY ml.language_name', $itemID);
         $lang_biblio_q = $dbs->query($_sql_lang_biblio_q);
         $lang_biblio_d = $lang_biblio_q->fetch_row();
+        if (is_null($lang_biblio_d)) {
+            $lang_biblio_d[1] = 0;
+        }
         if ($lang_biblio_d[1] < 1) {        
             if (!$sql_op->delete('mst_language', "language_id='$itemID'")) {
                 $error_num++;
@@ -128,17 +131,20 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $titles .= $title . "\n";
         }
         utility::jsToastr( __('Doc. Language'), __('Below data can not be deleted:') . "\n" . $titles, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'\'});</script>';
+        #echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . $_SERVER['PHP_SELF'] . '\', {addData: \'' . $_POST['lastQueryStr'] . '\'});</script>';
         exit();
     }  
 
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr(__('Doc. Language'),__('All Data Successfully Deleted'),'success');
-        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?\');</script>';
+        #echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
         utility::jsToastr(__('Doc. Language'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
-        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?\');</script>';
+        #echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
     exit();
 }
