@@ -9,6 +9,7 @@
  */
 
 namespace SLiMS\Filesystems;
+require LIB.'SimpleImage/SimpleImage.php';
 
 trait Utils
 {
@@ -130,7 +131,9 @@ trait Utils
                 if ($ext == 'jpg') $ext = 'jpeg';
 
                 // create image from string
-                $image = imagecreatefromstring($buffer);
+                #$image = imagecreatefromstring($buffer);
+                $image = new \claviska\SimpleImage();
+                $image->fromDataUri($buffer); 
 
                 if (function_exists(($functionName = 'image' . $ext))) {
                     $compressLevel = [

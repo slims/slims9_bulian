@@ -53,7 +53,7 @@ class Local extends Contract
             $this->uploadedFile = md5(date('this') . utility::createRandomString(64)) . $this->getExt($fileToUpload);
 
             // file resource
-            $resource = fopen($_FILES[$fileToUpload]['tmp_name'], 'r+');
+            $resource = fopen($_FILES[$fileToUpload]['tmp_name'], 'r');
 
             // Write file 
             $this->filesystem->writeStream($this->uploadedFile, $resource);
