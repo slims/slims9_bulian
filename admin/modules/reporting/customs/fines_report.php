@@ -118,7 +118,12 @@ if (!$reportView) {
     // month
     $selected_month = date('m');
     if (isset($_GET['month']) AND !empty($_GET['month'])) {
-        $selected_month = $_GET['month'];
+        $allowed_month = array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        if (in_array($_GET['month'], $allowed_month)) {
+            $selected_month = $_GET['month'];
+        } else {
+            $selected_month = "01";
+        }
     }
 
     // query fines data to database
