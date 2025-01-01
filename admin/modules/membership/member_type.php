@@ -58,24 +58,83 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         exit();
     } else {
         $data['member_type_name'] = $dbs->escape_string($memberTypeName);
-        $data['loan_limit'] = trim($_POST['loanLimit']);
-        $data['loan_periode'] = trim($_POST['loanPeriode']);
-        $data['enable_reserve'] = $_POST['enableReserve'];
-        $data['reserve_limit'] = $_POST['reserveLimit'];
-        $data['member_periode'] = $_POST['memberPeriode'];
+        # loan_limit
+        if (isset($_POST['loanLimit'])) {
+            if ( (is_numeric($_POST['loanLimit'])) AND ($_POST['loanLimit'] > 0) ) {
+                $data['loan_limit'] = $_POST['loanLimit'];
+            } else {
+                $data['loan_limit'] = "0";
+            }
+        } else {
+            $data['loan_limit'] = 0;
+        }
+        # loan_periode
+        if (isset($_POST['loanPeriode'])) {
+            if ( (is_numeric($_POST['loanPeriode'])) AND ($_POST['loanPeriode'] > 0) ) {
+                $data['loan_periode'] = $_POST['loanPeriode'];
+            } else {
+                $data['loan_periode'] = "0";
+            }
+        } else {
+            $data['loan_periode'] = 0;
+        }
+        # enable_reserve
+        $allowed_er = array (0, 1);
+        if (in_array($_POST['enableReserve'], $allowed_er)) {
+            $data['enable_reserve'] = $_POST['enableReserve'];
+        } else {
+            $data['enable_reserve'] = 0;
+        }
+        # reserve_limit
+        if (isset($_POST['reserveLimit'])) {
+            if ( (is_numeric($_POST['reserveLimit'])) AND ($_POST['reserveLimit'] > 0) ) {
+                $data['reserve_limit'] = $_POST['reserveLimit'];
+            } else {
+                $data['reserve_limit'] = "0";
+            }
+        } else {
+            $data['reserve_limit'] = 0;
+        }
+        # member_periode
+        if (isset($_POST['memberPeriode'])) {
+            if ( (is_numeric($_POST['memberPeriode'])) AND ($_POST['memberPeriode'] > 0) ) {
+                $data['member_periode'] = $_POST['memberPeriode'];
+            } else {
+                $data['member_periode'] = "0";
+            }
+        } else {
+            $data['member_periode'] = 0;
+        }
+        # reborrow_limit
         if (isset($_POST['reborrowLimit'])) {
-            if (is_numeric($_POST['reborrowLimit'])) {
+            if ( (is_numeric($_POST['reborrowLimit'])) AND ($_POST['reborrowLimit'] > 0) ) {
                 $data['reborrow_limit'] = $_POST['reborrowLimit'];
             } else {
-                $data['reborrow_limit'] = 0;
+                $data['reborrow_limit'] = "0";
             }
         } else {
             $data['reborrow_limit'] = 0;
         }
-        #$data['reborrow_limit'] = $_POST['reborrowLimit'];
-
-        $data['fine_each_day'] = $_POST['fineEachDay'];
-        $data['grace_periode'] = $_POST['gracePeriode'];
+        # fine_each_day
+        if (isset($_POST['fineEachDay'])) {
+            if ( (is_numeric($_POST['fineEachDay'])) AND ($_POST['fineEachDay'] > 0) ) {
+                $data['fine_each_day'] = $_POST['fineEachDay'];
+            } else {
+                $data['fine_each_day'] = "0";
+            }
+        } else {
+            $data['fine_each_day'] = 0;
+        }
+        # grace_periode
+        if (isset($_POST['gracePeriode'])) {
+            if ( (is_numeric($_POST['gracePeriode'])) AND ($_POST['gracePeriode'] > 0) ) {
+                $data['grace_periode'] = $_POST['gracePeriode'];
+            } else {
+                $data['grace_periode'] = 0;
+            }
+        } else {
+            $data['grace_periode'] = 0;
+        }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
