@@ -63,7 +63,17 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['enable_reserve'] = $_POST['enableReserve'];
         $data['reserve_limit'] = $_POST['reserveLimit'];
         $data['member_periode'] = $_POST['memberPeriode'];
-        $data['reborrow_limit'] = $_POST['reborrowLimit'];
+        if (isset($_POST['reborrowLimit'])) {
+            if (is_numeric($_POST['reborrowLimit'])) {
+                $data['reborrow_limit'] = $_POST['reborrowLimit'];
+            } else {
+                $data['reborrow_limit'] = 0;
+            }
+        } else {
+            $data['reborrow_limit'] = 0;
+        }
+        #$data['reborrow_limit'] = $_POST['reborrowLimit'];
+
         $data['fine_each_day'] = $_POST['fineEachDay'];
         $data['grace_periode'] = $_POST['gracePeriode'];
         $data['input_date'] = date('Y-m-d');
