@@ -45,37 +45,61 @@ $can_read = utility::havePrivilege('master_file', 'r');
 $can_write = utility::havePrivilege('master_file', 'w');
 
 // GET ID FROM URL
-$itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
+#$itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
+if (isset($_GET['itemID'])) {
+    if ( (is_numeric($_GET['itemID'])) AND ($_GET['itemID'] > 0) ) {
+        $itemID = (integer)$_GET['itemID'];
+    } else {
+        $itemID = 0; trigger_error("Error in Item ID");
+    }
+} else {
+    trigger_error("Error in getting Item ID");
+}
+if (isset($_POST['vocabolary_id'])) {
+    if ( (is_numeric($_POST['vocabolary_id'])) AND ($_POST['vocabolary_id'] > 0) ) {
+        $_POST['vocabolary_id'] = (integer)$_POST['vocabolary_id'];
+    } else {
+        $_POST['vocabolary_id'] = "0"; trigger_error("Error in Vocabulary ID");
+    }
+}
+if (isset($_POST['topic_id'])) {
+    if ( (is_numeric($_POST['topic_id'])) AND ($_POST['topic_id'] > 0) ) {
+        $_POST['topic_id'] = (integer)$_POST['topic_id'];
+    } else {
+        $_POST['topic_id'] = "0"; trigger_error("Error in Topic ID");
+    }
+}
+
 if (isset($_POST['save'])) {
-  $data['topic_id'] = (integer)$_POST['topic_id'];
-  $data['scope'] = trim($dbs->escape_string(strip_tags($_POST['scope'])));
+    $data['topic_id'] = (integer)$_POST['topic_id'];
+    $data['scope'] = trim($dbs->escape_string(strip_tags($_POST['scope'])));
 
-  # create new sql op object
-  $sql_op = new simbio_dbop($dbs);
-
-  if (!empty($_POST['vocabolary_id'])) {
-    // do update
-    $save = $sql_op->update('mst_voc_ctrl', $data, 'vocabolary_id='.$_POST['vocabolary_id']);
-  } else {
-    // insert
-    $save = $sql_op->insert('mst_voc_ctrl', $data);
-  }
-
-  if (isset($_POST['delete'])) {
     # create new sql op object
-    $save = $sql_op->delete('mst_voc_ctrl', 'vocabolary_id='.$_POST['vocabolary_id']);
-  }
+    $sql_op = new simbio_dbop($dbs);
 
-  if ($save) {
-    $alert_save  = '<script type="text/javascript">';
-    $alert_save .= 'alert(\''.__('Data saved!').'\');';
-    $alert_save .= 'parent.setIframeContent(\'itemIframe\', \''.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$data['topic_id'].'\');';
-    $alert_save .= 'top.jQuery.colorbox.close();';
-    $alert_save .= '</script>';
-    echo $alert_save;
-  } else {
-    toastr(__('Failed to save data!'))->error();
-  }
+    if (!empty($_POST['vocabolary_id'])) {
+        // do update
+        $save = $sql_op->update('mst_voc_ctrl', $data, 'vocabolary_id='.$_POST['vocabolary_id']);
+    } else {
+        // insert
+        $save = $sql_op->insert('mst_voc_ctrl', $data);
+    }
+
+    if (isset($_POST['delete'])) {
+        # create new sql op object
+        $save = $sql_op->delete('mst_voc_ctrl', 'vocabolary_id='.$_POST['vocabolary_id']);
+    }
+
+    if ($save) {
+        $alert_save  = '<script type="text/javascript">';
+        $alert_save .= 'alert(\''.__('Data saved!').'\');';
+        $alert_save .= 'parent.setIframeContent(\'itemIframe\', \''.MWB.'master_file/iframe_vocabolary_control.php?itemID='.$data['topic_id'].'\');';
+        $alert_save .= 'top.jQuery.colorbox.close();';
+        $alert_save .= '</script>';
+        echo $alert_save;
+    } else {
+        toastr(__('Failed to save data!'))->error();
+    }
 }
 
 // start buffer
