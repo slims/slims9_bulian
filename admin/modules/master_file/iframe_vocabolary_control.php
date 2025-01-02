@@ -22,13 +22,14 @@ $itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
 ob_start();
 ?>
 <script type="text/javascript">
-function confirmProcess(topic_id, vocabolary_id)
+function confirmProcess(topic_id, vocabolary_id, related_topic_id)
 {
   var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected topic?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it can\'t be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
     document.hiddenActionForm.tid.value = topic_id;
     document.hiddenActionForm.remove.value = vocabolary_id;
+    document.hiddenActionForm.related_topic_id.value = related_topic_id;
     // submit form
     document.hiddenActionForm.submit();
   }
@@ -36,14 +37,16 @@ function confirmProcess(topic_id, vocabolary_id)
 </script>
 <?php
 if (isset($_POST['remove'])) {
-  $tid = (integer)$_POST['tid'];
-  $vid = (integer)$_POST['remove'];
-  $sql_op = new simbio_dbop($dbs);
-  $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
-  toastr(addslashes(__('Topic succesfully removed!')))->success();
-  echo '<script type="text/javascript">';
-  echo 'setTimeout(() => {location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';}, 2500)';
-  echo '</script>';
+    $tid = (integer)$_POST['tid'];
+    $vid = (integer)$_POST['remove'];
+    $related_topic_id = (integer)$_POST['related_topic_id'];
+    $sql_op = new simbio_dbop($dbs);
+    $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
+    $sql_op->delete('mst_voc_ctrl', 'topic_id='.$related_topic_id.' AND related_topic_id='.$tid);
+    toastr(addslashes(__('Topic succesfully removed!')))->success();
+    echo '<script type="text/javascript">';
+    echo 'setTimeout(() => {location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';}, 2500)';
+    echo '</script>';
 }
 
 if($itemID){
@@ -70,7 +73,7 @@ while ($voc_d = $voc_q->fetch_assoc()) {
 
       // links
       $edit_link = '<a class="s-btn btn btn-primary btn-sm notAJAX openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;">'.__('Edit').'</a>';
-      $remove_link = '<a class="s-btn btn btn-danger btn-sm notAJAX" href="#" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].')">'.__('Remove').'</a>';
+      $remove_link = '<a class="s-btn btn btn-danger btn-sm notAJAX" href="#" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].','.$voc_d['related_topic_id'].')">'.__('Remove').'</a>';
       $related_term = $voc_d['rt_id'];
 
       $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_d[0]));
@@ -84,7 +87,8 @@ while ($voc_d = $voc_q->fetch_assoc()) {
 }
 echo $table->printTable();
 // hidden form
-echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /></form>';
+echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /><input type="hidden" name="related_topic_id" value="0" /></form>';
+#echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /></form>';
 }
 /* main content end */
 $content = ob_get_clean();

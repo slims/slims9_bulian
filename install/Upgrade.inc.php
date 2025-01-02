@@ -1138,20 +1138,21 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      * Upgrade role to v9.x.x
      */
     function upgrade_role_36(){
-      $sql['create'][] = "CREATE TABLE `user_tokens` (
-        `id` int NOT NULL AUTO_INCREMENT,
-        `selector` varchar(255) NOT NULL,
-        `hashed_validator` varchar(255) NOT NULL,
-        `user_id` int NOT NULL,
-        `expires_at` datetime NOT NULL,
-        `created_at` datetime NOT NULL,
-        PRIMARY KEY (`id`)
-      ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        $sql['create'][] = "CREATE TABLE `user_tokens` (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `selector` varchar(255) NOT NULL,
+            `hashed_validator` varchar(255) NOT NULL,
+            `user_id` int NOT NULL,
+            `expires_at` datetime NOT NULL,
+            `created_at` datetime NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-      $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
-      $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
-      $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
-      $sql['alter'][] = "ALTER TABLE `user` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
-      return $this->slims->query($sql, ['create', 'alter'],36);
+        $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
+        $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
+        $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+        $sql['alter'][] = "ALTER TABLE `user` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+        $sql['alter'][] = "ALTER IGNORE TABLE mst_voc_ctrl ADD UNIQUE idx_heading(topic_id, related_topic_id);"; 
+        return $this->slims->query($sql, ['create', 'alter'],36);
     }
 }
