@@ -50,7 +50,7 @@ if (!$can_read) {
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
-    $supplierName = trim(strip_tags($_POST['supplierName']));
+    $supplierName = trim($dbs->escape_string(strip_tags($_POST['supplierName'])));
     // check form validity
     if (empty($supplierName)) {
         utility::jsToastr(__('Supplier'),__('Supplier Name can\'t be empty'),'error');
@@ -211,6 +211,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'supplierFax', __('Fax Number'), $rec_d['fax']??'', 'class="form-control" style="width: 60%;"');
     // supplier account number
     $form->addTextField('text', 'supplierAccount', __('Account Number'), $rec_d['account']??'', 'class="form-control" style="width: 60%;"');
+    // supplier email
+    $form->addTextField('text', 'supplierEmail', __('Email'), $rec_d['e_mail']??'', 'class="form-control" style="width: 60%;"');
 
     // edit mode messagge
     if ($form->edit_mode) {

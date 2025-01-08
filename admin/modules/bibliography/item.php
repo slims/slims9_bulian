@@ -62,34 +62,38 @@ if (isset($_GET['inPopUp'])) {
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
-    $itemCode = trim(strip_tags($_POST['itemCode']));
+    $itemCode = $dbs->escape_string(trim(strip_tags($_POST['itemCode'])));
     if (empty($itemCode)) {
         utility::jsToastr('Item', __('Item Code can\'t be empty!'), 'error');
         exit();
     } else {
         // biblio title
-        $title = trim($_POST['biblioTitle']);
-        $data['biblio_id'] = $_POST['biblioID'];
+        $title = $dbs->escape_string(trim($_POST['biblioTitle']));
+        $data['biblio_id'] = intval($_POST['biblioID']);
+        if ($data['biblio_id'] < 1) { die("Invalid biblioID"); }
         $data['item_code'] = $dbs->escape_string($itemCode);
         $data['call_number'] = trim($dbs->escape_string($_POST['callNumber']));
         // check inventory code
-        $inventoryCode = trim($_POST['inventoryCode']);
+        $inventoryCode = $dbs->escape_string(trim($_POST['inventoryCode']));
         if ($inventoryCode) {
             $data['inventory_code'] = $inventoryCode;
         } else {
             $data['inventory_code'] = 'literal{NULL}';
         }
 
-        $data['location_id'] = $_POST['locationID'];
+        $data['location_id'] = trim($dbs->escape_string($_POST['locationID']));
         $data['site'] = trim($dbs->escape_string(strip_tags($_POST['itemSite'])));
         $data['coll_type_id'] = intval($_POST['collTypeID']);
-        $data['item_status_id'] = $dbs->escape_string($_POST['itemStatusID']);
-        $data['source'] = $_POST['source'];
+        if ($data['coll_type_id'] < 1) { die("Invalid coll_type_id"); }
+        $data['item_status_id'] = trim($dbs->escape_string($_POST['itemStatusID']));
+        $data['source'] = intval($_POST['source']);
+        if ($data['source'] < 0) { die("Invalid source"); }
         $data['order_no'] = trim($dbs->escape_string(strip_tags($_POST['orderNo'])));
         $data['order_date'] = $_POST['ordDate'];
         $data['received_date'] = $_POST['recvDate'];
-        $data['supplier_id'] = $_POST['supplierID'];
-        $data['invoice'] = $_POST['invoice'];
+        $data['supplier_id'] = intval($_POST['supplierID']);
+        if ($data['supplier_id'] < 0) { die("Invalid supplier_id"); }
+        $data['invoice'] = trim($dbs->escape_string($_POST['invoice']));
         $data['invoice_date'] = $_POST['invcDate'];
         $data['price_currency'] = trim($dbs->escape_string(strip_tags($_POST['priceCurrency'])));
         if (!$data['price_currency']) { $data['price_currency'] = 'literal{NULL}'; }
@@ -107,6 +111,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
+            if ($updateRecordID < 1) { die("Invalid updateRecordID"); }
             // update the data
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
@@ -185,16 +190,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $items .= $item."\n";
         }
         utility::jsToastr('Item on Hold', __('Item data can not be deleted because still on hold by members')." : \n".$items, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
         exit();
     }
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr('Item', __('Item succesfully removed!'), 'success');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
     } else {
         utility::jsToastr('Item', __('Item FAILED to removed!'), 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
     }
     exit();
 }
@@ -228,6 +233,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /* RECORD FORM */
     // try query
     $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    if ($itemID < 1) { die("Invalid itemID"); }
     $rec_q = $dbs->query('SELECT item.*, b.biblio_id, b.title, s.supplier_name
         FROM item
         LEFT JOIN biblio AS b ON item.biblio_id=b.biblio_id
