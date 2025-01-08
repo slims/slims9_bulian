@@ -286,74 +286,79 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
         if (isset($_POST['updateRecordID'])) {
-            if ($sysconf['log']['biblio']) {
-                $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
-            }
+            $_POST['updateRecordID'] = (integer)$_POST['updateRecordID'];
 
-            // Remove previous popular biblio data from cache if opac use default template
-            if ($sysconf['template']['theme'] == 'default' && $_POST['opacHide'] != $_POST['opacHideOrigin']) {
-                require SB . 'api/v1/helpers/Cache.php';
-                Cache::destroy('biblio_popular');
-            }
-
-            /* UPDATE RECORD MODE */
-            // remove input date
-            unset($data['input_date']);
-            unset($data['uid']);
-            // filter update record ID
-            $updateRecordID = (integer)$_POST['updateRecordID'];
-            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
-            // update data
-            $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
-            // send an alert
-            if ($update) {
-
-                // execute registered hook
-                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
-
-                // update custom data
-                if (isset($custom_data)) {
-                    // check if custom data for this record exists
-                    $_sql_check_custom_q = sprintf('SELECT biblio_id FROM biblio_custom WHERE biblio_id=%d', $updateRecordID);
-                    $check_custom_q = $dbs->query($_sql_check_custom_q);
-                    if ($check_custom_q->num_rows) {
-                        $update2 = @$sql_op->update('biblio_custom', $custom_data, 'biblio_id=' . $updateRecordID);
-                    } else {
-                        $custom_data['biblio_id'] = $updateRecordID;
-                        @$sql_op->insert('biblio_custom', $custom_data);
-                    }
-                }
-                if ($sysconf['bibliography_update_notification']) {
-                    utility::jsToastr('Bibliography', __('Bibliography Data Successfully Updated'), 'success');
-                }
-                // auto insert catalog to UCS if enabled
-                if ($sysconf['ucs']['enable']) {
-                    echo '<script type="text/javascript">parent.ucsUpload(\'' . MWB . 'bibliography/ucs_upload.php\', \'itemID[]=' . $updateRecordID . '\', false);</script>';
-                }
-                // write log
-                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' update bibliographic data (' . $data['title'] . ') with biblio_id (' . $updateRecordID . ')');
-
+            if ($_POST['updateRecordID'] > 0) {
                 if ($sysconf['log']['biblio']) {
-                    $_currrawdata = api::biblio_load($dbs, $updateRecordID);
-                    api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
-                    unset($_SESSION['_prevrawdata'][$updateRecordID]);
+                    $_prevrawdata = api::biblio_load($dbs, $_POST['updateRecordID']);
                 }
-                if ($sysconf['index']['engine']['enable']) {
-                    api::update_to_index($_currrawdata);
+
+                // Remove previous popular biblio data from cache if opac use default template
+                if ($sysconf['template']['theme'] == 'default' && $_POST['opacHide'] != $_POST['opacHideOrigin']) {
+                    require SB . 'api/v1/helpers/Cache.php';
+                    Cache::destroy('biblio_popular');
                 }
-                // close window OR redirect main page
-                if ($in_pop_up) {
-                    $itemCollID = (integer)$_POST['itemCollID'];
-                    echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url, {method: \'post\', addData: \'' . ($itemCollID ? 'itemID=' . $itemCollID . '&detail=true' : '') . '\'});</script>';
-                    echo '<script type="text/javascript">top.closeHTMLpop();</script>';
+
+                /* UPDATE RECORD MODE */
+                // remove input date
+                unset($data['input_date']);
+                unset($data['uid']);
+                // filter update record ID
+                $updateRecordID = (integer)$_POST['updateRecordID'];
+                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+                // update data
+                $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
+                // send an alert
+                if ($update) {
+
+                    // execute registered hook
+                    Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+
+                    // update custom data
+                    if (isset($custom_data)) {
+                        // check if custom data for this record exists
+                        $_sql_check_custom_q = sprintf('SELECT biblio_id FROM biblio_custom WHERE biblio_id=%d', $updateRecordID);
+                        $check_custom_q = $dbs->query($_sql_check_custom_q);
+                        if ($check_custom_q->num_rows) {
+                            $update2 = @$sql_op->update('biblio_custom', $custom_data, 'biblio_id=' . $updateRecordID);
+                        } else {
+                            $custom_data['biblio_id'] = $updateRecordID;
+                            @$sql_op->insert('biblio_custom', $custom_data);
+                        }
+                    }
+                    if ($sysconf['bibliography_update_notification']) {
+                        utility::jsToastr('Bibliography', __('Bibliography Data Successfully Updated'), 'success');
+                    }
+                    // auto insert catalog to UCS if enabled
+                    if ($sysconf['ucs']['enable']) {
+                        echo '<script type="text/javascript">parent.ucsUpload(\'' . MWB . 'bibliography/ucs_upload.php\', \'itemID[]=' . $updateRecordID . '\', false);</script>';
+                    }
+                    // write log
+                    writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' update bibliographic data (' . $data['title'] . ') with biblio_id (' . $updateRecordID . ')');
+
+                    if ($sysconf['log']['biblio']) {
+                        $_currrawdata = api::biblio_load($dbs, $updateRecordID);
+                        api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
+                        unset($_SESSION['_prevrawdata'][$updateRecordID]);
+                    }
+                    if ($sysconf['index']['engine']['enable']) {
+                        api::update_to_index($_currrawdata);
+                    }
+                    // close window OR redirect main page
+                    if ($in_pop_up) {
+                        $itemCollID = (integer)$_POST['itemCollID'];
+                        echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url, {method: \'post\', addData: \'' . ($itemCollID ? 'itemID=' . $itemCollID . '&detail=true' : '') . '\'});</script>';
+                        echo '<script type="text/javascript">top.closeHTMLpop();</script>';
+                    } else {
+                        echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
+                    }
+                    // update index
+                    $indexer->updateIndex($updateRecordID);
                 } else {
-                    echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
+                    utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator') . "\n" . $sql_op->error, 'error');
                 }
-                // update index
-                $indexer->updateIndex($updateRecordID);
-            } else {
-                utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator') . "\n" . $sql_op->error, 'error');
             }
+
         } else {
 
             // execute registered hook
@@ -484,7 +489,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $indexer->updateItems((isset($updateRecordID) ? $updateRecordID : $last_biblio_id));
         }
 
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . MWB . 'bibliography/index.php\', {method: \'post\', addData: \'itemID=' . (isset($updateRecordID) ? $updateRecordID : $last_biblio_id) . '&detail=true\'});</script>';
+        #$isset = array_key_exists('last_biblio_id', get_defined_vars());
+        if (array_key_exists('last_biblio_id', get_defined_vars())) {
+            echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\'' . MWB . 'bibliography/index.php\', {method: \'post\', addData: \'itemID=' . (isset($updateRecordID) ? $updateRecordID : $last_biblio_id) . '&detail=true\'});</script>';
+        }
         exit();
     }
     exit();
