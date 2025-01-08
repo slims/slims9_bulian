@@ -159,6 +159,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
 
 // add temporary item to session
 if (isset($_POST['tempLoanID'])) {
+    $_POST['tempLoanID'] = $dbs->escape_string($_POST['tempLoanID']);
     // create circulation object
     $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
