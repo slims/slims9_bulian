@@ -110,48 +110,50 @@ if (isset($_POST['finish'])) {
 // return and extend process
 if (isset($_POST['process']) AND isset($_POST['loanID'])) {
     $loanID = intval($_POST['loanID']);
-    // get loan data
-    $loan_q = $dbs->query('SELECT item_code FROM loan WHERE loan_id='.$loanID);
-    $loan_d = $loan_q->fetch_row();
-    // create circulation object
-    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
-    $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
-	$circulation->holiday_dayname = $_SESSION['holiday_dayname'];
-	$circulation->holiday_date = $_SESSION['holiday_date'];
-    if ($_POST['process'] == 'return') {
-        $return_status = $circulation->returnItem($loanID);
-        // write log
-        writeLog('member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Return');
-        if ($circulation->loan_have_overdue) {
-            toastr(__('Overdue fines inserted to fines database'))->success();
-        }
-        echo '<script type="text/javascript">';
-        if ($return_status === ITEM_RESERVED) {
-            echo 'location.href = \'loan_list.php?reserveAlert='.urlencode($loan_d[0]).'\';';
-        } else { 
-            echo 'location.href = \'loan_list.php\';'; 
-        }
-        echo '</script>';
-    } else {
-        // set holiday settings
+    if ($loanID > 0) {
+        // get loan data
+        $loan_q = $dbs->query('SELECT item_code FROM loan WHERE loan_id='.$loanID);
+        $loan_d = $loan_q->fetch_row();
+        // create circulation object
+        $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
+        $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
         $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
         $circulation->holiday_date = $_SESSION['holiday_date'];
-        $extend_status = $circulation->extendItemLoan($loanID);
-        if ($extend_status === ITEM_RESERVED) {
-            toastr(__('Item CANNOT BE Extended! This Item is being reserved by other member'))->warning();
-            echo '<script type="text/javascript">';
-            echo 'location.href = \'loan_list.php\';';
-            echo '</script>';
-        } else {
+        if ($_POST['process'] == 'return') {
+            $return_status = $circulation->returnItem($loanID);
             // write log
-            writeLog('member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Extended');
-            toastr(__('Loan Extended'))->success();
+            writeLog('member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' return item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Return');
             if ($circulation->loan_have_overdue) {
                 toastr(__('Overdue fines inserted to fines database'))->success();
             }
             echo '<script type="text/javascript">';
-            echo 'location.href = \'loan_list.php\';';
+            if ($return_status === ITEM_RESERVED) {
+                echo 'location.href = \'loan_list.php?reserveAlert='.urlencode($loan_d[0]).'\';';
+            } else { 
+                echo 'location.href = \'loan_list.php\';'; 
+            }
             echo '</script>';
+        } else {
+            // set holiday settings
+            $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
+            $circulation->holiday_date = $_SESSION['holiday_date'];
+            $extend_status = $circulation->extendItemLoan($loanID);
+            if ($extend_status === ITEM_RESERVED) {
+                toastr(__('Item CANNOT BE Extended! This Item is being reserved by other member'))->warning();
+                echo '<script type="text/javascript">';
+                echo 'location.href = \'loan_list.php\';';
+                echo '</script>';
+            } else {
+                // write log
+                writeLog('member', $dbs->escape_string($_SESSION['memberID']), 'circulation', $dbs->escape_string($_SESSION['realname']).' extend loan for item '.$loan_d[0].' for member ('.$dbs->escape_string($_SESSION['memberID']).')', 'Loan', 'Extended');
+                toastr(__('Loan Extended'))->success();
+                if ($circulation->loan_have_overdue) {
+                    toastr(__('Overdue fines inserted to fines database'))->success();
+                }
+                echo '<script type="text/javascript">';
+                echo 'location.href = \'loan_list.php\';';
+                echo '</script>';
+            }
         }
     }
     exit();
@@ -270,13 +272,14 @@ if (isset($_GET['removeID'])) {
 
 // quick return proccess
 if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
+    $_POST['quickReturnID'] = $dbs->escape_string($_POST['quickReturnID']);
     // get loan data
     $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, b.classification, mt.member_type_name FROM loan AS l
         LEFT JOIN item AS i ON i.item_code=l.item_code
         LEFT JOIN biblio AS b ON i.biblio_id=b.biblio_id
         LEFT JOIN member AS m ON l.member_id=m.member_id
         LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
-        WHERE l.item_code='".$dbs->escape_string($_POST['quickReturnID'])."' AND is_lent=1 AND is_return=0");
+        WHERE l.item_code='".$_POST['quickReturnID']."' AND is_lent=1 AND is_return=0");
     if ($loan_info_q->num_rows < 1) {
         echo '<div class="errorBox">'.__('This is item already returned or not exists in loan database').'</div>';
     } else {
