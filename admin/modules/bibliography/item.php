@@ -233,7 +233,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /* RECORD FORM */
     // try query
     $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
-    if ($itemID < 1) { die("Invalid itemID"); }
+    // if ($itemID < 1) { die("Invalid itemID"); }
     $rec_q = $dbs->query('SELECT item.*, b.biblio_id, b.title, s.supplier_name
         FROM item
         LEFT JOIN biblio AS b ON item.biblio_id=b.biblio_id
@@ -249,6 +249,10 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
 
+    if ($in_pop_up) {
+        $form->back_button = false;
+    }
+
     // edit mode flag set
     if ($rec_q->num_rows > 0) {
         $form->edit_mode = true;
@@ -257,7 +261,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $form->record_id = $itemID;
         } else {
             $form->addHidden('updateRecordID', $itemID);
-            $form->back_button = false;
         }
         // form record title
         $form->record_title = $rec_d['title'];
