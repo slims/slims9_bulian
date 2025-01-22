@@ -38,7 +38,7 @@ if (isset($_POST['code-6'])) {
 
         if ($sysconf['login_message']) utility::jsAlert(__('Welcome to Library Automation, ') . $realname);
 
-        $logon = Validator::use(config('auth', \SLiMS\Auth\Methods\Native::class));
+        $logon = Validator::use(config('auth.methods.native', \SLiMS\Auth\Methods\Native::class));
         $logonMethodInstance = $logon->getMethodInstance();
         $logonMethodInstance->setData($user_info);
         $logonMethodInstance->generateSession();
