@@ -517,7 +517,7 @@ $options[] = array('1', __('Yes'));
 $options[] = array('0', __('No'));
 $form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
 
-Plugins::run(Plugins::SYSTEM_BEFORE_CONFIGFORM_PRINTOUT, [$form]);
+Plugins::run('system_before_configform_printout', [$form]);
 
 // print out the object
 echo $form->printOut();

@@ -20,6 +20,40 @@ use Exception;
 class Plugins
 {
     const DATABASE_VERSION = 'db_version';
+
+    /**
+     * Constanta's List of Hooks
+     */
+    const ADMIN_SESSION_AFTER_START = 'admin_session_after_start';
+    const CONTENT_BEFORE_LOAD = 'before_content_load';
+    const CONTENT_AFTER_LOAD = 'after_content_load';
+    const BIBLIOGRAPHY_INIT = 'bibliography_init';
+    const BIBLIOGRAPHY_BEFORE_UPDATE = 'bibliography_before_update';
+    const BIBLIOGRAPHY_AFTER_UPDATE = 'bibliography_after_update';
+    const BIBLIOGRAPHY_BEFORE_SAVE = 'bibliography_before_save';
+    const BIBLIOGRAPHY_AFTER_SAVE = 'bibliography_after_save';
+    const BIBLIOGRAPHY_BEFORE_DELETE = 'bibliography_before_delete';
+    const BIBLIOGRAPHY_AFTER_DELETE = 'bibliography_after_delete';
+    const BIBLIOGRAPHY_CUSTOM_FIELD_DATA = 'advance_custom_field_data';
+    const BIBLIOGRAPHY_CUSTOM_FIELD_FORM = 'advance_custom_field_form';
+    const BIBLIOGRAPHY_BEFORE_DATAGRID_OUTPUT = 'bibliography_before_datagrid_output';
+    const CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION = 'circulation_after_successful_transaction';
+    const CIRCULATION_AFTER_START_TRANSACTION = 'circulation_after_start_transaction';
+    const MEMBERSHIP_INIT = 'membership_init';
+    const MEMBERSHIP_BEFORE_UPDATE = 'membership_before_update';
+    const MEMBERSHIP_AFTER_UPDATE = 'membership_after_update';
+    const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
+    const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
+    const MEMBERSHIP_CUSTOM_FIELD_DATA = 'membership_custom_field_data';
+    const MEMBERSHIP_CUSTOM_FIELD_FORM = 'membership_custom_field_form';
+    const OVERDUE_NOTICE_INIT = 'overduenotice_init';
+    const DUEDATE_NOTICE_INIT = 'duedate_init';
+    const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
+    const OAI2_INIT = 'oai2_init';
+    const SYSTEM_BEFORE_CONFIGFORM_PRINTOUT = 'system_before_configform_printout';
+    const SYSTEM_BEFORE_CONFIG_SAVE = 'system_before_config_save';
+    const SYSTEM_AFTER_CONFIG_SAVE = 'system_after_config_save';
+
     private static $instance;
     /**
      * Store plugins location, so plugins can stored in multiple location
@@ -489,13 +523,11 @@ class Plugins
      */
     public static function run($hook, $params = [])
     {
-        global $sysconf;
         self::getInstance()->execute($hook, $params);
     }
 
     public function execute($hook, $params = [])
     {
-        global $sysconf;
         $hook = $this->hooks[$hook]??[];
         sort($hook);
         foreach ($hook ?? [] as $hook) {

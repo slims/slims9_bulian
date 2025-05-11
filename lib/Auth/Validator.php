@@ -175,7 +175,7 @@ class Validator
         }
 
         $sql = 'SELECT u.user_id AS uid, u.username AS uname, u.passwd, 
-                       u.realname AS realname, u.groups, u.user_image AS upict, u.2fa
+            u.realname AS realname, u.groups, u.user_image AS upict, u.2fa
             FROM user AS u
             INNER JOIN user_tokens AS ut ON ut.user_id = u.user_id
             WHERE ut.selector = :selector AND ut.expires_at > now()

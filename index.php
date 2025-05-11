@@ -78,16 +78,12 @@ if (!$opac instanceof Opac) {
   throw new Exception("{$opacClass} is not instance of {$slimsOpac}");
 }
 
-// running hook to override process/variable before
-// content load
-$opac->hookBeforeContent(function($opac){
-  // Set header for CSP
-  $opac->setCsp();
-  $opac->setHeader('X-Content-Type-Options', 'nonsniff');
-  
-  // running plugin based on hook
-  Plugins::getInstance()->execute(Plugins::CONTENT_BEFORE_LOAD, [$opac]);
-});
+// Set header for CSP
+$opac->setCsp();
+$opac->setHeader('X-Content-Type-Options', 'nonsniff');
+
+// running plugin based on hook
+Plugins::getInstance()->execute('content_before_load', [$opac]);
 
 // Path process or show welcome page
 $opac->onWeb(function($opac){
@@ -95,10 +91,7 @@ $opac->onWeb(function($opac){
 })->onCli();
 
 // running hook to override process/variable after
-// content load
-$opac->hookAfterContent(function($opac){
-  Plugins::getInstance()->execute(Plugins::CONTENT_AFTER_LOAD, [$opac]);
-});
+Plugins::getInstance()->execute('content_after_load', [$opac]);
 
 // templating
 $opac->parseToTemplate();

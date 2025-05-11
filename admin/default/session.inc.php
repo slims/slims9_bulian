@@ -2,7 +2,7 @@
 /**
  *
  * SESSION Settings
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C)  Ari Nugraha (dicarve@gmail.com)
  * Taken and modified from phpMyAdmin's Session library
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,4 +42,4 @@ SessionFactory::use(config('customSession', Files::class))->start('admin');
 if (!ob_get_level()) ob_start();
 
 // hooking after session started
-Plugins::run(Plugins::ADMIN_SESSION_AFTER_START);
+Plugins::run('ADMIN_SESSION_AFTER_START');

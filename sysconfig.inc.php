@@ -59,7 +59,7 @@ registerSlimsHandler();
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 @ini_set( 'session.use_only_cookies', true );
-@ini_set( 'session.cookie_secure', true );
+@ini_set( 'session.cookie_secure', false );
 
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
@@ -512,21 +512,6 @@ $sysconf['ipaccess']['smc-stocktake'] = 'all';
 $sysconf['ipaccess']['smc-system'] = 'all';
 $sysconf['ipaccess']['smc-reporting'] = 'all';
 $sysconf['ipaccess']['smc-serialcontrol'] = 'all';
-
-// OAI-PMH settings
-$sysconf['OAI']['enable'] = true;
-$sysconf['OAI']['identifierPrefix'] = 'oai:slims/';
-$sysconf['OAI']['Identify']['baseURL'] = 'http://'.($_SERVER['SERVER_NAME']??'').':'.($_SERVER['SERVER_PORT']??'').SWB.'oai.php';
-$sysconf['OAI']['Identify']['repositoryName'] = 'SLiMS Senayan Library Management System Repository';
-$sysconf['OAI']['Identify']['adminEmail'] = 'admin@slims.web.id';
-$sysconf['OAI']['Identify']['granularity'] = 'YYYY-MM-DDThh:mm:ssZ';
-$sysconf['OAI']['Identify']['deletedRecord'] = 'transient';
-$sysconf['OAI']['Identify']['metadataPolicy'] = '';
-$sysconf['OAI']['ListRecords']['RecordPerSet'] = '100';
-$sysconf['OAI']['MetadataFormats']['Dublin Core'] = array(
-  'oai_prefix' => 'oai_dc',
-  'schema_xsd' => 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
-  'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/');
 
 // Search clustering
 $sysconf['enable_search_clustering'] = false;

@@ -107,7 +107,7 @@ class Opac
     }
 
     /**
-     * Load coontent based on plugin
+     * Load content based on plugin
      *
      * @return void
      */
@@ -407,7 +407,7 @@ class Opac
     }
 
     /**
-     * Mutatate an existing key in sysconf
+     * Mutate existing key in sysconf
      * we don't want to add new key directly
      *
      * @param [type] $key

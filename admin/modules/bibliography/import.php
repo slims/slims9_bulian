@@ -225,11 +225,11 @@ if (isset($_POST['doImport'])) {
         $pdo = DB::getInstance();
         $state = $pdo->prepare(<<<SQL
         INSERT IGNORE INTO biblio (title, gmd_id, edition,
-                    isbn_issn, publisher_id, publish_year,
-                    collation, series_title, call_number,
-                    language_id, publish_place_id, classification,
-                    notes, image, sor, input_date, last_update)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
+          isbn_issn, publisher_id, publish_year,
+          collation, series_title, call_number,
+          language_id, publish_place_id, classification,
+          notes, image, sor, input_date, last_update)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
         SQL);
 
         $state->execute($fields);

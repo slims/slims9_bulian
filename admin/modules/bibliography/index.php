@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2007,2008,2009,2010  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) Ari Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ if (!$can_read) {
 }
 
 // execute registered hook
-Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_INIT);
+Plugins::getInstance()->execute('BIBLIOGRAPHY_INIT');
 
 // load settings
 utility::loadSettings($dbs);
@@ -159,7 +159,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         }
 
         // Register advance custom field data
-        Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_DATA, ['custom_data' => &$custom_data]);
+        Plugins::getInstance()->execute('BIBLIOGRAPHY_CUSTOM_FIELD_DATA', ['custom_data' => &$custom_data]);
 
         $data['title'] = $dbs->escape_string($title);
         /* modified by hendro */
@@ -305,14 +305,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
-            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+            Plugins::getInstance()->execute('bibliography_before_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
             // update data
             $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
             // send an alert
             if ($update) {
 
                 // execute registered hook
-                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_UPDATE, ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+                Plugins::getInstance()->execute('bibliography_after_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
 
                 // update custom data
                 if (isset($custom_data)) {
@@ -361,7 +361,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else {
 
             // execute registered hook
-            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_SAVE, ['data' => $data]);
+            Plugins::getInstance()->execute('bibliography_before_save', ['data' => $data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -372,7 +372,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // execute registered hook
                 $data['biblio_id'] = $last_biblio_id;
-                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_SAVE, ['data' => $data]);
+                Plugins::getInstance()->execute('bibliography_after_save', ['data' => $data]);
 
                 // add authors
                 if ($_SESSION['biblioAuthor']) {
@@ -536,14 +536,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
 
             // execute registered hook
-            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_DELETE, [$itemID]);
+            Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
             
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
             } else {
 
                 // execute registered hook
-                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_DELETE, [$itemID]);
+                Plugins::getInstance()->execute('bibliography_after_delete', [$itemID]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . ($biblio_item_d[0]??'?') . ') with biblio_id (' . $itemID . ')');
@@ -1120,7 +1120,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     
     // get advance custom field based on plugin
     $js = '';
-    Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_CUSTOM_FIELD_FORM, ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
+    Plugins::getInstance()->execute('bibliography_custom_field_form', ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
@@ -1366,7 +1366,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid->debug = true;
 
     // execute registered hook
-    Plugins::run(Plugins::BIBLIOGRAPHY_BEFORE_DATAGRID_OUTPUT);
+    Plugins::run('bibliography_before_datagrid_output');
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));

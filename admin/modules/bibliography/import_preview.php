@@ -131,7 +131,14 @@ if (isset($_GET['cancel'])) {
 
             $file = $files_disk->readStream('temp' . DS . $_SESSION['csv']['name'] . '.csv');
 
-            $reader = new Reader;
+            $reader = new Reader([
+                'separator' => trim($_SESSION['csv']['format']['fieldSep']),
+                'enclosed_with' => trim($_SESSION['csv']['format']['fieldEnc']),
+                'record_separator' => [
+                    'newline' => "\n",
+                    'return' => "\t"
+                ]
+            ]);
             $reader->readFromStream($file)->setLimit($_GET['perpage']??5);
 
             // set header

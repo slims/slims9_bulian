@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) Ari Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,8 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 
         <div id="alert-new-version" class="alert alert-info border-0 mt-3 hidden">
             <strong>News!</strong> New version of SLiMS (<code id="new_version"></code>) available to <a class="notAJAX"
-                                                                                                         target="_blank"
-                                                                                                         href="https://github.com/slims/slims9_bulian/releases/latest">download</a>.
+                target="_blank"
+                href="https://github.com/slims/slims9_bulian/releases/latest">download</a>.
         </div>
 
         <?php

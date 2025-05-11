@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) Ari Nugraha (dicarve@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 
 /* Item Management section */
+
+use SLiMS\Plugins;
 
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
@@ -60,48 +62,55 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
+// bibliography item module initialization hook
+Plugins::getInstance()->execute('bibliography_item_init');
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
-    $itemCode = $dbs->escape_string(trim(strip_tags($_POST['itemCode'])));
-    if (empty($itemCode)) {
+    // biblio title
+    $title = $dbs->escape_string(trim($_POST['biblioTitle']));
+    $data['biblio_id'] = intval($_POST['biblioID']);
+    if ($data['biblio_id'] < 1) { die("Invalid biblioID"); }
+    $data['item_code'] = $dbs->escape_string(trim(strip_tags($_POST['itemCode'])));
+    $data['call_number'] = trim($dbs->escape_string($_POST['callNumber']));
+    // check inventory code
+    $inventoryCode = $dbs->escape_string(trim($_POST['inventoryCode']));
+    if ($inventoryCode) {
+        $data['inventory_code'] = $inventoryCode;
+    } else {
+        $data['inventory_code'] = 'literal{NULL}';
+    }
+
+    $data['location_id'] = trim($dbs->escape_string($_POST['locationID']));
+    $data['site'] = trim($dbs->escape_string(strip_tags($_POST['itemSite'])));
+    $data['coll_type_id'] = intval($_POST['collTypeID']);
+    if ($data['coll_type_id'] < 1) { die("Invalid coll_type_id"); }
+    $data['item_status_id'] = trim($dbs->escape_string($_POST['itemStatusID']));
+    $data['source'] = intval($_POST['source']);
+    if ($data['source'] < 0) { die("Invalid source"); }
+    $data['order_no'] = trim($dbs->escape_string(strip_tags($_POST['orderNo'])));
+    $data['order_date'] = $_POST['ordDate'];
+    $data['received_date'] = $_POST['recvDate'];
+    $data['supplier_id'] = intval($_POST['supplierID']);
+    if ($data['supplier_id'] < 0) { die("Invalid supplier_id"); }
+    $data['invoice'] = trim($dbs->escape_string($_POST['invoice']));
+    $data['invoice_date'] = $_POST['invcDate'];
+    $data['price_currency'] = trim($dbs->escape_string(strip_tags($_POST['priceCurrency'])));
+    if (!$data['price_currency']) { $data['price_currency'] = 'literal{NULL}'; }
+    $data['price'] = preg_replace('@[.,\-a-z ]@i', '', strip_tags($_POST['price']));
+    $data['input_date'] = date('Y-m-d H:i:s');
+    $data['last_update'] = date('Y-m-d H:i:s');
+    $data['uid'] = $_SESSION['uid'];
+
+    $form_invalid = empty($data['item_code']);
+
+    // bibliography item module initialization hook
+    Plugins::getInstance()->execute('bibliography_item_form_data_validation', ['data' => $data]);
+
+    if ($form_invalid) {
         utility::jsToastr('Item', __('Item Code can\'t be empty!'), 'error');
         exit();
     } else {
-        // biblio title
-        $title = $dbs->escape_string(trim($_POST['biblioTitle']));
-        $data['biblio_id'] = intval($_POST['biblioID']);
-        if ($data['biblio_id'] < 1) { die("Invalid biblioID"); }
-        $data['item_code'] = $dbs->escape_string($itemCode);
-        $data['call_number'] = trim($dbs->escape_string($_POST['callNumber']));
-        // check inventory code
-        $inventoryCode = $dbs->escape_string(trim($_POST['inventoryCode']));
-        if ($inventoryCode) {
-            $data['inventory_code'] = $inventoryCode;
-        } else {
-            $data['inventory_code'] = 'literal{NULL}';
-        }
-
-        $data['location_id'] = trim($dbs->escape_string($_POST['locationID']));
-        $data['site'] = trim($dbs->escape_string(strip_tags($_POST['itemSite'])));
-        $data['coll_type_id'] = intval($_POST['collTypeID']);
-        if ($data['coll_type_id'] < 1) { die("Invalid coll_type_id"); }
-        $data['item_status_id'] = trim($dbs->escape_string($_POST['itemStatusID']));
-        $data['source'] = intval($_POST['source']);
-        if ($data['source'] < 0) { die("Invalid source"); }
-        $data['order_no'] = trim($dbs->escape_string(strip_tags($_POST['orderNo'])));
-        $data['order_date'] = $_POST['ordDate'];
-        $data['received_date'] = $_POST['recvDate'];
-        $data['supplier_id'] = intval($_POST['supplierID']);
-        if ($data['supplier_id'] < 0) { die("Invalid supplier_id"); }
-        $data['invoice'] = trim($dbs->escape_string($_POST['invoice']));
-        $data['invoice_date'] = $_POST['invcDate'];
-        $data['price_currency'] = trim($dbs->escape_string(strip_tags($_POST['priceCurrency'])));
-        if (!$data['price_currency']) { $data['price_currency'] = 'literal{NULL}'; }
-        $data['price'] = preg_replace('@[.,\-a-z ]@i', '', strip_tags($_POST['price']));
-        $data['input_date'] = date('Y-m-d H:i:s');
-        $data['last_update'] = date('Y-m-d H:i:s');
-        $data['uid'] = $_SESSION['uid'];
-
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
         if (isset($_POST['updateRecordID'])) {
@@ -113,8 +122,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $updateRecordID = (integer)$_POST['updateRecordID'];
             if ($updateRecordID < 1) { die("Invalid updateRecordID"); }
             // update the data
+            Plugins::getInstance()->execute('bibliography_item_before_update', ['data' => $data]);
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
+                // execute registered hook
+                Plugins::getInstance()->execute('bibliography_item_after_update', ['data' => $data]);
+
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
                 if ($sysconf['bibliography_item_update_notification']) {
@@ -129,10 +142,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             } else { utility::jsToastr('Item', __('Item Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error'); }
             exit();
         } else {
+
+            // execute registered hook
+            Plugins::getInstance()->execute('bibliography_item_before_save', ['data' => $data]);
+
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
+
+                // execute registered hook
+                Plugins::getInstance()->execute('bibliography_item_after_save', ['data' => $data]);
+
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
                 utility::jsToastr('Item', __('New Item Data Successfully Saved'), 'success');
@@ -504,6 +525,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+
+    // execute registered hook
+    Plugins::run('bibliography_item_before_datagrid_output');
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));
