@@ -68,7 +68,9 @@ if ((bool) ini_get('safe_mode')) {
 
 // senayan version
 define('SENAYAN_VERSION', 'SLiMS 9 (Bulian)');
-define('SENAYAN_VERSION_TAG', 'v9.6.1');
+define('SENAYAN_VERSION_TAG', 'v9.9.0');
+define('SLiMS_VERSION', SENAYAN_VERSION);
+define('SLiMS_VERSION_TAG', SENAYAN_VERSION_TAG);
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -730,7 +732,8 @@ if ($load_balanced && (bool)$load_balanced['env']) ip()->setSourceRemoteIp($load
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;
-\SLiMS\Plugins::getInstance()->loadPlugins();
+$plugins = \SLiMS\Plugins::getInstance();
+$plugins->loadPlugins();
 
 // Captcha factory
 \SLiMS\Captcha\Factory::operate();

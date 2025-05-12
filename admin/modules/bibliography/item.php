@@ -55,7 +55,20 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
-// bibliography item module initialization hook
+/**
+ * 
+ * Hook: bibliography_item_init
+ * This hook is used to run plugins code at the initialization time
+ * 
+ * Example usage in plugin code:
+ * 
+ * // we add $dbs and $sysconf global vars in closure function
+ * // so they are available to the closure function body scope
+ * $plugin->register('bibliography_item_init', function() use ($dbs, $sysconf) {
+ *   // do something for initialization phase
+ * });
+ * 
+ */
 Plugins::getInstance()->execute('bibliography_item_init');
 
 /* RECORD OPERATION */
@@ -95,13 +108,27 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $data['last_update'] = date('Y-m-d H:i:s');
     $data['uid'] = $_SESSION['uid'];
 
-    $form_invalid = empty($data['item_code']);
+    $validation = !empty($data['item_code']);
+    $invalid_msg = 'Item Code can\'t be empty!';
 
-    // bibliography item module initialization hook
-    Plugins::getInstance()->execute('bibliography_item_form_data_validation', ['data' => $data]);
+    /**
+     * 
+     * Hook: bibliography_item_form_data_validation
+     * This hook is used to run plugins code which modify form validation rule
+     * 
+     * Example usage in plugin code:
+     * 
+     * // we add $dbs and $sysconf global vars in closure function
+     * // so they are available to the closure function body scope
+     * $plugin->register('bibliography_item_form_data_validation', function(&$data, &$validation, &$invalid_msg) use ($dbs, $sysconf) {
+     *   // do something with validation
+     * });
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_item_form_data_validation', [&$data, &$validation, &$invalid_msg]);
 
-    if ($form_invalid) {
-        utility::jsToastr('Item', __('Item Code can\'t be empty!'), 'error');
+    if (!$validation) {
+        utility::jsToastr('Item', __($invalid_msg), 'error');
         exit();
     } else {
         // create sql op object
@@ -114,12 +141,48 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
             if ($updateRecordID < 1) { die("Invalid updateRecordID"); }
-            // update the data
-            Plugins::getInstance()->execute('bibliography_item_before_update', ['data' => $data]);
+
+            /**
+             * 
+             * Hook: bibliography_item_before_update
+             * This hook is used to run plugins code which modify form data
+             * before the data updated/inserted into database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_item_before_update', function(&$data) use ($dbs, $sysconf) {
+             *   // print out the Item COde
+             *   echo $data['item_code'];
+             *   // modify item_code field data by adding HTML tag
+             *   $data['item_code'] = '<strong>'.$data['item_code'].'</strong>';
+             * });.
+             * 
+             * @param array $data The form data.
+             * 
+             */
+            Plugins::getInstance()->execute('bibliography_item_before_update', [&$data]);
+
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
-                // execute registered hook
-                Plugins::getInstance()->execute('bibliography_item_after_update', ['data' => $data]);
+
+                /**
+                 * 
+                 * Hook: bibliography_item_after_update
+                 * This hook is used to run plugins code which modify form data
+                 * after the data updated/inserted into database
+                 * 
+                 * Example usage in plugin code:
+                 * $plugin->register('bibliography_item_after_update', function($data) use ($dbs, $sysconf) {
+                 *   // print out the Item Code
+                 *   echo $data['item_code'];
+                 *   // print out item_code field data
+                 *   echo $data['item_code'].' successfully updated!';
+                 * });.
+                 * 
+                 * @param array $data The form data.
+                 * 
+                 */
+                Plugins::getInstance()->execute('bibliography_item_after_update', [$data]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
@@ -136,16 +199,49 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             exit();
         } else {
 
-            // execute registered hook
-            Plugins::getInstance()->execute('bibliography_item_before_save', ['data' => $data]);
+            /**
+             * 
+             * Hook: bibliography_item_before_save
+             * This hook is used to run plugins code which modify form data
+             * before the data inserted into database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_item_before_save', function(&$data) use ($dbs, $sysconf) {
+             *   // print out the Item Code
+             *   echo $data['item_code'];
+             *   // modify item_code field data
+             *   $data['item_code'] = 'Modified by plugins: '.$data['item_code'];
+             * });.
+             * 
+             * @param $data The form data.
+             * 
+             */
+            Plugins::getInstance()->execute('bibliography_item_before_save', [&$data]);
 
             /* INSERT RECORD MODE */
             // insert the data
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
 
-                // execute registered hook
-                Plugins::getInstance()->execute('bibliography_item_after_save', ['data' => $data]);
+                /**
+                 * 
+                 * Hook: bibliography_item_after_save
+                 * This hook is used to run plugins code which modify form data
+                 * after the data inserted into database
+                 * 
+                 * Example usage in plugin code:
+                 * $plugin->register('bibliography_item_after_save', function($data) use ($dbs, $sysconf) {
+                 *   // print out the Item Code
+                 *   echo $data['item_code'];
+                 *   // print out item_code field data
+                 *   echo $data['item_code'].' successfully inserted!';
+                 * });.
+                 * 
+                 * @param $data The form data.
+                 * 
+                 */
+                Plugins::getInstance()->execute('bibliography_item_after_save', [$data]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
@@ -165,7 +261,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (!($can_read AND $can_write)) {
         die();
     }
-    /* DATA DELETION PROCESS */
+
+    /* DATAGRID ITEMS BATCH PROCESSING */
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
@@ -175,6 +272,24 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
+
+    /**
+     * 
+     * Hook: bibliography_item_preprocess_datagrid_items
+     * This hook is used to run plugins code which modify an array of datagrid items ID
+     * when they are submitted but before database manipulation takes place
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_item_preprocess_datagrid_items', function(&$id_array) use ($dbs, $sysconf) {
+     *   // do something with the array such as looping through each ID and modify it
+     * });.
+     * 
+     * @param array $id_array The array containing metadata IDs from datagrid.
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_item_preprocess_datagrid_items', [&$_POST['itemID']]);
+
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
@@ -186,9 +301,47 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $loan_d = $loan_q->fetch_row();
         // if there is no loan
         if ($loan_d[2] < 1) {
+
+            /**
+             * 
+             * Hook: bibliography_item_before_delete
+             * This hook is used to run plugins code which modify single metadata record
+             * before it is deleted from database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_item_before_delete', function(&$id) use ($dbs, $sysconf) {
+             *   // do something before the data deleted
+             *   // such as preventing this particular ID of item to be removed be altering the value to 0
+             *   $id = 0;
+             * });.
+             * 
+             * @param integer $id The ID of item that will be deleted.
+             * 
+             */
+            Plugins::getInstance()->execute('bibliography_item_before_delete', [&$itemID]);
+
             if (!$sql_op->delete('item', 'item_id='.$itemID)) {
                 $error_num++;
             } else {
+                /**
+                 * 
+                 * Hook: bibliography_item_after_delete
+                 * This hook is used to run plugins code which modify single metadata record
+                 * after it is deleted from database
+                 * 
+                 * Example usage in plugin code:
+                 * $plugin->register('bibliography_item_after_delete', function($id) use ($dbs, $sysconf) {
+                 *   // do something after the data deleted such as writing to log table
+                 *   writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE item data with ID (' . $id . ')');
+                 * });.
+                 * 
+                 * @param integer $id The ID of deleted item.
+                 * 
+                 */
+                // execute registered hook
+                Plugins::getInstance()->execute('bibliography_item_after_delete', [$itemID]);
+
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
@@ -220,24 +373,45 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 /* RECORD OPERATION END */
 
 if (!$in_pop_up) {
-/* search form */
-?>
-<div class="menuBox">
-<div class="menuBoxInner itemIcon">
-	<div class="per_title">
-    	<h2><?php echo __('Items'); ?></h2>
-	</div>
-	<div class="sub_section">
-	    <form name="search" action="<?php echo MWB; ?>bibliography/item.php" id="search" method="get"  class="form-inline"><?php echo __('Search'); ?>
-		    <input type="text" name="keywords" id="keywords" size="30" class="form-control col-md-3" />
-		    <select name="searchby" class="form-control col-md-2"><option value="item">Item</option><option value="others"><?php echo __('Others'); ?> </option></select>
-		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
-	    </form>
+    /* search form */
+    ob_start();
+    ?>
+    <div class="menuBox">
+    <div class="menuBoxInner itemIcon">
+        <div class="per_title">
+            <h2><?php echo __('Items'); ?></h2>
+        </div>
+        <div class="sub_section">
+            <form name="search" action="<?php echo MWB; ?>bibliography/item.php" id="search" method="get"  class="form-inline"><?php echo __('Search'); ?>
+                <input type="text" name="keywords" id="keywords" size="30" class="form-control col-md-3" />
+                <select name="searchby" class="form-control col-md-2"><option value="item">Item</option><option value="others"><?php echo __('Others'); ?> </option></select>
+                <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+            </form>
+        </div>
     </div>
-</div>
-</div>
-<?php
-/* search form end */
+    </div>
+    <?php
+    $form_header = ob_get_clean();
+    /* search form end */
+
+    /**
+     * 
+    * Hook: bibliography_item_alter_form_header
+    * This hook is used to run plugins code which modify search form header HTML code
+    * before it is printed to the screen
+    * 
+    * Example usage in plugin code:
+    * // pass all function params as reference to modify the value directly
+    * $plugin->register('bibliography_item_alter_form_header', function(&$form_header) use ($dbs, $sysconf) {
+    *   // replace the form header with plugins own search header
+    *   $form_header = '<input type="search" name="keywords" class="form-control col-md-12" placeholder="Type your keywords"/>';
+    * });.
+    * 
+    * @param string $form_header The HTML string of search form header.
+    * 
+    */
+    Plugins::getInstance()->execute('bibliography_item_alter_form_header', [&$form_header]);
+    echo $form_header;
 }
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
@@ -307,7 +481,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       $str_input = $b_title;
       $str_input .= '<div class="makeHidden"><a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'bibliography/pop_biblio.php?inPopUp=true&action=detail&itemID='.($rec_d['biblio_id']??'').'&itemCollID='.($rec_d['item_id']??'').'" width="750" height="500" title="'.__('Edit Biblographic data').'">'.__('Edit Biblographic data').'</a></div>';
     } else { $str_input = $b_title; }
-    $form->addAnything(__('Title'), $str_input);
+    $form->addAnything(__('Title'), $str_input, 'title');
     $form->addHidden('biblioTitle', $b_title);
     $form->addHidden('biblioID', $b_id);
     // item code
@@ -317,7 +491,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '<span id="msgBox" class="col p-2"></span>';
     $str_input .= '</div>';
     $str_input .= '</div>';
-    $form->addAnything(__('Item Code'), $str_input);
+    $form->addAnything(__('Item Code'), $str_input, 'itemCode');
     // call number
     $form->addTextField('text', 'callNumber', __('Call Number'), $rec_d['call_number']??$def_call_number, 'style="width: 50%;" class="form-control"');
     // inventory code
@@ -377,7 +551,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], $rec_d['price_currency']??'','style="width: 10%;" class="form-control col-2"');
     $str_input .= '</div>';
     $str_input .= '</div>';
-    $form->addAnything(__('Price'), $str_input);
+    $form->addAnything(__('Price'), $str_input, 'price');
 
     // edit mode messagge
     if ($form->edit_mode) {
@@ -385,8 +559,39 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             .'<br />'.__('Last Updated').'&nbsp;'.date('d F Y h:i:s',strtotime($rec_d['last_update']));
         echo '</div>'."\n";
     }
+
+    /**
+     * 
+     * Hook: bibliography_item_custom_field_form
+     * This hook is used to run plugins code which modify barcode pattern form
+     * in the bibliography metadata entry form
+     * before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_item_custom_field_form', function(&$form, &$js, $data) use ($dbs, $sysconf) {
+     *   // change or add any elements
+     *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
+     * });.
+     * 
+     * @param object $form the simbio form object
+     * @param string $js custom javascript string
+     * @param array  $data the custom field data array 
+     * 
+     */
+    $js = '';
+    Plugins::getInstance()->execute('bibliography_item_custom_field_form', [ &$form, &$js, $rec_d ?? [] ]);
+
     // print out the form object
     echo $form->printOut();
+    ?>
+    <script type="text/javascript">
+    if (isset($js) && !empty($js))
+    {
+        echo $js;
+    }
+    </script>
+    <?php
 } else {
     require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
     require LIB.'biblio_list_model.inc.php';
@@ -519,8 +724,24 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // set delete proccess URL
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
 
-    // execute registered hook
-    Plugins::run('bibliography_item_before_datagrid_output');
+    /**
+     * 
+     * Hook: bibliography_item_before_datagrid_output
+     * This hook is used to run plugins code which modify datagrid
+     * before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_item_before_datagrid_output', function(&datagrid) use ($dbs, $sysconf) {
+     *   // change datagrid attribut
+     *   $datagrid->table_attr = 'id="dataList" class="s-table table plugin-datagrid"';
+     *   $datagrid->table_header_attr = 'class="dataListHeader plugin-datagrid-header"';
+     * });.
+     * 
+     * @param object $datagrid the simbio datagrid object
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_item_before_datagrid_output', [&$datagrid]);
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));

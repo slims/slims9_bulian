@@ -19,7 +19,7 @@ if (!defined('INDEX_AUTH')) {
 }
 
 #use SLiMS\AdvancedLogging;
-use SLiMS\{Plugins,AlLibrarian};
+use SLiMS\{AlLibrarian};
 use SLiMS\Filesystems\Storage;
 
 // key to get full database access
@@ -53,22 +53,6 @@ if (!$can_read) {
     die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
 
-/**
- * 
- * Hook: bibliography_init
- * This hook is used to run plugins code at the initialization time
- * 
- * Example usage in plugin code:
- * 
- * // we add $dbs and $sysconf global vars in closure function
- * // so they are available to the closure function body scope
- * $plugin->register('bibliography_init', function() use ($dbs, $sysconf) {
- *   // do something for initialization phase
- * });
- * 
- */
-Plugins::getInstance()->execute('bibliography_init');
-
 // load settings
 utility::loadSettings($dbs);
 
@@ -85,6 +69,22 @@ if (!function_exists('getimagesizefromstring')) {
         return getimagesize($uri);
     }
 }
+
+/**
+ * 
+ * Hook: bibliography_init
+ * This hook is used to run plugins code at the initialization time
+ * 
+ * Example usage in plugin code:
+ * 
+ * // we add $dbs and $sysconf global vars in closure function
+ * // so they are available to the closure function body scope
+ * $plugin->register('bibliography_init', function() use ($dbs, $sysconf) {
+ *   // do something for initialization phase
+ * });
+ * 
+ */
+$plugins->execute('bibliography_init');
 
 // RDA Content, Media and Carrier
 $rda_cmc = array('content' => 'Content Type', 'media' => 'Media Type', 'carrier' => 'Carrier Type');
@@ -167,7 +167,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * @param array $custom_data The custom form data that will be modified.
      * 
      */
-    Plugins::getInstance()->execute('bibliography_alter_custom_field_data', [$custom_data]);
+    $plugins->execute('bibliography_alter_custom_field_data', [&$custom_data]);
 
     $data['title'] = $dbs->escape_string(trim(strip_tags($_POST['title'])));
     /* modified by hendro */
@@ -254,7 +254,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * @param string $invalid_msg the message shown when the form is invalid
      * 
      */
-    Plugins::getInstance()->execute('bibliography_form_data_validation', [$data, $validation, $invalid_msg]);
+    $plugins->execute('bibliography_form_data_validation', [&$data, &$validation, &$invalid_msg]);
 
     // check form validity
     if (!$validation) {
@@ -369,7 +369,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param array $data The form data.
              * 
              */
-            Plugins::getInstance()->execute('bibliography_before_update', [array_merge($data, ['biblio_id' => $updateRecordID])]);
+            $data = array_merge($data, ['biblio_id' => $updateRecordID]);
+            $plugins->execute('bibliography_before_update', [&$data]);
             
             // update data
             $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
@@ -383,8 +384,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after the data updated/inserted into database
                  * 
                  * Example usage in plugin code:
-                 * // pass all function params as reference to modify the value directly
-                 * $plugin->register('bibliography_after_update', function(&$data) use ($dbs, $sysconf) {
+                 * $plugin->register('bibliography_after_update', function($data) use ($dbs, $sysconf) {
                  *   // print out the biblio ID
                  *   echo $data['biblio_id'];
                  *   // modify title field data
@@ -394,7 +394,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * @param array $data The form data.
                  * 
                  */
-                Plugins::getInstance()->execute('bibliography_after_update', [array_merge($data, ['biblio_id' => $updateRecordID])]);
+                $plugins->execute('bibliography_after_update', [array_merge($data, ['biblio_id' => $updateRecordID])]);
 
                 // update custom data
                 if (isset($custom_data)) {
@@ -460,8 +460,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param $data The form data.
              * 
              */
-            // execute registered hook
-            Plugins::getInstance()->execute('bibliography_before_save', [$data]);
+            $plugins->execute('bibliography_before_save', [&$data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -472,6 +471,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // execute registered hook
                 $data['biblio_id'] = $last_biblio_id;
+
                 /**
                  * 
                  * Hook: bibliography_after_save
@@ -479,8 +479,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after the data inserted into database
                  * 
                  * Example usage in plugin code:
-                 * // pass all function params as reference to modify the value directly
-                 * $plugin->register('bibliography_after_save', function(&$data) use ($dbs, $sysconf) {
+                 * $plugin->register('bibliography_after_save', function($data) use ($dbs, $sysconf) {
                  *   // print out the biblio ID
                  *   echo $data['biblio_id'];
                  *   // modify title field data
@@ -490,7 +489,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * @param $data The form data.
                  * 
                  */
-                Plugins::getInstance()->execute('bibliography_after_save', [$data]);
+                $plugins->execute('bibliography_after_save', [$data]);
 
                 // add authors
                 if ($_SESSION['biblioAuthor']) {
@@ -651,7 +650,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * @param array $id_array The array containing metadata IDs from datagrid.
      * 
      */
-    Plugins::getInstance()->execute('bibliography_preprocess_datagrid_items', [$_POST['itemID']]);
+    $plugins->execute('bibliography_preprocess_datagrid_items', [&$_POST['itemID']]);
 
     // loop array
     $http_query = '';
@@ -688,7 +687,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param integer $id The ID of item that will be deleted.
              * 
              */
-            Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
+            $plugins->execute('bibliography_before_delete', [&$itemID]);
             
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
@@ -700,8 +699,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after it is deleted from database
                  * 
                  * Example usage in plugin code:
-                 * // pass all function params as reference to modify the value directly
-                 * $plugin->register('bibliography_after_delete', function(&$id) use ($dbs, $sysconf) {
+                 * $plugin->register('bibliography_after_delete', function($id) use ($dbs, $sysconf) {
                  *   // do something after the data deleted such as writing to log table
                  *   writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data with biblio_id (' . $id . ')');
                  * });.
@@ -710,7 +708,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * 
                  */
                 // execute registered hook
-                Plugins::getInstance()->execute('bibliography_after_delete', [$itemID]);
+                $plugins->execute('bibliography_after_delete', [$itemID]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data (' . ($biblio_item_d[0]??'?') . ') with biblio_id (' . $itemID . ')');
@@ -856,75 +854,35 @@ if (!$in_pop_up) {
       * @param string $form_header The HTML string of search form header.
       * 
       */
-    Plugins::getInstance()->execute('bibliography_alter_form_header', [$form_header]);
+    $plugins->execute('bibliography_alter_form_header', [&$form_header]);
     echo $form_header;
 }
 /* main content */
-if (isset($_GET['action']) && $_GET['action'] == 'history') {
+/**
+  * 
+  * Hook: bibliography_alter_content
+  * This hook is used to run plugins code which modify main content of page
+  * 
+  * Example usage in plugin code:
+  * // pass all function params as reference to modify the value directly
+  * $plugin->register('bibliography_alter_content', function(&$alter_mode, &$content) use ($dbs, $sysconf) {
+  *   // add plugin content here
+  * });.
+  * 
+  * @param string $alter_mode The mode of content alteration: add or replace.
+  * @param string $content the content to be printed out
+  */
+$alter_content_mode = 'add';
+$content = '';
+$plugins->execute('bibliography_alter_content', [&$alter_content_mode, &$content]);
 
-    $biblioID = utility::filterData('biblioID', 'get', true, true, true);
-    $table_spec = 'biblio_log AS bl';
-    $criteria = 'bl.biblio_id=' . $biblioID;
-    // create datagrid
-    $datagrid = new simbio_datagrid();
-    $datagrid->setSQLColumn('bl.date AS \'' . __('Date') . '\'',
-        'bl.realname AS \'' . __('User Name') . '\'',
-        'bl.additional_information AS \'' . __('Additional Information') . '\'');
-    $datagrid->modifyColumnContent(2, 'callback{affectedDetail}');
-    $datagrid->setSQLorder('bl.biblio_log_id DESC');
-    $datagrid->sql_group_by = 'bl.date';
-    $datagrid->setSQLCriteria($criteria);
-    // set table and table header attributes
-    $datagrid->table_attr = 'id="dataList" class="s-table table"';
-    $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
+if ($alter_content_mode == 'add') {
+    echo $content;
+}
 
-    /**
-     * 
-     * Hook: bibliography_alter_biblio_log_datagrid
-     * This hook is used to run plugins code which modify biblio log datagrid
-     * before it is printed to the screen
-     * 
-     * Example usage in plugin code:
-     * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_alter_biblio_log_datagrid', function(&$datagrid) use ($dbs, $sysconf) {
-     *   global $sysconf;
-     *   // add CSS class to the datagrid table
-     *   $datagrid->table_attr = 'id="dataList" class="s-table table plugin-table"';
-     * });.
-     * 
-     * @param $datagrid The datagrid object.
-     * 
-     */
-    Plugins::getInstance()->execute('bibliography_alter_biblio_log_datagrid', [$datagrid]);
-
-    // plugins may define this callback function early
-    if (!function_exists('affectedDetail')) {
-        function affectedDetail($obj_db, $array_data)
-        {
-            $_q = $obj_db->query("SELECT action,affectedrow,title,additional_information FROM biblio_log WHERE `date` LIKE '" . $array_data[0] . "'");
-            $str = '';
-            $title = '';
-            if ($_q->num_rows > 0) {
-                while ($_data = $_q->fetch_assoc()) {
-                    $title = $_data['title'];
-                    $str .= ' - ' . $_data['action'] . ' ' . $_data['affectedrow'] . ' : <i>' . $_data['additional_information'] . '</i><br/>';
-                }
-            }
-            return $title . '</br>' . $str;
-        }
-    }
-
-    // put the result into variables
-    $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, false);
-
-    $_q = $dbs->query("SELECT title FROM biblio WHERE biblio_id=" . $biblioID);
-    if ($_q->num_rows > 0) {
-        $_d = $_q->fetch_row();
-        echo '<div class="infoBox">' . __('Biblio Log') . ' : <strong>' . $_d[0] . '</strong></div>';
-    }
-
-    echo $datagrid_result;
-} elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+if ($alter_content_mode == 'replace') {
+    echo $content;
+} else if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
     if ((isset($_GET['action'])) AND ($_GET['action'] == 'detail')) {
         # ADV LOG SYSTEM - STIIL EXPERIMENTAL
         $log = new AlLibrarian('1153', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname']));
@@ -952,11 +910,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
     $form->table_header_attr = 'class="alterCell"';
     $form->table_content_attr = 'class="alterCell2"';
-
-    //custom button
-    if (isset($itemID)) {
-        $form->addCustomBtn('history', __('Log'), $_SERVER['PHP_SELF'] . '?action=history&ajaxLoad=true&biblioID=' . $itemID, ' class="s-btn btn btn-success"');
-    }
 
     $visibility = 'makeVisible s-margin__bottom-1';
     // edit mode flag set
@@ -1099,7 +1052,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
      * $plugin->register('bibliography_alter_barcode_pattern_form', function(&$pattern_elements) use ($dbs, $sysconf) {
-     *   global $sysconf;
      *   // change or add any elements
      *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
      * });.
@@ -1107,7 +1059,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
      * @param $datagrid The datagrid object.
      * 
      */
-    Plugins::getInstance()->execute('bibliography_alter_barcode_pattern_form', [$pattern_elements]);
+    $plugins->execute('bibliography_alter_barcode_pattern_form', [&$pattern_elements]);
 
     foreach ($pattern_elements as $elm) {
         $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . $elm['label'] . '</div>';
@@ -1148,7 +1100,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             $form->addSelectList($cmc . 'TypeID', __($cmc_name), $cmc_options, '', 'class="select2"', __('RDA ' . $cmc_name . ' designation.'));
         }
     }
-
 
     // biblio publish frequencies
     // get frequency data related to this record from database
@@ -1396,7 +1347,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
      * // pass all function params as reference to modify the value directly
      * $plugin->register('bibliography_custom_field_form', function(&$form, &$js, $data) use ($dbs, $sysconf) {
      *   // change or add any elements
-     *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
+     *   $form->addAnything('New Element', 'New Element form plugin', 'new_element');
      * });.
      * 
      * @param object $form the simbio form object
@@ -1405,7 +1356,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
      * 
      */
     $js = '';
-    Plugins::getInstance()->execute('bibliography_custom_field_form', [$form, $js, 'data' => $rec_cust_d ?? []]);
+    $plugins->execute('bibliography_custom_field_form', [&$form, &$js, array_merge($rec_d ?? [], $rec_cust_d ?? []) ]);
 
     // print out the form object
     echo $form->printOut();
@@ -1611,7 +1562,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
      * @param object $datagrid the simbio datagrid object
      * 
      */
-    Plugins::getInstance()->execute('bibliography_before_datagrid_output', [$datagrid]);
+    $plugins->execute('bibliography_before_datagrid_output', [&$datagrid]);
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));

@@ -8,8 +8,6 @@
  * Author URI: https://t.me/drajathasan
  */
 
-// get plugin instance
-$plugin = \SLiMS\Plugins::getInstance();
 
 // registering menus or hook
-$plugin->registerMenu("system", 'CSP', __DIR__ . '/index.php');
+$this->registerMenu("system", 'CSP', __DIR__ . '/index.php');

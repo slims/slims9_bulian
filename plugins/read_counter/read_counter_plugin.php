@@ -8,8 +8,6 @@
  * Author URI: https://github.com/idoalit
  */
 
-// get instance of plugin object
-$plugin = \SLiMS\Plugins::getInstance();
 
 // registering our plugin into bibliography module
-$plugin->registerMenu('bibliography', __('Read Counter'), __DIR__ . '/index.php');
+$this->registerMenu('bibliography', __('Read Counter'), __DIR__ . '/index.php');

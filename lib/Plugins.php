@@ -170,7 +170,7 @@ class Plugins
      * a file into SLiMS core code such as
      * config etc without manual process. 
      * Maybe you ask "Why we need action? Is it migration 
-     * feature is enough?" the answer is "seperate". Seperating 
+     * feature is enough?" the answer is "seperate". Separating 
      * database migration process and file migration process.
      * 
      * @param Plugins $plugin
@@ -272,6 +272,7 @@ class Plugins
      */
     public function loadPlugins()
     {
+        global $dbs, $sysconf;
         foreach ($this->getActive() as $item) {
             if (file_exists($item->path)) require_once $item->path;
         }
