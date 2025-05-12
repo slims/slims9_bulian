@@ -1,0 +1,41 @@
+.ai-main-container {
+    width: 100%;
+    padding: 10px;
+}
+.ai-prompt-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.ai-prompt-header {
+    background-color: #004db6;
+    color: white;
+    padding: 10px;
+    font-size: 1.0rem;
+    font-weight: bold;
+}
+.ai-prompt-input {
+    width: 100%;
+    height: 100px;
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    resize: none;
+    box-sizing: border-box;
+}
+.model-selection {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+.model-selection label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+.model-selection select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}

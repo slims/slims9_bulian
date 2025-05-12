@@ -335,13 +335,21 @@ class Plugins
     }
 
     public function registerCSS($css_file_url, $sequence = 9999) {
-        if (isset($this->css[$sequence])) $sequence++;
-        $this->css[$sequence] = $css_file_url;
+        if (isset($this->css[$sequence])) {
+            $sequence++;
+            $this->registerCSS($css_file_url, $sequence);
+        } else {
+            $this->css[$sequence] = $css_file_url;
+        }
     }
 
     public function registerJS($js_file_url, $sequence = 9999) {
-        if (isset($this->js[$sequence])) $sequence++;
-        $this->js[$sequence] = $js_file_url;
+        if (isset($this->js[$sequence])) {
+            $sequence++;
+            $this->registerJS($js_file_url, $sequence);
+        } else {
+            $this->js[$sequence] = $js_file_url;
+        }
     }
 
     /**

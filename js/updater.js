@@ -101,13 +101,17 @@ jQuery.fn.simbioAJAX = async function (strURL, params) {
         ajaxResponse = simbioAJAXError(strURL, err);
     }
 
-    // add to elements
-    if (options.insertMode === 'before') {
-        ajaxContainer.prepend(ajaxResponse);
-    } else if (options.insertMode === 'after') {
-        ajaxContainer.append(ajaxResponse);
-    } else {
-        ajaxContainer.html(ajaxResponse).hide().fadeIn('fast');
+    try {
+        // add to elements
+        if (options.insertMode === 'before') {
+            ajaxContainer.prepend(ajaxResponse);
+        } else if (options.insertMode === 'after') {
+            ajaxContainer.append(ajaxResponse);
+        } else {
+            ajaxContainer.html(ajaxResponse).hide().fadeIn('fast');
+        }
+    } catch (err) {
+        ajaxResponse = simbioAJAXError(strURL, err);
     }
 
     ajaxContainer.trigger('simbioAJAXloaded');

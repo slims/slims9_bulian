@@ -87,7 +87,7 @@ $imagesDisk = Storage::images();
     </div>
     <?php if (config('registration_info') === null): ?>
     <div class="alert alert-warning m-0">
-      <strong><?= __('Your site is not register') ?></strong>&nbsp;&nbsp;
+      <strong><?= __('Your site is not registered yet') ?></strong>&nbsp;&nbsp;
       <a href="<?= MWB ?>system/register_site.php" class="btn btn-secondary"><?= __('Register') ?></a>
     </div>
     <?php else: ?>
@@ -108,25 +108,24 @@ $imagesDisk = Storage::images();
 
 /* remove logo */
 if (isset($_POST['removeImage'])) {
-      foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
-        if (isset($_POST[$key]))
-        {
-          if ($imagesDisk->isExists($path = 'default/'.$sysconf[$data])) {
-            $imagesDisk->delete($path);
-          }
-          addOrUpdateSetting($data, NULL); // set null
-        }
+  foreach (['limg' => 'logo_image','wimg' => 'webicon'] as $key => $data) {
+    if (isset($_POST[$key]))
+    {
+      if ($imagesDisk->isExists($path = 'default/'.$sysconf[$data])) {
+        $imagesDisk->delete($path);
       }
-
-      writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
-      utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
-      echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
-      exit();
+      addOrUpdateSetting($data, NULL); // set null
+    }
+  } 
+  writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' remove logo', 'Logo', 'Delete');
+  utility::jsToastr(__('System Configuration'), __('Logo Image removed. Refreshing page'), 'success'); 
+  echo '<script type="text/javascript">setTimeout(() => {top.location.href = \''.AWB.'index.php?mod=system\'}, 2500)</script>';
+  exit();
 }
 
 if (isset($_POST['updateData'])) {
 
-    Plugins::run(Plugins::SYSTEM_BEFORE_CONFIG_SAVE);
+    $plugins->execute('system_before_config_save');
 
     $imagesConfig = [
       'image' => [
@@ -297,7 +296,7 @@ if (isset($_POST['updateData'])) {
     // Simplified the simple search
     addOrUpdateSetting('simplified_simple_search', boolval($_POST['simplified_simple_search']));
 
-    Plugins::run(Plugins::SYSTEM_AFTER_CONFIG_SAVE);
+    $plugins->execute('system_after_config_save');
 
     // write log
     writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change application global configuration', 'Global Config', 'Update');
@@ -321,7 +320,7 @@ $form->table_content_attr = 'class="alterCell2"';
 utility::loadSettings($dbs);
 
 // version status
-$form->addAnything(__('SLiMS Version'), '<strong>'.SENAYAN_VERSION.'</strong>');
+$form->addAnything(__('SLiMS Version'), '<strong>'.SENAYAN_VERSION.'</strong>', 'slims_version');
 
 // library name
 $form->addTextField('text', 'library_name', __('Library Name'), $sysconf['library_name'], 'class="form-control"');
@@ -365,7 +364,7 @@ $('.custom-file input').on('change',function(){
 });
 </script>
 HTML;
-$form->addAnything(__('Logo Image'), $str_input);
+$form->addAnything(__('Logo Image'), $str_input, 'logo');
 
 /* Form Element(s) */
 // public template
@@ -400,7 +399,7 @@ $form->addSelectList('default_lang', __('Default App. Language'), Memory::getIns
 // timezone
 $html  = '<input type="text" class="form-control col-2" name="timezone" value="' . ($sysconf['timezone'] ?? 'Asia/Jakarta') . '"/>';
 $html .= '<a target="_blank" href="https://www.php.net/manual/en/timezones.php">' . __('List of timezones supported by PHP') . '</a>';
-$form->addAnything(__('Default App. Timezone'), $html);
+$form->addAnything(__('Default App. Timezone'), $html, 'timezone');
 
 // search engine
 $engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
@@ -517,7 +516,7 @@ $options[] = array('1', __('Yes'));
 $options[] = array('0', __('No'));
 $form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
 
-Plugins::run('system_before_configform_printout', [$form]);
+$plugins->execute('system_before_configform_printout', [&$form]);
 
 // print out the object
 echo $form->printOut();

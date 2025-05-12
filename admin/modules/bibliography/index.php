@@ -79,7 +79,7 @@ if (!function_exists('getimagesizefromstring')) {
  * 
  * // we add $dbs and $sysconf global vars in closure function
  * // so they are available to the closure function body scope
- * $plugin->register('bibliography_init', function() use ($dbs, $sysconf) {
+ * $this->register('bibliography_init', function() use ($dbs, $sysconf) {
  *   // do something for initialization phase
  * });
  * 
@@ -157,7 +157,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * This hook is used to run plugins code which modify custom field data
      * 
      * Example usage in plugin code:
-     * $plugin->register('bibliography_alter_custom_field_data', function(&$custom_data) use ($dbs, $sysconf) {
+     * $this->register('bibliography_alter_custom_field_data', function(&$custom_data) use ($dbs, $sysconf) {
      *   // show content of $custom_data var
      *   var_dump($custom_data);
      *   // empty the custom field data
@@ -241,7 +241,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * 
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_form_data_validation', function(&$data, &$validation, &$invalid_msg) use ($dbs, $sysconf) {
+     * $this->register('bibliography_form_data_validation', function(&$data, &$validation, &$invalid_msg) use ($dbs, $sysconf) {
      *   // check if title field is empty or not
      *   if (empty($data['title'])) {
      *     $validation = false;
@@ -359,7 +359,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * 
              * Example usage in plugin code:
              * // pass all function params as reference to modify the value directly
-             * $plugin->register('bibliography_before_update', function(&$data) use ($dbs, $sysconf) {
+             * $this->register('bibliography_before_update', function(&$data) use ($dbs, $sysconf) {
              *   // print out the biblio ID
              *   echo $data['biblio_id'];
              *   // modify title field data by adding HTML tag
@@ -384,7 +384,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after the data updated/inserted into database
                  * 
                  * Example usage in plugin code:
-                 * $plugin->register('bibliography_after_update', function($data) use ($dbs, $sysconf) {
+                 * $this->register('bibliography_after_update', function($data) use ($dbs, $sysconf) {
                  *   // print out the biblio ID
                  *   echo $data['biblio_id'];
                  *   // modify title field data
@@ -450,7 +450,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * 
              * Example usage in plugin code:
              * // pass all function params as reference to modify the value directly
-             * $plugin->register('bibliography_before_save', function(&$data) use ($dbs, $sysconf) {
+             * $this->register('bibliography_before_save', function(&$data) use ($dbs, $sysconf) {
              *   // print out the biblio ID
              *   echo $data['biblio_id'];
              *   // modify title field data
@@ -479,7 +479,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after the data inserted into database
                  * 
                  * Example usage in plugin code:
-                 * $plugin->register('bibliography_after_save', function($data) use ($dbs, $sysconf) {
+                 * $this->register('bibliography_after_save', function($data) use ($dbs, $sysconf) {
                  *   // print out the biblio ID
                  *   echo $data['biblio_id'];
                  *   // modify title field data
@@ -643,7 +643,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * 
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_preprocess_datagrid_items', function(&$id_array) use ($dbs, $sysconf) {
+     * $this->register('bibliography_preprocess_datagrid_items', function(&$id_array) use ($dbs, $sysconf) {
      *   // do something with the array such as looping through each ID and modify it
      * });.
      * 
@@ -678,7 +678,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * 
              * Example usage in plugin code:
              * // pass all function params as reference to modify the value directly
-             * $plugin->register('bibliography_before_delete', function(&$id) use ($dbs, $sysconf) {
+             * $this->register('bibliography_before_delete', function(&$id) use ($dbs, $sysconf) {
              *   // do something before the data deleted
              *   // such as preventing this particular ID of item to be removed be altering the value to 0
              *   $id = 0;
@@ -699,7 +699,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * after it is deleted from database
                  * 
                  * Example usage in plugin code:
-                 * $plugin->register('bibliography_after_delete', function($id) use ($dbs, $sysconf) {
+                 * $this->register('bibliography_after_delete', function($id) use ($dbs, $sysconf) {
                  *   // do something after the data deleted such as writing to log table
                  *   writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data with biblio_id (' . $id . ')');
                  * });.
@@ -846,7 +846,7 @@ if (!$in_pop_up) {
       * 
       * Example usage in plugin code:
       * // pass all function params as reference to modify the value directly
-      * $plugin->register('bibliography_alter_form_header', function(&$form_header) use ($dbs, $sysconf) {
+      * $this->register('bibliography_alter_form_header', function(&$form_header) use ($dbs, $sysconf) {
       *   // replace the form header with plugins own search header
       *   $form_header = '<input type="search" name="keywords" class="form-control col-md-12" placeholder="Type your keywords"/>';
       * });.
@@ -865,7 +865,7 @@ if (!$in_pop_up) {
   * 
   * Example usage in plugin code:
   * // pass all function params as reference to modify the value directly
-  * $plugin->register('bibliography_alter_content', function(&$alter_mode, &$content) use ($dbs, $sysconf) {
+  * $this->register('bibliography_alter_content', function(&$alter_mode, &$content) use ($dbs, $sysconf) {
   *   // add plugin content here
   * });.
   * 
@@ -1051,7 +1051,7 @@ if ($alter_content_mode == 'replace') {
      * 
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_alter_barcode_pattern_form', function(&$pattern_elements) use ($dbs, $sysconf) {
+     * $this->register('bibliography_alter_barcode_pattern_form', function(&$pattern_elements) use ($dbs, $sysconf) {
      *   // change or add any elements
      *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
      * });.
@@ -1345,7 +1345,7 @@ if ($alter_content_mode == 'replace') {
      * 
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_custom_field_form', function(&$form, &$js, $data) use ($dbs, $sysconf) {
+     * $this->register('bibliography_custom_field_form', function(&$form, &$js, $data) use ($dbs, $sysconf) {
      *   // change or add any elements
      *   $form->addAnything('New Element', 'New Element form plugin', 'new_element');
      * });.
@@ -1553,7 +1553,7 @@ if ($alter_content_mode == 'replace') {
      * 
      * Example usage in plugin code:
      * // pass all function params as reference to modify the value directly
-     * $plugin->register('bibliography_before_datagrid_output', function(&datagrid) use ($dbs, $sysconf) {
+     * $this->register('bibliography_before_datagrid_output', function(&datagrid) use ($dbs, $sysconf) {
      *   // change datagrid attribut
      *   $datagrid->table_attr = 'id="dataList" class="s-table table plugin-datagrid"';
      *   $datagrid->table_header_attr = 'class="dataListHeader plugin-datagrid-header"';
