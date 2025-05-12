@@ -143,6 +143,9 @@ $_SERVER['PHP_SELF'] = $sysconf['baseurl'] . $_SERVER['PHP_SELF'];
 // admin section web root dir
 define('AWB', SWB.'admin/');
 
+// plugins web root dir
+define('PWB', SWB.'plugins/');
+
 // javascript library web root dir
 define('JWB', SWB.'js/');
 

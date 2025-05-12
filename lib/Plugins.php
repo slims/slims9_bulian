@@ -35,6 +35,8 @@ class Plugins
     protected array $active_plugins = [];
     protected array $hooks = [];
     protected array $menus = [];
+    protected array $css = [];
+    protected array $js = [];
     private int $deep = 2;
     private array $autoloadList = [];
     private string $hook_handler = '';
@@ -276,10 +278,49 @@ class Plugins
     }
 
     /**
+     * load registered plugins css files
+     * 
+     * @param bool $printout print the css HTML tags
+     * @return void
+     */
+    public function loadPluginsCSS($printout = true)
+    {
+        $arr_css = [];
+        foreach ($this->css as $css) {
+            $arr_css[] = $css;
+            if ($printout) {
+                print '<link href="'.$css.'" rel="stylesheet" type="text/css" />'."\n";
+            }
+        }
+        if (!$printout) {
+            return $arr_css;
+        }
+    }
+
+    /**
+     * load registered plugins css files
+     * @return void
+     */
+    public function loadPluginsJS($printout = true)
+    {
+        $arr_js = [];
+        foreach ($this->js as $js) {
+            $arr_js[] = $js;
+            if ($printout) {
+                print '<script type="text/javascript" src="'.$js.'"></script>'."\n";
+            }
+        }
+        if (!$printout) {
+            return $arr_js;
+        }
+    }
+
+    /**
      * A method to listing hook into list
      * 
      * @param string $hook
      * @param closure $callback
+     * @param int $sequence
      * @return void
      */
     public function register($hook, $callback, $sequence = 9999)
@@ -290,6 +331,16 @@ class Plugins
         } else {
             $this->hooks[$hook][$sequence] = [$callback, $this->hook_handler, $sequence];
         }
+    }
+
+    public function registerCSS($css_file_url, $sequence = 9999) {
+        if (isset($this->css[$sequence])) $sequence++;
+        $this->css[$sequence] = $css_file_url;
+    }
+
+    public function registerJS($js_file_url, $sequence = 9999) {
+        if (isset($this->js[$sequence])) $sequence++;
+        $this->js[$sequence] = $js_file_url;
     }
 
     /**

@@ -27,6 +27,8 @@ if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
 }
 
+// check if this file called directly from http
+// if yes, re-include the sysconfig file
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     include_once '../../sysconfig.inc.php';
 }

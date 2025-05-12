@@ -1,30 +1,19 @@
 <?php
 /**
- * SENAYAN admin application bootstrap files
- *
- * Copyright (C) Ari Nugraha (dicarve@gmail.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * SLiMS admin application bootstrap files.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com). Modification by Hendro Wicaksono, Eddy Subratha, Waris Agung Widodo, Drajat Hasan
+ * @package SLiMS
+ * @subpackage Admin
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
 
 // key to authenticate
 define('INDEX_AUTH', '1');
 #use SLiMS\AdvancedLogging;
-use SLiMS\AlLibrarian;
-use SLiMS\DB;
+use SLiMS\{AlLibrarian,DB,Plugins};
 
 // required file
 require '../sysconfig.inc.php';
@@ -103,6 +92,19 @@ if ($current_module AND $can_read) {
             .'</script>';
     }
 } else {
+    /**
+     * 
+     * Hook: admin_before_homepage_load
+     * This hook is used to run plugins code before the admin homepage printed out to the screen
+     * 
+     * Example usage in plugin code:
+     * $plugin->register('admin_before_homepage_load', function() {
+     *   global $sysconf;
+     *   // do something
+     * });
+     * 
+     */
+    Plugins::getInstance()->execute('admin_before_homepage_load');
     include 'default/home.php';
     // for debugs purpose only
     // include 'modules/bibliography/index.php';
@@ -110,7 +112,21 @@ if ($current_module AND $can_read) {
 // page content
 $main_content = ob_get_clean();
 
-utility::loadUserTemplate($dbs,$_SESSION['uid']);
+utility::loadUserTemplate($dbs, $_SESSION['uid']);
+
+/**
+ * 
+ * Hook: admin_before_template_load
+ * This hook is used to run plugins code before the main template printed out to the screen
+ * 
+ * Example usage in plugin code:
+ * $plugin->register('admin_before_template_load', function() {
+ *   global $sysconf;
+ *   // do something
+ * });
+ * 
+ */
+Plugins::getInstance()->execute('admin_before_template_load');
 
 // print out the template
 require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';

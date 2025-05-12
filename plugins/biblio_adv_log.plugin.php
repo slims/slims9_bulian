@@ -41,7 +41,7 @@ $plugin->register('bibliography_after_update', function ($data) use (&$old_data)
 
     // prepare sql statement to insert into biblio_log
     $query = DB::getInstance()->prepare("INSERT INTO biblio_log (biblio_id, user_id, realname, title, ip, action, affectedrow, rawdata, additional_information, date) 
-                    VALUES (:biblio_id, :user_id, :realname, :title, :ip, :action, :affectedrow, :rawdata, :additional_information, :date)");
+        VALUES (:biblio_id, :user_id, :realname, :title, :ip, :action, :affectedrow, :rawdata, :additional_information, :date)");
 
     $query->bindValue(':biblio_id', $data['biblio_id'], PDO::PARAM_INT);
     $query->bindValue(':user_id', $_SESSION['uid'], PDO::PARAM_INT);

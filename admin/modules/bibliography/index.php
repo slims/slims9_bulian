@@ -1,24 +1,17 @@
 <?php
 /**
- * Copyright (C) Ari Nugraha (dicarve@gmail.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Bibliography module main file.
+ * 
+ * This file contains bibliographic metadata management
+ * such as showing adding, updating, removing, and listing of metadata records.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com). Modification by Hendro Wicaksono, Eddy Subratha, Waris Agung Widodo, Drajat Hasan
+ * @package SLiMS
+ * @subpackage Bibliography
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
-
-/* Bibliography Management section */
 
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
@@ -26,9 +19,8 @@ if (!defined('INDEX_AUTH')) {
 }
 
 #use SLiMS\AdvancedLogging;
-use SLiMS\AlLibrarian;
+use SLiMS\{Plugins,AlLibrarian};
 use SLiMS\Filesystems\Storage;
-use SLiMS\Plugins;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -61,8 +53,21 @@ if (!$can_read) {
     die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
 
-// execute registered hook
-Plugins::getInstance()->execute('BIBLIOGRAPHY_INIT');
+/**
+ * 
+ * Hook: bibliography_init
+ * This hook is used to run plugins code at the initialization time
+ * 
+ * Example usage in plugin code:
+ * 
+ * // we add $dbs and $sysconf global vars in closure function
+ * // so they are available to the closure function body scope
+ * $plugin->register('bibliography_init', function() use ($dbs, $sysconf) {
+ *   // do something for initialization phase
+ * });
+ * 
+ */
+Plugins::getInstance()->execute('bibliography_init');
 
 // load settings
 utility::loadSettings($dbs);
@@ -105,6 +110,7 @@ if (isset($_POST['removeImage']) && isset($_POST['bimg']) && isset($_POST['img']
     }
     exit();
 }
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     if (!simbio_form_maker::isTokenValid()) {
@@ -112,10 +118,147 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         writeLog('staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
         exit();
     }
-    $title = trim(strip_tags($_POST['title']));
+
+    /**
+     * Custom fields
+     */
+    if (isset($biblio_custom_fields)) {
+        if (is_array($biblio_custom_fields) && $biblio_custom_fields) {
+            foreach ($biblio_custom_fields as $fid => $cfield) {
+                // custom field data
+                $cf_dbfield = $cfield['dbfield'];
+                if (isset($_POST[$cf_dbfield])) {
+                    if (is_array($_POST[$cf_dbfield])) {
+                        foreach ($_POST[$cf_dbfield] as $value) {
+                            $arr[$value] = $value;
+                        }
+                        $custom_data[$cf_dbfield] = serialize($arr);
+                    } else {
+                        $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
+                        if ($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val != '')) {
+                            utility::jsToastr(__('Bibliography'), sprintf(__('Field %s only number for allowed'), $cfield['label']), 'error');
+                            exit();
+                        } elseif ($cfield['type'] == 'date' && $cf_val == '') {
+                            utility::jsToastr(__('Bibliography'), sprintf(__('Field %s is date format, empty not allowed'), $cfield['label']), 'error');
+                            exit();
+                        }
+                        $custom_data[$cf_dbfield] = $cf_val;
+                    }
+                } else {
+                    $custom_data[$cf_dbfield] = serialize(array());
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     * Hook: bibliography_alter_custom_field_data
+     * This hook is used to run plugins code which modify custom field data
+     * 
+     * Example usage in plugin code:
+     * $plugin->register('bibliography_alter_custom_field_data', function(&$custom_data) use ($dbs, $sysconf) {
+     *   // show content of $custom_data var
+     *   var_dump($custom_data);
+     *   // empty the custom field data
+     *   $custom_data = [];
+     * });.
+     * 
+     * @param array $custom_data The custom form data that will be modified.
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_alter_custom_field_data', [$custom_data]);
+
+    $data['title'] = $dbs->escape_string(trim(strip_tags($_POST['title'])));
+    /* modified by hendro */
+    $data['sor'] = trim($dbs->escape_string(strip_tags($_POST['sor'])));
+    /* end of modification */
+    $data['edition'] = trim($dbs->escape_string(strip_tags($_POST['edition'])));
+    $data['gmd_id'] = $_POST['gmdID'];
+    $data['isbn_issn'] = trim($dbs->escape_string(strip_tags($_POST['isbn_issn'])));
+
+    $class = str_ireplace('NEW:', '', trim(strip_tags($_POST['class'])));
+    $data['classification'] = trim($dbs->escape_string(strip_tags($class)));
+    $data['uid'] = $_SESSION['uid'];
+
+    // check publisher
+    // echo stripos($_POST['publisherID'], 'NEW:');
+    if (stripos($_POST['publisherID'], 'NEW:') === 0) {
+        $new_publisher = str_ireplace('NEW:', '', trim(strip_tags($_POST['publisherID'])));
+        $new_id = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $new_publisher);
+        $data['publisher_id'] = $new_id;
+    } else if (intval($_POST['publisherID']) > 0) {
+        $data['publisher_id'] = intval($_POST['publisherID']);
+    }
+
+    $data['publish_year'] = trim($dbs->escape_string(strip_tags($_POST['year'])));
+    $data['collation'] = trim($dbs->escape_string(strip_tags($_POST['collation'])));
+    $data['series_title'] = trim($dbs->escape_string(strip_tags($_POST['seriesTitle'])));
+    $data['call_number'] = trim($dbs->escape_string(strip_tags($_POST['callNumber'])));
+    $data['language_id'] = trim($dbs->escape_string(strip_tags($_POST['languageID'])));
+    // check place
+    if (stripos($_POST['placeID'], 'NEW:') === 0) {
+        $new_place = str_ireplace('NEW:', '', trim(strip_tags($_POST['placeID'])));
+        $new_id = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $new_place);
+        $data['publish_place_id'] = $new_id;
+    } else if (intval($_POST['placeID']) > 0) {
+        $data['publish_place_id'] = intval($_POST['placeID']);
+    }
+
+    $data['notes'] = trim($dbs->escape_string(strip_tags($_POST['notes'], '<br><p><div><span><i><em><strong><b><code>s')));
+    $data['opac_hide'] = ($_POST['opacHide'] == '0') ? 'literal{0}' : '1';
+    $data['promoted'] = ($_POST['promote'] == '0') ? 'literal{0}' : '1';
+    // labels
+    $arr_label = array();
+    if (!empty($_POST['labels'])) {
+        foreach ($_POST['labels'] as $label) {
+            if (trim($label) != '') {
+                $arr_label[] = array($label, isset($_POST['label_urls'][$label]) ? $_POST['label_urls'][$label] : null);
+            }
+        }
+    }
+
+    $data['labels'] = $arr_label ? serialize($arr_label) : 'literal{NULL}';
+    $data['frequency_id'] = ($_POST['frequencyID'] == '0') ? 'literal{0}' : (integer)$_POST['frequencyID'];
+    $data['spec_detail_info'] = trim($dbs->escape_string(strip_tags($_POST['specDetailInfo'])));
+    $data['input_date'] = date('Y-m-d H:i:s');
+    $data['last_update'] = date('Y-m-d H:i:s');
+
+    // RDA Content, Media anda Carrier Type
+    foreach ($rda_cmc as $cmc => $cmc_name) {
+        if (isset($_POST[$cmc . 'TypeID']) && $_POST[$cmc . 'TypeID'] <> 0) {
+            $data[$cmc . '_type_id'] = filter_input(INPUT_POST, $cmc . 'TypeID', FILTER_SANITIZE_NUMBER_INT);
+        }
+    }
+
+    $validation = !empty($data['title']);
+    $invalid_msg = 'Title can not be empty';
+
+    /**
+     * 
+     * Hook: bibliography_form_data_validation
+     * This hook is used to run plugins code which modify form validation rule
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_form_data_validation', function(&$data, &$validation, &$invalid_msg) use ($dbs, $sysconf) {
+     *   // check if title field is empty or not
+     *   if (empty($data['title'])) {
+     *     $validation = false;
+     *     $invalid_msg = 'The title field must be filled correctly!';
+     *   }
+     * });.
+     * 
+     * @param array $data The form data.
+     * @param bool $validation the validation flag, set it false to make the form invalid and cancel submission
+     * @param string $invalid_msg the message shown when the form is invalid
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_form_data_validation', [$data, $validation, $invalid_msg]);
+
     // check form validity
-    if (empty($title)) {
-        utility::jsToastr('Bibliography', __('Title can not be empty'), 'error');
+    if (!$validation) {
+        utility::jsToastr('Bibliography', __($invalid_msg), 'error');
         exit();
     } else {
         // include custom fields file
@@ -125,104 +268,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
         // create biblio_indexer class instance
         $indexer = new biblio_indexer($dbs);
-
-        /**
-         * Custom fields
-         */
-        if (isset($biblio_custom_fields)) {
-            if (is_array($biblio_custom_fields) && $biblio_custom_fields) {
-                foreach ($biblio_custom_fields as $fid => $cfield) {
-                    // custom field data
-                    $cf_dbfield = $cfield['dbfield'];
-                    if (isset($_POST[$cf_dbfield])) {
-                        if (is_array($_POST[$cf_dbfield])) {
-                            foreach ($_POST[$cf_dbfield] as $value) {
-                                $arr[$value] = $value;
-                            }
-                            $custom_data[$cf_dbfield] = serialize($arr);
-                        } else {
-                            $cf_val = $dbs->escape_string(strip_tags(trim($_POST[$cf_dbfield]), $sysconf['content']['allowable_tags']));
-                            if ($cfield['type'] == 'numeric' && (!is_numeric($cf_val) && $cf_val != '')) {
-                                utility::jsToastr(__('Bibliography'), sprintf(__('Field %s only number for allowed'), $cfield['label']), 'error');
-                                exit();
-                            } elseif ($cfield['type'] == 'date' && $cf_val == '') {
-                                utility::jsToastr(__('Bibliography'), sprintf(__('Field %s is date format, empty not allowed'), $cfield['label']), 'error');
-                                exit();
-                            }
-                            $custom_data[$cf_dbfield] = $cf_val;
-                        }
-                    } else {
-                        $custom_data[$cf_dbfield] = serialize(array());
-                    }
-                }
-            }
-        }
-
-        // Register advance custom field data
-        Plugins::getInstance()->execute('BIBLIOGRAPHY_CUSTOM_FIELD_DATA', ['custom_data' => &$custom_data]);
-
-        $data['title'] = $dbs->escape_string($title);
-        /* modified by hendro */
-        $data['sor'] = trim($dbs->escape_string(strip_tags($_POST['sor'])));
-        /* end of modification */
-        $data['edition'] = trim($dbs->escape_string(strip_tags($_POST['edition'])));
-        $data['gmd_id'] = $_POST['gmdID'];
-        $data['isbn_issn'] = trim($dbs->escape_string(strip_tags($_POST['isbn_issn'])));
-
-        $class = str_ireplace('NEW:', '', trim(strip_tags($_POST['class'])));
-        $data['classification'] = trim($dbs->escape_string(strip_tags($class)));
-        $data['uid'] = $_SESSION['uid'];
-
-        // check publisher
-        // echo stripos($_POST['publisherID'], 'NEW:');
-        if (stripos($_POST['publisherID'], 'NEW:') === 0) {
-            $new_publisher = str_ireplace('NEW:', '', trim(strip_tags($_POST['publisherID'])));
-            $new_id = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $new_publisher);
-            $data['publisher_id'] = $new_id;
-        } else if (intval($_POST['publisherID']) > 0) {
-            $data['publisher_id'] = intval($_POST['publisherID']);
-        }
-
-        $data['publish_year'] = trim($dbs->escape_string(strip_tags($_POST['year'])));
-        $data['collation'] = trim($dbs->escape_string(strip_tags($_POST['collation'])));
-        $data['series_title'] = trim($dbs->escape_string(strip_tags($_POST['seriesTitle'])));
-        $data['call_number'] = trim($dbs->escape_string(strip_tags($_POST['callNumber'])));
-        $data['language_id'] = trim($dbs->escape_string(strip_tags($_POST['languageID'])));
-        // check place
-        if (stripos($_POST['placeID'], 'NEW:') === 0) {
-            $new_place = str_ireplace('NEW:', '', trim(strip_tags($_POST['placeID'])));
-            $new_id = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $new_place);
-            $data['publish_place_id'] = $new_id;
-        } else if (intval($_POST['placeID']) > 0) {
-            $data['publish_place_id'] = intval($_POST['placeID']);
-        }
-
-        $data['notes'] = trim($dbs->escape_string(strip_tags($_POST['notes'], '<br><p><div><span><i><em><strong><b><code>s')));
-        $data['opac_hide'] = ($_POST['opacHide'] == '0') ? 'literal{0}' : '1';
-        $data['promoted'] = ($_POST['promote'] == '0') ? 'literal{0}' : '1';
-        // labels
-        $arr_label = array();
-        if (!empty($_POST['labels'])) {
-            foreach ($_POST['labels'] as $label) {
-                if (trim($label) != '') {
-                    $arr_label[] = array($label, isset($_POST['label_urls'][$label]) ? $_POST['label_urls'][$label] : null);
-                }
-            }
-        }
-
-        $data['labels'] = $arr_label ? serialize($arr_label) : 'literal{NULL}';
-        $data['frequency_id'] = ($_POST['frequencyID'] == '0') ? 'literal{0}' : (integer)$_POST['frequencyID'];
-        $data['spec_detail_info'] = trim($dbs->escape_string(strip_tags($_POST['specDetailInfo'])));
-
-        // RDA Content, Media anda Carrier Type
-        foreach ($rda_cmc as $cmc => $cmc_name) {
-            if (isset($_POST[$cmc . 'TypeID']) && $_POST[$cmc . 'TypeID'] <> 0) {
-                $data[$cmc . '_type_id'] = filter_input(INPUT_POST, $cmc . 'TypeID', FILTER_SANITIZE_NUMBER_INT);
-            }
-        }
-
-        $data['input_date'] = date('Y-m-d H:i:s');
-        $data['last_update'] = date('Y-m-d H:i:s');
 
         // image uploading
         $images_disk = Storage::images();
@@ -234,7 +279,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
 
             // create upload object
-            $image_upload = $images_disk->upload('image', function($images) use($sysconf) {
+            $image_upload = $images_disk->upload('image', function($images) use ($sysconf) {
                 // Extension check
                 $images->isExtensionAllowed($sysconf['allowed_images']);
 
@@ -305,14 +350,51 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
-            Plugins::getInstance()->execute('bibliography_before_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+
+            /**
+             * 
+             * Hook: bibliography_before_update
+             * This hook is used to run plugins code which modify form data
+             * before the data updated/inserted into database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_before_update', function(&$data) use ($dbs, $sysconf) {
+             *   // print out the biblio ID
+             *   echo $data['biblio_id'];
+             *   // modify title field data by adding HTML tag
+             *   $data['title'] = '<strong>'.$data['title'].'</strong>';
+             * });.
+             * 
+             * @param array $data The form data.
+             * 
+             */
+            Plugins::getInstance()->execute('bibliography_before_update', [array_merge($data, ['biblio_id' => $updateRecordID])]);
+            
             // update data
             $update = $sql_op->update('biblio', $data, 'biblio_id=' . $updateRecordID);
             // send an alert
             if ($update) {
 
-                // execute registered hook
-                Plugins::getInstance()->execute('bibliography_after_update', ['data' => array_merge($data, ['biblio_id' => $updateRecordID])]);
+                /**
+                 * 
+                 * Hook: bibliography_after_update
+                 * This hook is used to run plugins code which modify form data
+                 * after the data updated/inserted into database
+                 * 
+                 * Example usage in plugin code:
+                 * // pass all function params as reference to modify the value directly
+                 * $plugin->register('bibliography_after_update', function(&$data) use ($dbs, $sysconf) {
+                 *   // print out the biblio ID
+                 *   echo $data['biblio_id'];
+                 *   // modify title field data
+                 *   echo $data['title'].' successfully updated!';
+                 * });.
+                 * 
+                 * @param array $data The form data.
+                 * 
+                 */
+                Plugins::getInstance()->execute('bibliography_after_update', [array_merge($data, ['biblio_id' => $updateRecordID])]);
 
                 // update custom data
                 if (isset($custom_data)) {
@@ -360,8 +442,26 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
         } else {
 
+            /**
+             * 
+             * Hook: bibliography_before_save
+             * This hook is used to run plugins code which modify form data
+             * before the data inserted into database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_before_save', function(&$data) use ($dbs, $sysconf) {
+             *   // print out the biblio ID
+             *   echo $data['biblio_id'];
+             *   // modify title field data
+             *   $data['title'] = 'Modified by plugins: '.$data['title'];
+             * });.
+             * 
+             * @param $data The form data.
+             * 
+             */
             // execute registered hook
-            Plugins::getInstance()->execute('bibliography_before_save', ['data' => $data]);
+            Plugins::getInstance()->execute('bibliography_before_save', [$data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -372,7 +472,25 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // execute registered hook
                 $data['biblio_id'] = $last_biblio_id;
-                Plugins::getInstance()->execute('bibliography_after_save', ['data' => $data]);
+                /**
+                 * 
+                 * Hook: bibliography_after_save
+                 * This hook is used to run plugins code which modify form data
+                 * after the data inserted into database
+                 * 
+                 * Example usage in plugin code:
+                 * // pass all function params as reference to modify the value directly
+                 * $plugin->register('bibliography_after_save', function(&$data) use ($dbs, $sysconf) {
+                 *   // print out the biblio ID
+                 *   echo $data['biblio_id'];
+                 *   // modify title field data
+                 *   echo $data['title'].' successfully inserted!';
+                 * });.
+                 * 
+                 * @param $data The form data.
+                 * 
+                 */
+                Plugins::getInstance()->execute('bibliography_after_save', [$data]);
 
                 // add authors
                 if ($_SESSION['biblioAuthor']) {
@@ -507,7 +625,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     $indexer = new biblio_indexer($dbs);
 
-    /* DATA DELETION PROCESS */
+    /* DATAGRID ITEMS BATCH PROCESSING */
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
@@ -517,14 +635,32 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
+
+    /**
+     * 
+     * Hook: bibliography_preprocess_datagrid_items
+     * This hook is used to run plugins code which modify an array of datagrid items ID
+     * when they are submitted but before database manipulation takes place
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_preprocess_datagrid_items', function(&$id_array) use ($dbs, $sysconf) {
+     *   // do something with the array such as looping through each ID and modify it
+     * });.
+     * 
+     * @param array $id_array The array containing metadata IDs from datagrid.
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_preprocess_datagrid_items', [$_POST['itemID']]);
+
     // loop array
     $http_query = '';
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // check if this biblio data still have an item
         $_sql_biblio_item_q = sprintf('SELECT b.title, COUNT(item_id) FROM biblio AS b
-      LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
-      WHERE b.biblio_id=%d GROUP BY title', $itemID);
+        LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
+        WHERE b.biblio_id=%d GROUP BY title', $itemID);
         $biblio_item_q = $dbs->query($_sql_biblio_item_q);
         $biblio_item_d = $biblio_item_q->fetch_row();
         
@@ -535,13 +671,44 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 api::bibliolog_write($dbs, $itemID, $_SESSION['uid'], $_SESSION['realname'], $biblio_item_d[0]??'Item Undefined', 'delete', 'description', $_rawdata, 'Data bibliografi dihapus.');
             }
 
-            // execute registered hook
+            /**
+             * 
+             * Hook: bibliography_before_delete
+             * This hook is used to run plugins code which modify single metadata record
+             * before it is deleted from database
+             * 
+             * Example usage in plugin code:
+             * // pass all function params as reference to modify the value directly
+             * $plugin->register('bibliography_before_delete', function(&$id) use ($dbs, $sysconf) {
+             *   // do something before the data deleted
+             *   // such as preventing this particular ID of item to be removed be altering the value to 0
+             *   $id = 0;
+             * });.
+             * 
+             * @param integer $id The ID of item that will be deleted.
+             * 
+             */
             Plugins::getInstance()->execute('bibliography_before_delete', [$itemID]);
             
             if (!$sql_op->delete('biblio', "biblio_id=$itemID")) {
                 $error_num++;
             } else {
-
+                /**
+                 * 
+                 * Hook: bibliography_after_delete
+                 * This hook is used to run plugins code which modify single metadata record
+                 * after it is deleted from database
+                 * 
+                 * Example usage in plugin code:
+                 * // pass all function params as reference to modify the value directly
+                 * $plugin->register('bibliography_after_delete', function(&$id) use ($dbs, $sysconf) {
+                 *   // do something after the data deleted such as writing to log table
+                 *   writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' DELETE bibliographic data with biblio_id (' . $id . ')');
+                 * });.
+                 * 
+                 * @param integer $id The ID of deleted item.
+                 * 
+                 */
                 // execute registered hook
                 Plugins::getInstance()->execute('bibliography_after_delete', [$itemID]);
 
@@ -559,9 +726,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // delete serial data
                 // check kardex if exist
                 $_sql_serial_kardex_q = sprintf('SELECT b.title, COUNT(kardex_id),s.serial_id FROM biblio AS b
-          LEFT JOIN `serial` AS s ON b.biblio_id=s.biblio_id
-          LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
-          WHERE b.biblio_id=%d GROUP BY title', $itemID);
+                    LEFT JOIN `serial` AS s ON b.biblio_id=s.biblio_id
+                    LEFT JOIN kardex AS k ON s.serial_id=k.serial_id
+                    WHERE b.biblio_id=%d GROUP BY title', $itemID);
                 $serial_kardex_q = $dbs->query($_sql_serial_kardex_q);
                 if ($serial_kardex_q) {
                     $serial_kardex_d = $serial_kardex_q->fetch_row();
@@ -611,6 +778,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 /* RECORD OPERATION END */
 if (!$in_pop_up) {
     /* search form */
+    ob_start();
     ?>
     <div class="menuBox">
         <div class="menuBoxInner biblioIcon">
@@ -669,7 +837,27 @@ if (!$in_pop_up) {
         </div>
     </div>
     <?php
+    $form_header = ob_get_clean();
     /* search form end */
+
+    /**
+      * 
+      * Hook: bibliography_alter_form_header
+      * This hook is used to run plugins code which modify search form header HTML code
+      * before it is printed to the screen
+      * 
+      * Example usage in plugin code:
+      * // pass all function params as reference to modify the value directly
+      * $plugin->register('bibliography_alter_form_header', function(&$form_header) use ($dbs, $sysconf) {
+      *   // replace the form header with plugins own search header
+      *   $form_header = '<input type="search" name="keywords" class="form-control col-md-12" placeholder="Type your keywords"/>';
+      * });.
+      * 
+      * @param string $form_header The HTML string of search form header.
+      * 
+      */
+    Plugins::getInstance()->execute('bibliography_alter_form_header', [$form_header]);
+    echo $form_header;
 }
 /* main content */
 if (isset($_GET['action']) && $_GET['action'] == 'history') {
@@ -690,18 +878,40 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 
-    function affectedDetail($obj_db, $array_data)
-    {
-        $_q = $obj_db->query("SELECT action,affectedrow,title,additional_information FROM biblio_log WHERE `date` LIKE '" . $array_data[0] . "'");
-        $str = '';
-        $title = '';
-        if ($_q->num_rows > 0) {
-            while ($_data = $_q->fetch_assoc()) {
-                $title = $_data['title'];
-                $str .= ' - ' . $_data['action'] . ' ' . $_data['affectedrow'] . ' : <i>' . $_data['additional_information'] . '</i><br/>';
+    /**
+     * 
+     * Hook: bibliography_alter_biblio_log_datagrid
+     * This hook is used to run plugins code which modify biblio log datagrid
+     * before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_alter_biblio_log_datagrid', function(&$datagrid) use ($dbs, $sysconf) {
+     *   global $sysconf;
+     *   // add CSS class to the datagrid table
+     *   $datagrid->table_attr = 'id="dataList" class="s-table table plugin-table"';
+     * });.
+     * 
+     * @param $datagrid The datagrid object.
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_alter_biblio_log_datagrid', [$datagrid]);
+
+    // plugins may define this callback function early
+    if (!function_exists('affectedDetail')) {
+        function affectedDetail($obj_db, $array_data)
+        {
+            $_q = $obj_db->query("SELECT action,affectedrow,title,additional_information FROM biblio_log WHERE `date` LIKE '" . $array_data[0] . "'");
+            $str = '';
+            $title = '';
+            if ($_q->num_rows > 0) {
+                while ($_data = $_q->fetch_assoc()) {
+                    $title = $_data['title'];
+                    $str .= ' - ' . $_data['action'] . ' ' . $_data['affectedrow'] . ' : <i>' . $_data['additional_information'] . '</i><br/>';
+                }
             }
+            return $title . '</br>' . $str;
         }
-        return $title . '</br>' . $str;
     }
 
     // put the result into variables
@@ -723,7 +933,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     }
 
     if (!($can_read AND $can_write)) {
-
         die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
     }
     /* RECORD FORM */
@@ -793,7 +1002,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_author.php?biblioID='.$rec_d['biblio_id'].'\', 500, 200, \''.__('Authors/Roles').'\')">'.__('Add Author(s)').'</a></div>';
     $str_input = '<div class="' . $visibility . '"><a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'bibliography/pop_author.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '" title="' . __('Authors/Roles') . '">' . __('Add Author(s)') . '</a></div>';
     $str_input .= '<iframe name="authorIframe" id="authorIframe" class="form-control" style="width: 100%; height: 100px;" src="' . MWB . 'bibliography/iframe_author.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '&block=1"></iframe>';
-    $form->addAnything(__('Author(s)'), $str_input);
+    $form->addAnything(__('Author(s)'), $str_input, 'biblio_authors');
 
     // modified by hendro wicaksono
     // biblio sor statement of responsibility
@@ -826,93 +1035,94 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // Modified by Eddy Subratha
     // To avoid a miss processing after a pattern created, I think we should hide the Item Code Manager below
     // $str_input .= '<a href="'.MWB.'master_file/item_code_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe" title="'.__('Item code pattern manager').'">'.__('View available pattern').'</a>';
-    $str_input = '<div class="form-inline">';
-    $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"') . '&nbsp;';
-    $str_input .= '<input type="text" class="form-control col-4 noAutoFocus" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
-    $str_input .= '<div class="' . $visibility . '">
-  <div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">' . __('Options') . '</div>';
-    $str_input .= '<a href="' . MWB . 'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="' . __('Add new pattern') . '">' . __('Add New Pattern') . '</a></div></div>';
-    $str_input .= '<div class="collapse" id="batchItemDetail" style="padding:10px;width:100%; text-align:left !important;">';
-
     // location
     $location_q = $dbs->query("SELECT location_id, location_name FROM mst_location");
     $location_options = array(array('', '-- ' . __('Location') . ' --'));
     while ($location_d = $location_q->fetch_row()) {
         $location_options[] = array($location_d[0], $location_d[1]);
     }
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Location') . '</div>';
-    $str_input .= simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-4"') . '</div>';
-
-    // item site
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Shelf Location') . '</div>';
-    $str_input .= simbio_form_element::textField('text', 'itemSite', '', 'class="form-control col-4"') . '</div>';
-
+    $pattern_elements['locationID'] = ['label' => __('Location'), 'element' => simbio_form_element::selectList('locationID', $location_options, '', 'class="form-control col-4"')];
+    $pattern_elements['itemSite'] = ['label' => __('Shelf Location'), 'element' => simbio_form_element::textField('text', 'itemSite', '', 'class="form-control col-4"')];
     // collection type
     $coll_type_q = $dbs->query("SELECT coll_type_id, coll_type_name FROM mst_coll_type");
     $coll_type_options = array(array('', '--' . __('Collection Type') . '--'));
     while ($coll_type_d = $coll_type_q->fetch_row()) {
         $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
     }
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Collection Type') . '</div>';
-    $str_input .= simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-4"') . '</div> ';
-
+    $pattern_elements['collTypeID'] = ['label' => __('Collection Type'), 'element' => simbio_form_element::selectList('collTypeID', $coll_type_options, '', 'class="form-control col-4"')];
     // item status
     $item_status_q = $dbs->query("SELECT item_status_id, item_status_name FROM mst_item_status");
     $item_status_options[] = array('0', __('Available'));
     while ($item_status_d = $item_status_q->fetch_row()) {
         $item_status_options[] = array($item_status_d[0], $item_status_d[1]);
     }
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Item Status') . '</div>';
-    $str_input .= simbio_form_element::selectList('itemStatusID', $item_status_options, '', 'class="form-control col-4"') . '</div> ';
-
+    $pattern_elements['itemStatusID'] = ['label' => __('Item Status'), 'element' => simbio_form_element::selectList('itemStatusID', $item_status_options, '', 'class="form-control col-4"')];
     // item source
     $source_options[] = array('1', __('Buy'));
     $source_options[] = array('2', __('Prize/Grant'));
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Source') . '</div>';
-    $str_input .= simbio_form_element::selectList('source', $source_options, '', 'class="form-control col-4"') . '</div> ';
-
-    //order date
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Order Date') . '</div>';
-    $str_input .= simbio_form_element::dateField('orDate', date('Y-m-d'), 'class="form-control"') . '</div>';
-
+    $pattern_elements['source'] = ['label' => __('Source'), 'element' => simbio_form_element::selectList('source', $source_options, '', 'class="form-control col-4"')];
+    // order date
+    $pattern_elements['orDate'] = ['label' => __('Order Date'), 'element' => simbio_form_element::dateField('orDate', date('Y-m-d'), 'class="form-control"')];
     //receiving date
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Receiving Date') . '</div>';
-    $str_input .= simbio_form_element::dateField('recvDate', date('Y-m-d'), ' class="form-control col-12"') . '</div>';
-
+    $pattern_elements['recvDate'] = ['label' => __('Receiving Date'), 'element' => simbio_form_element::dateField('recvDate', date('Y-m-d'), ' class="form-control col-12"')];
     // order number
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Order Number') . '</div>';
-    $str_input .= simbio_form_element::textField('text', 'ordNo', '', 'class="form-control"') . '</div>';
-
+    $pattern_elements['ordNo'] = ['label' => __('Order Number'), 'element' => simbio_form_element::textField('text', 'ordNo', '', 'class="form-control"')];
     // invoice
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Invoice') . '</div>';
-    $str_input .= simbio_form_element::textField('text', 'invoice', '', 'class="form-control col-4"') . '</div>';
-
+    $pattern_elements['invoice'] = ['label' => __('Invoice'), 'element' => simbio_form_element::textField('text', 'invoice', '', 'class="form-control col-4"')];
     // invoice date
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Invoice Date') . '</div>';
-    $str_input .= simbio_form_element::dateField('invcDate', date('Y-m-d'), ' class="form-control col-12"') . '</div>';
-
+    $pattern_elements['invcDate'] = ['label' => __('Invoice Date'), 'element' => simbio_form_element::dateField('invcDate', date('Y-m-d'), ' class="form-control col-12"')];
     // supplier
     $supplier_q = $dbs->query("SELECT supplier_id, supplier_name FROM mst_supplier");
     $supplier_options[] = array('0', __('Not Applicable'));
     while ($supplier_d = $supplier_q->fetch_row()) {
         $supplier_options[] = array($supplier_d[0], $supplier_d[1]);
     }
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Supplier') . '</div>';
-    $str_input .= simbio_form_element::selectList('supplierID', $supplier_options, '', 'class="form-control col-4"') . '</div> ';
+    $pattern_elements['supplierID'] = ['label' => __('Supplier'), 'element' => simbio_form_element::selectList('supplierID', $supplier_options, '', 'class="form-control col-4"')];
 
     //price
-    $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . __('Price') . '</div>';
-    $str_input .= simbio_form_element::textField('text', 'price', '0', 'class="form-control col-3"');
-    $str_input .= simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], '', 'class="form-control col-2"') . '</div> ';
+    $pattern_elements['price'] = ['label' => __('Price'), 'element' => simbio_form_element::textField('text', 'price', '0', 'class="form-control col-3"')
+        .simbio_form_element::selectList('priceCurrency', $sysconf['currencies'], '', 'class="form-control col-2"')];
+
+    $str_input = '<div class="form-inline">';
+    $str_input .= simbio_form_element::selectList('itemCodePattern', $pattern_options, '', 'class="form-control col"') . '&nbsp;';
+    $str_input .= '<input type="text" class="form-control col-4 noAutoFocus" name="totalItems" placeholder="' . __('Total item(s)') . '" />&nbsp;';
+    $str_input .= '<div class="' . $visibility . '"><div class="bnt btn-group"><div class="btn btn-info" data-toggle="collapse" data-target="#batchItemDetail" aria-expanded="false" aria-controls="batchItemDetail">' . __('Options') . '</div>';
+    $str_input .= '<a href="' . MWB . 'bibliography/pop_pattern.php" height="420px" class="s-btn btn btn-default notAJAX openPopUp notIframe"  title="' . __('Add new pattern') . '">' . __('Add New Pattern') . '</a></div></div>';
+    $str_input .= '<div class="collapse" id="batchItemDetail" style="padding:10px;width:100%; text-align:left !important;">';
+
+    /**
+     * 
+     * Hook: bibliography_alter_barcode_pattern_form
+     * This hook is used to run plugins code which modify barcode pattern form
+     * in the bibliography metadata entry form before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_alter_barcode_pattern_form', function(&$pattern_elements) use ($dbs, $sysconf) {
+     *   global $sysconf;
+     *   // change or add any elements
+     *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
+     * });.
+     * 
+     * @param $datagrid The datagrid object.
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_alter_barcode_pattern_form', [$pattern_elements]);
+
+    foreach ($pattern_elements as $elm) {
+        $str_input .= '<div class="form-group divRow p-1"><div class="col-3">' . $elm['label'] . '</div>';
+        $str_input .= $elm['element'] . '</div>';
+    }
 
     $str_input .= '</div>';
     $form->addAnything(__('Item(s) code batch generator'), $str_input);
+
     // biblio item add
     if (!$in_pop_up AND $form->edit_mode) {
         // $str_input = '<div class="makeHidden s-margin__bottom-1"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID='.$rec_d['biblio_id'].'\', 650, 400, \''.__('Items/Copies').'\')">'.__('Add New Items').'</a></div>';
         $str_input = '<div class="makeHidden s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'bibliography/pop_item.php?inPopUp=true&action=detail&biblioID=' . $rec_d['biblio_id'] . '" title="' . __('Items/Copies') . '" width="780" height="500">' . __('Add New Items') . '</a></div>';
         $str_input .= '<iframe name="itemIframe" id="itemIframe" class="form-control" style="width: 100%; height: 100px;" src="' . MWB . 'bibliography/iframe_item_list.php?biblioID=' . $rec_d['biblio_id'] . '&block=1"></iframe>' . "\n";
-        $form->addAnything(__('Item(s) Data'), $str_input);
+        $form->addAnything(__('Item(s) Data'), $str_input, 'item');
     }
     // biblio gmd
     // get gmd data related to this record from database
@@ -951,7 +1161,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $str_input .= simbio_form_element::selectList('frequencyID', $freq_options, $rec_d['frequency_id'] ?? '', 'class="select2 col-3"');
     $str_input .= '<div class="col">' . __('Use this for Serial publication') . '</div>';
     $str_input .= '</div>';
-    $form->addAnything(__('Frequency'), $str_input);
+    $form->addAnything(__('Frequency'), $str_input, 'frequency');
     // biblio ISBN/ISSN
     $form->addTextField('text', 'isbn_issn', __('ISBN/ISSN'), $rec_d['isbn_issn'] ?? '', 'class="form-control" style="width: 40%;"', __('Unique publishing number for each title of publication.'));
     // biblio publisher
@@ -990,7 +1200,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_topic.php?biblioID='.$rec_d['biblio_id'].'\', 500, 200, \''.__('Subjects/Topics').'\')">'.__('Add Subject(s)').'</a></div>';
     $str_input = '<div class="' . $visibility . ' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'bibliography/pop_topic.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '" title="' . __('Subjects/Topics') . '">' . __('Add Subject(s)') . '</a></div>';
     $str_input .= '<iframe name="topicIframe" id="topicIframe" class="form-control" style="width: 100%; height: 100px;" src="' . MWB . 'bibliography/iframe_topic.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '&block=1"></iframe>';
-    $form->addAnything(__('Subject(s)'), $str_input);
+    $form->addAnything(__('Subject(s)'), $str_input, 'biblio_subject');
     // biblio language
     // get language data related to this record from database
     $lang_q = $dbs->query("SELECT language_id, language_name FROM mst_language");
@@ -1066,18 +1276,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         }
     }
 
-    $form->addAnything(__('Image'), $str_input);
+    $form->addAnything(__('Image'), $str_input, 'image');
 
     // biblio file attachment
     // $str_input = '<div class="'.$visibility.'"><a class="notAJAX button" href="javascript: openHTMLpop(\''.MWB.'bibliography/pop_attach.php?biblioID='.$rec_d['biblio_id'].'\', 600, 300, \''.__('File Attachments').'\')">'.__('Add Attachment').'</a></div>';
     $str_input = '<div class="' . $visibility . ' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'bibliography/pop_attach.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '" width="780" height="500" title="' . __('File Attachments') . '">' . __('Add Attachment') . '</a></div>';
     $str_input .= '<iframe name="attachIframe" id="attachIframe" class="form-control" style="width: 100%; height: 100px;" src="' . MWB . 'bibliography/iframe_attach.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '&block=1"></iframe>';
-    $form->addAnything(__('File Attachment'), $str_input);
+    $form->addAnything(__('File Attachment'), $str_input, 'biblio_file_attachment');
 
     // biblio relation
     $str_input = '<div class="' . $visibility . ' s-margin__bottom-1"><a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'bibliography/pop_biblio_rel.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '" title="' . __('Biblio Relation') . '">' . __('Add Relation') . '</a></div>';
     $str_input .= '<iframe name="biblioIframe" id="biblioIframe" class="form-control" style="width: 100%; height: 100px;" src="' . MWB . 'bibliography/iframe_biblio_rel.php?biblioID=' . ($rec_d['biblio_id'] ?? '') . '&block=1"></iframe>';
-    $form->addAnything(__('Related Biblio Data'), $str_input);
+    $form->addAnything(__('Related Biblio Data'), $str_input, 'biblio_relation');
 
     /**
      * Custom fields
@@ -1117,10 +1327,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             }
         }
     }
-    
-    // get advance custom field based on plugin
-    $js = '';
-    Plugins::getInstance()->execute('bibliography_custom_field_form', ['form' => $form, 'js' => &$js, 'data' => $rec_cust_d ?? []]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
@@ -1158,7 +1364,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         <input type="text" value="' . $url . '" placeholder="Enter a website link/URL to make this label clickable" title="Enter a website link/URL to make this label clickable" name="label_urls[' . $label_d['label_name'] . ']" id="label_urls[' . $label_d['label_name'] . ']" class="form-control" aria-label="Url for current label" style="border-left:none;">
         </div>';
     }
-    $form->addAnything('Label', $str_input);
+    $form->addAnything('Label', $str_input, 'biblio_label');
     // $form->addCheckBox('labels', 'Label', $label_options, explode(' ', $rec_d['labels']));
 
     // edit mode messagge
@@ -1178,6 +1384,29 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         }
         echo '</div>' . "\n";
     }
+
+    /**
+     * 
+     * Hook: bibliography_custom_field_form
+     * This hook is used to run plugins code which modify barcode pattern form
+     * in the bibliography metadata entry form
+     * before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_custom_field_form', function(&$form, &$js, $data) use ($dbs, $sysconf) {
+     *   // change or add any elements
+     *   $pattern_elements['new_element'] = ['label' => __('Plugin Element'), 'element' => simbio_form_element::textField('text', 'new_element', '', 'class="form-control"')];
+     * });.
+     * 
+     * @param object $form the simbio form object
+     * @param string $js custom javascript string
+     * @param array  $data the custom field data array 
+     * 
+     */
+    $js = '';
+    Plugins::getInstance()->execute('bibliography_custom_field_form', [$form, $js, 'data' => $rec_cust_d ?? []]);
+
     // print out the form object
     echo $form->printOut();
     // javascript
@@ -1365,8 +1594,24 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
     $datagrid->debug = true;
 
-    // execute registered hook
-    Plugins::run('bibliography_before_datagrid_output');
+    /**
+     * 
+     * Hook: bibliography_before_datagrid_output
+     * This hook is used to run plugins code which modify datagrid
+     * before it is printed to the screen
+     * 
+     * Example usage in plugin code:
+     * // pass all function params as reference to modify the value directly
+     * $plugin->register('bibliography_before_datagrid_output', function(&datagrid) use ($dbs, $sysconf) {
+     *   // change datagrid attribut
+     *   $datagrid->table_attr = 'id="dataList" class="s-table table plugin-datagrid"';
+     *   $datagrid->table_header_attr = 'class="dataListHeader plugin-datagrid-header"';
+     * });.
+     * 
+     * @param object $datagrid the simbio datagrid object
+     * 
+     */
+    Plugins::getInstance()->execute('bibliography_before_datagrid_output', [$datagrid]);
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, $biblio_result_num, ($can_read AND $can_write));

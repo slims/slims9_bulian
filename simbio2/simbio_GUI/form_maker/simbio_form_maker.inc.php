@@ -3,21 +3,11 @@
  * simbio_form_maker
  * Class for creating form with element based on simbio form elements
  *
- * Copyright (C) 2017  Arie Nugraha (dicarve@gmail.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * @author Original code by Ari Nugraha (dicarve@gmail.com)
+ * @package Simbio2
+ * @subpackage simbio_form_maker
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
 
@@ -203,7 +193,7 @@ class simbio_form_maker
    * @param   string  $str_elmnt_value
    * @param   string  $str_elmnt_attr
    * @param   string  $str_elmnt_info
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addTextField($str_elmnt_type, $str_elmnt_name, $str_elmnt_label, $str_elmnt_value = '', $str_elmnt_attr = '', $str_elmnt_info = '')
   {
@@ -216,6 +206,7 @@ class simbio_form_maker
     $_form_element->element_attr = $str_elmnt_attr;
     $_form_element->element_helptext = $str_elmnt_info;
     $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => $str_elmnt_info);
+    return $this;
   }
 
 
@@ -228,7 +219,7 @@ class simbio_form_maker
    * @param   string  $str_default_selected
    * @param   string  $str_elmnt_attr
    * @param   string  $str_elmnt_info
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addSelectList($str_elmnt_name, $str_elmnt_label, $array_option, $str_default_selected = '', $str_elmnt_attr = '', $str_elmnt_info = '')
   {
@@ -241,6 +232,7 @@ class simbio_form_maker
     $_form_element->element_attr = $str_elmnt_attr;
     $_form_element->element_helptext = $str_elmnt_info;
     $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => $str_elmnt_info);
+    return $this;
   }
 
 
@@ -252,7 +244,7 @@ class simbio_form_maker
    * @param   array   $array_chbox
    * @param   mixed   $default_checked
    * @param   string  $str_elmnt_info
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addCheckBox($str_elmnt_name, $str_elmnt_label, $array_chbox, $default_checked = '', $str_elmnt_info = '')
   {
@@ -264,6 +256,7 @@ class simbio_form_maker
     $_form_element->element_value = $default_checked;
     $_form_element->element_helptext = $str_elmnt_info;
     $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => $str_elmnt_info);
+    return $this;
   }
 
 
@@ -275,7 +268,7 @@ class simbio_form_maker
    * @param   array   $array_option
    * @param   mixed   $default_checked
    * @param   string  $str_elmnt_info
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addRadio($str_elmnt_name, $str_elmnt_label, $array_option, $default_checked = '', $str_elmnt_info = '')
   {
@@ -287,6 +280,7 @@ class simbio_form_maker
     $_form_element->element_value = $default_checked;
     $_form_element->element_helptext = $str_elmnt_info;
     $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => $str_elmnt_info);
+    return $this;
   }
 
 
@@ -299,11 +293,12 @@ class simbio_form_maker
    * @param   string  $str_elmnt_label
    * @param   string  $str_date
    * @param   string  $str_elmnt_info
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addDateField($str_elmnt_name, $str_elmnt_label, $str_elmnt_value = '', $str_elmnt_attr = '', $str_elmnt_info = '')
   {
     $this->addTextField('date', $str_elmnt_name, $str_elmnt_label, $str_elmnt_value, $str_elmnt_attr, $str_elmnt_info);
+    return $this;
   }
 
 
@@ -312,7 +307,7 @@ class simbio_form_maker
    *
    * @param   string  $str_elmnt_name
    * @param   string  $str_elmnt_value
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addHidden($str_elmnt_name, $str_elmnt_value)
   {
@@ -321,6 +316,7 @@ class simbio_form_maker
     $_form_element->element_name = $str_elmnt_name;
     $_form_element->element_value = $str_elmnt_value;
     $this->hidden_elements[] = $_form_element;
+    return $this;
   }
 
 
@@ -329,26 +325,35 @@ class simbio_form_maker
    *
    * @param   string  $str_elmnt_label
    * @param   string  $str_content
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
-  public function addAnything($str_elmnt_label, $str_content)
+  public function addAnything($str_elmnt_label, $str_content, $str_elmnt_name = null)
   {
     $_form_element = new simbio_form_maker_anything();
+    $_form_element->element_type = 'content';
     $_form_element->content = $str_content;
-    $this->elements[] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => null);
+    if (!is_null($str_elmnt_name)) {
+      $_form_element->element_name = $str_elmnt_name;
+      $this->elements[$str_elmnt_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => null);
+    } else {
+      $element_name = preg_replace('/[^\da-z]/i', '', strtolower($str_elmnt_label));
+      $_form_element->element_name = $element_name;
+      $this->elements[$element_name] = array('label' => $str_elmnt_label, 'element' => $_form_element, 'info' => null);
+    }
+    return $this;
   }
-
 
   /**
    * Method to add simbio form elements object directly
    *
    * @param   string  $str_elmnt_label
    * @param   object  $obj_simbio_fe
-   * @return  void
+   * @return  object  the simbio_form_maker instance
    */
   public function addFormObject($str_elmnt_label, $obj_simbio_fe, $str_elmnt_info = '')
   {
     $this->elements[$obj_simbio_fe->element_name] = array('label' => $str_elmnt_label, 'element' => $obj_simbio_fe, 'info' => $str_elmnt_info);
+    return $this;
   }
 
   /**
@@ -361,6 +366,42 @@ class simbio_form_maker
   {
     if ($designer instanceof Closure) {
       $this->custom_btn_layout = $designer($this);
+    }
+  }
+
+  /**
+   * Getter method to get all registered form elements
+   *
+   * @return void
+   */
+  public function &getAllFormElements() {
+    return $this->elements;
+  }
+
+  /**
+   * Getter method to get single registered form elements
+   *
+   * @param string element_name the name of element
+   * @return void
+   */
+  public function &getFormElement($element_name) {
+    if (isset($this->elements[$element_name])) {
+      return $this->elements[$element_name];
+    }
+    return null;
+  }
+
+  /**
+   * Method to remove single registered form elements
+   *
+   * @param string element_name the name of element to be removed
+   * @return array the array of removed element
+   */
+  public function removeElements($element_name) {
+    if (isset($this->elements[$element_name])) {
+      $removed = $this->elements[$element_name];
+      unset($this->elements[$element_name]);
+      return $removed;
     }
   }
 }
