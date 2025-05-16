@@ -51,6 +51,9 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
 }
 
+// Execute init hook
+$plugins->execute('master_file_init');
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $gmdCode = trim(strip_tags($_POST['gmdCode']));
@@ -65,10 +68,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
+        // Execute form validation hook
+        $validation = true;
+        $invalid_msg = '';
+        $plugins->execute('master_file_form_data_validation', [&$data, &$validation, &$invalid_msg]);
+        
+        if (!$validation) {
+            utility::jsToastr(__('GMD (General Material Designation)'), $invalid_msg, 'warning');
+            exit();
+        }
+
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
         if (isset($_POST['updateRecordID'])) {
             /* UPDATE RECORD MODE */
+            // Execute before update hook
+            $plugins->execute('master_file_before_update', [&$data, $_POST['updateRecordID']]);
+            
             // remove input date
             unset($data['input_date']);
             // filter update record ID
@@ -76,14 +92,23 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_gmd', $data, 'gmd_id='.$updateRecordID);
             if ($update) {
+                // Execute after update hook
+                $plugins->execute('master_file_after_update', [&$data, $updateRecordID]);
+                
                 utility::jsToastr(__('GMD (General Material Designation)'), __('GMD Data Successfully Updated'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
             } else { toastr(__('GMD Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
             exit();
         } else {
             /* INSERT RECORD MODE */
+            // Execute before save hook
+            $plugins->execute('master_file_before_save', [&$data]);
+            
             // insert the data
             if ($sql_op->insert('mst_gmd', $data)) {
+                // Execute after save hook
+                $plugins->execute('master_file_after_save', [&$data]);
+                
                 utility::jsToastr(__('GMD (General Material Designation)'), __('New GMD Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { 
@@ -109,6 +134,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
+        
+        // Execute before delete hook
+        $plugins->execute('master_file_before_delete', [&$itemID]);
+        
         // check if this gmd data still in use biblio
         $_sql_gmd_biblio_q = sprintf('SELECT mg.gmd_name, COUNT(mg.gmd_id) FROM biblio AS b
         LEFT JOIN mst_gmd AS mg ON b.gmd_id=mg.gmd_id
@@ -123,6 +152,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         if ($gmd_biblio_d[1] < 1) {
             if (!$sql_op->delete('mst_gmd', 'gmd_id='.$itemID)) {
                 $error_num++;
+            } else {
+                // Execute after delete hook
+                $plugins->execute('master_file_after_delete', [&$itemID]);
             }
         }else{
             $still_have_biblio[] = sprintf(__('%s still in use %d biblio ')."<br/>",substr($gmd_biblio_d[0], 0, 45),$gmd_biblio_d[1]);
