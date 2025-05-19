@@ -530,3 +530,47 @@ if (!function_exists('db')) {
         return DB::connection($connectionName, $type);
     }
 }
+
+if (!function_exists('isSerialized')) {
+    /**
+     * Check if the given string is serialized
+     *
+     * @param string $data
+     * @return bool
+     */
+    function isSerialized($data) {
+        if (!is_string($data)) {
+            return false;
+        }
+
+        $data = trim($data);
+
+        if ($data === 'N;') {
+            return true;
+        }
+
+        if (strlen($data) < 4) {
+            return false;
+        }
+
+        if ($data[1] !== ':') {
+            return false;
+        }
+
+        $lastc = substr($data, -1);
+        if ($lastc !== ';' && $lastc !== '}') {
+            return false;
+        }
+
+        try {
+            $result = @unserialize($data);
+            if ($result === false && $data !== serialize(false)) {
+                return false;
+            }
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return true;
+    }
+}
