@@ -167,7 +167,7 @@ trait HasCustomField
         }
     }
 
-    static function deleteCustomData($table, $custom_field_key, $key, $id)
+    static function deleteCustomData($table, $key, $id)
     {
         $db = DB::getInstance();
         $stmt = $db->prepare("DELETE FROM `$table` WHERE `$key` = :id");
