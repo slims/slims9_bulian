@@ -22,6 +22,7 @@
 /* Modified Heru Subekti (heroe.soebekti@gmail.com) */
 
 use SLiMS\Table\Schema;
+use SLiMS\Table\Blueprint;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -49,6 +50,12 @@ $can_write = utility::havePrivilege('system', 'w');
 if (!$can_read && $_SESSION['uid'] != 1) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
+
+// set table options
+$table_options = array();
+$table_options[] = array('biblio', __('Bibliography'));
+$table_options[] = array('item', __('Bibliography Item'));
+$table_options[] = array('member', __('Membership'));
 
 /* custom field update process */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
@@ -112,6 +119,28 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* INSERT RECORD MODE */
             // insert the data
             $data['dbfield'] = 'cf_'.substr(md5(microtime()),rand(0,26),5);
+            
+            $tableName = $data['primary_table'].'_custom';
+            $schemaParams = [$tableName, $data['dbfield']];
+            
+            Schema::table($tableName, function(Blueprint $table) use ($data) {
+                if($data['type'] == 'text'){
+                    $table->string($data['dbfield'], 255)->nullable()->add();
+                }else if($data['type'] == 'longtext'){
+                    $table->text($data['dbfield'])->nullable()->add();
+                }else if($data['type'] == 'numeric'){
+                    $table->integer($data['dbfield'], 11)->nullable()->add();
+                }else if($data['type'] == 'dropdown'){
+                    $table->string($data['dbfield'], 255)->nullable()->add();
+                }else if($data['type'] == 'checklist'){
+                    $table->string($data['dbfield'], 255)->nullable()->add();
+                }else if($data['type'] == 'choice'){
+                    $table->string($data['dbfield'], 255)->nullable()->add();
+                }else if($data['type'] == 'date'){
+                    $table->date($data['dbfield'])->nullable()->add();
+                }
+            });
+
             $insert = $sql_op->insert('mst_custom_field', $data);
             if ($insert) {
                 utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' create custom field ('.$data['label'].') on '. $data['primary_table'], $data['primary_table'] .' custom', 'Add');
@@ -221,8 +250,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     /* Form Element(s) */
-    $table_options[] = array('biblio', __('Bibliography'));
-    $table_options[] = array('member', __('Membership'));  
     $form->addSelectList('table', __('Primary Menu'), $table_options, isset($rec_d['primary_table']) && $rec_d['primary_table'] ?$rec_d['primary_table']:'biblio',' class="form-control col-3"');
 
     $form->addTextField('text', 'label', __('Label').'*', $rec_d['label']??'', ' required class="form-control col-6"');
@@ -279,6 +306,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             'type AS \''.__('Type').'\'',
             'note AS \''.__('Note').'\'');
     $datagrid->setSQLorder('dbfield ASC');
+
+    // set datagrid callback function
+    function showPrimaryMenu($db, $data, $index) {
+        global $table_options;
+        foreach ($table_options as $option) {
+            if ($option[0] === $data[$index]) {
+                return $option[1];
+            }
+        }
+        return $data[$index];
+    }
+    $datagrid->modifyColumnContent(1, 'callback{showPrimaryMenu}');
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {

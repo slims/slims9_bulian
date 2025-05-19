@@ -1148,6 +1148,11 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `item_custom` (
+          `item_id` INT NOT NULL ,
+          PRIMARY KEY ( `item_id` )
+        ) ENGINE=MyISAM COMMENT = 'one to one relation with real item table';";
+
         $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
         $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
         $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
