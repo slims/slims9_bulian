@@ -182,6 +182,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if (!$sql_op->delete('item', 'item_id='.$itemID)) {
                 $error_num++;
             } else {
+                // delete custom field data
+                $sql_op->delete('item_custom', 'item_id='.$itemID);
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
