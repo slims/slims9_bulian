@@ -22,6 +22,7 @@ use SLiMS\Plugins;
 
 /* Membership Management section */
 use SLiMS\Filesystems\Storage;
+use SLiMS\Form\FormAjaxWithCustomField;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -436,7 +437,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     // create new instance
-    $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+    $form = new FormAjaxWithCustomField('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
 
     // form table attributes
@@ -538,40 +539,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /**
      * Custom fields
      */
-    if (isset($member_custom_fields)) {
-        if (is_array($member_custom_fields) && $member_custom_fields) {
-            foreach ($member_custom_fields as $fid => $cfield) {
-
-            // custom field properties
-            $cf_dbfield = $cfield['dbfield'];
-            $cf_label = $cfield['label'];
-            $cf_default = $cfield['default'];
-            $cf_class = $cfield['class']??'';
-            $cf_data = (isset($cfield['data']) && $cfield['data'] )?unserialize($cfield['data']):array();
-
-            // get data field record
-            if(isset($rec_cust_d[$cf_dbfield]) && @unserialize($rec_cust_d[$cf_dbfield]) !== false){
-              $rec_cust_d[$cf_dbfield] = unserialize($rec_cust_d[$cf_dbfield]);
-            }
-
-            // custom field processing
-            if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
-              $cf_max = isset($cfield['max'])?$cfield['max']:'200';
-              $cf_width = isset($cfield['width'])?$cfield['width']:'50';
-              $form->addTextField( ($cfield['type'] == 'longtext')?'textarea':'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default, ' class="form-control '.$cf_class.'" style="width: '.$cf_width.'%;" maxlength="'.$cf_max.'"');
-            } else if ($cfield['type'] == 'dropdown') {
-              $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
-            } else if ($cfield['type'] == 'checklist') {
-              $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
-            } else if ($cfield['type'] == 'choice') {
-              $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
-            } else if ($cfield['type'] == 'date') {
-              $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield]??$cf_default,' class="form-control '.$cf_class.'"');
-            }
-            unset($cf_data);
-            }
-        }
-    }
+    $form->loadCustomField('member', 'member_id', $itemID);
 
     // get advance custom field based on plugin
     $js = '';

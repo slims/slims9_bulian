@@ -28,6 +28,7 @@ if (!defined('INDEX_AUTH')) {
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
 use SLiMS\Filesystems\Storage;
+use SLiMS\Form\FormAjaxWithCustomField;
 use SLiMS\Plugins;
 
 // key to get full database access
@@ -737,7 +738,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $rec_d = $rec_q->fetch_assoc();
 
     // create new instance
-    $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'], 'post');
+    $form = new FormAjaxWithCustomField('mainForm', $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="' . __('Save') . '" class="s-btn btn btn-default"';
     // form table attributes
     $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
@@ -1082,41 +1083,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     /**
      * Custom fields
      */
-    if (isset($biblio_custom_fields)) {
-        if (is_array($biblio_custom_fields) && $biblio_custom_fields) {
-            foreach ($biblio_custom_fields as $fid => $cfield) {
-
-                // custom field properties
-                $cf_dbfield = $cfield['dbfield'];
-                $cf_label = $cfield['label'];
-                $cf_default = $cfield['default'];
-                $cf_class = $cfield['class'] ?? '';
-                $cf_note = $cfield['note'] ?? '';
-                $cf_data = (isset($cfield['data']) && $cfield['data']) ? unserialize($cfield['data']) : array();
-
-                // get data field record
-                if (isset($rec_cust_d[$cf_dbfield]) && @unserialize($rec_cust_d[$cf_dbfield]) !== false) {
-                    $rec_cust_d[$cf_dbfield] = unserialize($rec_cust_d[$cf_dbfield]);
-                }
-
-                // custom field processing
-                if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
-                    $cf_max = isset($cfield['max']) ? $cfield['max'] : '200';
-                    $cf_width = isset($cfield['width']) ? $cfield['width'] : '50';
-                    $form->addTextField(($cfield['type'] == 'longtext') ? 'textarea' : 'text', $cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield] ?? $cf_default, ' class="form-control ' . $cf_class . '" style="width: ' . $cf_width . '%;" maxlength="' . $cf_max . '"', $cf_note);
-                } else if ($cfield['type'] == 'dropdown') {
-                    $form->addSelectList($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield] ?? $cf_default, ' class="form-control ' . $cf_class . '"');
-                } else if ($cfield['type'] == 'checklist') {
-                    $form->addCheckBox($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield] ?? $cf_default, ' class="form-control ' . $cf_class . '"');
-                } else if ($cfield['type'] == 'choice') {
-                    $form->addRadio($cf_dbfield, $cf_label, $cf_data, $rec_cust_d[$cf_dbfield] ?? $cf_default, ' class="form-control ' . $cf_class . '"');
-                } else if ($cfield['type'] == 'date') {
-                    $form->addDateField($cf_dbfield, $cf_label, $rec_cust_d[$cf_dbfield] ?? NULL, ' class="form-control ' . $cf_class . '"');
-                }
-                unset($cf_data);
-            }
-        }
-    }
+    $form->loadCustomField('biblio', 'biblio_id', $itemID);
     
     // get advance custom field based on plugin
     $js = '';
