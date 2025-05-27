@@ -37,6 +37,8 @@ class Plugins
     protected array $menus = [];
     protected array $css = [];
     protected array $js = [];
+    protected array $admin_css = [];
+    protected array $admin_js = [];
     private int $deep = 2;
     private array $autoloadList = [];
     private string $hook_handler = '';
@@ -284,10 +286,16 @@ class Plugins
      * @param bool $printout print the css HTML tags
      * @return void
      */
-    public function loadPluginsCSS($printout = true)
+    public function loadPluginsCSS($printout = true, $scope = 'public')
     {
+        if ($scope == 'public') {
+            $registered_css = $this->css;
+        } else {
+            $registered_css = $this->admin_css;
+        }
+
         $arr_css = [];
-        foreach ($this->css as $css) {
+        foreach ($registered_css as $css) {
             $arr_css[] = $css;
             if ($printout) {
                 print '<link href="'.$css.'" rel="stylesheet" type="text/css" />'."\n";
@@ -299,11 +307,17 @@ class Plugins
     }
 
     /**
-     * load registered plugins css files
+     * load registered plugins javascript files
      * @return void
      */
-    public function loadPluginsJS($printout = true)
+    public function loadPluginsJS($printout = true, $scope = 'public')
     {
+        if ($scope == 'public') {
+            $registered_js = $this->js;
+        } else {
+            $registered_js = $this->admin_js;
+        }
+
         $arr_js = [];
         foreach ($this->js as $js) {
             $arr_js[] = $js;
@@ -334,21 +348,49 @@ class Plugins
         }
     }
 
-    public function registerCSS($css_file_url, $sequence = 9999) {
-        if (isset($this->css[$sequence])) {
-            $sequence++;
-            $this->registerCSS($css_file_url, $sequence);
+    /**
+     * A method to register plugin's css file
+     * 
+     * @param string $css_file_url the web path to the css file
+     * @param string $scope the scope where the css will be loaded: 'public' or 'admin'
+     * @param int    $sequence the order of file inclusion
+     * @return void
+     */
+    public function registerCSS($css_file_url, $scope = 'public' ,$sequence = 9999) {
+        if ($scope == 'public') {
+            $css = &$this->css;
         } else {
-            $this->css[$sequence] = $css_file_url;
+            $css = &$this->admin_css;
+        }
+
+        if (isset($css[$sequence])) {
+            $sequence++;
+            $this->registerCSS($css_file_url, $scope, $sequence);
+        } else {
+            $css[$sequence] = $css_file_url;
         }
     }
 
-    public function registerJS($js_file_url, $sequence = 9999) {
-        if (isset($this->js[$sequence])) {
-            $sequence++;
-            $this->registerJS($js_file_url, $sequence);
+    /**
+     * A method to register plugin's javascript file
+     * 
+     * @param string $js_file_url the web path to the css javascript
+     * @param string $scope the scope where the javascript will be loaded: 'public' or 'admin'
+     * @param int    $sequence the order of file inclusion
+     * @return void
+     */
+    public function registerJS($js_file_url, $scope = 'public', $sequence = 9999) {
+        if ($scope == 'public') {
+            $js = &$this->js;
         } else {
-            $this->js[$sequence] = $js_file_url;
+            $js = &$this->admin_js;
+        }
+
+        if (isset($js[$sequence])) {
+            $sequence++;
+            $this->registerJS($js_file_url, $scope, $sequence);
+        } else {
+            $js[$sequence] = $js_file_url;
         }
     }
 

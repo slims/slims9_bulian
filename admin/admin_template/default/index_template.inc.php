@@ -1,7 +1,4 @@
-<?php
-use SLiMS\Plugins;
-?><!doctype html>
-<html>
+<!doctype html><html>
 <head>
   <title><?php echo $page_title; ?></title>
   <meta charset="utf-8">
@@ -41,7 +38,7 @@ use SLiMS\Plugins;
   </style>
   <?php
     // running plugin based on hook
-    Plugins::getInstance()->loadPluginsCSS(true);
+    $plugins->loadPluginsCSS(true, 'admin');
   ?>
   
   <!-- core JavaScript files -->
@@ -185,7 +182,7 @@ $('.s-close').click(function(e){
 </script>
 <?php
 // running plugin based on hook
-Plugins::getInstance()->loadPluginsJS(true);
+$plugins->loadPluginsJS(true, 'admin');
 ?>
 <?php include "chat.php" ?>
 </body>

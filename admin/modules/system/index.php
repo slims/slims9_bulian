@@ -26,7 +26,6 @@ use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\Filesystems\Storage;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Polyglot\Memory;
-use SLiMS\Plugins;
 
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');

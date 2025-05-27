@@ -18,8 +18,6 @@ if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
 }
 
-use SLiMS\Plugins;
-
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
@@ -69,7 +67,7 @@ if (isset($_GET['inPopUp'])) {
  * });
  * 
  */
-Plugins::getInstance()->execute('bibliography_item_init');
+$plugins->execute('bibliography_item_init');
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
@@ -125,7 +123,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * });
      * 
      */
-    Plugins::getInstance()->execute('bibliography_item_form_data_validation', [&$data, &$validation, &$invalid_msg]);
+    $plugins->execute('bibliography_item_form_data_validation', [&$data, &$validation, &$invalid_msg]);
 
     if (!$validation) {
         utility::jsToastr('Item', __($invalid_msg), 'error');
@@ -160,7 +158,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param array $data The form data.
              * 
              */
-            Plugins::getInstance()->execute('bibliography_item_before_update', [&$data]);
+            $plugins->execute('bibliography_item_before_update', [&$data]);
 
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
@@ -182,7 +180,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * @param array $data The form data.
                  * 
                  */
-                Plugins::getInstance()->execute('bibliography_item_after_update', [$data]);
+                $plugins->execute('bibliography_item_after_update', [$data]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
@@ -217,7 +215,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param $data The form data.
              * 
              */
-            Plugins::getInstance()->execute('bibliography_item_before_save', [&$data]);
+            $plugins->execute('bibliography_item_before_save', [&$data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -241,7 +239,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * @param $data The form data.
                  * 
                  */
-                Plugins::getInstance()->execute('bibliography_item_after_save', [$data]);
+                $plugins->execute('bibliography_item_after_save', [$data]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
@@ -288,7 +286,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
      * @param array $id_array The array containing metadata IDs from datagrid.
      * 
      */
-    Plugins::getInstance()->execute('bibliography_item_preprocess_datagrid_items', [&$_POST['itemID']]);
+    $plugins->execute('bibliography_item_preprocess_datagrid_items', [&$_POST['itemID']]);
 
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
@@ -319,7 +317,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
              * @param integer $id The ID of item that will be deleted.
              * 
              */
-            Plugins::getInstance()->execute('bibliography_item_before_delete', [&$itemID]);
+            $plugins->execute('bibliography_item_before_delete', [&$itemID]);
 
             if (!$sql_op->delete('item', 'item_id='.$itemID)) {
                 $error_num++;
@@ -340,7 +338,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * 
                  */
                 // execute registered hook
-                Plugins::getInstance()->execute('bibliography_item_after_delete', [$itemID]);
+                $plugins->execute('bibliography_item_after_delete', [$itemID]);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
@@ -410,7 +408,7 @@ if (!$in_pop_up) {
     * @param string $form_header The HTML string of search form header.
     * 
     */
-    Plugins::getInstance()->execute('bibliography_item_alter_form_header', [&$form_header]);
+    $plugins->execute('bibliography_item_alter_form_header', [&$form_header]);
     echo $form_header;
 }
 /* main content */
@@ -580,7 +578,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
      * 
      */
     $js = '';
-    Plugins::getInstance()->execute('bibliography_item_custom_field_form', [ &$form, &$js, $rec_d ?? [] ]);
+    $plugins->execute('bibliography_item_custom_field_form', [ &$form, &$js, $rec_d ?? [] ]);
 
     // print out the form object
     echo $form->printOut();
@@ -741,7 +739,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
      * @param object $datagrid the simbio datagrid object
      * 
      */
-    Plugins::getInstance()->execute('bibliography_item_before_datagrid_output', [&$datagrid]);
+    $plugins->execute('bibliography_item_before_datagrid_output', [&$datagrid]);
 
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));

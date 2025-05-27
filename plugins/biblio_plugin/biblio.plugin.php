@@ -11,8 +11,8 @@
 /**
  * Register plugin's CSS and JS
  */
-$this->registerCSS(PWB . 'biblio_plugin/style.css');
-$this->registerJS( PWB . 'biblio_plugin/script.js');
+$this->registerCSS(PWB . 'biblio_plugin/style.css', 'admin');
+$this->registerJS( PWB . 'biblio_plugin/script.js', 'admin');
 
 /**
  * This hook is executed very early in bibliographic module
