@@ -1,26 +1,16 @@
 <?php
 /**
- * Copyright (C) 2009  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Circulation transaction process.
+ * 
+ * This file handles circulation transaction process.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com). Modification by Waris Agung Widodo
+ * @package SLiMS
+ * @subpackage Circulation
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
-
-use SLiMS\Plugins;
-
-/* circulation transaction process */
 
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
@@ -42,41 +32,20 @@ do_checkIP('smc-circulation');
 require SB.'admin/default/session_check.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
-require MDLBS.'membership/member_base_lib.inc.php';
-require MDLBS.'circulation/circulation_base_lib.inc.php';
+require MDLBS.'membership/Membership.php';
+require MDLBS.'circulation/Circulation.php';
 
-function visitOnLoan($member_id)
-{
-    global $dbs;
-    $now = date('Y-m-d');
-    // check if already checkin
-    $query = $dbs->query('SELECT visitor_id FROM visitor_count WHERE member_id=\''.$member_id.'\' AND checkin_date LIKE \''.$now.'%\'');
-    if ($query->num_rows < 1) {
-        // get data
-        $mquery = $dbs->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
-        $mdata = $mquery->fetch_row();
-        $member_name = $dbs->escape_string($mdata[0]);
-        $institution = $mdata[1];
-        // insert visit
-        $checkin_date  = date('Y-m-d H:i:s');
-        $insert = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$institution', '$checkin_date')");
-        if (!$insert) {
-            toastr(__('ERROR! Can\'t insert visitor counter data'))->error();
-            return false;
-        }
-    }
-
-    return true;
-}
+$plugins->execute('circulation_action_init');
 
 // transaction is finished
 if (isset($_POST['finish'])) {
+    $plugins->execute('circulation_action_on_finish');
     // create circulation object
     $memberID = $dbs->escape_string($_SESSION['memberID']);
-    $circulation = new circulation($dbs, $memberID);
+    $circulation = new Circulation($dbs, $memberID);
     // finish loan transaction    
     $flush = $circulation->finishLoanSession();
-    if ($flush == TRANS_FLUSH_ERROR) {
+    if ($flush == Circulation::TRANS_FLUSH_ERROR) {
         // write log
         writeLog('member', $memberID, 'circulation', 'ERROR : '.$dbs->escape_string($_SESSION['realname']).' FAILED finish circulation transaction with member ('.$memberID.')', 'Transaction', 'Failed');
         toastr(__('ERROR! Loan data can\'t be saved to database'))->error();
@@ -84,10 +53,10 @@ if (isset($_POST['finish'])) {
         dump($circulation->error);
     } else {
         // insert visitor log
-        visitOnLoan($memberID);
+        $circulation->visitOnLoan($memberID);
         // hook method on after successful transaction
         if (isset($_SESSION['receipt_record'])) {
-            Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION, array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
+            $plugins->execute('circulation_after_successful_transaction', array ('data' => array_merge($_SESSION['receipt_record'], ['loggedin_user_id' => $memberID], ['loggedin_user_name' => $_SESSION['realname']])));
         }
         // write log
         writeLog('member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' finish circulation transaction with member ('.$memberID.')', 'Transaction', 'finished');
@@ -115,7 +84,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
         $loan_q = $dbs->query('SELECT item_code FROM loan WHERE loan_id='.$loanID);
         $loan_d = $loan_q->fetch_row();
         // create circulation object
-        $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
+        $circulation = new Circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
         $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
         $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
         $circulation->holiday_date = $_SESSION['holiday_date'];
@@ -127,7 +96,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
                 toastr(__('Overdue fines inserted to fines database'))->success();
             }
             echo '<script type="text/javascript">';
-            if ($return_status === ITEM_RESERVED) {
+            if ($return_status === Circulation::ITEM_RESERVED) {
                 echo 'location.href = \'loan_list.php?reserveAlert='.urlencode($loan_d[0]).'\';';
             } else { 
                 echo 'location.href = \'loan_list.php\';'; 
@@ -138,7 +107,7 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
             $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
             $circulation->holiday_date = $_SESSION['holiday_date'];
             $extend_status = $circulation->extendItemLoan($loanID);
-            if ($extend_status === ITEM_RESERVED) {
+            if ($extend_status === Circulation::ITEM_RESERVED) {
                 toastr(__('Item CANNOT BE Extended! This Item is being reserved by other member'))->warning();
                 echo '<script type="text/javascript">';
                 echo 'location.href = \'loan_list.php\';';
@@ -161,15 +130,16 @@ if (isset($_POST['process']) AND isset($_POST['loanID'])) {
 
 // add temporary item to session
 if (isset($_POST['tempLoanID'])) {
+    $plugins->execute('circulation_action_on_add_temp_loan');
     $_POST['tempLoanID'] = $dbs->escape_string($_POST['tempLoanID']);
     // create circulation object
-    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
+    $circulation = new Circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
     $add = $circulation->addLoanSession(trim($_POST['tempLoanID']));
-    if ($add == LOAN_LIMIT_REACHED) {
+    if ($add == Circulation::LOAN_LIMIT_REACHED) {
         echo '<html>';
         echo '<body>';
         if ($sysconf['loan_limit_override']) {
@@ -190,7 +160,7 @@ if (isset($_POST['tempLoanID'])) {
         echo '</body>';
         echo '</html>';
         exit();
-    } else if ($add == ITEM_RESERVED) {
+    } else if ($add == Circulation::ITEM_RESERVED) {
         // hidden form holding item code
         echo '<html>';
         echo '<body>';
@@ -205,27 +175,27 @@ if (isset($_POST['tempLoanID'])) {
         echo '</body>';
         echo '</html>';
         exit();
-    } else if ($add == ITEM_NOT_FOUND) {
+    } else if ($add == Circulation::ITEM_NOT_FOUND) {
         toastr(__('This Item is not registered in database'))->error();
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
-    } else if ($add == ITEM_UNAVAILABLE) {
+    } else if ($add == Circulation::ITEM_UNAVAILABLE) {
         toastr(__('This Item is currently not available'))->error();
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
-    } else if ($add == LOAN_NOT_PERMITTED) {
+    } else if ($add == Circulation::LOAN_NOT_PERMITTED) {
         toastr(__('Loan NOT PERMITTED! Membership already EXPIRED!'))->error();
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
-    } else if ($add == LOAN_NOT_PERMITTED_PENDING) {
+    } else if ($add == Circulation::LOAN_NOT_PERMITTED_PENDING) {
         toastr(__('Loan NOT PERMITTED! Membership under PENDING State!'))->error();
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
         echo '</script>';
-    } else if ($add == ITEM_LOAN_FORBID) {
+    } else if ($add == Circulation::ITEM_LOAN_FORBID) {
         toastr(__('Loan Forbidden for this Item!'))->error();
         echo '<script type="text/javascript">';
         echo 'location.href = \'loan.php\';';
@@ -243,8 +213,9 @@ if (isset($_POST['tempLoanID'])) {
 if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     // define constant
     define('IGNORE_LOAN_RULES', 1);
+    $plugins->execute('circulation_action_on_loan_limit_override');
     // create circulation object
-    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
+    $circulation = new Circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // set holiday settings
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
@@ -258,8 +229,9 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
 
 // remove temporary item session
 if (isset($_GET['removeID'])) {
+    $plugins->execute('circulation_action_on_remove_temp_loan');
     // create circulation object
-    $circulation = new circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
+    $circulation = new Circulation($dbs, $dbs->escape_string($_SESSION['memberID']));
     // remove item from loan session
     $circulation->removeLoanSession($_GET['removeID']);
     $msg = str_replace('{removeID}', $_GET['removeID'], __('Item {removeID} removed from session')); //mfc
@@ -272,6 +244,7 @@ if (isset($_GET['removeID'])) {
 
 // quick return proccess
 if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
+    $plugins->execute('circulation_action_on_quick_return');
     $_POST['quickReturnID'] = $dbs->escape_string($_POST['quickReturnID']);
     // get loan data
     $loan_info_q = $dbs->query("SELECT l.*,m.member_id,m.member_name,b.title, b.classification, mt.member_type_name FROM loan AS l
@@ -287,7 +260,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         // get data
         $loan_d = $loan_info_q->fetch_assoc();
         // create circulation object
-        $circulation = new circulation($dbs, $loan_d['member_id']);
+        $circulation = new Circulation($dbs, $loan_d['member_id']);
 
         /* modified by Indra Sutriadi */
         $circulation->ignore_holidays_fine_calc = $sysconf['ignore_holidays_fine_calc'];
@@ -304,7 +277,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         }
         // return item
         $return_status = $circulation->returnItem($loan_d['loan_id']);
-        if ($return_status === ITEM_RESERVED) {
+        if ($return_status === Circulation::ITEM_RESERVED) {
             // get reservation data
             $reserve_q = $dbs->query('SELECT r.member_id, m.member_name
                 FROM reserve AS r
@@ -332,7 +305,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
         $return_data['return'][0]['overdues'] = $overdue;
         $return_data['return'][0]['loan_id'] = $loan_d['loan_id'];
         $return_data['return'][0]['is_return'] = (INT)$loan_d['is_return'] + 1;
-        Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION, array ('data' => $return_data));
+        $plugins->execute('circulation_after_successful_transaction', array ('data' => $return_data));
         // show loan information
         include SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
         // create table object
@@ -363,6 +336,7 @@ if (isset($_POST['quickReturnID']) AND $_POST['quickReturnID']) {
 
 // add reservation
 if (isset($_POST['reserveItemID'])) {
+    $plugins->execute('circulation_action_on_reserve_item');
     $item_id = $dbs->escape_string(trim($_POST['reserveItemID']));
     if (!$item_id) {
         toastr(__('NO DATA Selected to reserve!'))->error();
@@ -429,6 +403,7 @@ if (isset($_POST['reserveItemID'])) {
 
 // remove reservation item
 if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
+    $plugins->execute('circulation_action_on_remove_reserve');
     $reserveID = intval($_POST['reserveID']);
     // get reserve data
     $reserve_q = $dbs->query('SELECT item_code FROM reserve WHERE reserve_id='.$reserveID);
@@ -446,6 +421,7 @@ if (isset($_POST['reserveID']) AND !empty($_POST['reserveID'])) {
 
 // removing fines
 if (isset($_POST['removeFines'])) {
+    $plugins->execute('circulation_action_on_remove_fines');
     foreach ($_POST['removeFines'] as $fines_id) {
         $fines_id = intval($fines_id);
         // change loan data
@@ -460,6 +436,7 @@ if (isset($_POST['removeFines'])) {
 
 // transaction is started
 if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
+    $plugins->execute('circulation_action_on_transaction_start');
     // create member object
     // if there is already member ID session
     if (isset($_SESSION['memberID'])) {
@@ -471,12 +448,12 @@ if (isset($_POST['memberID']) OR isset($_SESSION['memberID'])) {
         $memberID = trim(preg_replace('@\s*(<.+)$@i', '', $_POST['memberID']));
 
         // Hook new transaction
-        Plugins::getInstance()->execute(Plugins::CIRCULATION_AFTER_START_TRANSACTION);
+        $plugins->execute('circulation_after_start_transaction');
 
         // write log
         writeLog('member', $memberID, 'circulation', $dbs->escape_string($_SESSION['realname']).' start transaction with member ('.$memberID.')', 'Loan', 'Started');
     }
-    $member = new member($dbs, $memberID);
+    $member = new Membersip($dbs, $memberID);
     if (!$member->valid()) {
         echo '<div class="errorBox">'.__('Member ID').' '.$memberID.' '.__(' not valid (unregistered in database)').'</div>'; //mfc
     } else {

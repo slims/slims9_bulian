@@ -1,27 +1,20 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Membersip class.
+ * 
+ * This class handles membership related process.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com).
+ * @package SLiMS
+ * @subpackage Membership
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
 
-/* MEMBER BASE LIBRARY */
 use SLiMS\{Mail,Plugins};
 
-class member
+class Membership
 {
     # class properties
     public $member_id = null;
@@ -38,15 +31,15 @@ class member
     protected $is_expire = true;
     protected $is_pending = true;
     protected $member_type_prop = array();
-    protected $obj_db = false;
+    protected $db = false;
 
     # class constructor
     public function __construct($obj_db, $str_member_id)
     {
         // assign simbio database object to property
-        $this->obj_db = $obj_db;
+        $this->db = $obj_db;
         // get member data from database
-        $_member_q = $this->obj_db->query(sprintf("SELECT m.*,mt.* FROM member AS m
+        $_member_q = $this->db->query(sprintf("SELECT m.*,mt.* FROM member AS m
             LEFT JOIN mst_member_type AS mt ON m.member_type_id=mt.member_type_id
             WHERE member_id='%s'", $str_member_id));
 
@@ -134,7 +127,7 @@ class member
             $_sql_str = "SELECT item_code FROM loan AS l
                 WHERE member_id='".$this->member_id."' AND is_lent=1 AND is_return=0";
         }
-        $_count_q = $this->obj_db->query($_sql_str);
+        $_count_q = $this->db->query($_sql_str);
         while ($_count_d = $_count_q->fetch_row()) {
             $_arr_on_loan[] = $_count_d[0];
         }
@@ -167,14 +160,14 @@ class member
     public function sendOverdueNotice()
     {
         // execute registered hook
-        Plugins::getInstance()->execute(Plugins::OVERDUE_NOTICE_INIT, ['member' => $this]);
+        Plugins::getInstance()->execute('overdue_notice_init', ['member' => $this]);
 
         try {
             // Template
             include SB . 'admin/admin_template/overdueMail.php';
             $overdueTemplate = new overdueMail($this);
             $overdueTemplate->setMinify(true);
-            $overdueTemplate->setCirculationData($this->obj_db, self::getOverduedLoan($this->obj_db, $this->member_id));
+            $overdueTemplate->setCirculationData($this->db, self::getOverduedLoan($this->db, $this->member_id));
             
             // Send email to member
             Mail::to($this->member_email, $this->member_name)

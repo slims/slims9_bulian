@@ -1,11 +1,13 @@
 <?php
 /**
- * @author Drajat Hasan
- * @email drajathasan20@gmail.com
- * @create date 2023-01-07 12:35:55
- * @modify date 2023-01-07 13:16:11
- * @license GPLv3
- * @desc [description]
+ * Due date mailing handler.
+ * 
+ * @author Drajat Hasan (drajathasan20@gmail.com).
+ * @package SLiMS
+ * @subpackage Membership
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
+ *
  */
 
 use SLiMS\{DB,Mail,Plugins};
@@ -48,7 +50,7 @@ while ($loanResult = $loanStatement->fetchObject()) {
 }
 
 // execute registered hook
-Plugins::getInstance()->execute(Plugins::DUEDATE_NOTICE_INIT, ['member' => $memberData]);
+$plugins->execute('duedate_notice_init', ['member' => $memberData]);
 
 try {
     // Template

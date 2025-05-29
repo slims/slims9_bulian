@@ -1,30 +1,19 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Displaying list of current loan items.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com).
+ * @package SLiMS
+ * @subpackage Circulation
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
-
-/* loan list iframe content */
 
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
     define('INDEX_AUTH', '1');
 }
-
 
 // main system configuration
 require '../../../sysconfig.inc.php';
@@ -43,8 +32,8 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
-require MDLBS.'membership/member_base_lib.inc.php';
-require MDLBS.'circulation/circulation_base_lib.inc.php';
+require MDLBS.'membership/Membership.php';
+require MDLBS.'circulation/Circulation.php';
 
 // page title
 $page_title = 'Member Loan List';
@@ -76,7 +65,7 @@ function confirmProcess(intLoanID, strItemCode, strProcess)
 // check if there is member ID
 if (isset($_SESSION['memberID'])) {
     $memberID = trim($_SESSION['memberID']);
-    $circulation = new circulation($dbs, $memberID);
+    $circulation = new Circulation($dbs, $memberID);
     $loan_list_query = $dbs->query(sprintf("SELECT L.loan_id, b.title, ct.coll_type_name,
         i.item_code, L.loan_date, L.due_date, L.return_date, L.renewed,
         IF(lr.reborrow_limit IS NULL, IF(L.renewed>=mt.reborrow_limit, 1, 0), IF(L.renewed>=lr.reborrow_limit, 1, 0)) AS extend

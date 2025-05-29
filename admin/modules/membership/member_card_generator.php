@@ -1,24 +1,14 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Members card generator.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com). Modification by Eddy Subratha, Waris Agung Widodo, Drajat Hasan
+ * @package SLiMS
+ * @subpackage Membership
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
-
-/* Member card print */
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -154,7 +144,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     loadPrintSettings($dbs, 'membercard');
 
     // execute registered hook
-    \SLiMS\Plugins::getInstance()->execute('membercard_theme_print', [$member_datas]);
+    $plugins->execute('membercard_theme_print', [$member_datas]);
 
     // chunk cards array
     $chunked_card_arrays = array_chunk($member_datas, $card_ = $sysconf['print']['membercard']['items_per_row']);

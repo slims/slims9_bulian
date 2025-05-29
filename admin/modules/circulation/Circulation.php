@@ -1,44 +1,36 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Circulation class.
+ * 
+ * This class handles circulation transaction process.
+ * 
+ * @author Original code by Ari Nugraha (dicarve@gmail.com).
+ * @package SLiMS
+ * @subpackage Circulation
+ * @since 2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
  *
  */
-
-/* CIRCULATION BASE LIBRARY */
 
 // be sure that this file not accessed directly
 if (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
-// define some circulation/loan status
-define('LOAN_LIMIT_REACHED', 1);
-define('ITEM_NOT_FOUND', 2);
-define('ITEM_SESSION_ADDED', 3);
-define('ITEM_UNAVAILABLE', 4);
-define('TRANS_FLUSH_ERROR', 5);
-define('TRANS_FLUSH_SUCCESS', 6);
-define('LOAN_NOT_PERMITTED', 7);
-define('LOAN_NOT_PERMITTED_PENDING', 8);
-define('ITEM_LOAN_FORBID', 9);
-define('ITEM_RESERVED', 10);
-
-class circulation extends member
+class Circulation extends Membership
 {
+    // define some circulation/loan status
+    const LOAN_LIMIT_REACHED = 1;
+    const ITEM_NOT_FOUND = 2;
+    const ITEM_SESSION_ADDED = 3;
+    const ITEM_UNAVAILABLE = 4;
+    const TRANS_FLUSH_ERROR = 5;
+    const TRANS_FLUSH_SUCCESS = 6;
+    const LOAN_NOT_PERMITTED = 7;
+    const LOAN_NOT_PERMITTED_PENDING = 8;
+    const ITEM_LOAN_FORBID = 9;
+    const ITEM_RESERVED = 10;
+
     protected $loan_limit = 0;
     protected $loan_periode = 0;
     protected $reborrow_limit = 0;
@@ -91,7 +83,7 @@ class circulation extends member
         }
 
         // get the data from the loan rules table
-        $_loan_rules_q = $this->obj_db->query("SELECT * FROM mst_loan_rules
+        $_loan_rules_q = $this->db->query("SELECT * FROM mst_loan_rules
             WHERE member_type_id=".intval($this->member_type_id)." $ctype_string $gmd_string");
         // check if the loan rules exists
         if ($_loan_rules_q->num_rows > 0) {
@@ -104,7 +96,7 @@ class circulation extends member
             $this->item_loan_rules = $_loan_rules_d['loan_rules_id'];
         } else {
             // get data from the loan rules table with collection type specified but GMD not specified
-            $_loan_rules_q = $this->obj_db->query("SELECT * FROM mst_loan_rules
+            $_loan_rules_q = $this->db->query("SELECT * FROM mst_loan_rules
                 WHERE member_type_id=".intval($this->member_type_id)." $ctype_string");
             // check if the loan rules exists
             if ($_loan_rules_q->num_rows > 0) {
@@ -117,7 +109,7 @@ class circulation extends member
                 $this->item_loan_rules = $_loan_rules_d['loan_rules_id'];
             } else {
                 // get data from the loan rules table with GMD specified but collection type not specified
-                $_loan_rules_q = $this->obj_db->query("SELECT * FROM mst_loan_rules
+                $_loan_rules_q = $this->db->query("SELECT * FROM mst_loan_rules
                     WHERE member_type_id=".intval($this->member_type_id)." $gmd_string");
                 // check if the loan rules exists
                 if ($_loan_rules_q->num_rows > 0) {
@@ -146,12 +138,12 @@ class circulation extends member
     {
         // you cant borrow any collection if your membership is expired or in pending state
         if ($this->is_expire) {
-            return LOAN_NOT_PERMITTED;
+            return Circulation::LOAN_NOT_PERMITTED;
         }
         if ($this->is_pending) {
-            return LOAN_NOT_PERMITTED_PENDING;
+            return Circulation::Circulation::LOAN_NOT_PERMITTED_PENDING;
         }
-        $_q = $this->obj_db->query("SELECT b.title, i.coll_type_id,
+        $_q = $this->db->query("SELECT b.title, i.coll_type_id,
             b.gmd_id, ist.no_loan FROM biblio AS b
             LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
             LEFT JOIN mst_item_status AS ist ON i.item_status_id=ist.item_status_id
@@ -159,27 +151,27 @@ class circulation extends member
         $_d = $_q->fetch_row();
         if ($_q->num_rows > 0) {
             // first, check for availability for this item
-            $_avail_q = $this->obj_db->query("SELECT item_code FROM loan AS L
+            $_avail_q = $this->db->query("SELECT item_code FROM loan AS L
                 WHERE L.item_code='$str_item_code' AND L.is_lent=1 AND L.is_return=0");
             // if we find any record then it means the item is unavailable
             if ($_avail_q->num_rows > 0) {
-                return ITEM_UNAVAILABLE;
+                return Circulation::ITEM_UNAVAILABLE;
             }
             // check loan status for item
             if ((integer)$_d[3] > 0) {
-                return ITEM_LOAN_FORBID;
+                return Circulation::ITEM_LOAN_FORBID;
             }
             // check if loan rules are ignored
             if (!defined('IGNORE_LOAN_RULES')) {
                 // check if this item is being reserved by other member
-                $_resv_q = $this->obj_db->query("SELECT * FROM reserve AS rs
+                $_resv_q = $this->db->query("SELECT * FROM reserve AS rs
                     WHERE rs.item_code='$str_item_code' AND rs.member_id<>'".$_SESSION['memberID']."'");
                 if ($_resv_q->num_rows > 0) {
-                    $_resv2_q = $this->obj_db->query("SELECT * FROM reserve AS rs
+                    $_resv2_q = $this->db->query("SELECT * FROM reserve AS rs
                         WHERE rs.item_code='$str_item_code' ORDER BY reserve_date ASC LIMIT 1");
                     $_resv2_d = $_resv2_q->fetch_assoc();
                     if ($_resv2_d['member_id'] != $_SESSION['memberID']) {
-                        return ITEM_RESERVED;
+                        return Circulation::ITEM_RESERVED;
                     }
                 }
             }
@@ -216,7 +208,7 @@ class circulation extends member
                     'loan_date' => $_loan_date,
                     'due_date' => $_due_date
                 );
-                return ITEM_SESSION_ADDED;
+                return Circulation::ITEM_SESSION_ADDED;
             } else if ($this->loan_limit > ($_curr_loan_num + $_curr_session_loan_num)) {
                 // are the loan limit reached?
                 $_SESSION['temp_loan'][$str_item_code] = array(
@@ -226,12 +218,12 @@ class circulation extends member
                     'loan_date' => $_loan_date,
                     'due_date' => $_due_date
                 );
-                return ITEM_SESSION_ADDED;
+                return Circulation::ITEM_SESSION_ADDED;
             } else {
-                return LOAN_LIMIT_REACHED;
+                return Circulation::LOAN_LIMIT_REACHED;
             }
         } else {
-            return ITEM_NOT_FOUND;
+            return Circulation::ITEM_NOT_FOUND;
         }
     }
 
@@ -264,7 +256,7 @@ class circulation extends member
             $this->overdue_days = $_fines['days'];
             $overdue_description = str_replace("{item_code}", $_fines['item'], __("Overdue fines for item {item_code}"));
             if (is_numeric($this->overdue_days) AND $this->overdue_days > 0) {
-                $this->obj_db->query("INSERT INTO fines (fines_date, member_id, debet, credit, description) VALUES('$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
+                $this->db->query("INSERT INTO fines (fines_date, member_id, debet, credit, description) VALUES('$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->db->escape_string($overdue_description) ."')");
             }
             // add to receipt
             if (isset($_SESSION['receipt_record'])) {
@@ -272,11 +264,11 @@ class circulation extends member
             }
         }
         // update the loan data
-        $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
+        $this->db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, b.classification, l.* FROM loan AS l
+            $_title_q = $this->db->query('SELECT b.title, b.classification, l.* FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
@@ -288,11 +280,11 @@ class circulation extends member
             $_SESSION['receipt_record']['return'][] = $_returns;
         }
         // check if this item is being reserved by other member
-        $_resv_q = $this->obj_db->query("SELECT l.item_code FROM reserve AS rs
+        $_resv_q = $this->db->query("SELECT l.item_code FROM reserve AS rs
             INNER JOIN loan AS l ON rs.item_code=l.item_code
             WHERE l.loan_id=$int_loan_id AND rs.member_id!='".$this->member_id."'");
         if ($_resv_q->num_rows > 0) {
-            return ITEM_RESERVED;
+            return Circulation::ITEM_RESERVED;
         }
         return true;
     }
@@ -307,16 +299,16 @@ class circulation extends member
     public function extendItemLoan($int_loan_id)
     {
         // check if this item is being reserved by other member
-        $_resv_q = $this->obj_db->query("SELECT l.item_code FROM reserve AS rs
+        $_resv_q = $this->db->query("SELECT l.item_code FROM reserve AS rs
             INNER JOIN loan AS l ON rs.item_code=l.item_code
             WHERE l.loan_id=$int_loan_id AND rs.member_id!='".$_SESSION['memberID']."'");
         if ($_resv_q->num_rows > 0) {
-            return ITEM_RESERVED;
+            return Circulation::ITEM_RESERVED;
         }
         // return this item first
         self::returnItem($int_loan_id);
         // get loan rules for this loan
-        $_loan_rules_q = $this->obj_db->query("SELECT loan_periode FROM mst_loan_rules AS lr LEFT JOIN
+        $_loan_rules_q = $this->db->query("SELECT loan_periode FROM mst_loan_rules AS lr LEFT JOIN
             loan AS l ON lr.loan_rules_id=l.loan_rules_id WHERE loan_id=$int_loan_id");
         if ($_loan_rules_q->num_rows > 0) {
             $_loan_rules_d = $_loan_rules_q->fetch_row();
@@ -332,13 +324,13 @@ class circulation extends member
         if ($_expiry_date_compare != $this->expire_date) {
             $_due_date = $this->expire_date;
         }
-        $query = $this->obj_db->query("UPDATE loan SET renewed=renewed+1, due_date='$_due_date', is_return=0
+        $query = $this->db->query("UPDATE loan SET renewed=renewed+1, due_date='$_due_date', is_return=0
             WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."'");
         $_SESSION['reborrowed'][] = $int_loan_id;
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
-            $_title_q = $this->obj_db->query('SELECT b.title, b.classification, l.* FROM loan AS l
+            $_title_q = $this->db->query('SELECT b.title, b.classification, l.* FROM loan AS l
                 LEFT JOIN item AS i ON l.item_code=i.item_code
                 INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id WHERE l.loan_id='.$int_loan_id);
             $_title_d = $_title_q->fetch_assoc();
@@ -363,7 +355,7 @@ class circulation extends member
     {
         $_on_grace_periode = false;
         // get due date for this loan
-        $_loan_q = $this->obj_db->query("SELECT l.due_date, l.loan_rules_id, l.item_code FROM loan AS l WHERE loan_id=$int_loan_id");
+        $_loan_q = $this->db->query("SELECT l.due_date, l.loan_rules_id, l.item_code FROM loan AS l WHERE loan_id=$int_loan_id");
         $_loan_d = $_loan_q->fetch_row();
         // compare dates
         $_date = simbio_date::compareDates($str_return_date, $_loan_d[0]);
@@ -394,7 +386,7 @@ class circulation extends member
             }
             // check for loan rules if any
             if (!empty($_loan_d[1])) {
-                $_loan_rules_q = $this->obj_db->query('SELECT fine_each_day, grace_periode FROM mst_loan_rules WHERE loan_rules_id='.$_loan_d[1]);
+                $_loan_rules_q = $this->db->query('SELECT fine_each_day, grace_periode FROM mst_loan_rules WHERE loan_rules_id='.$_loan_d[1]);
                 $_loan_rules_d = $_loan_rules_q->fetch_row();
                 $this->fine_each_day = $_loan_rules_d[0];
                 // check for grace periode
@@ -470,18 +462,18 @@ class circulation extends member
                 $data['last_update'] = date("Y-m-d H:i:s");
                 $data['uid'] = $_SESSION['uid'];
                 try {    
-                    $sql_op = new simbio_dbop($this->obj_db);
+                    $sql_op = new simbio_dbop($this->db);
                     if ($sql_op->insert('loan', $data)) {
                         # get last insert id (loan_id)
-                        $loan_id = $this->obj_db->insert_id;
+                        $loan_id = $this->db->insert_id;
                         if (isset($_SESSION['receipt_record'])) {
                             // get title
-                            $_title_q = $this->obj_db->query('SELECT title, classification FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
+                            $_title_q = $this->db->query('SELECT title, classification FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');
                             $_title_d = $_title_q->fetch_row();
                             $_title = $_title_d[0];
                             $_classification = $_title_d[1];
                             // add to receipt
-                            $data_loan = (array)circapi::loan_load_by_id($this->obj_db, $loan_id);
+                            $data_loan = (array)circapi::loan_load_by_id($this->db, $loan_id);
                             $_loans = array ();
                             $_loans = $data_loan;
                             $_loans['itemCode'] = $data['item_code'];
@@ -492,7 +484,7 @@ class circulation extends member
                             $_SESSION['receipt_record']['loan'][] = $_loans;
                         }
                         // remove any reservation related to this items
-                        @$this->obj_db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
+                        @$this->db->query('DELETE FROM reserve WHERE member_id=\''.$this->member_id.'\' AND item_code=\''.$data['item_code'].'\'');
                     } else {
                         throw new Exception($sql_op->error);
                     }
@@ -507,9 +499,9 @@ class circulation extends member
             unset($_SESSION['memberID']);
             // return the status
             if ($error_num) {
-                return TRANS_FLUSH_ERROR;
+                return Circulation::TRANS_FLUSH_ERROR;
             } else {
-                return TRANS_FLUSH_SUCCESS;
+                return Circulation::TRANS_FLUSH_SUCCESS;
             }
         } else {
             // clean all circulation sessions
@@ -517,5 +509,28 @@ class circulation extends member
             $_SESSION['reborrowed'] = array();
             unset($_SESSION['memberID']);
         }
+    }
+
+    public function visitOnLoan($member_id)
+    {
+        $now = date('Y-m-d');
+        // check if already checkin
+        $query = $this->db->query('SELECT visitor_id FROM visitor_count WHERE member_id=\''.$member_id.'\' AND checkin_date LIKE \''.$now.'%\'');
+        if ($query->num_rows < 1) {
+            // get data
+            $mquery = $this->db->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
+            $mdata = $mquery->fetch_row();
+            $member_name = $this->db->escape_string($mdata[0]);
+            $institution = $mdata[1];
+            // insert visit
+            $checkin_date  = date('Y-m-d H:i:s');
+            $insert = $this->db->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$institution', '$checkin_date')");
+            if (!$insert) {
+                toastr(__('ERROR! Can\'t insert visitor counter data'))->error();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

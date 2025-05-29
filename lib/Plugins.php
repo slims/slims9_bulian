@@ -1,13 +1,16 @@
 <?php
-
 /**
- * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
- * @Date                : 05/11/20 13.53
- * @File name           : Plugins.php
+ * Plugins class.
+ * 
+ * @author Waris Agung Widodo (ido.alit@gmail.com).
+ * @package SLiMS
+ * @subpackage Plugins
+ * @since 2020
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License Version 3
+ *
  */
 
 namespace SLiMS;
-
 
 use SLiMS\DB;
 use SLiMS\Cli\Console;
