@@ -40,7 +40,7 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-system');
 
-// require SB.'admin/default/session_check.inc.php';
+require SB.'admin/default/session_check.inc.php';
 // require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 // require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 // require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
