@@ -141,7 +141,7 @@ class Circulation extends Membership
             return Circulation::LOAN_NOT_PERMITTED;
         }
         if ($this->is_pending) {
-            return Circulation::Circulation::LOAN_NOT_PERMITTED_PENDING;
+            return Circulation::LOAN_NOT_PERMITTED_PENDING;
         }
         $_q = $this->db->query("SELECT b.title, i.coll_type_id,
             b.gmd_id, ist.no_loan FROM biblio AS b
