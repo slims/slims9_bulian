@@ -84,7 +84,7 @@ final class Memory
 
     // initilialization locale and loader
     private function __construct(){
-        $this->locale = Config::getInstance()->get('default_lang');
+        $this->locale = Config::getInstance()->get('default_lang', 'en_US');
         $this->loader = new MoLoader;
     }
 
