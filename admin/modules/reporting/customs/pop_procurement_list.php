@@ -35,7 +35,7 @@ ob_start();
 
 $page_title = 'Procurement List';
 
-$filter = isset($_GET['filter'])?$dbs->escape_string(simbio_security::xssFree($_GET['filter'])):'%%';
+$filter = isset($_GET['filter'])?$dbs->real_escape_string(simbio_security::xssFree($_GET['filter'])):'%%';
 ?>
 <div class="menuBox">
 <div class="menuBoxInner backupIcon">
@@ -124,21 +124,21 @@ $datagrid->setSQLorder('i.input_date DESC');
 
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
-   $keywords = $dbs->escape_string($_GET['keywords']);
+   $keywords = $dbs->real_escape_string($_GET['keywords']);
    $criteria .= " AND (b.title LIKE '%$keywords%' OR i.item_code LIKE '%$keywords%') ";
 }
 if (isset($_GET['classification']) AND $_GET['classification'] !== '') {
-   $classification = $dbs->escape_string($_GET['classification']);
+   $classification = $dbs->real_escape_string($_GET['classification']);
    $criteria .= ($classification!='other')?" AND b.classification LIKE '$classification%'":" AND (trim(b.classification) REGEXP '^[^0-9]' OR trim(b.classification)='' OR trim(b.classification) IS NULL)";
 }
 
 if (isset($_GET['coll_type']) AND $_GET['coll_type']) {
-   $coll_type = $dbs->escape_string($_GET['coll_type']);
+   $coll_type = $dbs->real_escape_string($_GET['coll_type']);
    $criteria .= ($coll_type!='other')?" AND i.coll_type_id='$coll_type'":" AND i.coll_type_id=''";
 }
 
 if (isset($_GET['location']) AND $_GET['location']) {
-   $location = $dbs->escape_string($_GET['location']);
+   $location = $dbs->real_escape_string($_GET['location']);
    $criteria .=($location!='other')?" AND i.location_id LIKE '$location'":" AND i.location_id = ''";
 }
 

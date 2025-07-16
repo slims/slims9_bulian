@@ -78,14 +78,19 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
         $i = 0;
         while (!feof($stfile)) {
             $curr_time = date('Y-m-d H:i:s');
-            $item_code = fgets($stfile, 512);
-            $item_code = trim($item_code);
+            $item_code = fgets($stfile, 80);
+            // strip any html tags
+            $item_code = strip_tags(trim($item_code));
             if (!$item_code) {
+                continue;
+            }
+            if (!preg_match('/^[a-zA-Z0-9_\-\.]+$/', $item_code)) {
                 continue;
             }
 
             // check item status first
-            $item_check = $dbs->query("SELECT * FROM stock_take_item WHERE item_code='$item_code'");
+            $item_code = $dbs->real_escape_string($item_code);
+            $item_check = $dbs->query(sprintf( "SELECT * FROM stock_take_item WHERE item_code='%s'", $item_code ));
             $item_check_d = $item_check->fetch_assoc();
             if ($item_check->num_rows > 0) {
                 if ($item_check_d['status'] == 'l') {
