@@ -51,6 +51,31 @@ function getUserType($obj_db, $array_data, $col) {
   }
 }
 
+function validatePassword($password, $min_length = 8) {
+    // Check if the password is at least 8 characters long
+    if (strlen($password) < $min_length) {
+        return false;
+    }
+
+    // Check for at least one uppercase letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        return false;
+    }
+
+    // Check for at least one number
+    if (!preg_match('/[0-9]/', $password)) {
+        return false;
+    }
+
+    // Check for at least one non-alphanumeric character
+    if (!preg_match('/[^a-zA-Z0-9]/', $password)) {
+        return false;
+    }
+
+    // If all checks pass, return true
+    return true;
+}
+
 // check if we want to change current user profile
 $changecurrent = false;
 if (isset($_GET['changecurrent'])) {
@@ -131,6 +156,9 @@ if (isset($_POST['saveData'])) {
         exit();
     } else if (($userName == 'admin' OR $realName == 'Administrator') AND $_SESSION['uid'] != 1) {
         toastr(__('Login username or Real Name is probihited!'))->error();
+        exit();
+    } else if ($sysconf['password_policy_strong'] AND ($passwd1 AND $passwd2) AND ($passwd1 === $passwd2) AND !validatePassword($passwd2, $sysconf['password_policy_min_length'])) {
+        toastr(__('Password should at least 8 characters long, contains one capital letter, one number, and one non-alphanumeric character !'))->error();
         exit();
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
@@ -513,7 +541,41 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     // print out the form object
     echo $form->printOut();
-    echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"><form>';
+    echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"></form>';
+    if ($sysconf['password_policy_strong']) {
+        echo '<script>';
+        echo 'function validatePassword(password, min_length = 8) {
+            // Check if the password length
+            if (password.length < '.$sysconf['password_policy_min_length'].') {
+                return false;
+            }
+            // Check for at least one uppercase letter
+            if (!/[A-Z]/.test(password)) {
+                return false;
+            }
+            // Check for at least one number
+            if (!/[0-9]/.test(password)) {
+                return false;
+            }
+            // Check for at least one non-alphanumeric character
+            if (!/[^a-zA-Z0-9]/.test(password)) {
+                return false;
+            }
+            return true;
+        }';
+        echo 'jQuery(\'#mainForm\').on(\'submit\', function(event) {
+            const password1 = jQuery(\'#passwd1\').val();
+            const password2 = jQuery(\'#passwd2\').val();
+            if (password1.length > 0 && password2.length > 0) {
+                if (!validatePassword(password2)) {
+                    event.preventDefault();
+                    alert(\'Password must contain at least one uppercase letter, one number, and one special character.\');
+                }
+            }
+        });';
+        echo '</script>';
+    }
+
 } else {
     // only administrator have privileges to view user list
     if (!($can_read AND $can_write) OR $_SESSION['uid'] != 1) {

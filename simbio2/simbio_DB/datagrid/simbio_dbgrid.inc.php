@@ -48,6 +48,7 @@ class simbio_datagrid extends simbio_table
     protected $no_sort_column = array();
     protected $modified_content = array();
     protected $editable = false;
+    protected $sql_str = '';
 
     /**
      * Public properties
@@ -76,7 +77,6 @@ class simbio_datagrid extends simbio_table
     public $using_AJAX = true;
     public $invisible_fields = array();
     public $disable_paging = false;
-    private $sql_str = '';
 
     /**
      * Method to create datagrid

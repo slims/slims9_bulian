@@ -219,6 +219,12 @@ CREATE TABLE IF NOT EXISTS `item` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
 
 $sql['create'][] = "
+  CREATE TABLE IF NOT EXISTS `item_custom` (
+    `item_id` INT NOT NULL ,
+    PRIMARY KEY ( `item_id` )
+  ) ENGINE=MyISAM COMMENT = 'one to one relation with real item table';";
+
+$sql['create'][] = "
 CREATE TABLE IF NOT EXISTS `kardex` (
   `kardex_id` int(11) NOT NULL auto_increment,
   `date_expected` date NOT NULL,

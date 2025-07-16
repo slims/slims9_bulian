@@ -46,6 +46,9 @@ if (ENVIRONMENT === 'unavailable' && file_exists(__DIR__ . '/config/database.php
   exit(1); // EXIT_ERROR
 }
 
+// set security header preventing clickjacking
+header('X-Frame-Options: SAMEORIGIN');
+
 // require composer library
 if (file_exists(__DIR__ . '/vendor/autoload.php')) require __DIR__ . '/vendor/autoload.php';
 
@@ -715,11 +718,15 @@ $sysconf['always_user_login'] = true;
 /* new advanced system log - still experimental */
 $sysconf['log']['adv']['enabled'] = FALSE;
 $sysconf['log']['adv']['handler'] = 'fs'; # 'fs' for filesystem, 'es' for elasticsearch
-# for filesystem
+// for filesystem
 $sysconf['log']['adv']['path'] = '/var/www/logs';
-# for elasticsearch
+// for elasticsearch
 $sysconf['log']['adv']['host'] = 'localhost:9200';
 $sysconf['log']['adv']['index'] = 'slims_logs';
+
+// librarian / system user password policy
+$sysconf['password_policy_strong'] = true;
+$sysconf['password_policy_min_length'] = 8;
 
 // set default timezone
 // for a list of timezone, please see PHP Manual at "List of Supported Timezones" section

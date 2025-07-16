@@ -62,8 +62,8 @@ if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
         $sql_op = new simbio_dbop($dbs);
-        $name = $dbs->escape_string($name);
-        $data['setting_value'] = $dbs->escape_string(serialize($value));
+        $name = $dbs->real_escape_string($name);
+        $data['setting_value'] = $dbs->real_escape_string(serialize($value));
 
         $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
         if ($query->num_rows > 0) {
@@ -163,7 +163,7 @@ if (isset($_POST['updateData'])) {
       })->as('default' . DS . $config['filename']);
 
       if ($imagesDisk->getUploadStatus()) {
-        addOrUpdateSetting($config['configname'], $dbs->escape_string($imagesDisk->getUploadedFileName()));
+        addOrUpdateSetting($config['configname'], $dbs->real_escape_string($imagesDisk->getUploadedFileName()));
         $updateImageCache = true;
       } else {
           utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesDisk->getError(), 'error');
@@ -174,12 +174,12 @@ if (isset($_POST['updateData'])) {
 
     // reset/truncate setting table content
     // library name
-    $library_name = $dbs->escape_string(strip_tags(trim($_POST['library_name'])));
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($library_name)).'\' WHERE setting_name=\'library_name\'');
+    $library_name = $dbs->real_escape_string(strip_tags(trim($_POST['library_name'])));
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($library_name)).'\' WHERE setting_name=\'library_name\'');
 
     // library subname
-    $library_subname = $dbs->escape_string(strip_tags(trim($_POST['library_subname'])));
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($library_subname)).'\' WHERE setting_name=\'library_subname\'');
+    $library_subname = $dbs->real_escape_string(strip_tags(trim($_POST['library_subname'])));
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($library_subname)).'\' WHERE setting_name=\'library_subname\'');
 
     // // initialize template arrays
     // $template = array('theme' => $sysconf['template']['theme'], 'css' => $sysconf['template']['css']);
@@ -188,15 +188,15 @@ if (isset($_POST['updateData'])) {
     // // template
     // $template['theme'] = $_POST['template'];
     // $template['css'] = str_replace($sysconf['template']['theme'], $template['theme'], $sysconf['template']['css']);
-    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($template)).'\' WHERE setting_name=\'template\'');
+    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($template)).'\' WHERE setting_name=\'template\'');
     //
     // // admin template
     // $admin_template['theme'] = $_POST['admin_template'];
     // $admin_template['css'] = str_replace($sysconf['admin_template']['theme'], $admin_template['theme'], $sysconf['admin_template']['css']);
-    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($admin_template)).'\' WHERE setting_name=\'admin_template\'');
+    // $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($admin_template)).'\' WHERE setting_name=\'admin_template\'');
 
     // language
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($_POST['default_lang'])).'\' WHERE setting_name=\'default_lang\'');
 
     // timezone
     addOrUpdateSetting('timezone', utility::filterData('timezone', 'post', true, true, true));
@@ -205,57 +205,57 @@ if (isset($_POST['updateData'])) {
     addOrUpdateSetting('search_engine', utility::filterData('search_engine', 'post', true, true, true));
 
     // opac num result
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['opac_result_num'])).'\' WHERE setting_name=\'opac_result_num\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($_POST['opac_result_num'])).'\' WHERE setting_name=\'opac_result_num\'');
 
     // promoted titles in homepage
     if (isset($_POST['enable_promote_titles'])) {
-        $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['enable_promote_titles'])).'\' WHERE setting_name=\'enable_promote_titles\'');
+        $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($_POST['enable_promote_titles'])).'\' WHERE setting_name=\'enable_promote_titles\'');
     } else {
         $dbs->query('UPDATE setting SET setting_value=\'N;\' WHERE setting_name=\'enable_promote_titles\'');
     }
 
     // quick return
     $quick_return = $_POST['quick_return'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($quick_return)).'\' WHERE setting_name=\'quick_return\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($quick_return)).'\' WHERE setting_name=\'quick_return\'');
 
     // loan and due date manual change
     $circulation_receipt = $_POST['circulation_receipt'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($circulation_receipt)).'\' WHERE setting_name=\'circulation_receipt\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($circulation_receipt)).'\' WHERE setting_name=\'circulation_receipt\'');
 
     // loan and due date manual change
     $allow_loan_date_change = $_POST['allow_loan_date_change'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($allow_loan_date_change)).'\' WHERE setting_name=\'allow_loan_date_change\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($allow_loan_date_change)).'\' WHERE setting_name=\'allow_loan_date_change\'');
 
     // loan limit override
     $loan_limit_override = $_POST['loan_limit_override'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($loan_limit_override)).'\' WHERE setting_name=\'loan_limit_override\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($loan_limit_override)).'\' WHERE setting_name=\'loan_limit_override\'');
 
     // ignore holidays fine calculation
     // added by Indra Sutriadi
     $ignore_holidays_fine_calc = $_POST['ignore_holidays_fine_calc'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($ignore_holidays_fine_calc)).'\' WHERE setting_name=\'ignore_holidays_fine_calc\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($ignore_holidays_fine_calc)).'\' WHERE setting_name=\'ignore_holidays_fine_calc\'');
 
     // xml detail
     $xml_detail = $_POST['enable_xml_detail'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($xml_detail)).'\' WHERE setting_name=\'enable_xml_detail\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($xml_detail)).'\' WHERE setting_name=\'enable_xml_detail\'');
 
     // xml result
     $xml_result = $_POST['enable_xml_result'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($xml_result)).'\' WHERE setting_name=\'enable_xml_result\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($xml_result)).'\' WHERE setting_name=\'enable_xml_result\'');
 
     // file download
     $file_download = $_POST['allow_file_download'] == '1'?true:false;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($file_download)).'\' WHERE setting_name=\'allow_file_download\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($file_download)).'\' WHERE setting_name=\'allow_file_download\'');
 
     // session timeout
     $session_timeout = intval($_POST['session_timeout']) >= 1800?$_POST['session_timeout']:1800;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($session_timeout)).'\' WHERE setting_name=\'session_timeout\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($session_timeout)).'\' WHERE setting_name=\'session_timeout\'');
 
     // remember_me_timeout
     addOrUpdateSetting('remember_me_timeout', intval($_POST['remember_me_timeout']));
 
     // barcode encoding
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($_POST['barcode_encoding'])).'\' WHERE setting_name=\'barcode_encoding\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($_POST['barcode_encoding'])).'\' WHERE setting_name=\'barcode_encoding\'');
 
     // counter by ip
     $enable_counter_by_ip = utility::filterData('enable_counter_by_ip', 'post', true, true, true);
@@ -274,14 +274,14 @@ if (isset($_POST['updateData'])) {
 
     // visitor limitation
     $visitor_limitation = $_POST['enable_visitor_limitation'];
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($visitor_limitation)).'\' WHERE setting_name=\'enable_visitor_limitation\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($visitor_limitation)).'\' WHERE setting_name=\'enable_visitor_limitation\'');
 
     // time limitation
     $time_limit = intval($_POST['time_visitor_limitation']) >= 0?$_POST['time_visitor_limitation']:60;
-    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string(serialize($time_limit)).'\' WHERE setting_name=\'time_visitor_limitation\'');
+    $dbs->query('UPDATE setting SET setting_value=\''.$dbs->real_escape_string(serialize($time_limit)).'\' WHERE setting_name=\'time_visitor_limitation\'');
 
     // spellchecker
-    $spellchecker_enabled = $_POST['spellchecker_enabled'] == '1'?true:false;
+    $spellchecker_enabled = $_POST['password_policy_strong'] == '1'?true:false;
     $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($spellchecker_enabled).'\',  \'spellchecker_enabled\')');
 
     // enable chbox confirm
@@ -294,6 +294,16 @@ if (isset($_POST['updateData'])) {
 
     // Simplified the simple search
     addOrUpdateSetting('simplified_simple_search', boolval($_POST['simplified_simple_search']));
+
+    // Strong password policy
+    $strong_password_policy = $_POST['password_policy_strong'] == '1'?true:false;
+    $dbs->query('REPLACE INTO setting (setting_value, setting_name) VALUES (\''.serialize($strong_password_policy).'\',  \'password_policy_strong\')');
+
+    $password_length = (integer)$_POST['password_policy_min_length'];
+    if ($password_length < 8) {
+      $password_length = 8;
+    }
+    addOrUpdateSetting('password_policy_min_length', $password_length);
 
     $plugins->execute('system_after_config_save');
 
@@ -514,6 +524,13 @@ $options = null;
 $options[] = array('1', __('Yes'));
 $options[] = array('0', __('No'));
 $form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
+
+$options = null;
+$options[] = array('1', __('Yes'));
+$options[] = array('0', __('No'));
+$form->addSelectList('password_policy_strong', __('Strong Password Policy'), $options, ((int)$sysconf['password_policy_strong']),'class="form-control col-3"');
+
+$form->addTextField('text', 'password_policy_min_length', __('Password Minimum Characters (If Strong Password Policy is Yes)'), (int)$sysconf['password_policy_min_length'], 'style="width: 10%;" class="form-control"');
 
 $plugins->execute('system_before_configform_printout', [&$form]);
 

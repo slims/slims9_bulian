@@ -22,6 +22,7 @@
 /* Modified Heru Subekti (heroe.soebekti@gmail.com) */
 
 use SLiMS\Table\Schema;
+use SLiMS\Table\Blueprint;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -49,6 +50,28 @@ $can_write = utility::havePrivilege('system', 'w');
 if (!$can_read && $_SESSION['uid'] != 1) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
+
+function createNewColumn($tableName, $columnName, $columnType) {
+    Schema::table($tableName, function(Blueprint $table) use ($columnName, $columnType) {
+        if ($columnType == 'text') {
+            $table->string($columnName, 255)->nullable()->add();
+        } elseif ($columnType == 'longtext') {
+            $table->text($columnName)->nullable()->add();
+        } elseif ($columnType == 'numeric') {
+            $table->integer($columnName, 11)->nullable()->add();
+        } elseif ($columnType == 'dropdown' || $columnType == 'checklist' || $columnType == 'choice') {
+            $table->string($columnName, 255)->nullable()->add();
+        } elseif ($columnType == 'date') {
+            $table->date($columnName)->nullable()->add();
+        }
+    });
+}
+
+// set table options
+$table_options = array();
+$table_options[] = array('biblio', __('Bibliography'));
+$table_options[] = array('item', __('Bibliography Item'));
+$table_options[] = array('member', __('Membership'));
 
 /* custom field update process */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
@@ -88,16 +111,28 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* UPDATE RECORD MODE */
             // filter update record ID
             $updateRecordID = $dbs->escape_string(trim($_POST['updateRecordID']));
+
             //get last field table
             $_q = $dbs->query("SELECT primary_table,dbfield,label FROM mst_custom_field WHERE field_id=".$updateRecordID);
             if($_q->num_rows){
                 $_d = $_q->fetch_row();
                 if($_d[0]!=$data['primary_table']){
-                    // drop column
-                    $schemaParams = [$_d[0].'_custom', $_d[1]];
-                    if (Schema::hasColumn(...$schemaParams)) Schema::dropColumn(...$schemaParams);
+                    $count_q = $dbs->query("SELECT COUNT(*) FROM ".$_d[0]."_custom WHERE ".$_d[1]." IS NOT NULL");
+                    $count_d = $count_q->fetch_row();
+                    $has_data = ($count_d[0]) < 1;
+                    if(!$has_data){
+                        utility::jsToastr(__('Custom Field'), __('You can not change primary table if the field already has data, ' . $count_d[0] . ' row(s) found.'), 'error');
+                        exit();
+                    } else {
+                        $schemaParams = [$_d[0].'_custom', $_d[1]];
+                        if (Schema::hasColumn(...$schemaParams)) Schema::dropColumn(...$schemaParams);
+                        // create new column
+                        $data['dbfield'] = 'cf_'.substr(md5(microtime()),rand(0,26),5);
+                        createNewColumn($data['primary_table'].'_custom', $data['dbfield'], $data['type']);
+                    }
                 }
             }
+
             // update the data
             $update = $sql_op->update('mst_custom_field', $data, 'field_id=\''.$updateRecordID.'\'');
             if ($update) {
@@ -112,6 +147,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             /* INSERT RECORD MODE */
             // insert the data
             $data['dbfield'] = 'cf_'.substr(md5(microtime()),rand(0,26),5);
+            
+            $tableName = $data['primary_table'].'_custom';
+            $schemaParams = [$tableName, $data['dbfield']];
+
+            // check if the column already exists
+            if (!Schema::hasColumn(...$schemaParams)) {
+                // create new column
+                createNewColumn($tableName, $data['dbfield'], $data['type']);
+            }
+
             $insert = $sql_op->insert('mst_custom_field', $data);
             if ($insert) {
                 utility::writelogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' create custom field ('.$data['label'].') on '. $data['primary_table'], $data['primary_table'] .' custom', 'Add');
@@ -221,8 +266,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
 
     /* Form Element(s) */
-    $table_options[] = array('biblio', __('Bibliography'));
-    $table_options[] = array('member', __('Membership'));  
     $form->addSelectList('table', __('Primary Menu'), $table_options, isset($rec_d['primary_table']) && $rec_d['primary_table'] ?$rec_d['primary_table']:'biblio',' class="form-control col-3"');
 
     $form->addTextField('text', 'label', __('Label').'*', $rec_d['label']??'', ' required class="form-control col-6"');
@@ -279,6 +322,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             'type AS \''.__('Type').'\'',
             'note AS \''.__('Note').'\'');
     $datagrid->setSQLorder('dbfield ASC');
+
+    // set datagrid callback function
+    function showPrimaryMenu($db, $data, $index) {
+        global $table_options;
+        foreach ($table_options as $option) {
+            if ($option[0] === $data[$index]) {
+                return $option[1];
+            }
+        }
+        return $data[$index];
+    }
+    $datagrid->modifyColumnContent(1, 'callback{showPrimaryMenu}');
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {

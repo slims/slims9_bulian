@@ -13,6 +13,10 @@
  *
  */
 
+use SLiMS\Form\FormAjaxWithCustomField;
+
+/* Item Management section */
+
 // key to authenticate
 if (!defined('INDEX_AUTH')) {
   define('INDEX_AUTH', '1');
@@ -181,6 +185,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * 
                  */
                 $plugins->execute('bibliography_item_after_update', [$data]);
+                // save custom data
+                FormAjaxWithCustomField::saveCustomData('item_custom', 'item',  'item_id', $updateRecordID);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
@@ -240,6 +246,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                  * 
                  */
                 $plugins->execute('bibliography_item_after_save', [$data]);
+                // save custom data
+                FormAjaxWithCustomField::saveCustomData('item_custom', 'item', 'item_id', $dbs->insert_id);
 
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
@@ -340,6 +348,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // execute registered hook
                 $plugins->execute('bibliography_item_after_delete', [$itemID]);
 
+                // delete custom field data
+                $sql_op->delete('item_custom', 'item_id='.$itemID);
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
@@ -428,7 +438,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_d = $rec_q->fetch_assoc();
 
     // create new instance
-    $form = new simbio_form_table_AJAX('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+    $form = new FormAjaxWithCustomField('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
@@ -550,6 +560,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '</div>';
     $str_input .= '</div>';
     $form->addAnything(__('Price'), $str_input, 'price');
+
+    // load custom field
+    $form->loadCustomField('item', 'item_id', $itemID);
 
     // edit mode messagge
     if ($form->edit_mode) {

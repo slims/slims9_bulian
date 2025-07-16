@@ -135,7 +135,7 @@ if (!$reportView) {
     $overdue_criteria = ' (l.is_lent=1 AND l.is_return=0) ';
     // is there any search
     if (isset($_GET['id_name']) AND $_GET['id_name']) {
-        $keyword = $dbs->escape_string(trim($_GET['id_name']));
+        $keyword = $dbs->real_escape_string(trim($_GET['id_name']));
         $words = explode(' ', $keyword);
         if (count($words) > 1) {
             $concat_sql = ' (';
@@ -152,8 +152,8 @@ if (!$reportView) {
     }
     // loan date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $date_criteria = ' AND (TO_DAYS(l.loan_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
-            TO_DAYS(\''.$_GET['untilDate'].'\'))';
+        $date_criteria = sprintf(' AND (TO_DAYS(l.loan_date) BETWEEN TO_DAYS(\'%s\') AND
+            TO_DAYS(\'%s\'))', $dbs->real_escape_string($_GET['startDate']), $dbs->real_escape_string($_GET['untilDate']) );
         $overdue_criteria .= $date_criteria;
     }
 

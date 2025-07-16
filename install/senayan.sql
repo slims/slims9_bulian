@@ -316,6 +316,16 @@ CREATE TABLE IF NOT EXISTS `item` (
 -- Dumping data for table `item`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_custom`
+--
+CREATE TABLE IF NOT EXISTS `item_custom` (
+    `item_id` INT NOT NULL ,
+    PRIMARY KEY ( `item_id` )
+  ) ENGINE=MyISAM COMMENT = 'one to one relation with real item table';
+
 
 -- --------------------------------------------------------
 

@@ -160,7 +160,7 @@ if (!$reportView) {
     // is there any search
     $criteria = 'vc.visitor_id IS NOT NULL ';
     if (isset($_GET['member_type']) AND !empty($_GET['member_type'])) {
-        $mtype = $_GET['member_type'];
+        $mtype = sprintf( '%d', $dbs->real_escape_string($_GET['member_type']) );
         if (intval($mtype) < 0) {
             $criteria .= ' AND (vc.member_id IS NULL OR vc.member_id=\'\')';
         } else if (intval($mtype) > 0) {
@@ -168,21 +168,21 @@ if (!$reportView) {
         }
     }
     if (isset($_GET['id_name']) AND !empty($_GET['id_name'])) {
-        $id_name = $dbs->escape_string($_GET['id_name']);
+        $id_name = $dbs->real_escape_string($_GET['id_name']);
         $criteria .= ' AND (vc.member_id LIKE \'%'.$id_name.'%\' OR vc.member_name LIKE \'%'.$id_name.'%\')';
     }
     if (isset($_GET['institution']) AND !empty($_GET['institution'])) {
-        $institution = $dbs->escape_string(trim($_GET['institution']));
+        $institution = $dbs->real_escape_string(trim($_GET['institution']));
         $criteria .= ' AND vc.institution LIKE \'%'.$institution.'%\'';
     }
     if (isset($_GET['room_code']) AND !empty($_GET['room_code'])) {
-        $roomcode = $dbs->escape_string(trim($_GET['room_code']));
+        $roomcode = $dbs->real_escape_string(trim($_GET['room_code']));
         $criteria .= ' AND vc.room_code = \''.$roomcode.'\'';
     }
     // register date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(vc.checkin_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
-            TO_DAYS(\''.$_GET['untilDate'].'\'))';
+        $criteria .= sprintf( ' AND (TO_DAYS(vc.checkin_date) BETWEEN TO_DAYS(\'%s\') AND
+            TO_DAYS(\'%s\'))', $dbs->real_escape_string(trim($_GET['startDate'])), $dbs->real_escape_string(trim($_GET['untilDate'])) );
     }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];
