@@ -81,9 +81,17 @@ if (!$reportView) {
             <?php
             $current_year = date('Y');
             $year_options = array();
-            for ($y = $current_year; $y > 1999; $y--) {
-                $year_options[] = array($y, $y);
+            $year = $dbs->query("SELECT DISTINCT year(loan_date) AS y FROM loan ORDER BY y DESC");
+            if($year->num_rows > 0){
+            	while($y = $year->fetch_row()){
+            		$year_options[] = array($y[0], $y[0]);
+            	}
+            }else{
+            	$year_options[] = array($current_year, $current_year);
             }
+            //for ($y = $current_year; $y > 1999; $y--) {
+            //    $year_options[] = array($y, $y);
+            //}
             echo simbio_form_element::selectList('year', $year_options, $current_year, 'class="form-control col-1"');
             ?>
         </div>
