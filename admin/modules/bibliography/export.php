@@ -102,7 +102,7 @@ if (isset($_POST['doExport'])) {
     } else {
         if ($all_data_q->num_rows > 0) {
           // Define CSV standart based on user input
-          $standart = [
+          $csv_params = [
             'separator' => trim($_POST['fieldSep']),
             'enclosed_with' =>  trim($_POST['fieldEnc']),
             'record_separator' => [
@@ -111,16 +111,13 @@ if (isset($_POST['doExport'])) {
             ]
           ];
 
-          $formatter = function($content) use($dbs) {
-            return $dbs->escape_string($content) . ' - ' . rand(1,$limit);
-          };
-
           $csv = new Writer;
 
           // Define header row instance
-          $header = new Row([], array_merge($standart, ['key_based' => true]));
+          $header = new Row([], array_merge($csv_params, ['key_based' => true]));
 
           while ($biblio_d = $all_data_q->fetch_assoc()) {
+              array_walk($biblio_d, function(&$item, $key) { $item = trim( str_replace(array("\n", "\r"), '\\n', $item) ); });
               $itemData = '';
               $id = $biblio_d['biblio_id'];
 
@@ -141,7 +138,7 @@ if (isset($_POST['doExport'])) {
               }
               
               // initialization csv row data with custom formatter
-              $itemData = new Row($biblio_d, $standart, $formatter);
+              $itemData = new Row($biblio_d, $csv_params);
 
               /**
                * Author,Topic & Item Code seperated from

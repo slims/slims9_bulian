@@ -90,6 +90,7 @@ if (isset($_POST['doImport'])) {
 
         // get system temporary directory location
         $_SESSION['csv'] = [];
+        $_SESSION['csv']['header'] = false;
         $_SESSION['csv']['name'] = md5($_FILES['importFile']['name'] . date('this'));
         
         if (!$files_disk->isExists('temp')) $files_disk->makeDirectory('temp');
@@ -109,7 +110,7 @@ if (isset($_POST['doImport'])) {
         $_SESSION['csv']['section'] = 'membership';
         $_SESSION['csv']['action'] = $_SERVER['PHP_SELF'];
         $_SESSION['csv']['password'] = (int)($_POST['password'][0]??0);
-        if (isset($_POST['header'])) $_SESSION['csv']['header'] = 1;
+        if (isset($_POST['header'])) $_SESSION['csv']['header'] = true;
 
         // create upload object
         $csv_upload = $files_disk->upload('importFile', function($files) use($sysconf) {
@@ -174,6 +175,10 @@ if (isset($_POST['doImport'])) {
                 if ($record_num > 0 AND $row_count == $record_num) {
                     break;
                 }
+                // skip first line if it is column header
+                if ($_SESSION['csv']['header'] && $row_count == 0) {
+                    continue;
+                }
                 // go to offset
                 if ($row_count < $record_offset) {
                     // pass and continue to next loop
@@ -232,18 +237,13 @@ if (isset($_POST['doImport'])) {
                                 $expire_date, $birth_date, $member_notes,
                                 $curr_datetime, $curr_datetime, $mpasswd)";
     
-                        // first field is header
-                        if (isset($_SESSION['csv']['header']) && $n < 1) {
-                          $n++;
+                        // send query
+                        @$dbs->query($sql_str);
+                        
+                        if (!$dbs->error) {
+                          $inserted_row++;
                         } else {
-                          // send query
-                          @$dbs->query($sql_str);
-                          
-                          if (!$dbs->error) {
-                            $inserted_row++;
-                          } else {
-                            throw new Exception($dbs->error . ' with query : ' . $sql_str);
-                          }
+                          throw new Exception($dbs->error . ' with query : ' . $sql_str);
                         }
                     }
                     $row_count++;
