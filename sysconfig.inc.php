@@ -62,7 +62,7 @@ registerSlimsHandler();
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 @ini_set( 'session.use_only_cookies', true );
-@ini_set( 'session.cookie_secure', true );
+@ini_set( 'session.cookie_secure', false );
 
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {
