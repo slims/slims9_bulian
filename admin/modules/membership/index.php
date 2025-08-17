@@ -305,7 +305,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
+						if (isset($upload)) {
+							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
+						} else {
+							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Photo', 'Add');
+						}
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
