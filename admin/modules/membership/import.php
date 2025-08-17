@@ -134,6 +134,7 @@ if (isset($_POST['doImport'])) {
         // Redirect content
         redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
     } else {
+        $start_time = time();
         // set PHP time limit
         set_time_limit(7200);
         // set ob implicit flush
