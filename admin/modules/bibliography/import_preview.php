@@ -38,12 +38,13 @@ if (!$can_read) {
 
 // create upload object
 $files_disk = Storage::files();
+$csv_file = 'temp' . DS . $_SESSION['csv']['name'] . '.csv';
 
 if (isset($_GET['cancel'])) {
     $action = $_SESSION['csv']['action']??MWB . 'bibliography/import.php';
 
     // remove csv file
-    $files_disk->delete('temp' . DS . $_SESSION['csv']['name'] . '.csv');
+    $files_disk->delete($csv_file);
 
     // clear csv session
     unset($_SESSION['csv']['name']);
@@ -51,6 +52,9 @@ if (isset($_GET['cancel'])) {
     // redirect to previous content
     redirect()->simbioAJAX($action);
 }
+ 
+
+if ( $files_disk->isExists($csv_file) ) : 
 ?>
 
 <div class="menuBox">
@@ -213,3 +217,11 @@ if (isset($_GET['cancel'])) {
         })
     </script>
 </div>
+<?php else :
+$action = $_SESSION['csv']['action']??MWB . 'bibliography/import.php';
+unset($_SESSION['csv']);
+?>
+<script>$('#mainContent').simbioAJAX(`<?php echo $action; ?>`);</script>
+<?php
+endif; 
+?>

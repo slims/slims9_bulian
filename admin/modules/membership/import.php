@@ -20,9 +20,11 @@
 
 /* Biblio Import section */
 use SLiMS\Filesystems\Storage;
+use SLiMS\DB;
 use SLiMS\Csv\Writer;
 use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
+use SLiMS\Debug\VarDumper;
 
 /* Member Import section */
 
@@ -53,9 +55,6 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
-// Redirect content
-if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
-
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 {
   // Create Csv instance
@@ -77,6 +76,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 $max_chars = 4096;
 
 if (isset($_POST['doImport'])) {
+    if ( empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name']) ) {
+        utility::jsToastr(__('Import Tool'), __('No CSV file selected to import, please choose CSV file first!'), 'error');
+        exit();        
+    }
+
     // create upload object
     $files_disk = Storage::files();
     
@@ -134,10 +138,6 @@ if (isset($_POST['doImport'])) {
         // Redirect content
         redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
     } else {
-        // set PHP time limit
-        set_time_limit(7200);
-        // set ob implicit flush
-        ob_implicit_flush();
         $row_count = 0;
         // check for import setting
         $record_num = intval($_SESSION['csv']['format']['recordNum']);
@@ -146,30 +146,41 @@ if (isset($_POST['doImport'])) {
         $record_offset = intval($_SESSION['csv']['format']['recordOffset']);
         $record_offset = $record_offset-1;
         // get current datetime
+        $start_time = time();
         $curr_datetime = date('Y-m-d H:i:s');
         $curr_datetime = '\''.$curr_datetime.'\'';
         // foreign key id cache
         $mtype_id_cache = array();
         // read file line by line
         $inserted_row = 0;
-        $file = $files_disk->readStream('temp' . DS . $_SESSION['csv']['name'] . '.csv');
-        $fileNumber = $files_disk->readStream('temp' . DS . $_SESSION['csv']['name'] . '.csv');
+        $csv = 'temp' . DS . $_SESSION['csv']['name'] . '.csv';
+        $file = $files_disk->readStream($csv);
+        $fileNumber = $files_disk->readStream($csv);
         $n = 0;
 
         // get total line
         $lineNumber = 0;
         while (!feof($fileNumber)) {
-            $line = fgets($fileNumber);
+            $line = fgets($fileNumber, $max_chars);
             if (empty($line)) continue;
             $lineNumber++;
-            ob_flush();
-            flush();
         }
 
-        // close file handle
-        fclose($fileNumber);
-
         try {
+            $pdo = DB::getInstance();
+            $state = $pdo->prepare(<<<SQL
+                INSERT IGNORE INTO member
+                    (member_id, member_name, gender, 
+                    member_type_id, member_email, member_address, 
+                    postal_code, inst_name, is_new, member_image, 
+                    pin, member_phone, member_fax, 
+                    member_since_date, register_date, 
+                    expire_date, birth_date, member_notes, mpasswd,
+                    input_date, last_update)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                    now(),now());
+            SQL);
+
             while (!feof($file)) {
                 // record count
                 if ($record_num > 0 AND $row_count == $record_num) {
@@ -177,82 +188,112 @@ if (isset($_POST['doImport'])) {
                 }
                 // skip first line if it is column header
                 if ($_SESSION['csv']['header'] && $row_count == 0) {
+                    // pass and continue to next loop
+                    $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
+                    $_SESSION['csv']['header'] = false;
                     continue;
                 }
                 // go to offset
                 if ($row_count < $record_offset) {
                     // pass and continue to next loop
-                    $row = fgets($file, $max_chars);
+                    $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
                     $row_count++;
                     continue;
-                } else {
-                    // get an array of field
-                    $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
-                    if ($field) {
-                        // strip escape chars from all fields
-                        foreach ($field as $idx => $value) {
-                            $field[$idx] = str_replace('\\', '', trim($value));
-                            $field[$idx] = $dbs->escape_string($field[$idx]);
-                        }
-                        // strip leading field encloser if any
-                        $member_id = preg_replace('@^\\\s*'.$field_enc.'@i', '', $field[0]);
-                        $member_id = '\''.$member_id.'\'';
-                        $member_name = '\''.$field[1].'\'';
-                        $gender = ( ! empty($field[2])) ? $field[2] : 0; // patched by Indra Sutriadi
-                        $member_type_id = utility::getID($dbs, 'mst_member_type', 'member_type_id', 'member_type_name', $field[3], $mtype_id_cache);
-                        $member_email = $field[4]?'\''.$field[4].'\'':'NULL';
-                        $member_address = $field[5]?'\''.$field[5].'\'':'NULL';
-                        $postal_code = $field[6]?'\''.$field[6].'\'':'NULL';
-                        $inst_name = $field[7]?'\''.$field[7].'\'':'NULL';
-                        $is_new = $field[8]?$field[8]:'0';
-                        $member_image = $field[9]?'\''.$field[9].'\'':'NULL';
-                        $pin = $field[10]?'\''.$field[10].'\'':'NULL';
-                        $member_phone = $field[11]?'\''.$field[11].'\'':'NULL';
-                        $member_fax = $field[12]?'\''.$field[12].'\'':'NULL';
-                        $member_since_date = '\''.$field[13].'\'';
-                        $register_date = '\''.$field[14].'\'';
-                        $expire_date = '\''.$field[15].'\'';
-                        $birth_date = $field[16]?'\''.$field[16].'\'':'NULL';
-                        $member_notes = preg_replace('@\\\s*'.$field_enc.'$@i', '', $field[17]);
-                        $member_notes = $member_notes?'\''.$member_notes.'\'':'NULL';
-                        // Password column
-                        $lastKey = array_key_last($field);
-                        $withPassword = isset($_SESSION['csv']['password']) && $_SESSION['csv']['password'] == 1;
-                        $isPasswordValid = isset($field[$lastKey]) && !empty($field[$lastKey]);
-                        $mpasswd = $withPassword && $isPasswordValid ? '\'' . password_hash($field[$lastKey], PASSWORD_BCRYPT) . '\'' : 'NULL';
+                }
 
-                        // sql insert string
-                        $sql_str = "INSERT IGNORE INTO member
-                            (member_id, member_name, gender,
-                            member_type_id, member_email, member_address, postal_code,
-                            inst_name, is_new, member_image, pin, member_phone,
-                            member_fax, member_since_date, register_date,
-                            expire_date, birth_date, member_notes,
-                            input_date, last_update,mpasswd)
-                                VALUES ($member_id, $member_name, $gender,
-                                $member_type_id, $member_email, $member_address, $postal_code,
-                                $inst_name, $is_new,
-                                $member_image, $pin, $member_phone,
-                                $member_fax, $member_since_date, $register_date,
-                                $expire_date, $birth_date, $member_notes,
-                                $curr_datetime, $curr_datetime, $mpasswd)";
-    
-                        // send query
-                        @$dbs->query($sql_str);
-                        
-                        if (!$dbs->error) {
-                          $inserted_row++;
-                        } else {
-                          throw new Exception($dbs->error . ' with query : ' . $sql_str);
-                        }
+                // get an array of field
+                $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
+                if ($field) {
+                    // pre-process some fields
+                    $field[3] = utility::getID($dbs, 'mst_member_type', 'member_type_id', 'member_type_name', $field[3], $mtype_id_cache);
+                    $field[17] = ( isset($field[18]) && !empty($field[17]) ) ? $field[17] : null;
+                    
+                    // if last field is password field, hash it
+                    $withPassword = isset($_SESSION['csv']['password']) && $_SESSION['csv']['password'] == 1;
+                    $isPasswordValid = isset($field[18]) && !empty($field[18]);
+                    $field[18] = ($withPassword && $isPasswordValid) ? password_hash($field[18], PASSWORD_BCRYPT) : null;
+                    
+                    // remove extra fields
+                    array_splice($field, 19, 10);
+
+                    // echo "<pre>".print_r($field, true)."<pre>"; die();
+
+                    $state->execute($field);
+
+                    /* process fields
+
+                    // strip escape chars from all fields
+                    foreach ($field as $idx => $value) {
+                        $field[$idx] = str_replace('\\', '', trim($value));
+                        $field[$idx] = $dbs->escape_string($field[$idx]);
                     }
-                    $row_count++;
 
-                    importProgress(round($row_count/$lineNumber * 100));
-                    sleep(1);
+                    // strip leading field encloser if any
+                    $member_id = preg_replace('@^\\\s*'.$field_enc.'@i', '', $field[0]);
+                    $member_id = '\''.$member_id.'\'';
+                    $member_name = '\''.$field[1].'\'';
+                    $gender = ( ! empty($field[2])) ? $field[2] : 0; // patched by Indra Sutriadi
+                    $member_type_id = utility::getID($dbs, 'mst_member_type', 'member_type_id', 'member_type_name', $field[3], $mtype_id_cache);
+                    $member_email = $field[4]?'\''.$field[4].'\'':'NULL';
+                    $member_address = $field[5]?'\''.$field[5].'\'':'NULL';
+                    $postal_code = $field[6]?'\''.$field[6].'\'':'NULL';
+                    $inst_name = $field[7]?'\''.$field[7].'\'':'NULL';
+                    $is_new = $field[8]?$field[8]:'0';
+                    $member_image = $field[9]?'\''.$field[9].'\'':'NULL';
+                    $pin = $field[10]?'\''.$field[10].'\'':'NULL';
+                    $member_phone = $field[11]?'\''.$field[11].'\'':'NULL';
+                    $member_fax = $field[12]?'\''.$field[12].'\'':'NULL';
+                    $member_since_date = '\''.$field[13].'\'';
+                    $register_date = '\''.$field[14].'\'';
+                    $expire_date = '\''.$field[15].'\'';
+                    $birth_date = $field[16]?'\''.$field[16].'\'':'NULL';
+                    $member_notes = preg_replace('@\\\s*'.$field_enc.'$@i', '', $field[17]);
+                    $member_notes = $member_notes?'\''.$member_notes.'\'':'NULL';
+                    // Password column
+                    $lastKey = array_key_last($field);
+                    $withPassword = isset($_SESSION['csv']['password']) && $_SESSION['csv']['password'] == 1;
+                    $isPasswordValid = isset($field[$lastKey]) && !empty($field[$lastKey]);
+                    $mpasswd = $withPassword && $isPasswordValid ? '\'' . password_hash($field[$lastKey], PASSWORD_BCRYPT) . '\'' : 'NULL';
+
+                    $sql_str = "INSERT IGNORE INTO member
+                        (member_id, member_name, gender,
+                        member_type_id, member_email, member_address, postal_code,
+                        inst_name, is_new, member_image, pin, member_phone,
+                        member_fax, member_since_date, register_date,
+                        expire_date, birth_date, member_notes,
+                        input_date, last_update,mpasswd)
+                            VALUES ($member_id, $member_name, $gender,
+                            $member_type_id, $member_email, $member_address, $postal_code,
+                            $inst_name, $is_new,
+                            $member_image, $pin, $member_phone,
+                            $member_fax, $member_since_date, $register_date,
+                            $expire_date, $birth_date, $member_notes,
+                            $curr_datetime, $curr_datetime, $mpasswd)";
+    
+                    // send query
+                    @$dbs->query($sql_str);
+                    
+                    
+                    if (!$dbs->error) {
+                      $inserted_row++;
+                    } else {
+                      throw new Exception($dbs->error . ' with query : ' . $sql_str);
+                    }
+                    */
+                    if ($state) {
+                        VarDumper::dump(
+                            str_replace('{member}', $field[1]??'?', __('Success importing member data : {member}'))
+                        );
+
+                        $row_count++;
+                        importProgress(round($row_count/$lineNumber * 100));
+                        usleep(2500);
+                    }
                 }
             }
         } catch (Exception $e) {
+            // Reset session
+            unset($_SESSION['csv']);
             $errorMessage = $e->getMessage();
             toastr($errorMessage)->error();
             exit(<<<HTML

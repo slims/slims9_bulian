@@ -59,9 +59,6 @@ if ($sysconf['index']['type'] == 'index') {
   $indexer = new biblio_indexer($dbs);
 }
 
-// Redirect content
-if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
-
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 {
   // Create Csv instance
@@ -84,6 +81,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 $max_chars = 1024*100;
 
 if (isset($_POST['doImport'])) {
+  if ( empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name']) ) {  
+    utility::jsToastr(__('Import Tool'), __('No CSV file selected to import, please choose CSV file first!'), 'error');
+    exit();        
+  }
+
   // create upload object
   $files_disk = Storage::files();
   
@@ -167,6 +169,16 @@ if (isset($_POST['doImport'])) {
     
 
     try {
+      $pdo = DB::getInstance();
+      $state = $pdo->prepare(<<<SQL
+      INSERT IGNORE INTO biblio (title, gmd_id, edition,
+          isbn_issn, publisher_id, publish_year,
+          collation, series_title, call_number,
+          language_id, publish_place_id, classification,
+          notes, image, sor, input_date, last_update)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
+      SQL);
+
       // exit(str_replace('{title}', 'Darno'??'?', __('Success importing bibliographic data : {title}')));
       $reader->readFromStream($file);
 
@@ -208,7 +220,7 @@ if (isset($_POST['doImport'])) {
         // strip escape chars from all fields
         $field[$index] = str_replace('\\', '', trim($currentValue??''));
 
-      }, processor: function($reader, $row) use($dbs, $sysconf, $indexer, $lineNumber) {
+      }, processor: function($reader, $row) use($dbs, $pdo, $sysconf, $indexer, $lineNumber, $state) {
 
         $fields = $reader->getFields();
         $fields = array_pop($fields);
@@ -221,16 +233,6 @@ if (isset($_POST['doImport'])) {
         unset($fields[15]);
         unset($fields[16]);
         unset($fields[17]);
-        
-        $pdo = DB::getInstance();
-        $state = $pdo->prepare(<<<SQL
-        INSERT IGNORE INTO biblio (title, gmd_id, edition,
-                    isbn_issn, publisher_id, publish_year,
-                    collation, series_title, call_number,
-                    language_id, publish_place_id, classification,
-                    notes, image, sor, input_date, last_update)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
-        SQL);
 
         $state->execute($fields);
 
@@ -241,7 +243,7 @@ if (isset($_POST['doImport'])) {
           $biblio_id = $pdo->lastInsertId();
 
           if (!empty($authors)) {
-            $biblio_author_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES (?,?,?)');
+            $biblio_author_sql = $pdo->prepare('INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES (?,?,?)');
             $authors = explode('><', trim($authors, '<>'));
             foreach ($authors as $author) {
               $author = trim(str_replace(array('>', '<'), '', $author));
@@ -251,7 +253,7 @@ if (isset($_POST['doImport'])) {
           }
 
           if (!empty($subjects)) {
-            $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
+            $biblio_subject_sql = $pdo->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
             $subjects = explode('><', trim($subjects, '<>'));
             foreach ($subjects as $subject) {
               $subject = trim(str_replace(array('>', '<'), '', $subject));
@@ -262,7 +264,7 @@ if (isset($_POST['doImport'])) {
 
           // items
           if (!empty($items)) {
-            $item_sql = DB::getInstance()->prepare('INSERT IGNORE INTO item (biblio_id, item_code) VALUES (?,?)');
+            $item_sql = $pdo->prepare('INSERT IGNORE INTO item (biblio_id, item_code) VALUES (?,?)');
             $item_array = explode('><', $items);
             foreach ($item_array as $item) {
               $item = trim(str_replace(array('>', '<'), '', $item));
@@ -281,6 +283,8 @@ if (isset($_POST['doImport'])) {
         }
       });
     } catch (Exception $e) {
+      // Reset session
+      unset($_SESSION['csv']);
       $errorMessage = $e->getMessage();
       exit(<<<HTML
       <script>

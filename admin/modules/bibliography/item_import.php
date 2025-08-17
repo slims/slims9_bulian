@@ -20,8 +20,11 @@
 
 /* Item Import section */
 use SLiMS\Filesystems\Storage;
+use SLiMS\DB;
 use SLiMS\Csv\Writer;
+use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
+use SLiMS\Debug\VarDumper;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -49,9 +52,6 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
-// Redirect content
-if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
-
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 {
   // Create Csv instance
@@ -71,6 +71,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 $max_chars = 1024*100;
 
 if (isset($_POST['doImport'])) {
+    if ( empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name']) ) {  
+        utility::jsToastr(__('Import Tool'), __('No CSV file selected to import, please choose CSV file first!'), 'error');
+        exit();        
+    }
+
      // create upload object
     $files_disk = Storage::files();
 
@@ -126,10 +131,6 @@ if (isset($_POST['doImport'])) {
         redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
     } else {
         $start_time = time();
-        // set PHP time limit
-        set_time_limit(0);
-        // set ob implicit flush
-        ob_implicit_flush();
         $row_count = 0;
         // check for import setting
         $record_num = intval($_SESSION['csv']['format']['recordNum']);
@@ -154,14 +155,30 @@ if (isset($_POST['doImport'])) {
         // get total line
         $lineNumber = 0;
         while (!feof($fileNumber)) {
-            $line = fgets($fileNumber);
+            $line = fgets($fileNumber, $max_chars);
             if (empty($line)) continue;
             $lineNumber++;
-            ob_flush();
-            flush();
         }
 
         try {
+            $pdo = DB::getInstance();
+            $state_insert = $pdo->prepare(<<<SQL
+                INSERT IGNORE INTO item (biblio_id, item_code, call_number, coll_type_id,
+                    inventory_code, received_date, supplier_id,
+                    order_no, location_id, order_date, item_status_id, site,
+                    source, invoice, price, price_currency, invoice_date,
+                    input_date, last_update)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            SQL);
+
+            $state_update = $pdo->prepare(<<<SQL
+                UPDATE item SET call_number = ?, coll_type_id = ?,
+                    inventory_code = ?, received_date = ?, supplier_id = ?,
+                    order_no = ?, location_id = ?, order_date = ?, item_status_id = ?, site = ?,
+                    source = ?, invoice = ?, price = ?, price_currency = ?, invoice_date = ?,
+                    input_date = ?, last_update = ? WHERE item_code = ?;
+            SQL);
+
             while (!feof($file)) {
                 // record count
                 if ($record_num > 0 AND $row_count == $record_num) {
@@ -170,13 +187,48 @@ if (isset($_POST['doImport'])) {
                 // go to offset
                 if ($row_count < $record_offset) {
                     // pass and continue to next loop
-                    $field = fgetcsv($file, 1024, $field_sep, $field_enc);
+                    $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
                     $row_count++;
                     continue;
                 } else {
                     // get an array of field
                     $field = fgetcsv($file, $max_chars, $field_sep, $field_enc);
                     if ($field) {
+                        // preprocess fields
+                        $item_code = $field[0];
+                        $title = $field[18];
+                        $field[2] = utility::getID($dbs, 'mst_coll_type', 'coll_type_id', 'coll_type_name', $field[2], $ct_id_cache);
+                        $field[5] = utility::getID($dbs, 'mst_supplier', 'supplier_id', 'supplier_name', $field[5], $spl_id_cache);
+                        $field[7] = utility::getID($dbs, 'mst_location', 'location_id', 'location_name', $field[7], $loc_id_cache);
+                        $field[9] = utility::getID($dbs, 'mst_item_status', 'item_status_id', 'item_status_name', $field[9], $stat_id_cache);
+                        $field[4] = !empty($field[4])?$field[4]:date('Y-m-d H:i:s');
+                        $field[8] = !empty($field[8])?$field[8]:date('Y-m-d H:i:s');
+                        $field[15] = !empty($field[15])?$field[15]:date('Y-m-d H:i:s');
+                        $field[16] = !empty($field[16])?$field[16]:date('Y-m-d H:i:s');
+                        $field[17] = !empty($field[17])?$field[17]:date('Y-m-d H:i:s');
+                        $field[13] = !empty($field[13])?$field[13]:0.0;
+
+                        // get biblio_id
+                        $b_q = $dbs->query(sprintf("select biblio_id from biblio where title = '%s'", $dbs->real_escape_string($title)));
+                        if($b_q->num_rows < 1) continue;
+                        $b_d = $b_q->fetch_row();
+                        $biblio_id = $b_d[0];
+        
+                        // sql insert string
+                        if (!isItemExists($item_code)) {
+                            // prepend biblio id
+                            array_unshift($field, $biblio_id);
+                            // echo "<pre>".print_r($field, true)."<pre>";
+                            $state_insert->execute($field);
+                        } else {
+                            unset($field[0], $field[18]);
+                            $field[] = $item_code;
+                            // reset array keys number
+                            $field = array_values($field);
+                            // echo "<pre>".print_r($field, true)."<pre>";
+                            $state_update->execute($field);
+                        }
+                        /*
                         // strip escape chars from all fields
                         foreach ($field as $idx => $value) {
                             $field[$idx] = str_replace('\\', '', trim($value));
@@ -243,14 +295,20 @@ if (isset($_POST['doImport'])) {
                             $dbs->query($sql_str);
                             if ($dbs->affected_rows > 0) { $updated_row++; }
                         }
+                        */
                     }
-
+                    
+                    VarDumper::dump(
+                        str_replace(['{item_code}', '{title}'], [$item_code, $title], __('Success importing item data : {item_code} ({title})'))
+                    );
                     $row_count++;
                     importProgress(round($row_count/$lineNumber * 100));
                     usleep(2500);
                 }
             }
         } catch (Exception $e) {
+            // Reset session
+            unset($_SESSION['csv']);
             $errorMessage = $e->getMessage();
             toastr($errorMessage)->error();
             exit(<<<HTML
