@@ -106,6 +106,22 @@ class utility
       return $_random;
     }
 
+    /**
+     * Static Method to safe unserialize a string
+     *
+     * @param   string  $str
+     * @return  mixed
+     */
+    public static function unserialize($str) {
+        $str = preg_replace_callback(
+            '!s:(\d+):"(.*?)";!s',
+            function($m) {
+                return 's:'.strlen($m[2]).':"'.$m[2].'";';
+            },
+            $str
+        );
+        return unserialize($str);
+    }
 
     /**
      * Static Method to load application settings from database
@@ -119,7 +135,7 @@ class utility
         $_setting_query = $obj_db->query('SELECT * FROM setting');
         if (!$obj_db->errno) {
             while ($_setting_data = $_setting_query->fetch_assoc()) {
-                $_value = @unserialize($_setting_data['setting_value']);
+                $_value = static::unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
                     // make sure setting is available before
                     if (!isset($sysconf[$_setting_data['setting_name']]))
