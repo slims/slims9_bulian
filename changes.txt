@@ -43,6 +43,37 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.7 (Bulian D Roger)
+========================================================================
+Security - System security enhancements to protect data and application stability.
+• Comprehensive Security Patch: Patches SQL Injection and Stored XSS vulnerabilities, and enforces stronger password policies.
+• Server-Side Attack Prevention: Fixes potential Server-Side Request Forgery (SSRF) and SQL Injection vulnerabilities.
+• Upload Area Security: Improves .htaccess security.
+• Disables PHP5 script execution.
+• Sensitive Data Protection: Prevents direct access to hidden bibliographic details from the OPAC; hides credentials on error pages.
+• Cookie and Session Security: Default SecureCookie attribute for user session security.
+• Other Mitigations: Stripping EXIF ​​data from uploaded images; fixed ModSecurity issue.
+________________________________________
+Feature Enhancements & Changes
+• Customization and Extensibility: Added Custom Fields for Items; Expanded plugin ecosystem with the ability to load third-party languages; register new menus, and support for plugin modules.
+• Added new hooks to the system: login process, OAI, and deeper system customization configuration.
+• Support for custom OPAC templates.
+• Database and Data Management: Implemented the ability to connect to multiple databases simultaneously, added a file migration feature to another server, and configured the Copy Cataloging feature.
+• Development Environment: Docker support.
+• User Interface and Experience (UI/UX): Implemented a "Debug Box" to display debug information in a more structured manner, improved AJAX dropdown performance, and added a progress button for the data import process.
+________________________________________
+Bug Fixes
+• Data Import: Fixed various issues during the import process of bibliographic data (including MARC format) and membership, and fixed a bug where the import preview did not match the selected column separator.
+• Application Stability: Fixed "undefined variable," "undefined key," or "undefined offset" errors in various modules.
+• Data Management: Addressed issues with author and subject orphaned data deletion, the deletion process in the GMD module, the visit space, and backup files.
+• Module Functionality: Improved LDAP authentication functionality, resolved barcode label plugin compatibility, and improved filtering and updating borrowing history table.
+• System and Configuration: Fixed errors for large file upload, addressed incorrect URLs when running behind a web proxy, and resolved schema and multi-instance connection issues in PDO.
+________________________________________
+Other
+• Dependency Updates: Updated external libraries such as gettext, PHPSpreadsheet, league/flysystem, and symfony/var-dumper.
+• Refactoring and Code Quality Improvements: Refactored the registerAutoload strategy and form handling with the FormAjax class.
+• Documentation: Added and updated documentation for the Polyglot feature, Actions, and Docker commands.
+
 SLiMS 9.6.1 (Bulian)
 ========================================================================
 Add : CSP Manager

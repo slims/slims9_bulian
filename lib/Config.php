@@ -26,6 +26,7 @@ namespace SLiMS;
 use Generator;
 use PDO;
 use Symfony\Component\Finder\Finder;
+use utility;
 
 class Config
 {
@@ -79,7 +80,7 @@ class Config
         try {
             $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
             while ($data = $query->fetch(PDO::FETCH_OBJ)) {
-                $value = @unserialize($data->setting_value);
+                $value = utility::unserialize($data->setting_value);
 
                 if (is_array($value)) {
                     foreach ($value as $id => $current_value) {
