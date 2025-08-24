@@ -67,6 +67,20 @@ trait Guard
     }
 
     /**
+     * File image check
+     * @return boolean
+     */
+    public function isImageFile()
+    {
+        if (!$this->uploadStatus) return false;
+        $this->uploadStatus = exif_imagetype($this->path.$this->uploadedFile);
+        if (!$this->uploadStatus) {
+            $this->error =  __('Wrong image filetype.');
+        }
+        return $this->uploadStatus;
+    }
+
+    /**
      * get upload status
      *
      * @return boolean

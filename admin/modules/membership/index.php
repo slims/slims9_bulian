@@ -197,6 +197,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $image->isExtensionAllowed($sysconf['allowed_images']);
                 // File size check
                 $image->isLimitExceeded($sysconf['max_image_upload']*1024);
+                // Is it really image file
+                $image->isImageFile();
                 // destroy it if failed
                 if (!empty($image->getError())) $image->destroyIfFailed();
                 // remove exif from image
