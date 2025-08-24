@@ -209,7 +209,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             } else {
                 // write log
                 $data['member_image'] = NULL;
-                writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')');
+                writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')', 'Member Image', 'Upload');
                 utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
