@@ -1019,7 +1019,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $str_input .= '</div>';
     $str_input .= '</div>';
     $str_input .= '<div class="custom-file col-7">';
-    $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+    $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"  accept="'.implode(',', $sysconf['allowed_images']).'"');
     $str_input .= '<label class="custom-file-label" for="customFile">' . __('Choose file') . '</label>';
     $str_input .= '<div style="padding: 10px;margin-left: -25px;">';
     $str_input .= '<div>' . __('Or download from url') . '</div>';
