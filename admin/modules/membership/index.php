@@ -208,7 +208,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $data['member_image'] = $dbs->escape_string($upload->getUploadedFileName());
             } else {
                 // write log
-                $data['member_image'] = NULL;
                 writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')', 'Member Image', 'Upload failed');
                 utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
             }
