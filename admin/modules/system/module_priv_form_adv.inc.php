@@ -75,16 +75,19 @@ HTML;
                     $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus(str_replace(' ', '_', $module_data['module_name']));
                     $menu = array_merge($menu, $plugin_menus);
 
-                    foreach ($menu as $item) {
+                    foreach ($menu as $id => $item) {
                         if ($item[0] == 'Header') continue;
-                        $id = md5($item[1]);
+                        $id = (!is_numeric($id)) ? $id : md5($item[1]);
                         $menu_checked = in_array($id, $priv_data[$module_data['module_id']]['menus'] ?? []) ? 'checked' : '';
                         $submenu .= <<<HTML
 <li class="list-group-item px-4">
     <div class="px-2">
         <div class="custom-control custom-switch">
           <input name="menus[{$module_data['module_id']}][]" value="{$id}" {$menu_checked} type="checkbox" class="custom-control-input" id="menu-{$module_data['module_id']}-{$id}">
-          <label class="custom-control-label" for="menu-{$module_data['module_id']}-{$id}">{$item[0]}</label>
+          <label class="custom-control-label d-flex justify-content-between" for="menu-{$module_data['module_id']}-{$id}">
+            <span>{$item[0]}</span>
+            <code>{$id}</code>
+          </label>
         </div>
     </div>
 </li>

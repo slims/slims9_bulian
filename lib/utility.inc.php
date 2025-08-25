@@ -187,6 +187,13 @@ class utility
         return false;
     }
 
+    public static function haveAccess($id)
+    {
+        $module = explode('.', $id)[0];
+        // check if user has permission for the current url
+        return in_array($id, $_SESSION['priv'][$module]['menus'] ?? []);
+    }
+
 
     /**
      * Static Method to write application activities logs
