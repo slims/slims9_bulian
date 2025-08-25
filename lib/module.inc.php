@@ -184,9 +184,10 @@ class module extends simbio
 
         $menus = [];
         foreach ($this->reorderMenus($menu, $plugin_menus) as $header => $items) {
-            foreach ($items as $item) {
+            foreach ($items as $id => $item) {
                 $menus[$header] = $menus[$header] ?? [];
-                if ($_SESSION['uid'] > 1 && !empty($str_module) && !in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                $id = (is_numeric($id)) ? md5($item[1]) : $id;
+                if ($_SESSION['uid'] > 1 && !empty($str_module) && !in_array($id, $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
                 $menus[$header][] = $item;
             }
         }
@@ -209,7 +210,7 @@ class module extends simbio
 
         // collect header from default menu
         $header = null;
-        foreach ($default as $menu) {
+        foreach ($default as $key => $menu) {
             if (count($menu) === 2 && strtolower($menu[0]) === 'header') {
                 // before continue to new header
                 // check to plugin group
@@ -258,7 +259,7 @@ class module extends simbio
                 if (isset($override_menu[3])) unset($plugin[md5(realpath($override_menu[3]??''))]);
 
                 // Register menu into group
-                $groups[strtolower($header)][] = $override_menu;
+                $groups[strtolower($header)][$key] = $override_menu;
             }
         }
 
