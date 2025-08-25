@@ -187,7 +187,7 @@ class module extends simbio
             foreach ($items as $id => $item) {
                 $menus[$header] = $menus[$header] ?? [];
                 $id = (is_numeric($id)) ? md5($item[1]) : $id;
-                if ($_SESSION['uid'] > 1 && !empty($str_module) && !in_array($id, $_SESSION['priv'][$str_module]['menus'] ?? [])) continue;
+                if ($_SESSION['uid'] > 1 && !empty($str_module) && !utility::haveAccess($id)) continue;
                 $menus[$header][] = $item;
             }
         }
