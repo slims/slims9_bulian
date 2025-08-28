@@ -133,7 +133,8 @@ trait Utils
                 // create image from string
                 #$image = imagecreatefromstring($buffer);
                 $image = new \claviska\SimpleImage();
-                $image->fromDataUri($buffer); 
+                $image->fromDataUri($buffer);
+                $image->save();
 
                 if (function_exists(($functionName = 'image' . $ext))) {
                     $compressLevel = [

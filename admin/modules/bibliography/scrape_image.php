@@ -45,6 +45,10 @@ if (!($can_read && $can_write)) {
 try {
     // field check
     if (!isset($_POST['imageURL']) && empty($_POST['imageURL'])) throw new Exception(__('URL can\'t empty!'));
+    // make sure it is http request only
+    if (strcasecmp(substr($_POST['imageURL'], 0, 4), 'http') != 0) {
+        throw new Exception(__('Must be http URL!'));
+    }
 
     // imageURL must be a valid URL format
     $url = $_POST['imageURL'];
