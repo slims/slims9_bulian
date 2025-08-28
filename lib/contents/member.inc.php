@@ -754,6 +754,29 @@ if ($is_member_login) :
 
     }
 
+    $section = isset($_GET['sec']) ? trim($_GET['sec']) : 'current_loan';
+
+    // print digital member card
+    if ($section === 'membercard') :
+        include SB.'admin'.DS.'admin_template'.DS.'printed_settings.inc.php';
+        // check for custom template settings
+        $custom_settings = SB.'admin'.DS.$sysconf['admin_template']['dir'].DS.$sysconf['template']['theme'].DS.'printed_settings.inc.php';
+        if (file_exists($custom_settings)) {
+            include $custom_settings;
+        }
+        loadPrintSettings($dbs, 'membercard');
+
+        $card_conf = $sysconf['print']['membercard'];
+        $card_template = $card_conf['template'];
+        $card_path = SWB.FLS.DS.'membercard'.DS.$card_template.DS;
+        $card_logo = $card_path.IMG.DS.$card_conf['logo'];
+        $card_stamp = $card_path.IMG.DS.$card_conf['stamp_file'];
+        $card_signature = $card_path.IMG.DS.$card_conf['signature_file'];
+        $size = 2;
+
+        include UPLOAD . DS . 'membercard' . DS . 'individual-membercard.php';
+        exit();
+    endif;
     ?>
 
     <div class="d-flex">
@@ -761,8 +784,8 @@ if ($is_member_login) :
             <div class="p-4">
                 <img src="<?= $member_image_url ?>" alt="member photo" class="rounded shadow">
             </div>
-            <a href="index.php?p=member&logout=1" class="btn btn-danger btn-block"><i
-                        class="fas fa-sign-out-alt mr-2"></i><?php echo __('LOGOUT'); ?></a>
+            <a href="index.php?p=member&sec=membercard" class="btn btn-primary btn-block" target="_blank"><i class="fas fa-address-card mr-2"></i><?php echo __('View Library Card'); ?></a>
+            <a href="index.php?p=member&logout=1" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt mr-2"></i><?php echo __('LOGOUT'); ?></a>
         </div>
         <div class="flex-grow-1 p-4" id="member_content">
             <div class="text-sm text-grey-dark">
@@ -780,7 +803,7 @@ if ($is_member_login) :
                     <i class="far fa-user mr-2 text-green"></i><?php echo $_SESSION['m_member_type']; ?>
                 <?php endif; ?>
             </div>
-            <h1 class="mb-2">Hi, <?php echo $_SESSION['m_name']; ?></h1>
+            <h1 class="mb-2">Hi, <?php echo $_SESSION['m_name']; ?> <a href="index.php?p=member&sec=membercard" title="View Library Card" class="btn btn-primary" target="_blank"><i class="fas fa-address-card"></i></a></h1>
             <p id="info" class="w-75 mb-4">
                 <?php echo $info; ?>
             </p>
@@ -810,7 +833,7 @@ if ($is_member_login) :
                             'link' => 'index.php?p=member&sec=my_account'
                         ]
                     ];
-                    $section = isset($_GET['sec']) ? trim($_GET['sec']) : 'current_loan';
+                    
                     foreach ($tabs_menus as $km => $kv) {
                         $active = $section === $km ? 'active' : '';
                         $m = '<li class="nav-item">';
