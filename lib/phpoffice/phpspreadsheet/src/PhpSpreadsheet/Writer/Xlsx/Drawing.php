@@ -3,6 +3,7 @@
 namespace PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx\Namespaces;
 use PhpOffice\PhpSpreadsheet\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -34,8 +35,8 @@ class Drawing extends WriterPart
 
         // xdr:wsDr
         $objWriter->startElement('xdr:wsDr');
-        $objWriter->writeAttribute('xmlns:xdr', 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing');
-        $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
+        $objWriter->writeAttribute('xmlns:xdr', Namespaces::SPREADSHEET_DRAWING);
+        $objWriter->writeAttribute('xmlns:a', Namespaces::DRAWINGML);
 
         // Loop through images and write drawings
         $i = 1;
@@ -66,7 +67,7 @@ class Drawing extends WriterPart
         }
 
         // unparsed AlternateContent
-        $unparsedLoadedData = $worksheet->getParent()->getUnparsedLoadedData();
+        $unparsedLoadedData = $worksheet->getParentOrThrow()->getUnparsedLoadedData();
         if (isset($unparsedLoadedData['sheets'][$worksheet->getCodeName()]['drawingAlternateContents'])) {
             foreach ($unparsedLoadedData['sheets'][$worksheet->getCodeName()]['drawingAlternateContents'] as $drawingAlternateContent) {
                 $objWriter->writeRaw($drawingAlternateContent);
@@ -89,22 +90,49 @@ class Drawing extends WriterPart
         $tl = $chart->getTopLeftPosition();
         $tlColRow = Coordinate::indexesFromString($tl['cell']);
         $br = $chart->getBottomRightPosition();
-        $brColRow = Coordinate::indexesFromString($br['cell']);
 
-        $objWriter->startElement('xdr:twoCellAnchor');
+        $isTwoCellAnchor = $br['cell'] !== '';
+        if ($isTwoCellAnchor) {
+            $brColRow = Coordinate::indexesFromString($br['cell']);
 
-        $objWriter->startElement('xdr:from');
-        $objWriter->writeElement('xdr:col', (string) ($tlColRow[0] - 1));
-        $objWriter->writeElement('xdr:colOff', self::stringEmu($tl['xOffset']));
-        $objWriter->writeElement('xdr:row', (string) ($tlColRow[1] - 1));
-        $objWriter->writeElement('xdr:rowOff', self::stringEmu($tl['yOffset']));
-        $objWriter->endElement();
-        $objWriter->startElement('xdr:to');
-        $objWriter->writeElement('xdr:col', (string) ($brColRow[0] - 1));
-        $objWriter->writeElement('xdr:colOff', self::stringEmu($br['xOffset']));
-        $objWriter->writeElement('xdr:row', (string) ($brColRow[1] - 1));
-        $objWriter->writeElement('xdr:rowOff', self::stringEmu($br['yOffset']));
-        $objWriter->endElement();
+            $objWriter->startElement('xdr:twoCellAnchor');
+
+            $objWriter->startElement('xdr:from');
+            $objWriter->writeElement('xdr:col', (string) ($tlColRow[0] - 1));
+            $objWriter->writeElement('xdr:colOff', self::stringEmu($tl['xOffset']));
+            $objWriter->writeElement('xdr:row', (string) ($tlColRow[1] - 1));
+            $objWriter->writeElement('xdr:rowOff', self::stringEmu($tl['yOffset']));
+            $objWriter->endElement();
+            $objWriter->startElement('xdr:to');
+            $objWriter->writeElement('xdr:col', (string) ($brColRow[0] - 1));
+            $objWriter->writeElement('xdr:colOff', self::stringEmu($br['xOffset']));
+            $objWriter->writeElement('xdr:row', (string) ($brColRow[1] - 1));
+            $objWriter->writeElement('xdr:rowOff', self::stringEmu($br['yOffset']));
+            $objWriter->endElement();
+        } elseif ($chart->getOneCellAnchor()) {
+            $objWriter->startElement('xdr:oneCellAnchor');
+
+            $objWriter->startElement('xdr:from');
+            $objWriter->writeElement('xdr:col', (string) ($tlColRow[0] - 1));
+            $objWriter->writeElement('xdr:colOff', self::stringEmu($tl['xOffset']));
+            $objWriter->writeElement('xdr:row', (string) ($tlColRow[1] - 1));
+            $objWriter->writeElement('xdr:rowOff', self::stringEmu($tl['yOffset']));
+            $objWriter->endElement();
+            $objWriter->startElement('xdr:ext');
+            $objWriter->writeAttribute('cx', self::stringEmu($br['xOffset']));
+            $objWriter->writeAttribute('cy', self::stringEmu($br['yOffset']));
+            $objWriter->endElement();
+        } else {
+            $objWriter->startElement('xdr:absoluteAnchor');
+            $objWriter->startElement('xdr:pos');
+            $objWriter->writeAttribute('x', '0');
+            $objWriter->writeAttribute('y', '0');
+            $objWriter->endElement();
+            $objWriter->startElement('xdr:ext');
+            $objWriter->writeAttribute('cx', self::stringEmu($br['xOffset']));
+            $objWriter->writeAttribute('cy', self::stringEmu($br['yOffset']));
+            $objWriter->endElement();
+        }
 
         $objWriter->startElement('xdr:graphicFrame');
         $objWriter->writeAttribute('macro', '');
@@ -132,10 +160,10 @@ class Drawing extends WriterPart
 
         $objWriter->startElement('a:graphic');
         $objWriter->startElement('a:graphicData');
-        $objWriter->writeAttribute('uri', 'http://schemas.openxmlformats.org/drawingml/2006/chart');
+        $objWriter->writeAttribute('uri', Namespaces::CHART);
         $objWriter->startElement('c:chart');
-        $objWriter->writeAttribute('xmlns:c', 'http://schemas.openxmlformats.org/drawingml/2006/chart');
-        $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+        $objWriter->writeAttribute('xmlns:c', Namespaces::CHART);
+        $objWriter->writeAttribute('xmlns:r', Namespaces::SCHEMA_OFFICE_DOCUMENT);
         $objWriter->writeAttribute('r:id', 'rId' . $relationId);
         $objWriter->endElement();
         $objWriter->endElement();
@@ -238,7 +266,7 @@ class Drawing extends WriterPart
 
             // a:blip
             $objWriter->startElement('a:blip');
-            $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+            $objWriter->writeAttribute('xmlns:r', Namespaces::SCHEMA_OFFICE_DOCUMENT);
             $objWriter->writeAttribute('r:embed', 'rId' . $relationId);
             $objWriter->endElement();
 
@@ -335,9 +363,9 @@ class Drawing extends WriterPart
 
         // xml
         $objWriter->startElement('xml');
-        $objWriter->writeAttribute('xmlns:v', 'urn:schemas-microsoft-com:vml');
-        $objWriter->writeAttribute('xmlns:o', 'urn:schemas-microsoft-com:office:office');
-        $objWriter->writeAttribute('xmlns:x', 'urn:schemas-microsoft-com:office:excel');
+        $objWriter->writeAttribute('xmlns:v', Namespaces::URN_VML);
+        $objWriter->writeAttribute('xmlns:o', Namespaces::URN_MSOFFICE);
+        $objWriter->writeAttribute('xmlns:x', Namespaces::URN_EXCEL);
 
         // o:shapelayout
         $objWriter->startElement('o:shapelayout');
@@ -531,7 +559,7 @@ class Drawing extends WriterPart
         }
 
         $objWriter->startElement('a:hlinkClick');
-        $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+        $objWriter->writeAttribute('xmlns:r', Namespaces::SCHEMA_OFFICE_DOCUMENT);
         $objWriter->writeAttribute('r:id', 'rId' . $hlinkClickId);
         $objWriter->endElement();
     }

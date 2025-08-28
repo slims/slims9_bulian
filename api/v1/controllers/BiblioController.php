@@ -53,12 +53,16 @@ class BiblioController extends Controller
             $return[] = $data;
         }
         if ($query->num_rows < $limit) {
+            $a_not_in = array ();
+            foreach ($return as $k => $v) {
+                $a_not_in[$k] = $v['biblio_id'];
+            }
+            $not_in = '('.implode(', ', $a_not_in).')';
             $need = $limit - $query->num_rows;
             if ($need < 0) {
                 $need = $limit;
             }
-
-            $sql = "SELECT biblio_id, title, image FROM biblio WHERE opac_hide < 1 ORDER BY last_update DESC LIMIT {$need}";
+            $sql = "SELECT biblio_id, title, image FROM biblio WHERE opac_hide < 1 AND biblio_id NOT IN ".$not_in." ORDER BY last_update DESC LIMIT {$need}";
             $query = $this->db->query($sql);
             while ($data = $query->fetch_assoc()) {
                 $data['image'] = $this->getImagePath($data['image']);

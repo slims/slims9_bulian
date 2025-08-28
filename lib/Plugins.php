@@ -9,10 +9,13 @@
 namespace SLiMS;
 
 
+use SLiMS\DB;
 use SLiMS\Cli\Console;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\Session\Factory;
+use Symfony\Component\Finder\Finder;
 use stdClass;
+use Exception;
 
 class Plugins
 {
@@ -33,15 +36,23 @@ class Plugins
     const BIBLIOGRAPHY_AFTER_DELETE = 'bibliography_after_delete';
     const BIBLIOGRAPHY_CUSTOM_FIELD_DATA = 'advance_custom_field_data';
     const BIBLIOGRAPHY_CUSTOM_FIELD_FORM = 'advance_custom_field_form';
+    const BIBLIOGRAPHY_BEFORE_DATAGRID_OUTPUT = 'bibliography_before_datagrid_output';
     const CIRCULATION_AFTER_SUCCESSFUL_TRANSACTION = 'circulation_after_successful_transaction';
+    const CIRCULATION_AFTER_START_TRANSACTION = 'circulation_after_start_transaction';
     const MEMBERSHIP_INIT = 'membership_init';
     const MEMBERSHIP_BEFORE_UPDATE = 'membership_before_update';
     const MEMBERSHIP_AFTER_UPDATE = 'membership_after_update';
     const MEMBERSHIP_BEFORE_SAVE = 'membership_before_save';
     const MEMBERSHIP_AFTER_SAVE = 'membership_after_save';
+    const MEMBERSHIP_CUSTOM_FIELD_DATA = 'membership_custom_field_data';
+    const MEMBERSHIP_CUSTOM_FIELD_FORM = 'membership_custom_field_form';
     const OVERDUE_NOTICE_INIT = 'overduenotice_init';
     const DUEDATE_NOTICE_INIT = 'duedate_init';
     const MODULE_MAIN_MENU_INIT = 'module_main_menu_init';
+    const OAI2_INIT = 'oai2_init';
+    const SYSTEM_BEFORE_CONFIGFORM_PRINTOUT = 'system_before_configform_printout';
+    const SYSTEM_BEFORE_CONFIG_SAVE = 'system_before_config_save';
+    const SYSTEM_AFTER_CONFIG_SAVE = 'system_after_config_save';
 
     private static $instance;
     /**
@@ -63,6 +74,7 @@ class Plugins
     private string $hook_handler = '';
     private string $current_location = '';
     private ?string $group_name = null;
+    private array $default_module = [];
 
     /**
      * Plugins constructor.
@@ -152,6 +164,7 @@ class Plugins
                         // get migration info
                         $this->plugins[$plugin->id] = $plugin;
                         $this->plugins[$plugin->id]->migration = $this->getMigrationInfo($plugin);
+                        $this->plugins[$plugin->id]->action = $this->getActionInfo($plugin);
                     }
                 } elseif (is_dir($path) && (substr($file, 0, 1) != '.')) {
                     // get plugins from sub folder location
@@ -185,6 +198,30 @@ class Plugins
     }
 
     /**
+     * Some times we need to move
+     * a file into SLiMS core code such as
+     * config etc without manual process. 
+     * Maybe you ask "Why we need action? Is it migration 
+     * feature is enough?" the answer is "seperate". Seperating 
+     * database migration process and file migration process.
+     * 
+     * @param Plugins $plugin
+     * @return stdClass
+     */
+    private function getActionInfo($plugin)
+    {
+        $action = new stdClass;
+        $action->is_exist = false;
+
+        $action_directory = dirname($plugin->path) . DIRECTORY_SEPARATOR . 'action';
+        if (is_dir($action_directory)) {
+            $action->directory = $action_directory;
+            $action->is_exist = true;
+        }
+        return $action;
+    }
+
+    /**
      * Plugin option is an information about
      * plugin migration | database history
      * @param string $id
@@ -193,7 +230,7 @@ class Plugins
     {
         if (isset($this->active_plugins[$id])) {
             try {
-                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options??'');
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options ?? '');
             } catch (\Exception $exception) {
                 $this->plugins[$id]->options = new stdClass;
             }
@@ -279,9 +316,14 @@ class Plugins
      * @param closure $callback
      * @return void
      */
-    public function register($hook, $callback)
+    public function register($hook, $callback, $sequence = 9999)
     {
-        $this->hooks[$hook][] = [$callback, $this->hook_handler];
+        if (isset($this->hooks[$hook][$sequence])) {
+            $sequence++;
+            $this->register($hook, $callback, $sequence);
+        } else {
+            $this->hooks[$hook][$sequence] = [$callback, $this->hook_handler, $sequence];
+        }
     }
 
     /**
@@ -291,17 +333,17 @@ class Plugins
      * @param closure $callback
      * @return void
      */
-    public function registerHook($hook, $callback)
+    public function registerHook($hook, $callback, $sequence = 9999)
     {
-        $this->register($hook, $callback);
+        $this->register($hook, $callback, $sequence);
     }
 
     /**
      * shortcut to 'registerHook'
      */
-    public static function hook($hook, $callback)
+    public static function hook($hook, $callback, $sequence = 9999)
     {
-        self::getInstance()->registerHook($hook, $callback);
+        self::getInstance()->registerHook($hook, $callback, $sequence);
     }
 
     /**
@@ -353,7 +395,7 @@ class Plugins
         $md5_path = md5($path);
 
         // Register module as hook
-        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function(&$module_list) use($module_name, $path, $md5_path, $description, $callback_priv) {
+        Plugins::hook(Plugins::MODULE_MAIN_MENU_INIT, function (&$module_list) use ($module_name, $path, $md5_path, $description, $callback_priv) {
             // set module list
             $module_list[] = ['name' => $module_name, 'plugin_module_path' => $path, 'path' => $md5_path, 'desc' => $description];
 
@@ -373,9 +415,9 @@ class Plugins
         });
 
         // Make default group menu
-        Plugins::group($module_name, function() use($path,$md5_path) {
+        Plugins::group($module_name, function () use ($path, $md5_path) {
             // Scan all file inside module directory as menu
-            foreach (array_diff(scandir($path), ['.','..','submenu.php']) as $menu) {
+            foreach (array_diff(scandir($path), ['.', '..', 'submenu.php']) as $menu) {
                 if (is_dir($menu) || strpos($menu, '.inc.php')) continue;
 
                 // set label
@@ -397,7 +439,7 @@ class Plugins
      * @param string $callback_priv
      * @return void
      */
-    public function module($module_name, $path, $description = '', $callback_priv = '')
+    public static function module($module_name, $path, $description = '', $callback_priv = '')
     {
         self::getInstance()->registerModule($module_name, $path, $description, $callback_priv);
     }
@@ -440,15 +482,16 @@ class Plugins
      * and plugin base composer (vendor inside each plugin).
      * The autoload.php will be call at plugin_container.php
      */
-    public function registerAutoload($directoryToAutoload)
+    public function registerAutoload()
     {
+        $directoryToAutoload = dirname(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
         $match = file_exists($path = $directoryToAutoload . DS . 'vendor/autoload.php') || file_exists($path = $directoryToAutoload);
         if ($match) $this->autoloadList[$directoryToAutoload] = $path;
     }
 
     public function getAutoload($pluginPath)
     {
-        $pluginDirectory = explode(DS, str_replace(SB . 'plugins' . DS, '', $pluginPath))[0]??'';
+        $pluginDirectory = explode(DS, str_replace(SB . 'plugins' . DS, '', $pluginPath))[0] ?? '';
         if (isset($this->autoloadList[SB . 'plugins' . DS . $pluginDirectory])) include_once $this->autoloadList[SB . 'plugins' . DS . $pluginDirectory];
     }
 
@@ -478,18 +521,23 @@ class Plugins
      * @param array $params
      * @return void
      */
-    public static function run($hook, $params = []) {
+    public static function run($hook, $params = [])
+    {
         self::getInstance()->execute($hook, $params);
     }
 
     public function execute($hook, $params = [])
     {
-        foreach ($this->hooks[$hook] ?? [] as $hook) {
+        $hook = $this->hooks[$hook]??[];
+        sort($hook);
+        foreach ($hook ?? [] as $hook) {
             list($callback, $handler) = $hook;
             if (is_callable($callback)) call_user_func_array($callback, array_values($params));
-            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) 
-            {call_user_func_array([$handlerInstance, $callback], array_values($params));}
+            if (!empty($handler) && is_string($callback) && method_exists(($handlerInstance = new $handler), $callback)) {
+                call_user_func_array([$handlerInstance, $callback], array_values($params));
+            }
         }
+        
     }
 
     /**
@@ -525,5 +573,119 @@ class Plugins
     {
         if (is_null($module)) return $this->menus;
         return $this->menus[$module] ?? [];
+    }
+
+    /**
+     * Load php files inside (pages/) of a plugin
+     * and register as module menu with 
+     * hierarchical directory.
+     * 
+     * Description :
+     * 
+     * pages/ # first directory
+     * --- bibliography # as module
+     * ---- index.php # as file
+     * 
+     * or
+     * --- membership # as module
+     * ---- GROUP # as group name of plugin
+     * ----- index.php # as file
+     * 
+     * or if you want to grouping and ordering menu
+     * --- membership # as module
+     * ---- GROUP_<after|before>_<EXISTING_GROUP> # as group name of plugin, e.g : GROUP_before_TOOLS
+     * ----- index.php # as file
+     * 
+     * @param string $pathToPages
+     * @return void
+     */
+    public static function registerPages(string $pathToPages = 'pages')
+    {
+        $trace = debug_backtrace(limit: 1)[0];
+        $pathToPages = self::pathResolver($pathToPages, $trace['file']);
+
+        // output as null a.k.a stop process
+        if (!is_dir($pathToPages)) return;
+
+        $finder = new Finder;
+        $finder
+            ->files()
+            ->name('*.php')
+            ->notName('*.inc.*')
+            ->depth('< 3')->in($pathToPages);
+
+        foreach ($finder as $item) {
+            $paths = explode(DS, $item->getRelativePath());
+
+            $module_name = $paths[0];
+            $fileInfo = pathinfo($item->getFilename());
+
+
+            $label = ucwords(str_replace('_', ' ', $fileInfo['filename']));
+            $label = $module_name != 'opac' ? __($label) : $label;
+            $registerMenu = self::getInstance()
+                ->registerMenu(
+                    $module_name,
+
+                    // label
+                    $label,
+
+                    // absolute path
+                    $item->getPathname()
+                );
+
+            // Grouping process
+            if (isset($paths[1])) {
+                preg_match('/_(after|before)_/', $paths[1], $match); // get order type
+                $orderType = $match[1] ?? null;
+                $splitName = preg_split('/_(after|before)_/', $paths[1]);
+                $grouping = $registerMenu->group(str_replace('_', ' ', $splitName[0] ?? 'PLUGINS'));
+
+                // set order type
+                if ($orderType !== null) $grouping->{$orderType}(__($splitName[1]));
+            }
+        }
+    }
+
+    /**
+     * Path resolver is use to get absolute path
+     * of .plugin.php which call some method in
+     * Plugins.php
+     *
+     * @param string $path
+     * @param string $traceFile
+     * @return string
+     */
+    private static function pathResolver(string $path, string $traceFile): string
+    {
+        return strpos($path, dirname($traceFile)) === false ? dirname($traceFile) . '/' . ltrim($path, '/') : $path;
+    }
+
+    /**
+     * Magic 🪄 method to manage registing menu
+     * per module via static method call.
+     * 
+     * e.g : 
+     * 
+     * Plugins::opac($webPath, $filePaath) = Plugins::menu('opac', ...etc)
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return void|object
+     */
+    public static function __callStatic(string $method, array $arguments)
+    {
+        if (!method_exists(__CLASS__, $method)) {
+            if (count($arguments) < 2) return;
+
+            $module_name = implode('_', array_map(function ($item) {
+                return strtolower($item);
+            }, preg_split('/(?=[A-Z])/', lcfirst($method))));
+
+
+            $trace = debug_backtrace(limit: 1)[0];
+            $arguments[1] = self::pathResolver($arguments[1], $trace['file'] ?? '');
+            return self::getInstance()->registerMenu($module_name, ...$arguments);
+        }
     }
 }

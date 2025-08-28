@@ -7,6 +7,7 @@
 # @Last modified time: 2017-09-22T11:01:48+07:00
 
 /* Perpustakaan Nasional SRU Web Services section */
+use SLiMS\Extension;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -49,6 +50,11 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+$marcExtRequirement = [];
+if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
+  die('<div class="errorBox">' . (sprintf(__('Feature MARC needs some PHP extension such as %s'), implode(',', $marcExtRequirement))) . '</div>');
+}
+
 if (!\Marc\XMLParser::isSupport()) {
   die('<div class="errorBox">'.__('Extension XML is not enabled').'</div>');
 }
@@ -68,7 +74,7 @@ if (isset($_GET['marc_SRU_source'])) {
 
 function getAcronym($sentence)
 {
-  $words = explode(' ', $sentenc);
+  $words = explode(' ', $sentence);
   $acronym = '';
   foreach ($words as $word) {
     $acronym .= trim($word)[0];
@@ -285,7 +291,7 @@ if (isset($_POST['saveZ']) AND isset($_SESSION['marcresult'])) {
         // update index
         $indexer->makeIndex($biblio_id);
         // write to logs
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from MARC SRU service (server: %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$data['title'],$biblio_id), 'MARC SRU', 'Add');         
+        writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from MARC SRU service (server: %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$data['title'],$biblio_id), 'MARC SRU', 'Add');         
         $r++;
     }
   }
@@ -328,7 +334,7 @@ if (isset($_GET['keywords'])) {
     } else {
       $keywords = urlencode('"'.trim($_GET['keywords']).'"');
     }
-    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record.'&recordSchema=marc';
+    $request = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords='.$max_record.'&maxitem='.$max_record;
   }
 
   $marc = new \Marc\XMLParser($request);

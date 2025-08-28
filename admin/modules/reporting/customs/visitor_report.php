@@ -112,7 +112,7 @@ if (!$reportView) {
     // year
     $selected_year = date('Y');
     if (isset($_GET['year']) AND !empty($_GET['year'])) {
-        $selected_year = (integer)$_GET['year'];
+        $selected_year = sprintf( '%d', $dbs->real_escape_string($_GET['year']) );
     }
 
     // get member type data from databse

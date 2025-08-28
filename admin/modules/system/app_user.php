@@ -51,6 +51,31 @@ function getUserType($obj_db, $array_data, $col) {
   }
 }
 
+function validatePassword($password, $min_length = 8) {
+    // Check if the password is at least 8 characters long
+    if (strlen($password) < $min_length) {
+        return false;
+    }
+
+    // Check for at least one uppercase letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        return false;
+    }
+
+    // Check for at least one number
+    if (!preg_match('/[0-9]/', $password)) {
+        return false;
+    }
+
+    // Check for at least one non-alphanumeric character
+    if (!preg_match('/[^a-zA-Z0-9]/', $password)) {
+        return false;
+    }
+
+    // If all checks pass, return true
+    return true;
+}
+
 // check if we want to change current user profile
 $changecurrent = false;
 if (isset($_GET['changecurrent'])) {
@@ -120,17 +145,21 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
   exit();
 }
 /* RECORD OPERATION */
-if (isset($_POST['saveData'])) {
+if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pre>'; die();
     $userName = $_SESSION['uid'] > 1 ? $_SESSION['uname'] : trim(strip_tags($_POST['userName']));
     $realName = trim(strip_tags($_POST['realName']));
-    $passwd1 = trim($_POST['passwd1']);
-    $passwd2 = trim($_POST['passwd2']);
+    #$old_passwd = $dbs->escape_string(trim($_POST['old_passwd']));
+    $passwd1 = $dbs->escape_string(trim($_POST['passwd1']));
+    $passwd2 = $dbs->escape_string(trim($_POST['passwd2']));
     // check form validity
     if (empty($userName) OR empty($realName)) {
         toastr(__('User Name or Real Name can\'t be empty'))->error();
         exit();
     } else if (($userName == 'admin' OR $realName == 'Administrator') AND $_SESSION['uid'] != 1) {
         toastr(__('Login username or Real Name is probihited!'))->error();
+        exit();
+    } else if ($sysconf['password_policy_strong'] AND ($passwd1 AND $passwd2) AND ($passwd1 === $passwd2) AND !validatePassword($passwd2, $sysconf['password_policy_min_length'])) {
+        toastr(__('Password should at least 8 characters long, contains one capital letter, one number, and one non-alphanumeric character !'))->error();
         exit();
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
@@ -164,8 +193,16 @@ if (isset($_POST['saveData'])) {
             $data['groups'] = trim($groups);
         }
         if (($passwd1 AND $passwd2) AND ($passwd1 === $passwd2)) {
-            $data['passwd'] = password_hash($passwd2, PASSWORD_BCRYPT);
-            // $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
+            $old_passwd = $dbs->escape_string(trim($_POST['old_passwd']));
+            $up_q = $dbs->query('SELECT passwd FROM user WHERE user_id='.$_SESSION['uid']);
+            $up_d = $up_q->fetch_row();
+            if (password_verify($old_passwd, $up_d[0])) {
+                $data['passwd'] = password_hash($passwd2, PASSWORD_BCRYPT);
+                // $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
+            } else {
+                toastr(__('Password change failed. Make sure you input the old password.'))->error();
+                exit();
+            }
         }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
@@ -215,7 +252,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('user', $data, 'user_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update user data ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Update');
                 toastr(__('User Data Successfully Updated'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
@@ -223,11 +260,11 @@ if (isset($_POST['saveData'])) {
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
@@ -240,7 +277,7 @@ if (isset($_POST['saveData'])) {
             // insert the data
             if ($sql_op->insert('user', $data)) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new user ('.$data['realname'].') with username ('.$data['username'].')', 'User', 'Add');
                 toastr(__('New User Data Successfully Saved'))->success();
                 // upload status alert
                 if (isset($upload_status)) {
@@ -248,11 +285,11 @@ if (isset($_POST['saveData'])) {
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
@@ -284,7 +321,7 @@ if (isset($_POST['saveData'])) {
             $error_num++;
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')', 'User', 'Delete');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE user ('.$user_d[1].') with username ('.$user_d[0].')', 'User', 'Delete');
         }
     }
 
@@ -335,8 +372,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if ($changecurrent) {
         $itemID = (integer)$_SESSION['uid'];
     }
-    $rec_q = $dbs->query('SELECT * FROM user WHERE user_id='.$itemID);
-    $rec_d = $rec_q->fetch_assoc();
+    $rec_q = \SLiMS\DB::query('SELECT * FROM user WHERE user_id=?', [$itemID]);
+    $rec_d = $rec_q->first();
 
     // create new instance
     $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
@@ -348,7 +385,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->table_content_attr = 'class="alterCell2"';
 
     // edit mode flag set
-    if ($rec_q->num_rows > 0) {
+    if ($rec_q->count() > 0) {
         $form->edit_mode = true;
         // record ID for delete process
         if (!$changecurrent) {
@@ -399,7 +436,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if (isset($rec_d['user_image'])) {
       $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['user_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['user_image'].'</strong></a> <a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.$rec_d['user_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
     }
-    $str_input .= simbio_form_element::textField('file', 'image');
+    $str_input .= simbio_form_element::textField('file', 'image',' class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
     $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
         $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
@@ -447,12 +484,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']??''));
     }
     // user password
+    $form->addTextField('password', 'old_passwd', __('Old Password').'*', '', 'style="width: 50%;" class="form-control"');
     $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;" class="form-control"');
     // user password confirm
     $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');
 
     // Two Factor Authentication
-    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid']) {
+    if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid'] && extension_loaded('iconv')) {
         $otp = OTPHP\TOTP::generate();
         $otp->setLabel(config('library_name'));
         $secret = $otp->getSecret();
@@ -513,7 +551,41 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     // print out the form object
     echo $form->printOut();
-    echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"><form>';
+    echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"></form>';
+    if ($sysconf['password_policy_strong']) {
+        echo '<script>';
+        echo 'function validatePassword(password, min_length = 8) {
+            // Check if the password length
+            if (password.length < '.$sysconf['password_policy_min_length'].') {
+                return false;
+            }
+            // Check for at least one uppercase letter
+            if (!/[A-Z]/.test(password)) {
+                return false;
+            }
+            // Check for at least one number
+            if (!/[0-9]/.test(password)) {
+                return false;
+            }
+            // Check for at least one non-alphanumeric character
+            if (!/[^a-zA-Z0-9]/.test(password)) {
+                return false;
+            }
+            return true;
+        }';
+        echo 'jQuery(\'#mainForm\').on(\'submit\', function(event) {
+            const password1 = jQuery(\'#passwd1\').val();
+            const password2 = jQuery(\'#passwd2\').val();
+            if (password1.length > 0 && password2.length > 0) {
+                if (!validatePassword(password2)) {
+                    event.preventDefault();
+                    alert(\'Password must contain at least one uppercase letter, one number, and one special character.\');
+                }
+            }
+        });';
+        echo '</script>';
+    }
+
 } else {
     // only administrator have privileges to view user list
     if (!($can_read AND $can_write) OR $_SESSION['uid'] != 1) {

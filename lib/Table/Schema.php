@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-05-30 11:07:17
- * @modify date 2022-12-21 08:48:08
+ * @modify date 2024-01-21 15:07:00
  * @license GPLv3
  * @desc [description]
  */
@@ -24,6 +24,7 @@ class Schema
     private string $column = '';
     public static $debug = false;
     private static $instance = null;
+    private static $connectionName = '';
     private static $connection = null;
     private static $connectionProfile = [];
     
@@ -33,11 +34,24 @@ class Schema
     private function __construct()
     {
         try {
-            self::$connectionProfile = config('database.nodes.SLiMS', []);
-            self::$connection = new PDO("mysql:host=".self::$connectionProfile['host'].';port='.self::$connectionProfile['port'].';dbname=information_schema', self::$connectionProfile['username'], self::$connectionProfile['password']);
+            if (empty(self::$connectionName)) self::$connectionName = config('database.default_profile');
+            self::$connection = DB::connection(self::$connectionName);
+            self::$connectionProfile = DB::getCredential(self::$connectionName);
         } catch (RuntimeException $e) {
             die($e->getMessage());
         }
+    }
+
+    public static function connection(string $connectionName)
+    {
+        self::$instance = null;
+        self::$connectionName = $connectionName;
+        return self::getInstance();
+    }
+
+    public static function getConnectionName()
+    {
+        return self::$connectionName;
     }
 
     /**
@@ -61,7 +75,7 @@ class Schema
      * @param Closure $callBack
      * @return void
      */
-    public static function create(string $tableName, Closure $callBack)
+    public function structureCreate(string $tableName, Closure $callBack)
     {
         if (self::hasTable($tableName)) return;
         
@@ -70,8 +84,8 @@ class Schema
         
         try {
             $createQuery = $bluePrint->create($tableName);
-            self::getInstance()->verbose = $createQuery;
-            if (!self::$debug) DB::getInstance()->query($createQuery);
+            $this->verbose = $createQuery;
+            if (!self::$debug) self::$connection->query($createQuery);
         } catch (PDOException $e) {
             // debuging
             debug($e->getMessage(), $e->getTrace());
@@ -87,7 +101,7 @@ class Schema
      * @param Closure $callBack
      * @return Schema|String
      */
-    public static function table(string $tableName, $callBack = '')
+    public function structureTable(string $tableName, $callBack = '')
     {
         if (!self::hasTable($tableName)) return "Table {$tableName} is not found!";
 
@@ -99,8 +113,8 @@ class Schema
 
         try {
             $alterQuery = $bluePrint->alter($tableName);
-            self::getInstance()->verbose = $alterQuery;
-            if (!self::$debug) DB::getInstance()->query($alterQuery);
+            $this->verbose = $alterQuery;
+            if (!self::$debug) self::$connection->query($alterQuery);
         } catch (PDOException $e) {
             // debuging
             debug($e->getMessage(), $e->getTrace());
@@ -116,9 +130,9 @@ class Schema
      * @param string $tableName
      * @return void
      */
-    public static function drop(string $tableName)
+    public function structureDrop(string $tableName)
     {
-        DB::getInstance()->query('DROP TABLE `' . $tableName . '`');
+        self::$connection->query('DROP TABLE `' . $tableName . '`');
     }
 
     /**
@@ -128,9 +142,9 @@ class Schema
      * @param string $tableName
      * @return void
      */
-    public static function dropColumn(string $tableName, string $columnName)
+    public function structureDropColumn(string $tableName, string $columnName)
     {
-        DB::getInstance()->query('ALTER TABLE `' . $tableName . '` DROP COLUMN `' . $columnName . '`');
+        self::$connection->query('ALTER TABLE `' . $tableName . '` DROP COLUMN `' . $columnName . '`');
     }
 
     /**
@@ -139,8 +153,44 @@ class Schema
      * @param string $tableName
      * @return void
      */
-    public static function truncate(string $tableName)
+    public function structureTruncate(string $tableName)
     {
-        DB::getInstance()->query('TRUNCATE TABLE `' . $tableName . '`');
+        self::$connection->query('TRUNCATE TABLE `' . $tableName . '`');
+    }
+
+    /**
+     * Magic method to call data via scoped property or structure method
+     *
+     * @param [type] $method
+     * @param [type] $arguments
+     * @return string
+     */
+    public function __call($method, $arguments)
+    {
+        $escapeMethod = strtolower(str_replace('get', '', $method));
+        
+        if (isset($this->detailTableScope[$escapeMethod]) && empty($this->column) && !empty($this->table)) 
+        {
+            $data = $this->getTableDetail($this->table)->fetchObject();
+            $column = $this->detailTableScope[$escapeMethod];
+            return $data && property_exists($data, $column) ? $data->{$column} : null;
+        }
+        else if (!empty($this->column) && !empty($this->table))
+        {
+            $data = $this->getColumnDetail($this->table, $this->column)->fetchObject();
+            $column = $this->detailColumnScope[$escapeMethod];
+            return $data && property_exists($data, $column) ? $data->{$column} : null;
+        }
+        else if (method_exists($this, $method = 'structure' . ucfirst($method)))
+        {
+            return $this->$method(...$arguments);
+        }
+    }
+
+    public static function __callStatic($method, $arguments)
+    {
+        if (method_exists(self::getInstance(), $method = 'structure' . ucfirst($method))) {
+            return self::getInstance()->$method(...$arguments);
+        }
     }
 }

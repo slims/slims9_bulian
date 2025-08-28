@@ -129,15 +129,15 @@ if($sysconf['chat_system']['enabled'] && $sysconf['chat_system']['opac']) :
 
   $(document).ready(function() {
     log('Connecting...');
-    Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>?u=<?php echo @$_SESSION["userchat"] ?>');
+    Server = new FancyWebSocket('ws://<?php echo $sysconf['chat_system']['server'] ?>:<?php echo $sysconf['chat_system']['server_port'] ?>?u=<?php echo $_SESSION["userchat"]??'You' ?>');
     $('#message').keypress(function(e) {
       if ( e.keyCode == 13 && this.value ) {
         log( 'You: ' + this.value );
-        send( '[M] <?php echo @$_SESSION["userchat"] ?>|' + this.value );
+        send( '[M] <?php echo $_SESSION["userchat"]??'You' ?>|' + this.value );
         $.ajax({
           type: 'POST',
           url: 'index.php?p=chat',
-          data: {msg: '<?php echo date("Y.m.d H:i:s") ?> [M] <?php echo @$_SESSION["userchat"] ?> - ' + this.value}
+          data: {msg: '<?php echo date("Y.m.d H:i:s") ?> [M] <?php echo $_SESSION["userchat"]??'You' ?> - ' + this.value}
         });
         $(this).val('');
       }

@@ -18,6 +18,7 @@
  *
  */
 
+use SLiMS\Form\FormAjaxWithCustomField;
 
 /* Item Management section */
 
@@ -62,34 +63,38 @@ if (isset($_GET['inPopUp'])) {
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
-    $itemCode = trim(strip_tags($_POST['itemCode']));
+    $itemCode = $dbs->escape_string(trim(strip_tags($_POST['itemCode'])));
     if (empty($itemCode)) {
         utility::jsToastr('Item', __('Item Code can\'t be empty!'), 'error');
         exit();
     } else {
         // biblio title
-        $title = trim($_POST['biblioTitle']);
-        $data['biblio_id'] = $_POST['biblioID'];
+        $title = $dbs->escape_string(trim($_POST['biblioTitle']));
+        $data['biblio_id'] = intval($_POST['biblioID']);
+        if ($data['biblio_id'] < 1) { die("Invalid biblioID"); }
         $data['item_code'] = $dbs->escape_string($itemCode);
         $data['call_number'] = trim($dbs->escape_string($_POST['callNumber']));
         // check inventory code
-        $inventoryCode = trim($_POST['inventoryCode']);
+        $inventoryCode = $dbs->escape_string(trim($_POST['inventoryCode']));
         if ($inventoryCode) {
             $data['inventory_code'] = $inventoryCode;
         } else {
             $data['inventory_code'] = 'literal{NULL}';
         }
 
-        $data['location_id'] = $_POST['locationID'];
+        $data['location_id'] = trim($dbs->escape_string($_POST['locationID']));
         $data['site'] = trim($dbs->escape_string(strip_tags($_POST['itemSite'])));
         $data['coll_type_id'] = intval($_POST['collTypeID']);
-        $data['item_status_id'] = $dbs->escape_string($_POST['itemStatusID']);
-        $data['source'] = $_POST['source'];
+        if ($data['coll_type_id'] < 1) { die("Invalid coll_type_id"); }
+        $data['item_status_id'] = trim($dbs->escape_string($_POST['itemStatusID']));
+        $data['source'] = intval($_POST['source']);
+        if ($data['source'] < 0) { die("Invalid source"); }
         $data['order_no'] = trim($dbs->escape_string(strip_tags($_POST['orderNo'])));
         $data['order_date'] = $_POST['ordDate'];
         $data['received_date'] = $_POST['recvDate'];
-        $data['supplier_id'] = $_POST['supplierID'];
-        $data['invoice'] = $_POST['invoice'];
+        $data['supplier_id'] = intval($_POST['supplierID']);
+        if ($data['supplier_id'] < 0) { die("Invalid supplier_id"); }
+        $data['invoice'] = trim($dbs->escape_string($_POST['invoice']));
         $data['invoice_date'] = $_POST['invcDate'];
         $data['price_currency'] = trim($dbs->escape_string(strip_tags($_POST['priceCurrency'])));
         if (!$data['price_currency']) { $data['price_currency'] = 'literal{NULL}'; }
@@ -107,11 +112,15 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             unset($data['uid']);
             // filter update record ID
             $updateRecordID = (integer)$_POST['updateRecordID'];
+            if ($updateRecordID < 1) { die("Invalid updateRecordID"); }
             // update the data
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
+                // save custom data
+                FormAjaxWithCustomField::saveCustomData('item_custom', 'item',  'item_id', $updateRecordID);
+
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
                 if ($sysconf['bibliography_item_update_notification']) {
                     utility::jsToastr('Item', __('Item Data Successfully Updated'), 'success');
 			    }
@@ -128,8 +137,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // insert the data
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
+                // save custom data
+                FormAjaxWithCustomField::saveCustomData('item_custom', 'item', 'item_id', $dbs->insert_id);
+
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
                 utility::jsToastr('Item', __('New Item Data Successfully Saved'), 'success');
                 if ($in_pop_up) {
                     echo '<script type="text/javascript">top.setIframeContent(\'itemIframe\', \''.MWB.'bibliography/iframe_item_list.php?biblioID='.$data['biblio_id'].'\');</script>';
@@ -170,8 +182,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if (!$sql_op->delete('item', 'item_id='.$itemID)) {
                 $error_num++;
             } else {
+                // delete custom field data
+                $sql_op->delete('item_custom', 'item_id='.$itemID);
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
+                writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' DELETE item data ('.$loan_d[0].') with title ('.$loan_d[1].')', 'Item', 'Delete');
             }
         } else {
             $still_on_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -185,16 +199,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $items .= $item."\n";
         }
         utility::jsToastr('Item on Hold', __('Item data can not be deleted because still on hold by members')." : \n".$items, 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
         exit();
     }
     // error alerting
     if ($error_num == 0) {
         utility::jsToastr('Item', __('Item succesfully removed!'), 'success');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
     } else {
         utility::jsToastr('Item', __('Item FAILED to removed!'), 'error');
-        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
+        echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$dbs->escape_string($_POST['lastQueryStr']).'\');</script>';
     }
     exit();
 }
@@ -228,6 +242,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /* RECORD FORM */
     // try query
     $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    // if ($itemID < 1) { die("Invalid itemID"); }
     $rec_q = $dbs->query('SELECT item.*, b.biblio_id, b.title, s.supplier_name
         FROM item
         LEFT JOIN biblio AS b ON item.biblio_id=b.biblio_id
@@ -236,12 +251,16 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_d = $rec_q->fetch_assoc();
 
     // create new instance
-    $form = new simbio_form_table_AJAX('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+    $form = new FormAjaxWithCustomField('itemForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
     $form->submit_button_attr = 'name="saveData" value="'.__('Save').'" class="s-btn btn btn-default"';
     // form table attributes
     $form->table_attr = 'id="dataList" class="s-table table"';
     $form->table_header_attr = 'class="alterCell font-weight-bold"';
     $form->table_content_attr = 'class="alterCell2"';
+
+    if ($in_pop_up) {
+        $form->back_button = false;
+    }
 
     // edit mode flag set
     if ($rec_q->num_rows > 0) {
@@ -251,7 +270,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $form->record_id = $itemID;
         } else {
             $form->addHidden('updateRecordID', $itemID);
-            $form->back_button = false;
         }
         // form record title
         $form->record_title = $rec_d['title'];
@@ -355,6 +373,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '</div>';
     $str_input .= '</div>';
     $form->addAnything(__('Price'), $str_input);
+
+    // load custom field
+    $form->loadCustomField('item', 'item_id', $itemID);
 
     // edit mode messagge
     if ($form->edit_mode) {

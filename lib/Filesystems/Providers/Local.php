@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 10:16:14
- * @modify date 2023-02-04 18:34:15
+ * @modify date 2023-08-17 18:53:15
  * @license GPLv3
  * @desc [description]
  */
@@ -13,9 +13,11 @@ namespace SLiMS\Filesystems\Providers;
 use closure;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToWriteFile;
 use SLiMS\Filesystems\{Guard,Utils,Stream};
+use utility;
 
 class Local extends Contract
 {
@@ -29,10 +31,11 @@ class Local extends Contract
      *
      * @param string $root
      */
-    public function __construct(string $root)
+    public function __construct(string $root, string $diskName)
     {
-        $this->adapter = new LocalFilesystemAdapter($root);
+        $this->adapter = new LocalFilesystemAdapter($root, visibility: PortableVisibilityConverter::fromArray(permissionMap: [], defaultForDirectories: 'public'));
         $this->filesystem = new Filesystem($this->adapter);
+        $this->diskName = $diskName;
         $this->path = $root;
     }
 
@@ -47,10 +50,10 @@ class Local extends Contract
     {
         try {
             // create new random file name
-            $this->uploadedFile = md5(date('this')) . $this->getExt($fileToUpload);
+            $this->uploadedFile = md5(date('this') . utility::createRandomString(64)) . $this->getExt($fileToUpload);
 
             // file resource
-            $resource = fopen($_FILES[$fileToUpload]['tmp_name'], 'r+');
+            $resource = fopen($_FILES[$fileToUpload]['tmp_name'], 'r');
 
             // Write file 
             $this->filesystem->writeStream($this->uploadedFile, $resource);

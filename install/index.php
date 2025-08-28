@@ -100,11 +100,11 @@ $_SESSION['csrf_token'] = bin2hex(substr(str_shuffle(str_repeat($x='0123456789ab
     <tasks v-if="section === 'select-task'" @click="selectTask"></tasks>
     <install v-if="section === 'install'" @next="section = 'create-admin'"></install>
     <upgrade v-if="section === 'upgrade'" @next="section = 'select-version'"></upgrade>
-    <select-version v-if="section === 'select-version'" @success="section = 'success'"></select-version>
+    <select-version v-if="section === 'select-version'" @redirectwithmsg="setOptionalMsg" @success="section = 'success'"></select-version>
     <account v-if="section === 'create-admin'" @notwrite="setSection('show-config', 'create-admin')"
              @success="section = 'success'"></account>
     <show-config v-if="section === 'show-config'" :section="lastSection"></show-config>
-    <success v-if="section === 'success'"></success>
+    <success v-if="section === 'success'" :optionalmsg="optionalMessage"></success>
 </div>
 <!-- Required JavaScript -->
 <script src="js/vue.min.js"></script>

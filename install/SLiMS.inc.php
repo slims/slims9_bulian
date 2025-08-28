@@ -424,12 +424,21 @@ SQL;
     if ($writeEnv === false) throw new Exception("Cannot write env file. Create it manually in config directory based on env.sample.php", 403);
   }
 
-  function query($array, $types = [])
+  function query($array, $types = [], $role_number = 0)
   {
     $_return = [];
+    $stop = false;
     foreach ($types as $type) {
       if (array_key_exists($type, $array)) {
-        foreach ($array[$type] as $item) {
+        foreach ($array[$type] as $order => $item) {
+          // Continue iteration if query is successed previously
+          if (!isset($_SESSION['success_quries']['regular'][$role_number])) {
+            $_SESSION['success_quries']['regular'][$role_number] = [];
+          }
+
+          // no repetition for success query except in install action
+          if (ACTION !== 'install' && in_array($type . ' ' . $order, $_SESSION['success_quries']['regular'][$role_number])) continue;
+
           try {
             if (isset($_POST['engine']) && $_POST['engine'] !== 'MyISAM') 
             {
@@ -439,8 +448,9 @@ SQL;
             if (!$stmt) throw new Exception($this->db->error . '. Your syntax: ' . $item);
             $stmt->execute();
             $stmt->close();
+            $_SESSION['success_quries']['regular'][$role_number][] = $type . ' ' . $order;
           } catch (Exception $exception) {
-            $_return[] = $exception->getMessage();
+            $_return[] = $this->showErrorIfNeeded($exception, $role_number, $type . '-' . $order);
           }
         }
       }
@@ -449,18 +459,36 @@ SQL;
   }
 
 
-  function queryTrigger($array)
+  function queryTrigger($array, $role_number = 0)
   {
     $_return = [];
     foreach ($array as $key => $item) {
+      if (!isset($_SESSION['success_quries']['trigger'][$role_number])) {
+        $_SESSION['success_quries']['trigger'][$role_number] = [];
+      }
+      if (in_array($key, $_SESSION['success_quries']['trigger'][$role_number])) continue;
       try{
         $sql = $this->db->query($item);
         if(!$sql) throw new Exception($this->db->error . '. Your syntax: ' . $item);
+        $_SESSION['success_quries']['trigger'][$role_number][] = $key;
       } catch (Exception $exception) {
-        $_return[] = $exception->getMessage();
+        $_return[] = $this->showErrorIfNeeded($exception, $role_number, $key, 'trigger');
       }
     }
     return $_return;
+  }
+
+  function showErrorIfNeeded($exception, $role_number, $order, $type = 'regular')
+  {
+    $excludeCodes = [1050, 1359,1060,1061,1091,1072];
+
+    $_is_exclude = in_array($exception->getCode(), $excludeCodes);
+
+    $message = 'Error ' . $role_number . '-' . $order . '-' . $exception->getCode() . ' > ' . $exception->getMessage();
+    return [
+      'priority_error' => ($_is_exclude === false ?  $message : null),
+      'optional_error' => ($_is_exclude === true ? $message : null)
+    ];
   }
 
   function updateAdmin($username, $password)

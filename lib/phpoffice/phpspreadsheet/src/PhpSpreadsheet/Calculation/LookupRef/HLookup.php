@@ -27,7 +27,7 @@ class HLookup extends LookupBase
      */
     public static function lookup($lookupValue, $lookupArray, $indexNumber, $notExactMatch = true)
     {
-        if (is_array($lookupValue)) {
+        if (is_array($lookupValue) || is_array($indexNumber)) {
             return self::evaluateArrayArgumentsIgnore([self::class, __FUNCTION__], 1, $lookupValue, $lookupArray, $indexNumber, $notExactMatch);
         }
 
@@ -66,14 +66,14 @@ class HLookup extends LookupBase
      */
     private static function hLookupSearch($lookupValue, array $lookupArray, $column, bool $notExactMatch): ?int
     {
-        $lookupLower = StringHelper::strToLower($lookupValue);
+        $lookupLower = StringHelper::strToLower((string) $lookupValue);
 
         $rowNumber = null;
         foreach ($lookupArray[$column] as $rowKey => $rowData) {
             // break if we have passed possible keys
             $bothNumeric = is_numeric($lookupValue) && is_numeric($rowData);
             $bothNotNumeric = !is_numeric($lookupValue) && !is_numeric($rowData);
-            $cellDataLower = StringHelper::strToLower($rowData);
+            $cellDataLower = StringHelper::strToLower((string) $rowData);
 
             if (
                 $notExactMatch &&

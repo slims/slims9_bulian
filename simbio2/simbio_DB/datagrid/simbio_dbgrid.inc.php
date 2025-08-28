@@ -48,6 +48,7 @@ class simbio_datagrid extends simbio_table
     protected $no_sort_column = array();
     protected $modified_content = array();
     protected $editable = false;
+    protected $sql_str = '';
 
     /**
      * Public properties
@@ -165,7 +166,7 @@ class simbio_datagrid extends simbio_table
             ' '.$this->sql_group_by.' '.$this->sql_order." LIMIT $int_num2show OFFSET $_offset";
 
         // for debugging purpose only
-        debug($_sql_str);
+        $this->sql_str = $_sql_str;
 
         // real query
         $_start = function_exists('microtime')?microtime(true):time();
@@ -365,18 +366,19 @@ class simbio_datagrid extends simbio_table
         $_target = '_self';
         if ($this->using_AJAX) {
             $_target = 'submitExec';
-            $_iframe = '<iframe name="submitExec" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
             // below is for debugging purpose only
-            // $_iframe = '<iframe name="submitExec" style="visibility: visible; width: 100%; height: 300px;"></iframe>'."\n";
+            debugBox(content: function() {
+                debug($this->sql_str);
+                echo '<section><iframe id="submitExec" name="submitExec" /></section>' . PHP_EOL;
+            });
+
+            if (isDev() === false) {
+                // hidden iframe for form executing
+                $_iframe = '<iframe name="submitExec" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>'."\n";
+            }
         }
         // if editable
         if ($this->editable) {
-            if (ENVIRONMENT === 'development') 
-            {
-                $_buffer .= '<small class="mx-1"># Debug</small>|<button id="enlargeBox" class="btn btn-link mx-1 p-0">' . __('Enlarge Debug Box') . '</button>';
-                $_buffer .= '<iframe id="submitExec" name="submitExec" class="border border-secondary w-100" style="height: 50px;"></iframe>';
-                $_buffer .= '<script>$(\'#enlargeBox\').click(function() {$(\'#submitExec\').attr(\'style\', \'height: 500px;\')})</script>';
-            }
             if (class_exists('simbio_form_maker')) {
               $form_maker = new simbio_form_maker($this->table_name, $this->chbox_form_URL, $str_form_method = 'post', false);
               $form_maker->submit_target = $_target;

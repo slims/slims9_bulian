@@ -60,6 +60,13 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
+$in_orphaned = false;
+$orphaned_query = '';
+if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
+    $in_orphaned = true;
+    $orphaned_query = '?type=orphaned';
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $authorName = trim(strip_tags($_POST['authorName']));
@@ -87,7 +94,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // update the data
             $update = $sql_op->update('mst_author', $data, 'author_id='.$updateRecordID);
             if ($update) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' update author ('.$data['author_name'].').', 'Author', 'update');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' update author ('.$data['author_name'].').', 'Author', 'update');
                 utility::jsToastr(__('Author'),__('Author Data Successfully Updated'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
                 if ($in_pop_up) {
@@ -103,7 +110,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // insert the data
             $insert = $sql_op->insert('mst_author', $data);
             if ($insert) {
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' add new author ('.$data['author_name'].').', 'Author', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' add new author ('.$data['author_name'].').', 'Author', 'Add');
                 utility::jsToastr(__('Author'),__('New Author Data Successfully Saved'),'success');
                 echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
                 if ($in_pop_up) {
@@ -114,7 +121,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 }
 
             } else { 
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' can not add new author ('.$data['author_name'].').', 'Author', 'Fail');
+                writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' can not add new author ('.$data['author_name'].').', 'Author', 'Fail');
                 utility::jsToastr(__('Author'),__('Author Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error');
             }
             exit();
@@ -135,25 +142,34 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
     // loop array
+    $_log_authors = [];
+    $still_used_biblio = [];
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         
         // check if this author data still used biblio
-        $_sql_biblio_author_q = sprintf('SELECT  ma.author_name, COUNT(ma.author_id),b.title FROM biblio AS b
-        LEFT JOIN biblio_author ba ON ba.biblio_id=b.biblio_id
-        LEFT JOIN mst_author ma ON ma.author_id=ba.author_id
-        WHERE ma.author_id=%d GROUP BY b.title', $itemID);
-        $biblio_author_q = $dbs->query($_sql_biblio_author_q);
-        $biblio_author_d = $biblio_author_q->fetch_row();
-        $_log_authors .= $biblio_author_d['author_name'].', ';
+        $delete = true;
+        if (!$in_orphaned) {
+            $_sql_biblio_author_q = sprintf('SELECT  ma.author_name, COUNT(ma.author_id) as total, b.title FROM biblio AS b
+            LEFT JOIN biblio_author ba ON ba.biblio_id=b.biblio_id
+            LEFT JOIN mst_author ma ON ma.author_id=ba.author_id
+            WHERE ma.author_id=%d GROUP BY b.title', $itemID);
+            $biblio_author_q = $dbs->query($_sql_biblio_author_q);
+            $biblio_author_d = $biblio_author_q->fetch_assoc();
+            
+            if ($biblio_author_d && $biblio_author_d['total'] > 0) {
+                $_log_authors[] = $biblio_author_d['author_name'].', ';
+                $delete = false;
+            }
+        }
+        
 
-        if ($biblio_author_d[1] < 1) {
+        if ($delete) {
             if (!$sql_op->delete('mst_author', 'author_id='.$itemID)) {
                 $error_num++;
             }
-        }
-         else {
-            $still_used_biblio[] = substr($biblio_author_d[0], 0, 6).'... still used biblio '.substr($biblio_author_d[2], 0, 6).' ..'."\n";
+        } else {
+            $still_used_biblio[] = substr($biblio_author_d['author_name'], 0, 6).'... still used biblio '.substr($biblio_author_d['total'], 0, 6).' ..'."\n";
             $error_num++;
         }
     }
@@ -170,11 +186,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
     // error alerting
     if ($error_num == 0) {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author ('.implode(', ', $_log_authors).').', 'Author', 'delete');
+        writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author ('.implode(', ', $_log_authors).').', 'Author', 'delete');
         utility::jsToastr(__('Author'),__('All Data Successfully Deleted'),'success');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     } else {
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author(s), BUT not all ('.implode(', ', $_log_authors).').', 'Author', 'delete');
+        writeLog('staff', $_SESSION['uid'], 'Master file', $_SESSION['realname'].' delete  author(s), BUT not all ('.implode(', ', $_log_authors).').', 'Author', 'delete');
         utility::jsToastr(__('Author'),__('Some or All Data NOT deleted successfully!\nPlease contact system administrator'),'error');
         echo '<script type="text/javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
     }
@@ -188,14 +204,14 @@ if (!$in_pop_up) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Author'); ?></h2>
+	    <h2><?php echo $in_orphaned ? __('Orphaned Author') : __('Author'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/author.php" class="btn btn-default"><?php echo __('Author List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/author.php?action=detail" class="btn btn-default"><?php echo __('Add New Author'); ?></a>
     </div>
-    <form name="search" action="<?php echo MWB; ?>master_file/author.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <form name="search" action="<?php echo MWB; ?>master_file/author.php<?= trim($in_orphaned ? $orphaned_query : '') ?>" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
@@ -265,9 +281,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     /* AUTHOR LIST */
     // table spec
     $sql_criteria = 'a.author_id > 0';
-    if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
+    if ($in_orphaned) {
         $table_spec = 'mst_author AS a LEFT JOIN biblio_author AS ba ON a.author_id=ba.author_id';
-        $sql_criteria = 'ba.biblio_id IS NULL OR ba.author_id IS NULL';
+        $sql_criteria = '(ba.biblio_id IS NULL OR ba.author_id IS NULL)';
     } else {
         $table_spec = 'mst_author AS a';
     }
@@ -295,7 +311,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // change the record order
     if (isset($_GET['fld']) AND isset($_GET['dir'])) {
-        $datagrid->setSQLorder("'".urldecode($_GET['fld'])."' ".$dbs->escape_string($_GET['dir']));
+        $datagrid->setSQLorder("'".urldecode($dbs->escape_string($_GET['fld']))."' ".$dbs->escape_string($_GET['dir']));
     }
 
     // is there any search
@@ -303,13 +319,14 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
        $keywords = utility::filterData('keywords', 'get', true, true, true);
        $sql_criteria .= " AND a.author_name LIKE '%$keywords%'";
     }
+    
     $datagrid->setSQLCriteria($sql_criteria);
 
     // set table and table header attributes
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
-    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+    $datagrid->chbox_form_URL = trim($_SERVER['PHP_SELF'] . ($in_orphaned ? $orphaned_query : ''));
 
     // callback function to change value of authority type
     function callbackAuthorType($obj_db, $rec_d)

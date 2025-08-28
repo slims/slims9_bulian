@@ -155,7 +155,7 @@ if (!$reportView) {
         $criteria .= ' AND m.member_type_id='.$mtype;
     }
     if (isset($_GET['id_name']) AND !empty($_GET['id_name'])) {
-        $id_name = $dbs->escape_string($_GET['id_name']);
+        $id_name = $dbs->real_escape_string($_GET['id_name']);
         $criteria .= ' AND (m.member_id LIKE \'%'.$id_name.'%\' OR m.member_name LIKE \'%'.$id_name.'%\')';
     }
     if (isset($_GET['gender']) AND $_GET['gender'] != 'ALL') {
@@ -163,13 +163,13 @@ if (!$reportView) {
         $criteria .= ' AND m.gender='.$gender;
     }
     if (isset($_GET['address']) AND !empty($_GET['address'])) {
-        $address = $dbs->escape_string(trim($_GET['address']));
+        $address = $dbs->real_escape_string(trim($_GET['address']));
         $criteria .= ' AND m.member_address LIKE \'%'.$address.'%\'';
     }
     // register date
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(m.register_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
-            TO_DAYS(\''.$_GET['untilDate'].'\'))';
+        $criteria .= sprintf(' AND (TO_DAYS(m.register_date) BETWEEN TO_DAYS(\'%s\') AND
+            TO_DAYS(\'%s\'))', $dbs->real_escape_string($_GET['startDate']), $dbs->real_escape_string($_GET['untilDate']));
     }
     if (isset($_GET['recsEachPage'])) {
         $recsEachPage = (integer)$_GET['recsEachPage'];

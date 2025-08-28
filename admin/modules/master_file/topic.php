@@ -59,6 +59,13 @@ if (isset($_GET['inPopUp'])) {
   $in_pop_up = true;
 }
 
+$in_orphaned = false;
+$orphaned_query = '';
+if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
+    $in_orphaned = true;
+    $orphaned_query = '?type=orphaned';
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $topic = trim(strip_tags($_POST['topic']));
@@ -128,17 +135,25 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
     // loop array
+    $still_used_biblio = [];
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // check if this author data still used biblio
-        $_sql_biblio_topic_q = sprintf('SELECT  mt.topic, COUNT(mt.topic_id),b.title FROM biblio AS b
-        LEFT JOIN biblio_topic bt ON bt.biblio_id=b.biblio_id
-        LEFT JOIN mst_topic mt ON mt.topic_id=bt.topic_id
-        WHERE mt.topic_id=%d GROUP BY b.title', $itemID);
-        $biblio_topic_q = $dbs->query($_sql_biblio_topic_q);
-        $biblio_topic_d = $biblio_topic_q->fetch_row();
+        $delete = true;
+        if (!$in_orphaned) {
+            $_sql_biblio_topic_q = sprintf('SELECT  mt.topic, COUNT(mt.topic_id) as total, b.title FROM biblio AS b
+            LEFT JOIN biblio_topic bt ON bt.biblio_id=b.biblio_id
+            LEFT JOIN mst_topic mt ON mt.topic_id=bt.topic_id
+            WHERE mt.topic_id=%d GROUP BY b.title', $itemID);
+            $biblio_topic_q = $dbs->query($_sql_biblio_topic_q);
+            $biblio_topic_d = $biblio_topic_q->fetch_assoc();
 
-        if ($biblio_topic_d[1] < 1) {
+            if ($biblio_topic_d && $biblio_topic_d['total'] > 0) {
+                $delete = false;
+            }
+        }
+
+        if ($delete) {
             if (!$sql_op->delete('mst_topic', 'topic_id='.$itemID)) {
                 $error_num++;
             } else {
@@ -146,7 +161,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $sql_op->delete('mst_voc_ctrl', 'topic_id='.$itemID.' OR related_topic_id='.$itemID);
             }
         }else{
-            $still_used_biblio[] = sprintf(__('%s ... still used biblio %s').'<br/>',substr($biblio_topic_d[0], 0, 6),substr($biblio_topic_d[2], 0, 6));
+            $still_used_biblio[] = sprintf(__('%s ... still used biblio %s').'<br/>',substr($biblio_topic_d['topic'], 0, 6),substr($biblio_topic_d['title'], 0, 6));
             $error_num++;            
         }
     }
@@ -178,7 +193,7 @@ if (!$in_pop_up) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Subject'); ?></h2>
+	    <h2><?php echo $in_orphaned ? __('Orphaned Subject') : __('Subject'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
@@ -186,7 +201,7 @@ if (!$in_pop_up) {
 		  <a href="<?php echo MWB; ?>master_file/topic.php?action=detail" class="btn btn-default"><?php echo __('Add New Subject'); ?></a>
           <a href="<?php echo MWB; ?>master_file/cross_reference.php" class="btn btn-success"><?php echo __('Cross Reference'); ?></a>
 	  </div>
-	  <form name="search" action="<?php echo MWB; ?>master_file/topic.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+	  <form name="search" action="<?php echo MWB; ?>master_file/topic.php<?= $orphaned_query ?>" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
 		  <input type="text" name="keywords" class="form-control col-md-3" />
 		  <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
 	  </form>
@@ -268,7 +283,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $sql_criteria = 't.topic_id >= 1';
     if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
         $table_spec = 'mst_topic AS t LEFT JOIN biblio_topic AS bt ON t.topic_id=bt.topic_id';
-        $sql_criteria = 'bt.biblio_id IS NULL OR bt.topic_id IS NULL';
+        $sql_criteria = '(bt.biblio_id IS NULL OR bt.topic_id IS NULL)';
     } else {
         $table_spec = 'mst_topic AS t';
     }
@@ -307,7 +322,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $concat_sql .= ') ';
             $sql_criteria .= $concat_sql;
         } else {
-            $sql_criteria .= " AND t.topic LIKE '%$keyword%' OR t.classification LIKE '%$keyword%' ";
+            $sql_criteria .= " AND (t.topic LIKE '%$keyword%' OR t.classification LIKE '%$keyword%') ";
         }
     }
     $datagrid->setSQLCriteria($sql_criteria);
@@ -316,7 +331,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
-    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+    $datagrid->chbox_form_URL = trim($_SERVER['PHP_SELF'] . $orphaned_query);
 
     // callback function to change value of subject type
     function callbackSubjectType($obj_db, $rec_d)

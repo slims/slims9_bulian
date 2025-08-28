@@ -49,6 +49,13 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
+$in_orphaned = false;
+$orphaned_query = '';
+if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
+    $in_orphaned = true;
+    $orphaned_query = '?type=orphaned';
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $publisherName = trim(strip_tags($_POST['publisherName']));
@@ -101,15 +108,24 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $_POST['itemID'] = array((integer)$_POST['itemID']);
     }
     // loop array
+    $still_have_biblio = [];
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // check if this place data still in use biblio
-        $_sql_publish_biblio_q = sprintf('SELECT mp.publisher_name, COUNT(mp.publisher_id) FROM biblio AS b
-        LEFT JOIN mst_publisher AS mp ON b.publisher_id=mp.publisher_id
-        WHERE mp.publisher_id = \'%d\' GROUP BY mp.publisher_name', $itemID);
-        $publish_biblio_q = $dbs->query($_sql_publish_biblio_q);
-        $publish_biblio_d = $publish_biblio_q->fetch_row();
-        if ($publish_biblio_d[1] < 1) {  
+        $delete = true;
+        if (!$in_orphaned) {
+            $_sql_publish_biblio_q = sprintf('SELECT mp.publisher_name, COUNT(mp.publisher_id) FROM biblio AS b
+            LEFT JOIN mst_publisher AS mp ON b.publisher_id=mp.publisher_id
+            WHERE mp.publisher_id = \'%d\' GROUP BY mp.publisher_name', $itemID);
+            $publish_biblio_q = $dbs->query($_sql_publish_biblio_q);
+            $publish_biblio_d = $publish_biblio_q->fetch_row();
+
+            if ($publish_biblio_d && $publish_biblio_d[1] > 0) {
+                $delete = false;
+            }
+        }
+        
+        if ($delete) {  
 
             if (!$sql_op->delete('mst_publisher', 'publisher_id='.$itemID)) {
                 $error_num++;
@@ -147,14 +163,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Publisher'); ?></h2>
+	    <h2><?php echo $in_orphaned ? __('Orphaned Publisher') : __('Publisher'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/publisher.php" class="btn btn-default"><?php echo __('Publisher List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/publisher.php?action=detail" class="btn btn-default"><?php echo __('Add New Publisher'); ?></a>
     </div>
-    <form name="search" action="<?php echo MWB; ?>master_file/publisher.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <form name="search" action="<?php echo MWB; ?>master_file/publisher.php<?= $orphaned_query ?>" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
@@ -224,7 +240,6 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     } else {
     	// TODO: publisher_place was dropped in stable7...?
         $datagrid->setSQLColumn('p.publisher_name AS \''.__('Publisher Name').'\'',
-            'p.publisher_place AS \''.lang_mod_masterfile_publisher_form_field_place.'\'',
             'p.last_update AS \''.__('Last Update').'\'');
     }
     $datagrid->setSQLorder('publisher_name ASC');
@@ -247,7 +262,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
-    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+    $datagrid->chbox_form_URL = trim($_SERVER['PHP_SELF'] . $orphaned_query);
 
     // put the result into variable
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));

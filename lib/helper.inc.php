@@ -22,13 +22,18 @@
  */
 
 use SLiMS\Config;
+use SLiMS\DB;
 use SLiMS\Ip;
 use SLiMS\Number;
 use SLiMS\Currency;
+use SLiMS\Log\Factory;
 use SLiMS\Json;
 use SLiMS\Jquery;
+use SLiMS\Url;
 use SLiMS\Http\Redirect;
 use SLiMS\Session\Flash;
+use SLiMS\Polyglot\Memory;
+use SLiMS\Debug\VarDumper;
 
 if (!function_exists('config')) {
     /**
@@ -38,8 +43,12 @@ if (!function_exists('config')) {
      * @param null $default
      * @return mixed|null
      */
-    function config($key, $default = null) {
-        return Config::getInstance()->get($key, $default);
+    function config($key = '', $default = null) {
+        if (!empty($key)) {
+            return Config::getInstance()->get($key, $default);
+        }
+
+        return Config::getInstance();
     }
 }
 
@@ -191,6 +200,92 @@ if (!function_exists('redirect'))
     }
 }
 
+if (!function_exists('pluginUrl'))
+{
+    /**
+     * Generate URL with plugin_container.php?id=<id>&mod=<mod> + custom query
+     *
+     * @param array $data
+     * @param boolean $reset
+     * @return string
+     */
+    function pluginUrl(array $data = [], bool $reset = false): string
+    {
+        // back to base uri
+        if ($reset) return Url::getSelf(fn($self) => $self . '?mod=' . $_GET['mod'] . '&id=' . $_GET['id']);
+        
+        return Url::getSelf(function($self) use($data) {
+            return $self . '?' . http_build_query(array_merge($_GET,$data));
+        });
+    }
+}
+
+if (!function_exists('pluginNavigateTo'))
+{
+    /**
+     * Create url based on registered plugin menu
+     * to navigate from current page to another page
+     * without pain 😁
+     *
+     * @param string $filepath
+     * @return string
+     */
+    function pluginNavigateTo(string $filepath): string
+    {
+        $fileInfo = pathinfo($filepath);
+        $trace = debug_backtrace(limit:1)[0];
+        $currentPath = dirname($trace['file']) . DS;
+
+        if ($fileInfo['dirname'] != './' || '.\\')
+        {
+            $optionalPath = realpath($currentPath . $fileInfo['dirname']) . DS;
+            // make sure path is only inside plugin/ 
+            if ($optionalPath !== false) $currentPath = $optionalPath;
+        }
+
+        $path = $currentPath . $fileInfo['filename'] . '.' . ($fileInfo['extension']??'php');
+        if (!file_exists($path)) return pluginUrl(['id' => 'notfound']);
+        
+        return pluginUrl(['id' => md5($path)]);
+    }
+}
+
+if (!function_exists('commonList'))
+{
+    function commonList(string $type)
+    {
+        $dbs = \SLiMS\DB::getInstance('mysqli');
+        ob_start();
+        switch ($type) {
+            case 'location':
+                echo '<option value="0">'.__('All Locations').'</option>';
+                $loc_q = $dbs->query('SELECT location_name FROM mst_location LIMIT 50');
+                while ($loc_d = $loc_q->fetch_row()) {
+                    echo '<option value="'.$loc_d[0].'">'.$loc_d[0].'</option>';
+                }
+                break;
+
+            case 'collection':
+                echo '<option value="0">'.__('All Collections').'</option>';
+                $colltype_q = $dbs->query('SELECT coll_type_name FROM mst_coll_type LIMIT 50');
+                while ($colltype_d = $colltype_q->fetch_row()) {
+                    echo '<option value="'.$colltype_d[0].'">'.$colltype_d[0].'</option>';
+                }
+                break;
+            
+            case 'gmd':
+                echo '<option value="0">'.__('All GMD/Media').'</option>';
+                $gmd_q = $dbs->query('SELECT gmd_name FROM mst_gmd LIMIT 50');
+                while ($gmd_d = $gmd_q->fetch_row()) {
+                    echo '<option value="'.$gmd_d[0].'">'.$gmd_d[0].'</option>';
+                }
+                break;
+        }
+        
+        return ob_get_clean();
+
+    }
+}
 
 if (!function_exists('toastr'))
 {
@@ -239,5 +334,243 @@ if (!function_exists('toastr'))
                 else utility::jsAlert($this->message);
             }
         };
+    }
+}
+
+/**
+ * Translatation method
+ * part of SLiMS\Polyglot
+ */
+if (!function_exists('__'))
+{
+    function __(string $content)
+    {
+        return Memory::find($content);
+    }
+}
+
+/**
+ * Write log with easiest way.
+ * This helper let you not only write
+ * log into database, you can write SLiMS
+ * System log to another service
+ */
+if (!function_exists('writeLog')) {
+    function writeLog(string $type, string $value_id, string $location, string $message, string $submod = '', string $action = '')
+    {
+        Factory::write($type, $value_id, $location, $message, $submod, $action);
+    }
+}
+
+/**
+ * The beauty php dumper
+ */
+if (!function_exists('dump')) {
+    /**
+     * @author Nicolas Grekas <p@tchwork.com>
+     */
+    function dump($var, ...$moreVars)
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $label = ($trace['file']??'') . ':' . ($trace['line']);
+        VarDumper::dump($var, $label);
+
+        foreach ($moreVars as $v) {
+            VarDumper::dump($v);
+        }
+
+        if (1 < func_num_args()) {
+            return func_get_args();
+        }
+
+        return $var;
+    }
+}
+
+/**
+ * DD is stand for "Dump and Die!".
+ * SLiMS will be dump your process and make
+ * next proses is not execute.
+ */
+if (!function_exists('dd')) {
+    /**
+     * @return never
+     */
+    function dd(...$vars)
+    {
+        if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && !headers_sent()) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $label = ($trace['file']??'') . ':' . ($trace['line']);
+        foreach ($vars as $seq => $v) {
+            VarDumper::dump($v, ($seq === 0 ? $label : ''));
+        }
+
+        exit(1);
+    }
+}
+
+if (!function_exists('debug'))
+{
+    /**
+     * Helper to verbosing 
+     * debug process
+     * @return void
+     */
+    function debug(string $title, ...$moreVars)
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+        $debugLocation = ($trace['file']??'') . ':' . ($trace['line']);
+        
+        if (isDev()) {
+            VarDumper::dump($title, $debugLocation);
+
+            foreach($moreVars as $anotherVar) {
+                VarDumper::dump(
+                    ...(
+                        is_array($anotherVar) ? [
+                            $anotherVar[1]??'', $anotherVar[0]??'' // var to dump, label
+                        ] : [$anotherVar]) // only var without label
+                );
+            }
+        }
+    }
+}
+
+if (!function_exists('debugBox')) {
+    function debugBox(Closure|string $content)
+    {
+        if (isDev()) {
+            $debug_box = '<details class="debug debug-empty">' . PHP_EOL;
+            $debug_box .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
+            ob_start();
+            is_callable($content) ? $content() : print($content);
+            $debug_box .= '<section>'.ob_get_clean().'</section>' . PHP_EOL;
+            $debug_box .= '</details>' . PHP_EOL;
+            echo $debug_box;
+        }
+    }
+}
+
+/**
+ * A shortcut to remove xss char
+ */
+if (!function_exists('xssFree')) {
+    function xssFree(array|string $content)
+    {
+        return simbio_security::xssFree($content);
+    }
+}
+
+/**
+ * Have problem with multidimension array?
+ * e.g :
+ * with 
+ * 
+ * $record['biblio']['items']['detail'] = 'Ok';
+ * 
+ * generally every people will be do this
+ * 
+ * if (isset($record['biblio'])) {
+ *    if (isset($record['biblio']['items']) {
+ *       if (isset($record['biblio']['items']['detail']) {
+ *          // you got here. : ( so nested
+*        }
+ *    }
+ * }
+ * 
+ * // just do it and your are not waste your time
+ * $result = getArrayData(map: 'biblio.items.detail', data: $record);
+ * 
+ * // output : ok pr if not exists will be give you empty result. 
+ * 
+ * Need another data type as default result? just define your $default output
+ * at 3rd argument or default argument.
+ * 
+ * this function inspired from SLiMS\Config,
+ */
+if (!function_exists('getArrayData')) {
+    function getArrayData(?array $data, string $map, $default = '')
+    {
+        if (!is_array($data)) return $default;
+
+        $result = $default;
+        foreach (explode('.', trim($map, '.')) as $key) {
+            if (isset($data[$key]) && empty($result)) {
+                $result = $data[$key];
+                continue;
+            }
+
+            if (isset($result[$key])) {
+                $result = $result[$key];
+                continue;
+            }
+        }
+
+        return $result;
+    }
+}
+
+/**
+ * @param string $connectionName
+ * @param string $type
+ */
+if (!function_exists('db')) {
+    function db(string $connectionName = 'SLiMS', string $type = 'pdo', string $extension = '', array $extensionParams = [])
+    {
+        if (!empty($extension)) {
+            $extensionInstance = DB::$extension(...$extensionParams);
+            if (method_exists($extensionInstance, 'setConnection')) $extensionInstance->setConnection($connectionName);
+            return $extensionInstance;
+        }
+        if ($connectionName === 'SLiMS') return DB::getInstance($type);
+
+        return DB::connection($connectionName, $type);
+    }
+}
+
+if (!function_exists('isSerialized')) {
+    /**
+     * Check if the given string is serialized
+     *
+     * @param string $data
+     * @return bool
+     */
+    function isSerialized($data) {
+        if (!is_string($data)) {
+            return false;
+        }
+
+        $data = trim($data);
+
+        if ($data === 'N;') {
+            return true;
+        }
+
+        if (strlen($data) < 4) {
+            return false;
+        }
+
+        if ($data[1] !== ':') {
+            return false;
+        }
+
+        $lastc = substr($data, -1);
+        if ($lastc !== ';' && $lastc !== '}') {
+            return false;
+        }
+
+        try {
+            $result = @unserialize($data);
+            if ($result === false && $data !== serialize(false)) {
+                return false;
+            }
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return true;
     }
 }

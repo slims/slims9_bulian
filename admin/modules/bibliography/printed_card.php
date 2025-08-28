@@ -42,8 +42,9 @@ function reverseAuthor($lastfirst) {
 	if ($lastfirst == "") {
 		return "";
 	} else {
-		list($last, $first) = explode(', ', $lastfirst);
-		if ($first <>"") {
+        $authorWords = explode(', ', $lastfirst);
+		list($last, $first) = isset($authorWords[1]) ? $authorWords : ['', $lastfirst];
+		if ($first <> "") {
 			return $first . " " . $last;
 		} else {
 			return $last;

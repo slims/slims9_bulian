@@ -33,6 +33,7 @@ do_checkIP('smc-circulation');
 
 // quick return
 if (isset($_POST['quickReturnID'])) {
+    $_POST['quickReturnID'] = $dbs->escape_string(trim($_POST['quickReturnID']));
     echo '<script type="text/javascript">'."\n";
     echo 'parent.$(\'#circulationLayer\').simbioAJAX(\''.MWB.'circulation/circulation_action.php\', {method: \'post\', addData: \'quickReturnID='.trim($_POST['quickReturnID']).'\'});'."\n";
     echo 'parent.$(\'#quickReturnID\').val(\'\');'."\n";

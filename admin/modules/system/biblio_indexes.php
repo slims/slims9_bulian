@@ -66,7 +66,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $indexer = new biblio_indexer($dbs);
     $empty = $indexer->emptyingIndex();
     if ($empty) {
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' emptied index table', 'Index', 'Delete');
+      writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' emptied index table', 'Index', 'Delete');
       $message = [
         'content' => __('Index table truncated!'),
         'type' => 'alert-success'
@@ -101,7 +101,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
       ];
       $_log .=  sprintf(' with $d failed', count($indexer->failed));
     }
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update index table ('.$_log.')', 'Index', 'Update');
+    writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' update index table ('.$_log.')', 'Index', 'Update');
     $_SESSION['message'] = $message;
     redirect()->simbioAJAX($_SERVER['PHP_SELF']);
   }
@@ -131,7 +131,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
           'type' => 'alert-danger'
         ];
     	}
-      utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' execute re-index table' , 'Index', 'Re-create');
+      writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' execute re-index table' , 'Index', 'Re-create');
     	$_SESSION['message'] = $message;
     }
 

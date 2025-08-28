@@ -50,7 +50,7 @@ if (isset($_POST['updateSettings'])) {
     $dbs->query(sprintf("REPLACE INTO setting (setting_name, setting_value) VALUES ('%s', '%s')",
       $setting_name, $dbs->escape_string(serialize($_POST[$setting_type]))));
     // write log
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings', 'Print Setting', 'Change');
+    writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' change '.$setting_type.' print settings', 'Print Setting', 'Change');
     utility::jsAlert(__('Settings saved'));
     echo '<script type="text/javascript"></script>';
 }

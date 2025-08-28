@@ -7,25 +7,55 @@
 
 namespace SLiMS;
 
-
+use Closure;
+use Exception;
+use Generator;
+use mysqli;
 use PDO;
 use PDOException;
-use PHPMailer\PHPMailer\Exception;
 use Ifsnop\Mysqldump as IMysqldump;
 
+/**
+ * @method static Query query(string $sql, array $bind_params) Method to query database
+ */
 class DB
 {
     /**
      * PDO instance
      * @var null
      */
-    private static $instance = null;
+    private static $instance = [];
 
     /**
      * MySQLi Instance
      * @var null
      */
-    private static $instance_mysqli = null;
+    private static $instance_mysqli = [];
+
+    // Current connection name
+    private static $connectionName = null;
+
+    /**
+     * @var SLiMS\Collection
+     */
+    private static $connectionCollection = null;
+
+    /**
+     * Database config
+     */
+    private static array $config = [];
+
+    /**
+     * Current database credential
+     */
+
+    private static array $credentials = [];
+
+    private ?Closure $proxyRule = null;
+
+    private static array $extensions = [
+        'query' => ['class' => Query::class, 'instance' => null],
+    ];
 
     /**
      * Backup const
@@ -41,16 +71,7 @@ class DB
     private function __construct($driver = 'pdo')
     {
         try {
-
-            if ($driver === 'mysqli') {
-                self::$instance_mysqli = new \mysqli(...$this->getProfile($driver));
-            } else {
-                self::$instance = new PDO(...$this->getProfile($driver));
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, ENVIRONMENT == 'development' ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
-                self::$instance->query('SET NAMES utf8');
-                self::$instance->query('SET CHARACTER SET utf8');
-            }
-
+            $this->setConnection($driver);
         } catch(PDOException $error) {
             echo $error->getMessage();
         } catch (Exception $error) {
@@ -65,15 +86,26 @@ class DB
      * @param string $driver
      * @return PDO|MySQLi
      */
-    public static function getInstance($driver = 'pdo')
+    public static function getInstance($driver = 'pdo', $connectionName = '')
     {
-        if ($driver === 'mysqli') {
-            if (is_null(self::$instance_mysqli)) new DB('mysqli');
-            return self::$instance_mysqli;
-        } else {
-            if (is_null(self::$instance)) new DB();
-            return self::$instance;
-        }
+        self::getConfig();
+
+        // Create collection instance
+        if (is_null(self::$connectionCollection)) self::$connectionCollection = new Collection(Connection::class);
+
+        // set current connection name
+        $adminClusterMode = isset($_SESSION) && isset($_SESSION['default_connection']) && empty($connectionName);
+        self::$connectionName = $adminClusterMode ? $_SESSION['default_connection'] : $connectionName;
+
+        // get connection from collection
+        $instance = self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
+
+        if (is_null($instance) === false) return $instance;
+        
+        // not exists? then create it.
+        new DB($driver);
+        
+        return self::$connectionCollection->get($driver . '_' . self::$connectionName)?->getConn();
     }
 
     /**
@@ -86,8 +118,30 @@ class DB
      */
     public static function backup()
     {
-        $static = new static;
-        return new IMysqldump\Mysqldump(...array_merge($static->getProfile('pdo'), [config('database_backup.options')]));
+        return new IMysqldump\Mysqldump(self::$connectionCollection->get('pdo_' . self::$connectionName));
+    }
+
+    /**
+     * Switching database connection
+     *
+     * @param string $name
+     * @param string $driver
+     * @return void
+     */
+    public static function connection(string $name, string $driver = 'pdo')
+    {
+        return self::getInstance($driver, $name);
+    }
+
+    /**
+     * Register connection into collection
+     *
+     * @param string $driver
+     * @return void
+     */
+    private function setConnection(string $driver = 'pdo')
+    {
+        self::$connectionCollection->add(new Connection(self::$connectionName??'database', $this->getProfile(), $driver));
     }
 
     /**
@@ -116,43 +170,44 @@ class DB
      * @param string $driver
      * @return array
      */
-    private function getProfile($driver = 'pdo')
+    private function getProfile()
     {
-        $config = $this->getConfig();
-        $defaultProfile = $config['default_profile'];
+        $connectionName = 
+            empty(self::$connectionName) ? 
+                // get default profile?
+                self::$config['default_profile'] : self::$connectionName;
 
-        if ($config['proxy']) $defaultProfile = $this->setProxy();
+        // in Proxy?
+        $this->setProxy();
+        if (self::$config['proxy']??false) {
+            call_user_func_array($this->proxyRule, [&$connectionName]);
+        }
 
-        extract($config['nodes'][$defaultProfile]??[]);
+        // in database.php?
+        if (isset(self::$config['nodes'][$connectionName])) {
+            $config = self::$config['nodes'][$connectionName];
+        } else {
+            self::getConfig($connectionName);
+            $config = self::$config['database'];
+        }
 
-        if (!isset($host)) throw new \Exception("Database " . $defaultProfile . " is not valid!");
+        self::$credentials[self::$connectionName] = $config;
 
-        // Casting $port as integer
-        $port = (int)$port;
-
-        return $driver === 'pdo' ? 
-                ['mysql:host=' . $host . ';port=' . $port . ';dbname=' . $database, $username, $password] 
-                :
-                [$host, $username, $password, $database, $port];
-    }
-
-    /**
-     * Get database credential
-     *
-     * @param string $nodeName
-     * @return array
-     */
-    private function getNode(string $nodeName)
-    {
-        return $this->getConfig()['nodes'][$nodeName]??[];
+        return $config;
     }
 
     /**
      * @return array
      */
-    private function getConfig()
+    private static function getConfig(?string $path = null)
     {
-        return require SB . 'config/database.php';
+        self::$config = require SB . 'config/' . basename($path??'database') . '.php';
+        return self::$config;
+    }
+
+    public static function getCredential(string $name)
+    {
+        return self::$credentials[$name]??null;
     }
 
     /**
@@ -163,8 +218,44 @@ class DB
      */
     private function setProxy()
     {
-        if (!file_exists($dbProxy = SB . 'config/database_proxy.php')) return [];
-        include $dbProxy;
-        return $defaultProfile;
+        if (file_exists($dbProxy = SB . 'config/database_proxy.php')) {
+            $closure = require $dbProxy;
+            if (!$closure instanceof Closure) return;
+            $this->proxyRule = require $dbProxy;
+        }
+    }
+
+    public static function registerExtension(string $name, string $class, ?Object $instance = null)
+    {
+        self::$extensions[$name] = ['class' => $class, 'instance' => $instance];
+    }
+
+    /**
+     * Load database extension
+     * - By default is Query::class,
+     * and you can use Illuminate Database
+     * if you want :)
+     *
+     * @param string $method
+     * @param array $params
+     * @return Object
+     */
+    private static function loadExtension(string $method, array $params)
+    {
+        $match = array_values(array_filter(array_keys(self::$extensions), function($extension) use($method) {
+            if ($extension === $method) return true;
+        }))[0]??null;
+        
+        if ($match === null) throw new Exception("Extension $method is not exists or not registered!");
+        
+        $extension = self::$extensions[$match];
+        $instance = $extension['instance']??null;
+        if ($instance === null) $instance = new $extension['class'](...$params);
+        return $instance;
+    }
+
+    public static function __callStatic($method, $params)
+    {
+        if (!method_exists(__CLASS__, $method)) return self::loadExtension($method, $params);
     }
 }

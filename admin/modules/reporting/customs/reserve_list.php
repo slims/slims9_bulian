@@ -119,7 +119,7 @@ if (!$reportView) {
     // is there any search
     $criteria = 'r.reserve_id IS NOT NULL ';
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
-        $keyword = $dbs->escape_string(trim($_GET['title']));
+        $keyword = $dbs->real_escape_string(trim($_GET['title']));
         $words = explode(' ', $keyword);
         if (count($words) > 1) {
             $concat_sql = ' AND (';
@@ -135,11 +135,11 @@ if (!$reportView) {
         }
     }
     if (isset($_GET['itemCode']) AND !empty($_GET['itemCode'])) {
-        $item_code = $dbs->escape_string(trim($_GET['itemCode']));
+        $item_code = $dbs->real_escape_string(trim($_GET['itemCode']));
         $criteria .= ' AND i.item_code LIKE \'%'.$item_code.'%\'';
     }
     if (isset($_GET['member']) AND !empty($_GET['member'])) {
-        $member = $dbs->escape_string($_GET['member']);
+        $member = $dbs->real_escape_string($_GET['member']);
         $criteria .= ' AND (m.member_name LIKE \'%'.$member.'%\' OR m.member_id LIKE \'%'.$member.'%\')';
     }
     if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {

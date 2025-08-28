@@ -3,12 +3,13 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2022-11-01 16:04:53
- * @modify date 2023-01-01 21:20:25
+ * @modify date 2023-08-17 20:07:12
  * @license GPLv3
  * @desc [description]
  */
 
 namespace SLiMS\Filesystems;
+require LIB.'SimpleImage/SimpleImage.php';
 
 trait Utils
 {
@@ -103,5 +104,52 @@ trait Utils
     public function getUploadStatus()
     {
         return $this->uploadStatus;
+    }
+
+    /**
+     * Clean sensitive exif info
+     * @return void
+     */
+    public function cleanExifInfo()
+    {
+        if (!empty($this->uploadedFile)) {
+            try {
+                $originName = $this->uploadedFile;
+                $buffer = $this->filesystem->read($this->uploadedFile);
+                $imageIndetification = pathinfo($originName);
+
+                if (!in_array('.' . ($imageIndetification['extension']??'?'), config('allowed_images'))) {
+                    return;
+                }
+
+                $ext = $imageIndetification['extension'];
+
+                //  no gif
+                if (strtolower($ext) == 'gif') return;
+
+                //  jpg is jpeg
+                if ($ext == 'jpg') $ext = 'jpeg';
+
+                // create image from string
+                #$image = imagecreatefromstring($buffer);
+                $image = new \claviska\SimpleImage();
+                $image->fromDataUri($buffer);
+                $image->save();
+
+                if (function_exists(($functionName = 'image' . $ext))) {
+                    $compressLevel = [
+                        'png' => 9,
+                        'jpeg' => 90
+                    ];
+
+                    $functionName($image, $this->path . DS . ($cleanName = 'clean' . $originName), $compressLevel[$ext]);
+                }
+
+                // move clean version to original file
+                $this->filesystem->move($cleanName, $originName);
+            } catch (\Exception $e) {
+                writeLog('system', $e->getCode(), 'failed exif check', $e->getMessage());
+            }
+        }
     }
 }

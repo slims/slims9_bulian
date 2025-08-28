@@ -10,13 +10,16 @@ use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Style\Style as CellStyle;
 use PhpOffice\PhpSpreadsheet\Worksheet\ColumnDimension;
 use PhpOffice\PhpSpreadsheet\Worksheet\RowDimension;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Style
 {
     public const CELL_STYLE_PREFIX = 'ce';
     public const COLUMN_STYLE_PREFIX = 'co';
     public const ROW_STYLE_PREFIX = 'ro';
+    public const TABLE_STYLE_PREFIX = 'ta';
 
+    /** @var XMLWriter */
     private $writer;
 
     public function __construct(XMLWriter $writer)
@@ -95,9 +98,7 @@ class Style
         $this->writer->writeAttribute('style:rotation-align', 'none');
 
         // Fill
-        if ($fill = $style->getFill()) {
-            $this->writeFillStyle($fill);
-        }
+        $this->writeFillStyle($style->getFill());
 
         $this->writer->endElement();
 
@@ -140,9 +141,7 @@ class Style
             $this->writer->writeAttribute('fo:font-style', 'italic');
         }
 
-        if ($color = $font->getColor()) {
-            $this->writer->writeAttribute('fo:color', sprintf('#%s', $color->getRGB()));
-        }
+        $this->writer->writeAttribute('fo:color', sprintf('#%s', $font->getColor()->getRGB()));
 
         if ($family = $font->getName()) {
             $this->writer->writeAttribute('fo:font-family', $family);
@@ -199,7 +198,7 @@ class Style
             'style:row-height',
             round($rowDimension->getRowHeight(Dimension::UOM_CENTIMETERS), 3) . 'cm'
         );
-        $this->writer->writeAttribute('style:use-optimal-row-height', 'true');
+        $this->writer->writeAttribute('style:use-optimal-row-height', 'false');
         $this->writer->writeAttribute('fo:break-before', 'auto');
 
         // End
@@ -218,6 +217,26 @@ class Style
         $this->writeRowProperties($rowDimension);
 
         // End
+        $this->writer->endElement(); // Close style:style
+    }
+
+    public function writeTableStyle(Worksheet $worksheet, int $sheetId): void
+    {
+        $this->writer->startElement('style:style');
+        $this->writer->writeAttribute('style:family', 'table');
+        $this->writer->writeAttribute(
+            'style:name',
+            sprintf('%s%d', self::TABLE_STYLE_PREFIX, $sheetId)
+        );
+
+        $this->writer->startElement('style:table-properties');
+
+        $this->writer->writeAttribute(
+            'table:display',
+            $worksheet->getSheetState() === Worksheet::SHEETSTATE_VISIBLE ? 'true' : 'false'
+        );
+
+        $this->writer->endElement(); // Close style:table-properties
         $this->writer->endElement(); // Close style:style
     }
 

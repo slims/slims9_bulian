@@ -23,8 +23,10 @@
 
 namespace SLiMS;
 
-
+use Generator;
 use PDO;
+use Symfony\Component\Finder\Finder;
+use utility;
 
 class Config
 {
@@ -34,7 +36,7 @@ class Config
     public function __construct()
     {
         // load default config folder
-        $this->load(__DIR__ . '/../config', ['env.php', 'env.sample.php']);
+        $this->load(__DIR__ . '/../config', ['*.*.php','*_*.php','index.php','env.php']);
     }
 
     /**
@@ -56,13 +58,11 @@ class Config
      */
     function load($directory, $ignore = [])
     {
-        $ignore = array_unique(array_merge(['..', '.', 'index.html', 'index.php'], $ignore));
-        $scanned_directory = array_diff(scandir($directory), $ignore);
+        $finder = new Finder;
+        $scanned_directory = $finder->files()->in($directory);
+        $scanned_directory->notName($ignore)->name('*.php');
         foreach ($scanned_directory as $file) {
-            if (strpos($file, '.php')) {
-                $file_path = $directory . DIRECTORY_SEPARATOR . $file;
-                $this->configs[basename($file_path, '.php')] = require $file_path;
-            }
+            $this->configs[basename($file->getFilename(), '.php')] = require $file->getPathname();
         }
 
         // load config from database
@@ -76,17 +76,22 @@ class Config
     function loadFromDatabase()
     {
         if (self::getFile('database') === null) return;
-        
-        $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
-        while ($data = $query->fetch(PDO::FETCH_OBJ)) {
-            $value = @unserialize($data->setting_value);
-            if (is_array($value)) {
-                foreach ($value as $id => $current_value) {
-                    $this->configs[$data->setting_name][$id] = $current_value;
+
+        try {
+            $query = DB::getInstance()->query('SELECT setting_name, setting_value FROM setting');
+            while ($data = $query->fetch(PDO::FETCH_OBJ)) {
+                $value = utility::unserialize($data->setting_value);
+
+                if (is_array($value)) {
+                    foreach ($value as $id => $current_value) {
+                        $this->configs[$data->setting_name][$id] = $current_value;
+                    }
+                } else {
+                    $this->configs[$data->setting_name] = is_string($value) ? stripslashes($value??'') : $value;
                 }
-            } else {
-                $this->configs[$data->setting_name] = stripslashes($value??'');
             }
+        } catch (\Throwable $e) {
+            // throw new \Exception($e->getMessage());
         }
     }
 
@@ -118,6 +123,110 @@ class Config
         if (is_null($config)) $config = $this->getGlobal($key, $default);
 
         return $config;
+    }
+
+    /**
+     * Find and modify multidimensional
+     * registered config
+     *
+     * @param array $config
+     * @param string $keyToModify
+     * @param mixed $newValue
+     * @param string $mode
+     * @return void
+     */
+    private function findAndModify(array &$config, string $keyToModify, $newValue, string $mode = 'append')
+    {
+        foreach ($config as $key => $value) {
+            if ($key != $keyToModify && is_array($value)) {
+                $this->findAndModify($value, $keyToModify, $newValue, $mode);
+                $config[$key] = $value;
+                continue;
+            } else if ($key == $keyToModify) {
+                if (is_array($value) && $mode == 'append') {
+                    $newValue = !is_array($newValue) ? [$newValue] : $newValue;
+                    $config[$key] = array_merge($value, $newValue);
+                } else if ($mode == 'replace') {
+                    $config[$key] = $newValue;
+                }
+            }
+        }
+    }
+
+    /**
+     * Change config value without
+     * overriding original value
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @param string $mode
+     * @return bool
+     */
+    public function change(string $key, $newValue, string $mode = 'replace')
+    {
+        if (is_null($this->get($key)) === false) {
+            // extract dot separator
+            $keys = explode('.', trim($key, '.'));
+
+            $configName = $key;
+            $keyToReplaceOrAppend = $key;
+
+            $isMultidimensional = count($keys) > 1;
+
+            // Multi Dimentional
+            if ($isMultidimensional) {
+                $configName = $keys[0];
+                $keyToReplaceOrAppend = $keys[array_key_last($keys)];
+
+                // reset array key
+                $keys = array_values($keys);
+            }
+
+            // Save accessed config into new variable
+            $configToReplaceOrAppend = $this->configs[$configName];
+
+            if ($isMultidimensional) {
+                $this->findAndModify($configToReplaceOrAppend, $keyToReplaceOrAppend, $newValue, $mode);
+            } else {
+                // merge newvalue into current config
+                if (!is_array($newValue)) $newValue = [$newValue];
+                if (!is_array($configToReplaceOrAppend)) {
+                    throw new \Exception("Config {$configName} value is string, cannot be replaced.");
+
+                }
+                $configToReplaceOrAppend = array_merge($configToReplaceOrAppend, $newValue);
+            }
+
+            $this->configs[$configName] = $configToReplaceOrAppend;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @return bool
+     */
+    public function append(string $key, $newValue)
+    {
+        return $this->change($key, $newValue, mode: 'append');
+    }
+
+    /**
+     * Replace current config
+     *
+     * @param string $key
+     * @param mixed $newValue
+     * @return bool
+     */
+    public function replace(string $key, $newValue)
+    {
+        return $this->change($key, $newValue, mode: 'replace');
     }
 
     /**
@@ -155,6 +264,22 @@ class Config
         return file_exists($path = SB . 'config/' . $filename . '.php') ? file_get_contents($path) : null;
     }
 
+    public static function isExists(string $name):bool
+    {
+        return file_exists(SB . 'config' . DS . basename($name) . '.php');
+    }
+
+    public static function createFromSampleIfNotExists(string|array $nameOrNames): void
+    {
+        $nameOrNames = is_string($nameOrNames) ? [$nameOrNames] : $nameOrNames;
+
+        foreach ($nameOrNames as $name) {
+            if (self::isExists($name)) continue;
+            self::createFromSample($name);
+        }
+    }
+
+
     /**
      * Create some configuration file
      * into <slims-root>/config/
@@ -167,6 +292,18 @@ class Config
     {
         if (is_callable($content)) $content = $content($filename);
         file_put_contents(SB . 'config/' . basename($filename) . '.php', $content);
+    }
+
+    public static function createFromSample(string $configName)
+    {
+        $configName = basename($configName);
+        $configBasePath = SB . 'config' . DS;
+        $configPathSampleName = $configBasePath . $configName . '.sample.php';
+        $configPathName =  $configBasePath . $configName . '.php';
+
+        if (!self::isExists($configName . '.sample')) return;
+
+        copy($configPathSampleName, $configPathName);
     }
 
     /**

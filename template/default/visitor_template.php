@@ -155,7 +155,7 @@ if (isset($_GET['select_lang'])) {
                     url: url,
                     method: 'post',
                     data: data,
-                    headers: {'Content-Type': 'multipart/form-data' }
+                    headers: {'Content-Type': 'multipart/form-data', 'X-Response-With': 'application/json' }
                 })
                     .then(res => {
                         this.textInfo = res.data.message

@@ -24,6 +24,7 @@ use SLiMS\DB;
 use SLiMS\Csv\Writer;
 use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
+use SLiMS\Debug\VarDumper;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -58,9 +59,6 @@ if ($sysconf['index']['type'] == 'index') {
   $indexer = new biblio_indexer($dbs);
 }
 
-// Redirect content
-if (isset($_SESSION['csv']['name']) && !isset($_POST['process'])) redirect()->simbioAJAX(MWB . 'bibliography/import_preview.php');
-
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 {
   // Create Csv instance
@@ -83,6 +81,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 $max_chars = 1024*100;
 
 if (isset($_POST['doImport'])) {
+  if ( empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name']) ) {  
+    utility::jsToastr(__('Import Tool'), __('No CSV file selected to import, please choose CSV file first!'), 'error');
+    exit();        
+  }
+
   // create upload object
   $files_disk = Storage::files();
   
@@ -166,8 +169,23 @@ if (isset($_POST['doImport'])) {
     
 
     try {
+      $pdo = DB::getInstance();
+      $state = $pdo->prepare(<<<SQL
+      INSERT IGNORE INTO biblio (title, gmd_id, edition,
+          isbn_issn, publisher_id, publish_year,
+          collation, series_title, call_number,
+          language_id, publish_place_id, classification,
+          notes, image, sor, input_date, last_update)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
+      SQL);
+
+      // exit(str_replace('{title}', 'Darno'??'?', __('Success importing bibliographic data : {title}')));
       $reader->readFromStream($file);
 
+      /**
+       * Formatter : a function to format some value such as author data etc
+       * Processor : inserting data to database
+       */
       $reader->each(formatter: function(&$field, $row, $index) use($dbs) {
         $currentValue = $field[$index];
 
@@ -202,7 +220,7 @@ if (isset($_POST['doImport'])) {
         // strip escape chars from all fields
         $field[$index] = str_replace('\\', '', trim($currentValue??''));
 
-      }, processor: function($reader, $row) use($dbs, $sysconf, $indexer, $lineNumber) {
+      }, processor: function($reader, $row) use($dbs, $pdo, $sysconf, $indexer, $lineNumber, $state) {
 
         $fields = $reader->getFields();
         $fields = array_pop($fields);
@@ -215,24 +233,18 @@ if (isset($_POST['doImport'])) {
         unset($fields[15]);
         unset($fields[16]);
         unset($fields[17]);
-        
-        $state = DB::getInstance()->prepare(<<<SQL
-        INSERT IGNORE INTO biblio (title, gmd_id, edition,
-                    isbn_issn, publisher_id, publish_year,
-                    collation, series_title, call_number,
-                    language_id, publish_place_id, classification,
-                    notes, image, sor, input_date, last_update)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now());
-        SQL);
 
         $state->execute($fields);
 
         if ($state) {
-          $biblio_id = DB::getInstance()->lastInsertId();
+          VarDumper::dump(
+              str_replace('{title}', $fields[0]??'?', __('Success importing bibliographic data : {title}'))
+          );
+          $biblio_id = $pdo->lastInsertId();
 
           if (!empty($authors)) {
-            $biblio_author_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES (?,?,?)');
-            $authors = explode('><', $authors);
+            $biblio_author_sql = $pdo->prepare('INSERT IGNORE INTO biblio_author (biblio_id, author_id, level) VALUES (?,?,?)');
+            $authors = explode('><', trim($authors, '<>'));
             foreach ($authors as $author) {
               $author = trim(str_replace(array('>', '<'), '', $author));
               $author_id = utility::getID($dbs, 'mst_author', 'author_id', 'author_name', $author);
@@ -241,18 +253,8 @@ if (isset($_POST['doImport'])) {
           }
 
           if (!empty($subjects)) {
-            $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
-            $subjects = explode('><', $subjects);
-            foreach ($subjects as $subject) {
-              $subject = trim(str_replace(array('>', '<'), '', $subject));
-              $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
-              $biblio_subject_sql->execute([$biblio_id, $subject_id , 2]);
-            }
-          }
-
-          if (!empty($items)) {
-            $biblio_subject_sql = DB::getInstance()->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
-            $subjects = explode('><', $subjects);
+            $biblio_subject_sql = $pdo->prepare('INSERT IGNORE INTO biblio_topic (biblio_id, topic_id, level) VALUES (?,?,?)');
+            $subjects = explode('><', trim($subjects, '<>'));
             foreach ($subjects as $subject) {
               $subject = trim(str_replace(array('>', '<'), '', $subject));
               $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
@@ -262,7 +264,7 @@ if (isset($_POST['doImport'])) {
 
           // items
           if (!empty($items)) {
-            $item_sql = DB::getInstance()->prepare('INSERT IGNORE INTO item (biblio_id, item_code) VALUES (?,?)');
+            $item_sql = $pdo->prepare('INSERT IGNORE INTO item (biblio_id, item_code) VALUES (?,?)');
             $item_array = explode('><', $items);
             foreach ($item_array as $item) {
               $item = trim(str_replace(array('>', '<'), '', $item));
@@ -277,17 +279,18 @@ if (isset($_POST['doImport'])) {
 
           $row++;
           importProgress(round($row/$lineNumber * 100));
-          sleep(1);
+          usleep(2500);
         }
       });
     } catch (Exception $e) {
-      dd($e);
+      // Reset session
+      unset($_SESSION['csv']);
       $errorMessage = $e->getMessage();
       exit(<<<HTML
       <script>
-      parent.\$('.infoBox').html('{$errorMessage}')
-      parent.\$('.infoBox').addClass('errorBox');
-      parent.\$('.infoBox').removeClass('infoBox');
+        parent.\$('.infoBox').html('{$errorMessage}')
+        parent.\$('.infoBox').addClass('errorBox');
+        parent.\$('.infoBox').removeClass('infoBox');
       </script>
       HTML);
     }
@@ -307,8 +310,8 @@ if (isset($_POST['doImport'])) {
 
     $end_time = time();
     $import_time_sec = $end_time-$start_time;
-    utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$fileName, 'Import' );
-    $label = str_replace(['{row_count}','{time_to_finish}'], [$row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
+    writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$fileName, 'Import' );
+    $label = str_replace(['{row_count}','{time_to_finish}'], [$inserted_row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
     exit(<<<HTML
     <script>
     parent.\$('.infoBox').html('{$label}')
@@ -346,7 +349,7 @@ $form->table_content_attr = 'class="alterCell2"';
 $str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');
+$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"  accept=".csv" required');
 $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col">';

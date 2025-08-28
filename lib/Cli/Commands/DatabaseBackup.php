@@ -3,7 +3,7 @@
  * @author Drajat Hasan
  * @email drajathasan20@gmail.com
  * @create date 2023-01-12 15:56:39
- * @modify date 2023-01-14 20:43:05
+ * @modify date 2023-12-17 07:01:17
  * @license GPLv3
  * @desc [description]
  */
@@ -38,41 +38,25 @@ class DatabaseBackup extends \SLiMS\Cli\Command
      */
     public function handle()
     {
-        $backup = DB::backup([    
-            'compress' => IMysqldump\Mysqldump::NONE,
-            'no-data' => false,
-            'add-drop-table' => true,
-            'single-transaction' => true,
-            'lock-tables' => true,
-            'add-locks' => false,
-            'extended-insert' => false,
-            'disable-keys' => true,
-            'skip-triggers' => false,
-            'add-drop-trigger' => true,
-            'routines' => true,
-            'databases' => false,
-            'add-drop-database' => false,
-            'hex-blob' => true,
-            'no-create-info' => false,
-            'where' => '',
-            /**
-             * an option for definer state in trigger query. 
-             * For some case, user had bad experience 
-             * when they move their SLiMS database to other database 
-             * machine without same privileged user as trigger definer.
-             */
-            'skip-definer' => true
-        ]);
-
-        $progress = new ProgressBar($this->output);
-        $progress->setBarCharacter('<info>+</info>');
-        $progress->setFormat("%message% %current%/%max%");
+        $start = microtime(true);
+        $backup = DB::backup();
 
         // Starting backup
         $path = ($this->option('path')??SB . 'files' . DS . 'backup' . DS);
         $filename = ($this->option('filename')??'backup-database-' . date('YmdHis') . '.sql');
-        $backup->start($path . $filename, $progress);
-        $this->success("\n" . sprintf(__('Backup database has been finished as %s'), $filename));
+        $backup->start($path . $filename);
+
+        if (file_exists($path . $filename)) {
+            $logging = DB::query('insert into `backup_log` set `user_id` = 1, `backup_time` = ?, `backup_file` = ?', [date('Y-m-d H:i:s'), $path . $filename]);
+            
+            if ($logging->isAffected()) {
+                $this->info('🕐 Backup success in ' . date('i:s', (int)(microtime(true) - $start)));
+                $this->success('✅ ' . sprintf(__('Backup database has been finished as %s'), $filename));
+            } else {
+                $this->error(__('Backup logging is not saved successfully') . ' : ' . $logging->getError());
+                $this->success(sprintf(__('Backup database has been finished as %s'), $filename));
+            }
+        }
 
         return 1;
     }

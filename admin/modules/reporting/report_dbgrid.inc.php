@@ -39,7 +39,7 @@ class report_datagrid extends simbio_datagrid
         $this->table_attr = 'align="center" class="dataListPrinted" cellpadding="3" cellspacing="1"';
         $this->table_header_attr = 'class="dataListHeaderPrinted"';
 
-        $this->spreadsheet_export_btn = '<a href="../spreadsheet.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
+        $this->spreadsheet_export_btn = '<a href="' . MWB . 'reporting/spreadsheet.php" class="s-btn btn btn-default">'.__('Export to spreadsheet format').'</a>';
     }
 
     /**
@@ -88,6 +88,12 @@ class report_datagrid extends simbio_datagrid
             $this->paging_set = simbio_paging::paging($this->num_rows, $int_num2show, 10, '', 'reportView');
         } else {
             $this->paging_set =  '&nbsp;';
+        }
+        // debug box
+        if (isDev() !== false) {
+            debugBox(content: function() use ($_buffer) {
+                debug($this->sql_str);
+            });
         }
         $_buffer .= '<div class="s-print__page-info printPageInfo"><strong>'.$this->num_rows.'</strong> '.__('record(s) found. Currently displaying page').' '.$this->current_page.' ('.$int_num2show.' '.__('record each page').') <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>';
         // put the additional button process

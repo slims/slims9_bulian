@@ -106,12 +106,17 @@ if (!$reportView) {
     // year
     $selected_year = date('Y');
     if (isset($_GET['year']) AND !empty($_GET['year'])) {
-        $selected_year = (integer)$_GET['year'];
+        $selected_year = sprintf( '%d', $dbs->real_escape_string($_GET['year']) );
     }
     // month
     $selected_month = date('m');
     if (isset($_GET['month']) AND !empty($_GET['month'])) {
-        $selected_month = $_GET['month'];
+        $allowed_month = array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        if (in_array($_GET['month'], $allowed_month)) {
+            $selected_month = sprintf( '%s', $dbs->real_escape_string($_GET['month']) );
+        } else {
+            $selected_month = "01";
+        }
     }
 
     // for each day in the month

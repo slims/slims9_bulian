@@ -178,6 +178,7 @@ if (!$reportView) {
         $num_recs_show = ($recsEachPage >= 5 && $recsEachPage <= 200)?$recsEachPage:$num_recs_show;
     }
     $reportgrid->setSQLCriteria($fines_criteria);
+    // dd($fines_criteria);
 
     // set table and table header attributes
     $reportgrid->table_attr = 'align="center" class="dataListPrinted" cellpadding="5" cellspacing="0"';

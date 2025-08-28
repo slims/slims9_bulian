@@ -31,6 +31,18 @@ class Upgrade
   {
     $upgrade = new Upgrade();
     $upgrade->slims = $slims;
+
+    // determine how mane upgrade_role is availabe
+    $versions = [];
+    foreach (get_class_methods($upgrade) as $method) {
+      if (preg_match('/upgrade_role_/', $method)) {
+        $versions[] = preg_replace('/[^0-9]/', '', $method);
+      }
+    }
+    
+    // get last version
+    sort($versions);
+    $upgrade->version = $versions[array_key_last($versions)];
     return $upgrade;
   }
 
@@ -81,16 +93,23 @@ class Upgrade
    */
   function from($version)
   {
+    if (!isset($_SESSION['upgrade_attempt'])) $_SESSION['upgrade_attempt'] = 1;
+    else $_SESSION['upgrade_attempt']++;
+
     // run before script
     $this->hookBeforeUpgrade();
 
     $raw_err = [];
-    for ($i = ($version + 1); $i <= $this->version; $i++) {
-      $method = 'upgrade_role_' . $i;
+    $roles = range($version, $this->version);
+    sort($roles);
+
+    foreach ($roles as $role) {
+      $method = 'upgrade_role_' . $role;
       if (method_exists($this, $method)) {
         $raw_err[] = $this->$method();
       }
     }
+
     $err = [];
     foreach ($raw_err as $e) {
       if (is_array($e)) {
@@ -198,7 +217,7 @@ UPDATE `mst_item_status` SET `skip_stock_take`=1 WHERE `rules` LIKE '%s:1:\"2\";
 
     $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `labels` `labels` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;";
 
-    return $this->slims->query($sql, ['truncate', 'alter', 'insert']);
+    return $this->slims->query($sql, ['truncate', 'alter', 'insert'], 9);
   }
 
   /**
@@ -218,7 +237,7 @@ UPDATE `mst_item_status` SET `skip_stock_take`=1 WHERE `rules` LIKE '%s:1:\"2\";
     $sql['insert'][] = "INSERT INTO `setting` (`setting_id`, `setting_name`, `setting_value`) VALUES (NULL, 'circulation_receipt', 'b:1;'),
 (NULL, 'barcode_encoding', 's:4:\"128B\";');";
 
-    return $this->slims->query($sql, ['insert']);
+    return $this->slims->query($sql, ['insert'], 11);
   }
 
   /**
@@ -312,7 +331,7 @@ PRIMARY KEY ( `member_id` )
     $sql['insert'][] = "INSERT INTO `mst_item_status` (`item_status_id`, `item_status_name`, `rules`, `input_date`, `last_update`, `no_loan`, `skip_stock_take`) VALUES
 ('MIS', 'Missing', NULL, DATE(NOW()), DATE(NOW()), '1', '1');";
 
-    return $this->slims->query($sql, ['drop', 'create', 'alter', 'insert']);
+    return $this->slims->query($sql, ['drop', 'create', 'alter', 'insert'], 13);
   }
 
   /**
@@ -326,7 +345,7 @@ PRIMARY KEY ( `member_id` )
     $sql['alter'][] = "ALTER TABLE `biblio` ADD `sor` VARCHAR( 200 ) COLLATE utf8_unicode_ci NULL AFTER `title` ;";
     $sql['insert'][] = "INSERT INTO `setting` (`setting_id`, `setting_name`, `setting_value`) VALUES (NULL , 'ignore_holidays_fine_calc', 'b:0;');";
 
-    return $this->slims->query($sql, ['alter', 'insert']);
+    return $this->slims->query($sql, ['alter', 'insert'], 14);
   }
 
   /**
@@ -365,7 +384,7 @@ ADD `user_type` SMALLINT( 2 ) NULL DEFAULT NULL AFTER `email` ,
 ADD `user_image` VARCHAR( 250 ) NULL DEFAULT NULL AFTER `user_type` ,
 ADD `social_media` TEXT NULL AFTER `user_image`;";
 
-    return $this->slims->query($sql, ['create', 'alter', 'insert', 'update']);
+    return $this->slims->query($sql, ['create', 'alter', 'insert', 'update'], 15);
   }
 
   /**
@@ -634,7 +653,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;";
 
     $sql['alter'][] = "ALTER TABLE `content` ADD `is_news` SMALLINT(1) NULL DEFAULT NULL AFTER `content_path`;";
 
-    return $this->slims->query($sql, ['create', 'alter', 'delete', 'insert', 'update']);
+    return $this->slims->query($sql, ['create', 'alter', 'delete', 'insert', 'update'], 16);
   }
 
   /**
@@ -651,7 +670,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;";
 
     $sql['alter'][] = "ALTER TABLE `mst_voc_ctrl` CHANGE `vocabolary_id` `vocabolary_id` INT(11) NOT NULL AUTO_INCREMENT;";
 
-    return $this->slims->query($sql, ['alter', 'insert']);
+    return $this->slims->query($sql, ['alter', 'insert'], 17);
   }
 
   /**
@@ -682,7 +701,7 @@ ADD INDEX (  `uid` ) ;";
 
     $sql['alter'][] = "ALTER TABLE `mst_voc_ctrl` ADD `scope` TEXT NULL DEFAULT NULL; ";
 
-    return $this->slims->query($sql, ['create', 'alter']);
+    return $this->slims->query($sql, ['create', 'alter'], 18);
   }
 
   /**
@@ -722,7 +741,7 @@ ADD  `last_update` DATETIME NULL DEFAULT NULL ,
 ADD  `uid` INT( 11 ) NULL DEFAULT NULL ,
 ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
-    return $this->slims->query($sql, ['create', 'alter']);
+    return $this->slims->query($sql, ['create', 'alter'], 19);
   }
 
   /**
@@ -812,7 +831,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     LEFT JOIN mst_coll_type mct ON mct.coll_type_id=i.coll_type_id
     LEFT JOIN mst_member_type mmt ON mmt.member_type_id=m.member_type_id WHERE m.member_id IS NOT NULL AND b.biblio_id IS NOT NULL);";
 
-    $error = $this->slims->query($sql, ['create', 'insert']);
+    $error = $this->slims->query($sql, ['create', 'insert'], 20);
 
     // create trigger
     $query_trigger[] = "
@@ -829,7 +848,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     SET is_lent=NEW.is_lent,
     is_return=NEW.is_return,
     renewed=NEW.renewed,
-    return_date=NEW.return_date
+    return_date=NEW.return_date,
+    last_update=NEW.last_update
     WHERE loan_id=NEW.loan_id;";
 
     $query_trigger[] = "
@@ -860,7 +880,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
      member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
 
-    $error_trigger = $this->slims->queryTrigger($query_trigger);
+    $error_trigger = $this->slims->queryTrigger($query_trigger,20);
     $error = array_merge($error, $error_trigger);
 
     // fix mst_topic:classification
@@ -941,7 +961,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
       PRIMARY KEY (`filelog_id`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
-    $error = $this->slims->query($sql, ['alter','insert','create']);
+    $error = $this->slims->query($sql, ['alter','insert','create'],23);
 
     return $error;
   }
@@ -983,7 +1003,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
       $sql['alter'][] = "ALTER TABLE `backup_log` CHANGE `backup_file` `backup_file` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;";
 
-      return $this->slims->query($sql, ['create', 'alter']);
+      return $this->slims->query($sql, ['create', 'alter'],26);
   }
 
     /**
@@ -1004,7 +1024,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
                                 ADD `deleted_at` datetime NULL AFTER `updated_at`;";
         $sql['alter'][] = "ALTER TABLE `plugins` ADD UNIQUE `id` (`id`);";
 
-        return $this->slims->query($sql, ['alter']);
+        return $this->slims->query($sql, ['alter'],28);
     }
 
     /**
@@ -1051,13 +1071,17 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           KEY `location` (`location`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        return $this->slims->query($sql, ['create', 'alter']);
+        return $this->slims->query($sql, ['create', 'alter'],31);
     }
+    /**
+     * Upgrade role to v9.5.1
+     */
+    function upgrade_role_32(){}
 
     /**
      * Upgrade role to v9.5.2
      */
-    function upgrade_role_32()
+    function upgrade_role_33()
     {
         $sql['alter'][] = 'ALTER TABLE `search_biblio` DROP INDEX `title`, ADD FULLTEXT `title` (`title`, `series_title`)';
         $sql['create'][] = "CREATE TABLE IF NOT EXISTS `biblio_mark` (
@@ -1070,13 +1094,13 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
           KEY `biblio_id_idx` (`biblio_id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        return $this->slims->query($sql, ['create', 'alter']);
+        return $this->slims->query($sql, ['create', 'alter'],33);
     }
 
     /**
      * Upgrade role to v9.6.0
      */
-    function upgrade_role_33()
+    function upgrade_role_34()
     {
         $sql['alter'][] = "ALTER TABLE `user` ADD `2fa` text COLLATE 'utf8_unicode_ci' NULL AFTER `passwd`;";
         $sql['create'][] = "CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
@@ -1101,11 +1125,39 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
         $sql['update'][] = "UPDATE `mst_item_status` SET `skip_stock_take` = 1 WHERE `item_status_id` IN ('NL','R')";
 
-        return $this->slims->query($sql, ['create', 'alter','update']);
+        return $this->slims->query($sql, ['create', 'alter','update'],34);
     }
 
     /**
-     * Upgrade role to v9.6.0
+     * Upgrade role to v9.6.1
      */
-    function upgrade_role_34(){}
+    function upgrade_role_35(){
+    }
+
+    /**
+     * Upgrade role to v9.x.x
+     */
+    function upgrade_role_36(){
+        $sql['create'][] = "CREATE TABLE `user_tokens` (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `selector` varchar(255) NOT NULL,
+            `hashed_validator` varchar(255) NOT NULL,
+            `user_id` int NOT NULL,
+            `expires_at` datetime NOT NULL,
+            `created_at` datetime NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+        $sql['create'][] = "CREATE TABLE IF NOT EXISTS `item_custom` (
+          `item_id` INT NOT NULL ,
+          PRIMARY KEY ( `item_id` )
+        ) ENGINE=MyISAM COMMENT = 'one to one relation with real item table';";
+
+        $sql['alter'][] = "ALTER TABLE `biblio` ADD INDEX `publisher_id` (`publisher_id`);";
+        $sql['alter'][] = "ALTER TABLE `biblio` CHANGE `source` `source` varchar(10) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `language_id`;";
+        $sql['alter'][] = "ALTER TABLE `member` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+        $sql['alter'][] = "ALTER TABLE `user` CHANGE `last_login_ip` `last_login_ip` varchar(50) COLLATE 'utf8mb3_unicode_ci' NULL AFTER `last_login`;";
+        $sql['alter'][] = "ALTER IGNORE TABLE mst_voc_ctrl ADD UNIQUE idx_heading(topic_id, related_topic_id);"; 
+        return $this->slims->query($sql, ['create', 'alter'],36);
+    }
 }

@@ -68,7 +68,16 @@ if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'
     header("Content-Length: " .(string)(filesize($path)) );
     header('Content-Disposition: attachment; filename="'.basename($path).'"');
     header("Content-Transfer-Encoding: binary\n");
-    echo file_get_contents($path);
+    $fo = fopen($path, 'rb');
+
+    while (!feof($fo)) {
+      echo fread($fo, 8192);
+
+      ob_flush();
+      flush();
+    }
+
+    fclose($fo);
     exit();
   }
 }
@@ -84,7 +93,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
       $_POST['itemID'] = array($_POST['itemID']);
     }
 
-    $error_num == 0;
+    $error_num = 0;
     foreach ($_POST['itemID'] as $itemID) {
       //delete file
       $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$itemID);
@@ -211,7 +220,7 @@ function showFilesize($obj_db,$array_data) {
       $factor = floor((strlen($file) - 1) / 3);
       if ($factor > 0) 
         $sz = 'KMGT';
-        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . @$sz[$factor - 1] . 'B';
+        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . $sz[((int)$factor - 1)] . 'B';
         $str .= '&nbsp;<a class="btn btn-sm btn-info pull-right" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.__('Download').'</a>';
     }
   return $str;

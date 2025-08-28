@@ -58,14 +58,83 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         exit();
     } else {
         $data['member_type_name'] = $dbs->escape_string($memberTypeName);
-        $data['loan_limit'] = trim($_POST['loanLimit']);
-        $data['loan_periode'] = trim($_POST['loanPeriode']);
-        $data['enable_reserve'] = $_POST['enableReserve'];
-        $data['reserve_limit'] = $_POST['reserveLimit'];
-        $data['member_periode'] = $_POST['memberPeriode'];
-        $data['reborrow_limit'] = $_POST['reborrowLimit'];
-        $data['fine_each_day'] = $_POST['fineEachDay'];
-        $data['grace_periode'] = $_POST['gracePeriode'];
+        # loan_limit
+        if (isset($_POST['loanLimit'])) {
+            if ( (is_numeric($_POST['loanLimit'])) AND ($_POST['loanLimit'] > 0) ) {
+                $data['loan_limit'] = $_POST['loanLimit'];
+            } else {
+                $data['loan_limit'] = "0";
+            }
+        } else {
+            $data['loan_limit'] = 0;
+        }
+        # loan_periode
+        if (isset($_POST['loanPeriode'])) {
+            if ( (is_numeric($_POST['loanPeriode'])) AND ($_POST['loanPeriode'] > 0) ) {
+                $data['loan_periode'] = $_POST['loanPeriode'];
+            } else {
+                $data['loan_periode'] = "0";
+            }
+        } else {
+            $data['loan_periode'] = 0;
+        }
+        # enable_reserve
+        $allowed_er = array (0, 1);
+        if (in_array($_POST['enableReserve'], $allowed_er)) {
+            $data['enable_reserve'] = $_POST['enableReserve'];
+        } else {
+            $data['enable_reserve'] = 0;
+        }
+        # reserve_limit
+        if (isset($_POST['reserveLimit'])) {
+            if ( (is_numeric($_POST['reserveLimit'])) AND ($_POST['reserveLimit'] > 0) ) {
+                $data['reserve_limit'] = $_POST['reserveLimit'];
+            } else {
+                $data['reserve_limit'] = "0";
+            }
+        } else {
+            $data['reserve_limit'] = 0;
+        }
+        # member_periode
+        if (isset($_POST['memberPeriode'])) {
+            if ( (is_numeric($_POST['memberPeriode'])) AND ($_POST['memberPeriode'] > 0) ) {
+                $data['member_periode'] = $_POST['memberPeriode'];
+            } else {
+                $data['member_periode'] = "0";
+            }
+        } else {
+            $data['member_periode'] = 0;
+        }
+        # reborrow_limit
+        if (isset($_POST['reborrowLimit'])) {
+            if ( (is_numeric($_POST['reborrowLimit'])) AND ($_POST['reborrowLimit'] > 0) ) {
+                $data['reborrow_limit'] = $_POST['reborrowLimit'];
+            } else {
+                $data['reborrow_limit'] = "0";
+            }
+        } else {
+            $data['reborrow_limit'] = 0;
+        }
+        # fine_each_day
+        if (isset($_POST['fineEachDay'])) {
+            if ( (is_numeric($_POST['fineEachDay'])) AND ($_POST['fineEachDay'] > 0) ) {
+                $data['fine_each_day'] = $_POST['fineEachDay'];
+            } else {
+                $data['fine_each_day'] = "0";
+            }
+        } else {
+            $data['fine_each_day'] = 0;
+        }
+        # grace_periode
+        if (isset($_POST['gracePeriode'])) {
+            if ( (is_numeric($_POST['gracePeriode'])) AND ($_POST['gracePeriode'] > 0) ) {
+                $data['grace_periode'] = $_POST['gracePeriode'];
+            } else {
+                $data['grace_periode'] = 0;
+            }
+        } else {
+            $data['grace_periode'] = 0;
+        }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
 
@@ -82,7 +151,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($update) {
                 utility::jsToastr(__('Member Type'),__('Member Type Successfully Updated'),'success');
                 // update all member expire date
-                @$dbs->query('UPDATE member AS m SET expire_date=DATE_ADD(register_date,INTERVAL '.$data['member_periode'].'  DAY)
+                $dbs->query('UPDATE member AS m SET expire_date=DATE_ADD( COALESCE(register_date, now()),INTERVAL '.$data['member_periode'].'  DAY)
                     WHERE member_type_id='.$updateRecordID);
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsToastr(__('Member Type'),__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
@@ -227,15 +296,15 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $enable_resv_chbox[1] = array('0', __('Disable'));
     $form->addRadio('enableReserve', __('Reserve'), $enable_resv_chbox, isset($rec_d['enable_reserve'])?$rec_d['enable_reserve']:'1');
     // reserve limit
-    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit']??'', 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'reserveLimit', __('Reserve Limit'), $rec_d['reserve_limit']??'0', 'style="width:25%" class="form-control"');
     // membership period
-    $form->addTextField('text', 'memberPeriode', __('Membership Period (In Days)'), $rec_d['member_periode']??'', 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'memberPeriode', __('Membership Period (In Days)'), $rec_d['member_periode']??'365', 'style="width:25%" class="form-control"');
     // reborrow limit
-    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']??'', 'style="width:25%" class="form-control"');
+    $form->addTextField('text', 'reborrowLimit', __('Reborrow Limit'), $rec_d['reborrow_limit']??'0', 'style="width:25%" class="form-control"');
     // fine each day
-    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']??'','style="width:25%" class="form-control"');
+    $form->addTextField('text', 'fineEachDay', __('Fine Each Day'), $rec_d['fine_each_day']??'0','style="width:25%" class="form-control"');
     // overdue grace periode
-    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Period'), $rec_d['grace_periode']??'','style="width:25%" class="form-control"');
+    $form->addTextField('text', 'gracePeriode', __('Overdue Grace Period'), $rec_d['grace_periode']??'0','style="width:25%" class="form-control"');
 
     // edit mode messagge
     if ($form->edit_mode) {

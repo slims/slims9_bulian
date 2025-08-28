@@ -119,11 +119,11 @@ if (!$reportView) {
 
     $start_date = '2000-01-01';
     if (isset($_GET['startDate'])) {
-        $start_date = $_GET['startDate'];
+        $start_date = $dbs->real_escape_string($_GET['startDate']);
     }
     $until_date = date('Y-m-d');
     if (isset($_GET['untilDate'])) {
-        $until_date = $_GET['untilDate'];
+        $until_date = $dbs->real_escape_string($_GET['untilDate']);
     }
     // callbacks
     function showBiblioEntries($obj_db, $array_data)

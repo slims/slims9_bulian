@@ -82,10 +82,10 @@ $request_uri = urlencode(strip_tags(urldecode($_SERVER['REQUEST_URI'])));
     <link rel="stylesheet" href="<?php echo assets('css/style.css?v=' . date('Ymd-his')); ?>">
 
     <?php
-    $icon = 'webicon.ico';
-    if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && file_exists(SB . 'images/default/' . $sysconf['webicon']))
+    $icon = SWB . 'webicon.ico';
+    if (isset($sysconf['webicon']) && !empty($sysconf['webicon']) && $imagesDisk->isExists($path = 'default/' . $sysconf['webicon']))
     {
-        $icon = SWB . 'images/default/' . v($sysconf['webicon']);;
+        $icon = SWB . 'lib/minigalnano/createthumb.php?filename=images/' . $path . '&width=130';
     }
     ?>
     <link rel="shortcut icon" href="<?= $icon ?>" type="image/x-icon"/>

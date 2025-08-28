@@ -18,6 +18,7 @@ namespace Ifsnop\Mysqldump;
 use Exception;
 use PDO;
 use PDOException;
+use SLiMS\Connection;
 
 /**
  * Class Mysqldump.
@@ -77,7 +78,7 @@ class Mysqldump
     private $functions = array();
     private $events = array();
     protected $dbHandler = null;
-    private $dbType = "";
+    private $dbType = "mysql";
     private $compressManager;
     private $typeAdapter;
     protected $dumpSettings = array();
@@ -168,25 +169,20 @@ class Mysqldump
      * @param array  $dumpSettings SQL database settings
      * @param array  $pdoSettings  PDO configured attributes
      */
-    public function __construct(
-        $dsn = '',
-        $user = '',
-        $pass = '',
-        $dumpSettings = array(),
-        $pdoSettings = array()
-    ) {
+    public function __construct(Connection $connection) {
 
-        $this->user = $user;
-        $this->pass = $pass;
-        $this->parseDsn($dsn);
-
+        $this->dbHandler = $connection->getConn();
+        
         // This drops MYSQL dependency, only use the constant if it's defined.
+        $this->dbType = $connection->getDsnPrefix();
         if ("mysql" === $this->dbType) {
             $this->pdoSettingsDefault[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = false;
         }
 
-        $this->pdoSettings = array_replace_recursive($this->pdoSettingsDefault, $pdoSettings);
-        $this->dumpSettings = array_replace_recursive($this->dumpSettingsDefault, $dumpSettings);
+        $this->dbName = $connection->getDetail('database');
+
+        $this->pdoSettings = array_replace_recursive($this->pdoSettingsDefault, $connection->getDetail('options.pdo', []));
+        $this->dumpSettings = array_replace_recursive($this->dumpSettingsDefault, config('database_backup.options')??[]);
         $this->dumpSettings['init_commands'][] = "SET NAMES ".$this->dumpSettings['default-character-set'];
 
         if (false === $this->dumpSettings['skip-tz-utc']) {
@@ -374,17 +370,12 @@ class Mysqldump
         try {
             switch ($this->dbType) {
                 case 'sqlite':
-                    $this->dbHandler = @new PDO("sqlite:".$this->dbName, null, null, $this->pdoSettings);
-                    break;
                 case 'mysql':
                 case 'pgsql':
                 case 'dblib':
-                    $this->dbHandler = @new PDO(
-                        $this->dsn,
-                        $this->user,
-                        $this->pass,
-                        $this->pdoSettings
-                    );
+                    foreach ($this->pdoSettings as $key => $value) {
+                        $this->dbHandler->setAttribute($key, $value);
+                    }
                     // Execute init commands once connected
                     foreach ($this->dumpSettings['init_commands'] as $stmt) {
                         $this->dbHandler->exec($stmt);

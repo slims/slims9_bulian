@@ -118,7 +118,7 @@ if (isset($_POST['saveData'])) {
             $update = $sql_op->update('content', $data, 'content_id='.$updateRecordID);
             if ($update) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['content_title'].' update content data ('.$data['content_title'].') with contentname ('.$data['contentname'].')', 'Content', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $contentTitle.' update content data ('.$data['content_title'].') with contentname ('.($data['contentname']??'').')', 'Content', 'Update');
                 utility::jsToastr('Success', __('Content data updated'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             } else { utility::jsToastr('Error', __('Content data FAILED to update!')."\nDEBUG : ".$sql_op->error, 'error'); }
@@ -128,7 +128,7 @@ if (isset($_POST['saveData'])) {
             // insert the data
             if ($sql_op->insert('content', $data)) {
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new content ('.$data['content_title'].') with contentname ('.$data['contentname'].')');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new content ('.$data['content_title'].') with contentname ('.($data['contentname']??'').')');
                 utility::jsToastr('Success', __('Content data saved'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else {  utility::jsToastr('Error', __('Content data FAILED to save!')."\n".$sql_op->error, 'error'); }
@@ -158,7 +158,7 @@ if (isset($_POST['saveData'])) {
             $error_num++;
         } else {
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_d[0].')','Content', 'Delete');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_d[0].')','Content', 'Delete');
         }
     }
 

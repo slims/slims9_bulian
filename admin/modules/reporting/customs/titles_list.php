@@ -156,7 +156,7 @@ if (!$reportView) {
     $criteria = 'bsub.biblio_id IS NOT NULL ';
     $outer_criteria = 'b.biblio_id > 0 ';
     if (isset($_GET['title']) AND !empty($_GET['title'])) {
-        $keyword = $dbs->escape_string(trim($_GET['title']));
+        $keyword = $dbs->real_escape_string(trim($_GET['title']));
         $words = explode(' ', $keyword);
         if (count($words) > 1) {
             $concat_sql = ' AND (';
@@ -172,17 +172,17 @@ if (!$reportView) {
         }
     }
     if (isset($_GET['author']) AND !empty($_GET['author'])) {
-        $author = $dbs->escape_string($_GET['author']);
+        $author = $dbs->real_escape_string($_GET['author']);
         $criteria .= ' AND ma.author_name LIKE \'%'.$author.'%\'';
     }
     if (isset($_GET['class']) AND !empty($_GET['class'])) {
-        $class = $dbs->escape_string($_GET['class']);
+        $class = $dbs->real_escape_string($_GET['class']);
         $criteria .= ' AND bsub.classification LIKE \''.$class.'%\'';
     }
     if (isset($_GET['gmd']) AND !empty($_GET['gmd'])) {
         $gmd_IDs = '';
         foreach ($_GET['gmd'] as $id) {
-            $id = (integer)$id;
+            $id = sprintf( '%d', $dbs->real_escape_string($id) );
             if ($id) {
                 $gmd_IDs .= "$id,";
             }
@@ -195,7 +195,7 @@ if (!$reportView) {
     if (isset($_GET['collType'])) {
         $coll_type_IDs = '';
         foreach ($_GET['collType'] as $id) {
-            $id = (integer)$id;
+            $id = sprintf( '%d', $dbs->real_escape_string($id) );
             if ($id) {
                 $coll_type_IDs .= "$id,";
             }
@@ -206,20 +206,20 @@ if (!$reportView) {
         }
     }
     if (isset($_GET['language']) AND !empty($_GET['language'])) {
-        $language = $dbs->escape_string(trim($_GET['language']));
+        $language = $dbs->real_escape_string(trim($_GET['language']));
         $criteria .= ' AND bsub.language_id=\''.$language.'\'';
     }
     if (isset($_GET['location']) AND !empty($_GET['location'])) {
-        $location = $dbs->escape_string(trim($_GET['location']));
+        $location = $dbs->real_escape_string(trim($_GET['location']));
         $outer_criteria .= ' AND i.location_id=\''.$location.'\'';
     }
     if (isset($_GET['publishYear']) AND !empty($_GET['publishYear'])) {
-        $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
+        $publish_year = $dbs->real_escape_string(trim($_GET['publishYear']));
         $criteria .= ' AND bsub.publish_year LIKE \'%'.$publish_year.'%\'';
     }
     if (isset($_GET['inputDateStart']) AND !empty($_GET['inputDateStart']) && isset($_GET['inputDateEnd']) AND !empty($_GET['inputDateEnd'])) {
-        $inputDateStart = $dbs->escape_string(trim($_GET['inputDateStart']));
-        $inputDateEnd = $dbs->escape_string(trim($_GET['inputDateEnd']));
+        $inputDateStart = $dbs->real_escape_string(trim($_GET['inputDateStart']));
+        $inputDateEnd = $dbs->real_escape_string(trim($_GET['inputDateEnd']));
         $criteria .= ' AND (bsub.input_date >= \'' . $inputDateStart . '\' AND bsub.input_date <= \'' . $inputDateEnd . '\')';
     }
     if (isset($_GET['recsEachPage'])) {

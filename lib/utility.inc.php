@@ -106,6 +106,22 @@ class utility
       return $_random;
     }
 
+    /**
+     * Static Method to safe unserialize a string
+     *
+     * @param   string  $str
+     * @return  mixed
+     */
+    public static function unserialize($str) {
+        $str = preg_replace_callback(
+            '!s:(\d+):"(.*?)";!s',
+            function($m) {
+                return 's:'.strlen($m[2]).':"'.$m[2].'";';
+            },
+            $str
+        );
+        return unserialize($str);
+    }
 
     /**
      * Static Method to load application settings from database
@@ -119,7 +135,7 @@ class utility
         $_setting_query = $obj_db->query('SELECT * FROM setting');
         if (!$obj_db->errno) {
             while ($_setting_data = $_setting_query->fetch_assoc()) {
-                $_value = @unserialize($_setting_data['setting_value']);
+                $_value = static::unserialize($_setting_data['setting_value']);
                 if (is_array($_value)) {
                     // make sure setting is available before
                     if (!isset($sysconf[$_setting_data['setting_name']]))
@@ -150,8 +166,8 @@ class utility
     {
         global $sysconf;
         // checking checksum
-        if ($sysconf['load_balanced_env']) {
-            $server_addr = ip();
+        if (config('loadbalanced.env')) {
+            $server_addr = ip()->getProxyIp();
         } else {
             $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
         }
@@ -267,7 +283,7 @@ class utility
             palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|
             treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|
             xda|xiino/i',
-        @$_SERVER['HTTP_USER_AGENT'] ?? '')
+        ($_SERVER['HTTP_USER_AGENT'] ?? ''))
         || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|
             a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|
             amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|
@@ -297,7 +313,7 @@ class utility
             vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|
             vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|
             wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i',
-        substr(@$_SERVER['HTTP_USER_AGENT'] ?? '',0,4)))
+        substr(($_SERVER['HTTP_USER_AGENT'] ?? ''),0,4)))
             $_is_mobile_browser = true;
 
         return $_is_mobile_browser;

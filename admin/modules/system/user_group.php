@@ -95,7 +95,7 @@ if (isset($_POST['saveData'])) {
                     }
                 }
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update group data ('.$groupName.')', 'User group', 'Update');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' update group data ('.$groupName.')', 'User group', 'Update');
                 utility::jsToastr(__('User Group'), __('Group Data Successfully Updated'), 'success');
 
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
@@ -133,7 +133,7 @@ if (isset($_POST['saveData'])) {
                 }
 
                 // write log
-                utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new group ('.$groupName.')', 'User group', 'Add');
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' add new group ('.$groupName.')', 'User group', 'Add');
                 utility::jsToastr(__('User Group'), __('New Group Data Successfully Saved'), 'success');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsToastr(__('User Group'), __('Group Data FAILED to Save. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error, 'error');}
@@ -163,7 +163,7 @@ if (isset($_POST['saveData'])) {
             // delete group privileges
             $dbs->query('DELETE FROM group_access WHERE group_id='.$itemID);
             // write log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE group ('.$group_d[0].')', 'User group', 'Delete');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE group ('.$group_d[0].')', 'User group', 'Delete');
         }
     }
 

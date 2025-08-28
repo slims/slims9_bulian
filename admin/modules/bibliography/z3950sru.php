@@ -51,14 +51,15 @@ if (!$can_read) {
 }
 
 // get servers
-$server_q = $dbs->query('SELECT name, uri FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
+$server_q = $dbs->query('SELECT name, uri, server_id FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');
 while ($server = $server_q->fetch_assoc()) {
-  $sysconf['z3950_SRU_source'][] = array('uri' => $server['uri'], 'name' => $server['name']);
+  $sysconf['z3950_SRU_source'][] = array('id' => $server['server_id'], 'uri' => $server['uri'], 'name' => $server['name']);
 }
 
 if (isset($_GET['z3950_SRU_source'])) {
-    $inList = (bool)count(array_filter($sysconf['z3950_SRU_source'], fn($sru) => trim(urldecode($_GET['z3950_SRU_source'])) == $sru['uri']));
+    $inList = (bool)count($matchServer = array_values(array_filter($sysconf['z3950_SRU_source'], fn($sru) => trim(urldecode($_GET['z3950_SRU_source'])) == $sru['uri'])));
     $zserver = $inList ? trim(urldecode($_GET['z3950_SRU_source'])) : '';
+    $matchServer = array_pop($matchServer);
 } else {
     $zserver = 'http://z3950.loc.gov:7090/voyager?';
 }
@@ -89,16 +90,16 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
           // escape all string value
           foreach ($record as $field => $content) { if (is_string($content)) { $biblio[$field] = $dbs->escape_string(trim($content)); } }
           // gmd
-          $biblio['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $record['gmd'], $gmd_cache);
+          $biblio['gmd_id'] = utility::getID($dbs, 'mst_gmd', 'gmd_id', 'gmd_name', $record['gmd']??'', $gmd_cache);
           unset($biblio['gmd']);
           // publisher
-          $biblio['publisher_id'] = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $record['publisher'], $publ_cache);
+          $biblio['publisher_id'] = utility::getID($dbs, 'mst_publisher', 'publisher_id', 'publisher_name', $record['publisher']??'', $publ_cache);
           unset($biblio['publisher']);
           // publish place
-          $biblio['publish_place_id'] = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $record['publish_place'], $place_cache);
+          $biblio['publish_place_id'] = utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $record['publish_place']??'', $place_cache);
           unset($biblio['publish_place']);
           // language
-          $biblio['language_id'] = utility::getID($dbs, 'mst_language', 'language_id', 'language_name', $record['language']['name'], $lang_cache);
+          $biblio['language_id'] = utility::getID($dbs, 'mst_language', 'language_id', 'language_name', getArrayData($record, 'language.name.code'), $lang_cache);
           unset($biblio['language']);
           // authors
           $authors = array();
@@ -113,7 +114,8 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
               unset($biblio['subjects']);
           }
 
-          $biblio['input_date'] = $biblio['create_date'];
+          $biblio['source'] = array_search('z3950 SRU server', $sysconf['p2pserver_type']) . '.' . ($_SESSION['z3950sru_id']??0);
+          $biblio['input_date'] = $biblio['create_date']??date('Y-m-d H:i:s');
           // $biblio['last_update'] = $biblio['modified_date'];
           $biblio['last_update'] = date('Y-m-d H:i:s');
 
@@ -171,7 +173,7 @@ if (isset($_POST['zrecord']) && isset($_SESSION['z3950result'])) {
               // update index
               $indexer->makeIndex($biblio_id);
               // write to logs
-              utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from Z3950 service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$biblio['title'],$biblio_id), 'Z3950 SRU', 'Add');  
+              writeLog('staff', $_SESSION['uid'], 'bibliography',sprintf(__('%s insert bibliographic data from Z3950 service (server : %s) with title (%s) and biblio_id (%s)'),$_SESSION['realname'],$zserver,$biblio['title'],$biblio_id), 'Z3950 SRU', 'Add');  
               $r++;
           }
       }
@@ -190,7 +192,7 @@ if (isset($_GET['keywords']) AND $can_read) {
   require LIB.'modsxmlslims.inc.php';
   $_SESSION['z3950result'] = array();
   if ($_GET['index'] != 0) {
-    $index = trim($_GET['index']).' any ';
+    $index = trim($_GET['index']).'=';
     $keywords = urlencode($index.'"'.trim($_GET['keywords'].'"'));
   } else {
     $keywords = urlencode('"'.trim($_GET['keywords']).'"');
@@ -198,6 +200,11 @@ if (isset($_GET['keywords']) AND $can_read) {
 
   $query = '';
   if ($keywords) {
+
+    if (isset($matchServer) && isset($matchServer['id'])) {
+      $_SESSION['z3950sru_id'] = $matchServer['id'];
+    }
+
     $sru_server = $zserver.'?version=1.1&operation=searchRetrieve&query='.$keywords.'&startRecord=1&maximumRecords=20&recordSchema=mods';
     // parse SRU Server XML
     $sru_xml = new SimpleXMLElement($sru_server, LIBXML_NSCLEAN, true);
@@ -227,7 +234,7 @@ if (isset($_GET['keywords']) AND $can_read) {
         $_SESSION['z3950result'][$row] = $mods;
 
         // authors
-        $authors = array(); foreach ($mods['authors'] as $auth) { $authors[] = $auth['name']; }
+        $authors = array(); foreach ($mods['authors']??[] as $auth) { $authors[] = $auth['name']; }
 
         $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 

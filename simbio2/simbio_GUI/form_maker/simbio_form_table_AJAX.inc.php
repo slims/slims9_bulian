@@ -43,6 +43,7 @@ class simbio_form_table_AJAX extends simbio_form_maker
     public $customBtn = false;
     // back button
     public $back_button = true;
+    public $back_button_criteria = ['action','detail'];
     public $delete_button = true;
     public $name = '';
     public $str = '';
@@ -73,16 +74,20 @@ class simbio_form_table_AJAX extends simbio_form_maker
       // initialize result buffer
       $_buffer = '';
 
+      // for debugging purpose only
+      if (ENVIRONMENT === 'development') {
+        $_buffer .= '<details class="debug debug-empty">' . PHP_EOL;
+        $_buffer .= '<summary><strong>#</strong>&nbsp;<span>Debug Box</span></summary>' . PHP_EOL;
+        $_buffer .= '<section><iframe id="submitExec" name="submitExec"></iframe></section>' . PHP_EOL;
+        $_buffer .= '</details>' . PHP_EOL;
+      } else {
+        // hidden iframe for form executing
+        $_buffer .= '<iframe name="submitExec" class="noBlock" style="display: none; visibility: hidden; width: 100%; height: 0;"></iframe>';
+      }
+
       // check if form tag is included
       if ($this->with_form_tag) {
           $this->submit_target = 'submitExec';
-          // for debugging purpose only
-          if (ENVIRONMENT === 'development') 
-          {
-            $_buffer .= '<small class="mx-1"># Debug</small>|<button id="enlargeBox" class="btn btn-link mx-1 p-0">' . __('Enlarge Debug Box') . '</button>';
-            $_buffer .= '<iframe id="submitExec" name="submitExec" class="border border-secondary w-100" style="height: 50px;"></iframe>';
-            $_buffer .= '<script>$(\'#enlargeBox\').click(function() {$(\'#submitExec\').attr(\'style\', \'height: 500px;\')})</script>';
-          }
           $_buffer .= $this->startForm()."\n";
       }
 
@@ -115,16 +120,22 @@ class simbio_form_table_AJAX extends simbio_form_maker
       $_del_value = __('Delete Record');
       $_cancel_value = __('Cancel');
 
+      // back button
+      $criteriaMatch = (bool)count(array_filter($this->back_button_criteria, fn($item) => isset($_REQUEST[$item])));
+      if ($this->back_button && $criteriaMatch) {
+          $event = '';
+          if (!$this->edit_mode) $event = ' onclick="backToList()"';
+          $_back_button = '<input type="button" class="s-btn btn btn-default cancelButton " value="'.$_cancel_value.'"' . $event . '/>';
+      }
+
       // check if we are on edit form mode
       if ($this->edit_mode) {
           $_edit_link .= '<a href="#" class="notAJAX editFormLink btn btn-default">' . __('Edit') . '</a>';
+
           if($this->customBtn){
             $_custom_link .= '<a href="'.$this->url.'" '.$this->style.'">' . $this->str . '</a>';
           }
-          // back button
-          if ($this->back_button) {
-              $_back_button = '<input type="button" class="s-btn btn btn-default cancelButton " value="'.$_cancel_value.'" />';
-          }
+
           // delete button exists if the record_id properties exists
           if ($this->record_id && $this->delete_button) {
               // create delete button
@@ -135,10 +146,15 @@ class simbio_form_table_AJAX extends simbio_form_maker
       $_buttons = '';
       // check if form tag is included
       if ($this->with_form_tag) {
-          $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%;">'
+          if (empty($this->custom_btn_layout)) {
+            $_buttons = '<table cellspacing="0" cellpadding="3" style="width: 100%;">'
               .'<tr><td><input type="submit" class="s-btn btn btn-primary" '.$this->submit_button_attr.' />&nbsp;'.$_delete_button.'</td><td class="edit-link-area">'.$_back_button.'&nbsp;'.$_edit_link.'&nbsp;'.$_custom_link.'</td>'
               .'</tr></table>'."\n";
+          } else {
+            $_buttons = $this->custom_btn_layout;
+          }
       }
+
       // get the table result
       $_buffer .= $_buttons;
       $_buffer .= $_table->printTable();

@@ -41,16 +41,14 @@ class Reader
         // get total line
         $lineNumber = 0;
         while (!feof($this->resource)) {
-            $line = fgets($this->resource);
+            $line = fgets($this->resource, 4096);
             if (empty($line)) continue;
             $lineNumber++;
-            ob_flush();
-            flush();
         }
         // close file handle
         fclose($this->resource);
         
-        return $lineNumber - (isset($_SESSION['csv']['header']) ? 1 : 0);
+        return $lineNumber;
     }
     
     public function each(Closure $formatter, Closure|string $processor = '', int $length = 102400)

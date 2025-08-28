@@ -39,6 +39,39 @@ $plugin = \SLiMS\Plugins::getInstance();
 // Parameter 2 = Text untuk menunya
 // Parameter 3 = full path dari file yang akan digunakan
 $plugin->registerMenu('bibliography', 'Label & Barcode', __DIR__ . '/index.php');
+
+// atau 
+\SLiMS\Plugins::menu('bibliography', 'Label & Barcode', __DIR__ . '/index.php');
+
+// atau 
+\SLiMS\Plugins::bibliography('Label & Barcode', __DIR__ . '/index.php');
+
+// atau
+/**
+ * Jika anda perlu mendaftarkan banyak halaman anda bisa
+ * membuat folder pages/ pada folder plugin anda.
+ * 
+ * # Penjelasan:
+ * <plugin_anda>/pages/
+ * - bibliography # sebagai nama modul
+ * -- index.php # sebagai nama file yang akan didaftarkan
+ * 
+ * # atau 
+ * - bibliography # sebagai nama modul
+ * -- GRUP # sebagai nama grup
+ * --- index.php # sebagai nama file yang akan didaftarkan
+ * 
+ * # atau jika anda ingin mengkelompokan dan mengurutkan
+ * # posisi menu anda
+ * - bibliography # sebagai nama modul
+ * -- GRUP_<after|before>_<NAMA_GRUP_YG_SUDAH_ADA> # sebagai nama grup  contoh : GRUP_after_TOOLS
+ * --- index.php # sebagai nama file yang akan didaftarkan
+ */
+
+\SLiMS\Plugins::registerPages();
+
+# Jika halaman yang anda buat bukan pages/ maka sebutkan nama nya
+\SLiMS\Plugins::registerPages('halaman/kustom/');
 ```
 
 ## Group Menu Plugin

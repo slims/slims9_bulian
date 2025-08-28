@@ -63,7 +63,7 @@ if (isset($_POST['itemCode'])) {
     if ($item_check->num_rows > 0) {
         if ($item_check_d['status'] == 'l') {
             // record to log
-            utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : '.sprintf(__('Item %s (%s) is currently ON LOAN'),$item_check_d['title'],$item_check_d['item_code']), 'Error', 'On Loan');
+            writeLog('staff', $_SESSION['uid'], 'stock_take', 'Stock Take ERROR : '.sprintf(__('Item %s (%s) is currently ON LOAN'),$item_check_d['title'],$item_check_d['item_code']), 'Error', 'On Loan');
             echo '<script type="text/javascript">'."\n";
             echo 'parent.$(\'#stError\').html(\''.sprintf(__('Item %s is currently ON LOAN'), $item_code).'\')';
             echo '.css( {\'display\': \'block\'} );'."\n";
@@ -121,7 +121,7 @@ if (isset($_POST['itemCode'])) {
         }
 
         // record to log
-        utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'stock_take',$message, 'Error', 'No Item');
+        writeLog('staff', $_SESSION['uid'], 'stock_take',$message, 'Error', 'No Item');
         echo '<script type="text/javascript">'."\n";
         echo 'parent.$(\'#stError\').html(\''.$alert.'\')';
         echo '.css( {\'display\': \'block\'} );'."\n";

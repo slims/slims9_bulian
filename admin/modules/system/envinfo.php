@@ -40,7 +40,7 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-system');
 
-// require SB.'admin/default/session_check.inc.php';
+require SB.'admin/default/session_check.inc.php';
 // require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 // require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 // require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
@@ -49,8 +49,8 @@ do_checkIP('smc-system');
 $environment = array(
   array('title' => __('SLiMS Environment Mode'), 'desc' => ucfirst(ENVIRONMENT)),
   array('title' => __('SLiMS Version'), 'desc' => SENAYAN_VERSION_TAG),
-  array('title' => __('Operating System'), 'desc' => php_uname('a')),
-  array('title' => __('OS Architecture'), 'desc' => php_uname('m').' '.(8 * PHP_INT_SIZE).' bit'),
+  array('title' => __('Operating System'), 'desc' => (function_exists('php_uname') ? php_uname('a') : (DS === '/' ? 'Unix Like' : 'MS Windows'))),
+  array('title' => __('OS Architecture'), 'desc' => (function_exists('php_uname') ? php_uname('m') : 'uknown ').' '.(8 * PHP_INT_SIZE).' bit'),
   array('title' => __('Web Server'), 'desc' => $_SERVER['SERVER_SOFTWARE']),  
   array('title' => __('PHP version'), 'desc' => phpversion()),  
   array('title' => __('MySQL Database version'), 'desc' => $dbs->server_info),  

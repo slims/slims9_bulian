@@ -49,6 +49,13 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
+$in_orphaned = false;
+$orphaned_query = '';
+if (isset($_GET['type']) && $_GET['type'] == 'orphaned') {
+    $in_orphaned = true;
+    $orphaned_query = '?type=orphaned';
+}
+
 /* RECORD OPERATION */
 if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $placeName = trim(strip_tags($_POST['placeName']));
@@ -109,12 +116,21 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     foreach ($_POST['itemID'] as $itemID) {
         $itemID = (integer)$itemID;
         // check if this place data still in use biblio
-        $_sql_place_biblio_q = sprintf('SELECT mp.place_name, COUNT(mp.place_id) FROM biblio AS b
-        LEFT JOIN mst_place AS mp ON b.publish_place_id=mp.place_id
-        WHERE mp.place_id=%d GROUP BY mp.place_name', $itemID);
-        $place_biblio_q = $dbs->query($_sql_place_biblio_q);
-        $place_biblio_d = $place_biblio_q->fetch_row();
-        if ($place_biblio_d[1] < 1) {
+        $delete = true;
+
+        if (!$in_orphaned) {
+            $_sql_place_biblio_q = sprintf('SELECT mp.place_name, COUNT(mp.place_id) FROM biblio AS b
+            LEFT JOIN mst_place AS mp ON b.publish_place_id=mp.place_id
+            WHERE mp.place_id=%d GROUP BY mp.place_name', $itemID);
+            $place_biblio_q = $dbs->query($_sql_place_biblio_q);
+            $place_biblio_d = $place_biblio_q->fetch_row();
+
+            if ($place_biblio_d && $place_biblio_d[1] > 0) {
+                $delete = false;
+            }
+        }
+
+        if ($delete) {
             if (!$sql_op->delete('mst_place', 'place_id='.$itemID)) {
                 $error_num++;
             }
@@ -150,14 +166,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
 	<div class="per_title">
-	    <h2><?php echo __('Place'); ?></h2>
+	    <h2><?php echo $in_orphaned ? __('Orphaned Place') : __('Place'); ?></h2>
   </div>
 	<div class="sub_section">
 	  <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/place.php" class="btn btn-default"><?php echo __('Place List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/place.php?action=detail" class="btn btn-default"><?php echo __('Add New Place'); ?></a>
 	  </div>
-    <form name="search" action="<?php echo MWB; ?>master_file/place.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+    <form name="search" action="<?php echo MWB; ?>master_file/place.php<?= $orphaned_query ?>" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
     </form>
@@ -241,7 +257,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
     $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
     // set delete proccess URL
-    $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
+    $datagrid->chbox_form_URL = trim($_SERVER['PHP_SELF'] .  $orphaned_query);
 
     // put the result into variable
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));
