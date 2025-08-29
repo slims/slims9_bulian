@@ -173,52 +173,7 @@ if (!file_exists(SB.'config'.DS.'database.php')) {
   }
 }
 
-// Apply language settings
-$localisation = \SLiMS\Polyglot\Memory::getInstance();
 
-// plugin locale
-$localisation->registerLanguageFromPlugin();
-
-// load localisation
-$localisation->load(function($memory){
-  // OPAC Only
-  if (\SLiMS\Url::isOpac() === false) return;
-
-  if (isset($_GET['select_lang'])) {
-    // remove last temp language at current memory
-    if (isset($_COOKIE['select_lang'])) $memory->forgetTempLanguage(languageName: $_GET['select_lang']);
-    
-    // make it one
-    $memory->rememberTempLanguage(languageName: $_GET['select_lang']);
-    
-    //reload page on change language
-    header("location:index.php");
-    exit;    
-  }
-
-  // set locale based on temp locale language
-  if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
-});
-
-// load helper
-require_once LIB . "helper.inc.php";
-
-$localisation->registerLanguages([
-    ['ar_SA', __('Arabic'), 'Arabic'],
-    ['bn_BD', __('Bengali'), 'Bengali'],
-    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
-    ['en_US', __('English'), 'English'],
-    ['es_ES', __('Espanol'), 'Espanol'],
-    ['de_DE', __('German'), 'Deutsch'],
-    ['id_ID', __('Indonesian'), 'Indonesia'],
-    ['ja_JP', __('Japanese'), 'Japanese'],
-    ['ms_MY', __('Malay'), 'Malay'],
-    ['fa_IR', __('Persian'), 'Persian'],
-    ['ru_RU', __('Russian'), 'Russian'],
-    ['th_TH', __('Thai'), 'Thai'],
-    ['tr_TR', __('Turkish'), 'Turkish'],
-    ['ur_PK', __('Urdu'), 'Urdu']
-]);
 
 // Extension check
 \SLiMS\Extension::throwIfNotFulfilled();
@@ -579,10 +534,79 @@ $dbs = \SLiMS\DB::getInstance('mysqli');
 
 /* Force UTF-8 for MySQL connection */
 $dbs->query('SET NAMES \'utf8\'');
+//------------------ BLOK BAHASA -----------------------
+// Pindah ruangan, tambah dan geser perabot
+// Apply language settings
+$localisation = \SLiMS\Polyglot\Memory::getInstance();
+
+// plugin locale
+$localisation->registerLanguageFromPlugin();
+
+// load localisation
+$localisation->load(function($memory) use($dbs, &$sysconf) {
+    // For Admin Area
+    if (\SLiMS\Url::isAdmin()) {
+        if (isset($_POST['select_lang'])) {
+            $_SESSION['lang'] = $_POST['select_lang'];
+        }
+        
+        if (empty($_SESSION['lang'])) {
+            $lang_dbs = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = 'default_lang'");
+            //$lang_dbs_res = $lang_dbs->fetch(\PDO::FETCH_ASSOC);
+            $lang_dbs_res = $lang_dbs->fetch_assoc();
+            if ($lang_dbs_res && ($lang_val = unserialize($lang_dbs_res['setting_value']))) {
+                $_SESSION['lang'] = $lang_val;
+            } else {
+                $_SESSION['lang'] = 'en_US'; // Fallback to English
+            }
+        }
+        $memory->setLocale($_SESSION['lang']);
+        $sysconf['default_lang'] = $_SESSION['lang']; // Update sysconf as well
+        return;
+    }
+
+    // For OPAC Area
+    if (\SLiMS\Url::isOpac()) {
+        if (isset($_GET['select_lang'])) {
+            // remove last temp language at current memory
+            if (isset($_COOKIE['select_lang'])) $memory->forgetTempLanguage(languageName: $_GET['select_lang']);
+            
+            // make it one
+            $memory->rememberTempLanguage(languageName: $_GET['select_lang']);
+            
+            //reload page on change language
+            header("location:index.php");
+            exit;   
+        }
+
+        // set locale based on temp locale language
+        if ($memory->hasTempLanguage() && !\SLiMS\Url::inXml()) $memory->setLocale($memory->getLastTempLanguage());
+    }
+});
+
+// load helper
+require_once LIB . "helper.inc.php";
+
+$localisation->registerLanguages([
+    ['ar_SA', __('Arabic'), 'Arabic'],
+    ['bn_BD', __('Bengali'), 'Bengali'],
+    ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
+    ['en_US', __('English'), 'English'],
+    ['es_ES', __('Espanol'), 'Espanol'],
+    ['de_DE', __('German'), 'Deutsch'],
+    ['id_ID', __('Indonesian'), 'Indonesia'],
+    ['ja_JP', __('Japanese'), 'Japanese'],
+    ['ms_MY', __('Malay'), 'Malay'],
+    ['fa_IR', __('Persian'), 'Persian'],
+    ['ru_RU', __('Russian'), 'Russian'],
+    ['th_TH', __('Thai'), 'Thai'],
+    ['tr_TR', __('Turkish'), 'Turkish'],
+    ['ur_PK', __('Urdu'), 'Urdu']
+]);
 
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
-
+//------------------ BLOK BAHASA -----------------------
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
   $sysconf['template']['base'] = 'php'; /* html OR php */
