@@ -534,8 +534,7 @@ $dbs = \SLiMS\DB::getInstance('mysqli');
 
 /* Force UTF-8 for MySQL connection */
 $dbs->query('SET NAMES \'utf8\'');
-//------------------ BLOK BAHASA -----------------------
-// Pindah ruangan, tambah dan geser perabot
+
 // Apply language settings
 $localisation = \SLiMS\Polyglot\Memory::getInstance();
 
@@ -606,7 +605,7 @@ $localisation->registerLanguages([
 
 // load global settings from database. Uncomment below lines if you dont want to load it
 utility::loadSettings($dbs);
-//------------------ BLOK BAHASA -----------------------
+
 // template info config
 if (!file_exists($sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/tinfo.inc.php')) {
   $sysconf['template']['base'] = 'php'; /* html OR php */
