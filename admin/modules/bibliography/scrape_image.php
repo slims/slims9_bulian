@@ -46,19 +46,28 @@ try {
     // field check
     if (!isset($_POST['imageURL']) && empty($_POST['imageURL'])) throw new Exception(__('URL can\'t empty!'));
     // make sure it is http request only
-    if (strcasecmp(substr($_POST['imageURL'], 0, 4), 'http') != 0) {
-        throw new Exception(__('Must be http URL!'));
+    $parsed_url = parse_url($_POST['imageURL']);
+    if (!isset($parsed_url['scheme']) || !in_array(strtolower($parsed_url['scheme']), ['http','https'], true)) {
+        throw new Exception(__('Must be http/https URL!'));
     }
 
     // imageURL must be a valid URL format
     $url = $_POST['imageURL'];
     if (!filter_var($url, FILTER_VALIDATE_URL)) throw new Exception(__('URL not valid!'));
 
+    // no private ip addresses
+    $ip = gethostbyname($parsed_url['host']);
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        throw new Exception('Access to addresses is not allowed');
+    }
+
+
     // Get image from another service
     $stream = Client::get($url, [
         'headers' => [
-            'User-Agent' => $_SERVER['HTTP_USER_AGENT']
-        ]
+            'User-Agent' => $_SERVER['HTTP_USER_AGENT']],
+            'timeout' => 10,
+            'max_redirects' => 0,
     ]);
 
     // Get image info from string
@@ -66,6 +75,14 @@ try {
 
     if (!$imageInfo) throw new Exception(__('Image is not valid!'));
     
+    if (strlen($image) > 1 * 512 * 512) { // 512kb limit
+        throw new Exception('Image larger than expected');
+    }
+
+    if (!$imageInfo || strpos($imageInfo['mime'], 'image/') !== 0) {
+        throw new Exception('Invalid image');
+    }
+
     $src = 'data:' . $imageInfo['mime'] . ';base64,'. ($encodedImage = base64_encode($image));
     $type = str_replace('image/', '',$imageInfo['mime']);
     $result = $encodedImage. '#image/type#' . $type;
