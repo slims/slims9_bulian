@@ -197,6 +197,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $image->isExtensionAllowed($sysconf['allowed_images']);
                 // File size check
                 $image->isLimitExceeded($sysconf['max_image_upload']*1024);
+                // Is it really image file
+                $image->isImageFile();
                 // destroy it if failed
                 if (!empty($image->getError())) $image->destroyIfFailed();
                 // remove exif from image
@@ -206,8 +208,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $data['member_image'] = $dbs->escape_string($upload->getUploadedFileName());
             } else {
                 // write log
-                $data['member_image'] = NULL;
-                writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')');
+                writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')', 'Member Image', 'Upload failed');
                 utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
             }
         } else if (!empty($_POST['base64picstring'])) {
@@ -268,16 +269,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$data['member_image'], 'Photo', 'Update');
+                        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$data['member_image'], 'Member Image', 'Upload success');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$data['member_image'].', with error ('.$upload->error.')', 'Photo', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$data['member_image'].', with error ('.$upload->error.')', 'Member Image', 'Upload failed');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
-                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Update', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' update member data ('.$memberName.') with ID ('.$memberID.')', 'Member Profile', 'Profile updated');
                 if ($sysconf['webcam'] == 'html5') {
                     echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.MWB.'membership/index.php\');</script>';
                 } else {
@@ -306,19 +307,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
 						if (isset($upload)) {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Photo', 'Add');
+							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Member Image', 'Upload success');
 						} else {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Photo', 'Add');
+							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Member Image', 'Take Photo');
 						}
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'Photo', 'Fail');
+                        writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'member Image', 'Upload failed');
                         toastr(__('Image FAILED to upload'))->error();
                     }
                 }
                 // write log
-                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Add', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' add new member ('.$memberName.') with ID ('.$memberID.')', 'Member Profile', 'Profile added');
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { toastr(__('Member Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->danger(); }
             exit();
@@ -339,7 +340,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         $expire_date = simbio_date::getNextDate($mtype_d[0], $curr_date);
         @$dbs->query('UPDATE member SET register_date=\''.date("Y-m-d").'\',  expire_date=\''.$expire_date.'\', last_update=\''.date("y-m-d").'\' WHERE member_id=\''.$memberID.'\'');
         // write log
-        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Extend', 'OK');
+        writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' extends membership for member ('.$mtype_d[1].') with ID ('.$memberID.')', 'Member Profile', 'Extend Membership');
         $num_extended++;
     }
     header('Location: '.MWB.'membership/index.php?expire=true&numExtended='.$num_extended);
@@ -372,7 +373,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // delete custom data
                 $sql_op->delete('member_custom', "member_id='$itemID'");
                 // write log
-                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Delete', 'OK');
+                writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Member Profile', 'Profile deleted');
             }
         } else {
             $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
@@ -568,7 +569,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input .= '</div>';
     $str_input .= '</div>';
     $str_input .= '<div class="custom-file col-4">';
-    $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input"');
+    $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
     $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
     $str_input .= '</div>';
     $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';

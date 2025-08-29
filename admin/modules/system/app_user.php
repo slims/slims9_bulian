@@ -145,11 +145,12 @@ if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img']
   exit();
 }
 /* RECORD OPERATION */
-if (isset($_POST['saveData'])) {
+if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pre>'; die();
     $userName = $_SESSION['uid'] > 1 ? $_SESSION['uname'] : trim(strip_tags($_POST['userName']));
     $realName = trim(strip_tags($_POST['realName']));
-    $passwd1 = trim($_POST['passwd1']);
-    $passwd2 = trim($_POST['passwd2']);
+    #$old_passwd = $dbs->escape_string(trim($_POST['old_passwd']));
+    $passwd1 = $dbs->escape_string(trim($_POST['passwd1']));
+    $passwd2 = $dbs->escape_string(trim($_POST['passwd2']));
     // check form validity
     if (empty($userName) OR empty($realName)) {
         toastr(__('User Name or Real Name can\'t be empty'))->error();
@@ -192,8 +193,16 @@ if (isset($_POST['saveData'])) {
             $data['groups'] = trim($groups);
         }
         if (($passwd1 AND $passwd2) AND ($passwd1 === $passwd2)) {
-            $data['passwd'] = password_hash($passwd2, PASSWORD_BCRYPT);
-            // $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
+            $old_passwd = $dbs->escape_string(trim($_POST['old_passwd']));
+            $up_q = $dbs->query('SELECT passwd FROM user WHERE user_id='.$_SESSION['uid']);
+            $up_d = $up_q->fetch_row();
+            if (password_verify($old_passwd, $up_d[0])) {
+                $data['passwd'] = password_hash($passwd2, PASSWORD_BCRYPT);
+                // $data['passwd'] = 'literal{MD5(\''.$passwd2.'\')}';
+            } else {
+                toastr(__('Password change failed. Make sure you input the old password.'))->error();
+                exit();
+            }
         }
         $data['input_date'] = date('Y-m-d');
         $data['last_update'] = date('Y-m-d');
@@ -427,7 +436,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if (isset($rec_d['user_image'])) {
       $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['user_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['user_image'].'</strong></a> <a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.$rec_d['user_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
     }
-    $str_input .= simbio_form_element::textField('file', 'image');
+    $str_input .= simbio_form_element::textField('file', 'image',' class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
     $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
     if ($sysconf['webcam'] !== false) {
         $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
@@ -475,6 +484,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->addCheckBox('groups', __('Group(s)'), $group_options, unserialize($rec_d['groups']??''));
     }
     // user password
+    $form->addTextField('password', 'old_passwd', __('Old Password').'*', '', 'style="width: 50%;" class="form-control"');
     $form->addTextField('password', 'passwd1', __('New Password').'*', '', 'style="width: 50%;" class="form-control"');
     // user password confirm
     $form->addTextField('password', 'passwd2', __('Confirm New Password').'*', '', 'style="width: 50%;" class="form-control"');

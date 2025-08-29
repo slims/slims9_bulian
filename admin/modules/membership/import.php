@@ -362,7 +362,7 @@ $form->table_content_attr = 'class="alterCell2"';
 $str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"');
+$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input" accept=".csv" required');
 $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col">';
