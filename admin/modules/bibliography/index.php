@@ -720,8 +720,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     echo $datagrid_result;
 } elseif (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
     # CHECK ACCESS
-    if (!utility::haveAccess('bibliography.bibliography-add')) {
-        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    if ($_SESSION['uid'] != 1) {
+        if (!utility::haveAccess('bibliography.bibliography-add')) {
+            die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+        }
     }
 
     if ((isset($_GET['action'])) AND ($_GET['action'] == 'detail')) {
@@ -1225,8 +1227,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     <?php
 } else {
     # CHECK ACCESS
-    if (!utility::haveAccess('bibliography.bibliography-list')) {
-        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    if ($_SESSION['uid'] != 1) {
+        if (!utility::haveAccess('bibliography.bibliography-list')) {
+            die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+        }
     }
 
     # ADV LOG SYSTEM - STIIL EXPERIMENTAL

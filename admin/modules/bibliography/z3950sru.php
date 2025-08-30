@@ -49,6 +49,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.z3950-sru')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
 
 // get servers
 $server_q = $dbs->query('SELECT name, uri, server_id FROM mst_servers WHERE server_type = 3 ORDER BY name ASC');

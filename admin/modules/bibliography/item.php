@@ -55,6 +55,13 @@ if (!$can_read) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.item-list')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
+
 $in_pop_up = false;
 // check if we are inside pop-up window
 if (isset($_GET['inPopUp'])) {

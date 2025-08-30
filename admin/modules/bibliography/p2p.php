@@ -51,6 +51,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_read) {
   die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.p2p-service')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
 
 $p2pExtRequirement = [];
 if (!Extension::forFeature('p2p')->isFulfilled($p2pExtRequirement)) {

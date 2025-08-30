@@ -50,6 +50,13 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
 
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.marc-sru')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
+
 $marcExtRequirement = [];
 if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
   die('<div class="errorBox">' . (sprintf(__('Feature MARC needs some PHP extension such as %s'), implode(',', $marcExtRequirement))) . '</div>');
