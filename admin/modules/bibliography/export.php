@@ -44,6 +44,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_read) {
     die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.biblio-data-export')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
 
 if (isset($_POST['doExport'])) {
   // check for form validity

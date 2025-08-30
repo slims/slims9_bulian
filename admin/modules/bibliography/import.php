@@ -52,6 +52,12 @@ $can_write = utility::havePrivilege('bibliography', 'w');
 if (!$can_read) {
   die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
 }
+# CHECK ACCESS
+if ($_SESSION['uid'] != 1) {
+    if (!utility::haveAccess('bibliography.biblio-data-import')) {
+        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+    }
+}
 
 if ($sysconf['index']['type'] == 'index') {
   require MDLBS.'system/biblio_indexer.inc.php';
