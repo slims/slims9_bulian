@@ -1171,11 +1171,24 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
      * Upgrade role to v9.7.2
      */
     function upgrade_role_38(){
-      $sql['drop'][] = "DROP TRIGGER IF EXISTS `delete_loan_history`;";
-      $sql['drop'][] = "DROP TRIGGER IF EXISTS `update_loan_history`;";
-      $sql['drop'][] = "DROP TRIGGER IF EXISTS `insert_loan_history`;";
-
-      $error = $this->slims->query($sql, ['drop'],38);
+      // Use direct query execution for DROP TRIGGER statements for backward compatibility
+      $dbs = $this->slims->getDb();
+      
+      $dropTriggers = [
+        "DROP TRIGGER IF EXISTS `delete_loan_history`",
+        "DROP TRIGGER IF EXISTS `update_loan_history`", 
+        "DROP TRIGGER IF EXISTS `insert_loan_history`"
+      ];
+      
+      $error = [];
+      
+      // Execute DROP TRIGGER statements directly without prepared statements
+      foreach ($dropTriggers as $triggerSql) {
+        $result = mysqli_query($dbs, $triggerSql);
+        if (!$result) {
+          $error[] = "Error dropping trigger: " . mysqli_error($dbs);
+        }
+      }
       
       // Update submenu references from MD5 hash to menu keys
       try {
