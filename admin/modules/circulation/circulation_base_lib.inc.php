@@ -532,7 +532,7 @@ class circulation extends member
                 }
             }
             
-            $insert_query = "INSERT INTO loan_history (" . implode(', ', $fields) . ") 
+            $insert_query = "INSERT IGNORE INTO loan_history (" . implode(', ', $fields) . ") 
                            VALUES (" . implode(', ', $values) . ")";
             
             $insert_result = $this->obj_db->query($insert_query);
