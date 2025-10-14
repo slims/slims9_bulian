@@ -53,6 +53,8 @@ class Plugins
     const SYSTEM_BEFORE_CONFIGFORM_PRINTOUT = 'system_before_configform_printout';
     const SYSTEM_BEFORE_CONFIG_SAVE = 'system_before_config_save';
     const SYSTEM_AFTER_CONFIG_SAVE = 'system_after_config_save';
+    const MEMBER_ON_VISIT = 'member_on_visit';
+    const NON_MEMBER_ON_VISIT = 'non_member_on_visit';
 
     private static $instance;
     /**
