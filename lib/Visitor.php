@@ -107,7 +107,7 @@ class Visitor
                 // default non member photos
                 $this->image = 'non_member.png';
                 $this->data = [ null, $memberId,trim($_POST['institution'])];
-                Plugins::getInstance()->execute('NON_MEMBER_ON_VISIT', ['data' => array_slice($this->data, 1)]);
+                Plugins::getInstance()->execute(Plugins::NON_MEMBER_ON_VISIT, ['data' => array_slice($this->data, 1)]);
             }
 
         
