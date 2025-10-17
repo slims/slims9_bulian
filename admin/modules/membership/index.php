@@ -92,7 +92,8 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
             if (!empty($postImage) && $image->isExists($imagePath)) {
                 @Storage::images()->delete($imagePath);
             }
-            exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $postImage, __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+            $safePostImage = htmlspecialchars($postImage, ENT_QUOTES, 'UTF-8');
+            exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $safePostImage, __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
         }
     }
     exit();
@@ -225,15 +226,16 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
             $fileinfo = getimagesizefromstring($filedata);
             $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
             $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
-			$new_filename = 'member_'.$data['member_id'].'.'.strtolower($filedom);
-			if ($valid) {
-                @$imageDisk->put('persons/'.$new_filename, $filedata);
+            $filedom_safe = strtolower(trim($filedom));
+            $new_filename = 'member_'.$data['member_id'].'.'.$filedom_safe;
+            if ($valid) {
+                $imageDisk->put('persons/'.$new_filename, $filedata);
                 if ($imageDisk->isExists('persons/'.$new_filename)) {
                     $data['member_image'] = $dbs->escape_string($new_filename);
                     if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
                     $upload_status = UPLOAD_SUCCESS;
                 }
-			}
+            }
         }
         // password confirmation
         if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 === $mpasswd2)) {
@@ -316,11 +318,11 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-						if (isset($upload)) {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Member Image', 'Upload success');
-						} else {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Member Image', 'Take Photo');
-						}
+                        if (isset($upload)) {
+                            writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Member Image', 'Upload success');
+                        } else {
+                            writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Member Image', 'Take Photo');
+                        }
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
@@ -386,7 +388,8 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
                 writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Member Profile', 'Profile deleted');
             }
         } else {
-            $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
+            $safe_member_name = htmlspecialchars($loan_d[1]);
+            $still_have_loan[] = $loan_d[0].' - '.$safe_member_name;
             $error_num++;
         }
     }
@@ -396,7 +399,7 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
         foreach ($still_have_loan as $mbr) {
             $members .= $mbr."\n";
         }
-        toastr(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$mbr)->error();
+        toastr(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$members)->error();
         exit();
     }
     // error alerting
@@ -419,20 +422,20 @@ if(isset($_GET['expire'])) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner memberIcon">
-	<div class="per_title">
-    	<h2><?php echo $page_title; ?></h2>
+    <div class="per_title">
+        <h2><?php echo $page_title; ?></h2>
     </div>
     <div class="sub_section">
-	<div class="btn-group">
+    <div class="btn-group">
     <a href="<?php echo MWB; ?>membership/index.php" class="btn btn-default"><?php echo __('Member List'); ?></a>
     <a href="<?php echo MWB; ?>membership/index.php?action=detail" class="btn btn-default"><?php echo __('Add New Member'); ?></a>
     <a href="<?php echo MWB; ?>membership/index.php?expire=true" class="btn btn-danger"><?php echo __('View Expired Member'); ?></a>
-	</div>
+    </div>
     <form name="search" action="<?php echo MWB; ?>membership/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-	    <input type="text" name="keywords" class="form-control col-md-3" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
-	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
-	</form>
-	</div>
+        <input type="text" name="keywords" class="form-control col-md-3" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
+        <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+    </form>
+    </div>
 </div>
 </div>
 <?php
@@ -776,3 +779,4 @@ $(document).ready(function() {
     echo $datagrid_result;
 }
 /* main content end */
+

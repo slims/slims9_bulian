@@ -95,6 +95,9 @@ if (isset($_POST['saveData'])) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    
+    $still_have_item = array();
+    
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -107,17 +110,19 @@ if (isset($_POST['saveData'])) {
             LEFT JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
             WHERE i.coll_type_id='.$itemID.' GROUP BY i.coll_type_id');
         $item_d = $item_q->fetch_row();
-        if ($item_d[1] < 1) {
+        
+
+        if (is_array($item_d) AND $item_d[1] > 0) {
+            $still_have_item[] = sprintf(__('Collection type %s still used by %s items'),$item_d[0],$item_d[1]);
+            $error_num++;
+        } else {
             if (!$sql_op->delete('mst_coll_type', "coll_type_id=$itemID")) {
                 $error_num++;
             }
-        } else {
-            $still_have_item[] = sprintf(__('Collection type %s still used by %s items'),$item_d[0],$item_d[1]);
-            $error_num++;
         }
     }
 
-    if ($still_have_item) {
+    if ($still_have_item) { 
         $undeleted_coll_types = '';
         foreach ($still_have_item as $coll_type) {
             $undeleted_coll_types .= $coll_type."\n";
@@ -141,14 +146,14 @@ if (isset($_POST['saveData'])) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Collection Type'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Collection Type'); ?></h2>
   </div>
-	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="sub_section">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/coll_type.php" class="btn btn-default"><?php echo __('Collection Type List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/coll_type.php?action=detail" class="btn btn-default"><?php echo __('Add New Collection Type'); ?></a>
-	  </div>
+      </div>
     <form name="search" action="<?php echo MWB; ?>master_file/coll_type.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
@@ -239,3 +244,4 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     echo $datagrid_result;
 }
 /* main content end */
+
