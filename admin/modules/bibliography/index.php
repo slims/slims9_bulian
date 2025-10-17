@@ -460,39 +460,33 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::jsToastr('Bibliography', sprintf(__('Item Data FAILED to Save. Insert batch item maximum %s copies'), $sysconf['max_insert_batch']), 'warning');
                 die();
             }
-
-            // get zeros
             preg_match($regex, $pattern, $result);
             $zeros = strlen($result[0]);
-
-            // get chars
             $chars = preg_split($regex, $pattern);
-
+            $chars_first = trim($chars[0]); 
             $chars_last = (isset($chars[1]) && !empty(trim($chars[1]))) ? trim($chars[1]) : '';
-
-            // get last number from database
-            $last_q = $dbs->query('SELECT item_code FROM item WHERE item_code REGEXP \'^' . $chars[0] . '[0-9]{3,}' . $chars_last . '$\' ORDER BY item_code DESC LIMIT 1');
+            $safe_chars_first = preg_quote($chars_first, '/');
+            $safe_chars_last = preg_quote($chars_last, '/');
+            $sql_pattern = '^' . $safe_chars_first . '[0-9]{'.$zeros.',}' . $safe_chars_last . '$';
+            $last_q = $dbs->query("SELECT item_code FROM item WHERE item_code REGEXP '{$sql_pattern}' ORDER BY item_code DESC LIMIT 1");
             if (!$dbs->errno && $last_q->num_rows > 0) {
                 $last_d = $last_q->fetch_row();
-                // get last  number
-                $ptn = '/' . $chars[0] . '|' . $chars_last . '$/';
+                $ptn = '/' . $safe_chars_first . '|' . $safe_chars_last . '$/';
                 $last = preg_replace($ptn, '', $last_d[0]);
                 $start = intval($last) + 1;
             } else {
                 $start = 1;
             }
-
+            $start = $start+1;
             $end = $start + $total;
             for ($b = $start; $b < $end; $b++) {
-                $len = strlen($b);
-                $itemcode = $chars[0];
+                $itemcode = $chars_first; 
                 if ($zeros > 0) {
-                    $itemcode .= preg_replace('@0{' . $len . '}$@i', $b, $result[0]);
+                    $itemcode .= str_pad((string)$b, $zeros, '0', STR_PAD_LEFT);
                 } else {
                     $itemcode .= $b;
                 }
-                $itemcode .= $chars[1];
-
+                $itemcode .= $chars_last;
                 $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, received_date, supplier_id, order_no, order_date, item_status_id, site, source, invoice, price, price_currency, invoice_date, call_number, coll_type_id, location_id, input_date, last_update, uid)
         VALUES ( %d, '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)",
                     isset($updateRecordID) ? $updateRecordID : $last_biblio_id, $itemcode, $dbs->escape_string($_POST['recvDate']), intval($_POST['supplierID']), $dbs->escape_string($_POST['ordNo']), $dbs->escape_string($_POST['orDate']), $dbs->escape_string($_POST['itemStatusID']), $dbs->escape_string($_POST['itemSite']), intval($_POST['source']), $dbs->escape_string($_POST['invoice']), intval($_POST['price']), $dbs->escape_string($_POST['priceCurrency']), $dbs->escape_string($_POST['invcDate']), $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
