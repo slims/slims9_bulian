@@ -96,6 +96,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    
+    $still_have_biblio = array();
+    
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -109,13 +112,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         WHERE mf.frequency_id='.$itemID.' GROUP BY mf.frequency';
         $freq_biblio_q = $dbs->query($_sql_freq_biblio_q);
         $freq_biblio_d = $freq_biblio_q->fetch_row();
-        if ($freq_biblio_d[1] < 1) {
+        
+        if (is_array($freq_biblio_d) AND $freq_biblio_d[1] > 0) {
+            $still_have_biblio[] = sprintf(__('Frequency %s still in use %d biblio(s)')."<br/>",substr($freq_biblio_d[0], 0, 45),$freq_biblio_d[1]);
+            $error_num++;                       
+        } else {
             if (!$sql_op->delete('mst_frequency', 'frequency_id='.$itemID)) {
                 $error_num++;
             }
-        }else{
-            $still_have_biblio[] = sprintf(__('Frequency %s still in use %d biblio(s)')."<br/>",substr($freq_biblio_d[0], 0, 45),$freq_biblio_d[1]);
-            $error_num++;                       
         }
     }
 
@@ -145,11 +149,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Frequency'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Frequency'); ?></h2>
   </div>
-	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="sub_section">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/frequency.php" class="btn btn-default"><?php echo __('Frequency Available'); ?></a>
       <a href="<?php echo MWB; ?>master_file/frequency.php?action=detail" class="btn btn-default"><?php echo __('Add New Frequency'); ?></a>
     </div>
@@ -245,7 +249,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
        $keywords = utility::filterData('keywords', 'get', true, true, true);
-       $datagrid->setSQLCriteria("g.frequency_name LIKE '%$keywords%'");
+       $datagrid->setSQLCriteria("f.frequency LIKE '%$keywords%'");
     }
 
     // set table and table header attributes
