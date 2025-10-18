@@ -33,11 +33,11 @@ include_once '../sysconfig.inc.php';
 // Generate Menu
 function main_menu()
 {
-  global $dbs;
-  $modules_dir 	  = 'modules';
+  global $dbs, $sysconf;
+  $modules_dir    = 'modules';
   $module_table   = 'mst_module';
-  $module_list 	  = array();
-  $_menu 	        = '';
+  $module_list    = array();
+  $_menu          = '';
   $icon           = array(
     'home'           => 'fa fa-home',
     'bibliography'   => 'fa fa-bookmark',
@@ -57,22 +57,33 @@ function main_menu()
     'master_file'    => __('Master File'),
   );
   $appended_first  = '<li><input type="radio" name="s-menu" id="home" role="button"><label for="home" class="menu home"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Shortcut').'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="home-close" role="button"><label for="home-close" class="menu home s-current s-menu-hide"><i class="nav-icon '.$icon['home'].'"></i> <span class="s-menu-title">'.__('Shortcut').'</span></label>';
+  
   $_mods_q = $dbs->query('SELECT * FROM '.$module_table);
-  while ($_mods_d = $_mods_q->fetch_assoc()) {
-    $module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);
+  
+  if ($_mods_q) {
+      while ($_mods_d = $_mods_q->fetch_assoc()) {
+          $module_list[] = array('name' => $_mods_d['module_name'], 'path' => $_mods_d['module_path'], 'desc' => $_mods_d['module_desc']);
+      }
   }
-  $_menu 	.= '<ul class="nav">';
-  $_menu 	.= $appended_first;
-  $_menu 	.= @sub_menu('default', $module_list);
-  $_menu 	.= '</li>'."\n";
-  $_menu 	.= '<li><a class="menu dashboard" href="'.AWB.'index.php"><i class="nav-icon fa fa-dashboard"></i> <span class="s-menu-title">'.__('Dashboard').'</span></a></li>';
-  $_menu 	.= '<li><a class="menu opac" href="'.SWB.'index.php" target="_blank"><i class="nav-icon '.$icon['opac'].'"></i> <span class="s-menu-title">' . __('OPAC') . '</span></a></li>';
+
+  $_menu  .= '<ul class="nav">';
+  $_menu  .= $appended_first;
+  $_menu  .= sub_menu('default', array()); 
+  $_menu  .= '</li>'."\n";
+  $_menu  .= '<li><a class="menu dashboard" href="'.AWB.'index.php"><i class="nav-icon fa fa-dashboard"></i> <span class="s-menu-title">'.__('Dashboard').'</span></a></li>';
+  $_menu  .= '<li><a class="menu opac" href="'.SWB.'index.php" target="_blank"><i class="nav-icon '.$icon['opac'].'"></i> <span class="s-menu-title">' . __('OPAC') . '</span></a></li>';
+  
+  $priv_session = $_SESSION['priv'] ?? [];
+
   if ($module_list) {
     foreach ($module_list as $_module) {
       $_formated_module_name = ucwords(str_replace('_', ' ', $_module['name']));
       $_mod_dir = $_module['path'];
-      if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && file_exists($modules_dir.DS.$_mod_dir)) {
-        $_icon = isset($icon[$_module['name']])?$icon[$_module['name']]:'fa fa-bars';
+      
+      $has_read_permission = isset($priv_session[$_mod_dir]['r']) && $priv_session[$_mod_dir]['r'];
+
+      if ($has_read_permission && file_exists($modules_dir.DS.$_mod_dir)) {
+        $_icon = $icon[$_module['name']] ?? 'fa fa-bars';
         $_menu .= '<li><input type="radio" name="s-menu" id="'.$_module['name'].'" role="button"><label for="'.$_module['name'].'" class="menu '.$_module['name'].'" title="'.$_module['desc'].'"><i class="nav-icon '.$_icon.'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label><input type="radio" name="s-menu" class="s-menu-close" id="'.$_module['name'].'-close" role="button"><label for="'.$_module['name'].'-close" class="menu '.$_module['name'].' s-current s-menu-hide"><i class="nav-icon '.$_icon.'"></i> <span class="s-menu-title">'.__($_formated_module_name).'</span></label>';
         $_menu .= sub_menu($_mod_dir, $_module);
         $_menu .= '</li>';
@@ -87,42 +98,64 @@ function main_menu()
 function sub_menu($str_module = '', $_module = array())
 {
     global $dbs;
-    $modules_dir 	= 'modules';
-    $_submenu 		= '<div id="sidepan"><ul class="nav">';
-    $_submenu_file 	= $modules_dir.DS.$_module['path'].DS.'submenu.php';
-
+    $modules_dir  = 'modules';
+    $_submenu     = '<div id="sidepan"><ul class="nav">'; 
+    $module_path = $_module['path'] ?? $str_module;
+    $_submenu_file  = $modules_dir.DS.$module_path.DS.'submenu.php';
+    $menu = [];
     $plugin_menus = \SLiMS\Plugins::getInstance()->getMenus($str_module);
 
     if (file_exists($_submenu_file)) {
         include $_submenu_file;
-        $menu = array_merge($menu ?? [], $plugin_menus);
+  
+        $menu = array_merge($menu, $plugin_menus);
+        $uid = $_SESSION['uid'] ?? 0;
+        $priv_session = $_SESSION['priv'] ?? [];
 
-        if ($_SESSION['uid'] > 1) {
+        if ($uid > 1) {
             $tmp_menu = [];
+            $allowed_menus = $priv_session[$str_module]['menus'] ?? [];
+
             if (isset($menu) && count($menu) > 0) {
                 foreach ($menu as $item) {
-                  if (in_array(md5($item[1]), $_SESSION['priv'][$str_module]['menus']) || $item[0] == 'Header' ) $tmp_menu[] = $item;
+                  $is_header = ($item[0] ?? '') === 'Header';
+                  $menu_path_md5 = md5($item[1] ?? '');
+
+                  if (in_array($menu_path_md5, $allowed_menus) || $is_header) {
+                      $tmp_menu[] = $item;
+                  }
                 }
             }
             $menu = $tmp_menu;
         }
     } else {
-  include 'default/submenu.php';
-	$shortcuts = get_shortcuts_menu();
-	foreach ($shortcuts as $shortcut) {
-	  $path = preg_replace('@^.+?\|/@i', '', $shortcut);
-	  $label = preg_replace('@\|.+$@i', '', $shortcut);
-	  $menu[] = array(__($label), MWB.$path, __($label));
-	}
-    }
-    // iterate menu array
-    foreach ($menu as $i=>$_list) {
-      if ($_list[0] == 'Header') {
-        $_submenu .= '<li class="s-submenu-header">'.$menu[$i][1].'</li>'."\n";
-      } else {
-        $_submenu .= '<li><a class="menu s-current-child submenu-'.$i.' '.strtolower(str_replace(' ', '-', $menu[$i][0])).'" href="'.$menu[$i][1].'" title="'.( isset($menu[$i][2])?$menu[$i][2]:$menu[$i][0] ).'"><i class="nav-icon fa fa-bars"></i> '.$menu[$i][0].'</a></li>'."\n";
+      include 'default/submenu.php';
+      
+      $shortcuts = get_shortcuts_menu();
+      
+      foreach ($shortcuts as $shortcut) {
+        $path = preg_replace('@^.+?\|/@i', '', $shortcut);
+        $label = preg_replace('@\|.+$@i', '', $shortcut);
+        $menu[] = array(__($label), MWB.$path, __($label));
       }
     }
+    
+    if (is_array($menu)) {
+      // iterate menu array
+      foreach ($menu as $i=>$_list) {
+        $label = $_list[0] ?? '';
+        $href = $_list[1] ?? '#';
+        $title = $_list[2] ?? $label;
+
+        if ($label === 'Header') {
+          $_submenu .= '<li class="s-submenu-header">'.$href.'</li>'."\n";
+        } else {
+          $css_class = strtolower(str_replace(' ', '-', $label));
+          $_submenu .= '<li><a class="menu s-current-child submenu-'.$i.' '.$css_class.'" href="'.$href.'" title="'.$title.'"><i class="nav-icon fa fa-bars"></i> '.$label.'</a></li>'."\n";
+        }
+      }
+    }
+    
     $_submenu .= '</ul></div>';
     return $_submenu;
 }
@@ -131,10 +164,22 @@ function get_shortcuts_menu()
 {
     global $dbs;
     $shortcuts = array();
-    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \'shortcuts_'.$dbs->escape_string($_SESSION['uid']).'\'');
-    $shortcuts_d = $shortcuts_q->fetch_assoc();
-    if ($shortcuts_q->num_rows > 0) {
-      $shortcuts = unserialize($shortcuts_d['setting_value']);
+    $uid = $_SESSION['uid'] ?? 0;
+
+    $setting_name_param = 'shortcuts_'.$dbs->escape_string((string)$uid);
+    $shortcuts_q = $dbs->query('SELECT * FROM setting WHERE setting_name LIKE \''.$setting_name_param.'\'');
+    
+    if ($shortcuts_q) {
+      $shortcuts_d = $shortcuts_q->fetch_assoc();
+      if ($shortcuts_q->num_rows > 0) {
+        $setting_value = $shortcuts_d['setting_value'] ?? null;
+        if ($setting_value !== null) {
+            $unserialized_data = unserialize($setting_value);
+            if (is_array($unserialized_data)) {
+                $shortcuts = $unserialized_data;
+            }
+        }
+      }
     }
     return $shortcuts;
 }
