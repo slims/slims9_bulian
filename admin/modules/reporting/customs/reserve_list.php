@@ -153,8 +153,10 @@ if (!$reportView) {
         $criteria .= ' AND (m.member_name LIKE \'%' . $member . '%\' OR m.member_id LIKE \'%' . $member . '%\')';
     }
     if (isset($_GET['startDate']) and isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(r.reserve_date) BETWEEN TO_DAYS(\'' . $_GET['startDate'] . '\') AND
-            TO_DAYS(\'' . $_GET['untilDate'] . '\'))';
+        $startDate = $dbs->real_escape_string($_GET['startDate']);
+        $untilDate = $dbs->real_escape_string($_GET['untilDate']);
+        $criteria .= ' AND (TO_DAYS(r.reserve_date) BETWEEN TO_DAYS(\'' . $startDate . '\') AND
+            TO_DAYS(\'' . $untilDate . '\'))';
     }
 
     $reportgrid->setSQLCriteria($criteria);
