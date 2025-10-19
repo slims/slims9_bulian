@@ -60,6 +60,8 @@ if (isset($_GET['biblioID']) AND $_GET['biblioID']) {
 function checkAuthor($str_author_name, $str_author_type = 'p')
 {
   global $dbs;
+
+  $str_author_type = $dbs->escape_string(substr($str_author_type, 0, 1));
   $_q = $dbs->query('SELECT author_id FROM mst_author WHERE author_name=\''.$str_author_name.'\' AND authority_type=\''.$str_author_type.'\'');
   if ($_q->num_rows > 0) {
     $_d = $_q->fetch_row();

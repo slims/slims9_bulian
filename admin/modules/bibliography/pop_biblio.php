@@ -41,11 +41,11 @@ if (!$can_write) {
 }
 
 if (isset($_GET['itemID'])) {
-  $_POST['itemID'] = $_GET['itemID'];
+  $_POST['itemID'] = (integer)$_GET['itemID'];
 }
 
 if (isset($_GET['itemCollID'])) {
-  $_POST['itemCollID'] = $_GET['itemCollID'];
+  $_POST['itemCollID'] = (integer)$_GET['itemCollID'];
 }
 
 $_GET['inPopUp'] = true;
@@ -62,7 +62,7 @@ $(document).ready(function() {
 $content = ob_get_clean();
 
 // page title
-$page_title = 'Bibliographic Data';
+$page_title = __('Bibliographic Data');
 
 // include the page template
 require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';

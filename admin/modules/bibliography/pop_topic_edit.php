@@ -27,7 +27,7 @@ define('INDEX_AUTH', '1');
 require '../../../sysconfig.inc.php';
 
 if (isset($_GET['topicID'])) {
-  $_POST['itemID'] = $_GET['topicID'];
+  $_POST['itemID'] = (integer)$_GET['topicID'];
   $_POST['detail'] = true;
 
 }
