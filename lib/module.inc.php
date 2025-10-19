@@ -76,7 +76,8 @@ class module extends simbio
             foreach ($this->module_list as $_module) {
                 $_formated_module_name = ucwords(str_replace('_', ' ', $_module['name']));
                 $_mod_dir = $_module['path'];
-                $_menu .= '<li><a class="menu ' . $_module['name'] . ((isset($_GET['mod']) && $_GET['mod'] == $_module['path']) ? ' menuCurrent' : '') . '" title="' . $_module['desc'] . '" href="index.php?mod=' . $_mod_dir . '"><span>' . __($_formated_module_name) . '</span></a></li>';
+                $_href = 'index.php?mod=' . $_mod_dir;
+                $_menu .= '<li><a class="menu ' . $_module['name'] . ((isset($_GET['mod']) && $_GET['mod'] == $_mod_dir) ? ' menuCurrent' : '') . '" title="' . $_module['desc'] . '" href="' . $_href . '"><span>' . __($_formated_module_name) . '</span></a></li>';
             }
         }
         $_menu .= $this->appended_last;
@@ -110,7 +111,7 @@ class module extends simbio
             foreach ($module_list as $_id => $_module) {
                 $_mod_dir = $_module['path'];
                 $_path_exists = file_exists($this->modules_dir . $_mod_dir) || (isset($_module['plugin_module_path']) && file_exists($_module['plugin_module_path']));
-                if (isset($_SESSION['priv'][$_module['path']]['r']) && $_SESSION['priv'][$_module['path']]['r'] && $_path_exists) {
+                if (isset($_SESSION['priv'][$_mod_dir]['r']) && $_SESSION['priv'][$_mod_dir]['r'] && $_path_exists) {
                     $_menu[$_id] = $_module;
                     if ($also_get_childs) {
                         $_menu[$_id]['childs'] = $this->getSubMenuItems($_module['name']);
@@ -145,7 +146,7 @@ class module extends simbio
                 if ($i > 0) $_submenu_current = '';
                 $_submenu .= '<a class="subMenuItem ' . $_submenu_current . '" '
                     . ' href="' . $item[1] . '"'
-                    . ' title="' . (isset($item[2]) ? $item[2] : $item[0]) . '" href="#"><span>' . $item[0] . '</span></a>';
+                    . ' title="' . (isset($item[2]) ? $item[2] : $item[0]) . '"><span>' . $item[0] . '</span></a>';
                 $i++;
             }
         }
@@ -186,8 +187,37 @@ class module extends simbio
         foreach ($this->reorderMenus($menu, $plugin_menus) as $header => $items) {
             foreach ($items as $id => $item) {
                 $menus[$header] = $menus[$header] ?? [];
-                $id = (is_numeric($id)) ? md5($item[1]) : $id;
-                if ($_SESSION['uid'] > 1 && !empty($str_module) && !utility::haveAccess($id)) continue;
+                $access_id = (is_numeric($id)) ? md5($item[1]) : $id;
+                $access_passed = false;
+
+                if (strpos($item[1], 'plugin_container.php') !== false) {
+                    $url_parts = parse_url($item[1]);
+                    $query_params = [];
+                    if (isset($url_parts['query'])) {
+                        parse_str($url_parts['query'], $query_params);
+                    }
+
+                    if (isset($query_params['id']) && strlen($query_params['id']) === 32) {
+                        $access_id = $query_params['id'];
+
+                        if (isset($_SESSION['priv'][$str_module]['menus'])) {
+                            if (in_array($access_id, $_SESSION['priv'][$str_module]['menus'])) {
+                                $access_passed = true;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                } else {
+                    if (utility::haveAccess($access_id)) {
+                        $access_passed = true;
+                    }
+                }
+
+                if ($_SESSION['uid'] > 1 && !empty($str_module) && !$access_passed) {
+                    continue;
+                }
+
                 $menus[$header][] = $item;
             }
         }
@@ -197,8 +227,7 @@ class module extends simbio
 
     /**
      * Method to order default menu and plugin menu
-     * 
-     * @param array $default 
+     * * @param array $default 
      * @param array $plugin 
      * @return array 
      */
@@ -216,7 +245,7 @@ class module extends simbio
                 // check to plugin group
                 if (!is_null($header) && isset($group_menu[$header])) {
                     foreach ($group_menu[$header] as $hash) {
-                        $groups[$header][] = $plugin[$hash];
+                        if (isset($plugin[$hash])) $groups[$header][] = $plugin[$hash];
                     }
                     unset($group_menu[$header]);
                 }
@@ -272,12 +301,17 @@ class module extends simbio
             if(count($tmp_menu) > 0) $groups[$header] = $tmp_menu;
         }
 
-        // ungrouped plugin group to "plugins" group
-        $ungrouped = array_filter(array_keys($plugin), fn ($p) => !in_array($p, GroupMenu::getInstance()->getPluginInGroup()));
-        $ungrouped = ['plugins' => array_map(fn ($i) => $plugin[$i], $ungrouped)];
-
+        $pluginsInGroup = GroupMenu::getInstance()->getPluginInGroup();
+        $ungrouped = [];
+        
+        foreach ($plugin as $hash => $p_menu) {
+            if (!in_array($hash, $pluginsInGroup)) {
+                $ungrouped['plugins'][] = $p_menu;
+            }
+        }
+        
         // merge group
-        if (count($plugin) > 0)
+        if (count($ungrouped) > 0)
             $groups = array_merge($groups, $ungrouped);
 
         return $groups;
@@ -285,8 +319,7 @@ class module extends simbio
 
     /**
      * Method to get a first submenu of module
-     * 
-     * @param string $str_module 
+     * * @param string $str_module 
      * @return mixed 
      */
     public function getFirstMenu($str_module = '')
