@@ -846,8 +846,8 @@ if (window.parent && window.parent !== window) {
     window.parent.confSubmit = confSubmit;
     window.parent.jsonToList = jsonToList;
     window.parent.setInputValue = setInputValue;
-    window.parent.debounce = debounce;
-    window.parent.showDropDown = showDropDown;
+    // window.parent.debounce = debounce;
+    // window.parent.showDropDown = showDropDown;
   } catch (error) {
     // Ignore cross-origin errors
     console.warn('Cannot assign functions to parent window (cross-origin restriction)');
