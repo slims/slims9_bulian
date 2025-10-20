@@ -13,7 +13,10 @@
         "volnix/csrf": "~1.0",
         "monolog/monolog": "^2.0",
         "ramsey/uuid": "^4.0",
-        "ifsnop/mysqldump-php": "^2.9"
+        "ifsnop/mysqldump-php": "^2.9",
+        "setasign/fpdi": "^2.6",
+        "psr/log": "*",
+        "mpdf/psr-log-aware-trait": "*"
     },
     "license": "GNU GPL v3"
 }
