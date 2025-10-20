@@ -38,6 +38,34 @@ require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+
+$backup_base_dir = realpath($sysconf['backup_dir']);
+
+if (!$backup_base_dir) {
+    die('<div class="errorBox">'.__('Backup directory is not accessible or not configured correctly.').'</div>');
+}
+
+function validate_path($requested_path, $base_dir) {
+    if (empty($requested_path)) {
+        return false;
+    }
+
+    $full_path = realpath($requested_path);
+    if (!$full_path) {
+        $filename = basename($requested_path);
+        $full_path = realpath($base_dir . '/' . $filename);
+    }
+
+    if (!$full_path) {
+        return false;
+    }
+
+    if (strpos($full_path, $base_dir) === 0) {
+        return $full_path;
+    }
+    return false;
+}
+
 // create token in session
 $_SESSION['token'] = utility::createRandomString(32);
 
@@ -61,14 +89,16 @@ if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'
   }
   $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$id);
   if ($_q->num_rows > 0) {
-      $path = $_q->fetch_row()[0];
-      if(file_exists($path)){
+      $requested_path = $_q->fetch_row()[0];
+      $path = validate_path($requested_path, $backup_base_dir);
+      if($path !== false){
+        $mime_type = function_exists('mime_content_type') ? mime_content_type($path) : 'application/octet-stream';
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: public");
         header("Content-Description: File Transfer");
-        header("Content-Type: " . mime_content_type($path));
+        header("Content-Type: " . $mime_type);
         header("Content-Length: " .(string)(filesize($path)) );
         header('Content-Disposition: attachment; filename="'.basename($path).'"');
         header("Content-Transfer-Encoding: binary\n");
@@ -76,14 +106,14 @@ if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'
 
         while (!feof($fo)) {
           echo fread($fo, 8192);
-
           ob_flush();
           flush();
         }
-
         fclose($fo);
         exit();
       }
+      header("HTTP/1.0 404 Not Found");
+      exit();
   }
 }
 
@@ -100,13 +130,14 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 
     $error_num = 0;
     foreach ($_POST['itemID'] as $itemID) {
-      $itemID = utility::filterData($itemID, 'int', true, true, true);
+      $itemID = (int)$itemID;
 
       //delete file
       $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$itemID);
-      $file = $_q->fetch_row()[0];
-      if(file_exists($file)){
-          @unlink($file);
+      $requested_file = $_q->fetch_row()[0];
+      $file_to_delete = validate_path($requested_file, $backup_base_dir);
+      if($file_to_delete !== false && file_exists($file_to_delete)){
+          @unlink($file_to_delete);
       } 
       //delete record
       $sql_op = new simbio_dbop($dbs);
@@ -233,9 +264,11 @@ $datagrid->edit_property = false;
 $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
 
 function showFilesize($obj_db,$array_data) {
+    global $backup_base_dir;
     $path_index = 3;
     $str = __('File not found');
-    if(isset($array_data[$path_index]) && file_exists($array_data[$path_index])){
+    $safe_path = validate_path($array_data[$path_index], $backup_base_dir);
+    if($safe_path !== false){
         $str = '&nbsp;<a class="btn btn btn-info" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.
         '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16" style="margin-right: 5px;">'.
         '<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>'.
@@ -247,10 +280,12 @@ function showFilesize($obj_db,$array_data) {
 }
 
 function getFilenameFromPath($obj_db,$array_data) {
+    global $backup_base_dir;
     $str = __('File not found');
     $decimal  = 2;
-    if(isset($array_data[3]) && file_exists($array_data[3])){
-      $file = filesize($array_data[3]);
+    $safe_path = validate_path($array_data[3], $backup_base_dir);
+    if($safe_path !== false){
+      $file = filesize($safe_path);
       $factor = floor((strlen($file) - 1) / 3);
       if ($factor > 0) 
         $sz = 'KMGT';
@@ -272,3 +307,4 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
 }
 
 echo $datagrid_result;
+// END OF FILE
