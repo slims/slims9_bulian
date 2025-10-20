@@ -37,6 +37,8 @@ if (!$can_read) {
     die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
 }
 
+$tempPath = SB . FLS . DS. '/cache';
+
 $xlsdata = [];
 if (isset($_SESSION['xlsquery'])) {
 	$q = $_SESSION['xlsquery'];
@@ -56,7 +58,9 @@ else if (isset($_SESSION['xlsdata'])) {
 }
 
 try {
-    $mpdf = new Mpdf();
+    $mpdf = new \Mpdf\Mpdf([
+        'tempDir' => $tempPath
+    ]);
 } catch (MpdfException $e) {
     die('Mpdf error: ' . $e->getMessage());
 }
