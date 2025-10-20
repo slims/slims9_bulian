@@ -277,7 +277,8 @@ if (!$reportView) {
     // print out
     echo '<div class="mb-2">' . __('Title and Collection Recap by') . ' <strong>' . $recapby . '</strong>
     <a href="#" class="s-btn btn btn-default printReport" onclick="window.print()">' . __('Print Current Page') . '</a>
-    <a href="../xlsoutput.php" class="s-btn btn btn-default">' . __('Export to spreadsheet format') . '</a></div>' . "\n";
+    <a href="../xlsoutput.php" class="s-btn btn btn-default">' . __('Export to spreadsheet format') . '</a>
+    <a href="../pdf.php" class="s-btn btn btn-default">' . __('Export to PDF') . '</a></div>' . "\n";
     echo $output;
 
     unset($_SESSION['xlsquery']);

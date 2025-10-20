@@ -202,7 +202,7 @@ if (!$reportView) {
 
     // show spreadsheet export button
     $reportgrid->show_spreadsheet_export = true;
-
+    $reportgrid->show_pdf_export = true;
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
