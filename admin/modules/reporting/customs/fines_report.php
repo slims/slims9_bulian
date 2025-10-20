@@ -143,6 +143,8 @@ if (!$reportView) {
 
     // query fines data to database
     // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal`, `fines_id` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
+    $selected_year  = $dbs->real_escape_string($selected_year);
+    $selected_month = $dbs->real_escape_string($selected_month);
     $sql_str = "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
     // debug box
     if (isDev() !== false) {

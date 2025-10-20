@@ -37,7 +37,7 @@ if (isset($_GET['type'])) {
 
 // ajax action
 $content = '<script type="text/javascript">'."\n";
-$content .= '$(document).ready( function() { $(\'#pageContent\').simbioAJAX(\'print_settings.php?type='.$type.'&inPopUp=true\'); });';
+$content .= '$(document).ready( function() { $(\'#pageContent\').simbioAJAX(\'print_settings.php?type='.urlencode($type).'&inPopUp=true\'); });';
 $content .= '</script>';
 
 // page title

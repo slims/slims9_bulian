@@ -60,6 +60,7 @@ if (isset($_GET['biblioID']) AND $_GET['biblioID']) {
 function checkSubject($str_subject, $str_subject_type = 't')
 {
     global $dbs;
+    $str_subject_type = $dbs->escape_string($str_subject_type);
     $_q = $dbs->query('SELECT topic_id FROM mst_topic WHERE topic=\''.$str_subject.'\' AND topic_type=\''.$str_subject_type.'\'');
     if ($_q->num_rows > 0) {
         $_d = $_q->fetch_row();
@@ -85,13 +86,14 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
             $data['topic_id'] = $_POST['topicID'];
         } else if ($subject AND empty($_POST['topicID'])) {
             // check subject
+            $topic_type = $dbs->escape_string(trim($_POST['type']));
             $subject_id = checkSubject($subject, $_POST['type']);
             if ($subject_id !== false) {
                 $data['topic_id'] = $subject_id;
             } else {
                 // adding new topic
                 $topic_data['topic'] = $subject;
-                $topic_data['topic_type'] = $_POST['type'];
+                $topic_data['topic_type'] = $topic_type;
                 $topic_data['classification'] = '';
                 $topic_data['input_date'] = date('Y-m-d');
                 $topic_data['last_update'] = date('Y-m-d');
