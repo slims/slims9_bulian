@@ -56,35 +56,40 @@ if($_SESSION['uid'] != 1){
 /* DOWNLOAD OPERATION */
 if(isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'download'){
   $id = utility::filterData('id', 'get', true, true, true);
+  if (!is_numeric($id)) {
+      exit();
+  }
   $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$id);
-  $path = $_q->fetch_row()[0];
-  if(file_exists($path)){
-    header("Pragma: public");
-    header("Expires: 0");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Cache-Control: public");
-    header("Content-Description: File Transfer");
-    header("Content-Type: " . mime_content_type($path));
-    header("Content-Length: " .(string)(filesize($path)) );
-    header('Content-Disposition: attachment; filename="'.basename($path).'"');
-    header("Content-Transfer-Encoding: binary\n");
-    $fo = fopen($path, 'rb');
+  if ($_q->num_rows > 0) {
+      $path = $_q->fetch_row()[0];
+      if(file_exists($path)){
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header("Content-Type: " . mime_content_type($path));
+        header("Content-Length: " .(string)(filesize($path)) );
+        header('Content-Disposition: attachment; filename="'.basename($path).'"');
+        header("Content-Transfer-Encoding: binary\n");
+        $fo = fopen($path, 'rb');
 
-    while (!feof($fo)) {
-      echo fread($fo, 8192);
+        while (!feof($fo)) {
+          echo fread($fo, 8192);
 
-      ob_flush();
-      flush();
-    }
+          ob_flush();
+          flush();
+        }
 
-    fclose($fo);
-    exit();
+        fclose($fo);
+        exit();
+      }
   }
 }
 
 /* RECORD OPERATION */
 if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])) {
-    if (!$can_read) { 
+    if (!$can_write) { // Gunakan can_write karena ini operasi DELETE
       die();  
     }
 
@@ -95,6 +100,8 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 
     $error_num = 0;
     foreach ($_POST['itemID'] as $itemID) {
+      $itemID = utility::filterData($itemID, 'int', true, true, true);
+
       //delete file
       $_q = $dbs->query("SELECT backup_file FROM backup_log WHERE backup_log_id=".$itemID);
       $file = $_q->fetch_row()[0];
@@ -122,16 +129,16 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
 ?>
 <div class="menuBox">
 <div class="menuBoxInner backupIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Database Backup'); ?></h2>
+  <div class="per_title">
+      <h2><?php echo __('Database Backup'); ?></h2>
   </div>
   <?php
  // if (!file_exists($sysconf['mysqldump'])) {
  //     echo '<div class="alert alert-danger rounded-none">'.__('The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won\'t be able to do any database backups.').'</div>';
  // }
   ?>
-	<div class="sub_section">
-	  <div class="btn-group d-flex flex-column">
+  <div class="sub_section">
+    <div class="btn-group d-flex flex-column">
       <div class="d-flex">
         <button id="startBackup" class="notAJAX btn btn-success d-block mb-1"><?php echo __('Start New Backup'); ?></button>
         <?php if ($_SESSION['uid'] == 1): ?>
@@ -141,7 +148,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
       <div>
         <input type="checkbox" value="yes" id="activateVerbose"/> <label><?= __('Verbose process')?></label>
       </div>
-	  </div>
+    </div>
     <form name="search" action="<?php echo MWB; ?>system/backup.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
       <input type="text" name="keywords" class="form-control col-md-3" />
       <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
@@ -159,8 +166,7 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   $('#startBackup').click(function(){
     let input = $('#activateVerbose');
 
-    // Change ui
-    input.attr('disabled', '');
+    input.attr('disabled', 'disabled');
     $(this).removeClass('btn-success').addClass('btn-secondary');
     $(this).text('<?= __('Processing') ?>');
     $('#createBackup').submit()
@@ -169,18 +175,16 @@ if (isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemA
   $('#activateVerbose').click(function(){
     let input = $('input[name="verbose"]');
     let iframe = $('iframe[name="backupVerbose"]');
-    let button = $('#startBackup');
 
     if ($(this).is(':checked'))
     {
       input.val('yes');
-      button.trigger('click');
       iframe.removeClass('d-none');
     }
     else
     {
       iframe.addClass('d-none');
-      input.val('false');
+      input.val('no');
     }
   });
 </script>
@@ -194,11 +198,11 @@ $datagrid = new simbio_datagrid();
 $datagrid->setSQLColumn('bl.backup_log_id',
     'u.realname AS  \''.__('Backup Executor').'\'',
     'bl.backup_time AS \''.__('Backup Time').'\'',
-    'bl.backup_file AS \''.__('Backup File Location').'\'',
-    'bl.backup_file AS \''.__('File Size').'\'');
+    'bl.backup_file AS \''.__('Backup File').'\'', 
+    'bl.backup_file AS \''.__('OPTION').'\'');
 $datagrid->setSQLorder('backup_time DESC');
-$datagrid->modifyColumnContent(4, 'callback{showFileSize}');
-if (!$can_write) $datagrid->invisible_fields = [0];
+$datagrid->modifyColumnContent(4, 'callback{showFilesize}');
+$datagrid->modifyColumnContent(3, 'callback{getFilenameFromPath}');
 
 // is there any search
 if (isset($_GET['keywords']) AND $_GET['keywords']) {
@@ -210,20 +214,31 @@ $datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 $datagrid->edit_property = false;
 $datagrid->chbox_form_URL = $_SERVER['PHP_SELF'];
-$datagrid->modifyColumnContent(4, 'callback{showFileSize}'); 
 
 function showFilesize($obj_db,$array_data) {
+    $path_index = 3;
+    $str = __('File not found');
+    if(isset($array_data[$path_index]) && file_exists($array_data[$path_index])){
+        $str = '&nbsp;<a class="btn btn btn-info" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.__('Download').'</a>';
+    }
+  return $str;
+}
+
+function getFilenameFromPath($obj_db,$array_data) {
     $str = __('File not found');
     $decimal  = 2;
-    if(file_exists($array_data[3])){
+    if(isset($array_data[3]) && file_exists($array_data[3])){
       $file = filesize($array_data[3]);
       $factor = floor((strlen($file) - 1) / 3);
       if ($factor > 0) 
         $sz = 'KMGT';
-        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . $sz[((int)$factor - 1)] . 'B';
-        $str .= '&nbsp;<a class="btn btn-sm btn-info pull-right" href="'.MWB.'system/backup.php?action=download&id='.$array_data[0].'" target="_SELF">'.__('Download').'</a>';
+      else
+        $sz = '';
+        $factor = max(0, $factor);
+        $str  = sprintf("%.{$decimal}f ", $file / pow(1024, $factor)) . ($factor > 0 ? $sz[((int)$factor - 1)] : '') . 'B';
+        $str =  basename($array_data[3]).'<br/><small><i>( '.$str.' )</i></small>';
     }
-  return $str;
+    return $str;    
 }
 
 // put the result into variables
