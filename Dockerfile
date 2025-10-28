@@ -19,9 +19,15 @@ COPY . /var/www/html
 
 RUN composer install
 
+# Copy sample config files
+RUN if [ -f config/csp.sample.php ] && [ ! -f config/csp.php ]; then \
+        cp config/csp.sample.php config/csp.php; \
+    fi
+
 RUN chown -R www-data:www-data /var/www/html/files
 RUN chown -R www-data:www-data /var/www/html/images
 RUN chown -R www-data:www-data /var/www/html/repository
+RUN chown -R www-data:www-data /var/www/html/config
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -31,4 +37,3 @@ EXPOSE 80
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["apache2-foreground"]
-
