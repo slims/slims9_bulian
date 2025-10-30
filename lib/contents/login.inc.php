@@ -123,6 +123,13 @@ if (isset($_POST['logMeIn'])) {
                 ->withSamesite('Lax')
                 ->set('admin_logged_in', TRUE);
 
+        // Set admin language cookie if available
+        if ($defaultLang = $logon->getData('template')['default_lang'] ?? null) {
+            Cookie::withPath(SWB . 'admin')
+                ->withExpires(time() + 14400)
+                ->set('admin_lang', $defaultLang);
+        }
+
         // write log
         writeLog('staff', $username, 'Login', 'Login success for user ' . $username . ' from address ' . ip());
 

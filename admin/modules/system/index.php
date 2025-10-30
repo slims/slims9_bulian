@@ -59,30 +59,6 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
 
-function getFlag(string $locale): string {
-    $countryCode = '';
-    if (preg_match('/[_-]([a-z]{2,})$/i', $locale, $matches)) {
-        $countryCode = $matches[1];
-    } elseif (strlen($locale) === 2) {
-        $countryCode = $locale;
-    }
-    if (empty($countryCode)) {
-        return '';
-    }
-
-    $countryCode = strtoupper(substr($countryCode, 0, 2));
-    $flag = '';
-    for ($i = 0; $i < 2; $i++) {
-        $unicode_point = ord($countryCode[$i]) + 127397; 
-        if (function_exists('mb_chr')) {
-            $flag .= mb_chr($unicode_point, 'UTF-8');
-        } else {
-            $flag .= '&#' . $unicode_point . ';';
-        }
-    }
-    return $flag;
-}
-
 if (!function_exists('addOrUpdateSetting')) {
     function addOrUpdateSetting($name, $value) {
         global $dbs;
@@ -433,7 +409,7 @@ $form->addAnything(__('Logo Image'), $str_input);
 $options = null;
 $languages = Memory::getInstance()->getLanguages();
 foreach ($languages as $lang) {
-    $flag = getFlag($lang[0]);
+    $flag = Memory::getFlag($lang[0]);
     $displayText = trim($flag . ' ' . $lang[1]);
     $options[] = array($lang[0], $displayText);
 }

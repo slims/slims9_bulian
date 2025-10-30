@@ -571,7 +571,7 @@ $localisation->load(function($memory) use($dbs, &$sysconf) {
         if (isset($_POST['select_lang'])) {
             $_SESSION['lang'] = $_POST['select_lang'];
         }
-        
+
         if (empty($_SESSION['lang'])) {
             $lang_dbs = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = 'default_lang'");
             $lang_dbs_res = $lang_dbs->fetch_assoc();
@@ -581,6 +581,15 @@ $localisation->load(function($memory) use($dbs, &$sysconf) {
                 $_SESSION['lang'] = 'en_US'; // Fallback to English
             }
         }
+
+        if (isset($_POST['default_lang'])) {
+            @setcookie('admin_lang', $_POST['default_lang'], time()+14400, SWB . 'admin');
+        }
+
+        if(isset($_COOKIE['admin_lang'])){
+            $_SESSION['lang'] = $_COOKIE['admin_lang'];
+        }
+
         $memory->setLocale($_SESSION['lang']);
         $sysconf['default_lang'] = $_SESSION['lang']; // Update sysconf as well
         return;
