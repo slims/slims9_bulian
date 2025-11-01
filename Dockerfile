@@ -2,8 +2,8 @@ FROM php:8.3.13-apache
 
 RUN apt-get update \
     && apt-get install -y libicu-dev libxml2-dev libzip-dev libpng-dev libonig-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6-dev \
-    && docker-php-ext-install intl xml xmlwriter gettext mbstring zip mysqli pdo_mysql \
-    && docker-php-ext-enable intl xml xmlwriter gettext mbstring zip mysqli pdo_mysql \
+    && docker-php-ext-install intl xml xmlwriter gettext mbstring zip mysqli pdo_mysql exif \
+    && docker-php-ext-enable intl xml xmlwriter gettext mbstring zip mysqli pdo_mysql exif \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
