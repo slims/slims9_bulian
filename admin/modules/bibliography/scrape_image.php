@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -61,14 +61,21 @@ try {
         throw new Exception('Access to addresses is not allowed');
     }
 
-
     // Get image from another service
-    $stream = Client::get($url, [
-        'headers' => [
-            'User-Agent' => $_SERVER['HTTP_USER_AGENT']],
-            'timeout' => 10,
-            'max_redirects' => 0,
-    ]);
+    try {
+        $stream = Client::get($url, [
+            'headers' => [
+                'User-Agent' => $_SERVER['HTTP_USER_AGENT']],
+                'timeout' => 10,
+                'max_redirects' => 0,
+        ]);
+    } catch (\Exception $e) {
+        $message = $e->getMessage();
+        if (strpos($message, 'cURL error') !== false || strpos($message, 'timed out') !== false) {
+             throw new Exception(__('Failed to connect to image source or connection timed out. Check the URL and server connectivity.'));
+        }
+        throw new Exception($message);
+    }
 
     // Get image info from string
     $imageInfo = getimagesizefromstring($image = $stream->getContent());
@@ -81,6 +88,40 @@ try {
 
     if (!$imageInfo || strpos($imageInfo['mime'], 'image/') !== 0) {
         throw new Exception('Invalid image');
+    }
+
+    if (extension_loaded('gd') && $img = @imagecreatefromstring($image)) {
+        $mime = $imageInfo['mime'];
+        $gd_failed = false;
+
+        ob_start();
+        switch ($mime) {
+            case 'image/jpeg':
+            case 'image/jpg':
+                imagejpeg($img, null, 100);
+                break;
+            case 'image/png':
+                imagealphablending($img, false);
+                imagesavealpha($img, true);
+                imagepng($img, null, 9);
+                break;
+            case 'image/gif':
+                imagegif($img, null);
+                break;
+            default:
+                ob_end_clean();
+                $gd_failed = true;
+                break;
+        }
+
+        if (!$gd_failed) {
+            $cleaned_image = ob_get_clean();
+            if (!empty($cleaned_image)) {
+                $image = $cleaned_image;
+            }
+        }
+
+        imagedestroy($img);
     }
 
     $src = 'data:' . $imageInfo['mime'] . ';base64,'. ($encodedImage = base64_encode($image));
