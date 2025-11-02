@@ -51,7 +51,7 @@ class simbio_dbop extends simbio
      * Helper function needed for dynamic call_user_func_array with bind_param
      */
     private function refValues($arr) {
-        if (strnatcmp(phpversion(),'5.3') >= 0) {
+        if (version_compare(PHP_VERSION, '5.3.0', '>=') ) {
             $refs = array();
             foreach($arr as $key => $value) {
                 $refs[$key] = &$arr[$key];
@@ -68,8 +68,10 @@ class simbio_dbop extends simbio
      * @return  string  Type string ('s', 'i', 'd')
      */
     private function getBindType($value) {
-        if (is_int($value) || is_float($value)) {
-            return 's';
+        if (is_int($value)) {
+            return 'i';
+        } else if (is_float($value)) {
+            return 'd';
         } else {
             return 's';
         }
@@ -95,9 +97,17 @@ class simbio_dbop extends simbio
 
         foreach ($array_data as $column => $value) {
             $_columns[] = "`$column`";
-            $_placeholders[] = '?';
-            $_values[] = $value;
-            $_types .= $this->getBindType($value);
+
+            if ($value === null || $value === 'NULL') {
+                $_placeholders[] = 'NULL';
+            } else if (is_string($value) && preg_match("/^literal{.+}/i", $value)) {
+                $literal_value = preg_replace("/literal{|}/i", '', $value);
+                $_placeholders[] = $literal_value;
+            } else {
+                $_placeholders[] = '?';
+                $_values[] = $value;
+                $_types .= $this->getBindType($value);
+            }
         }
 
         $_str_columns = implode(', ', $_columns);
@@ -125,7 +135,11 @@ class simbio_dbop extends simbio
 
         } catch (Exception $e) {
             // if an error occur
-            $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : '';
+            if (function_exists('isDev') && isDev()) {
+                $this->error = $e->getMessage() . ' : ' . $this->sql_string;
+            } else {
+                $this->error = 'Database insert error.';
+            }
             return false; 
         }
 
@@ -153,14 +167,26 @@ class simbio_dbop extends simbio
         $_types = '';
 
         foreach ($array_update as $column => $new_value) {
-            $_set_clauses[] = "`$column` = ?";
-            $_values[] = $new_value;
-            $_types .= $this->getBindType($new_value);
+            if ($new_value === 'NULL' OR $new_value === null) {
+                $_set_clauses[] = "`$column` = NULL";
+            } else if (is_string($new_value) && preg_match("/^literal{.+}/i", $new_value)) {
+                $literal_value = preg_replace("/literal{|}/i", '', $new_value);
+                $_set_clauses[] = "`$column` = $literal_value";
+            } else {
+                $_set_clauses[] = "`$column` = ?";
+                $_values[] = $new_value;
+                $_types .= $this->getBindType($new_value);
+            }
         }
 
         foreach ($array_criteria_values as $c_value) {
             $_values[] = $c_value;
             $_types .= $this->getBindType($c_value);
+        }
+
+        if (count($_set_clauses) === 0) {
+             $this->error = 'No valid columns to update.';
+             return false;
         }
 
         $_set = implode(', ', $_set_clauses);
@@ -181,14 +207,17 @@ class simbio_dbop extends simbio
             if (!$stmt->execute()) {
                 throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             }
-
             // number of affected rows
             $this->affected_rows = $stmt->affected_rows;
             $stmt->close();
 
         } catch (Exception $e) {
              // if an error occur
-             $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : ''; 
+             if (function_exists('isDev') && isDev()) {
+                $this->error = $e->getMessage() . ' : ' . $this->sql_string;
+             } else {
+                $this->error = 'Database update error.';
+             }
              return false; 
         }
 
@@ -231,14 +260,17 @@ class simbio_dbop extends simbio
             if (!$stmt->execute()) {
                 throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             }
-
             // affected rows
             $this->affected_rows = $stmt->affected_rows;
             $stmt->close();
 
         } catch (Exception $e) {
             // if an error occur
-            $this->error = isDev() ? $e->getMessage() . ' : ' . $this->sql_string : '';
+            if (function_exists('isDev') && isDev()) {
+                $this->error = $e->getMessage() . ' : ' . $this->sql_string;
+            } else {
+                $this->error = 'Database delete error.';
+            }
             return false;
         }
 
