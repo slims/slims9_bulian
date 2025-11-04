@@ -503,7 +503,8 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('enable_counter_by_ip', __('Visitor Counter by IP'), $options, $sysconf['enable_counter_by_ip']?'1':'0','class="form-control col-3"');
-$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
+$ip_value = is_array($sysconf['allowed_counter_ip']) ? $sysconf['allowed_counter_ip'] : [];
+$form->addTextField('textarea','allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $ip_value),'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
 
 $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 

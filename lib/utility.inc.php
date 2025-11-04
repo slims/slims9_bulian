@@ -135,7 +135,7 @@ class utility
         $_setting_query = $obj_db->query('SELECT * FROM setting');
         if (!$obj_db->errno) {
             while ($_setting_data = $_setting_query->fetch_assoc()) {
-                $_value = static::unserialize($_setting_data['setting_value']);
+                $_value = static::unserialize(stripslashes($_setting_data['setting_value']));
                 if (is_array($_value)) {
                     // make sure setting is available before
                     if (!isset($sysconf[$_setting_data['setting_name']]))
