@@ -148,7 +148,8 @@ class utility
                         $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = stripcslashes($_value??'');
+                    // Only apply stripcslashes to strings to preserve boolean false, integers, etc.
+                    $sysconf[$_setting_data['setting_name']] = is_string($_value) ? stripcslashes($_value) : $_value;
                 }
             }
         }

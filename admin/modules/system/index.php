@@ -295,7 +295,7 @@ if (isset($_POST['updateData'])) {
     addOrUpdateSetting('http', $http);
 
     // Simplified the simple search
-    addOrUpdateSetting('simplified_simple_search', boolval($_POST['simplified_simple_search']));
+    addOrUpdateSetting('simplified_simple_search', boolval((int)$_POST['simplified_simple_search']));
 
     // Strong password policy
     $strong_password_policy = $_POST['password_policy_strong'] == '1'?true:false;
@@ -534,7 +534,7 @@ $form->addSelectList('ignore_ssl_verification', __('Ignore SSL verification'), $
 $options = null;
 $options[] = array('1', __('Yes'));
 $options[] = array('0', __('No'));
-$form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
+$form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search')),'class="form-control col-3"');
 
 $options = null;
 $options[] = array('1', __('Yes'));

@@ -62,10 +62,12 @@ if (isset($_GET['search'])) {
             $keywords = trim(strip_tags(urldecode($_GET['keywords'] ?? '')));
             if ($keywords !== '') {
                 $criteria->keywords = $keywords;
-                if (config('simplified_simple_search', true) === false) {
-                    foreach (['title', 'author', 'subject'] as $item) $criteria->or($item, $keywords);
-                } else {
+                // Simplified search: if enabled, search only in title
+                // If disabled or not set, search in title, author, and subject
+                if (config('simplified_simple_search')) {
                     $criteria->exact('title', $keywords);
+                } else {
+                    foreach (['title', 'author', 'subject'] as $item) $criteria->or($item, $keywords);
                 }
             }
         }
