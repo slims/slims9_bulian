@@ -96,9 +96,10 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                         utility::jsToastr(__('Custom Field'), __('Data List can\'t be empty'), 'error');
                 exit();
                     }
-                    $arr[$key] = array($key,$value);
+                    $escaped_value = $dbs->escape_string($value);
+                    $arr[$key] = array($key, $escaped_value);
                 }
-            $data['data'] = $dbs->escape_string(serialize($arr));
+            $data['data'] = serialize($arr);
             }else{
                 utility::jsToastr(__('Custom Field'), __('Data List can\'t be empty'), 'error');
                 exit();
@@ -215,14 +216,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Custom Field Editor'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Custom Field Editor'); ?></h2>
   </div>
-	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="sub_section">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>system/custom_field.php" class="btn btn-default"><?php echo __('Field List'); ?></a>
       <a href="<?php echo MWB; ?>system/custom_field.php?action=detail" class="btn btn-default"><?php echo __('Add New Field'); ?></a>
-	  </div>
+      </div>
     <form name="search" action="<?php echo MWB; ?>system/custom_field.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
@@ -286,8 +287,18 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'class', __('Custom Style'), $rec_d['class']??'', ' class="form-control col-3"');
 
     $str_input = '<div class="wrp"><div id="more"><button class="add_field_button btn btn-primary '.$visibility.'" type="button" id="more">'.__('Add Item').'</button>';
-    if(isset($rec_d['data'])){
-        $data = unserialize($rec_d['data']);
+
+    if(isset($rec_d['data']) && !empty($rec_d['data'])){
+        $data = array();
+
+        ob_start();
+        $unserialized_data = unserialize($rec_d['data']);
+        ob_end_clean();
+
+        if (is_array($unserialized_data)) {
+            $data = $unserialized_data;
+        }
+
         if(is_array($data)){
             $x = 1;
             foreach ($data as $key => $value) {
