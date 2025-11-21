@@ -205,7 +205,6 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
             $base64_full_string = $_POST['base64picstring'];
             if (strpos($base64_full_string, 'base64,') !== false) {
                 list($mime, $data_string) = explode(';', $base64_full_string);
-                $file_extension = str_replace('data:image/', '', $mime);
                 list(, $base64_data) = explode(',', $data_string);
             }
             elseif (strpos($base64_full_string, '#image/type#') !== false) {
@@ -216,10 +215,16 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
 
         }
         if (!empty($base64_data)) {
-            $filedata = base64_decode($base64_data);
-            $fileinfo = @getimagesizefromstring($filedata);
-            $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
+            $filedata = base64_decode($base64_data, true);
+            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : $file_extension;
+            $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
+
+            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $mimeAllowed = $fileMime && in_array($fileMime, $sysconf['allowed_images_mimetype']);
+            $extAllowed = $file_extension && in_array($file_extension, $sysconf['allowed_images']);
+            $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $extAllowed;
             $new_filename = 'member_'.$data['member_id'].'.'.$file_extension;
             if ($valid) {
                 $imageDisk->put('persons/'.$new_filename, $filedata);

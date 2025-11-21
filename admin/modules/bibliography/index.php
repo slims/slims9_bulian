@@ -280,10 +280,16 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-            $filedata = base64_decode($filedata);
-            $fileinfo = getimagesizefromstring($filedata);
-            $valid = strlen($filedata) / 1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
+            $filedata = base64_decode($filedata, true);
+            $fileinfo = $filedata !== false ? getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $filedom = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : $filedom;
+            $filedom = $fileMime && !$filedom && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $filedom;
+
+            $sizeAllowed = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $mimeAllowed = $fileMime && in_array($fileMime, $sysconf['allowed_images_mimetype']);
+            $extAllowed = $filedom && in_array($filedom, $sysconf['allowed_images']);
+            $valid = $fileinfo && $sizeAllowed && $mimeAllowed && $extAllowed;
             $new_filename = strtolower('cover_'
                 . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')
                 . '.' . $filedom);
@@ -297,6 +303,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
                     $upload_status = UPLOAD_SUCCESS;
                 }
+            } else {
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
             }
         }
 
