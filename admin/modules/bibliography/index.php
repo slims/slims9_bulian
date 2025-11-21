@@ -280,15 +280,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-            $filedata = base64_decode($filedata, true);
+            $filedata = base64_decode(trim($filedata), true);
             $fileinfo = $filedata !== false ? getimagesizefromstring($filedata) : false;
             $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
-            $filedom = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : $filedom;
+            $filedom = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($filedom);
             $filedom = $fileMime && !$filedom && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $filedom;
+            $fileMimeLower = strtolower($fileMime);
 
             $sizeAllowed = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
-            $mimeAllowed = $fileMime && in_array($fileMime, $sysconf['allowed_images_mimetype']);
-            $extAllowed = $filedom && in_array($filedom, $sysconf['allowed_images']);
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $filedom && in_array($filedom, $allowedExts, true);
             $valid = $fileinfo && $sizeAllowed && $mimeAllowed && $extAllowed;
             $new_filename = strtolower('cover_'
                 . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')

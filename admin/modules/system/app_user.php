@@ -216,15 +216,19 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         }
 
         if (!empty($base64_data)) {
+            $base64_data = trim($base64_data);
             $filedata = base64_decode($base64_data, true);
             $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
             $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
-            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : $file_extension;
+            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($file_extension);
             $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
+            $fileMimeLower = strtolower($fileMime);
 
             $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
-            $mimeAllowed = $fileMime && in_array($fileMime, $sysconf['allowed_images_mimetype']);
-            $extAllowed = $file_extension && in_array($file_extension, $sysconf['allowed_images']);
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
             $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $extAllowed;
             $new_filename = $new_filename_base.'.'.$file_extension;
             if ($valid) {
