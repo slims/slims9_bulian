@@ -229,7 +229,6 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
             $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
             $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
             $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $mimeAllowed;
-            var_dump( $sysconf['max_image_upload']);
             $new_filename = 'member_'.$data['member_id'].'.'.$file_extension;
             if ($valid) {
                 $imageDisk->put('persons/'.$new_filename, $filedata);
