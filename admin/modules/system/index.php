@@ -132,12 +132,14 @@ if (isset($_POST['updateData'])) {
       'image' => [
         'filename' => 'logo',
         'extension' => $sysconf['allowed_images'],
+        'mime' => $sysconf['allowed_images_mimetype'],
         'max' => $sysconf['max_image_upload']*1024,
         'configname' => 'logo_image'
       ],
       'icon' => [
         'filename' => 'webicon',
         'extension' => ['.ico','.png'],
+        'mime' => ['image/x-icon', 'image/png'],
         'max' => $sysconf['max_image_upload']*1024,
         'configname' => 'webicon'
       ]
@@ -149,26 +151,25 @@ if (isset($_POST['updateData'])) {
       if (empty($_FILES[$name]['name'])) continue;
 
       $config = $imagesConfig[$name];
-      $imagesDisk->upload($name, function($imagesDisk) use($config) {
-          // Extension check
-          $imagesDisk->isExtensionAllowed($config['extension']);
-
-          // limitation
-          $imagesDisk->isLimitExceeded($config['max']);
-
-          // exif removal
-          $imagesDisk->cleanExifInfo();
-
-          // destroy it if failed
-          if (!empty($imagesDisk->getError())) $imagesDisk->destroyIfFailed();
-
+      $upload = $imagesDisk->upload($name, function($image) use($config) {
+          $image->isExtensionAllowed($config['extension']);
+          $image->isLimitExceeded($config['max']);
+          $image->isMimeAllowed($config['mime'] ?? []);
+          $image->isImageFile();
+          if (empty($image->getError())) {
+            $image->cleanExifInfo();
+            $image->sanitizeImageWithGD();
+          }
+          if (!empty($image->getError())) {
+            $image->destroyIfFailed();
+          }
       })->as('default' . DS . $config['filename']);
 
-      if ($imagesDisk->getUploadStatus()) {
-        addOrUpdateSetting($config['configname'], $dbs->real_escape_string($imagesDisk->getUploadedFileName()));
+      if ($upload->getUploadStatus()) {
+        addOrUpdateSetting($config['configname'], $dbs->real_escape_string($upload->getUploadedFileName()));
         $updateImageCache = true;
       } else {
-          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesDisk->getError(), 'error');
+          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$upload->getError(), 'error');
       }
     }
 
@@ -348,7 +349,7 @@ if(isset($sysconf['logo_image']) && $imagesDisk->isExists('default/'.$sysconf['l
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
 $str_input .= '<div class="custom-file col-3 d-block">';
-$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile" accept=".jpg,.jpeg,.png,.gif"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
@@ -361,7 +362,7 @@ if(isset($sysconf['webicon']) && $imagesDisk->isExists('default/'.$sysconf['webi
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
 $str_input .= '<div class="custom-file col-3">';
-$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile"');
+$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile" accept=".ico,.png"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="mt-2 ml-2">Maximum 100 KB</div>';
