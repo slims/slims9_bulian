@@ -1275,6 +1275,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         if ($can_read AND $can_write) {
             $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \'' . __('Title') . '\'', 'index.labels', 'index.image',
                 'index.author',
+                'index.edition AS \'' . __('Edition') . '\'',
                 'index.isbn_issn AS \'' . __('ISBN/ISSN') . '\'',
                 'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">' . __('None') . '</strong>\') AS \'' . __('Copies') . '\'',
                 'index.last_update AS \'' . __('Last Update') . '\'');
