@@ -158,10 +158,7 @@ trait HasCustomField
     {
         $db = DB::getInstance();
         $stmt = $db->prepare("SELECT * FROM `$table` WHERE `$key` = :id");
-        #$debug['sql'] = "SELECT * FROM `$table` WHERE `$key` = :id";
         $stmt->bindParam(':id', $id);
-        #$debug['id'] = $id;
-        #echo '<pre>'; var_dump($debug); echo '</pre>'; die();
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             self::updateCustomData($table, $custom_field_key, $key, $id);
