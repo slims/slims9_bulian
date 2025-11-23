@@ -158,7 +158,10 @@ trait HasCustomField
     {
         $db = DB::getInstance();
         $stmt = $db->prepare("SELECT * FROM `$table` WHERE `$key` = :id");
+        #$debug['sql'] = "SELECT * FROM `$table` WHERE `$key` = :id";
         $stmt->bindParam(':id', $id);
+        #$debug['id'] = $id;
+        #echo '<pre>'; var_dump($debug); echo '</pre>'; die();
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             self::updateCustomData($table, $custom_field_key, $key, $id);
@@ -174,4 +177,22 @@ trait HasCustomField
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
+
+    static function cf_available($primary_table)
+    {
+        $is_allowed = ['biblio', 'member', 'item'];
+        if (in_array($primary_table, $is_allowed)) {
+            $db = DB::getInstance();
+            $stmt = $db->prepare("SELECT primary_table FROM mst_custom_field WHERE primary_table = '".$primary_table."'");
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
 }
