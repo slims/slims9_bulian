@@ -311,7 +311,13 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // change the record order
     if (isset($_GET['fld']) AND isset($_GET['dir'])) {
-        $datagrid->setSQLorder("'".urldecode($dbs->escape_string($_GET['fld']))."' ".$dbs->escape_string($_GET['dir']));
+        // $datagrid->setSQLorder("'".urldecode($dbs->escape_string($_GET['fld']))."' ".$dbs->escape_string($_GET['dir']));
+        $allowed_fields = array('author_name','author_year','authority_type','auth_list','last_update','author_id');
+        $fld = $_GET['fld'];
+        $dir = strtoupper($_GET['dir']);
+        if (in_array($fld, $allowed_fields) && in_array($dir, array('ASC','DESC'))) {
+            $datagrid->setSQLorder($fld . ' ' . $dir);
+        }
     }
 
     // is there any search
