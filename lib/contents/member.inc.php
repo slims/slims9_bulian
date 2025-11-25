@@ -701,8 +701,28 @@ if ($is_member_login) :
 
     function _getItemReserve($dbs, $biblio_id)
     {
-        $sql = "SELECT item_code FROM item WHERE biblio_id='%s' ORDER BY RAND() ASC LIMIT 1";
-        $query = $dbs->query(sprintf($sql, $biblio_id));
+        // Use a round-robin selection to distribute reservations across available items.
+        // Approach: count available items, count existing reservations for this biblio,
+        // then pick the item at offset (reserve_count % total_available).
+        $biblio_id = (int)$biblio_id;
+
+        // count available items
+        $sql_count = "SELECT COUNT(item_code) FROM item WHERE biblio_id=%d AND (item_status_id IS NULL OR item_status_id = '' OR item_status_id = '0')";
+        $q_count = $dbs->query(sprintf($sql_count, $biblio_id));
+        $cdata = $q_count->fetch_row();
+        $total = (int)($cdata[0] ?? 0);
+        if ($total === 0) return null;
+
+        // count existing reservations for this biblio
+        $sql_res = "SELECT COUNT(reserve_id) FROM reserve WHERE biblio_id=%d";
+        $q_res = $dbs->query(sprintf($sql_res, $biblio_id));
+        $rdata = $q_res->fetch_row();
+        $reserve_count = (int)($rdata[0] ?? 0);
+
+        $offset = $reserve_count % $total;
+
+        $sql = "SELECT item_code FROM item WHERE biblio_id=%d AND (item_status_id IS NULL OR item_status_id = '' OR item_status_id = '0') ORDER BY item_code ASC LIMIT 1 OFFSET %d";
+        $query = $dbs->query(sprintf($sql, $biblio_id, $offset));
         $data = $query->fetch_row();
         return $data[0] ?? null;
     }
