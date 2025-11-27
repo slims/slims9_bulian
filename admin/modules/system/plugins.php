@@ -37,33 +37,6 @@ if(method_exists(\Composer\InstalledVersions::class, 'getInstalledPackagesByType
             $plugins->addLocation(\Composer\InstalledVersions::getInstallPath($package));
 
 if (isset($_GET['view']) && !empty($_GET['view'])) $_SESSION['view'] = $_GET['view'];
-
-if (isset($_GET['upload']))
-{
-    $package = Package::prepare(SB . 'files/temp/test.zip');
-    ob_start();
-    if ($package?->isCompressorExists()) {
-        // create new instance
-        $form = new simbio_form_table_AJAX('mainForm', MWB . 'system/plugin_action.php', 'post');
-        $form->submit_button_attr = 'name="upload" value="' . __('Save') . '" class="s-btn btn btn-default"';
-        // form table attributes
-        $form->table_attr = 'id="dataList" cellpadding="0" cellspacing="0"';
-        $form->table_header_attr = 'class="alterCell"';
-        $form->table_content_attr = 'class="alterCell2"';
-
-        $form->addAnything(__('Plugin'), simbio_form_element::textField('file', 'plugin', '',''));
-        $form->addSelectList('enable', __('Enable plugin'), [[0,__('No')],[1,__('Yes')]], '', 'class="form-control"', '');
-
-        echo $form->printOut();
-    } else {
-        echo '<div class="alert alert-danger">' . __('Extension ZIP is not exists.') . '</div>';
-    }
-    $content = ob_get_clean();
-    require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
-    exit();
-} 
-else 
-{
 ?>
     <div class="menuBox">
         <div class="menuBoxInner masterFileIcon">
@@ -239,6 +212,3 @@ else
             })
         }
     </script>
-<?php
-}
-?>

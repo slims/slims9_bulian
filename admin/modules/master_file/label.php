@@ -65,6 +65,13 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // create upload object
             $image_upload = new simbio_file_upload();
             $image_upload->setAllowableFormat($sysconf['allowed_images']);
+            $image_upload->setAllowableMimeTypes(array(
+              'image/gif',
+              'image/jpeg',
+              'image/pjpeg',
+              'image/png',
+              'image/webp'
+            ));
             $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
             $image_upload->setUploadDir(IMGBS.'labels');
             // upload
@@ -223,7 +230,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name']??'', 'style="width: 60%;" maxlength="20" class="form-control"');
     // label image
     if (empty($rec_d['label_image'])) {
-        $str_input = simbio_form_element::textField('file', 'labelImage');
+        $str_input = simbio_form_element::textField('file', 'labelImage', '', 'accept="image/*"');
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
     } else {

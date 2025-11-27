@@ -206,7 +206,6 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
             $base64_full_string = $_POST['base64picstring'];
             if (strpos($base64_full_string, 'base64,') !== false) {
                 list($mime, $data_string) = explode(';', $base64_full_string);
-                $file_extension = str_replace('data:image/', '', $mime);
                 list(, $base64_data) = explode(',', $data_string);
             }
             elseif (strpos($base64_full_string, '#image/type#') !== false) {
@@ -217,10 +216,20 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         }
 
         if (!empty($base64_data)) {
-            $filedata = base64_decode($base64_data);
-            $fileinfo = @getimagesizefromstring($filedata);
-            $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
+            $base64_data = trim($base64_data);
+            $filedata = base64_decode($base64_data, true);
+            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($file_extension);
+            $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
+            $fileMimeLower = strtolower($fileMime);
+
+            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
+            $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $extAllowed;
             $new_filename = $new_filename_base.'.'.$file_extension;
             if ($valid) {
                 $imageDisk->put('persons/'.$new_filename, $filedata);
@@ -233,7 +242,7 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
                     $upload_status = UPLOAD_SUCCESS;
                 }
             } else {
-                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid or exceeds max size.'), 'error');
+                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
             }
         }
         elseif (!empty($_FILES['image']) AND $_FILES['image']['size']) {

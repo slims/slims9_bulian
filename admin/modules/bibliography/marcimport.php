@@ -94,6 +94,15 @@ if (isset($_POST['doImport'])) {
       // set max size
       $max_size = $sysconf['max_upload']*1024;
       $upload->setAllowableFormat(array('.mrc', '.xml', '.txt'));
+      $upload->setAllowableMimeTypes(array(
+        'application/marc',
+        'application/x-marc',
+        'application/marcxml+xml',
+        'application/xml',
+        'text/xml',
+        'text/plain',
+        'application/octet-stream'
+      ));
       $upload->setMaxSize($max_size);
       $upload->setUploadDir($temp_dir);
       $upload_status = $upload->doUpload('importFile');
@@ -414,7 +423,7 @@ $form->table_content_attr = 'class="alterCell2"';
 $str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'importFile','', 'class="custom-file-input"');
+$str_input .= simbio_form_element::textField('file', 'importFile','', 'class="custom-file-input" accept=".mrc,.xml,.txt"');
 $str_input .= '<label class="custom-file-label" for="importFile">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col">';

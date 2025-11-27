@@ -280,10 +280,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-            $filedata = base64_decode($filedata);
-            $fileinfo = getimagesizefromstring($filedata);
-            $valid = strlen($filedata) / 1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
+            $filedata = base64_decode(trim($filedata), true);
+            $fileinfo = $filedata !== false ? getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $filedom = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($filedom);
+            $filedom = $fileMime && !$filedom && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $filedom;
+            $fileMimeLower = strtolower($fileMime);
+
+            $sizeAllowed = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $filedom && in_array($filedom, $allowedExts, true);
+            $valid = $fileinfo && $sizeAllowed && $mimeAllowed && $extAllowed;
             $new_filename = strtolower('cover_'
                 . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')
                 . '.' . $filedom);
@@ -297,6 +306,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
                     $upload_status = UPLOAD_SUCCESS;
                 }
+            } else {
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
             }
         }
 
@@ -1264,6 +1275,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         if ($can_read AND $can_write) {
             $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \'' . __('Title') . '\'', 'index.labels', 'index.image',
                 'index.author',
+                'index.edition AS \'' . __('Edition') . '\'',
                 'index.isbn_issn AS \'' . __('ISBN/ISSN') . '\'',
                 'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">' . __('None') . '</strong>\') AS \'' . __('Copies') . '\'',
                 'index.last_update AS \'' . __('Last Update') . '\'');

@@ -124,8 +124,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $update = $sql_op->update('item', $data, "item_id=".$updateRecordID);
             if ($update) {
                 // save custom data
-                FormAjaxWithCustomField::saveCustomData('item_custom', 'item',  'item_id', $updateRecordID);
-
+                if (FormAjaxWithCustomField::cf_available('item')) {
+                    FormAjaxWithCustomField::saveCustomData('item_custom', 'item',  'item_id', $updateRecordID);
+                }
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' update item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Update');
                 if ($sysconf['bibliography_item_update_notification']) {
@@ -145,8 +146,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $insert = $sql_op->insert('item', $data);
             if ($insert) {
                 // save custom data
-                FormAjaxWithCustomField::saveCustomData('item_custom', 'item', 'item_id', $dbs->insert_id);
-
+                if (FormAjaxWithCustomField::cf_available('item')) {
+                    FormAjaxWithCustomField::saveCustomData('item_custom', 'item', 'item_id', $dbs->insert_id);
+                }
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' insert item data ('.$data['item_code'].') with title ('.$title.')', 'Item', 'Add');
                 utility::jsToastr('Item', __('New Item Data Successfully Saved'), 'success');

@@ -81,6 +81,12 @@ try {
     $imageInfo = getimagesizefromstring($image = $stream->getContent());
 
     if (!$imageInfo) throw new Exception(__('Image is not valid!'));
+
+    $mime = $imageInfo['mime'] ?? '';
+    $ext = $mime ? ltrim(strtolower(image_type_to_extension($imageInfo[2], false)), '.') : '';
+    if (!$mime || !in_array($mime, $sysconf['allowed_images_mimetype'], true) || ($ext && !in_array($ext, $sysconf['allowed_images'], true))) {
+        throw new Exception(__('Image type not allowed!'));
+    }
     
     if (strlen($image) > 1 * 512 * 512) { // 512kb limit
         throw new Exception('Image larger than expected');
