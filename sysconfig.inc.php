@@ -606,6 +606,7 @@ $localisation->registerLanguages([
     ['ar_SA', __('Arabic'), 'Arabic'],
     ['bn_BD', __('Bengali'), 'Bengali'],
     ['pt_BR', __('Brazilian Portuguese'), 'Brazilian Portuguese'],
+    ['en_AU', __('Australian English'), ' Australian English'],
     ['en_US', __('English'), 'English'],
     ['es_ES', __('Espanol'), 'Espanol'],
     ['de_DE', __('German'), 'Deutsch'],
