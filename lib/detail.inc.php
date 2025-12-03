@@ -341,7 +341,7 @@ HTML;
         return $_output;
     }
 
-/**
+    /**
      * Method to get biblio custom data
      *
      * @return  array
@@ -352,29 +352,38 @@ HTML;
       if (file_exists(MDLBS.'bibliography/custom_fields.inc.php')) {
         include MDLBS.'bibliography/custom_fields.inc.php';
       }
+
       $columns = '';
+      $public_fields = array();
+
       if (isset($biblio_custom_fields)) {
         foreach ($biblio_custom_fields as $custom_field) {
-          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1')
+          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1') {
             $columns .= $custom_field['dbfield'] . ', ';
+            $public_fields[$custom_field['dbfield']] = $custom_field;
+          }
         }
-        if ($columns !== '') {
-          $columns = substr($columns, 0, -2);
+
+        if ($columns === '') {
+          return $_return;
         }
+
+        $columns = substr($columns, 0, -2);
       } else {
-        $columns = '*';
+        return $_return;
       }
 
       $query = $this->db->query(sprintf("SELECT %s FROM biblio_custom WHERE biblio_id=%d", $columns, $this->detail_id));
+
       if ($query) {
         $data = $query->fetch_assoc();
-        if (isset($biblio_custom_fields)) {
-          foreach ($biblio_custom_fields as $custom_field) {
-            if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
-
+        if ($data) {
+          foreach ($public_fields as $custom_field) {
+            $dbfield = $custom_field['dbfield'];
+            if (isset($data[$dbfield])) {
               $data_field = unserialize($custom_field['data']??'');
               if (!is_array($data_field)) $data_field = [];
-              $data_record  = $data[$custom_field['dbfield']];
+              $data_record  = $data[$dbfield];
               $arr = [];
               $value = '';
 
@@ -397,7 +406,7 @@ HTML;
                   $value = implode(' -- ',$arr);
                   break;
                 default:
-                  $value = $data[$custom_field['dbfield']];
+                  $value = $data[$dbfield];
                   break;
               }
 
