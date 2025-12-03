@@ -341,7 +341,7 @@ HTML;
         return $_output;
     }
 
-    /**
+/**
      * Method to get biblio custom data
      *
      * @return  array
@@ -373,21 +373,27 @@ HTML;
             if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
 
               $data_field = unserialize($custom_field['data']??'');
+              if (!is_array($data_field)) $data_field = [];
               $data_record  = $data[$custom_field['dbfield']];
+              $arr = [];
+              $value = '';
 
               switch ($custom_field['type']) {
                 case 'dropdown':
                 case 'choice':
-                  $value = end($data_field[$data_record]);
+                  $temp_array = $data_field[$data_record] ?? [];
+                  $value = end($temp_array);
                   break;
                 case 'checklist':
                   $data_record = unserialize($data_record);
-                  foreach ($data_record as $key => $val) {
-                    if(isset($data_field[$val])){
-                    $arr[] = end($data_field[$val]);
+                  if (is_array($data_record)) {
+                    foreach ($data_record as $key => $val) {
+                      if(isset($data_field[$val])){
+                        $temp_array = $data_field[$val] ?? [];
+                        $arr[] = end($temp_array);
+                      }
                     }
                   }
-                  // convert array to string
                   $value = implode(' -- ',$arr);
                   break;
                 default:
