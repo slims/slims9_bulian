@@ -104,7 +104,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
         $output .= '<img loading="lazy" src="'.$thumb_url.'" alt="cover" class="img-fluid rounded '.($availability > 0 ?: 'not-available').'" title="' . ($availability > 0 ?:  __('Items is not available')) . '"/>';
         $output .= '</div>'; // -- close col-2
         $output .= '<div class="col-8">';
-        $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.addEllipsis($title, 80).'</a></h5>';
+        $output .= '<h5><a title="'.__('View record detail description for this title').'" class="card-link text-dark" href="'.$detail_url.'">'.stripslashes(addEllipsis($title, 80)).'</a></h5>';
         $output .= createButton($biblio_id, $biblio_detail['title']);
         $output .= '<div class="d-flex authors flex-wrap py-2">';
         $output .= $_authors_string;

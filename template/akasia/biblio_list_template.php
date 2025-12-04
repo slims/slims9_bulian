@@ -101,7 +101,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   
   // $alt_list = ($n%2 == 0)?'alterList':'alterList2';
   $output .= '<div class="item biblioRecord" itemscope itemtype="http://schema.org/Book" vocab="http://schema.org/" typeof="Book"><div class="cover-list">'.$image_cover.'</div>';
-  $output .= '<div class="detail-list"><h4>'.$title_link.'</h4>';
+  $output .= '<div class="detail-list"><h4>'.stripcslashes($title_link).'</h4>';
   // concat author data
   $_authors = isset($biblio_detail['author'])?$biblio_detail['author']:biblio_list_model::getAuthors($dbs, $biblio_id, true);
   $output .= '<div class="author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">';

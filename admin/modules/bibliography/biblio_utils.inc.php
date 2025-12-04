@@ -198,7 +198,7 @@ function showTitleAuthors($obj_db, $array_data)
       $_output = '<div class="media">
                     <img class="mr-3 rounded" loading="lazy" src="../lib/minigalnano/createthumb.php?filename='.$img.'&width=50&height=65" alt="cover image">
                     <div class="media-body">
-                      <div class="title">'.stripslashes($array_data[1]).'</div>
+                      <div class="title">'.stripslashes(stripslashes($array_data[1])).'</div>
                       <div class="authors">'.$array_data[4].'</div>
                       <div title="' . ($_p2p_server_type ? str_replace('{type}', $_p2p_server_type . ' ' . $server_source, __('Copy from {type}')) : 'Manual') . '" class="' . ($_p2p_server_type ? 'd-block' : 'd-none') . '">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-download" viewBox="0 0 16 16">
