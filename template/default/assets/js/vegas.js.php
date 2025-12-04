@@ -22,4 +22,4 @@ if (!$sysconf['template']['classic_library_disableslide']):
     });
 </script>
 <?php
-endif;
+endif;// Fix applied
