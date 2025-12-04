@@ -811,7 +811,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
 
     /* Form Element(s) */
     // biblio title
-    $form->addTextField('textarea', 'title', __('Title') . '*', stripslashes($rec_d['title']) ?? '', 'rows="1" class="form-control"',
+    $form->addTextField('textarea', 'title', __('Title') . '*', stripslashes(($rec_d ?? [])['title'] ?? ''), 'rows="1" class="form-control"',
         __('Main title of collection. Separate child title with colon and pararel title with equal (=) sign.'));
 
     // biblio authors
