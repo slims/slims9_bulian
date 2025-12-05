@@ -127,7 +127,7 @@ class Native extends Contract
         $this->data['biblioAuthor'] = array();
         $this->data['biblioTopic'] = array();
         $this->data['biblioAttach'] = array();
-        $this->data['template'] = unserialize($this->data['template']);        
+        $this->data['template'] = unserialize($this->data['template'] ?? 'N;');
 
         if (empty($this->data['upict'])) {
             $this->data['upict'] = 'person.png';
