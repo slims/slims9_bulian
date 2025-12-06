@@ -54,7 +54,7 @@ $authors_string = implode(', ', $author_list) . (count($authors) > 2 ? ' et al' 
 <p class="citation text-justify">
   <h3><?php echo __('AGPS Style'); ?></h3>
   <?php if ($authors_string) : ?>
-    <span class="authors"><?php print $authors_string ?></span> <span class="year"> <?php print $publish_year ?> </span>
+    <span class="authors"><?php print $authors_string ?></span> <span class="year"> <?php print $publish_year ?>, </span>
     <span class="title"><em><?php print $title ?></em>, <?php if ($edition) : ?><span class="edition"><?php print $edition ?>,</span><?php endif; ?></span>
   <?php else : ?>
     <span class="title"><em><?php print $title ?></em>,</span> <span class="year"><?php print $publish_year ?>,</span>
