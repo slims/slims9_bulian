@@ -121,8 +121,9 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
   }
 
   if (isset($_FILES['file2attach']) AND $_FILES['file2attach']['size']) {
-    $file_dir = trim($_POST['fileDir']);
     // create upload object
+    $file_dir = trim($_POST['fileDir']);
+    $sub_dir = !empty($file_dir) ? trim($file_dir, '/\\') . DIRECTORY_SEPARATOR : '';
     $file_upload = Storage::repository()->upload('file2attach', function($repository) use($sysconf) {
 
       // Extension check
@@ -134,7 +135,8 @@ if (isset($_POST['upload']) AND trim(strip_tags($_POST['fileTitle'])) != '') {
       // destroy it if failed
       if (!empty($repository->getError())) $repository->destroyIfFailed();
 
-    })->as(md5(date('Y-m-d H:i:s'))); // set new name
+    })->as($sub_dir . md5(date('Y-m-d H:i:s')));  // set new name
+
 
     if ($file_upload->getUploadStatus()) {
         $file_ext = $file_upload->getExt($file_upload->getUploadedFileName());
