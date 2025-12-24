@@ -133,7 +133,8 @@ class utility
         }
 
         // Check if it looks like serialized data
-        if (preg_match('/^(a|O|s|b|i|d):[0-9]+:/s', $str)) {
+        // Matches: a:0:, O:3:, s:5:, i:0;, b:0;, d:1.5;, N;
+        if (preg_match('/^(a:[0-9]+:|O:[0-9]+:|s:[0-9]+:|i:[0-9]+;|b:[01];|d:[0-9.E+-]+;|N;)/s', $str)) {
             // Fix broken serialized string lengths
             $str = preg_replace_callback(
                 '!s:(\d+):"(.*?)";!s',
@@ -147,7 +148,7 @@ class utility
             $result = @unserialize($str);
 
             // If unserialize succeeded, return the result
-            if ($result !== false || $str === 'b:0;') {
+            if ($result !== false || $str === 'b:0;' || $str === 'N;') {
                 return $result;
             }
         }
