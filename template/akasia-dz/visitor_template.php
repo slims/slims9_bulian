@@ -37,7 +37,7 @@ $main_template_path = $sysconf['template']['dir'].'/'.$sysconf['template']['them
   </header>
   
   <form action="index.php?p=visitor" name="visitorCounterForm" id="visitorCounterForm" method="post">
-
+    <div id="csrf-container"><?= \Volnix\CSRF\CSRF::getHiddenInputString(); ?></div>
     <div class="row"> 
 
       <div class="col-lg-6 col-sm-6 col-xs-12">

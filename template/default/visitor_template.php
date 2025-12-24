@@ -112,7 +112,9 @@ if (isset($_GET['select_lang'])) {
                 textInfo: '',
                 image: './images/persons/photo.png',
                 quotes: {},
-                timeout: null
+                timeout: null,
+                csrfName: '<?= \Volnix\CSRF\CSRF::getTokenName() ?>',
+                csrfToken: '<?= \Volnix\CSRF\CSRF::getToken() ?>'
             }
         },
         mounted() {
@@ -150,6 +152,7 @@ if (isset($_GET['select_lang'])) {
                 data.append('memberID', this.memberId)
                 data.append('institution', this.institution)
                 data.append('counter', 1)
+                data.append(this.csrfName, this.csrfToken)
 
                 axios({
                     url: url,
@@ -160,12 +163,18 @@ if (isset($_GET['select_lang'])) {
                     .then(res => {
                         this.textInfo = res.data.message
                         this.image = `./images/persons/${res.data.image}`
+                        if (res.data.new_token) {
+                            this.csrfToken = res.data.new_token
+                        }
                         <?php if ($sysconf['template']['visitor_log_voice']) : ?>
                             this.textToSpeech(this.textInfo.replace(/(<([^>]+)>)/ig, ''))
                         <?php endif; ?>
                     })
                     .catch(err => {
                         console.log(err);
+                        if (err.response && err.response.data.new_token) {
+                            this.csrfToken = err.response.data.new_token
+                        }
                     })
                     .finally(() => {
                         this.resetForm()
