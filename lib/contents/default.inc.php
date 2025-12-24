@@ -47,7 +47,7 @@ if (isset($_GET['search'])) {
         try {
             $db = \SLiMS\DB::getInstance();
             $check_index = $db->query("SELECT COUNT(*) as count FROM index_words LIMIT 1");
-            $index_count = $check_index->fetch_assoc();
+            $index_count = $check_index->fetch(\PDO::FETCH_ASSOC);
 
             // If index tables are empty, use DefaultEngine instead
             if ($index_count['count'] == 0) {
