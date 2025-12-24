@@ -27,7 +27,7 @@ class Engine
 {
     private static $instance;
 
-    protected array $engine = [DefaultEngine::class, SearchBiblioEngine::class];
+    protected array $engine = [DefaultEngine::class, SearchBiblioEngine::class, FuzzySearchEngine::class];
 
     private function __construct()
     {
