@@ -133,9 +133,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     	}
       writeLog('staff', $_SESSION['uid'], 'System', $_SESSION['realname'].' execute re-index table' , 'Index', 'Re-create');
     	$_SESSION['message'] = $message;
-    }
 
-    if (!$indexer->failed) redirect()->simbioAJAX($_SERVER['PHP_SELF']);
+      if (!$indexer->failed) redirect()->simbioAJAX($_SERVER['PHP_SELF']);
+    }
   }
   exit();
 } else {
