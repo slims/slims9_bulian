@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 01/01/2022 13:25
@@ -42,6 +43,11 @@ class Criteria
         return $this;
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->queries);
+    }
+
     public function exact($field, $value)
     {
         if (!empty($this->queries)) $this->queries[] = ['boolean', 'exact'];
@@ -66,7 +72,8 @@ class Criteria
         $this->addCriteria($field, $value);
     }
 
-    private function addCriteria($field, $value) {
+    private function addCriteria($field, $value)
+    {
         $this->queries[] = [$field, $value];
         $this->{$field} = $value;
     }
@@ -88,9 +95,8 @@ class Criteria
                 // unset current fielad
                 unset($this->queries[$index]);
                 // unset next field if it's a boolean
-                if (isset($this->queries[$index+1]) && $this->queries[$index+1][0] == 'boolean')
-                    unset($this->queries[$index+1]);
-                
+                if (isset($this->queries[$index + 1]) && $this->queries[$index + 1][0] == 'boolean')
+                    unset($this->queries[$index + 1]);
             }
         }
     }
@@ -102,7 +108,7 @@ class Criteria
 
     public function separateBooleanChar($value)
     {
-        return array_filter(explode(' ', $value), function($value){
+        return array_filter(explode(' ', $value), function ($value) {
             if (!$this->isBool($value)) return true;
         });
     }
@@ -112,10 +118,9 @@ class Criteria
         $result = '';
         $matchBoolean = '+';
         preg_match('@\b(exact|and|or|not)\b@i', $value, $match);
-        
-        if (count($match))
-        {
-            $bool = strtolower($match[0]??'AND');
+
+        if (count($match)) {
+            $bool = strtolower($match[0] ?? 'AND');
             switch ($bool) {
                 case 'exact':
                     $matchBoolean = '++';
@@ -129,7 +134,7 @@ class Criteria
             }
         }
 
-        return [implode(' ' .$matchBoolean, $this->separateBooleanChar($value)), $matchBoolean];
+        return [implode(' ' . $matchBoolean, $this->separateBooleanChar($value)), $matchBoolean];
     }
 
     /**

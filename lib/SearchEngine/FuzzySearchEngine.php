@@ -48,6 +48,9 @@ class FuzzySearchEngine extends Contract
      */
     protected array $scoredResults = [];
 
+    // Return all documents when keywords are empty
+    protected bool $returnAllIfEmpty = true;
+
     /**
      * Set maximum Levenshtein distance
      */
@@ -74,29 +77,32 @@ class FuzzySearchEngine extends Contract
         $start = microtime(true);
 
         try {
-            // Extract search terms from criteria
-            $searchTerms = $this->extractSearchTerms();
+            // initialize defaults
+            $this->num_rows = 0;
+            $this->documents = [];
 
-            if (empty($searchTerms)) {
-                $this->num_rows = 0;
-                $this->documents = [];
-                return;
+            // If no criteria provided, optionally return all documents
+            if ($this->criteria->isEmpty()) {
+                if ($this->returnAllIfEmpty) {
+                    $this->getAllDocuments();
+                }
+            } else {
+                // extract search terms
+                $searchTerms = $this->extractSearchTerms();
+
+                if (!empty($searchTerms)) {
+                    $matchedWords = $this->findFuzzyMatches($searchTerms);
+
+                    if (!empty($matchedWords)) {
+                        $documentScores = $this->getDocumentsByWords($matchedWords);
+
+                        if (!empty($documentScores)) {
+                            $this->retrieveDocumentDetails($documentScores);
+                        }
+                    }
+                }
             }
 
-            // Find matching words using fuzzy algorithms
-            $matchedWords = $this->findFuzzyMatches($searchTerms);
-
-            if (empty($matchedWords)) {
-                $this->num_rows = 0;
-                $this->documents = [];
-                return;
-            }
-
-            // Get documents containing the matched words
-            $documentScores = $this->getDocumentsByWords($matchedWords);
-
-            // Retrieve full document details
-            $this->retrieveDocumentDetails($documentScores);
         } catch (\PDOException | \Exception $e) {
             $this->error = $e->getMessage();
             $this->num_rows = 0;
@@ -105,6 +111,30 @@ class FuzzySearchEngine extends Contract
 
         $end = microtime(true);
         $this->query_time = round($end - $start, 5);
+    }
+
+    /**
+     * Retrieve all documents (fallback method)
+     * Used when no search criteria is provided
+     */
+    function getAllDocuments()
+    {
+        $defaultEngine = new SearchBiblioEngine();
+        $defaultEngine->setCriteria($this->criteria);
+        $defaultEngine->setFilter($this->filter);
+
+        // build sql command
+        $sql = $defaultEngine->buildSQL();
+
+        $db = DB::getInstance();
+        $count = $db->prepare($sql['count']);
+        $count->execute($this->execute);
+        $query = $db->prepare($sql['query']);
+        $query->execute($this->execute);
+
+        // get results
+        $this->num_rows = ($count->fetch(\PDO::FETCH_NUM))[0] ?? 0;
+        $this->documents = $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
