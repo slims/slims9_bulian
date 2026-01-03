@@ -52,6 +52,47 @@ class FuzzySearchEngine extends Contract
     protected bool $returnAllIfEmpty = true;
 
     /**
+     * Fallback search engine class for empty keywords
+     */
+    protected string $fallbackEngine = SearchBiblioEngine::class;
+
+    /**
+     * Constructor - Load configuration from settings
+     */
+    public function __construct()
+    {
+        // Load configuration from database settings
+        $config = config('fuzzy_search_config');
+        
+        if (is_array($config)) {
+            // Apply maxDistance setting
+            if (isset($config['maxDistance']) && is_numeric($config['maxDistance'])) {
+                $this->maxDistance = max(1, min(5, (int)$config['maxDistance']));
+            }
+            
+            // Apply minWordLength setting
+            if (isset($config['minWordLength']) && is_numeric($config['minWordLength'])) {
+                $this->minWordLength = max(1, min(10, (int)$config['minWordLength']));
+            }
+            
+            // Apply usePhonetic setting
+            if (isset($config['usePhonetic'])) {
+                $this->usePhonetic = (bool)$config['usePhonetic'];
+            }
+            
+            // Apply returnAllIfEmpty setting
+            if (isset($config['returnAllIfEmpty'])) {
+                $this->returnAllIfEmpty = (bool)$config['returnAllIfEmpty'];
+            }
+            
+            // Apply fallbackEngine setting
+            if (isset($config['fallbackEngine']) && is_string($config['fallbackEngine'])) {
+                $this->fallbackEngine = $config['fallbackEngine'];
+            }
+        }
+    }
+
+    /**
      * Set maximum Levenshtein distance
      */
     public function setMaxDistance(int $distance): self
@@ -66,6 +107,33 @@ class FuzzySearchEngine extends Contract
     public function setPhoneticMatching(bool $enabled): self
     {
         $this->usePhonetic = $enabled;
+        return $this;
+    }
+
+    /**
+     * Set minimum word length for fuzzy matching
+     */
+    public function setMinWordLength(int $length): self
+    {
+        $this->minWordLength = max(1, min(10, $length));
+        return $this;
+    }
+
+    /**
+     * Set whether to return all documents when search is empty
+     */
+    public function setReturnAllIfEmpty(bool $enabled): self
+    {
+        $this->returnAllIfEmpty = $enabled;
+        return $this;
+    }
+
+    /**
+     * Set fallback search engine class
+     */
+    public function setFallbackEngine(string $engineClass): self
+    {
+        $this->fallbackEngine = $engineClass;
         return $this;
     }
 
@@ -119,7 +187,9 @@ class FuzzySearchEngine extends Contract
      */
     function getAllDocuments()
     {
-        $defaultEngine = new SearchBiblioEngine();
+        // Use configured fallback engine
+        $engineClass = $this->fallbackEngine;
+        $defaultEngine = new $engineClass();
         $defaultEngine->setCriteria($this->criteria);
         $defaultEngine->setFilter($this->filter);
 

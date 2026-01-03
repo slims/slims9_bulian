@@ -421,9 +421,34 @@ $html  = '<input type="text" class="form-control col-2" name="timezone" value="'
 $html .= '<a target="_blank" href="https://www.php.net/manual/en/timezones.php">' . __('List of timezones supported by PHP') . '</a>';
 $form->addAnything(__('Default App. Timezone'), $html);
 
-// search engine
+// search engine with settings button
 $engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
-$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-6"');
+$html = '<div class="input-group">';
+$html .= '<select id="search_engine_select" name="search_engine" class="custom-select col-md-6">';
+foreach ($engine as $opt) {
+    $val = $opt[0];
+    $label = $opt[1];
+    $selected = ($val == ($sysconf['search_engine'] ?? DefaultEngine::class)) ? ' selected' : '';
+    $html .= '<option value="'.htmlspecialchars($val).'"'.$selected.'>'.htmlspecialchars($label).'</option>';
+}
+$html .= '</select>';
+$html .= '<div class="input-group-append">';
+$html .= '<a id="searchEngineSettingsBtn" class="btn btn-outline-secondary openPopUp notAJAX" width="800" height="600" href="#">'.__('Settings').'</a>';
+$html .= '</div>';
+$html .= '</div>';
+$html .= "<script>
+(function(){
+  var sel = document.getElementById('search_engine_select');
+  var btn = document.getElementById('searchEngineSettingsBtn');
+  function updateBtn(){
+    var v = encodeURIComponent(sel.value);
+    btn.setAttribute('href', '".MWB."system/search-engine-setting.php?engine=' + v);
+  }
+  sel.addEventListener('change', updateBtn);
+  updateBtn();
+})();
+</script>";
+$form->addAnything(__('Search Engine'), $html);
 
 // opac result list number
 $result_num_options[] = array('10', '10');
