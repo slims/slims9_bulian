@@ -25,6 +25,7 @@
 use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\SearchEngine\FuzzySearchEngine;
 use SLiMS\SearchEngine\SearchBiblioEngine;
+use SLiMS\SearchEngine\SphinxSearchEngine;
 
 /* Biblio Index Management section */
 
@@ -128,7 +129,7 @@ if (isset($_POST['updateData'])) {
             $fuzzy_config['returnAllIfEmpty'] = isset($_POST['fuzzy_return_all_if_empty']) ? true : false;
 
             // Fallback engine for empty keywords
-            $fuzzy_config['fallbackEngine'] = $_POST['fallback_engine'] ?? SearchBiblioEngine::class;
+            $fuzzy_config['fallbackEngine'] = utility::filterData('fallback_engine', 'post') ?? SearchBiblioEngine::class;
 
             // Save settings safely
             addOrUpdateSetting('fuzzy_search_config', $fuzzy_config);
@@ -137,23 +138,39 @@ if (isset($_POST['updateData'])) {
             writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' updated Fuzzy Search Engine settings', 'Search Engine Config', 'Update');
 
             $info[] = __('Fuzzy Search Engine settings saved successfully');
-        }
+        } else if ($engine === SphinxSearchEngine::class) {
+            // Sanitize and validate Sphinx Search Engine settings
+            $sphinx_config = [];
 
+            // Sphinx host
+            $sphinx_config['host'] = utility::filterData('sphinx_host', 'post') ?? 'localhost';
+
+            // Sphinx port
+            $sphinx_port = intval(utility::filterData('sphinx_port', 'post') ?? 9312);
+            $sphinx_config['port'] = ($sphinx_port > 0 && $sphinx_port <= 65535) ? $sphinx_port : 9312;
+
+            // Sphinx index name
+            $sphinx_config['index_name'] = utility::filterData('sphinx_index', 'post') ?? 'slims';
+            // Save settings safely
+            addOrUpdateSetting('sphinx_search_config', $sphinx_config);
+
+            // Write log
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' updated Sphinx Search Engine settings', 'Search Engine Config', 'Update');
+
+            $info[] = __('Sphinx Search Engine settings saved successfully');
+        }
         utility::jsToastr(__('Search Engine Settings'), __('Settings saved. Refreshing page'), 'success');
         // echo '<script type="text/javascript">setTimeout(() => { top.location.reload(); }, 2000);</script>';
         exit();
     }
 }
 
-// Load current Fuzzy Search Engine settings
-$fuzzy_config = config('fuzzy_search_config') ?? [];
-$fuzzy_config = is_array($fuzzy_config) ? $fuzzy_config : [
-    'maxDistance' => 2,
-    'minWordLength' => 3,
-    'usePhonetic' => true,
-    'returnAllIfEmpty' => true,
-    'fallbackEngine' => SearchBiblioEngine::class
-];
+// Initialize form
+$form = new simbio_form_table_AJAX('fuzzySearchForm', $_SERVER['PHP_SELF'] . '?engine=' . urlencode($engine), 'post');
+$form->submit_button_attr = 'name="updateData" value="' . __('Save Settings') . '" class="btn btn-default"';
+$form->table_attr = 'id="fuzzySearchList" class="s-table table"';
+$form->table_header_attr = 'class="alterCell font-weight-bold"';
+$form->table_content_attr = 'class="alterCell2"';
 
 // Check if viewing Fuzzy Search Engine settings
 if ($engine === FuzzySearchEngine::class) {
@@ -171,13 +188,18 @@ if ($engine === FuzzySearchEngine::class) {
         }
     }
 
-    // Create form for Fuzzy Search Engine configuration
-    $form = new simbio_form_table_AJAX('fuzzySearchForm', $_SERVER['PHP_SELF'] . '?engine=' . urlencode($engine), 'post');
-    $form->submit_button_attr = 'name="updateData" value="' . __('Save Settings') . '" class="btn btn-default"';
-    $form->table_attr = 'id="fuzzySearchList" class="s-table table"';
-    $form->table_header_attr = 'class="alterCell font-weight-bold"';
-    $form->table_content_attr = 'class="alterCell2"';
+    // Load current Fuzzy Search Engine settings
+    $fuzzy_config = config('fuzzy_search_config') ?? [];
+    $fuzzy_config = is_array($fuzzy_config) ? $fuzzy_config : [
+        'maxDistance' => 2,
+        'minWordLength' => 3,
+        'usePhonetic' => true,
+        'returnAllIfEmpty' => true,
+        'fallbackEngine' => SearchBiblioEngine::class
+    ];
 
+
+    // Fuzzy Search Engine Settings Form
     // Max Levenshtein Distance (1-5)
     $form->addTextField('text', 'fuzzy_max_distance', __('Max Levenshtein Distance'), $fuzzy_config['maxDistance'] ?? 2, 'class="form-control col-2" type="number" min="1" max="5" required', __('Maximum number of character differences allowed for fuzzy matching. Value 1 = strict (only nearly perfect matches), value 5 = loose (matches very different words)'));
 
@@ -200,6 +222,20 @@ if ($engine === FuzzySearchEngine::class) {
 
     // Print form
     echo $form->printOut();
+} else if ($engine === SphinxSearchEngine::class) {
+    // load current Sphinx Search Engine settings
+    $sphinx_config = config('sphinx_search_config') ?? [];
+    $sphinx_config = is_array($sphinx_config) ? $sphinx_config : [
+        'host' => 'localhost',
+        'port' => 9312,
+        'index_name' => 'slims'
+    ];
+    // Sphinx Search Engine settings form
+    $form->addTextField('text', 'sphinx_host', __('Sphinx Host'), $sphinx_config['host'] ?? 'localhost', 'class="form-control col-4" required', __('Hostname or IP address of the Sphinx search server'));
+    $form->addTextField('text', 'sphinx_port', __('Sphinx Port'), $sphinx_config['port'] ?? '9312', 'class="form-control col-2" type="number" required', __('Port number of the Sphinx search server'));
+    $form->addTextField('text', 'sphinx_index', __('Sphinx Index Name'), $sphinx_config['index_name'] ?? 'slims', 'class="form-control col-4" required', __('Name of the Sphinx index to use for searching bibliography records'));
+    // Print form
+    echo $form->printOut();
 } else {
     echo '<div class="alert alert-warning">' . __('Sorry, this engine is not supported for configuration') . '</div>';
 }
@@ -207,4 +243,4 @@ if ($engine === FuzzySearchEngine::class) {
 /* main content end */
 $content = ob_get_clean();
 // include the page template
-require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
+require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
