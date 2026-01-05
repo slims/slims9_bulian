@@ -144,6 +144,8 @@ CREATE TABLE IF NOT EXISTS `content` (
   `content_desc` text collate utf8_unicode_ci NOT NULL,
   `content_path` varchar(20) collate utf8_unicode_ci NOT NULL,
   `is_news` smallint(1) NULL DEFAULT NULL,
+  `is_draft` smallint(1) DEFAULT 0,
+  `publish_date` date DEFAULT NULL,
   `input_date` datetime NOT NULL,
   `last_update` datetime NOT NULL,
   `content_ownpage` enum('1','2') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
@@ -151,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   UNIQUE KEY `content_path` (`content_path`),
   FULLTEXT KEY `content_title` (`content_title`),
   FULLTEXT KEY `content_desc` (`content_desc`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5;
 
 -- ALTER TABLE `content` ADD UNIQUE (`content_path`);
 
@@ -1476,10 +1478,14 @@ CREATE TABLE `files_read` (
 --
 DROP TABLE IF EXISTS `plugins`;
 CREATE TABLE `plugins` (
-   `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-   `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
-   `created_at` datetime NOT NULL,
-   `uid` int(11) NOT NULL
+  `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` json DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `uid` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
