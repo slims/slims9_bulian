@@ -19,6 +19,8 @@
  */
 
 use SLiMS\Form\FormAjaxWithCustomField;
+use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
 
 /* Item Management section */
 
@@ -398,7 +400,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
     require LIB.'biblio_list_model.inc.php';
 
-    if ($sysconf['index']['type'] == 'default' || (isset($_GET['searchby']) && $_GET['searchby'] == 'item')) {
+    if (Engine::active() == DefaultEngine::class || (isset($_GET['searchby']) && $_GET['searchby'] == 'item')) {
         require LIB.'biblio_list.inc.php';
         $title_field_idx = 1;
         // callback function to show title and authors in datagrid

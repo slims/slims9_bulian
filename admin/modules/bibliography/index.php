@@ -30,6 +30,9 @@ use SLiMS\AlLibrarian;
 use SLiMS\Filesystems\Storage;
 use SLiMS\Form\FormAjaxWithCustomField;
 use SLiMS\Plugins;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SearchBiblioEngine;
+use SLiMS\SearchEngine\SphinxSearchEngine;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -1261,8 +1264,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid = new simbio_datagrid();
 
     // index choice
-    if ($sysconf['index']['type'] == 'index' || $sysconf['index']['type'] == 'sphinx') {
-        if ($sysconf['index']['type'] == 'sphinx') {
+    $search_engine = Engine::active();
+    if ($search_engine == SearchBiblioEngine::class || $search_engine == SphinxSearchEngine::class) {
+        if ($search_engine == SphinxSearchEngine::class) {
             require LIB . 'sphinx/sphinxapi.php';
             require LIB . 'biblio_list_sphinx.inc.php';
         } else {

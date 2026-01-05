@@ -20,6 +20,10 @@
  *
  */
 
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SearchBiblioEngine;
+use SLiMS\SearchEngine\SphinxSearchEngine;
+
 /* Bibliography label printing */
 
 // key to authenticate
@@ -341,9 +345,12 @@ $datagrid = new simbio_datagrid();
 /* BIBLIOGRAPHY LIST */
 require SIMBIO.'simbio_UTILS/simbio_tokenizecql.inc.php';
 require LIB.'biblio_list_model.inc.php';
+
+    $search_engine = Engine::active();
+$is_sphinx = ($search_engine == SphinxSearchEngine::class && file_exists(LIB.'sphinx/sphinxapi.php'));
 // index choice
-if ($sysconf['index']['type'] == 'index' || ($sysconf['index']['type'] == 'sphinx' && file_exists(LIB.'sphinx/sphinxapi.php'))) {
-    if ($sysconf['index']['type'] == 'sphinx') {
+if ($search_engine ===  SearchBiblioEngine::class || $is_sphinx) {
+    if ($is_sphinx) {
         require LIB.'sphinx/sphinxapi.php';
         require LIB.'biblio_list_sphinx.inc.php';
     } else {

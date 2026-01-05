@@ -24,6 +24,7 @@
 use SLiMS\SearchEngine\Contract;
 use SLiMS\SearchEngine\Criteria;
 use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
 use SLiMS\SearchEngine\FuzzySearchEngine;
 
 // if we are in searching mode
@@ -37,7 +38,8 @@ if (isset($_GET['search'])) {
     $search_result_info = '';
 
     // get engine name from setting, default to FuzzySearchEngine
-    $search_engine = config('search_engine', FuzzySearchEngine::class);
+    $search_engine = Engine::active();
+    
     // data setting exists but class not exists
     if (!class_exists($search_engine)) $search_engine = FuzzySearchEngine::class;
 

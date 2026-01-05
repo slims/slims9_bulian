@@ -18,6 +18,9 @@
  *
  */
 use SLiMS\Extension;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SearchBiblioEngine;
+
 /* Item Import section */
 
 // key to authenticate
@@ -63,7 +66,7 @@ if (!Extension::forFeature('MARC')->isFulfilled($marcExtRequirement)) {
 // max chars in line for file operations
 $max_chars = 1024*100;
 
-if ($sysconf['index']['type'] == 'index') {
+if (Engine::active() == SearchBiblioEngine::class) {
   require MDLBS.'system/biblio_indexer.inc.php';
   // create biblio_indexer class instance
   $indexer = new biblio_indexer($dbs);
@@ -383,7 +386,7 @@ if (isset($_POST['doImport'])) {
         }
 
         // create biblio index
-        if ($sysconf['index']['type'] == 'index') {
+        if (Engine::active() == SearchBiblioEngine::class) {
           $indexer->makeIndex($biblio_id);
         }
 

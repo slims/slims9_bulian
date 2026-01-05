@@ -19,6 +19,8 @@
  */
 
 use \SLiMS\Filesystems\Storage;
+use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
 
 /**
  * Utility function to get author ID
@@ -111,7 +113,7 @@ function showTitleAuthors($obj_db, $array_data)
   $img = 'images/default/image.png';
   $imageDisk = Storage::images();
   // biblio author detail
-  if ($sysconf['index']['type'] == 'default') {
+  if (Engine::active() === DefaultEngine::class) {
       $_sql_biblio_q = sprintf('SELECT b.title, a.author_name, opac_hide, promoted, b.labels,b.image, b.source FROM biblio AS b
           LEFT JOIN biblio_author AS ba ON b.biblio_id=ba.biblio_id
           LEFT JOIN mst_author AS a ON ba.author_id=a.author_id

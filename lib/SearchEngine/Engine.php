@@ -49,4 +49,9 @@ class Engine
     {
         return $this->engine;
     }
+
+    static function active($default = FuzzySearchEngine::class): string
+    {
+        return config('search_engine', $default);
+    }
 }

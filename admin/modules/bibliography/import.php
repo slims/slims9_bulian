@@ -25,6 +25,8 @@ use SLiMS\Csv\Writer;
 use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
 use SLiMS\Debug\VarDumper;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SearchBiblioEngine;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -59,7 +61,7 @@ if ($_SESSION['uid'] != 1) {
     }
 }
 
-if ($sysconf['index']['type'] == 'index') {
+if (Engine::active() === SearchBiblioEngine::class) {
   require MDLBS.'system/biblio_indexer.inc.php';
   // create biblio_indexer class instance
   $indexer = new biblio_indexer($dbs);
@@ -140,7 +142,7 @@ if (isset($_POST['doImport'])) {
     
     if (!$csv_upload->getUploadStatus())
     {
-      toastr(__('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB')->error(__('Import Tool'));
+      toastr(__('Upload failed! File type not allowed or the size is more than') . ($sysconf['max_upload']/1024) . ' MB')->error(__('Import Tool'));
       exit;
     }
 
@@ -279,7 +281,7 @@ if (isset($_POST['doImport'])) {
           }
 
           // create biblio index
-          if ($sysconf['index']['type'] == 'index') {
+          if (Engine::active() === SearchBiblioEngine::class) {
             $indexer->makeIndex($biblio_id ?? 0);
           }
 
