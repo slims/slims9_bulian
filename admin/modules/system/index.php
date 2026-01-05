@@ -433,7 +433,7 @@ foreach ($engine as $opt) {
 }
 $html .= '</select>';
 $html .= '<div class="input-group-append">';
-$html .= '<a id="searchEngineSettingsBtn" class="btn btn-outline-secondary openPopUp notAJAX" width="800" height="600" href="#">'.__('Settings').'</a>';
+$html .= '<a id="searchEngineSettingsBtn" class="btn btn-outline-secondary openPopUp notAJAX" width="800" height="600" href="#" title="'.__('Search Engine Settings').'">'.__('Settings').'</a>';
 $html .= '</div>';
 $html .= '</div>';
 $html .= "<script>

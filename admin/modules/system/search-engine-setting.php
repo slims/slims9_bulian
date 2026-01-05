@@ -179,25 +179,23 @@ if ($engine === FuzzySearchEngine::class) {
     $form->table_content_attr = 'class="alterCell2"';
 
     // Max Levenshtein Distance (1-5)
-    $distance_desc = __('Maximum number of character differences allowed for fuzzy matching (1=strict, 5=loose)');
-    $form->addTextField('text', 'fuzzy_max_distance', __('Max Levenshtein Distance'), $fuzzy_config['maxDistance'] ?? 2, 'class="form-control col-2" type="number" min="1" max="5" required');
+    $form->addTextField('text', 'fuzzy_max_distance', __('Max Levenshtein Distance'), $fuzzy_config['maxDistance'] ?? 2, 'class="form-control col-2" type="number" min="1" max="5" required', __('Maximum number of character differences allowed for fuzzy matching. Value 1 = strict (only nearly perfect matches), value 5 = loose (matches very different words)'));
 
     // Min Word Length (1-10)
-    $min_word_desc = __('Minimum word length to apply fuzzy matching');
-    $form->addTextField('text', 'fuzzy_min_word_length', __('Minimum Word Length'), $fuzzy_config['minWordLength'] ?? 3, 'class="form-control col-2" type="number" min="1" max="10" required');
+    $form->addTextField('text', 'fuzzy_min_word_length', __('Minimum Word Length'), $fuzzy_config['minWordLength'] ?? 3, 'class="form-control col-2" type="number" min="1" max="10" required', __('Minimum word length to apply fuzzy matching. Words shorter than this value will be matched exactly'));
     // Use Phonetic Matching
     $phonetic_options[] = array('1', __('Enable'));
-    $form->addCheckBox('fuzzy_use_phonetic', __('Use Phonetic Matching (Soundex/Metaphone)'), $phonetic_options, $fuzzy_config['usePhonetic'] ?? true, 'class="form-control"');
+    $form->addCheckBox('fuzzy_use_phonetic', __('Use Phonetic Matching (Soundex/Metaphone)'), $phonetic_options, $fuzzy_config['usePhonetic'] ?? true, __('Use phonetic matching to capture words that sound similar but are spelled differently, improving search result relevance'));
 
     // Return All if Empty
     $return_all_options[] = array('1', __('Yes'));
-    $form->addCheckBox('fuzzy_return_all_if_empty', __('Return All Documents When Keywords is Empty'), $return_all_options, $fuzzy_config['returnAllIfEmpty'] ?? true, 'class="form-control"');
+    $form->addCheckBox('fuzzy_return_all_if_empty', __('Return All Documents When Keywords is Empty'), $return_all_options, $fuzzy_config['returnAllIfEmpty'] ?? true, __('If enabled, the system will display all documents when users perform a search without keywords'));
 
     // select fallback engine class if empty keywords
     $form->addSelectList('fallback_engine', __('Fallback Engine for Empty Keywords'), [
         DefaultEngine::class => DefaultEngine::class,
         SearchBiblioEngine::class => SearchBiblioEngine::class
-    ], $fuzzy_config['fallbackEngine'] ?? SearchBiblioEngine::class, 'class="form-control"');
+    ], $fuzzy_config['fallbackEngine'] ?? SearchBiblioEngine::class, 'class="form-control"', __('Select an alternative search engine to use when keywords are empty'));
 
 
     // Print form
