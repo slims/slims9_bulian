@@ -39,7 +39,7 @@ if (isset($_GET['search'])) {
 
     // get engine name from setting, default to FuzzySearchEngine
     $search_engine = Engine::active();
-    
+
     // data setting exists but class not exists
     if (!class_exists($search_engine)) $search_engine = FuzzySearchEngine::class;
 
