@@ -30,8 +30,8 @@ use SLiMS\AlLibrarian;
 use SLiMS\Filesystems\Storage;
 use SLiMS\Form\FormAjaxWithCustomField;
 use SLiMS\Plugins;
+use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\SearchEngine\Engine;
-use SLiMS\SearchEngine\SearchBiblioEngine;
 use SLiMS\SearchEngine\SphinxSearchEngine;
 
 // key to get full database access
@@ -1265,7 +1265,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
 
     // index choice
     $search_engine = Engine::active();
-    if ($search_engine == SearchBiblioEngine::class || $search_engine == SphinxSearchEngine::class) {
+    if ($search_engine != DefaultEngine::class) {
         if ($search_engine == SphinxSearchEngine::class) {
             require LIB . 'sphinx/sphinxapi.php';
             require LIB . 'biblio_list_sphinx.inc.php';
