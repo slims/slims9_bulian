@@ -33,6 +33,7 @@ use SLiMS\Plugins;
 use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\SearchEngine\SphinxSearchEngine;
+use SLiMS\Ucs;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -435,7 +436,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     @$sql_op->insert('biblio_custom', $custom_data);
                 }
 
-
                 utility::jsToastr('Bibliography', __('New Bibliography Data Successfully Saved'), 'success');
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'] . ' insert bibliographic data (' . $data['title'] . ') with biblio_id (' . $last_biblio_id . ')');
@@ -599,6 +599,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // add to http query for UCS delete
                 $http_query .= "itemID[]=$itemID&";
+                $_itemID[] = $itemID;
+                $itemIDs = implode(',', $_itemID);
             }
         } else {
             $still_have_item[] = substr($biblio_item_d[0], 0, 45) . '... still have ' . $biblio_item_d[1] . ' copies';
@@ -617,7 +619,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
     // auto delete data on UCS if enabled
     if ($http_query && $sysconf['ucs']['enable'] && $sysconf['ucs']['auto_delete']) {
-        echo '<script type="text/javascript">parent.ucsUpdate(\'' . MWB . 'bibliography/ucs_update.php\', \'nodeOperation=delete&' . $http_query . '\');</script>';
+        Ucs::auto_delete($itemIDs);
     }
     // error alerting
     if ($error_num == 0) {
