@@ -1056,7 +1056,7 @@ HTML;
           LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
       if ($attachment_q->num_rows > 0) {
         while ($attachment_d = $attachment_q->fetch_assoc()) {
-            $_xml_output .= '<dc:relation><![CDATA[';
+            // $_xml_output .= '<dc:relation><![CDATA[';
             // check member type privileges
             if ($attachment_d['access_limit']) { continue; }
             $jsonld['associatedMedia']['name'] = trim($attachment_d['file_title']);
