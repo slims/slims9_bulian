@@ -1103,7 +1103,7 @@ CREATE TABLE IF NOT EXISTS `plugins` (
 
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+  `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
 ) ENGINE=MyISAM COLLATE 'utf8mb4_unicode_ci';";
