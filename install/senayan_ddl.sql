@@ -1889,6 +1889,12 @@ ALTER TABLE `index_words`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- Change field size for table `index_words`
+--
+ALTER TABLE `index_words`
+  MODIFY `word` VARCHAR(255) NOT NULL;
+
+--
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
