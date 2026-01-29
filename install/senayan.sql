@@ -1501,7 +1501,7 @@ ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT N
 
 CREATE TABLE `index_words` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+  `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
 ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';
