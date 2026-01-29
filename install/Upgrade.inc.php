@@ -1024,7 +1024,7 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
 
     $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
           `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-          `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+          `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
           `num_hits` int NOT NULL,
           `doc_hits` int NOT NULL
         ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';";
@@ -1187,6 +1187,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
     $sql['alter'][] = "ALTER TABLE `index_words` ADD INDEX `idx_word_hits` (`word`, `num_hits`);";
     $sql['alter'][] = "ALTER TABLE `index_documents` ADD INDEX `idx_word_location` (`word_id`, `location`, `hit_count`);";
     $sql['alter'][] = "ALTER TABLE `index_documents` ADD INDEX `idx_document_id` (`document_id`);";
+    $sql['alter'][] = "ALTER TABLE `index_words` MODIFY COLUMN `word` VARCHAR(255) NOT NULL;";
+
 
     // Analyze index
     $sql['analyze'][] = "ANALYZE TABLE `index_words`;";
