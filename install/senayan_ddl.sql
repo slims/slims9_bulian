@@ -350,7 +350,7 @@ CREATE TABLE `index_documents` (
 
 CREATE TABLE `index_words` (
   `id` bigint(20) NOT NULL,
-  `word` varchar(50) NOT NULL,
+  `word` varchar(255) NOT NULL,
   `num_hits` int(11) NOT NULL,
   `doc_hits` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
