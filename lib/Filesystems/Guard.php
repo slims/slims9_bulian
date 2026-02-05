@@ -73,7 +73,7 @@ trait Guard
     public function isImageFile()
     {
         if (!$this->uploadStatus) return false;
-        $this->uploadStatus = exif_imagetype($this->path.$this->uploadedFile);
+        $this->uploadStatus = \exif_imagetype($this->path.$this->uploadedFile);
         if (!$this->uploadStatus) {
             $this->error =  __('Wrong image filetype.');
         }
