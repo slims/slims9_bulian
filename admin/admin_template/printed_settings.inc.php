@@ -29,7 +29,22 @@ function loadPrintSettings($dbs, $type) {
   if ($barcode_settings_q->num_rows) {
     $barcode_settings_d = $barcode_settings_q->fetch_row();
     if ($barcode_settings_d[0]) {
-      $barcode_settings = @unserialize($barcode_settings_d[0]);
+      // Temporarily restore default error handler to prevent slimsErrorHandler
+      // from intercepting E_WARNING from unserialize() on corrupt data
+      $prev_handler = set_error_handler(function() { return false; });
+      try {
+        $barcode_settings = @unserialize($barcode_settings_d[0]);
+      } catch (\Throwable $e) {
+        $barcode_settings = false;
+      }
+      // Restore previous error handler
+      restore_error_handler();
+
+      if ($barcode_settings === false) {
+        // Serialized data is corrupted, delete it so defaults are used
+        $dbs->query("DELETE FROM setting WHERE setting_name='".$type."_print_settings'");
+        return $sysconf['print'][$type] ?? [];
+      }
       if (is_array($barcode_settings) && count($barcode_settings) > 0) {
         foreach ($barcode_settings as $setting_name => $val) {
           $sysconf['print'][$type][$setting_name] = $val;
