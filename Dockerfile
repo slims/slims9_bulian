@@ -24,6 +24,10 @@ RUN if [ -f config/csp.sample.php ] && [ ! -f config/csp.php ]; then \
         cp config/csp.sample.php config/csp.php; \
     fi
 
+# Backup membercard assets to a location outside the volume mount
+# so they can be restored at runtime by entrypoint.sh
+RUN cp -r /var/www/html/files/membercard /opt/slims-assets-membercard
+
 RUN chown -R www-data:www-data /var/www/html/files
 RUN chown -R www-data:www-data /var/www/html/images
 RUN chown -R www-data:www-data /var/www/html/repository
