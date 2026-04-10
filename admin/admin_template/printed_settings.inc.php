@@ -131,7 +131,7 @@ $sysconf['print']['membercard']['front_side_image'] = 'bg-front.svg';
 $sysconf['print']['membercard']['back_side_image'] = 'bg-back.svg';
 
 // Logo Setting
-$sysconf['print']['membercard']['logo'] = "logo.png";
+$sysconf['print']['membercard']['logo'] = "logo_v2.png";
 $sysconf['print']['membercard']['front_logo_width'] = "";
 $sysconf['print']['membercard']['front_logo_height'] = "";
 $sysconf['print']['membercard']['front_logo_left'] = "";
@@ -168,8 +168,8 @@ $sysconf['print']['membercard']['city'] = "City Name";
 $sysconf['print']['membercard']['title'] = "Library Manager";
 $sysconf['print']['membercard']['officials'] = "Librarian Name";
 $sysconf['print']['membercard']['officials_id'] = "Librarian ID";
-$sysconf['print']['membercard']['stamp_file'] = "stamp.png"; // stamp image, use transparent image
-$sysconf['print']['membercard']['signature_file'] = "signature.png"; // sign picture, use transparent image
+$sysconf['print']['membercard']['stamp_file'] = "stamp_v2.png"; // stamp image, use transparent image
+$sysconf['print']['membercard']['signature_file'] = "signature_v2.png"; // sign picture, use transparent image
 $sysconf['print']['membercard']['stamp_left'] = "";
 $sysconf['print']['membercard']['stamp_top'] = "";
 $sysconf['print']['membercard']['stamp_width'] = "";
