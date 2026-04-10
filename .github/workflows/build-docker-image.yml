@@ -1,0 +1,123 @@
+name: Build SLiMS Docker Image
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: slims9
+  SLIMS_VERSION: 9.7.2
+
+jobs:
+  build:
+    name: Build and Push SLiMS Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ env.SLIMS_VERSION }}
+            type=raw,value=latest
+            type=sha,prefix=slims-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image summary
+        run: |
+          echo "## 📦 SLiMS Docker Image Built" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tags:**" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: Trigger Deployment
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://slims.perpussmala.my.id
+
+    steps:
+      - name: Generate webhook payload
+        id: payload
+        run: |
+          PAYLOAD=$(cat <<EOF
+          {
+            "environment": "production",
+            "image": "${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest",
+            "commit_sha": "${{ github.sha }}",
+            "timestamp": $(date +%s)
+          }
+          EOF
+          )
+
+          echo "payload<<EOF" >> $GITHUB_OUTPUT
+          echo "$PAYLOAD" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Generate HMAC signature
+        id: signature
+        run: |
+          SIGNATURE=$(echo -n '${{ steps.payload.outputs.payload }}' | \
+            openssl dgst -sha256 -hmac "${{ secrets.WEBHOOK_SECRET }}" | \
+            sed 's/SHA2-256(stdin)= //')
+          echo "signature=$SIGNATURE" >> $GITHUB_OUTPUT
+
+      - name: Trigger deployment via webhook
+        run: |
+          echo "🚀 Triggering deployment..."
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            ${{ secrets.WEBHOOK_ENDPOINT }} \
+            -H "CF-Access-Client-Id: ${{ secrets.CF_SERVICE_TOKEN_ID }}" \
+            -H "CF-Access-Client-Secret: ${{ secrets.CF_SERVICE_TOKEN_SECRET }}" \
+            -H "X-Webhook-Signature: ${{ steps.signature.outputs.signature }}" \
+            -H "Content-Type: application/json" \
+            -d '${{ steps.payload.outputs.payload }}')
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "📡 Response Code: $HTTP_CODE"
+          echo "$BODY" | jq '.' || echo "$BODY"
+
+          if [ "$HTTP_CODE" -ne 200 ] && [ "$HTTP_CODE" -ne 202 ]; then
+            echo "❌ Deployment trigger failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+
+          echo "✅ Deployment triggered successfully!"

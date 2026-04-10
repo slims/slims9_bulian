@@ -29,7 +29,22 @@ function loadPrintSettings($dbs, $type) {
   if ($barcode_settings_q->num_rows) {
     $barcode_settings_d = $barcode_settings_q->fetch_row();
     if ($barcode_settings_d[0]) {
-      $barcode_settings = @unserialize($barcode_settings_d[0]);
+      // Temporarily restore default error handler to prevent slimsErrorHandler
+      // from intercepting E_WARNING from unserialize() on corrupt data
+      $prev_handler = set_error_handler(function() { return false; });
+      try {
+        $barcode_settings = @unserialize($barcode_settings_d[0]);
+      } catch (\Throwable $e) {
+        $barcode_settings = false;
+      }
+      // Restore previous error handler
+      restore_error_handler();
+
+      if ($barcode_settings === false) {
+        // Serialized data is corrupted, delete it so defaults are used
+        $dbs->query("DELETE FROM setting WHERE setting_name='".$type."_print_settings'");
+        return $sysconf['print'][$type] ?? [];
+      }
       if (is_array($barcode_settings) && count($barcode_settings) > 0) {
         foreach ($barcode_settings as $setting_name => $val) {
           $sysconf['print'][$type][$setting_name] = $val;
@@ -116,7 +131,7 @@ $sysconf['print']['membercard']['front_side_image'] = 'bg-front.svg';
 $sysconf['print']['membercard']['back_side_image'] = 'bg-back.svg';
 
 // Logo Setting
-$sysconf['print']['membercard']['logo'] = "logo.png";
+$sysconf['print']['membercard']['logo'] = "logo_v2.png";
 $sysconf['print']['membercard']['front_logo_width'] = "";
 $sysconf['print']['membercard']['front_logo_height'] = "";
 $sysconf['print']['membercard']['front_logo_left'] = "";
@@ -153,8 +168,8 @@ $sysconf['print']['membercard']['city'] = "City Name";
 $sysconf['print']['membercard']['title'] = "Library Manager";
 $sysconf['print']['membercard']['officials'] = "Librarian Name";
 $sysconf['print']['membercard']['officials_id'] = "Librarian ID";
-$sysconf['print']['membercard']['stamp_file'] = "stamp.png"; // stamp image, use transparent image
-$sysconf['print']['membercard']['signature_file'] = "signature.png"; // sign picture, use transparent image
+$sysconf['print']['membercard']['stamp_file'] = "stamp_v2.png"; // stamp image, use transparent image
+$sysconf['print']['membercard']['signature_file'] = "signature_v2.png"; // sign picture, use transparent image
 $sysconf['print']['membercard']['stamp_left'] = "";
 $sysconf['print']['membercard']['stamp_top'] = "";
 $sysconf['print']['membercard']['stamp_width'] = "";

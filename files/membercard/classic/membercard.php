@@ -255,7 +255,7 @@ strong {
     <section id="front-card">
       <header>
         <div class="logo">
-          <img src="<?php echo $card_logo ?>" alt="No Photo">
+          <img src="<?php echo $card_logo ?>?v=<?php echo time() ?>" alt="No Photo">
           <div class="sub-brand"><?php echo $sysconf['print']['membercard']['front_header1_text'] ?></div>
           <div class="brand"><?php echo $sysconf['print']['membercard']['front_header2_text'] ?></div>
         </div>
@@ -310,8 +310,8 @@ strong {
         <div class="sign">
           <div class="time"><?php echo $sysconf['print']['membercard']['city']?>, <?php echo date('d M Y',strtotime($card['register_date'])) ?></div>
           <div class="position"><?php echo $sysconf['print']['membercard']['title'] ?></div>
-          <img class="signature" src="<?php echo $card_signature ?>" alt="No signature">
-          <img class="stamp" src="<?php echo $card_stamp ?>" alt="No stamp">
+          <img class="signature" src="<?php echo $card_signature ?>?v=<?php echo time() ?>" alt="No signature">
+          <img class="stamp" src="<?php echo $card_stamp ?>?v=<?php echo time() ?>" alt="No stamp">
           <div class="librarian"><?php echo $sysconf['print']['membercard']['officials'] ?></div>
           <div class="uid"><?php echo $sysconf['print']['membercard']['officials_id'] ?></div>
         </div>

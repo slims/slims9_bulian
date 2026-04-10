@@ -387,6 +387,16 @@ CREATE TABLE `item` (
 
 -- --------------------------------------------------------
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `item_custom`
+--
+
+CREATE TABLE IF NOT EXISTS `item_custom` (
+  `item_id` int(11) NOT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='one to one relation with real item table';
+
 --
 -- Table structure for table `kardex`
 --
@@ -458,7 +468,7 @@ CREATE TRIGGER `insert_loan_history` AFTER INSERT ON `loan` FOR EACH ROW INSERT 
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `update_loan_history` AFTER UPDATE ON `loan` FOR EACH ROW UPDATE loan_history 
+CREATE TRIGGER `update_loan_history` AFTER UPDATE ON `loan` FOR EACH ROW UPDATE loan_history
     SET is_lent=NEW.is_lent,
     is_return=NEW.is_return,
     renewed=NEW.renewed,
@@ -2120,3 +2130,13 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE `user_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `selector` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hashed_validator` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

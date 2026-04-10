@@ -23,7 +23,7 @@ trait Guard
     public function isMimeAllowed(array $allowedMime = [])
     {
         if (!$this->uploadStatus) return false;
-        
+
         $detector = new ExtensionMimeTypeDetector();
         $this->uploadStatus = in_array($detector->detectMimeTypeFromPath($this->path . $this->uploadedFile), ($allowedMime ? $allowedMime : config('mimetype')));
 
@@ -58,7 +58,7 @@ trait Guard
     public function isLimitExceeded($maxSize)
     {
         if (!$this->uploadStatus) return false;
-        
+
         $this->uploadStatus = $maxSize > $this->getSize($this->uploadedFile);
 
         if (!$this->uploadStatus) $this->error = str_replace(['{fileSize}','{maxSize}'], [$this->toUnitSize($this->getSize($this->uploadedFile)), $this->toUnitSize($maxSize)], __('Size {fileSize} greater than {maxSize}.'));
@@ -73,7 +73,16 @@ trait Guard
     public function isImageFile()
     {
         if (!$this->uploadStatus) return false;
-        $this->uploadStatus = exif_imagetype($this->path.$this->uploadedFile);
+
+        // Check if exif_imagetype function exists
+        if (function_exists('exif_imagetype')) {
+            $this->uploadStatus = exif_imagetype($this->path.$this->uploadedFile);
+        } else {
+            // Fallback using getimagesize if exif extension is not available
+            $imageInfo = @getimagesize($this->path.$this->uploadedFile);
+            $this->uploadStatus = $imageInfo !== false;
+        }
+
         if (!$this->uploadStatus) {
             $this->error =  __('Wrong image filetype.');
         }
