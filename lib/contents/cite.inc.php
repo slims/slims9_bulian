@@ -52,7 +52,16 @@ $style_files = $dir->getFileList();
 // create Biblio
 $biblio = new Biblio($dbs, $biblio_id);
 $biblio_detail = $biblio->detail();
-// var_dump($biblio_detail);
+// Ensure all template variables have a default value to prevent undefined variable warnings
+$biblio_detail = array_merge([
+    'title'          => '',
+    'edition'        => '',
+    'publish_year'   => '',
+    'publish_place'  => '',
+    'publisher_name' => '',
+    'gmd_name'       => '',
+    'authors'        => [],
+], $biblio_detail);
 extract($biblio_detail);
 
 // foreach ($style_files as $file) {
