@@ -224,9 +224,11 @@ class Thumb
         $this->resulutionHeight = $this->height == 0 ? number((($this->resulutionWidth/$this->imageWidth) * $this->imageHeight))->toInteger() : $this->height;
         
         $this->cache['file'] = str_replace(['resolutionWidth','resolutionHeight'], [$this->resulutionWidth,$this->resulutionHeight], $this->cache['file']);
-        if (file_exists($this->cache['file'])) {
-            unlink ($this->cache['file']);
-        }
+
+        // Only delete stale cache when explicitly requested, not on every prepare().
+        // Keeping the cache allows createthumb.php to redirect to the static file
+        // on subsequent requests, avoiding repeated PHP execution.
+
         return $this;
     }
 

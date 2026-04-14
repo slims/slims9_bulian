@@ -2,11 +2,15 @@
 /**
  * Read lib/minigalnano/Thumb.php for more
  * information
- * 
+ *
  * Original source by Hendro Wicaksono
  * delivered from Minigal Nano
- * 
+ *
  * - 2022 modified by Drajat Hasan (drajathasan20@gmail.com)
+ * - 2026 modified by Sandikodev <androxoss@hotmail.com>
+ *   After generating the thumbnail, redirect the browser to the static
+ *   cache file so subsequent requests are served directly by the web
+ *   server (nginx/apache) without invoking PHP at all.
  */
 use Minigalnano\Thumb;
 use SLiMS\Filesystems\Storage;
@@ -32,9 +36,9 @@ try {
     $thumbnail->setCacheOption('folder', SB . 'images/cache/');
 
     // Set cache file path
-    $thumbnail->setCacheOption('file', 
-        $thumbnail->getCacheOption('folder') . 
-        $thumbnail->getCacheOption('prefix') . 
+    $thumbnail->setCacheOption('file',
+        $thumbnail->getCacheOption('folder') .
+        $thumbnail->getCacheOption('prefix') .
         basename($thumbnail->getFilePath())
     );
 
@@ -44,11 +48,27 @@ try {
     $thumbnail->isReadable()->orError();
 
     // set measurement
-    $thumbnail->setWidth(( (isset($_GET['width']) AND trim($_GET['width']) != '') ?  trim($_GET['width']) : 120));
-    $thumbnail->setHeight(( (isset($_GET['height']) AND trim($_GET['height']) != '') ?  trim($_GET['height']) : 0));
+    $thumbnail->setWidth(((isset($_GET['width']) AND trim($_GET['width']) != '') ? trim($_GET['width']) : 120));
+    $thumbnail->setHeight(((isset($_GET['height']) AND trim($_GET['height']) != '') ? trim($_GET['height']) : 0));
 
-    // Preparing image and generate it
-    $thumbnail->prepare()->generate();
+    // Preparing image — this resolves the final cache file path (with dimensions)
+    $thumbnail->prepare();
+
+    // If cache already exists, redirect to static file immediately — no PHP output needed.
+    $cacheFile = $thumbnail->getCacheOption('file');
+    if (file_exists($cacheFile)) {
+        $scheme = (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) 
+            ? $_SERVER['HTTP_X_FORWARDED_PROTO'] 
+            : ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $base = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/');
+        header('Location: ' . $scheme . '://' . $host . $base . '/images/cache/' . basename($cacheFile), true, 302);
+        exit;
+    }
+
+    // Cache miss — generate thumbnail (outputs image directly), then it will be
+    // cached on disk for the next request.
+    $thumbnail->generate();
 } catch (Exception $e) {
     if (!isDev()) Thumb::setError();
     dd($e);
