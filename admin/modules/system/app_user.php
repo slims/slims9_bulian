@@ -164,7 +164,8 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         if ($social_media) {
           $data['social_media'] = $dbs->escape_string(serialize($social_media));
         }
-        if (isset($_POST['noChangeGroup'])) {
+        // only update group data if the flag is set, and user have enough privileges
+        if (isset($_POST['noChangeGroup']) AND $can_read AND $can_write) {
             // parsing groups data
             $groups = '';
             if (isset($_POST['groups']) AND !empty($_POST['groups'])) {
