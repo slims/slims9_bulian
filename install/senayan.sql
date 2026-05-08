@@ -1508,8 +1508,8 @@ CREATE TABLE `index_words` (
   `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL,
-  KEY `idx_word` (`word`),
-  KEY `idx_word_hits` (`word`,`num_hits`)
+  KEY `idx_word` (`word`(250)),
+  KEY `idx_word_hits` (`word`(245),`num_hits`)
 ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';
 
 CREATE TABLE `index_documents` (

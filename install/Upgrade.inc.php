@@ -1183,8 +1183,8 @@ ADD INDEX (  `input_date` ,  `last_update` ,  `uid` ) ;";
   function upgrade_role_39()
   {
     // Optimize index
-    $sql['alter'][] = "ALTER TABLE `index_words` ADD INDEX `idx_word` (`word`);";
-    $sql['alter'][] = "ALTER TABLE `index_words` ADD INDEX `idx_word_hits` (`word`, `num_hits`);";
+    $sql['alter'][] = "ALTER TABLE `index_words` ADD INDEX `idx_word` (`word`(250));";
+    $sql['alter'][] = "ALTER TABLE `index_words` ADD INDEX `idx_word_hits` (`word`(245), `num_hits`);";
     $sql['alter'][] = "ALTER TABLE `index_documents` ADD INDEX `idx_word_location` (`word_id`, `location`, `hit_count`);";
     $sql['alter'][] = "ALTER TABLE `index_documents` ADD INDEX `idx_document_id` (`document_id`);";
     $sql['alter'][] = "ALTER TABLE `index_words` MODIFY COLUMN `word` VARCHAR(255) NOT NULL;";
