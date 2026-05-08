@@ -7,12 +7,12 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - ENV=production
+      - ENV=${APP_ENV}
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASS=Pass123
-      - DB_NAME=senayan
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
     volumes:
       - appfiles:/var/www/html/files
       - appimages:/var/www/html/images
@@ -30,11 +30,12 @@ services:
     ports:
       - "${DB_PORT}:3306"
     volumes:
-      - ./install/senayan_ddl.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./install/senayan.sql:/docker-entrypoint-initdb.d/01-senayan.sql
+      - ./install/sampledata.sql:/docker-entrypoint-initdb.d/02-sampledata.sql
       - dbdata:/var/lib/mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=Pass123
-      - MARIADB_DATABASE=senayan
+      - MARIADB_ROOT_PASSWORD=${DB_PASS}
+      - MARIADB_DATABASE=${DB_NAME}
     networks:
       - proxy
 
