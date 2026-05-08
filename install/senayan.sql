@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `series_title` varchar(200) collate utf8_unicode_ci default NULL,
   `call_number` varchar(50) collate utf8_unicode_ci default NULL,
   `language_id` char(5) collate utf8_unicode_ci default 'en',
-  `source` varchar(3) collate utf8_unicode_ci default NULL,
+  `source` varchar(10) collate utf8_unicode_ci default NULL,
   `publish_place_id` int(11) default NULL,
   `classification` varchar(40) collate utf8_unicode_ci default NULL,
   `notes` text collate utf8_unicode_ci,
@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `uid` int(11) default NULL,
   PRIMARY KEY  (`biblio_id`),
   KEY `references_idx` (`gmd_id`,`publisher_id`,`language_id`,`publish_place_id`),
+  KEY `publisher_id` (`publisher_id`),
   KEY `classification` (`classification`),
   KEY `biblio_flag_idx` (`opac_hide`,`promoted`),
   KEY `rda_idx` (`content_type_id`, `media_type_id`, `carrier_type_id`),
@@ -106,7 +107,9 @@ CREATE TABLE IF NOT EXISTS `biblio_author` (
   `biblio_id` int(11) NOT NULL default '0',
   `author_id` int(11) NOT NULL default '0',
   `level` int(1) NOT NULL default '1',
-  PRIMARY KEY  (`biblio_id`,`author_id`)
+  PRIMARY KEY  (`biblio_id`,`author_id`),
+  KEY `biblio_id` (`biblio_id`),
+  KEY `author_id` (`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -124,7 +127,9 @@ CREATE TABLE IF NOT EXISTS `biblio_topic` (
   `biblio_id` int(11) NOT NULL default '0',
   `topic_id` int(11) NOT NULL default '0',
   `level` int(1) NOT NULL default '1',
-  PRIMARY KEY  (`biblio_id`,`topic_id`)
+  PRIMARY KEY  (`biblio_id`,`topic_id`),
+  KEY `biblio_id` (`biblio_id`),
+  KEY `topic_id` (`topic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -414,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `member` (
   `is_pending` smallint(1) NOT NULL default '0',
   `mpasswd` VARCHAR(64) NULL,
   `last_login` DATETIME NULL,
-  `last_login_ip` VARCHAR(20) NULL,
+  `last_login_ip` VARCHAR(50) NULL,
   `input_date` date default NULL,
   `last_update` date default NULL,
   PRIMARY KEY  (`member_id`),
@@ -579,8 +584,8 @@ CREATE TABLE IF NOT EXISTS `mst_item_status` (
 --
 
 INSERT INTO `mst_item_status` (`item_status_id`, `item_status_name`, `rules`, `input_date`, `last_update`, `no_loan`, `skip_stock_take`) VALUES
-('R', 'Repair', 'a:1:{i:0;s:1:"1";}', DATE(NOW()), DATE(NOW()), '1', '0'),
-('NL', 'No Loan', 'a:1:{i:0;s:1:"1";}', DATE(NOW()), DATE(NOW()), '1', '0'),
+('R', 'Repair', 'a:1:{i:0;s:1:"1";}', DATE(NOW()), DATE(NOW()), '1', '1'),
+('NL', 'No Loan', 'a:1:{i:0;s:1:"1";}', DATE(NOW()), DATE(NOW()), '1', '1'),
 ('MIS', 'Missing', NULL, DATE(NOW()), DATE(NOW()), '1', '1');
 
 -- --------------------------------------------------------
@@ -1015,8 +1020,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_image` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `social_media` text COLLATE utf8_unicode_ci NULL,
   `last_login` datetime DEFAULT NULL,
-  `last_login_ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_login_ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `groups` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `forgot` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `admin_template` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `input_date` date DEFAULT NULL,
   `last_update` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
@@ -1064,9 +1071,11 @@ CREATE TABLE IF NOT EXISTS `visitor_count` (
   `member_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `member_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `institution` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `room_code` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `checkin_date` datetime NOT NULL,
   PRIMARY KEY (`visitor_id`),
-  KEY `member_id` (`member_id`)
+  KEY `member_id` (`member_id`),
+  KEY `room_code` (`room_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1114,7 +1123,7 @@ CREATE TABLE IF NOT EXISTS `search_biblio` (
   KEY `add_indexes` (`gmd`,`publisher`,`publish_place`,`language`,`classification`,`publish_year`,`call_number`),
   KEY `add_indexes2` (`opac_hide`,`promoted`),
   KEY `rda_indexes` (`carrier_type`,`media_type`,`content_type`),
-  FULLTEXT `title` (`title`),
+  FULLTEXT `title` (`title`,`series_title`),
   FULLTEXT `author` (`author`),
   FULLTEXT `topic` (`topic`),
   FULLTEXT `location` (`location`),
@@ -1329,7 +1338,8 @@ CREATE TABLE IF NOT EXISTS `mst_voc_ctrl` (
   `rt_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `related_topic_id` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `scope` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`vocabolary_id`)
+  PRIMARY KEY (`vocabolary_id`),
+  UNIQUE KEY `idx_heading` (`topic_id`,`related_topic_id`(200))
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1489,12 +1499,6 @@ CREATE TABLE `plugins` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Version v9.2.0
---
-
-ALTER TABLE `user` ADD `forgot` VARCHAR(80) COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `groups`;
-ALTER TABLE `user` ADD `admin_template` text COLLATE 'utf8_unicode_ci' DEFAULT NULL AFTER `forgot`;
-
 -- 
 -- Index Word and Document
 -- 
@@ -1503,7 +1507,9 @@ CREATE TABLE `index_words` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
-  `doc_hits` int NOT NULL
+  `doc_hits` int NOT NULL,
+  KEY `idx_word` (`word`),
+  KEY `idx_word_hits` (`word`,`num_hits`)
 ) ENGINE='MyISAM' COLLATE 'utf8mb4_unicode_ci';
 
 CREATE TABLE `index_documents` (
@@ -1514,7 +1520,9 @@ CREATE TABLE `index_documents` (
   PRIMARY KEY (`document_id`,`word_id`,`location`),
   KEY `document_id` (`document_id`),
   KEY `word_id` (`word_id`),
-  KEY `location` (`location`)
+  KEY `location` (`location`),
+  KEY `idx_word_location` (`word_id`,`location`,`hit_count`),
+  KEY `idx_document_id` (`document_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
@@ -1529,4 +1537,43 @@ CREATE TABLE `user_tokens` (
   `expires_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Table structure for table `biblio_mark`
+--
+CREATE TABLE IF NOT EXISTS `biblio_mark` (
+  `id` varchar(32) NOT NULL,
+  `member_id` varchar(20) NOT NULL,
+  `biblio_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  UNIQUE KEY `id` (`id`),
+  KEY `member_id_idx` (`member_id`),
+  KEY `biblio_id_idx` (`biblio_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Table structure for table `mst_visitor_room`
+--
+CREATE TABLE IF NOT EXISTS `mst_visitor_room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `unique_code` varchar(5) NOT NULL COMMENT 'Code for identification each room',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_code_unq` (`unique_code`),
+  KEY `unique_code_idx` (`unique_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Table structure for table `cache`
+--
+CREATE TABLE IF NOT EXISTS `cache` (
+  `name` varchar(64) NOT NULL,
+  `contents` text NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `expired_at` datetime DEFAULT NULL,
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
