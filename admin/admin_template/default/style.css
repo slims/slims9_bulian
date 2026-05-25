@@ -933,32 +933,80 @@ header
 #pageContent {
   padding: 15px;
 }
-.pagingList a,
-.pagingList b {
-  padding: 7px 0.85rem;
-  border-radius: 3px;
-  transition: all 0.25s ease;
-  font-weight: 700;
-  display: inline-block;
-  margin-left: 2px;
-  color: #ffffff;
+.paging-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0;
+    width: 100%;
 }
-.pagingList b {
-  background: #00a9ff;
-  border-color: #00a9ff;
+
+.pagingList {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px; /* Jarak antar kotak nomor */
+    background: rgba(255, 255, 255, 0.8);
+    padding: 6px 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-.pagingList a {
-  border-color: #808080;
-  background-color: #808080;
+
+.page_link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
 }
-.pagingList a:hover {
-  color: #ffffff;
-  background: #00a9ff;
-  border-color: #00a9ff;
+
+.page_link:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-color: #007bff;
 }
-.paging-area {
-  background: #ffffff;
-  text-align: right;
+
+.page_link.current.active {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 600;
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+    cursor: default;
+}
+
+.first_link, .prev_link, .next_link, .last_link {
+    font-size: 13px;
+    padding: 0 12px;
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.first_link:hover, .prev_link:hover, .next_link:hover, .last_link:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
+}
+
+.paging-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 36px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #adb5bd;
+    user-select: none;
 }
 #pagingBox:blank,
 #pagingBox:empty {
