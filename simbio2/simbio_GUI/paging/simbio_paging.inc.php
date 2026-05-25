@@ -1,30 +1,14 @@
 <?php
 /**
  * simbio_paging_ajax
- * Paging Generator class
+ * Paging Generator class - Enhanced Ultimate Edition
  *
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * GPL v2 or later
  */
 
-// be sure that this file not accessed directly
-if (!defined('INDEX_AUTH')) {
-    die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) { 
+// Pastikan file tidak diakses langsung
+if (!defined('INDEX_AUTH') || INDEX_AUTH != 1) { 
     die("can not access this file directly");
 }
 
@@ -33,121 +17,147 @@ class simbio_paging
     /**
      * Static Method to print out the paging list
      *
-     * @param   integer $int_all_recs_num
-     * @param   integer $int_recs_each_page
-     * @param   integer $int_pages_each_set
-     * @param   string  $str_fragment
-     * @param   string  $str_target_frame
+     * @param   integer $int_all_recs_num   Total semua baris data
+     * @param   integer $int_recs_each_page Jumlah data per halaman
+     * @param   integer $int_pages_each_set Jumlah angka link yang tampil (default 5 untuk sliding)
+     * @param   string  $str_fragment       Anchor fragment (e.g., #section)
+     * @param   string  $str_target_frame   Target atribut link
      * @return  string
      */
-    public static function paging($int_all_recs_num, $int_recs_each_page, $int_pages_each_set = 10, $str_fragment = '', $str_target_frame = '_self')
+    public static function paging($int_all_recs_num, $int_recs_each_page, $int_pages_each_set = 5, $str_fragment = '', $str_target_frame = '_self')
     {
-        // check for wrong arguments
-        if ($int_recs_each_page > $int_all_recs_num) {
-            return;
+        // 1. Cek argumen dasar yang tidak valid
+        if ($int_recs_each_page >= $int_all_recs_num || $int_recs_each_page <= 0) {
+            return '';
         }
 
-        // total number of pages
-        $_num_page_total = ceil($int_all_recs_num/$int_recs_each_page);
-
+        // 2. Hitung total halaman
+        $_num_page_total = (int)ceil($int_all_recs_num / $int_recs_each_page);
         if ($_num_page_total < 2) {
-            return;
+            return '';
         }
 
-        // total number of pager set
-        $_pager_set_num = ceil($_num_page_total/$int_pages_each_set);
+        // 3. Ambil dan validasi halaman saat ini (Mencegah Out of Bounds)
+        $_page = 1;
+        if (isset($_GET['page'])) {
+            $_page = (int)$_GET['page'];
+            if ($_page < 1) {
+                $_page = 1;
+            } elseif ($_page > $_num_page_total) {
+                $_page = $_num_page_total; // Paksa ke halaman maksimum jika input ngawur
+            }
+        }
 
-        // check the current page number
-        if (isset($_GET['page']) AND $_GET['page'] > 1) {
-            $_page = (integer)$_GET['page'];
-        } else {$_page = 1;}
-
-        // check the query string
-        if (isset($_SERVER['QUERY_STRING']) AND !empty($_SERVER['QUERY_STRING'])) {
+        // 4. Bersihkan dan bangun Query String (Anti-XSS & Support Array Parameters)
+        $_query_str_page = '';
+        if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
             parse_str($_SERVER['QUERY_STRING'], $arr_query_var);
-            // renew csrf token
-            if (isset($arr_query_var['csrf_token'])) $arr_query_var['csrf_token'] = $_SESSION['csrf_token']??'';
-            // rebuild query str without "page" var
-            $_query_str_page = '';
-            foreach ($arr_query_var as $varname => $varvalue) {
-                if (is_string($varvalue)) {
-                    $varvalue = urlencode($varvalue);
-                    if ($varname != 'page') {
-                        $_query_str_page .= simbio_security::xssFree($varname).'='.simbio_security::xssFree($varvalue).'&';
-                    }
-                } else if (is_array($varvalue)) {
-                    $_query_str_page .= http_build_query(xssFree($varvalue));
-                }
+            
+            // Perbarui token CSRF jika ada di query string
+            if (isset($arr_query_var['csrf_token'])) {
+                $arr_query_var['csrf_token'] = $_SESSION['csrf_token'] ?? '';
             }
-            // append "page" var at the end
-            $_query_str_page .= 'page=';
-            // create full URL
-            $_current_page = $_SERVER['PHP_SELF'].'?'.$_query_str_page;
-        } else {
-            $_current_page = $_SERVER['PHP_SELF'].'?page=';
+            
+            // Singkirkan parameter page lama agar tidak duplikat
+            unset($arr_query_var['page']);
+
+            // Bersihkan XSS secara aman menggunakan helper rekursif
+            $cleaned_query = self::cleanQueryArray($arr_query_var);
+            
+            if (!empty($cleaned_query)) {
+                $_query_str_page = http_build_query($cleaned_query) . '&';
+            }
+        }
+        
+        $_query_str_page .= 'page=';
+        $_current_page = $_SERVER['PHP_SELF'] . '?' . $_query_str_page;
+
+        // Atribut target frame aman
+        $str_target_frame = 'target="' . htmlspecialchars($str_target_frame, ENT_QUOTES, 'UTF-8') . '"';
+
+        // Inisialisasi Buffer HTML
+        $_buffer = '<div class="paging-container"><span class="pagingList">';
+
+        // LOKALISASI TEKS (Simbio/SLiMS internal function)
+        $_first = __('First Page');
+        $_prev  = __('Previous');
+        $_next  = __('Next');
+        $_last  = __('Last Page');
+
+        // 5. LINK FIRST & PREVIOUS
+        if ($_page > 1) {
+            $_buffer .= '<a href="' . $_current_page . '1' . $str_fragment . '" ' . $str_target_frame . ' class="page_link first_link">' . $_first . '</a>' . "\n";
+            $_buffer .= '<a href="' . $_current_page . ($_page - 1) . $str_fragment . '" ' . $str_target_frame . ' class="page_link prev_link">' . $_prev . '</a>' . "\n";
         }
 
-        // target frame
-        $str_target_frame = 'target="'.$str_target_frame.'"';
+        // 6. HITUNG STRATEGI SLIDING WINDOW (2 Sebelum dan 2 Sesudah)
+        $side_links = 2; 
+        $_pager_offset = $_page - $side_links;
+        $_pager_max    = $_page + $side_links;
 
-        // init the return string
-        $_buffer = '<span class="pagingList">';
-        $_stopper = 1;
-
-        // count the offset of paging
-        if (($_page > 5) AND ($_page%5 == 1)) {
-            $_lowest = $_page-5;
-            if ($_page == $_lowest) {
-                $_pager_offset = $_lowest;
-            } else {
-                $_pager_offset = $_page;
-            }
-        } else if (($_page > 5) AND (($_page*2)%5 == 0)) {
-            $_lowest = $_page-5;
-            $_pager_offset = $_lowest+1;
-        } else if (($_page > 5) AND ($_page%5 > 1)) {
-            $_rest = $_page%5;
-            $_pager_offset = $_page-($_rest-1);
-        } else {
+        if ($_pager_offset < 1) {
+            $_pager_max = $_pager_max + (1 - $_pager_offset);
             $_pager_offset = 1;
         }
 
-        // Previous page link
-				$_first = __('First Page');
-
-				$_prev = __('Previous');
-
-        if ($_page > 1) {
-            $_buffer .= '<a href="'.$_current_page.(1).$str_fragment.'" '.$str_target_frame.' class="first_link">'.$_first.'</a>'."\n";
-            $_buffer .= '<a href="'.$_current_page.($_page-1).$str_fragment.'" '.$str_target_frame.' class="prev_link">'.$_prev.'</a>'."\n";
-        }
-
-        for ($p = $_pager_offset; ($p <= $_num_page_total) AND ($_stopper < $int_pages_each_set+1); $p++) {
-            if ($p == $_page) {
-                $_buffer .= '<b>'.$p.'</b>'."\n";
-            } else {
-                $_buffer .= '<a href="'.$_current_page.$p.$str_fragment.'" '.$str_target_frame.'>'.$p.'</a>'."\n";
+        if ($_pager_max > $_num_page_total) {
+            $_pager_offset = $_pager_offset - ($_pager_max - $_num_page_total);
+            $_pager_max = $_num_page_total;
+            if ($_pager_offset < 1) {
+                $_pager_offset = 1;
             }
-
-            $_stopper++;
         }
 
-        // Next page link
-				$_next = __('Next');
-
-        if (($_pager_offset != $_num_page_total-4) AND ($_page != $_num_page_total)) {
-            $_buffer .= '<a href="'.$_current_page.($_page+1).$str_fragment.'" '.$str_target_frame.' class="next_link">'.$_next.'</a>'."\n";
+        // 7. FITUR BARU: ELIPSIS AWAL (...)
+        if ($_pager_offset > 1) {
+            $_buffer .= '<a href="' . $_current_page . '1' . $str_fragment . '" ' . $str_target_frame . ' class="page_link">1</a>' . "\n";
+            if ($_pager_offset > 2) {
+                $_buffer .= '<span class="paging-ellipsis">...</span>' . "\n";
+            }
         }
 
-        // Last page link
-				$_last = __('Last Page');
+        // 8. LOOPING NOMOR HALAMAN DINAMIS
+        for ($p = $_pager_offset; $p <= $_pager_max; $p++) {
+            if ($p == $_page) {
+                $_buffer .= '<span class="page_link current active">' . $p . '</span>' . "\n";
+            } else {
+                $_buffer .= '<a href="' . $_current_page . $p . $str_fragment . '" ' . $str_target_frame . ' class="page_link">' . $p . '</a>' . "\n";
+            }
+        }
 
+        // 9. FITUR BARU: ELIPSIS AKHIR (...)
+        if ($_pager_max < $_num_page_total) {
+            if ($_pager_max < $_num_page_total - 1) {
+                $_buffer .= '<span class="paging-ellipsis">...</span>' . "\n";
+            }
+            $_buffer .= '<a href="' . $_current_page . $_num_page_total . $str_fragment . '" ' . $str_target_frame . ' class="page_link">' . $_num_page_total . '</a>' . "\n";
+        }
+
+        // 10. LINK NEXT & LAST
         if ($_page < $_num_page_total) {
-            $_buffer .= '<a href="'.$_current_page.($_num_page_total).$str_fragment.'" '.$str_target_frame.' class="last_link">'.$_last.'</a>'."\n";
+            $_buffer .= '<a href="' . $_current_page . ($_page + 1) . $str_fragment . '" ' . $str_target_frame . ' class="page_link next_link">' . $_next . '</a>' . "\n";
+            $_buffer .= '<a href="' . $_current_page . $_num_page_total . $str_fragment . '" ' . $str_target_frame . ' class="page_link last_link">' . $_last . '</a>' . "\n";
         }
 
-        $_buffer .= '</span>';
+        $_buffer .= '</span></div>';
 
         return $_buffer;
+    }
+
+    /**
+     * Helper privat untuk membersihkan data array query secara rekursif dari celah XSS
+     */
+    private static function cleanQueryArray(array $array)
+    {
+        $cleaned = [];
+        foreach ($array as $key => $value) {
+            $safe_key = class_exists('simbio_security') ? simbio_security::xssFree($key) : $key;
+            if (is_array($value)) {
+                $cleaned[$safe_key] = self::cleanQueryArray($value);
+            } else {
+                $cleaned[$safe_key] = class_exists('simbio_security') ? simbio_security::xssFree($value) : $value;
+            }
+        }
+        return $cleaned;
     }
 }
