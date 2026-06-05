@@ -19,28 +19,42 @@ if (isset($args['resumptionToken'])) {
 		$errors[] = oai_error('badResumptionToken', '', $args['resumptionToken']);
 	} else {
 		debug_var_dump('readings',$readings);
-		list($deliveredrecords, $extquery, $metadataPrefix) = $readings;
+		list($deliveredrecords, $filters, $metadataPrefix) = $readings;
+		$deliveredrecords = max(0, (int)$deliveredrecords);
 	}
 } else { // no, we start a new session
 	$deliveredrecords = 0; 
-	$extquery = '';
+	$filters = array();
 
 	$metadataPrefix = $args['metadataPrefix'];
 
 	if (isset($args['from'])) {
 		$from = checkDateFormat($args['from']);
-		$extquery .= fromQuery($from);
+		if ($from === false) {
+			$errors[] = oai_error('badGranularity', 'from', $args['from']);
+		} else {
+			$filters['from'] = $from;
+		}
 	}
 
 	if (isset($args['until'])) {
 		$until = checkDateFormat($args['until']);
-		$extquery .= untilQuery($until);
+		if ($until === false) {
+			$errors[] = oai_error('badGranularity', 'until', $args['until']);
+		} else {
+			$filters['until'] = $until;
+		}
 	}
 
-    if (isset($args['set'])) {
-	    if (is_array($SETS)) {
-		    $extquery .= setQuery($args['set']);
-	    } else {
+	if (isset($args['set'])) {
+		if (is_array($SETS)) {
+			$set = urldecode($args['set']);
+			if (!is_valid_oai_set($set)) {
+				$errors[] = oai_error('badArgument', 'set', $args['set']);
+			} else {
+				$filters['set'] = $set;
+			}
+		} else {
 			$errors[] = oai_error('noSetHierarchy'); 
 		}
 	}
@@ -51,7 +65,8 @@ if (!empty($errors)) {
 }
 
 // Load the handler
-if (is_array($METADATAFORMATS[$metadataPrefix]) 
+if (isset($METADATAFORMATS[$metadataPrefix])
+	&& is_array($METADATAFORMATS[$metadataPrefix])
 	&& isset($METADATAFORMATS[$metadataPrefix]['myhandler'])) {
 	$inc_record  = $METADATAFORMATS[$metadataPrefix]['myhandler'];
 	include($inc_record);
@@ -64,16 +79,24 @@ if (!empty($errors)) {
 }
 
 if (empty($errors)) {
+	$params = array();
+	$extquery = buildOaiFilterQuery($filters, $params);
+	if ($extquery === false) {
+		$errors[] = oai_error('badArgument', 'filter');
+	}
+}
+
+if (empty($errors)) {
 	$query = selectallQuery($metadataPrefix, '', ['opac_hide']) . $extquery . " ORDER BY " . $SQL['identifier'] . " ASC ";
 
 	// workaround for mysql
 	if (isset($deliveredrecords)){
-		$query .= " LIMIT " . MAXRECORDS . " OFFSET $deliveredrecords ";
+		$query .= " LIMIT " . (int)MAXRECORDS . " OFFSET " . (int)$deliveredrecords . " ";
 	}
 	debug_message("Query: $query") ;
 
 	$res = $db->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-	$r = $res->execute();
+	$r = $res->execute($params);
  	if ($r===false) {
 		if (SHOW_QUERY_ERROR) {
 			echo __FILE__.','.__LINE__."<br />";
@@ -88,7 +111,7 @@ if (empty($errors)) {
 		if ($r===false) {
 			exit("FetchMode is not supported");
 		}
-		$num_rows = rowCount($metadataPrefix, $extquery, $db);  
+		$num_rows = rowCount($metadataPrefix, $filters, $db);
 		if ($num_rows==0) {
 			#echo "Cannot find records: $query\n"; #debug
 			$errors[] = oai_error('noRecordsMatch');
@@ -112,7 +135,7 @@ $maxrec = min($num_rows - $deliveredrecords, $maxItems);
 
 if ($num_rows - $deliveredrecords > $maxItems) {
 	$cursor = (int)$deliveredrecords + $maxItems;
-	$restoken = createResumToken($cursor, $extquery, $metadataPrefix);
+	$restoken = createResumToken($cursor, $filters, $metadataPrefix);
 	$expirationdatetime = DateTimeImmutable::createFromFormat('U', time()+TOKEN_VALID)->format('Y-m-dTTZ');
 }
 // Last delivery, return empty ResumptionToken
