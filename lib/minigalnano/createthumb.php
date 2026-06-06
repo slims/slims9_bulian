@@ -60,7 +60,6 @@ try {
     $thumbnail->prepare()->generate();
 
 } catch (Exception $e) {
-
     if (!isDev()) Thumb::setError();
     dd($e);
 }

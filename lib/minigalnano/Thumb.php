@@ -49,8 +49,8 @@ class Thumb
      * @var integer
      */
     private $defaultResWidth = 42;
-    private $resulutionWidth = 0;
-    private $resulutionHeight = 0;
+    private $resolutionWidth = 0;
+    private $resolutionHeight = 0;
 
     /**
      * Cache property
@@ -220,13 +220,10 @@ class Thumb
         $this->imageWidth = $imageSize[0];
         $this->imageHeight = $imageSize[1];
 
-        $this->resulutionWidth = $this->width != 0 ? $this->width : $this->defaultResWidth;
-        $this->resulutionHeight = $this->height == 0 ? number((($this->resulutionWidth/$this->imageWidth) * $this->imageHeight))->toInteger() : $this->height;
+        $this->resolutionWidth = $this->width != 0 ? $this->width : $this->defaultResWidth;
+        $this->resolutionHeight = $this->height == 0 ? number((($this->resolutionWidth/$this->imageWidth) * $this->imageHeight))->toInteger() : $this->height;
         
-        $this->cache['file'] = str_replace(['resolutionWidth','resolutionHeight'], [$this->resulutionWidth,$this->resulutionHeight], $this->cache['file']);
-        if (file_exists($this->cache['file'])) {
-            unlink ($this->cache['file']);
-        }
+        $this->cache['file'] = str_replace(['resolutionWidth','resolutionHeight'], [$this->resolutionWidth,$this->resolutionHeight], $this->cache['file']);
         return $this;
     }
 
@@ -264,7 +261,7 @@ class Thumb
         {
             ob_start();
             // Create image source
-            $target = imagecreatetruecolor($this->resulutionWidth, $this->resulutionHeight);
+            $target = imagecreatetruecolor($this->resolutionWidth, $this->resolutionHeight);
             if (preg_match("/.jpg$|.jpeg$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
             if (preg_match("/.gif$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
             if (preg_match("/.png$/i", $this->filePath)) $source = imagecreatefromstring($this->storage->read($this->filePath));
@@ -273,9 +270,9 @@ class Thumb
             imagealphablending($target, false);
             imagesavealpha($target,true);
             $transparent = imagecolorallocatealpha($target, 255, 255, 255, 127);
-            imagefilledrectangle($target, 0, 0, $this->resulutionWidth, $this->resulutionHeight, $transparent);
+            imagefilledrectangle($target, 0, 0, $this->resolutionWidth, $this->resolutionHeight, $transparent);
 
-            imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resulutionWidth, $this->resulutionHeight,$this->imageWidth,$this->imageHeight);
+            imagecopyresampled($target,$source,0,0,$this->xoord,$this->yoord,$this->resolutionWidth, $this->resolutionHeight,$this->imageWidth,$this->imageHeight);
             imagedestroy($source);
             ob_end_clean();
 
