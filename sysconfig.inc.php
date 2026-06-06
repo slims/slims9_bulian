@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+use SLiMS\Plugins;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -58,6 +59,8 @@ require __DIR__ . '/lib/autoload.php';
 // Error handler
 require __DIR__ . '/lib/errorHandler.inc.php';
 registerSlimsHandler();
+
+$plugins = Plugins::getInstance();
 
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
@@ -172,8 +175,6 @@ if (!file_exists(SB.'config'.DS.'database.php')) {
     exit;
   }
 }
-
-
 
 // Extension check
 \SLiMS\Extension::throwIfNotFulfilled();
@@ -785,7 +786,7 @@ if ($load_balanced && (bool)$load_balanced['env']) ip()->setSourceRemoteIp($load
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;
-\SLiMS\Plugins::getInstance()->loadPlugins();
+$plugins->loadPlugins();
 
 // Captcha factory
 \SLiMS\Captcha\Factory::operate();
@@ -801,3 +802,6 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
 \SLiMS\Config::createFromSampleIfNotExists([
   'csp','auth'
 ]);
+
+// sysconfig ini hook execution
+$plugins->execute(Plugins::SYSCONFIG_ALL_INIT, [&$sysconf]);

@@ -23,9 +23,12 @@
 
 // key to authenticate
 define('INDEX_AUTH', '1');
+// flag for admin area
+define('ADMIN_AREA', 'admin_area');
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
 use SLiMS\DB;
+use SLiMS\Plugins;
 
 // required file
 require '../sysconfig.inc.php';
@@ -79,6 +82,8 @@ $can_read = utility::havePrivilege($current_module, 'r');
 // submenu
 $sub_menu = $module->generateSubMenu(($current_module and $can_read) ? $current_module : '');
 
+$plugins->execute(Plugins::ADMIN_AFTER_MODULE_LOADED, [$current_module, &$module, &$main_menu, &$sub_menu]);
+
 // start the output buffering for main content
 ob_start();
 // info
@@ -88,7 +93,7 @@ utility::loadUserTemplate($dbs, $_SESSION['uid']);
 
 // get default current module menu 
 $firstMenu = $module->getFirstMenu($current_module);
-if ($current_module and $can_read) {
+if ($current_module && $can_read) {
     if (!isset($firstMenu[1])) {
         // set unprivileged module warning
         $module->unprivileged();
@@ -113,6 +118,8 @@ if ($current_module and $can_read) {
 
 // page content
 $main_content = ob_get_clean();
+
+$plugins->execute(Plugins::ADMIN_AFTER_CONTENT_LOADED, [$current_module, &$main_content]);
 
 // print out the template
 require $sysconf['admin_template']['dir'] . '/' . $sysconf['admin_template']['theme'] . '/index_template.inc.php';

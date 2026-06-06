@@ -25,6 +25,8 @@ use SLiMS\{Opac,Plugins};
 
 // key to authenticate
 define('INDEX_AUTH', '1');
+// flag for public area
+define('PUBLIC_AREA', 'public_area');
 
 // required file
 require 'sysconfig.inc.php';
@@ -81,12 +83,13 @@ if (!$opac instanceof Opac) {
 // running hook to override process/variable before
 // content load
 $opac->hookBeforeContent(function($opac){
+  global $plugins;
   // Set header for CSP
   $opac->setCsp();
   $opac->setHeader('X-Content-Type-Options', 'nonsniff');
   
   // running plugin based on hook
-  Plugins::getInstance()->execute(Plugins::CONTENT_BEFORE_LOAD, [$opac]);
+  $plugins->execute(Plugins::CONTENT_BEFORE_LOAD, [$opac]);
 });
 
 // Path process or show welcome page
@@ -97,7 +100,8 @@ $opac->onWeb(function($opac){
 // running hook to override process/variable after
 // content load
 $opac->hookAfterContent(function($opac){
-  Plugins::getInstance()->execute(Plugins::CONTENT_AFTER_LOAD, [$opac]);
+  global $plugins;
+  $plugins->execute(Plugins::CONTENT_AFTER_LOAD, [$opac]);
 });
 
 // templating
