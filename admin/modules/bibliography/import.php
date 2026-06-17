@@ -63,6 +63,9 @@ if ($_SESSION['uid'] != 1) {
   }
 }
 
+// initialize indexer variable
+$indexer = null;
+
 if (Engine::active() === SearchBiblioEngine::class) {
   require MDLBS . 'system/biblio_indexer.inc.php';
   // create biblio_indexer class instance
