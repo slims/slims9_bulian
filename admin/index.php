@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SENAYAN admin application bootstrap files
  *
@@ -22,21 +23,24 @@
 
 // key to authenticate
 define('INDEX_AUTH', '1');
+// flag for admin area
+define('ADMIN_AREA', 'admin_area');
 #use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
 use SLiMS\DB;
+use SLiMS\Plugins;
 
 // required file
 require '../sysconfig.inc.php';
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('smc');
 // start the session
-require SB.'admin/default/session.inc.php';
+require SB . 'admin/default/session.inc.php';
 // session checking
-require SB.'admin/default/session_check.inc.php';
-require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
-require LIB.'module.inc.php';
+require SB . 'admin/default/session_check.inc.php';
+require SIMBIO . 'simbio_GUI/template_parser/simbio_template_parser.inc.php';
+require LIB . 'module.inc.php';
 
 // https connection (if enabled)
 if ($sysconf['https_enable']) {
@@ -60,7 +64,7 @@ if ($_SESSION['uid'] == 1 && config('init_info') === null) {
 }
 
 // page title
-$page_title = $sysconf['library_name'].' | '.__('Senayan Library Management System');
+$page_title = $sysconf['library_name'] . ' | ' . __('Senayan Library Management System');
 // main menu
 $module = new module();
 $module->setModulesDir(MDLBS);
@@ -68,49 +72,54 @@ $main_menu = $module->generateModuleMenu($dbs);
 
 $current_module = '';
 // get module from URL
-if (isset($_GET['mod']) AND !empty($_GET['mod'])) {
-  $current_module = trim($_GET['mod']);
+if (isset($_GET['mod']) and !empty($_GET['mod'])) {
+    $current_module = trim($_GET['mod']);
 }
 
 // read privileges
 $can_read = utility::havePrivilege($current_module, 'r');
 
 // submenu
-$sub_menu = $module->generateSubMenu(($current_module AND $can_read)?$current_module:'');
+$sub_menu = $module->generateSubMenu(($current_module and $can_read) ? $current_module : '');
+
+$plugins->execute(Plugins::ADMIN_AFTER_MODULE_LOADED, [$current_module, &$module, &$main_menu, &$sub_menu]);
 
 // start the output buffering for main content
 ob_start();
 // info
-$info = __('You are currently logged in as').' <strong>'.$_SESSION['realname'].'</strong>'; //mfc
+$info = __('You are currently logged in as') . ' <strong>' . $_SESSION['realname'] . '</strong>'; //mfc
+
+utility::loadUserTemplate($dbs, $_SESSION['uid']);
 
 // get default current module menu 
 $firstMenu = $module->getFirstMenu($current_module);
-if ($current_module AND $can_read) {
-    if (!isset($firstMenu[1]))
-    {
+if ($current_module && $can_read) {
+    if (!isset($firstMenu[1])) {
         // set unprivileged module warning
         $module->unprivileged();
-    }
-    else
-    {
+    } else {
         # ADV LOG SYSTEM - STIIL EXPERIMENTAL
         $log = new AlLibrarian('1101', array("username" => $_SESSION['uname'], "uid" => $_SESSION['uid'], "realname" => $_SESSION['realname'], "module" => $current_module));
         // get content of module default content with AJAX
         $defaultUrl = $firstMenu[1];
         $sysconf['page_footer'] .= "\n"
-            .'<script type="text/javascript">'
-            .'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\''.$defaultUrl.'\', {method: \'get\'}); });'
-            .'</script>';
+            . '<script type="text/javascript">'
+            . 'jQuery(document).ready(function() { jQuery(\'#mainContent\').simbioAJAX(\'' . $defaultUrl . '\', {method: \'get\'}); });'
+            . '</script>';
     }
 } else {
-    include 'default/home.php';
-    // for debugs purpose only
-    // include 'modules/bibliography/index.php';
+    // show dashboard
+    if (file_exists($sysconf['admin_template']['dir'] . '/' . $sysconf['admin_template']['theme'] . '/home.php')) {
+        include $sysconf['admin_template']['dir'] . '/' . $sysconf['admin_template']['theme'] . '/home.php';
+    } else {
+        include 'default/home.php';
+    }
 }
+
 // page content
 $main_content = ob_get_clean();
 
-utility::loadUserTemplate($dbs,$_SESSION['uid']);
+$plugins->execute(Plugins::ADMIN_AFTER_CONTENT_LOADED, [$current_module, &$main_content]);
 
 // print out the template
-require $sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/index_template.inc.php';
+require $sysconf['admin_template']['dir'] . '/' . $sysconf['admin_template']['theme'] . '/index_template.inc.php';

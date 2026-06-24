@@ -1,4 +1,5 @@
 <?php
+
 /**
  * utility class
  * A Collection of static utility methods
@@ -44,47 +45,47 @@ class utility
 
         // replace newline with javascripts newline
         $str_message = str_replace("\n", '\n', addslashes($str_message));
-        echo '<script type="text/javascript">'."\n";
-        echo 'alert("'.$str_message.'")'."\n";
-        echo '</script>'."\n";
+        echo '<script type="text/javascript">' . "\n";
+        echo 'alert("' . $str_message . '")' . "\n";
+        echo '</script>' . "\n";
     }
 
-  /**
-   * Static Method to send out toastr notification
-   *
-   * @param   string $type [info, success, warning, error]
-   * @param   string $str_message
-   * @return  void
-   */
+    /**
+     * Static Method to send out toastr notification
+     *
+     * @param   string $type [info, success, warning, error]
+     * @param   string $str_message
+     * @return  void
+     */
     public static function jsToastr($title, $str_message, $type = 'info')
     {
-      if (!$str_message) {
-        return;
-      }
+        if (!$str_message) {
+            return;
+        }
 
-      $options = [
-        'closeButton' => true,
-        'debug' => false,
-        'newestOnTop' => false,
-        'progressBar' => false,
-        'positionClass' => 'toast-top-right',
-        'preventDuplicates' => false,
-        'onclick' => null,
-        'showDuration' => 300,
-        'hideDuration' => 1000,
-        'timeOut' => 5000,
-        'extendedTimeOut' => 1000,
-        'showEasing' => 'swing',
-        'hideEasing' => 'linear',
-        'showMethod' => 'fadeIn',
-        'hideMethod' => 'fadeOut'
-      ];
+        $options = [
+            'closeButton' => true,
+            'debug' => false,
+            'newestOnTop' => false,
+            'progressBar' => false,
+            'positionClass' => 'toast-top-right',
+            'preventDuplicates' => false,
+            'onclick' => null,
+            'showDuration' => 300,
+            'hideDuration' => 1000,
+            'timeOut' => 5000,
+            'extendedTimeOut' => 1000,
+            'showEasing' => 'swing',
+            'hideEasing' => 'linear',
+            'showMethod' => 'fadeIn',
+            'hideMethod' => 'fadeOut'
+        ];
 
-      // replace newline with javascripts newline
-      $str_message = str_replace("\n", '\n', addslashes($str_message));
-      echo '<script type="text/javascript">'."\n";
-      echo 'top.toastr.'.$type.'("'.$str_message.'", "'.$title.'", '.json_encode($options).')'."\n";
-      echo '</script>'."\n";
+        // replace newline with javascripts newline
+        $str_message = str_replace("\n", '\n', addslashes($str_message));
+        echo '<script type="text/javascript">' . "\n";
+        echo 'top.toastr.' . $type . '("' . $str_message . '", "' . $title . '", ' . json_encode($options) . ')' . "\n";
+        echo '</script>' . "\n";
     }
 
 
@@ -96,31 +97,64 @@ class utility
      */
     public static function createRandomString($int_num_string = 32)
     {
-      $_random = '';
-      $_salt = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      $_saltlength = strlen($_salt);
-      for ($r = 0; $r < $int_num_string; $r++) {
-        $_random .= $_salt[rand(0, $_saltlength - 1)];
-      }
+        $_random = '';
+        $_salt = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $_saltlength = strlen($_salt);
+        for ($r = 0; $r < $int_num_string; $r++) {
+            $_random .= $_salt[rand(0, $_saltlength - 1)];
+        }
 
-      return $_random;
+        return $_random;
     }
 
     /**
      * Static Method to safe unserialize a string
+     * Handles multiple formats: JSON, PHP serialized data, and plain strings
      *
      * @param   string  $str
      * @return  mixed
      */
-    public static function unserialize($str) {
-        $str = preg_replace_callback(
-            '!s:(\d+):"(.*?)";!s',
-            function($m) {
-                return 's:'.strlen($m[2]).':"'.$m[2].'";';
-            },
-            $str
-        );
-        return unserialize($str);
+    public static function unserialize($str)
+    {
+        // Return as-is if empty or not a string
+        if (empty($str) || !is_string($str)) {
+            return $str;
+        }
+
+        // Trim the string
+        $str = trim($str);
+
+        // Try to detect and decode JSON first
+        if (($str[0] === '{' || $str[0] === '[') && ($str[strlen($str) - 1] === '}' || $str[strlen($str) - 1] === ']')) {
+            $json_decoded = json_decode($str, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $json_decoded;
+            }
+        }
+
+        // Check if it looks like serialized data
+        // Matches: a:0:, O:3:, s:5:, i:0;, b:0;, d:1.5;, N;
+        if (preg_match('/^(a:[0-9]+:|O:[0-9]+:|s:[0-9]+:|i:[0-9]+;|b:[01];|d:[0-9.E+-]+;|N;)/s', $str)) {
+            // Fix broken serialized string lengths
+            $str = preg_replace_callback(
+                '!s:(\d+):"(.*?)";!s',
+                function ($m) {
+                    return 's:' . strlen($m[2]) . ':"' . $m[2] . '";';
+                },
+                $str
+            );
+
+            // Attempt to unserialize with error suppression
+            $result = @unserialize($str);
+
+            // If unserialize succeeded, return the result
+            if ($result !== false || $str === 'b:0;' || $str === 'N;') {
+                return $result;
+            }
+        }
+
+        // If all else fails, return the original string
+        return $str;
     }
 
     /**
@@ -135,7 +169,7 @@ class utility
         $_setting_query = $obj_db->query('SELECT * FROM setting');
         if (!$obj_db->errno) {
             while ($_setting_data = $_setting_query->fetch_assoc()) {
-                $_value = static::unserialize($_setting_data['setting_value']);
+                $_value = static::unserialize(stripslashes($_setting_data['setting_value']));
                 if (is_array($_value)) {
                     // make sure setting is available before
                     if (!isset($sysconf[$_setting_data['setting_name']]))
@@ -148,7 +182,8 @@ class utility
                         $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
                     }
                 } else {
-                    $sysconf[$_setting_data['setting_name']] = stripcslashes($_value??'');
+                    // Only apply stripcslashes to strings to preserve boolean false, integers, etc.
+                    $sysconf[$_setting_data['setting_name']] = is_string($_value) ? stripcslashes($_value) : $_value;
                 }
             }
         }
@@ -173,7 +208,7 @@ class utility
         }
 
 
-        $_checksum = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
+        $_checksum = defined('UCS_BASE_DIR') ? md5($server_addr . UCS_BASE_DIR . 'admin') : md5($server_addr . SB . 'admin');
         if (!isset($_SESSION['checksum']) || $_SESSION['checksum'] != $_checksum) {
             return false;
         }
@@ -181,7 +216,7 @@ class utility
         if (!in_array($str_privilege_type, array('r', 'w'))) {
             return false;
         }
-        if (isset($_SESSION['priv'][$str_module_name][$str_privilege_type]) AND $_SESSION['priv'][$str_module_name][$str_privilege_type]) {
+        if (isset($_SESSION['priv'][$str_module_name][$str_privilege_type]) and $_SESSION['priv'][$str_module_name][$str_privilege_type]) {
             return true;
         }
         return false;
@@ -205,7 +240,7 @@ class utility
      * @param   string  $str_log_msg
      * @return  void
      */
-    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod='', $str_log_action='')
+    public static function writeLogs($obj_db, $str_log_type, $str_value_id, $str_location, $str_log_msg, $str_log_submod = '', $str_log_action = '')
     {
         if (!$obj_db->error) {
             // log table
@@ -219,11 +254,11 @@ class utility
             $str_log_submod = $obj_db->escape_string(trim($str_log_submod));
             $str_log_action = $obj_db->escape_string(trim($str_log_action));
             // insert log data to database
-            @$obj_db->query('INSERT INTO '.$_log_table.'
-            VALUES (NULL, \''.$str_log_type.'\', \''.$str_value_id.'\', \''.$str_location.'\','.
-             ' \''.$str_log_submod.'\''.
-             ', \''.$str_log_action.'\''.
-             ', \''.$str_log_msg.'\', \''.$_log_date.'\')');
+            @$obj_db->query('INSERT INTO ' . $_log_table . '
+            VALUES (NULL, \'' . $str_log_type . '\', \'' . $str_value_id . '\', \'' . $str_location . '\',' .
+                ' \'' . $str_log_submod . '\'' .
+                ', \'' . $str_log_action . '\'' .
+                ', \'' . $str_log_msg . '\', \'' . $_log_date . '\')');
         }
     }
 
@@ -248,7 +283,7 @@ class utility
             }
         }
         if (!$obj_db->error) {
-            $id_q = $obj_db->query('SELECT '.$str_id_field.' FROM '.$str_table_name.' WHERE '.$str_value_field.'=\''.$obj_db->escape_string($str_value).'\'');
+            $id_q = $obj_db->query('SELECT ' . $str_id_field . ' FROM ' . $str_table_name . ' WHERE ' . $str_value_field . '=\'' . $obj_db->escape_string($str_value) . '\'');
             if ($id_q->num_rows > 0) {
                 $id_d = $id_q->fetch_row();
                 unset($id_q);
@@ -260,8 +295,8 @@ class utility
             } else {
                 $_curr_date = date('Y-m-d');
                 // if not found then we insert it as new value
-                $obj_db->query('INSERT IGNORE INTO '.$str_table_name.' ('.$str_value_field.', input_date, last_update)
-                    VALUES (\''.$obj_db->escape_string($str_value).'\', \''.$_curr_date.'\', \''.$_curr_date.'\')');
+                $obj_db->query('INSERT IGNORE INTO ' . $str_table_name . ' (' . $str_value_field . ', input_date, last_update)
+                    VALUES (\'' . $obj_db->escape_string($str_value) . '\', \'' . $_curr_date . '\', \'' . $_curr_date . '\')');
                 if (!$obj_db->error) {
                     // cache
                     if ($arr_cache) {
@@ -284,14 +319,18 @@ class utility
     {
         $_is_mobile_browser = false;
 
-        if(preg_match('/android.+mobile|avantgo|bada\/|blackberry|
+        if (
+            preg_match(
+                '/android.+mobile|avantgo|bada\/|blackberry|
             blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|
             iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|
             palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|
             treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|
             xda|xiino/i',
-        ($_SERVER['HTTP_USER_AGENT'] ?? ''))
-        || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|
+                ($_SERVER['HTTP_USER_AGENT'] ?? '')
+            )
+            || preg_match(
+                '/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|
             a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|
             amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|
             au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|
@@ -320,7 +359,9 @@ class utility
             vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|
             vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|
             wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i',
-        substr(($_SERVER['HTTP_USER_AGENT'] ?? ''),0,4)))
+                substr(($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 4)
+            )
+        )
             $_is_mobile_browser = true;
 
         return $_is_mobile_browser;
@@ -349,7 +390,8 @@ class utility
      *
      * @return  mixed
      **/
-    public static function filterData($mix_input, $str_input_type = 'get', $bool_escape_sql = true, $bool_trim = true, $bool_strip_html = false) {
+    public static function filterData($mix_input, $str_input_type = 'get', $bool_escape_sql = true, $bool_trim = true, $bool_strip_html = false)
+    {
         global $dbs;
 
         if (extension_loaded('filter')) {
@@ -362,31 +404,37 @@ class utility
             } else if ($str_input_type == 'session') {
                 $mix_input = filter_input(INPUT_SESSION, $mix_input);
             } else if ($str_input_type == 'server') {
-                $mix_input = $_SERVER[$mix_input]??null;
+                $mix_input = $_SERVER[$mix_input] ?? null;
             } else {
                 $mix_input = filter_input(INPUT_GET, $mix_input);
             }
         } else {
             if ($str_input_type == 'get') {
-                $mix_input = $_GET[$mix_input]??null;
+                $mix_input = $_GET[$mix_input] ?? null;
             } else if ($str_input_type == 'post') {
-                $mix_input = $_POST[$mix_input]??null;
+                $mix_input = $_POST[$mix_input] ?? null;
             } else if ($str_input_type == 'cookie') {
-                $mix_input = $_COOKIE[$mix_input]??null;
+                $mix_input = $_COOKIE[$mix_input] ?? null;
             } else if ($str_input_type == 'session') {
-                $mix_input = $_SESSION[$mix_input]??null;
+                $mix_input = $_SESSION[$mix_input] ?? null;
             } else if ($str_input_type == 'server') {
-                $mix_input = $_SERVER[$mix_input]??null;
-            } 
+                $mix_input = $_SERVER[$mix_input] ?? null;
+            }
         }
 
         if (!is_null($mix_input)) {
             // trim whitespace on string
-            if ($bool_trim) { $mix_input = trim($mix_input); }
+            if ($bool_trim) {
+                $mix_input = trim($mix_input);
+            }
             // strip html
-            if ($bool_strip_html) { $mix_input = strip_tags($mix_input); }
+            if ($bool_strip_html) {
+                $mix_input = strip_tags($mix_input);
+            }
             // escape SQL string
-            if ($bool_escape_sql) { $mix_input = $dbs->escape_string($mix_input); }
+            if ($bool_escape_sql) {
+                $mix_input = $dbs->escape_string($mix_input);
+            }
         }
 
         return $mix_input;
@@ -402,263 +450,265 @@ class utility
      *
      * @return  string
      **/
-    public static function convertXMLentities($str_xml_data) {
-      static $_ent_table = array('quot' => '&#34;',
-        'amp' => '&#38;',
-        'lt' => '&#60;',
-        'gt' => '&#62;',
-        'OElig' => '&#338;',
-        'oelig' => '&#339;',
-        'Scaron' => '&#352;',
-        'scaron' => '&#353;',
-        'Yuml' => '&#376;',
-        'circ' => '&#710;',
-        'tilde' => '&#732;',
-        'ensp' => '&#8194;',
-        'emsp' => '&#8195;',
-        'thinsp' => '&#8201;',
-        'zwnj' => '&#8204;',
-        'zwj' => '&#8205;',
-        'lrm' => '&#8206;',
-        'rlm' => '&#8207;',
-        'ndash' => '&#8211;',
-        'mdash' => '&#8212;',
-        'lsquo' => '&#8216;',
-        'rsquo' => '&#8217;',
-        'sbquo' => '&#8218;',
-        'ldquo' => '&#8220;',
-        'rdquo' => '&#8221;',
-        'bdquo' => '&#8222;',
-        'dagger' => '&#8224;',
-        'Dagger' => '&#8225;',
-        'permil' => '&#8240;',
-        'lsaquo' => '&#8249;',
-        'rsaquo' => '&#8250;',
-        'euro' => '&#8364;',
-        'fnof' => '&#402;',
-        'Alpha' => '&#913;',
-        'Beta' => '&#914;',
-        'Gamma' => '&#915;',
-        'Delta' => '&#916;',
-        'Epsilon' => '&#917;',
-        'Zeta' => '&#918;',
-        'Eta' => '&#919;',
-        'Theta' => '&#920;',
-        'Iota' => '&#921;',
-        'Kappa' => '&#922;',
-        'Lambda' => '&#923;',
-        'Mu' => '&#924;',
-        'Nu' => '&#925;',
-        'Xi' => '&#926;',
-        'Omicron' => '&#927;',
-        'Pi' => '&#928;',
-        'Rho' => '&#929;',
-        'Sigma' => '&#931;',
-        'Tau' => '&#932;',
-        'Upsilon' => '&#933;',
-        'Phi' => '&#934;',
-        'Chi' => '&#935;',
-        'Psi' => '&#936;',
-        'Omega' => '&#937;',
-        'alpha' => '&#945;',
-        'beta' => '&#946;',
-        'gamma' => '&#947;',
-        'delta' => '&#948;',
-        'epsilon' => '&#949;',
-        'zeta' => '&#950;',
-        'eta' => '&#951;',
-        'theta' => '&#952;',
-        'iota' => '&#953;',
-        'kappa' => '&#954;',
-        'lambda' => '&#955;',
-        'mu' => '&#956;',
-        'nu' => '&#957;',
-        'xi' => '&#958;',
-        'omicron' => '&#959;',
-        'pi' => '&#960;',
-        'rho' => '&#961;',
-        'sigmaf' => '&#962;',
-        'sigma' => '&#963;',
-        'tau' => '&#964;',
-        'upsilon' => '&#965;',
-        'phi' => '&#966;',
-        'chi' => '&#967;',
-        'psi' => '&#968;',
-        'omega' => '&#969;',
-        'thetasym' => '&#977;',
-        'upsih' => '&#978;',
-        'piv' => '&#982;',
-        'bull' => '&#8226;',
-        'hellip' => '&#8230;',
-        'prime' => '&#8242;',
-        'Prime' => '&#8243;',
-        'oline' => '&#8254;',
-        'frasl' => '&#8260;',
-        'weierp' => '&#8472;',
-        'image' => '&#8465;',
-        'real' => '&#8476;',
-        'trade' => '&#8482;',
-        'alefsym' => '&#8501;',
-        'larr' => '&#8592;',
-        'uarr' => '&#8593;',
-        'rarr' => '&#8594;',
-        'darr' => '&#8595;',
-        'harr' => '&#8596;',
-        'crarr' => '&#8629;',
-        'lArr' => '&#8656;',
-        'uArr' => '&#8657;',
-        'rArr' => '&#8658;',
-        'dArr' => '&#8659;',
-        'hArr' => '&#8660;',
-        'forall' => '&#8704;',
-        'part' => '&#8706;',
-        'exist' => '&#8707;',
-        'empty' => '&#8709;',
-        'nabla' => '&#8711;',
-        'isin' => '&#8712;',
-        'notin' => '&#8713;',
-        'ni' => '&#8715;',
-        'prod' => '&#8719;',
-        'sum' => '&#8721;',
-        'minus' => '&#8722;',
-        'lowast' => '&#8727;',
-        'radic' => '&#8730;',
-        'prop' => '&#8733;',
-        'infin' => '&#8734;',
-        'ang' => '&#8736;',
-        'and' => '&#8743;',
-        'or' => '&#8744;',
-        'cap' => '&#8745;',
-        'cup' => '&#8746;',
-        'int' => '&#8747;',
-        'there4' => '&#8756;',
-        'sim' => '&#8764;',
-        'cong' => '&#8773;',
-        'asymp' => '&#8776;',
-        'ne' => '&#8800;',
-        'equiv' => '&#8801;',
-        'le' => '&#8804;',
-        'ge' => '&#8805;',
-        'sub' => '&#8834;',
-        'sup' => '&#8835;',
-        'nsub' => '&#8836;',
-        'sube' => '&#8838;',
-        'supe' => '&#8839;',
-        'oplus' => '&#8853;',
-        'otimes' => '&#8855;',
-        'perp' => '&#8869;',
-        'sdot' => '&#8901;',
-        'lceil' => '&#8968;',
-        'rceil' => '&#8969;',
-        'lfloor' => '&#8970;',
-        'rfloor' => '&#8971;',
-        'lang' => '&#9001;',
-        'rang' => '&#9002;',
-        'loz' => '&#9674;',
-        'spades' => '&#9824;',
-        'clubs' => '&#9827;',
-        'hearts' => '&#9829;',
-        'diams' => '&#9830;',
-        'nbsp' => '&#160;',
-        'iexcl' => '&#161;',
-        'cent' => '&#162;',
-        'pound' => '&#163;',
-        'curren' => '&#164;',
-        'yen' => '&#165;',
-        'brvbar' => '&#166;',
-        'sect' => '&#167;',
-        'uml' => '&#168;',
-        'copy' => '&#169;',
-        'ordf' => '&#170;',
-        'laquo' => '&#171;',
-        'not' => '&#172;',
-        'shy' => '&#173;',
-        'reg' => '&#174;',
-        'macr' => '&#175;',
-        'deg' => '&#176;',
-        'plusmn' => '&#177;',
-        'sup2' => '&#178;',
-        'sup3' => '&#179;',
-        'acute' => '&#180;',
-        'micro' => '&#181;',
-        'para' => '&#182;',
-        'middot' => '&#183;',
-        'cedil' => '&#184;',
-        'sup1' => '&#185;',
-        'ordm' => '&#186;',
-        'raquo' => '&#187;',
-        'frac14' => '&#188;',
-        'frac12' => '&#189;',
-        'frac34' => '&#190;',
-        'iquest' => '&#191;',
-        'Agrave' => '&#192;',
-        'Aacute' => '&#193;',
-        'Acirc' => '&#194;',
-        'Atilde' => '&#195;',
-        'Auml' => '&#196;',
-        'Aring' => '&#197;',
-        'AElig' => '&#198;',
-        'Ccedil' => '&#199;',
-        'Egrave' => '&#200;',
-        'Eacute' => '&#201;',
-        'Ecirc' => '&#202;',
-        'Euml' => '&#203;',
-        'Igrave' => '&#204;',
-        'Iacute' => '&#205;',
-        'Icirc' => '&#206;',
-        'Iuml' => '&#207;',
-        'ETH' => '&#208;',
-        'Ntilde' => '&#209;',
-        'Ograve' => '&#210;',
-        'Oacute' => '&#211;',
-        'Ocirc' => '&#212;',
-        'Otilde' => '&#213;',
-        'Ouml' => '&#214;',
-        'times' => '&#215;',
-        'Oslash' => '&#216;',
-        'Ugrave' => '&#217;',
-        'Uacute' => '&#218;',
-        'Ucirc' => '&#219;',
-        'Uuml' => '&#220;',
-        'Yacute' => '&#221;',
-        'THORN' => '&#222;',
-        'szlig' => '&#223;',
-        'agrave' => '&#224;',
-        'aacute' => '&#225;',
-        'acirc' => '&#226;',
-        'atilde' => '&#227;',
-        'auml' => '&#228;',
-        'aring' => '&#229;',
-        'aelig' => '&#230;',
-        'ccedil' => '&#231;',
-        'egrave' => '&#232;',
-        'eacute' => '&#233;',
-        'ecirc' => '&#234;',
-        'euml' => '&#235;',
-        'igrave' => '&#236;',
-        'iacute' => '&#237;',
-        'icirc' => '&#238;',
-        'iuml' => '&#239;',
-        'eth' => '&#240;',
-        'ntilde' => '&#241;',
-        'ograve' => '&#242;',
-        'oacute' => '&#243;',
-        'ocirc' => '&#244;',
-        'otilde' => '&#245;',
-        'ouml' => '&#246;',
-        'divide' => '&#247;',
-        'oslash' => '&#248;',
-        'ugrave' => '&#249;',
-        'uacute' => '&#250;',
-        'ucirc' => '&#251;',
-        'uuml' => '&#252;',
-        'yacute' => '&#253;',
-        'thorn' => '&#254;',
-        'yuml' => '&#255;'
+    public static function convertXMLentities($str_xml_data)
+    {
+        static $_ent_table = array(
+            'quot' => '&#34;',
+            'amp' => '&#38;',
+            'lt' => '&#60;',
+            'gt' => '&#62;',
+            'OElig' => '&#338;',
+            'oelig' => '&#339;',
+            'Scaron' => '&#352;',
+            'scaron' => '&#353;',
+            'Yuml' => '&#376;',
+            'circ' => '&#710;',
+            'tilde' => '&#732;',
+            'ensp' => '&#8194;',
+            'emsp' => '&#8195;',
+            'thinsp' => '&#8201;',
+            'zwnj' => '&#8204;',
+            'zwj' => '&#8205;',
+            'lrm' => '&#8206;',
+            'rlm' => '&#8207;',
+            'ndash' => '&#8211;',
+            'mdash' => '&#8212;',
+            'lsquo' => '&#8216;',
+            'rsquo' => '&#8217;',
+            'sbquo' => '&#8218;',
+            'ldquo' => '&#8220;',
+            'rdquo' => '&#8221;',
+            'bdquo' => '&#8222;',
+            'dagger' => '&#8224;',
+            'Dagger' => '&#8225;',
+            'permil' => '&#8240;',
+            'lsaquo' => '&#8249;',
+            'rsaquo' => '&#8250;',
+            'euro' => '&#8364;',
+            'fnof' => '&#402;',
+            'Alpha' => '&#913;',
+            'Beta' => '&#914;',
+            'Gamma' => '&#915;',
+            'Delta' => '&#916;',
+            'Epsilon' => '&#917;',
+            'Zeta' => '&#918;',
+            'Eta' => '&#919;',
+            'Theta' => '&#920;',
+            'Iota' => '&#921;',
+            'Kappa' => '&#922;',
+            'Lambda' => '&#923;',
+            'Mu' => '&#924;',
+            'Nu' => '&#925;',
+            'Xi' => '&#926;',
+            'Omicron' => '&#927;',
+            'Pi' => '&#928;',
+            'Rho' => '&#929;',
+            'Sigma' => '&#931;',
+            'Tau' => '&#932;',
+            'Upsilon' => '&#933;',
+            'Phi' => '&#934;',
+            'Chi' => '&#935;',
+            'Psi' => '&#936;',
+            'Omega' => '&#937;',
+            'alpha' => '&#945;',
+            'beta' => '&#946;',
+            'gamma' => '&#947;',
+            'delta' => '&#948;',
+            'epsilon' => '&#949;',
+            'zeta' => '&#950;',
+            'eta' => '&#951;',
+            'theta' => '&#952;',
+            'iota' => '&#953;',
+            'kappa' => '&#954;',
+            'lambda' => '&#955;',
+            'mu' => '&#956;',
+            'nu' => '&#957;',
+            'xi' => '&#958;',
+            'omicron' => '&#959;',
+            'pi' => '&#960;',
+            'rho' => '&#961;',
+            'sigmaf' => '&#962;',
+            'sigma' => '&#963;',
+            'tau' => '&#964;',
+            'upsilon' => '&#965;',
+            'phi' => '&#966;',
+            'chi' => '&#967;',
+            'psi' => '&#968;',
+            'omega' => '&#969;',
+            'thetasym' => '&#977;',
+            'upsih' => '&#978;',
+            'piv' => '&#982;',
+            'bull' => '&#8226;',
+            'hellip' => '&#8230;',
+            'prime' => '&#8242;',
+            'Prime' => '&#8243;',
+            'oline' => '&#8254;',
+            'frasl' => '&#8260;',
+            'weierp' => '&#8472;',
+            'image' => '&#8465;',
+            'real' => '&#8476;',
+            'trade' => '&#8482;',
+            'alefsym' => '&#8501;',
+            'larr' => '&#8592;',
+            'uarr' => '&#8593;',
+            'rarr' => '&#8594;',
+            'darr' => '&#8595;',
+            'harr' => '&#8596;',
+            'crarr' => '&#8629;',
+            'lArr' => '&#8656;',
+            'uArr' => '&#8657;',
+            'rArr' => '&#8658;',
+            'dArr' => '&#8659;',
+            'hArr' => '&#8660;',
+            'forall' => '&#8704;',
+            'part' => '&#8706;',
+            'exist' => '&#8707;',
+            'empty' => '&#8709;',
+            'nabla' => '&#8711;',
+            'isin' => '&#8712;',
+            'notin' => '&#8713;',
+            'ni' => '&#8715;',
+            'prod' => '&#8719;',
+            'sum' => '&#8721;',
+            'minus' => '&#8722;',
+            'lowast' => '&#8727;',
+            'radic' => '&#8730;',
+            'prop' => '&#8733;',
+            'infin' => '&#8734;',
+            'ang' => '&#8736;',
+            'and' => '&#8743;',
+            'or' => '&#8744;',
+            'cap' => '&#8745;',
+            'cup' => '&#8746;',
+            'int' => '&#8747;',
+            'there4' => '&#8756;',
+            'sim' => '&#8764;',
+            'cong' => '&#8773;',
+            'asymp' => '&#8776;',
+            'ne' => '&#8800;',
+            'equiv' => '&#8801;',
+            'le' => '&#8804;',
+            'ge' => '&#8805;',
+            'sub' => '&#8834;',
+            'sup' => '&#8835;',
+            'nsub' => '&#8836;',
+            'sube' => '&#8838;',
+            'supe' => '&#8839;',
+            'oplus' => '&#8853;',
+            'otimes' => '&#8855;',
+            'perp' => '&#8869;',
+            'sdot' => '&#8901;',
+            'lceil' => '&#8968;',
+            'rceil' => '&#8969;',
+            'lfloor' => '&#8970;',
+            'rfloor' => '&#8971;',
+            'lang' => '&#9001;',
+            'rang' => '&#9002;',
+            'loz' => '&#9674;',
+            'spades' => '&#9824;',
+            'clubs' => '&#9827;',
+            'hearts' => '&#9829;',
+            'diams' => '&#9830;',
+            'nbsp' => '&#160;',
+            'iexcl' => '&#161;',
+            'cent' => '&#162;',
+            'pound' => '&#163;',
+            'curren' => '&#164;',
+            'yen' => '&#165;',
+            'brvbar' => '&#166;',
+            'sect' => '&#167;',
+            'uml' => '&#168;',
+            'copy' => '&#169;',
+            'ordf' => '&#170;',
+            'laquo' => '&#171;',
+            'not' => '&#172;',
+            'shy' => '&#173;',
+            'reg' => '&#174;',
+            'macr' => '&#175;',
+            'deg' => '&#176;',
+            'plusmn' => '&#177;',
+            'sup2' => '&#178;',
+            'sup3' => '&#179;',
+            'acute' => '&#180;',
+            'micro' => '&#181;',
+            'para' => '&#182;',
+            'middot' => '&#183;',
+            'cedil' => '&#184;',
+            'sup1' => '&#185;',
+            'ordm' => '&#186;',
+            'raquo' => '&#187;',
+            'frac14' => '&#188;',
+            'frac12' => '&#189;',
+            'frac34' => '&#190;',
+            'iquest' => '&#191;',
+            'Agrave' => '&#192;',
+            'Aacute' => '&#193;',
+            'Acirc' => '&#194;',
+            'Atilde' => '&#195;',
+            'Auml' => '&#196;',
+            'Aring' => '&#197;',
+            'AElig' => '&#198;',
+            'Ccedil' => '&#199;',
+            'Egrave' => '&#200;',
+            'Eacute' => '&#201;',
+            'Ecirc' => '&#202;',
+            'Euml' => '&#203;',
+            'Igrave' => '&#204;',
+            'Iacute' => '&#205;',
+            'Icirc' => '&#206;',
+            'Iuml' => '&#207;',
+            'ETH' => '&#208;',
+            'Ntilde' => '&#209;',
+            'Ograve' => '&#210;',
+            'Oacute' => '&#211;',
+            'Ocirc' => '&#212;',
+            'Otilde' => '&#213;',
+            'Ouml' => '&#214;',
+            'times' => '&#215;',
+            'Oslash' => '&#216;',
+            'Ugrave' => '&#217;',
+            'Uacute' => '&#218;',
+            'Ucirc' => '&#219;',
+            'Uuml' => '&#220;',
+            'Yacute' => '&#221;',
+            'THORN' => '&#222;',
+            'szlig' => '&#223;',
+            'agrave' => '&#224;',
+            'aacute' => '&#225;',
+            'acirc' => '&#226;',
+            'atilde' => '&#227;',
+            'auml' => '&#228;',
+            'aring' => '&#229;',
+            'aelig' => '&#230;',
+            'ccedil' => '&#231;',
+            'egrave' => '&#232;',
+            'eacute' => '&#233;',
+            'ecirc' => '&#234;',
+            'euml' => '&#235;',
+            'igrave' => '&#236;',
+            'iacute' => '&#237;',
+            'icirc' => '&#238;',
+            'iuml' => '&#239;',
+            'eth' => '&#240;',
+            'ntilde' => '&#241;',
+            'ograve' => '&#242;',
+            'oacute' => '&#243;',
+            'ocirc' => '&#244;',
+            'otilde' => '&#245;',
+            'ouml' => '&#246;',
+            'divide' => '&#247;',
+            'oslash' => '&#248;',
+            'ugrave' => '&#249;',
+            'uacute' => '&#250;',
+            'ucirc' => '&#251;',
+            'uuml' => '&#252;',
+            'yacute' => '&#253;',
+            'thorn' => '&#254;',
+            'yuml' => '&#255;'
         );
 
-      // Entity not found? Destroy it.
-      return isset($_ent_table[$str_xml_data[1]]) ? $_ent_table[$str_xml_data[1]] : '';
+        // Entity not found? Destroy it.
+        return isset($_ent_table[$str_xml_data[1]]) ? $_ent_table[$str_xml_data[1]] : '';
     }
 
     /**
@@ -667,17 +717,17 @@ class utility
      * @param   object  $obj_db
      * @return  void
      */
-    public static function loadUserTemplate($obj_db,$uid)
+    public static function loadUserTemplate($obj_db, $uid)
     {
-      global $sysconf;
-      // load user template settings for override setting
-      $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
-      if($_q->num_rows>0){
-        $template_settings = unserialize($_q->fetch_row()[0]);
-        foreach ($template_settings as $setting_name => $setting_value) {
-          $sysconf['admin_template'][$setting_name] = $setting_value;
+        global $sysconf;
+        // load user template settings for override setting
+        $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
+        if ($_q->num_rows > 0) {
+            $template_settings = unserialize($_q->fetch_row()[0]);
+            foreach ($template_settings as $setting_name => $setting_value) {
+                $sysconf['admin_template'][$setting_name] = $setting_value;
+            }
         }
-      }
     }
 
     public static function dlCount($obj_db, $str_file_id, $str_member_id, $str_user_id)
@@ -691,8 +741,8 @@ class utility
             $str_value_id = $obj_db->escape_string(trim($str_member_id));
             $str_user_id = $obj_db->escape_string(trim($str_user_id));
             // insert log data to database
-            @$obj_db->query('INSERT INTO `'.$_log_table.'` (`filelog_id`,`file_id`,`date_read`,`member_id`,`user_id`,`client_ip`) 
-            VALUES (NULL, \''.$str_file_id.'\', \''.$_log_date.'\', \''.$str_value_id.'\', \''.$str_user_id.'\', \''.ip().'\')');
+            @$obj_db->query('INSERT INTO `' . $_log_table . '` (`filelog_id`,`file_id`,`date_read`,`member_id`,`user_id`,`client_ip`) 
+            VALUES (NULL, \'' . $str_file_id . '\', \'' . $_log_date . '\', \'' . $str_value_id . '\', \'' . $str_user_id . '\', \'' . ip() . '\')');
         }
     }
 }

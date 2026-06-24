@@ -79,7 +79,7 @@ class biblio_indexer
 			while ($rb_id = $rec_bib->fetch_row()) {
 				$biblio_id = $rb_id[0];
 				$index = $this->makeIndex($biblio_id);
-				if (isset($sysconf['index']) && ($sysconf['index']['word']??false)) {
+				if (isset($sysconf['index']) && ($sysconf['index']['word'] ?? false)) {
 					$this->makeIndexWord($biblio_id);
 				}
 			}
@@ -318,66 +318,218 @@ class biblio_indexer
 		}
 	}
 
-	protected function wordIndex($word, $count)
+	/**
+	 * Index a word and return its ID
+	 * 
+	 * @param string $word The word to index
+	 * @param int $count Hit count for this word
+	 * @param bool $isNewDocument Whether this is from a new document (affects doc_hits)
+	 * @return int Word ID
+	 */
+	protected function wordIndex($word, $count, $isNewDocument = true)
 	{
 		$word = mb_convert_encoding($word, "UTF-8", mb_detect_encoding($word));
 		$word = $this->obj_db->escape_string($word);
+
 		# check if already exist
-		$query = $this->obj_db->query("select id, num_hits, doc_hits from index_words where word = '" . $word . "'");
+		$query = $this->obj_db->query("SELECT id, num_hits, doc_hits FROM index_words WHERE word = '" . $word . "'");
 		if ($query->num_rows > 0) {
-			# increase num_hits
+			# increase num_hits and doc_hits
 			$data = $query->fetch_row();
-			$num_hits = $data[1] + $count;
-			$doc_hits = $data[2] + ($count > 1 ? 1 : $count);
-			$this->obj_db->query("update index_words set num_hits=$num_hits, doc_hits=$doc_hits where id=$data[0]");
+			$num_hits = $data[1] + abs($count);
+			$doc_hits = $data[2] + ($isNewDocument && $count > 0 ? 1 : 0);
+
+			# prevent negative values
+			$num_hits = max(0, $num_hits);
+			$doc_hits = max(0, $doc_hits);
+
+			$this->obj_db->query("UPDATE index_words SET num_hits=$num_hits, doc_hits=$doc_hits WHERE id=$data[0]");
 			return $data[0];
 		}
 
-		# insert
-		$this->obj_db->query("insert into index_words (word, num_hits, doc_hits) values ('$word', 1, 1)");
-		return $this->obj_db->insert_id;
+		# insert new word (only if count is positive)
+		if ($count > 0) {
+			$this->obj_db->query("INSERT INTO index_words (word, num_hits, doc_hits) VALUES ('$word', " . abs($count) . ", 1)");
+			return $this->obj_db->insert_id;
+		}
+
+		return 0;
 	}
 
-	protected function documentIndex($biblio_id, $word_id, $increase = 1)
+	/**
+	 * Index a word in a specific document location
+	 * 
+	 * @param int $biblio_id Document ID
+	 * @param int $word_id Word ID
+	 * @param string $location Field location (title, author, subject, isbn, publisher, notes)
+	 * @param int $increase Hit count increment (can be negative for deletion)
+	 * @return bool Success status
+	 */
+	protected function documentIndex($biblio_id, $word_id, $location = 'title', $increase = 1)
 	{
+		if ($word_id == 0) return false;
+
 		# check if already exist
-		$criteria = "document_id=$biblio_id and word_id=$word_id and location='biblio'";
-		$query = $this->obj_db->query("select hit_count from index_documents where $criteria");
+		$location = $this->obj_db->escape_string($location);
+		$criteria = "document_id=$biblio_id AND word_id=$word_id AND location='$location'";
+		$query = $this->obj_db->query("SELECT hit_count FROM index_documents WHERE $criteria");
+
 		if ($query->num_rows > 0) {
-			# increase hit
+			# update existing entry
 			$data = $query->fetch_row();
 			$hit_count = $data[0] + $increase;
+
 			if ($hit_count < 1) {
-				return $this->obj_db->query("delete from index_documents where $criteria");
+				# delete if hit count becomes zero or negative
+				return $this->obj_db->query("DELETE FROM index_documents WHERE $criteria");
 			} else {
-				return $this->obj_db->query("update index_documents set hit_count=$hit_count where $criteria");
+				# update hit count
+				return $this->obj_db->query("UPDATE index_documents SET hit_count=$hit_count WHERE $criteria");
 			}
 		}
 
-		return $this->obj_db->query("insert into index_documents (document_id, word_id, location, hit_count) values ($biblio_id, $word_id, 'biblio', 1)");
+		# insert new entry (only if increase is positive)
+		if ($increase > 0) {
+			return $this->obj_db->query("INSERT INTO index_documents (document_id, word_id, location, hit_count) VALUES ($biblio_id, $word_id, '$location', $increase)");
+		}
+
+		return true;
 	}
 
+	/**
+	 * Create word index for a bibliographic record
+	 * Indexes words separately for each field (title, author, subject, etc.)
+	 * 
+	 * @param int $biblio_id Bibliographic record ID
+	 * @param int $increase 1 for new/update, 0 for rebuild, -1 for deletion
+	 * @return void
+	 */
 	public function makeIndexWord($biblio_id, $increase = 1)
 	{
-		# get from search biblio
-		$query = $this->obj_db->query("select title, author, topic from search_biblio where biblio_id=$biblio_id");
+		$biblio_id = (int)$biblio_id;
+
+		# If deleting, remove all word indexes for this document
+		if ($increase < 0) {
+			$this->deleteWordIndex($biblio_id);
+			return;
+		}
+
+		# If updating (increase = 0), delete first then reindex
+		if ($increase == 0) {
+			$this->deleteWordIndex($biblio_id);
+			$increase = 1;
+		}
+
+		# Get bibliographic data with all fields
+		$query = $this->obj_db->query("
+			SELECT 
+				b.title, 
+				b.isbn_issn,
+				b.notes,
+				GROUP_CONCAT(DISTINCT ma.author_name SEPARATOR ' ') AS author,
+				GROUP_CONCAT(DISTINCT mt.topic SEPARATOR ' ') AS subject,
+				mp.publisher_name as publisher
+			FROM biblio AS b
+			LEFT JOIN biblio_author AS ba ON ba.biblio_id = b.biblio_id
+			LEFT JOIN mst_author AS ma ON ba.author_id = ma.author_id
+			LEFT JOIN biblio_topic AS bt ON bt.biblio_id = b.biblio_id
+			LEFT JOIN mst_topic AS mt ON bt.topic_id = mt.topic_id
+			LEFT JOIN mst_publisher AS mp ON b.publisher_id = mp.publisher_id
+			WHERE b.biblio_id = $biblio_id
+			GROUP BY b.biblio_id
+		");
+
 		if ($query->num_rows < 1) {
 			return;
 		}
 
-		# create sentence
-		$data = $query->fetch_row();
-		$sentence = implode(' ', $data);
+		$data = $query->fetch_assoc();
 
-		# tokenize sentence with whitespace
-		preg_match_all('/\w+/i', strtolower($sentence), $wordArr);
-		$words = array_count_values($wordArr[0]);
+		# Define fields to index with their locations
+		$fields = [
+			'title' => $data['title'] ?? '',
+			'author' => $data['author'] ?? '',
+			'subject' => $data['subject'] ?? '',
+			'isbn' => $data['isbn_issn'] ?? '',
+			'publisher' => $data['publisher'] ?? '',
+			'notes' => strip_tags($data['notes'] ?? '')
+		];
 
-		# save to index word
-		$word_ids = array_map([$this, 'wordIndex'], array_keys($words), array_map(fn($c) => $c * $increase, $words));
+		# Stop words to exclude
+		$stopWords = ['a', 'an', 'of', 'the', 'to', 'so', 'as', 'be', 'and', 'or', 'in', 'on', 'at', 'is', 'are', 'was', 'were'];
+		$minWordLength = 3;
 
-		# save to index document
-		foreach ($word_ids as $wid) $this->documentIndex($biblio_id, $wid, $increase);
+		# Index each field separately
+		foreach ($fields as $location => $text) {
+			if (empty($text)) continue;
+
+			# Tokenize text into words
+			$text = strtolower($text);
+			preg_match_all('/\w+/u', $text, $wordArr);
+
+			if (empty($wordArr[0])) continue;
+
+			# Count word occurrences in this field
+			$words = array_count_values($wordArr[0]);
+
+			# Process each unique word
+			foreach ($words as $word => $count) {
+				# Skip if too short or is a stop word
+				if (mb_strlen($word) < $minWordLength || in_array($word, $stopWords)) {
+					continue;
+				}
+
+				# Index the word and get its ID
+				$word_id = $this->wordIndex($word, $count * $increase, $increase > 0);
+
+				# Index the word in this document location
+				if ($word_id > 0) {
+					$this->documentIndex($biblio_id, $word_id, $location, $count * $increase);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Delete all word indexes for a bibliographic record
+	 * 
+	 * @param int $biblio_id Bibliographic record ID
+	 * @return void
+	 */
+	protected function deleteWordIndex($biblio_id)
+	{
+		$biblio_id = (int)$biblio_id;
+
+		# Get all words indexed for this document
+		$query = $this->obj_db->query("
+			SELECT word_id, location, hit_count 
+			FROM index_documents 
+			WHERE document_id = $biblio_id
+		");
+
+		$wordUpdates = [];
+		while ($row = $query->fetch_assoc()) {
+			$word_id = $row['word_id'];
+			$hit_count = $row['hit_count'];
+
+			if (!isset($wordUpdates[$word_id])) {
+				$wordUpdates[$word_id] = 0;
+			}
+			$wordUpdates[$word_id] += $hit_count;
+		}
+
+
+		# Update word statistics
+		foreach ($wordUpdates as $word_id => $total_hits) {
+			$this->obj_db->query("UPDATE index_words SET num_hits = GREATEST(0, num_hits - $total_hits), doc_hits = GREATEST(0, doc_hits - 1) WHERE id = $word_id");
+		}
+
+
+		# Delete document entries
+		$this->obj_db->query("DELETE FROM index_documents WHERE document_id = $biblio_id");
+
+		# Clean up words with no documents
+		$this->obj_db->query("DELETE FROM index_words WHERE doc_hits = 0");
 	}
 
 	public function updateItems($int_biblio_id)
@@ -385,13 +537,11 @@ class biblio_indexer
 		$int_biblio_id = (int)$int_biblio_id;
 		$itemsString = $this->obj_db->escape_string($this->getItems($int_biblio_id));
 
-		if (!empty($itemsString))
-		{
+		if (!empty($itemsString)) {
 			/*  SQL operation object  */
 			$sql_op = new simbio_dbop($this->obj_db);
 			$sql_op->update('search_biblio', ['items' => $itemsString], "biblio_id = $int_biblio_id");
 		}
-
 	}
 
 	public function getItems($int_biblio_id)
@@ -427,8 +577,8 @@ class biblio_indexer
 			}, 1000);
 		</script>
 		HTML;
-        ob_flush();
-        flush();
+		ob_flush();
+		flush();
 		usleep(2500);
 	}
 }

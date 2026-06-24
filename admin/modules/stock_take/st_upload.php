@@ -58,6 +58,10 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
     // create upload object
     $upload = new simbio_file_upload();
     $upload->setAllowableFormat(array('.txt'));
+    $upload->setAllowableMimeTypes(array(
+      'text/plain',
+      'application/octet-stream'
+    ));
     $upload->setMaxSize($sysconf['max_upload']*1024);
     $upload->setUploadDir(UPLOAD);
     // upload the file and change all space characters to underscore
@@ -138,7 +142,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
     <div class="container-fluid">
         <div class="row">
             <div class="custom-file col-6">
-                <input type="file" name="stFile" id="stFile" value="" class="custom-file-input">
+                <input type="file" name="stFile" id="stFile" value="" class="custom-file-input" accept=".txt,text/plain">
                 <label class="custom-file-label" for="customFile"><?= __('Choose file')?></label></div>
                 <div class="col"><div class="mt-2"><?= __(sprintf('Maximum %s KB',$sysconf['max_upload']))?></div></div>
             </div>

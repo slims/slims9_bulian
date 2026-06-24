@@ -14,13 +14,20 @@ use SLiMS\Filesystems\Storage;
 define('INDEX_AUTH', '1');
 include __DIR__ . '/../../sysconfig.inc.php';
 
+define('MAX_THUMB_WIDTH', 600);
+define('MAX_THUMB_HEIGHT', 600);
+
 try {
     // Fetch filename based on query request
-    $filenameinput = pathinfo(isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png');
-    $storageName = explode('/', $filenameinput['dirname'])[0]??'uknown';
+    $filenameInputRaw = isset($_GET['filename']) && !empty($_GET['filename']) ? urldecode($_GET['filename']) : 'notfound.png';
+    if (strpos($filenameInputRaw, '..') !== false || strpos($filenameInputRaw, '%2e%2e') !== false) {
+        throw new Exception("Path Traversal attempt detected and blocked.");
+    }
+
+    $filenameinput = pathinfo($filenameInputRaw);
+    $storageName = explode('/', $filenameinput['dirname'])[0] ?? 'uknown';
     $filename = str_replace($storageName, '', $filenameinput['dirname']) . '/' . $filenameinput['basename'];
     $storage = Storage::{$storageName}();
-
     // thumb instance need parameter 1st as path to image file
     $thumbnail = new Thumb($storage, $filename);
 
@@ -44,11 +51,14 @@ try {
     $thumbnail->isReadable()->orError();
 
     // set measurement
-    $thumbnail->setWidth(( (isset($_GET['width']) AND trim($_GET['width']) != '') ?  trim($_GET['width']) : 120));
-    $thumbnail->setHeight(( (isset($_GET['height']) AND trim($_GET['height']) != '') ?  trim($_GET['height']) : 0));
+    $inputWidth = (isset($_GET['width']) && is_numeric($_GET['width'])) ? (int)trim($_GET['width']) : 120;
+    $inputHeight = (isset($_GET['height']) && is_numeric($_GET['height'])) ? (int)trim($_GET['height']) : 0;
+    $thumbnail->setWidth(max(0, min($inputWidth, MAX_THUMB_WIDTH)));
+    $thumbnail->setHeight(max(0, min($inputHeight, MAX_THUMB_HEIGHT)));
 
     // Preparing image and generate it
     $thumbnail->prepare()->generate();
+
 } catch (Exception $e) {
     if (!isDev()) Thumb::setError();
     dd($e);

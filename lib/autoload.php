@@ -49,6 +49,10 @@ $namespaces = [
     'Gettext\\Languages\\' => '/lang/gettext/languages/src',
     'Gettext\\Scanner\\' => '/lang/gettext/php-scanner/src',
     'PhpParser\\' => '/lang/gettext/php-parser/lib/PhpParser',
+    'Mpdf\\' => '/mpdf/src/',
+    'setasign\Fpdi\\' => '/setasign/fpdi/src/',
+    'Mpdf\\PsrLogAwareTrait\\' => '/psr-log-aware-trait/src/',
+    'Psr\\Log\\' => '/psr/log/Psr/Log',
 ];
 
 $class_alias = [];

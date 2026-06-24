@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+use SLiMS\Plugins;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -59,6 +60,8 @@ require __DIR__ . '/lib/autoload.php';
 require __DIR__ . '/lib/errorHandler.inc.php';
 registerSlimsHandler();
 
+$plugins = Plugins::getInstance();
+
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 @ini_set( 'session.use_only_cookies', true );
@@ -70,8 +73,8 @@ if ((bool) ini_get('safe_mode')) {
 }
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 9 (Bulian D Roger)');
-define('SENAYAN_VERSION_TAG', 'v9.7.2');
+define('SENAYAN_VERSION', 'SLiMS 9 (Bulian D Ace)');
+define('SENAYAN_VERSION_TAG', 'v9.8.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
@@ -172,8 +175,6 @@ if (!file_exists(SB.'config'.DS.'database.php')) {
     exit;
   }
 }
-
-
 
 // Extension check
 \SLiMS\Extension::throwIfNotFulfilled();
@@ -571,7 +572,7 @@ $localisation->load(function($memory) use($dbs, &$sysconf) {
         if (isset($_POST['select_lang'])) {
             $_SESSION['lang'] = $_POST['select_lang'];
         }
-        
+
         if (empty($_SESSION['lang'])) {
             $lang_dbs = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = 'default_lang'");
             $lang_dbs_res = $lang_dbs->fetch_assoc();
@@ -581,6 +582,15 @@ $localisation->load(function($memory) use($dbs, &$sysconf) {
                 $_SESSION['lang'] = 'en_US'; // Fallback to English
             }
         }
+
+        if (isset($_POST['default_lang'])) {
+            @setcookie('admin_lang', $_POST['default_lang'], time()+14400, SWB . 'admin');
+        }
+
+        if(isset($_COOKIE['admin_lang'])){
+            $_SESSION['lang'] = $_COOKIE['admin_lang'];
+        }
+
         $memory->setLocale($_SESSION['lang']);
         $sysconf['default_lang'] = $_SESSION['lang']; // Update sysconf as well
         return;
@@ -776,7 +786,7 @@ if ($load_balanced && (bool)$load_balanced['env']) ip()->setSourceRemoteIp($load
 
 // load all Plugins
 $sysconf['max_plugin_upload'] = 5000;
-\SLiMS\Plugins::getInstance()->loadPlugins();
+$plugins->loadPlugins();
 
 // Captcha factory
 \SLiMS\Captcha\Factory::operate();
@@ -792,3 +802,6 @@ $sanitizer = \SLiMS\Sanitizer::fromGlobal(config('custom_sanitizer_options', [
 \SLiMS\Config::createFromSampleIfNotExists([
   'csp','auth'
 ]);
+
+// sysconfig ini hook execution
+$plugins->execute(Plugins::SYSCONFIG_ALL_INIT, [&$sysconf]);

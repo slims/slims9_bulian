@@ -39,7 +39,7 @@ include 'function.php';
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-  <title><?php echo $page_title; ?></title>
+  <title><?php echo $page_title ?? 'SLiMS'; ?></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -64,9 +64,10 @@ include 'function.php';
   <link href="<?php echo JWB; ?>colorbox/colorbox.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>chosen/chosen.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>jquery.imgareaselect/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
-  <link href="<?php echo $sysconf['admin_template']['css'] . '?v=' . date('this'); ?>" rel="stylesheet" type="text/css" />
+  <link href="<?php echo ($sysconf['admin_template']['css'] ?? '') . '?v=' . date('this'); ?>" rel="stylesheet" type="text/css" />
   <link href="<?php echo JWB; ?>datepicker/css/datepicker-bs4.min.css" rel="stylesheet" />
   <link href="<?php echo JWB; ?>toastr/toastr.min.css?<?php echo date('this') ?>" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo JWB; ?>/croppie/croppie.css"/>
 
   <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>updater.js"></script>
@@ -82,13 +83,14 @@ include 'function.php';
   <script type="text/javascript" src="<?php echo JWB; ?>jquery.imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>webcam.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>scanner.js"></script>
-  <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme']?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+  <script type="text/javascript" src="<?php echo AWB; ?>admin_template/<?php echo $sysconf['admin_template']['theme'] ?? 'default' ?>/assets/vendor/slimscroll/jquery.slimscroll.min.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>toastr/toastr.min.js"></script>
   <script type="text/javascript" src="<?php echo JWB; ?>datepicker/js/datepicker-full.min.js"></script>
-  <?php if (file_exists(SB . 'js/datepicker/js/locales/' . substr($sysconf['default_lang'], 0,2) . '.js')): ?>
-  <script type="text/javascript" src="<?php echo JWB; ?>datepicker/js/locales/<?= substr($sysconf['default_lang'], 0,2) ?>.js"></script>
+  <script type="text/javascript" src="<?php echo JWB; ?>/croppie/croppie.js"></script>
+  <?php if (file_exists(SB . 'js/datepicker/js/locales/' . substr($sysconf['default_lang'] ?? 'en-US', 0,2) . '.js')): ?>
+  <script type="text/javascript" src="<?php echo JWB; ?>datepicker/js/locales/<?= substr($sysconf['default_lang'] ?? 'en-US', 0,2) ?>.js"></script>
   <?php endif; ?>
-  <?php if($sysconf['chat_system']['enabled']) : ?>
+  <?php if(($sysconf['chat_system']['enabled'] ?? false)) : ?>
   <script src="<?php echo JWB; ?>fancywebsocket.js"></script>
   <?php endif; ?>
 </head>
@@ -101,17 +103,19 @@ include 'function.php';
           <div class="s-user-frame">
             <a href="<?php echo MWB.'system/app_user.php?changecurrent=true&action=detail'; ?>" class="s-user-photo">
                 <?php
-                if (filter_var($_SESSION['upict'], FILTER_VALIDATE_URL)) {
-                    $user_image_url = $_SESSION['upict'];
+                $user_image = $_SESSION['upict'] ?? null;
+                if (filter_var($user_image, FILTER_VALIDATE_URL)) {
+                    $user_image_url = $user_image;
                 } else {
-                    $user_image = $_SESSION['upict'] && file_exists(IMGBS . 'persons/' . $_SESSION['upict']) ? $_SESSION['upict'] : 'person.png';
+                    $image_file_path = IMGBS . 'persons/' . $user_image;
+                    $user_image = ($user_image && file_exists($image_file_path)) ? $user_image : 'person.png';
                     $user_image_url = '../lib/minigalnano/createthumb.php?filename=' . IMG . '/persons/' . urlencode(urlencode($user_image)) . '&width=200';
                 }
                 ?>
-                <img src="<?= $user_image_url ?>" alt="Photo <?php echo $_SESSION['realname'] ?>">
+                <img src="<?= $user_image_url ?>" alt="Photo <?php echo $_SESSION['realname'] ?? 'User' ?>">
             </a>
           </div>
-          <h4 class="s-user-name"><?php echo $_SESSION['realname']?></h4>
+          <h4 class="s-user-name"><?php echo $_SESSION['realname'] ?? 'User'?></h4>
         </div>
       </header>
       <div id="mainMenu"><?php main_menu(); ?>
@@ -119,37 +123,35 @@ include 'function.php';
     </nav>
   </aside>
   <main class="s-content" role="main">
-    <div class="loader"><?php echo $info;?></div>
+    <div class="loader"><?php echo $info ?? '';?></div>
     <a href="#" name="top" class="s-help"><i class="fa fa-question-circle"></i></a>
     <div id="main">
       <div class="left">
         <div class="s-help-header"><?php echo __('Help'); ?></div>
         <div class="s-help-content">
           <!-- Place to put documentation -->
-        </div>
+          </div>
       </div>
       <div class="right">
         <div id="mainContent">
           <?php
-            if(isset($_GET['mod']) && ($_GET['mod'] == 'system')) {
+            if(($_GET['mod'] ?? '') == 'system') {
               include "modules/system/index.php";
               echo "<script>$('#mainForm').attr('action','".AWB."modules/system/index.php');</script>";
             } else {
-              echo $main_content;
+              echo $main_content ?? '';
             }
           ?>
         </div>
       </div>
     </div>
     <footer class="s-footer">
-      <div class="s-footer-about"><a href="http://www.slims.web.id/" target="_blank"><?php echo SENAYAN_VERSION; ?></a></div>
-      <div class="s-footer-brand"><?php echo $sysconf['library_name'].' - '.$sysconf['library_subname']?> </div>
+      <div class="s-footer-about"><a href="http://www.slims.web.id/" target="_blank"><?php echo SENAYAN_VERSION ?? ''; ?></a></div>
+      <div class="s-footer-brand"><?php echo ($sysconf['library_name'] ?? '').' - '.($sysconf['library_subname'] ?? '')?> </div>
     </footer>
   </main>
 
-  <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
   <iframe name="blindSubmit" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
-  <!-- fake submit iframe -->
   <script>
 
     var toggleMainMenu = function() {
@@ -170,7 +172,7 @@ include 'function.php';
     $('.s-current-child').click(function(){
       $('.left, .right, .loader').removeClass('active');
       $('.s-help > i').removeClass('fa-times').addClass('fa-question-circle');
-      $('.s-help-content').html();
+      $('.s-help-content').html('');
       $('.s-help').removeClass('active');
       var get_url       = $(this).attr('href');
       var path_array    = get_url.split('/');
@@ -210,9 +212,9 @@ include 'function.php';
     })
 
     $('#mainMenu a.opac').bind('click', function(evt) {
-    	evt.preventDefault();
-    	top.jQuery.colorbox({iframe:true,
-    	  href: $(this).attr('href'),
+      evt.preventDefault();
+      top.jQuery.colorbox({iframe:true,
+        href: $(this).attr('href'),
           width: function() { return parseInt($(window).width())-50; },
           height: function() { return parseInt($(window).height())-50; },
           title: function() { return 'Online Public Access Catalog'; } }

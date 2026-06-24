@@ -104,12 +104,9 @@ function checkArgs($args, $checkList) {
 			break;
 			
 			case 'resumptionToken':
-			// only check for expairation
-			//	if((int)$val+TOKEN_VALID < time())
-
-			// only check for value
-			if (empty($val))
+			if (!is_valid_resumption_token($val)) {
 					$errors[] = oai_error('badResumptionToken');
+			}
 			break;		
 		}
 	}
@@ -130,9 +127,32 @@ function is_valid_uri($url)
  * Here there are few more match patterns than is_valid_uri(): ':_'.
  * \param $attrb Type: string
  */
- function is_valid_attrb($attrb) {
-	 return preg_match("/^[_a-zA-Z0-9\-\:\.\+\>\%]+$/",$attrb);
- }
+function is_valid_attrb($attrb) {
+	return preg_match("/^[_a-zA-Z0-9\-\:\.\+\>\%]+$/",$attrb);
+}
+
+/** Validates signed OAI resumption tokens before they are decoded. */
+function is_valid_resumption_token($token) {
+	$token = urldecode((string)$token);
+	return $token !== ''
+		&& strlen($token) <= 1024
+		&& preg_match('/^[A-Za-z0-9_-]+\.[a-f0-9]{64}$/i', $token);
+}
+
+function is_valid_oai_metadata_prefix($metadataPrefix) {
+	return is_string($metadataPrefix)
+		&& preg_match('/^[A-Za-z0-9_.-]{1,64}$/', $metadataPrefix);
+}
+
+function is_valid_oai_set($set) {
+	return is_string($set)
+		&& preg_match('/^[A-Za-z0-9_.:-]{1,128}$/', $set);
+}
+
+function is_valid_oai_filter_date($date) {
+	return is_string($date)
+		&& preg_match('/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?$/', $date);
+}
  
 /** All datestamps used in this system are GMT even
  * return value from database has no TZ information
@@ -202,7 +222,7 @@ function get_token()
  * It has three parts which is separated by '#': cursor, extension of query, metadataPrefix.
  * Called by listrecords.php.
  */
-function createResumToken($cursor, $extquery, $metadataPrefix) {
+function createResumToken($cursor, $filters, $metadataPrefix) {
 
 	/*
 	$token = get_token(); 
@@ -217,8 +237,22 @@ function createResumToken($cursor, $extquery, $metadataPrefix) {
 	return $token; 
 	*/
 
-	$token = $cursor . "__" . urlencode($extquery) . "__" . $metadataPrefix;
-	return $token;
+	$filters = normalizeOaiFilters($filters);
+	if ($filters === false || !is_valid_oai_metadata_prefix($metadataPrefix)) {
+		return '';
+	}
+
+	$payload = array(
+		'v' => 2,
+		'c' => max(0, (int)$cursor),
+		'f' => $filters,
+		'm' => $metadataPrefix,
+		't' => time()
+	);
+	$encodedPayload = oai_base64url_encode(json_encode($payload));
+	$signature = hash_hmac('sha256', $encodedPayload, oai_token_secret());
+
+	return $encodedPayload . '.' . $signature;
 }
 
 /** Read a saved ResumToken */
@@ -237,8 +271,138 @@ function readResumToken($resumptionToken) {
 	return $rtVal; 
 	*/
 
-	$parts = explode("__", urldecode($resumptionToken));
-	return $parts;
+	$resumptionToken = urldecode((string)$resumptionToken);
+	if (!is_valid_resumption_token($resumptionToken)) {
+		return false;
+	}
+
+	list($encodedPayload, $signature) = explode('.', $resumptionToken, 2);
+	$expectedSignature = hash_hmac('sha256', $encodedPayload, oai_token_secret());
+	if (!hash_equals($expectedSignature, $signature)) {
+		return false;
+	}
+
+	$decodedPayload = oai_base64url_decode($encodedPayload);
+	if ($decodedPayload === false) {
+		return false;
+	}
+
+	$payload = json_decode($decodedPayload, true);
+	if (!is_array($payload)
+		|| !isset($payload['v'], $payload['c'], $payload['f'], $payload['m'], $payload['t'])
+		|| (int)$payload['v'] !== 2
+		|| !is_numeric($payload['c'])
+		|| (int)$payload['c'] < 0
+		|| !is_numeric($payload['t'])
+		|| !is_valid_oai_metadata_prefix($payload['m'])) {
+		return false;
+	}
+
+	$issuedAt = (int)$payload['t'];
+	$tokenValidSeconds = defined('TOKEN_VALID') ? TOKEN_VALID : 24*3600;
+	if ($issuedAt > time() + 300 || $issuedAt + $tokenValidSeconds < time()) {
+		return false;
+	}
+
+	$filters = normalizeOaiFilters($payload['f']);
+	if ($filters === false) {
+		return false;
+	}
+
+	return array((int)$payload['c'], $filters, $payload['m']);
+}
+
+function oai_base64url_encode($data) {
+	return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+function oai_base64url_decode($data) {
+	if (!is_string($data) || !preg_match('/^[A-Za-z0-9_-]+$/', $data)) {
+		return false;
+	}
+
+	$padding = strlen($data) % 4;
+	if ($padding > 0) {
+		$data .= str_repeat('=', 4 - $padding);
+	}
+
+	return base64_decode(strtr($data, '-_', '+/'), true);
+}
+
+function oai_token_secret() {
+	$parts = array(
+		defined('DB_HOST') ? DB_HOST : '',
+		defined('DB_NAME') ? DB_NAME : '',
+		defined('DB_USERNAME') ? DB_USERNAME : '',
+		defined('DB_PASSWORD') ? DB_PASSWORD : '',
+		defined('SLIMS_SERVER_NAME') ? SLIMS_SERVER_NAME : '',
+		defined('TOKEN_PREFIX') ? TOKEN_PREFIX : '',
+		__FILE__
+	);
+
+	return hash('sha256', implode('|', $parts));
+}
+
+function normalizeOaiFilters($filters) {
+	if (!is_array($filters)) {
+		return false;
+	}
+
+	$normalized = array();
+	$allowedKeys = array('from', 'until', 'set');
+	foreach ($filters as $key => $value) {
+		if (!in_array($key, $allowedKeys)) {
+			return false;
+		}
+
+		$value = urldecode((string)$value);
+		if ($key === 'set') {
+			if (!is_valid_oai_set($value)) {
+				return false;
+			}
+			$normalized[$key] = $value;
+			continue;
+		}
+
+		if (!is_valid_oai_filter_date($value)) {
+			return false;
+		}
+		$normalized[$key] = $value;
+	}
+
+	return $normalized;
+}
+
+function buildOaiFilterQuery($filters, &$params) {
+	global $SQL;
+
+	$params = array();
+	$filters = normalizeOaiFilters($filters);
+	if ($filters === false) {
+		return false;
+	}
+
+	$query = '';
+	if (isset($filters['from'])) {
+		$query .= ' AND ' . $SQL['datestamp'] . ' >= :oai_from';
+		$params[':oai_from'] = $filters['from'];
+	}
+
+	if (isset($filters['until'])) {
+		$query .= ' AND ' . $SQL['datestamp'] . ' <= :oai_until';
+		$params[':oai_until'] = $filters['until'];
+	}
+
+	if (isset($filters['set'])) {
+		$set = $filters['set'];
+		if (strstr($set, 'class:')) {
+			$set = substr($set, 6);
+		}
+		$query .= ' AND ' . $SQL['set'] . ' LIKE :oai_set';
+		$params[':oai_set'] = '%' . $set . '%';
+	}
+
+	return $query;
 }
 
 // Here are a couple of queries which might need to be adjusted to 
@@ -316,12 +480,19 @@ function setQuery($set)
 }
 
 /** for accurately to assess how many records satisfy conditions for all DBs */
-function rowCount($metadataPrefix, $extQuery, $db) {
+function rowCount($metadataPrefix, $filters, $db) {
 	global $SQL;
 	$n = 0;
+	$params = array();
+	$extQuery = buildOaiFilterQuery($filters, $params);
+	if ($extQuery === false) {
+		return $n;
+	}
+
 	$sql = "SELECT COUNT(*) FROM ".$SQL['table'] . " WHERE 1 " . $extQuery;
-	if ($res = $db->query($sql)) {
-  	$n = $res->fetchColumn();
+	if ($res = $db->prepare($sql)) {
+		$res->execute($params);
+		$n = $res->fetchColumn();
 	}
 	return $n;
 }

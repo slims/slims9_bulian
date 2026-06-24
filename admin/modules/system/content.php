@@ -26,6 +26,9 @@ define('INDEX_AUTH', '1');
 // key to get full database access
 define('DB_ACCESS', 'fa');
 
+use SLiMS\Filesystems\Storage;
+use SLiMS\Url;
+
 // main system configuration
 require '../../../sysconfig.inc.php';
 // IP based access limitation
@@ -43,6 +46,8 @@ require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require SIMBIO . 'simbio_FILE/simbio_file_upload.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
+$base_url = Url::getSlimsBaseUri();
+
 // privileges checking
 $can_read = utility::havePrivilege('system', 'r');
 $can_write = utility::havePrivilege('system', 'w');
@@ -52,7 +57,9 @@ if (!$can_read) {
 }
 
 // Image upload handler from CKEditor5
-if (!empty($_FILES['upload']) AND $_FILES['upload']['size']) {
+if ($can_write AND !empty($_FILES['upload']) AND $_FILES['upload']['size']) {
+
+    ob_start();
     header('Content-Type: application/json');
     try {
         // Check base directory
@@ -60,30 +67,94 @@ if (!empty($_FILES['upload']) AND $_FILES['upload']['size']) {
         // Create content directory if not exists
         if (!is_dir(IMGBS . 'content') && !mkdir(IMGBS . 'content')) throw new Exception('Failed to create ' . IMGBS . 'content');
 
-        ob_start();
-        // create upload object
-        $image_upload = new simbio_file_upload();
-        $image_upload->setAllowableFormat($sysconf['allowed_images']);
-        $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
-        $image_upload->setUploadDir(IMGBS.'content');
-        // upload the file and change all space characters to underscore
-        $img_upload_status = $image_upload->doUpload('upload', md5(date('this')));
-        ob_end_clean();
-        if ($img_upload_status == UPLOAD_SUCCESS) {
-            echo json_encode(['uploaded' => true, 'url' => SWB . 'images/content/'.$image_upload->new_filename]);
+        $images_disk = Storage::images();
+        $file_key = 'upload';
+        $filename_base = basename($_FILES[$file_key]['name'] ?? 'file');
+        $unique_filename = hash('sha256', time() . $filename_base);
+        $image_upload = $images_disk->upload($file_key, function($images) use($sysconf) {
+            $images->isExtensionAllowed($sysconf['allowed_images']);
+            $images->isLimitExceeded($sysconf['max_image_upload']*1024);
+            if (empty($images->getError())) $images->cleanExifInfo();
+            if (empty($images->getError())) $images->sanitizeImageWithGD();
+            if (!empty($images->getError())) $images->destroyIfFailed();
+        })->as('content/' . $unique_filename);
+
+        if ($image_upload->getUploadStatus()) {
+            ob_end_clean();
+            $original_filename = $_FILES[$file_key]['name'];
+            $extension = pathinfo($original_filename, PATHINFO_EXTENSION);
+            $final_filename = $unique_filename;
+            if (!empty($extension)) {
+                $final_filename .= '.' . strtolower($extension);
+            }
+            $public_url = rtrim($base_url, '/') . '/images/content/' . $final_filename;
+            echo json_encode(['uploaded' => true, 'url' => $public_url]);
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' upload content image file ' . 'content/' . $final_filename);
         } else {
-            throw new Exception($image_upload->error);
+            throw new Exception($image_upload->getError());
         }
+
     } catch (Exception $e) {
+        ob_end_clean();
         echo json_encode(['uploaded' => false, 'error' => ['message' => 'Error : ' . $e->getMessage()]]);
+    }
+    exit;
+}
+
+if (isset($_POST['action']) AND $_POST['action'] == 'deleteImage' AND isset($_POST['imageURL'])) {
+    if (!$can_write) {
+        http_response_code(403);
+        die(json_encode(['status' => 'error', 'message' => 'Not enough privileges.']));
+    }
+
+    $imageURL = trim($_POST['imageURL']);
+
+    if (strpos($imageURL, '/images/content/') === false) {
+        http_response_code(400);
+        die(json_encode(['status' => 'error', 'message' => 'Invalid image path pattern.']));
+    }
+
+    // Convert URL to local file path
+    $base_path_segment = '/images/';
+    $pos = strpos($imageURL, $base_path_segment);
+
+    if (!defined('IMGBS')) {
+        http_response_code(500);
+        die(json_encode(['status' => 'error', 'message' => 'IMGBS constant not defined.']));
+    }
+
+    if ($pos !== false) {
+        $relative_path_from_images = substr($imageURL, $pos + strlen($base_path_segment));
+        $file_to_delete = IMGBS . $relative_path_from_images;
+
+        if (file_exists($file_to_delete) && is_file($file_to_delete)) {
+            if (@unlink($file_to_delete)) {
+                writeLog('staff', $_SESSION['uid'], 'system', 'REAL-TIME DELETE content image file: ' . $relative_path_from_images);
+                die(json_encode(['status' => 'success', 'message' => 'File deleted.']));
+            } else {
+                http_response_code(500);
+                die(json_encode(['status' => 'error', 'message' => 'Failed to delete file. Check permissions.']));
+            }
+        } else {
+            die(json_encode(['status' => 'success', 'message' => 'File not found on server, assuming deleted.']));
+        }
+    } else {
+        http_response_code(400);
+        die(json_encode(['status' => 'error', 'message' => 'Could not determine file path.']));
     }
     exit;
 }
 
 /* RECORD OPERATION */
 if (isset($_POST['saveData'])) {
+    if (!$can_write) {
+        utility::jsToastr('Error', __('You don\'t have enough privileges to perform this action'), 'error');
+        exit();
+    }
+
     $contentTitle = trim(strip_tags($_POST['contentTitle']));
     $contentPath = trim(strip_tags($_POST['contentPath']));
+
     // check form validity
     if (empty($contentTitle) OR empty($contentPath)) {
         utility::jsToastr('Error', __('Title or Path can\'t be empty!'), 'error');
@@ -95,14 +166,25 @@ if (isset($_POST['saveData'])) {
         if ($_POST['isNews'] && $_POST['isNews'] == '1') {
             $data['is_news'] = '1';
         }
-        
+
         if (!empty($_POST['publishDate']))
         {
             $data['publish_date'] = $dbs->escape_string($_POST['publishDate']);
         }
 
         $data['is_draft'] = $_POST['isDraft'] == '1' ? '1' : '0';
-        $data['content_desc'] = $dbs->escape_string(trim($_POST['contentDesc']));
+
+        $allowed_html_tags = '<h1><h2><h3><h4><h5><h6><p><a><img><ul><ol><li><br><em><strong><u><span><div><table><thead><tbody><tr><td><th>';
+
+        $raw_content_desc = trim($_POST['contentDesc']);
+
+        if (method_exists('utility', 'cleanHTML')) {
+             $clean_content_desc = utility::cleanHTML($raw_content_desc, $allowed_html_tags);
+        } else {
+             $clean_content_desc = strip_tags($raw_content_desc, $allowed_html_tags);
+        }
+
+        $data['content_desc'] = $dbs->escape_string(html_entity_decode($clean_content_desc, ENT_QUOTES, 'UTF-8'));
         $data['input_date'] = date('Y-m-d H:i:s');
         $data['last_update'] = date('Y-m-d H:i:s');
 
@@ -142,7 +224,6 @@ if (isset($_POST['saveData'])) {
     }
     /* DATA DELETION PROCESS */
     $sql_op = new simbio_dbop($dbs);
-    $failed_array = array();
     $error_num = 0;
     if (!is_array($_POST['itemID'])) {
         // make an array
@@ -150,15 +231,42 @@ if (isset($_POST['saveData'])) {
     }
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
-        $itemID = (integer)$itemID;
-        // get content data
-        $content_q = $dbs->query('SELECT content_title FROM content WHERE content_id='.$itemID);
-        $content_d = $content_q->fetch_row();
-        if (!$sql_op->delete('content', "content_id='$itemID'")) {
-            $error_num++;
+        $itemID = (integer)$itemID; // SQLi prevention
+        $content_q = $dbs->query('SELECT content_title, content_desc FROM content WHERE content_id='.$itemID);
+        $content_d = $content_q->fetch_assoc();
+
+        if ($content_d) {
+            $content_title = $content_d['content_title'];
+            $content_desc = $content_d['content_desc'];
+            $cleaned_content = stripslashes($content_desc);
+            $cleaned_content = html_entity_decode($cleaned_content, ENT_QUOTES, 'UTF-8');
+            $regex = '/src=["\'](.*images\/content\/[a-f0-9]+\.(?:png|jpg|jpeg|gif|webp))["\']/i';
+            preg_match_all($regex, $cleaned_content, $matches);
+            if (isset($matches[1]) && is_array($matches[1])) {
+                foreach ($matches[1] as $full_url) {
+                    $base_path_segment = '/images/';
+                    $pos = strpos($full_url, $base_path_segment);
+                    if ($pos !== false) {
+                        $relative_path_from_images = substr($full_url, $pos + strlen($base_path_segment));
+                        $file_to_delete = IMGBS . $relative_path_from_images;
+                        if (file_exists($file_to_delete) && is_file($file_to_delete)) {
+                            @unlink($file_to_delete);
+                            writeLog('staff', $_SESSION['uid'], 'system', 'DELETE content image file: ' . $relative_path_from_images . ' for content: ' . $content_title);
+                        }
+                    }
+                }
+            }
+
+            if (!$sql_op->delete('content', "content_id='$itemID'")) {
+                $error_num++;
+            } else {
+                // write log
+                writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_title.')','Content', 'Delete');
+            }
         } else {
-            // write log
-            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'].' DELETE content ('.$content_d[0].')','Content', 'Delete');
+             if (!$sql_op->delete('content', "content_id='$itemID'")) {
+                $error_num++;
+            }
         }
     }
 
@@ -205,6 +313,12 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $rec_q = $dbs->query('SELECT * FROM content WHERE content_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 
+    $editor_content = $rec_d['content_desc'] ?? '';
+    if (!empty($editor_content)) {
+        $editor_content = stripslashes($editor_content);
+        $editor_content = html_entity_decode($editor_content, ENT_QUOTES, 'UTF-8');
+    }
+
     // texteditor instance
     ?>
     <form class="d-flex px-3" id="contentForm" method="POST" action="<?= $_SERVER['PHP_SELF'] ?>" target="submitExec">
@@ -223,7 +337,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             </div>
             <div id="toolbarContainer"></div>
             <div id="outerContent" style="background-color: #e1e1e1; padding: 30px">
-                <div id="contentDesc" class="rounded-lg px-5" style="background-color: white; min-height: 800px"><?= str_replace(['<script>','</script>'], '', $rec_d['content_desc']??'')??'' ?></div>
+                <div id="contentDesc" class="rounded-lg px-5" style="background-color: white; min-height: 800px"><?= $editor_content ?></div>
             </div>
         </div>
         <div id="detail" class="col-4">
@@ -251,7 +365,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
           function() {
             // automatic set path based on inputed title
             $('#setPath').on('keyup', function(){
-                let text = $(this).val().replace(/[^a-zA-Z]/g, '-');
+                let text = $(this).val().replace(/[^a-zA-Z0-9]/g, '-');
                 let path = $('#path');
 
                 if (text.length <= 20)
@@ -273,18 +387,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                         throw "Stop";
                     }
 
-                    let filter = $(this).val().replace(/[^a-zA-Z]/g, '-');
+                    let filter = $(this).val().replace(/[^a-zA-Z0-9]/g, '-');
                     $(this).val(filter.toLowerCase());
 
                 } catch (error) {
                     $(this).addClass('border border-danger');
-                    $('#warningChar').addClass('d-block');
                     $(this).attr('maxlength', '20');
+                    $('#warningChar').addClass('d-block');
                 }
             })
 
             let editorInstance = '';
-
             DecoupledEditor
                 .create(document.querySelector('#contentDesc'),{  
                     toolbar: {shouldNotGroupWhenFull: true},
@@ -294,7 +407,48 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
                 .then( editor => {
                     const toolbarContainer = document.querySelector('#toolbarContainer');
                     toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-                    editorInstance = editor
+                    editorInstance = editor;
+                    const contentElement = editor.ui.view.editable.element;
+                    let initialImageUrls = [];
+                    contentElement.querySelectorAll('img').forEach(img => {
+                        initialImageUrls.push(img.getAttribute('src'));
+                    });
+                    
+                    const observer = new MutationObserver((mutationsList, observer) => {
+                        for (const mutation of mutationsList) {
+                            if (mutation.type === 'childList') {
+                                mutation.removedNodes.forEach(removedNode => {
+                                    const imgElement = removedNode.tagName === 'IMG' ? removedNode : removedNode.querySelector('img');
+                                    if (imgElement) {
+                                        const removedImageUrl = imgElement.getAttribute('src');
+                                        if (initialImageUrls.includes(removedImageUrl)) {
+                                            initialImageUrls = initialImageUrls.filter(url => url !== removedImageUrl);
+                                            $.ajax({
+                                                url: '<?php echo $_SERVER['PHP_SELF'];?>',
+                                                type: 'POST',
+                                                dataType: 'json',
+                                                data: {
+                                                    action: 'deleteImage',
+                                                    imageURL: removedImageUrl
+                                                },
+                                                success: function(response) {
+                                                    if (response.status === 'success') {
+                                                        toastr.success('<?= __('Image file successfully deleted:')?>', 'Content', {timeOut: 5000});
+                                                    } else {
+                                                        toastr.error('<?= __('Failed to delete file:')?>' + response.message, 'Content', {timeOut: 5000});
+                                                    }
+                                                },
+                                                error: function(xhr) {
+                                                    toastr.error('<?= __('Failed to delete file:')?>', 'Content', {timeOut: 5000});
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    observer.observe(contentElement, { childList: true, subtree: true });
                 })
                 .catch( error => {
                     console.log(error);
@@ -331,7 +485,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $criteria = 'c.content_id IS NOT NULL ';
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
        $keywords = utility::filterData('keywords', 'get', true, true, true);
-       $criteria .= " AND MATCH(content_title, content_desc) AGAINST('$keywords')";
+       $criteria .= " AND MATCH(content_title, content_desc) AGAINST('{$dbs->escape_string($keywords)}')";
     }
     $datagrid->setSQLCriteria($criteria);
 

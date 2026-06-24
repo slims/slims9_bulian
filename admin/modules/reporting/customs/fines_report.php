@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
@@ -27,22 +28,22 @@ define('INDEX_AUTH', '1');
 // main system configuration
 require '../../../../sysconfig.inc.php';
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-reporting');
 // start the session
-require SB.'admin/default/session.inc.php';
-require SB.'admin/default/session_check.inc.php';
+require SB . 'admin/default/session.inc.php';
+require SB . 'admin/default/session_check.inc.php';
 // privileges checking
 $can_read = utility::havePrivilege('reporting', 'r');
 $can_write = utility::havePrivilege('reporting', 'w');
 
 if (!$can_read) {
-    die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
+    die('<div class="errorBox">' . __('You don\'t have enough privileges to access this area!') . '</div>');
 }
 
-require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
-require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
+require SIMBIO . 'simbio_GUI/form_maker/simbio_form_element.inc.php';
+require SIMBIO . 'simbio_UTILS/simbio_date.inc.php';
 
 // months array
 $months['01'] = __('Jan');
@@ -66,70 +67,75 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <div class="per_title">
-    	<h2><?php echo __('Fines Report'); ?></h2>
-	  </div>
-    <div class="infoBox">
-        <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="form-group divRow">
-            <label><?php echo __('Year'); ?></label>
-            <?php
-            $current_year = date('Y');
-            $year_options = array();
-            $year = $dbs->query("SELECT DISTINCT year(loan_date) AS y FROM loan ORDER BY y DESC");
-            if($year->num_rows > 0){
-            	while($y = $year->fetch_row()){
-            		$year_options[] = array($y[0], $y[0]);
-            	}
-            }else{
-            	$year_options[] = array($current_year, $current_year);
-            }
-            //for ($y = $current_year; $y > 1999; $y--) {
-            //    $year_options[] = array($y, $y);
-            //}
-            echo simbio_form_element::selectList('year', $year_options, $current_year, 'class="form-control col-1"');
-            ?>
+    <div class="menuBox">
+        <div class="menuBoxInner">
+            <!-- filter -->
+            <div class="per_title">
+                <h2><?php echo __('Fines Report'); ?></h2>
+            </div>
+            <div class="infoBox">
+                <?php echo __('Report Filter'); ?>
+            </div>
+            <div class="sub_section">
+                <div>&nbsp;</div>
+                <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+                    <div id="filterForm">
+                        <div class="form-group divRow">
+                            <label><?php echo __('Year'); ?></label>
+                            <?php
+                            $current_year = date('Y');
+                            $year_options = array();
+                            $year = $dbs->query("SELECT DISTINCT year(loan_date) AS y FROM loan ORDER BY y DESC");
+                            if ($year->num_rows > 0) {
+                                while ($y = $year->fetch_row()) {
+                                    $year_options[] = array($y[0], $y[0]);
+                                }
+                            } else {
+                                $year_options[] = array($current_year, $current_year);
+                            }
+                            //for ($y = $current_year; $y > 1999; $y--) {
+                            //    $year_options[] = array($y, $y);
+                            //}
+                            echo simbio_form_element::selectList('year', $year_options, $current_year, 'class="form-control col-1"');
+                            ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Month'); ?></label>
+                            <?php
+                            $current_month = date('m');
+                            $month_options = array();
+                            foreach ($months as $idx => $month) {
+                                $month_options[] = array($idx, $month);
+                            }
+                            echo simbio_form_element::selectList('month', $month_options, $current_month, 'class="form-control col-1"');
+                            ?>
+                        </div>
+                    </div>
+                    <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+                    <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+                    <input type="hidden" name="reportView" value="true" />
+                </form>
+            </div>
         </div>
-        <div class="form-group divRow">
-            <label><?php echo __('Month'); ?></label>
-            <?php
-            $current_month = date('m');
-            $month_options = array();
-            foreach ($months as $idx => $month) {
-                $month_options[] = array($idx, $month);
-            }
-            echo simbio_form_element::selectList('month', $month_options, $current_month,'class="form-control col-1"');
-            ?>
-        </div>
-    </div>
-    <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </form>
     </div>
     <!-- filter end -->
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
     $fines_data = array();
     // year
     $selected_year = date('Y');
-    if (isset($_GET['year']) AND !empty($_GET['year'])) {
-        $selected_year = sprintf( '%d', $dbs->real_escape_string($_GET['year']) );
+    if (isset($_GET['year']) and !empty($_GET['year'])) {
+        $selected_year = sprintf('%d', $dbs->real_escape_string($_GET['year']));
     }
 
     // month
     $selected_month = date('m');
-    if (isset($_GET['month']) AND !empty($_GET['month'])) {
+    if (isset($_GET['month']) and !empty($_GET['month'])) {
         $allowed_month = array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         if (in_array($_GET['month'], $allowed_month)) {
-            $selected_month = sprintf( '%s', $dbs->real_escape_string($_GET['month']) );
+            $selected_month = sprintf('%s', $dbs->real_escape_string($_GET['month']));
         } else {
             $selected_month = "01";
         }
@@ -137,27 +143,29 @@ if (!$reportView) {
 
     // query fines data to database
     // echo "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal`, `fines_id` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
+    $selected_year  = $dbs->real_escape_string($selected_year);
+    $selected_month = $dbs->real_escape_string($selected_month);
     $sql_str = "SELECT SUBSTRING(`fines_date`, -2) AS `mdate`, SUM(debet) AS `dtotal` FROM `fines` WHERE `fines_date` LIKE '$selected_year-$selected_month%' GROUP BY `fines_date`";
     // debug box
     if (isDev() !== false) {
-        debugBox(content: function() use ($sql_str) {
+        debugBox(content: function () use ($sql_str) {
             debug($sql_str);
         });
     }
     $_fines_q = $dbs->query($sql_str);
     while ($_fines_d = $_fines_q->fetch_row()) {
-        $date = (integer)preg_replace('@^0+@i', '',$_fines_d[0]);
-        $fines_data[$date] = '<div class="data"><a href="'.AWB.'modules/reporting/customs/member_fines_list.php?reportView=true&singleDate=true&finesDate='.$selected_year.'-'.$selected_month.'-'.$date.'" class="notAJAX openPopUp" width="800" height="600" title="'.__('Member Fines List').'">'.currency($_fines_d[1]?:'0').'</a></div>';
+        $date = (int)preg_replace('@^0+@i', '', $_fines_d[0]);
+        $fines_data[$date] = '<div class="data"><a href="' . AWB . 'modules/reporting/customs/member_fines_list.php?reportView=true&singleDate=true&finesDate=' . $selected_year . '-' . $selected_month . '-' . $date . '" class="notAJAX openPopUp" width="800" height="600" title="' . __('Member Fines List') . '">' . currency($_fines_d[1] ?: '0') . '</a></div>';
     }
 
     // generate calendar
     $output = simbio_date::generateCalendar($selected_year, $selected_month, $fines_data);
 
     // print out
-    echo '<div class="mb-2">'.__('Fines count report for').' <strong>'.$months[$selected_month].', '.$selected_year.'</strong> <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a></div>'."\n";
+    echo '<div class="mb-2">' . __('Fines count report for') . ' <strong>' . $months[$selected_month] . ', ' . $selected_year . '</strong> <a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">' . __('Print Current Page') . '</a></div>' . "\n";
     echo $output;
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
+    require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/notemplate_page_tpl.php';
 }

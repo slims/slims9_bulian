@@ -34,7 +34,7 @@ $setBookmarked = trim(isset($_SESSION['bookmark'][$biblio_id]) ? 'bg-success tex
         <div class="flex-1 p-0 px-md-4">
             <p class="lead"><i class="fas fa-bookmark text-green"></i> <?= $gmd_name; ?></p>
             <blockquote class="blockquote">
-                <h4 class="mb-2"><?= $title; ?></h4>
+                <h4 class="mb-2"><?= stripslashes($title); ?></h4>
                 <footer class="blockquote-footer"><?= str_replace("<br />", '; ', $authors); ?></footer>
             </blockquote>
             <hr>

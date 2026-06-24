@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
@@ -29,21 +30,21 @@ define('INDEX_AUTH', '1');
 // main system configuration
 require '../../../../sysconfig.inc.php';
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-reporting');
 // start the session
-require SB.'admin/default/session.inc.php';
-require SB.'admin/default/session_check.inc.php';
+require SB . 'admin/default/session.inc.php';
+require SB . 'admin/default/session_check.inc.php';
 // privileges checking
 $can_read = utility::havePrivilege('reporting', 'r');
 $can_write = utility::havePrivilege('reporting', 'w');
 
 if (!$can_read) {
-    die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
+    die('<div class="errorBox">' . __('You don\'t have enough privileges to access this area!') . '</div>');
 }
 
-require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
+require SIMBIO . 'simbio_GUI/form_maker/simbio_form_element.inc.php';
 
 $page_title = 'Library Visitor Report';
 $reportView = false;
@@ -53,30 +54,35 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <div class="per_title">
-      <h2><?php echo __('Library Visitor Report'); ?></h2>
-    </div>
-    <div class="infoBox">
-      <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
-      <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
-        <label class="mr-2"><?php echo __('Year'); ?></label>
-        <?php
-        $current_year = date('Y');
-        $year_options = array();
-        for ($y = $current_year; $y > 1999; $y--) {
-            $year_options[] = array($y, $y);
-        }
-        echo simbio_form_element::selectList('year', $year_options, $current_year,'class="form-control col-2"');
-        ?>
-        <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
-        <input type="hidden" name="reportView" value="true" />
-      </form>
+    <div class="menuBox">
+        <div class="menuBoxInner">
+            <!-- filter -->
+            <div class="per_title">
+                <h2><?php echo __('Library Visitor Report'); ?></h2>
+            </div>
+            <div class="infoBox">
+                <?php echo __('Report Filter'); ?>
+            </div>
+            <div class="sub_section">
+                <div>&nbsp;</div>
+                <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView" class="form-inline">
+                    <label class="mr-2"><?php echo __('Year'); ?></label>
+                    <?php
+                    $current_year = date('Y');
+                    $year_options = array();
+                    for ($y = $current_year; $y > 1999; $y--) {
+                        $year_options[] = array($y, $y);
+                    }
+                    echo simbio_form_element::selectList('year', $year_options, $current_year, 'class="form-control col-2"');
+                    ?>
+                    <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+                    <input type="hidden" name="reportView" value="true" />
+                </form>
+            </div>
+        </div>
     </div>
     <!-- filter end -->
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -100,10 +106,10 @@ if (!$reportView) {
 
     // header
     $output .= '<tr class="dataListHeaderPrinted">';
-    $output .= '<td><a>'.__('Member Type').'</a></td>';
+    $output .= '<td><a>' . __('Member Type') . '</a></td>';
     foreach ($months as $month_num => $month) {
         $total_month[$month_num] = 0;
-        $output .= '<td>'.$month.'</td>';
+        $output .= '<td>' . $month . '</td>';
         $xAxis[$month_num] = $month;
     }
     $output .= '<td>TOTAL</td>';
@@ -111,8 +117,8 @@ if (!$reportView) {
 
     // year
     $selected_year = date('Y');
-    if (isset($_GET['year']) AND !empty($_GET['year'])) {
-        $selected_year = sprintf( '%d', $dbs->real_escape_string($_GET['year']) );
+    if (isset($_GET['year']) and !empty($_GET['year'])) {
+        $selected_year = sprintf('%d', $dbs->real_escape_string($_GET['year']));
     }
 
     // get member type data from databse
@@ -145,24 +151,24 @@ if (!$reportView) {
 
     foreach ($member_types as $id => $member_type) {
         $output .= '<tr>';
-        $output .= '<td>'.$member_type.'</td>'."\n";
+        $output .= '<td>' . $member_type . '</td>' . "\n";
         $count_row = 0;
         foreach ($visitors[$id] as $month => $value) {
             if ($value > 0) {
-                $output .= '<td><strong>'.$value.'</strong></td>';
+                $output .= '<td><strong>' . $value . '</strong></td>';
             } else {
-                $output .= '<td>'.$value.'</td>';
+                $output .= '<td>' . $value . '</td>';
             }
             $data[$member_type][$month] = $value;
             $count_row += $value;
         }
-        $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
+        $output .= '<td class="table-warning">' . $count_row . '</td>' . "\n";
         $output .= '</tr>';
     }
 
     // non member visitor count
     $output .= '<tr>';
-    $output .= '<td>'.__('NON-Member Visitor').'</td>'."\n";
+    $output .= '<td>' . __('NON-Member Visitor') . '</td>' . "\n";
     $data['non_member'] = $months;
     $count_row = 0;
     foreach ($months as $month_num => $month) {
@@ -172,28 +178,28 @@ if (!$reportView) {
         $visitor_d = $visitor_q->fetch_row();
         if ($visitor_d[0] > 0) {
             $data['non_member'][$month_num] = $visitor_d[0];
-            $output .= '<td><strong>'.$visitor_d[0].'</strong></td>';
+            $output .= '<td><strong>' . $visitor_d[0] . '</strong></td>';
         } else {
             $data['non_member'][$month_num] = 0;
-            $output .= '<td>'.$visitor_d[0].'</td>';
+            $output .= '<td>' . $visitor_d[0] . '</td>';
         }
         $count_row += $visitor_d[0];
         $total_month[$month_num] += $visitor_d[0];
     }
-    $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
+    $output .= '<td class="table-warning">' . $count_row . '</td>' . "\n";
     $output .= '</tr>';
 
 
 
     // total for each month
     $output .= '<tr class="table-warning">';
-    $output .= '<td>'.__('Total visit/month').'</td>';
+    $output .= '<td>' . __('Total visit/month') . '</td>';
     $count_row = 0;
     foreach ($months as $month_num => $month) {
-        $output .= '<td>'.$total_month[$month_num].'</td>';
+        $output .= '<td>' . $total_month[$month_num] . '</td>';
         $count_row += $total_month[$month_num];
     }
-    $output .= '<td class="table-warning">'.$count_row.'</td>'."\n";
+    $output .= '<td class="table-warning">' . $count_row . '</td>' . "\n";
     $output .= '</tr>';
 
     $output .= '</table>';
@@ -202,17 +208,17 @@ if (!$reportView) {
     unset($_SESSION['chart']);
     $chart['xAxis'] = $xAxis;
     $chart['data'] = $data;
-    $chart['title'] =  str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>'));
+    $chart['title'] =  str_replace('{selectedYear}', $selected_year, __('Visitor Count Report for year <strong>{selectedYear}</strong>'));
     $_SESSION['chart'] = $chart;
 
     // print out
 
-    echo '<div class="mb-2">'. str_replace('{selectedYear}', $selected_year,__('Visitor Count Report for year <strong>{selectedYear}</strong>'));
-    echo '&nbsp;<div class="btn-group"><a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">'.__('Print Current Page').'</a>
-    <a class="s-btn btn btn-default notAJAX openPopUp" href="'.MWB.'reporting/pop_chart.php" width="700" height="530">'.__('Show in chart/plot').'</a></div></div>'."\n";
+    echo '<div class="mb-2">' . str_replace('{selectedYear}', $selected_year, __('Visitor Count Report for year <strong>{selectedYear}</strong>'));
+    echo '&nbsp;<div class="btn-group"><a class="s-btn btn btn-default printReport" onclick="window.print()" href="#">' . __('Print Current Page') . '</a>
+    <a class="s-btn btn btn-default notAJAX openPopUp" href="' . MWB . 'reporting/pop_chart.php" width="700" height="530">' . __('Show in chart/plot') . '</a></div></div>' . "\n";
     echo $output;
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/pop_iframe_tpl.php';
+    require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/pop_iframe_tpl.php';
 }

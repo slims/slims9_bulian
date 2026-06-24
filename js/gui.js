@@ -843,7 +843,7 @@ $(() => {
             opacity: 0,
             display: 'block'
           }).animate({
-            left: `${leftPos + 50}px`,
+            left: `${leftPos + 0}px`,
             opacity: 1
           }, 300);
         },

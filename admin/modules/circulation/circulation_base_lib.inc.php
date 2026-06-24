@@ -273,13 +273,13 @@ class circulation extends member
         }
         // update the loan data
         $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
-        
+
         // Update loan history (replaces update_loan_history trigger)
         $this->updateLoanHistory($int_loan_id, array(
             'is_return' => 1,
             'return_date' => $_return_date
         ));
-        
+
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
             // get item data
@@ -341,13 +341,17 @@ class circulation extends member
         }
         $query = $this->obj_db->query("UPDATE loan SET renewed=renewed+1, due_date='$_due_date', is_return=0
             WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."'");
-        
+
+        $_renewed_q = $this->obj_db->query("SELECT renewed FROM loan WHERE loan_id=$int_loan_id");
+        $_renewed_d = $_renewed_q->fetch_row();
+        $new_renewed_count = intval($_renewed_d[0]);
+
         // Update loan history (replaces update_loan_history trigger)
         $this->updateLoanHistory($int_loan_id, array(
-            'renewed' => 'renewed+1',
+            'renewed' => $new_renewed_count,
             'is_return' => 0
         ));
-        
+
         $_SESSION['reborrowed'][] = $int_loan_id;
         // add to receipt
         if (isset($_SESSION['receipt_record'])) {
@@ -426,7 +430,7 @@ class circulation extends member
             } else {
                 $_fines_value = $this->fine_each_day*$_overdue_days;
                 if (isset($_overdue_days_ignore_holiday)){
-                    $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;  
+                    $_fines_value = $this->fine_each_day*$_overdue_days_ignore_holiday;
                     $_overdue_days = $_overdue_days_ignore_holiday;
                 }
                 return array('days' => $_overdue_days, 'value' => $_fines_value, 'item' => $_loan_d[2]);
@@ -470,7 +474,7 @@ class circulation extends member
     protected function insertLoanHistory($loan_id, $loan_data)
     {
         // Get additional bibliographic information
-        $query = "SELECT 
+        $query = "SELECT
             b.title,
             b.biblio_id,
             IF(i.call_number IS NULL, b.call_number, i.call_number) as call_number,
@@ -490,11 +494,11 @@ class circulation extends member
         LEFT JOIN member m ON m.member_id='{$loan_data['member_id']}'
         LEFT JOIN mst_member_type mmt ON m.member_type_id=mmt.member_type_id
         WHERE i.item_code='{$loan_data['item_code']}'";
-        
+
         $result = $this->obj_db->query($query);
         if ($result && $result->num_rows > 0) {
             $biblio_data = $result->fetch_assoc();
-            
+
             // Prepare loan history data with proper escaping and handle literal values
             $history_data = array(
                 'loan_id' => $loan_id,
@@ -519,7 +523,7 @@ class circulation extends member
                 'member_name' => $this->obj_db->escape_string($biblio_data['member_name'] ?? ''),
                 'member_type_name' => $this->obj_db->escape_string($biblio_data['member_type_name'] ?? '')
             );
-            
+
             // Build INSERT query
             $fields = array();
             $values = array();
@@ -531,14 +535,14 @@ class circulation extends member
                     $values[] = "'" . $value . "'";
                 }
             }
-            
-            $insert_query = "INSERT INTO loan_history (" . implode(', ', $fields) . ") 
+
+            $insert_query = "INSERT INTO loan_history (" . implode(', ', $fields) . ")
                            VALUES (" . implode(', ', $values) . ")";
-            
+
             $insert_result = $this->obj_db->query($insert_query);
             return $insert_result !== false;
         }
-        
+
         return false;
     }
 
@@ -552,31 +556,34 @@ class circulation extends member
     protected function updateLoanHistory($loan_id, $updated_data)
     {
         $update_fields = array();
-        
+
         // Map the fields that should be updated in loan_history
         $updatable_fields = array(
             'is_lent' => 'is_lent',
-            'is_return' => 'is_return', 
+            'is_return' => 'is_return',
             'renewed' => 'renewed',
             'return_date' => 'return_date'
         );
-        
+
         foreach ($updatable_fields as $loan_field => $history_field) {
             if (isset($updated_data[$loan_field])) {
-                if ($updated_data[$loan_field] === null || $updated_data[$loan_field] === 'NULL') {
+                $value = $updated_data[$loan_field];
+                if ($value === null || $value === 'NULL') {
                     $update_fields[] = "$history_field=NULL";
+                } elseif ($loan_field === 'renewed' && is_numeric($value)) {
+                    $update_fields[] = "$history_field=" . intval($value);
                 } else {
-                    $update_fields[] = "$history_field='" . $this->obj_db->escape_string($updated_data[$loan_field]) . "'";
+                    $update_fields[] = "$history_field='" . $this->obj_db->escape_string($value) . "'";
                 }
             }
         }
-        
+
         if (!empty($update_fields)) {
             $update_query = "UPDATE loan_history SET " . implode(', ', $update_fields) . " WHERE loan_id=$loan_id";
             $update_result = $this->obj_db->query($update_query);
             return $update_result !== false;
         }
-        
+
         return true;
     }
 
@@ -631,15 +638,15 @@ class circulation extends member
                 $data['input_date'] = date("Y-m-d H:i:s");
                 $data['last_update'] = date("Y-m-d H:i:s");
                 $data['uid'] = $_SESSION['uid'];
-                try {    
+                try {
                     $sql_op = new simbio_dbop($this->obj_db);
                     if ($sql_op->insert('loan', $data)) {
                         # get last insert id (loan_id)
                         $loan_id = $this->obj_db->insert_id;
-                        
+
                         // Insert loan history (replaces insert_loan_history trigger)
                         $this->insertLoanHistory($loan_id, $data);
-                        
+
                         if (isset($_SESSION['receipt_record'])) {
                             // get title
                             $_title_q = $this->obj_db->query('SELECT title, classification FROM biblio AS b INNER JOIN item AS i ON b.biblio_id=i.biblio_id WHERE i.item_code=\''.$data['item_code'].'\'');

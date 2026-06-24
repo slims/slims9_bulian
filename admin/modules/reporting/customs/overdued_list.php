@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
@@ -59,58 +60,61 @@ if (isset($_GET['reportView'])) {
 }
 
 if (!$reportView) {
-    ?>
+?>
     <!-- filter -->
-    <div>
-        <div class="per_title">
-            <h2><?php echo __('Overdued List'); ?></h2>
-        </div>
-        <div class="infoBox">
-          <?php echo __('Report Filter'); ?>
-        </div>
-        <div class="sub_section">
-            <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-                <div id="filterForm">
-                    <div class="divRow">
-                        <div class="divRowLabel"><?php echo __('Member ID') . '/' . __('Member Name'); ?></div>
-                        <div class="divRowContent">
-                          <?php
-                            echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control" style="width: 50%"');
+    <div class="menuBox">
+        <div class="menuBoxInner">
+            <div class="per_title">
+                <h2><?php echo __('Overdued List'); ?></h2>
+            </div>
+            <div class="infoBox">
+                <?php echo __('Report Filter'); ?>
+            </div>
+            <div class="sub_section">
+                <div>&nbsp;</div>
+                <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+                    <div id="filterForm">
+                        <div class="divRow">
+                            <div class="divRowLabel"><?php echo __('Member ID') . '/' . __('Member Name'); ?></div>
+                            <div class="divRowContent">
+                                <?php
+                                echo simbio_form_element::textField('text', 'id_name', '', 'class="form-control" style="width: 50%"');
                                 ?>
-                        </div>
-                    </div>
-                    <div class="form-group divRow">
-                        <div class="divRowContent">
-                            <div>
-                                <label style="width: 195px;"><?php echo __('Loan Date From'); ?></label>
-                                <label><?php echo __('Loan Date Until'); ?></label>
-                            </div>
-                            <div id="range">
-                                <input type="text" name="startDate" value="2000-01-01">
-                                <span><?= __('to') ?></span>
-                                <input type="text" name="untilDate" value="<?= date('Y-m-d') ?>">
                             </div>
                         </div>
-                    </div>
-                    <div class="divRow">
-                        <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
-                        <div class="divRowContent"><input type="text" name="recsEachPage" class="form-control col-1" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>"/> <?php echo __('Set between 20 and 200'); ?>
+                        <div class="form-group divRow">
+                            <div class="divRowContent">
+                                <div>
+                                    <label style="width: 195px;"><?php echo __('Loan Date From'); ?></label>
+                                    <label><?php echo __('Loan Date Until'); ?></label>
+                                </div>
+                                <div id="range">
+                                    <input type="text" name="startDate" value="2000-01-01">
+                                    <span><?= __('to') ?></span>
+                                    <input type="text" name="untilDate" value="<?= date('Y-m-d') ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divRow">
+                            <div class="divRowLabel"><?php echo __('Record each page'); ?></div>
+                            <div class="divRowContent"><input type="text" name="recsEachPage" class="form-control col-1" size="3" maxlength="3" value="<?php echo $num_recs_show; ?>" /> <?php echo __('Set between 20 and 200'); ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div style="padding-top: 10px; clear: both;">
-                    <input type="button" name="moreFilter" class="btn btn-default"  value="<?php echo __('Show More Filter Options'); ?>"/>
-                    <input type="submit" class="btn btn-primary" name="applyFilter" value="<?php echo __('Apply Filter'); ?>"/>
-                    <input type="hidden" name="reportView" value="true"/>
-                </div>
-            </form>
+                    <div style="padding-top: 10px; clear: both;">
+                        <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+                        <input type="submit" class="btn btn-primary" name="applyFilter" value="<?php echo __('Apply Filter'); ?>" />
+                        <input type="hidden" name="reportView" value="true" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             const elem = document.getElementById('range');
             const dateRangePicker = new DateRangePicker(elem, {
-                language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+                language: '<?= substr($sysconf['default_lang'], 0, 2) ?>',
                 format: 'yyyy-mm-dd',
             });
         })
@@ -118,8 +122,8 @@ if (!$reportView) {
     <!-- filter end -->
     <div class="dataListHeader" style="padding: 3px;"><span id="pagingBox"></span></div>
     <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>"
-            frameborder="0" style="width: 100%; height: 500px;"></iframe>
-  <?php
+        frameborder="0" style="width: 100%; height: 500px;"></iframe>
+<?php
 } else {
     ob_start();
     // table spec
@@ -153,11 +157,11 @@ if (!$reportView) {
     // loan date
     if (isset($_GET['startDate']) and isset($_GET['untilDate'])) {
         $date_criteria = sprintf(' AND (TO_DAYS(l.loan_date) BETWEEN TO_DAYS(\'%s\') AND
-          TO_DAYS(\'%s\'))', $dbs->real_escape_string($_GET['startDate']), $dbs->real_escape_string($_GET['untilDate']) );
+          TO_DAYS(\'%s\'))', $dbs->real_escape_string($_GET['startDate']), $dbs->real_escape_string($_GET['untilDate']));
         $overdue_criteria .= $date_criteria;
     }
     if (isset($_GET['recsEachPage'])) {
-        $recsEachPage = (integer) $_GET['recsEachPage'];
+        $recsEachPage = (int) $_GET['recsEachPage'];
         $num_recs_show = ($recsEachPage >= 5 && $recsEachPage <= 200) ? $recsEachPage : $num_recs_show;
     }
     $reportgrid->setSQLCriteria($overdue_criteria);
@@ -216,7 +220,7 @@ if (!$reportView) {
             $_buffer .= '<tr>';
             $_buffer .= '<td valign="top" width="10%">' . $ovd_title_d['item_code'] . '</td>';
             $_buffer .= '<td valign="top" width="40%">' . $ovd_title_d['title'] . '<div>' . __('Book Price') . ': ' . currency($ovd_title_d['price']) . '</div></td>';
-            $_buffer .= '<td width="20%"><div>' . __('Overdue') . ': ' . $overdue_days . ' ' . __('day(s)') . '</div><div>'.__('Fines').': '.$fines.'</div></td>';
+            $_buffer .= '<td width="20%"><div>' . __('Overdue') . ': ' . $overdue_days . ' ' . __('day(s)') . '</div><div>' . __('Fines') . ': ' . $fines . '</div></td>';
             $_buffer .= '<td width="30%">' . __('Loan Date') . ': ' . $ovd_title_d['loan_date'] . ' &nbsp; ' . __('Due Date') . ': ' . $ovd_title_d['due_date'] . '</td>';
             $_buffer .= '</tr>';
         }
@@ -230,14 +234,14 @@ if (!$reportView) {
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 
-    ?>
+?>
     <script type="text/javascript" src="<?php echo JWB . 'jquery.js'; ?>"></script>
     <script type="text/javascript" src="<?php echo JWB . 'updater.js'; ?>"></script>
     <script type="text/javascript">
         // registering event for send email button
-        $(document).ready(function () {
+        $(document).ready(function() {
             parent.$('#pagingBox').html('<?php echo str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set) ?>');
-            $('a.usingAJAX').click(function (evt) {
+            $('a.usingAJAX').click(function(evt) {
                 evt.preventDefault();
                 var anchor = $(this);
                 // get anchor href
@@ -250,14 +254,21 @@ if (!$reportView) {
                 }
                 // set ajax
                 if (postData) {
-                    container.simbioAJAX(url, {method: 'post', addData: postData});
+                    container.simbioAJAX(url, {
+                        method: 'post',
+                        addData: postData
+                    });
                 } else {
-                    container.simbioAJAX(url, {addData: {ajaxload: 1}});
+                    container.simbioAJAX(url, {
+                        addData: {
+                            ajaxload: 1
+                        }
+                    });
                 }
             });
         });
     </script>
-  <?php
+<?php
 
     $content = ob_get_clean();
     // include the page template

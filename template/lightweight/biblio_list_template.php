@@ -31,7 +31,7 @@ $label_cache = array();
  *
  * @param   object      $dbs
  * @param   array       $biblio_detail
- * @param   int		$n
+ * @param   int   $n
  * @param   array       $settings
  * @param   array       $return_back
  *
@@ -47,10 +47,10 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   $biblio_id  = $biblio_detail['biblio_id'];
   $detail_url = SWB.'index.php?p=show_detail&id='.$biblio_id.'&keywords='.$settings['keywords'];
   $cite_url   = SWB.'index.php?p=cite&id='.$biblio_id.'&keywords='.$settings['keywords'];  
-  $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.$title.'</a>';
+  $title_link = '<a href="'.$detail_url.'" class="titleField" itemprop="name" property="name" title="'.__('View record detail description for this title').'">'.stripslashes($title).'</a>';
 
   // label
-  if ($settings['show_labels'] AND !empty($biblio_detail['labels'])) {
+  if (isset($settings['show_labels']) AND !empty($biblio_detail['labels'])) {
     $labels = @unserialize($biblio_detail['labels']);
     if ($labels !== false) {
       foreach ($labels as $label) {
@@ -76,13 +76,14 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
   
   // button
   $xml_button = '';
-  $detail_button = '<a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
-  if ($settings['xml_detail']) {
+  #$detail_button = '<a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
+  $detail_button = '<div style="margin-top: 20px;"><a href="'.$detail_url.'" class="detailLink" title="'.__('View record detail description for this title').'">'.__('Record Detail').'</a>';
+  if (isset($settings['xml_detail'])) {
     $xml_button = '<a href="'.$detail_url.'&inXML=true" class="xmlDetailLink" title="'.__('View record detail description in XML Format').'" target="_blank">'.__('XML Detail').'</a>';
   }
   
   // citation button
-  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a>';
+  $cite_button = '<a href="'.$cite_url.'" class="openPopUp citationLink" title="'.str_replace('{title}', substr($title, 0, 50) , __('Citation for: {title}')).'" target="_blank">'.__('Cite').'</a></div>';
   
   // cover images var
   $image_cover = '';
@@ -90,7 +91,7 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
     $biblio_detail['image'] = urlencode($biblio_detail['image']);
     $images_loc = 'images/docs/'.$biblio_detail['image'];
     if($biblio_detail['image'] == '' || $biblio_detail['image'] == NULL){
-        $images_loc = 'images/default/image.png'; 
+      $images_loc = 'images/default/image.png'; 
     }
     if ($sysconf['tg']['type'] == 'minigalnano') {
       $thumb_url = './lib/minigalnano/createthumb.php?filename='.urlencode($images_loc).'&width=120';
@@ -150,16 +151,16 @@ function biblio_list_format($dbs, $biblio_detail, $n, $settings = array(), &$ret
             $output .= '<div class="customField availabilityField"><b>'.$field_opts[1].'</b> : '.$item_availability_message.'</div>';
           }
         } else if ($field == 'node_id' && $settings['disable_item_data']) {
-  	    $output .= '<div class="customField locationField"><b>'.$field_opts[1].'</b> : '.$sysconf['node'][$biblio_detail['node_id']]['name'].'</div>';
-  	}
+        $output .= '<div class="customField locationField"><b>'.$field_opts[1].'</b> : '.$sysconf['node'][$biblio_detail['node_id']]['name'].'</div>';
+    }
       }
     }
   }
 
   // checkbox for marking collection
   $_i= rand(); // Add By Eddy Subratha
-  $_check_mark = (utility::isMemberLogin() && $settings['enable_mark'])?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
-  $output .= '<div class="subItem">'.$detail_button.$xml_button.$_check_mark.$cite_button.'</div>';
+  $_check_mark = (utility::isMemberLogin() && ($settings['enable_mark']??false))?' <input type="checkbox" id="biblioCheck'.$_i.'" name="biblio[]" class="biblioCheck" value="'.$biblio_id.'" /> <label for="biblioCheck'.$_i.'">'.__('mark this').'</label>':'';
+  $output .= '<div class="subItem">'.$detail_button.$xml_button.$cite_button.$_check_mark.'</div>';
   
   // social buttons
   if ($sysconf['social_shares']) {

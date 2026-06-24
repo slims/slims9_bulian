@@ -132,12 +132,14 @@ if (isset($_POST['updateData'])) {
       'image' => [
         'filename' => 'logo',
         'extension' => $sysconf['allowed_images'],
+        'mime' => $sysconf['allowed_images_mimetype'],
         'max' => $sysconf['max_image_upload']*1024,
         'configname' => 'logo_image'
       ],
       'icon' => [
         'filename' => 'webicon',
         'extension' => ['.ico','.png'],
+        'mime' => ['image/x-icon', 'image/png'],
         'max' => $sysconf['max_image_upload']*1024,
         'configname' => 'webicon'
       ]
@@ -149,26 +151,25 @@ if (isset($_POST['updateData'])) {
       if (empty($_FILES[$name]['name'])) continue;
 
       $config = $imagesConfig[$name];
-      $imagesDisk->upload($name, function($imagesDisk) use($config) {
-          // Extension check
-          $imagesDisk->isExtensionAllowed($config['extension']);
-
-          // limitation
-          $imagesDisk->isLimitExceeded($config['max']);
-
-          // exif removal
-          $imagesDisk->cleanExifInfo();
-
-          // destroy it if failed
-          if (!empty($imagesDisk->getError())) $imagesDisk->destroyIfFailed();
-
+      $upload = $imagesDisk->upload($name, function($image) use($config) {
+          $image->isExtensionAllowed($config['extension']);
+          $image->isLimitExceeded($config['max']);
+          $image->isMimeAllowed($config['mime'] ?? []);
+          $image->isImageFile();
+          if (empty($image->getError())) {
+            $image->cleanExifInfo();
+            $image->sanitizeImageWithGD();
+          }
+          if (!empty($image->getError())) {
+            $image->destroyIfFailed();
+          }
       })->as('default' . DS . $config['filename']);
 
-      if ($imagesDisk->getUploadStatus()) {
-        addOrUpdateSetting($config['configname'], $dbs->real_escape_string($imagesDisk->getUploadedFileName()));
+      if ($upload->getUploadStatus()) {
+        addOrUpdateSetting($config['configname'], $dbs->real_escape_string($upload->getUploadedFileName()));
         $updateImageCache = true;
       } else {
-          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$imagesDisk->getError(), 'error');
+          utility::jsToastr('System', __('Image Uploaded Failed') .' : ' . $config['filename'] . '<br/>'.$upload->getError(), 'error');
       }
     }
 
@@ -295,7 +296,7 @@ if (isset($_POST['updateData'])) {
     addOrUpdateSetting('http', $http);
 
     // Simplified the simple search
-    addOrUpdateSetting('simplified_simple_search', boolval($_POST['simplified_simple_search']));
+    addOrUpdateSetting('simplified_simple_search', boolval((int)$_POST['simplified_simple_search']));
 
     // Strong password policy
     $strong_password_policy = $_POST['password_policy_strong'] == '1'?true:false;
@@ -348,7 +349,7 @@ if(isset($sysconf['logo_image']) && $imagesDisk->isExists('default/'.$sysconf['l
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&limg='.$sysconf['logo_image'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
 $str_input .= '<div class="custom-file col-3 d-block">';
-$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile"');
+$str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" id="customFile" accept=".jpg,.jpeg,.png,.gif"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
@@ -361,7 +362,7 @@ if(isset($sysconf['webicon']) && $imagesDisk->isExists('default/'.$sysconf['webi
     $str_input .= '<a href="'.MWB.'system/index.php" postdata="removeImage=true&wimg='.$sysconf['webicon'].'" class="btn btn-sm btn-danger">'.__('Remove Image').'</a></div>';
 }
 $str_input .= '<div class="custom-file col-3">';
-$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile"');
+$str_input .= simbio_form_element::textField('file', 'icon', '', 'class="custom-file-input" id="customFile" accept=".ico,.png"');
 $str_input .= '<label class="custom-file-label" for="customFile">'.__('Choose file').'</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="mt-2 ml-2">Maximum 100 KB</div>';
@@ -405,16 +406,49 @@ $form->addAnything(__('Logo Image'), $str_input);
 // $form->addSelectList('admin_template', __('Admin Template'), $admin_tpl_options, $sysconf['admin_template']['theme']);
 
 // application language
-$form->addSelectList('default_lang', __('Default App. Language'), Memory::getInstance()->getLanguages(), $sysconf['default_lang'], 'class="form-control col-3"');
+
+$options = null;
+$languages = Memory::getInstance()->getLanguages();
+foreach ($languages as $lang) {
+    $flag = Memory::getFlag($lang[0]);
+    $displayText = trim($flag . ' ' . $lang[1]);
+    $options[] = array($lang[0], $displayText);
+}
+$form->addSelectList('default_lang', __('Default App. Language'), $options, $sysconf['default_lang'], 'class="form-control col-3"');
 
 // timezone
 $html  = '<input type="text" class="form-control col-2" name="timezone" value="' . ($sysconf['timezone'] ?? 'Asia/Jakarta') . '"/>';
 $html .= '<a target="_blank" href="https://www.php.net/manual/en/timezones.php">' . __('List of timezones supported by PHP') . '</a>';
 $form->addAnything(__('Default App. Timezone'), $html);
 
-// search engine
+// search engine with settings button
 $engine = array_map(fn($e) => [$e, $e], Engine::init()->get());
-$form->addSelectList('search_engine', __('Search Engine'), $engine, $sysconf['search_engine'] ?? DefaultEngine::class, 'class="select2 col-md-6"');
+$html = '<div class="input-group">';
+$html .= '<select id="search_engine_select" name="search_engine" class="custom-select col-md-6">';
+foreach ($engine as $opt) {
+    $val = $opt[0];
+    $label = $opt[1];
+    $selected = ($val == ($sysconf['search_engine'] ?? DefaultEngine::class)) ? ' selected' : '';
+    $html .= '<option value="'.htmlspecialchars($val).'"'.$selected.'>'.htmlspecialchars($label).'</option>';
+}
+$html .= '</select>';
+$html .= '<div class="input-group-append">';
+$html .= '<a id="searchEngineSettingsBtn" class="btn btn-outline-secondary openPopUp notAJAX" width="800" height="600" href="#" title="'.__('Search Engine Settings').'">'.__('Settings').'</a>';
+$html .= '</div>';
+$html .= '</div>';
+$html .= "<script>
+(function(){
+  var sel = document.getElementById('search_engine_select');
+  var btn = document.getElementById('searchEngineSettingsBtn');
+  function updateBtn(){
+    var v = encodeURIComponent(sel.value);
+    btn.setAttribute('href', '".MWB."system/search-engine-setting.php?engine=' + v);
+  }
+  sel.addEventListener('change', updateBtn);
+  updateBtn();
+})();
+</script>";
+$form->addAnything(__('Search Engine'), $html);
 
 // opac result list number
 $result_num_options[] = array('10', '10');
@@ -495,7 +529,8 @@ $options = null;
 $options[] = array('0', __('Disable'));
 $options[] = array('1', __('Enable'));
 $form->addSelectList('enable_counter_by_ip', __('Visitor Counter by IP'), $options, $sysconf['enable_counter_by_ip']?'1':'0','class="form-control col-3"');
-$form->addTextField('textarea', 'allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $sysconf['allowed_counter_ip']), 'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
+$ip_value = is_array($sysconf['allowed_counter_ip']) ? $sysconf['allowed_counter_ip'] : [];
+$form->addTextField('textarea','allowed_counter_ip', __('Allowed Counter IP'), implode('; ', $ip_value),'style="width: 100%;" class="form-control"', __('Separate ip with ;'));
 
 $form->addSelectList('enable_visitor_limitation', __('Visitor Limitation by Time'), $options, $sysconf['enable_visitor_limitation']?'1':'0','class="form-control col-3"');
 
@@ -525,7 +560,7 @@ $form->addSelectList('ignore_ssl_verification', __('Ignore SSL verification'), $
 $options = null;
 $options[] = array('1', __('Yes'));
 $options[] = array('0', __('No'));
-$form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search', true)),'class="form-control col-3"');
+$form->addSelectList('simplified_simple_search', __('Simplified the simple search. narrowing search aspects'), $options, ((int)config('simplified_simple_search')),'class="form-control col-3"');
 
 $options = null;
 $options[] = array('1', __('Yes'));

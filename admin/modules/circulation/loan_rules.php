@@ -97,6 +97,7 @@ if (isset($_POST['saveData'])) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $active_loan_rules = false;
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -109,11 +110,13 @@ if (isset($_POST['saveData'])) {
             if (!$sql_op->delete('mst_loan_rules', 'loan_rules_id='.$itemID)) {
                 $error_num++;
             }
+        }else {
+            $active_loan_rules = true;
         }
     }
     // error alerting
     if ($error_num == 0) {
-        if (!$lrStatus) {
+        if (!$active_loan_rules) {
             toastr(__('All Data Successfully Deleted'))->success();
             echo '<script language="Javascript">parent.jQuery(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_POST['lastQueryStr'].'\');</script>';
         } else {

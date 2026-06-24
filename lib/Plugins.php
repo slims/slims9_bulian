@@ -24,7 +24,10 @@ class Plugins
     /**
      * Constanta's List of Hooks
      */
+    const SYSCONFIG_ALL_INIT = 'sysconfig_all_init';
     const ADMIN_SESSION_AFTER_START = 'admin_session_after_start';
+    const ADMIN_AFTER_MODULE_LOADED = 'admin_after_module_loaded';
+    const ADMIN_AFTER_CONTENT_LOADED = 'admin_after_content_loaded';
     const CONTENT_BEFORE_LOAD = 'before_content_load';
     const CONTENT_AFTER_LOAD = 'after_content_load';
     const BIBLIOGRAPHY_INIT = 'bibliography_init';
