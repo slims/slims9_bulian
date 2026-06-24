@@ -66,12 +66,12 @@ class DefaultEngine extends Contract
 
     function buildSQL(): array
     {
-        $sql_select = 'select b.biblio_id, b.title, b.image, b.isbn_issn, b.publish_year,
+        $sql_select = "select b.biblio_id, b.title, b.image, b.isbn_issn, b.publish_year,
                        b.edition, b.collation, b.series_title, b.call_number,
                        mp.publisher_name as `publisher`, mpl.place_name as `publish_place`, b.labels, b.input_date,
                        mg.gmd_name as `gmd`,
-                       GROUP_CONCAT(DISTINCT ma.author_name SEPARATOR " - ") AS author,
-                       GROUP_CONCAT(DISTINCT mt.topic SEPARATOR ", ") AS topic';
+                       GROUP_CONCAT(DISTINCT ma.author_name SEPARATOR ' - ') AS author,
+                       GROUP_CONCAT(DISTINCT mt.topic SEPARATOR ', ') AS topic";
 
         // checking custom front page fields file
         $file_path = SB;
