@@ -88,7 +88,7 @@ if (isset($_POST['updateRecordID']) && isset($_POST['disable2fa']) && isset($_GE
     $uid = (int)utility::filterData('updateRecordID', 'post', true, true, true);
     $arr = explode(':', $uid);
     if ($_SESSION['uid'] == 1 || $uid == $_SESSION['uid']) {
-        $update = $dbs->query(sprintf("update user set 2fa = null where user_id = '%d'", $uid));
+        $update = $dbs->query(sprintf("update user set `2fa` = null where user_id = '%d'", $uid));
         if ($update) {
             echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             toastr(__('Two-factor authentication has been disabled.'))->success();
