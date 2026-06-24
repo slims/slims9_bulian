@@ -73,8 +73,8 @@ if ((bool) ini_get('safe_mode')) {
 }
 
 // senayan version
-define('SENAYAN_VERSION', 'SLiMS 9 (Bulian D Roger)');
-define('SENAYAN_VERSION_TAG', 'v9.7.2');
+define('SENAYAN_VERSION', 'SLiMS 9 (Bulian D Ace)');
+define('SENAYAN_VERSION_TAG', 'v9.8.0');
 
 // senayan session cookies name
 define('COOKIES_NAME', 'SenayanAdmin');
