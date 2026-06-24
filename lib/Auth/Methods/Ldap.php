@@ -205,7 +205,7 @@ class Ldap extends Native
             $_check_q = DB::query(<<<SQL
             SELECT
                 u.user_id as uid, u.username as uname, u.passwd,
-                u.realname as realname, u.groups, u.user_image as upict, u.2fa
+                u.realname as realname, u.groups, u.user_image as upict, u.`2fa`
                 FROM user AS u
                 WHERE u.username=?
             SQL, [$username]);
