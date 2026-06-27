@@ -57,7 +57,7 @@ $report_q = $dbs->query('SELECT gmd_name, COUNT(loan_id) FROM loan AS l
     INNER JOIN item AS i ON l.item_code=i.item_code
     INNER JOIN biblio AS b ON i.biblio_id=b.biblio_id
     INNER JOIN mst_gmd AS gmd ON b.gmd_id=gmd.gmd_id
-    GROUP BY b.gmd_id ORDER BY COUNT(loan_id) DESC');
+    GROUP BY b.gmd_id, gmd.gmd_name ORDER BY COUNT(loan_id) DESC');
 
 $report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_gmd" width="700" height="470" title="'.__('Total Loan By GMD/Medium').'">'.__('Show in chart/plot').'</a></div>';
 $stat_d = '';
@@ -71,7 +71,7 @@ $loan_report[__('Total Loan By GMD/Medium')] = $report_d;
 $report_q = $dbs->query('SELECT coll_type_name, COUNT(loan_id) FROM loan AS l
     INNER JOIN item AS i ON l.item_code=i.item_code
     INNER JOIN mst_coll_type AS ct ON i.coll_type_id=ct.coll_type_id
-    GROUP BY i.coll_type_id ORDER BY COUNT(loan_id) DESC');
+    GROUP BY i.coll_type_id, ct.coll_type_name ORDER BY COUNT(loan_id) DESC');
 
 $report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="'.MWB.'reporting/charts_report.php?chart=total_loan_colltype" width="700" height="470" title="'.__('Total Loan By Collection Type').'">'.__('Show in chart/plot').'</a></div>';
 $stat_d = '';

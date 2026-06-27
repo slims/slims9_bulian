@@ -110,7 +110,7 @@ if (!$reportView) {
             THEN input_date
             ELSE NULL
         END
-    )");
+    ), item.received_date, item.input_date");
 
     if ($_q && $_q->num_rows > 0) {
         while ($_d = $_q->fetch_row()) {

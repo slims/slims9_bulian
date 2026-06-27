@@ -385,7 +385,7 @@ if ($search_engine ===  SearchBiblioEngine::class || $is_sphinx) {
         $datagrid->setSQLColumn('biblio.biblio_id, biblio.title, COUNT(i.item_id) as ' . __('Item'));
     }
 
-    $datagrid->sql_group_by = "biblio.biblio_id";
+    $datagrid->sql_group_by = "biblio.biblio_id, biblio.title, biblio.call_number, biblio.last_update";
 
     //  SELECT IF(item.item_id IS NOT NULL, item.item_id, CONCAT('b', biblio.biblio_id)), biblio.title AS 'Title', IF(item.call_number<>'', item.call_number, biblio.call_number) AS 'Call Number'
     //  FROM biblio LEFT JOIN item ON biblio.biblio_id=item.biblio_id

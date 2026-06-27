@@ -241,7 +241,7 @@ if (!$reportView) {
 
     // subquery/view string
     $subquery_str = '(SELECT DISTINCT bsub.biblio_id, bsub.gmd_id, bsub.title, bsub.isbn_issn, bsub.call_number, bsub.classification, bsub.language_id,
-		bsub.publish_place_id, bsub.publisher_id
+        bsub.publish_place_id, bsub.publisher_id
         FROM biblio AS bsub
         LEFT JOIN biblio_author AS ba ON bsub.biblio_id = ba.biblio_id
         LEFT JOIN mst_author AS ma ON ba.author_id = ma.author_id
@@ -251,11 +251,11 @@ if (!$reportView) {
     // table spec
     $table_spec = $subquery_str . ' AS b
         LEFT JOIN item AS i ON b.biblio_id=i.biblio_id
-		LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id
-		LEFT JOIN mst_publisher AS pb ON b.publisher_id=pb.publisher_id';
+        LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id
+        LEFT JOIN mst_publisher AS pb ON b.publisher_id=pb.publisher_id';
 
     // set group by
-    $reportgrid->sql_group_by = 'b.biblio_id';
+    $reportgrid->sql_group_by = 'b.biblio_id, b.title, b.isbn_issn, b.call_number, b.classification, b.language_id, pl.place_name, pb.publisher_name, b.publish_place_id, b.publisher_id';
     $reportgrid->setSQLCriteria($outer_criteria);
 
     // callback function to show title and authors

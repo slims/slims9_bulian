@@ -707,7 +707,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         'bl.additional_information AS \'' . __('Additional Information') . '\'');
     $datagrid->modifyColumnContent(2, 'callback{affectedDetail}');
     $datagrid->setSQLorder('bl.biblio_log_id DESC');
-    $datagrid->sql_group_by = 'bl.date';
+    $datagrid->sql_group_by = 'bl.date, bl.realname, bl.additional_information';
     $datagrid->setSQLCriteria($criteria);
     // set table and table header attributes
     $datagrid->table_attr = 'id="dataList" class="s-table table"';
@@ -1297,7 +1297,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         $datagrid->setSQLorder('index.last_update DESC');
 
         // set group by
-        $datagrid->sql_group_by = 'index.biblio_id';
+        $datagrid->sql_group_by = 'index.biblio_id,
+                                   index.title,
+                                   index.labels,
+                                   index.image,
+                                   index.author,
+                                   index.edition,
+                                   index.isbn_issn,
+                                   index.last_update';
 
     } else {
         require LIB . 'biblio_list.inc.php';
@@ -1324,7 +1331,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         $datagrid->setSQLorder('biblio.last_update DESC');
 
         // set group by
-        $datagrid->sql_group_by = 'biblio.biblio_id';
+        $datagrid->sql_group_by = 'biblio.biblio_id, 
+                                   biblio.title, 
+                                   biblio.labels, 
+                                   biblio.image, 
+                                   biblio.author, 
+                                   biblio.edition, 
+                                   biblio.isbn_issn, 
+                                   biblio.last_update';
     }
 
     $stopwords = "@\sAnd\s|\sOr\s|\sNot\s|\sThe\s|\sDan\s|\sAtau\s|\sAn\s|\sA\s@i";

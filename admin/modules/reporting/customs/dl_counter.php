@@ -175,7 +175,7 @@ if (!$reportView) {
         left join search_biblio b on ba.biblio_id = b.biblio_id';
 
     // set group by
-    $reportgrid->sql_group_by = 'fr.file_id';
+    $reportgrid->sql_group_by = 'fr.file_id, f.file_title, f.mime_type, f.file_id';
     $reportgrid->setSQLCriteria($criteria);
 
     // callback function to show title and authors

@@ -70,7 +70,7 @@ $loan_report[__('Total Active Member')] = $report_d[0];
 $report_q = $dbs->query('SELECT member_type_name, COUNT(member_id) FROM mst_member_type AS mt
     LEFT JOIN member AS m ON mt.member_type_id=m.member_type_id
     WHERE TO_DAYS(expire_date)>TO_DAYS(\'' . date('Y-m-d') . '\')
-    GROUP BY m.member_type_id ORDER BY COUNT(member_id) DESC');
+    GROUP BY m.member_type_id, mt.member_type_name ORDER BY COUNT(member_id) DESC');
 
 $report_d = '<div class="chartLink"><a class="btn btn-success notAJAX openPopUp" href="' . MWB . 'reporting/charts_report.php?chart=total_member_by_type" width="700" height="470" title="' . __('Total Members By Membership Type') . '">' . __('Show in chart/plot') . '</a></div>';;
 $stat_data = '';
@@ -92,7 +92,7 @@ $report_q = $dbs->query('SELECT m.member_name, m.member_id, COUNT(loan_id) FROM 
     INNER JOIN member AS m ON m.member_id=l.member_id
     WHERE TO_DAYS(expire_date)>TO_DAYS(\'' . date('Y-m-d') . '\')
     AND (loan_date BETWEEN \'' . $start . '\' AND \'' . $end . '\')
-    GROUP BY l.member_id ORDER BY COUNT(loan_id) DESC LIMIT 10');
+    GROUP BY m.member_id, m.member_name ORDER BY COUNT(loan_id) DESC LIMIT 10');
 if ($report_q->num_rows > 0) {
   $_ = '__';
   if (!isset($_POST['print'])) {
