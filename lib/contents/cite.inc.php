@@ -60,7 +60,10 @@ extract($biblio_detail);
 //     continue;
 //   } else {
     include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.'apa_style_template.php'; 
+// the line below was introduced by gurujim to enable Australian Government Publishing Service citation style
+    include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.'agps_style_template.php'; 
     include_once SB.'template'.DS.$sysconf['template']['theme'].DS.'citation'.DS.'mla_style_template.php'; 
+
 //   }
 // }
 
