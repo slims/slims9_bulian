@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
+ * Copyright (C) 2007,2008 Arie Nugraha (dicarve@yahoo.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,12 +9,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  *
  */
 
@@ -151,7 +151,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             if ($update) {
                 utility::jsToastr(__('Member Type'),__('Member Type Successfully Updated'),'success');
                 // update all member expire date
-                $dbs->query('UPDATE member AS m SET expire_date=DATE_ADD( COALESCE(register_date, now()),INTERVAL '.$data['member_periode'].'  DAY)
+                $dbs->query('UPDATE member AS m SET expire_date=DATE_ADD( COALESCE(register_date, now()),INTERVAL '.$data['member_periode'].' DAY)
                     WHERE member_type_id='.$updateRecordID);
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
             } else { utility::jsToastr(__('Member Type'),__('Member Type Data FAILED to Save/Update. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error,'error'); }
@@ -175,6 +175,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     $sql_op = new simbio_dbop($dbs);
     $failed_array = array();
     $error_num = 0;
+    $still_use_member = array(); 
     if (!is_array($_POST['itemID'])) {
         // make an array
         $_POST['itemID'] = array((integer)$_POST['itemID']);
@@ -190,15 +191,21 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         WHERE mmt.member_type_id='.$itemID.' GROUP BY mmt.member_type_name';
         $type_member_q = $dbs->query($_sql_type_member_q);
         $type_member_d = $type_member_q->fetch_row();
-        if ($type_member_d[1] < 1) {
+        if (is_array($type_member_d) && $type_member_d[1] < 1) {
             if (!$lrStatus) {
                 if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
                     $error_num++;
                 }
             }
-        }else{
+        } elseif (!is_array($type_member_d)) {
+            if (!$lrStatus) {
+                if (!$sql_op->delete('mst_member_type', 'member_type_id='.$itemID)) {
+                    $error_num++;
+                }
+            }
+        } else {
             $still_use_member[] = sprintf(__('Member Type %s still in use %d member(s)')."<br/>",substr($type_member_d[0], 0, 45),$type_member_d[1]);
-            $error_num++;                       
+            $error_num++;
         }
     }
 
@@ -237,18 +244,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner memberTypeIcon">
-	<div class="per_title">
-    	<h2><?php echo __('Member Type'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Member Type'); ?></h2>
     </div>
     <div class="sub_section">
-	    <div class="btn-group">
-		    <a href="<?php echo MWB; ?>membership/member_type.php" class="btn btn-default"><?php echo __('Member Type List'); ?></a>
-		    <a href="<?php echo MWB; ?>membership/member_type.php?action=detail" class="btn btn-default"><?php echo __('Add New Member Type'); ?></a>
-	    </div>
-	    <form name="search" action="<?php echo MWB; ?>membership/member_type.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
-		    <input type="text" name="keywords" class="form-control col-md-3" />
-		    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
-	    </form>
+        <div class="btn-group">
+            <a href="<?php echo MWB; ?>membership/member_type.php" class="btn btn-default"><?php echo __('Member Type List'); ?></a>
+            <a href="<?php echo MWB; ?>membership/member_type.php?action=detail" class="btn btn-default"><?php echo __('Add New Member Type'); ?></a>
+        </div>
+        <form name="search" action="<?php echo MWB; ?>membership/member_type.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
+            <input type="text" name="keywords" class="form-control col-md-3" />
+            <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+        </form>
     </div>
 </div>
 </div>
@@ -290,7 +297,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // loan limit
     $form->addTextField('text', 'loanLimit', __('Loan Limit'), $rec_d['loan_limit']??'', 'style="width:25%" class="form-control"');
     // loan periode
-    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode']??'', 'style="width:25%"  class="form-control"');
+    $form->addTextField('text', 'loanPeriode', __('Loan Periode (In Days)'), $rec_d['loan_periode']??'', 'style="width:25%" class="form-control"');
     // enable reserve
     $enable_resv_chbox[0] = array('1', __('Enable'));
     $enable_resv_chbox[1] = array('0', __('Disable'));
@@ -337,8 +344,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // is there any search
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
-       $keywords = utility::filterData('keywords', 'get', true, true, true);
-       $datagrid->setSQLCriteria("mt.member_type_name LIKE '%$keywords%'");
+        $keywords = utility::filterData('keywords', 'get', true, true, true);
+        $datagrid->setSQLCriteria("mt.member_type_name LIKE '%$keywords%'");
     }
 
     // set table and table header attributes

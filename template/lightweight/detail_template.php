@@ -9,7 +9,7 @@
   <!-- Title 
   ============================================= -->
   <h3 class="s-detail-type"><?php echo $gmd_name ?></h3>
-  <h4 class="s-detail-title" itemprop="name" property="name"><?php echo $title ?></h4>
+  <h4 class="s-detail-title" itemprop="name" property="name"><?php echo stripcslashes($title) ?></h4>
   <?php if($sysconf['social_shares']) { echo $social_shares; } ?>
   <br>
   <div class="s-detail-author" itemprop="author" property="author" itemscope itemtype="http://schema.org/Person">
@@ -157,6 +157,30 @@
   </table>
   </div>
   </div>
+
+    <!-- Biblio Custom
+  ============================================= -->
+    <?php if(count($biblio_custom) > 0) {; ?>
+    <h3><i class="fa fa-circle-o"></i> <?php echo __('Other Information'); ?></h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="s-table">
+                <tbody>
+                <!-- ============================================= -->
+                <?php foreach ($biblio_custom as $item) { ?>
+                <tr>
+                    <th><?php echo $item['label']; ?></th>
+                    <td>
+                        <div itemprop="alternativeHeadline" property="alternativeHeadline"><?php echo ($item['value']) ? $item['value'] : '-'; ?></div>
+                    </td>
+                </tr>
+                <?php }; ?>
+                <!-- ============================================= -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <?php }; ?>
 
   <!-- Related biblio data
   ============================================= -->  

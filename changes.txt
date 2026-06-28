@@ -43,6 +43,17 @@ Code enhancement: John Antony (john.antony@iamplus.com)
 
 THANKS TO OUR USERS AND COMMUNITIES, YOU ARE DEVELOPERS TOO!
 
+SLiMS 9.8.0 (Bulian D Ace)
+========================================================================
+• Security: Hardened upload, image scraping, attachment handling, backup download/delete, lookup, visitor counter, and output escaping against SQLi, XSS, SSRF, CSRF, path traversal, and unsafe image metadata.
+• Search: Added Fuzzy Search and Sphinx Search engines with settings UI, active-engine integration, fallback handling, and larger index word support.
+• Reports: Added PDF export support via mPDF for datagrid reports and title lists.
+• Maintenance: Added Image Maintenance Tool for cleanup, rebuild, backup, and synchronization.
+• Circulation/Member: Added round-robin item reservation and fixed loan-history renewal/duplicate handling.
+• Bibliography/OPAC: Improved custom-field handling, template configurability, external repository uploads, thumbnail generation, and UCS auto-delete behavior.
+• Upgrade/Install: Synced installer schema with upgrade flow; optimized index definitions; updated dependencies and Docker environment handling.
+• Extensibility: Added hooks for sysconfig, OPAC index, Admin index, and bibliography save data references.
+
 SLiMS 9.7.2 (Bulian D Roger)
 ========================================================================
 • Feature: Loan History Maintenance + menu integration.

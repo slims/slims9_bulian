@@ -87,7 +87,7 @@ class Native extends Contract
         $user = DB::query(<<<SQL
         SELECT
             u.user_id as uid, u.username as uname, u.passwd,
-            u.realname as realname, u.groups, u.user_image as upict, u.2fa
+            u.realname as realname, u.groups, u.user_image as upict, u.`2fa`, u.admin_template as template
             FROM user AS u
             WHERE u.username=?
         SQL, [$this->username]);
@@ -127,6 +127,7 @@ class Native extends Contract
         $this->data['biblioAuthor'] = array();
         $this->data['biblioTopic'] = array();
         $this->data['biblioAttach'] = array();
+        $this->data['template'] = unserialize($this->data['template'] ?? 'N;');
 
         if (empty($this->data['upict'])) {
             $this->data['upict'] = 'person.png';

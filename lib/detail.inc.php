@@ -352,46 +352,61 @@ HTML;
       if (file_exists(MDLBS.'bibliography/custom_fields.inc.php')) {
         include MDLBS.'bibliography/custom_fields.inc.php';
       }
+
       $columns = '';
+      $public_fields = array();
+
       if (isset($biblio_custom_fields)) {
         foreach ($biblio_custom_fields as $custom_field) {
-          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1')
+          if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1') {
             $columns .= $custom_field['dbfield'] . ', ';
+            $public_fields[$custom_field['dbfield']] = $custom_field;
+          }
         }
-        if ($columns !== '') {
-          $columns = substr($columns, 0, -2);
+
+        if ($columns === '') {
+          return $_return;
         }
+
+        $columns = substr($columns, 0, -2);
       } else {
-        $columns = '*';
+        return $_return;
       }
 
       $query = $this->db->query(sprintf("SELECT %s FROM biblio_custom WHERE biblio_id=%d", $columns, $this->detail_id));
+
       if ($query) {
         $data = $query->fetch_assoc();
-        if (isset($biblio_custom_fields)) {
-          foreach ($biblio_custom_fields as $custom_field) {
-            if (isset($custom_field['is_public']) && $custom_field['is_public'] == '1' && isset($data[$custom_field['dbfield']])) {
-
+        if ($data) {
+          foreach ($public_fields as $custom_field) {
+            $dbfield = $custom_field['dbfield'];
+            if (isset($data[$dbfield])) {
               $data_field = unserialize($custom_field['data']??'');
-              $data_record  = $data[$custom_field['dbfield']];
+              if (!is_array($data_field)) $data_field = [];
+              $data_record  = $data[$dbfield];
+              $arr = [];
+              $value = '';
 
               switch ($custom_field['type']) {
                 case 'dropdown':
                 case 'choice':
-                  $value = end($data_field[$data_record]);
+                  $temp_array = $data_field[$data_record] ?? [];
+                  $value = end($temp_array);
                   break;
                 case 'checklist':
                   $data_record = unserialize($data_record);
-                  foreach ($data_record as $key => $val) {
-                    if(isset($data_field[$val])){
-                    $arr[] = end($data_field[$val]);
+                  if (is_array($data_record)) {
+                    foreach ($data_record as $key => $val) {
+                      if(isset($data_field[$val])){
+                        $temp_array = $data_field[$val] ?? [];
+                        $arr[] = end($temp_array);
+                      }
                     }
                   }
-                  // convert array to string
                   $value = implode(' -- ',$arr);
                   break;
                 default:
-                  $value = $data[$custom_field['dbfield']];
+                  $value = $data[$dbfield];
                   break;
               }
 
@@ -1041,7 +1056,7 @@ HTML;
           LEFT JOIN files AS f ON att.file_id=f.file_id WHERE att.biblio_id='.$this->detail_id.' AND att.access_type=\'public\' LIMIT 20');
       if ($attachment_q->num_rows > 0) {
         while ($attachment_d = $attachment_q->fetch_assoc()) {
-            $_xml_output .= '<dc:relation><![CDATA[';
+            // $_xml_output .= '<dc:relation><![CDATA[';
             // check member type privileges
             if ($attachment_d['access_limit']) { continue; }
             $jsonld['associatedMedia']['name'] = trim($attachment_d['file_title']);

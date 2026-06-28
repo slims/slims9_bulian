@@ -18,6 +18,8 @@
  *
  */
 
+use SLiMS\Filesystems\Storage;
+
 /* Staffs/Application Users Management section */
 
 // key to authenticate
@@ -39,7 +41,6 @@ require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
-
 // privileges checking
 $can_read = utility::havePrivilege('system', 'r');
 $can_write = utility::havePrivilege('system', 'w');
@@ -70,7 +71,8 @@ if (!$changecurrent) {
 if (isset($_POST['secret_code']) && isset($_POST['verify_code'])) {
     $secret = utility::filterData('secret_code', 'post', true, true, true);
     $otp = OTPHP\TOTP::createFromSecret($secret);
-    $isOk = $otp->verify(trim($_POST['verify_code']));
+    $verify_code = trim(utility::filterData('verify_code', 'post', true, true, true));
+    $isOk = $otp->verify($verify_code);
     if ($isOk) {
         // save to session for next purpose
         $_SESSION['2fa_secret'] = $secret;
@@ -86,7 +88,7 @@ if (isset($_POST['updateRecordID']) && isset($_POST['disable2fa']) && isset($_GE
     $uid = (int)utility::filterData('updateRecordID', 'post', true, true, true);
     $arr = explode(':', $uid);
     if ($_SESSION['uid'] == 1 || $uid == $_SESSION['uid']) {
-        $update = $dbs->query(sprintf("update user set 2fa = null where user_id = '%s'", $uid));
+        $update = $dbs->query(sprintf("update user set `2fa` = null where user_id = '%d'", $uid));
         if ($update) {
             echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
             toastr(__('Two-factor authentication has been disabled.'))->success();
@@ -102,18 +104,22 @@ if (isset($_POST['updateRecordID']) && isset($_POST['disable2fa']) && isset($_GE
 /* REMOVE IMAGE */
 if (isset($_POST['removeImage']) && isset($_POST['uimg']) && isset($_POST['img'])) {
   // validate post image
-  $user_id = $_SESSION['uid'] > 1 ? $_SESSION['uid'] : utility::filterData('uimg', 'post', true, true, true);
-  $image_name = utility::filterData('img', 'post', true, true, true);
+  $user_id = $_SESSION['uid'] > 1 ? (integer)$_SESSION['uid'] : (integer)utility::filterData('uimg', 'post', true, true, true);
+  $image_name = $dbs->escape_string(utility::filterData('img', 'post', true, true, true));
 
   $query_image = $dbs->query("SELECT user_id FROM user WHERE user_id='{$user_id}' AND user_image='{$image_name}'");
   if ($query_image->num_rows > 0) {
-    $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $_POST['uimg']));
+    $_delete = $dbs->query(sprintf('UPDATE user SET user_image=NULL WHERE user_id=%d', $user_id));
     if ($_delete) {
       // Change upict
       $_SESSION['upict'] = 'person.png';
       $postImage = stripslashes($_POST['img']);
       $postImage = str_replace('/', '', $postImage);
-      @unlink(sprintf(IMGBS.'persons/%s', $postImage));
+      $imageDisk = Storage::images();
+      $imagePath = sprintf('persons/%s', $postImage);
+      if (!empty($postImage) && $imageDisk->isExists($imagePath)) {
+        @$imageDisk->delete($imagePath);
+      }
       exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $postImage, __('{imageFilename} successfully removed!')).'\'); $(\'#userImage, #imageFilename\').remove();</script>');
     }
   }
@@ -125,6 +131,8 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
     $realName = trim(strip_tags($_POST['realName']));
     $passwd1 = $dbs->escape_string(trim($_POST['passwd1']));
     $passwd2 = $dbs->escape_string(trim($_POST['passwd2']));
+    $old_user_image = $_POST['old_user_image'] ?? '';
+
     // check form validity
     if (empty($userName) OR empty($realName)) {
         toastr(__('User Name or Real Name can\'t be empty'))->error();
@@ -156,7 +164,8 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         if ($social_media) {
           $data['social_media'] = $dbs->escape_string(serialize($social_media));
         }
-        if (isset($_POST['noChangeGroup'])) {
+        // only update group data if the flag is set, and user have enough privileges
+        if (isset($_POST['noChangeGroup']) AND !$changecurrent AND $can_read AND $can_write) {
             // parsing groups data
             $groups = '';
             if (isset($_POST['groups']) AND !empty($_POST['groups'])) {
@@ -190,32 +199,75 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
             unset($_SESSION['2fa_secret']);
         }
 
-        // create upload object
-        $upload = new simbio_file_upload();
-        if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
-          $upload->setAllowableFormat($sysconf['allowed_images']);
-          $upload->setMaxSize($sysconf['max_image_upload']*1024); // approx. 100 kb
-          $upload->setUploadDir(IMGBS.'persons');
-          // give new name for upload file
-          $new_filename = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username']));
-          $upload_status = $upload->doUpload('image', $new_filename);
-          if ($upload_status == UPLOAD_SUCCESS) {
-            $data['user_image'] = $dbs->escape_string($upload->new_filename);
-          }
-        } else if (!empty($_POST['base64picstring'])) {
-            list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-          $filedata = base64_decode($filedata);
-          $fileinfo = getimagesizefromstring($filedata);
-          $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
-          $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
-			    $new_filename = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username'])).'.'.strtolower($filedom);
+        $imageDisk = Storage::images();
+        $new_filename_base = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username']));
+        $base64_data = null;
+        $file_extension = 'jpg';
+        if (!empty($_POST['base64picstring'])) {
+            $base64_full_string = $_POST['base64picstring'];
+            if (strpos($base64_full_string, 'base64,') !== false) {
+                list($mime, $data_string) = explode(';', $base64_full_string);
+                list(, $base64_data) = explode(',', $data_string);
+            }
+            elseif (strpos($base64_full_string, '#image/type#') !== false) {
+                list($base64_data_raw, $file_extension) = explode('#image/type#', $base64_full_string);
+                $base64_data = $base64_data_raw;
+                $file_extension = strtolower(trim($file_extension));
+            }
+        }
 
-			    if ($valid AND file_put_contents(IMGBS.'persons/'.$new_filename, $filedata)) {
-				    $data['user_image'] = $dbs->escape_string($new_filename);
-				    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-				    $upload_status = UPLOAD_SUCCESS;
-			    }
-		    }
+        if (!empty($base64_data)) {
+            $base64_data = trim($base64_data);
+            $filedata = base64_decode($base64_data, true);
+            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($file_extension);
+            $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
+            $fileMimeLower = strtolower($fileMime);
+
+            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
+            $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $extAllowed;
+            $new_filename = $new_filename_base.'.'.$file_extension;
+            if ($valid) {
+                $imageDisk->put('persons/'.$new_filename, $filedata);
+                if ($imageDisk->isExists('persons/'.$new_filename)) {
+                    if (!empty($old_user_image) && $old_user_image != $new_filename) {
+                        @$imageDisk->delete('persons/'.$old_user_image);
+                    }
+                    $data['user_image'] = $dbs->escape_string($new_filename);
+                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                    $upload_status = UPLOAD_SUCCESS;
+                }
+            } else {
+                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
+            }
+        }
+        elseif (!empty($_FILES['image']) AND $_FILES['image']['size']) {
+            $upload = $imageDisk->upload('image', function($image) use($sysconf) {
+                $image->isExtensionAllowed($sysconf['allowed_images']);
+                $image->isLimitExceeded($sysconf['max_image_upload']*1024);
+                $image->isImageFile();
+                if (!empty($image->getError())) $image->destroyIfFailed();
+                if (empty($image->getError())) $image->cleanExifInfo();
+            })->as('persons/' . $new_filename_base);
+            if ($upload->getUploadStatus()) {
+                $new_filename = $upload->getUploadedFileName();
+                if (!empty($old_user_image) && $old_user_image != $new_filename) {
+                    @$imageDisk->delete('persons/'.$old_user_image);
+                }
+                $data['user_image'] = $dbs->escape_string($new_filename);
+                if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                $upload_status = UPLOAD_SUCCESS;
+            } else {
+                // write log
+                writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')', 'User image', 'Fail');
+                utility::jsToastr('System User', __('Image FAILED to upload').'<br/>'.$upload->getError(), 'error');
+            }
+        }
 
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
@@ -224,7 +276,12 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
             // remove input date
             unset($data['input_date']);
             // filter update record ID
-            $updateRecordID = $_SESSION['uid'] > 1 ? $_SESSION['uid'] : (integer)$_POST['updateRecordID'];
+            $updateRecordID = (integer)$_POST['updateRecordID'];
+            if ($_SESSION['uid'] != 1 && $updateRecordID !== (integer)$_SESSION['uid']) {
+                toastr(__('You don\'t have enough privileges to modify this user.'))->error();
+                exit();
+            }
+
             // update the data
             $update = $sql_op->update('user', $data, 'user_id='.$updateRecordID);
             if ($update) {
@@ -237,17 +294,18 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$data['user_image'], 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
-                        toastr(__('Image FAILED to upload'))->error();
+                        $log_error_msg = isset($upload) ? $upload->getError() : 'Base64/Validation failed';
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file (Error: '.$log_error_msg.')', 'User image', 'Fail');
                     }
                 }
-                // echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(parent.$.ajaxHistory[0].url);</script>';
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'].'\');</script>';
-            } else { toastr(__('User Data FAILED to Updated. Please Contact System Administrator')."\nDEBUG : ".$sql_op->error)->error(); }
+            } else {
+                toastr(__('User Data FAILED to Updated. Please Contact System Administrator'))->error();
+            }
             exit();
         } else {
             /* INSERT RECORD MODE */
@@ -262,16 +320,18 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
                         // Change upict
                         $_SESSION['upict'] = $data['user_image'];
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'User image', 'Upload');
+                        writeLog('staff', $_SESSION['uid'], 'system/user', $_SESSION['realname'].' upload image file '.$data['user_image'], 'User image', 'Upload');
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
-                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file '.$upload->new_filename.', with error ('.$upload->error.')', 'User image', 'Fail');
-                        toastr(__('Image FAILED to upload'))->error();
+                        $log_error_msg = isset($upload) ? $upload->getError() : 'Base64/Validation failed';
+                        writeLog('staff', $_SESSION['uid'], 'system/user', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload image file (Error: '.$log_error_msg.')', 'User image', 'Fail');
                     }
                 }
                 echo '<script type="text/javascript">parent.$(\'#mainContent\').simbioAJAX(\''.$_SERVER['PHP_SELF'].'\');</script>';
-            } else { toastr(__('User Data FAILED to Save. Please Contact System Administrator')."\n".$sql_op->error)->error(); }
+            } else {
+                toastr(__('User Data FAILED to Save. Please Contact System Administrator'))->error();
+            }
             exit();
         }
     }
@@ -319,14 +379,14 @@ if (!$changecurrent) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner userIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Librarian & System Users'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Librarian & System Users'); ?></h2>
   </div>
-	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="sub_section">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>/system/app_user.php" class="btn btn-default"><?php echo __('User List'); ?></a>
       <a href="<?php echo MWB; ?>system/app_user.php?action=detail" class="btn btn-default"><?php echo __('Add New User'); ?></a>
-	  </div>
+      </div>
     <form name="search" action="<?php echo MWB; ?>system/app_user.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="btn btn-default" />
@@ -376,6 +436,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $form->record_title = $rec_d['realname'];
         // submit button attribute
         $form->submit_button_attr = 'name="saveData" value="'.__('Update').'" class="btn btn-default"';
+        $form->addHidden('old_user_image', $rec_d['user_image'] ?? '');
     }
 
     /* Form Element(s) */
@@ -408,43 +469,66 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     $str_input .= '</div>';
     $form->addAnything(__('Social Media'), $str_input);
-    // user photo
-    $str_input = '';
-    if (isset($rec_d['user_image'])) {
-      $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['user_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['user_image'].'</strong></a> <a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.$rec_d['user_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';
+
+    $imageDisk = Storage::images();
+    $str_input  = '<div class="row">';
+    $str_input .= '<div class="col-2">';
+    $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
+
+    if (isset($rec_d['user_image']) && $imageDisk->isExists('persons/'.$rec_d['user_image'])) { // Check existence using Storage
+        $str_input  .= '<a href="'.SWB . 'lib/minigalnano/createthumb.php?filename=images/persons/' . urlencode($rec_d['user_image']) . '&width=600" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400" >';
+        $str_input .= '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['user_image']??'photo.png')).'&width=600&v='.date('this').'" class="img-fluid rounded" id="current_image_preview" alt="Image cover">';
+        $str_input .= '</a>';
+        // Tombol Remove
+        $str_input .= '<a href="'.MWB.'system/app_user.php" postdata="removeImage=true&uimg='.$itemID.'&img='.($rec_d['user_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
+    } else {
+        $str_input .= '<img src="'.SWB.'images/persons/person.png'.'?'.date('this').'" class="img-fluid rounded" id="current_image_preview" alt="Image cover">';
     }
-    $str_input .= simbio_form_element::textField('file', 'image',' class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
-    $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
+    $str_input .= '</div>';
+    $str_input .= '</div>';
+    
+    $str_input .= '<div class="custom-file col-4">';
+    $str_input .= simbio_form_element::textField('file', 'image', '', 'id="image" class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
+    $str_input .= '<label class="custom-file-label" for="image">'.__('Choose file').'</label>';
+    $str_input .= '</div>';
+    $str_input .= ' <div class="mt-2 ml-2">'.__('Maximum').' '.$sysconf['max_image_upload'].' KB</div>';
+    $str_input .= '</div>';
+    
     if ($sysconf['webcam'] !== false) {
         $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
-        $str_input .= '<p>'.__('or take a photo').'</p>';
-        $str_input .= '<div class="form-inline">';
-        $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button type="button" id="btn_load" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
-        $str_input .= '</div>';
-        $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
-        $str_input .= '</div>';
-        $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
-        $str_input .= '</div>';
-        $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button type="button" id="btn_pause" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
-        $str_input .= '</div>';
-        $str_input .= '<div class="form-group pr-2">';
-        $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
-        $str_input .= '</div>';
-        $str_input .= '</div>';
-        $str_input .= '<div id="my_container" class="mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
-        $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
-        $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
-        $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
-        $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #f4f4f4; display: none;"></canvas>';
-
+        if ($sysconf['webcam'] == 'flex') {
+            $str_input .= '<object id="flash_video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" height="280px" width="100%">';
+            $str_input .= '<param name="src" value="'.SWB.'lib/flex/ShotSLiMSMemberPicture.swf"/>';
+            $str_input .= '<embed name="src" src="'.SWB.'lib/flex/ShotSLiMSMemberPicture.swf" height="280px" width="100%"/>';
+            $str_input .= '</object>';
+        } elseif ($sysconf['webcam'] == 'html5') {
+            $str_input .= '<div class="makeHidden_">';
+            $str_input .= '<p>'.__('or take a photo').'</p>';
+            $str_input .= '<div class="form-inline">';
+            $str_input .= '<div class="form-group pr-2">';
+            $str_input .= '<button id="btn_load" type="button" class="btn btn-primary" onclick="loadcam(this)">'.__('Load Camera').'</button>';
+            $str_input .= '</div>';
+            $str_input .= '<div class="form-group pr-2">';
+            $str_input .= '<select class="form-control" onchange="aspect(this)"><option value="1">1x1</option><option value="2" selected>2x3</option><option value="3">3x4</option></select>';
+            $str_input .= '</div>';
+            $str_input .= '<div class="form-group pr-2">';
+            $str_input .= '<select class="form-control" id="cmb_format" onchange="if(pause){set();}"><option value="png">PNG</option><option value="jpg">JPEG</option></select>';
+            $str_input .= '</div>';
+            $str_input .= '<div class="form-group pr-2">';
+            $str_input .= '<button id="btn_pause" type="button" class="btn btn-primary" onclick="snapshot(this)" disabled>'.__('Capture').'</button>';
+            $str_input .= '</div>';
+            $str_input .= '<div class="form-group pr-2">';
+            $str_input .= '<button type="button" id="btn_reset" class="btn btn-danger" onclick="resetvalue()">'.__('Reset').'</button>';
+            $str_input .= '</div>';
+            $str_input .= '</div>';
+            $str_input .= '<div id="my_container" class="makeHidden_ mt-2" style="width: 400px; height: 300px; border: 1px solid #f4f4f4; position: relative;">';
+            $str_input .= '<video id="my_vid" autoplay width="400" height="300" style="float: left; position: absolute; left: 10;"></video>';
+            $str_input .= '<canvas id="my_canvas" width="400" height="300" style="float: left; position: absolute; left: 10; visibility: hidden;"></canvas>';
+            $str_input .= '<div id="my_frame" style="border: 1px solid #CCC; width: 160px; height: 240px; z-index: 2; margin: auto; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div></div>';
+            $str_input .= '<canvas id="my_preview" width="160" height="240" style="width: 160px; height: 240px; border: 1px solid #f4f4f4; display: none;"></canvas>';
+        }
     }
-
     $form->addAnything(__('User Photo'), $str_input);
-
     // user group
     // only appear by user who hold system module privileges
     if (!$changecurrent AND $can_read AND $can_write) {
@@ -518,12 +602,17 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     // edit mode messagge
     if ($form->edit_mode) {
+        if (isset($rec_d['user_image'])) {
+            if ($imageDisk->isExists('persons/'.$rec_d['user_image'])) {
+                echo '<div id="memberImage" class="d-none"><img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode($rec_d['user_image']).'&width=120&v='.date('his').'" alt="'.$rec_d['realname'].'" /></div>';
+            }
+        }
         echo '<div class="per_title"><h2>'.__('Change User Profiles').'</h2></div>';
         echo '<div class="infoBox row"><div class="col-6">'.__('You are going to edit user profile'),' : <b>'.$rec_d['realname'].'</b> <br />'.__('Last Update').'&nbsp;'.$rec_d['last_update'].'
         <div>'.__('Leave Password field blank if you don\'t want to change the password').'</div></div>';
         if ($rec_d['user_image']) {
-            if (file_exists(IMGBS.'persons/'.$rec_d['user_image'])) {
-            echo '<div class="col-6"><div id="userImage" class="float-right"><img src="../images/persons/'.urlencode($rec_d['user_image']).'?'.date('this').'" class="w-100"/></div></div>';
+            if ($imageDisk->isExists('persons/'.$rec_d['user_image'])) {
+            echo '<div class="col-6 d-none"><div id="userImage" class="float-right"><img src="../images/persons/'.urlencode($rec_d['user_image']).'?'.date('this').'" class="w-100"/></div></div>';
             }
         }
         echo '</div>';
@@ -531,6 +620,77 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // print out the form object
     echo $form->printOut();
     echo '<form id="formVerify2fa" target="blindSubmit" method="post" action="'.$_SERVER['PHP_SELF'].'?changecurrent=true"></form>';
+?>
+<div id="croppie-processor" style="visibility: hidden; position: absolute; width: 300px; height: 300px; top: -9999px;"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+    const outputWidth = 160;
+    const outputHeight = 240;
+    const processorEl = $('#croppie-processor');
+    $('#image').on('change', function(){
+        const input = this;
+        $('#base64picstring').val('');
+        if (input.files && input.files[0]) {
+            let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+            $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (processorEl.data('croppie')) {
+                    processorEl.croppie('destroy');
+                }
+                let $image_crop = processorEl.croppie({
+                    enableExif: true,
+                    enableZoom: true,
+                    enableResize: false,
+                    enableOrientation: true,
+                    viewport: {
+                        width: outputWidth,
+                        height: outputHeight,
+                        type: 'square'
+                    },
+                    boundary: {
+                        width: outputWidth + 100, 
+                        height: outputHeight + 100
+                    }
+                });
+                $image_crop.croppie('bind', {
+                    url: e.target.result,
+                    zoom: 0
+                }).then(function() {
+                    setTimeout(function() {
+                        $image_crop.croppie('result', {
+                            type: 'base64',
+                            size: { width: outputWidth, height: outputHeight }, 
+                            format: 'jpeg',
+                            quality: 0.75
+                        }).then(function(base64_result) {
+                            $('#base64picstring').val(base64_result);
+                            $('#current_image_preview').attr('src', base64_result);
+                            $image_crop.croppie('destroy');
+                        });
+                    }, 50);
+                });
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+
+    $('.removeImage').click(function (e) {
+        if (confirm('Are you sure you want to permanently remove this image?')) {
+            $('#base64picstring').val('');
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    $(document).on('change', '.custom-file-input', function () {
+        let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+        $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+    });
+});
+</script>
+<?php
     if ($sysconf['password_policy_strong']) {
         echo simbio_security::validatePasswordFunctionJS();
         echo '<script type="text/javascript">comparePassword("#mainForm", "#passwd1", "#passwd2", '.$sysconf['password_policy_min_length'].');</script>';
@@ -584,8 +744,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // put the result into variables
     $datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 20, ($can_read AND $can_write));
     if (isset($_GET['keywords']) AND $_GET['keywords']) {
+        $keywords = htmlspecialchars($_GET['keywords'], ENT_QUOTES, 'UTF-8');
         $msg = str_replace('{result->num_rows}', $datagrid->num_rows, __('Found <strong>{result->num_rows}</strong> from your keywords')); //mfc
-        echo '<div class="infoBox">'.$msg.' : "'.$_GET['keywords'].'"</div>';
+        echo '<div class="infoBox">'.$msg.' : "'.$keywords.'"</div>';
     }
 
     echo $datagrid_result;

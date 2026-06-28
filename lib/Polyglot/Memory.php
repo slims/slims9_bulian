@@ -185,6 +185,30 @@ final class Memory
         return $this->languages;
     }
 
+    public static function getFlag(string $locale): string
+    {
+        $countryCode = '';
+            if (preg_match('/[_-]([a-z]{2,})$/i', $locale, $matches)) {
+            $countryCode = $matches[1];
+        } elseif (strlen($locale) === 2) {
+            $countryCode = $locale;
+        }
+        if (empty($countryCode)) {
+            return '';
+        }
+        $countryCode = strtoupper(substr($countryCode, 0, 2));
+        $flag = '';
+        for ($i = 0; $i < 2; $i++) {
+            $unicode_point = ord($countryCode[$i]) + 127397;
+            if (function_exists('mb_chr')) {
+                $flag .= mb_chr($unicode_point, 'UTF-8');
+            } else {
+                $flag .= '&#' . $unicode_point . ';';
+            }
+        }
+        return $flag;
+    }
+
     /**
      * Setter for locate prop
      *

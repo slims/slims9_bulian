@@ -57,105 +57,110 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <div class="per_title">
-        <h2><?php echo __('Items Title List'); ?></h2>
-    </div>
-    <div class="infoBox">
-        <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
-        <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-            <div id="filterForm">
-                <div class="form-group divRow">
-                    <label><?php echo __('Title/ISBN'); ?></label>
-                    <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-4"'); ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Item Code'); ?></label>
-                    <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-4"'); ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Classification'); ?></label>
-                    <?php echo simbio_form_element::textField('text', 'class', '', 'class="form-control col-4"'); ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('GMD'); ?></label>
-                    <?php
-                    $gmd_q = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
-                    $gmd_options[] = array('0', __('ALL'));
-                    while ($gmd_d = $gmd_q->fetch_row()) {
-                        $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
-                    }
-                    echo simbio_form_element::selectList('gmd[]', $gmd_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
-                    ?><small class="text-muted"><?php echo __('Press Ctrl and click to select multiple entries'); ?></small>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Collection Type'); ?></label>
-                    <?php
-                    $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
-                    $coll_type_options = array();
-                    $coll_type_options[] = array('0', __('ALL'));
-                    while ($coll_type_d = $coll_type_q->fetch_row()) {
-                        $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
-                    }
-                    echo simbio_form_element::selectList('collType[]', $coll_type_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
-                    ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Item Status'); ?></label>
-                    <?php
-                    $status_q = $dbs->query('SELECT item_status_id, item_status_name FROM mst_item_status');
-                    $status_options = array();
-                    $status_options[] = array('0', __('ALL'));
-                    while ($status_d = $status_q->fetch_row()) {
-                        $status_options[] = array($status_d[0], $status_d[1]);
-                    }
-                    echo simbio_form_element::selectList('status', $status_options, '', 'class="form-control col-2"');
-                    ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Location'); ?></label>
-                    <?php
-                    $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
-                    $loc_options = array();
-                    $loc_options[] = array('0', __('ALL'));
-                    while ($loc_d = $loc_q->fetch_row()) {
-                        $loc_options[] = array($loc_d[0], $loc_d[1]);
-                    }
-                    echo simbio_form_element::selectList('location', $loc_options, '', 'class="form-control col-2"');
-                    ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Input Date'); ?></label>
-                    <div class="divRowContent">
-                        <div id="range">
-                            <input type="text" name="inputDateStart">
-                            <span><?= __('to') ?></span>
-                            <input type="text" name="inputDateEnd">
+    <div class="menuBox">
+        <div class="menuBoxInner">
+            <!-- filter -->
+            <div class="per_title">
+                <h2><?php echo __('Items Title List'); ?></h2>
+            </div>
+            <div class="infoBox">
+                <?php echo __('Report Filter'); ?>
+            </div>
+            <div class="sub_section">
+                <div>&nbsp;</div>
+                <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+                    <div id="filterForm">
+                        <div class="form-group divRow">
+                            <label><?php echo __('Title/ISBN'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-4"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Item Code'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-4"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Classification'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'class', '', 'class="form-control col-4"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('GMD'); ?></label>
+                            <?php
+                            $gmd_q = $dbs->query('SELECT gmd_id, gmd_name FROM mst_gmd');
+                            $gmd_options[] = array('0', __('ALL'));
+                            while ($gmd_d = $gmd_q->fetch_row()) {
+                                $gmd_options[] = array($gmd_d[0], $gmd_d[1]);
+                            }
+                            echo simbio_form_element::selectList('gmd[]', $gmd_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
+                            ?><small class="text-muted"><?php echo __('Press Ctrl and click to select multiple entries'); ?></small>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Collection Type'); ?></label>
+                            <?php
+                            $coll_type_q = $dbs->query('SELECT coll_type_id, coll_type_name FROM mst_coll_type');
+                            $coll_type_options = array();
+                            $coll_type_options[] = array('0', __('ALL'));
+                            while ($coll_type_d = $coll_type_q->fetch_row()) {
+                                $coll_type_options[] = array($coll_type_d[0], $coll_type_d[1]);
+                            }
+                            echo simbio_form_element::selectList('collType[]', $coll_type_options, '', 'multiple="multiple" size="5" class="form-control col-3"');
+                            ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Item Status'); ?></label>
+                            <?php
+                            $status_q = $dbs->query('SELECT item_status_id, item_status_name FROM mst_item_status');
+                            $status_options = array();
+                            $status_options[] = array('0', __('ALL'));
+                            while ($status_d = $status_q->fetch_row()) {
+                                $status_options[] = array($status_d[0], $status_d[1]);
+                            }
+                            echo simbio_form_element::selectList('status', $status_options, '', 'class="form-control col-2"');
+                            ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Location'); ?></label>
+                            <?php
+                            $loc_q = $dbs->query('SELECT location_id, location_name FROM mst_location');
+                            $loc_options = array();
+                            $loc_options[] = array('0', __('ALL'));
+                            while ($loc_d = $loc_q->fetch_row()) {
+                                $loc_options[] = array($loc_d[0], $loc_d[1]);
+                            }
+                            echo simbio_form_element::selectList('location', $loc_options, '', 'class="form-control col-2"');
+                            ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Input Date'); ?></label>
+                            <div class="divRowContent">
+                                <div id="range">
+                                    <input type="text" name="inputDateStart">
+                                    <span><?= __('to') ?></span>
+                                    <input type="text" name="inputDateEnd">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Publish year'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'publishYear', '', 'class="form-control col-1"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Record each page'); ?></label>
+                            <input type="text" name="recsEachPage" size="3" class="form-control col-1" maxlength="3" value="<?php echo $num_recs_show; ?>" />
+                            <small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
                         </div>
                     </div>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Publish year'); ?></label>
-                    <?php echo simbio_form_element::textField('text', 'publishYear', '', 'class="form-control col-1"'); ?>
-                </div>
-                <div class="form-group divRow">
-                    <label><?php echo __('Record each page'); ?></label>
-                    <input type="text" name="recsEachPage" size="3" class="form-control col-1" maxlength="3" value="<?php echo $num_recs_show; ?>" />
-                    <small class="text-muted"><?php echo __('Set between 20 and 200'); ?></small>
-                </div>
+                    <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+                    <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+                    <input type="hidden" name="reportView" value="true" />
+                </form>
             </div>
-            <input type="button" name="moreFilter" class="btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
-            <input type="submit" name="applyFilter" class="btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
-            <input type="hidden" name="reportView" value="true" />
-        </form>
+        </div>
     </div>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             const elem = document.getElementById('range');
             const dateRangePicker = new DateRangePicker(elem, {
-                language: '<?= substr($sysconf['default_lang'], 0,2) ?>',
+                language: '<?= substr($sysconf['default_lang'], 0, 2) ?>',
                 format: 'yyyy-mm-dd',
             });
         })
@@ -250,7 +255,7 @@ if (!$reportView) {
         $publish_year = $dbs->escape_string(trim($_GET['publishYear']));
         $criteria .= ' AND b.publish_year LIKE \'%' . $publish_year . '%\'';
     }
-    if (isset($_GET['inputDateStart']) AND !empty($_GET['inputDateStart']) && isset($_GET['inputDateEnd']) AND !empty($_GET['inputDateEnd'])) {
+    if (isset($_GET['inputDateStart']) and !empty($_GET['inputDateStart']) && isset($_GET['inputDateEnd']) and !empty($_GET['inputDateEnd'])) {
         $inputDateStart = $dbs->escape_string(trim($_GET['inputDateStart']));
         $inputDateEnd = $dbs->escape_string(trim($_GET['inputDateEnd']));
         $criteria .= ' AND (i.input_date >= \'' . $inputDateStart . '\' AND i.input_date <= \'' . $inputDateEnd . '\')';
@@ -301,7 +306,8 @@ if (!$reportView) {
 
     // show spreadsheet export button
     $reportgrid->show_spreadsheet_export = true;
-
+    $reportgrid->show_pdf_export = true;
+    
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);
 

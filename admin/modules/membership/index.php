@@ -92,7 +92,8 @@ if (isset($_POST['removeImage']) && isset($_POST['mimg']) && isset($_POST['img']
             if (!empty($postImage) && $image->isExists($imagePath)) {
                 @Storage::images()->delete($imagePath);
             }
-            exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $postImage, __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
+            $safePostImage = htmlspecialchars($postImage, ENT_QUOTES, 'UTF-8');
+            exit('<script type="text/javascript">alert(\''.str_replace('{imageFilename}', $safePostImage, __('{imageFilename} successfully removed!')).'\'); $(\'#memberImage, #imageFilename\').remove();</script>');
         }
     }
     exit();
@@ -198,7 +199,54 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
         $data['last_update'] = date('Y-m-d');
 
         $imageDisk = Storage::images();
-        if (!empty($_FILES['image']) AND $_FILES['image']['size']) {
+        $base64_data = null;
+        $file_extension = 'jpg';
+        if (!empty($_POST['base64picstring'])) {
+            $base64_full_string = $_POST['base64picstring'];
+            if (strpos($base64_full_string, 'base64,') !== false) {
+                list($mime, $data_string) = explode(';', $base64_full_string);
+                list(, $base64_data) = explode(',', $data_string);
+            }
+            elseif (strpos($base64_full_string, '#image/type#') !== false) {
+                list($base64_data_raw, $file_extension) = explode('#image/type#', $base64_full_string);
+                $base64_data = $base64_data_raw;
+                $file_extension = strtolower(trim($file_extension));
+            }
+
+        }
+        if (!empty($base64_data)) {
+            $base64_data = trim($base64_data);
+            $filedata = base64_decode($base64_data, true);
+            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($file_extension);
+            $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
+            $fileMimeLower = strtolower($fileMime);
+
+            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
+            $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $mimeAllowed;
+            $new_filename = 'member_'.$data['member_id'].'.'.$file_extension;
+            if ($valid) {
+                $imageDisk->put('persons/'.$new_filename, $filedata);
+                if ($imageDisk->isExists('persons/'.$new_filename)) {
+                    if (isset($_POST['old_member_image']) && !empty($_POST['old_member_image']) && $_POST['old_member_image'] != $new_filename) {
+                        @$imageDisk->delete('persons/'.$_POST['old_member_image']);
+                    }
+                    
+                    $data['member_image'] = $dbs->escape_string($new_filename);
+                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                    $upload_status = UPLOAD_SUCCESS;
+                }
+            } else {
+                utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid or exceeds max size.'), 'error');
+            }
+
+        }
+        elseif (!empty($_FILES['image']) AND $_FILES['image']['size']) {
             // create upload object
             $upload = $imageDisk->upload('image', function($image) use($sysconf) {
                 // Extension check
@@ -214,26 +262,13 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
             })->as('persons/' . 'member_'.$data['member_id']);
             if ($upload->getUploadStatus()) {
                 $data['member_image'] = $dbs->escape_string($upload->getUploadedFileName());
+                if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                $upload_status = UPLOAD_SUCCESS;
             } else {
                 // write log
                 writeLog('staff', $_SESSION['uid'], 'membership', 'ERROR : ' . $_SESSION['realname'] . ' FAILED TO upload image file ' . $upload->getUploadedFileName() . ', with error (' . $upload->getError() . ')', 'Member Image', 'Upload failed');
                 utility::jsToastr('Membership', __('Image Uploaded Failed').'<br/>'.$upload->getError(), 'error');
             }
-        } else if (!empty($_POST['base64picstring'])) {
-            list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-            $filedata = base64_decode($filedata);
-            $fileinfo = getimagesizefromstring($filedata);
-            $valid = strlen($filedata)/1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
-			$new_filename = 'member_'.$data['member_id'].'.'.strtolower($filedom);
-			if ($valid) {
-                @$imageDisk->put('persons/'.$new_filename, $filedata);
-                if ($imageDisk->isExists('persons/'.$new_filename)) {
-                    $data['member_image'] = $dbs->escape_string($new_filename);
-                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-                    $upload_status = UPLOAD_SUCCESS;
-                }
-			}
         }
         // password confirmation
         if (($mpasswd1 AND $mpasswd2) AND ($mpasswd1 === $mpasswd2)) {
@@ -316,11 +351,11 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
                 if (isset($upload_status)) {
                     if ($upload_status == UPLOAD_SUCCESS) {
                         // write log
-						if (isset($upload)) {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Member Image', 'Upload success');
-						} else {
-							writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Member Image', 'Take Photo');
-						}
+                        if (isset($upload)) {
+                            writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' upload image file '.$upload->new_filename, 'Member Image', 'Upload success');
+                        } else {
+                            writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' taken image photo ('.$memberName.') with ID ('.$memberID.')', 'Member Image', 'Take Photo');
+                        }
                         toastr(__('Image Uploaded Successfully'))->success();
                     } else {
                         // write log
@@ -386,7 +421,8 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
                 writeLog('staff', $_SESSION['uid'], 'membership', $_SESSION['realname'].' DELETE member data ('.$loan_d[1].') with ID ('.$loan_d[0].')', 'Member Profile', 'Profile deleted');
             }
         } else {
-            $still_have_loan[] = $loan_d[0].' - '.$loan_d[1];
+            $safe_member_name = htmlspecialchars($loan_d[1]);
+            $still_have_loan[] = $loan_d[0].' - '.$safe_member_name;
             $error_num++;
         }
     }
@@ -396,7 +432,7 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
         foreach ($still_have_loan as $mbr) {
             $members .= $mbr."\n";
         }
-        toastr(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$mbr)->error();
+        toastr(__('Below member data can\'t be deleted because still have unreturned item(s)').' : '."\n".$members)->error();
         exit();
     }
     // error alerting
@@ -419,20 +455,20 @@ if(isset($_GET['expire'])) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner memberIcon">
-	<div class="per_title">
-    	<h2><?php echo $page_title; ?></h2>
+    <div class="per_title">
+        <h2><?php echo $page_title; ?></h2>
     </div>
     <div class="sub_section">
-	<div class="btn-group">
+    <div class="btn-group">
     <a href="<?php echo MWB; ?>membership/index.php" class="btn btn-default"><?php echo __('Member List'); ?></a>
     <a href="<?php echo MWB; ?>membership/index.php?action=detail" class="btn btn-default"><?php echo __('Add New Member'); ?></a>
     <a href="<?php echo MWB; ?>membership/index.php?expire=true" class="btn btn-danger"><?php echo __('View Expired Member'); ?></a>
-	</div>
+    </div>
     <form name="search" action="<?php echo MWB; ?>membership/index.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?>
-	    <input type="text" name="keywords" class="form-control col-md-3" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
-	    <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
-	</form>
-	</div>
+        <input type="text" name="keywords" class="form-control col-md-3" /><?php if (isset($_GET['expire'])) { echo '<input type="hidden" name="expire" value="true" />'; } ?>
+        <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
+    </form>
+    </div>
 </div>
 </div>
 <?php
@@ -496,6 +532,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
             $form->addCheckBox('extend', __('Extend Membership'), $chbox_array);
             $expired_message = '<strong class="text-danger">('.__('Membership Already Expired').')</strong>';
         }
+        $form->addHidden('old_member_image', $rec_d['member_image'] ?? ''); 
     }
 
     // include custom fields file
@@ -573,29 +610,28 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $str_input  = '<div class="row">';
     $str_input .= '<div class="col-2">';
     $str_input .= '<div id="imageFilename" class="s-margin__bottom-1">';
+    
     if (isset($rec_d['member_image']) && Storage::images()->isExists('persons/'.$rec_d['member_image'])) {
-        $str_input .= '<a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400">';
-        // $str_input .= '<img src="'.$upper_dir.'../lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=130" class="img-fluid" alt="Image cover">';
-        $str_input .= '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=148&v='.date('this').'" class="img-fluid rounded" alt="Image cover">';
+        $str_input  .= '<a href="'.SWB . 'lib/minigalnano/createthumb.php?filename=images/persons/' . urlencode($rec_d['member_image']) . '&width=600" class="openPopUp notAJAX" title="'.__('Click to enlarge preview').'" width="300" height="400" >';
+        $str_input .= '<img src="'.SWB.'lib/minigalnano/createthumb.php?filename=images/persons/'.urlencode(($rec_d['member_image']??'photo.png')).'&width=600&v='.date('this').'" class="img-fluid rounded" id="current_image_preview" alt="Image cover">';
         $str_input .= '</a>';
+        // Tombol Remove
         $str_input .= '<a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.($rec_d['member_image']??'photo.png').'" loadcontainer="imageFilename" class="s-margin__bottom-1 s-btn btn btn-danger btn-block rounded-0 makeHidden removeImage">'.__('Remove Image').'</a>';
-    }else{
-        $str_input .= '<img src="'.SWB.'images/persons/person.png'.'?'.date('this').'" class="img-fluid rounded" alt="Image cover">';
+    } else {
+        $str_input .= '<img src="'.SWB.'images/persons/person.png'.'?'.date('this').'" class="img-fluid rounded" id="current_image_preview" alt="Image cover">';
     }
     $str_input .= '</div>';
     $str_input .= '</div>';
+    
     $str_input .= '<div class="custom-file col-4">';
-    $str_input .= simbio_form_element::textField('file', 'image', '', 'class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
-    $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
+    $str_input .= simbio_form_element::textField('file', 'image_file_input', '', 'id="image_file_input" class="custom-file-input" accept="'.implode(',', $sysconf['allowed_images']).'"');
+    $str_input .= '<label class="custom-file-label" for="image_file_input">Choose file</label>';
     $str_input .= '</div>';
     $str_input .= ' <div class="mt-2 ml-2">Maximum '.$sysconf['max_image_upload'].' KB</div>';
     $str_input .= '</div>';
-    // $str_input = '<div id="imageFilename"><a href="'.SWB.'images/persons/'.$rec_d['member_image'].'" class="openPopUp notAJAX"><strong>'.$rec_d['member_image'].'</strong></a> <a href="'.MWB.'membership/index.php" postdata="removeImage=true&mimg='.$itemID.'&img='.$rec_d['member_image'].'" loadcontainer="imageFilename" class="makeHidden removeImage">'.__('REMOVE IMAGE').'</a></div>';    
-    // $str_input .= simbio_form_element::textField('file', 'image');
-    // $str_input .= ' '.__('Maximum').' '.$sysconf['max_image_upload'].' KB';
+    
     if ($sysconf['webcam'] !== false) {
         $str_input .= '<textarea id="base64picstring" name="base64picstring" style="display: none;"></textarea>';
-
         if ($sysconf['webcam'] == 'flex') {
             $str_input .= '<object id="flash_video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" height="280px" width="100%">';
             $str_input .= '<param name="src" value="'.SWB.'lib/flex/ShotSLiMSMemberPicture.swf"/>';
@@ -663,15 +699,70 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         echo '<script type="text/javascript">comparePassword("#mainForm", "#memberPasswd", "#memberPasswd2", '.$sysconf['password_policy_min_length'].');</script>';
     }
 ?>
+
+<div id="croppie-processor" style="visibility: hidden; position: absolute; width: 300px; height: 300px; top: -9999px;"></div>
 <script type="text/javascript">
 $(document).ready(function() {
+    const outputWidth = 300; 
+    const outputHeight = 400;   
+    const processorEl = $('#croppie-processor');
+    $('#image_file_input').on('change', function(){
+        const input = this;
+        $('#base64picstring').val('');
+        if (input.files && input.files[0]) {
+            let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+            $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (processorEl.data('croppie')) {
+                    processorEl.croppie('destroy');
+                }
+                let $image_crop = processorEl.croppie({
+                    enableExif: true,
+                    enableZoom: true,
+                    enableResize: false,
+                    enableOrientation: true,
+                    viewport: {
+                        width: outputWidth,
+                        height: outputHeight,
+                        type: 'square'
+                    },
+                    boundary: {
+                        width: outputWidth + 100, 
+                        height: outputHeight + 100
+                    }
+                });
+                $image_crop.croppie('bind', {
+                    url: e.target.result,
+                    zoom: 0
+                }).then(function() {
+                    setTimeout(function() {
+                        $image_crop.croppie('result', {
+                            type: 'base64',
+                            size: { width: outputWidth, height: outputHeight }, 
+                            format: 'jpeg',
+                            quality: 0.75
+                        }).then(function(base64_result) {
+                            $('#base64picstring').val(base64_result);
+                            $('#current_image_preview').attr('src', base64_result);
+                            $image_crop.croppie('destroy');
+                        });
+                    }, 50);
+                });
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+
     $('.removeImage').click(function (e) {
         if (confirm('Are you sure you want to permanently remove this image?')) {
+            $('#base64picstring').val('');
             return true;
         } else {
             return false;
         }
     });
+
     $(document).on('change', '.custom-file-input', function () {
         let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
@@ -700,10 +791,10 @@ $(document).ready(function() {
             $addr  = $_d[2]!=''?'<i class="fa fa-map-marker" aria-hidden="true"></i></i>&nbsp;'.$_d[2]:'';
             $phone = $_d[3]!=''?'<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;'.$_d[3]:'';
         }
-        $imageUrl = SWB . 'lib/minigalnano/createthumb.php?filename=' . $image . '&width=120';
+        $imageUrl = SWB . 'lib/minigalnano/createthumb.php?filename=' . $image . '&width=600';
         $_output = '<div class="media"> 
                     <a href="'.$imageUrl.'" class="openPopUp notAJAX" title="'.$_d[1].'" width="300" height="400" >
-                    <img class="mr-3 rounded" src="'.$imageUrl.'" alt="cover image" width="60"></a>
+                    <img class="mr-3 rounded" src="'.$imageUrl.'" alt="cover image" width="60" height: auto;></a>
                     <div class="media-body">
                       <div class="title">'.$array_data[2].'</div>
                       <div class="sub">'.$phone.'</div>
@@ -775,4 +866,3 @@ $(document).ready(function() {
 
     echo $datagrid_result;
 }
-/* main content end */

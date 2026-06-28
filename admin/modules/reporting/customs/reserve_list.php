@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
@@ -27,25 +28,25 @@ define('INDEX_AUTH', '1');
 // main system configuration
 require '../../../../sysconfig.inc.php';
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-circulation');
 // start the session
-require SB.'admin/default/session.inc.php';
-require SB.'admin/default/session_check.inc.php';
+require SB . 'admin/default/session.inc.php';
+require SB . 'admin/default/session_check.inc.php';
 // privileges checking
 $can_read = utility::havePrivilege('circulation', 'r');
 $can_write = utility::havePrivilege('circulation', 'w');
 
 if (!$can_read) {
-    die('<div class="errorBox">'.__('You don\'t have enough privileges to access this area!').'</div>');
+    die('<div class="errorBox">' . __('You don\'t have enough privileges to access this area!') . '</div>');
 }
 
-require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
-require SIMBIO.'simbio_GUI/paging/simbio_paging.inc.php';
-require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
-require SIMBIO.'simbio_DB/datagrid/simbio_dbgrid.inc.php';
-require MDLBS.'reporting/report_dbgrid.inc.php';
+require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
+require SIMBIO . 'simbio_GUI/paging/simbio_paging.inc.php';
+require SIMBIO . 'simbio_GUI/form_maker/simbio_form_element.inc.php';
+require SIMBIO . 'simbio_DB/datagrid/simbio_dbgrid.inc.php';
+require MDLBS . 'reporting/report_dbgrid.inc.php';
 
 $page_title = 'Reservation List Report';
 $reportView = false;
@@ -55,49 +56,56 @@ if (isset($_GET['reportView'])) {
 
 if (!$reportView) {
 ?>
-    <!-- filter -->
-    <div class="per_title">
-    	<h2><?php echo __('Reservation'); ?></h2>
-    </div>
-    <div class="infoBox">
-        <?php echo __('Report Filter'); ?>
-    </div>
-    <div class="sub_section">
-    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
-    <div id="filterForm">
-        <div class="form-group divRow">
-            <label><?php echo __('Member ID').'/'.__('Member Name'); ?></label>
-            <?php echo simbio_form_element::textField('text', 'member', '', 'class="form-control col-4"'); ?>
+    <div class="menuBox">
+        <div class="menuBoxInner">
+            <!-- filter -->
+            <div class="per_title">
+                <h2><?php echo __('Reservation'); ?></h2>
+            </div>
+            <div class="infoBox">
+                <?php echo __('Report Filter'); ?>
+            </div>
+            <div class="sub_section">
+                <div>&nbsp;</div>
+                <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" target="reportView">
+                    <div id="filterForm">
+                        <div class="form-group divRow">
+                            <label><?php echo __('Member ID') . '/' . __('Member Name'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'member', '', 'class="form-control col-4"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Title/ISBN'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-6"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Item Code'); ?></label>
+                            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-3"'); ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Reserve Date From'); ?></label>
+                            <?php
+                            echo simbio_form_element::dateField('startDate', '2000-01-01', 'class="form-control"');
+                            ?>
+                        </div>
+                        <div class="form-group divRow">
+                            <label><?php echo __('Reserve Date Until'); ?></label>
+                            <?php
+                            echo simbio_form_element::dateField('untilDate', date('Y-m-d'), 'class="form-control"');
+                            ?>
+                        </div>
+                    </div>
+                    <input type="button" name="moreFilter" class="s-btn btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
+                    <input type="submit" name="applyFilter" class="s-btn btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
+                    <input type="hidden" name="reportView" value="true" />
+                </form>
+            </div>
         </div>
-        <div class="form-group divRow">
-            <label><?php echo __('Title/ISBN'); ?></label>
-            <?php echo simbio_form_element::textField('text', 'title', '', 'class="form-control col-6"'); ?>
-        </div>
-        <div class="form-group divRow">
-            <label><?php echo __('Item Code'); ?></label>
-            <?php echo simbio_form_element::textField('text', 'itemCode', '', 'class="form-control col-3"'); ?>
-        </div>
-        <div class="form-group divRow">
-            <label><?php echo __('Reserve Date From'); ?></label>
-            <?php
-            echo simbio_form_element::dateField('startDate', '2000-01-01','class="form-control"');
-            ?>
-        </div>
-        <div class="form-group divRow">
-            <label><?php echo __('Reserve Date Until'); ?></label>
-            <?php
-            echo simbio_form_element::dateField('untilDate', date('Y-m-d'),'class="form-control"');
-            ?>
-        </div>
-    </div>
-    <input type="button" name="moreFilter" class="s-btn btn btn-default" value="<?php echo __('Show More Filter Options'); ?>" />
-    <input type="submit" name="applyFilter" class="s-btn btn btn-primary" value="<?php echo __('Apply Filter'); ?>" />
-    <input type="hidden" name="reportView" value="true" />
-    </form>
     </div>
     <!-- filter end -->
-    <div class="paging-area"><div class="pb-3 pr-3" id="pagingBox"></div></div>
-    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'].'?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
+    <div class="paging-area">
+        <div class="pb-3 pr-3" id="pagingBox"></div>
+    </div>
+    <iframe name="reportView" id="reportView" src="<?php echo $_SERVER['PHP_SELF'] . '?reportView=true'; ?>" frameborder="0" style="width: 100%; height: 500px;"></iframe>
 <?php
 } else {
     ob_start();
@@ -109,16 +117,18 @@ if (!$reportView) {
     // create datagrid
     $reportgrid = new report_datagrid();
     $reportgrid->table_attr = 'class="s-table table table-sm table-bordered"';
-    $reportgrid->setSQLColumn('r.item_code AS \''.__('Item Code').'\'',
-        'b.title AS \''.__('Title').'\'',
-        'm.member_name AS \''.__('Member Name').'\'',
-        'm.member_id AS \''.__('Member ID').'\'',
-        'r.reserve_date AS \''.__('Reserve Date').'\'');
+    $reportgrid->setSQLColumn(
+        'r.item_code AS \'' . __('Item Code') . '\'',
+        'b.title AS \'' . __('Title') . '\'',
+        'm.member_name AS \'' . __('Member Name') . '\'',
+        'm.member_id AS \'' . __('Member ID') . '\'',
+        'r.reserve_date AS \'' . __('Reserve Date') . '\''
+    );
     $reportgrid->setSQLorder('r.reserve_date DESC');
 
     // is there any search
     $criteria = 'r.reserve_id IS NOT NULL ';
-    if (isset($_GET['title']) AND !empty($_GET['title'])) {
+    if (isset($_GET['title']) and !empty($_GET['title'])) {
         $keyword = $dbs->real_escape_string(trim($_GET['title']));
         $words = explode(' ', $keyword);
         if (count($words) > 1) {
@@ -131,20 +141,22 @@ if (!$reportView) {
             $concat_sql .= ') ';
             $criteria .= $concat_sql;
         } else {
-            $criteria .= ' AND (b.title LIKE \'%'.$keyword.'%\')';
+            $criteria .= ' AND (b.title LIKE \'%' . $keyword . '%\')';
         }
     }
-    if (isset($_GET['itemCode']) AND !empty($_GET['itemCode'])) {
+    if (isset($_GET['itemCode']) and !empty($_GET['itemCode'])) {
         $item_code = $dbs->real_escape_string(trim($_GET['itemCode']));
-        $criteria .= ' AND i.item_code LIKE \'%'.$item_code.'%\'';
+        $criteria .= ' AND i.item_code LIKE \'%' . $item_code . '%\'';
     }
-    if (isset($_GET['member']) AND !empty($_GET['member'])) {
+    if (isset($_GET['member']) and !empty($_GET['member'])) {
         $member = $dbs->real_escape_string($_GET['member']);
-        $criteria .= ' AND (m.member_name LIKE \'%'.$member.'%\' OR m.member_id LIKE \'%'.$member.'%\')';
+        $criteria .= ' AND (m.member_name LIKE \'%' . $member . '%\' OR m.member_id LIKE \'%' . $member . '%\')';
     }
-    if (isset($_GET['startDate']) AND isset($_GET['untilDate'])) {
-        $criteria .= ' AND (TO_DAYS(r.reserve_date) BETWEEN TO_DAYS(\''.$_GET['startDate'].'\') AND
-            TO_DAYS(\''.$_GET['untilDate'].'\'))';
+    if (isset($_GET['startDate']) and isset($_GET['untilDate'])) {
+        $startDate = $dbs->real_escape_string($_GET['startDate']);
+        $untilDate = $dbs->real_escape_string($_GET['untilDate']);
+        $criteria .= ' AND (TO_DAYS(r.reserve_date) BETWEEN TO_DAYS(\'' . $startDate . '\') AND
+            TO_DAYS(\'' . $untilDate . '\'))';
     }
 
     $reportgrid->setSQLCriteria($criteria);
@@ -152,11 +164,11 @@ if (!$reportView) {
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, 20);
 
-    echo '<script type="text/javascript">'."\n";
-    echo 'parent.$(\'#pagingBox\').html(\''.str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set).'\');'."\n";
+    echo '<script type="text/javascript">' . "\n";
+    echo 'parent.$(\'#pagingBox\').html(\'' . str_replace(array("\n", "\r", "\t"), '', $reportgrid->paging_set) . '\');' . "\n";
     echo '</script>';
 
     $content = ob_get_clean();
     // include the page template
-    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/printed_page_tpl.php';
+    require SB . '/admin/' . $sysconf['admin_template']['dir'] . '/printed_page_tpl.php';
 }

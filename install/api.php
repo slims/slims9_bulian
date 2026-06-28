@@ -105,7 +105,8 @@ if (isset($_GET['versionlist'])) {
     'SLiMS 9.6.0 | Bulian',
     'SLiMS 9.6.1 | Bulian',
     'SLiMS 9.7.0 | Bulian D. Roger',
-    'SLiMS 9.7.1 | Bulian D. Roger'
+    'SLiMS 9.7.1 | Bulian D. Roger',
+    'SLiMS 9.7.2 | Bulian D. Roger',
   ];
   die(json_encode(['status' => true, 'data' => $versionList]));
 }

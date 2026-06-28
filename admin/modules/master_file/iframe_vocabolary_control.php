@@ -16,7 +16,7 @@ require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 // GET ID FROM URL
-$itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
+$itemID = (integer)isset($_GET['itemID']) ? $_GET['itemID'] : 0;
 
 // start buffer
 ob_start();
@@ -24,12 +24,16 @@ ob_start();
 <script type="text/javascript">
 function confirmProcess(topic_id, vocabolary_id, related_topic_id)
 {
+  var tID = parseInt(topic_id);
+  var vID = parseInt(vocabolary_id);
+  var rID = parseInt(related_topic_id);
+
   var confirmBox = confirm('<?php echo addslashes(__('Are you sure to remove selected topic?'));?>' + "\n" + '<?php echo addslashes(__('Once deleted, it cannot be restored!'));?>');
   if (confirmBox) {
     // set hidden element value
-    document.hiddenActionForm.tid.value = topic_id;
-    document.hiddenActionForm.remove.value = vocabolary_id;
-    document.hiddenActionForm.related_topic_id.value = related_topic_id;
+    document.hiddenActionForm.tid.value = tID;
+    document.hiddenActionForm.remove.value = vID;
+    document.hiddenActionForm.related_topic_id.value = rID;
     // submit form
     document.hiddenActionForm.submit();
   }
@@ -40,57 +44,70 @@ if (isset($_POST['remove'])) {
     $tid = (integer)$_POST['tid'];
     $vid = (integer)$_POST['remove'];
     $related_topic_id = (integer)$_POST['related_topic_id'];
-    $sql_op = new simbio_dbop($dbs);
-    $sql_op->delete('mst_voc_ctrl', 'topic_id='.$tid.' AND vocabolary_id='.$vid);
-    $sql_op->delete('mst_voc_ctrl', 'topic_id='.$related_topic_id.' AND related_topic_id='.$tid);
-    toastr(addslashes(__('Topic succesfully removed!')))->success();
-    echo '<script type="text/javascript">';
-    echo 'setTimeout(() => {location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';}, 2500)';
-    echo '</script>';
+
+    if ($tid > 0 && $vid > 0) {
+        $sql_op = new simbio_dbop($dbs);
+        $sql_op->delete('mst_voc_ctrl', 'topic_id=' . $dbs->real_escape_string($tid) . ' AND vocabolary_id=' . $dbs->real_escape_string($vid));
+
+        if ($related_topic_id > 0) {
+            $sql_op->delete('mst_voc_ctrl', 'topic_id=' . $dbs->real_escape_string($related_topic_id) . ' AND related_topic_id=' . $dbs->real_escape_string($tid));
+        }
+
+        toastr(addslashes(__('Topic succesfully removed!')))->success();
+        echo '<script type="text/javascript">';
+        echo 'setTimeout(() => {location.href = \'iframe_vocabolary_control.php?itemID='.$tid.'\';}, 2500)';
+        echo '</script>';
+    }
 }
 
 if($itemID){
-$table = new simbio_table();
-$table->table_attr = 'class="s-table table" cellpadding="2" cellspacing="0"';
+    $table = new simbio_table();
+    $table->table_attr = 'class="s-table table" cellpadding="2" cellspacing="0"';
+    $voc_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE topic_id=' . $dbs->real_escape_string($itemID));
+    $row = 1;
+    while ($voc_d = $voc_q->fetch_assoc()) {
 
-// query database
-$voc_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE topic_id='.$itemID);
+        if (!empty($voc_d['scope'])) {
+            echo '<strong>' . __('Scope note') . ': </strong>'.$voc_d['scope'];
+        }
 
-$row = 1;
-while ($voc_d = $voc_q->fetch_assoc()) {
+        if (empty($voc_d['scope'])) {
+            $topic_name = 'N/A';
+            $related_topic_id = (integer)$voc_d['related_topic_id'];
+            if ($related_topic_id > 0) {
+                $topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id=' . $dbs->real_escape_string($related_topic_id));
+                $topic_d = $topic_q ? $topic_q->fetch_row() : null;
+            } else {
+                $topic_d = null;
+            }
 
-  if (!is_null($voc_d['scope'])) {
-    echo '<strong>' . __('Scope note') . ': </strong>'.$voc_d['scope'];
-  }
+            if ($topic_d) {
+                $topic_name = $topic_d[0];
+            }
 
-  if (is_null($voc_d['scope'])) {
-    // fallback related topic id
-    $topic_q = $dbs->query('SELECT topic FROM mst_topic WHERE topic_id='.$voc_d['related_topic_id']);
-    $topic_d = $topic_q->fetch_row();
+            // alternate the row color
+            $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
 
-    // alternate the row color
-      $row_class = ($row%2 == 0)?'alterCell':'alterCell2';
+            // links
+            $edit_link = '<a class="s-btn btn btn-primary btn-sm notAJAX openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;">'.__('Edit').'</a>';
+            $remove_link = '<a class="s-btn btn btn-danger btn-sm notAJAX" href="#" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].','.$related_topic_id.')">'.__('Remove').'</a>';
+            $related_term = $voc_d['rt_id'];
 
-      // links
-      $edit_link = '<a class="s-btn btn btn-primary btn-sm notAJAX openPopUp" href="'.MWB.'master_file/pop_vocabolary_control.php?editTopic=true&itemID='.$itemID.'&vocID='.$voc_d['vocabolary_id'].'" height="450" title="'.__('Vocabolary Control').'" style="text-decoration: underline;">'.__('Edit').'</a>';
-      $remove_link = '<a class="s-btn btn btn-danger btn-sm notAJAX" href="#" onclick="javascript: confirmProcess('.$itemID.', '.$voc_d['vocabolary_id'].','.$voc_d['related_topic_id'].')">'.__('Remove').'</a>';
-      $related_term = $voc_d['rt_id'];
+            $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_name));
+            $table->setCellAttr($row, null, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: auto;"');
+            $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
+            $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
+            $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 8%;"');
 
-      $table->appendTableRow(array($remove_link, $edit_link, $related_term, $topic_d[0]));
-      $table->setCellAttr($row, null, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: auto;"');
-      $table->setCellAttr($row, 0, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-      $table->setCellAttr($row, 1, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 5%;"');
-      $table->setCellAttr($row, 2, 'valign="top" class="'.$row_class.'" style="font-weight: bold; width: 8%;"');
+            $row++;
+        }
+    }
+    echo $table->printTable();
+    // hidden form
+    echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /><input type="hidden" name="related_topic_id" value="0" /></form>';
 
-      $row++;
-  }
+    /* main content end */
+    $content = ob_get_clean();
+    // include the page template
+    require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';
 }
-echo $table->printTable();
-// hidden form
-echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /><input type="hidden" name="related_topic_id" value="0" /></form>';
-#echo '<form name="hiddenActionForm" method="post" action="'.$_SERVER['PHP_SELF'].'"><input type="hidden" name="tid" value="0" /><input type="hidden" name="remove" value="0" /></form>';
-}
-/* main content end */
-$content = ob_get_clean();
-// include the page template
-require SB.'/admin/'.$sysconf['admin_template']['dir'].'/notemplate_page_tpl.php';

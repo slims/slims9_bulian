@@ -258,7 +258,7 @@ class admin_logon
         */
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username, u.passwd,
-            u.realname, u.groups, u.user_image, u.2fa
+            u.realname, u.groups, u.user_image, u.`2fa`
             FROM user AS u
             WHERE u.username='%s'", $this->obj_db->escape_string($this->username));
         $_user_q = $this->obj_db->query($_sql_librarian_login);
@@ -299,7 +299,7 @@ class admin_logon
     protected function nativeLoginMd5() {
         $_sql_librarian_login = sprintf("SELECT
             u.user_id, u.username,
-            u.realname, u.groups, u.2fa
+            u.realname, u.groups, u.`2fa`
             FROM user AS u
             WHERE u.username='%s'
                 AND u.passwd=MD5('%s')", $this->obj_db->escape_string($this->username), $this->obj_db->escape_string($this->password));

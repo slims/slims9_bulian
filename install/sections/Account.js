@@ -27,11 +27,32 @@ export default {
             engine: 'MyISAM'
         }
     },
+    computed: {
+        passwordErrors() {
+            return this.validatePassword()
+        },
+        canSubmit() {
+            return !this.loading
+                && this.passwd
+                && this.confirmPasswd
+                && this.passwd === this.confirmPasswd
+                && this.passwordErrors.length === 0
+                && this.username
+        }
+    },
     methods: {
         submitForm() {
-            if (this.passwd === this.confirmPasswd) {
-                this.doInstallation()
+            this.message = []
+            const errors = this.validatePassword()
+            if (this.passwd !== this.confirmPasswd) {
+                errors.push('Password confirmation does not match.')
             }
+            if (errors.length > 0) {
+                this.isPass = false
+                this.message = errors
+                return
+            }
+            this.doInstallation()
         },
         doInstallation() {
             this.loading = true
@@ -79,6 +100,37 @@ export default {
         {
             if (engine === 'Aria') return engine + ' - recommended for crash safe'
             return engine
+        },
+        validatePassword() {
+            const errors = []
+            const minLength = 12
+            const password = this.passwd ?? ''
+            const username = this.username ?? ''
+
+            if (password.length < minLength) {
+                errors.push(`Password must be at least ${minLength} characters.`)
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push('Password must contain at least one uppercase letter.')
+            }
+            if (!/[a-z]/.test(password)) {
+                errors.push('Password must contain at least one lowercase letter.')
+            }
+            if (!/[0-9]/.test(password)) {
+                errors.push('Password must contain at least one number.')
+            }
+            // hyphen placed at end to avoid range issues
+            if (!/[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?`~-]/.test(password)) {
+                errors.push('Password must contain at least one special character.')
+            }
+            if (/\s/.test(password)) {
+                errors.push('Password cannot contain spaces.')
+            }
+            if (username && password.toLowerCase().includes(username.toLowerCase())) {
+                errors.push('Password cannot contain the username.')
+            }
+
+            return errors
         }
     },
     mounted() {
@@ -146,8 +198,16 @@ export default {
             Retype Password
           </label>
           <input required v-model="confirmPasswd" ref="db_user" id="db_user" class="md:w-1/2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="password" placeholder="Retype password">
+          <div class="text-sm text-gray-600 mt-2">
+              <div>Password must be at least 12 characters and include uppercase, lowercase, number, and special character. No spaces; avoid using the username.</div>
+              <div v-if="passwordErrors.length" class="text-pink-600 mt-1" >
+                  <ul>
+                      <li v-for="err in passwordErrors">{{ err }}</li>
+                  </ul>
+              </div>
+          </div>
       </div>
-      <slims-button :loading="loading" :disabled="loading" type="submit" text="Run the installation"></slims-button>
+      <slims-button :loading="loading" :disabled="loading || !canSubmit" type="submit" text="Run the installation"></slims-button>
     </form>
     
 </div>

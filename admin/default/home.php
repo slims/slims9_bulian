@@ -455,7 +455,7 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($_SESSION['uid'] === '1') : ?>
+        <?php if ((int) $_SESSION['uid'] === 1) : ?>
         // get lastest release
         fetch('https://api.github.com/repos/slims/slims9_bulian/releases/latest')
             .then(res => res.json())

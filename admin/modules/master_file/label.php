@@ -65,19 +65,26 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             // create upload object
             $image_upload = new simbio_file_upload();
             $image_upload->setAllowableFormat($sysconf['allowed_images']);
+            $image_upload->setAllowableMimeTypes(array(
+              'image/gif',
+              'image/jpeg',
+              'image/pjpeg',
+              'image/png',
+              'image/webp'
+            ));
             $image_upload->setMaxSize($sysconf['max_image_upload']*1024);
             $image_upload->setUploadDir(IMGBS.'labels');
             // upload
             $img_upload_status = $image_upload->doUpload('labelImage', $data['label_name']);
             if ($img_upload_status == UPLOAD_SUCCESS) {
-              $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
-              // write log
-              writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename, 'Master Label Image', 'Upload');
-              utility::jsToastr(__('Label'),__('Label image file successfully uploaded'),'success');
+             $data['label_image'] = $dbs->escape_string($image_upload->new_filename);
+             // write log
+             writeLog('staff', $_SESSION['uid'], 'bibliography', $_SESSION['realname'].' upload label image file '.$image_upload->new_filename, 'Master Label Image', 'Upload');
+             utility::jsToastr(__('Label'),__('Label image file successfully uploaded'),'success');
             } else {
-              // write log
-              writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')', 'Master Label Image', 'Fail');
-              utility::jsToastr(__('Label'),__('FAILED to upload label image! Please see System Log for more detailed information'),'error');
+             // write log
+             writeLog('staff', $_SESSION['uid'], 'bibliography', 'ERROR : '.$_SESSION['realname'].' FAILED TO upload label image file '.$image_upload->new_filename.', with error ('.$image_upload->error.')', 'Master Label Image', 'Fail');
+             utility::jsToastr(__('Label'),__('FAILED to upload label image! Please see System Log for more detailed information'),'error');
             }
         }else{
               utility::jsToastr(__('Label'),__('Label need image uploaded'),'error');
@@ -134,13 +141,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         WHERE ml.label_id='.$itemID.' GROUP BY ml.label_name';
         $label_biblio_q = $dbs->query($_sql_label_biblio_q);
         $label_biblio_d = $label_biblio_q->fetch_row();
-        if ($label_biblio_d[1] < 1) {
+        
+        if (is_array($label_biblio_d) && isset($label_biblio_d[1]) && $label_biblio_d[1] > 0) {
+            $still_have_biblio[] = sprintf(__('Label %s still in use %d biblio(s)')."<br/>",substr($label_biblio_d[0], 0, 45),$label_biblio_d[1]);
+            $error_num++;          
+        } else {
             if (!$sql_op->delete('mst_label', 'label_id='.$itemID)) {
                 $error_num++;
             }
-        }else{
-            $still_have_biblio[] = sprintf(__('Label %s still in use %d biblio(s)')."<br/>",substr($label_biblio_d[0], 0, 45),$label_biblio_d[1]);
-            $error_num++;            
         }
     }
 
@@ -170,14 +178,14 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 ?>
 <div class="menuBox">
 <div class="menuBoxInner masterFileIcon">
-	<div class="per_title">
-	    <h2><?php echo __('Label'); ?></h2>
+    <div class="per_title">
+        <h2><?php echo __('Label'); ?></h2>
   </div>
-	<div class="sub_section">
-	  <div class="btn-group">
+    <div class="sub_section">
+      <div class="btn-group">
       <a href="<?php echo MWB; ?>master_file/label.php" class="btn btn-default"><?php echo __('Label List'); ?></a>
       <a href="<?php echo MWB; ?>master_file/label.php?action=detail" class="btn btn-default"><?php echo __('Add New Label'); ?></a>
-	  </div>
+      </div>
     <form name="search" action="<?php echo MWB; ?>master_file/label.php" id="search" method="get" class="form-inline"><?php echo __('Search'); ?> 
     <input type="text" name="keywords" class="form-control col-md-3" />
     <input type="submit" id="doSearch" value="<?php echo __('Search'); ?>" class="s-btn btn btn-default" />
@@ -222,7 +230,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     $form->addTextField('text', 'labelName', __('Label Name').'*', $rec_d['label_name']??'', 'style="width: 60%;" maxlength="20" class="form-control"');
     // label image
     if (empty($rec_d['label_image'])) {
-        $str_input = simbio_form_element::textField('file', 'labelImage');
+        $str_input = simbio_form_element::textField('file', 'labelImage', '', 'accept="image/*"');
         $str_input .= ' Maximum '.$sysconf['max_image_upload'].' KB. All image will be automatically resized.';
         $form->addAnything(__('File Attachment'), $str_input);
     } else {

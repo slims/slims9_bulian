@@ -163,7 +163,7 @@ if (!function_exists('redirect'))
      * Redirect page with many options
      *
      * @param string $urlOrPath
-     * @return void
+     * @return object
      */
     function redirect(string $urlOrPath = '')
     {
@@ -308,7 +308,7 @@ if (!function_exists('toastr'))
      * will you use native browser alert.
      * 
      * @param string $message
-     * @return void
+     * @return object
      */
     function toastr(string $message)
     {

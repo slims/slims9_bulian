@@ -50,6 +50,7 @@ if ($_SESSION['uid'] == 1) {
     $menu['system.modules'] = array(__('Modules'), MWB.'system/module.php', __('Configure Application Modules'));
     $menu['system.user-group'] = array(__('User Group'), MWB.'system/user_group.php', __('Manage Group of Application User'));
     $menu['system.librarian-users'] = array(__('Librarian & System Users'), MWB.'system/app_user.php', __('Manage Application User or Library Staff'));
+    $menu['system.image-maintenance'] = array(__('Image Maintenance'), MWB.'system/image_maintenance.php', __('Manage All Image Assets.'));
 
 }
 $menu['system.shortcut-setting'] = array(__('Shortcut Setting'), MWB.'system/shortcut.php', __('Shortcut Setting'));

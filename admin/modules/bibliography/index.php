@@ -30,6 +30,10 @@ use SLiMS\AlLibrarian;
 use SLiMS\Filesystems\Storage;
 use SLiMS\Form\FormAjaxWithCustomField;
 use SLiMS\Plugins;
+use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SphinxSearchEngine;
+use SLiMS\Ucs;
 
 // key to get full database access
 define('DB_ACCESS', 'fa');
@@ -262,6 +266,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // remove exif data
                 if (empty($images->getError())) $images->cleanExifInfo();
 
+                $images->sanitizeImageWithGD();
+
             })->as('docs/' . strtolower('cover_'. preg_replace("/[^a-zA-Z0-9]+/", "-", $img_title)));
 
             
@@ -278,10 +284,19 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         } else if (!empty($_POST['base64picstring'])) {
             list($filedata, $filedom) = explode('#image/type#', $_POST['base64picstring']);
-            $filedata = base64_decode($filedata);
-            $fileinfo = getimagesizefromstring($filedata);
-            $valid = strlen($filedata) / 1024 < $sysconf['max_image_upload'];
-            $valid = (!$fileinfo || $valid === false) ? false : in_array($fileinfo['mime'], $sysconf['allowed_images_mimetype']);
+            $filedata = base64_decode(trim($filedata), true);
+            $fileinfo = $filedata !== false ? getimagesizefromstring($filedata) : false;
+            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
+            $filedom = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($filedom);
+            $filedom = $fileMime && !$filedom && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $filedom;
+            $fileMimeLower = strtolower($fileMime);
+
+            $sizeAllowed = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
+            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
+            $extAllowed = $filedom && in_array($filedom, $allowedExts, true);
+            $valid = $fileinfo && $sizeAllowed && $mimeAllowed && $extAllowed;
             $new_filename = strtolower('cover_'
                 . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')
                 . '.' . $filedom);
@@ -295,6 +310,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
                     $upload_status = UPLOAD_SUCCESS;
                 }
+            } else {
+                utility::jsToastr('Bibliography', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
             }
         }
 
@@ -376,7 +393,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         } else {
 
             // execute registered hook
-            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_SAVE, ['data' => $data]);
+            Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_BEFORE_SAVE, ['data' => &$data]);
 
             /* INSERT RECORD MODE */
             // insert the data
@@ -387,7 +404,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // execute registered hook
                 $data['biblio_id'] = $last_biblio_id;
-                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_SAVE, ['data' => $data]);
+                Plugins::getInstance()->execute(Plugins::BIBLIOGRAPHY_AFTER_SAVE, ['data' => &$data]);
 
                 // add authors
                 if ($_SESSION['biblioAuthor']) {
@@ -418,7 +435,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     $custom_data['biblio_id'] = $last_biblio_id;
                     @$sql_op->insert('biblio_custom', $custom_data);
                 }
-
 
                 utility::jsToastr('Bibliography', __('New Bibliography Data Successfully Saved'), 'success');
                 // write log
@@ -460,39 +476,33 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 utility::jsToastr('Bibliography', sprintf(__('Item Data FAILED to Save. Insert batch item maximum %s copies'), $sysconf['max_insert_batch']), 'warning');
                 die();
             }
-
-            // get zeros
             preg_match($regex, $pattern, $result);
             $zeros = strlen($result[0]);
-
-            // get chars
             $chars = preg_split($regex, $pattern);
-
+            $chars_first = trim($chars[0]); 
             $chars_last = (isset($chars[1]) && !empty(trim($chars[1]))) ? trim($chars[1]) : '';
-
-            // get last number from database
-            $last_q = $dbs->query('SELECT item_code FROM item WHERE item_code REGEXP \'^' . $chars[0] . '[0-9]{3,}' . $chars_last . '$\' ORDER BY item_code DESC LIMIT 1');
+            $safe_chars_first = preg_quote($chars_first, '/');
+            $safe_chars_last = preg_quote($chars_last, '/');
+            $sql_pattern = '^' . $safe_chars_first . '[0-9]{'.$zeros.',}' . $safe_chars_last . '$';
+            $last_q = $dbs->query("SELECT item_code FROM item WHERE item_code REGEXP '{$sql_pattern}' ORDER BY item_code DESC LIMIT 1");
             if (!$dbs->errno && $last_q->num_rows > 0) {
                 $last_d = $last_q->fetch_row();
-                // get last  number
-                $ptn = '/' . $chars[0] . '|' . $chars_last . '$/';
+                $ptn = '/' . $safe_chars_first . '|' . $safe_chars_last . '$/';
                 $last = preg_replace($ptn, '', $last_d[0]);
                 $start = intval($last) + 1;
             } else {
                 $start = 1;
             }
-
+            $start = $start+1;
             $end = $start + $total;
             for ($b = $start; $b < $end; $b++) {
-                $len = strlen($b);
-                $itemcode = $chars[0];
+                $itemcode = $chars_first; 
                 if ($zeros > 0) {
-                    $itemcode .= preg_replace('@0{' . $len . '}$@i', $b, $result[0]);
+                    $itemcode .= str_pad((string)$b, $zeros, '0', STR_PAD_LEFT);
                 } else {
                     $itemcode .= $b;
                 }
-                $itemcode .= $chars[1];
-
+                $itemcode .= $chars_last;
                 $item_insert_sql = sprintf("INSERT IGNORE INTO item (biblio_id, item_code, received_date, supplier_id, order_no, order_date, item_status_id, site, source, invoice, price, price_currency, invoice_date, call_number, coll_type_id, location_id, input_date, last_update, uid)
         VALUES ( %d, '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)",
                     isset($updateRecordID) ? $updateRecordID : $last_biblio_id, $itemcode, $dbs->escape_string($_POST['recvDate']), intval($_POST['supplierID']), $dbs->escape_string($_POST['ordNo']), $dbs->escape_string($_POST['orDate']), $dbs->escape_string($_POST['itemStatusID']), $dbs->escape_string($_POST['itemSite']), intval($_POST['source']), $dbs->escape_string($_POST['invoice']), intval($_POST['price']), $dbs->escape_string($_POST['priceCurrency']), $dbs->escape_string($_POST['invcDate']), $data['call_number'], intval($_POST['collTypeID']), $dbs->escape_string($_POST['locationID']), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $_SESSION['uid']);
@@ -589,6 +599,8 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 // add to http query for UCS delete
                 $http_query .= "itemID[]=$itemID&";
+                $_itemID[] = $itemID;
+                $itemIDs = implode(',', $_itemID);
             }
         } else {
             $still_have_item[] = substr($biblio_item_d[0], 0, 45) . '... still have ' . $biblio_item_d[1] . ' copies';
@@ -607,7 +619,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
     // auto delete data on UCS if enabled
     if ($http_query && $sysconf['ucs']['enable'] && $sysconf['ucs']['auto_delete']) {
-        echo '<script type="text/javascript">parent.ucsUpdate(\'' . MWB . 'bibliography/ucs_update.php\', \'nodeOperation=delete&' . $http_query . '\');</script>';
+        Ucs::auto_delete($itemIDs);
     }
     // error alerting
     if ($error_num == 0) {
@@ -804,7 +816,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
 
     /* Form Element(s) */
     // biblio title
-    $form->addTextField('textarea', 'title', __('Title') . '*', $rec_d['title'] ?? '', 'rows="1" class="form-control"',
+    $form->addTextField('textarea', 'title', __('Title') . '*', stripslashes(($rec_d ?? [])['title'] ?? ''), 'rows="1" class="form-control"',
         __('Main title of collection. Separate child title with colon and pararel title with equal (=) sign.'));
 
     // biblio authors
@@ -1254,8 +1266,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     $datagrid = new simbio_datagrid();
 
     // index choice
-    if ($sysconf['index']['type'] == 'index' || $sysconf['index']['type'] == 'sphinx') {
-        if ($sysconf['index']['type'] == 'sphinx') {
+    $search_engine = Engine::active();
+    if ($search_engine != DefaultEngine::class) {
+        if ($search_engine == SphinxSearchEngine::class) {
             require LIB . 'sphinx/sphinxapi.php';
             require LIB . 'biblio_list_sphinx.inc.php';
         } else {
@@ -1268,6 +1281,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
         if ($can_read AND $can_write) {
             $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \'' . __('Title') . '\'', 'index.labels', 'index.image',
                 'index.author',
+                'index.edition AS \'' . __('Edition') . '\'',
                 'index.isbn_issn AS \'' . __('ISBN/ISSN') . '\'',
                 'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">' . __('None') . '</strong>\') AS \'' . __('Copies') . '\'',
                 'index.last_update AS \'' . __('Last Update') . '\'');

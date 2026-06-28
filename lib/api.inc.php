@@ -125,8 +125,11 @@ class api
         while ($r_sub = $q_sub->fetch_assoc()) {
           $_return['subjects'][$_ct]['topic'] = $r_sub['topic'];
           $_type = $r_sub['topic_type'];
-          $_return['subjects'][$_ct]['topic_type'] = $r_sub['topic_type'];
-          $_return['subjects'][$_ct]['topic_type'] = $sysconf['subject_type'][$_type];
+          if (isset($sysconf['subject_type'][$_type])) {
+            $_return['subjects'][$_ct]['topic_type'] = $sysconf['subject_type'][$_type];
+          } else {
+            $_return['subjects'][$_ct]['topic_type'] = $r_sub['topic_type'];
+          }
           $_level = $r_sub['level'];
           if ($_level == '1') {
             $_return['subjects'][$_ct]['topic_level'] = 'Primary';

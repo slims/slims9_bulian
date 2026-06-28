@@ -43,8 +43,12 @@ ob_start();
 
 if (isset($_POST['counter'])) {
 
+  if (!\Volnix\CSRF\CSRF::validate($_POST)) {
+    die(Json::stringify(['status' => 'error','message' => __('Invalid CSRF Token! Please refresh the page.'),'image' => 'person.png','new_token' => \Volnix\CSRF\CSRF::getToken()])->withHeader());
+  }
+
   if (trim($_POST['memberID']) == '') {
-    die(Json::stringify(['message' => __('Member ID can\'t be empty'), 'image' => 'person.png'])->withHeader());
+    die(Json::stringify(['message' => __('Member ID can\'t be empty'), 'image' => 'person.png','new_token' => \Volnix\CSRF\CSRF::getToken()])->withHeader());
   }
    
   // sleep for a while
@@ -75,7 +79,7 @@ if (isset($_POST['counter'])) {
   }
   
   // send response
-  die(Json::stringify(['message' => $message, 'image' => $image, 'status' => $visitor->getError()])->withHeader());
+  die(Json::stringify(['message' => $message, 'image' => $image,'new_token' => \Volnix\CSRF\CSRF::getToken(), 'status' => $visitor->getError()])->withHeader());
 }
 
 // include visitor form template
@@ -121,6 +125,9 @@ $(document).ready( function() {
           success: function(respond) {
             $('#counterInfo').html(respond.message);
             $('#text_voice').val(success_text + respond.message); 
+            if (respond.new_token) {
+                $('input[name="<?= \Volnix\CSRF\CSRF::getTokenName() ?>"]').val(respond.new_token);
+            }
             // reset counter
             setTimeout(function() { 
               $('#speak').trigger('click');
@@ -141,10 +148,13 @@ $(document).ready( function() {
             }
             $('#memberID').focus();            
           },
-          error: function(){
-            // alert('Error inserting counter data to database!');
-            $('#text_voice').val(error_text);            
-            $(this).enableForm().find('input[type=text]').val('');
+        error: function(xhr){
+            var errResp = xhr.responseJSON;
+            if (errResp && errResp.new_token) {
+                $('input[name="<?= \Volnix\CSRF\CSRF::getTokenName() ?>"]').val(errResp.new_token);
+            }
+            $('#counterInfo').html(error_text);
+            theForm.enableForm();
             $('#memberID').focus();
           }
       });

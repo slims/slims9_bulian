@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Created by          : Waris Agung Widodo (ido.alit@gmail.com)
  * @Date                : 01/01/2022 12:14
@@ -23,6 +24,8 @@
 use SLiMS\SearchEngine\Contract;
 use SLiMS\SearchEngine\Criteria;
 use SLiMS\SearchEngine\DefaultEngine;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\FuzzySearchEngine;
 
 // if we are in searching mode
 if (isset($_GET['search'])) {
@@ -34,10 +37,29 @@ if (isset($_GET['search'])) {
     $keywords = '';
     $search_result_info = '';
 
-    // get engine name from setting
-    $search_engine = config('search_engine', DefaultEngine::class);
+    // get engine name from setting, default to FuzzySearchEngine
+    $search_engine = Engine::active();
+
     // data setting exists but class not exists
-    if (!class_exists($search_engine)) $search_engine = DefaultEngine::class;
+    if (!class_exists($search_engine)) $search_engine = FuzzySearchEngine::class;
+
+    // Check if index tables are populated (for FuzzySearchEngine)
+    // If empty, fallback to DefaultEngine for backward compatibility
+    if ($search_engine === FuzzySearchEngine::class) {
+        try {
+            $db = \SLiMS\DB::getInstance();
+            $check_index = $db->query("SELECT COUNT(*) as count FROM index_words LIMIT 1");
+            $index_count = $check_index->fetch(\PDO::FETCH_ASSOC);
+
+            // If index tables are empty, use DefaultEngine instead
+            if ($index_count['count'] == 0) {
+                $search_engine = DefaultEngine::class;
+            }
+        } catch (\Exception $e) {
+            // If tables don't exist or error occurs, fallback to DefaultEngine
+            $search_engine = DefaultEngine::class;
+        }
+    }
 
     // starting engine
     $engine = new $search_engine;
@@ -62,10 +84,12 @@ if (isset($_GET['search'])) {
             $keywords = trim(strip_tags(urldecode($_GET['keywords'] ?? '')));
             if ($keywords !== '') {
                 $criteria->keywords = $keywords;
-                if (config('simplified_simple_search', true) === false) {
-                    foreach (['title', 'author', 'subject'] as $item) $criteria->or($item, $keywords);
-                } else {
+                // Simplified search: if enabled, search only in title
+                // If disabled or not set, search in title, author, and subject
+                if (config('simplified_simple_search')) {
                     $criteria->exact('title', $keywords);
+                } else {
+                    foreach (['title', 'author', 'subject'] as $item) $criteria->or($item, $keywords);
                 }
             }
         }
@@ -77,7 +101,7 @@ if (isset($_GET['search'])) {
             $filterArr = json_decode($filter, true);
             unset($filterArr['csrf_token']);
             $filters = [];
-            foreach ($filterArr??[] as $idx => $x) {
+            foreach ($filterArr ?? [] as $idx => $x) {
                 if (strpos($idx, '[') !== false) {
                     $arr = explode('[', $idx);
                     $filters[$arr[0]][] = $x;
@@ -131,8 +155,8 @@ if (isset($_GET['search'])) {
                 $search_result_info = str_replace('{biblio_list->num_rows}', $engine->getNumRows(), $search_result_info);
                 $search_result_info .= '<div class="search-query-time">' . __('Query took') . ' <b>' . $engine->query_time . '</b> ' . __('second(s) to complete') . '</div>';
                 $search_result_info .= '<div>';
-                $search_result_info .= '<a href="index.php?resultXML=true&'.$_SERVER['QUERY_STRING'].'" class="xmlResultLink" target="_blank" title="View Result in XML Format" style="clear: both;">XML Result</a>';
-                $search_result_info .= '<a href="index.php?JSONLD=true&'.$_SERVER['QUERY_STRING'].'" class="jsonResultLink" target="_blank" title="View Result in JSON Format" style="clear: both;">JSON Result</a>';
+                $search_result_info .= '<a href="index.php?resultXML=true&' . $_SERVER['QUERY_STRING'] . '" class="xmlResultLink" target="_blank" title="View Result in XML Format" style="clear: both;">XML Result</a>';
+                $search_result_info .= '<a href="index.php?JSONLD=true&' . $_SERVER['QUERY_STRING'] . '" class="jsonResultLink" target="_blank" title="View Result in JSON Format" style="clear: both;">JSON Result</a>';
                 $search_result_info .= '</div>';
 
                 // pagination

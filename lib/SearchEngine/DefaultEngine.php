@@ -66,7 +66,12 @@ class DefaultEngine extends Contract
 
     function buildSQL(): array
     {
-        $sql_select = 'select b.biblio_id, b.title, b.image, b.isbn_issn, b.publish_year, mp.publisher_name as `publisher`, mpl.place_name as `publish_place`, b.labels, b.input_date';
+        $sql_select = "select b.biblio_id, b.title, b.image, b.isbn_issn, b.publish_year,
+                       b.edition, b.collation, b.series_title, b.call_number,
+                       mp.publisher_name as `publisher`, mpl.place_name as `publish_place`, b.labels, b.input_date,
+                       mg.gmd_name as `gmd`,
+                       GROUP_CONCAT(DISTINCT ma.author_name SEPARATOR ' - ') AS author,
+                       GROUP_CONCAT(DISTINCT mt.topic SEPARATOR ', ') AS topic";
 
         // checking custom front page fields file
         $file_path = SB;
@@ -85,14 +90,18 @@ class DefaultEngine extends Contract
 
         $sql_join = 'left join mst_publisher as mp on b.publisher_id=mp.publisher_id ';
         $sql_join .= 'left join mst_place as mpl on b.publish_place_id=mpl.place_id ';
+        $sql_join .= 'left join mst_gmd as mg on b.gmd_id=mg.gmd_id ';
+        $sql_join .= 'left join biblio_author AS ba ON ba.biblio_id=b.biblio_id ';
+        $sql_join .= 'left join mst_author AS ma ON ba.author_id=ma.author_id ';
+        $sql_join .= 'left join biblio_topic AS bt ON bt.biblio_id=b.biblio_id ';
+        $sql_join .= 'left join mst_topic AS mt ON bt.topic_id=mt.topic_id ';
 
         // location
-        $sql_group = '';
+        $sql_group = 'group by b.biblio_id';
         if (!is_null($this->criteria->location) || !is_null($this->criteria->colltype)
             || !is_null($this->filter->location) || !is_null($this->filter->colltype)
             || !is_null($this->filter->availability)) {
             $sql_join .= 'left join item as i on b.biblio_id=i.biblio_id ';
-            $sql_group = 'group by b.biblio_id';
         }
 
         $sql_criteria = 'where b.opac_hide=0 ';
@@ -441,10 +450,11 @@ class DefaultEngine extends Contract
 
     function toHTML()
     {
+        global $sysconf;
         $buffer = '';
         // include biblio list html template callback
-        $path = SB . config('template.dir', 'template') . DS;
-        $path .= config('template.theme', 'default') . DS . 'biblio_list_template.php';
+        $path = SB . config('template.dir', $sysconf['template']['dir']) . DS;
+        $path .= config('template.theme', $sysconf['template']['theme']) . DS . 'biblio_list_template.php';
         include $path;
 
         foreach ($this->documents as $i => $document) {
@@ -598,14 +608,86 @@ class DefaultEngine extends Contract
         }
     }
 
-    function toRSS()
+    public function toRSS()
     {
         // TODO: Implement toRSS() method.
+        if (ob_get_level() > 0) {
+            ob_clean();
+        }
+        header('Content-Type: text/xml; charset=utf-8');
+
+        $xml = new \XMLWriter();
+        $xml->openMemory();
+        $xml->setIndent(true);
+
+        // --- Start RSS 2.0 ---
+        $xml->startElement('rss');
+        $xml->writeAttribute('version', '2.0');
+
+        // Start Channel
+        $xml->startElement('channel');
+
+        $xml->startElement('title');
+        $xml->writeCData('Collection of ' . ($sysconf['library_name'] ?? 'SLiMS Library'));
+        $xml->endElement();
+
+        $xml->startElement('link');
+        $xml->writeCData('http://' . ($_SERVER['SERVER_NAME'] ?? 'localhost') . SWB);
+        $xml->endElement();
+
+        $xml->startElement('description');
+        $xml->writeCData('New collection of ' . ($sysconf['library_name'] ?? 'SLiMS Library'));
+        $xml->endElement();
+
+        foreach ($this->documents as $document) {
+            $biblio_id = $document['biblio_id'] ?? '';
+            $title = trim($document['title'] ?? 'No Title');
+            $author = $document['author'] ?? '';
+            $isbn_issn = $document['isbn_issn'] ?? '';
+            $input_date = $document['input_date'] ?? '';
+
+            $xml->startElement('item');
+
+            // Title
+            $xml->startElement('title');
+            $xml->writeCData($title);
+            $xml->endElement();
+
+            // Link
+            $link = 'http://' . ($_SERVER['SERVER_NAME'] ?? 'localhost') . SWB . '/index.php?p=show_detail&id=' . $biblio_id;
+            $xml->startElement('link');
+            $xml->writeCData($link);
+            $xml->endElement();
+
+            $timestamp = !empty($input_date) ? strtotime($input_date) : time();
+            $pubDate = date('D, d F Y H:i:s', $timestamp);
+            $xml->startElement('pubDate');
+            $xml->writeCData($pubDate);
+            $xml->endElement();
+
+            // Author
+            $xml->startElement('author');
+            $xml->writeCData($author);
+            $xml->endElement();
+
+            $description_item = 'Author: ' . $author . ' ISBN: ' . $isbn_issn;
+            $xml->startElement('description');
+            $xml->writeCData($description_item);
+            $xml->endElement();
+
+            $xml->endElement();
+        }
+
+        $xml->endElement(); // channel
+        $xml->endElement(); // rss
+
+        echo $xml->flush();
+        exit;
     }
 
     function dump(array $sql)
     {
-        if (!isset($_GET['resultXML'])) {
+        if (!isset($_GET['resultXML']) && !isset($_GET['rss'])) {
             debugBox(content: function() use($sql) {
                 debug('Search Engine Debug 🔎 🪲', [
                     'Engine Type ⚙️:', get_class($this)

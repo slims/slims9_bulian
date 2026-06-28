@@ -58,8 +58,11 @@ $page_title = __('Vocabulary Control');
 function checkSubject($str_subject, $str_subject_type = 't')
 {
     global $dbs;
-    $_q = $dbs->query('SELECT topic_id FROM mst_topic WHERE topic=\''.$str_subject.'\' AND topic_type=\''.$str_subject_type.'\'');
-    if ($_q->num_rows > 0) {
+    $str_subject = $dbs->real_escape_string($str_subject);
+    $str_subject_type = $dbs->real_escape_string($str_subject_type);
+
+    $_q = $dbs->query("SELECT topic_id FROM mst_topic WHERE topic='".$str_subject."' AND topic_type='".$str_subject_type."'");
+    if ($_q && $_q->num_rows > 0) {
         $_d = $_q->fetch_row();
         // return the subject/topic ID
         return $_d[0];
@@ -69,8 +72,8 @@ function checkSubject($str_subject, $str_subject_type = 't')
 
 if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['search_str']))) {
   
-    $relatedterm = trim($dbs->escape_string(strip_tags($_POST['relatedterm'])));
-    $search_str = trim($dbs->escape_string(strip_tags($_POST['search_str'])));
+    $relatedterm = trim($dbs->real_escape_string(strip_tags($_POST['relatedterm'])));
+    $search_str = trim($dbs->real_escape_string(strip_tags($_POST['search_str'])));
 
     # create new sql op object
     $sql_op = new simbio_dbop($dbs);
@@ -89,7 +92,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     $data['rt_id'] = $relatedterm;
 
     if (!empty($_POST['topicID'])) { # a.
-        $data['related_topic_id'] = $_POST['topicID'];
+        $data['related_topic_id'] = (integer)$_POST['topicID'];
     } else if ($search_str AND empty($_POST['topicID'])) {
         // check subject
         $subject_id = checkSubject($search_str);
@@ -98,7 +101,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
         } else {
             // adding new topic
             $topic_data['topic'] = $search_str;
-            $topic_data['classification'] = $_POST['topicClass'];
+            $topic_data['classification'] = $dbs->real_escape_string($_POST['topicClass']);
             $topic_data['topic_type'] = 't';
             $topic_data['input_date'] = date('Y-m-d');
             $topic_data['last_update'] = date('Y-m-d');
@@ -110,7 +113,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
     }
 
     // data secondary vocabulary
-    $_data['topic_id'] = $data['related_topic_id'];
+    $_data['topic_id'] = (integer)$data['related_topic_id'];
     $_data['related_topic_id'] = $itemID;
 
     $_data['rt_id'] = false;
@@ -133,7 +136,7 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
 
     // update mode
     if (isset($_POST['saveData'])) {
-        $update = $sql_op->update('mst_voc_ctrl', $data, 'vocabolary_id='.$vocID);
+        $update = $sql_op->update('mst_voc_ctrl', $data, 'vocabolary_id=' . $dbs->real_escape_string($vocID));
         if ($update) {
             $alert_update  = '<script type="text/javascript">';
             $alert_update .= 'alert(\''.__('Vocabulary update!').'\');';
@@ -146,8 +149,9 @@ if (isset($_POST['relatedterm']) AND (isset($_POST['topicID']) OR isset($_POST['
         }
     } else {
         // checking if already added
-        $check_vc = $dbs->query('SELECT count(topic_id) FROM mst_voc_ctrl WHERE topic_id='.$data['topic_id'].' AND related_topic_id='.$data['related_topic_id']);
-        $check_dc = $check_vc->fetch_row();
+        $check_vc = $dbs->query('SELECT count(topic_id) FROM mst_voc_ctrl WHERE topic_id=' . $dbs->real_escape_string($data['topic_id']) . ' AND related_topic_id=' . $dbs->real_escape_string($data['related_topic_id']));
+        $check_dc = $check_vc ? $check_vc->fetch_row() : array(0);
+
         if ($check_dc[0] > 0) {
             // already add
             toastr(__('Subject ALREADY Added in Relation!'))->success();
@@ -180,12 +184,27 @@ if (isset($_GET['editTopic'])) {
     // record form
     $itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
     $vocID = (integer)isset($_GET['vocID'])?$_GET['vocID']:0;
-    $rec_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE vocabolary_id='.$vocID.' AND topic_id='.$itemID);
+    $rec_q = $dbs->query('SELECT * FROM mst_voc_ctrl WHERE vocabolary_id=' . $dbs->real_escape_string($vocID) . ' AND topic_id=' . $dbs->real_escape_string($itemID));
     $rec_d = $rec_q->fetch_assoc();
+    $topic_name = '';
+    $topic_class = '';
+    $related_topic_id = 0;
 
-    $topic_q = $dbs->query('SELECT topic, classification FROM mst_topic WHERE topic_id='.$rec_d['related_topic_id']);
-    $topic_d = $topic_q->fetch_row();
+    if ($rec_d && $rec_d['related_topic_id']) {
+        $related_topic_id = (integer)$rec_d['related_topic_id'];
+    }
 
+    if ($related_topic_id > 0) {
+        $topic_q = $dbs->query('SELECT topic, classification FROM mst_topic WHERE topic_id=' . $dbs->real_escape_string($related_topic_id));
+        $topic_d = $topic_q ? $topic_q->fetch_row() : null;
+    } else {
+        $topic_d = null;
+    }
+
+    if ($topic_d) {
+        $topic_name = $topic_d[0];
+        $topic_class = $topic_d[1];
+    }
 
 // edit mode
   ?>
@@ -215,14 +234,14 @@ if (isset($_GET['editTopic'])) {
       <?php
       $ajax_exp = "ajaxFillSelect('../../AJAX_lookup_handler.php', 'mst_topic', 'topic_id:topic:topic_type', 'topicID', $('#search_str').val())";
       ?>
-      <input type="text" value="<?php echo $topic_d[0];?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabulary" oninput="<?php echo $ajax_exp; ?>" />
+      <input type="text" value="<?php echo $topic_name;?>" name="search_str" id="search_str" class="form-control" placeholder="Vocabulary" oninput="<?php echo $ajax_exp; ?>" />
       <select name="topicID" id="topicID" size="5" class="form-control"><option value="0"><?php echo __('Type to search for existing topics or to add a new one'); ?></option></select>
       </div>
     </div>
     <div class="form-group">
     <label for="subname" class="col-xs-2 control-label"><?php echo __('Classification'); ?></label>
     <div class="col-xs-10">
-      <input type="text" name="topicClass" class="form-control" value="<?php echo $topic_d[1]; ?>">
+      <input type="text" name="topicClass" class="form-control" value="<?php echo $topic_class; ?>">
     </div>
   </div>
     <div class="form-group">

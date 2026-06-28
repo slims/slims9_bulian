@@ -38,7 +38,9 @@ define('FILESIZE_EXCED', 3);
 
 class simbio_file_upload extends simbio
 {
-  private $allowable_ext = array('.jpg', '.jpeg', '.gif', '.png', '.html', '.htm', '.pdf', '.doc', '.txt');
+  // default to safe, non-executable types; override via setters per instance
+  private $allowable_ext = array('.jpg', '.jpeg', '.gif', '.png', '.pdf', '.doc', '.docx', '.txt', '.rtf');
+  private $allowable_mime = array();
   private $max_size = 1024000; // in bytes
   private $upload_dir = './';
   public $new_filename;
@@ -53,7 +55,7 @@ class simbio_file_upload extends simbio
   public function setAllowableFormat($array_allowable_ext)
   {
     if ($array_allowable_ext == '*') {
-      $this->allowable_ext = '*';
+      // avoid fully-open uploads; keep existing allowlist
       return;
     }
 
@@ -61,6 +63,22 @@ class simbio_file_upload extends simbio
       $this->allowable_ext = $array_allowable_ext;
     } else {
       echo 'setAllowableFormat method error : The argument for must be an array';
+      return;
+    }
+  }
+
+  /**
+   * Method to set allowable MIME types
+   *
+   * @param array $array_allowable_mime
+   * @return void
+   */
+  public function setAllowableMimeTypes($array_allowable_mime)
+  {
+    if (is_array($array_allowable_mime)) {
+      $this->allowable_mime = $array_allowable_mime;
+    } else {
+      echo 'setAllowableMimeTypes method error : The argument must be an array';
       return;
     }
   }
@@ -101,26 +119,22 @@ class simbio_file_upload extends simbio
   public function doUpload($file_input_name, $str_new_filename = '')
   {
     // get file extension
-    $file_ext = substr($_FILES[$file_input_name]['name'], strrpos($_FILES[$file_input_name]['name'], '.'));
-    if (empty($str_new_filename)) {
-      $this->new_filename = basename($_FILES[$file_input_name]['name']);
-    } else {
-      $this->new_filename = $str_new_filename.$file_ext;
-    }
+    $file_ext = strtolower(strrchr($_FILES[$file_input_name]['name'], '.'));
+    $safe_base = $this->sanitizeFilename($_FILES[$file_input_name]['name']);
+    $target_base = empty($str_new_filename) ? $safe_base : $this->sanitizeFilename($str_new_filename) . $file_ext;
+    $this->new_filename = $target_base;
 
     $_isTypeAllowed = 0;
     // checking file extensions
-    if ($this->allowable_ext != '*') {
-      foreach ($this->allowable_ext as $ext) {
-        if ($ext == $file_ext) {
-          $_isTypeAllowed++;
-        }
+    foreach ($this->allowable_ext as $ext) {
+      if (strtolower($ext) == $file_ext) {
+        $_isTypeAllowed++;
       }
+    }
 
-      if (!$_isTypeAllowed) {
-        $this->error = 'Filetype is forbidden';
-        return FILETYPE_NOT_ALLOWED;
-      }
+    if (!$_isTypeAllowed) {
+      $this->error = 'Filetype is forbidden';
+      return FILETYPE_NOT_ALLOWED;
     }
 
     // check for file size
@@ -130,8 +144,31 @@ class simbio_file_upload extends simbio
       return FILESIZE_EXCED;
     }
 
+    // check upload dir
+    if (!is_dir($this->upload_dir) || !is_writable($this->upload_dir)) {
+      $this->error = 'Upload failed. Upload directory is not writable or not exists.';
+      return UPLOAD_FAILED;
+    }
+
+    // MIME validation using finfo if available
+    if (function_exists('finfo_open')) {
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $mime = @finfo_file($finfo, $_FILES[$file_input_name]['tmp_name']);
+      finfo_close($finfo);
+      if ($mime && !empty($this->allowable_mime) && !in_array($mime, $this->allowable_mime)) {
+        $this->error = 'File MIME type is forbidden';
+        return FILETYPE_NOT_ALLOWED;
+      }
+    }
+
     // uploading file
-    if (self::chunkUpload($_FILES[$file_input_name]['tmp_name'], $this->upload_dir.'/'.$this->new_filename)) {
+    $target_file = $this->upload_dir.'/'.$this->new_filename;
+    if (file_exists($target_file)) {
+      $this->error = 'Upload failed. Target file already exists.';
+      return UPLOAD_FAILED;
+    }
+
+    if (self::chunkUpload($_FILES[$file_input_name]['tmp_name'], $target_file)) {
       return UPLOAD_SUCCESS;
     } else {
       $upload_error = error_get_last();
@@ -169,6 +206,14 @@ class simbio_file_upload extends simbio
     fclose($fp);
     unlink($tmpfile);
     return true;
+  }
+
+  private function sanitizeFilename($filename)
+  {
+    $filename = basename($filename);
+    // allow alnum, dot, dash, underscore only; truncate overly long names
+    $filename = preg_replace('/[^A-Za-z0-9._-]/', '_', $filename);
+    return substr($filename, 0, 150);
   }
 
 }

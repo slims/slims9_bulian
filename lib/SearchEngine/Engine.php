@@ -27,7 +27,7 @@ class Engine
 {
     private static $instance;
 
-    protected array $engine = [DefaultEngine::class, SearchBiblioEngine::class];
+    protected array $engine = [DefaultEngine::class, SearchBiblioEngine::class, FuzzySearchEngine::class, SphinxSearchEngine::class];
 
     private function __construct()
     {
@@ -48,5 +48,10 @@ class Engine
     function get(): array
     {
         return $this->engine;
+    }
+
+    static function active($default = FuzzySearchEngine::class): string
+    {
+        return config('search_engine', $default);
     }
 }

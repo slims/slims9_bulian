@@ -81,6 +81,7 @@ class Content
         
         // get content data
         while ($_content_d = $_content_q->fetch_assoc()) {
+            $_content_d['content_desc'] = stripslashes($_content_d['content_desc']);
             $contents[] = $_content_d;
         }
         
@@ -122,12 +123,15 @@ class Content
         if (!isset($_content_d['content_title']) OR !isset($_content_d['content_path'])) {
             return false;
         } else {
+            $content_html = html_entity_decode(stripslashes($_content_d['content_desc']), ENT_QUOTES, 'UTF-8');
+            $content_html = preg_replace('/(src=["\'])\s*http:\/\//i', '$1https://', $content_html);
             $_content['Title'] = $_content_d['content_title'];
             $_content['Path'] = $_content_d['content_path'];
-            $_content['Content'] = '<div class="ck-content p-5">' . $_content_d['content_desc'] . '</div>';
+            $_content['Content'] = '<div class="ck-content p-5">' . $content_html . '</div>';
             // strip html
             if ($this->strip_html) {
-                $_content['Content'] = '<div class="ck-content p-5">' . strip_tags($_content['Content'], $this->allowed_tags) . '</div>';
+                $_content['Content'] = strip_tags($_content['Content'], $this->allowed_tags);
+                $_content['Content'] = '<div class="ck-content p-5">' . $_content['Content'] . '</div>';
             }
 
             return $_content;

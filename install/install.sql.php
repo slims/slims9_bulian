@@ -1103,7 +1103,7 @@ CREATE TABLE IF NOT EXISTS `plugins` (
 
 $sql['create'][] = "CREATE TABLE IF NOT EXISTS `index_words` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `word` varchar(50) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
+  `word` varchar(255) COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   `num_hits` int NOT NULL,
   `doc_hits` int NOT NULL
 ) ENGINE=MyISAM COLLATE 'utf8mb4_unicode_ci';";
@@ -1148,44 +1148,6 @@ $sql['create'][] = "CREATE TABLE IF NOT EXISTS `cache` (
   `expired_at` datetime DEFAULT NULL,
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
-
-$query_trigger[] = "
-    CREATE TRIGGER `delete_loan_history` AFTER DELETE ON `loan`
-     FOR EACH ROW DELETE FROM `loan_history` WHERE loan_id=OLD.loan_id;";
-
-$query_trigger[] = "
-    CREATE TRIGGER `update_loan_history` AFTER UPDATE ON `loan`
-     FOR EACH ROW UPDATE loan_history 
-    SET is_lent=NEW.is_lent,
-    is_return=NEW.is_return,
-    renewed=NEW.renewed,
-    return_date=NEW.return_date
-    WHERE loan_id=NEW.loan_id;";
-
-$query_trigger[] = "
-    CREATE TRIGGER `insert_loan_history` AFTER INSERT ON `loan`
-     FOR EACH ROW INSERT INTO loan_history
-     SET loan_id=NEW.loan_id,
-     item_code=NEW.item_code,
-     member_id=NEW.member_id,
-     loan_date=NEW.loan_date,
-     due_date=NEW.due_date,
-     renewed=NEW.renewed,
-     is_lent=NEW.is_lent,
-     is_return=NEW.is_return,
-     return_date=NEW.return_date,
-     input_date=NEW.input_date,
-     last_update=NEW.last_update,
-     title=(SELECT b.title FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
-     biblio_id=(SELECT b.biblio_id FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
-     call_number=(SELECT IF(i.call_number IS NULL, b.call_number,i.call_number) FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
-     classification=(SELECT b.classification FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id WHERE i.item_code=NEW.item_code),
-     gmd_name=(SELECT g.gmd_name FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id LEFT JOIN mst_gmd g ON g.gmd_id=b.gmd_id WHERE i.item_code=NEW.item_code),
-     language_name=(SELECT l.language_name FROM biblio b LEFT JOIN item i ON i.biblio_id=b.biblio_id LEFT JOIN mst_language l ON b.language_id=l.language_id WHERE i.item_code=NEW.item_code),
-     location_name=(SELECT ml.location_name FROM item i LEFT JOIN mst_location ml ON i.location_id=ml.location_id WHERE i.item_code=NEW.item_code),
-     collection_type_name=(SELECT mct.coll_type_name FROM mst_coll_type mct LEFT JOIN item i ON i.coll_type_id=mct.coll_type_id WHERE i.item_code=NEW.item_code),
-     member_name=(SELECT m.member_name FROM member m WHERE m.member_id=NEW.member_id),
-     member_type_name=(SELECT mmt.member_type_name FROM mst_member_type mmt LEFT JOIN member m ON m.member_type_id=mmt.member_type_id WHERE m.member_id=NEW.member_id);";
 
 $sql['create'][] = "CREATE TABLE `user_tokens` (
   `id` int NOT NULL AUTO_INCREMENT,

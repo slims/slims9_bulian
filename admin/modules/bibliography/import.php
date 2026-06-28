@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2007,2008  Arie Nugraha (dicarve@yahoo.com)
  *
@@ -19,12 +20,15 @@
  */
 
 /* Biblio Import section */
+
 use SLiMS\Filesystems\Storage;
 use SLiMS\DB;
 use SLiMS\Csv\Writer;
 use SLiMS\Csv\Reader;
 use SLiMS\Csv\Row;
 use SLiMS\Debug\VarDumper;
+use SLiMS\SearchEngine\Engine;
+use SLiMS\SearchEngine\SearchBiblioEngine;
 
 // key to authenticate
 define('INDEX_AUTH', '1');
@@ -34,15 +38,15 @@ define('DB_ACCESS', 'fa');
 // main system configuration
 require '../../../sysconfig.inc.php';
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-bibliography');
 // start the session
-require SB.'admin/default/session.inc.php';
-require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
-require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
-require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
-require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
+require SB . 'admin/default/session.inc.php';
+require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
+require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
+require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
+require SIMBIO . 'simbio_FILE/simbio_file_upload.inc.php';
 require __DIR__ . '/biblio_utils.inc.php';
 
 // privileges checking
@@ -50,33 +54,46 @@ $can_read = utility::havePrivilege('bibliography', 'r');
 $can_write = utility::havePrivilege('bibliography', 'w');
 
 if (!$can_read) {
-  die('<div class="errorBox">'.__('You are not authorized to view this section').'</div>');
+  die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
 # CHECK ACCESS
 if ($_SESSION['uid'] != 1) {
-    if (!utility::haveAccess('bibliography.biblio-data-import')) {
-        die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
-    }
+  if (!utility::haveAccess('bibliography.biblio-data-import')) {
+    die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
+  }
 }
 
-if ($sysconf['index']['type'] == 'index') {
-  require MDLBS.'system/biblio_indexer.inc.php';
+// initialize indexer variable
+$indexer = null;
+
+if (Engine::active() === SearchBiblioEngine::class) {
+  require MDLBS . 'system/biblio_indexer.inc.php';
   // create biblio_indexer class instance
   $indexer = new biblio_indexer($dbs);
 }
 
-if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
-{
+if (isset($_GET['action']) && $_GET['action'] === 'download_sample') {
   // Create Csv instance
   $csv = new Writer;
   $csv->add(new Row([
-    'title','gmd_name','edition',
-    'isbn_issn','publisher_name',
-    'publish_year','collation',
-    'series_title','call_number',
-    'language_name','place_name',
-    'classification','notes','image',
-    'sor','authors','topics','item_code'
+    'title',
+    'gmd_name',
+    'edition',
+    'isbn_issn',
+    'publisher_name',
+    'publish_year',
+    'collation',
+    'series_title',
+    'call_number',
+    'language_name',
+    'place_name',
+    'classification',
+    'notes',
+    'image',
+    'sor',
+    'authors',
+    'topics',
+    'item_code'
   ]));
 
   // Download CSV
@@ -84,21 +101,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'download_sample')
 }
 
 // max chars in line for file operations
-$max_chars = 1024*100;
+$max_chars = 1024 * 100;
 
 if (isset($_POST['doImport'])) {
-  if ( empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name']) ) {  
+  if (empty($_FILES['importFile']['name']) && !isset($_SESSION['csv']['name'])) {
     utility::jsToastr(__('Import Tool'), __('No CSV file selected to import, please choose CSV file first!'), 'error');
-    exit();        
+    exit();
   }
 
   // create upload object
   $files_disk = Storage::files();
-  
+
   // check for form validity
   if (!isset($_POST['process'])) {
 
-    if (empty($_POST['fieldSep']) OR empty($_POST['fieldEnc'])) {
+    if (empty($_POST['fieldSep']) or empty($_POST['fieldEnc'])) {
       utility::jsToastr(__('Import Tool'), __('Required fields (*)  must be filled correctly!'), 'error');
       exit();
     }
@@ -106,13 +123,13 @@ if (isset($_POST['doImport'])) {
     // get system temporary directory location
     $_SESSION['csv'] = [];
     $_SESSION['csv']['name'] = md5($_FILES['importFile']['name'] . date('this'));
-    
+
     if (!$files_disk->isExists('temp')) $files_disk->makeDirectory('temp');
 
     if ($files_disk->isExists('temp' . DS . $_SESSION['csv']['name'])) {
       $files_disk->delete('temp' . DS . $_SESSION['csv']['name']);
     }
-    
+
     // set csv format
     $_SESSION['csv']['format'] = [
       'recordNum' => intval($_POST['recordNum']),
@@ -126,21 +143,19 @@ if (isset($_POST['doImport'])) {
     if (isset($_POST['header'])) $_SESSION['csv']['header'] = 1;
 
     // create upload object
-    $csv_upload = $files_disk->upload('importFile', function($files) use($sysconf) {
+    $csv_upload = $files_disk->upload('importFile', function ($files) use ($sysconf) {
       // Extension check
       $files->isExtensionAllowed(['.csv']);
 
       // File size check
-      $files->isLimitExceeded($sysconf['max_upload']*1024);
+      $files->isLimitExceeded($sysconf['max_upload'] * 1024);
 
       // destroy it if failed
       if (!empty($files->getError())) $files->destroyIfFailed();
-
     })->as('temp' . DS . $_SESSION['csv']['name']);
-    
-    if (!$csv_upload->getUploadStatus())
-    {
-      toastr(__('Upload failed! File type not allowed or the size is more than').($sysconf['max_upload']/1024).' MB')->error(__('Import Tool'));
+
+    if (!$csv_upload->getUploadStatus()) {
+      toastr(__('Upload failed! File type not allowed or the size is more than') . ($sysconf['max_upload'] / 1024) . ' MB')->error(__('Import Tool'));
       exit;
     }
 
@@ -165,14 +180,14 @@ if (isset($_POST['doImport'])) {
       'separator' => trim($_SESSION['csv']['format']['fieldSep']),
       'enclosed_with' => trim($_SESSION['csv']['format']['fieldEnc']),
       'record_separator' => [
-          'newline' => "\n",
-          'return' => "\t"
+        'newline' => "\n",
+        'return' => "\t"
       ]
     ]);
 
     // get total line
     $lineNumber = $reader->readFromStream($fileNumber)->getTotalLine();
-    
+
 
     try {
       $pdo = DB::getInstance();
@@ -192,7 +207,7 @@ if (isset($_POST['doImport'])) {
        * Formatter : a function to format some value such as author data etc
        * Processor : inserting data to database
        */
-      $reader->each(formatter: function(&$field, $row, $index) use($dbs) {
+      $reader->each(formatter: function (&$field, $row, $index) use ($dbs) {
         $currentValue = $field[$index];
 
         switch ($index) {
@@ -216,7 +231,7 @@ if (isset($_POST['doImport'])) {
           case 10:
             $currentValue = empty($currentValue) ? NULL : utility::getID($dbs, 'mst_place', 'place_id', 'place_name', $currentValue);
             break;
-          
+
           default:
             $currentValue = empty($currentValue) ? NULL : $currentValue;
             break;
@@ -224,9 +239,8 @@ if (isset($_POST['doImport'])) {
         // end formatter
 
         // strip escape chars from all fields
-        $field[$index] = str_replace('\\', '', trim($currentValue??''));
-
-      }, processor: function($reader, $row) use($dbs, $pdo, $sysconf, $indexer, $lineNumber, $state) {
+        $field[$index] = str_replace('\\', '', trim($currentValue ?? ''));
+      }, processor: function ($reader, $row) use ($dbs, $pdo, $sysconf, $indexer, $lineNumber, $state) {
 
         $fields = $reader->getFields();
         $fields = array_pop($fields);
@@ -244,7 +258,7 @@ if (isset($_POST['doImport'])) {
 
         if ($state) {
           VarDumper::dump(
-              str_replace('{title}', $fields[0]??'?', __('Success importing bibliographic data : {title}'))
+            str_replace('{title}', $fields[0] ?? '?', __('Success importing bibliographic data : {title}'))
           );
           $biblio_id = $pdo->lastInsertId();
 
@@ -264,7 +278,7 @@ if (isset($_POST['doImport'])) {
             foreach ($subjects as $subject) {
               $subject = trim(str_replace(array('>', '<'), '', $subject));
               $subject_id = utility::getID($dbs, 'mst_topic', 'topic_id', 'topic', $subject);
-              $biblio_subject_sql->execute([$biblio_id, $subject_id , 2]);
+              $biblio_subject_sql->execute([$biblio_id, $subject_id, 2]);
             }
           }
 
@@ -279,12 +293,12 @@ if (isset($_POST['doImport'])) {
           }
 
           // create biblio index
-          if ($sysconf['index']['type'] == 'index') {
+          if (Engine::active() === SearchBiblioEngine::class) {
             $indexer->makeIndex($biblio_id ?? 0);
           }
 
           $row++;
-          importProgress(round($row/$lineNumber * 100));
+          importProgress(round($row / $lineNumber * 100));
           usleep(2500);
         }
       });
@@ -315,9 +329,9 @@ if (isset($_POST['doImport'])) {
     unset($_SESSION['csv']);
 
     $end_time = time();
-    $import_time_sec = $end_time-$start_time;
-    writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing '.$inserted_row.' bibliographic records from file : '.$fileName, 'Import' );
-    $label = str_replace(['{row_count}','{time_to_finish}'], [$inserted_row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
+    $import_time_sec = $end_time - $start_time;
+    writeLog('staff', $_SESSION['uid'], 'bibliography', 'Importing ' . $inserted_row . ' bibliographic records from file : ' . $fileName, 'Import');
+    $label = str_replace(['{row_count}', '{time_to_finish}'], [$inserted_row, $import_time_sec], __('Success imported <strong>{row_count}</strong> title in <strong>{time_to_finish}</strong> second'));
     exit(<<<HTML
     <script>
     parent.\$('.infoBox').html('{$label}')
@@ -328,22 +342,23 @@ if (isset($_POST['doImport'])) {
 }
 ?>
 <div class="menuBox">
-<div class="menuBoxInner importIcon">
-	<div class="per_title">
-    <h2><?php echo __('Import Tool'); ?></h2>
+  <div class="menuBoxInner importIcon">
+    <div class="per_title">
+      <h2><?php echo __('Import Tool'); ?></h2>
     </div>
     <div class="infoBox">
       <?php echo __('Import for bibliographics data from CSV file. For guide on CSV fields order and format please refer to documentation or visit <a href="http://slims.web.id" target="_blank">Official Website</a>'); ?>
       &nbsp;<a href="<?= $_SERVER['PHP_SELF'] ?>?action=download_sample" class="s-btn btn btn-secondary notAJAX"><?= __('Download Sample') ?></a>
-	  </div>
+    </div>
+  </div>
 </div>
-</div>
-<div id="importInfo" class="infoBox" style="display: none;">&nbsp;</div><div id="importError" class="errorBox" style="display: none;">&nbsp;</div>
+<div id="importInfo" class="infoBox" style="display: none;">&nbsp;</div>
+<div id="importError" class="errorBox" style="display: none;">&nbsp;</div>
 <?php
 
 // create new instance
 $form = new simbio_form_table_AJAX('mainForm', $_SERVER['PHP_SELF'], 'post');
-$form->submit_button_attr = 'name="doImport" value="'.__('Process').'" class="btn btn-default"';
+$form->submit_button_attr = 'name="doImport" value="' . __('Process') . '" class="btn btn-default"';
 
 // form table attributes
 $form->table_attr = 'id="dataList" class="s-table table"';
@@ -355,31 +370,31 @@ $form->table_content_attr = 'class="alterCell2"';
 $str_input  = '<div class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'importFile','','class="custom-file-input"  accept=".csv" required');
+$str_input .= simbio_form_element::textField('file', 'importFile', '', 'class="custom-file-input"  accept=".csv" required');
 $str_input .= '<label class="custom-file-label" for="customFile">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col">';
-$str_input .= '<div class="mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';
+$str_input .= '<div class="mt-2">Maximum ' . $sysconf['max_upload'] . ' KB</div>';
 $str_input .= '</div>';
 $str_input .= '</div>';
 $str_input .= '</div>';
 $form->addAnything(__('File To Import'), $str_input);
 // field separator
-$form->addTextField('text', 'fieldSep', __('Field Separator').'*', ''.htmlentities(config('csv.separator')).'', 'style="width: 10%;" maxlength="3" class="form-control"');
+$form->addTextField('text', 'fieldSep', __('Field Separator') . '*', '' . htmlentities(config('csv.separator')) . '', 'style="width: 10%;" maxlength="3" class="form-control"');
 //  field enclosed
-$form->addTextField('text', 'fieldEnc', __('Field Enclosed With').'*', ''.htmlentities(config('csv.enclosed_with')).'', 'style="width: 10%;" class="form-control"');
+$form->addTextField('text', 'fieldEnc', __('Field Enclosed With') . '*', '' . htmlentities(config('csv.enclosed_with')) . '', 'style="width: 10%;" class="form-control"');
 // number of records to import
 $form->addTextField('text', 'recordNum', __('Number of Records To Import (0 for all records)'), '0', 'style="width: 10%;" class="form-control"');
 // records offset
 $form->addTextField('text', 'recordOffset', __('Start From Record'), '1', 'style="width: 10%;" class="form-control"');
 // header (column name)
-$form->addCheckBox('header', __('The first row is the columns names'), array( array('1', __('Yes')) ), '');
+$form->addCheckBox('header', __('The first row is the columns names'), array(array('1', __('Yes'))), '');
 // output the form
 echo $form->printOut();
 ?>
 <script>
-$(document).on('change', '.custom-file-input', function () {
+  $(document).on('change', '.custom-file-input', function() {
     let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
     $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
-});
+  });
 </script>
