@@ -1335,7 +1335,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                                    biblio.title, 
                                    biblio.labels, 
                                    biblio.image, 
-                                   biblio.author, 
                                    biblio.edition, 
                                    biblio.isbn_issn, 
                                    biblio.last_update';
