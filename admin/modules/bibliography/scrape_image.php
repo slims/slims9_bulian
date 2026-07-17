@@ -44,7 +44,7 @@ if (!($can_read && $can_write)) {
 
 try {
     // field check
-    if (!isset($_POST['imageURL']) && empty($_POST['imageURL'])) throw new Exception(__('URL can\'t empty!'));
+    if (!isset($_POST['imageURL']) || empty($_POST['imageURL'])) throw new Exception(__('URL can\'t empty!'));
     // make sure it is http request only
     $parsed_url = parse_url($_POST['imageURL']);
     if (!isset($parsed_url['scheme']) || !in_array(strtolower($parsed_url['scheme']), ['http','https'], true)) {
@@ -61,30 +61,56 @@ try {
         throw new Exception('Access to addresses is not allowed');
     }
 
-    // Get image from another service
+    // Get image from another service using native cURL / file_get_contents to bypass SLiMS Client option compiling bugs
     try {
-        $stream = Client::get($url, [
-            'headers' => [
-                'User-Agent' => $_SERVER['HTTP_USER_AGENT']],
-                'timeout' => 10,
-                'max_redirects' => 0,
-        ]);
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+        $image = '';
+
+        if (function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $image = curl_exec($ch);
+            if (curl_errno($ch)) {
+                throw new Exception('Curl error: ' . curl_error($ch));
+            }
+            curl_close($ch);
+        } else {
+            $opts = [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => "User-Agent: " . $userAgent . "\r\n",
+                    'timeout' => 15
+                ]
+            ];
+            $context = stream_context_create($opts);
+            $image = @file_get_contents($url, false, $context);
+            if ($image === false) {
+                throw new Exception('file_get_contents failed to fetch image');
+            }
+        }
     } catch (\Exception $e) {
         $message = $e->getMessage();
-        if (strpos($message, 'cURL error') !== false || strpos($message, 'timed out') !== false) {
+        if (strpos($message, 'Curl error') !== false || strpos($message, 'timed out') !== false) {
              throw new Exception(__('Failed to connect to image source or connection timed out. Check the URL and server connectivity.'));
         }
         throw new Exception($message);
     }
 
     // Get image info from string
-    $imageInfo = getimagesizefromstring($image = $stream->getContent());
+    $imageInfo = getimagesizefromstring($image);
 
     if (!$imageInfo) throw new Exception(__('Image is not valid!'));
 
     $mime = $imageInfo['mime'] ?? '';
     $ext = $mime ? ltrim(strtolower(image_type_to_extension($imageInfo[2], false)), '.') : '';
-    if (!$mime || !in_array($mime, $sysconf['allowed_images_mimetype'], true) || ($ext && !in_array($ext, $sysconf['allowed_images'], true))) {
+    $allowedMimes = array_merge($sysconf['allowed_images_mimetype'], ['image/jpg', 'image/gif', 'image/webp']);
+    // $sysconf['allowed_images'] uses dotted format (e.g. ".jpg"), $ext has no dot — add it for comparison
+    if (!$mime || !in_array($mime, $allowedMimes, true) || ($ext && !in_array('.' . $ext, $sysconf['allowed_images'], true))) {
         throw new Exception(__('Image type not allowed!'));
     }
     

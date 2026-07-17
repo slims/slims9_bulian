@@ -20,7 +20,7 @@
       <label class="language-info" for="select_lang"><?php echo __('Select Language'); ?></label>
       <span class="custom-dropdown custom-dropdown--emerald custom-dropdown--small">
         <select name="select_lang" id="select_lang" title="Change language of this site" onchange="document.langSelect.submit();" class="custom-dropdown__select custom-dropdown__select--emerald">
-          <?php echo $language_select; ?>
+          <?php echo $language_select ?? ''; ?>
         </select>
       </span>
     </form>

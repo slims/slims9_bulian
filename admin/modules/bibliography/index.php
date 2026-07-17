@@ -292,10 +292,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $fileMimeLower = strtolower($fileMime);
 
             $sizeAllowed = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
-            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
+            $allowedMimes = array_map('strtolower', array_merge((array)$sysconf['allowed_images_mimetype'], ['image/jpg', 'image/gif', 'image/webp']));
             $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
             $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
-            $extAllowed = $filedom && in_array($filedom, $allowedExts, true);
+            // $allowedExts uses dotted format (e.g. ".jpg"), $filedom has no dot — add it for comparison
+            $extAllowed = $filedom && in_array('.' . $filedom, $allowedExts, true);
             $valid = $fileinfo && $sizeAllowed && $mimeAllowed && $extAllowed;
             $new_filename = strtolower('cover_'
                 . preg_replace("/[^a-zA-Z0-9]+/", "_", substr($data['title'], 0,70)) . '-' . date('this')
@@ -1060,7 +1061,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                   <input type="text" id="getUrl" class="form-control" style="width:190px" placeholder="Paste url address here">
                   <div class="input-group-append">
                   <button class="btn btn-default" type="button" id="getImage">' . __('Download') . ' <i class="fa fa-spin fa-cog hidden" id="imgLoader"></i></button>
-                  <button class="btn btn-default openPopUp notAJAX ml-2" type="button" id="showEngine" onclick="toggle_search($(\'#title\').val());">' . __('Trying search in DuckduckGo') . '</button>
+                  <button class="btn btn-default openPopUp notAJAX ml-2" type="button" id="showEngine" onclick="var q = $(\'#title\').val(); if (q.trim() === \'\') { var toastrObj = (typeof parent !== \'undefined\' && parent.toastr) ? parent.toastr : (typeof toastr !== \'undefined\' ? toastr : null); if (toastrObj) { toastrObj.error(\'' . __('No title available') . '\', \'Bibliography\'); } else { alert(\'' . __('No title available') . '\'); } } else { toggle_search(\'' . MWB . 'bibliography/pop_cover_search.php?query=\' + encodeURIComponent(q)); }">' . __('Search Cover Online') . '</button>
+                  <button class="btn btn-info ml-2" type="button" id="fetchIsbnCover" title="' . __('Auto-fetch cover from Open Library based on ISBN (free, no VPN needed)') . '"><i class="fa fa-book"></i> ' . __('Fetch Cover by ISBN') . '</button>
+                  <button class="btn btn-warning ml-2" type="button" id="searchTitleGoogle" title="' . __('Search Google Images based on Title') . '"><i class="fa fa-google"></i> ' . __('Search Google by Title') . '</button>
                   </div>
                   </div>';
     $str_input .= '</div>';
@@ -1179,7 +1182,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     // javascript
     ?>
     <script type="text/javascript">
-        $(document).ready(function () {
+         $(document).ready(function () {
+            // SLiMS Edit Mode protection: disable cover buttons if form is disabled/read-only on load
+            if ($('form.disabled').length > 0 || $('#title').prop('disabled')) {
+                $('#showEngine, #fetchIsbnCover, #searchTitleGoogle').prop('disabled', true);
+            }
+
+            // Enable cover buttons when Edit link/button is clicked
+            $(document).on('formEnabled', function() {
+                $('#showEngine, #fetchIsbnCover, #searchTitleGoogle').prop('disabled', false);
+            });
+
             // popup pattern
             $('#class').change(function () {
                 $('#callNumber').val($(this).val().replace('NEW:', ''));
@@ -1206,33 +1219,165 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                 $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
             });
 
+            function startScraping(btn) {
+                if (btn) {
+                    var $btn = $(btn);
+                    $btn.prop('disabled', true);
+                    var $icon = $btn.find('i');
+                    if ($icon.length) {
+                        if ($icon.hasClass('fa-book')) {
+                            $icon.removeClass('fa-book').addClass('fa-spin fa-cog');
+                        } else {
+                            $icon.removeClass('hidden d-none').addClass('fa-spin');
+                        }
+                    }
+                }
+                // Redupkan preview cover & beri spinner besar di tengahnya
+                var $imgWrap = $('#imageFilename');
+                if ($imgWrap.length) {
+                    $imgWrap.css('position', 'relative');
+                    $imgWrap.find('img').css('opacity', '0.3');
+                    if ($imgWrap.find('.img-spinner').length === 0) {
+                        $imgWrap.append(
+                            '<div class="img-spinner" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 10;"><i class="fa fa-spin fa-spinner fa-3x text-info"></i></div>'
+                        );
+                    }
+                }
+            }
+
+            function stopScraping(btn) {
+                if (btn) {
+                    var $btn = $(btn);
+                    $btn.prop('disabled', false);
+                    var $icon = $btn.find('i');
+                    if ($icon.length) {
+                        if ($icon.hasClass('fa-cog')) {
+                            $icon.removeClass('fa-spin fa-cog').addClass('fa-book');
+                        } else {
+                            $icon.removeClass('fa-spin').addClass('hidden');
+                        }
+                    }
+                }
+                // Kembalikan preview cover semula
+                var $imgWrap = $('#imageFilename');
+                if ($imgWrap.length) {
+                    $imgWrap.find('img').css('opacity', '1');
+                    $imgWrap.find('.img-spinner').remove();
+                }
+            }
+
             $('#getImage').click(function () {
-                $.post("<?php echo MWB ?>bibliography/scrape_image.php", {imageURL: $('#getUrl').val()})
+                var url = $('#getUrl').val();
+                if (!url || url.trim() === '') {
+                    return;
+                }
+                startScraping('#getImage');
+                $.post("<?php echo MWB ?>bibliography/scrape_image.php", {imageURL: url})
                     .done(function (data) {
                         if (data.status == 'VALID') {
                             $('#base64picstring').val(data.image);
                             $('#imageFilename img').attr('src', data.message);
                         } else {
                             $('#base64picstring, #getUrl').val('');
-                            parent.toastr.error("<?php echo __('Current url is not valid or your internet is down.') ?>", "Bibliography Image", {
-                                "closeButton": true,
-                                "debug": false,
-                                "newestOnTop": false,
-                                "progressBar": false,
-                                "positionClass": "toast-top-right",
-                                "preventDuplicates": false,
-                                "onclick": null,
-                                "showDuration": 300,
-                                "hideDuration": 1000,
-                                "timeOut": 5000,
-                                "extendedTimeOut": 1000,
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            })
+                            var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                            var errorMsg = "<?php echo __('Current url is not valid or your internet is down.') ?>";
+                            if (toastrObj) {
+                                toastrObj.error(errorMsg, "Bibliography Image", {"closeButton": true, "timeOut": 5000});
+                            } else {
+                                alert(errorMsg);
+                            }
                         }
+                    })
+                    .fail(function () {
+                        var errorMsg = "<?php echo __('Connection error. Check your internet connection.') ?>";
+                        var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                        if (toastrObj) {
+                            toastrObj.error(errorMsg, "Bibliography Image", {"closeButton": true, "timeOut": 5000});
+                        } else {
+                            alert(errorMsg);
+                        }
+                    })
+                    .always(function () {
+                        stopScraping('#getImage');
                     });
+            });
+
+            $('#fetchIsbnCover').click(function () {
+                var isbn = $('#isbn_issn').val();
+                if (!isbn) {
+                    isbn = $('input[name="isbn_issn"]').val();
+                }
+
+                // Bersihkan karakter non-digit kecuali X
+                isbn = (isbn || '').replace(/[^0-9Xx]/g, '');
+
+                if (!isbn) {
+                    var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                    if (toastrObj) {
+                        toastrObj.warning('<?php echo __('Please fill in the ISBN/ISSN field first.') ?>', 'Open Library', {
+                            "closeButton": true, "timeOut": 4000, "positionClass": "toast-top-right"
+                        });
+                    } else {
+                        alert('<?php echo __('Please fill in the ISBN/ISSN field first.') ?>');
+                    }
+                    return;
+                }
+
+                var coverUrl = 'https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg';
+                console.log('[FetchCover] ISBN:', isbn, '| URL:', coverUrl);
+
+                startScraping('#fetchIsbnCover');
+
+                $.post('<?php echo MWB ?>bibliography/scrape_image.php', {imageURL: coverUrl})
+                    .done(function (data) {
+                        console.log('[FetchCover] Response:', data);
+                        var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                        if (data.status === 'VALID') {
+                            $('#base64picstring').val(data.image);
+                            $('#imageFilename img').attr('src', data.message);
+                            $('#getUrl').val(coverUrl);
+                            if (toastrObj) toastrObj.success('<?php echo __('Cover found and loaded from Open Library!') ?>', 'Open Library', {
+                                "closeButton": true, "timeOut": 4000, "positionClass": "toast-top-right"
+                            });
+                        } else {
+                            if (toastrObj) toastrObj.warning(
+                                '<?php echo __('Cover not found on Open Library for this ISBN. Try searching Google Images manually.') ?> [' + (data.message||'') + ']',
+                                'Open Library',
+                                {"closeButton": true, "timeOut": 6000, "positionClass": "toast-top-right"}
+                            );
+                        }
+                    })
+                    .fail(function (xhr) {
+                        console.error('[FetchCover] AJAX error:', xhr.status, xhr.responseText);
+                        var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                        if (toastrObj) toastrObj.error('<?php echo __('Connection error. Check your internet connection.') ?>', 'Open Library', {
+                            "closeButton": true, "timeOut": 5000, "positionClass": "toast-top-right"
+                        });
+                    })
+                    .always(function () {
+                        stopScraping('#fetchIsbnCover');
+                    });
+            });
+
+            $('#searchTitleGoogle').click(function () {
+                var title = $('#title').val();
+                if (!title) {
+                    title = $('input[name="title"]').val();
+                }
+
+                if (!title || title.trim() === '') {
+                    var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+                    if (toastrObj) {
+                        toastrObj.warning('<?php echo __('Please fill in the Title field first.') ?>', 'Google Images', {
+                            "closeButton": true, "timeOut": 4000, "positionClass": "toast-top-right"
+                        });
+                    } else {
+                        alert('<?php echo __('Please fill in the Title field first.') ?>');
+                    }
+                    return;
+                }
+
+                toggle_google_search(title + ' book cover');
             });
 
             <?php

@@ -278,18 +278,70 @@ function toggle_dialog() {
   });
 }
 
-function toggle_search(query) {
+
+/**
+ * Buka Google Images untuk mencari cover buku berdasarkan judul.
+*/
+function toggle_search(url) {
   let win = window;
   let h = 640;
-  let w = 800;
+  let w = 900;
   const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
   const x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
-  let url = 'https://duckduckgo.com/?q='+query+'+book&t=h_&ia=images&iax=images';
-  let title = 'DuckduckGo Search Result';
-  if(query !== '') {
-    win.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+y+', left='+x);
+  let title = 'Open Library - Cover Search';
+  win.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+  win.focus();
+}
+
+/**
+ * Buka Google Images untuk mencari cover buku berdasarkan query/ISBN.
+ */
+function toggle_google_search(query) {
+  let win = window;
+  let h = 640;
+  let w = 900;
+  const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
+  const x = win.top.outerWidth / 2 + win.top.screenX - ( w / 2);
+  let url = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&tbm=isch&tbs=isz:m';
+  let title = 'Google Images - Book Cover Search';
+  if (query !== '') {
+    win.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
     win.focus();
   } else {
-    parent.toastr.error("No title available", "Bibliography", {"closeButton":true,"debug":false,"newestOnTop":false,"progressBar":false,"positionClass":"toast-top-right","preventDuplicates":false,"onclick":null,"showDuration":300,"hideDuration":1000,"timeOut":5000,"extendedTimeOut":1000,"showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"})
+    var toastrObj = (typeof parent !== 'undefined' && parent.toastr) ? parent.toastr : (typeof toastr !== 'undefined' ? toastr : null);
+    if (toastrObj) {
+      toastrObj.error("No search query available", "Bibliography", {"closeButton":true,"timeOut":4000,"positionClass":"toast-top-right"});
+    } else {
+      alert("No search query available");
+    }
   }
+}
+
+/**
+ * Ambil cover buku otomatis dari Open Library berdasarkan ISBN.
+ * Open Library Cover API: https://covers.openlibrary.org/b/isbn/{ISBN}-L.jpg
+ *
+ * @param {string} isbn  - Nilai ISBN/ISSN dari field form
+ * @param {function} onSuccess - Callback dipanggil dengan URL cover jika ditemukan
+ * @param {function} onError   - Callback dipanggil jika cover tidak ditemukan
+ */
+function fetch_cover_by_isbn(isbn, onSuccess, onError) {
+  if (!isbn || isbn.trim() === '') {
+    if (typeof onError === 'function') onError('No ISBN provided');
+    return;
+  }
+  // Bersihkan ISBN dari karakter non-digit/non-X
+  let cleanIsbn = isbn.replace(/[^0-9X]/gi, '');
+  // Open Library Cover API — ?default=false agar tidak return placeholder jika tidak ada
+  let coverUrl = 'https://covers.openlibrary.org/b/isbn/' + cleanIsbn + '-L.jpg?default=false';
+
+  // Cek ketersediaan cover dengan membuat Image object
+  let img = new Image();
+  img.onload = function () {
+    if (typeof onSuccess === 'function') onSuccess(coverUrl);
+  };
+  img.onerror = function () {
+    if (typeof onError === 'function') onError('Cover not found on Open Library for ISBN: ' + cleanIsbn);
+  };
+  img.src = coverUrl;
 }

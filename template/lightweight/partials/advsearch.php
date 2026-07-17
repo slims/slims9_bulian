@@ -55,7 +55,7 @@
       <div class="control-group">
         <label class="label"><?php echo __('Collection Type'); ?></label>
         <div class="controls">
-          <select name="colltype" class="form-control"><?php echo $colltype_list; ?></select>
+          <select name="colltype" class="form-control"><?php echo $colltype_list ?? ''; ?></select>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
       <div class="control-group">
         <label class="label"><?php echo __('Location'); ?></label>
         <div class="controls">
-          <select name="location" class="form-control"> <?php echo $location_list; ?></select>
+          <select name="location" class="form-control"> <?php echo $location_list ?? ''; ?></select>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@
       <div class="control-group">
       <label class="label"><?php echo __('GMD'); ?></label>
       <div class="controls">
-        <select name="gmd" class="form-control"><?php echo $gmd_list; ?></select>
+        <select name="gmd" class="form-control"><?php echo $gmd_list ?? ''; ?></select>
       </div>
       </div>
     </div>
