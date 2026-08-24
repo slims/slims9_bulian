@@ -206,13 +206,20 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
 
         if (!empty($_POST['base64picstring'])) {
             $base64_full_string = $_POST['base64picstring'];
-            
-            if (strpos($base64_full_string, ',') !== false) {
+
+            if (strpos($base64_full_string, '#image/type') !== false) {
+                $parts_suffix = explode('#image/type', $base64_full_string);
+                $base64_full_string = $parts_suffix[0];
+            }
+
+            if (strpos($base64_full_string, 'data:image') !== false && strpos($base64_full_string, ',') !== false) {
                 $parts = explode(',', $base64_full_string);
                 $base64_data = trim(end($parts));
             } else {
                 $base64_data = trim($base64_full_string);
             }
+
+            $base64_data = str_replace(' ', '+', $base64_data);
 
             if (!empty($base64_data)) {
                 $filedata = base64_decode($base64_data, true);
