@@ -203,47 +203,53 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         $new_filename_base = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username']));
         $base64_data = null;
         $file_extension = 'jpg';
+
         if (!empty($_POST['base64picstring'])) {
             $base64_full_string = $_POST['base64picstring'];
-            if (strpos($base64_full_string, 'base64,') !== false) {
-                list($mime, $data_string) = explode(';', $base64_full_string);
-                list(, $base64_data) = explode(',', $data_string);
+            
+            if (strpos($base64_full_string, ',') !== false) {
+                $parts = explode(',', $base64_full_string);
+                $base64_data = trim(end($parts));
+            } else {
+                $base64_data = trim($base64_full_string);
             }
-            elseif (strpos($base64_full_string, '#image/type#') !== false) {
-                list($base64_data_raw, $file_extension) = explode('#image/type#', $base64_full_string);
-                $base64_data = $base64_data_raw;
-                $file_extension = strtolower(trim($file_extension));
-            }
-        }
 
-        if (!empty($base64_data)) {
-            $base64_data = trim($base64_data);
-            $filedata = base64_decode($base64_data, true);
-            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
-            $fileMime = $fileinfo ? ($fileinfo['mime'] ?? '') : '';
-            $file_extension = $fileinfo ? ltrim(strtolower(image_type_to_extension($fileinfo[2], false)), '.') : strtolower($file_extension);
-            $file_extension = $fileMime && !$file_extension && strpos($fileMime, 'image/') === 0 ? substr($fileMime, 6) : $file_extension;
-            $fileMimeLower = strtolower($fileMime);
+            if (!empty($base64_data)) {
+                $filedata = base64_decode($base64_data, true);
+                if ($filedata !== false) {
+                    $file_extension = 'jpg';
+                    $new_filename = $new_filename_base . '.' . $file_extension;
+                    $imgResource = @imagecreatefromstring($filedata);
+                    $saved = false;
+                    $cleanFiledata = '';
 
-            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
-            $allowedMimes = array_map('strtolower', (array)$sysconf['allowed_images_mimetype']);
-            $allowedExts = array_map('strtolower', (array)$sysconf['allowed_images']);
-            $mimeAllowed = $fileMime && in_array($fileMimeLower, $allowedMimes, true);
-            $extAllowed = $file_extension && in_array($file_extension, $allowedExts, true);
-            $valid = $fileinfo && $fileSizeOkay && $mimeAllowed && $extAllowed;
-            $new_filename = $new_filename_base.'.'.$file_extension;
-            if ($valid) {
-                $imageDisk->put('persons/'.$new_filename, $filedata);
-                if ($imageDisk->isExists('persons/'.$new_filename)) {
-                    if (!empty($old_user_image) && $old_user_image != $new_filename) {
-                        @$imageDisk->delete('persons/'.$old_user_image);
+                    if ($imgResource !== false) {
+                        ob_start();
+                        imagejpeg($imgResource, null, 90);
+                        $cleanFiledata = ob_get_clean();
+                        imagedestroy($imgResource);
+                        $saved = true;
                     }
-                    $data['user_image'] = $dbs->escape_string($new_filename);
-                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-                    $upload_status = UPLOAD_SUCCESS;
+
+                    if ($saved && !empty($cleanFiledata)) {
+                        $imageDisk->put('persons/' . $new_filename, $cleanFiledata);
+                    }
+
+                    if ($imageDisk->isExists('persons/' . $new_filename)) {
+                        if (!empty($old_user_image) && $old_user_image != $new_filename) {
+                            @$imageDisk->delete('persons/' . $old_user_image);
+                        }
+                        $data['user_image'] = $dbs->escape_string($new_filename);
+                        if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                        $upload_status = UPLOAD_SUCCESS;
+                    } else {
+                        utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Failed to write file to disk storage.'), 'error');
+                    }
+                } else {
+                    utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Failed to decode base64 string.'), 'error');
                 }
             } else {
-                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Cropped image data is invalid, uses disallowed type, or exceeds max size.'), 'error');
+                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Image string data is empty.'), 'error');
             }
         }
         elseif (!empty($_FILES['image']) AND $_FILES['image']['size']) {
@@ -268,7 +274,6 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
                 utility::jsToastr('System User', __('Image FAILED to upload').'<br/>'.$upload->getError(), 'error');
             }
         }
-
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
         if (isset($_POST['updateRecordID'])) {
