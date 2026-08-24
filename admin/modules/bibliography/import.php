@@ -63,13 +63,8 @@ if ($_SESSION['uid'] != 1) {
   }
 }
 
-// initialize indexer variable
-$indexer = null;
-
 if (Engine::active() === SearchBiblioEngine::class) {
   require MDLBS . 'system/biblio_indexer.inc.php';
-  // create biblio_indexer class instance
-  $indexer = new biblio_indexer($dbs);
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'download_sample') {
@@ -240,7 +235,7 @@ if (isset($_POST['doImport'])) {
 
         // strip escape chars from all fields
         $field[$index] = str_replace('\\', '', trim($currentValue ?? ''));
-      }, processor: function ($reader, $row) use ($dbs, $pdo, $sysconf, $indexer, $lineNumber, $state) {
+      }, processor: function ($reader, $row) use ($dbs, $pdo, $sysconf, $lineNumber, $state) {
 
         $fields = $reader->getFields();
         $fields = array_pop($fields);
@@ -293,8 +288,9 @@ if (isset($_POST['doImport'])) {
           }
 
           // create biblio index
-          if (Engine::active() === SearchBiblioEngine::class) {
-            $indexer->makeIndex($biblio_id ?? 0);
+          if (Engine::active() === SearchBiblioEngine::class && $biblio_id) {
+            $indexer = new biblio_indexer($dbs);
+            $indexer->makeIndex($biblio_id);
           }
 
           $row++;
