@@ -494,7 +494,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             } else {
                 $start = 1;
             }
-            $start = $start+1;
+            //$start = $start+1;
             $end = $start + $total;
             for ($b = $start; $b < $end; $b++) {
                 $itemcode = $chars_first; 
