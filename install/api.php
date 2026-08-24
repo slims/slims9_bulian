@@ -27,6 +27,11 @@ if (!isset($_SESSION['success_quries'])) {
   ];
 }
 
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    header('HTTP/1.1 403 Forbidden');
+    die(json_encode(['status' => false,'message' => ['Installer is disabled. Please remove the install directory for security reasons.']]));
+}
+
 // if (isset($_GET['success_query'])) exit(json_encode($_SESSION['success_quries']??''));
 
 // switch request
