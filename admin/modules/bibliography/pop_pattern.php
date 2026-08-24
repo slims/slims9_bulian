@@ -204,6 +204,12 @@ $('#mainFormPattern').submit(function (e) {
         data: $( this ).serialize()
     }).done(function (msg) {
         alert(msg);
+        var pattern = $('#preview').text();
+        if (window.parent && window.parent.jQuery('#itemCodePattern').length > 0) {
+            window.parent.jQuery('#itemCodePattern').append('<option value="'+ pattern +'">'+ pattern +'</option>');
+        } else {
+            $('#itemCodePattern', document).append('<option value="'+ pattern +'">'+ pattern +'</option>');
+        }
         jQuery.colorbox.close();
         <?php
         if (isset($_GET['in']) && $_GET['in'] == 'master') {
