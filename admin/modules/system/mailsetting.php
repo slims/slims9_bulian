@@ -26,14 +26,33 @@ require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
-$configPath = SB.'config'.DS.'mail.php';
-$samplePath = SB.'config'.DS.'mail.sample.php';
-$isConfigExists = file_exists($configPath);
-$isConfigWriteable = is_writable(SB.'config'.DS);
+utility::loadSettings($dbs);
+
+if (!function_exists('addOrUpdateSetting')) {
+    function addOrUpdateSetting($name, $value) {
+        global $dbs;
+        $sql_op = new simbio_dbop($dbs);
+        $name = $dbs->real_escape_string($name);
+        $data['setting_value'] = $dbs->real_escape_string(serialize($value));
+
+        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+        if ($query->num_rows > 0) {
+            $sql_op->update('setting', $data, "setting_name='{$name}'");
+        } else {
+            $data['setting_name'] = $name;
+            $sql_op->insert('setting', $data);
+        }
+    }
+}
+
+$dbMailSetting = config('mail');
+$isConfigExists = is_array($dbMailSetting) && !empty($dbMailSetting);
+$isConfigWriteable = true;
 
 function setValue($key)
 {
-  return config('mail', [])[$key]??'';
+  $mailData = is_array(config('mail')) ? config('mail') : [];
+  return $mailData[$key]??'';
 }
 
 function setPlaceholder($key, $ignore = 'auth_password')
@@ -63,35 +82,36 @@ function setPlaceholder($key, $ignore = 'auth_password')
 
 if (isset($_POST['saveData']))
 {
-    if (!$isConfigWriteable)
-    {
-        toastr(__('Directory config is not writeable.'))->error();
-        exit;
-    }
-
+    $existingMailData = is_array(config('mail')) ? config('mail') : [];
+    $existingPassword = $existingMailData['auth_password'] ?? '';
     if (isset($_POST['edit']) && empty(trim($_POST['authpassword'])))
     {
-      $_POST['authpassword'] = config('mail')['auth_password']??''; // if user change configuration without password, use available password
+      $_POST['authpassword'] = $existingPassword; // if user change configuration without password, use available password
     }
-
-    // get sample
-    $Config = file_get_contents($samplePath);
-    $mailConfig = $isConfigExists ? config('mail') : require $samplePath;
 
     if ($_POST['withreplyto'] == 0) {
       $_POST['replyto'] = $_POST['from'];
       $_POST['replytoname'] = $_POST['fromname'];
     }
 
-    foreach ($mailConfig as $key => $value) 
-    {
-        $key = str_replace('_', '', $key);
-        $customConfig = ($_POST[$key]) ?? '?';
-        $Config = str_replace('_' . $key . '_', $customConfig, $Config);
-    }
+    $mailConfig = [
+        'debug' => (int) ($_POST['debug'] ?? 0),
+        'SMTPSecure' => trim($_POST['SMTPSecure'] ?? ''),
+        'enable' => true,
+        'server' => trim($_POST['server'] ?? ''),
+        'server_port' => trim($_POST['serverport'] ?? ''),
+        'auth_enable' => true,
+        'auth_username' => trim($_POST['authusername'] ?? ''),
+        'auth_password' => trim($_POST['authpassword'] ?? ''),
+        'from' => trim($_POST['from'] ?? ''),
+        'from_name' => trim($_POST['fromname'] ?? ''),
+        'with_reply_to' => (int) ($_POST['withreplyto'] ?? 0),
+        'reply_to' => trim($_POST['replyto'] ?? ''),
+        'reply_to_name' => trim($_POST['replytoname'] ?? ''),
+    ];
 
-    // write mail configuration
-    file_put_contents($configPath, $Config);
+    // write mail configuration to database
+    addOrUpdateSetting('mail', $mailConfig);
 
     // alert
     toastr(__('Settings inserted.'))->success(__('E-Mail Configuration'));
@@ -130,17 +150,9 @@ $form->table_content_attr = 'class="alterCell2"';
     <div class="per_title">
       <h2><?= __('E-Mail Configuration'); ?></h2>
     </div>
-    <div class="<?= $isConfigWriteable ? 'info' : 'error' ?>Box">
+    <div class="infoBox">
       <?php
-        if ($isConfigWriteable)
-        {
-            echo (isset($_GET['section']) ? __('E-Mail test') : __('Modify E-Mail preferences'));
-        }
-        else
-        {
-            echo '<b>' . __('Directory config is not writeable.') . "</b><br/>";
-            echo __('Make the following files and directories (and their contents) writeable (i.e., by changing the owner or permissions with chown or chmod)');
-        }
+        echo (isset($_GET['section']) ? __('E-Mail test') : __('Modify E-Mail preferences'));
       ?>
     </div>
   </div>
