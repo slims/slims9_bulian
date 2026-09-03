@@ -76,20 +76,23 @@ class Visitor
             if ($statement->rowCount() > 0)
             {
                 $this->member = true;
-                $data = $statement->fetch(\PDO::FETCH_NUM);
-                
+                $member = $statement->fetch(\PDO::FETCH_ASSOC);
+
                 // set image based on record data
-                $this->image = $data[2]??'person.png';
+                $this->image = $member['member_image'] ?? 'person.png';
 
                 // set expire status
-                if ($data[4] == 1) $this->memberExpire = true;
-                
-                // unset image and expire status
-                unset($data[4]);
-                unset($data[2]);
+                if (($member['is_expire'] ?? 0) == 1) $this->memberExpire = true;
 
-                $this->data = array_values($data);
-                Plugins::getInstance()->execute('MEMBER_ON_VISIT', ['data' => $statement->fetch(\PDO::FETCH_ASSOC)]);
+                // prepare data for visitor_count insert: [member_id, member_name, institution]
+                $this->data = [
+                    $member['member_id'] ?? null,
+                    $member['member_name'] ?? null,
+                    $member['inst_name'] ?? null
+                ];
+
+                // trigger hook with full member data
+                Plugins::getInstance()->execute(Plugins::MEMBER_ON_VISIT, ['data' => $member]);
             }
             // Guest
             else
@@ -104,7 +107,7 @@ class Visitor
                 // default non member photos
                 $this->image = 'non_member.png';
                 $this->data = [ null, $memberId,trim($_POST['institution'])];
-                Plugins::getInstance()->execute('NON_MEMBER_ON_VISIT', ['data' => array_slice($this->data, 1)]);
+                Plugins::getInstance()->execute(Plugins::NON_MEMBER_ON_VISIT, ['data' => array_slice($this->data, 1)]);
             }
 
         
