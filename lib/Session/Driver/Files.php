@@ -12,6 +12,17 @@
 
 class Files extends Contract
 {
+    private function cookieOptions(int $lifetime, string $path): array
+    {
+        return [
+            'lifetime' => $lifetime,
+            'path' => $path,
+            'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ];
+    }
+ 
     public function admin()
     {
         // always use session cookies
@@ -23,7 +34,7 @@ class Files extends Contract
         // set session name and start the session
         @session_name(COOKIES_NAME);
         // set session cookies params
-        @session_set_cookie_params(86400, SWB.'admin/');
+        @session_set_cookie_params($this->cookieOptions(86400, SWB.'admin/'));
     }
 
     public function memberArea()
@@ -37,6 +48,6 @@ class Files extends Contract
         // set session name and start the session
         @session_name(MEMBER_COOKIES_NAME);
         // set session cookies params
-        @session_set_cookie_params(43200, SWB);
+        @session_set_cookie_params($this->cookieOptions(43200, SWB));
     }
 }
