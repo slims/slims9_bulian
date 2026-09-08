@@ -113,7 +113,7 @@ if (isset($_POST['saveData']) && $can_read && $can_write) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
         exit();
     } else if ($sysconf['password_policy_strong'] && ($mpasswd1 AND $mpasswd2) && ($mpasswd1 === $mpasswd2) && !simbio_security::validatePassword($mpasswd2, $sysconf['password_policy_min_length'])) {
-        toastr(__( sprintf('Password should at least %d characters long, contains one capital letter, one number, and one non-alphanumeric character !', $sysconf['password_policy_min_length']) ))->error();
+        toastr(sprintf(__('Password should at least %d characters long, contains one capital letter, one number, and one non-alphanumeric character !'), $sysconf['password_policy_min_length']) )->error();
         exit();
     } else {
         // include custom fields file

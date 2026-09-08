@@ -144,7 +144,7 @@ if (isset($_POST['stUpload']) && isset($_FILES['stFile'])) {
             <div class="custom-file col-6">
                 <input type="file" name="stFile" id="stFile" value="" class="custom-file-input" accept=".txt,text/plain">
                 <label class="custom-file-label" for="customFile"><?= __('Choose file')?></label></div>
-                <div class="col"><div class="mt-2"><?= __(sprintf('Maximum %s KB',$sysconf['max_upload']))?></div></div>
+                <div class="col"><div class="mt-2"><?= sprintf(__('Maximum %s KB'),$sysconf['max_upload'])?></div></div>
             </div>
         </div>
     <div style="margin: 3px;"><input type="submit" name="stUpload" id="stUpload" value="<?php echo __('Upload File'); ?>" class="btn btn-default" />

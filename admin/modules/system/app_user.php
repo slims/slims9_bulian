@@ -141,7 +141,7 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         toastr(__('Login username or Real Name is probihited!'))->error();
         exit();
     } else if ($sysconf['password_policy_strong'] && ($passwd1 AND $passwd2) && ($passwd1 === $passwd2) && !simbio_security::validatePassword($passwd2, $sysconf['password_policy_min_length'])) {
-        toastr(__( sprintf('Password should at least %d characters long, contains one capital letter, one number, and one non-alphanumeric character !', $sysconf['password_policy_min_length']) ))->error();
+        toastr(sprintf(__('Password should at least %d characters long, contains one capital letter, one number, and one non-alphanumeric character !'), $sysconf['password_policy_min_length']) )->error();
         exit();
     } else if (($passwd1 AND $passwd2) AND ($passwd1 !== $passwd2)) {
         toastr(__('Password confirmation does not match. See if your Caps Lock key is on!'))->error();
