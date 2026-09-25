@@ -33,7 +33,7 @@ $content = new Content();
 $total = 0;
 $content_list = $content->getContents($dbs, 10, $total, $keywords);
 if ($total > 0) {
-  echo '<div class="alert alert-info">'.__(sprintf('We have %d news for you!', $total)).'</div>';  
+  echo '<div class="alert alert-info">'.sprintf(__('We have %d news for you!'), $total).'</div>';  
 } else {
   echo '<div class="alert alert-warning">'.__('Sorry, we don\'t have any news for you yet.').'</div>';  
 }
