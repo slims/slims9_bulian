@@ -203,60 +203,42 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
         $new_filename_base = 'user_'.str_replace(array(',', '.', ' ', '-'), '_', strtolower($data['username']));
         $base64_data = null;
         $file_extension = 'jpg';
-
         if (!empty($_POST['base64picstring'])) {
             $base64_full_string = $_POST['base64picstring'];
-
-            if (strpos($base64_full_string, '#image/type') !== false) {
-                $parts_suffix = explode('#image/type', $base64_full_string);
-                $base64_full_string = $parts_suffix[0];
+            if (strpos($base64_full_string, 'base64,') !== false) {
+                list($mime, $data_string) = explode(';', $base64_full_string);
+                list(, $base64_data) = explode(',', $data_string);
             }
-
-            if (strpos($base64_full_string, 'data:image') !== false && strpos($base64_full_string, ',') !== false) {
-                $parts = explode(',', $base64_full_string);
-                $base64_data = trim(end($parts));
-            } else {
-                $base64_data = trim($base64_full_string);
+            elseif (strpos($base64_full_string, '#image/type#') !== false) {
+                list($base64_data_raw, $file_extension) = explode('#image/type#', $base64_full_string);
+                $base64_data = $base64_data_raw;
+                $file_extension = strtolower(trim($file_extension));
             }
+        }
 
-            $base64_data = str_replace(' ', '+', $base64_data);
-
-            if (!empty($base64_data)) {
-                $filedata = base64_decode($base64_data, true);
-                if ($filedata !== false) {
-                    $file_extension = 'jpg';
-                    $new_filename = $new_filename_base . '.' . $file_extension;
-                    $imgResource = @imagecreatefromstring($filedata);
-                    $saved = false;
-                    $cleanFiledata = '';
-
-                    if ($imgResource !== false) {
-                        ob_start();
-                        imagejpeg($imgResource, null, 90);
-                        $cleanFiledata = ob_get_clean();
-                        imagedestroy($imgResource);
-                        $saved = true;
+        if (!empty($base64_data)) {
+            $base64_data = trim($base64_data);
+            $filedata = base64_decode($base64_data, true);
+            
+            $fileinfo = $filedata !== false ? @getimagesizefromstring($filedata) : false;
+            $fileSizeOkay = $filedata !== false && (strlen($filedata) <= ($sysconf['max_image_upload'] * 1024));
+            $valid = $fileinfo !== false && $fileSizeOkay && in_array($fileinfo[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]);
+            
+            $file_extension = $fileinfo ? image_type_to_extension($fileinfo[2], false) : 'jpg';
+            $new_filename = $new_filename_base.'.'.$file_extension;
+            
+            if ($valid) {
+                $imageDisk->put('persons/'.$new_filename, $filedata);
+                if ($imageDisk->isExists('persons/'.$new_filename)) {
+                    if (!empty($old_user_image) && $old_user_image != $new_filename) {
+                        @$imageDisk->delete('persons/'.$old_user_image);
                     }
-
-                    if ($saved && !empty($cleanFiledata)) {
-                        $imageDisk->put('persons/' . $new_filename, $cleanFiledata);
-                    }
-
-                    if ($imageDisk->isExists('persons/' . $new_filename)) {
-                        if (!empty($old_user_image) && $old_user_image != $new_filename) {
-                            @$imageDisk->delete('persons/' . $old_user_image);
-                        }
-                        $data['user_image'] = $dbs->escape_string($new_filename);
-                        if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
-                        $upload_status = UPLOAD_SUCCESS;
-                    } else {
-                        utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Failed to write file to disk storage.'), 'error');
-                    }
-                } else {
-                    utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Failed to decode base64 string.'), 'error');
+                    $data['user_image'] = $dbs->escape_string($new_filename);
+                    if (!defined('UPLOAD_SUCCESS')) define('UPLOAD_SUCCESS', 1);
+                    $upload_status = UPLOAD_SUCCESS;
                 }
             } else {
-                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Image string data is empty.'), 'error');
+                utility::jsToastr('System User', __('Image Uploaded Failed').'<br/>'.__('Invalid image file or exceeds max size.'), 'error');
             }
         }
         elseif (!empty($_FILES['image']) AND $_FILES['image']['size']) {
@@ -281,6 +263,7 @@ if (isset($_POST['saveData'])) { //echo '<pre>'; var_dump($_SESSION); echo '</pr
                 utility::jsToastr('System User', __('Image FAILED to upload').'<br/>'.$upload->getError(), 'error');
             }
         }
+
         // create sql op object
         $sql_op = new simbio_dbop($dbs);
         if (isset($_POST['updateRecordID'])) {
@@ -567,7 +550,8 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     // Two Factor Authentication
     if (!empty($rec_d) && $rec_d['user_id'] === $_SESSION['uid'] && extension_loaded('iconv')) {
         $otp = OTPHP\TOTP::generate();
-        $otp->setLabel(config('library_name'));
+        $libraryName = str_replace(':', '', config('library_name'));
+        $otp->setLabel($libraryName);
         $secret = $otp->getSecret();
         // generate qrcode
         $render = new BaconQrCode\Renderer\ImageRenderer(
