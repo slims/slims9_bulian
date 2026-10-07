@@ -1508,12 +1508,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     }
 
     if (isset($_GET['opac_hide']) && $_GET['opac_hide'] != '') {
-        $opac_hide = $dbs->escape_string($_GET['opac_hide']);
+        $opac_hide = (int) $_GET['opac_hide'];
         $str_criteria .= ' AND opac_hide =' . $opac_hide;
     }
 
     if (isset($_GET['promoted']) && $_GET['promoted'] != '') {
-        $promoted = $dbs->escape_string($_GET['promoted']);
+        $promoted = (int) $_GET['promoted'];
         $str_criteria .= ' AND promoted =' . $promoted;
     }
     //debug
