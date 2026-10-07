@@ -13,8 +13,8 @@
  * Copyright (c) 2025 Waris Agung Widodo                                       *
  * -----                                                                       *
  * HISTORY:                                                                    *
- * Date      	By	Comments                                                   *
- * ----------	---	---------------------------------------------------------  *
+ * Date         By  Comments                                                   *
+ * ----------   --- ---------------------------------------------------------  *
  */
 
 // key to authenticate
@@ -47,6 +47,12 @@ if ($_SESSION['uid'] != 1 && !utility::haveAccess('circulation.loan-history-main
     die('<div class="errorBox">' . __('You are not authorized to view this section') . '</div>');
 }
 
+if (empty($_SESSION['csrf_token']) || is_array($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+$session_csrf = is_array($_SESSION['csrf_token']) ? (($_SESSION['csrf_token'][0] ?? '')) : $_SESSION['csrf_token'];
+
 // Utilities
 function _echo($message)
 {
@@ -55,16 +61,26 @@ function _echo($message)
     @flush();
 }
 
-// Handle actions (run in iframe target for streaming logs)
-if (isset($_GET['action']) && $_GET['action'] === 'run') {
+// Handle actions (run in iframe target for streaming logs) via POST and CSRF validation
+if (isset($_POST['action']) && $_POST['action'] === 'run') {
+    // Basic header for output stream
+    echo '<div style="font-family: monospace; padding: 10px;">';
+
+    $post_csrf = is_array($_POST['csrf_token'] ?? null) ? '' : ($_POST['csrf_token'] ?? '');
+
+    // Validate CSRF Token securely
+    if (empty($post_csrf) || !hash_equals($session_csrf,$post_csrf)) {
+        _echo('<span style="color:red">' . __('Invalid form submission token!') . '</span>');
+        echo '</div>';
+        exit();
+    }
+
     // long running safety
     @set_time_limit(0);
     @ob_implicit_flush(true);
 
-    $task = $_GET['task'] ?? '';
+    $task = $_POST['task'] ?? '';
 
-    // Basic header
-    echo '<div style="font-family: monospace; padding: 10px;">';
     _echo('<strong>' . __('Loan History Maintenance') . '</strong>');
     _echo(date('Y-m-d H:i:s'));
     _echo(str_repeat('-', 60));
@@ -219,12 +235,16 @@ if ($q) { $r = $q->fetch_row(); $missing = (int)($r[0] ?? 0); }
             <h2><?php echo __('Loan History Maintenance'); ?></h2>
         </div>
         <div class="sub_section mb-2">
-            <div class="btn-group">
-                <a target="progress" href="<?php echo MWB; ?>circulation/loan_history_maintenance.php?action=run&amp;task=generate_missing" class="btn btn-default"><?php echo __('Generate Missing'); ?></a>
-                <a target="progress" href="<?php echo MWB; ?>circulation/loan_history_maintenance.php?action=run&amp;task=rebuild_all" class="btn btn-danger" onclick="return confirm('<?php echo __('This will rebuild all loan history. Continue?'); ?>')"><?php echo __('Rebuild All'); ?></a>
-                <a target="progress" href="<?php echo MWB; ?>circulation/loan_history_maintenance.php?action=run&amp;task=empty" class="btn btn-warning" onclick="return confirm('<?php echo __('This will empty loan history table. Continue?'); ?>')"><?php echo __('Empty History'); ?></a>
-                <a target="progress" href="<?php echo MWB; ?>circulation/loan_history_maintenance.php?action=run&amp;task=stats" class="btn btn-default"><?php echo __('Refresh Stats'); ?></a>
-            </div>
+            <form method="post" action="<?php echo MWB; ?>circulation/loan_history_maintenance.php?action=run" target="progress" style="display:inline-block;">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($session_csrf); ?>">
+                <input type="hidden" name="action" value="run">
+                <div class="btn-group">
+                    <button type="submit" name="task" value="generate_missing" class="btn btn-default"><?php echo __('Generate Missing'); ?></button>
+                    <button type="submit" name="task" value="rebuild_all" class="btn btn-danger" onclick="return confirm('<?php echo __('This will rebuild all loan history. Continue?'); ?>')"><?php echo __('Rebuild All'); ?></button>
+                    <button type="submit" name="task" value="empty" class="btn btn-warning" onclick="return confirm('<?php echo __('This will empty loan history table. Continue?'); ?>')"><?php echo __('Empty History'); ?></button>
+                    <button type="submit" name="task" value="stats" class="btn btn-default"><?php echo __('Refresh Stats'); ?></button>
+                </div>
+            </form>
         </div>
         <div class="infoBox">
             <?php echo __('Re-indexes and/or regenerates loan history data by rebuilding history records from current loan entries'); ?>
