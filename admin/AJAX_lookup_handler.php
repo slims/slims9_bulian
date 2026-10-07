@@ -52,9 +52,35 @@ if (empty($_POST)) {
 // list limit
 $limit = 20;
 
-$table_state = explode(':', trim($_POST['tableName']));
-$table_name = trim($table_state[1]??$table_state[0]);
-$table_fields = trim($_POST['tableFields']);
+$table_state = explode(':', trim($_POST['tableName'] ?? ''));
+$raw_table_name = trim($table_state[1] ?? $table_state[0]);
+$table_fields = trim($_POST['tableFields'] ?? '');
+
+if (!preg_match('/^[a-zA-Z0-9_]+$/', $raw_table_name)) {
+    if ($rawInput == false) exit('<option value="0">' . __('Invalid table name format') . '</option>');
+    else exit(json_encode(array('id' => 0, 'text' => __('Invalid table name format'))));
+}
+$table_name = $raw_table_name;
+
+$fields_array = explode(':', $table_fields);
+$validated_fields = [];
+
+foreach ($fields_array as $field) {
+    $field = trim($field);
+    if (!preg_match('/^[a-zA-Z0-9_]+$/', $field)) {
+        if ($rawInput == false) exit('<option value="0">' . __('Invalid field name format') . '</option>');
+        else exit(json_encode(array('id' => 0, 'text' => __('Invalid field name format'))));
+    }
+    $validated_fields[] = $field;
+}
+
+if (empty($validated_fields)) {
+    if ($rawInput == false) exit('<option value="0">' . __('Fields cannot be empty') . '</option>');
+    else exit(json_encode(array('id' => 0, 'text' => __('Fields cannot be empty'))));
+}
+
+$table_fields = implode(':', $validated_fields);
+$fields = implode(', ', $validated_fields);
 
 if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
 	$keywords = urldecode(ltrim($_POST['keywords']));
@@ -63,13 +89,11 @@ if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
 	else exit(json_encode(array('id' => 0, 'text' => __('Keyword can\'t be empty'))));
 }
 
-// explode table fields data
-$fields = str_replace(':', ', ', $table_fields);
 $where_parts = [];
 $params = [];
 $types = '';
 
-foreach (explode(':', $table_fields) as $field) {
+foreach ($validated_fields as $field) {
 	$where_parts[] = " $field LIKE ? ";
 	$types .= 's';
 	$params[] = '%' . $keywords . '%';
@@ -79,7 +103,6 @@ $criteria_string = implode(' OR ', $where_parts);
 
 $sql_string = "SELECT $fields ";
 
-// append table name
 $sql_string .= " FROM $table_name ";
 if ($criteria_string) {
 	$sql_string .= " WHERE $criteria_string LIMIT $limit";
@@ -114,7 +137,7 @@ $headers = function_exists('getallheaders') ? getallheaders() : $_SERVER;
 $contentType = $headers['Content-Type']??$headers['content-type']??$headers['CONTENT_TYPE']??'';
 
 if ($contentType == 'application/json') {
-	header('Contenty-Type: application/json');
+	header('Content-Type: application/json');
 
 	if ($error) {
 		echo json_encode(array('id' => 0, 'text' => $error));
