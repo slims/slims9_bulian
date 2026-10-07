@@ -52,14 +52,14 @@ require MDLBS . 'reporting/report_dbgrid.inc.php';
 $page_title = 'Download Counter Report';
 $reportView = false;
 $num_recs_show = 20;
-$_IDFile = "";
+$_IDFile = 0;
 
 if (isset($_GET['reportView'])) {
     $reportView = true;
 }
 
 if (isset($_GET['fileID'])) {
-    $_IDFile = $dbs->escape_string(strip_tags($_GET['fileID']));
+    $_IDFile = (int)$_GET['fileID'];
 }
 
 if (!$reportView) {

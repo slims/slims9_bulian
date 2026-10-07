@@ -125,7 +125,8 @@ if (isset($_POST['saveData'])) {
     }
 
     // get biblio ID for this subcription
-    $biblio_q = $dbs->query('SELECT biblio_id FROM serial WHERE serial_id='.( isset($_POST['itemID'][0])?$_POST['itemID'][0]:'0' ).' LIMIT 1');
+    $serial_id_val = isset($_POST['itemID'][0]) ? (int)$_POST['itemID'][0] : 0;
+    $biblio_q = $dbs->query('SELECT biblio_id FROM serial WHERE serial_id=' . $serial_id_val . ' LIMIT 1');
     $biblio_d = $biblio_q->fetch_row();
     $biblioID = $biblio_d[0];
     // loop array
