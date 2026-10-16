@@ -28,23 +28,6 @@ require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 
 utility::loadSettings($dbs);
 
-if (!function_exists('addOrUpdateSetting')) {
-    function addOrUpdateSetting($name, $value) {
-        global $dbs;
-        $sql_op = new simbio_dbop($dbs);
-        $name = $dbs->real_escape_string($name);
-        $data['setting_value'] = $dbs->real_escape_string(serialize($value));
-
-        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
-        if ($query->num_rows > 0) {
-            $sql_op->update('setting', $data, "setting_name='{$name}'");
-        } else {
-            $data['setting_name'] = $name;
-            $sql_op->insert('setting', $data);
-        }
-    }
-}
-
 $dbMailSetting = config('mail');
 $isConfigExists = is_array($dbMailSetting) && !empty($dbMailSetting);
 $isConfigWriteable = true;
@@ -111,7 +94,7 @@ if (isset($_POST['saveData']))
     ];
 
     // write mail configuration to database
-    addOrUpdateSetting('mail', $mailConfig);
+    utility::addOrUpdateSetting('mail', $mailConfig);
 
     // alert
     toastr(__('Settings inserted.'))->success(__('E-Mail Configuration'));

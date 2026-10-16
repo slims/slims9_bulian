@@ -39,11 +39,11 @@ if (!function_exists('addOrUpdateSetting')) {
     foreach ($value as $key => $val) {
       $settings[$key] = trim(str_replace(array('\n', '\r','\t', '\\'), '', $val));
     }
-    $data['setting_value'] = $dbs->escape_string(serialize($settings));
+    $data['setting_value'] = $dbs->escape_string(json_encode($settings));
 
     // save personalized user template
     if($name == 'admin_template'){
-      $_d['admin_template'] = serialize($value);
+      $_d['admin_template'] = json_encode($value);
       $update = $sql_op->update('user', $_d, "user_id=".$_SESSION['uid']);
       if (!$update) return $dbs->error;
     }

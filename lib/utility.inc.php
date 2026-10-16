@@ -124,16 +124,13 @@ class utility
         // Trim the string
         $str = trim($str);
 
-        // Try to detect and decode JSON first
-        if (($str[0] === '{' || $str[0] === '[') && ($str[strlen($str) - 1] === '}' || $str[strlen($str) - 1] === ']')) {
-            $json_decoded = json_decode($str, true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                return $json_decoded;
-            }
+        // Try to decode JSON first (supports arrays/objects stored via json_encode)
+        $json_decoded = json_decode($str, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $json_decoded;
         }
 
         // Check if it looks like serialized data
-        // Matches: a:0:, O:3:, s:5:, i:0;, b:0;, d:1.5;, N;
         if (preg_match('/^(a:[0-9]+:|O:[0-9]+:|s:[0-9]+:|i:[0-9]+;|b:[01];|d:[0-9.E+-]+;|N;)/s', $str)) {
             // Fix broken serialized string lengths
             $str = preg_replace_callback(
@@ -171,15 +168,11 @@ class utility
             while ($_setting_data = $_setting_query->fetch_assoc()) {
                 $_value = static::unserialize(stripslashes($_setting_data['setting_value']));
                 if (is_array($_value)) {
-                    // make sure setting is available before
-                    if (!isset($sysconf[$_setting_data['setting_name']]))
-                        $sysconf[$_setting_data['setting_name']] = [];
 
-                    foreach ($_value as $_idx => $_curr_value) {
-                        // convert default setting value into array
-                        if (!is_array($sysconf[$_setting_data['setting_name']]))
-                            $sysconf[$_setting_data['setting_name']] = [$sysconf[$_setting_data['setting_name']]];
-                        $sysconf[$_setting_data['setting_name']][$_idx] = $_curr_value;
+                    if (is_array($sysconf[$_setting_data['setting_name']] ?? null)) {
+                        $sysconf[$_setting_data['setting_name']] = array_merge($sysconf[$_setting_data['setting_name']], $_value);
+                    } else {
+                        $sysconf[$_setting_data['setting_name']] = $_value;
                     }
                 } else {
                     // Only apply stripcslashes to strings to preserve boolean false, integers, etc.
@@ -745,4 +738,21 @@ class utility
             VALUES (NULL, \'' . $str_file_id . '\', \'' . $_log_date . '\', \'' . $str_value_id . '\', \'' . $str_user_id . '\', \'' . ip() . '\')');
         }
     }
+
+    public static function addOrUpdateSetting($name, $value) 
+    {
+        global $dbs;
+        $sql_op = new simbio_dbop($dbs);
+        $name = $dbs->real_escape_string($name);
+        $data['setting_value'] = $dbs->real_escape_string(json_encode($value));
+        $query = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = '{$name}'");
+        if ($query->num_rows > 0) {
+            $sql_op->update('setting', $data, "setting_name='{$name}'");
+        } else {
+            // insert
+            $data['setting_name'] = $name;
+            $sql_op->insert('setting', $data);
+        }
+    }
+
 }
