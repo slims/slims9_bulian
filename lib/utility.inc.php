@@ -716,9 +716,11 @@ class utility
         // load user template settings for override setting
         $_q = $obj_db->query("SELECT admin_template FROM user WHERE user_id=$uid AND (admin_template!=NULL OR admin_template !='')");
         if ($_q->num_rows > 0) {
-            $template_settings = unserialize($_q->fetch_row()[0]);
-            foreach ($template_settings as $setting_name => $setting_value) {
-                $sysconf['admin_template'][$setting_name] = $setting_value;
+            $template_settings = static::unserialize($_q->fetch_row()[0]);
+            if (is_array($template_settings)) {
+                foreach ($template_settings as $setting_name => $setting_value) {
+                    $sysconf['admin_template'][$setting_name] = $setting_value;
+                }
             }
         }
     }
