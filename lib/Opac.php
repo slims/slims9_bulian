@@ -250,8 +250,11 @@ class Opac
      */
     public function validateCsrf()
     {
-        if ((isset($_SESSION['csrf_token'])) AND (isset($_GET['csrf_token'])) ) {
-            if (!(\Slims\Opac\Security::checkCsrfToken($_SESSION['csrf_token'], $_GET['csrf_token']))) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        $client_token = $headers['X-CSRF-TOKEN'] ?? $headers['x-csrf-token'] ?? $_POST['csrf_token'] ?? $_GET['csrf_token'] ?? null;
+
+        if (isset($_SESSION['csrf_token']) && $client_token !== null) {
+            if (!(\Slims\Opac\Security::checkCsrfToken($_SESSION['csrf_token'], $client_token))) {
                 $this->invalid_token = true;
             }
         }
