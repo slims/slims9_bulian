@@ -59,15 +59,28 @@ function showComment($_detail_id)
 		if ($commlist) {
 			$_all_recs = $commlist->num_rows;
 		}
-		if ($_all_recs >0) {
+		if ($_all_recs > 0) {
 			$_page = ($page -1) * $_recs_each_page;
 			$_sql .= " Limit " . $_page. ", " . $_recs_each_page;
 			$commlist = $dbs->query($_sql);
 			$_list_comment .= '<div class="comment-found">'. $_all_recs . __(' comments available'). '</div>'; 
+			$purifier = null;
+			if (class_exists('HTMLPurifier')) {
+				$config = \HTMLPurifier_Config::createDefault();
+				$purifier = new \HTMLPurifier($config);
+			}
+
 			while ($_data = $commlist->fetch_assoc()) {
+				$safe_member_name = htmlspecialchars($_data['member_name'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				$safe_date = htmlspecialchars($_data['input_date'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				if ($purifier) {
+					$safe_comment = $purifier->purify($_data['comment']);
+				} else {
+					$safe_comment = htmlspecialchars($_data['comment'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				}
 				$_list_comment .= '<div class="comments">';
-				$_list_comment .= '<div class="comment-member">'.$_data['member_name']. __(' at ') . $_data['input_date']. __(' write'). '</div>';
-				$_list_comment .= '<div class="comment-content mt-2">'. $_data['comment'] . '</div>';
+				$_list_comment .= '<div class="comment-member">'.$safe_member_name . __(' at ') . $safe_date . __(' write'). '</div>';
+				$_list_comment .= '<div class="comment-content mt-2">'. $safe_comment . '</div>';
 				$_list_comment .= '</div>';		
 			}
 			$_list_comment .= '<div class="comment-found">'.simbio_paging::paging($_all_recs, $_recs_each_page, $int_pages_each_set = 10, '', '_self').'</div>';
@@ -86,7 +99,6 @@ function showComment($_detail_id)
 			$js .= '<script type="text/javascript" src="'.JWB.'/ckeditor5/ckeditor.tinfo.js"></script>';
 			$js .= "<script>createMultiEditor('1', '#mainForm', ['bold','italic','bulletedList','numberedList'])</script>";
 			// $js .= "<script type=\"text/javascript\">CKEDITOR.config.toolbar = [['Bold','Italic','Underline','StrikeThrough','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']] ;</script>";
-
 			return $_list_comment.$_forms.$js;
 		} else  {
 			return $_list_comment;
