@@ -222,6 +222,10 @@ if (isset($_POST['doImport'])) {
         
                         // sql insert string
                         if (!isItemExists($item_code)) {
+                            // title is lookup-only, not an item column
+                            unset($field[18]);
+                            // reset array keys number
+                            $field = array_values($field);
                             // prepend biblio id
                             array_unshift($field, $biblio_id);
                             // echo "<pre>".print_r($field, true)."<pre>";
