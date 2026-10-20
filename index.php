@@ -86,7 +86,7 @@ $opac->hookBeforeContent(function($opac){
   global $plugins;
   // Set header for CSP
   $opac->setCsp();
-  $opac->setHeader('X-Content-Type-Options', 'nonsniff');
+  $opac->setHeader('X-Content-Type-Options', 'nosniff');
   
   // running plugin based on hook
   $plugins->execute(Plugins::CONTENT_BEFORE_LOAD, [$opac]);
