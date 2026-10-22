@@ -1,4 +1,4 @@
-FROM php:8.3.13-apache
+FROM php:8.3.36-apache
 
 RUN apt-get update \
     && apt-get install -y libicu-dev libxml2-dev libzip-dev libpng-dev libonig-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6-dev \
