@@ -127,7 +127,13 @@ class Native extends Contract
         $this->data['biblioAuthor'] = array();
         $this->data['biblioTopic'] = array();
         $this->data['biblioAttach'] = array();
-        $this->data['template'] = unserialize($this->data['template'] ?? 'N;');
+
+        $templateData = $this->data['template'] ?? 'N;';
+        $this->data['template'] = is_string($templateData) && ($decoded = json_decode($templateData, true)) !== null ? $decoded : @unserialize($templateData);
+
+        if (!is_array($this->data['template'])) {
+            $this->data['template'] = [];
+        }
 
         if (empty($this->data['upict'])) {
             $this->data['upict'] = 'person.png';

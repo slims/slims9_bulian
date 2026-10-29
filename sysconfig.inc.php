@@ -576,8 +576,15 @@ $localisation->load(function($memory) use($dbs, &$sysconf) {
         if (empty($_SESSION['lang'])) {
             $lang_dbs = $dbs->query("SELECT setting_value FROM setting WHERE setting_name = 'default_lang'");
             $lang_dbs_res = $lang_dbs->fetch_assoc();
-            if ($lang_dbs_res && ($lang_val = unserialize($lang_dbs_res['setting_value']))) {
-                $_SESSION['lang'] = $lang_val;
+            if ($lang_dbs_res && isset($lang_dbs_res['setting_value'])) {
+                $raw_val = $lang_dbs_res['setting_value'];
+
+                if (is_string($raw_val) && preg_match('/^([adObis]):/', $raw_val)) {
+                    $unserialized = @unserialize($raw_val);
+                    $_SESSION['lang'] = ($unserialized !== false) ? $unserialized : 'en_US';
+                } else {
+                    $_SESSION['lang'] = !empty($raw_val) ? $raw_val : 'en_US';
+                }
             } else {
                 $_SESSION['lang'] = 'en_US'; // Fallback to English
             }
