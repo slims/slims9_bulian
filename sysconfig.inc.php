@@ -618,6 +618,7 @@ $localisation->registerLanguages([
     ['es_ES', __('Espanol'), 'Espanol'],
     ['de_DE', __('German'), 'Deutsch'],
     ['id_ID', __('Indonesian'), 'Indonesia'],
+    ['it_IT', __('Italian'), 'Italiano'],
     ['ja_JP', __('Japanese'), 'Japanese'],
     ['ms_MY', __('Malay'), 'Malay'],
     ['fa_IR', __('Persian'), 'Persian'],
