@@ -277,7 +277,8 @@ class circulation extends member
         // Update loan history (replaces update_loan_history trigger)
         $this->updateLoanHistory($int_loan_id, array(
             'is_return' => 1,
-            'return_date' => $_return_date
+            'return_date' => $_return_date,
+            'last_update' => date("Y-m-d H:i:s")
         ));
 
         // add to receipt
@@ -349,7 +350,8 @@ class circulation extends member
         // Update loan history (replaces update_loan_history trigger)
         $this->updateLoanHistory($int_loan_id, array(
             'renewed' => $new_renewed_count,
-            'is_return' => 0
+            'is_return' => 0,
+            'last_update' => date("Y-m-d H:i:s")
         ));
 
         $_SESSION['reborrowed'][] = $int_loan_id;
@@ -562,7 +564,8 @@ class circulation extends member
             'is_lent' => 'is_lent',
             'is_return' => 'is_return',
             'renewed' => 'renewed',
-            'return_date' => 'return_date'
+            'return_date' => 'return_date',
+            'last_update' => 'last_update'
         );
 
         foreach ($updatable_fields as $loan_field => $history_field) {
