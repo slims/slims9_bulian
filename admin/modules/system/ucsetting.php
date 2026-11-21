@@ -19,6 +19,18 @@ do_checkIP('smc-system');
 // start the session
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
+
+// privileges checking: this endpoint has no per-request privilege gate,
+// so any logged-in staff could view/alter the UCS configuration.
+$can_read = utility::havePrivilege('system', 'r');
+$can_write = utility::havePrivilege('system', 'w');
+if (!$can_read) {
+    die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
+}
+if (isset($_POST['updateData']) && !$can_write) {
+    die('<div class="errorBox">'.__('You don\'t have enough privileges to update this section').'</div>');
+}
+
 require SIMBIO.'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO.'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
