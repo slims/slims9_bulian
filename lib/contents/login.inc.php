@@ -170,7 +170,7 @@ $_uname = (isset($_COOKIE['uname'])) ? trim($_COOKIE['uname']) : '';
         <?php
         if (isset($_GET['update']) && !empty($_GET['update'])) { ?>
             <?php if (isset($_COOKIE['token']) && $_GET['update'] === $_COOKIE['token']) { ?>
-                <div class="alert alert-danger"><?php echo str_replace('{username}', $_uname, __('Hi {username}, please update your password!')) ?></div>
+                <div class="alert alert-danger"><?php echo str_replace('{username}', htmlspecialchars($_uname, ENT_QUOTES, 'UTF-8'), __('Hi {username}, please update your password!')) ?></div>
                 <div class="heading1"><?php echo __('Current Password'); ?></div>
                 <div class="login_input"><input type="password" name="currentPasswd" id="userName" class="login_input" /></div>
                 <div class="heading1"><?php echo __('New Password'); ?></div>
@@ -178,8 +178,8 @@ $_uname = (isset($_COOKIE['uname'])) ? trim($_COOKIE['uname']) : '';
                 <div class="heading1"><?php echo __('Confirm New Password'); ?></div>
                 <div class="login_input"><input type="password" name="newPasswd2" class="login_input" /></div>
                 <!-- Captcha in form - start -->
-                <?php if ($sysconf['captcha']['smc']['enable']) { ?>
-                    <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
+                <?php if ($sysconf['captcha']['smc']['enable'] ?? false) { ?>
+                    <?php if (($sysconf['captcha']['smc']['type'] ?? '') == "recaptcha") { ?>
                         <div class="captchaAdmin">
                             <?php
                             require_once LIB . $sysconf['captcha']['smc']['folder'] . '/' . $sysconf['captcha']['smc']['incfile'];
@@ -189,7 +189,7 @@ $_uname = (isset($_COOKIE['uname'])) ? trim($_COOKIE['uname']) : '';
                         </div>
                         <!-- <div><input type="text" name="captcha_code" id="captcha-form" style="width: 80%;" /></div> -->
                 <?php
-                    } elseif ($sysconf['captcha']['smc']['type'] == "others") {
+                    } elseif (($sysconf['captcha']['smc']['type'] ?? '') == "others") {
                     }
                     #debugging
                     #echo SWB.'lib/'.$sysconf['captcha']['folder'].'/'.$sysconf['captcha']['webfile'];
