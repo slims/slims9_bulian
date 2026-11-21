@@ -90,7 +90,10 @@ if (isset($_POST['template'])) {
 if (isset($_GET['customize'])) {
   ob_start();
   $theme_type = utility::filterData('customize', 'get', true, true, true);
-  $theme_dir = utility::filterData('theme', 'get', true, true, true);
+  // basename() strips any directory traversal (e.g. ../) so $theme_dir can
+  // only ever name a directory directly under files/membercard/, never an
+  // arbitrary path passed to include_once below.
+  $theme_dir = basename(utility::filterData('theme', 'get', true, true, true));
 
   // execute registered hook
   \SLiMS\Plugins::getInstance()->execute('membercard_theme_customize', [$theme_dir]);  

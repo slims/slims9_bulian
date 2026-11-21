@@ -80,7 +80,10 @@ if (isset($_POST['theme'])) {
 // save action
 if (isset($_POST['updateData'])) {
   $theme_type = utility::filterData('themeType', 'post', true, true, true);
-  $theme_dir = utility::filterData('themeDir', 'post', true, true, true);
+  // basename() strips any directory traversal (e.g. ../) so $theme_dir can
+  // only ever name a directory directly under the theme folder, never an
+  // arbitrary path passed to include_once below.
+  $theme_dir = basename(utility::filterData('themeDir', 'post', true, true, true));
   // include tinfo.inc.php
   if ($theme_type == 'public') {
     $path = SB . $sysconf['template']['dir'] . '/' . $theme_dir . '/tinfo.inc.php';
@@ -118,7 +121,10 @@ if (isset($_POST['updateData'])) {
 if (isset($_GET['customize'])) {
   ob_start();
   $theme_type = utility::filterData('customize', 'get', true, true, true);
-  $theme_dir = utility::filterData('theme', 'get', true, true, true);
+  // basename() strips any directory traversal (e.g. ../) so $theme_dir can
+  // only ever name a directory directly under the theme folder, never an
+  // arbitrary path passed to include_once below.
+  $theme_dir = basename(utility::filterData('theme', 'get', true, true, true));
   // include tinfo.inc.php
   if ($theme_type == 'public') {
     $path = SB . $sysconf['template']['dir'] . '/' . $theme_dir . '/tinfo.inc.php';
@@ -141,7 +147,7 @@ if (isset($_GET['customize'])) {
       $form->table_header_attr = 'class="alterCell font-weight-bold"';
       $form->table_content_attr = 'class="alterCell2"';
 
-      foreach ($sysconf[$theme_key]['option'][$_GET['theme']] as $fid => $cfield) {
+      foreach ($sysconf[$theme_key]['option'][$theme_dir] as $fid => $cfield) {
         // custom field properties
         $cf_dbfield = $cfield['dbfield'];
         $cf_label = $cfield['label'];
@@ -149,7 +155,7 @@ if (isset($_GET['customize'])) {
         $cf_class = $cfield['class']??'';
         $cf_data = (isset($cfield['data']) && $cfield['data']) ? $cfield['data'] : array();
         $cf_width = isset($cfield['width']) ? $cfield['width'] : '50';
-        $form->addHidden('themeDir', $_GET['theme']);
+        $form->addHidden('themeDir', $theme_dir);
         $form->addHidden('themeType', $_GET['customize']);
         // custom field processing
         if (in_array($cfield['type'], array('text', 'longtext', 'numeric'))) {
