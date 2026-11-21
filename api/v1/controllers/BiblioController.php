@@ -104,16 +104,20 @@ class BiblioController extends Controller
         $limit = 3;
         $sql = "SELECT b.biblio_id, b.title, b.image, b.notes
           FROM biblio AS b, mst_gmd AS g
-          WHERE b.gmd_id=g.gmd_id AND g.gmd_name='$gmd' AND b.opac_hide < 1
+          WHERE b.gmd_id=g.gmd_id AND g.gmd_name=? AND b.opac_hide < 1
           ORDER BY b.last_update DESC
           LIMIT {$limit}";
-        $query = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param('s', $gmd);
+        $stmt->execute();
+        $query = $stmt->get_result();
         $return = array();
         while ($data = $query->fetch_assoc()) {
             $data['image'] = $this->getImagePath($data['image']);
             $return[] = $data;
         }
-    
+        $stmt->close();
+
         parent::withJson($return);
     }
 
@@ -121,16 +125,20 @@ class BiblioController extends Controller
         $limit = 3;
         $sql = "SELECT b.biblio_id, b.title, b.image, b.notes
           FROM biblio AS b, item AS i, mst_coll_type AS c
-          WHERE b.biblio_id=i.biblio_id AND i.coll_type_id=c.coll_type_id AND c.coll_type_name='$coll_type' AND b.opac_hide < 1
+          WHERE b.biblio_id=i.biblio_id AND i.coll_type_id=c.coll_type_id AND c.coll_type_name=? AND b.opac_hide < 1
           ORDER BY b.last_update DESC
           LIMIT {$limit}";
-        $query = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param('s', $coll_type);
+        $stmt->execute();
+        $query = $stmt->get_result();
         $return = array();
         while ($data = $query->fetch_assoc()) {
             $data['image'] = $this->getImagePath($data['image']);
             $return[] = $data;
         }
-    
+        $stmt->close();
+
         parent::withJson($return);
     }
 
