@@ -1432,7 +1432,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                 'index.last_update AS \'' . __('Last Update') . '\'');
             $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
         } else {
-            $datagrid->setSQLColumn('index.title AS \'' . __('Title') . '\'', 'index.author', 'index.labels', 'index.image',
+            $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \'' . __('Title') . '\'', 'index.author', 'index.labels', 'index.image',
                 'index.isbn_issn AS \'' . __('ISBN/ISSN') . '\'',
                 'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">' . __('None') . '</strong>\') AS \'' . __('Copies') . '\'',
                 'index.last_update AS \'' . __('Last Update') . '\'');
