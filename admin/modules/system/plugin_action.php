@@ -26,6 +26,17 @@ $upload_success = false;
 
 if (count($_POST) == 0) $_POST = json_decode(file_get_contents('php://input'), true);
 
+// privileges checking: every action here mutates plugin state (enable/
+// disable, run migrations), so require system write privilege. Without this
+// any authenticated staff account could toggle plugins and run their
+// migrations. Checked after $_POST is populated so the response format is
+// known.
+if (!utility::havePrivilege('system', 'w')) {
+    die(isset($_POST['format'])
+        ? json_encode(['status' => false, 'message' => __('You don\'t have enough privileges to update this section')])
+        : toastr(__('You don\'t have enough privileges to update this section'))->error());
+}
+
 if (isset($_POST['enable'])) {
     $id = $_POST['id'];
     $plugin = array_filter($plugins->getPlugins(), function ($plugin) use ($id) {
