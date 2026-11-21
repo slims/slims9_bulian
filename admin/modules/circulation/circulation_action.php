@@ -40,6 +40,15 @@ require LIB.'ip_based_access.inc.php';
 do_checkIP('smc');
 do_checkIP('smc-circulation');
 require SB.'admin/default/session_check.inc.php';
+
+// privileges checking: every path through this handler mutates circulation
+// data (loans, returns, reserves, fines), and circulation/index.php only
+// includes it in a read+write context. Require circulation write privilege
+// so other authenticated staff cannot drive transactions here directly.
+if (!utility::havePrivilege('circulation', 'w')) {
+    die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
+}
+
 require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
 require SIMBIO.'simbio_UTILS/simbio_date.inc.php';
 require MDLBS.'membership/member_base_lib.inc.php';

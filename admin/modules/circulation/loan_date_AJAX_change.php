@@ -34,6 +34,12 @@ do_checkIP('smc-circulation');
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
 
+// privileges checking: this adjusts the in-progress loan transaction, so
+// require circulation write privilege like the rest of the loan workflow.
+if (!utility::havePrivilege('circulation', 'w')) {
+    die(json_encode(['error' => __('You don\'t have enough privileges to update this section')]));
+}
+
 // get ID of loan session
 $loanSessionID = trim(strip_tags($_POST['loanSessionID']));
 if (isset($_POST['newLoanDate']) && trim($_POST['newLoanDate']) != '') {
