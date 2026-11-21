@@ -30,7 +30,14 @@ if (!defined('INDEX_AUTH')) {
 }
 
 if (isset($_POST['init'])) {
-  echo base64_encode($_SESSION[$_POST['init']].$_POST['init']) ?? '';
+  // The PDF viewer exchanges a random UUID (created below as $_SESSION[$uuid])
+  // for the encoded file key. Restrict this to UUID-shaped keys that actually
+  // exist in the session, so arbitrary session entries (csrf_token, user, ...)
+  // can never be read back through this endpoint.
+  $initKey = (string) $_POST['init'];
+  if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $initKey) && isset($_SESSION[$initKey])) {
+    echo base64_encode($_SESSION[$initKey] . $initKey);
+  }
   exit;
 }
 
