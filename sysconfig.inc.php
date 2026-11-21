@@ -65,7 +65,17 @@ $plugins = Plugins::getInstance();
 // use httpOnly for cookie
 @ini_set( 'session.cookie_httponly', true );
 @ini_set( 'session.use_only_cookies', true );
-@ini_set( 'session.cookie_secure', false );
+// Default the Secure flag from the actual request scheme instead of forcing
+// it off. Detected purely from $_SERVER here because config()/$sysconf are
+// not loaded yet; the session driver refines this with the full HTTPS
+// context when it sets the cookie params. Plain HTTP stays false so the
+// session keeps working.
+@ini_set( 'session.cookie_secure', (
+    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+    || (int)($_SERVER['SERVER_PORT'] ?? 0) === 443
+    || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
+    || strtolower($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '') === 'on'
+) );
 
 // check if safe mode is on
 if ((bool) ini_get('safe_mode')) {

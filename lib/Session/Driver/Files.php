@@ -17,10 +17,44 @@ class Files extends Contract
         return [
             'lifetime' => $lifetime,
             'path' => $path,
-            'secure' => filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN),
+            // Mark the session cookie Secure whenever the request is served
+            // over HTTPS, so the cookie is never sent back over plain HTTP.
+            // Previously this read session.cookie_secure, which sysconfig
+            // forces to false, leaving admin/member cookies without the
+            // Secure attribute even on HTTPS deployments.
+            'secure' => $this->isSecureRequest(),
             'httponly' => true,
             'samesite' => 'Lax',
         ];
+    }
+
+    /**
+     * Determine whether the current request is being served over HTTPS,
+     * following the same conventions SLiMS already uses elsewhere
+     * (direct TLS, a TLS-terminating proxy, force_https / load-balanced
+     * config, and the https_enable system setting).
+     *
+     * The failure mode is deliberately safe: a plain HTTP request resolves
+     * to false so the session cookie keeps working, and the worst a spoofed
+     * forwarding header can do is set Secure on the spoofer's own cookie.
+     */
+    private function isSecureRequest(): bool
+    {
+        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') return true;
+        if ((int) ($_SERVER['SERVER_PORT'] ?? 0) === 443) return true;
+        if (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') return true;
+        if (strtolower($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '') === 'on') return true;
+
+        if (function_exists('config')) {
+            if (config('url.force_https')) return true;
+            $loadBalance = config('loadbalanced');
+            if ($loadBalance && !empty($loadBalance['env']) && ($loadBalance['options']['scheme'] ?? '') === 'https') return true;
+        }
+
+        global $sysconf;
+        if (!empty($sysconf['https_enable'])) return true;
+
+        return false;
     }
  
     public function admin()
