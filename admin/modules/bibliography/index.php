@@ -1432,13 +1432,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                 'index.last_update AS \'' . __('Last Update') . '\'');
             $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
         } else {
-            $datagrid->setSQLColumn('index.title AS \'' . __('Title') . '\'', 'index.author', 'index.labels', 'index.image',
+            // Mirror the read+write column layout (biblio_id first) so the
+            // showTitleAuthors callback, which reads $array_data[0] as the
+            // biblio_id, works for read-only users too. The previous layout
+            // omitted biblio_id and put the title in column 0, producing a
+            // broken "WHERE biblio_id=<title>" query (HTTP 500).
+            $datagrid->setSQLColumn('index.biblio_id', 'index.title AS \'' . __('Title') . '\'', 'index.labels', 'index.image',
+                'index.author',
+                'index.edition AS \'' . __('Edition') . '\'',
                 'index.isbn_issn AS \'' . __('ISBN/ISSN') . '\'',
                 'IF(COUNT(item.item_id)>0, COUNT(item.item_id), \'<strong style="color: #f00;">' . __('None') . '</strong>\') AS \'' . __('Copies') . '\'',
                 'index.last_update AS \'' . __('Last Update') . '\'');
             $datagrid->modifyColumnContent(1, 'callback{showTitleAuthors}');
         }
-        $datagrid->invisible_fields = array(1, 2, 3);
+        $datagrid->invisible_fields = array(0, 1, 2, 3);
         $datagrid->setSQLorder('index.last_update DESC');
 
         // set group by
