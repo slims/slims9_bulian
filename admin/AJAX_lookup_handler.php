@@ -49,6 +49,34 @@ if (empty($_POST)) {
 	$_POST = json_decode(file_get_contents('php://input'), true);
 }
 
+/**
+ * Helper to abort the request with a format-aware message.
+ */
+$lookup_abort = function (string $message) use ($rawInput) {
+	if ($rawInput == false) exit('<option value="0">' . $message . '</option>');
+	exit(json_encode(array('id' => 0, 'text' => $message)));
+};
+
+/**
+ * Privilege gate.
+ *
+ * This is a shared, cross-module autocomplete endpoint, so it does not map
+ * to a single module privilege. Require read access on at least one module
+ * that legitimately uses lookups; the super administrator (uid 1) is always
+ * allowed. Without this, any authenticated staff account could reach the
+ * query below regardless of their assigned privileges.
+ */
+if (($_SESSION['uid'] ?? 0) != 1) {
+	$lookup_modules = ['bibliography', 'master_file', 'circulation', 'serial_control', 'membership'];
+	$has_lookup_privilege = false;
+	foreach ($lookup_modules as $lookup_module) {
+		if (utility::havePrivilege($lookup_module, 'r')) { $has_lookup_privilege = true; break; }
+	}
+	if (!$has_lookup_privilege) {
+		$lookup_abort(__('You don\'t have enough privileges to access this area!'));
+	}
+}
+
 // list limit
 $limit = 20;
 
@@ -77,6 +105,40 @@ foreach ($fields_array as $field) {
 if (empty($validated_fields)) {
     if ($rawInput == false) exit('<option value="0">' . __('Fields cannot be empty') . '</option>');
     else exit(json_encode(array('id' => 0, 'text' => __('Fields cannot be empty'))));
+}
+
+/**
+ * Allowlist of tables and the columns that may be read through this
+ * endpoint.
+ *
+ * The regular expressions above only validate the *format* of the table and
+ * field names, not that they are legitimate lookup targets. Because this
+ * endpoint builds `SELECT <fields> FROM <table>` from client input, format
+ * validation alone still allows reading any table/column (e.g. user.passwd
+ * or member PII). The allowlist restricts both the table and every requested
+ * column to the master-file data the autocomplete UI actually needs.
+ *
+ * Installations with custom master files can extend the list through the
+ * `lookup_handler_whitelist` config key (table => [columns]).
+ */
+$lookup_whitelist = [
+    'biblio'        => ['biblio_id', 'title', 'edition', 'publish_year'],
+    'mst_author'    => ['author_id', 'author_name', 'author_year', 'authority_type'],
+    'mst_topic'     => ['topic_id', 'topic', 'topic_type', 'classification'],
+    'mst_place'     => ['place_id', 'place_name'],
+    'mst_publisher' => ['publisher_id', 'publisher_name'],
+];
+foreach ((array) config('lookup_handler_whitelist', []) as $wl_table => $wl_columns) {
+    $lookup_whitelist[$wl_table] = array_merge($lookup_whitelist[$wl_table] ?? [], (array) $wl_columns);
+}
+
+if (!isset($lookup_whitelist[$table_name])) {
+    $lookup_abort(__('Table is not allowed'));
+}
+foreach ($validated_fields as $field) {
+    if (!in_array($field, $lookup_whitelist[$table_name], true)) {
+        $lookup_abort(__('Field is not allowed'));
+    }
 }
 
 $table_fields = implode(':', $validated_fields);
