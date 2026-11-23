@@ -376,7 +376,8 @@ class api
   }
 
   /**
-   * Send to indexing engine (Solr / ElasticSearch) via REST
+   * Send to indexing engine (Solr) via REST.
+   * Elasticsearch is handled by SLiMS\SearchEngine\ElasticSearchEngine::sync()
    *
    * @param array $array
    * @return void
@@ -398,8 +399,6 @@ class api
         'Content-Length: ' . strlen($json_data))                                                                    
         );
         curl_exec($ch);
-    } elseif ($sysconf['index']['engine']['type'] == 'es') {
-      #here is the codes for accessing ES
     }
   }
 

@@ -42,7 +42,9 @@ if ($_SESSION['uid'] == 1) {
 $menu['system.content'] = array(__('Content'), MWB.'system/content.php', __('Content'));
 // only administrator have privileges for below menus
 if ($_SESSION['uid'] == 1) {
-    if ($sysconf['index']['engine']['enable']) {
+    if (\SLiMS\SearchEngine\Engine::active() === \SLiMS\SearchEngine\ElasticSearchEngine::class) {
+      $menu['system.biblio-indexes'] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes_es.php', __('Bibliographic Indexes management'));
+    } else if (!empty($sysconf['index']['engine']['enable'])) {
       $menu['system.biblio-indexes'] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes_'.$sysconf['index']['engine']['type'].'.php', __('Bibliographic Indexes management'));
     } else {
       $menu['system.biblio-indexes'] = array(__('Biblio Indexes'), MWB.'system/biblio_indexes.php', __('Bibliographic Indexes management'));

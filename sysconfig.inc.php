@@ -445,17 +445,12 @@ $sysconf['index']['sphinx_opts'] = array(
 	'ranker' => null);
 
 $sysconf['index']['engine']['enable'] = FALSE;
-$sysconf['index']['engine']['type'] = 'es'; // value can be 'solr' OR 'es' for ElasticSearch
+$sysconf['index']['engine']['type'] = 'solr'; // Elasticsearch is a search engine now: System > System Configuration > Search Engine
 $sysconf['index']['engine']['solr_opts'] = array(
     'host' => 'http://172.17.0.4',
     'port' => 8983,
     'collection' => 'slims' // name of collection in Solr
   );
-
-$sysconf['index']['engine']['es_opts'] = array(
-  'hosts' => ['localhost:9200'],
-  'index' => 'slims' // name of index in ElasticSearch
-);
 
 $sysconf['index']['word'] = true;
 /**

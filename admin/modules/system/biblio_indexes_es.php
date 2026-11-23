@@ -21,6 +21,8 @@
  *
  */
 
+use SLiMS\SearchEngine\ElasticSearchEngine;
+
 /* Biblio Index Management section */
 
 // key to authenticate
@@ -37,104 +39,83 @@ do_checkIP('smc-system');
 // start the session
 require SB . 'admin/default/session.inc.php';
 require SB . 'admin/default/session_check.inc.php';
-require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
-require MDLBS . 'system/biblio_indexer_es.inc.php';
 
 // privileges checking
 $can_read = utility::havePrivilege('bibliography', 'r');
 $can_write = utility::havePrivilege('bibliography', 'w');
-$error = array();
-$info = array();
 
 if (!$can_read) {
   die('<div class="errorBox">' . __('You don\'t have enough privileges to view this section') . '</div>');
 }
 
-$client = Elasticsearch\ClientBuilder::create()
-  ->setHosts($sysconf['index']['engine']['es_opts']['hosts'])
-  ->build();
-
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
+  header('Content-Type: application/json');
+
   if (!($can_read AND $can_write)) {
     die(json_encode(['status' => 'error', 'message' => __('You don\'t have enough privileges to view this section')]));
   }
 
-  $params = ['index' => $sysconf['index']['engine']['es_opts']['index']];
+  $detail = (string)($_GET['detail'] ?? '');
+  $engine = new ElasticSearchEngine;
 
-  /* create index */
-  if ($_GET['detail'] == 'create') {
-    try {
-      if (!$client->indices()->exists($params)) {
-        include __DIR__ . './../../../indexing_engine/elasticsearch_config.conf.php';
-        $client->indices()->create($params);
-        $mapping = $client->indices()->getMapping(['index' => $sysconf['index']['engine']['es_opts']['index']]);
-        echo json_encode(['status' => 'success', 'message' => 'Index created. READY.', 'mapping' => $mapping]);
-      } else {
-        echo json_encode(['status' => 'success', 'message' => 'READY.']);
-      }
-    } catch (\Elasticsearch\Common\Exceptions\NoNodesAvailableException $exception) {
-      echo json_encode(['status' => 'danger', 'message' => $exception->getMessage() . '. Make sure ElasticSearch is running and accessible!']);
-    } catch (Exception $e) {
-      $message = json_decode($e->getMessage());
-      echo json_encode(['status' => 'danger', 'message' => $message->error]);
-    }
-  }
+  try {
+    switch ($detail) {
+      /* create index */
+      case 'create':
+        $version = $engine->ping();
+        if (!$engine->indexExists()) {
+          $engine->createIndex();
+          echo json_encode(['status' => 'success', 'message' => 'Elasticsearch ' . $version . '. Index "' . $engine->getIndexName() . '" created. READY.']);
+        } else {
+          echo json_encode(['status' => 'success', 'message' => 'Elasticsearch ' . $version . '. READY.']);
+        }
+        break;
 
-  if ($_GET['detail'] == 'delete') {
-    try {
-      $response = $client->indices()->delete($params);
-      if ($response['acknowledged']) {
+      /* delete index */
+      case 'delete':
+        $engine->deleteIndex();
         echo json_encode(['status' => 'success', 'message' => 'Index deleted']);
-      } else {
-        echo json_encode(['status' => 'danger', 'message' => 'Failed delete index']);
-      }
-    } catch (Exception $e) {
-      $message = json_decode($e->getMessage());
-      echo json_encode(['status' => 'danger', 'message' => $message->error]);
-    }
-  }
+        break;
 
-  /* biblios */
-  if ($_GET['detail'] == 'biblios') {
-    $rec_bib_q = $dbs->query('SELECT COUNT(*) FROM biblio');
-    $rec_bib_d = $rec_bib_q->fetch_row();
-    $bib_total = $rec_bib_d[0];
-    echo json_encode(['status' => 'info', 'message' => 'Total data on biblio: ' . $bib_total . ' records.', 'biblios' => $bib_total]);
-  }
+      /* biblios */
+      case 'biblios':
+        $rec_bib_q = $dbs->query('SELECT COUNT(*) FROM biblio');
+        $rec_bib_d = $rec_bib_q->fetch_row();
+        $bib_total = (int)$rec_bib_d[0];
+        echo json_encode(['status' => 'info', 'message' => 'Total data on biblio: ' . $bib_total . ' records.', 'biblios' => $bib_total]);
+        break;
 
-  /* biblio indexed */
-  if ($_GET['detail'] == 'indexed') {
-    try {
-      $info = $client->indices()->stats($params);
-      echo json_encode(['status' => 'info', 'message' => 'Total indexed data: ' . $info['indices'][$params['index']]['primaries']['indexing']['index_total'] . ' records.', 'detail' => $info]);
-    } catch (\Elasticsearch\Common\Exceptions\NoNodesAvailableException $exception) {
-      echo json_encode(['status' => 'danger', 'message' => $exception->getMessage() . '. Make sure ElasticSearch is running and accessible!']);
-    } catch (Exception $exception) {
-      echo json_encode(['status' => 'danger', 'message' => $exception->getMessage()]);
-    }
-  }
+      /* biblio indexed */
+      case 'indexed':
+        echo json_encode(['status' => 'info', 'message' => 'Total indexed data: ' . $engine->countDocuments() . ' records.']);
+        break;
 
-  /* indexing data */
-  if ($_GET['detail'] == 'indexing') {
-      $start = (int)$_GET['start'];
-      $end = (int)$_GET['end'];
-      $query = $dbs->query('SELECT biblio_id FROM biblio LIMIT ' . $start . ', ' . ($end - $start));
-      $r = array();
-      if ($query) {
-          while ($data = $query -> fetch_row()) {
-              $b = api::biblio_load($dbs, $data[0]);
-              unset($b['_id']);
-              $p = [
-                  'index' => $sysconf['index']['engine']['es_opts']['index'],
-                  'type' => 'bibliography',
-                  'id' => md5($data[0]),
-                  'body' => $b
-              ];
-              $r[] = $client->index($p);
+      /* indexing data */
+      case 'indexing':
+        $start = max(0, (int)($_GET['start'] ?? 0));
+        $end = max($start, (int)($_GET['end'] ?? 0));
+        $biblios = [];
+        $query = $dbs->query('SELECT biblio_id FROM biblio ORDER BY biblio_id LIMIT ' . $start . ', ' . min(500, $end - $start));
+        if ($query) {
+          while ($data = $query->fetch_row()) {
+            $biblio = api::biblio_load($dbs, (int)$data[0]);
+            if (is_array($biblio) && $biblio) $biblios[] = $biblio;
           }
-      }
-      echo json_encode(['status' => 'success', 'message' => __('Biblio from ' . $start . ' to ' . $end . ' indexed.'), 'detail' => $r]);
+        }
+        $failed = $engine->indexDocuments($biblios);
+        if ($failed > 0) {
+          echo json_encode(['status' => 'danger', 'message' => 'Biblio from ' . $start . ' to ' . $end . ': ' . $failed . ' records refused by Elasticsearch.']);
+        } else {
+          echo json_encode(['status' => 'success', 'message' => 'Biblio from ' . $start . ' to ' . $end . ' indexed.']);
+        }
+        break;
+
+      default:
+        echo json_encode(['status' => 'danger', 'message' => 'Unknown action']);
+    }
+  } catch (Throwable $e) {
+    echo json_encode(['status' => 'danger', 'message' => $e->getMessage() . ' Make sure Elasticsearch is running and the search engine settings are correct.']);
   }
 
   exit();
