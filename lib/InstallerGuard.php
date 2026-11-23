@@ -55,7 +55,7 @@ class InstallerGuard
         // an empty folder holds no installer. It can be left behind when the
         // operating system refuses to drop the folder itself (e.g. it is open
         // in another program) although everything inside has been deleted
-        $entries = @scandir($path);
+        $entries = self::quietly(function () use ($path) { return scandir($path); });
         return $entries === false || count(array_diff($entries, ['.', '..'])) > 0;
     }
 
@@ -79,7 +79,8 @@ class InstallerGuard
     public static function lock(): bool
     {
         if (self::isLocked()) return true;
-        return @file_put_contents(self::lockPath(), 'Installer disabled at ' . date('c') . PHP_EOL, LOCK_EX) !== false;
+        $file = self::lockPath();
+        return self::quietly(function () use ($file) { return file_put_contents($file, 'Installer disabled at ' . date('c') . PHP_EOL, LOCK_EX); }) !== false;
     }
 
     public static function isLocked(): bool
@@ -97,7 +98,7 @@ class InstallerGuard
         $path = self::path();
 
         if (!self::exists()) {
-            @unlink(self::lockPath());
+            self::unlock();
             return ['ok' => true, 'reason' => ''];
         }
 
@@ -113,6 +114,66 @@ class InstallerGuard
             return ['ok' => false, 'reason' => 'The install folder path could not be verified.'];
         }
 
+        // A delete is not always finished when the call returns. On Windows a
+        // file or folder that another program still has open (file explorer,
+        // editor, antivirus, search indexer) only disappears once that program
+        // lets go, and until then its parent can not be removed either. So the
+        // pass is repeated for a short while before it is reported as failed.
+        $failed = '';
+        for ($attempt = 0; $attempt < 15; $attempt++) {
+            if ($attempt > 0) usleep(200000);
+            $failed = self::quietly(function () use ($real) { return self::removePass($real); });
+            clearstatcache();
+            if (!self::exists()) break;
+        }
+
+        if (self::exists()) {
+            return ['ok' => false, 'reason' => 'The web server is not allowed to delete: ' . ($failed ?: $real)];
+        }
+
+        // nothing left to lock
+        self::unlock();
+        return ['ok' => true, 'reason' => ''];
+    }
+
+    /**
+     * Run a filesystem operation without letting its PHP warnings reach the
+     * application error handler. That handler turns every warning into an
+     * error page, also for calls silenced with "@", while a delete that fails
+     * here is an expected outcome which is reported through the return value.
+     *
+     * @return mixed result of the callback, false when it throws
+     */
+    private static function quietly(callable $operation)
+    {
+        set_error_handler(function () { return true; });
+        try {
+            return $operation();
+        } catch (Throwable $e) {
+            return false;
+        } finally {
+            restore_error_handler();
+        }
+    }
+
+    /**
+     * Drop the lock file, when there is one
+     */
+    private static function unlock(): void
+    {
+        $file = self::lockPath();
+        if (is_file($file)) self::quietly(function () use ($file) { return unlink($file); });
+    }
+
+    /**
+     * Delete everything inside the folder, then the folder itself.
+     *
+     * @return string first path that could not be deleted, empty when none
+     */
+    private static function removePass(string $real): string
+    {
+        if (!is_dir($real)) return '';
+
         $failed = '';
         try {
             $items = new RecursiveIteratorIterator(
@@ -127,18 +188,11 @@ class InstallerGuard
             }
             // release the directory handles before removing the folder itself
             unset($items, $item);
-            if ($failed === '' && !@rmdir($real)) $failed = $real;
+            if (!@rmdir($real) && $failed === '') $failed = $real;
         } catch (Throwable $e) {
             $failed = $failed ?: $real;
         }
 
-        clearstatcache();
-        if (self::exists()) {
-            return ['ok' => false, 'reason' => 'The web server is not allowed to delete: ' . ($failed ?: $real)];
-        }
-
-        // nothing left to lock
-        @unlink(self::lockPath());
-        return ['ok' => true, 'reason' => ''];
+        return $failed;
     }
 }
