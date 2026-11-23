@@ -148,9 +148,6 @@ include "partials/nav.php";
             <hr/>
 
         <?php
-        if ($sysconf['index']['engine']['enable']) {
-          echo $biblio_list->getClustering();
-        } else {
         if (isset($_GET['keywords']) && (!empty($_GET['keywords']))) :
         ?>
 
@@ -171,8 +168,6 @@ include "partials/nav.php";
             </script>
 
         <?php endif; ?>
-
-        <?php } ?>
 
         <?php endif; ?>
       </div>

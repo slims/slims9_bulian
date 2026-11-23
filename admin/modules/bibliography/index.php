@@ -31,7 +31,7 @@ use SLiMS\Filesystems\Storage;
 use SLiMS\Form\FormAjaxWithCustomField;
 use SLiMS\Plugins;
 use SLiMS\SearchEngine\DefaultEngine;
-use SLiMS\SearchEngine\ElasticSearchEngine;
+use SLiMS\SearchEngine\RemoteIndexEngine;
 use SLiMS\SearchEngine\Engine;
 use SLiMS\SearchEngine\SphinxSearchEngine;
 use SLiMS\Ucs;
@@ -375,9 +375,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     api::bibliolog_compare($dbs, $updateRecordID, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_currrawdata, $_SESSION['_prevrawdata'][$updateRecordID]);
                     unset($_SESSION['_prevrawdata'][$updateRecordID]);
                 }
-                if ($sysconf['index']['engine']['enable']) {
-                    api::update_to_index($_currrawdata);
-                }
                 // close window OR redirect main page
                 if ($in_pop_up) {
                     $itemCollID = (integer)$_POST['itemCollID'];
@@ -388,7 +385,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 }
                 // update index
                 $indexer->updateIndex($updateRecordID);
-                ElasticSearchEngine::sync($dbs, (int)$updateRecordID);
+                RemoteIndexEngine::sync($dbs, (int)$updateRecordID);
             } else {
                 utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator') . "\n" . $sql_op->error, 'error');
             }
@@ -447,9 +444,6 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     api::bibliolog_write($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], 'create', 'description', $_rawdata, 'New data. Bibliography.');
                     api::bibliolog_compare($dbs, $last_biblio_id, $_SESSION['uid'], $_SESSION['realname'], $data['title'], $_rawdata, NULL);
                 }
-                if ($sysconf['index']['engine']['enable']) {
-                    api::update_to_index($_rawdata);
-                }
                 // clear related sessions
                 $_SESSION['biblioAuthor'] = array();
                 $_SESSION['biblioTopic'] = array();
@@ -459,7 +453,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 // make index
                 $indexer->makeIndex($last_biblio_id);
                 $indexer->makeIndexWord($last_biblio_id);
-                ElasticSearchEngine::sync($dbs, (int)$last_biblio_id);
+                RemoteIndexEngine::sync($dbs, (int)$last_biblio_id);
 
                 // auto insert catalog to UCS if enabled
                 if ($sysconf['ucs']['enable'] && $sysconf['ucs']['auto_insert']) {
@@ -515,7 +509,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
             // update items data into search_biblio
             $indexer->updateItems((isset($updateRecordID) ? $updateRecordID : $last_biblio_id));
-            ElasticSearchEngine::sync($dbs, (int)(isset($updateRecordID) ? $updateRecordID : $last_biblio_id));
+            RemoteIndexEngine::sync($dbs, (int)(isset($updateRecordID) ? $updateRecordID : $last_biblio_id));
         }
 
         #$isset = array_key_exists('last_biblio_id', get_defined_vars());
@@ -585,7 +579,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 
                 # delete from index
                 $indexer->deleteIndex($itemID);
-                ElasticSearchEngine::forget((int)$itemID);
+                RemoteIndexEngine::forget((int)$itemID);
 
                 // delete serial data
                 // check kardex if exist

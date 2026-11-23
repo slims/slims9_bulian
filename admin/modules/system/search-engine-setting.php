@@ -26,6 +26,7 @@ use SLiMS\SearchEngine\DefaultEngine;
 use SLiMS\SearchEngine\ElasticSearchEngine;
 use SLiMS\SearchEngine\FuzzySearchEngine;
 use SLiMS\SearchEngine\SearchBiblioEngine;
+use SLiMS\SearchEngine\SolrSearchEngine;
 use SLiMS\SearchEngine\SphinxSearchEngine;
 
 /* Biblio Index Management section */
@@ -159,13 +160,13 @@ if (isset($_POST['updateData'])) {
             writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' updated Sphinx Search Engine settings', 'Search Engine Config', 'Update');
 
             $info[] = __('Sphinx Search Engine settings saved successfully');
-        } else if ($engine === ElasticSearchEngine::class) {
-            $es_current = config(ElasticSearchEngine::CONFIG_KEY);
+        } else if (in_array($engine, [ElasticSearchEngine::class, SolrSearchEngine::class], true)) {
+            $es_current = config($engine::CONFIG_KEY);
             $es_current = is_array($es_current) ? $es_current : [];
 
             $es_config = [];
-            $es_config['host'] = ElasticSearchEngine::normalizeHost((string)($_POST['es_host'] ?? ''));
-            $es_config['index_name'] = ElasticSearchEngine::normalizeIndexName((string)($_POST['es_index'] ?? ''));
+            $es_config['host'] = $engine::normalizeHost((string)($_POST['es_host'] ?? ''));
+            $es_config['index_name'] = $engine::normalizeIndexName((string)($_POST['es_index'] ?? ''));
             $es_config['username'] = trim((string)($_POST['es_username'] ?? ''));
             // an empty password field keeps the stored one
             $es_password = (string)($_POST['es_password'] ?? '');
@@ -173,16 +174,16 @@ if (isset($_POST['updateData'])) {
             $es_config['verify_ssl'] = !isset($_POST['es_skip_verify']);
 
             if (!filter_var($es_config['host'], FILTER_VALIDATE_URL)) {
-                utility::jsToastr(__('Search Engine Settings'), __('Elasticsearch URL is not valid'), 'error');
+                utility::jsToastr(__('Search Engine Settings'), __('Server URL is not valid'), 'error');
                 exit();
             }
 
-            addOrUpdateSetting(ElasticSearchEngine::CONFIG_KEY, $es_config);
+            addOrUpdateSetting($engine::CONFIG_KEY, $es_config);
 
             // Write log
-            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' updated Elasticsearch Search Engine settings', 'Search Engine Config', 'Update');
+            writeLog('staff', $_SESSION['uid'], 'system', $_SESSION['realname'] . ' updated ' . $engine::LABEL . ' Search Engine settings', 'Search Engine Config', 'Update');
 
-            $info[] = __('Elasticsearch settings saved successfully');
+            $info[] = __('Search Engine settings saved successfully');
         }
         utility::jsToastr(__('Search Engine Settings'), __('Settings saved. Refreshing page'), 'success');
         // echo '<script type="text/javascript">setTimeout(() => { top.location.reload(); }, 2000);</script>';
@@ -261,12 +262,15 @@ if ($engine === FuzzySearchEngine::class) {
     $form->addTextField('text', 'sphinx_index', __('Sphinx Index Name'), $sphinx_config['index_name'] ?? 'slims', 'class="form-control col-4" required', __('Name of the Sphinx index to use for searching bibliography records'));
     // Print form
     echo $form->printOut();
-} else if ($engine === ElasticSearchEngine::class) {
-    $es_config = config(ElasticSearchEngine::CONFIG_KEY);
+} else if (in_array($engine, [ElasticSearchEngine::class, SolrSearchEngine::class], true)) {
+    $es_config = config($engine::CONFIG_KEY);
     $es_config = is_array($es_config) ? $es_config : [];
 
-    $form->addTextField('text', 'es_host', __('Elasticsearch URL'), $es_config['host'] ?? 'http://localhost:9200', 'class="form-control col-6" required', __('Address of the Elasticsearch server (version 7 or 8), for example http://localhost:9200'));
-    $form->addTextField('text', 'es_index', __('Index Name'), $es_config['index_name'] ?? 'slims', 'class="form-control col-4" required', __('Lowercase letters, numbers, dash and underscore only'));
+    $es_is_solr = $engine === SolrSearchEngine::class;
+    $form->addTextField('text', 'es_host', $engine::LABEL . ' URL', $es_config['host'] ?? $engine::DEFAULT_HOST, 'class="form-control col-6" required',
+        ($es_is_solr ? __('Address of the Solr server (version 7 or newer), for example') : __('Address of the Elasticsearch server (version 7 or 8), for example')) . ' ' . $engine::DEFAULT_HOST);
+    $form->addTextField('text', 'es_index', $es_is_solr ? __('Core Name') : __('Index Name'), $es_config['index_name'] ?? 'slims', 'class="form-control col-4" required',
+        __('Lowercase letters, numbers, dash and underscore only') . ($es_is_solr ? '. ' . __('The core must already exist on the Solr server, for example: bin/solr create -c slims') : ''));
     $form->addTextField('text', 'es_username', __('Username'), $es_config['username'] ?? '', 'class="form-control col-4" autocomplete="off"', __('Leave empty when the server does not ask for a login'));
     $form->addTextField('password', 'es_password', __('Password'), '', 'class="form-control col-4" autocomplete="new-password"', __('Leave empty to keep the saved password'));
     $es_verify_options[] = array('1', __('Yes'));

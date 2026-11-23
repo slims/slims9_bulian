@@ -21,7 +21,7 @@
  *
  */
 
-use SLiMS\SearchEngine\ElasticSearchEngine;
+use SLiMS\SearchEngine\RemoteIndexEngine;
 
 /* Biblio Index Management section */
 
@@ -48,6 +48,9 @@ if (!$can_read) {
   die('<div class="errorBox">' . __('You don\'t have enough privileges to view this section') . '</div>');
 }
 
+// the active search engine, when it keeps its index on another server (Elasticsearch, Solr)
+$engine = RemoteIndexEngine::activeInstance();
+
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
   header('Content-Type: application/json');
@@ -57,7 +60,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
   }
 
   $detail = (string)($_GET['detail'] ?? '');
-  $engine = new ElasticSearchEngine;
+  if (!$engine) {
+    die(json_encode(['status' => 'danger', 'message' => 'The active search engine does not use an external index.']));
+  }
 
   try {
     switch ($detail) {
@@ -66,9 +71,9 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         $version = $engine->ping();
         if (!$engine->indexExists()) {
           $engine->createIndex();
-          echo json_encode(['status' => 'success', 'message' => 'Elasticsearch ' . $version . '. Index "' . $engine->getIndexName() . '" created. READY.']);
+          echo json_encode(['status' => 'success', 'message' => $engine::LABEL . ' ' . $version . '. Index "' . $engine->getIndexName() . '" created. READY.']);
         } else {
-          echo json_encode(['status' => 'success', 'message' => 'Elasticsearch ' . $version . '. READY.']);
+          echo json_encode(['status' => 'success', 'message' => $engine::LABEL . ' ' . $version . '. READY.']);
         }
         break;
 
@@ -105,7 +110,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         }
         $failed = $engine->indexDocuments($biblios);
         if ($failed > 0) {
-          echo json_encode(['status' => 'danger', 'message' => 'Biblio from ' . $start . ' to ' . $end . ': ' . $failed . ' records refused by Elasticsearch.']);
+          echo json_encode(['status' => 'danger', 'message' => 'Biblio from ' . $start . ' to ' . $end . ': ' . $failed . ' records refused by the server.']);
         } else {
           echo json_encode(['status' => 'success', 'message' => 'Biblio from ' . $start . ' to ' . $end . ' indexed.']);
         }
@@ -115,16 +120,19 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         echo json_encode(['status' => 'danger', 'message' => 'Unknown action']);
     }
   } catch (Throwable $e) {
-    echo json_encode(['status' => 'danger', 'message' => $e->getMessage() . ' Make sure Elasticsearch is running and the search engine settings are correct.']);
+    echo json_encode(['status' => 'danger', 'message' => $e->getMessage() . ' Make sure ' . $engine::LABEL . ' is running and the search engine settings are correct.']);
   }
 
   exit();
 } else {
+  if (!$engine) {
+    die('<div class="errorBox">' . __('The active search engine does not use an external index.') . '</div>');
+  }
   ?>
     <div class="menuBox">
         <div class="menuBoxInner systemIcon">
             <div class="per_title">
-                <h2><?php echo __('Bibliographic Index (ElasticSearch)'); ?></h2>
+                <h2><?php echo __('Bibliographic Index') . ' (' . $engine::LABEL . ')'; ?></h2>
             </div>
             <div class="sub_section">.
                 <div class="btn-group">
@@ -143,11 +151,11 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
 
     <script>
         const container = $('.index-log-cat')
-        const uriCreate = '<?php echo MWB; ?>system/biblio_indexes_es.php?action=detail&detail=create'
-        const uriDelete = '<?php echo MWB; ?>system/biblio_indexes_es.php?action=detail&detail=delete'
-        const uriBiblios = '<?php echo MWB; ?>system/biblio_indexes_es.php?action=detail&detail=biblios'
-        const uriIndexed = '<?php echo MWB; ?>system/biblio_indexes_es.php?action=detail&detail=indexed'
-        const uriIndexing = '<?php echo MWB; ?>system/biblio_indexes_es.php?action=detail&detail=indexing'
+        const uriCreate = '<?php echo MWB; ?>system/biblio_indexes_engine.php?action=detail&detail=create'
+        const uriDelete = '<?php echo MWB; ?>system/biblio_indexes_engine.php?action=detail&detail=delete'
+        const uriBiblios = '<?php echo MWB; ?>system/biblio_indexes_engine.php?action=detail&detail=biblios'
+        const uriIndexed = '<?php echo MWB; ?>system/biblio_indexes_engine.php?action=detail&detail=indexed'
+        const uriIndexing = '<?php echo MWB; ?>system/biblio_indexes_engine.php?action=detail&detail=indexing'
 
         let doRequest = (url, callback) => {
             fetch(url)
@@ -163,7 +171,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         }
 
         $(document).ready(() => {
-            log(container, 'info', 'initialize SLiMS ElasticSearch indexing engine')
+            log(container, 'info', 'initialize SLiMS indexing engine')
             doRequest(uriCreate, () => doRequest(uriBiblios, doRequest(uriIndexed)))
         })
 
