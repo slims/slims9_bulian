@@ -134,6 +134,8 @@ abstract class RemoteIndexEngine extends Contract
 
         $ch = curl_init($this->host . $path);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+        // a HEAD response announces a length but carries no body to wait for
+        if (strtoupper($method) === 'HEAD') curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
