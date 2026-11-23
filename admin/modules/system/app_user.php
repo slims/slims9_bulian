@@ -400,7 +400,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     /* RECORD FORM */
     // try query
-    $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     if ($changecurrent) {
         $itemID = (integer)$_SESSION['uid'];
     }

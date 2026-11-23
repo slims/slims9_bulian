@@ -37,8 +37,30 @@ require SB . 'admin/default/session_check.inc.php';
 // list limit
 $limit = 20;
 
-$table_name = $dbs->escape_string(trim($_POST['tableName']));
-$table_fields = trim($_POST['tableFields']);
+// privilege gate: used by the subject pop up of bibliography and master file
+if (($_SESSION['uid'] ?? 0) != 1
+	&& !utility::havePrivilege('bibliography', 'r')
+	&& !utility::havePrivilege('master_file', 'r')) {
+	exit('<option value="0">' . __('You don\'t have enough privileges to access this area!') . '</option>');
+}
+
+/**
+ * This handler only ever looks up subjects, so the table is fixed and the
+ * columns are limited to an allowlist. Table and column names are SQL
+ * identifiers and can not be protected by escaping. The first field must be
+ * topic_id because it is used below to fetch the vocabulary relations.
+ */
+$voc_allowed_fields = ['topic_id', 'topic', 'topic_type', 'classification'];
+$table_name = trim((string)($_POST['tableName'] ?? ''));
+$voc_fields = array_map('trim', explode(':', (string)($_POST['tableFields'] ?? '')));
+
+if ($table_name !== 'mst_topic') {
+	exit('<option value="0">' . __('Table is not allowed') . '</option>');
+}
+if (($voc_fields[0] ?? '') !== 'topic_id' || array_diff($voc_fields, $voc_allowed_fields)) {
+	exit('<option value="0">' . __('Field is not allowed') . '</option>');
+}
+$table_fields = implode(':', $voc_fields);
 
 if (isset($_POST['keywords']) and !empty($_POST['keywords'])) {
 	$keywords = $dbs->escape_string(urldecode(ltrim($_POST['keywords'])));
@@ -112,11 +134,11 @@ if (isset($_GET['format'])) {
 			$li = '';
 			$scope = '';
 
-			$voc_q = $dbs->query('SELECT rt_id, related_topic_id, scope FROM mst_voc_ctrl WHERE topic_id=' . $row[0]);
+			$voc_q = $dbs->query('SELECT rt_id, related_topic_id, scope FROM mst_voc_ctrl WHERE topic_id=' . (int)$row[0]);
 			while ($voc_d = $voc_q->fetch_row()) {
 				if (is_null($voc_d[2])) {
-					$topic_q = $dbs->query('SELECT topic, topic_type FROM mst_topic WHERE topic_id=' . $voc_d[1]);
-					$topic_d = $topic_q->fetch_row();
+					$topic_q = $dbs->query('SELECT topic, topic_type FROM mst_topic WHERE topic_id=' . (int)$voc_d[1]);
+					$topic_d = $topic_q->fetch_row() ?: ['', ''];
 					$li .= '<li><strong style="margin-right:10px;">' . __($voc_d[0]) . '</strong><span style="padding: 0 5px; border-radius:2px;" class="voc">' . $topic_d[0] . ' - ' . $topic_d[1] . '</span></li>';
 				} else {
 					$scope = $voc_d[2];

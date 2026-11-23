@@ -146,7 +146,7 @@ if (isset($_POST['confirmFinish'])) {
         echo '<script type="text/javascript">top.$.colorbox({href: "'.SWB.'/'.FLS.'/'.REP.'/'.$stk_take_report_filename.'", width: 800, height: 500, title: "Stock Take Report"})</script>';
     } else { utility::jsAlert(str_replace('{directory}', REPBS, __('ERROR! Stock take report failed to generate, possibly because {directory} directory is not writable'))); }
     // update
-    $update_st_q = $dbs->query("UPDATE stock_take SET report_file='$stk_take_report_filename' WHERE is_active=1");
+    $update_st_q = $dbs->query("UPDATE stock_take SET report_file='".$dbs->escape_string($stk_take_report_filename)."' WHERE is_active=1");
     // set currently active stock take process to unactive
     $inactive_q = $dbs->query('UPDATE stock_take SET is_active=0');
     // clean all current stock take error log

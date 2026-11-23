@@ -187,7 +187,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
 if (isset($_GET['mode'])) {
     if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
         /* SPECIAL HOLIDAY RECORD FORM */
-        $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+        $itemID = (int)($_POST['itemID'] ?? 0);
         $rec_q = $dbs->query('SELECT * FROM holiday WHERE holiday_id='.$itemID);
         $rec_d = $rec_q->fetch_assoc();
 

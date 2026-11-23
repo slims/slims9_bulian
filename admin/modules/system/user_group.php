@@ -203,7 +203,7 @@ if (isset($_POST['saveData'])) {
 /* main content */
 if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) {
     /* RECORD FORM */
-    $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     $rec_q = $dbs->query('SELECT * FROM user_group WHERE group_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 

@@ -485,7 +485,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             $safe_chars_first = preg_quote($chars_first, '/');
             $safe_chars_last = preg_quote($chars_last, '/');
             $sql_pattern = '^' . $safe_chars_first . '[0-9]{'.$zeros.',}' . $safe_chars_last . '$';
-            $last_q = $dbs->query("SELECT item_code FROM item WHERE item_code REGEXP '{$sql_pattern}' ORDER BY item_code DESC LIMIT 1");
+            $last_q = $dbs->query("SELECT item_code FROM item WHERE item_code REGEXP '" . $dbs->escape_string($sql_pattern) . "' ORDER BY item_code DESC LIMIT 1");
             if (!$dbs->errno && $last_q->num_rows > 0) {
                 $last_d = $last_q->fetch_row();
                 $ptn = '/' . $safe_chars_first . '|' . $safe_chars_last . '$/';
@@ -698,7 +698,7 @@ if (!$in_pop_up) {
 /* main content */
 if (isset($_GET['action']) && $_GET['action'] == 'history') {
 
-    $biblioID = utility::filterData('biblioID', 'get', true, true, true);
+    $biblioID = (int)utility::filterData('biblioID', 'get', true, true, true);
     $table_spec = 'biblio_log AS bl';
     $criteria = 'bl.biblio_id=' . $biblioID;
     // create datagrid
@@ -759,7 +759,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
     }
     /* RECORD FORM */
     // try query
-    $itemID = (integer)isset($_POST['itemID']) ? $_POST['itemID'] : 0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     $_sql_rec_q = sprintf('SELECT b.*, p.publisher_name, pl.place_name FROM biblio AS b
     LEFT JOIN mst_publisher AS p ON b.publisher_id=p.publisher_id
     LEFT JOIN mst_place AS pl ON b.publish_place_id=pl.place_id

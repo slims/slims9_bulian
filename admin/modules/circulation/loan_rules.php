@@ -160,7 +160,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     }
     /* RECORD FORM */
     // try query
-    $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     $rec_q = $dbs->query('SELECT * FROM mst_loan_rules WHERE loan_rules_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 

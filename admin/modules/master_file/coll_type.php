@@ -168,7 +168,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
     if (!($can_read AND $can_write)) {
         die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
     }
-    $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     $rec_q = $dbs->query("SELECT * FROM mst_coll_type WHERE coll_type_id=$itemID");
     $rec_d = $rec_q->fetch_assoc();
 

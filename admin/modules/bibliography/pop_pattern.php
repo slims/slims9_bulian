@@ -62,10 +62,12 @@ if (isset($_GET['pattern']) && !empty($_GET['pattern'])) {
 $succces_msg = 'Pattern saved';
 $failed_msg = 'Failed to save Pattern';
 if (isset($_POST['saveData'])) {
-  $prefix = trim($dbs->escape_string(strip_tags($_POST['prefix'])));
-  $suffix = trim($dbs->escape_string(strip_tags($_POST['suffix'])));
+  // values are serialized first, then the serialized string is escaped at query time.
+  // escaping before serialize() would not protect the query and corrupts the stored length
+  $prefix = trim(strip_tags($_POST['prefix']));
+  $suffix = trim(strip_tags($_POST['suffix']));
   $length_serial = trim($dbs->escape_string(strip_tags($_POST['length_serial'])));
-  $old_pattern = isset($_POST['old_pattern']) ? trim($dbs->escape_string(strip_tags($_POST['old_pattern']))) : ''; 
+  $old_pattern = isset($_POST['old_pattern']) ? trim(strip_tags($_POST['old_pattern'])) : '';
 
   if ($length_serial < 2) {
     echo __('Please, fill length serial number more than 2');
@@ -101,19 +103,19 @@ if (isset($_POST['saveData'])) {
         $patterns_list = array_unique($val);
         $data_serialize = serialize(array_values($patterns_list)); 
 
-        $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'batch_item_code_pattern\'');
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string($data_serialize).'\' WHERE setting_name=\'batch_item_code_pattern\'');
 
       } else {
         $patterns_list[] = $new_pattern;
         $data_serialize = serialize($patterns_list);
-        $update = $dbs->query('UPDATE setting SET setting_value=\''.$data_serialize.'\' WHERE setting_name=\'batch_item_code_pattern\'');
+        $update = $dbs->query('UPDATE setting SET setting_value=\''.$dbs->escape_string($data_serialize).'\' WHERE setting_name=\'batch_item_code_pattern\'');
       }
 
     } else {
       $patterns_list[] = $new_pattern;
       $data_serialize = serialize($patterns_list);
       // insert
-      $insert = $dbs->query("INSERT INTO setting(setting_name, setting_value) VALUES ('batch_item_code_pattern','$data_serialize')");
+      $insert = $dbs->query("INSERT INTO setting(setting_name, setting_value) VALUES ('batch_item_code_pattern','" . $dbs->escape_string($data_serialize) . "')");
     }
 
     if ($update || $insert) {

@@ -116,7 +116,8 @@ if (isset($_POST['save']) AND (isset($_POST['topicID']) OR trim($_POST['search_s
     } else {
         if (!empty($_POST['topicID'])) {
             // add to current session
-            $_SESSION['biblioTopic'][$_POST['topicID']] = array($_POST['topicID'], intval($_POST['level']));
+            $topicID = (int)$_POST['topicID'];
+            $_SESSION['biblioTopic'][$topicID] = array($topicID, intval($_POST['level']));
         } else if ($subject AND empty($_POST['topicID'])) {
             // check subject
             $subject_id = checkSubject($subject);

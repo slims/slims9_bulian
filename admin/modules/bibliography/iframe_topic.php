@@ -138,7 +138,7 @@ if ($biblioID) {
       $remove_link = '<a class="notAJAX btn button btn-danger btn-delete" href="iframe_topic.php?removesess='.$biblio_session[0].'">' . __('Remove') . '</a>';
 
       if ($biblio_session) {
-          $topic_q = $dbs->query("SELECT topic, topic_type FROM mst_topic WHERE topic_id=".$biblio_session[0]);
+          $topic_q = $dbs->query("SELECT topic, topic_type FROM mst_topic WHERE topic_id=".(int)$biblio_session[0]);
           $topic_d = $topic_q->fetch_row();
           $topic = $topic_d[0];
           $topic_type = $sysconf['subject_type'][$topic_d[1]];

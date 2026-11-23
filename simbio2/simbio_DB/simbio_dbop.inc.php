@@ -78,6 +78,33 @@ class simbio_dbop extends simbio
     }
 
     /**
+     * Helper function to resolve a "literal{...}" marker into a raw SQL token.
+     *
+     * Only a whole-value marker holding a constant from a fixed allowlist is
+     * accepted: NULL, a number, or one of a few argument-less date functions.
+     * Anything else returns false and must be bound as a normal parameter, so
+     * request data that merely starts with "literal{" can never reach the SQL
+     * string unescaped.
+     *
+     * @param   mixed   $value
+     * @return  string|false
+     */
+    private function parseLiteral($value) {
+        if (!is_string($value) || !preg_match('/^literal\{(.+)\}$/is', $value, $_match)) {
+            return false;
+        }
+        $_literal = trim($_match[1]);
+        if (preg_match('/^(NULL|TRUE|FALSE|-?\d+(\.\d+)?)$/i', $_literal)) {
+            return strtoupper($_literal);
+        }
+        $_functions = array('NOW()', 'CURDATE()', 'CURTIME()', 'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'UNIX_TIMESTAMP()');
+        if (in_array(strtoupper($_literal), $_functions, true)) {
+            return strtoupper($_literal);
+        }
+        return false;
+    }
+
+    /**
      * Method to insert a record using Prepared Statements
      *
      * @param   string  $str_table
@@ -100,8 +127,7 @@ class simbio_dbop extends simbio
 
             if ($value === null || $value === 'NULL') {
                 $_placeholders[] = 'NULL';
-            } else if (is_string($value) && preg_match("/^literal{.+}/i", $value)) {
-                $literal_value = preg_replace("/literal{|}/i", '', $value);
+            } else if (($literal_value = $this->parseLiteral($value)) !== false) {
                 $_placeholders[] = $literal_value;
             } else {
                 $_placeholders[] = '?';
@@ -169,8 +195,7 @@ class simbio_dbop extends simbio
         foreach ($array_update as $column => $new_value) {
             if ($new_value === 'NULL' OR $new_value === null) {
                 $_set_clauses[] = "`$column` = NULL";
-            } else if (is_string($new_value) && preg_match("/^literal{.+}/i", $new_value)) {
-                $literal_value = preg_replace("/literal{|}/i", '', $new_value);
+            } else if (($literal_value = $this->parseLiteral($new_value)) !== false) {
                 $_set_clauses[] = "`$column` = $literal_value";
             } else {
                 $_set_clauses[] = "`$column` = ?";

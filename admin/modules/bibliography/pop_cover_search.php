@@ -50,7 +50,6 @@ if (isset($_GET['ajax_search'])) {
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
             curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $response = curl_exec($ch);
             if (curl_errno($ch)) {
                 throw new Exception('Curl error: ' . curl_error($ch));

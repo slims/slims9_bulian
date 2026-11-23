@@ -136,7 +136,7 @@ if (isset($_GET['action']) and $_GET['action'] == 'print') {
   // concat all ID together
   $item_ids = '';
   foreach ($_SESSION['barcodes'] as $id) {
-    $item_ids .= '\'' . $id . '\',';
+    $item_ids .= '\'' . $dbs->escape_string((string)$id) . '\',';
   }
   // strip the last comma
   $item_ids = substr_replace($item_ids, '', -1);

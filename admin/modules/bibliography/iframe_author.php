@@ -145,7 +145,7 @@ if ($biblioID) {
 
       if ($biblio_session) {
           $author_q = $dbs->query("SELECT author_name, author_year, authority_type FROM mst_author
-              WHERE author_id=".$biblio_session[0]);
+              WHERE author_id=".(int)$biblio_session[0]);
           $author_d = $author_q->fetch_row();
           $author = $author_d[0];
           $author_year = $author_d[1];

@@ -55,43 +55,85 @@ try {
     $url = $_POST['imageURL'];
     if (!filter_var($url, FILTER_VALIDATE_URL)) throw new Exception(__('URL not valid!'));
 
-    // no private ip addresses
-    $ip = gethostbyname($parsed_url['host']);
-    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-        throw new Exception('Access to addresses is not allowed');
-    }
+    /**
+     * Check one URL before it is requested: http/https only and the host must
+     * resolve to a public address. Returns [host, port, ip] so the request can
+     * be pinned to the address that was checked.
+     */
+    $checkTarget = function (string $target) {
+        $parts = parse_url($target);
+        $scheme = strtolower($parts['scheme'] ?? '');
+        if (!in_array($scheme, ['http', 'https'], true) || empty($parts['host'])) {
+            throw new Exception(__('Must be http/https URL!'));
+        }
+        // no private ip addresses
+        $ip = gethostbyname($parts['host']);
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            throw new Exception('Access to addresses is not allowed');
+        }
+        return [$parts['host'], $parts['port'] ?? ($scheme === 'https' ? 443 : 80), $ip];
+    };
 
     // Get image from another service using native cURL / file_get_contents to bypass SLiMS Client option compiling bugs
     try {
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         $image = '';
 
-        if (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $image = curl_exec($ch);
-            if (curl_errno($ch)) {
-                throw new Exception('Curl error: ' . curl_error($ch));
+        // redirects are followed by hand so every hop goes through the same check.
+        // letting the HTTP client follow them would allow a public URL to
+        // redirect the request to an internal address
+        $maxRedirects = 5;
+        for ($hop = 0; ; $hop++) {
+            if ($hop > $maxRedirects) throw new Exception(__('URL not valid!'));
+            [$targetHost, $targetPort, $targetIp] = $checkTarget($url);
+            $location = null;
+
+            if (function_exists('curl_init')) {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+                curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+                // connect to the address that was validated above
+                curl_setopt($ch, CURLOPT_RESOLVE, [$targetHost . ':' . $targetPort . ':' . $targetIp]);
+                curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+                $image = curl_exec($ch);
+                if (curl_errno($ch)) {
+                    throw new Exception('Curl error: ' . curl_error($ch));
+                }
+                $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+                if ($status >= 300 && $status < 400) {
+                    $location = curl_getinfo($ch, CURLINFO_REDIRECT_URL) ?: null;
+                }
+                curl_close($ch);
+            } else {
+                $opts = [
+                    'http' => [
+                        'method' => 'GET',
+                        'header' => "User-Agent: " . $userAgent . "\r\n",
+                        'timeout' => 15,
+                        'follow_location' => 0,
+                        'ignore_errors' => true
+                    ]
+                ];
+                $context = stream_context_create($opts);
+                $image = @file_get_contents($url, false, $context);
+                if ($image === false) {
+                    throw new Exception('file_get_contents failed to fetch image');
+                }
+                $status = 0;
+                foreach ($http_response_header ?? [] as $headerLine) {
+                    if (preg_match('@^HTTP/\S+\s+(\d{3})@', $headerLine, $m)) $status = (int)$m[1];
+                    if (preg_match('@^Location:\s*(\S+)@i', $headerLine, $m)) $location = $m[1];
+                }
+                if ($status < 300 || $status >= 400) $location = null;
             }
-            curl_close($ch);
-        } else {
-            $opts = [
-                'http' => [
-                    'method' => 'GET',
-                    'header' => "User-Agent: " . $userAgent . "\r\n",
-                    'timeout' => 15
-                ]
-            ];
-            $context = stream_context_create($opts);
-            $image = @file_get_contents($url, false, $context);
-            if ($image === false) {
-                throw new Exception('file_get_contents failed to fetch image');
-            }
+
+            if ($location === null) break;
+            // only absolute redirect targets are followed
+            if (!filter_var($location, FILTER_VALIDATE_URL)) throw new Exception(__('URL not valid!'));
+            $url = $location;
         }
     } catch (\Exception $e) {
         $message = $e->getMessage();

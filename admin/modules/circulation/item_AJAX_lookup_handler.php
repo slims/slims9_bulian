@@ -34,7 +34,19 @@ do_checkIP('smc-circulation');
 require SB.'admin/default/session.inc.php';
 require SB.'admin/default/session_check.inc.php';
 
-$table_fields = trim($_POST['tableFields']);
+// privileges checking
+if (!utility::havePrivilege('circulation', 'r')) {
+    die('<option value="0">'.__('You don\'t have enough privileges to access this area!').'</option>');
+}
+
+// only these columns of the item/biblio join below may be searched.
+// column names are SQL identifiers and can not be protected by escaping
+$allowed_fields = ['i.item_code', 'item_code', 'b.title', 'title'];
+$lookup_fields = array_map('trim', explode(':', (string)($_POST['tableFields'] ?? '')));
+if (array_diff($lookup_fields, $allowed_fields)) {
+    die('<option value="0">'.__('Field is not allowed').'</option>');
+}
+$table_fields = implode(':', $lookup_fields);
 
 if (isset($_POST['keywords']) AND !empty($_POST['keywords'])) {
     $keywords = $dbs->escape_string(urldecode(trim($_POST['keywords'])));

@@ -81,7 +81,12 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::jsToastr(__('Custom Field'), __('Field or Label can\'t be empty'), 'error');
         exit();
     } else {
-        $data['primary_table'] = $dbs->escape_string(trim($_POST['table']));        
+        $data['primary_table'] = $dbs->escape_string(trim($_POST['table']));
+        // primary table is used as part of a table name, only known tables are allowed
+        if (!in_array($data['primary_table'], array_column($table_options, 0), true)) {
+            utility::jsToastr(__('Custom Field'), __('Table is not allowed'), 'error');
+            exit();
+        }
         $data['label'] = ucwords($dbs->escape_string($label));
         $data['type'] = $dbs->escape_string(trim($_POST['type']));   
         $data['is_public'] = $dbs->escape_string(trim($_POST['is_public']));  
@@ -111,13 +116,18 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         if (isset($_POST['updateRecordID'])) {
             /* UPDATE RECORD MODE */
             // filter update record ID
-            $updateRecordID = $dbs->escape_string(trim($_POST['updateRecordID']));
+            $updateRecordID = (int)$_POST['updateRecordID'];
 
             //get last field table
             $_q = $dbs->query("SELECT primary_table,dbfield,label FROM mst_custom_field WHERE field_id=".$updateRecordID);
             if($_q->num_rows){
                 $_d = $_q->fetch_row();
                 if($_d[0]!=$data['primary_table']){
+                    // stored table and column names go into the query below as identifiers
+                    if (!in_array($_d[0], array_column($table_options, 0), true) || !preg_match('/^[a-zA-Z0-9_]+$/', (string)$_d[1])) {
+                        utility::jsToastr(__('Custom Field'), __('Table is not allowed'), 'error');
+                        exit();
+                    }
                     $count_q = $dbs->query("SELECT COUNT(*) FROM ".$_d[0]."_custom WHERE ".$_d[1]." IS NOT NULL");
                     $count_d = $count_q->fetch_row();
                     $has_data = ($count_d[0]) < 1;
@@ -184,7 +194,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
     }
     // loop array
     foreach ($_POST['itemID'] as $itemID) {
-        $itemID = $dbs->escape_string(trim($itemID));
+        $itemID = (int)$itemID;
         //get dbfield name
         $dbfield_q = $dbs->query("SELECT dbfield,primary_table,label FROM mst_custom_field WHERE field_id=".$itemID);
         $field = $dbfield_q->fetch_row();

@@ -272,7 +272,7 @@ if (isset($_POST['detail']) or (isset($_GET['action']) and $_GET['action'] == 'd
     }
     /* RECORD FORM */
     // try query
-    $itemID = (int)isset($_POST['itemID']) ? $_POST['itemID'] : 0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     // if ($itemID < 1) { die("Invalid itemID"); }
     $rec_q = $dbs->query('SELECT item.*, b.biblio_id, b.title, s.supplier_name
         FROM item

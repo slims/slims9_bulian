@@ -219,10 +219,11 @@ class Biblio
     if ($total < 1) {
       $total = 1000000;
     }
-    $input_id = $dbs->escape_string($input_id);
-    if ($input_id == 'BATCH') {
+    if ($input_id === 'BATCH') {
       $records = $this->getRecords(null, $offset, $total);
     } else {
+      // input is one biblio ID or a comma separated list of them: keep integers only
+      $input_id = implode(',', array_map('intval', explode(',', (string)$input_id)));
       $records = $this->getRecords(sprintf('biblio_id IN (%s)', $input_id), $offset, $total);
     }
 

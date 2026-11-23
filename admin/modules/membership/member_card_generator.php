@@ -119,7 +119,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'print') {
     // concat all ID together
     $member_ids = '';
     foreach ($_SESSION['card'] as $id) {
-        $member_ids .= '\''.$id.'\',';
+        $member_ids .= '\''.$dbs->escape_string((string)$id).'\',';
     }
     // strip the last comma
     $member_ids = substr_replace($member_ids, '', -1);

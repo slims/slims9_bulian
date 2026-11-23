@@ -143,7 +143,7 @@ if (isset($_POST['saveData'])) {
 /* main content */
 if ((isset($_GET['detail']) && isset($_GET['itemID'])) || (isset($_GET['action']) && $_GET['action'] == 'detail')) {
     /* RECORD FORM */
-    $itemID = (integer)isset($_GET['itemID'])?$_GET['itemID']:0;
+    $itemID = (int)($_GET['itemID'] ?? 0);
     $rec_q = $dbs->query('SELECT * FROM fines WHERE fines_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 

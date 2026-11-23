@@ -264,7 +264,7 @@ class circulation extends member
             $this->overdue_days = $_fines['days'];
             $overdue_description = str_replace("{item_code}", $_fines['item'], __("Overdue fines for item {item_code}"));
             if (is_numeric($this->overdue_days) AND $this->overdue_days > 0) {
-                $this->obj_db->query("INSERT INTO fines (fines_date, member_id, debet, credit, description) VALUES('$_return_date', '".$this->member_id ."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
+                $this->obj_db->query("INSERT INTO fines (fines_date, member_id, debet, credit, description) VALUES('$_return_date', '".$this->obj_db->escape_string((string)$this->member_id)."', ".$_fines['value'].", 0, '". $this->obj_db->escape_string($overdue_description) ."')");
             }
             // add to receipt
             if (isset($_SESSION['receipt_record'])) {
@@ -272,7 +272,7 @@ class circulation extends member
             }
         }
         // update the loan data
-        $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."' AND is_lent=1 AND is_return=0");
+        $this->obj_db->query("UPDATE loan SET is_return=1, return_date='$_return_date', last_update='".date("Y-m-d H:i:s")."' WHERE loan_id=$int_loan_id AND member_id='".$this->obj_db->escape_string((string)$this->member_id)."' AND is_lent=1 AND is_return=0");
 
         // Update loan history (replaces update_loan_history trigger)
         $this->updateLoanHistory($int_loan_id, array(
@@ -298,7 +298,7 @@ class circulation extends member
         // check if this item is being reserved by other member
         $_resv_q = $this->obj_db->query("SELECT l.item_code FROM reserve AS rs
             INNER JOIN loan AS l ON rs.item_code=l.item_code
-            WHERE l.loan_id=$int_loan_id AND rs.member_id!='".$this->member_id."'");
+            WHERE l.loan_id=$int_loan_id AND rs.member_id!='".$this->obj_db->escape_string((string)$this->member_id)."'");
         if ($_resv_q->num_rows > 0) {
             return ITEM_RESERVED;
         }
@@ -341,7 +341,7 @@ class circulation extends member
             $_due_date = $this->expire_date;
         }
         $query = $this->obj_db->query("UPDATE loan SET renewed=renewed+1, due_date='$_due_date', is_return=0
-            WHERE loan_id=$int_loan_id AND member_id='".$this->member_id."'");
+            WHERE loan_id=$int_loan_id AND member_id='".$this->obj_db->escape_string((string)$this->member_id)."'");
 
         $_renewed_q = $this->obj_db->query("SELECT renewed FROM loan WHERE loan_id=$int_loan_id");
         $_renewed_d = $_renewed_q->fetch_row();

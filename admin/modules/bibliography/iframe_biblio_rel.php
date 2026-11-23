@@ -134,7 +134,7 @@ if ($biblioID) {
 
       if ($biblio_session) {
           $title_q = $dbs->query("SELECT title, publish_year, edition FROM biblio
-              WHERE biblio_id=".$biblio_session[0]);
+              WHERE biblio_id=".(int)$biblio_session[0]);
           $title_d = $title_q->fetch_row();
           $title = $title_d[0];
           $publish_year = $title_d[1];

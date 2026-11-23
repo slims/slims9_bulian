@@ -267,7 +267,7 @@ if (isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'd
         die('<div class="errorBox">'.__('You don\'t have enough privileges to view this section').'</div>');
     }
     /* RECORD FORM */
-    $itemID = (integer)isset($_POST['itemID'])?$_POST['itemID']:0;
+    $itemID = (int)($_POST['itemID'] ?? 0);
     $rec_q = $dbs->query('SELECT * FROM mst_member_type WHERE member_type_id='.$itemID);
     $rec_d = $rec_q->fetch_assoc();
 

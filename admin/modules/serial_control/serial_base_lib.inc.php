@@ -249,7 +249,7 @@ class serial
                 @$this->obj_db->query("INSERT INTO kardex (serial_id, date_expected, date_received, seq_number, notes, input_date, last_update) VALUES ($_serialID, '$_date_expected', $_date_received, $_seq_number, $_notes, '$_curr_date', '$_curr_date')");
             } else {
                 @$this->obj_db->query("UPDATE kardex SET date_expected='$_date_expected',
-                    date_received=$_date_received, seq_number=$_seq_number, notes=$_notes, last_update='$_curr_date' WHERE kardex_id=$_kardexID AND serial_id=$_serialID");
+                    date_received=$_date_received, seq_number=$_seq_number, notes=$_notes, last_update='$_curr_date' WHERE kardex_id=".(int)$_kardexID." AND serial_id=$_serialID");
             }
         }
     }

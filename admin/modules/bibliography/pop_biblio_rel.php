@@ -69,7 +69,8 @@ if (isset($_POST['save']) AND (isset($_POST['biblioID']) OR trim($_POST['search_
   } else {
       if (isset($_POST['relBiblioID']) AND !empty($_POST['relBiblioID'])) {
           // add to current session
-          $_SESSION['biblioToBiblio'][$_POST['relBiblioID']] = array($_POST['relBiblioID']);
+          $relBiblioID = (int)$_POST['relBiblioID'];
+          $_SESSION['biblioToBiblio'][$relBiblioID] = array($relBiblioID);
           utility::jsToastr('Biblio Relation', __('Biblio relation added!'), 'success');
           echo '<script type="text/javascript">';
           echo 'parent.setIframeContent(\'biblioIframe\', \''.MWB.'bibliography/iframe_biblio_rel.php\');';

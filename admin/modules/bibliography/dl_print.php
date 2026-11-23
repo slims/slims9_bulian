@@ -83,7 +83,7 @@ if (isset($_POST['itemID']) and !empty($_POST['itemID']) and isset($_POST['itemA
         }
         if (stripos($itemID, 'b', 0) !== false) {
             // Biblio ID
-            $biblioID = str_ireplace('b', '', $itemID);
+            $biblioID = (int)str_ireplace('b', '', $itemID);
             if (isset($_SESSION['labels']['biblio'][$biblioID])) {
                 continue;
             }
@@ -132,14 +132,14 @@ if (isset($_GET['action']) and $_GET['action'] == 'print') {
     $item_ids = '';
     if (isset($_SESSION['labels']['item'])) {
         foreach ($_SESSION['labels']['item'] as $id) {
-            $item_ids .= $id . ',';
+            $item_ids .= (int)$id . ',';
         }
     }
     // concat biblio ID
     $biblio_ids = '';
     if (isset($_SESSION['labels']['biblio'])) {
         foreach ($_SESSION['labels']['biblio'] as $id) {
-            $biblio_ids .= $id . ',';
+            $biblio_ids .= (int)$id . ',';
         }
     }
     // strip the last comma

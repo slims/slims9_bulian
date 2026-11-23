@@ -114,7 +114,8 @@ if (isset($_POST['save']) AND (isset($_POST['authorID']) OR trim($_POST['search_
   } else {
       if (isset($_POST['authorID']) AND !empty($_POST['authorID'])) {
           // add to current session
-          $_SESSION['biblioAuthor'][$_POST['authorID']] = array($_POST['authorID'], intval($_POST['level']));
+          $authorID = (int)$_POST['authorID'];
+          $_SESSION['biblioAuthor'][$authorID] = array($authorID, intval($_POST['level']));
       } else if ($author_name AND empty($_POST['authorID'])) {
           // check author
           $author_id = checkAuthor($author_name);

@@ -262,7 +262,8 @@ class OAI_Web_Service {
       return ob_get_clean();
     }
     */
-    $recordID = str_ireplace($sysconf['OAI']['identifierPrefix'], '', $recordID);
+    // record ID is always the integer biblio ID once the OAI prefix is removed
+    $recordID = (int)str_ireplace($sysconf['OAI']['identifierPrefix'], '', $recordID);
     $this->xml->startElement('request');
         $this->xml->writeAttribute('verb', 'GetRecord');
         $this->xml->writeAttribute('identifier', $recordID);

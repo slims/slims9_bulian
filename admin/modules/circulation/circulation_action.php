@@ -65,7 +65,7 @@ function visitOnLoan($member_id)
         $mquery = $dbs->query('SELECT member_name, inst_name FROM member WHERE member_id=\''.$member_id.'\'');
         $mdata = $mquery->fetch_row();
         $member_name = $dbs->escape_string($mdata[0]);
-        $institution = $mdata[1];
+        $institution = $dbs->escape_string((string)$mdata[1]);
         // insert visit
         $checkin_date  = date('Y-m-d H:i:s');
         $insert = $dbs->query("INSERT INTO visitor_count (member_id, member_name, institution, checkin_date) VALUES ('$member_id', '$member_name', '$institution', '$checkin_date')");
@@ -258,7 +258,7 @@ if (isset($_POST['overrideID']) AND !empty($_POST['overrideID'])) {
     $circulation->holiday_dayname = $_SESSION['holiday_dayname'];
     $circulation->holiday_date = $_SESSION['holiday_date'];
     // add item to loan session
-    $add = $circulation->addLoanSession($_POST['overrideID']);
+    $add = $circulation->addLoanSession($dbs->escape_string(trim($_POST['overrideID'])));
     echo '<script type="text/javascript">';
     echo 'location.href = \'loan.php\';';
     echo '</script>';
