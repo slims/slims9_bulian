@@ -13,8 +13,17 @@ export default {
     },
     data() {
         return {
-            optionalMessage: false
+            optionalMessage: false,
+            // true only when the installer could not remove itself
+            installerLeft: false
         }
+    },
+    mounted() {
+        // the installer removes itself when it finishes. Ask for one of its
+        // own files: if it still answers (anything but 404), it is still there
+        fetch('./api.php', {method: 'POST', cache: 'no-store'})
+            .then(res => { this.installerLeft = res.status !== 404 })
+            .catch(() => { this.installerLeft = false })
     },
     methods: {
         showOptionalMessage() {
@@ -31,9 +40,9 @@ export default {
 <div class="flex-1 bg-gray-100 py-8 px-16">
     <h1 class="text-3xl font-medium">New <slims-text></slims-text> successful installed.</h1>
     <p class="text-lg text-gray-700 tracking-wide mb-4">Congratulation, now you have <slims-text></slims-text> in your machine.</p>
-    <p class="rounded border bg-pink-100 border-pink-500 text-pink-500 px-4 py-2 mt-2 mb-8 text-lg">
-    Folder <code class="font-bold px-2">install</code> in your <slims-text></slims-text> is already exist. For security
-                        reason please rename or remove it from your machine.</p>
+    <p v-if="installerLeft" class="rounded border bg-pink-100 border-pink-500 text-pink-500 px-4 py-2 mt-2 mb-8 text-lg">
+    The <code class="font-bold px-2">install</code> folder could not be removed automatically. It has been disabled, and you
+                        will be asked to remove it the first time you log in as administrator.</p>
     <div v-if="optionalmsg.length > 0">
         <h1 class="text-3xl font-medium">Upgrade result</h1>
         <p class="mb-4 mt-1 text-grey-700 leading-normal">Some upgrade process didn't work, but don't worry it doesn't have big impact on your <slims-text></slims-text>, <strong class="font-bold cursor-pointer" title="For more information" v-on:click="showOptionalMessage()" >show detail</strong>. Now it ready to use</p>

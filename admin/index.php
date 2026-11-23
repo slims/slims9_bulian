@@ -39,6 +39,17 @@ do_checkIP('smc');
 require SB . 'admin/default/session.inc.php';
 // session checking
 require SB . 'admin/default/session_check.inc.php';
+
+/**
+ * The installer folder must not stay on a running site. The super
+ * administrator is the one who can do something about it, so that account
+ * is stopped here until the folder is removed. Other staff are not blocked.
+ */
+if ((int)$_SESSION['uid'] === 1 && \SLiMS\InstallerGuard::mustBlock()) {
+    require SB . 'template/installer_gate.php';
+    exit;
+}
+
 require SIMBIO . 'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 require LIB . 'module.inc.php';
 

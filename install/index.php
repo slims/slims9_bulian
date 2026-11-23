@@ -5,7 +5,9 @@
  * @File name           : index.php
  */
 
-if (file_exists(__DIR__ . '/../config/database.php')) {
+// installer is disabled once the application is configured, or when it has
+// been locked because the folder could not be removed (config/installer.lock)
+if (file_exists(__DIR__ . '/../config/database.php') || file_exists(__DIR__ . '/../config/installer.lock')) {
     header('Location: ../index.php');
     exit();
 }

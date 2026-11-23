@@ -27,9 +27,26 @@ if (!isset($_SESSION['success_quries'])) {
   ];
 }
 
-if (file_exists(__DIR__ . '/../config/database.php')) {
+if (file_exists(__DIR__ . '/../config/database.php') || file_exists(__DIR__ . '/../config/installer.lock')) {
     header('HTTP/1.1 403 Forbidden');
     die(json_encode(['status' => false,'message' => ['Installer is disabled. Please remove the install directory for security reasons.']]));
+}
+
+/**
+ * Send the final success response, then take the installer off the server.
+ * The folder is removed here so nobody has to remember to do it later. When
+ * it can not be removed (file permission), the installer is locked instead
+ * and the super administrator is asked to remove it at first login.
+ */
+function finishInstaller(array $payload)
+{
+    require_once __DIR__ . '/../lib/InstallerGuard.php';
+    // release the session file before the folder goes away
+    session_write_close();
+    $removed = \SLiMS\InstallerGuard::remove();
+    if (!$removed['ok']) \SLiMS\InstallerGuard::lock();
+    $payload['installer_removed'] = $removed['ok'];
+    die(json_encode($payload));
 }
 
 // if (isset($_GET['success_query'])) exit(json_encode($_SESSION['success_quries']??''));
@@ -236,7 +253,7 @@ switch ($action) {
       $slims->createConfigFile($_SESSION);
       // write environment file
       $slims->createEnvFile();
-      die(json_encode(['status' => true, 'message' => 'SLiMS Successful be installed']));
+      finishInstaller(['status' => true, 'message' => 'SLiMS Successful be installed']);
     } catch (Exception $exception) {
       if ($exception->getCode() === 5000 || $exception->getCode() === 5001) {
         $_SESSION['admin_username'] = $_POST['username'];
@@ -294,7 +311,7 @@ switch ($action) {
 
       unset($_SESSION['success_quries']);
 
-      die(json_encode(['status' => true]));
+      finishInstaller(['status' => true]);
     } catch (Exception $exception) {
       if ($exception->getCode() === 5000 || $exception->getCode() === 5001) {
         $_SESSION['oldVersion'] = $_POST['oldVersion'];

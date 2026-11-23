@@ -87,9 +87,16 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
         //if (!file_exists($sysconf['mysqldump'])) {
         //    $warnings[] = __('The PATH for <strong>mysqldump</strong> program is not right! Please check configuration file or you won\'t be able to do any database backups.');
         //}
-        // check installer directory
-        if (is_dir('../install/')) {
-            $warnings[] = __('Installer folder is still exist inside your server. Please remove it or rename to another name for security reason.');
+        // installer directory: in production the super administrator is stopped
+        // by a blocking screen (see admin/index.php), so this reminder is only
+        // for the development environment where that screen is not shown.
+        // Other staff can not act on it and are not bothered with it.
+        if ((int)$_SESSION['uid'] === 1 && \SLiMS\InstallerGuard::exists()) {
+            $warnings[] = __('The installer folder is still on this server. Remove it before this site goes live; renaming it is not enough.');
+        }
+        if (!empty($_SESSION['installer_removed_notice'])) {
+            unset($_SESSION['installer_removed_notice']);
+            echo '<div class="alert alert-success border-0 mt-3">' . __('The installer folder has been removed. This site is now safer.') . '</div>';
         }
 
 
