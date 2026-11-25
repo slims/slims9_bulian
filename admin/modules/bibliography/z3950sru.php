@@ -67,7 +67,7 @@ if (isset($_GET['z3950_SRU_source'])) {
     $zserver = $inList ? trim(urldecode($_GET['z3950_SRU_source'])) : '';
     $matchServer = array_pop($matchServer);
 } else {
-    $zserver = 'http://z3950.loc.gov:7090/voyager?';
+    $zserver = 'https://lx2.loc.gov/sru/lcdb';
 }
 
 /* RECORD OPERATION */
