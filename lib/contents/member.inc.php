@@ -776,7 +776,7 @@ if ($is_member_login) :
                 $_SESSION['info']['data'] = __('Reservation e-mail sent successfully!. please contact librarians for further info.');
                 $_SESSION['info']['status'] = 'success';
             } else {
-                $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.__(sprintf('Reservation e-mail FAILED to sent with error: %s Please contact administrator!', $mail['message'])).'</span>';
+                $_SESSION['info']['data'] = '<span style="font-size: 120%; font-weight: bold; color: red;">'.sprintf(__('Reservation e-mail FAILED to sent with error: %s Please contact administrator!'), $mail['message']).'</span>';
                 $_SESSION['info']['status'] = 'danger';
             }
             exit;
