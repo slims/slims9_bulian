@@ -181,9 +181,6 @@ class Thumb
      */
     public function isCacheExists()
     {
-        if (file_exists($this->cache['file'])) {
-            unlink ($this->cache['file']);
-        }
         return file_exists($this->cache['file']);
     }
 
