@@ -36,7 +36,19 @@ use utility;
 class Config
 {
     private static ?self $instance = null;
-    
+
+    /**
+     * Security-critical keys that only sysconfig.inc.php may define.
+     * Values for these in the `setting` table are ignored, so a write to
+     * that table (e.g. via SQL injection) cannot widen upload whitelists.
+     */
+    public const FILE_ONLY_KEYS = [
+        'allowed_file_att',
+        'allowed_images',
+        'allowed_images_mimetype',
+        'mimetype',
+    ];
+
     /**
      * Configuration storage array
      * @var array<string, mixed>
@@ -116,6 +128,7 @@ class Config
             while ($data = $query->fetch(PDO::FETCH_OBJ)) {
                 $value = utility::unserialize($data->setting_value);
                 $settingName = $data->setting_name;
+                if (in_array($settingName, self::FILE_ONLY_KEYS, true)) continue;
 
                 if (is_array($value)) {
                     $this->mergeArrayConfig($settingName, $value);

@@ -16,7 +16,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToWriteFile;
-use SLiMS\Filesystems\{Guard,Utils,Stream};
+use SLiMS\Filesystems\{ForbiddenFile,Guard,Utils,Stream};
 use utility;
 
 class Local extends Contract
@@ -49,6 +49,14 @@ class Local extends Contract
     public function upload(string $fileToUpload, closure $validation)
     {
         try {
+            // refuse executable files before anything touches the disk
+            $originalName = $_FILES[$fileToUpload]['name'] ?? '';
+            if (ForbiddenFile::matches($originalName)) {
+                $this->uploadStatus = false;
+                $this->error = str_replace('{extension}', $this->getExt($fileToUpload), __('Extension {extension} is not allowed!'));
+                return $this;
+            }
+
             // create new random file name
             $this->uploadedFile = md5(date('this') . utility::createRandomString(64)) . $this->getExt($fileToUpload);
 

@@ -53,6 +53,11 @@ class Connection {
             }
             $dsn[] = $username;
             $dsn[] = $password;
+            // No stacked queries: stops an injection from appending its own
+            // statements (e.g. "; UPDATE setting ..."). Only settable at connect time.
+            if ($this->dsnPrefix === 'mysql') {
+                $dsn[] = [PDO::MYSQL_ATTR_MULTI_STATEMENTS => false];
+            }
             return $dsn;
         } 
 

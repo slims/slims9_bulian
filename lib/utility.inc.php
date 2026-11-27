@@ -166,6 +166,7 @@ class utility
         $_setting_query = $obj_db->query('SELECT * FROM setting');
         if (!$obj_db->errno) {
             while ($_setting_data = $_setting_query->fetch_assoc()) {
+                if (in_array($_setting_data['setting_name'], \SLiMS\Config::FILE_ONLY_KEYS, true)) continue;
                 $_value = static::unserialize(stripslashes($_setting_data['setting_value']));
                 if (is_array($_value)) {
 

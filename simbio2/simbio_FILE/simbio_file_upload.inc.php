@@ -132,7 +132,9 @@ class simbio_file_upload extends simbio
       }
     }
 
-    if (!$_isTypeAllowed) {
+    if (!$_isTypeAllowed
+        || \SLiMS\Filesystems\ForbiddenFile::matches($_FILES[$file_input_name]['name'])
+        || \SLiMS\Filesystems\ForbiddenFile::matches($this->new_filename)) {
       $this->error = 'Filetype is forbidden';
       return FILETYPE_NOT_ALLOWED;
     }
